@@ -8,7 +8,7 @@ export type PermissionEnums = DatabaseEnums['permissions_type'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
-  [id in (typeof PATHS)[number]]: PermissionEnums[];
+  [id in (typeof PATHS)[number]]: (PermissionEnums | 'basic')[];
 };
 
 const DEFAULT: Permissions = Object.assign(
@@ -51,6 +51,7 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
+  '/api/getMembersWithRole': ['team_enabled'],
   '/api/scheduling/get_interview_plans': ['scheduler_enabled'],
   '/api/greenhouse/getPostings': ['jobs_enabled'],
   '/api/greenhouse/saveApiKey': ['settings_company_update'],
@@ -58,8 +59,7 @@ const PERMISSIONS: Permissions = {
   '/api/lever/saveApiKey': ['settings_company_update'],
   '/api/ashby/getPostings': ['jobs_enabled'],
   '/api/ashby/saveApiKey': ['settings_company_update'],
-  '/api/getMembersWithRole': ['team_enabled'],
-  '/api/get_last_login': ['team_read'],
+  '/api/get_last_login': ['team_enabled'],
   '/api/setMembersWithRole': ['team_enabled', 'scheduler_enabled'],
   '/api/scheduling/fetchUserDetails': ['scheduler_enabled'],
   '/api/scheduling/fetch_interview_session_task': ['scheduler_enabled'],
@@ -127,6 +127,7 @@ const PERMISSIONS: Permissions = {
   '/api/emails/preview': ['scheduler_enabled'],
   '/api/getRoleAndPermissions': ['settings_roles_update'],
   '/api/setRoleAndPermission': ['settings_roles_update'],
+  '/api/getUserDetails': ['jobs_enabled'],
 };
 
 export default PERMISSIONS;

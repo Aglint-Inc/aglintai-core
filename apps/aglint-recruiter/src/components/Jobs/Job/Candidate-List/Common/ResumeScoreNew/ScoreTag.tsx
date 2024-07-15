@@ -48,13 +48,13 @@ const getResumeScore = (score: number) => {
   else if (score == -1)
     return {
       text: 'Resume not parsable',
-      bgColor: 'var(--neutal-3)',
-      color: 'var(--neutal-11)',
+      bgColor: 'var(--neutral-3)',
+      color: 'var(--neutral-11)',
     };
   else if (score == -2)
     return {
       text: 'Resume not found',
-      bgColor: 'var(--neutal-3)',
-      color: 'var(--neutal-11)',
+      bgColor: 'var(--neutral-3)',
+      color: 'var(--neutral-11)',
     };
 };

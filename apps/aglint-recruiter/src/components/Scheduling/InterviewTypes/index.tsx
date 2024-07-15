@@ -109,8 +109,8 @@ export function Modules() {
                       setShowArchive(false);
                     },
                   }}
-                  textFirst={'Show Archived'}
-                  textSecond={'Hide Archived'}
+                  textFirst={'Active'}
+                  textSecond={'Archived'}
                 />
               </Stack>
             }
@@ -146,8 +146,8 @@ export function Modules() {
                               total={mod.users.length}
                               sx={{
                                 '& .MuiAvatar-root': {
-                                  width: 28,
-                                  height: 28,
+                                  width: 'var(--space-5)',
+                                  height: 'var(--space-5)',
                                   fontSize: 12,
                                 },
                               }}

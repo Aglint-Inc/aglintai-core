@@ -136,6 +136,7 @@
 
 .tab_wrapper {
   display: flex;
+  padding-left: var(--space-4);
   justify-content: flex-start;
   align-items: center;
   border-bottom: 1px solid var(--neutral-a6);

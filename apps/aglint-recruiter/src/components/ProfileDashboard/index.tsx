@@ -1,6 +1,3 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable security/detect-unsafe-regex */
-/* eslint-disable security/detect-object-injection */
 import { RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -24,6 +21,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { PermissionEnums } from '@/src/utils/routing/permissions';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -422,39 +420,7 @@ const ProfileDashboard = () => {
                 />
               </>
             }
-            slotUserInfoBtn={
-              <>
-                {/* <Stack
-                  style={{
-                    position: 'relative',
-                    pointerEvents: loading.profile ? 'none' : 'auto',
-                    zIndex: 0,
-                  }}
-                >
-                  <ButtonPrimaryRegular
-                    textLabel={'Save Changes'}
-                    isDisabled={!profileChange}
-                    onClickButton={{
-                      onClick: async () => {
-                        setLoading((prev) => {
-                          return { ...prev, password: true };
-                        });
-                        const confirmation = await handleSubmit(
-                          profile,
-                          setProfile,
-                          handleUpdateProfile,
-                          recruiterUser,
-                        );
-                        if (confirmation) setProfileChange(false);
-                        setLoading((prev) => {
-                          return { ...prev, profile: false };
-                        });
-                      },
-                    }}
-                  />
-                </Stack> */}
-              </>
-            }
+            slotUserInfoBtn={<></>}
             onClickProfilePhotoChange={{
               onClick: () => {
                 document.getElementById('image-upload').click();
@@ -494,6 +460,16 @@ const ProfileDashboard = () => {
                   textEmail={recruiterUser.email || '--'}
                   textJobTitle={recruiterUser.position || '--'}
                   textLocation={recruiterUser.interview_location || '--'}
+                  isRoleLinkVisible={recruiterUser.role === 'admin'}
+                  isManagerVisible={recruiterUser.role !== 'admin'}
+                  onClickRole={{
+                    onClick: () => {
+                      router.push(
+                        `${ROUTES['/company']()}?tab=roles&role=${recruiterUser.role}`,
+                      );
+                    },
+                  }}
+                  textManager={recruiterUser.manager_details?.name || '--'}
                   textRole={
                     recruiterUser.role
                       ? capitalizeFirstLetter(recruiterUser.role)
@@ -684,7 +660,7 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
       return {
         newProfile: {
           ...acc.newProfile,
-          [key]: { ...acc.newProfile[key], value, error },
+          [key]: { ...acc.newProfile[String(key)], value, error },
         },
         error: error && !acc.error ? true : acc.error,
       };
@@ -741,6 +717,7 @@ const validateMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
+    // eslint-disable-next-line no-useless-escape
     /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
       value.trim(),
     )
@@ -750,6 +727,7 @@ const validateGMail = (value: string) => {
   return (
     value &&
     value.trim() !== '' &&
+    // eslint-disable-next-line no-useless-escape
     /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@g(oogle)?mail([\.])com/g.test(
       value.trim(),
     )
@@ -790,7 +768,7 @@ const ProfileForms = ({
       return {
         ...prev,
         [key]: {
-          ...prev[key],
+          ...prev[String(key)],
           value: e.target.value,
           error: false,
         },
@@ -950,6 +928,7 @@ export default ProfileDashboard;
 
 const validateLinkedIn = (value: string) => {
   const linkedInURLPattern =
+    // eslint-disable-next-line security/detect-unsafe-regex
     /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
   return linkedInURLPattern.test(value);
 };

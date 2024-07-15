@@ -7,21 +7,13 @@ declare function MemberListCard(props: {
   textName?: React.ReactNode;
   textRole?: React.ReactNode;
   countCompletedSchedule?: React.ReactNode;
-  onHoverDot?: Types.Devlink.RuntimeProps;
   onClickPauseInterview?: Types.Devlink.RuntimeProps;
-  onClickResumeInterview?: Types.Devlink.RuntimeProps;
-  onClickRemoveModule?: Types.Devlink.RuntimeProps;
-  isPauseVisible?: Types.Visibility.VisibilityConditions;
-  isResumeVisible?: Types.Visibility.VisibilityConditions;
   isScheduleCountVisible?: Types.Visibility.VisibilityConditions;
   isProfileVisible?: Types.Visibility.VisibilityConditions;
-  isRoleVisible?: Types.Visibility.VisibilityConditions;
   isTrainingCompletedVisible?: Types.Visibility.VisibilityConditions;
   isTrainingProgessVisible?: Types.Visibility.VisibilityConditions;
   onClickApproveCandidate?: Types.Devlink.RuntimeProps;
   slotProgressBar?: Types.Devlink.Slot;
-  isMoveToQualifierVisible?: Types.Visibility.VisibilityConditions;
-  onClickMoveToQualifier?: Types.Devlink.RuntimeProps;
   isApproveCandidateButtonVisible?: Types.Visibility.VisibilityConditions;
   isPendingApprovalVisible?: Types.Visibility.VisibilityConditions;
   textPauseResumeDate?: React.ReactNode;
@@ -40,5 +32,5 @@ declare function MemberListCard(props: {
   isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
   textPause?: React.ReactNode;
   isInterviewsVisible?: Types.Visibility.VisibilityConditions;
-  isRemoveVisible?: Types.Visibility.VisibilityConditions;
+  slotThreeDot?: Types.Devlink.Slot;
 }): React.JSX.Element;

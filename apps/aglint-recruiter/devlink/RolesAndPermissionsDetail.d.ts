@@ -10,4 +10,5 @@ declare function RolesAndPermissionsDetail(props: {
   textUserCount?: React.ReactNode;
   textRoleName?: React.ReactNode;
   textUserDescription?: React.ReactNode;
+  slotBanner?: Types.Devlink.Slot;
 }): React.JSX.Element;

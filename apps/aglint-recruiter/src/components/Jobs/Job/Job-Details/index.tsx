@@ -19,21 +19,21 @@ import {
   validateDescription,
   validateString,
 } from '@/src/context/JobContext/utils';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
+import JobNotFound from '../Common/JobNotFound';
 
 const JobDetailsDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job?.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

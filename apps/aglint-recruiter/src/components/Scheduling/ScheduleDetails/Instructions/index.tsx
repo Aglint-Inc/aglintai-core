@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Text } from '@/devlink/Text';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
@@ -74,15 +75,19 @@ function Instructions({
           }}
         />
       </Dialog>
-      <Stack gap={2} direction={'column'} p={'var(--space-5)'}>
+      <Stack  direction={'column'} p={'var(--space-5)'}>
+        <Stack gap={2} bgcolor={'white'} padding={'var(--space-4)'} border={'1px solid var(--neutral-6)'} borderRadius={'var(--radius-4)'} width={'800px'}>
         <ShowCode>
           <ShowCode.When isTrue={showEditButton}>
-            <Stack direction={'row'} justifyContent={'start'}>
+        
+            <Stack direction={'row'} justifyContent={'space-between'}>
+            <Text content='Instruction' weight={'medium'}/>
               <ButtonSoft
+              color={'neutral'}
                 isLeftIcon={true}
                 slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
                 size={1}
-                textButton={'Edit Instruction'}
+                textButton={'Edit'}
                 onClickButton={{
                   onClick: () => {
                     setEdit(true);
@@ -100,6 +105,7 @@ function Instructions({
             __html: marked(instruction || 'Instructions not given'),
           }}
         ></div>
+      </Stack>
       </Stack>
     </>
   );

@@ -1,12 +1,13 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -50,12 +51,13 @@ function SlotBodyComp({
 
   const { data: meetingData, isLoading } = useGetMeetingsByModuleId();
 
-  const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
+  const currentTab = (router.query.tab ||
+    'members') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
   const { refetch } = useModuleAndUsers();
-  
+
   async function updateInstruction() {
     if (textValue) {
       const { data } = await supabase
@@ -69,6 +71,48 @@ function SlotBodyComp({
       }
     }
   }
+
+  let sections = tabsModuleMembers.map((item) => item.queryParams);
+  const tabCount: number = sections.length - 1;
+  const currentIndex: number = sections.indexOf(currentTab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+    router.push(
+      ROUTES['/scheduling/module/members/[module_id]']({
+        module_id: editModule.id,
+      }) + `?tab=${pre}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+
+    router.push(
+      ROUTES['/scheduling/module/members/[module_id]']({
+        module_id: editModule.id,
+      }) + `?tab=${next}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
+
   return (
     <>
       <SettingsDialog editModule={editModule} />

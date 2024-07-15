@@ -1,13 +1,13 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import {
   SchedulesSupabase,
   transformDataSchedules,
 } from '../../../schedules-query';
-import { DateIcon } from '../../../Settings/Components/DateSelector';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({
@@ -26,7 +26,15 @@ function ScheduleMeetingList({
             textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
             textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
             textMonth={
-              date != 'undefined' ? dayjs(date).format('MMM') : <DateIcon />
+              date != 'undefined' ? (
+                dayjs(date).format('MMM')
+              ) : (
+                <GlobalIcon
+                  iconName='calendar_clock'
+                  size={5}
+                  weight={'regular'}
+                />
+              )
             }
             slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
               return (
@@ -41,4 +49,3 @@ function ScheduleMeetingList({
 }
 
 export default ScheduleMeetingList;
-

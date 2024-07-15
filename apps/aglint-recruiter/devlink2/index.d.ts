@@ -164,6 +164,7 @@ export * from "./LinkButton";
 export * from "./LoginAtsInfo";
 export * from "./McqQuestion";
 export * from "./MemberListCard";
+export * from "./MemberListCardOption";
 export * from "./ModuleMembers";
 export * from "./ModuleSetting";
 export * from "./MoveAssessment";

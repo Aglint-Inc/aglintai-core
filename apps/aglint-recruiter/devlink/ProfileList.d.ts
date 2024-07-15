@@ -14,4 +14,9 @@ declare function ProfileList(props: {
   textEmail?: React.ReactNode;
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   onClickLinkedIn?: Types.Devlink.RuntimeProps;
+  onClickRole?: Types.Devlink.RuntimeProps;
+  isRoleLinkVisible?: Types.Visibility.VisibilityConditions;
+  textManager?: React.ReactNode;
+  isManagerVisible?: Types.Visibility.VisibilityConditions;
+  onClickManagerLink?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

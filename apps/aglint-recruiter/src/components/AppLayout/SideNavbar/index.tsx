@@ -80,7 +80,7 @@ function SideNavbar() {
       route: ROUTES['/workflows'](),
       comingSoon: false,
       isVisible: true,
-      // permission: 'workflows_enabled',
+      permission: ['workflow_enabled'],
     },
     {
       text: 'Sourcing Hub',

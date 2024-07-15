@@ -12,12 +12,11 @@ import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
 import { DarkPill } from '@/devlink3/DarkPill';
-import { DashboardAlert } from '@/devlink3/DashboardAlert';
-import { DashboardWarning } from '@/devlink3/DashboardWarning';
 import { EnableDisable } from '@/devlink3/EnableDisable';
 import { GraphBlock } from '@/devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@/devlink3/JobDashboard';
@@ -54,7 +53,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
-import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
@@ -66,6 +64,7 @@ import {
   capitalizeSentence,
 } from '@/src/utils/text/textUtils';
 
+import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
@@ -73,12 +72,12 @@ import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { jobLoad, job } = useJobDashboard();
+  const { job, jobLoad } = useJob();
   return jobLoad ? (
-    job !== undefined ? (
+    job ? (
       <Dashboard />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
@@ -230,7 +229,7 @@ const Dashboard = () => {
             slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
-            slotModuleCard={<Modules />}
+            slotModuleCard={job?.status !== 'closed' && <Modules />}
             slotCardWithNumber={<TenureAndExpSummary />}
             isViewScheduleVisible={schedule?.length > 3}
             onClickViewSchedule={{
@@ -340,7 +339,7 @@ const Roles = () => {
       Object.entries(coordinatorsData)
         // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
-        .reduce((acc, [key, value]) => {
+        .reduce((acc, [key, value], i) => {
           const user = (data ?? []).find(({ user_id }) => user_id === value);
           if (user) {
             const name = getFullName(
@@ -349,6 +348,7 @@ const Roles = () => {
             );
             acc.push(
               <RoleList
+                key={i}
                 slotImage={
                   <MuiAvatar
                     src={user?.profile_image ?? null}
@@ -584,68 +584,38 @@ const useBanners = () => {
 
   if (isInterviewPlanDisabled)
     banners.push(
-      <DashboardWarning
-        textWarningTitle={'Interview plan not set'}
-        textDesc={
-          'To use the scheduling module, please configure an interview plan for this job.'
-        }
-        slotButton={
-          <>
-            <ButtonSoft
-              textButton='Ignore'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () =>
-                  handleJobUpdate({ interview_plan_warning_ignore: true }),
-              }}
-            />
-
-            <ButtonSolid
-              textButton='Set now'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () => push(`/jobs/${job.id}/interview-plan`),
-              }}
-            />
-          </>
-        }
+      <Banner
+        type='warning'
+        title='Interview plan not set'
+        description='To use the scheduling module, enable interview plans for this job.'
+        primary={{
+          title: 'Ignore',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+        }}
+        secondary={{
+          title: 'View',
+          onClick: () =>
+            handleJobUpdate({ interview_plan_warning_ignore: true }),
+        }}
       />,
     );
   if (isInterviewSessionEmpty)
     banners.push(
-      <DashboardWarning
-        textWarningTitle={'Interview plan not set'}
-        textDesc={
-          'Add one or more interview types to create an interview plan.'
-        }
-        slotButton={
-          <>
-            <ButtonSoft
-              textButton='Ignore'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () =>
-                  handleJobUpdate({ interview_session_warning_ignore: true }),
-              }}
-            />
-
-            <ButtonSolid
-              textButton='Set now'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () => push(`/jobs/${job.id}/interview-plan`),
-              }}
-            />
-          </>
-        }
+      <Banner
+        type='warning'
+        title='Interview types not set'
+        description='Add one or more interview types to create an interview plan.'
+        primary={{
+          title: 'Ignore',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+        }}
+        secondary={{
+          title: 'View',
+          onClick: () =>
+            handleJobUpdate({ interview_session_warning_ignore: true }),
+        }}
       />,
     );
   if (
@@ -654,53 +624,29 @@ const useBanners = () => {
   ) {
     if (!publishStatus.detailsValidity.validity) {
       banners.push(
-        <DashboardAlert
-          textTitile={publishStatus.detailsValidity.message}
-          textShortDescription={
-            'Please ensure that valid job details are provided.'
-          }
-          onClickBanner={{
+        <Banner
+          type='error'
+          title={publishStatus.detailsValidity.message}
+          description='Please ensure that valid job details are provided.'
+          primary={{
+            title: 'View',
             onClick: () =>
               push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
           }}
-          slotViewButton={
-            <ButtonSolid
-              size={2}
-              color={'accent'}
-              textButton='View'
-              highContrast='true'
-              onClickButton={{
-                onClick: () =>
-                  push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
-              }}
-            />
-          }
         />,
       );
     }
     if (!publishStatus.hiringTeamValidity.validity) {
       banners.push(
-        <DashboardAlert
-          textTitile={publishStatus.hiringTeamValidity.message}
-          textShortDescription={
-            'Please ensure that necessary hiring members are selected.'
-          }
-          onClickBanner={{
+        <Banner
+          type='error'
+          title={publishStatus.detailsValidity.message}
+          description='Please ensure that necessary hiring members are selected.'
+          primary={{
+            title: 'Assign now',
             onClick: () =>
               push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}
-          slotViewButton={
-            <ButtonSolid
-              size={2}
-              color={'accent'}
-              textButton='View'
-              highContrast='true'
-              onClickButton={{
-                onClick: () =>
-                  push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
-              }}
-            />
-          }
         />,
       );
     }
@@ -718,98 +664,64 @@ const useBanners = () => {
     );
   else if (!publishStatus.jdValidity)
     banners.push(
-      <DashboardAlert
-        textTitile={'Profile score is empty'}
-        textShortDescription={
-          'Candidates cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
-        }
-        onClickBanner={{
-          onClick: () => push(`/jobs/${job.id}/profile-score`),
+      <Banner
+        type='error'
+        title={'Profile score is empty'}
+        description='Candidates cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
+        primary={{
+          title: 'View',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/profile-score']({ id: job?.id })),
         }}
-        slotViewButton={
-          <ButtonSolid
-            size={2}
-            color={'accent'}
-            textButton='View'
-            highContrast='true'
-            onClickButton={{
-              onClick: () => push(`/jobs/${job.id}/profile-score`),
-            }}
-          />
-        }
+      />,
+    );
+  else if (status.scoring_criteria_changed)
+    banners.push(
+      <Banner
+        type='warning'
+        title='Profile score has been updated'
+        description='You may need to publish changes to score applicants with the current profile score'
+        primary={{
+          title: 'View',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/profile-score']({ id: job?.id })),
+        }}
+        secondary={{
+          title: 'Revert',
+          onClick: () =>
+            handleJobUpdate({
+              draft: { ...job.draft, jd_json: job.jd_json },
+            }),
+        }}
       />,
     );
   if (status.description_changed)
     banners.push(
-      <DashboardWarning
-        textWarningTitle={'Job details have changed'}
-        textDesc={'You may need to publish these changes.'}
-        slotButton={
-          <>
-            <ButtonSoft
-              textButton='Revert'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () =>
-                  handleJobUpdate({
-                    draft: {
-                      ...job.draft,
-                      company: job.company,
-                      department: job.department,
-                      description: job.description,
-                      job_title: job.job_title,
-                      job_type: job.job_type,
-                      location: job.location,
-                      workplace_type: job.workplace_type,
-                    },
-                  }),
-              }}
-            />
-
-            <ButtonSolid
-              textButton='View'
-              size={2}
-              color={'accent'}
-              highContrast={'true'}
-              onClickButton={{
-                onClick: () => push(`/jobs/${job.id}/profile-score`),
-              }}
-            />
-          </>
-        }
-      />,
-    );
-  if (status.scoring_criteria_changed)
-    banners.push(
-      <DashboardWarning
-        textWarningTitle={'Scoring criteria has been updated'}
-        textDesc='You may need to publish changes to score applicants with the current scoring criteria'
-        slotButton={
-          <>
-            <ButtonSoft
-              textButton='Revert'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () =>
-                  handleJobUpdate({
-                    draft: { ...job.draft, jd_json: job.jd_json },
-                  }),
-              }}
-            />
-
-            <ButtonSolid
-              textButton='View'
-              size={2}
-              color={'accent'}
-              onClickButton={{
-                onClick: () => push(`/jobs/${job.id}/profile-score`),
-              }}
-            />
-          </>
-        }
+      <Banner
+        type='warning'
+        title={'Job details have changed'}
+        description='You may need to publish these changes.'
+        primary={{
+          title: 'View',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+        }}
+        secondary={{
+          title: 'Revert',
+          onClick: () =>
+            handleJobUpdate({
+              draft: {
+                ...job.draft,
+                company: job.company,
+                department: job.department,
+                description: job.description,
+                job_title: job.job_title,
+                job_type: job.job_type,
+                location: job.location,
+                workplace_type: job.workplace_type,
+              },
+            }),
+        }}
       />,
     );
   return banners;
@@ -1183,4 +1095,77 @@ const ProfileScoreModule = () => {
       }
     />
   );
+};
+
+type BaseBanner = {
+  title: string;
+  description: string;
+  primary: {
+    title: string;
+    onClick: () => void;
+  };
+  secondary: {
+    title: string;
+    onClick: () => void;
+  };
+};
+
+type BannerProps =
+  | ({ type: 'warning' } & BaseBanner)
+  | ({ type: 'error' } & Omit<BaseBanner, 'secondary'>);
+
+const Banner = (props: BannerProps) => {
+  switch (props.type) {
+    case 'warning':
+      return (
+        <GlobalBanner
+          color={'warning'}
+          iconName={'warning'}
+          slotButtons={
+            <>
+              <ButtonSoft
+                textButton={props.secondary.title}
+                size={2}
+                color={'accent'}
+                highContrast={'true'}
+                onClickButton={{
+                  onClick: props.secondary.onClick,
+                }}
+              />
+
+              <ButtonSolid
+                textButton={props.primary.title}
+                size={2}
+                color={'accent'}
+                onClickButton={{
+                  onClick: props.primary.onClick,
+                }}
+              />
+            </>
+          }
+          textTitle={props.title}
+          textDescription={props.description}
+        />
+      );
+    case 'error':
+      return (
+        <GlobalBanner
+          color={'error'}
+          iconName={'error'}
+          slotButtons={
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton={props.primary.title}
+              highContrast='true'
+              onClickButton={{
+                onClick: () => props.primary.title,
+              }}
+            />
+          }
+          textTitle={props.title}
+          textDescription={props.description}
+        />
+      );
+  }
 };

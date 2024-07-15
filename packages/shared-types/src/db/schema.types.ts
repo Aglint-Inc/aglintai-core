@@ -5376,6 +5376,8 @@ export type Database = {
         | "interviewEnd_slack_interviewerForFeedback"
         | "interviewEnd_email_interviewerForFeedback"
         | "candidateBook_slack_interviewerForConfirmation"
+        | "onSignup_email_admin"
+        | "onInvite_email_user"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

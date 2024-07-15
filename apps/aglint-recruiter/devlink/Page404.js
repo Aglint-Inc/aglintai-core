@@ -5,7 +5,11 @@ import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./Page404.module.css";
 
-export function Page404({ as: _Component = _Builtin.Block }) {
+export function Page404({
+  as: _Component = _Builtin.Block,
+  text404 = "",
+  slot404,
+}) {
   return (
     <_Component className={_utils.cx(_styles, "page-404")} tag="div">
       <_Builtin.Block
@@ -43,7 +47,16 @@ export function Page404({ as: _Component = _Builtin.Block }) {
             )}
             tag="div"
           >
-            <Text content="" size="3" color="error" align="center" />
+            <Text content={text404} size="3" align="center" />
+          </_Builtin.Block>
+          <_Builtin.Block
+            id={_utils.cx(
+              _styles,
+              "w-node-_31d7f888-89d3-1f36-b5e6-66f6bc558a4e-cdbabd24"
+            )}
+            tag="div"
+          >
+            {slot404}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

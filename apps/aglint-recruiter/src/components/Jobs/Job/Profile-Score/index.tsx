@@ -30,9 +30,10 @@ import ScoreWheel, {
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { palette } from '@/src/context/Theme/Theme';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
+
+import JobNotFound from '../Common/JobNotFound';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -40,10 +41,10 @@ const JobProfileScoreDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>

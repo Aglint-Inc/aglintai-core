@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -25,6 +25,7 @@ import axios from '@/src/client/axios';
 import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -151,6 +152,9 @@ const RoleTable = ({
 };
 
 const useRoleAndPermissions = () => {
+  const { queryParams, setQueryParams } = useSearchQuery<{
+    role: string;
+  }>();
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -158,6 +162,18 @@ const useRoleAndPermissions = () => {
     queryFn: getRoleAndPermissionsWithUserCount,
     enabled: Boolean(recruiter?.id),
   });
+  useEffect(() => {
+    if (
+      query.isFetched &&
+      queryParams.role &&
+      query.data?.rolesAndPermissions
+    ) {
+      const role_id = Object.values(query.data?.rolesAndPermissions).find(
+        (val) => val.name == queryParams.role,
+      )?.id;
+      role_id && setSelectRole(role_id);
+    }
+  }, [query.isFetched]);
 
   const [selectRole, setSelectRole] = useState<string>(null);
 
@@ -222,6 +238,7 @@ const useRoleAndPermissions = () => {
       );
     },
     onSuccess(resData, { add, delete: toDelete, role_id }) {
+      add;
       queryClient.setQueryData(
         ['app', recruiter?.id, 'role-and-permissions'],
         (
@@ -232,11 +249,11 @@ const useRoleAndPermissions = () => {
           const tempData = structuredClone(prevData);
           tempData.rolesAndPermissions[role_id].permissions =
             tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              if (add === item.id) {
-                const temp = resData.addedPermissions;
-                if (temp) {
-                  item = { ...item, ...temp, isActive: true };
-                }
+              const temp = resData.addedPermissions.find(
+                (added) => added.id == item.id,
+              );
+              if (temp) {
+                item = { ...item, ...temp, isActive: true };
               }
               if (toDelete === item.relation_id) {
                 item = { ...item, relation_id: null, isActive: false };
@@ -269,11 +286,16 @@ const useRoleAndPermissions = () => {
     },
   });
 
+  const handelSelectRole = (role_id: string) => {
+    setSelectRole(role_id);
+    const role = (role_id = query.data?.rolesAndPermissions[role_id].name);
+    role && setQueryParams({ role });
+  };
   return {
     role,
     roleDetails,
     selectRole,
-    setSelectRole,
+    setSelectRole: handelSelectRole,
     handelUpdateRole,
     ...query,
   };
@@ -345,15 +367,18 @@ function RoleDetails({
             onClickButton={{ onClick: back }}
           />
         }
+        slotBanner={  <>  
+          {role.name === 'admin' && (
+          <GlobalBannerInline
+            color={'info'}
+            textContent={'You cannot edit the primary admin role permissions.'}
+            slotButton={<></>}
+          />
+        )}
+        </>}
         slotPermissions={
           <>
-            {role.name === 'admin' && (
-              <GlobalBannerInline
-                color={'warning'}
-                textContent={'Admin role can not be Edited.'}
-                slotButton={<></>}
-              />
-            )}
+        
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => {
                 return (

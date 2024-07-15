@@ -1,7 +1,7 @@
 import { Alert, IconButton, Stack, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 
-import AUIButton from '../AUIButton';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 
 export default function AlertDialog({
   title,
@@ -76,36 +76,20 @@ export default function AlertDialog({
             <Stack direction={'row'} justifyContent='flex-end' spacing={1}>
               {SecBtntext && (
                 <>
-                  {/* <CustomButton
-                    variant='cancel'
-                    onClick={SecAction || handleClose}
-                    text={SecBtntext}
-                  /> */}
-                  <AUIButton
-                    id={SecBtntext}
-                    variant='text'
-                    size='medium'
-                    onClick={SecAction || handleClose}
-                  >
-                    {SecBtntext}
-                  </AUIButton>
+                  <ButtonGhost
+                    textButton={SecBtntext}
+                    size={2}
+                    onClickButton={{ onClick: SecAction || handleClose }}
+                  />
                 </>
               )}
               {PriBtntext && (
                 <>
-                  {/* <CustomButton
-                    variant='delete'
-                    onClick={PriAction || handleClose}
-                    text={PriBtntext}
-                  /> */}
-                  <AUIButton
-                    id={PriBtntext}
-                    variant='error'
-                    size='medium'
-                    onClick={PriAction || handleClose}
-                  >
-                    {PriBtntext}
-                  </AUIButton>
+                  <ButtonGhost
+                    textButton={PriBtntext}
+                    size={2}
+                    onClickButton={{ onClick: PriAction || handleClose }}
+                  />
                 </>
               )}
             </Stack>
