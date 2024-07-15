@@ -1,8 +1,8 @@
 import { DB } from '@aglint/shared-types';
+import { defaultRoles } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { defaultRoles } from '@/src/constant/RolesAndPermissions';
 import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<DB>(
