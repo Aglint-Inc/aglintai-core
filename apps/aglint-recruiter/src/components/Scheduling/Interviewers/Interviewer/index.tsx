@@ -10,6 +10,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
@@ -119,6 +120,60 @@ function Interviewer() {
     }
   }, [interviewerDetails?.interviewer?.user_id]);
 
+  // let sections = tabsMo
+
+  const tabs: { name: string; queryParam: string }[] = [
+    {
+      name: 'Overview',
+      queryParam: 'overview',
+    },
+    {
+      name: 'Interview Types',
+      queryParam: 'interviewtypes',
+    },
+    {
+      name: 'Schedules',
+      queryParam: 'allschedules',
+    },
+    {
+      name: 'Availibility',
+      queryParam: 'availibility',
+    },
+    {
+      name: 'Keywords',
+      queryParam: 'keywords',
+    },
+  ];
+
+  const sections = tabs.map((item) => item.queryParam);
+  const tabCount: number = sections.length - 1;
+  const currentIndex: number = sections.indexOf(tab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+    router.push(
+      `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${pre}`,
+    );
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+
+    router.push(
+      `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${next}`,
+    );
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
+
   return (
     <>
       <PageLayout
@@ -131,61 +186,20 @@ function Interviewer() {
               <InterviewerDetail
                 slotNewTabPill={
                   <>
-                    <NewTabPill
-                      textLabel={'Overview'}
-                      isPillActive={tab === 'overview'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=overview`,
-                          );
-                        },
-                      }}
-                    />
-                    <NewTabPill
-                      textLabel={'Interview Types'}
-                      isPillActive={tab === 'interviewtypes'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=interviewtypes`,
-                          );
-                        },
-                      }}
-                    />
-                    <NewTabPill
-                      textLabel={'Schedules'}
-                      isPillActive={tab === 'allschedules'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=allschedules`,
-                          );
-                        },
-                      }}
-                    />
-                    <NewTabPill
-                      textLabel={'Availibility'}
-                      isPillActive={tab === 'availibility'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=availibility`,
-                          );
-                        },
-                      }}
-                    />
-                    <NewTabPill
-                      textLabel={'Keywords'}
-                      isPillActive={tab === 'keywords'}
-                      onClickPill={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=keywords`,
-                          );
-                        },
-                      }}
-                    />
+                    {tabs.map((item, i) => [
+                      <NewTabPill
+                        key={i}
+                        textLabel={item.name}
+                        isPillActive={tab === item.queryParam}
+                        onClickPill={{
+                          onClick: () => {
+                            router.push(
+                              `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${item.queryParam}`,
+                            );
+                          },
+                        }}
+                      />,
+                    ])}
                   </>
                 }
                 slotTabContent={
