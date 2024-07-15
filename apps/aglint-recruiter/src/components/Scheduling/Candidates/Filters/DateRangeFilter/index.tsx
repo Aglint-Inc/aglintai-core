@@ -6,8 +6,8 @@ import { addDays } from 'date-fns';
 import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 
-import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
-import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 
@@ -108,13 +108,9 @@ function DateRangeFilterComp() {
             spacing={2}
             width={'205px'}
           >
-            <ButtonPrimarySmall
-              wrapperProps={{
-                style: {
-                  width: '100%',
-                },
-              }}
-              textLabel='Apply'
+            <ButtonSolid
+              textButton={'Apply'}
+              size={2}
               onClickButton={{
                 onClick: () => {
                   const startDate = new Date(state[0].startDate).toISOString();
@@ -125,13 +121,9 @@ function DateRangeFilterComp() {
                 },
               }}
             />
-            <ButtonTextSmall
-              wrapperProps={{
-                style: {
-                  width: '100%',
-                },
-              }}
-              textLabel='Delete'
+            <ButtonGhost
+              textButton='Delete'
+              size={2}
               onClickButton={{
                 onClick: () => {
                   setFilter({ dateRange: null });

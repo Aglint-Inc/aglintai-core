@@ -424,15 +424,10 @@ const ProfileDashboard = () => {
             }
             slotUserInfoBtn={
               <>
-                {/* <Stack
-                  style={{
-                    position: 'relative',
-                    pointerEvents: loading.profile ? 'none' : 'auto',
-                    zIndex: 0,
-                  }}
-                >
-                  <ButtonPrimaryRegular
-                    textLabel={'Save Changes'}
+                {/* <Stack>
+                  <ButtonSolid
+                    textButton={'Save Changes'}
+                    size={2}
                     isDisabled={!profileChange}
                     onClickButton={{
                       onClick: async () => {
