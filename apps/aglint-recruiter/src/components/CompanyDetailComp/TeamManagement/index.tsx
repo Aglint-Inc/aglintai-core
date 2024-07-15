@@ -29,7 +29,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
-  const { data: members, isFetching } = useTeamMembers();
+  const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
@@ -264,13 +264,9 @@ const TeamManagement = () => {
                     }
                   }}
                   updateMember={(updatedMem) => {
-                    handelMemberUpdate({
+                    return handelMemberUpdate({
                       user_id: member.user_id,
                       data: updatedMem,
-                    }).then(() => {
-                      toast.success(
-                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'suspended successfully' : 'activated successfully'}.`,
-                      );
                     });
                   }}
                   canSuspend={
@@ -309,7 +305,7 @@ const TeamManagement = () => {
       {editMember ? (
         <EditMember
           open={Boolean(editMember)}
-          memberList={members
+          memberList={activeMembers
             .map((mem) => ({
               id: mem.user_id,
               name: getFullName(mem.first_name, mem.last_name),
@@ -324,7 +320,7 @@ const TeamManagement = () => {
         <AddMember
           open={openDrawer.open}
           menu={openDrawer.window}
-          memberList={members.map((mem) => ({
+          memberList={activeMembers.map((mem) => ({
             id: mem.user_id,
             name: getFullName(mem.first_name, mem.last_name),
           }))}
@@ -341,7 +337,11 @@ const TeamManagement = () => {
 export default TeamManagement;
 
 const useTeamMembers = () => {
-  const { members, recruiter } = useAuthDetails();
+  const {
+    allMember: members,
+    members: activeMembers,
+    recruiter,
+  } = useAuthDetails();
   const query = useQuery({
     queryKey: ['TeamMembers'],
     queryFn: () => {
@@ -364,7 +364,7 @@ const useTeamMembers = () => {
       query.refetch();
     }
   }, [members, query.refetch]);
-  return query;
+  return { activeMembers, ...query };
 };
 
 const getLastLogins = (ids: string[], recruiter_id: string) => {

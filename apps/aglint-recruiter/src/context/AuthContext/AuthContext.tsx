@@ -60,6 +60,7 @@ export interface ContextValue {
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
   members: RecruiterUserType[];
+  allMember: RecruiterUserType[];
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
   handelMemberUpdate: (x: {
     user_id: string;
@@ -113,6 +114,7 @@ const defaultProvider = {
   recruiterUser: null,
   setRecruiterUser: () => {},
   members: [],
+  allMember: [],
   setMembers: () => {},
   handelMemberUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
@@ -413,7 +415,10 @@ const AuthProvider = ({ children }) => {
         allRecruiterRelation: allRecruiterRelation,
         setAllRecruiterRelation,
         setRecruiterUser,
-        members,
+        members: (members || []).filter(
+          (item) => item.join_status == 'joined' && !item.is_suspended,
+        ),
+        allMember: members,
         setMembers,
         handelMemberUpdate,
         isAllowed,

@@ -371,39 +371,41 @@ const EditMember = ({
                       />
                     )}
                   />
-                  <Autocomplete
-                    fullWidth
-                    value={form.manager_id}
-                    onChange={(event: any, newValue: string | null) => {
-                      setForm({
-                        ...form,
-                        manager_id: newValue,
-                      });
-                    }}
-                    id='controllable-states-demo'
-                    options={memberList.map((member) => member.id)}
-                    getOptionLabel={(option) => {
-                      return capitalizeFirstLetter(
-                        memberListObj[String(option)],
-                      );
-                    }}
-                    renderInput={(params) => (
-                      <UITextField
-                        {...params}
-                        name='manager'
-                        placeholder='Select Manager'
-                        label='Manager'
-                        required
-                        error={formError.manager}
-                        onFocus={() => {
-                          setFormError({ ...formError, manager: false });
-                        }}
-                        helperText={
-                          formError.manager ? 'Manager must required' : ''
-                        }
-                      />
-                    )}
-                  />
+                  {form.role !== 'admin' && (
+                    <Autocomplete
+                      fullWidth
+                      value={form.manager_id}
+                      onChange={(event: any, newValue: string | null) => {
+                        setForm({
+                          ...form,
+                          manager_id: newValue,
+                        });
+                      }}
+                      id='controllable-states-demo'
+                      options={memberList.map((member) => member.id)}
+                      getOptionLabel={(option) => {
+                        return capitalizeFirstLetter(
+                          memberListObj[String(option)],
+                        );
+                      }}
+                      renderInput={(params) => (
+                        <UITextField
+                          {...params}
+                          name='manager'
+                          placeholder='Select Manager'
+                          label='Manager'
+                          required
+                          error={formError.manager}
+                          onFocus={() => {
+                            setFormError({ ...formError, manager: false });
+                          }}
+                          helperText={
+                            formError.manager ? 'Manager must required' : ''
+                          }
+                        />
+                      )}
+                    />
+                  )}
                 </Stack>
               )}
             </Stack>

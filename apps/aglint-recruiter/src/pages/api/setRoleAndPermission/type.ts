@@ -6,9 +6,10 @@ export type SetRoleAndPermissionAPI = {
   };
   response: {
     success: boolean;
+    // removiedPermissions: number[];
     addedPermissions: {
       relation_id: string;
       id: number;
-    };
+    }[];
   };
 };

@@ -155,7 +155,10 @@ const AddMember = ({
       temp = { ...temp, role: true };
       flag = true;
     }
-    if (!form.manager_id || form.manager_id.trim() === '') {
+    if (
+      (form.role !== 'admin' && !form.manager_id) ||
+      form.manager_id.trim() === ''
+    ) {
       temp = { ...temp, manager: true };
       flag = true;
     }
@@ -292,19 +295,6 @@ const AddMember = ({
                         setForm({ ...form, first_name: e.target.value });
                       }}
                     />
-                    {/* <TextField
-                    label='First Name'
-                    value={form.first_name ? form.first_name : ''}
-                    name='first_name'
-                    placeholder='First Name'
-                    error={formError.first_name}
-                    onFocus={() => {
-                      setFormError({ ...formError, first_name: false });
-                    }}
-                    onChange={(e) => {
-                      setForm({ ...form, first_name: e.target.value });
-                    }}
-                  /> */}
                     <UITextField
                       value={form.last_name ? form.last_name : ''}
                       name='last_name'
@@ -502,37 +492,39 @@ const AddMember = ({
                         />
                       )}
                     />
-                    <Autocomplete
-                      fullWidth
-                      value={form.manager_id}
-                      onChange={(event: any, newValue: string | null) => {
-                        setForm({
-                          ...form,
-                          manager_id: newValue,
-                        });
-                      }}
-                      id='controllable-states-demo'
-                      options={memberList.map((member) => member.id)}
-                      getOptionLabel={(option) => {
-                        return memberListObj[String(option)];
-                      }}
-                      renderInput={(params) => (
-                        <UITextField
-                          {...params}
-                          name='manager'
-                          placeholder='Select Manager'
-                          label='Manager'
-                          required
-                          error={formError.manager}
-                          onFocus={() => {
-                            setFormError({ ...formError, manager: false });
-                          }}
-                          helperText={
-                            formError.manager ? 'Manager must required' : ''
-                          }
-                        />
-                      )}
-                    />
+                    {form.role != 'admin' && (
+                      <Autocomplete
+                        fullWidth
+                        value={form.manager_id}
+                        onChange={(event: any, newValue: string | null) => {
+                          setForm({
+                            ...form,
+                            manager_id: newValue,
+                          });
+                        }}
+                        id='controllable-states-demo'
+                        options={memberList.map((member) => member.id)}
+                        getOptionLabel={(option) => {
+                          return memberListObj[String(option)];
+                        }}
+                        renderInput={(params) => (
+                          <UITextField
+                            {...params}
+                            name='manager'
+                            placeholder='Select Manager'
+                            label='Manager'
+                            required
+                            error={formError.manager}
+                            onFocus={() => {
+                              setFormError({ ...formError, manager: false });
+                            }}
+                            helperText={
+                              formError.manager ? 'Manager must required' : ''
+                            }
+                          />
+                        )}
+                      />
+                    )}
                   </Stack>
                 </Stack>
               }

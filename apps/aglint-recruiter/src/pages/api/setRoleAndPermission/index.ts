@@ -27,22 +27,40 @@ export default async function handler(
       if (await checkRole(role_id)) throw new Error('Cannot alter admin role.');
       if (!(add || toDelete))
         throw new Error('No permission added or deleted is required');
-      if (toDelete) {
-        await supabase.from('role_permissions').delete().eq('id', toDelete);
+      const permission_dependency = await getPermissions({
+        ids: add,
+        rel_ids: toDelete,
+      });
+
+      if (toDelete && permission_dependency) {
+        const toDeleteArray = [
+          permission_dependency.id,
+          ...(permission_dependency?.dependency_tree?.child || []),
+        ];
+        await supabase
+          .from('role_permissions')
+          .delete()
+          .eq('role_id', role_id)
+          .in('permission_id', toDeleteArray)
+          .throwOnError();
       }
       let temp_added: SetRoleAndPermissionAPI['response']['addedPermissions'] =
         null;
-      if (add) {
+
+      if (add && permission_dependency) {
+        const toAddArray = [
+          permission_dependency.id,
+          ...(permission_dependency?.dependency_tree?.child || []),
+        ].map((pId) => ({ recruiter_id, permission_id: Number(pId), role_id }));
         const { data } = await supabase
           .from('role_permissions')
-          .insert({ recruiter_id, permission_id: add, role_id })
+          .insert(toAddArray)
           .select('id, permission_id')
-          .single()
           .throwOnError();
-        temp_added = {
+        temp_added = data.map((data) => ({
           id: data.permission_id,
           relation_id: data.id,
-        };
+        }));
       }
       return { success: true, addedPermissions: temp_added };
     },
@@ -58,4 +76,31 @@ const checkRole = (role_id: string) => {
     .throwOnError()
     .single()
     .then(({ data }) => data.name === 'admin');
+};
+const getPermissions = async ({
+  ids,
+  rel_ids,
+}: {
+  ids: number;
+  rel_ids: string;
+}) => {
+  if (ids)
+    return (
+      await supabase
+        .from('permissions')
+        .select('*')
+        .eq('is_enable', true)
+        .eq('id', ids)
+        .single()
+        .throwOnError()
+    ).data;
+  return (
+    await supabase
+      .from('role_permissions')
+      .select('permissions(*)')
+      .eq('permissions.is_enable', true)
+      .eq('id', rel_ids)
+      .single()
+      .throwOnError()
+  ).data?.permissions;
 };
