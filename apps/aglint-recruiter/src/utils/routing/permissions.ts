@@ -8,7 +8,7 @@ export type PermissionEnums = DatabaseEnums['permissions_type'];
 
 type Permissions = {
   // eslint-disable-next-line no-unused-vars
-  [id in (typeof PATHS)[number]]: PermissionEnums[];
+  [id in (typeof PATHS)[number]]: (PermissionEnums | 'basic')[];
 };
 
 const DEFAULT: Permissions = Object.assign(
@@ -127,6 +127,7 @@ const PERMISSIONS: Permissions = {
   '/api/emails/preview': ['scheduler_enabled'],
   '/api/getRoleAndPermissions': ['settings_roles_update'],
   '/api/setRoleAndPermission': ['settings_roles_update'],
+  '/api/getUserDetails': ['jobs_enabled'],
 };
 
 export default PERMISSIONS;
