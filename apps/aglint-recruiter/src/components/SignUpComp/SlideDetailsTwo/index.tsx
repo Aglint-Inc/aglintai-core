@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { BackButton } from '@/devlink2/BackButton';
 import { RcInfoForm } from '@/devlink2/RcInfoForm';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
@@ -251,10 +250,10 @@ export function CompanyDetails() {
         />
       }
       slotForm={
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <UITextField
             label='Company Name'
-            labelSize='medium'
+            labelSize='small'
             fullWidth
             value={recruiter?.name}
             placeholder={'Ex. Acme Inc.'}
@@ -291,7 +290,7 @@ export function CompanyDetails() {
               return (
                 <UITextField
                   rest={{ ...params }}
-                  labelSize='medium'
+                  labelSize='small'
                   fullWidth
                   label='Industry Type'
                   placeholder='Ex. Healthcare'
@@ -338,7 +337,7 @@ export function CompanyDetails() {
                 }}
                 label='Employee Size'
                 placeholder='Ex. 1000-2000'
-                labelSize='medium'
+                labelSize='small'
                 onChange={(event) => {
                   setRecruiter({
                     ...recruiter,
@@ -356,6 +355,7 @@ export function CompanyDetails() {
             }}
             placeholder='Enter your phone number'
             value={phone}
+            labelSize='small'
             error={error.phone.error}
             onChange={(value, data: phone, event, formattedValue) => {
               setPhonePattern(data.format);
@@ -377,12 +377,15 @@ export function CompanyDetails() {
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <BackButton
-              onclickProps={{
+            <ButtonGhost
+              color={'neutral'}
+              onClickButton={{
                 onClick: () => {
                   router.back();
                 },
               }}
+              textButton='Back'
+              size={2}
             />
             <Stack
               direction={'row'}
