@@ -1,12 +1,11 @@
 import { DatabaseTable, DB } from '@aglint/shared-types';
+import {
+  defaultRolePermissionRelation,
+  defaultRoles,
+} from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import {
-  //   defaultPermissions,
-  defaultRolePermissionRelation,
-  defaultRoles,
-} from '@/src/constant/RolesAndPermissions';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
 type apiPreSeed = {
