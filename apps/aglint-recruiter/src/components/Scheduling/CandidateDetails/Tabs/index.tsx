@@ -23,12 +23,14 @@ function TabsSchedulingApplication() {
   if (isFeedbackVisible) {
     sections.push('feedback');
   }
+  // sections.push('candidate_feedback'); //enable when candidate feedback enable
   const tabCount: number = sections.length - 1;
   const currentTab: string = (router.query.tab || 'interview_plan') as string;
   const currentIndex: number = sections.indexOf(currentTab);
 
   const handlePrevious = () => {
     const pre =
+      // eslint-disable-next-line security/detect-object-injection
       currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
     router.replace(
       ROUTES['/scheduling/application/[application_id]']({
