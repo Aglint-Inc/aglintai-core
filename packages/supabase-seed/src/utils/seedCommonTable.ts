@@ -13,19 +13,12 @@ export const seedCommonTable = async (
     await supabaseAdmin.from(table_name).delete().not(primary_key, 'is', null)
   );
 
-  const promises = seed_data.map(async rec => {
-    const [new_row] = supabaseWrap(
-      await supabaseAdmin
-        .from(table_name)
-        .insert({
-          ...rec,
-        })
-        .select()
-    );
+  const {data: new_rows} = await supabaseAdmin
+    .from(table_name)
+    .insert(seed_data)
+    .select()
+    .throwOnError();
 
-    return new_row;
-  });
-  const new_rows = await Promise.all(promises);
   console.log(`created ${table_name}`, new_rows.length);
   return new_rows;
 };

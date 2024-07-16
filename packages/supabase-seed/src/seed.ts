@@ -12,10 +12,10 @@ const main = async () => {
   await seedCommonTable('recruiter_user', 'user_id');
   await seedCommonTable('recruiter_relation');
   await seedCommonTable('role_permissions');
-  await seedCommonTable('public_jobs');
-  await seedCommonTable('candidates');
-  await seedCommonTable('candidate_files');
-  await seedCommonTable('applications');
+  // await seedCommonTable('public_jobs');
+  // await seedCommonTable('candidates');
+  // await seedCommonTable('candidate_files');
+  // await seedCommonTable('applications');
 };
 
 main();
