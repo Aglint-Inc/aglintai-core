@@ -146,20 +146,23 @@ export const createCloneSession = async ({
       .eq('new_tasks.application_id', application_id)
       .not('new_tasks', 'is', null);
 
+    const upsertTaskSessionRelation: DatabaseTableInsert['task_session_relation'][] =
+      taskSelRel
+        .map((taskRel) => ({
+          id: taskRel.id,
+          session_id: refSessions.find(
+            (ses) => ses.interview_session.id === taskRel.session_id,
+          )?.newId,
+          task_id: taskRel.task_id,
+        }))
+        .filter((taskRel) => !!taskRel.session_id); // filtering is not needed actually but just to be safe
+
     if (errTaskSelRel) throw new Error(errTaskSelRel.message);
 
     if (taskSelRel.length > 0) {
       const { error: errTaskUpdSesRel } = await supabase
         .from('task_session_relation')
-        .upsert(
-          taskSelRel.map((taskRel) => ({
-            id: taskRel.id,
-            session_id: refSessions.find(
-              (ses) => ses.interview_session.id === taskRel.session_id,
-            ).newId,
-            task_id: taskRel.task_id,
-          })),
-        );
+        .upsert(upsertTaskSessionRelation);
 
       if (errTaskUpdSesRel) throw new Error(errTaskUpdSesRel.message);
     }
