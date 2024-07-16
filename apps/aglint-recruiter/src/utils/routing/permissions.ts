@@ -130,6 +130,8 @@ const PERMISSIONS: Permissions = {
   '/api/getUserDetails': ['jobs_enabled'],
   '/api/invite_user': ['team_enabled'],
   '/api/invite_user/resend': ['team_enabled'],
+  // general apis
+  '/api/decryptApiKey': ['integrations_enabled'],
 };
 
 export default PERMISSIONS;
