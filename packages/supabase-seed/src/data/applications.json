@@ -1,0 +1,2584 @@
+[
+  {
+    "id": "d906c665-d405-4ebc-bd82-b13abedbd15e",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-16 03:45:34.927+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "59ffafe4-8f8f-4ec1-9ad3-25f873804ace",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 1,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 76,
+        "jobStability": 83
+      },
+      "scores": {
+        "skills": 66,
+        "education": 87,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Divyansh Srivastava's skills align well with the primary skill requirements for the job, demonstrating a strong foundation in embedded systems design, system architecture, and C/C++. While there are some secondary skills that may not directly align, the overall skill set meets the mid-level software engineer job requirements.",
+        "schools": "Divyansh Srivastava's education in Electrical and Computer Engineering at the Master's level and Electronics & Telecommunication Engineering at the Bachelor's level provides a strong foundation in embedded systems, software architecture, and development, aligning well with the job requirements for a Software Engineer.",
+        "positions": "The work experiences do not align closely with the job requirements, particularly in the areas of embedded system design, software development using C/C++, and knowledge of connectivity protocols and development methodologies."
+      },
+      "relevance": {
+        "skills": {
+          "C": "medium",
+          "C++": "high",
+          "Git": "high",
+          "Bash": "low",
+          "Bazel": "low",
+          "Kaldi": "low",
+          "Praat": "low",
+          "Swift": "low",
+          "MATLAB": "low",
+          "Python": "low",
+          "Arduino": "medium",
+          "Openfst": "low",
+          "Pytorch": "low",
+          "CMU Sphinx": "low"
+        },
+        "schools": {
+          "0": "high",
+          "1": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low"
+        }
+      }
+    },
+    "overall_score": "51",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "39b2e7e0-9e2e-40f7-8892-b406e42e015d",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.607227+00"
+  },
+  {
+    "id": "65039b31-23b6-476f-8c82-8125667afe49",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-30 13:26:16.523+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "8f5bd5e0-766f-447a-9f1e-19c31efd75ee",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 89,
+        "careerGrowth": 70,
+        "jobStability": 90
+      },
+      "scores": {
+        "skills": 26,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Terry Rodriguez's skills align with the primary requirements of the job, demonstrating proficiency in essential areas such as embedded systems design, system architecture, and C/C++. However, there may be a need for further development in certain specialized areas and secondary skills.",
+        "schools": "Terry Rodriguez's education in Mathematics may not directly align with the specific technical requirements of the Software Engineer role, which heavily emphasizes embedded systems, software architecture, and development using C/C++.",
+        "positions": "Terry Rodriguez's work experiences do not align with the job requirements for a Software Engineer at the mid-level. The job requires specific skills and experience in embedded systems, connectivity protocols, micro-controllers/processors, and quality standards, which are not reflected in the provided work experiences."
+      },
+      "relevance": {
+        "skills": {
+          "AWS": "low",
+          "C++": "high",
+          "CNN": "low",
+          "GCP": "low",
+          "NLP": "low",
+          "ODE": "low",
+          "RNN": "low",
+          "ROS": "low",
+          "SQL": "low",
+          "VAE": "low",
+          "CUDA": "low",
+          "GANs": "low",
+          "GNNs": "low",
+          "PDEs": "low",
+          "Linux": "low",
+          "Scala": "low",
+          "Spark": "low",
+          "Docker": "low",
+          "FFmpeg": "low",
+          "OpenCV": "low",
+          "Pandas": "low",
+          "Python": "medium",
+          "Pytorch": "low",
+          "Sklearn": "low",
+          "Robotics": "low",
+          "Security": "low",
+          "GStreamer": "low",
+          "Kubernetes": "low",
+          "Tensorflow": "low",
+          "A/B Testing": "low",
+          "Deep Learning": "low",
+          "Data sketching": "low",
+          "Computer Vision": "low",
+          "Machine Learning": "low",
+          "Edge Optimization": "low",
+          "Network Protocols": "low",
+          "Cloud Optimization": "low",
+          "Linear Programming": "low",
+          "Integer Programming": "low",
+          "Reinforcement Learning": "low",
+          "Representation Learning": "low",
+          "Distributed Optimization": "low",
+          "Rate-distortion Optimization": "low",
+          "Personalization & Recommendation": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        }
+      }
+    },
+    "overall_score": "8",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "6c946449-7ebf-478b-b0c2-2001ec35c8e0",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.581816+00"
+  },
+  {
+    "id": "1a6ef86b-5361-4ad0-86a5-21d1378878a2",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-12-20 15:00:00.895+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "231a280c-f678-4bfa-a2d5-7cb705fffe73",
+    "score_json": {
+      "badges": {
+        "skills": 0,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 82,
+        "jobStability": 82
+      },
+      "scores": {
+        "skills": 34,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "PRISCILLA SUGUMAR's skills align well with the job requirements, demonstrating a strong understanding of the necessary technical competencies and tools. While some skills may not directly match the primary requirements, the overall skill set showcases a good foundation for the role.",
+        "schools": "PRISCILLA SUGUMAR's education details do not align with the primary and secondary requirements of the job, as they lack specific focus on embedded systems, software architecture, and related technologies.",
+        "positions": "The work experiences of PRISCILLA SUGUMAR do not align closely with the job requirements for a Software Engineer at the mid-level."
+      },
+      "relevance": {
+        "skills": {
+          "AWS": "low",
+          "Jira": "medium",
+          "RASA": "low",
+          "MIMIC": "low",
+          "MYSQL": "low",
+          "Python": "low",
+          "Pytorch": "low",
+          "Tensorflow": "low",
+          "Postgre SQL": "low",
+          "Neural Style Transfer": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low"
+        }
+      }
+    },
+    "overall_score": "11",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "ff90a4f6-4bd2-43d9-9f91-9dffd90737c8",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 17:41:39.53626+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.589333+00"
+  },
+  {
+    "id": "f18ae5cf-35cb-4466-8f1a-b82162e534ad",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-07-07 20:04:37.784+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "bbc296c6-ce1a-4323-b9ab-603e9a00f5d6",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 82,
+        "jobStability": 90
+      },
+      "scores": {
+        "skills": 65,
+        "education": 60,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Weiying Li's skills align well with the primary requirements of the job, demonstrating proficiency in embedded systems design, system architecture, C/C++, RTOS, embedded software development, and other essential technical skills. Additionally, the secondary skills in automotive software and agile methodology further enhance their suitability for the role.",
+        "schools": "Weiying Li's education in Computer Science at both the Bachelor's and Master's level provides a strong foundation in software development and engineering, which aligns well with the job requirements for a Software Engineer.",
+        "positions": "The work experiences of Weiying Li do not align closely with the job requirements, indicating a low level of similarity. Additional training or experience may be necessary to meet the specific demands of the role."
+      },
+      "relevance": {
+        "skills": {
+          "Patents": "low",
+          "Machine Learning": "medium",
+          "Speech Recognition": "high",
+          "Natural Language Processing": "medium",
+          "System and method for addressing discontinuous transmission in a network device": "low",
+          "Content delivery system with barge- in mechanism and method of operation thereof": "low",
+          "Navigation system with state generation mechanism and method of operation thereof": "low",
+          "Method And Apparatus For Exploiting Language Skill Information In Automatic Speech Recognition": "low",
+          "Universal remote control allowing natural language modality for television and multimedia searches and requests": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low"
+        }
+      }
+    },
+    "overall_score": "41",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "316a8533-50ca-4f22-b710-69d73d7dbdd6",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.633464+00"
+  },
+  {
+    "id": "8a49355c-4417-47b2-965d-490291f0a9c9",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-24 18:51:08.095+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "0990ab41-09ed-4a36-b76d-6b780c783009",
+    "score_json": {
+      "badges": {
+        "skills": 3,
+        "schools": 1,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 80,
+        "jobStability": 88
+      },
+      "scores": {
+        "skills": 77,
+        "education": 79,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Edgar Cilio's skills align well with the job requirements, particularly in the areas of embedded systems and programming, making him a suitable candidate for the position.",
+        "schools": "Edgar Cilio's education in Electrical Engineering at the University of Arkansas provides a strong foundation in technical knowledge and problem-solving skills, which are relevant to the job requirements for a Software Engineer with a focus on embedded systems and software development.",
+        "positions": "The work experiences of Edgar Cilio do not align closely with the job requirements, particularly in terms of the technical skills and knowledge needed for the role of a Software Engineer at the mid-level."
+      },
+      "relevance": {
+        "skills": {
+          "C": "high",
+          "AWS": "low",
+          "IoT": "medium",
+          "Java": "low",
+          "Matlab": "low",
+          "Python": "low",
+          "Programming": "high",
+          "Embedded Systems": "high",
+          "Machine Learning": "low"
+        },
+        "schools": {
+          "0": "high",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low"
+        }
+      }
+    },
+    "overall_score": "52",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "b86a08d7-07ad-4b28-9899-576fd2c6013a",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:16:02.503897+00"
+  },
+  {
+    "id": "fb915230-c02f-4cba-8d76-c6c64fb5ec4f",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-30 15:26:09.569+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "6080b2c5-b5fd-43e0-ad8c-71bd7cea12d3",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 85,
+        "jobStability": 78
+      },
+      "scores": {
+        "skills": 42,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Sam Arasteh's skills align well with the job requirements, demonstrating a strong understanding of the primary skills and a familiarity with relevant secondary skills. However, there may be a need for further development in certain areas to fully meet the job's expectations.",
+        "schools": "Sam Arasteh's education details do not align with the job requirements for a Software Engineer, particularly in the areas of embedded systems, software architecture, and development using C/C++.",
+        "positions": "Sam Arasteh's work experiences do not align closely with the primary and secondary requirements of the job, particularly in terms of proficiency in embedded system design, knowledge of connectivity protocols, experience with micro-controllers/processors, and familiarity with specific development methodologies and standards."
+      },
+      "relevance": {
+        "skills": {
+          "R": "low",
+          "AWS": "low",
+          "CNN": "low",
+          "RNN": "low",
+          "SVM": "low",
+          "Azure": "low",
+          "Keras": "low",
+          "Hadoop": "low",
+          "MATLAB": "low",
+          "OpenCV": "low",
+          "Python": "medium",
+          "PySpark": "low",
+          "Pytorch": "low",
+          "RWD/RWE": "low",
+          "Tableau": "low",
+          "SQL/MySQL": "low",
+          "Clustering": "low",
+          "GIT/GITHUB": "high",
+          "TensorFlow": "low",
+          "Unix/Linux": "medium",
+          "Time Series": "low",
+          "Apache Spark": "low",
+          "Classification": "low",
+          "Medical Devices": "low",
+          "Medical Imaging": "low",
+          "Machine Learning": "low",
+          "Predictive Modeling": "low",
+          "Recommender Systems": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low"
+        }
+      }
+    },
+    "overall_score": "13",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "69336c32-7d29-4f2a-adfe-12cd16a4edc7",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.696574+00"
+  },
+  {
+    "id": "b48df724-1aa7-4e1f-9030-ac81dbabec0b",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-20 12:58:32.936+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "f328429c-e2d3-48a1-a717-05a9a87508a8",
+    "score_json": {
+      "badges": {
+        "skills": 3,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 86,
+        "jobStability": 85
+      },
+      "scores": {
+        "skills": 47,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Tej Vuligonda's skills align with the mid-level Software Engineer job requirements, demonstrating proficiency in several key areas such as embedded system design, system architecture, C/C++, RTOS, and configuration management tools. However, there are some gaps in the secondary skill requirements, which may need to be addressed through training or additional experience.",
+        "schools": "Tej Vuligonda's education in Computer Science and Engineering, along with a minor in Management, provides a strong foundation for software engineering. However, there may be a gap in specific embedded systems and functional safety standards knowledge, which are crucial for the job requirements.",
+        "positions": "Tej Vuligonda's work experiences do not align closely with the job requirements, particularly in terms of proficiency in embedded system design, knowledge of connectivity protocols, experience with micro-controllers/processors, and familiarity with specific tools and methodologies. Further skill development or training may be necessary to meet the job's expectations."
+      },
+      "relevance": {
+        "skills": {
+          "C": "low",
+          "R": "low",
+          "AWS": "low",
+          "C++": "high",
+          "Git": "high",
+          "Lua": "low",
+          "PHP": "low",
+          "SQL": "low",
+          "SVN": "high",
+          "iOS": "low",
+          "Bash": "low",
+          "CSS3": "low",
+          "Java": "low",
+          "Perl": "low",
+          "HTML5": "low",
+          "Swift": "low",
+          "Apache": "low",
+          "Django": "low",
+          "GenSim": "low",
+          "Python": "low",
+          "SQLite": "low",
+          "jQuery": "low",
+          "MongoDB": "low",
+          "Node.js": "low",
+          "Perforce": "low",
+          "R Studio": "low",
+          "AngularJS": "low",
+          "Travis CI": "low",
+          "JavaScript": "low",
+          "PostgreSQL": "low",
+          "TensorFlow": "low",
+          "Objective-C": "low",
+          "Ruby on Rails": "low"
+        },
+        "schools": {
+          "0": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        }
+      }
+    },
+    "overall_score": "15",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "1",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "a409e2f3-278f-45ff-8bdc-e09e3fd7ace7",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:21:01.941232+00"
+  },
+  {
+    "id": "4bbaf6ec-775f-4cfe-8627-553b327bffa9",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-17 14:29:07.086+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "77b93049-32a7-4b7f-8623-a74813496f81",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 20,
+        "leadership": 0,
+        "careerGrowth": 85,
+        "jobStability": 73
+      },
+      "scores": {
+        "skills": 45,
+        "education": 65,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Feroz Ahmad's skills align with the primary requirements of the job, demonstrating proficiency in essential areas such as embedded system design, system architecture, C/C++, RTOS, and other critical skills. However, there are some gaps in the secondary skill requirements, which may need to be addressed.",
+        "schools": "Feroz Ahmad's education in Computer Engineering and Computer Science, along with a focus on Machine Learning, provides a strong foundation for the software engineering role. While the specific requirements of embedded systems and related technologies may not be directly evident, the overall technical knowledge and problem-solving skills gained from the education could be beneficial for the role.",
+        "positions": "Feroz Ahmad's work experiences do not align closely with the job requirements, particularly in terms of proficiency in embedded system design and development, knowledge of connectivity protocols, and experience with micro-controllers/processors. Additional experience in requirement elicitation and Free RTOS would also be beneficial."
+      },
+      "relevance": {
+        "skills": {
+          "C++": "high",
+          "Git": "high",
+          "PHP": "low",
+          "SQL": "low",
+          "Java": "low",
+          "RASA": "low",
+          "Latex": "low",
+          "MySQL": "low",
+          "Nginx": "low",
+          "Redis": "low",
+          "Docker": "low",
+          "Pandas": "low",
+          "Python": "low",
+          "Splunk": "low",
+          "Spring": "low",
+          "Jenkins": "low",
+          "PyTorch": "low",
+          "HTML/CSS": "low",
+          "JavaScript": "low",
+          "PostgreSQL": "low",
+          "TensorFlow": "low",
+          "Scikit-learn": "low",
+          "AWS SageMaker": "low",
+          "GCP DialogFlow": "low",
+          "Amazon DynamoDB": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        }
+      }
+    },
+    "overall_score": "36",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "73475712-1e4d-4b1c-b23d-7dec581c3f0b",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:16:02.47062+00"
+  },
+  {
+    "id": "df619ef1-0c58-4501-91b5-0391bce28d95",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-09-10 05:12:02.971+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "302a4797-214a-4a59-8e5f-2a62e747f6c7",
+    "score_json": {
+      "badges": {
+        "skills": 0,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 69,
+        "careerGrowth": 75,
+        "jobStability": 92
+      },
+      "scores": {
+        "skills": 0,
+        "education": 79,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": null,
+        "schools": "Pavan Karnam's education in Computer Engineering and Computer Science at the Bachelor's and Master's level, along with a strong GPA, provides a solid foundation in relevant technical knowledge and skills for the Software Engineer role, aligning well with the job requirements.",
+        "positions": "The work experiences of PAVAN KARNAM do not align closely with the job requirements for a Software Engineer at the mid-level. There is a significant mismatch in the required skills and experience."
+      },
+      "relevance": {
+        "skills": null,
+        "schools": {
+          "0": "medium",
+          "1": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low"
+        }
+      }
+    },
+    "overall_score": "26",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "6fcb22bd-ac0f-4f03-bf57-14c36562a6aa",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.777992+00"
+  },
+  {
+    "id": "d091db0c-bcec-4a34-b753-d18d6143213c",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2024-05-08 06:57:05.097+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "8bf82243-8005-4657-bbca-633d6b48f71d",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 2,
+        "leadership": 68,
+        "careerGrowth": 86,
+        "jobStability": 83
+      },
+      "scores": {
+        "skills": 29,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Nilesh Chaudhari's skills do not align with the primary skill requirements for the job. The majority of the skills mentioned are not relevant to the job description, indicating a mismatch in skillset for the mid-level Software Engineer position.",
+        "schools": "Nilesh Chaudhari's education at IIT Guwahati provides a strong foundation in technical knowledge and problem-solving skills, which are essential for a mid-level Software Engineer role. However, specific details about the field of study and GPA are needed to fully assess the alignment with the job requirements.",
+        "positions": "Nilesh Chaudhari's work experiences do not align closely with the job requirements, particularly in the areas of embedded system design, software development, connectivity protocols, and quality standards."
+      },
+      "relevance": {
+        "skills": {
+          "T5": "low",
+          "DNN": "low",
+          "H2O": "low",
+          "PCA": "low",
+          "SQL": "low",
+          "SVM": "low",
+          "kNN": "low",
+          "BERT": "low",
+          "CNNs": "low",
+          "CUDA": "low",
+          "NLTK": "low",
+          "RNNs": "low",
+          "Rasa": "low",
+          "XLMR": "low",
+          "Flask": "low",
+          "LSTMs": "low",
+          "MLOps": "low",
+          "NumPy": "medium",
+          "Sanic": "low",
+          "SpaCy": "low",
+          "t-SNE": "low",
+          "Docker": "low",
+          "OpenCV": "low",
+          "Pandas": "medium",
+          "Plotly": "low",
+          "Python": "high",
+          "Rasa-X": "low",
+          "kMeans": "low",
+          "FastAPI": "low",
+          "MongoDB": "low",
+          "PyTorch": "low",
+          "Seaborn": "low",
+          "sklearn": "low",
+          "textacy": "low",
+          "Matplotlib": "low",
+          "Perceptron": "low",
+          "TensorFlow": "low",
+          "GPU hosting": "low",
+          "StanfordNLP": "low",
+          "Transformers": "low",
+          "Auto-encoders": "low",
+          "Decision Tree": "low",
+          "ElasticSearch": "low",
+          "Random Forest": "low",
+          "Attention Models": "low",
+          "Transfer Learning": "low",
+          "Large Vision Models": "low",
+          "Logistic Regression": "low",
+          "Graph Neural Networks": "low",
+          "Siamese Architectures": "low",
+          "Large Language Models (LLMs)": "low"
+        },
+        "schools": {
+          "0": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low"
+        }
+      }
+    },
+    "overall_score": "9",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "6038a2fc-914d-4949-ac1f-b9555f5ee78c",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.638498+00"
+  },
+  {
+    "id": "1b00e8cd-1a70-4783-9b90-2553b0abb27c",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-02-19 16:56:04.022+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "9c0dab35-cb9e-4077-b60a-e7de1135ad78",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 70,
+        "jobStability": 87
+      },
+      "scores": {
+        "skills": 31,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Andrew Gray's skills align with the primary requirements of the job, demonstrating proficiency in key areas such as embedded systems design, system architecture, and software development. While some secondary skills may be lacking, the overall skill set is well-suited for the mid-level software engineer position.",
+        "schools": "Andrew Gray's education details do not align with the job requirements for a Software Engineer, especially in the areas of embedded systems, software architecture, and development using C/C++.",
+        "positions": "The work experiences of Andrew Gray do not align closely with the job requirements for a Software Engineer in terms of the necessary technical skills and domain knowledge."
+      },
+      "relevance": {
+        "skills": {
+          "R": "low",
+          "C++": "high",
+          "CSS": "low",
+          "Git": "high",
+          "SQL": "low",
+          "VBA": "low",
+          "Bash": "low",
+          "Dask": "low",
+          "Drake": "low",
+          "Flask": "low",
+          "NumPy": "low",
+          "Redux": "low",
+          "Shiny": "low",
+          "Spark": "low",
+          "VueJS": "low",
+          "MATLAB": "low",
+          "NextJS": "low",
+          "NodeJS": "low",
+          "Pandas": "low",
+          "Python": "low",
+          "Jenkins": "low",
+          "MongoDB": "low",
+          "Prefect": "low",
+          "PyTorch": "low",
+          "ReactJS": "low",
+          "RecoilJS": "low",
+          "Snowflake": "low",
+          "Streamlit": "low",
+          "Tidyverse": "low",
+          "JavaScript": "low",
+          "Kubernetes": "low",
+          "Tensorflow": "low",
+          "Typescript": "low",
+          "LESS / SCSS": "low",
+          "Scikit-Learn": "low",
+          "Deep Learning": "low",
+          "ElasticSearch": "low",
+          "Regularization": "low",
+          "Computer Vision": "low",
+          "Model Ensembling": "low",
+          "Many SQL variants": "low",
+          "Rapid Prototyping": "low",
+          "Data Visualization": "low",
+          "Tree-Based Methods": "low",
+          "Parallel Processing": "low",
+          "Distributed Computing": "low",
+          "Productionizing Models": "low",
+          "Reinforcement Learning": "low",
+          "Exploratory Data Analysis": "low",
+          "Recurrent Neural Networks": "low",
+          "Data Wrangling and Cleaning": "low",
+          "Natural Language Processing": "low",
+          "Evaluating Model Performance": "low",
+          "Convolutional Neural Networks": "low",
+          "Generative Adversarial Networks": "low",
+          "Data and Model Pipeline Engineering": "low",
+          "Developing Innovative Methodologies": "low",
+          "Solving Business Problems with Data": "low",
+          "Designing and Deploying Complex Systems": "medium"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low"
+        }
+      }
+    },
+    "overall_score": "10",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "e4b9a42d-4cde-47a2-8ccf-9fb6e9da9730",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.61957+00"
+  },
+  {
+    "id": "b44115ca-9cf1-4020-ac27-0f984503a668",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-18 19:57:51.468+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "27b9ae51-cc73-43e1-9477-f7dd1b0efeaf",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 79,
+        "jobStability": 83
+      },
+      "scores": {
+        "skills": 55,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Jiangjin Liu's skills align well with the job requirements, particularly in embedded system design, system architecture design, C/C++, RTOS, embedded software development, and other essential technical skills. This makes Jiangjin Liu a suitable candidate for the mid-level Software Engineer position.",
+        "schools": "Jiangjin Liu's education details in Mechanical and Electrical Engineering do not directly align with the specific requirements for the Software Engineer role, which primarily focuses on embedded systems, software architecture, and related technologies.",
+        "positions": "Jiangjin Liu's work experiences do not align closely with the primary and secondary requirements of the Software Engineer position, as outlined in the job description."
+      },
+      "relevance": {
+        "skills": {
+          "C++": "high",
+          "MATLAB": "low",
+          "Python": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        }
+      }
+    },
+    "overall_score": "18",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "dc73d3e6-17e6-47af-a165-a36cbd87ccf4",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.64852+00"
+  },
+  {
+    "id": "7052e009-8ae1-4484-aca6-f692f4d048f4",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-25 22:04:50.588+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "d3a68e2e-e77d-4fae-8f8f-d9cec8eca0aa",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 1,
+        "positions": 0,
+        "jobHopping": 30,
+        "leadership": 0,
+        "careerGrowth": 91,
+        "jobStability": 75
+      },
+      "scores": {
+        "skills": 34,
+        "education": 69,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Phuc Ton Nguyen's skills align with some of the primary requirements for the job, but there are several key skills that are not mentioned or relevant to the job description. Overall, there is a partial match between Phuc Ton Nguyen's skills and the job requirements.",
+        "schools": "Phuc Ton Nguyen's education in Electrical Engineering and Computer Science from the University of California - Berkeley aligns well with the technical requirements of the Software Engineer role, demonstrating a strong foundation in embedded systems and software development.",
+        "positions": "The work experiences do not align closely with the job requirements, indicating a low level of similarity."
+      },
+      "relevance": {
+        "skills": {
+          "C": "low",
+          "C#": "low",
+          "S3": "low",
+          "C++": "high",
+          "EC2": "low",
+          "EMR": "low",
+          "RDS": "low",
+          "git": "high",
+          "php": "low",
+          "CSS3": "low",
+          "Java": "low",
+          "MIPS": "low",
+          "ajax": "low",
+          "ruby": "low",
+          "HTML5": "low",
+          "Linux": "low",
+          "Panda": "low",
+          "mysql": "low",
+          "Django": "low",
+          "Hadoop": "low",
+          "Python": "medium",
+          "jquery": "low",
+          "Eclipse": "low",
+          "XGBoost": "low",
+          "AWS Stack": "low",
+          "Java Play": "low",
+          "PHP/MySQL": "low",
+          "Pig Latin": "low",
+          "SageMaker": "low",
+          "Javascript": "low",
+          "A/B Testing": "low",
+          "ASP.NET MVC": "low",
+          "Java Spring": "low",
+          "Data Science": "low",
+          "Naïve Bayes": "low",
+          "shell script": "low",
+          "Data Modeling": "low",
+          "Deep Learning": "low",
+          "Random Forest": "low",
+          "ruby on rails": "low",
+          "Data Analytics": "low",
+          "Neural Networks": "low",
+          "Jupyter Notebook": "low",
+          "Machine Learning": "low",
+          "Cosine Similarity": "low",
+          "Docker-Kubernetes": "low",
+          "Gradient Boosting": "low",
+          "Linear Regression": "low",
+          "Data Visualization": "low",
+          "K-means Clustering": "low",
+          "Logistic Regression": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "high"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low",
+          "9": "low",
+          "10": "low"
+        }
+      }
+    },
+    "overall_score": "34",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "204af7ec-8c89-41e6-88b6-1ed04321200b",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.602122+00"
+  },
+  {
+    "id": "43354fd2-6945-4ac1-8081-1990cf3574e3",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-11 21:24:54.312+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "3be42534-aacf-4098-a37d-611abe0856fc",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 74,
+        "careerGrowth": 65,
+        "jobStability": 86
+      },
+      "scores": {
+        "skills": 59,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "SHENGPING JIANG's skills align well with the primary skill requirements for the job, demonstrating a strong foundation in embedded systems design, system architecture, and C/C++. However, there are some gaps in the secondary skill requirements, which may need to be addressed through additional training or experience.",
+        "schools": "The education details provided do not align closely with the specific requirements of the job, particularly in the areas of embedded systems design and development, software architecture design, and embedded software development using C/C++.",
+        "positions": "The work experiences of SHENGPING JIANG do not closely align with the job requirements for a Software Engineer, especially in the domain of Embedded Systems and related technologies."
+      },
+      "relevance": {
+        "skills": {
+          "C++": "high",
+          "CNN": "low",
+          "Git": "high",
+          "Java": "low",
+          "Perl": "low",
+          "Keras": "low",
+          "Linux": "medium",
+          "Numpy": "low",
+          "OD API": "low",
+          "OpenCV": "low",
+          "Pandas": "low",
+          "Python": "low",
+          "Eclipse": "low",
+          "Jenkins": "medium",
+          "PyCharm": "low",
+          "PyTorch": "low",
+          "Windows": "low",
+          "TensorFlow": "low",
+          "Scikit-learn": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        }
+      }
+    },
+    "overall_score": "19",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "1",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "c360ff0a-9c79-48cf-b001-12181fbedcd7",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:21:01.968077+00"
+  },
+  {
+    "id": "4ae87269-6467-4773-a29a-f55e7e0560cd",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-11-04 16:50:57.705+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "4f31bff7-1da9-41cf-adf2-592dc9aeacfc",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 91,
+        "careerGrowth": 58,
+        "jobStability": 92
+      },
+      "scores": {
+        "skills": 77,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Rivarol Vergin's skills align well with the primary requirements of the job, demonstrating proficiency in key areas such as embedded systems design, system architecture, and C/C++. Additionally, the secondary skills show a good understanding of relevant technologies and methodologies, making Rivarol a suitable candidate for the position.",
+        "schools": "Rivarol Vergin's education details do not align with the primary and secondary requirements of the job, as they lack specific focus on embedded systems, software architecture, and related technologies.",
+        "positions": "Rivarol Vergin's work experiences do not align closely with the job requirements, particularly in terms of the technical skills and experience in embedded systems and software development. The job requires a strong background in embedded systems, connectivity protocols, micro-controllers/processors, and adherence to quality standards, which are not clearly reflected in Rivarol Vergin's work experiences."
+      },
+      "relevance": {
+        "skills": {
+          "C": "high",
+          "AWS": "low",
+          "C++": "high",
+          "RTP": "medium",
+          "SIP": "medium",
+          "UDP": "medium",
+          "Java": "low",
+          "Perl": "low",
+          "VoIP": "medium",
+          "Azure": "low",
+          "MATLAB": "low",
+          "Python": "low",
+          "TCP/IP": "medium",
+          "PyTorch": "low",
+          "TensorFlow": "low",
+          "Data Mining": "medium",
+          "scikit-learn": "low",
+          "Data Analysis": "medium",
+          "Deep Learning": "medium",
+          "Data Analytics": "medium",
+          "Echo Canceling": "medium",
+          "Noise Reduction": "medium",
+          "Machine Learning": "medium",
+          "Machine learning": "medium",
+          "Conversational IVR": "medium",
+          "Speech Recognition": "medium",
+          "Knowledge Reasoning": "low",
+          "Relational Data Base": "medium",
+          "Google Cloud Platform": "low",
+          "Voice Activity Detection": "medium",
+          "Digital signal processing": "medium"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low"
+        }
+      }
+    },
+    "overall_score": "25",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "023d9034-c6e5-48ec-9733-26afabcad470",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.592103+00"
+  },
+  {
+    "id": "780df454-3bfc-4de7-b0d2-e3927c6a44f7",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-12-14 19:31:08.047+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "2c95106d-bcbb-40ed-8591-b648abd37905",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 76,
+        "careerGrowth": 78,
+        "jobStability": 88
+      },
+      "scores": {
+        "skills": 45,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Shaaz Ansari's skills align well with the job requirements, demonstrating a strong understanding of the primary skills and some relevant secondary skills. However, there are some gaps in the secondary skills, which may require additional training or experience.",
+        "schools": "Shaaz Ansari's education details do not align with the technical requirements of the job, as they lack specific coursework or degrees in fields related to embedded systems, software architecture, and other technical skills required for the role.",
+        "positions": "Shaaz Ansari's work experiences do not align closely with the job requirements for a Software Engineer at the mid-level. The roles and responsibilities mentioned are not directly related to the technical skills and experience needed for the position."
+      },
+      "relevance": {
+        "skills": {
+          "R": "low",
+          "AI": "low",
+          "ASM": "low",
+          "AWS": "low",
+          "CNN": "low",
+          "ETL": "low",
+          "NLP": "low",
+          "Pig": "low",
+          "RAC": "low",
+          "SAS": "low",
+          "SQL": "low",
+          "XML": "low",
+          "Brio": "low",
+          "HTML": "low",
+          "Hive": "low",
+          "Java": "medium",
+          "RMAN": "low",
+          "Toad": "low",
+          "UNIX": "low",
+          "ASTER": "low",
+          "Hbase": "low",
+          "MySQL": "low",
+          "Spark": "low",
+          "Hadoop": "low",
+          "Oracle": "low",
+          "PL/SQL": "low",
+          "Python": "medium",
+          "Talend": "low",
+          "VB.net": "low",
+          "Autosys": "low",
+          "Redshift": "low",
+          "Teradata": "low",
+          "Ab-Initio": "low",
+          "Cassandra": "low",
+          "Dataguard": "low",
+          "Blockchain": "low",
+          "Databricks": "low",
+          "Javascript": "low",
+          "SQL Server": "low",
+          "IT Analysis": "medium",
+          "Informatica": "low",
+          "Architecture": "high",
+          "Data Science": "low",
+          "Apache Hadoop": "low",
+          "Microstrategy": "low",
+          "Systems Design": "high",
+          "Data Warehousing": "low",
+          "Machine Learning": "low",
+          "Enterprise Manager": "low",
+          "Oracle Golden Gate": "low",
+          "Project Management": "medium",
+          "Teradata Utilities": "low",
+          "Business Intelligence": "low",
+          "Application Development": "medium",
+          "Database Administration": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low",
+          "9": "low",
+          "10": "low"
+        }
+      }
+    },
+    "overall_score": "14",
+    "processing_status": "success",
+    "status": "new",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "7583265d-2c81-4a2f-acf1-83d6bef6bcd5",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.647059+00"
+  },
+  {
+    "id": "934e2684-172b-4613-9afc-a60ab8932766",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-06-11 09:50:03.974+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "81db0a5f-b5d9-4134-813a-8ef2650f9e75",
+    "score_json": {
+      "badges": {
+        "skills": 3,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 8,
+        "leadership": 0,
+        "careerGrowth": 84,
+        "jobStability": 79
+      },
+      "scores": {
+        "skills": 45,
+        "education": 65,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Shaswat Babhulgaonkar's skills align with the majority of the primary skill requirements for the job, demonstrating a strong foundation in the essential areas. However, there are some secondary skills that may need further development to fully meet the job requirements.",
+        "schools": "Shaswat Babhulgaonkar's education details demonstrate a strong foundation in computer science and engineering, which aligns well with the technical requirements of the job. However, there may be a need for additional specific knowledge or experience in embedded systems and related technologies.",
+        "positions": "The work experiences do not align closely with the primary and secondary requirements of the job description, indicating a low level of similarity."
+      },
+      "relevance": {
+        "skills": {
+          "C": "low",
+          "ANN": "low",
+          "C++": "high",
+          "Git": "high",
+          "AJAX": "low",
+          "CSS3": "low",
+          "JSON": "low",
+          "Java": "low",
+          "LSTM": "low",
+          "Agile": "high",
+          "Flask": "low",
+          "HTML5": "low",
+          "Keras": "low",
+          "MySQL": "low",
+          "NumPy": "low",
+          "SciPy": "low",
+          "Scrum": "low",
+          "U-Net": "low",
+          "GitHub": "low",
+          "OpenCV": "low",
+          "Pandas": "low",
+          "Python": "low",
+          "Eclipse": "low",
+          "MongoDB": "low",
+          "Node.js": "low",
+          "PyCharm": "low",
+          "PyTorch": "low",
+          "ReactJS": "low",
+          "REST API": "low",
+          "Express.js": "low",
+          "JavaScript": "low",
+          "Matplotlib": "low",
+          "TensorFlow": "low",
+          "Scikit-learn": "low",
+          "Visual Studio": "low",
+          "Jupyter Notebook": "low",
+          "Microsoft Access": "low"
+        },
+        "schools": {
+          "0": "medium",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        }
+      }
+    },
+    "overall_score": "36",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "30b00eb1-1c2a-4d15-a204-82045b62b484",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 15:21:58.565077+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.588598+00"
+  },
+  {
+    "id": "31241608-082e-4a8b-ac72-5957148aa604",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-10-01 16:54:35.263+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "8d1a3353-681e-40c1-b402-1b4135462677",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 58,
+        "careerGrowth": 74,
+        "jobStability": 90
+      },
+      "scores": {
+        "skills": 25,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Anju Saxena's skills do not align with the primary skill requirements for the job. The majority of the skills mentioned are not relevant to the job description, indicating a mismatch in the skillset for the position.",
+        "schools": "Anju Saxena's education in Electrical Engineering with a focus on Signal Processing from reputable institutions provides a strong foundation in technical knowledge. However, there is a need for more specific experience and knowledge in embedded systems and software development for the job requirements.",
+        "positions": "Anju Saxena's work experiences do not align closely with the job requirements, as they lack the necessary skills and experience in embedded system design, software development, and connectivity protocols as outlined in the job description."
+      },
+      "relevance": {
+        "skills": {
+          "MBE": "low",
+          "MP3": "low",
+          "Sox": "low",
+          "WMA": "low",
+          "Java": "low",
+          "Jira": "low",
+          "Perl": "low",
+          "C/C++": "high",
+          "HeAAC": "low",
+          "Matlab": "low",
+          "Python": "low",
+          "Sphinx": "low",
+          "Eclipse": "low",
+          "Assembly": "low",
+          "Bugzilla": "low",
+          "Perforce": "low",
+          "Visual Studio": "low",
+          "Windows/Linux": "low",
+          "Xtensa Xplorer": "low",
+          "Machine Learning": "low",
+          "Speech Recognition": "low",
+          "MPEG2 and MPEG4 AAC": "low",
+          "Audio/Speech Processing": "low",
+          "CELP (G.723, G.729, AMR)": "low",
+          "Cool Edit/Adobe Audition": "low",
+          "SIMD (Vector Processors)": "low",
+          "Digital Signal Processing": "low",
+          "Code Composer Studio (CCS)": "low",
+          "Psychoacoustics Principles": "low",
+          "Xtensa Xplorer (Tensilica)": "low",
+          "ARM / TI (TMS320C55x, TMS320C54x) / Tensilica (BBE(16/32/64)EP, B10,Vision Q7)": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low"
+        }
+      }
+    },
+    "overall_score": "8",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "ba131f9a-2363-4e2a-a53c-4888439b53eb",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 15:21:58.565077+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.59627+00"
+  },
+  {
+    "id": "99e37419-d9fa-40d8-87f2-3fdb481ace39",
+    "created_at": "2024-07-15 11:50:51.280871+00",
+    "applied_at": "2024-07-15 11:50:51.280871+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "5c8a93ce-23e8-4686-bb4b-bff731fa5f26",
+    "score_json": null,
+    "overall_score": "-1",
+    "processing_status": "failed",
+    "status": "new",
+    "retry": "2",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "40120ebd-c332-483c-9e36-d24e73dde8c3",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "csv_upload",
+    "processing_started_at": "2024-07-15 17:17:01.996336+00"
+  },
+  {
+    "id": "22722d87-eac7-47e5-b7f8-9fe27af77dd3",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-30 14:18:20.999+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "ddf2eaf4-eb97-4443-abf9-3ba399c2fd0f",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 90,
+        "jobStability": 82
+      },
+      "scores": {
+        "skills": 53,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Zachary Wilkins's skills align with the mid-level Software Engineer job requirements, demonstrating a good understanding of the primary and secondary skills. While there are some areas for improvement, overall, the skill set is well-suited for the role.",
+        "schools": "Zachary Wilkins's education details in Linguistics and Spanish do not align with the technical requirements of the Software Engineer role, which heavily emphasizes embedded systems, software architecture, and development using C/C++.",
+        "positions": "Zachary Wilkins's work experiences do not align closely with the job requirements, particularly in terms of proficiency in embedded system design and development, knowledge of connectivity protocols, and experience with micro-controllers/processors. The job requires a higher level of expertise in these areas."
+      },
+      "relevance": {
+        "skills": {
+          "CSS": "low",
+          "HTML": "low",
+          "NLTK": "low",
+          "CI/CD": "medium",
+          "spaCy": "low",
+          "Groovy": "low",
+          "Python": "high",
+          "AI DSLs": "low",
+          "Prodigy": "low",
+          "PyTorch": "low",
+          "WordNet": "low",
+          "JavaScript": "low",
+          "Figure Eight": "low",
+          "Jira/Pivotal": "medium",
+          "AWS SageMaker": "low",
+          "Mechanical Turk": "low",
+          "Stanford CoreNLP": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        }
+      }
+    },
+    "overall_score": "17",
+    "processing_status": "success",
+    "status": "qualified",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "ca29f280-0b15-40cf-9432-c33ce1beefde",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 13:43:04.437617+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.628468+00"
+  },
+  {
+    "id": "9dd82d1c-0326-43aa-aae8-4847b94dd4f7",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2024-04-19 22:12:06.25+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "be58a4d3-7c08-443f-8655-3ac11d1b7848",
+    "score_json": {
+      "badges": {
+        "skills": 4,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 84,
+        "jobStability": 83
+      },
+      "scores": {
+        "skills": 57,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Ben Piché's skills align well with the job requirements, particularly in the areas of embedded systems design, system architecture, and familiarity with Agile methodology, making him a suitable candidate for the role of a Software Engineer.",
+        "schools": "Ben Piché's education in Linguistics does not align with the technical requirements of the job, which heavily emphasize embedded systems, software architecture, and development using C/C++ and other technical skills. Therefore, the education details do not match the job requirements.",
+        "positions": "Ben Piché's work experiences do not align closely with the job requirements for a Software Engineer, especially in the domain of Embedded Systems and related technologies."
+      },
+      "relevance": {
+        "skills": {
+          "C": "high",
+          "R": "low",
+          "GIS": "low",
+          "Git": "high",
+          "Java": "low",
+          "OS X": "low",
+          "Perl": "low",
+          "Weka": "low",
+          "Agile": "high",
+          "Excel": "low",
+          "Linux": "high",
+          "Shiny": "low",
+          "shell": "low",
+          "Python": "low",
+          "MongoDB": "low",
+          "ggplot2": "low",
+          "Perforce": "low",
+          "Ant/Maven": "low",
+          "PostgreSQL": "low",
+          "cryptography": "low",
+          "topic modeling": "low",
+          "machine learning": "low",
+          "data visualization": "low",
+          "marketing analysis": "low",
+          "document clustering": "low",
+          "business intelligence": "low",
+          "recommendation systems": "low",
+          "natural language processing": "low"
+        },
+        "schools": {
+          "0": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low"
+        }
+      }
+    },
+    "overall_score": "18",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "eb2da815-d162-46fc-9d34-fbef4596fbb7",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 15:21:58.565077+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.738179+00"
+  },
+  {
+    "id": "80a09ade-aa95-427b-a878-7737eb48f9c5",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-12-15 18:17:01.817+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "3c3feef1-7ae2-4c76-abda-649b0df99faf",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 1,
+        "jobHopping": 0,
+        "leadership": 92,
+        "careerGrowth": 77,
+        "jobStability": 92
+      },
+      "scores": {
+        "skills": 54,
+        "education": 0,
+        "experience": 61
+      },
+      "reasoning": {
+        "skills": "HOSSEIN AKHLAGHPOUR's skills align well with the job requirements, demonstrating a strong fit for the role of a Software Engineer.",
+        "schools": "HOSSEIN AKHLAGHPOUR's education in Physics at the Master's level may not directly align with the specific technical requirements of the job in software engineering, especially in embedded systems and software development. However, the problem-solving and analytical skills gained from a Master's degree in Physics could potentially be transferable to certain aspects of the job.",
+        "positions": "HOSSEIN AKHLAGHPOUR's work experiences align closely with the job requirements, demonstrating a strong match in terms of skills, responsibilities, and leadership capabilities at the senior level."
+      },
+      "relevance": {
+        "skills": {
+          "C++": "high",
+          "Cuda": "low",
+          "Keras": "low",
+          "Spark": "low",
+          "AutoML": "low",
+          "Lucene": "low",
+          "MLflow": "low",
+          "Rapids": "low",
+          "Pytorch": "low",
+          "DynamoDB": "low",
+          "Kubeflow": "low",
+          "Tech Lead": "medium",
+          "Amazon RDS": "low",
+          "Hbase Solr": "low",
+          "Kubernetes": "low",
+          "Tensorflow": "low",
+          "deployment": "medium",
+          "production": "medium",
+          "ML Engineer": "low",
+          "TensorBoard": "low",
+          "Alfresco CMS": "low",
+          "Life Science": "low",
+          "ML algorithms": "low",
+          "Machine Learning": "low",
+          "Renewable Energy": "low",
+          "Spring framework": "low",
+          "Software Engineer": "high",
+          "Java native Interface": "low",
+          "Advertisement Industries": "low"
+        },
+        "schools": {
+          "0": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "high"
+        }
+      }
+    },
+    "overall_score": "37",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "6961bb13-9031-41bc-9e71-3efecfdb4d28",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 15:21:58.565077+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.585311+00"
+  },
+  {
+    "id": "453eb80c-a2da-4a1b-80b3-6ad47587f75d",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-13 18:19:12.314+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "c0434cab-25d7-4ff9-82e0-f1eee676096d",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 58,
+        "jobStability": 91
+      },
+      "scores": {
+        "skills": 38,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "ABDUL RAZAK KOLLIKATHARA's skills align well with the job requirements, demonstrating a strong foundation in the necessary technical competencies and expertise relevant to the role.",
+        "schools": "ABDUL RAZAK KOLLIKATHARA's education in Electrical Engineering, with a focus on control systems, provides a strong foundation for the job requirements in embedded systems design and development, software architecture design, and embedded software development. However, there may be a need for additional specific knowledge or experience in certain areas such as RTOS, Yocto, and ISO26262 functional safety standards.",
+        "positions": "The work experiences do not align closely with the job requirements, particularly in terms of proficiency in embedded system design, knowledge of connectivity protocols, and experience with configuration management tools and agile development methodology."
+      },
+      "relevance": {
+        "skills": {
+          "AWS": "low",
+          "C++": "high",
+          "EMR": "low",
+          "GCP": "low",
+          "Git": "high",
+          "SQL": "low",
+          "TFX": "low",
+          "UML": "medium",
+          "Akka": "low",
+          "Bash": "low",
+          "HTTP": "low",
+          "Html": "low",
+          "Java": "low",
+          "Json": "low",
+          "REST": "low",
+          "SNMP": "low",
+          "Flask": "low",
+          "Kafka": "low",
+          "Keras": "low",
+          "Numpy": "low",
+          "Scala": "low",
+          "Spark": "low",
+          "Hadoop": "low",
+          "MLFlow": "low",
+          "Python": "low",
+          "TCP/IP": "low",
+          "Angular": "low",
+          "Jupyter": "low",
+          "Pytorch": "low",
+          "Kubeflow": "low",
+          "Cassandra": "low",
+          "Sagemaker": "low",
+          "Terraform": "low",
+          "JavaScript": "low",
+          "Kubernetes": "low",
+          "Tensorflow": "low",
+          "TypeScript": "low",
+          "AI Platform": "low",
+          "Apache Beam": "low",
+          "Scikit-learn": "low",
+          "Cloud Composer": "low",
+          "Play framework": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low"
+        }
+      }
+    },
+    "overall_score": "12",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "1",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "da576574-a14d-4d2e-8548-2716358b0449",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 15:21:58.565077+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:21:01.98093+00"
+  },
+  {
+    "id": "3313bba5-beb1-495a-9a63-471c941a5f6e",
+    "created_at": "2024-07-15 11:50:51.280871+00",
+    "applied_at": "2024-07-15 11:50:51.280871+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "df5b27e6-d97b-4268-bef0-9a437e452ec0",
+    "score_json": null,
+    "overall_score": "-1",
+    "processing_status": "failed",
+    "status": "new",
+    "retry": "2",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "0cab59d0-8bc8-4892-b0e2-bdd636693c2a",
+    "overall_interview_score": "-1",
+    "converted_at": null,
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "csv_upload",
+    "processing_started_at": "2024-07-15 17:17:01.985426+00"
+  },
+  {
+    "id": "8536081e-e254-497d-8b29-605e752edb16",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-09-01 16:09:53.872+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "3f2c9c17-67d7-458e-8250-4f1879a7ad16",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 82,
+        "jobStability": 88
+      },
+      "scores": {
+        "skills": 54,
+        "education": 54,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Jinwoo Baek's skills align well with the primary skill requirements for the job, demonstrating proficiency in embedded systems design, system architecture, C/C++, RTOS, embedded software development, and other essential areas. While some secondary skills may not be directly relevant, the overall match with the primary requirements is strong.",
+        "schools": "Jinwoo Baek's education details show a strong foundation in engineering and computer science, with a focus on robotics and deep learning. However, there is a lack of specific coursework or degree directly related to embedded systems and software architecture, which are primary requirements for the job.",
+        "positions": "The work experiences do not align closely with the job requirements, indicating a low level of similarity."
+      },
+      "relevance": {
+        "skills": {
+          "C++": "high",
+          "Java": "low",
+          "Ruby": "low",
+          "Kafka": "low",
+          "Swift": "low",
+          "numpy": "low",
+          "Kotlin": "low",
+          "Python": "medium",
+          "Node.js": "low",
+          "Dataflow": "low",
+          "Kubeflow": "low",
+          "Javascript": "low",
+          "Kubernetes": "medium",
+          "Tensorflow": "low",
+          "Objective-C": "low",
+          "Jupyter Labs": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "medium",
+          "3": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low"
+        }
+      }
+    },
+    "overall_score": "36",
+    "processing_status": "success",
+    "status": "qualified",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "8ab49eea-bdd2-48fd-a00b-fe6f4721d47b",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 13:43:04.437617+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:16:02.463636+00"
+  },
+  {
+    "id": "90ddf4bd-543c-4007-b057-360f6b54dbfd",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-30 17:59:57.783+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "80bab59e-d55f-4363-9d8a-dc7b4983af48",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 2,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 91,
+        "careerGrowth": 57,
+        "jobStability": 93
+      },
+      "scores": {
+        "skills": 43,
+        "education": 89,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "CJ Wang's skills align well with the primary skill requirements for the job, demonstrating a strong foundation in software engineering and embedded systems design.",
+        "schools": "CJ Wang's education details align well with the job requirements, as they have a strong background in computer engineering and computer science, which are directly relevant to the skills and knowledge needed for the software engineer role.",
+        "positions": "CJ Wang's work experiences do not align closely with the job requirements, particularly in terms of the technical skills and experience needed for the role."
+      },
+      "relevance": {
+        "skills": {
+          "S3": "low",
+          "AWS": "low",
+          "C++": "high",
+          "EMR": "low",
+          "ETL": "low",
+          "GCP": "low",
+          "NLP": "low",
+          "PCA": "low",
+          "RNN": "low",
+          "BERT": "low",
+          "Java": "low",
+          "LSTM": "low",
+          "ML/DL": "low",
+          "Neo4j": "low",
+          "Scala": "low",
+          "Spark": "low",
+          "Hadoop": "low",
+          "Python": "low",
+          "K-means": "low",
+          "PySpark": "low",
+          "BigQuery": "low",
+          "DynamoDB": "low",
+          "REST API": "low",
+          "TensorFlow": "low",
+          "clustering": "low",
+          "regressions": "low",
+          "Deep Learning": "low",
+          "data analytics": "medium",
+          "decision trees": "low",
+          "machine learning": "low",
+          "people management": "low",
+          "project management": "low",
+          "software development": "high"
+        },
+        "schools": {
+          "0": "low",
+          "1": "high",
+          "2": "high"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low"
+        }
+      }
+    },
+    "overall_score": "44",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "79a63e2d-79ca-4bfa-97e5-5832b295b348",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 14:33:04.235872+00",
+    "feedback": null,
+    "bookmarked": true,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:16:02.459909+00"
+  },
+  {
+    "id": "09a89151-f1f0-47c3-8de3-afa17b9416c4",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-01-25 20:50:56.151+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "2e20c8a7-1d77-442e-adb4-cb7a3d4fbb9a",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 81,
+        "jobStability": 82
+      },
+      "scores": {
+        "skills": 61,
+        "education": 65,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "SHU ZHANG's skills align well with the primary skill requirements for the Software Engineer role, demonstrating a strong foundation in embedded systems design, system architecture, C/C++, RTOS, and other essential technical skills. While some secondary skills may not be directly mentioned, the overall skill set indicates a good match for the job requirements.",
+        "schools": "The candidate's education in Statistics may not directly align with the specific technical requirements of the job in embedded systems and software engineering.",
+        "positions": "The work experiences do not align closely with the job requirements, particularly in the domain of embedded system design and development, connectivity protocols, and knowledge of specific tools and methodologies. Additional training or experience may be necessary to meet the job's expectations."
+      },
+      "relevance": {
+        "skills": {
+          "NoSQL": "low",
+          "Database": "medium",
+          "Data Science": "low",
+          "Deep Learning": "low",
+          "Machine Learning": "low",
+          "Business Analytics": "low",
+          "Software Engineering": "high",
+          "Statistical Modeling": "low"
+        },
+        "schools": {
+          "0": "medium",
+          "1": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low"
+        }
+      }
+    },
+    "overall_score": "42",
+    "processing_status": "success",
+    "status": "qualified",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "b1369bee-4534-45e0-a0b0-2e84d352f3d4",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 17:49:58.743051+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.611224+00"
+  },
+  {
+    "id": "5bc598b7-4d95-4add-bbf3-fb7b1239d361",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-18 00:40:22.268+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "af9dcd1c-9b1d-4817-abdb-4a393e03aa09",
+    "score_json": {
+      "badges": {
+        "skills": 1,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 82,
+        "jobStability": 86
+      },
+      "scores": {
+        "skills": 46,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Chien-Lin Huang's skills align with the primary requirements of the job, demonstrating a strong foundation in the necessary technical competencies. While there are some secondary skills that are not directly mentioned, the overall skill set indicates a good fit for the mid-level Software Engineer position.",
+        "schools": "Chien-Lin Huang's education details do not align closely with the specific technical requirements of the job, such as embedded systems development, RTOS, and ISO26262 functional safety standards. The focus of the PhD in Computer Science and Information Engineering may not directly cover the essential skills needed for the Software Engineer role.",
+        "positions": "Chien-Lin Huang's work experiences do not align closely with the job requirements, as they lack the specific skills and experience in embedded system design, software development, connectivity protocols, and other key areas outlined in the job description."
+      },
+      "relevance": {
+        "skills": {
+          "DNN": "low",
+          "JFA": "low",
+          "OCR": "low",
+          "LSTM": "low",
+          "Patent": "low",
+          "Arduino": "medium",
+          "I-vector": "low",
+          "MFCC_GMM": "low",
+          "Research": "medium",
+          "X-vector": "low",
+          "Attention": "low",
+          "Google Cloud": "medium",
+          "Data Selection": "low",
+          "Neural Networks": "low",
+          "Machine Learning": "low",
+          "Object Detection": "low",
+          "Data Augmentation": "low",
+          "Indoor Navigation": "low",
+          "Speech Processing": "low",
+          "Industrial Product": "high",
+          "Speaker Adaptation": "low",
+          "Speech Recognition": "low",
+          "Android Programming": "medium",
+          "Emotion Recognition": "low",
+          "Speaker Recognition": "low",
+          "Language Recognition": "low",
+          "Mixed Language Speech": "low",
+          "Acoustic Model Training": "low",
+          "Lexical Stress Detection": "low",
+          "Multilingual Information": "low",
+          "International Competition": "low",
+          "Low-Level-Descriptors_SVM": "low",
+          "Spoken Document Retrieval": "low",
+          "Semantic Context Inference": "low",
+          "Spoken Language Technology": "low",
+          "Ultrasound Gesture Recognition": "low"
+        },
+        "schools": {
+          "0": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low",
+          "4": "low",
+          "5": "low",
+          "6": "low",
+          "7": "low",
+          "8": "low",
+          "9": "low"
+        }
+      }
+    },
+    "overall_score": "15",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "f7885604-4b49-4d58-ac61-0886780ad4b2",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 14:42:46.421926+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.676147+00"
+  },
+  {
+    "id": "288944e0-f1dc-468c-b164-bf125d2a8345",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-10-19 20:39:31.321+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "498593ac-1756-4035-8067-2a26bd6aa9e4",
+    "score_json": {
+      "badges": {
+        "skills": 2,
+        "schools": 1,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 75,
+        "jobStability": 90
+      },
+      "scores": {
+        "skills": 46,
+        "education": 83,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Anil Palaparthi's skills align well with the job requirements, demonstrating proficiency in several key areas essential for the role of a Software Engineer at a mid-level. The combination of skills and experience makes Anil a suitable candidate for the position.",
+        "schools": "Anil Palaparthi's education details in Electrical & Computer Engineering align well with the job requirements for a Software Engineer, especially in the areas of embedded systems, software architecture, and embedded software development.",
+        "positions": "Anil Palaparthi's work experiences do not align closely with the job requirements, particularly in the areas of embedded system design, software development, connectivity protocols, and compliance with industry standards."
+      },
+      "relevance": {
+        "skills": {
+          "R": "low",
+          "Git": "high",
+          "Java": "low",
+          "Trax": "low",
+          "UNIX": "low",
+          "Ansys": "low",
+          "C/C++": "high",
+          "FEBio": "low",
+          "Keras": "low",
+          "Linux": "low",
+          "Numpy": "low",
+          "Scipy": "low",
+          "COMSOL": "low",
+          "MATLAB": "low",
+          "Pandas": "low",
+          "Python": "medium",
+          "FORTRAN": "low",
+          "LabVIEW": "low",
+          "Windows": "low",
+          "Simulink": "low",
+          "Leadership": "low",
+          "Tensorflow": "low",
+          "Deep Learning": "low",
+          "Team Building": "low",
+          "Attention Models": "low",
+          "Signal Processing": "low",
+          "Project Management": "low",
+          "Bayesian algorithms": "low",
+          "Hidden Markov models": "low",
+          "Artificial Intelligence": "low",
+          "Research and Development": "medium",
+          "Finite Element Simulation": "low",
+          "Computational Neuroscience": "low",
+          "Machine Learning and Data Analysis": "low",
+          "Statistical and Digital Signal Processing": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "high",
+          "2": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        }
+      }
+    },
+    "overall_score": "43",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "073756f0-63d0-4de9-bbe6-56ffea55c40c",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 14:42:46.421926+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.75126+00"
+  },
+  {
+    "id": "7140f0ca-c746-4809-b511-d1000a8dc643",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2022-02-11 11:59:19.681+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "2d130177-7364-4fd8-869b-5462d47847b9",
+    "score_json": {
+      "badges": {
+        "skills": 0,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 0,
+        "careerGrowth": 60,
+        "jobStability": 91
+      },
+      "scores": {
+        "skills": 51,
+        "education": 0,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Yitagessu Gebremedhin's skills align with the primary skill requirements for the job, demonstrating a strong foundation in the necessary technical competencies. Additionally, the medium-rated skills indicate a potential for adaptability and growth within the role.",
+        "schools": "Yitagessu Gebremedhin's education details do not align closely with the specific technical requirements for the Software Engineer role, particularly in the areas of embedded systems, software architecture, and RTOS, which are essential for the position.",
+        "positions": "The work experiences of Yitagessu Gebremedhin do not align closely with the job requirements for a Software Engineer, particularly in the areas of embedded system design, software development, connectivity protocols, and quality standards."
+      },
+      "relevance": {
+        "skills": {
+          "Decoder Design": "low",
+          "Psychoacoustics": "low",
+          "Acoustic Modeling": "low",
+          "Language Modeling": "low",
+          "Speech Recognition": "low",
+          "Team Collaboration": "medium",
+          "Dynamic Programming": "low",
+          "Communication Skills": "medium",
+          "Linguistic Phonetics": "low",
+          "Speech Corpus Design": "low",
+          "Auditory Neuroscience": "low",
+          "Organizational Skills": "medium",
+          "Open Source Integration": "medium",
+          "Digital Signal Processing": "low",
+          "Research Paper and Thesis Writing": "low",
+          "Commercial ASR Packages Integration": "low",
+          "Speech Recognition Results Analysis": "low",
+          "Text-to-Speech (TTS) Implementation": "low",
+          "Acoustic and Language Model Training": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "low",
+          "2": "low"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low",
+          "2": "low",
+          "3": "low"
+        }
+      }
+    },
+    "overall_score": "16",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "1",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "aca7acae-2068-4741-a877-3a17747befd6",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-12 14:42:46.421926+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:21:01.922748+00"
+  },
+  {
+    "id": "25b90a6e-dc68-4821-9147-665e139b8228",
+    "created_at": "2024-07-12 12:40:07.815697+00",
+    "applied_at": "2021-08-31 15:27:10.806+00",
+    "job_id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "candidate_file_id": "865da4fd-9168-47ec-a3c6-79866309119d",
+    "score_json": {
+      "badges": {
+        "skills": 0,
+        "schools": 0,
+        "positions": 0,
+        "jobHopping": 0,
+        "leadership": 76,
+        "careerGrowth": 70,
+        "jobStability": 78
+      },
+      "scores": {
+        "skills": 26,
+        "education": 74,
+        "experience": 0
+      },
+      "reasoning": {
+        "skills": "Manu Rastogi's skills do not align with the primary skill requirements for the job, as they lack the specific expertise in embedded systems, system architecture design, and other essential technical skills listed in the job description.",
+        "schools": "Manu Rastogi's education in Electrical Engineering at the M.S. level aligns well with the job requirements for a Software Engineer, especially in the areas of embedded systems, software architecture, and embedded software development. The prior education provides a strong foundation for the technical skills and knowledge needed for the role.",
+        "positions": "Manu Rastogi's work experiences do not align closely with the job requirements, especially in terms of proficiency in embedded system design, knowledge of connectivity protocols, and experience with configuration management tools and agile development methodology."
+      },
+      "relevance": {
+        "skills": {
+          "Software Design": "medium",
+          "Machine Learning": "low",
+          "Analog Sensor Design": "low",
+          "Speaker Verification": "low",
+          "Deep Learning on Cloud": "low",
+          "Computational Neuroscience": "low",
+          "Machine Learning Inference": "low",
+          "RNN and LSTM Network Design": "low",
+          "Signal Processing Algorithms": "low",
+          "Multi-modal Emotion Detection": "low",
+          "Statistical Signal Processing": "low",
+          "Deep Learning Model Development": "low",
+          "Signal Processing/Machine Learning": "low",
+          "Digital Hardware Verification/Design": "low",
+          "Embedded System for Machine Learning": "low"
+        },
+        "schools": {
+          "0": "low",
+          "1": "medium",
+          "2": "medium"
+        },
+        "positions": {
+          "0": "low",
+          "1": "low"
+        }
+      }
+    },
+    "overall_score": "33",
+    "processing_status": "success",
+    "status": "interview",
+    "retry": "0",
+    "status_emails_sent": {},
+    "is_resume_fetching": false,
+    "assessment_id": null,
+    "phone_screening": null,
+    "candidate_id": "47f266bf-532b-44dc-97f7-43222db0eabd",
+    "overall_interview_score": "-1",
+    "converted_at": "2024-07-13 08:14:15.18825+00",
+    "feedback": null,
+    "bookmarked": false,
+    "is_new": false,
+    "source": "greenhouse",
+    "processing_started_at": "2024-07-15 17:15:05.772658+00"
+  }
+]
