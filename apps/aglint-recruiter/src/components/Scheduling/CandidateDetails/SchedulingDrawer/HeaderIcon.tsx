@@ -12,6 +12,8 @@ function HeaderIcon() {
     <>
       {stepScheduling === 'reschedule' ? (
         <GlobalIcon iconName={'event_repeat'} size={4} />
+      ) : stepScheduling === 'schedule_all_options' ? (
+        ''
       ) : scheduleFlow === 'self_scheduling' ? (
         <GlobalIcon iconName={'attach_email'} size={4} />
       ) : scheduleFlow === 'email_agent' ? (

@@ -208,6 +208,8 @@ function SlotBodyComp({
                       setTextValue={setTextValue}
                       showEditButton={true}
                       updateInstruction={updateInstruction}
+                      isBorder={true}
+                      isPadding={true}
                     />
                   </>
                 )}
