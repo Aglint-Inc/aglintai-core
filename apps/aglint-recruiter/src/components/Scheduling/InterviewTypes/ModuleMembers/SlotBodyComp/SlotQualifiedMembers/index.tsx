@@ -69,18 +69,6 @@ function SlotQualifiedMembers({
       return { ...user, weekly, daily };
     }); // need to write rpc which calc everything in db and return
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
   return (
     <>
       {allQualified.length === 0 && (
@@ -124,66 +112,7 @@ function SlotQualifiedMembers({
             }}
             isDropdownIconVisible={false}
             key={user.user_id}
-            slotThreeDot={
-              <>
-                <Stack onClick={handleClick}>
-                  <IconButtonGhost
-                    iconName='more_vert'
-                    size={2}
-                    iconSize={6}
-                    color={'neutral'}
-                  />
-                </Stack>
-                <Popover
-                  id={id}
-                  open={open}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  PaperProps={{
-                    style: {
-                      boxShadow: 'none',
-                      borderRadius: 0,
-                      backgroundColor: 'transparent',
-                    },
-                  }}
-                >
-                  <MemberListCardOption
-                    isMoveToQualifierVisible={false}
-                    isPauseVisible={!user.pause_json}
-                    isResumeVisible={Boolean(user.pause_json)}
-                    onClickRemoveModule={{
-                      onClick: () => {
-                        setSelUser(user);
-                        setIsDeleteMemberDialogOpen(true);
-                        handleClose();
-                      },
-                    }}
-                    onClickResumeInterview={{
-                      onClick: () => {
-                        setSelUser(user);
-                        setIsResumeDialogOpen(true);
-                        handleClose();
-                      },
-                    }}
-                    onClickPauseInterview={{
-                      onClick: () => {
-                        setSelUser(user);
-                        setIsPauseDialogOpen(true);
-                        handleClose();
-                      },
-                    }}
-                  />
-                </Popover>
-              </>
-            }
+            slotThreeDot={<ThreeDot user={user} />}
             isTrainingProgessVisible={true}
             isTrainingCompletedVisible={false}
             textPauseResumeDate={getPauseMemberText(user.pause_json)}
@@ -221,3 +150,78 @@ function SlotQualifiedMembers({
 }
 
 export default SlotQualifiedMembers;
+
+const ThreeDot = ({ user }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+  return (
+    <>
+      <Stack onClick={handleClick}>
+        <IconButtonGhost
+          iconName='more_vert'
+          size={2}
+          iconSize={6}
+          color={'neutral'}
+        />
+      </Stack>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MemberListCardOption
+          isMoveToQualifierVisible={false}
+          isPauseVisible={!user.pause_json}
+          isResumeVisible={Boolean(user.pause_json)}
+          onClickRemoveModule={{
+            onClick: () => {
+              setSelUser(user);
+              setIsDeleteMemberDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickResumeInterview={{
+            onClick: () => {
+              setSelUser(user);
+              setIsResumeDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickPauseInterview={{
+            onClick: () => {
+              setSelUser(user);
+              setIsPauseDialogOpen(true);
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
+    </>
+  );
+};
