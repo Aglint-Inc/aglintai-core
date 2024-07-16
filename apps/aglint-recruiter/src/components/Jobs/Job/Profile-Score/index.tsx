@@ -154,8 +154,11 @@ const ProfileScoreControls = () => {
     >
       <ScoreWeightage
         slotResetButton={
-          <ButtonSolid
+          <ButtonSoft
+            color='neutral'
             textButton='Reset'
+            isLeftIcon
+            iconName='refresh'
             size={2}
             onClickButton={{
               onClick: () => handleReset(),
