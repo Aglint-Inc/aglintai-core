@@ -9,6 +9,7 @@ import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter
 import { DetailsWithCount, PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';
 import TraininingModules from './TraininingModules';
+import { GlobalEmptyState } from '@/devlink';
 
 function TabInterviewModules({
   detailsWithCount,
@@ -70,7 +71,7 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <AllInterviewEmpty textDynamic='No interview types added yet.' />
+              <GlobalEmptyState textDesc='No Interview type found.' size={6} iconName='school'/>
             )}
           </>
         }
