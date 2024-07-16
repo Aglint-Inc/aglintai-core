@@ -38,6 +38,7 @@ import {
   filterJobs,
   getGreenhouseStatusColor,
 } from './utils';
+import { DarkPill, NewTabPill } from '@/devlink3';
 
 export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -283,6 +284,39 @@ export function GreenhouseModal() {
             overflow={'hidden'}
           >
             <GreenhouseAts
+            slotNewTab={
+              <>
+            <Stack 
+             display={'flex'} 
+             flexDirection={'row'}
+             gap={'8px'}>
+              <DarkPill textPill='All'
+              isActive={greenhouseFilter == 'all'}
+              onClickPill={{
+                onClick: () => {
+                setGreenhouseFilter('all');
+              },}}/>
+              <DarkPill textPill='Active'
+              isActive={greenhouseFilter == 'active'}
+              onClickPill={{  
+                onClick: () => {
+                setGreenhouseFilter('active');
+              },}}/>
+              <DarkPill textPill='Live'
+              isActive={greenhouseFilter == 'live'}
+              onClickPill={{  
+                onClick: () => {
+                  setGreenhouseFilter('live');
+                },}}/>
+              <DarkPill textPill='Closed'
+              isActive={greenhouseFilter == 'closed'}
+              onClickPill={{  
+                onClick: () => {
+                  setGreenhouseFilter('closed');
+                },}}/>
+           
+            </Stack>
+            </>}
               textNumberofJobs={
                 <Typography variant='body1'>
                   {selectedGreenhousePostings.length == 0

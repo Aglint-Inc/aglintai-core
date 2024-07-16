@@ -54,7 +54,7 @@ const CompanyLogo = ({
 
 const UnknownCompany = () => {
   return (
-    <Stack bgcolor={'var(--neutral-3)'} borderRadius={'var(--radius-2)'} width={'48px'} height={'48px'}>
+    <Stack bgcolor={'var(--neutral-3)'} borderRadius={'var(--radius-2)'} width={'48px'} height={'48px'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
     <GlobalIcon iconName='domain' size={8}/>
     </Stack>
     // <svg
