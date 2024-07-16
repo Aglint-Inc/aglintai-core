@@ -191,6 +191,8 @@ export async function getAllScheduleList({
     filtersAll.contains('confirmed_user_ids', interviewers);
   }
 
-  const { data: schedules } = await filtersAll.throwOnError();
+  const { data: schedules } = await filtersAll
+    .order('start_time', { ascending: true })
+    .throwOnError();
   return schedules;
 }

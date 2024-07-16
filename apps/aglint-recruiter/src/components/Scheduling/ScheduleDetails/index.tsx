@@ -294,6 +294,8 @@ function SchedulingViewComp() {
                             recruiterUser.user_id
                         }
                         updateInstruction={updateInstruction}
+                        isBorder={false}
+                        isPadding={false}
                       />
                     </ShowCode.When>
                     <ShowCode.When isTrue={router.query.tab === 'feedback'}>
