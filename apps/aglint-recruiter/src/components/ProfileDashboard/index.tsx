@@ -277,6 +277,12 @@ const ProfileDashboard = () => {
 
   const handleSubmitEmail = async () => {
     const { newEmail, error } = handleValidateMail();
+    if (userMail === newEmail) {
+      toast.error(
+        'You have entered your current email address. Please use different email',
+      );
+      return;
+    }
     if (!error) {
       const confirmation = await handleUpdateEmail(newEmail);
       if (confirmation) {
