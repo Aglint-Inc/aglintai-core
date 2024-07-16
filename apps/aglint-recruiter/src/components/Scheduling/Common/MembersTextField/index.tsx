@@ -94,7 +94,10 @@ function MembersAutoComplete({
                       fontSize='12px'
                     />
                   }
-                  textMemberName={user.first_name}
+                  textMemberName={getFullName(
+                    user?.first_name,
+                    user?.last_name,
+                  )}
                 />
               </Stack>
             );
@@ -200,7 +203,7 @@ function MembersAutoComplete({
                     className='one-line-clamp'
                     sx={{ textTransform: 'capitalize' }}
                   >
-                    {option.first_name}
+                    {getFullName(option.first_name, option.last_name)}
                   </Typography>
                   <Typography
                     variant='caption'
