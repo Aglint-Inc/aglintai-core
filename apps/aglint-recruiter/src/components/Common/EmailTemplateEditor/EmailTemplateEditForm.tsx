@@ -13,6 +13,8 @@ interface Props {
     | DatabaseTableInsert['company_email_template']
     | DatabaseTableInsert['job_email_template'];
   disabled?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
   showSubject?: boolean;
   showSender?: boolean;
   isJobTemplate?: boolean;
@@ -24,6 +26,8 @@ export default function EmailTemplateEditForm({
   emailBodyChange,
   selectedTemplate,
   disabled = false,
+  onFocus,
+  onBlur,
   showSender = true,
   showSubject = true,
   isJobTemplate = false,
@@ -31,6 +35,7 @@ export default function EmailTemplateEditForm({
   const options = isJobTemplate
     ? ['{{companyName}}', 'Aglint Ai']
     : ['{{organizerName}}', '{{companyName}}', 'Aglint Ai'];
+
   return (
     <Stack spacing={'var(--space-5)'}>
       {showSender && (
@@ -47,6 +52,8 @@ export default function EmailTemplateEditForm({
           <Select
             defaultValue={selectedTemplate?.from_name}
             disabled={disabled}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChange={senderNameChange}
             sx={{
               '& .MuiOutlinedInput-notchedOutline': {
@@ -125,6 +132,8 @@ export default function EmailTemplateEditForm({
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
+              onfocus={onFocus}
+              onblur={onBlur}
               placeholder={'subject'}
               singleLine={true}
               isSize={false}
@@ -153,6 +162,8 @@ export default function EmailTemplateEditForm({
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}
+            onfocus={onFocus}
+            onblur={onBlur}
             height='360px'
             minHeight='360px'
             editor_type='email'
