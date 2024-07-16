@@ -1,8 +1,5 @@
 set check_function_bodies = off;
 
-DROP TRIGGER IF EXISTS application_score_log ON applications;
-DROP FUNCTION IF EXISTS trigger_application_score_log;
-
 CREATE OR REPLACE FUNCTION public.trigger_application_score_log()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -54,14 +51,6 @@ END;
 $function$
 ;
 
-CREATE TRIGGER application_score_log
-AFTER UPDATE OF processing_status ON applications 
-FOR EACH ROW 
-EXECUTE FUNCTION trigger_application_score_log();
-
-DROP TRIGGER IF EXISTS application_score_log2 ON public_jobs;
-DROP FUNCTION IF EXISTS trigger_application_score_log2;
-
 CREATE OR REPLACE FUNCTION public.trigger_application_score_log2()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -110,8 +99,3 @@ BEGIN
 END;
 $function$
 ;
-
-CREATE TRIGGER application_score_log2
-AFTER UPDATE OF parameter_weights ON public_jobs 
-FOR EACH ROW 
-EXECUTE FUNCTION trigger_application_score_log2();
