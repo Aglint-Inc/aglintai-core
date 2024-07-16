@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import { create } from 'zustand';
 
 import { SessionsType } from '../../types';
