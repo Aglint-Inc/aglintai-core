@@ -1,6 +1,7 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { JobsBanner } from '@/devlink3/JobsBanner';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
@@ -54,8 +55,7 @@ const ApplicationsComponent = () => {
   return (
     <DNDProvider>
       <JobDetails
-        isImportCandidates={job.status === 'published'}
-        onclickAddCandidates={{ onClick: () => setImportPopup(true) }}
+        isImportCandidates={false}
         isFetchingPillVisible={false}
         slotRefresh={
           applicationScoringPollEnabled && (
@@ -90,6 +90,16 @@ const ApplicationsComponent = () => {
         slotBreadcrumb={<BreadCrumbs />}
         slotGlobalBanner={
           <>
+            {job?.status !== 'closed' && (
+              <ButtonSoft
+                size={2}
+                color='neutral'
+                textButton='Add candidates'
+                onClickButton={{ onClick: () => setImportPopup(true) }}
+                isLeftIcon
+                iconName='add'
+              />
+            )}
             {job?.status === 'draft' && (
               <JobsBanner
                 slotButton={

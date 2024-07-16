@@ -14,7 +14,6 @@ import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
 import { DarkPill } from '@/devlink3/DarkPill';
 import { EnableDisable } from '@/devlink3/EnableDisable';
@@ -283,12 +282,16 @@ const Dashboard = () => {
                     }
                   />
                 )}
-                <AddCandidateButton
-                  isImport={job?.status !== 'closed'}
-                  onClickImport={{
-                    onClick: () => setImportPopup(true),
-                  }}
-                />
+                {job?.status !== 'closed' && (
+                  <ButtonSoft
+                    size={2}
+                    color='neutral'
+                    textButton='Add candidates'
+                    onClickButton={{ onClick: () => setImportPopup(true) }}
+                    isLeftIcon
+                    iconName='add'
+                  />
+                )}
               </>
             }
             slotPublishButton={publishButton}

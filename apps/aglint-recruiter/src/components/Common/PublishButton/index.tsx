@@ -36,6 +36,7 @@ const PublishButton = ({
     <Stack sx={{ cursor: 'pointer' }}>
       <Button
         sx={{
+          height: '32px',
           pointerEvents: disabled ? 'none' : 'auto',
           color:
             publishing === 0
