@@ -93,6 +93,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
         textWarning={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
         textButton={'Archive'}
         textJobTitle={moduleName}
+        onClickCloseJob={{ onClick: onClose }}
         slotButton={
           <>
             <ButtonSoft
