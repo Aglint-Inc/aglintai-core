@@ -139,12 +139,12 @@ export const createCloneSession = async ({
     }));
 
     // task session replace
-    const oldSessionIds = refSessions.map((ses) => ses.interview_session.id);
 
     const { data: taskSelRel, error: errTaskSelRel } = await supabase
       .from('task_session_relation')
-      .select()
-      .in('session_id', oldSessionIds);
+      .select('*,new_tasks(application_id)')
+      .eq('new_tasks.application_id', application_id)
+      .not('new_tasks', 'is', null);
 
     if (errTaskSelRel) throw new Error(errTaskSelRel.message);
 

@@ -12,7 +12,8 @@ import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import toast from '@/src/utils/toast';
 
 import { useGetScheduleApplication } from '../../hooks';
-import { setIsEditOpen, useSchedulingApplicationStore } from '../../store';
+import { setIsEditOpen, setSelectedTasks, useSchedulingApplicationStore } from '../../store';
+import { getTaskDetails } from '../../utils';
 import {
   resetEditSessionDrawerState,
   setEditSession,
@@ -126,6 +127,8 @@ export const useEditSession = () => {
             };
 
             editInterviewSession(editInterviewSessionParams);
+            const data = await getTaskDetails(selectedApplication.id);
+            setSelectedTasks(data);
             toast.success('Session saved successfully.');
           } else {
             const updateDebriefParams: UpdateDebriefSession = {

@@ -1,12 +1,10 @@
-import { DatabaseView } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import { supabase } from '@/src/utils/supabase/client';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 
 import {
   setDateRange,
@@ -15,37 +13,41 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../../SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '../../store';
+import {
+  setRescheduleSessionIds,
+  setSelectedTasks,
+  useSchedulingApplicationStore,
+} from '../../store';
+import { getTaskDetails } from '../../utils';
 
 function TaskPopups() {
-  const [tasks, setTasks] = useState<DatabaseView['tasks_view'][]>(null);
   const router = useRouter();
   const { updateRequestAvailibityId } = useSchedulingFlowStore();
+  const { selectedTasks } = useSchedulingApplicationStore();
   useEffect(() => {
     if (router.query.application_id) {
-      getTaskDetails(router.query.application_id as string);
+      getTask();
     }
   }, [updateRequestAvailibityId]);
 
-  const getTaskDetails = async (application_id: string) => {
-    const { data } = await supabase
-      .from('tasks_view')
-      .select('*')
-      .eq('application_id', application_id);
-
-    setTasks(data);
+  const getTask = async () => {
+    const data = await getTaskDetails(router.query.application_id as string);
+    setSelectedTasks(data);
   };
+
   return (
     <Stack direction={'column'} gap={1}>
-      {tasks &&
-        tasks.length === 1 &&
-        tasks[0].latest_progress?.progress_type === 'schedule' &&
-        tasks[0].assignee[0] !== EmailAgentId &&
-        tasks[0].assignee[0] !== PhoneAgentId && (
-          <GeneralBanner
-            textHeading={`Task created for scheduling ${tasks[0].session_ids.map((ele) => `${ele.name}`)}`}
-            textDesc={''}
-            slotButton={
+      {selectedTasks &&
+        selectedTasks.length === 1 &&
+        selectedTasks[0].latest_progress?.progress_type === 'schedule' &&
+        selectedTasks[0].assignee[0] !== EmailAgentId &&
+        selectedTasks[0].assignee[0] !== PhoneAgentId && (
+          <GlobalBannerShort
+            textTitle={`Task created for scheduling ${selectedTasks[0].session_ids.map((ele) => `${ele.name}`)}`}
+            textDescription={''}
+            color={'warning'}
+            iconName={'schedule'}
+            slotButtons={
               <>
                 <ButtonSolid
                   textButton={'Schedule now'}
@@ -56,14 +58,15 @@ function TaskPopups() {
                   onClickButton={{
                     onClick: () => {
                       setRescheduleSessionIds(
-                        tasks[0].session_ids.map((ele) => ele.id),
+                        selectedTasks[0].session_ids.map((ele) => ele.id),
                       );
                       setStepScheduling('schedule_all_options');
                       setDateRange({
-                        start_date: tasks[0].schedule_date_range.start_date,
-                        end_date: tasks[0].schedule_date_range.end_date,
+                        start_date:
+                          selectedTasks[0].schedule_date_range.start_date,
+                        end_date: selectedTasks[0].schedule_date_range.end_date,
                       });
-                      setSelectedTaskId(tasks[0].id);
+                      setSelectedTaskId(selectedTasks[0].id);
                       // setSelectedSessionIds(
                       //   tasks[0].session_ids.map((ele) => ele.id),
                       // );
