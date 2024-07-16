@@ -4,6 +4,7 @@ import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 
 import { PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';
+import { GlobalEmptyState } from '@/devlink';
 
 function TraininingModules({
   trainingModulesList,
@@ -29,7 +30,8 @@ function TraininingModules({
           );
         })
       ) : (
-        <AllInterviewEmpty textDynamic='No interview types found.' />
+        // <AllInterviewEmpty textDynamic='No interview types found.' />
+        <GlobalEmptyState textDesc='No ongoing training.' size={6} iconName='filter_tilt_shift' />
       )}
     </>
   );

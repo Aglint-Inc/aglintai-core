@@ -9,6 +9,7 @@ import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeeting
 import { SchedulesSupabase } from '../../../schedules-query';
 import { DetailsWithCount, PauseDialog } from '../../type';
 import TraininingModules from '../TabModules/TraininingModules';
+import { GlobalEmptyState } from '@/devlink';
 
 function Overview({
   detailsWithCount,
@@ -75,7 +76,8 @@ function Overview({
               );
             })
           ) : (
-            <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
+            // <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
+            <GlobalEmptyState textDesc='No upcoming schedules found.' size={6} iconName='event'/>
           )
         }
         slotTrainingModules={

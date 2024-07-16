@@ -24,6 +24,7 @@ import LocationIcon from './Icons/LocationIcon';
 import StatusIcon from './Icons/StatusIcon';
 import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
+import { GlobalBannerInline } from '@/devlink2';
 
 type ItemType = string;
 
@@ -159,8 +160,23 @@ const TeamManagement = () => {
     Boolean(selectedRoles.length) ||
     Boolean(selectedLocations.length);
   return (
-    <>
+    <Stack bgcolor={'white'}>
       <TeamUsersList
+      slotBanner={
+      <GlobalBannerInline 
+
+      iconName='history'
+      textContent='You currently have four pending invites awaiting your response.'
+      color={'warning'} 
+      slotButton={
+      <ButtonSolid 
+      onClickButton={{ onClick: () => {
+        setSelectedStatus(['invited']);
+        // setOpenDrawer({ open: true, window: 'pendingMember' });
+      },}}
+      textButton='View pending invites' 
+      color={'accent'}/>
+    } />}
         slotSearchAndFilter={
           <>
             <Stack marginRight={5}>
@@ -292,12 +308,12 @@ const TeamManagement = () => {
           />
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        onClickViewPendingInvites={{
-          onClick: () => {
-            setSelectedStatus(['invited']);
-            // setOpenDrawer({ open: true, window: 'pendingMember' });
-          },
-        }}
+        // onClickViewPendingInvites={{
+        //   onClick: () => {
+        //     setSelectedStatus(['invited']);
+        //     // setOpenDrawer({ open: true, window: 'pendingMember' });
+        //   },
+        // }}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
         )} pending invites awaiting your response.`}
@@ -331,7 +347,7 @@ const TeamManagement = () => {
           }}
         />
       )}
-    </>
+    </Stack>
   );
 };
 

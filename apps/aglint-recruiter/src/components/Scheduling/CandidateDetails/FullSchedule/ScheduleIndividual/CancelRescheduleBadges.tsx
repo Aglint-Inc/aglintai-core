@@ -75,7 +75,7 @@ function CancelRescheduleBadges({
 
       {rescheduleRequests.length > 0 && (
         <GlobalBadge
-          color={'event_repeat'}
+          color={'warning'}
           iconName='refresh'
           textBadge={`${rescheduleRequests.length} Reschedule Request`}
           showIcon={true}

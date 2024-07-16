@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 
@@ -54,7 +54,9 @@ const CompanyLogo = ({
 
 const UnknownCompany = () => {
   return (
-    <GlobalIcon iconName='domain' />
+    <Stack bgcolor={'var(--neutral-3)'} borderRadius={'var(--radius-2)'} width={'48px'} height={'48px'}>
+    <GlobalIcon iconName='domain' size={8}/>
+    </Stack>
     // <svg
     //   width='60'
     //   height='60'
