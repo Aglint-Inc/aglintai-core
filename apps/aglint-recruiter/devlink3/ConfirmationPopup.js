@@ -23,6 +23,8 @@ export function ConfirmationPopup({
   isGreyButtonVisible = true,
   isDescriptionVisible = true,
   widthStyleProps = {},
+  slotButton,
+  isSlotButtonVisible = false,
 }) {
   return (
     <_Component
@@ -116,6 +118,18 @@ export function ConfirmationPopup({
               textButton={textPopupButton}
               size="2"
             />
+          </_Builtin.Block>
+        ) : null}
+        {isSlotButtonVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "wide_button")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_61ca3642-8dc1-1d99-3306-3085ae35401f-4e0bdc1d"
+            )}
+            tag="div"
+          >
+            {slotButton}
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
