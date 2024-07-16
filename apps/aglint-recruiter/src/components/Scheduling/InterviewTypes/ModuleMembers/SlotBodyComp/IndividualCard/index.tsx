@@ -68,19 +68,6 @@ function IndividualCard({
     length: editModule.settings.noReverseShadow - reverseShadowProgress.length,
   });
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
   return (
     <>
       <MemberListCard
@@ -210,73 +197,10 @@ function IndividualCard({
           </Collapse>
         }
         slotThreeDot={
-          <>
-            <Stack onClick={handleClick}>
-              <IconButtonGhost
-                iconName='more_vert'
-                size={2}
-                iconSize={6}
-                color={'neutral'}
-              />
-            </Stack>
-
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              PaperProps={{
-                style: {
-                  boxShadow: 'none',
-                  borderRadius: 0,
-                  backgroundColor: 'transparent',
-                },
-              }}
-            >
-              <MemberListCardOption
-                isMoveToQualifierVisible={isMoveToQualifierVisible}
-                isRemoveVisible={true}
-                isPauseVisible={!user.pause_json}
-                isResumeVisible={Boolean(user.pause_json)}
-                onClickMoveToQualifier={{
-                  onClick: () => {
-                    setSelUser(user);
-                    setIsMovedToQualifiedDialogOpen(true);
-                    handleClose();
-                  },
-                }}
-                onClickRemoveModule={{
-                  onClick: () => {
-                    setSelUser(user);
-                    setIsDeleteMemberDialogOpen(true);
-                    handleClose();
-                  },
-                }}
-                onClickResumeInterview={{
-                  onClick: () => {
-                    setSelUser(user);
-                    setIsResumeDialogOpen(true);
-                    handleClose();
-                  },
-                }}
-                onClickPauseInterview={{
-                  onClick: () => {
-                    setSelUser(user);
-                    setIsPauseDialogOpen(true);
-                    handleClose();
-                  },
-                }}
-              />
-            </Popover>
-          </>
+          <ThreeDot
+            isMoveToQualifierVisible={isMoveToQualifierVisible}
+            user={user}
+          />
         }
         isDropdownIconVisible={true}
         onClickDropdownIcon={{
@@ -302,3 +226,87 @@ function IndividualCard({
 }
 
 export default IndividualCard;
+
+const ThreeDot = ({ isMoveToQualifierVisible, user }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+  return (
+    <>
+      <Stack onClick={handleClick}>
+        <IconButtonGhost
+          iconName='more_vert'
+          size={2}
+          iconSize={6}
+          color={'neutral'}
+        />
+      </Stack>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MemberListCardOption
+          isMoveToQualifierVisible={isMoveToQualifierVisible}
+          isRemoveVisible={true}
+          isPauseVisible={!user.pause_json}
+          isResumeVisible={Boolean(user.pause_json)}
+          onClickMoveToQualifier={{
+            onClick: () => {
+              setSelUser(user);
+              setIsMovedToQualifiedDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickRemoveModule={{
+            onClick: () => {
+              setSelUser(user);
+              setIsDeleteMemberDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickResumeInterview={{
+            onClick: () => {
+              setSelUser(user);
+              setIsResumeDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickPauseInterview={{
+            onClick: () => {
+              setSelUser(user);
+              setIsPauseDialogOpen(true);
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
+    </>
+  );
+};
