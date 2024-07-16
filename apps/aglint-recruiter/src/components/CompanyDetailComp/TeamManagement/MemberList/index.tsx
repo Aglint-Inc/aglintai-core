@@ -6,7 +6,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { TeamListItem } from '@/devlink/TeamListItem';
 import { TeamOptionList } from '@/devlink/TeamOptionList';
@@ -21,6 +23,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
 
@@ -168,6 +171,37 @@ const Member = ({
                   isDeleteVisible={member.join_status !== 'invited'}
                   isResetPasswordVisible={member.join_status !== 'invited'}
                   isEditVisible={member.join_status !== 'invited'}
+                  slotFilterOption={
+                    <>
+                      {member.join_status === 'invited' && (
+                        <FilterOption
+                          slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
+                          text={'Resend Invitation'}
+                          color={{
+                            style: {
+                              color: 'transparent',
+                            },
+                          }}
+                          onClickCancelInvite={{
+                            onClick: () => {
+                              reinviteUser(
+                                member.email,
+                                userDetails.user.id,
+                              ).then(({ error, emailSend }) => {
+                                if (!error && emailSend) {
+                                  return toast.success(
+                                    'Invite sent successfully.',
+                                  );
+                                }
+                                return toast.error(error);
+                              });
+                            },
+                          }}
+                        />
+                      )}
+                    </>
+                  }
+                  isFilterOptionVisible={true}
                   onClickMarkActive={{
                     onClick: () => {
                       updateMember({ is_suspended: false }).then(() => {
