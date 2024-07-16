@@ -36,39 +36,14 @@ export const RoleUserWidget = ({
     <>
       <UserSearch members={members} setEditUser={setEditUser} />
       {role.assignedTo.length ? (
-        role.assignedTo.map((user_id) => {
-          const user = members.find((member) => member.user_id === user_id);
-          if (!user) return;
-          return (
-            <UserWithRole
-              key={user_id}
-              textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
-              textRole={user.position}
-              slotButton={
-                <IconButtonGhost
-                  iconName={'edit'}
-                  color={'neutral'}
-                  onClickButton={{ onClick: () => setEditUser(user) }}
-                />
-              }
-              slotBadge={
-                <GlobalBadge
-                  color={user.is_suspended ? 'error' : 'success'}
-                  textBadge={user.is_suspended ? 'Suspended' : 'Active'}
-                />
-              }
-              slotAvatar={
-                <Avatar
-                  key={user_id}
-                  src={user.profile_image}
-                  variant='rounded'
-                  alt={user.first_name}
-                  sx={{ height: '100%', width: '100%' }}
-                />
-              }
-            />
-          );
-        })
+        role.assignedTo.map((user_id) => (
+          <UserCard
+            members={members}
+            setEditUser={setEditUser}
+            user_id={user_id}
+            key={user_id}
+          />
+        ))
       ) : (
         <GlobalEmptyState
           styleEmpty={{
@@ -194,5 +169,50 @@ const UserSearch = ({
         </Popover>
       )}
     </>
+  );
+};
+
+const UserCard = ({ members, user_id, setEditUser }) => {
+  const [isEdit, setEdit] = useState(false);
+
+  const user = members.find((member) => member.user_id === user_id);
+  if (!user) return;
+  return (
+    <Stack
+      key={user_id}
+      onMouseEnter={() => setEdit(true)}
+      onMouseLeave={() => setEdit(false)}
+    >
+      <UserWithRole
+        textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+        textRole={user.position}
+        slotButton={
+          isEdit ? (
+            <IconButtonGhost
+              iconName={'edit'}
+              color={'neutral'}
+              onClickButton={{ onClick: () => setEditUser(user) }}
+            />
+          ) : (
+            <></>
+          )
+        }
+        slotBadge={
+          <GlobalBadge
+            color={user.is_suspended ? 'error' : 'success'}
+            textBadge={user.is_suspended ? 'Suspended' : 'Active'}
+          />
+        }
+        slotAvatar={
+          <Avatar
+            key={user_id}
+            src={user.profile_image}
+            variant='rounded'
+            alt={user.first_name}
+            sx={{ height: '100%', width: '100%' }}
+          />
+        }
+      />
+    </Stack>
   );
 };

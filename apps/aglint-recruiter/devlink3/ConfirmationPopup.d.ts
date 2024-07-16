@@ -16,4 +16,6 @@ declare function ConfirmationPopup(props: {
   isGreyButtonVisible?: Types.Visibility.VisibilityConditions;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
   widthStyleProps?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  isSlotButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
