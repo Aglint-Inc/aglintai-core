@@ -20,9 +20,11 @@ import {
   setRescheduleSessionIds,
   setSelectedApplicationLog,
   setSelectedSessionIds,
+  setSelectedTasks,
   useSchedulingApplicationStore,
 } from '../store';
 import { ApiResponseFindAvailability } from '../types';
+import { getTaskDetails } from '../utils';
 import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
 import {
   setFetchingPlan,
@@ -230,6 +232,8 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           setStepScheduling('success_screen');
         }
         refetch();
+        const data = await getTaskDetails(selectedApplication.id);
+        setSelectedTasks(data);
       } else {
         throw new Error('Error sending to candidate.');
       }
@@ -384,8 +388,10 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           );
         }
       }
-      refetch();
       fetchInterviewDataByApplication();
+      refetch();
+      const data = await getTaskDetails(selectedApplication.id);
+      setSelectedTasks(data);
       resetStateSelfScheduling();
     } catch (e) {
       //

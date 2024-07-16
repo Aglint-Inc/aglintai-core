@@ -1,5 +1,6 @@
 import {
   DatabaseTable,
+  DatabaseView,
   InterviewModuleType,
   InterviewScheduleTypeDB,
 } from '@aglint/shared-types';
@@ -49,6 +50,7 @@ export interface SchedulingApplication {
         application_id: string;
       }[]
     | null;
+  selectedTasks: DatabaseView['tasks_view'][];
 }
 
 const initialState: SchedulingApplication = {
@@ -74,6 +76,7 @@ const initialState: SchedulingApplication = {
   isSendingToCandidate: false, // sending to candidate loader state for api call
   selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
   rescheduleSessionIds: [], // reschedule session ids,
+  selectedTasks: [],
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -81,6 +84,10 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
     ...initialState,
   }),
 );
+
+export const setSelectedTasks = (
+  selectedTasks: SchedulingApplication['selectedTasks'],
+) => useSchedulingApplicationStore.setState({ selectedTasks });
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
