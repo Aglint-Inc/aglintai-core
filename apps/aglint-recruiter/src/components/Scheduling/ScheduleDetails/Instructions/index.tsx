@@ -14,11 +14,15 @@ function Instructions({
   setTextValue,
   updateInstruction,
   showEditButton,
+  isBorder = false,
+  isPadding = true,
 }: {
   instruction: string;
   updateInstruction: any;
   showEditButton: boolean;
   setTextValue: any;
+  isBorder?: boolean;
+  isPadding?: boolean;
 }) {
   const [edit, setEdit] = useState(false);
 
@@ -46,8 +50,8 @@ function Instructions({
                 // margin: '20px',
                 maxWidth: '800px',
                 minWidth: '800px',
-                border: '1px solid',
-                borderColor: 'var(--neutral-6)',
+                // border: '1px solid',
+                // borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
               }}
               height={'500px'}
@@ -75,37 +79,43 @@ function Instructions({
           }}
         />
       </Dialog>
-      <Stack  direction={'column'} p={'var(--space-5)'}>
-        <Stack gap={2} bgcolor={'white'} padding={'var(--space-4)'} border={'1px solid var(--neutral-6)'} borderRadius={'var(--radius-4)'} width={'800px'}>
-        <ShowCode>
-          <ShowCode.When isTrue={showEditButton}>
-        
-            <Stack direction={'row'} justifyContent={'space-between'}>
-            <Text content='Instruction' weight={'medium'}/>
-              <ButtonSoft
-              color={'neutral'}
-                isLeftIcon={true}
-                slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
-                size={1}
-                textButton={instruction?'Edit Instruction':'Add Instruction'}
-                onClickButton={{
-                  onClick: () => {
-                    setEdit(true);
-                  },
-                }}
-              />
-            </Stack>
-          </ShowCode.When>
-        </ShowCode>
-        <div
-          style={{
-            maxWidth: '600px',
-          }}
-          dangerouslySetInnerHTML={{
-            __html: marked(instruction || 'Instructions not given'),
-          }}
-        ></div>
-      </Stack>
+      <Stack direction={'column'} p={'var(--space-5)'}>
+        <Stack
+          gap={2}
+          bgcolor={'white'}
+          padding={isPadding && 'var(--space-4)'}
+          border={isBorder && '1px solid var(--neutral-6)'}
+          borderRadius={'var(--radius-4)'}
+          width={'800px'}
+        >
+          <ShowCode>
+            <ShowCode.When isTrue={showEditButton}>
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Text content='Instruction' weight={'medium'} />
+                <ButtonSoft
+                  color={'neutral'}
+                  isLeftIcon={true}
+                  slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
+                  size={1}
+                  textButton={'Edit'}
+                  onClickButton={{
+                    onClick: () => {
+                      setEdit(true);
+                    },
+                  }}
+                />
+              </Stack>
+            </ShowCode.When>
+          </ShowCode>
+          <div
+            style={{
+              maxWidth: '600px',
+            }}
+            dangerouslySetInnerHTML={{
+              __html: marked(instruction || 'Instructions not given'),
+            }}
+          ></div>
+        </Stack>
       </Stack>
     </>
   );
