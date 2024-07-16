@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 
 import { SchedulesSupabase, schedulesSupabase } from '../../schedules-query';
 
@@ -19,14 +20,14 @@ export type ScheduleFilerType = {
   date_range: string[];
   searchText: string;
 };
-const initialFilterState = {
+export var initialFilterState: ScheduleFilerType = {
   status: [],
   interviewers: [],
   jobs: [],
   schedule_types: [],
   date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')], //dayjsLocal().add(7, 'day').format('YYYY-MM-DD')
   searchText: null,
-} as ScheduleFilerType;
+};
 interface ContextValue {
   filteredSchedules: SchedulesSupabase | null;
   setFilteredSchedule: (x: SchedulesSupabase | null) => void;
@@ -56,10 +57,11 @@ function ScheduleStatesProvider({ children }) {
     useState<SchedulesSupabase | null>(null);
   const [loadingSchedules, setLoadingSchedules] = useState(true);
 
+  const [scheduleFilterIds, setScheduleFilterIds] =
+    useLocalStorage('scheduleFilterIds');
+
   const [filterState, setFilterState] = useState(
-    localStorage.getItem('scheduleFilterIds')
-      ? JSON.parse(localStorage.getItem('scheduleFilterIds'))
-      : initialFilterState,
+    scheduleFilterIds ? scheduleFilterIds : initialFilterState,
   );
 
   const updateFilterState = (
@@ -72,13 +74,10 @@ function ScheduleStatesProvider({ children }) {
         [key]: value,
       };
       if (key !== 'date_range') {
-        localStorage.setItem(
-          'scheduleFilterIds',
-          JSON.stringify({
-            ...states,
-            date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')],
-          }),
-        );
+        setScheduleFilterIds({
+          ...states,
+          date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')],
+        });
       }
       return states;
     });
