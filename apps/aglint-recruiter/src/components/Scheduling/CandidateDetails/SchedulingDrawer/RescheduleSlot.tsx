@@ -2,10 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
 import ScheduleIndividualCard from '../FullSchedule/ScheduleIndividual';
-import {
-  SchedulingApplication,
-  useSchedulingApplicationStore
-} from '../store';
+import { SchedulingApplication, useSchedulingApplicationStore } from '../store';
 
 function RescheduleSlot() {
   const { initialSessions, selectedApplication, rescheduleSessionIds } =
@@ -57,6 +54,7 @@ function RescheduleSlot() {
             isEditIconVisible={false}
             gridStyle='1fr 1.7fr 0fr'
             users={ses.users}
+            currentSession={ses}
           />
         );
       })}

@@ -33,6 +33,7 @@ function FilterTasks() {
           filterSearch: true,
           iconname: 'account_circle',
           searchPlaceholder: 'Search Assignee',
+          multiSelect: false,
           options: [
             { header: 'Agents', options: agentsDetails },
             { header: 'Members', options: filter.assignee.options },
