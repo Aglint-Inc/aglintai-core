@@ -8,13 +8,12 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
-import { IconButtonSoft } from '@/devlink';
 
 const SocialComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();

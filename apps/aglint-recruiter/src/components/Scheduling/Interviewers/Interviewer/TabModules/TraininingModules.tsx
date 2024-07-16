@@ -1,10 +1,9 @@
 import React, { Dispatch } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 import { PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';
-import { GlobalEmptyState } from '@/devlink';
 
 function TraininingModules({
   trainingModulesList,

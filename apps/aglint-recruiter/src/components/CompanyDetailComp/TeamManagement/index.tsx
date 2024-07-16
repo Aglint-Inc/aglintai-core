@@ -8,6 +8,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
@@ -24,7 +25,6 @@ import LocationIcon from './Icons/LocationIcon';
 import StatusIcon from './Icons/StatusIcon';
 import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
-import { GlobalBannerInline } from '@/devlink2';
 
 type ItemType = string;
 
