@@ -2,14 +2,13 @@ import { Stack } from '@mui/material';
 import React, { Dispatch } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { DetailsWithCount, PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';
 import TraininingModules from './TraininingModules';
-import { GlobalEmptyState } from '@/devlink';
 
 function TabInterviewModules({
   detailsWithCount,
@@ -71,7 +70,11 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <GlobalEmptyState textDesc='No Interview type found.' size={6} iconName='school'/>
+              <GlobalEmptyState
+                textDesc='No Interview type found.'
+                size={6}
+                iconName='school'
+              />
             )}
           </>
         }
