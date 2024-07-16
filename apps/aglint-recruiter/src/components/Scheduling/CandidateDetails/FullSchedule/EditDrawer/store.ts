@@ -10,7 +10,33 @@ export interface EditSessionDrawer {
   trainingToggle: boolean;
   saving: boolean;
   editSession: SessionsType;
+  errorValidation: {
+    field: 'session_name' | 'qualified_interviewers' | 'training_interviewers';
+    error: boolean;
+    message: string;
+  }[];
 }
+
+export const initialError = () => {
+  const error: EditSessionDrawer['errorValidation'] = [
+    {
+      field: 'session_name',
+      error: false,
+      message: 'Session name is required',
+    },
+    {
+      field: 'qualified_interviewers',
+      error: false,
+      message: 'Interviewers are required',
+    },
+    {
+      field: 'training_interviewers',
+      error: false,
+      message: 'Interviewers are required',
+    },
+  ];
+  return error;
+};
 
 const initialState: EditSessionDrawer = {
   selectedInterviewers: [],
@@ -19,11 +45,16 @@ const initialState: EditSessionDrawer = {
   trainingToggle: false,
   saving: false,
   editSession: null,
+  errorValidation: initialError(),
 };
 
 export const useEditSessionDrawerStore = create<EditSessionDrawer>()(() => ({
   ...initialState,
 }));
+
+export const setErrorValidation = (
+  errorValidation: EditSessionDrawer['errorValidation'],
+) => useEditSessionDrawerStore.setState({ errorValidation });
 
 export const setSaving = (saving: boolean) =>
   useEditSessionDrawerStore.setState({ saving });

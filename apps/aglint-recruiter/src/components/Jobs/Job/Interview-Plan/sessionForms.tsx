@@ -822,6 +822,8 @@ type MemberSelectionDropDownProps = {
   }[];
   value: string | number;
   showIcons?: boolean;
+  error?: boolean;
+  helperText?: string;
 };
 
 export const DropDown = ({
@@ -830,6 +832,8 @@ export const DropDown = ({
   options,
   value,
   showIcons = true,
+  error = false,
+  helperText = '',
 }: MemberSelectionDropDownProps) => {
   return (
     <Stack
@@ -841,7 +845,7 @@ export const DropDown = ({
         <Stack
           position={'absolute'}
           zIndex={1}
-          style={{ color: 'var(--neutral-11)', pointerEvents: 'none' }}
+          style={{ color: 'var(--neutral-11)', pointerEvents: 'none', top: 8 }}
           ml={2}
         >
           {placeholder}
@@ -852,6 +856,8 @@ export const DropDown = ({
         menuOptions={options}
         showMenuIcons={showIcons}
         value={value}
+        error={error}
+        helperText={helperText}
       />
     </Stack>
   );

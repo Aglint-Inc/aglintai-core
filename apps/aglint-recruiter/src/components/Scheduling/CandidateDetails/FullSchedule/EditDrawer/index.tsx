@@ -28,6 +28,7 @@ import { useEditSession } from './hooks';
 import {
   setDebriefMembers,
   setEditSession,
+  setErrorValidation,
   setSelectedInterviewers,
   setTrainingInterviewers,
   setTrainingToggle,
@@ -49,6 +50,7 @@ function SideDrawerEdit() {
     trainingInterviewers,
     trainingToggle,
     debriefMembers,
+    errorValidation,
   } = useEditSessionDrawerStore((state) => ({
     editSession: state.editSession,
     selectedInterviewers: state.selectedInterviewers,
@@ -56,6 +58,7 @@ function SideDrawerEdit() {
     trainingInterviewers: state.trainingInterviewers,
     trainingToggle: state.trainingToggle,
     debriefMembers: state.debriefMembers,
+    errorValidation: state.errorValidation,
   }));
 
   const { handleClose, handleSave } = useEditSession();
@@ -104,6 +107,12 @@ function SideDrawerEdit() {
 
   const onChange = (e, type) => {
     if (type === 'interviewer') {
+      errorValidation.find(
+        (err) => err.field === 'qualified_interviewers',
+      ).error = false;
+
+      setErrorValidation([...errorValidation]);
+
       const selectedUser = moduleCurrent?.members?.find(
         (member) => member.moduleUserId === e.target.value,
       );
@@ -185,6 +194,16 @@ function SideDrawerEdit() {
                             name: e.target.value,
                           },
                         })
+                      }
+                      error={
+                        errorValidation.find(
+                          (err) => err.field === 'session_name',
+                        ).error
+                      }
+                      helperText={
+                        errorValidation.find(
+                          (err) => err.field === 'session_name',
+                        ).message
                       }
                     />
                   }
@@ -322,13 +341,9 @@ function SideDrawerEdit() {
                           />
                         </>
                       }
-                      isInterviewerDropVisible={
-                        moduleCurrent?.members.filter(
-                          (user) => user.training_status == 'qualified',
-                        ).length > Number(selectedInterviewers?.length)
-                      }
+                      isInterviewerDropVisible={true}
                       slotMemberCountDropdown={
-                        selectedInterviewers?.length > 0 && (
+                        selectedInterviewers?.length > 0 ? (
                           <TextField
                             size='small'
                             name={'interviewer_cnt'}
@@ -361,15 +376,49 @@ function SideDrawerEdit() {
                               </MenuItem>
                             ))}
                           </TextField>
+                        ) : (
+                          '--'
                         )
                       }
                       slotInterviewersDropdown={
-                        <DropDown
-                          placeholder='Select Interviewers'
-                          onChange={(e) => onChange(e, 'interviewer')}
-                          options={optionsInterviewers}
-                          value=''
-                        />
+                        optionsInterviewers.length === 0 ? (
+                          <UITextField
+                            value='Please add members to the interview type'
+                            disabled
+                            fullWidth
+                            error={
+                              errorValidation.find(
+                                (err) => err.field === 'qualified_interviewers',
+                              ).error
+                            }
+                            helperText={
+                              errorValidation.find(
+                                (err) => err.field === 'qualified_interviewers',
+                              ).message
+                            }
+                          />
+                        ) : (
+                          <>
+                            <DropDown
+                              placeholder='Select Interviewers'
+                              onChange={(e) => onChange(e, 'interviewer')}
+                              options={optionsInterviewers}
+                              value=''
+                              error={
+                                errorValidation.find(
+                                  (err) =>
+                                    err.field === 'qualified_interviewers',
+                                ).error
+                              }
+                              helperText={
+                                errorValidation.find(
+                                  (err) =>
+                                    err.field === 'qualified_interviewers',
+                                ).message
+                              }
+                            />
+                          </>
+                        )
                       }
                       isTrainingVisible={optionTrainees.length > 0}
                       slotInterviewersAvatarSelectionPill={
@@ -450,6 +499,16 @@ function SideDrawerEdit() {
                           onChange={(e) => onChange(e, 'trainee')}
                           options={optionTrainees}
                           value=''
+                          error={
+                            errorValidation.find(
+                              (err) => err.field === 'training_interviewers',
+                            ).error
+                          }
+                          helperText={
+                            errorValidation.find(
+                              (err) => err.field === 'training_interviewers',
+                            ).message
+                          }
                         />
                       }
                     />
@@ -469,6 +528,7 @@ function SideDrawerEdit() {
                 onClickButton={{ onClick: () => handleClose() }}
               />
               <ButtonSolid
+                isDisabled={errorValidation.some((err) => err.error)}
                 textButton='Save'
                 size={2}
                 isLoading={saving}

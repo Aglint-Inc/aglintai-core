@@ -17,20 +17,31 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
 import { setMembers, useSchedulingApplicationStore } from '../../../store';
-import { setDebriefMembers, setEditSession, useEditSessionDrawerStore } from '../store';
+import {
+  setDebriefMembers,
+  setEditSession,
+  setErrorValidation,
+  useEditSessionDrawerStore,
+} from '../store';
 import { Interviewer } from '../types';
 
 function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
   const { recruiter } = useAuthDetails();
   const members = useSchedulingApplicationStore((state) => state.members);
-  const { editSession, debriefMembers } = useEditSessionDrawerStore(
-    (state) => ({
+  const { editSession, debriefMembers, errorValidation } =
+    useEditSessionDrawerStore((state) => ({
       editSession: state.editSession,
       debriefMembers: state.debriefMembers,
-    }),
-  );
+      errorValidation: state.errorValidation,
+    }));
 
   const onChange = (e) => {
+    errorValidation.find(
+      (err) => err.field === 'qualified_interviewers',
+    ).error = false;
+
+    setErrorValidation([...errorValidation]);
+
     const selectedUser = members?.find(
       (member) => member.user_id === e.target.value,
     );
@@ -162,6 +173,16 @@ function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
               onChange={(e) => onChange(e)}
               options={filterDebriefMembers}
               value={''}
+              error={
+                errorValidation.find(
+                  (err) => err.field === 'qualified_interviewers',
+                ).error
+              }
+              helperText={
+                errorValidation.find(
+                  (err) => err.field === 'qualified_interviewers',
+                ).message
+              }
             />
           )
         }
