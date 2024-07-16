@@ -168,7 +168,7 @@ const TeamManagement = () => {
                 value={searchText}
                 onChange={handleTextChange}
                 onClear={handleTextClear}
-                placeholder='Search Member'
+                placeholder='Search users'
               />
             </Stack>
             <Stack
