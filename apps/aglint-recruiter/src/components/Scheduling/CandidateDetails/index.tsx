@@ -111,7 +111,7 @@ function SchedulingApplication() {
                 slotCandidateCard={<RightPanel allActivities={allActivities} />}
                 slotFullScheduleCard={
                   tab === 'candidate_detail' ? (
-                    <Stack p={'var(--space-4)'}>
+                    <Stack p={`var(--radius-4)`}>
                       <Stack
                         sx={{
                           borderRadius: 'var(--radius-4)',
