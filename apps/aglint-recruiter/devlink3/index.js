@@ -160,6 +160,7 @@ export * from "./MemberRow";
 export * from "./MembersList";
 export * from "./ModuleCard";
 export * from "./MoreButton";
+export * from "./MoreMenu";
 export * from "./MultiFilterLayout";
 export * from "./MyFeedbackPopup";
 export * from "./MyScheduleSubCard";
