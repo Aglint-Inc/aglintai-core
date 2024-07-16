@@ -1,10 +1,3 @@
-CREATE OR REPLACE FUNCTION delete_interview_schedule_on_status_update()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF OLD.status = 'disqualified' AND NEW.status = 'new' THEN
-    DELETE FROM interview_schedule WHERE application_id = NEW.id;
-    DELETE FROM candidate_request_availability WHERE application_id = NEW.id;
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+CREATE UNIQUE INDEX roles_recruiter_id_name_unique ON public.roles USING btree (recruiter_id, name);
+
+alter table "public"."roles" add constraint "roles_recruiter_id_name_unique" UNIQUE using index "roles_recruiter_id_name_unique";
