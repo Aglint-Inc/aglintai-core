@@ -18,7 +18,7 @@ export interface EditSessionDrawer {
   }[];
 }
 
-const initialError = () => {
+export const initialError = () => {
   const error: EditSessionDrawer['errorValidation'] = [
     {
       field: 'session_name',
@@ -36,7 +36,7 @@ const initialError = () => {
       message: 'Interviewers are required',
     },
   ];
-  return cloneDeep(error);
+  return error;
 };
 
 const initialState: EditSessionDrawer = {

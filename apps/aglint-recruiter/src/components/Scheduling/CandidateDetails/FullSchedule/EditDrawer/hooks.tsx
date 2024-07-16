@@ -15,6 +15,7 @@ import toast from '@/src/utils/toast';
 import { useGetScheduleApplication } from '../../hooks';
 import { setIsEditOpen, useSchedulingApplicationStore } from '../../store';
 import {
+  initialError,
   resetEditSessionDrawerState,
   setEditSession,
   setErrorValidation,
@@ -52,8 +53,11 @@ export const useEditSession = () => {
   }));
 
   useEffect(() => {
-    if (!editSession?.interview_session?.id) return;
-    validate();
+    if (!editSession?.interview_session?.id) {
+      setErrorValidation(initialError());
+    } else {
+      validate();
+    }
   }, [editSession?.interview_session?.id]);
 
   const isDebrief = allSessions
@@ -255,7 +259,6 @@ export const useEditSession = () => {
 
   const handleClose = () => {
     if (saving) return;
-
     resetEditSessionDrawerState();
     setEditSession(null);
     setIsEditOpen(false);
