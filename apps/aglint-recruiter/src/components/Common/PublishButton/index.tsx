@@ -41,7 +41,7 @@ const PublishButton = ({
           color:
             publishing === 0
               ? disabled
-                ? 'var(--neutral-11)'
+                ? 'var(--neutral-7)'
                 : 'var(--white)'
               : publishing === 1
                 ? 'var(--white)'

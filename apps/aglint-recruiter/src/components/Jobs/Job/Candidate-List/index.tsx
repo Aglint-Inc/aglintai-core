@@ -97,7 +97,7 @@ const ApplicationsComponent = () => {
                 textButton='Add candidates'
                 onClickButton={{ onClick: () => setImportPopup(true) }}
                 isLeftIcon
-                iconName='add'
+                iconName='person_add'
               />
             )}
             {job?.status === 'draft' && (
