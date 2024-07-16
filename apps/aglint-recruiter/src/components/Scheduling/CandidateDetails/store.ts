@@ -73,7 +73,7 @@ const initialState: SchedulingApplication = {
   isEditBreakOpen: false, // edit break drawer open state from interview plan
   isSendingToCandidate: false, // sending to candidate loader state for api call
   selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
-  rescheduleSessionIds: [], // reschedule session ids
+  rescheduleSessionIds: [], // reschedule session ids,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -128,8 +128,6 @@ export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
 export const setSelectedSession = (
   selectedSession: SchedulingApplication['selectedSession'],
 ) => useSchedulingApplicationStore.setState({ selectedSession });
-
-
 
 export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,

@@ -84,7 +84,7 @@ function FinalScreen() {
               <Stack direction={'row'} spacing={1} justifyItems={'start'}>
                 <ButtonSoft
                   size={1}
-                  textButton={'Edit email'}
+                  textButton={'Edit Email Template'}
                   color={'neutral'}
                   onClickButton={{
                     onClick: () => {
