@@ -87,7 +87,7 @@ function Instructions({
                 isLeftIcon={true}
                 slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
                 size={1}
-                textButton={'Edit'}
+                textButton={instruction?'Edit Instruction':'Add Instruction'}
                 onClickButton={{
                   onClick: () => {
                     setEdit(true);

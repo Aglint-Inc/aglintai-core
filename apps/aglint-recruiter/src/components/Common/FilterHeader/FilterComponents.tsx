@@ -3,6 +3,7 @@ import {
   List,
   ListItemButton,
   Popover,
+  Radio,
   Stack,
   Typography,
 } from '@mui/material';
@@ -67,6 +68,7 @@ export type FilterComponentType = {
   // eslint-disable-next-line no-unused-vars
   setValue: (value: string[]) => void;
   isVisible?: boolean;
+  multiSelect?: boolean;
 };
 /* eslint-enable no-unused-vars */
 export type FilterTypes =
@@ -157,6 +159,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           }}
           iconname={filter.iconname}
           icon={filter.icon}
+          multiSelect={filter.multiSelect}
         />
       );
     case 'multi-section-filter': {
@@ -215,6 +218,7 @@ export function FilterComponent({
   iconname = '',
   filterSearch = false,
   searchPlaceholder = '',
+  multiSelect = true,
   icon,
 }: FilterComponentType) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -229,6 +233,7 @@ export function FilterComponent({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   return (
     <>
       <ButtonFilter
@@ -288,14 +293,19 @@ export function FilterComponent({
                 selectedItems={selectedItems}
                 searchFilter={filterSearch}
                 searchPlaceholder={searchPlaceholder}
+                multiSelect={multiSelect}
                 setSelectedItems={(val) => {
-                  let temp = [...selectedItems];
-                  if (temp.includes(val)) {
-                    temp = temp.filter((innerEle) => innerEle !== val);
+                  if (multiSelect) {
+                    let temp = [...selectedItems];
+                    if (temp.includes(val)) {
+                      temp = temp.filter((innerEle) => innerEle !== val);
+                    } else {
+                      temp.push(val);
+                    }
+                    setSelectedItems(temp);
                   } else {
-                    temp.push(val);
+                    setSelectedItems([val]);
                   }
-                  setSelectedItems(temp);
                 }}
                 nested={false}
               />
@@ -632,10 +642,12 @@ function FilterOptionsList({
   searchPlaceholder,
   setSelectedItems,
   nested = false,
+  multiSelect = true,
 }: {
   selectedItems: string[];
   searchFilter: boolean;
   searchPlaceholder?: string;
+  multiSelect?: boolean;
 } & (
   | {
       // eslint-disable-next-line no-unused-vars
@@ -741,16 +753,22 @@ function FilterOptionsList({
                           setSelectedItems(option.id, optionList.path || []);
                         }}
                       >
-                        <Checkbox
-                          checked={
-                            nested
-                              ? // @ts-ignore
-                                option.status === 'active'
-                              : selectedItems.includes(option.id)
-                          }
-                          // @ts-ignore
-                          indeterminate={nested && option.status === 'partial'}
-                        />
+                        {multiSelect ? (
+                          <Checkbox
+                            checked={
+                              nested
+                                ? // @ts-ignore
+                                  option.status === 'active'
+                                : selectedItems.includes(option.id)
+                            }
+                            indeterminate={
+                              // @ts-ignore
+                              nested && option.status === 'partial'
+                            }
+                          />
+                        ) : (
+                          <Radio checked={selectedItems.includes(option.id)} />
+                        )}
                         <Typography
                           sx={{
                             fontSize: '14px',

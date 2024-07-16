@@ -1,8 +1,9 @@
 import { DateInfoType } from '@aglint/shared-types';
-import { capitalize } from '@mui/material';
+
+import { capitalizeAll } from './text/textUtils';
 
 export const getFullName = (firstName, lastName) => {
-  return capitalize(
+  return capitalizeAll(
     [firstName, lastName]
       .filter(Boolean)
       .map((s) => s.trim())

@@ -128,6 +128,8 @@ const PERMISSIONS: Permissions = {
   '/api/getRoleAndPermissions': ['settings_roles_update'],
   '/api/setRoleAndPermission': ['settings_roles_update'],
   '/api/getUserDetails': ['jobs_enabled'],
+  '/api/invite_user': ['team_enabled'],
+  '/api/invite_user/resend': ['team_enabled'],
 };
 
 export default PERMISSIONS;
