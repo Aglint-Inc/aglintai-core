@@ -162,21 +162,25 @@ const TeamManagement = () => {
   return (
     <Stack bgcolor={'white'}>
       <TeamUsersList
-      slotBanner={
-      <GlobalBannerInline 
-
-      iconName='history'
-      textContent='You currently have four pending invites awaiting your response.'
-      color={'warning'} 
-      slotButton={
-      <ButtonSolid 
-      onClickButton={{ onClick: () => {
-        setSelectedStatus(['invited']);
-        // setOpenDrawer({ open: true, window: 'pendingMember' });
-      },}}
-      textButton='View pending invites' 
-      color={'accent'}/>
-    } />}
+        slotBanner={
+          <GlobalBannerInline
+            iconName='history'
+            textContent='You currently have four pending invites awaiting your response.'
+            color={'warning'}
+            slotButton={
+              <ButtonSolid
+                onClickButton={{
+                  onClick: () => {
+                    setSelectedStatus(['invited']);
+                    // setOpenDrawer({ open: true, window: 'pendingMember' });
+                  },
+                }}
+                textButton='View pending invites'
+                color={'accent'}
+              />
+            }
+          />
+        }
         slotSearchAndFilter={
           <>
             <Stack marginRight={5}>

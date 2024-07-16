@@ -30,7 +30,11 @@ function TraininingModules({
         })
       ) : (
         // <AllInterviewEmpty textDynamic='No interview types found.' />
-        <GlobalEmptyState textDesc='No ongoing training.' size={6} iconName='filter_tilt_shift' />
+        <GlobalEmptyState
+          textDesc='No ongoing training.'
+          size={6}
+          iconName='filter_tilt_shift'
+        />
       )}
     </>
   );

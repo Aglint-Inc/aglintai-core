@@ -21,9 +21,7 @@ function Overview({
 }) {
   const router = useRouter();
   const upcomingScheduleList =
-    scheduleList?.filter(
-      (item) => item.status === 'confirmed',
-    ) || [];
+    scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
   const trainingModulesList =
     detailsWithCount.modules.filter(
@@ -76,7 +74,11 @@ function Overview({
             })
           ) : (
             // <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
-            <GlobalEmptyState textDesc='No upcoming schedules found.' size={6} iconName='event'/>
+            <GlobalEmptyState
+              textDesc='No upcoming schedules found.'
+              size={6}
+              iconName='event'
+            />
           )
         }
         slotTrainingModules={

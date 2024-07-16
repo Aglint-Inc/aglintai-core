@@ -70,7 +70,11 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <GlobalEmptyState textDesc='No Interview type found.' size={6} iconName='school'/>
+              <GlobalEmptyState
+                textDesc='No Interview type found.'
+                size={6}
+                iconName='school'
+              />
             )}
           </>
         }

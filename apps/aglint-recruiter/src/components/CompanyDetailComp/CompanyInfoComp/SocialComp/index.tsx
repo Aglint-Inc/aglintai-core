@@ -339,7 +339,11 @@ const SocialComp = ({ setIsSaving }) => {
                     });
                   }}
                 >
-                  <IconButtonSoft iconName='delete' color={'error'} iconColor={'error'} />
+                  <IconButtonSoft
+                    iconName='delete'
+                    color={'error'}
+                    iconColor={'error'}
+                  />
                 </Stack>
               }
               key={socialName}
