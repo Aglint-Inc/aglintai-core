@@ -7,7 +7,7 @@ import {
   useSchedulingApplicationStore
 } from '../store';
 
-function RescheduleSlot() {
+function ScheduleAllOptions() {
   const { initialSessions, selectedApplication, rescheduleSessionIds } =
     useSchedulingApplicationStore((state) => ({
       initialSessions: state.initialSessions,
@@ -27,6 +27,7 @@ function RescheduleSlot() {
         return (
           <ScheduleIndividualCard
             key={ses.interview_session.id}
+            currentSession={ses}
             isCheckboxVisible={false}
             selectedSessionIds={rescheduleSessionIds}
             candidate={{
@@ -36,13 +37,6 @@ function RescheduleSlot() {
                 selectedApplication.candidates.last_name,
               ),
               timezone: selectedApplication.candidates.timezone,
-            }}
-            interview_meeting={{
-              end_time: ses.interview_meeting.end_time,
-              id: ses.interview_meeting.id,
-              start_time: ses.interview_meeting.start_time,
-              status: ses.interview_meeting.status,
-              meeting_flow: ses.interview_meeting.meeting_flow,
             }}
             interview_session={{
               break_duration: ses.interview_session.break_duration,
@@ -57,7 +51,6 @@ function RescheduleSlot() {
             isEditIconVisible={false}
             gridStyle='1fr 1.7fr 0fr'
             users={ses.users}
-            currentSession={ses}
           />
         );
       })}
@@ -65,4 +58,4 @@ function RescheduleSlot() {
   );
 }
 
-export default RescheduleSlot;
+export default ScheduleAllOptions;

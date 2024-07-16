@@ -15,7 +15,7 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../../SchedulingDrawer/store';
-import { setRescheduleSessionIds, setSelectedSessionIds } from '../../store';
+import { setRescheduleSessionIds } from '../../store';
 
 function TaskPopups() {
   const [tasks, setTasks] = useState<DatabaseView['tasks_view'][]>(null);
@@ -58,21 +58,15 @@ function TaskPopups() {
                       setRescheduleSessionIds(
                         tasks[0].session_ids.map((ele) => ele.id),
                       );
-                      setStepScheduling('reschedule');
+                      setStepScheduling('schedule_all_options');
                       setDateRange({
                         start_date: tasks[0].schedule_date_range.start_date,
                         end_date: tasks[0].schedule_date_range.end_date,
                       });
                       setSelectedTaskId(tasks[0].id);
-                      setSelectedSessionIds(
-                        tasks[0].session_ids.map((ele) => ele.id),
-                      );
-                      setRescheduleSessionIds(
-                        tasks[0].session_ids.map((ele) => ele.id),
-                      );
-                      router.push(
-                        `/scheduling/application/${router.query.application_id}`,
-                      );
+                      // setSelectedSessionIds(
+                      //   tasks[0].session_ids.map((ele) => ele.id),
+                      // );
                       setIsScheduleNowOpen(true);
                     },
                   }}

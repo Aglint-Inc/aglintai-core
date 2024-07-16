@@ -53,7 +53,7 @@ function ScheduleNowCard({
                 setRescheduleSessionIds(
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
-                setStepScheduling('reschedule');
+                setStepScheduling('schedule_all_options');
                 if (selectedTask.type === 'availability') {
                   setScheduleFlow('create_request_availibility');
                   setStepScheduling('request_availibility');
@@ -68,6 +68,7 @@ function ScheduleNowCard({
                     selectedTask.session_ids.map((ele) => ele.id),
                   );
                 }
+
                 setSelectedTaskId(selectedTask.id);
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
