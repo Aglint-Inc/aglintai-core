@@ -36,11 +36,12 @@ const PublishButton = ({
     <Stack sx={{ cursor: 'pointer' }}>
       <Button
         sx={{
+          height: '32px',
           pointerEvents: disabled ? 'none' : 'auto',
           color:
             publishing === 0
               ? disabled
-                ? 'var(--neutral-11)'
+                ? 'var(--neutral-7)'
                 : 'var(--white)'
               : publishing === 1
                 ? 'var(--white)'

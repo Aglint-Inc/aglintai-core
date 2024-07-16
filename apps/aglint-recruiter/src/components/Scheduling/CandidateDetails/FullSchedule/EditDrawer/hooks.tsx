@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
@@ -15,8 +16,10 @@ import { useGetScheduleApplication } from '../../hooks';
 import { setIsEditOpen, setSelectedTasks, useSchedulingApplicationStore } from '../../store';
 import { getTaskDetails } from '../../utils';
 import {
+  initialError,
   resetEditSessionDrawerState,
   setEditSession,
+  setErrorValidation,
   setSaving,
   useEditSessionDrawerStore,
 } from './store';
@@ -29,6 +32,7 @@ export const useEditSession = () => {
       allSessions: state.initialSessions,
       selectedApplication: state.selectedApplication,
     }));
+
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   const {
@@ -37,13 +41,25 @@ export const useEditSession = () => {
     saving,
     trainingInterviewers,
     debriefMembers,
+    trainingToggle,
+    errorValidation,
   } = useEditSessionDrawerStore((state) => ({
     editSession: state.editSession,
     selectedInterviewers: state.selectedInterviewers,
     saving: state.saving,
     trainingInterviewers: state.trainingInterviewers,
     debriefMembers: state.debriefMembers,
+    trainingToggle: state.trainingToggle,
+    errorValidation: state.errorValidation,
   }));
+
+  useEffect(() => {
+    if (!editSession?.interview_session?.id) {
+      setErrorValidation(initialError());
+    } else {
+      validate();
+    }
+  }, [editSession?.interview_session?.id]);
 
   const isDebrief = allSessions
     .filter(
@@ -53,14 +69,13 @@ export const useEditSession = () => {
 
   const handleSave = async () => {
     try {
+      if (validate()) return;
       if (!isDebrief) {
         if (selectedInterviewers.length === 0) {
-          toast.warning('Please select at least one interviewer.');
           return;
         }
       } else {
         if (debriefMembers.length === 0) {
-          toast.warning('Please select at least one member.');
           return;
         }
       }
@@ -206,6 +221,43 @@ export const useEditSession = () => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const validate = () => {
+    let isError = false;
+
+    if (!editSession.interview_session.name) {
+      errorValidation[0].error = true;
+      isError = true;
+    } else {
+      errorValidation[0].error = false;
+    }
+
+    if (
+      editSession.interview_session.session_type === 'debrief' &&
+      debriefMembers.length === 0
+    ) {
+      errorValidation[1].error = true;
+      isError = true;
+    } else if (
+      editSession.interview_session.session_type !== 'debrief' &&
+      selectedInterviewers.length === 0
+    ) {
+      errorValidation[1].error = true;
+      isError = true;
+    } else {
+      errorValidation[1].error = false;
+    }
+
+    if (trainingToggle && trainingInterviewers.length === 0) {
+      errorValidation[2].error = true;
+      isError = true;
+    } else {
+      errorValidation[2].error = false;
+    }
+
+    setErrorValidation([...errorValidation]);
+    return isError;
   };
 
   const handleClose = () => {

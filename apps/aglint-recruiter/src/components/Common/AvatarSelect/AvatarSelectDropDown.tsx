@@ -3,7 +3,7 @@ import React from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
 
-import { WarningSvg } from '../../Jobs/Create/form';
+import Icon from '../Icons/Icon';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 
@@ -212,7 +212,7 @@ const AvatarSelectDropDown = ({
       )}
       {error && helperText && (
         <Stack alignItems={'center'} direction={'row'} color='var(--error-11)'>
-          <WarningSvg />
+          <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
           {helperText}
         </Stack>
       )}
