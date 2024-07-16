@@ -254,7 +254,8 @@ const ProfileDashboard = () => {
   const handleSubmitPassword = async () => {
     const { newPassword, error } = handleValidatePassword();
     if (!error) {
-      await handleUpdatePassword(newPassword, false);
+      const res = await handleUpdatePassword(newPassword, false);
+      if (!res) return;
       setPassword((prev) => ({
         ...prev,
         password: { ...prev.password, modal: true },
