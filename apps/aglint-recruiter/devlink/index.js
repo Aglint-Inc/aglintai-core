@@ -308,6 +308,8 @@ export * from "./SavedListLoader";
 export * from "./SavedListMenu";
 export * from "./ScheduleProgress";
 export * from "./ScheduleProgressPill";
+export * from "./SchedulerDashList";
+export * from "./SchedulerDashMenu";
 export * from "./ScoreCard";
 export * from "./ScoreCardEdit";
 export * from "./ScorePercentage";

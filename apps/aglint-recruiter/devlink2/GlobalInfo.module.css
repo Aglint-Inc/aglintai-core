@@ -1,4 +1,7 @@
 .global_banner {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   padding: var(--space-3);
   flex-direction: column;
@@ -31,6 +34,39 @@
   grid-row-gap: var(--space-2);
   grid-template-columns: 40px auto max-content;
   grid-template-rows: auto;
+}
+
+.info_close {
+  position: absolute;
+  left: auto;
+  top: -10px;
+  right: -10px;
+  bottom: auto;
+
+  color: var(--neutral-1);
+}
+
+.info_close:hover {
+  color: var(--neutral-3);
+}
+
+.embed_flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+.embed_flex.is_absolute {
+  position: absolute;
 }
 
 #w-node-_8bbee309-4a2b-c35e-9a03-3f599e1158c1-9e1158c1 {

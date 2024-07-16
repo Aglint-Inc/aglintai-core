@@ -12,4 +12,12 @@ declare function SchedulerFilters(props: {
   slotTimeRangeSelector?: Types.Devlink.Slot;
   slotCheckbox?: Types.Devlink.Slot;
   textDateRange?: React.ReactNode;
+  slotSoftConflictToggle?: Types.Devlink.Slot;
+  slotNoConflictToggle?: Types.Devlink.Slot;
+  slotHardConflictToggle?: Types.Devlink.Slot;
+  slotOutsideToggle?: Types.Devlink.Slot;
+  isNoConflictActive?: Types.Visibility.VisibilityConditions;
+  isSoftConflictActive?: Types.Visibility.VisibilityConditions;
+  isHardConflictActive?: Types.Visibility.VisibilityConditions;
+  isOutsideActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

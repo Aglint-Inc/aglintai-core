@@ -6,4 +6,5 @@ declare function ScoreWeightage(props: {
   slotScoreWheel?: Types.Devlink.Slot;
   slotScorePercent?: Types.Devlink.Slot;
   slotResetButton?: Types.Devlink.Slot;
+  slotBanner?: Types.Devlink.Slot;
 }): React.JSX.Element;
