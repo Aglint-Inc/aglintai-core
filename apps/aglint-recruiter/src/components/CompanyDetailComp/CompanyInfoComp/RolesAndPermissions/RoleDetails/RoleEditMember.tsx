@@ -2,10 +2,11 @@ import { RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Dialog, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
-import { type useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function RoleEditMember({
@@ -25,6 +26,7 @@ function RoleEditMember({
   options: { role: string; id: string }[];
 }) {
   const [role_id, setRole_id] = useState<string>(defaultRole || user.role_id);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <Dialog
       open={true}
@@ -35,7 +37,26 @@ function RoleEditMember({
     >
       <ConfirmationPopup
         onClickCancel={{ onClick: close }}
-        isYellowButtonVisible={role_id && role_id !== user.role_id}
+        isYellowButtonVisible={false}
+        isSlotButtonVisible={true}
+        slotButton={
+          <ButtonSolid
+            textButton='Update'
+            size={2}
+            isLoading={isLoading}
+            isDisabled={role_id === user.role_id}
+            onClickButton={{
+              onClick: async () => {
+                setIsLoading(true);
+                await handelMemberUpdate({
+                  user_id: user.user_id,
+                  data: { role_id: role_id },
+                });
+                setIsLoading(false);
+              },
+            }}
+          />
+        }
         textPopupTitle={'Update Role'}
         isIcon={false}
         isBlueButtonVisible={false}
