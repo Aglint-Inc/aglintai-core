@@ -11,7 +11,8 @@ export const supabaseWrap = <T extends unknown, U extends unknown>(
   // eslint-disable-next-line @typescript-eslint/no-throw-literal
   if (error) {
     let err = new Error(); // for including stack trace
-    err.message = (error as any).message;
+
+    err.message = JSON.stringify(error);
     throw err;
   }
   if (handle_empty_records && Array.isArray(data)) {

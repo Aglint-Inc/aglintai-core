@@ -1,0 +1,74 @@
+[
+  {
+    "id": "98fc25aa-cb0c-40d1-a2d6-bdf0777ff732",
+    "recruiter_id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "name": "admin",
+    "created_at": "2024-07-15 11:46:20.967176",
+    "updated_at": "2024-07-15 11:46:20.967176",
+    "description": "Manage job postings, candidate information, interviews, reports, settings, workflows, and teams with the highest level of access."
+  },
+  {
+    "id": "a4bac48f-67ff-4c32-a6a9-bf3d4e6df32f",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "sourcer",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "Add and manage candidate information and utilize sourcing tools to build talent pipelines."
+  },
+  {
+    "id": "f24e5bfe-12a6-4986-89e5-ca90db053cf5",
+    "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "name": "admin",
+    "created_at": "2024-07-15 11:13:31.036248",
+    "updated_at": "2024-07-15 11:13:31.036248",
+    "description": "Manage job postings, candidate information, interviews, reports, settings, workflows, and teams with the highest level of access."
+  },
+  {
+    "id": "8505ea23-79e6-4b31-8b71-ae9dc1ddc521",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "admin",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "Manage job postings, candidate information, interviews, reports, settings, workflows, and teams with the highest level of access."
+  },
+  {
+    "id": "23748777-ff0b-4783-9ea5-ece25f0011ef",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "recruiting coordinator",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "Manage interview scheduling and coordination, as well as task updates related to interviews."
+  },
+  {
+    "id": "dc08b80f-ef3e-4a51-a149-dcef65eaaef6",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "hiring manager",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "Assigned to jobs, view job postings, candidate information, interview schedules, and tasks."
+  },
+  {
+    "id": "d03ad104-81f2-43e3-b765-e437988a9aab",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "name": "admin",
+    "created_at": "2024-07-15 14:06:49.016005",
+    "updated_at": "2024-07-15 14:06:49.016005",
+    "description": "Manage job postings, candidate information, interviews, reports, settings, workflows, and teams with the highest level of access."
+  },
+  {
+    "id": "aae79880-afc3-4e16-bd60-c0caa19eff9c",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "interviewer",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "View interview schedules and related tasks."
+  },
+  {
+    "id": "44ae0d32-3e19-46f4-92e6-fc7644a15050",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "name": "recruiter",
+    "created_at": "2024-07-12 12:28:27.407985",
+    "updated_at": "2024-07-12 12:28:27.407985",
+    "description": "Manage job postings, candidate information, interview scheduling, and task management."
+  }
+]

@@ -1,8 +1,10 @@
-import { Collapse } from '@mui/material';
+import { Collapse, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { MemberListCard } from '@/devlink2/MemberListCard';
+import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { PanelBlock } from '@/devlink2/PanelBlock';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
@@ -65,6 +67,19 @@ function IndividualCard({
   const mutatedReverseShadowProgress = Array.from({
     length: editModule.settings.noReverseShadow - reverseShadowProgress.length,
   });
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <>
@@ -194,6 +209,75 @@ function IndividualCard({
             />
           </Collapse>
         }
+        slotThreeDot={
+          <>
+            <Stack onClick={handleClick}>
+              <IconButtonGhost
+                iconName='more_vert'
+                size={2}
+                iconSize={6}
+                color={'neutral'}
+              />
+            </Stack>
+
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              PaperProps={{
+                style: {
+                  boxShadow: 'none',
+                  borderRadius: 0,
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+              <MemberListCardOption
+                isMoveToQualifierVisible={isMoveToQualifierVisible}
+                isRemoveVisible={true}
+                isPauseVisible={!user.pause_json}
+                isResumeVisible={Boolean(user.pause_json)}
+                onClickMoveToQualifier={{
+                  onClick: () => {
+                    setSelUser(user);
+                    setIsMovedToQualifiedDialogOpen(true);
+                    handleClose();
+                  },
+                }}
+                onClickRemoveModule={{
+                  onClick: () => {
+                    setSelUser(user);
+                    setIsDeleteMemberDialogOpen(true);
+                    handleClose();
+                  },
+                }}
+                onClickResumeInterview={{
+                  onClick: () => {
+                    setSelUser(user);
+                    setIsResumeDialogOpen(true);
+                    handleClose();
+                  },
+                }}
+                onClickPauseInterview={{
+                  onClick: () => {
+                    setSelUser(user);
+                    setIsPauseDialogOpen(true);
+                    handleClose();
+                  },
+                }}
+              />
+            </Popover>
+          </>
+        }
         isDropdownIconVisible={true}
         onClickDropdownIcon={{
           onClick: () => {
@@ -201,37 +285,8 @@ function IndividualCard({
           },
         }}
         isTrainingProgressDetailVisible={true}
-        onClickMoveToQualifier={{
-          onClick: () => {
-            setSelUser(user);
-            setIsMovedToQualifiedDialogOpen(true);
-          },
-        }}
         key={user.user_id}
-        isMoveToQualifierVisible={isMoveToQualifierVisible}
         textPauseResumeDate={getPauseMemberText(user.pause_json)}
-        onClickRemoveModule={{
-          onClick: () => {
-            setSelUser(user);
-            setIsDeleteMemberDialogOpen(true);
-          },
-        }}
-        onClickPauseInterview={{
-          onClick: () => {
-            setSelUser(user);
-            setIsPauseDialogOpen(true);
-          },
-        }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setSelUser(user);
-            setIsResumeDialogOpen(true);
-          },
-        }}
-        onHoverDot={false}
-        isPauseResumeVisible={Boolean(user.pause_json)}
-        isPauseVisible={!user.pause_json}
-        isResumeVisible={Boolean(user.pause_json)}
         slotProfileImage={
           <MuiAvatar
             src={member.profile_image}

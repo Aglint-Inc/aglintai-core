@@ -1,0 +1,1289 @@
+[
+  {
+    "id": "f4ee2e5c-38b3-47f3-87a4-bcb27cfb52d4",
+    "created_at": "2024-07-12 13:42:05.307982+00",
+    "company_details": null,
+    "overview": null,
+    "logo": null,
+    "company": "Aglint",
+    "location": "San Francisco, California, USA",
+    "job_title": "Engineering Manager, Product",
+    "description": "<p><strong>Convex is transforming the way developers build applications.</strong> </p><p>Our mission is to fundamentally change how software is built on the Internet by empowering developers to create fast, reliable, and dynamic apps without the headaches of complex backend engineering or the hassles of database administration. We provide a cutting-edge, full-stack developer platform that seamlessly combines a powerful custom database with an integrated execution environment.</p><p></p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://convex.dev/about-us\"><strong><u>The Team:</u></strong></a></p><p>Convex has assembled a team of technologists who have built and designed some of the largest backends in the world, with exabytes of data, millions of transactions per second, and shipped desktop and mobile software onto billions of devices. We are a group of friendly, collaborative, and passionate individuals that love working in-person together in our offices in SF and NYC. </p><p></p><p><strong><u>The Role:</u></strong></p><p>We are looking to hire a highly technical product engineering leader to be an effective people manager and can be hands-on while our team is still small. In this role, you will initially take on both leadership and technical responsibilities. You will eventually be responsible fo rhiirng and growing the team as we expand.</p><p><strong><br />More details coming soon...</strong></p>",
+    "skills": [],
+    "slug": "",
+    "job_type": "full time",
+    "workplace_type": "on site",
+    "screening_setting": {},
+    "screening_questions": [
+      {
+        "id": "_TtFCnB4eaNdK5RZ-LsAL",
+        "copy": "Skill",
+        "category": "skill",
+        "questions": []
+      },
+      {
+        "id": "OHA290kmXtmow8f85UDWs",
+        "copy": "Behavior",
+        "category": "behavior",
+        "questions": []
+      },
+      {
+        "id": "LTezJA4H_rfZKdt1Rll9-",
+        "copy": "communication",
+        "category": "communication",
+        "questions": []
+      },
+      {
+        "id": "Myjsxafr-GsUMSO4O2-bJ",
+        "copy": "Performance",
+        "category": "performance",
+        "questions": []
+      },
+      {
+        "id": "wQcmD1Y72rtd4cMuk2CG1",
+        "copy": "Education",
+        "category": "education",
+        "questions": []
+      },
+      {
+        "id": "thq14SF4XYQk_XgTEx61e",
+        "copy": "General",
+        "category": "general",
+        "questions": []
+      }
+    ],
+    "job_criteria": {},
+    "posted_by": "Ashby",
+    "active_status": {
+      "closed": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "sourcing": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "interviewing": {
+        "isActive": false,
+        "timeStamp": null
+      }
+    },
+    "updated_at": "2024-07-12 13:42:05.307982",
+    "department": "Software Development",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "new_screening_setting": {
+      "interview": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "screening": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "interviewMail": {
+        "isManual": true,
+        "timestamp": null
+      },
+      "feedbackVisible": false,
+      "disqualifiedMail": {
+        "isManual": true,
+        "timestamp": null
+      }
+    },
+    "parameter_weights": {
+      "skills": 50,
+      "education": 0,
+      "experience": 50
+    },
+    "jd_json": {
+      "level": "Senior-level",
+      "title": "Engineering Manager, Product",
+      "skills": [
+        {
+          "id": "Oq-pEkzfn2sPs7h3BHFoX",
+          "field": "Product Engineering",
+          "isMustHave": true
+        },
+        {
+          "id": "A8zUUmc9msa0pmkQikFo0",
+          "field": "Technical Leadership",
+          "isMustHave": true
+        },
+        {
+          "id": "z0tm5eq-b8DWeLp2qax4U",
+          "field": "People Management",
+          "isMustHave": true
+        },
+        {
+          "id": "ZisEt4QiSrE0UQYdbtQiJ",
+          "field": "Hands-on",
+          "isMustHave": true
+        },
+        {
+          "id": "JE5Z-cYy-fSCrnYCOgiB1",
+          "field": "Team Building",
+          "isMustHave": true
+        }
+      ],
+      "educations": [],
+      "rolesResponsibilities": [
+        {
+          "id": "euj1KMgfL_h9zFw79L3uF",
+          "field": "Experience in leading and managing a product engineering team",
+          "isMustHave": true
+        },
+        {
+          "id": "l-tBSe7m121jlcPmHFKAJ",
+          "field": "Hands-on technical experience",
+          "isMustHave": true
+        },
+        {
+          "id": "zUhQw2T-w1pLlz66fvIcU",
+          "field": "Ability to hire and grow a team",
+          "isMustHave": true
+        },
+        {
+          "id": "X_sp8daL8fVuXzfZDtese",
+          "field": "Experience in building and designing large backends",
+          "isMustHave": false
+        },
+        {
+          "id": "OB8l_Eb6fN_S0fy2C0hB1",
+          "field": "Experience in software development for desktop and mobile platforms",
+          "isMustHave": false
+        },
+        {
+          "id": "SG733gq12MQ-fppvJnCNS",
+          "field": "Lead a team of technologists",
+          "isMustHave": true
+        },
+        {
+          "id": "f83n4sUI4O0Dos_XRDUGf",
+          "field": "Be hands-on with technical responsibilities",
+          "isMustHave": true
+        },
+        {
+          "id": "BL44IdhpOtfsJGlMEusa8",
+          "field": "Hire and grow the team",
+          "isMustHave": true
+        }
+      ]
+    },
+    "end_video": null,
+    "intro_videos": null,
+    "start_video": null,
+    "video_assessment": false,
+    "draft": {
+      "company": "Aglint",
+      "jd_json": {
+        "level": "Senior-level",
+        "title": "Engineering Manager, Product",
+        "skills": [
+          {
+            "id": "Oq-pEkzfn2sPs7h3BHFoX",
+            "field": "Product Engineering",
+            "isMustHave": true
+          },
+          {
+            "id": "A8zUUmc9msa0pmkQikFo0",
+            "field": "Technical Leadership",
+            "isMustHave": true
+          },
+          {
+            "id": "z0tm5eq-b8DWeLp2qax4U",
+            "field": "People Management",
+            "isMustHave": true
+          },
+          {
+            "id": "ZisEt4QiSrE0UQYdbtQiJ",
+            "field": "Hands-on",
+            "isMustHave": true
+          },
+          {
+            "id": "JE5Z-cYy-fSCrnYCOgiB1",
+            "field": "Team Building",
+            "isMustHave": true
+          }
+        ],
+        "educations": [],
+        "rolesResponsibilities": [
+          {
+            "id": "euj1KMgfL_h9zFw79L3uF",
+            "field": "Experience in leading and managing a product engineering team",
+            "isMustHave": true
+          },
+          {
+            "id": "l-tBSe7m121jlcPmHFKAJ",
+            "field": "Hands-on technical experience",
+            "isMustHave": true
+          },
+          {
+            "id": "zUhQw2T-w1pLlz66fvIcU",
+            "field": "Ability to hire and grow a team",
+            "isMustHave": true
+          },
+          {
+            "id": "X_sp8daL8fVuXzfZDtese",
+            "field": "Experience in building and designing large backends",
+            "isMustHave": false
+          },
+          {
+            "id": "OB8l_Eb6fN_S0fy2C0hB1",
+            "field": "Experience in software development for desktop and mobile platforms",
+            "isMustHave": false
+          },
+          {
+            "id": "SG733gq12MQ-fppvJnCNS",
+            "field": "Lead a team of technologists",
+            "isMustHave": true
+          },
+          {
+            "id": "f83n4sUI4O0Dos_XRDUGf",
+            "field": "Be hands-on with technical responsibilities",
+            "isMustHave": true
+          },
+          {
+            "id": "BL44IdhpOtfsJGlMEusa8",
+            "field": "Hire and grow the team",
+            "isMustHave": true
+          }
+        ]
+      },
+      "job_type": "full time",
+      "location": "San Francisco, California, USA",
+      "job_title": "Engineering Manager, Product",
+      "department": "Software Development",
+      "description": "<p><strong>Convex is transforming the way developers build applications.</strong> </p><p>Our mission is to fundamentally change how software is built on the Internet by empowering developers to create fast, reliable, and dynamic apps without the headaches of complex backend engineering or the hassles of database administration. We provide a cutting-edge, full-stack developer platform that seamlessly combines a powerful custom database with an integrated execution environment.</p><p></p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://convex.dev/about-us\"><strong><u>The Team:</u></strong></a></p><p>Convex has assembled a team of technologists who have built and designed some of the largest backends in the world, with exabytes of data, millions of transactions per second, and shipped desktop and mobile software onto billions of devices. We are a group of friendly, collaborative, and passionate individuals that love working in-person together in our offices in SF and NYC. </p><p></p><p><strong><u>The Role:</u></strong></p><p>We are looking to hire a highly technical product engineering leader to be an effective people manager and can be hands-on while our team is still small. In this role, you will initially take on both leadership and technical responsibilities. You will eventually be responsible fo rhiirng and growing the team as we expand.</p><p><strong><br />More details coming soon...</strong></p>",
+      "workplace_type": "on site"
+    },
+    "status": "closed",
+    "interview_instructions": null,
+    "assessment": false,
+    "is_ats_sync": false,
+    "phone_screening": null,
+    "jd_changed": false,
+    "phone_screen_enabled": false,
+    "job_details_embedding": null,
+    "experience_in_months": null,
+    "location_json": null,
+    "screening_template": null,
+    "interview_success": null,
+    "interview_plan": null,
+    "scoring_criteria_loading": false,
+    "hiring_manager": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "recruiter": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "recruiting_coordinator": null,
+    "sourcer": null,
+    "interview_coordinator": null,
+    "interview_plan_warning_ignore": false,
+    "interview_session_warning_ignore": true
+  },
+  {
+    "id": "bfddbbb0-64d7-4352-bb44-f02a7d520aaa",
+    "created_at": "2024-07-15 08:55:26.129608+00",
+    "company_details": null,
+    "overview": null,
+    "logo": null,
+    "company": "Aglint",
+    "location": "Bengaluru, Karnataka, India",
+    "job_title": "developer",
+    "description": "<p>J<span>ob description must have more than 100 characters </span>Job description must have more than 100 characters Job description must have more than 100 characters Job description must have more than 100 characters </p>",
+    "skills": null,
+    "slug": "",
+    "job_type": "full time",
+    "workplace_type": "hybrid",
+    "screening_setting": {},
+    "screening_questions": [
+      {
+        "id": "_TtFCnB4eaNdK5RZ-LsAL",
+        "copy": "Skill",
+        "category": "skill",
+        "questions": []
+      },
+      {
+        "id": "OHA290kmXtmow8f85UDWs",
+        "copy": "Behavior",
+        "category": "behavior",
+        "questions": []
+      },
+      {
+        "id": "LTezJA4H_rfZKdt1Rll9-",
+        "copy": "communication",
+        "category": "communication",
+        "questions": []
+      },
+      {
+        "id": "Myjsxafr-GsUMSO4O2-bJ",
+        "copy": "Performance",
+        "category": "performance",
+        "questions": []
+      },
+      {
+        "id": "wQcmD1Y72rtd4cMuk2CG1",
+        "copy": "Education",
+        "category": "education",
+        "questions": []
+      },
+      {
+        "id": "thq14SF4XYQk_XgTEx61e",
+        "copy": "General",
+        "category": "general",
+        "questions": []
+      }
+    ],
+    "job_criteria": {},
+    "posted_by": "Aglint",
+    "active_status": {
+      "closed": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "sourcing": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "interviewing": {
+        "isActive": false,
+        "timeStamp": null
+      }
+    },
+    "updated_at": "2024-07-15 08:55:26.129608",
+    "department": "Software Development",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "new_screening_setting": {
+      "interview": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "screening": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "interviewMail": {
+        "isManual": true,
+        "timestamp": null
+      },
+      "feedbackVisible": false,
+      "disqualifiedMail": {
+        "isManual": true,
+        "timestamp": null
+      }
+    },
+    "parameter_weights": {
+      "skills": 0,
+      "education": 0,
+      "experience": 100
+    },
+    "jd_json": {
+      "level": "Mid-level",
+      "title": "developer",
+      "skills": [],
+      "educations": [],
+      "rolesResponsibilities": [
+        {
+          "id": "jqWvDhE2TlQ6EtUDCHWlh",
+          "field": "Experience as a developer",
+          "isMustHave": true
+        },
+        {
+          "id": "8kdA7HEfur23LHYWqtmXw",
+          "field": "Job description with more than 100 characters",
+          "isMustHave": true
+        }
+      ]
+    },
+    "end_video": null,
+    "intro_videos": null,
+    "start_video": null,
+    "video_assessment": false,
+    "draft": {
+      "company": "Aglint",
+      "jd_json": {
+        "level": "Mid-level",
+        "title": "developer",
+        "skills": [],
+        "educations": [],
+        "rolesResponsibilities": [
+          {
+            "id": "jqWvDhE2TlQ6EtUDCHWlh",
+            "field": "Experience as a developer",
+            "isMustHave": true
+          },
+          {
+            "id": "8kdA7HEfur23LHYWqtmXw",
+            "field": "Job description with more than 100 characters",
+            "isMustHave": true
+          }
+        ]
+      },
+      "job_type": "full time",
+      "location": "Bengaluru, Karnataka, India",
+      "job_title": "developer",
+      "department": "Software Development",
+      "description": "<p>J<span>ob description must have more than 100 characters </span>Job description must have more than 100 characters Job description must have more than 100 characters Job description must have more than 100 characters </p>",
+      "workplace_type": "hybrid"
+    },
+    "status": "draft",
+    "interview_instructions": null,
+    "assessment": false,
+    "is_ats_sync": false,
+    "phone_screening": null,
+    "jd_changed": false,
+    "phone_screen_enabled": false,
+    "job_details_embedding": null,
+    "experience_in_months": null,
+    "location_json": null,
+    "screening_template": null,
+    "interview_success": null,
+    "interview_plan": null,
+    "scoring_criteria_loading": false,
+    "hiring_manager": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "recruiter": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "recruiting_coordinator": null,
+    "sourcer": null,
+    "interview_coordinator": null,
+    "interview_plan_warning_ignore": false,
+    "interview_session_warning_ignore": true
+  },
+  {
+    "id": "a6ad6f97-cdee-49f5-8ae5-42505b998523",
+    "created_at": "2024-07-12 12:40:00.1769+00",
+    "company_details": null,
+    "overview": null,
+    "logo": null,
+    "company": "Aglint",
+    "location": "Redwood City",
+    "job_title": "Software Engineer",
+    "description": "<p>Key Responsibilities :</p><p></p><p></p><p>Proficient in Embedded System design development, System Architecture Design: Collaborate with cross-functional teams, including engineers, product managers, and stakeholders to define the overall system architecture for automotive software Requirements Analysis: Analyze and understand the functional and technical requirements of automotive systems and translate them into software architecture and design specifications Proficient in Architecting end to end Embedded product Experience in Embedded Software Development using C/C/CPP; RTOS; developing Software for Electronic Control units Experience in Yocto, Embedded Linux Technical</p><p>Experience :</p><p>Free RTOS Good knowledge on connectivity protocols like BT, WiFi Experience working with Micro-controllers/processors Good experience in Requirement elicitation, deriving system requirements to software requirements Commitment to quality and high standards Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc Knowledge in Agile based development methodology. Â· Knowledge in complete V-model for ECU Development project. Â· Knowledge in Telematic Control Unit. Â· Knowledge on Touch GFX Good knowledge of the ISO26262 functional safety standards and implementation in compliance with the chosen standards.</p>",
+    "skills": [],
+    "slug": "",
+    "job_type": "full time",
+    "workplace_type": "on site",
+    "screening_setting": {},
+    "screening_questions": [
+      {
+        "id": "_TtFCnB4eaNdK5RZ-LsAL",
+        "copy": "Skill",
+        "category": "skill",
+        "questions": []
+      },
+      {
+        "id": "OHA290kmXtmow8f85UDWs",
+        "copy": "Behavior",
+        "category": "behavior",
+        "questions": []
+      },
+      {
+        "id": "LTezJA4H_rfZKdt1Rll9-",
+        "copy": "communication",
+        "category": "communication",
+        "questions": []
+      },
+      {
+        "id": "Myjsxafr-GsUMSO4O2-bJ",
+        "copy": "Performance",
+        "category": "performance",
+        "questions": []
+      },
+      {
+        "id": "wQcmD1Y72rtd4cMuk2CG1",
+        "copy": "Education",
+        "category": "education",
+        "questions": []
+      },
+      {
+        "id": "thq14SF4XYQk_XgTEx61e",
+        "copy": "General",
+        "category": "general",
+        "questions": []
+      }
+    ],
+    "job_criteria": {},
+    "posted_by": "Greenhouse",
+    "active_status": {
+      "closed": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "sourcing": {
+        "isActive": false,
+        "timeStamp": null
+      },
+      "interviewing": {
+        "isActive": false,
+        "timeStamp": null
+      }
+    },
+    "updated_at": "2024-07-12 12:40:00.1769",
+    "department": "it",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "new_screening_setting": {
+      "interview": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "screening": {
+        "isManual": true,
+        "qualificationRange": null
+      },
+      "interviewMail": {
+        "isManual": true,
+        "timestamp": null
+      },
+      "feedbackVisible": false,
+      "disqualifiedMail": {
+        "isManual": true,
+        "timestamp": null
+      }
+    },
+    "parameter_weights": {
+      "skills": 33,
+      "education": 34,
+      "experience": 33
+    },
+    "jd_json": {
+      "level": "Mid-level",
+      "title": "Software Engineer",
+      "skills": [
+        {
+          "id": "iPsXKRmjf7noouBmtWfQj",
+          "field": "Embedded System design",
+          "isMustHave": true
+        },
+        {
+          "id": "hm2lEg36xTxxY5ojju0tv",
+          "field": "System Architecture Design",
+          "isMustHave": true
+        },
+        {
+          "id": "cpYP_KYs9RnFjNzH_lzrM",
+          "field": "Requirements Analysis",
+          "isMustHave": true
+        },
+        {
+          "id": "bawlWKFkVGSvGixD7PmLt",
+          "field": "C/C++",
+          "isMustHave": true
+        },
+        {
+          "id": "zqg1OIA6jfkiM5g9SCx-c",
+          "field": "RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "E_eBk6qtVvlIq4N0dqli5",
+          "field": "Embedded Software Development",
+          "isMustHave": true
+        },
+        {
+          "id": "ta1k3XZZU-DKA_VmypwCT",
+          "field": "Yocto",
+          "isMustHave": true
+        },
+        {
+          "id": "Rk5S39xF639B4AtbVgmlw",
+          "field": "Free RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "dLUTyU7t7wVdCIlrOTQa7",
+          "field": "BT",
+          "isMustHave": true
+        },
+        {
+          "id": "br-0hPHnjnvHI17PvJsnI",
+          "field": "WiFi",
+          "isMustHave": true
+        },
+        {
+          "id": "IVovjcByZQymd05KnLfIk",
+          "field": "Micro-controllers/processors",
+          "isMustHave": true
+        },
+        {
+          "id": "mHanSb1KtMq6zbA0slRSr",
+          "field": "Requirement elicitation",
+          "isMustHave": true
+        },
+        {
+          "id": "78s_VRr6MyoytzHHyOLhp",
+          "field": "Configuration Management Tools",
+          "isMustHave": true
+        },
+        {
+          "id": "pCqHYCYe-gQKc5Epx7Dtt",
+          "field": "Agile",
+          "isMustHave": true
+        },
+        {
+          "id": "Zsw3sHawJ_VJsISrQGhgt",
+          "field": "ISO26262",
+          "isMustHave": true
+        },
+        {
+          "id": "twuqxqOjoyMshm2QqAZUH",
+          "field": "DOORS",
+          "isMustHave": true
+        },
+        {
+          "id": "XegckggabKdaFAKsQ_ws8",
+          "field": "Polarion",
+          "isMustHave": true
+        },
+        {
+          "id": "4i14Hhg81RWbtAuEzv6Ex",
+          "field": "git",
+          "isMustHave": true
+        },
+        {
+          "id": "fY--t2moiPMVzXbGpWMxN",
+          "field": "SVN",
+          "isMustHave": true
+        },
+        {
+          "id": "Xe8RNS4Nbd8uyA_gVR8fP",
+          "field": "V-model",
+          "isMustHave": true
+        },
+        {
+          "id": "Vvb0Z7ygwf5Cq7792NZ7O",
+          "field": "Telematic Control Unit",
+          "isMustHave": true
+        },
+        {
+          "id": "J9_H5W3vhB06aOj-UYosf",
+          "field": "Touch GFX",
+          "isMustHave": true
+        },
+        {
+          "id": "iKaMKj9x8MxUjapOZ1YDc",
+          "field": "functional safety standards",
+          "isMustHave": true
+        },
+        {
+          "id": "zRXzzgbYaZccnOLUsToqt",
+          "field": "Automotive software",
+          "isMustHave": false
+        },
+        {
+          "id": "rzr5i5QtaI0fjEXwi8K0B",
+          "field": "Product development",
+          "isMustHave": false
+        },
+        {
+          "id": "tkRQvA_2qLWMkuZY8fn2c",
+          "field": "Agile methodology",
+          "isMustHave": false
+        }
+      ],
+      "educations": [
+        {
+          "id": "y6eLBM0RFHtw1DG3eOTFR",
+          "field": "Embedded System design development",
+          "isMustHave": true
+        },
+        {
+          "id": "UPal2NVmW8K4YfJWS6LiJ",
+          "field": "Software Architecture Design",
+          "isMustHave": true
+        },
+        {
+          "id": "oDb8s2hOI5B39m-_ZrfcX",
+          "field": "Embedded Software Development using C/C/CPP",
+          "isMustHave": true
+        },
+        {
+          "id": "5ZiWI_cLkCfPGf0reuhnY",
+          "field": "RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "g0B1_BrEVw_hdI9KaHxo8",
+          "field": "Yocto",
+          "isMustHave": true
+        },
+        {
+          "id": "bxGS02EnvXPmjSeusnHed",
+          "field": "Embedded Linux",
+          "isMustHave": true
+        },
+        {
+          "id": "X2syNseD6aRAQL0ICEsEq",
+          "field": "Free RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "Qwbswaevtu-TbfuTdKS3y",
+          "field": "ISO26262 functional safety standards",
+          "isMustHave": true
+        },
+        {
+          "id": "zx9-OL3lk_hE-L1UJykvX",
+          "field": "BT, WiFi connectivity protocols",
+          "isMustHave": false
+        },
+        {
+          "id": "Ldzz3PQxkdKhWcbudmx8U",
+          "field": "Micro-controllers/processors",
+          "isMustHave": false
+        },
+        {
+          "id": "lA4bDikyerLQ6zJW0gG8W",
+          "field": "Requirement elicitation",
+          "isMustHave": false
+        },
+        {
+          "id": "y-oJKmHDaeoEsfUELNYov",
+          "field": "Configuration Management Tools (git, SVN)",
+          "isMustHave": false
+        },
+        {
+          "id": "hDcf_JWDjlWp6pOPJDg6Y",
+          "field": "Agile based development methodology",
+          "isMustHave": false
+        }
+      ],
+      "rolesResponsibilities": [
+        {
+          "id": "Cp2z5xwgFGllQPSjZi6gK",
+          "field": "Proficient in Embedded System design development",
+          "isMustHave": true
+        },
+        {
+          "id": "gb3sF4LBVmTfRJ6-T2fjp",
+          "field": "Experience in Embedded Software Development using C/C/CPP; RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "hDHUCscTZ01j7qKff2rhL",
+          "field": "Good knowledge on connectivity protocols like BT, WiFi",
+          "isMustHave": true
+        },
+        {
+          "id": "2XYfZo-rugf9h59Nu9cQP",
+          "field": "Experience working with Micro-controllers/processors",
+          "isMustHave": true
+        },
+        {
+          "id": "5K-foey-B-EYTZTTBjQA5",
+          "field": "Commitment to quality and high standards",
+          "isMustHave": true
+        },
+        {
+          "id": "LMjuFEfJ_RdHcW493zjg9",
+          "field": "Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc",
+          "isMustHave": true
+        },
+        {
+          "id": "BOjJc6DctvP1H1tdlP8r-",
+          "field": "Knowledge in Agile based development methodology",
+          "isMustHave": true
+        },
+        {
+          "id": "TCSD7sg-gIWTF-ZfR5aoL",
+          "field": "Knowledge in complete V-model for ECU Development project",
+          "isMustHave": true
+        },
+        {
+          "id": "g-mFOXotD0FUCOQ23P8lu",
+          "field": "Knowledge in Telematic Control Unit",
+          "isMustHave": true
+        },
+        {
+          "id": "hdnRpKFqkgnB_Vunn_nfl",
+          "field": "Knowledge on Touch GFX",
+          "isMustHave": true
+        },
+        {
+          "id": "zxzSBAhX3sEfo3IrxbCCC",
+          "field": "Good knowledge of the ISO26262 functional safety standards and implementation",
+          "isMustHave": true
+        },
+        {
+          "id": "SctoZrG5S1EXPibvDa8iF",
+          "field": "Experience in Requirement elicitation, deriving system requirements to software requirements",
+          "isMustHave": false
+        },
+        {
+          "id": "CCuqye6ADMmj5HkYRNGCw",
+          "field": "Proficient in Embedded System design development",
+          "isMustHave": true
+        },
+        {
+          "id": "fOVZbqeYVNsvEExOMZKQ3",
+          "field": "System Architecture Design",
+          "isMustHave": true
+        },
+        {
+          "id": "tL0P1g2ESAR8wL2WeMcwl",
+          "field": "Requirements Analysis",
+          "isMustHave": true
+        },
+        {
+          "id": "Fp9TobG_zzkMrNey9ahNI",
+          "field": "Architecting end to end Embedded product",
+          "isMustHave": true
+        },
+        {
+          "id": "x2xP68Lccy7IVq0XPv34M",
+          "field": "Embedded Software Development using C/C/CPP; RTOS",
+          "isMustHave": true
+        },
+        {
+          "id": "oSPP8rBo6tGJXPoQHoWd2",
+          "field": "Experience in Yocto, Embedded Linux Technical",
+          "isMustHave": true
+        },
+        {
+          "id": "i9iFLGt5MspR6vwuFxXXY",
+          "field": "Good knowledge on connectivity protocols like BT, WiFi",
+          "isMustHave": true
+        },
+        {
+          "id": "BPhqXfeisQaBXWhtSZTzq",
+          "field": "Experience working with Micro-controllers/processors",
+          "isMustHave": true
+        },
+        {
+          "id": "UPXy5SZnwOJA9XQVpUT_P",
+          "field": "Good experience in Requirement elicitation",
+          "isMustHave": true
+        },
+        {
+          "id": "81N3RDhMHqWh9MlYFDdae",
+          "field": "Commitment to quality and high standards",
+          "isMustHave": true
+        },
+        {
+          "id": "l2EqDiMmkduKzyH7XtC3Y",
+          "field": "Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc",
+          "isMustHave": true
+        },
+        {
+          "id": "u68UjdjyfWBPr5FQoOLCF",
+          "field": "Knowledge in Agile based development methodology",
+          "isMustHave": true
+        },
+        {
+          "id": "PNHftYqzy2Vwxqk1ulzHz",
+          "field": "Knowledge in complete V-model for ECU Development project",
+          "isMustHave": true
+        },
+        {
+          "id": "0-f_XiPLGpO5u2DPuTDmx",
+          "field": "Knowledge in Telematic Control Unit",
+          "isMustHave": true
+        },
+        {
+          "id": "grOoPjObhRezBthTBV4op",
+          "field": "Knowledge on Touch GFX",
+          "isMustHave": true
+        },
+        {
+          "id": "yY2Pnt9a8097V814qbfTs",
+          "field": "Good knowledge of the ISO26262 functional safety standards and implementation in compliance with the chosen standards",
+          "isMustHave": true
+        },
+        {
+          "id": "F0WGFldnOt2Pv81jA8iGT",
+          "field": "Experience in Free RTOS",
+          "isMustHave": false
+        },
+        {
+          "id": "6Rhy1tCwZYQNcYYWRkHnT",
+          "field": "Knowledge in V-model for ECU Development project",
+          "isMustHave": false
+        }
+      ]
+    },
+    "end_video": null,
+    "intro_videos": null,
+    "start_video": null,
+    "video_assessment": false,
+    "draft": {
+      "company": "Aglint",
+      "jd_json": {
+        "level": "Mid-level",
+        "title": "Software Engineer",
+        "skills": [
+          {
+            "id": "iPsXKRmjf7noouBmtWfQj",
+            "field": "Embedded System design",
+            "isMustHave": true
+          },
+          {
+            "id": "hm2lEg36xTxxY5ojju0tv",
+            "field": "System Architecture Design",
+            "isMustHave": true
+          },
+          {
+            "id": "cpYP_KYs9RnFjNzH_lzrM",
+            "field": "Requirements Analysis",
+            "isMustHave": true
+          },
+          {
+            "id": "bawlWKFkVGSvGixD7PmLt",
+            "field": "C/C++",
+            "isMustHave": true
+          },
+          {
+            "id": "zqg1OIA6jfkiM5g9SCx-c",
+            "field": "RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "E_eBk6qtVvlIq4N0dqli5",
+            "field": "Embedded Software Development",
+            "isMustHave": true
+          },
+          {
+            "id": "ta1k3XZZU-DKA_VmypwCT",
+            "field": "Yocto",
+            "isMustHave": true
+          },
+          {
+            "id": "Rk5S39xF639B4AtbVgmlw",
+            "field": "Free RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "dLUTyU7t7wVdCIlrOTQa7",
+            "field": "BT",
+            "isMustHave": true
+          },
+          {
+            "id": "br-0hPHnjnvHI17PvJsnI",
+            "field": "WiFi",
+            "isMustHave": true
+          },
+          {
+            "id": "IVovjcByZQymd05KnLfIk",
+            "field": "Micro-controllers/processors",
+            "isMustHave": true
+          },
+          {
+            "id": "mHanSb1KtMq6zbA0slRSr",
+            "field": "Requirement elicitation",
+            "isMustHave": true
+          },
+          {
+            "id": "78s_VRr6MyoytzHHyOLhp",
+            "field": "Configuration Management Tools",
+            "isMustHave": true
+          },
+          {
+            "id": "pCqHYCYe-gQKc5Epx7Dtt",
+            "field": "Agile",
+            "isMustHave": true
+          },
+          {
+            "id": "Zsw3sHawJ_VJsISrQGhgt",
+            "field": "ISO26262",
+            "isMustHave": true
+          },
+          {
+            "id": "twuqxqOjoyMshm2QqAZUH",
+            "field": "DOORS",
+            "isMustHave": true
+          },
+          {
+            "id": "XegckggabKdaFAKsQ_ws8",
+            "field": "Polarion",
+            "isMustHave": true
+          },
+          {
+            "id": "4i14Hhg81RWbtAuEzv6Ex",
+            "field": "git",
+            "isMustHave": true
+          },
+          {
+            "id": "fY--t2moiPMVzXbGpWMxN",
+            "field": "SVN",
+            "isMustHave": true
+          },
+          {
+            "id": "Xe8RNS4Nbd8uyA_gVR8fP",
+            "field": "V-model",
+            "isMustHave": true
+          },
+          {
+            "id": "Vvb0Z7ygwf5Cq7792NZ7O",
+            "field": "Telematic Control Unit",
+            "isMustHave": true
+          },
+          {
+            "id": "J9_H5W3vhB06aOj-UYosf",
+            "field": "Touch GFX",
+            "isMustHave": true
+          },
+          {
+            "id": "iKaMKj9x8MxUjapOZ1YDc",
+            "field": "functional safety standards",
+            "isMustHave": true
+          },
+          {
+            "id": "zRXzzgbYaZccnOLUsToqt",
+            "field": "Automotive software",
+            "isMustHave": false
+          },
+          {
+            "id": "rzr5i5QtaI0fjEXwi8K0B",
+            "field": "Product development",
+            "isMustHave": false
+          },
+          {
+            "id": "tkRQvA_2qLWMkuZY8fn2c",
+            "field": "Agile methodology",
+            "isMustHave": false
+          }
+        ],
+        "educations": [
+          {
+            "id": "y6eLBM0RFHtw1DG3eOTFR",
+            "field": "Embedded System design development",
+            "isMustHave": true
+          },
+          {
+            "id": "UPal2NVmW8K4YfJWS6LiJ",
+            "field": "Software Architecture Design",
+            "isMustHave": true
+          },
+          {
+            "id": "oDb8s2hOI5B39m-_ZrfcX",
+            "field": "Embedded Software Development using C/C/CPP",
+            "isMustHave": true
+          },
+          {
+            "id": "5ZiWI_cLkCfPGf0reuhnY",
+            "field": "RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "g0B1_BrEVw_hdI9KaHxo8",
+            "field": "Yocto",
+            "isMustHave": true
+          },
+          {
+            "id": "bxGS02EnvXPmjSeusnHed",
+            "field": "Embedded Linux",
+            "isMustHave": true
+          },
+          {
+            "id": "X2syNseD6aRAQL0ICEsEq",
+            "field": "Free RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "Qwbswaevtu-TbfuTdKS3y",
+            "field": "ISO26262 functional safety standards",
+            "isMustHave": true
+          },
+          {
+            "id": "zx9-OL3lk_hE-L1UJykvX",
+            "field": "BT, WiFi connectivity protocols",
+            "isMustHave": false
+          },
+          {
+            "id": "Ldzz3PQxkdKhWcbudmx8U",
+            "field": "Micro-controllers/processors",
+            "isMustHave": false
+          },
+          {
+            "id": "lA4bDikyerLQ6zJW0gG8W",
+            "field": "Requirement elicitation",
+            "isMustHave": false
+          },
+          {
+            "id": "y-oJKmHDaeoEsfUELNYov",
+            "field": "Configuration Management Tools (git, SVN)",
+            "isMustHave": false
+          },
+          {
+            "id": "hDcf_JWDjlWp6pOPJDg6Y",
+            "field": "Agile based development methodology",
+            "isMustHave": false
+          }
+        ],
+        "rolesResponsibilities": [
+          {
+            "id": "Cp2z5xwgFGllQPSjZi6gK",
+            "field": "Proficient in Embedded System design development",
+            "isMustHave": true
+          },
+          {
+            "id": "gb3sF4LBVmTfRJ6-T2fjp",
+            "field": "Experience in Embedded Software Development using C/C/CPP; RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "hDHUCscTZ01j7qKff2rhL",
+            "field": "Good knowledge on connectivity protocols like BT, WiFi",
+            "isMustHave": true
+          },
+          {
+            "id": "2XYfZo-rugf9h59Nu9cQP",
+            "field": "Experience working with Micro-controllers/processors",
+            "isMustHave": true
+          },
+          {
+            "id": "5K-foey-B-EYTZTTBjQA5",
+            "field": "Commitment to quality and high standards",
+            "isMustHave": true
+          },
+          {
+            "id": "LMjuFEfJ_RdHcW493zjg9",
+            "field": "Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc",
+            "isMustHave": true
+          },
+          {
+            "id": "BOjJc6DctvP1H1tdlP8r-",
+            "field": "Knowledge in Agile based development methodology",
+            "isMustHave": true
+          },
+          {
+            "id": "TCSD7sg-gIWTF-ZfR5aoL",
+            "field": "Knowledge in complete V-model for ECU Development project",
+            "isMustHave": true
+          },
+          {
+            "id": "g-mFOXotD0FUCOQ23P8lu",
+            "field": "Knowledge in Telematic Control Unit",
+            "isMustHave": true
+          },
+          {
+            "id": "hdnRpKFqkgnB_Vunn_nfl",
+            "field": "Knowledge on Touch GFX",
+            "isMustHave": true
+          },
+          {
+            "id": "zxzSBAhX3sEfo3IrxbCCC",
+            "field": "Good knowledge of the ISO26262 functional safety standards and implementation",
+            "isMustHave": true
+          },
+          {
+            "id": "SctoZrG5S1EXPibvDa8iF",
+            "field": "Experience in Requirement elicitation, deriving system requirements to software requirements",
+            "isMustHave": false
+          },
+          {
+            "id": "CCuqye6ADMmj5HkYRNGCw",
+            "field": "Proficient in Embedded System design development",
+            "isMustHave": true
+          },
+          {
+            "id": "fOVZbqeYVNsvEExOMZKQ3",
+            "field": "System Architecture Design",
+            "isMustHave": true
+          },
+          {
+            "id": "tL0P1g2ESAR8wL2WeMcwl",
+            "field": "Requirements Analysis",
+            "isMustHave": true
+          },
+          {
+            "id": "Fp9TobG_zzkMrNey9ahNI",
+            "field": "Architecting end to end Embedded product",
+            "isMustHave": true
+          },
+          {
+            "id": "x2xP68Lccy7IVq0XPv34M",
+            "field": "Embedded Software Development using C/C/CPP; RTOS",
+            "isMustHave": true
+          },
+          {
+            "id": "oSPP8rBo6tGJXPoQHoWd2",
+            "field": "Experience in Yocto, Embedded Linux Technical",
+            "isMustHave": true
+          },
+          {
+            "id": "i9iFLGt5MspR6vwuFxXXY",
+            "field": "Good knowledge on connectivity protocols like BT, WiFi",
+            "isMustHave": true
+          },
+          {
+            "id": "BPhqXfeisQaBXWhtSZTzq",
+            "field": "Experience working with Micro-controllers/processors",
+            "isMustHave": true
+          },
+          {
+            "id": "UPXy5SZnwOJA9XQVpUT_P",
+            "field": "Good experience in Requirement elicitation",
+            "isMustHave": true
+          },
+          {
+            "id": "81N3RDhMHqWh9MlYFDdae",
+            "field": "Commitment to quality and high standards",
+            "isMustHave": true
+          },
+          {
+            "id": "l2EqDiMmkduKzyH7XtC3Y",
+            "field": "Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc",
+            "isMustHave": true
+          },
+          {
+            "id": "u68UjdjyfWBPr5FQoOLCF",
+            "field": "Knowledge in Agile based development methodology",
+            "isMustHave": true
+          },
+          {
+            "id": "PNHftYqzy2Vwxqk1ulzHz",
+            "field": "Knowledge in complete V-model for ECU Development project",
+            "isMustHave": true
+          },
+          {
+            "id": "0-f_XiPLGpO5u2DPuTDmx",
+            "field": "Knowledge in Telematic Control Unit",
+            "isMustHave": true
+          },
+          {
+            "id": "grOoPjObhRezBthTBV4op",
+            "field": "Knowledge on Touch GFX",
+            "isMustHave": true
+          },
+          {
+            "id": "yY2Pnt9a8097V814qbfTs",
+            "field": "Good knowledge of the ISO26262 functional safety standards and implementation in compliance with the chosen standards",
+            "isMustHave": true
+          },
+          {
+            "id": "F0WGFldnOt2Pv81jA8iGT",
+            "field": "Experience in Free RTOS",
+            "isMustHave": false
+          },
+          {
+            "id": "6Rhy1tCwZYQNcYYWRkHnT",
+            "field": "Knowledge in V-model for ECU Development project",
+            "isMustHave": false
+          }
+        ]
+      },
+      "job_type": "full time",
+      "location": "Redwood City",
+      "job_title": "Software Engineer",
+      "department": "it",
+      "description": "<p>Key Responsibilities :</p><p></p><p></p><p>Proficient in Embedded System design development, System Architecture Design: Collaborate with cross-functional teams, including engineers, product managers, and stakeholders to define the overall system architecture for automotive software Requirements Analysis: Analyze and understand the functional and technical requirements of automotive systems and translate them into software architecture and design specifications Proficient in Architecting end to end Embedded product Experience in Embedded Software Development using C/C/CPP; RTOS; developing Software for Electronic Control units Experience in Yocto, Embedded Linux Technical</p><p>Experience :</p><p>Free RTOS Good knowledge on connectivity protocols like BT, WiFi Experience working with Micro-controllers/processors Good experience in Requirement elicitation, deriving system requirements to software requirements Commitment to quality and high standards Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc Knowledge in Agile based development methodology. Â· Knowledge in complete V-model for ECU Development project. Â· Knowledge in Telematic Control Unit. Â· Knowledge on Touch GFX Good knowledge of the ISO26262 functional safety standards and implementation in compliance with the chosen standards.</p>",
+      "workplace_type": "on site"
+    },
+    "status": "published",
+    "interview_instructions": null,
+    "assessment": false,
+    "is_ats_sync": false,
+    "phone_screening": null,
+    "jd_changed": false,
+    "phone_screen_enabled": false,
+    "job_details_embedding": null,
+    "experience_in_months": null,
+    "location_json": null,
+    "screening_template": null,
+    "interview_success": null,
+    "interview_plan": null,
+    "scoring_criteria_loading": false,
+    "hiring_manager": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "recruiter": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
+    "recruiting_coordinator": null,
+    "sourcer": null,
+    "interview_coordinator": null,
+    "interview_plan_warning_ignore": false,
+    "interview_session_warning_ignore": true
+  }
+]

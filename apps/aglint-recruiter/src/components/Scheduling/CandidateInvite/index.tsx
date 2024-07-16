@@ -1199,6 +1199,14 @@ const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
       slotInterviewtypeIcon={
         <SessionIcon session_type={interview_session.session_type} />
       }
+      iconName={
+        interview_session.schedule_type === 'google_meet' ||
+        interview_session.schedule_type === 'zoom'
+          ? 'videocam'
+          : interview_session.schedule_type === 'phone_call'
+            ? 'call'
+            : 'person'
+      }
     />
   );
 };
@@ -1212,6 +1220,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
       slotInterviewtypeIcon={<BreakIcon />}
+      iconName={''}
     />
   );
 };

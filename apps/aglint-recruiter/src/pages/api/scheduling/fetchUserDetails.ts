@@ -1,4 +1,5 @@
 import { DB } from '@aglint/shared-types';
+import { defaultRoles } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -36,7 +37,7 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      `role,recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery})`,
+      `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}), roles(name)`,
     )
     .eq('recruiter_id', recruiter_id)
     .eq('recruiter_user.join_status', status)
@@ -44,6 +45,9 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
       if (error) throw new Error(error.message);
       return data
         .filter((item) => item.recruiter_user)
-        .map((item) => ({ ...item.recruiter_user, role: item.role }));
+        .map((item) => ({
+          ...item.recruiter_user,
+          role: item.roles.name as (typeof defaultRoles)[number]['name'],
+        }));
     });
 };

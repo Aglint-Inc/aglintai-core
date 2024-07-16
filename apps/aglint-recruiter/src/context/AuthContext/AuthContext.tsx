@@ -28,6 +28,7 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import axios from '@/src/client/axios';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
@@ -179,16 +180,15 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    const { data: recruiterRel, error: errorRel } = await supabase
-      .from('recruiter_relation')
-      .select(
-        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name,role_permissions(permissions(name)))',
-      )
-      .match({ user_id: userDetails.user.id, is_active: true })
-      .single();
-
+    // const { data: recruiterRel, error: errorRel } = await supabase
+    //   .from('recruiter_relation')
+    //   .select(
+    //     '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions(name)))',
+    //   )
+    //   .match({ user_id: userDetails.user.id, is_active: true })
+    //   .single();
+    const recruiterRel = await getUserDetails();
     // get user permissions
-
     const rolePermissions: ContextValue['userPermissions'] = {
       role: recruiterRel?.roles?.name || null,
       permissions:
@@ -203,7 +203,7 @@ const AuthProvider = ({ children }) => {
 
     setUserPermissions(rolePermissions);
 
-    if (!errorRel && recruiterRel?.recruiter_user) {
+    if (recruiterRel?.recruiter_user) {
       posthog.identify(userDetails.user.email, {
         Email: userDetails.user.email,
         CompanyId: recruiterRel.recruiter.id,
@@ -216,6 +216,13 @@ const AuthProvider = ({ children }) => {
         role: recruiterRel.roles.name,
         role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,
+        manager_details: recruiterRel.manager_details
+          ? {
+              name: `${recruiterRel.manager_details.first_name} ${recruiterRel.manager_details.last_name}`.trim(),
+              position: recruiterRel.manager_details.position,
+            }
+          : null,
+
         created_by: recruiterRel.created_by,
       });
       setRecruiter({
@@ -466,6 +473,10 @@ const pageFeatureMapper = {
   [ROUTES['/support']()]: 'isSupportEnabled',
   [ROUTES['/candidates/history']()]: 'isSourcingEnabled',
 };
+
+async function getUserDetails() {
+  return axios.call<GetUserDetailsAPI>('GET', '/api/getUserDetails', {});
+}
 
 const updateMember = ({
   data,

@@ -24,6 +24,8 @@ export function TeamOptionList({
   isDeleteVisible = true,
   isResetPasswordVisible = true,
   onClickResetPassword = {},
+  slotFilterOption,
+  isFilterOptionVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -57,6 +59,9 @@ export function TeamOptionList({
           />
           <Text content="Cancel Invite" color="error" />
         </_Builtin.Block>
+      ) : null}
+      {isFilterOptionVisible ? (
+        <_Builtin.Block tag="div">{slotFilterOption}</_Builtin.Block>
       ) : null}
       {isSuspendVisible ? (
         <_Builtin.Block

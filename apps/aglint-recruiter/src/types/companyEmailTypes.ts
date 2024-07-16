@@ -134,6 +134,14 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Slack Interview Reminder',
     description: 'Slack Interview Reminder',
   },
+  onSignup_email_admin: {
+    heading: '',
+    description: '',
+  },
+  onInvite_email_user: {
+    heading: '',
+    description: '',
+  },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
   candidateBook_email_interviewerForFeedback: null,
