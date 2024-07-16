@@ -1,24 +1,17 @@
-import {DatabaseTable} from '@aglint/shared-types';
 import {seedAuthUsers} from './utils/seedAuthUsers';
-import {getJsonRecords} from './data';
-import {seedRecruiterUser} from './utils/seedRecruiterUser';
-import {seedCompanies} from './utils/seedCompanies';
-import {seedCompaniesRoles} from './utils/seedRoles';
-import {seedPermissions} from './utils/seedPermissions';
 import {supabaseAdmin} from './supabase/SupabaseAdmin';
-import {seedRecruiterRelation} from './utils/seedRecruiterRelation';
-import {seedRolePermissions} from './utils/seedRolePermissions';
+import {seedCommonTable} from './utils/seedCommonTable';
 
 const main = async () => {
   await seedAuthUsers();
 
   await supabaseAdmin.auth.signOut();
-  await seedCompanies();
-  await seedCompaniesRoles();
-  await seedPermissions();
-  await seedRecruiterUser();
-  await seedRecruiterRelation();
-  await seedRolePermissions();
+  await seedCommonTable('recruiter');
+  await seedCommonTable('roles');
+  await seedCommonTable('permissions');
+  await seedCommonTable('recruiter_user', 'user_id');
+  await seedCommonTable('recruiter_relation');
+  await seedCommonTable('role_permissions');
 };
 
 main();
