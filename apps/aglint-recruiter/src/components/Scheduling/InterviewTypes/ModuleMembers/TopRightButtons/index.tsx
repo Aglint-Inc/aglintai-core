@@ -76,11 +76,13 @@ function TopRightButtons({ editModule }: { editModule: ModuleType }) {
           onClickDelete={{
             onClick: () => {
               setIsDeleteModuleDialogOpen(true);
+              handleClose();
             },
           }}
           onClickArchive={{
             onClick: () => {
               setIsArchiveDialogOpen(true);
+              handleClose();
             },
           }}
           onClickUnarchive={{
@@ -101,6 +103,7 @@ function TopRightButtons({ editModule }: { editModule: ModuleType }) {
                 );
                 toast.success('Interview type unarchived successfully.');
               }
+              handleClose();
             },
           }}
         />
