@@ -31,6 +31,8 @@ export type TipTapAIEditorParams = {
     count: number;
   };
   disabled?: boolean;
+  onfocus?: () => void;
+  onblur?: () => void;
   singleLine?: boolean;
   height?: string;
   minHeight?: string;
@@ -61,6 +63,8 @@ const TipTapAIEditor = ({
   template_type,
   toolbar = true,
   padding = 2,
+  onfocus,
+  onblur,
   isSize = true,
   isAlign = true,
 }: TipTapAIEditorParams) => {
@@ -202,6 +206,8 @@ const TipTapAIEditor = ({
                 </Stack>
               ) : (
                 <EditorContent
+                  onFocus={onfocus}
+                  onBlur={onblur}
                   editor={editor}
                   className={singleLine && 'single-line-editor'}
                   style={
