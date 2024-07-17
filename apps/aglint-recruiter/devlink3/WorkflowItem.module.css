@@ -7,7 +7,7 @@
 
 .workflow_item_top {
   display: flex;
-  padding: var(--space-4);
+  padding: var(--space-2) var(--space-4);
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: nowrap;
@@ -22,8 +22,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .flex_hr_10 {

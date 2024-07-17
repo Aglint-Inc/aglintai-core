@@ -32,7 +32,7 @@ export function GeneralBanner({
         >
           {slotHeadingIcon}
         </_Builtin.Block>
-        <Text content={textHeading} weight="bold" />
+        <Text content={textHeading} weight="medium" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "general-banner-desc")}

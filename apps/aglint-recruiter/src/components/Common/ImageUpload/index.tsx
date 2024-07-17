@@ -34,6 +34,7 @@ function ImageUpload({
   const [loading, setLoading] = useState<boolean>();
   const { userDetails } = useAuthDetails();
 
+  image = image === null ? '/images/logo/company.png' : image;
   const setProfilePicture = async (file) => {
     setLoading(true);
     if (file.size > 5 * 1000000) {
