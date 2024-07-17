@@ -112,12 +112,12 @@ const AvatarSelectDropDown = ({
             <Stack
               px={1}
               style={{
-                fontStyle: 'italic',
                 color: 'var(--neutral-12)',
                 cursor: 'default',
+                padding: 'var(--space-2)',
               }}
             >
-              No options available
+              No options
             </Stack>
           ) : (
             menuOptions.map((menu, idx) => (
