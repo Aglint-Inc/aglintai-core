@@ -14,13 +14,13 @@ const Body = () => {
   } = useTour();
   const [tip, setTip] = useState(false);
   const firstVisit = useMemo(
-    () => !(data ?? ['workflow_tip']).includes('workflow_tip'),
+    () => !(data ?? ['workflow_intro']).includes('workflow_intro'),
     [data],
   );
   const open = useMemo(() => firstVisit || tip, [firstVisit, tip]);
   const handleTip = useCallback(() => {
     if (open) {
-      if (firstVisit) handleCreateTourLog({ type: 'workflow_tip' });
+      if (firstVisit) handleCreateTourLog({ type: 'workflow_intro' });
       setTip(false);
     } else setTip(true);
   }, [handleCreateTourLog, firstVisit, open]);

@@ -7,4 +7,4 @@ export type CustomTour = TableType<
   }
 >;
 
-type CustomTourType = "workflow_tip";
+type CustomTourType = "workflow_intro" | "profile_score_intro";
