@@ -11,4 +11,5 @@ declare function TeamUsersList(props: {
   onClickViewPendingInvites?: Types.Devlink.RuntimeProps;
   textPending?: React.ReactNode;
   slotSearchAndFilter?: Types.Devlink.Slot;
+  slotBanner?: Types.Devlink.Slot;
 }): React.JSX.Element;

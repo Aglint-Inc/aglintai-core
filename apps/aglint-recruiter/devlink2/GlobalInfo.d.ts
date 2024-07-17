@@ -10,4 +10,6 @@ declare function GlobalInfo(props: {
   slotWidget?: Types.Devlink.Slot;
   showWidget?: Types.Visibility.VisibilityConditions;
   showDescription?: Types.Visibility.VisibilityConditions;
+  onClickClose?: Types.Devlink.RuntimeProps;
+  showCloseButton?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

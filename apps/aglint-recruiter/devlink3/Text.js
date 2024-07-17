@@ -6,7 +6,7 @@ export function Text({
   as: _Component = _Builtin.Block,
   align = "left",
   size = "2",
-  weight = "bold",
+  weight = "medium",
   color = "neutral-12",
   highContrast = "false",
   content = "This is a global text component",

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
@@ -21,9 +21,7 @@ function Overview({
 }) {
   const router = useRouter();
   const upcomingScheduleList =
-    scheduleList?.filter(
-      (item) => item.status === 'confirmed',
-    ) || [];
+    scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
   const trainingModulesList =
     detailsWithCount.modules.filter(
@@ -75,7 +73,12 @@ function Overview({
               );
             })
           ) : (
-            <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
+            // <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
+            <GlobalEmptyState
+              textDesc='No upcoming schedules found.'
+              size={6}
+              iconName='event'
+            />
           )
         }
         slotTrainingModules={

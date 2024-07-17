@@ -1227,7 +1227,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
-    <Stack height={'60px'}>
+    <Stack height={'60px'} >
       <CompanyLogo companyName={companyName} companyLogo={logo} />
     </Stack>
   );

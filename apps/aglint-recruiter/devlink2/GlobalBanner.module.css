@@ -1,4 +1,7 @@
 .global_banner {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   padding: var(--space-3);
   flex-direction: column;
@@ -34,6 +37,7 @@
 .flex_v1 {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
@@ -50,6 +54,7 @@
 .slot_additional_notes {
   display: flex;
   padding-top: var(--space-4);
+  padding-left: var(--space-2);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 2px;
