@@ -16,7 +16,13 @@ import { unArchiveModuleById } from '../../utils';
 import ArchiveModuleDialog from './ArchiveModuleDialog';
 import DeleteModuleDialog from './DeleteModuleDialog';
 
-function TopRightButtons({ editModule }: { editModule: ModuleType }) {
+function TopRightButtons({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const queryClient = useQueryClient();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -37,7 +43,7 @@ function TopRightButtons({ editModule }: { editModule: ModuleType }) {
     <>
       <Stack direction={'row'} alignItems={'center'} spacing={1}>
         <DeleteModuleDialog editModule={editModule} />
-        <ArchiveModuleDialog editModule={editModule} />
+        <ArchiveModuleDialog editModule={editModule} refetch={refetch} />
 
         <Stack onClick={handleClick}>
           <IconButtonGhost

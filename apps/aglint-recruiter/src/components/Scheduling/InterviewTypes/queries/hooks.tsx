@@ -27,6 +27,7 @@ export const useAllInterviewModules = () => {
     queryKey: QueryKeysInteviewModules.INTERVIEW_MODULES,
     queryFn: () => fetchInterviewModules(recruiter.id),
     enabled: !!recruiter.id,
+    refetchOnMount: true,
   });
   return query;
 };

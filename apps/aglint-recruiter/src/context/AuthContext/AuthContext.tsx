@@ -54,7 +54,6 @@ export interface ContextValue {
   allRecruiterRelation: RecruiterRelationsType[];
   setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
-  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
   setLoading: (loading: boolean) => void;
   handleLogout: () => Promise<void>;
@@ -96,13 +95,11 @@ export interface ContextValue {
   >;
 }
 
-const defaultProvider = {
+const defaultProvider: ContextValue = {
   userDetails: null,
   userCountry: 'us',
   setUserDetails: () => {},
-  handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
-  handleUpdatePassword: undefined,
   recruiter: null,
   userPermissions: null,
   recruiter_id: null,
@@ -209,8 +206,7 @@ const AuthProvider = ({ children }) => {
         CompanyId: recruiterRel.recruiter.id,
       });
       const recruiterUser = recruiterRel.recruiter_user;
-      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
-        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
+
       setRecruiterUser({
         ...recruiterUser,
         role: recruiterRel.roles.name,
@@ -222,8 +218,8 @@ const AuthProvider = ({ children }) => {
               position: recruiterRel.manager_details.position,
             }
           : null,
-
         created_by: recruiterRel.created_by,
+        recruiter_relation_id: recruiterRel.id,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
@@ -264,41 +260,6 @@ const AuthProvider = ({ children }) => {
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
       setUserCountry('us');
-    }
-  };
-
-  const handleUpdateProfile = async (
-    details: Partial<RecruiterUserType>,
-    id?: string,
-  ): Promise<boolean> => {
-    const { data, error } = await supabase
-      .from('recruiter_user')
-      .update({
-        ...details,
-        manager_id: undefined,
-        manager_details: undefined,
-        role: undefined,
-        last_login: undefined,
-        created_by: undefined,
-        role_id: undefined,
-      })
-      .eq('user_id', id || userDetails.user.id)
-      .select()
-      .single();
-    if (!error) {
-      setRecruiterUser({
-        ...data,
-        manager_details: details.manager_details,
-        manager_id: details.manager_id,
-        role: details.role,
-        last_login: details.last_login,
-        created_by: details.created_by,
-        role_id: details.role_id,
-      });
-      return true;
-    } else {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
     }
   };
 
@@ -414,7 +375,6 @@ const AuthProvider = ({ children }) => {
         recruiter,
         userPermissions,
         recruiter_id,
-        handleUpdateProfile,
         handleUpdateEmail,
         setRecruiter,
         loading,

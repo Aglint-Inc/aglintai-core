@@ -992,7 +992,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
           isLeftIcon={false}
           isRightIcon={false}
           textButton='Proceed'
-          size={3}
+          size={2}
           onClickButton={{
             onClick: () => {
               setOpen(true);

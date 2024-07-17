@@ -144,21 +144,14 @@ export function ReqAvailability({
             <Text
               content={
                 <>
-                  {"Set Minimum Requirements:"}
+                  {"Minimum Requirements:"}
                   <br />
                 </>
               }
               weight="medium"
             />
             <Text
-              content={
-                <>
-                  {
-                    "Specify the minimum number of days and slots per day to be selected for the candidate's availability."
-                  }
-                  <br />
-                </>
-              }
+              content="Ensure the candidate selects the minimum number of days and slots per day for their availability."
               weight=""
               color="neutral"
             />

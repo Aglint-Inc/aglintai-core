@@ -1,6 +1,6 @@
 import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
@@ -13,6 +13,7 @@ import {
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
@@ -66,9 +67,15 @@ function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
   }, []);
 
   const fetchAllMembers = async () => {
-    const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
+    const bodyParams: BodyParamsFetchUserDetails = {
       recruiter_id: recruiter.id,
-    })) as { data: MemberType[] };
+      status: 'joined',
+      is_suspended: false,
+    };
+    const resMem = (await axios.post(
+      '/api/scheduling/fetchUserDetails',
+      bodyParams,
+    )) as { data: MemberType[] };
 
     if (resMem?.data?.length > 0) {
       setMembers(resMem.data);
