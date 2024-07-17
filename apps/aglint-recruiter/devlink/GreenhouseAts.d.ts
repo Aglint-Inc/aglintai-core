@@ -18,4 +18,5 @@ declare function GreenhouseAts(props: {
   onClickLive?: Types.Devlink.RuntimeProps;
   isClosedActive?: Types.Visibility.VisibilityConditions;
   isAtsMenuVisible?: Types.Visibility.VisibilityConditions;
+  slotNewTab?: Types.Devlink.Slot;
 }): React.JSX.Element;

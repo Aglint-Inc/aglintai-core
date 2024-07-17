@@ -4,7 +4,6 @@ import * as _Builtin from "./_Builtin";
 import { JobsBanner } from "./JobsBanner";
 import { Text } from "./Text";
 import { PipeLine } from "./PipeLine";
-import { GlobalIcon } from "./GlobalIcon";
 import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
 import { CardWithNumber } from "./CardWithNumber";
@@ -234,16 +233,11 @@ export function JobDashboard({
               <Text content="Upcoming Schedules" weight="medium" />
               {isViewScheduleVisible ? (
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "flex-horizontal",
-                    "align-center"
-                  )}
+                  className={_utils.cx(_styles, "view-jd-wrap")}
                   tag="div"
                   {...onClickViewSchedule}
                 >
                   <Text content="View all" size="2" weight="" color="accent" />
-                  <GlobalIcon iconName="" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>
