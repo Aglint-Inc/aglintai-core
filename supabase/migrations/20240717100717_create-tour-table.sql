@@ -61,4 +61,38 @@ grant truncate on table "public"."tour" to "service_role";
 
 grant update on table "public"."tour" to "service_role";
 
+create policy "tour authenticated insert"
+on "public"."tour"
+as permissive
+for insert
+to authenticated
+with check ((recruiter_relation_id IN ( SELECT recruiter_relation.id
+   FROM recruiter_relation)));
+
+
+create policy "tour authenticated read"
+on "public"."tour"
+as permissive
+for select
+to authenticated
+using ((recruiter_relation_id IN ( SELECT recruiter_relation.id
+   FROM recruiter_relation)));
+
+
+create policy "tour authenticator delete"
+on "public"."tour"
+as permissive
+for delete
+to authenticator
+using (true);
+
+
+create policy "tour authenticator update"
+on "public"."tour"
+as permissive
+for update
+to authenticator
+using (true);
+
+
 
