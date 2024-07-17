@@ -99,7 +99,7 @@ const ApplicationsComponent = () => {
                 iconName='person_add'
               />
             )}
-            {job?.status !== 'draft' && (
+            {job?.status === 'draft' && (
               <JobsBanner
                 slotButton={
                   <PublishButton
