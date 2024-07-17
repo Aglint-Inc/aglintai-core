@@ -25,7 +25,7 @@ const BreadCrumbs = () => {
 
 const Actions = () => {
   return (
-    <WithPermission permission={['manage_workflow']}>
+    <WithPermission permission={['workflow_create']}>
       <Create />
     </WithPermission>
   );

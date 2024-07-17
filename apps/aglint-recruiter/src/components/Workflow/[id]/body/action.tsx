@@ -40,13 +40,13 @@ const Actions = () => {
   return (
     <>
       {actions}
-      {canCreateAction && permissions.manage && (
+      {canCreateAction && permissions.update && (
         <>
           <WorkflowConnector />
           <WorkflowAdd
             onClickAdd={{
               onClick: () => createAction(),
-              ...devlinkProps.manage,
+              ...devlinkProps.update,
             }}
           />
         </>
@@ -72,7 +72,7 @@ const Action = (props: ActionProps) => {
       isDeleteVisible={true}
       onClickDelete={{
         onClick: () => handleDeleteAction({ id: props.action.id }),
-        ...devlinkProps.manage,
+        ...devlinkProps.delete,
       }}
     />
   );
@@ -106,7 +106,7 @@ const ActionForm = ({
     <UISelect
       label='Do this'
       value={type}
-      disabled={!permissions.manage}
+      disabled={!permissions.update}
       menuOptions={options}
       onChange={(e) => {
         const {

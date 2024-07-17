@@ -43,7 +43,7 @@ const TriggerForm = () => {
   return (
     <UISelect
       label='When will the event trigger?'
-      disabled={!permissions.manage}
+      disabled={!permissions.update}
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
       onChange={(e) => {
@@ -67,7 +67,7 @@ const DurationForm = () => {
   return (
     <UISelect
       label='Interval between the trigger and action'
-      disabled={!permissions.manage}
+      disabled={!permissions.update}
       value={interval}
       menuOptions={DURATION_OPTIONS}
       onChange={(e) => handleUpdateWorkflow({ interval: e.target.value })}

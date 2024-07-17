@@ -36,7 +36,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 export type taskFilterType = {
   Job: string[];
   Date: string[];
@@ -253,9 +252,8 @@ const reducer = (
 
 export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
-  const { recruiter_id, recruiterUser } = useAuthDetails();
+  const { recruiter_id, recruiterUser, isAllowed } = useAuthDetails();
   const { members, loading: isFetching } = useAuthDetails();
-  const { checkPermissions } = useRolesAndPermissions();
 
   const router = useRouter();
 
@@ -562,7 +560,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           rows: tasksReducer.pagination.rows,
         },
         getCount: true,
-        user_id: checkPermissions(['view_all_task'])
+        user_id: isAllowed(['admin', 'recruiter', 'recruiting_coordinator'])
           ? undefined
           : recruiterUser.user_id,
       }).then((data) => {
