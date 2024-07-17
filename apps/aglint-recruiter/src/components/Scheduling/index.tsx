@@ -94,7 +94,7 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {tab === 'interviewtypes' &&
-              checkPermissions(['scheduler_interview_types_create']) && (
+              checkPermissions(['create_interview_types']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonSolid
                     isRightIcon={false}
@@ -111,7 +111,7 @@ function SchedulingMainComp() {
                 </Stack>
               )}
             {(tab === 'schedules' || tab === 'myschedules') &&
-              checkPermissions(['scheduling_module', 'scheduler_read']) && (
+              checkPermissions(['scheduling_module']) && (
                 <TaskSwitchButton
                   isIconVisible={false}
                   isJobCandActive={tab === 'schedules'}
@@ -180,7 +180,7 @@ const BodyComp = ({ setSaving }) => {
           {checkPermissions(['scheduler_create']) && <AllSchedules />}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewtypes'}>
-          {checkPermissions(['scheduler_interview_types_create']) ? (
+          {checkPermissions(['create_interview_types']) ? (
             <Modules />
           ) : (
             <InterviewerModule
