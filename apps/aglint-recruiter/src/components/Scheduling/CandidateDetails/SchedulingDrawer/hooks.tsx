@@ -131,8 +131,12 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
 
       // numberTotal is the total number of slots available (including conflicts)
-      if (filterSlots.numberTotal === 0) {
-        setNoSlotReasons(filterSlots.combs);
+      if (filterSlots.numberTotal < 5) {
+        setNoSlotReasons(
+          filterSlots.combs.filter((comb) =>
+            comb.plans.some((plan) => plan.no_slot_reasons.length > 0),
+          ),
+        );
         setNoOptions(true);
         return;
       }
@@ -144,7 +148,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
         filters,
       });
 
-      if (filterSlots.numberTotal === 0) {
+      if (filterSlots.numberTotal < 5) {
         toast.warning('No availability found with the selected preferences.');
         return;
       }
@@ -281,7 +285,6 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       if (res.status === 200) {
         const slots = res.data as ApiResponseFindAvailability;
         if (slots.length === 0) {
-          toast.error('No availability found.');
           return [];
         }
         return slots;
