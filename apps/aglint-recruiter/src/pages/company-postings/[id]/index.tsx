@@ -58,7 +58,7 @@ function JobPost() {
           <JobNotFound />
         </Stack>
       )}
-      <Footer />
+     
     </Stack>
   );
 }
