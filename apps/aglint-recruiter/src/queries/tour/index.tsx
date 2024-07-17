@@ -10,7 +10,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { appKey } from '..';
 
 type TourQuery = {
-  recruiter_id?: string;
+  user_id?: string;
 };
 
 const tourKey = 'tour';
@@ -19,21 +19,21 @@ export const tourQuery = {
   all: () => ({
     queryKey: [appKey, tourKey] as const,
   }),
-  tours: (recruiter_id?: TourQuery['recruiter_id']) =>
+  tours: (user_id?: TourQuery['user_id']) =>
     queryOptions({
       queryKey: [...tourQuery.all().queryKey],
-      queryFn: () => getTours({ recruiter_id }),
-      enabled: !!recruiter_id,
+      queryFn: () => getTours({ user_id }),
+      enabled: !!user_id,
     }),
 };
 
-const getTours = async ({ recruiter_id }: TourQuery) =>
+const getTours = async ({ user_id }: TourQuery) =>
   (
     (
       await supabase
         .from('tour')
         .select('type')
-        .eq('recruiter_id', recruiter_id)
+        .eq('user_id', user_id)
         .throwOnError()
     ).data ?? []
   ).map(({ type }) => type);
