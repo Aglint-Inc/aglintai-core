@@ -1,5 +1,5 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Dialog, Typography } from '@mui/material';
+import { Autocomplete, Dialog } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -8,7 +8,6 @@ import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import { GlobalBannerShort } from '@/devlink2';
 
 function RoleEditMember({
   user,
@@ -87,7 +86,11 @@ function RoleEditMember({
               />
             )}
             {errorMessage && (
-              <GlobalBannerInline textContent={errorMessage} slotButton={<></>} color={'warning'}/>
+              <GlobalBannerInline
+                textContent={errorMessage}
+                slotButton={<></>}
+                color={'warning'}
+              />
               // <Typography fontWeight={600} color={'var(--warning-11)'}>Warning: {errorMessage}</Typography>
             )}
             <Autocomplete

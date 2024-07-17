@@ -1,10 +1,10 @@
 import { Stack } from '@mui/material';
 import { memo } from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { ButtonSoft } from '@/devlink3/ButtonSoft';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import NoApplicants from '@/public/lottie/NoApplicants';
-import { GlobalBannerInline } from '@/devlink2';
 
 export const ActionEmptyState = memo(
   ({

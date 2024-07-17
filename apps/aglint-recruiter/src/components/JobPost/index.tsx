@@ -23,6 +23,7 @@ import {
 } from 'react-share';
 
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
@@ -35,7 +36,6 @@ import toast from '@/src/utils/toast';
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
-import { GlobalEmptyState } from '@/devlink';
 
 interface JobsListProps {
   post: JobTypeDB;
@@ -320,33 +320,39 @@ const JobPostPublic: React.FC<JobsListProps> = ({
           }
           slotOpenJobListing={
             <Stack spacing={2}>
-              {filteredJobs.length > 0
-                ? filteredJobs.map((job, ind) => {
-                    return (
-                      <OpenJobListingCard
-                        key={ind}
-                        textJobRole={job.job_title || '--'}
-                        textCompanyType={job.department || '--'}
-                        textLocation={job.location || '--'}
-                        textWorkingType={job.job_type || '--'}
-                        onClickApplyNow={{
-                          onClick: () => {
-                            const targetElement =
-                              document.getElementById('topAvatar');
-                            if (targetElement) {
-                              targetElement.scrollIntoView({
-                                behavior: 'instant',
-                                block: 'end',
-                                inline: 'end',
-                              });
-                            }
-                            router.push(job.id);
-                          },
-                        }}
-                      />
-                    );
-                  })
-                : <GlobalEmptyState textDesc='No more Jobs Postings' iconName='work' size={5}/>}
+              {filteredJobs.length > 0 ? (
+                filteredJobs.map((job, ind) => {
+                  return (
+                    <OpenJobListingCard
+                      key={ind}
+                      textJobRole={job.job_title || '--'}
+                      textCompanyType={job.department || '--'}
+                      textLocation={job.location || '--'}
+                      textWorkingType={job.job_type || '--'}
+                      onClickApplyNow={{
+                        onClick: () => {
+                          const targetElement =
+                            document.getElementById('topAvatar');
+                          if (targetElement) {
+                            targetElement.scrollIntoView({
+                              behavior: 'instant',
+                              block: 'end',
+                              inline: 'end',
+                            });
+                          }
+                          router.push(job.id);
+                        },
+                      }}
+                    />
+                  );
+                })
+              ) : (
+                <GlobalEmptyState
+                  textDesc='No more Jobs Postings'
+                  iconName='work'
+                  size={5}
+                />
+              )}
             </Stack>
           }
           onClickViewMore={{
