@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable, DB } from '@aglint/shared-types';
+import { DatabaseTable, DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -72,7 +72,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
               relation_id: string;
               id: number;
               title: string;
-              name: DatabaseEnums['permissions_type'];
+              name: DatabaseTable['permissions']['name'];
               description: string;
               dependency_tree: DatabaseTable['permissions']['dependency_tree'];
               isActive: boolean;
@@ -104,7 +104,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
             {} as {
               [permission: number]: {
                 id: number;
-                name: DatabaseEnums['permissions_type'];
+                name: DatabaseTable['permissions']['name'];
                 title: string;
                 description: string;
                 dependency_tree: DatabaseTable['permissions']['dependency_tree'];

@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -41,7 +41,7 @@ function SideNavbar() {
     route: string;
     comingSoon: boolean;
     isVisible: boolean;
-    permission?: DatabaseEnums['permissions_type'][];
+    permission?: DatabaseTable['permissions']['name'][];
   }[] = [
     {
       text: 'Agent',
@@ -111,7 +111,7 @@ function SideNavbar() {
       route: ROUTES['/screening'](),
       comingSoon: false,
       isVisible: isScreeningEnabled,
-      permission: ['phone_screening_enabled'],
+      // permission: ['phone_screening_enabled'],
     },
 
     {
@@ -120,7 +120,7 @@ function SideNavbar() {
       route: ROUTES['/assessment-new'](),
       comingSoon: false,
       isVisible: isAssessmentEnabled,
-      permission: ['assessment_enabled'],
+      // permission: ['assessment_enabled'],
     },
     {
       text: 'Integrations',
@@ -128,7 +128,7 @@ function SideNavbar() {
       route: ROUTES['/integrations'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['integrations_enabled'],
+      permission: ['integrations_module'],
     },
     {
       text: 'Company Settings',
