@@ -19,7 +19,7 @@ import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
 import FilterDepartment from './Filters/FilterDepartment';
 import { useAllInterviewModules } from './queries/hooks';
-import { resetModulesStore } from './store';
+import { resetModulesStore, setInitalOpen } from './store';
 import { customSortModules } from './utils';
 
 export function Modules() {
@@ -143,31 +143,48 @@ export function Modules() {
                           textObjective={mod.interview_modules.description}
                           textModuleName={mod.interview_modules.name}
                           slotMemberPic={
-                            <AvatarGroup
-                              variant='rounded'
-                              total={mod.users.length}
-                              sx={{
-                                '& .MuiAvatar-root': {
-                                  width: 'var(--space-5)',
-                                  height: 'var(--space-5)',
-                                  fontSize: 12,
-                                },
-                              }}
-                            >
-                              {mod.users.slice(0, 5).map((user) => {
-                                return (
-                                  <MuiAvatar
-                                    key={user.user_id}
-                                    src={user.profile_image}
-                                    level={getFullName(
-                                      user.first_name,
-                                      user.last_name,
-                                    )}
-                                    variant='rounded-small'
-                                  />
-                                );
-                              })}
-                            </AvatarGroup>
+                            <>
+                              {/* interview types */}
+                              {mod.users.length ? (
+                                <AvatarGroup
+                                  variant='rounded'
+                                  total={mod.users.length}
+                                  sx={{
+                                    '& .MuiAvatar-root': {
+                                      width: 'var(--space-5)',
+                                      height: 'var(--space-5)',
+                                      fontSize: 12,
+                                    },
+                                  }}
+                                >
+                                  {mod.users.slice(0, 5).map((user) => {
+                                    return (
+                                      <MuiAvatar
+                                        key={user.user_id}
+                                        src={user.profile_image}
+                                        level={getFullName(
+                                          user.first_name,
+                                          user.last_name,
+                                        )}
+                                        variant='rounded-small'
+                                      />
+                                    );
+                                  })}
+                                </AvatarGroup>
+                              ) : (
+                                <ButtonGhost
+                                  textButton='Add members'
+                                  size={1}
+                                  iconName='add'
+                                  isLeftIcon
+                                  onClickButton={{
+                                    onClick: () => {
+                                      setInitalOpen('qualified');
+                                    },
+                                  }}
+                                />
+                              )}
+                            </>
                           }
                           textMembersCount={
                             mod.users.length !== 0

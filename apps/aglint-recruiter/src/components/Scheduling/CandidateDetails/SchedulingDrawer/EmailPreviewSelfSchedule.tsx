@@ -37,9 +37,12 @@ function EmailPreviewSelfSchedule() {
     }));
 
   const selectedSlots = filteredSchedulingOptions
-    .filter((option) =>
-      option.plans.some((plan) => selectedCombIds.includes(plan.plan_comb_id)),
-    )
+    .map((option) => ({
+      ...option,
+      plans: option.plans.filter((plan) =>
+        selectedCombIds.includes(plan.plan_comb_id),
+      ),
+    }))
     .filter((option) => option.plans.length > 1);
 
   const numberOfDays = selectedSlots.length;
@@ -80,6 +83,7 @@ function EmailPreviewSelfSchedule() {
             index={index}
             setSelectedCombIds={() => {}}
             isAutoCollapse={false}
+            isSelectedOptionsTextVisible={false}
           />
         );
       })}
