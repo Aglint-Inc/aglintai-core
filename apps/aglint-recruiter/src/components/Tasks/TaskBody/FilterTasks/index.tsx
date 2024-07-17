@@ -9,16 +9,17 @@ function FilterTasks() {
     filter,
     handelSearch,
     handelFilter,
-    // handelResetFilter
+    handelResetFilter
   } = useTasksContext();
-  const allResetShow = !!Object.values(filter)
-    .map((ele) => ele.values)
-    .flat().length;
+  // const allResetShow = !!Object.values(filter)
+  //   .map((ele) => ele.values)
+  //   .flat().length;
 
   return (
     <FilterHeader
-      // handelResetAll={handelResetFilter}
-      isResetAll={allResetShow}
+      handelResetAll={handelResetFilter}
+      isResetAll={true}
+
       search={{
         value: search,
         setValue: (e) => {
@@ -33,7 +34,6 @@ function FilterTasks() {
           filterSearch: true,
           iconname: 'account_circle',
           searchPlaceholder: 'Search Assignee',
-          multiSelect: false,
           options: [
             { header: 'Agents', options: agentsDetails },
             { header: 'Members', options: filter.assignee.options },
