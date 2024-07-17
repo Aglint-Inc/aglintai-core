@@ -29,6 +29,7 @@ function DayCardWrapper({
   index,
   setSelectedCombIds,
   isAutoCollapse = true,
+  isSelectedOptionsTextVisible = true,
 }: {
   isRadioNeeded: boolean;
   item: MultiDayPlanType;
@@ -43,6 +44,7 @@ function DayCardWrapper({
   index: number;
   setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
   isAutoCollapse?: boolean;
+  isSelectedOptionsTextVisible?: boolean;
 }) {
   const dates = item?.date_range || [];
   const header = dates
@@ -126,10 +128,12 @@ function DayCardWrapper({
           <>
             {!noSlotReasons.length && (
               <>
-                <Text
-                  content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
-                  color={isSelected ? 'accent' : 'neutral'}
-                />
+                {isSelectedOptionsTextVisible && (
+                  <Text
+                    content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
+                    color={isSelected ? 'accent' : 'neutral'}
+                  />
+                )}
                 <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
               </>
             )}
