@@ -3667,6 +3667,39 @@ export type Database = {
         }
         Relationships: []
       }
+      tour: {
+        Row: {
+          created_at: string
+          recruiter_id: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          recruiter_id: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          recruiter_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "tour_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       workflow: {
         Row: {
           auto_connect: boolean
