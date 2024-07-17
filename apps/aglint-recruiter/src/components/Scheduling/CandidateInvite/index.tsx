@@ -3,7 +3,6 @@ import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
-  Alert,
   Container,
   Dialog,
   FormControlLabel,
@@ -31,6 +30,7 @@ import { Page404 } from '@/devlink/Page404';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
 import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
@@ -319,6 +319,10 @@ export const ConfirmedInvitePage = (
     });
   };
 
+  const reasons = cancelReschedulingDetails?.sessions.map(
+    (session) => session.reason,
+  );
+
   return (
     <>
       <Stack
@@ -330,24 +334,25 @@ export const ConfirmedInvitePage = (
           paddingBottom: '24px',
         }}
       >
-        <InterviewConfirmed
-          slotBanner={
-            <>
-              {cancelReschedulingDetails?.all && (
-                <Alert
-                  variant='outlined'
-                  severity='warning'
-                  sx={{
-                    '& .MuiAlert-icon, & .MuiAlert-action': {
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    },
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+        <Stack
+          sx={{
+            backgroundColor: 'white',
+            maxWidth: '760px',
+            width: '100%',
+            marginInline: 'auto',
+            marginTop: '10px',
+            zIndex: '10',
+            transform: 'translateY(50px)',
+          }}
+        >
+          {cancelReschedulingDetails?.all && (
+            <GlobalBanner
+              iconName='info'
+              textTitle=''
+              slotButtons={<></>}
+              color={'info'}
+              textDescription={
+                <>
                   <Typography>
                     {'Request to '}
                     {capitalizeFirstLetter(
@@ -360,10 +365,35 @@ export const ConfirmedInvitePage = (
                       ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
                     {' received.'}
                   </Typography>
-                </Alert>
-              )}
-            </>
-          }
+                  {reasons.length && (
+                    <Typography>
+                      <span style={{ fontWeight: '500' }}>Reason : </span>
+                      {reasons.join(', ')}
+                    </Typography>
+                  )}
+                  {cancelReschedulingDetails.other_details.note && (
+                    <Typography>
+                      <span style={{ fontWeight: '500' }}>
+                        Additional Notes :
+                      </span>
+                      {cancelReschedulingDetails.other_details.note}
+                    </Typography>
+                  )}
+                  <Typography fontWeight={500} marginTop={'5px'}>
+                    Your request to{' '}
+                    {capitalizeFirstLetter(
+                      cancelReschedulingDetails.type == 'declined'
+                        ? 'cancel'
+                        : 'reschedule',
+                    )}{' '}
+                    is pending company review.
+                  </Typography>
+                </>
+              }
+            />
+          )}
+        </Stack>
+        <InterviewConfirmed
           isBannerVisible={Boolean(cancelReschedulingDetails?.all)}
           slotCompanyLogo={
             <Logo companyName={recruiter.name} logo={recruiter.logo} />
