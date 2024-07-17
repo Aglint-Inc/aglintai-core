@@ -507,7 +507,7 @@ function RequestAvailability() {
                           return (
                             <GlobalBadge
                               key={i}
-                              color={'neutral'}
+                              color={'accent'}
                               textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
                             />
                           );
