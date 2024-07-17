@@ -90,9 +90,9 @@ function EmailPreviewSelfSchedule() {
       textEmailPreview={
         <Stack spacing={1} direction={'column'}>
           <Typography>
-            To proceed to self scheduling please click on the button below. Upon
-            doing so, an email containing the following message will be sent to
-            the candidate:
+          This email will be sent to the candidate. To edit the content, go to the template section, make edits, then click refresh.
+          <br/>
+          Click "Request Availability" to send.
           </Typography>
           <Stack direction={'row'} spacing={1} justifyItems={'start'}>
             <ButtonSoft
@@ -126,6 +126,7 @@ function EmailPreviewSelfSchedule() {
             </Stack>
           </ShowCode.When>
           <ShowCode.Else>
+            
             <Stack sx={{ py: 'var(--space-4)' }}>
               <iframe
                 width={'600px'}

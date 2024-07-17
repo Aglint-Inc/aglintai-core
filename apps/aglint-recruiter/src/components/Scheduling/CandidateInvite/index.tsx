@@ -56,6 +56,7 @@ import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
 import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
+import { IconButtonGhost } from '@/devlink';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -417,7 +418,7 @@ export const ConfirmedInvitePage = (
             title={
               cancelReschedule === 'reschedule'
                 ? 'Reschedule'
-                : 'Cancel Schedule'
+                : 'Cancel Interview'
             }
             type={cancelReschedule}
           />
@@ -454,12 +455,23 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
-        slotButton={''}
+        slotButton={
+          <IconButtonGhost
+          color={'neutral'}
+            size={1}
+            iconName={'close'}
+            onClickButton={{
+              onClick: () => {
+                setDetailsPop(false);
+              },
+            }}
+          />
+        }
+        isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-        isSlotButtonVisible={false}
         isTitle={false}
       />
     </Dialog>
@@ -648,7 +660,7 @@ const CancelRescheduleDialog = ({
             )}
             {type === 'cancel' && (
               <ButtonSolid
-                textButton='Cancel Schedule'
+                textButton='Cancel Interview'
                 size={2}
                 color={'error'}
                 onClickButton={{ onClick: handleSubmit }}
