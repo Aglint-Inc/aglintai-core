@@ -33,11 +33,7 @@ function ATSPopUps({
   inputValue: string;
 }) {
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      maxWidth={'md'}
-    >
+    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <IntegrationLoading
@@ -190,35 +186,12 @@ function ATSPopUps({
                   <ShowCode.Else>
                     <Stack direction={'row'} spacing={1} alignItems={'center'}>
                       {popUpBody}
-                      <ShowCode.When
-                        isTrue={
-                          reason === 'update_ashby' ||
-                          reason == 'update_greenhouse' ||
-                          reason === 'update_lever'
-                        }
-                      >
-                        <Stack
-                          onClick={() => {
-                            navigator.clipboard
-                              .writeText(inputValue)
-                              .then(() => {
-                                toast.message('Copied to clipboard.');
-                              });
-                          }}
-                        >
-                          <Icon
-                            width='16px'
-                            height='16px'
-                            variant='CopyTextIcon'
-                          />
-                        </Stack>
-                      </ShowCode.When>
                     </Stack>
                   </ShowCode.Else>
                 </ShowCode>
               </Stack>
             }
-            isGreyButtonVisible = {true}
+            isGreyButtonVisible={true}
             // isGreyButtonVisible={
             //   reason !== 'connect_greenhouse' &&
             //   reason !== 'connect_ashby' &&

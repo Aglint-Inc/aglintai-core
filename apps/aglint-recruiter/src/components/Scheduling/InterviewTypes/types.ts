@@ -32,6 +32,7 @@ export type SchedulingSlice = {
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
+  initalOpen: StatusTraining | null;
 };
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {

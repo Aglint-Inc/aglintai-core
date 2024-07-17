@@ -1,11 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
+import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { AshbyApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby/types';
+
+export const maxDuration = 300;
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -17,9 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const syncToken = req.body.synctoken;
     const apiKey = req.body.apikey;
     const recruiter_id = req.body.recruiter_id;
-    if (!syncToken) {
-      return res.status(200).send('no sync token');
-    }
+    // if (!syncToken) {
+    //   return res.status(200).send('no sync token');
+    // }
     if (!apiKey) {
       return res.status(200).send('no api key');
     }
@@ -29,34 +31,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const fetchedApplications = await fetchAllCandidates(apiKey, syncToken);
 
+    console.log('fetchedApplications no', fetchedApplications.length);
+
     if (!fetchedApplications || fetchedApplications.length === 0) {
       return res.status(200).send('no new applications');
     }
 
-    await Promise.all(
-      fetchedApplications.map(async (application) => {
-        const { data, error } = await supabase
-          .from('application_reference')
-          .select()
-          .eq('ats_json->>id', application.id)
-          .eq('recruiter_id', recruiter_id);
-        if (!error) {
-          if (data && data.length > 0) {
-            await supabase
-              .from('application_reference')
-              .update({ ats_json: application })
-              .eq('ats_json->>id', application.id)
-              .eq('recruiter_id', recruiter_id);
-          } else {
-            await supabase
-              .from('application_reference')
-              .insert({ ats_json: application, recruiter_id: recruiter_id });
-          }
-        }
-      }),
-    );
+    await updateOrInsertApplications(fetchedApplications, recruiter_id);
 
-    return res.status(200).send(fetchedApplications);
+    return res
+      .status(200)
+      .send(`Successfully updated ${fetchedApplications.length} applications`);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
@@ -101,4 +86,51 @@ export const fetchAllCandidates = async (
   }
 
   return allCandidates;
+};
+
+const updateOrInsertApplications = async (
+  fetchedApplications: AshbyApplication[],
+  recruiter_id,
+) => {
+  // const applicationsToUpdate = [];
+  // const applicationsToInsert = [];
+
+  // for (const application of fetchedApplications) {
+  //   const { data, error } = await supabase
+  //     .from('application_reference')
+  //     .select()
+  //     .eq('ats_json->>id', application.id)
+  //     .eq('recruiter_id', recruiter_id);
+
+  //   if (!error) {
+  //     if (data && data.length > 0) {
+  //       applicationsToUpdate.push(application);
+  //     } else {
+  //       applicationsToInsert.push(application);
+  //     }
+  //   }
+  // }
+
+  // if (fetchedApplications.length > 0) {
+  //   const updatePromises = fetchedApplications.map((application) =>
+  //     supabase
+  //       .from('application_reference')
+  //       .update({ ats_json: application })
+  //       .eq('ats_json->>id', application.id)
+  //       .eq('recruiter_id', recruiter_id),
+  //   );
+  //   await Promise.all(updatePromises);
+  // }
+
+  if (fetchedApplications.length > 0) {
+    const upsertApplicationReference: DatabaseTableInsert['application_reference'][] =
+      fetchedApplications.map((app) => ({
+        ats_json: app,
+        recruiter_id: recruiter_id,
+      }));
+
+    await supabase
+      .from('application_reference')
+      .upsert(upsertApplicationReference);
+  }
 };
