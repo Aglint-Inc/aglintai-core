@@ -114,15 +114,17 @@ export function AshbyModalComp() {
         await supabase.from('job_reference').insert(astJobsObj).select();
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
-        // await axios.post('/api/ashby/batchsave', {
-        //   recruiter_id: recruiter.id,
-        // });
+        axios.post('/api/ashby/syncapplications', {
+          apikey: recruiter.ashby_key,
+          synctoken: recruiter.ashby_sync_token,
+          recruiter_id: recruiter.id,
+        });
         //closing modal once done
+        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
         setIntegration((prev) => ({
           ...prev,
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         }));
-        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
       }
     } catch (error) {
       toast.error(
