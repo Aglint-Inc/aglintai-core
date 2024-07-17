@@ -10,7 +10,7 @@ export type CustomPermissions = TableType<
 >;
 
 type DependencyTreeType = {
-  child: string[];
-  parent: string;
-  sibling: string;
+  child: number[];
+  parent: number;
+  sibling: number;
 };
