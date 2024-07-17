@@ -109,6 +109,7 @@ function DateRangeField() {
                 sx={{
                   width: '100%',
                   '& input': {
+                    height:'17px',
                     fontSize: '14px',
                   },
                 }}
@@ -130,6 +131,7 @@ function DateRangeField() {
                 sx={{
                   width: '100%',
                   '& input': {
+                    height:'17px',
                     fontSize: '14px',
                   },
                 }}
