@@ -74,7 +74,7 @@ const Edit = () => {
   const open = Boolean(anchorEl);
 
   return (
-    <WithPermission permission={['workflow_update']}>
+    <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
           <ButtonSoft

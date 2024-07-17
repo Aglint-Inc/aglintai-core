@@ -579,12 +579,7 @@ const app_modules: {
     dependency: 'workflow_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
-    permissions: [
-      'workflow_read',
-      'workflow_create',
-      'workflow_update',
-      'workflow_delete',
-    ],
+    permissions: ['view_workflow', 'manage_workflow'],
   },
 
   // {
