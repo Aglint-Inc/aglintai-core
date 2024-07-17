@@ -51,9 +51,6 @@ const ModuleMembers = () => {
   );
 };
 
-// ModuleMembers.getProvider = function getProvider(page) {
-//   return <SchedulingProvider>{page}</SchedulingProvider>;
-// };
 export default ModuleMembers;
 
 const subTabs: ('training history' | 'instructions' | 'members')[] = [

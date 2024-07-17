@@ -14,6 +14,7 @@ function ModuleMembersComp() {
     data: editModule,
     isLoading: fetchingModule,
     isFetching,
+    refetch,
   } = useModuleAndUsers();
 
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
@@ -46,7 +47,7 @@ function ModuleMembersComp() {
             justifyItems={'center'}
             gap={'var(--space-2)'}
           >
-            <TopRightButtons editModule={editModule} />
+            <TopRightButtons editModule={editModule} refetch={refetch} />
           </Stack>
         }
         slotBody={
@@ -54,6 +55,7 @@ function ModuleMembersComp() {
             editModule={editModule}
             fetchingModule={fetchingModule}
             isFetching={isFetching}
+            refetch={refetch}
           />
         }
       />
