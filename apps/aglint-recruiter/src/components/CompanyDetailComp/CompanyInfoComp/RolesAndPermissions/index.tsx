@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { RecruiterUserType } from '@aglint/shared-types';
+import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
 import {
   Avatar,
   List,
@@ -249,11 +249,13 @@ const useRoleAndPermissions = () => {
           const tempData = structuredClone(prevData);
           tempData.rolesAndPermissions[role_id].permissions =
             tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              const temp = resData.addedPermissions.find(
-                (added) => added.id == item.id,
-              );
-              if (temp) {
-                item = { ...item, ...temp, isActive: true };
+              if (resData.addedPermissions?.length) {
+                const temp = resData.addedPermissions.find(
+                  (added) => added.id == item.id,
+                );
+                if (temp) {
+                  item = { ...item, ...temp, isActive: true };
+                }
               }
               if (toDelete === item.relation_id) {
                 item = { ...item, relation_id: null, isActive: false };
@@ -288,8 +290,8 @@ const useRoleAndPermissions = () => {
 
   const handelSelectRole = (role_id: string) => {
     setSelectRole(role_id);
-    const role = (role_id = query.data?.rolesAndPermissions[role_id].name);
-    role && setQueryParams({ role });
+    const role = query.data?.rolesAndPermissions[role_id]?.name || null;
+    setQueryParams({ role });
   };
   return {
     role,
@@ -367,18 +369,21 @@ function RoleDetails({
             onClickButton={{ onClick: back }}
           />
         }
-        slotBanner={  <>  
-          {role.name === 'admin' && (
-          <GlobalBannerInline
-            color={'info'}
-            textContent={'You cannot edit the primary admin role permissions.'}
-            slotButton={<></>}
-          />
-        )}
-        </>}
+        slotBanner={
+          <>
+            {role.name === 'admin' && (
+              <GlobalBannerInline
+                color={'info'}
+                textContent={
+                  'You cannot edit the primary admin role permissions.'
+                }
+                slotButton={<></>}
+              />
+            )}
+          </>
+        }
         slotPermissions={
           <>
-        
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => {
                 return (
@@ -476,7 +481,7 @@ const app_modules: {
   name: string;
   description: string;
   dependency: string;
-  permissions: string[];
+  permissions: DatabaseTable['permissions']['name'][];
 }[] = [
   {
     name: 'Enable or Disable Apps',
@@ -484,12 +489,12 @@ const app_modules: {
     description:
       'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
     permissions: [
-      'tasks_enabled',
-      'jobs_enabled',
-      'scheduler_enabled',
-      'workflow_enabled',
-      'integrations_enabled',
-      'company_setting_enabled',
+      'job_module',
+      'task_module',
+      'scheduling_module',
+      'workflow_module',
+      'integrations_module',
+      'company_settings_module',
       // 'assessment_enabled',
       // 'phone_screening_enabled',
       // 'sourcing_enabled',
@@ -498,58 +503,28 @@ const app_modules: {
   },
   {
     name: 'Tasks Application Permissions',
-    dependency: 'tasks_enabled',
+    dependency: 'task_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
-    permissions: ['tasks_read', 'tasks_create', 'tasks_update', 'tasks_delete'],
+    permissions: ['view_all_task'],
   },
   {
     name: 'Jobs Application Permissions',
-    dependency: 'jobs_enabled',
+    dependency: 'job_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
-    permissions: [
-      'jobs_read',
-      'jobs_create',
-      'jobs_update',
-      'jobs_publish',
-      'jobs_unpublish',
-      'jobs_archive',
-      'jobs_restore',
-      'jobs_delete',
-      'candidates_read',
-      'candidates_add',
-      'candidates_delete',
-      'profileScore_view',
-      'candidates_moveStage',
-      // 'candidates_update',
-      'jobs_assignHiringManager',
-      'jobs_assignRecruiter',
-      'jobs_assignCoordinator',
-      'jobs_assignSourcer',
-      // 'profileScore_update',
-    ],
+    permissions: ['job_module', 'manage_job'],
   },
   {
-    name: 'Scheduling  Application Permissions',
-    dependency: 'scheduler_enabled',
+    name: 'Scheduling Application Permissions',
+    dependency: 'scheduling_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
     permissions: [
-      'scheduler_read',
-      'scheduler_create',
-      'scheduler_update',
-      'scheduler_delete',
-      'scheduler_request_availability',
-      'scheduler_send_scheduling',
-      'interviews_read',
-      'interviews_update',
-      'interviews_delete',
-      'scheduler_interview_types_create',
-      'scheduler_interview_types_read',
-      'scheduler_interview_types_update',
-      'scheduler_interviewer_edit',
-      'settings_scheduler_update',
+      'interview_types',
+      'scheduling_actions',
+      'manage_interviewers',
+      'scheduling_settings_and_reports',
     ],
   },
   // {
@@ -576,15 +551,10 @@ const app_modules: {
 
   {
     name: 'Workflows Application Permissions',
-    dependency: 'workflow_enabled',
+    dependency: 'workflow_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
-    permissions: [
-      'workflow_read',
-      'workflow_create',
-      'workflow_update',
-      'workflow_delete',
-    ],
+    permissions: ['workflow_module', 'manage_workflow'],
   },
 
   // {
@@ -603,23 +573,16 @@ const app_modules: {
   // },
   {
     name: 'Company Settings Permissions',
-    dependency: 'company_setting_enabled',
+    dependency: 'company_settings_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Company Settings',
     permissions: [
-      'settings_view',
-      'settings_update',
-      'settings_company_enable',
-      'settings_company_update',
-      'settings_roles_enable',
-      'settings_roles_update',
-      'team_enabled',
-      'team_read',
-      'team_create',
-      'team_update',
-      'team_delete',
-      'settings_team_enable',
-      'settings_team_update',
+      'view_company',
+      'manage_company',
+      'view_roles',
+      'manage_roles',
+      'view_users',
+      'manage_users',
     ],
   },
 ];
