@@ -224,6 +224,7 @@ const AuthProvider = ({ children }) => {
           : null,
 
         created_by: recruiterRel.created_by,
+        recruiter_relation_id: recruiterRel.id,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
@@ -294,6 +295,7 @@ const AuthProvider = ({ children }) => {
         last_login: details.last_login,
         created_by: details.created_by,
         role_id: details.role_id,
+        recruiter_relation_id: recruiterUser.recruiter_relation_id,
       });
       return true;
     } else {

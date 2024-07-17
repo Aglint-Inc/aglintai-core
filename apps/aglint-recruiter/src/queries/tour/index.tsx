@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   queryOptions,
   useMutation,
@@ -9,9 +9,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { appKey } from '..';
 
-type TourQuery = {
-  user_id?: string;
-};
+type TourQuery = Pick<DatabaseTable['tour'], 'recruiter_relation_id'>;
 
 const tourKey = 'tour';
 
@@ -19,21 +17,21 @@ export const tourQuery = {
   all: () => ({
     queryKey: [appKey, tourKey] as const,
   }),
-  tours: (user_id?: TourQuery['user_id']) =>
+  tours: (recruiter_relation_id?: TourQuery['recruiter_relation_id']) =>
     queryOptions({
       queryKey: [...tourQuery.all().queryKey],
-      queryFn: () => getTours({ user_id }),
-      enabled: !!user_id,
+      queryFn: () => getTours({ recruiter_relation_id }),
+      enabled: !!recruiter_relation_id,
     }),
 };
 
-const getTours = async ({ user_id }: TourQuery) =>
+const getTours = async ({ recruiter_relation_id }: TourQuery) =>
   (
     (
       await supabase
         .from('tour')
         .select('type')
-        .eq('user_id', user_id)
+        .eq('recruiter_relation_id', recruiter_relation_id)
         .throwOnError()
     ).data ?? []
   ).map(({ type }) => type);

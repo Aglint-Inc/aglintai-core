@@ -147,6 +147,7 @@ export interface RecruiterUserType extends TempRecruiterUser {
     position: string;
   };
   created_by: string;
+  recruiter_relation_id: number;
 }
 
 export type RoleType = {
