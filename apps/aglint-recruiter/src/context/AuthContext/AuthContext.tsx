@@ -166,11 +166,14 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
+      console.log('Asdasd');
 
       if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
+      console.log(err);
+
       router.push(ROUTES['/login']());
       handleLogout();
     }
@@ -238,6 +241,8 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleLogout = async () => {
+    console.log('logging out');
+
     const { error } = await supabase.auth.signOut({
       scope: 'local',
     });
