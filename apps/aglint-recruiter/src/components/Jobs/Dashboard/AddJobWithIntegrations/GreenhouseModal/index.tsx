@@ -16,7 +16,7 @@ import { LeverApiKey } from '@/devlink/LeverApiKey';
 import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import DarkPill  from '@/devlink3/DarkPill';
+import { DarkPill } from '@/devlink3/DarkPill';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
