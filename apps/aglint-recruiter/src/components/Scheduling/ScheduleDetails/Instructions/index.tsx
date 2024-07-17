@@ -47,6 +47,7 @@ function Instructions({
           slotPopup={
             <Stack
               sx={{
+                border:'1px solid var(--neutral-6)',
                 // margin: '20px',
                 maxWidth: '800px',
                 minWidth: '800px',
