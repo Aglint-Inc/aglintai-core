@@ -169,7 +169,7 @@
 
 .gsc-slot-candidate {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
