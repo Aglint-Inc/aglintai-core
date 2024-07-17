@@ -209,8 +209,7 @@ const AuthProvider = ({ children }) => {
         CompanyId: recruiterRel.recruiter.id,
       });
       const recruiterUser = recruiterRel.recruiter_user;
-      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
-        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
+
       setRecruiterUser({
         ...recruiterUser,
         role: recruiterRel.roles.name,
@@ -222,7 +221,6 @@ const AuthProvider = ({ children }) => {
               position: recruiterRel.manager_details.position,
             }
           : null,
-
         created_by: recruiterRel.created_by,
       });
       setRecruiter({
