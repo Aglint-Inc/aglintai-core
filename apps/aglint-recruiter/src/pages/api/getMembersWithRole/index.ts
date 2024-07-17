@@ -40,7 +40,7 @@ const getMembers = (id: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      'role_id, manager_id, created_by,recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name)',
+      'id, role_id, manager_id, created_by,recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name)',
     )
     .eq('recruiter_id', id)
     .then(({ data, error }) => {
@@ -51,6 +51,7 @@ const getMembers = (id: string) => {
         role: item.roles?.name,
         role_id: item.role_id,
         manager_id: item.manager_id,
+        recruiter_relation_id: item.id,
       }));
     });
 };
