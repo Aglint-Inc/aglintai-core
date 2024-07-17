@@ -8,6 +8,7 @@ import { InterviewModePill } from '@/devlink2/InterviewModePill';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
+import { GlobalIcon } from '@/devlink3/GlobalIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import {
@@ -41,6 +42,7 @@ function SideDrawerEdit() {
     isEditOpen: state.isEditOpen,
     members: state.members,
   }));
+
   const interviewModules = useInterviewModules();
 
   const {
@@ -61,6 +63,12 @@ function SideDrawerEdit() {
     errorValidation: state.errorValidation,
   }));
 
+  const filterArchivedModules = interviewModules?.data?.filter(
+    (module) =>
+      editSession?.interview_session.module_id === module.id ||
+      !module.is_archived,
+  );
+
   const { handleClose, handleSave } = useEditSession();
 
   let optionsInterviewers = [];
@@ -71,7 +79,7 @@ function SideDrawerEdit() {
     start_icon_url: member.profile_image,
   }));
 
-  const moduleCurrent = interviewModules?.data?.find(
+  const moduleCurrent = filterArchivedModules?.find(
     (module) => module.id === editSession?.interview_session.module_id,
   );
 
@@ -238,7 +246,7 @@ function SideDrawerEdit() {
                         select
                         value={editSession.interview_session.module_id}
                       >
-                        {interviewModules?.data?.map((module) => (
+                        {filterArchivedModules?.map((module) => (
                           <MenuItem
                             value={module.id}
                             key={module.id}
@@ -254,7 +262,16 @@ function SideDrawerEdit() {
                               setTrainingToggle(false);
                             }}
                           >
-                            {capitalize(module.name)}
+                            <Stack
+                              direction={'row'}
+                              spacing={1}
+                              alignItems={'center'}
+                            >
+                              <Stack>{capitalize(module.name)}</Stack>
+                              {module.is_archived && (
+                                <GlobalIcon iconName={'archive'} size={4} />
+                              )}
+                            </Stack>
                           </MenuItem>
                         ))}
                       </TextField>
@@ -381,7 +398,7 @@ function SideDrawerEdit() {
                         )
                       }
                       slotInterviewersDropdown={
-                        optionsInterviewers.length === 0 ? (
+                        moduleCurrent?.members.length === 0 ? (
                           <UITextField
                             value='Please add members to the interview type'
                             disabled

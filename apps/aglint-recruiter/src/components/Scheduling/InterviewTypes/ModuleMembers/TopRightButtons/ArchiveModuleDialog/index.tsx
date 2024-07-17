@@ -1,6 +1,5 @@
-import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { Dialog, Stack, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -9,32 +8,52 @@ import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { QueryKeysInteviewModules } from '../../../queries/type';
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
 
-function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
+function ArchiveModuleDialog({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const isArchiveDialogOpen = useModulesStore(
     (state) => state.isArchiveDialogOpen,
   );
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const queryClient = useQueryClient();
+  const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    setValue('');
+    setErrors([]);
+  }, [isArchiveDialogOpen]);
 
   const archiveModule = async () => {
     if (!loading) {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('interview_meeting')
-          .select('*,interview_session!inner(*)')
-          .eq('interview_session.module_id', editModule.id);
+          .from('interview_session')
+          .select(
+            '*,interview_meeting(*),interview_plan(public_jobs(id,job_title))',
+          )
+          .eq('module_id', editModule.id);
+
+        const connectedJobs: string[] = data
+          .filter((ses) => !!ses.interview_plan_id)
+          .map((ses) => ses.interview_plan?.public_jobs?.job_title);
+
+        const uniqueJobs = [...new Set(connectedJobs)];
 
         const isActiveMeeting = data.some(
-          (meet) => meet.start_time > new Date().toISOString(),
+          (meet) =>
+            meet.interview_meeting.status === 'confirmed' ||
+            meet.interview_meeting.status === 'waiting',
         );
 
-        if (!isActiveMeeting) {
+        if (!isActiveMeeting && uniqueJobs.length === 0) {
           const { error } = await supabase
             .from('interview_module')
             .update({
@@ -42,32 +61,33 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
             })
             .eq('id', editModule.id);
           if (!error) {
-            const updatedEditModule = {
-              ...editModule,
-              is_archived: true,
-            } as ModuleType;
-            queryClient.setQueryData<ModuleType>(
-              QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-                moduleId: editModule.id,
-              }),
-              {
-                ...updatedEditModule,
-              },
-            );
+            refetch();
             toast.success('Interview type archived successfully.');
+            setIsArchiveDialogOpen(false);
           } else {
             throw new Error();
           }
         } else {
-          toast.warning(
-            'Cannot archive interview type; active schedules are present for this type.',
-          );
+          if (uniqueJobs.length) {
+            uniqueJobs.map((job) => {
+              errors.push(
+                `Remove this type from  ${job} job's interview plan.`,
+              );
+            });
+          }
+
+          if (isActiveMeeting) {
+            errors.push(
+              'Please wait until the ongoing schedules are completed to archive this interview type.',
+            );
+          }
+
+          setErrors([...errors]);
         }
       } catch {
         toast.error('Error archiving interview type.');
       } finally {
         setLoading(false);
-        setIsArchiveDialogOpen(false);
       }
     } else {
       toast.warning('Please wait until the ongoing process is complete.');
@@ -116,12 +136,21 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
         }
         textLocation={moduleDescription}
         slotInput={
-          <UITextField
-            disabled={loading}
-            placeholder={moduleName}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
+          <Stack spacing={1}>
+            <UITextField
+              disabled={loading}
+              placeholder={moduleName}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            {errors.map((error, index) => (
+              <li key={index}>
+                <Typography key={index} variant='caption'>
+                  {error}
+                </Typography>
+              </li>
+            ))}
+          </Stack>
         }
       />
     </Dialog>

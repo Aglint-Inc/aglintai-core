@@ -27,9 +27,9 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('interview_meeting')
-          .select('*,interview_session!inner(*)')
-          .eq('interview_session.module_id', editModule.id);
+          .from('interview_session')
+          .select('*')
+          .eq('module_id', editModule.id);
 
         if (data.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
@@ -41,7 +41,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           }
         } else {
           toast.warning(
-            'Cannot delete interview type; it is being used in interview plans.',
+            'Cannot delete interview type as it is connected to some schedules.',
           );
         }
       } catch {
