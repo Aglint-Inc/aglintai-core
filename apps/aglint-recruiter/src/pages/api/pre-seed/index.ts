@@ -7,6 +7,9 @@ import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { seed_email_templates } from '@/src/utils/seedCompanyData/seed_email_templates';
+import { seed_workflow_actions } from '@/src/utils/seedCompanyData/seed_workflow';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type apiPreSeed = {
   request: {
@@ -35,13 +38,16 @@ export default async function handler(
       const { record } = body;
       const recruiter_id = record.id;
       if (!recruiter_id) throw new Error('recruiter_id missing!!');
-      await seedRolesAndPermissions(recruiter_id);
+      // await seedRolesAndPermissions(recruiter_id); /// seed roles err
+      const comp_templates = await seedCompTemplate(recruiter_id);
+      await seedWorkFlow(recruiter_id, comp_templates);
       return { success: true };
     },
     ['record'],
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 async function seedRolesAndPermissions(rec_id: string) {
   const tempRoles = await createRoles(rec_id);
   const tempPermissions = await getPermissions();
@@ -121,3 +127,50 @@ async function createRolePermissions(
 ) {
   return supabase.from('role_permissions').insert(data).throwOnError().then();
 }
+
+const seedCompTemplate = async (recruiter_id) => {
+  const { data: all_templates } = await supabaseAdmin
+    .from('company_email_template')
+    .insert(
+      seed_email_templates.map((t) => ({
+        ...t,
+        recruiter_id: recruiter_id,
+      })),
+    )
+    .throwOnError();
+  return all_templates;
+};
+
+const seedWorkFlow = async (
+  recruiter_id: string,
+  company_email_template: DatabaseTable['company_email_template'][],
+) => {
+  const promies = seed_workflow_actions.map(async (work_flow_act) => {
+    const {
+      data: [workflow],
+    } = await supabaseAdmin
+      .from('workflow')
+      .insert({
+        phase: work_flow_act.workflow.phase,
+        trigger: work_flow_act.workflow.trigger,
+        auto_connect: work_flow_act.workflow.auto_connect,
+        description: work_flow_act.workflow.description,
+        interval: work_flow_act.workflow.interval,
+        title: work_flow_act.workflow.title,
+        recruiter_id,
+      })
+      .select();
+    await supabaseAdmin.from('workflow_action').insert(
+      work_flow_act.actions.map((action) => ({
+        order: action.order,
+        work_flow_id: workflow.id,
+        email_template_id: company_email_template.find(
+          (temp) => temp.type === action.template_type,
+        ).id,
+      })),
+    );
+    //
+  });
+
+  await Promise.all(promies);
+};
