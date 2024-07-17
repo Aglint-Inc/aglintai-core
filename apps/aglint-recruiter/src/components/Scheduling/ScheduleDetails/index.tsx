@@ -242,6 +242,7 @@ function SchedulingViewComp() {
                         sessionRelation={sessionRelation}
                         refetch={refetch}
                         setIsDeclineOpen={setIsDeclineOpen}
+                        setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                       />
                     )}
                     <Overview schedule={schedule} />
@@ -337,9 +338,7 @@ function SchedulingViewComp() {
               <ButtonGroup
                 setIsCancelOpen={setIsCancelOpen}
                 isMeetingJobHiringTeam={isMeetingJobHiringTeam}
-                cancelReasons={cancelReasons}
                 schedule={schedule}
-                setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                 setIsRescheduleOpen={setIsRescheduleOpen}
               />
             }

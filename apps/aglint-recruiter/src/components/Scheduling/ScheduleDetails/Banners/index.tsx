@@ -13,6 +13,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import {
+  setDateRange,
   setIsScheduleNowOpen,
   setStepScheduling,
 } from '../../CandidateDetails/SchedulingDrawer/store';
@@ -33,6 +34,7 @@ interface CancelReasonCardsProps {
   refetch: () => void;
   sessionRelation: DatabaseTable['interview_session_relation'];
   setIsDeclineOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsRequestRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Banners({
@@ -46,6 +48,7 @@ function Banners({
   refetch,
   sessionRelation,
   setIsDeclineOpen,
+  setIsRequestRescheduleOpen,
 }: CancelReasonCardsProps) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -75,6 +78,21 @@ function Banners({
 
   const isConfirmed = schedule.interview_meeting.status === 'confirmed';
 
+  // if logged in user is an interviewer in this session
+  const isRequestRescheduleButtonVisible =
+    schedule?.users?.find(
+      (user) =>
+        user.interview_session_relation.is_confirmed &&
+        user.email === recruiterUser.email &&
+        user.interview_session_relation.training_type === 'qualified',
+    ) &&
+    !cancelReasons?.some(
+      (item) =>
+        item.recruiter_user.id === recruiterUser.user_id &&
+        !item.interview_session_cancel.is_resolved,
+    ) &&
+    schedule?.interview_meeting?.status === 'confirmed';
+
   return (
     <Stack spacing={'var(--space-4)'}>
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
@@ -94,6 +112,18 @@ function Banners({
                   onClickButton={{
                     onClick: () => {
                       setIsDeclineOpen(true);
+                    },
+                  }}
+                />
+              )}
+              {isRequestRescheduleButtonVisible && (
+                <ButtonSoft
+                  color={'accent'}
+                  size={1}
+                  textButton={'Request Reschedule'}
+                  onClickButton={{
+                    onClick: () => {
+                      setIsRequestRescheduleOpen(true);
                     },
                   }}
                 />
@@ -267,6 +297,19 @@ function Banners({
                           onClickButton={{
                             onClick: () => {
                               setIsScheduleNowOpen(true);
+                              if (
+                                item.interview_session_cancel?.other_details
+                                  ?.dateRange?.start
+                              ) {
+                                setDateRange({
+                                  start_date:
+                                    item.interview_session_cancel.other_details
+                                      .dateRange.start,
+                                  end_date:
+                                    item.interview_session_cancel.other_details
+                                      .dateRange.end,
+                                });
+                              }
                               setRescheduleSessionIds([
                                 schedule.interview_session.id,
                               ]);
