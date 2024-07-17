@@ -43,9 +43,9 @@ function TaskPopups() {
         selectedTasks[0].assignee[0] !== EmailAgentId &&
         selectedTasks[0].assignee[0] !== PhoneAgentId && (
           <GlobalBannerShort
+          color={'warning'}
             textTitle={`Task created for scheduling ${selectedTasks[0].session_ids.map((ele) => `${ele.name}`)}`}
             textDescription={''}
-            color={'warning'}
             iconName={'schedule'}
             slotButtons={
               <>

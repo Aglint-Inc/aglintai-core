@@ -6,8 +6,10 @@ import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
@@ -159,8 +161,28 @@ const TeamManagement = () => {
     Boolean(selectedRoles.length) ||
     Boolean(selectedLocations.length);
   return (
-    <>
+    <Stack bgcolor={'white'}>
       <TeamUsersList
+        slotBanner={
+          <GlobalBannerInline
+            iconName='history'
+            textContent='You currently have four pending invites awaiting your response.'
+            color={'warning'}
+            slotButton={
+              <ButtonSoft
+                onClickButton={{
+                  onClick: () => {
+                    setSelectedStatus(['invited']);
+                    // setOpenDrawer({ open: true, window: 'pendingMember' });
+                  },
+                }}
+                textButton='View pending invites'
+                color={'accent'}
+                size={2}
+              />
+            }
+          />
+        }
         slotSearchAndFilter={
           <>
             <Stack marginRight={5}>
@@ -292,12 +314,12 @@ const TeamManagement = () => {
           />
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        onClickViewPendingInvites={{
-          onClick: () => {
-            setSelectedStatus(['invited']);
-            // setOpenDrawer({ open: true, window: 'pendingMember' });
-          },
-        }}
+        // onClickViewPendingInvites={{
+        //   onClick: () => {
+        //     setSelectedStatus(['invited']);
+        //     // setOpenDrawer({ open: true, window: 'pendingMember' });
+        //   },
+        // }}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
         )} pending invites awaiting your response.`}
@@ -331,7 +353,7 @@ const TeamManagement = () => {
           }}
         />
       )}
-    </>
+    </Stack>
   );
 };
 

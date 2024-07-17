@@ -123,14 +123,18 @@ function SchedulingViewComp() {
     DatabaseTable['interview_session_relation'] | null
   >();
 
+  const confirmedUsers = schedule?.users?.filter(
+    (user) => user.interview_session_relation.is_confirmed,
+  );
+
   useEffect(() => {
-    if (schedule?.users) {
+    if (confirmedUsers?.length > 0) {
       setSessionRelation(
-        schedule?.users?.find((user) => user.email === recruiterUser.email)
+        confirmedUsers.find((user) => user.email === recruiterUser.email)
           ?.interview_session_relation,
       );
     }
-  }, [schedule?.users]);
+  }, [confirmedUsers]);
   // if logged in user is interviewer session relation will be there or else null
 
   useEffect(() => {
@@ -238,6 +242,7 @@ function SchedulingViewComp() {
                         sessionRelation={sessionRelation}
                         refetch={refetch}
                         setIsDeclineOpen={setIsDeclineOpen}
+                        setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                       />
                     )}
                     <Overview schedule={schedule} />
@@ -333,9 +338,7 @@ function SchedulingViewComp() {
               <ButtonGroup
                 setIsCancelOpen={setIsCancelOpen}
                 isMeetingJobHiringTeam={isMeetingJobHiringTeam}
-                cancelReasons={cancelReasons}
                 schedule={schedule}
-                setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                 setIsRescheduleOpen={setIsRescheduleOpen}
               />
             }

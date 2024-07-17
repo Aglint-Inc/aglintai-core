@@ -46,11 +46,15 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   selUser: null,
   pause_json: { isManual: true, start_date: '', end_date: '' },
   trainingStatus: 'qualified',
+  initalOpen: null,
 };
 
 export const useModulesStore = create<SchedulingSlice>()(
   () => initialStateSchedulingStore,
 );
+
+export const setInitalOpen = (initalOpen: StatusTraining | null) =>
+  useModulesStore.setState({ initalOpen });
 
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
   useModulesStore.setState({ isCreateDialogOpen });

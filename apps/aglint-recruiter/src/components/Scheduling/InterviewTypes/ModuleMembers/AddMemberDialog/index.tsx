@@ -1,5 +1,5 @@
 import { Dialog } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -10,6 +10,7 @@ import { useAddMemberHandler } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
+  setTrainingStatus,
   useModulesStore,
 } from '../../store';
 import { ModuleType } from '../../types';
@@ -22,6 +23,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   );
   const selectedUsers = useModulesStore((state) => state.selectedUsers);
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
+  const initalOpen = useModulesStore((state) => state.initalOpen);
 
   const { addMemberHandler } = useAddMemberHandler();
 
@@ -48,6 +50,14 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
       setLoading(false);
     }
   };
+
+  //add member button directly open dialog to add member
+  useEffect(() => {
+    if (initalOpen) {
+      setIsAddMemberDialogOpen(Boolean(initalOpen));
+      setTrainingStatus(initalOpen);
+    }
+  }, []);
 
   return (
     <Dialog

@@ -121,9 +121,9 @@ function RequestAvailability() {
     DatabaseTable['candidate_request_availability']['availability']
   >({
     day_offs: false,
-    free_keywords: false,
+    free_keywords: true,
     outside_work_hours: false,
-    recruiting_block_keywords: false,
+    recruiting_block_keywords: true,
   });
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
@@ -269,15 +269,14 @@ function RequestAvailability() {
 
       if (scheduleFlow === 'create_request_availibility') {
         const result = await insertCandidateRequestAvailability({
-          application_id: selectedApplication.id,
-          recruiter_id: recruiter.id,
-          availability: availability,
-          date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
-          is_task_created: markCreateTicket,
-          number_of_days: selectedDays.value,
-          number_of_slots: selectedSlots.value,
-
-          total_slots: null,
+          application_id: String(selectedApplication.id), //31241608-082e-4a8b-ac72-5957148aa604
+          recruiter_id: String(recruiter.id), //1a12a488-c3f3-462b-8b3b-ea429e4f7fdc
+          // availability: availability,
+          // date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
+          // is_task_created: markCreateTicket,
+          // number_of_days: selectedDays.value,
+          // number_of_slots: selectedSlots.value,
+          // total_slots: null,
         });
         setRequestDetails(result);
         await supabase.from('request_session_relation').insert(
