@@ -66,11 +66,11 @@ function EmailPreview({
       textEmailPreview={
         <Stack spacing={1} direction={'column'}>
           <Typography>
-          This email will be sent to the candidate. To edit the content, go to the template section, make edits, then click refresh.
-          <br/>
-          Click "Request Availability" to send.
+            This email will be sent to the candidate. To edit the content, go to
+            the template section, make edits, then click refresh.
+            <br />
+            {`Click "Request Availability" to send.`}
           </Typography>
-          
         </Stack>
       }
       slotButton={
@@ -103,29 +103,35 @@ function EmailPreview({
             </Stack>
           </ShowCode.When>
           <ShowCode.Else>
-            
-          <Stack direction={'row'} spacing={1} justifyItems={'start'} position={'absolute'} top={'10px'} right={'10px'}>
-            <ButtonSoft
-              size={1}
-              textButton={'Edit Email Template'}
-              color={'accent'}
-              onClickButton={{
-                onClick: () => {
-                  window.open(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
-                  );
-                },
-              }}
-            />
-            <IconButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'refresh'}
-              onClickButton={{
-                onClick: getEmail,
-              }}
-            />
-          </Stack>
+            <Stack
+              direction={'row'}
+              spacing={1}
+              justifyItems={'start'}
+              position={'absolute'}
+              top={'10px'}
+              right={'10px'}
+            >
+              <ButtonSoft
+                size={1}
+                textButton={'Edit Email Template'}
+                color={'accent'}
+                onClickButton={{
+                  onClick: () => {
+                    window.open(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
+                    );
+                  },
+                }}
+              />
+              <IconButtonSoft
+                size={1}
+                color={'neutral'}
+                iconName={'refresh'}
+                onClickButton={{
+                  onClick: getEmail,
+                }}
+              />
+            </Stack>
             <iframe
               width={'600px'}
               height={'720px'}
@@ -133,7 +139,6 @@ function EmailPreview({
               srcDoc={emailData?.html}
               title='Previw Email'
             />
-          
           </ShowCode.Else>
         </ShowCode>
       }
