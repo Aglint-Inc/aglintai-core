@@ -2,6 +2,7 @@ import { Popover, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { MoreMenu } from '@/devlink3/MoreMenu';
 import toast from '@/src/utils/toast';
@@ -10,6 +11,7 @@ import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsArchiveDialogOpen,
   setIsDeleteModuleDialogOpen,
+  setIsSettingsDialogOpen,
 } from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
@@ -39,8 +41,16 @@ function TopRightButtons({ editModule }: { editModule: ModuleType }) {
         <DeleteModuleDialog editModule={editModule} />
         <ArchiveModuleDialog editModule={editModule} />
 
-        <Stack onClick={handleClick}>
+        <Stack flexDirection={'row'} gap={'var(--space-2)'}>
+          <ButtonSolid
+            textButton='Edit Interview Type'
+            size={2}
+            onClickButton={{
+              onClick: () => setIsSettingsDialogOpen(true),
+            }}
+          />
           <IconButtonGhost
+            onClickButton={{ onClick: handleClick }}
             iconName='more_vert'
             size={2}
             iconSize={6}

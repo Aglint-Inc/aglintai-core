@@ -17,11 +17,7 @@ import {
   useGetMeetingsByModuleId,
   useModuleAndUsers,
 } from '../../queries/hooks';
-import {
-  setIsAddMemberDialogOpen,
-  setIsSettingsDialogOpen,
-  setTrainingStatus,
-} from '../../store';
+import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
@@ -128,11 +124,6 @@ function SlotBodyComp({
       ) : (
         editModule && (
           <InterviewMemberList
-            onClickEdit={{
-              onClick: () => {
-                setIsSettingsDialogOpen(true);
-              },
-            }}
             slotNewTabPill={
               <Stack direction={'row'}>
                 {tabsModuleMembers.map((tab) => {
