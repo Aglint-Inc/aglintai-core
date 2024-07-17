@@ -78,4 +78,5 @@ export type permissionsEnum =
   | "update_debrief_defaults"
   | "view_scheduling_reports"
   | "scheduling_settings_and_reports"
-  | "scheduling_module";
+  | "scheduling_module"
+  | "view_all_task";

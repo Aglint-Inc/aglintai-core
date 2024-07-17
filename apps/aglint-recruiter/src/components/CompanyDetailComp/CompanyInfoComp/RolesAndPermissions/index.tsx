@@ -506,7 +506,13 @@ const app_modules: {
     dependency: 'task_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
-    permissions: ['task_read', 'task_create', 'task_update', 'task_delete'],
+    permissions: [
+      'task_read',
+      'task_create',
+      'task_update',
+      'task_delete',
+      'view_all_task',
+    ],
   },
   {
     name: 'Jobs Application Permissions',
@@ -526,7 +532,6 @@ const app_modules: {
       'candidates_add',
       'candidates_delete',
       'profile_score_view',
-      'candidates_move_stage',
       // 'candidates_update',
       'job_assign_hiring_manager',
       'job_assign_recruiter',
