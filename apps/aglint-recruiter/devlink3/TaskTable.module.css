@@ -219,11 +219,6 @@
   cursor: pointer;
 }
 
-.div-block-1453 {
-  position: relative;
-  z-index: 2;
-}
-
 .slot_tasktablecard {
   overflow: auto;
   height: calc(100vh - 176px);
