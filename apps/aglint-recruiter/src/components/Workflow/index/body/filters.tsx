@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useWorkflows } from '@/src/context/Workflows';
@@ -10,7 +10,7 @@ import {
   WorkflowStore,
 } from '../../../../context/Workflows/store';
 
-const Filters = () => {
+const Filters = memo(() => {
   const { workflowJobFilter } = useWorkflows();
   const {
     filters: { search, ...filters },
@@ -59,7 +59,8 @@ const Filters = () => {
     [safeFilters, search],
   );
   return component;
-};
+});
+Filters.displayName = 'Filters';
 
 export default Filters;
 

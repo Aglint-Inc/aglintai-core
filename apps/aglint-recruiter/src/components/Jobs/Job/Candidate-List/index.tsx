@@ -57,26 +57,7 @@ const ApplicationsComponent = () => {
       <JobDetails
         isImportCandidates={false}
         isFetchingPillVisible={false}
-        slotRefresh={
-          applicationScoringPollEnabled && (
-            <ScoreSetting
-              textScoreCount={`${
-                job?.processing_count.processed +
-                job?.processing_count.unavailable +
-                job?.processing_count.unparsable
-              }/${total ?? '---'}`}
-              slotScoringLoader={
-                <Stack sx={{ width: '12px', aspectRatio: 1 }}>
-                  <CircularProgress
-                    color='inherit'
-                    size={'100%'}
-                    sx={{ color: 'var(--white)' }}
-                  />
-                </Stack>
-              }
-            />
-          )
-        }
+        slotRefresh={<></>}
         slotShowFilterButton={<></>}
         slotLoadingLottie={
           <CircularProgress
@@ -89,7 +70,25 @@ const ApplicationsComponent = () => {
         }
         slotBreadcrumb={<BreadCrumbs />}
         slotGlobalBanner={
-          <>
+          <Stack direction={'row'} alignItems={'center'} gap={2}>
+            {applicationScoringPollEnabled && (
+              <ScoreSetting
+                textScoreCount={`${
+                  job?.processing_count.processed +
+                  job?.processing_count.unavailable +
+                  job?.processing_count.unparsable
+                }/${total ?? '---'}`}
+                slotScoringLoader={
+                  <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                    <CircularProgress
+                      color='inherit'
+                      size={'100%'}
+                      sx={{ color: 'var(--white)' }}
+                    />
+                  </Stack>
+                }
+              />
+            )}
             {job?.status !== 'closed' && (
               <ButtonSoft
                 size={2}
@@ -110,7 +109,7 @@ const ApplicationsComponent = () => {
                 }
               />
             )}
-          </>
+          </Stack>
         }
         slotTabs={<Tabs />}
         slotTable={<Table />}

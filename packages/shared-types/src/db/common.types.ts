@@ -1,7 +1,7 @@
 import { Database, Tables } from "./schema.types";
 import { Type } from "./utils.types";
 
-export type   CustomMembersMeta = {
+export type CustomMembersMeta = {
   [id in
     | keyof Pick<
         Tables<"public_jobs">,
@@ -84,10 +84,3 @@ type CustomDraft = Pick<
   | "job_type"
   | "location"
 > & { jd_json: CustomJdJson };
-
-type CustomDashboardWarnings = {
-  job_description: boolean;
-  interview_plan: boolean;
-  interview_session: boolean;
-  score_changed: boolean;
-};

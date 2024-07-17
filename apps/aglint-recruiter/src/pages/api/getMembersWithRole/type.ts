@@ -9,5 +9,6 @@ export interface API_getMembersWithRole extends ApiInterface {
     role_id: string;
     manager_id: string;
     created_by: string;
+    recruiter_relation_id: number;
   })[];
 }
