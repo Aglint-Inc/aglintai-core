@@ -69,7 +69,7 @@ const Cards = (props: {
             onClickDelete={{
               onClick: () =>
                 setDeletion({ open: true, workflow: { id, jobs } }),
-              ...devlinkProps.delete,
+              ...devlinkProps.manage,
             }}
             onClickEdit={{
               onClick: () => push(ROUTES['/workflows/[id]']({ id })),

@@ -3667,6 +3667,32 @@ export type Database = {
         }
         Relationships: []
       }
+      tour: {
+        Row: {
+          created_at: string
+          recruiter_relation_id: number
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          recruiter_relation_id?: number
+          type: string
+        }
+        Update: {
+          created_at?: string
+          recruiter_relation_id?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_recruiter_relation_id_fkey"
+            columns: ["recruiter_relation_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_relation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow: {
         Row: {
           auto_connect: boolean
@@ -5045,12 +5071,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      insert_company_email_templates: {
-        Args: {
-          p_recruiter_id: string
-        }
-        Returns: undefined
-      }
       insert_debrief_session: {
         Args: {
           interview_plan_id: string
@@ -5401,6 +5421,75 @@ export type Database = {
         | "mail_agent"
         | "phone_agent"
       modules: "standard" | "scheduler" | "assessment" | "jobs"
+      permissions_type:
+        | "jobs_create"
+        | "jobs_read"
+        | "jobs_update"
+        | "jobs_delete"
+        | "jobs_publish"
+        | "jobs_unpublish"
+        | "jobs_archive"
+        | "jobs_restore"
+        | "jobs_assignHiringManager"
+        | "jobs_assignRecruiter"
+        | "jobs_assignCoordinator"
+        | "jobs_assignSourcer"
+        | "candidates_add"
+        | "candidates_read"
+        | "candidates_update"
+        | "candidates_delete"
+        | "candidates_moveStage"
+        | "profileScore_view"
+        | "profileScore_update"
+        | "interviews_schedule"
+        | "interviews_read"
+        | "interviews_update"
+        | "interviews_delete"
+        | "reports_generate"
+        | "reports_view"
+        | "reports_export"
+        | "settings_view"
+        | "settings_update"
+        | "tasks_enabled"
+        | "jobs_enabled"
+        | "scheduler_enabled"
+        | "sourcing_enabled"
+        | "phone_screening_enabled"
+        | "assessment_enabled"
+        | "integrations_enabled"
+        | "company_setting_enabled"
+        | "workflow_enabled"
+        | "workflow_create"
+        | "workflow_read"
+        | "workflow_update"
+        | "workflow_delete"
+        | "team_enabled"
+        | "team_create"
+        | "team_read"
+        | "team_update"
+        | "team_delete"
+        | "tasks_create"
+        | "tasks_read"
+        | "tasks_update"
+        | "tasks_delete"
+        | "scheduler_create"
+        | "scheduler_read"
+        | "scheduler_update"
+        | "scheduler_delete"
+        | "scheduler_request_availability"
+        | "scheduler_send_scheduling"
+        | "scheduler_interview_types_create"
+        | "scheduler_interview_types_read"
+        | "scheduler_interview_types_update"
+        | "scheduler_interviewer_edit"
+        | "settings_scheduler_enable"
+        | "settings_scheduler_update"
+        | "settings_company_enable"
+        | "settings_company_update"
+        | "settings_team_enable"
+        | "settings_team_update"
+        | "settings_roles_enable"
+        | "settings_roles_update"
       progress_type:
         | "standard"
         | "interview_schedule"

@@ -39,8 +39,8 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/screening': ['job_module', 'job_read', 'job_update'],
   '/jobs/[id]/hiring-team': ['job_update'],
   '/jobs/[id]/email-templates': ['job_module', 'job_read', 'job_update'],
-  '/workflows': ['workflow_module', 'workflow_read'],
-  '/workflows/[id]': ['workflow_module', 'workflow_read'],
+  '/workflows': ['workflow_module', 'view_workflow'],
+  '/workflows/[id]': ['workflow_module', 'view_workflow'],
 
   '/scheduling': ['scheduling_module'],
   '/scheduling/module/members/[module_id]': ['scheduling_module'],
