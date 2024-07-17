@@ -249,11 +249,13 @@ const useRoleAndPermissions = () => {
           const tempData = structuredClone(prevData);
           tempData.rolesAndPermissions[role_id].permissions =
             tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              const temp = resData.addedPermissions.find(
-                (added) => added.id == item.id,
-              );
-              if (temp) {
-                item = { ...item, ...temp, isActive: true };
+              if (resData.addedPermissions?.length) {
+                const temp = resData.addedPermissions.find(
+                  (added) => added.id == item.id,
+                );
+                if (temp) {
+                  item = { ...item, ...temp, isActive: true };
+                }
               }
               if (toDelete === item.relation_id) {
                 item = { ...item, relation_id: null, isActive: false };
