@@ -1,5 +1,5 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Dialog, Typography } from '@mui/material';
+import { Autocomplete, Dialog } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -86,7 +86,12 @@ function RoleEditMember({
               />
             )}
             {errorMessage && (
-              <Typography fontWeight={600}>Warning: {errorMessage}</Typography>
+              <GlobalBannerInline
+                textContent={errorMessage}
+                slotButton={<></>}
+                color={'warning'}
+              />
+              // <Typography fontWeight={600} color={'var(--warning-11)'}>Warning: {errorMessage}</Typography>
             )}
             <Autocomplete
               fullWidth
