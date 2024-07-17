@@ -63,15 +63,16 @@ function CancelRescheduleBadges({
           </>
         )}
 
-      {cancelRequests.length > 0 && (
-        <GlobalBadge
-          color={'error'}
-          iconName='event_busy'
-          textBadge={`${cancelRequests.length} Cancel Request`}
-          showIcon={true}
-          iconSize={2}
-        />
-      )}
+      {interview_meeting?.status !== 'cancelled' &&
+        cancelRequests.length > 0 && (
+          <GlobalBadge
+            color={'error'}
+            iconName='event_busy'
+            textBadge={`${cancelRequests.length} Cancel Request`}
+            showIcon={true}
+            iconSize={2}
+          />
+        )}
 
       {rescheduleRequests.length > 0 && (
         <GlobalBadge

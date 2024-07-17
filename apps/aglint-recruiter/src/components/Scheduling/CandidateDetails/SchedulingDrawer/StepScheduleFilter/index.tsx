@@ -3,11 +3,11 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
+import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 
 import { setFilters, useSchedulingFlowStore } from '../store';
 import DateRangeField from './DateRangeField';
 import PreferedInterviewers from './PreferedInterviewers';
-import SuggesttionToggle from './SuggesttionToggle';
 import { filterSchedulingOptionsArray } from './utils';
 
 function StepScheduleFilter() {
@@ -48,13 +48,57 @@ function StepScheduleFilter() {
             }}
           />
         }
+        slotNoConflictToggle={
+          <AntSwitch
+            size='small'
+            checked={filters.isNoConflicts}
+            onChange={() => {
+              setFilters({
+                isNoConflicts: !filters.isNoConflicts,
+              });
+            }}
+          />
+        }
+        slotSoftConflictToggle={
+          <AntSwitch
+            size='small'
+            checked={filters.isSoftConflicts}
+            onChange={() => {
+              setFilters({
+                isSoftConflicts: !filters.isSoftConflicts,
+              });
+            }}
+          />
+        }
+        slotHardConflictToggle={
+          <AntSwitch
+            size='small'
+            checked={filters.isHardConflicts}
+            onChange={() => {
+              setFilters({
+                isHardConflicts: !filters.isHardConflicts,
+              });
+            }}
+          />
+        }
+        slotOutsideToggle={
+          <AntSwitch
+            size='small'
+            checked={filters.isOutSideWorkHours}
+            onChange={() => {
+              setFilters({
+                isOutSideWorkHours: !filters.isOutSideWorkHours,
+              });
+            }}
+          />
+        }
         slotTimeRangeSelector={<DateRangeField />}
         textNumberNoConflicts={numberNoConflicts}
         textNumberHardConflicts={numberHardConflicts}
         textNumberSoftConflicts={numberSoftConflicts}
         textNumberOutsideWorkHours={numberOutsideWorkHours}
         slotPreferedInterviewersSearch={<PreferedInterviewers />}
-        slotSuggestionControlTooltip={<SuggesttionToggle />}
+        // slotSuggestionControlTooltip={<SuggesttionToggle />}
       />
     </Stack>
   );

@@ -60,8 +60,8 @@ function DateRange({
               paddingLeft: '24px',
               paddingRight: '12px',
             },
-            '& .MuiPickersSlideTransition-root' : {
-                minWidth: '320px',
+            '& .MuiPickersSlideTransition-root': {
+              minWidth: '320px',
             },
             '& .MuiPickersDay-root': {
               fontFamily: 'var(--text)',

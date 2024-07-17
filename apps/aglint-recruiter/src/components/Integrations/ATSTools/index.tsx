@@ -196,18 +196,22 @@ function ATSTools() {
 
       setIsOpen(true);
       setReason('update_greenhouse');
-      await axios
-        .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.greenhouse_key,
-        })
-        .then(({ data }) => {
-          if (data) {
-            setTimeout(() => {
-              inputRef.current.value = (data as string) || '';
-              setInputValue(data);
-            }, 10);
-          }
-        });
+      try {
+        await axios
+          .post(`/api/decryptApiKey`, {
+            encryptData: recruiter.greenhouse_key,
+          })
+          .then(({ data }) => {
+            if (data) {
+              setTimeout(() => {
+                inputRef.current.value = (data as string) || '';
+                setInputValue(data);
+              }, 10);
+            }
+          });
+      } catch (error) {
+        toast.error('Something went wrong.');
+      }
       setLoading(false);
     }
     if (source === 'ashby') {
@@ -360,8 +364,12 @@ function ATSTools() {
                   onClick={() => {
                     setHideApiKey((pre) => !pre);
                   }}
-                > 
-                  {hideApiKey ? <GlobalIcon iconName='visibility'/> : <GlobalIcon iconName='visibility_off'/>}
+                >
+                  {hideApiKey ? (
+                    <GlobalIcon iconName='visibility' />
+                  ) : (
+                    <GlobalIcon iconName='visibility_off' />
+                  )}
                 </IconButton>
               ),
             }}
