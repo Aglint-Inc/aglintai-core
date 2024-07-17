@@ -19,7 +19,6 @@ export function SchedulerFilters({
       <br />
     </>
   ),
-  slotSuggestionControlTooltip,
   slotPreferedInterviewersSearch,
   slotTimeRangeSelector,
   slotCheckbox,
@@ -40,7 +39,14 @@ export function SchedulerFilters({
     >
       <_Builtin.Block className={_utils.cx(_styles, "slottimeblock")} tag="div">
         <_Builtin.Block tag="div">
-          <Text content="" />
+          <Text
+            content={
+              <>
+                {"Selected Date Range"}
+                <br />
+              </>
+            }
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "timeblock", "is_link")}
@@ -209,24 +215,6 @@ export function SchedulerFilters({
               tag="div"
             />
           ) : null}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "sub_session_with_heading")}
-        tag="div"
-      >
-        <Text content="Suggestion Controls" weight="medium" />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "flex_ver_left_16")}
-          tag="div"
-        >
-          {slotSuggestionControlTooltip ?? (
-            <>
-              <SlotComp componentNeme="ToggleWithText" />
-              <SlotComp componentNeme="ToggleWithText" />
-              <SlotComp componentNeme="ToggleWithText" />
-            </>
-          )}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
