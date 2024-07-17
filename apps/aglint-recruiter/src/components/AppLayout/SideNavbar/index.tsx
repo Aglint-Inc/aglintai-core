@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums } from '@aglint/shared-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -41,7 +41,7 @@ function SideNavbar() {
     route: string;
     comingSoon: boolean;
     isVisible: boolean;
-    permission?: DatabaseTable['permissions']['name'][];
+    permission?: DatabaseEnums['permissions_type'][];
   }[] = [
     {
       text: 'Agent',
@@ -56,7 +56,7 @@ function SideNavbar() {
       route: ROUTES['/tasks']() + '?myTasks',
       comingSoon: false,
       isVisible: isTasksEnabled,
-      permission: ['task_module'],
+      permission: ['tasks_enabled'],
     },
     {
       text: 'Jobs',
@@ -64,7 +64,7 @@ function SideNavbar() {
       route: ROUTES['/jobs']() + '?status=published',
       comingSoon: false,
       isVisible: true,
-      permission: ['job_module'],
+      permission: ['jobs_enabled'],
     },
     {
       text: 'Scheduler',
@@ -72,7 +72,7 @@ function SideNavbar() {
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
       isVisible: isSchedulingEnabled,
-      permission: ['scheduling_module'],
+      permission: ['scheduler_enabled'],
     },
     {
       text: 'Workflows',
@@ -80,7 +80,7 @@ function SideNavbar() {
       route: ROUTES['/workflows'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['workflow_module'],
+      permission: ['workflow_enabled'],
     },
     {
       text: 'Sourcing Hub',
@@ -111,7 +111,7 @@ function SideNavbar() {
       route: ROUTES['/screening'](),
       comingSoon: false,
       isVisible: isScreeningEnabled,
-      // permission: ['phone_screening_enabled'],
+      permission: ['phone_screening_enabled'],
     },
 
     {
@@ -120,7 +120,7 @@ function SideNavbar() {
       route: ROUTES['/assessment-new'](),
       comingSoon: false,
       isVisible: isAssessmentEnabled,
-      // permission: ['assessment_enabled'],
+      permission: ['assessment_enabled'],
     },
     {
       text: 'Integrations',
@@ -128,7 +128,7 @@ function SideNavbar() {
       route: ROUTES['/integrations'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['integrations_module'],
+      permission: ['integrations_enabled'],
     },
     {
       text: 'Company Settings',
@@ -136,7 +136,7 @@ function SideNavbar() {
       route: ROUTES['/company'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['company_settings_module'],
+      permission: ['company_setting_enabled'],
     },
   ];
 

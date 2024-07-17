@@ -10,7 +10,6 @@ export function useSearchQuery<T extends Record<string, string | number>>() {
   }
   const setQueryParams = (data: Partial<T>) => {
     const newParams = { ...queryParams, ...data };
-
     const tempParams = Object.entries(newParams)
       .map(([key, value]) => {
         if (!value || !String(value).trim().length) return null;

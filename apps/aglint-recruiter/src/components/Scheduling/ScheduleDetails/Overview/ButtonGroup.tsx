@@ -21,12 +21,12 @@ function ButtonGroup({
   // if logged in user is an interviewer in this session
 
   const isCancelButtonVisible =
-    (checkPermissions(['scheduling_actions']) || isMeetingJobHiringTeam) &&
+    (checkPermissions(['scheduler_create']) || isMeetingJobHiringTeam) &&
     schedule?.interview_meeting?.status === 'confirmed';
 
   //if logged in user is hiring team or having scheduler_update permission
   const isRescheduleButtonVisible =
-    (isMeetingJobHiringTeam || checkPermissions(['scheduling_actions'])) &&
+    (isMeetingJobHiringTeam || checkPermissions(['scheduler_update'])) &&
     schedule?.interview_meeting?.status === 'confirmed';
 
   return (

@@ -36,6 +36,7 @@ import SchedulingSettings from './Settings';
 import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
 
+
 function SchedulingMainComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -94,7 +95,7 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {tab === 'interviewtypes' &&
-              checkPermissions(['interview_types']) && (
+              checkPermissions(['scheduler_interview_types_create']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonSolid
                     isRightIcon={false}
@@ -111,7 +112,7 @@ function SchedulingMainComp() {
                 </Stack>
               )}
             {(tab === 'schedules' || tab === 'myschedules') &&
-              checkPermissions(['scheduling_actions']) && (
+              checkPermissions(['scheduler_enabled', 'scheduler_read']) && (
                 <TaskSwitchButton
                   isIconVisible={false}
                   isJobCandActive={tab === 'schedules'}
@@ -177,10 +178,10 @@ const BodyComp = ({ setSaving }) => {
     <>
       <ShowCode>
         <ShowCode.When isTrue={tab === 'candidates'}>
-          {checkPermissions(['scheduling_actions']) && <AllSchedules />}
+          {checkPermissions(['scheduler_create']) && <AllSchedules />}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewtypes'}>
-          {checkPermissions(['interview_types']) ? (
+          {checkPermissions(['scheduler_interview_types_create']) ? (
             <Modules />
           ) : (
             <InterviewerModule
@@ -190,10 +191,12 @@ const BodyComp = ({ setSaving }) => {
           )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewers'}>
-          {checkPermissions(['manage_interviewers']) && <AllInterviewersComp />}
+          {checkPermissions(['scheduler_interviewer_edit']) && (
+            <AllInterviewersComp />
+          )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'settings'}>
-          {checkPermissions(['scheduling_settings_and_reports']) ? (
+          {checkPermissions(['settings_scheduler_enable']) ? (
             <SchedulingSettings
               updateSettings={updateSettings}
               initialData={recruiter?.scheduling_settings}
@@ -210,9 +213,7 @@ const BodyComp = ({ setSaving }) => {
           <MySchedule />
         </ShowCode.When>
         <ShowCode.Else>
-          {checkPermissions(['scheduling_settings_and_reports']) && (
-            <SchedulingDashboard />
-          )}
+          {checkPermissions(['scheduler_enabled']) && <SchedulingDashboard />}
         </ShowCode.Else>
       </ShowCode>
     </>

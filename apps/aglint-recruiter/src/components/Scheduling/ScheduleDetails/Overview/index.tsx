@@ -161,7 +161,7 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
               iconSize={3}
               onClickButton={{
                 onClick: () => {
-                  checkPermissions(['interview_types']) &&
+                  checkPermissions(['scheduler_create']) &&
                     window.open(
                       `/scheduling/module/members/${schedule.interview_session.module_id}`,
                       '_blank',
