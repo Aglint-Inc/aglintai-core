@@ -36,8 +36,6 @@ export default function Loading() {
   }
 
   const handleLogout = async () => {
-    console.log('logout');
-    
     const { error } = await supabase.auth.signOut({
       scope: 'local',
     });
