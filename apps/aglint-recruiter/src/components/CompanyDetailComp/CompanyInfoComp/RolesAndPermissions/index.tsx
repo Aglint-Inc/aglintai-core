@@ -506,13 +506,7 @@ const app_modules: {
     dependency: 'task_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
-    permissions: [
-      'task_read',
-      'task_create',
-      'task_update',
-      'task_delete',
-      'view_all_task',
-    ],
+    permissions: ['view_all_task'],
   },
   {
     name: 'Jobs Application Permissions',
