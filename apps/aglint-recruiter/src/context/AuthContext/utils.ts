@@ -1,7 +1,6 @@
 import { RecruiterDB } from '@aglint/shared-types';
 
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 export const updateRecruiterInDb = async (
   updateData: Partial<RecruiterDB>,
@@ -21,17 +20,23 @@ export const updateRecruiterInDb = async (
 
 export const handleUpdatePassword = async (
   password: string,
-  showToast: boolean = false,
-): Promise<boolean> => {
+): Promise<{
+  error: boolean;
+  message: string;
+}> => {
   const { error } = await supabase.auth.updateUser({
     password: password,
   });
   if (error) {
-    toast.error(`Oops! Something went wrong. (${error.message})`);
-    return false;
+    return {
+      error: true,
+      message: error.message,
+    };
   } else {
-    showToast && toast.success(`Password reset successfully.`);
-    return true;
+    return {
+      error: false,
+      message: 'Password reset successfully',
+    };
   }
 };
 
