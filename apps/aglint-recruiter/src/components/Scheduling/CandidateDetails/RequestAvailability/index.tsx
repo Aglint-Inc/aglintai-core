@@ -542,10 +542,10 @@ function RequestAvailability() {
                   direction={'row'}
                   alignItems={'center'}
                   spacing={'var(--space-2)'}
-                  width={'480px'}
+                  width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                    Minimum number of days should be selected.
+                  Minimum Number of Days:
                   </Typography>
                   <Autocomplete
                     fullWidth
@@ -572,10 +572,10 @@ function RequestAvailability() {
                   direction={'row'}
                   alignItems={'center'}
                   spacing={'var(--space-2)'}
-                  width={'480px'}
+                  width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                    Minimum number of slots selected per each day.
+                  Minimum Slots Per Day:
                   </Typography>
                   <Autocomplete
                     fullWidth

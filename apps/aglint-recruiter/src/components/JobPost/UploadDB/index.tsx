@@ -227,7 +227,7 @@ function UploadDB({
       }}
     >
       <Stack direction={'row'} spacing={2} justifyContent={'space-between'}>
-        <Typography variant='h3'>Apply for this job.</Typography>
+        <Typography variant='h4'>Apply for this job.</Typography>
         <Typography variant='caption' color={'#000'}>
           <span style={{ color: 'var(--error-11)' }}>*</span> Required
         </Typography>

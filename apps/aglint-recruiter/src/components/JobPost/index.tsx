@@ -35,6 +35,7 @@ import toast from '@/src/utils/toast';
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
+import { GlobalEmptyState } from '@/devlink';
 
 interface JobsListProps {
   post: JobTypeDB;
@@ -345,7 +346,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                       />
                     );
                   })
-                : 'No More Jobs Postings'}
+                : <GlobalEmptyState textDesc='No more Jobs Postings' iconName='work' size={5}/>}
             </Stack>
           }
           onClickViewMore={{
