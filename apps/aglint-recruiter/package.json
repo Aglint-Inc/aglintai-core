@@ -17,7 +17,8 @@
     "pull": "git pull origin development --no-rebase",
     "test": "jest",
     "test:watch": "npm run dev:build && jest --watch",
-    "get-path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js"
+    "get-path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js",
+    "gen_types": "npx tsc script/genTypesFromDB.ts --skipLibCheck && node script/genTypesFromDB.js"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
@@ -59,6 +60,7 @@
     "chart.js": "^4.4.1",
     "date-fns": "^3.6.0",
     "dayjs-plugin-utc": "^0.1.2",
+    "dotenv": "^16.4.5",
     "eslint-plugin-react-compiler": "^0.0.0-experimental-53bb89e-20240515",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",

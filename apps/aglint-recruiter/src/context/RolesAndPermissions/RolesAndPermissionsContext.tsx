@@ -1,21 +1,20 @@
 /* eslint-disable security/detect-object-injection */
 'use client';
 
+import { DatabaseTable } from '@aglint/shared-types';
 import { createContext, ReactNode, useContext } from 'react';
-
-import { PermissionEnums } from '@/src/utils/routing/permissions';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
 /* eslint-disable no-unused-vars */
 export type RolesAndPermissionsContextType = {
-  checkPermissions?: (x: PermissionEnums[]) => boolean;
+  checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;
   devlinkProps?: (
-    x: PermissionEnums[],
+    x: DatabaseTable['permissions']['name'][],
   ) => { onClick: null; style: { display: 'none' } } | {};
   ifAllowed: <T extends Function | ReactNode>(
     func: T,
-    permission: PermissionEnums[],
+    permission: DatabaseTable['permissions']['name'][],
   ) => T;
 };
 

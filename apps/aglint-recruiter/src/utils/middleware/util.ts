@@ -1,4 +1,4 @@
-import { DatabaseEnums, DB } from '@aglint/shared-types';
+import { DatabaseTable, DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 export const server_check_permissions = async ({
@@ -7,7 +7,7 @@ export const server_check_permissions = async ({
 }: {
   // eslint-disable-next-line no-unused-vars
   getVal: (name: string) => string;
-  permissions: DatabaseEnums['permissions_type'][];
+  permissions: DatabaseTable['permissions']['name'][];
 }) => {
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
@@ -64,7 +64,7 @@ export const server_check_permissions = async ({
               //       return prev;
               //     },
               //     // eslint-disable-next-line no-unused-vars
-              //     {} as { [key in DatabaseEnums['permissions_type']]: boolean },
+              //     {} as { [key in DatabaseTable['permissions']['name']]: boolean },
               //   );
             }
             return {
