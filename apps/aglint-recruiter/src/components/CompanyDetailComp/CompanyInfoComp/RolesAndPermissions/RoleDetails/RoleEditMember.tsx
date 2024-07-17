@@ -8,6 +8,7 @@ import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { GlobalBannerShort } from '@/devlink2';
 
 function RoleEditMember({
   user,
@@ -86,7 +87,8 @@ function RoleEditMember({
               />
             )}
             {errorMessage && (
-              <Typography fontWeight={600}>Warning: {errorMessage}</Typography>
+              <GlobalBannerInline textContent={errorMessage} slotButton={<></>} color={'warning'}/>
+              // <Typography fontWeight={600} color={'var(--warning-11)'}>Warning: {errorMessage}</Typography>
             )}
             <Autocomplete
               fullWidth

@@ -18,14 +18,20 @@ function TabInterviewModules({
   setPauseResumeDialog: Dispatch<React.SetStateAction<PauseDialog>>;
 }) {
   const qualifiedModulesList =
-    detailsWithCount.modules.filter(
-      (item) => item.training_status === 'qualified',
-    ) || [];
+    detailsWithCount.modules.filter((item) => {
+      return (
+        item.training_status === 'qualified' &&
+        item.interview_module.is_archived === false
+      );
+    }) || [];
 
   const trainingModulesList =
-    detailsWithCount.modules.filter(
-      (item) => item.training_status === 'training',
-    ) || [];
+    detailsWithCount.modules.filter((item) => {
+      return (
+        item.training_status === 'training' &&
+        item.interview_module.is_archived === false
+      );
+    }) || [];
 
   return (
     <>

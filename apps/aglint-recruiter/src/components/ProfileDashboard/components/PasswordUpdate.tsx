@@ -1,11 +1,13 @@
 import { Dialog, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { PasswordUpdated } from '@/devlink/PasswordUpdated';
 import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 
+import Icon from '../../Common/Icons/Icon';
+import UITypography from '../../Common/UITypography';
 import { ProfileForms } from '..';
 import { FormValues, PasswordFormFields, validatePassword } from '../util';
 
@@ -75,26 +77,35 @@ export const PasswordUpdate = () => {
           'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
       };
   };
+  const [error, setError] = useState('');
 
   const handleSubmitPassword = async () => {
-    const { newPassword, error } = handleValidatePassword();
-    if (!error) {
-      const res = await handleUpdatePassword(newPassword, false);
-      if (!res) return;
+    const { newPassword, error: valiError } = handleValidatePassword();
+    if (!valiError) {
       setPassword((prev) => ({
         ...prev,
-        password: { ...prev.password, modal: true },
+        password: { ...prev.password, error: false },
+        confirmPassword: { ...prev.confirmPassword, error: false },
       }));
-      setPasswordChange(true);
+      const { error, message } = await handleUpdatePassword(newPassword);
+      if (!error) {
+        setPassword((prev) => ({
+          ...prev,
+          password: { ...prev.password, modal: true },
+        }));
+        setPasswordChange(true);
+      } else {
+        setError(message);
+      }
     } else {
       setPassword((prev) => {
         return {
           ...prev,
-          password: { ...prev.password, error: true, helperText: error },
+          password: { ...prev.password, error: true, helperText: valiError },
           confirmPassword: {
             ...prev.confirmPassword,
             error: true,
-            helperText: error,
+            helperText: valiError,
           },
         };
       });
@@ -103,6 +114,9 @@ export const PasswordUpdate = () => {
   const handleClosePassword = () => {
     setPassword(initialPassword);
   };
+  useEffect(() => {
+    setError('');
+  }, [password]);
   return (
     <>
       <Dialog
@@ -127,15 +141,34 @@ export const PasswordUpdate = () => {
         }
         slotSavePassword={
           <>
+            {error && (
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                justifyContent={'start'}
+                marginBottom={'var(--space-3)'}
+              >
+                <Icon
+                  height='12px'
+                  color={'var(--error-9)'}
+                  variant='AlertIcon'
+                />
+                <UITypography type='small' color={'var(--error-11)'}>
+                  {error}
+                </UITypography>
+              </Stack>
+            )}
             <Stack
               style={{
                 pointerEvents: loading ? 'none' : 'auto',
                 zIndex: 0,
               }}
+              width={'200px'}
             >
               <ButtonSolid
                 textButton='Update Password'
                 size={2}
+                isLoading={loading}
                 isDisabled={
                   !passwordChange ||
                   password.password.value === '' ||
