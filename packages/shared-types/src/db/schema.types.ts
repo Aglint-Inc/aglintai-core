@@ -3670,30 +3670,30 @@ export type Database = {
       tour: {
         Row: {
           created_at: string
-          recruiter_id: string
           type: string
+          user_id: string
         }
         Insert: {
           created_at?: string
-          recruiter_id: string
           type: string
+          user_id?: string
         }
         Update: {
           created_at?: string
-          recruiter_id?: string
           type?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "tour_recruiter_id_fkey"
-            columns: ["recruiter_id"]
+            foreignKeyName: "tour_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "tour_recruiter_id_fkey"
-            columns: ["recruiter_id"]
+            foreignKeyName: "tour_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]

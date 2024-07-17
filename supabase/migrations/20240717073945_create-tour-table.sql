@@ -1,23 +1,21 @@
 create table "public"."tour" (
-    "recruiter_id" uuid not null,
+    "user_id" uuid not null default gen_random_uuid(),
     "created_at" timestamp with time zone not null default now(),
     "type" text not null
 );
 
 
-alter table "public"."tour" enable row level security;
-
-CREATE UNIQUE INDEX tour_pkey ON public.tour USING btree (recruiter_id, type);
+CREATE UNIQUE INDEX tour_pkey ON public.tour USING btree (user_id, type);
 
 alter table "public"."tour" add constraint "tour_pkey" PRIMARY KEY using index "tour_pkey";
-
-alter table "public"."tour" add constraint "tour_recruiter_id_fkey" FOREIGN KEY (recruiter_id) REFERENCES recruiter_user(user_id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
-
-alter table "public"."tour" validate constraint "tour_recruiter_id_fkey";
 
 alter table "public"."tour" add constraint "tour_type_check" CHECK ((type = 'workflow_tip'::text)) not valid;
 
 alter table "public"."tour" validate constraint "tour_type_check";
+
+alter table "public"."tour" add constraint "tour_user_id_fkey" FOREIGN KEY (user_id) REFERENCES recruiter_user(user_id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+
+alter table "public"."tour" validate constraint "tour_user_id_fkey";
 
 grant delete on table "public"."tour" to "anon";
 
