@@ -232,6 +232,19 @@ const ProfileDashboard = () => {
       };
   };
   const handleValidateMail = () => {
+    if (!email.email.value) {
+      return {
+        newEmail: null,
+        error: 'Please enter a email',
+      };
+    }
+    if (userMail === email.email.value) {
+      return {
+        newEmail: null,
+        error:
+          'You have entered your current email address. Please use different email',
+      };
+    }
     if (validateMail(email.email.value)) {
       if (validateGMail(email.email.value))
         return {
@@ -278,12 +291,7 @@ const ProfileDashboard = () => {
 
   const handleSubmitEmail = async () => {
     const { newEmail, error } = handleValidateMail();
-    if (userMail === newEmail) {
-      toast.error(
-        'You have entered your current email address. Please use different email',
-      );
-      return;
-    }
+
     if (!error) {
       const confirmation = await handleUpdateEmail(newEmail);
       if (confirmation) {
