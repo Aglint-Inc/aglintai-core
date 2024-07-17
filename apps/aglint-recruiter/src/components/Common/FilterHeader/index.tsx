@@ -10,7 +10,7 @@ import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
-  // handelResetAll,
+  handelResetAll,
   filters,
   isResetAll,
   sort,
@@ -20,21 +20,23 @@ export default function FilterHeader({
     x;
   },
 }: FilterHeaderType) {
-  const handelResetAll = () => {
-    filters.forEach((filter) => {
-      switch (filter.type) {
-        case 'filter':
-        case 'nested-filter': {
-          filter.setValue([]);
-          break;
+  handelResetAll =
+    handelResetAll ||
+    (() => {
+      filters.forEach((filter) => {
+        switch (filter.type) {
+          case 'filter':
+          case 'nested-filter': {
+            filter.setValue([]);
+            break;
+          }
+          case 'multi-section-filter': {
+            filter.setValue({});
+            break;
+          }
         }
-        case 'multi-section-filter': {
-          filter.setValue({});
-          break;
-        }
-      }
+      });
     });
-  };
   const isFiltersActive = filters.some((filter) => {
     switch (filter.type) {
       case 'filter': {
@@ -88,7 +90,7 @@ export default function FilterHeader({
 }
 
 export type FilterHeaderType = {
-  // handelResetAll?: () => void;
+  handelResetAll?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars
