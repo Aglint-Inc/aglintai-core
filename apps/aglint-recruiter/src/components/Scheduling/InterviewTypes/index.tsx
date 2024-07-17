@@ -44,7 +44,9 @@ export function Modules() {
           mod.interview_modules.name
             .toLowerCase()
             .includes(textSearch.toLowerCase())) &&
-        (showArchive || !mod.interview_modules.is_archived)
+        (showArchive
+          ? mod.interview_modules.is_archived
+          : mod.interview_modules.is_archived !== true)
       );
     })
     .sort(customSortModules);
@@ -97,16 +99,16 @@ export function Modules() {
                 </Stack>{' '}
                 <TaskSwitchButton
                   isIconVisible={false}
-                  isJobCandActive={showArchive}
-                  isListActive={!showArchive}
+                  isJobCandActive={!showArchive}
+                  isListActive={showArchive}
                   onClickJobCand={{
                     onClick: () => {
-                      setShowArchive(true);
+                      setShowArchive(false);
                     },
                   }}
                   onClickList={{
                     onClick: () => {
-                      setShowArchive(false);
+                      setShowArchive(true);
                     },
                   }}
                   textFirst={'Active'}
