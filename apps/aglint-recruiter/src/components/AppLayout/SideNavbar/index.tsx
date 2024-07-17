@@ -56,7 +56,7 @@ function SideNavbar() {
       route: ROUTES['/tasks']() + '?myTasks',
       comingSoon: false,
       isVisible: isTasksEnabled,
-      permission: ['tasks_enabled'],
+      permission: ['task_module'],
     },
     {
       text: 'Jobs',
@@ -64,7 +64,7 @@ function SideNavbar() {
       route: ROUTES['/jobs']() + '?status=published',
       comingSoon: false,
       isVisible: true,
-      permission: ['jobs_enabled'],
+      permission: ['job_module'],
     },
     {
       text: 'Scheduler',
@@ -72,7 +72,7 @@ function SideNavbar() {
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
       isVisible: isSchedulingEnabled,
-      permission: ['scheduler_enabled'],
+      permission: ['scheduling_module'],
     },
     {
       text: 'Workflows',
@@ -80,7 +80,7 @@ function SideNavbar() {
       route: ROUTES['/workflows'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['workflow_enabled'],
+      permission: ['workflow_module'],
     },
     {
       text: 'Sourcing Hub',
@@ -136,7 +136,7 @@ function SideNavbar() {
       route: ROUTES['/company'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['company_setting_enabled'],
+      permission: ['company_settings_module'],
     },
   ];
 

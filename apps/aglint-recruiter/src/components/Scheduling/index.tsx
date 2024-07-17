@@ -36,7 +36,6 @@ import SchedulingSettings from './Settings';
 import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
 
-
 function SchedulingMainComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -112,7 +111,7 @@ function SchedulingMainComp() {
                 </Stack>
               )}
             {(tab === 'schedules' || tab === 'myschedules') &&
-              checkPermissions(['scheduler_enabled', 'scheduler_read']) && (
+              checkPermissions(['scheduling_module', 'scheduler_read']) && (
                 <TaskSwitchButton
                   isIconVisible={false}
                   isJobCandActive={tab === 'schedules'}
@@ -213,7 +212,7 @@ const BodyComp = ({ setSaving }) => {
           <MySchedule />
         </ShowCode.When>
         <ShowCode.Else>
-          {checkPermissions(['scheduler_enabled']) && <SchedulingDashboard />}
+          {checkPermissions(['scheduling_module']) && <SchedulingDashboard />}
         </ShowCode.Else>
       </ShowCode>
     </>
