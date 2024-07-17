@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { memo } from 'react';
 
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
@@ -14,14 +15,15 @@ import {
 } from '../../../../context/Workflows/store';
 import { getTriggerOption } from '../../[id]/body/trigger';
 
-const Content = () => {
+const Content = memo(() => {
   const {
     workflows: { data, status },
   } = useWorkflows();
   if (status === 'error') return <>Error</>;
   if (status == 'pending') return <Loader />;
   return <Cards data={data} />;
-};
+});
+Content.displayName = 'Content';
 
 export default Content;
 

@@ -98,6 +98,7 @@ const SignupProvider = ({ children }) => {
         manager_id: recruiterRel.manager_id,
         role_id: recruiterRel.role_id,
         created_by: recruiterRel.created_by,
+        recruiter_relation_id: recruiterRel.id,
       });
       setRecruiter({
         ...recruiterRel.recruiter,

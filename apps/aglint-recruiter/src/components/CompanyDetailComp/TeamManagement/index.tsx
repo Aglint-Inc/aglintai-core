@@ -6,6 +6,7 @@ import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
@@ -168,7 +169,7 @@ const TeamManagement = () => {
             textContent='You currently have four pending invites awaiting your response.'
             color={'warning'}
             slotButton={
-              <ButtonSolid
+              <ButtonSoft
                 onClickButton={{
                   onClick: () => {
                     setSelectedStatus(['invited']);
@@ -177,6 +178,7 @@ const TeamManagement = () => {
                 }}
                 textButton='View pending invites'
                 color={'accent'}
+                size={2}
               />
             }
           />

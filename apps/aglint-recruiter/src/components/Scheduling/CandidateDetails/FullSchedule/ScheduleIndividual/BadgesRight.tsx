@@ -6,11 +6,13 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { SchedulingApplication } from '../../store';
 import { ScheduleIndividualCardType } from './types';
 
-function CancelRescheduleBadges({
+function BadgesRight({
+  interview_module,
   interview_meeting,
   cancelReasons,
   users,
 }: {
+  interview_module: SchedulingApplication['initialSessions'][0]['interview_module'];
   interview_meeting: ScheduleIndividualCardType['interview_meeting'];
   cancelReasons: ScheduleIndividualCardType['cancelReasons'];
   users: SchedulingApplication['initialSessions'][0]['users'];
@@ -39,6 +41,15 @@ function CancelRescheduleBadges({
 
   return (
     <>
+      {interview_module?.is_archived && (
+        <GlobalBadge
+          size={1}
+          showIcon={true}
+          iconName={'warning'}
+          color={'error'}
+          textBadge={'Interview Type Archived'}
+        />
+      )}
       {interview_meeting?.status !== 'confirmed' &&
         interview_meeting?.status !== 'completed' && (
           <>
@@ -63,15 +74,16 @@ function CancelRescheduleBadges({
           </>
         )}
 
-      {cancelRequests.length > 0 && (
-        <GlobalBadge
-          color={'error'}
-          iconName='event_busy'
-          textBadge={`${cancelRequests.length} Cancel Request`}
-          showIcon={true}
-          iconSize={2}
-        />
-      )}
+      {interview_meeting?.status !== 'cancelled' &&
+        cancelRequests.length > 0 && (
+          <GlobalBadge
+            color={'error'}
+            iconName='event_busy'
+            textBadge={`${cancelRequests.length} Cancel Request`}
+            showIcon={true}
+            iconSize={2}
+          />
+        )}
 
       {rescheduleRequests.length > 0 && (
         <GlobalBadge
@@ -86,4 +98,4 @@ function CancelRescheduleBadges({
   );
 }
 
-export default CancelRescheduleBadges;
+export default BadgesRight;

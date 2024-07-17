@@ -11,8 +11,8 @@ import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
 import IconSessionType from '../../RightPanel/IconSessionType';
+import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
-import CancelRescheduleBadges from './CancelRescheduleBadges';
 import CollapseContent from './CollapseContent';
 import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 import { ScheduleIndividualCardType } from './types';
@@ -51,16 +51,21 @@ function ScheduleIndividualCard({
   return (
     <GlobalScheduleCard
       isCheckboxVisible={
+        isCheckboxVisible &&
         (!interview_meeting ||
           interview_meeting.status === 'not_scheduled' ||
           interview_meeting.status === 'cancelled' ||
-          interview_meeting.status === 'reschedule') &&
-        isCheckboxVisible
+          interview_meeting.status === 'reschedule')
       }
       slotCheckbox={
         <Checkbox
           size='small'
-          disabled={usersWithErrors.length === users.length}
+          disabled={
+            usersWithErrors.length === users.length ||
+            (currentSession?.interview_module
+              ? currentSession.interview_module.is_archived
+              : false)
+          }
           checked={selectedSessionIds.includes(interview_session.id)}
           onClick={(e) => {
             e.stopPropagation();
@@ -158,11 +163,14 @@ function ScheduleIndividualCard({
         <RequestStatusUnconfirmed interview_meeting={interview_meeting} />
       }
       slotRequestDetail={
-        <CancelRescheduleBadges
-          cancelReasons={cancelReasons}
-          users={users}
-          interview_meeting={interview_meeting}
-        />
+        currentSession && (
+          <BadgesRight
+            cancelReasons={cancelReasons}
+            users={users}
+            interview_meeting={interview_meeting}
+            interview_module={currentSession.interview_module}
+          />
+        )
       }
     />
   );

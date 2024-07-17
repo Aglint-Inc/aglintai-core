@@ -14,8 +14,7 @@ import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import {
-  useGetMeetingsByModuleId,
-  useModuleAndUsers,
+  useGetMeetingsByModuleId
 } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
@@ -39,12 +38,14 @@ interface SlotBodyCompProps {
   editModule: ModuleType;
   fetchingModule: boolean;
   isFetching: boolean;
+  refetch: () => void;
 }
 
 function SlotBodyComp({
   editModule,
   fetchingModule,
   isFetching,
+  refetch,
 }: SlotBodyCompProps) {
   const router = useRouter();
   const { loading } = useSchedulingContext();
@@ -55,8 +56,6 @@ function SlotBodyComp({
     'members') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
-
-  const { refetch } = useModuleAndUsers();
 
   async function updateInstruction() {
     if (textValue) {

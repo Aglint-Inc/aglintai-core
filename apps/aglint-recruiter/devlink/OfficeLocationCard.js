@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./OfficeLocationCard.module.css";
 
@@ -44,12 +45,7 @@ export function OfficeLocationCard({
         {textAddress}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "job-post-tag")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-block-36")}
-          tag="div"
-        >
-          {textJobPostCount}
-        </_Builtin.Block>
+        <GlobalBadge textBadge={textJobPostCount} />
       </_Builtin.Block>
     </_Component>
   );

@@ -59,20 +59,24 @@ import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
+
   return (
     <Stack
-      height={'100%'}
+      height={'100vh'}
       width={'100%'}
       alignItems={'center'}
       justifyContent={'center'}
     >
       {load === undefined ? (
-        <Stack width={'100%'} height={'100%'}>
+        <Stack>
           <Loader />
         </Stack>
       ) : load === null ? (
-        <Stack style={{ transform: 'translateY(-50%)' }}>
-          <Page404 />
+        <Stack width={'100%'} height={'100vh'}>
+          <Page404 text404='The requested page was not found' />
+          <Stack bgcolor={'var(--neutral-2)'} height={'48px'}>
+            <Footer brand={true} />
+          </Stack>
         </Stack>
       ) : (
         <>
@@ -988,7 +992,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
           isLeftIcon={false}
           isRightIcon={false}
           textButton='Proceed'
-          size={3}
+          size={2}
           onClickButton={{
             onClick: () => {
               setOpen(true);
@@ -1227,7 +1231,7 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
-    <Stack height={'60px'} >
+    <Stack height={'60px'}>
       <CompanyLogo companyName={companyName} companyLogo={logo} />
     </Stack>
   );

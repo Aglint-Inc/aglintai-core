@@ -34,7 +34,7 @@ function RequestStatusUnconfirmed({
           ) : interview_meeting?.meeting_flow === 'mail_agent' ? (
             <TextWithIcon
               iconName={'attach_email'}
-              textContent={'Scheduling Via Email Agent'}
+              textContent={'Assigned to Email Agent'}
               color={'warning'}
               fontWeight={'regular'}
               fontSize={1}
@@ -42,8 +42,8 @@ function RequestStatusUnconfirmed({
             />
           ) : interview_meeting?.meeting_flow === 'phone_agent' ? (
             <TextWithIcon
-              iconName={'phone_call'}
-              textContent={'Scheduling Via Phone Agent'}
+              iconName={'phone_in_talk'}
+              textContent={'Assigned to Phone Agent'}
               color={'warning'}
               fontWeight={'regular'}
               fontSize={1}
