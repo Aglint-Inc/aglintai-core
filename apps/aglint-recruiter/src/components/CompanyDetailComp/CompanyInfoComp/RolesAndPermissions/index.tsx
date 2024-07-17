@@ -519,26 +519,7 @@ const app_modules: {
     dependency: 'job_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
-    permissions: [
-      'job_read',
-      'job_create',
-      'job_update',
-      'job_publish',
-      'job_unpublish',
-      'job_archive',
-      'job_restore',
-      'job_delete',
-      'candidates_read',
-      'candidates_add',
-      'candidates_delete',
-      'profile_score_view',
-      // 'candidates_update',
-      'job_assign_hiring_manager',
-      'job_assign_recruiter',
-      'job_assign_coordinator',
-      'job_assign_sourcer',
-      // 'profileScore_update',
-    ],
+    permissions: ['job_module', 'manage_job'],
   },
   {
     name: 'Scheduling Application Permissions',
@@ -579,7 +560,7 @@ const app_modules: {
     dependency: 'workflow_module',
     description:
       'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
-    permissions: ['view_workflow', 'manage_workflow'],
+    permissions: ['workflow_module', 'manage_workflow'],
   },
 
   // {
