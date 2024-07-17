@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./AtsCard.module.css";
 
@@ -53,7 +54,7 @@ export function AtsCard({
         >
           <Text content={textRole} weight="medium" />
           <_Builtin.Block tag="div" {...propsTextColor}>
-            <Text content={textStatus} size="1" color="" />
+            <GlobalBadge textBadge={textStatus} />
           </_Builtin.Block>
         </_Builtin.Block>
         <Text content={textWorktypeLocation} color="neutral" />

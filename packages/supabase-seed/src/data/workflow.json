@@ -1,0 +1,57 @@
+[
+  {
+    "id": "f18c78b6-03b4-4fb9-a0be-d9614577e1a5",
+    "created_at": "2024-07-13 02:42:21.294515+00",
+    "trigger": "interviewStart",
+    "phase": "before",
+    "interval": "30",
+    "title": "Send Slack Reminders 30 Minutes Before Interview",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "auto_connect": true,
+    "description": "Send Slack Reminders 30 Minutes Before Interview to Organizers, Interviewers, and Candidates."
+  },
+  {
+    "id": "0d0282ef-9da4-42fd-99d4-163751f3c5ef",
+    "created_at": "2024-07-13 02:57:16.592646+00",
+    "trigger": "sendAvailReqReminder",
+    "phase": "after",
+    "interval": "0",
+    "title": "Availability Reminder Email for Candidate",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "auto_connect": true,
+    "description": "Send a reminder to the candidate if they do not respond to the availability link within 24 or 48 hours."
+  },
+  {
+    "id": "fb5a32d0-f969-487d-8be9-40f0beb0b8d9",
+    "created_at": "2024-07-13 02:57:48.190506+00",
+    "trigger": "sendAvailReqReminder",
+    "phase": "after",
+    "interval": "0",
+    "title": "Self-Scheduling Reminder Email for Candidate",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "auto_connect": true,
+    "description": "Send a reminder to the candidate if they do not respond to the self-scheduling link within 24 or 48 hours."
+  },
+  {
+    "id": "f7bcd8d4-c15a-4cc6-9cf0-4032a7489681",
+    "created_at": "2024-07-13 02:58:29.099687+00",
+    "trigger": "sendAvailReqReminder",
+    "phase": "after",
+    "interval": "0",
+    "title": "Interviewer Reminder Email",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "auto_connect": true,
+    "description": "Send a reminder to interviewers if they do not accept the invite within 24 hours of receiving it."
+  },
+  {
+    "id": "649ab291-0b5d-48c1-8547-3a71063d892f",
+    "created_at": "2024-07-13 02:39:30.414441+00",
+    "trigger": "candidateBook",
+    "phase": "after",
+    "interval": "30",
+    "title": "Send Email Reminders 30 Min Before Interview",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "auto_connect": true,
+    "description": "Send Email Reminders 30 Minutes Before Interview to Organizers, Interviewers, and Candidates."
+  }
+]

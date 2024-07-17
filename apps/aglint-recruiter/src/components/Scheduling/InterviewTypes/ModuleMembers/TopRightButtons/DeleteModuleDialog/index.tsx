@@ -74,6 +74,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         textPopupTitle={`Delete Interview Type`}
         textWarning={`By clicking delete the module will be permanently deleted`}
         textJobTitle={moduleName}
+        onClickCloseJob={{ onClick: onClose }}
         slotButton={
           <>
             <ButtonSoft

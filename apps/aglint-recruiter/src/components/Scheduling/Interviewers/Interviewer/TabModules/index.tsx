@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import React, { Dispatch } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
@@ -70,7 +70,11 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <AllInterviewEmpty textDynamic='No interview types added yet.' />
+              <GlobalEmptyState
+                textDesc='No Interview type found.'
+                size={6}
+                iconName='school'
+              />
             )}
           </>
         }

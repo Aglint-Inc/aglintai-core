@@ -14,7 +14,6 @@ import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
 import { BannerLoading } from '@/devlink3/BannerLoading';
 import { DarkPill } from '@/devlink3/DarkPill';
 import { EnableDisable } from '@/devlink3/EnableDisable';
@@ -53,6 +52,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
+import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
@@ -171,6 +171,8 @@ const Dashboard = () => {
 
   const banners = useBanners();
 
+  const [, setStorage] = useLocalStorage('scheduleFilterIds');
+
   return (
     <>
       <UploadApplications />
@@ -234,19 +236,16 @@ const Dashboard = () => {
             isViewScheduleVisible={schedule?.length > 3}
             onClickViewSchedule={{
               onClick: () => {
-                localStorage.setItem(
-                  'scheduleFilterIds',
-                  JSON.stringify({
-                    status: ['confirmed'],
-                    member: [],
-                    job: [job?.id],
-                  }),
-                );
+                setStorage((prev) => ({
+                  ...prev,
+                  status: ['confirmed'],
+                  member: [],
+                  jobs: [job?.id],
+                }));
                 push(`/scheduling?tab=schedules`);
               },
             }}
             slotScheduleCardSmall={<Schedules />}
-            // textCandidateCount={counts.total}
             onClickAssistant={{
               onClick: () => push(`/jobs/${job.id}/agent`),
             }}
@@ -283,18 +282,20 @@ const Dashboard = () => {
                     }
                   />
                 )}
-                <AddCandidateButton
-                  isImport={job?.status !== 'closed'}
-                  onClickImport={{
-                    onClick: () => setImportPopup(true),
-                  }}
-                />
+                {job?.status !== 'closed' && (
+                  <ButtonSoft
+                    size={2}
+                    color='neutral'
+                    textButton='Add candidates'
+                    onClickButton={{ onClick: () => setImportPopup(true) }}
+                    isLeftIcon
+                    iconName='person_add'
+                  />
+                )}
               </>
             }
             slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
-            // isEditError={!settingsValidity.validity}
-            // onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
                 <IconButtonGhost

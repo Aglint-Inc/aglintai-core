@@ -1,7 +1,7 @@
 import {
   DatabaseTable,
   EmailTemplateAPi,
-  InterviewSessionTypeDB
+  InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -50,7 +50,12 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
-import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import {
+  setSelectedSessionIds,
+  setSelectedTasks,
+  useSchedulingApplicationStore,
+} from '../store';
+import { getTaskDetails } from '../utils';
 import EmailPreview from './Components/EmailPriview';
 import {
   createTask,
@@ -199,6 +204,9 @@ function RequestAvailability() {
               },
             };
           });
+
+          const data = await getTaskDetails(selectedApplication.id);
+          setSelectedTasks(data);
         } else {
           throw new Error();
         }

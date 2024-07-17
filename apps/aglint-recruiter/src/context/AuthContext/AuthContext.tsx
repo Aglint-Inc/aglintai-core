@@ -276,6 +276,7 @@ const AuthProvider = ({ children }) => {
       .update({
         ...details,
         manager_id: undefined,
+        manager_details: undefined,
         role: undefined,
         last_login: undefined,
         created_by: undefined,
@@ -287,6 +288,7 @@ const AuthProvider = ({ children }) => {
     if (!error) {
       setRecruiterUser({
         ...data,
+        manager_details: details.manager_details,
         manager_id: details.manager_id,
         role: details.role,
         last_login: details.last_login,
