@@ -6,13 +6,13 @@ import React from 'react';
 
 import { CompanyListing } from '@/devlink/CompanyListing';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
-import { GlobalEmptyState } from '@/devlink';
 
 interface CompanyJobPostType {
   recruiter: RecruiterDB;
@@ -55,7 +55,9 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         textOpenJobCount={filteredJobs.length}
         slotOpenJobListing={
           <>
-            {filteredJobs.length == 0 && <GlobalEmptyState textDesc='No Jobs Found.' iconName='work'/>}
+            {filteredJobs.length == 0 && (
+              <GlobalEmptyState textDesc='No Jobs Found.' iconName='work' />
+            )}
             {filteredJobs.map((job, ind) => {
               return (
                 <OpenJobListingCard
