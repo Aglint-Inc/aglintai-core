@@ -5046,12 +5046,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      insert_company_email_templates: {
-        Args: {
-          p_recruiter_id: string
-        }
-        Returns: undefined
-      }
       insert_debrief_session: {
         Args: {
           interview_plan_id: string
@@ -5379,13 +5373,13 @@ export type Database = {
         | "candidateBook_slack_interviewerForConfirmation"
         | "onSignup_email_admin"
         | "onInvite_email_user"
-        | "onShadowComplete_email_interviewer"
-        | "onRShadowComplete_email_interviewer"
-        | "onShadowComplete_slack_interviewer"
-        | "onRShadowComplete_slack_interviewer"
-        | "onQualified_email_interviewer"
+        | "onShadowComplete_email_trainee"
+        | "onRShadowComplete_email_trainee"
+        | "onShadowComplete_slack_trainee"
+        | "onRShadowComplete_slack_trainee"
+        | "onQualified_email_trainee"
         | "onQualified_email_approved"
-        | "onQualified_slack_interviewer"
+        | "onQualified_slack_trainee"
         | "onQualified_slack_approved"
         | "onQualified_slack_approver"
         | "onQualified_email_approver"
