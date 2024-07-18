@@ -70,7 +70,6 @@ import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
-import { GlobalIcon } from '@/devlink';
 
 const JobDashboard = () => {
   const { job, jobLoad } = useJob();
