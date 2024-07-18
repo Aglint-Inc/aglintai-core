@@ -7,6 +7,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { RolesPill } from '@/devlink/RolesPill';
@@ -17,7 +18,6 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { EnableInterviewPlan as EnableInterviewPlanDev } from '@/devlink3/EnableInterviewPlan';
 import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
-import { InterviewPlan as InterviewPlanDev } from '@/devlink3/InterviewPlan';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
@@ -65,12 +65,101 @@ const InterviewPlanPage = () => {
   const {
     interviewPlans: { data },
   } = useJobInterviewPlan();
+  const [drawers, setDrawers] = useState<DrawerType>(initalDrawer);
+  const [drawerModal, setDrawerModal] = useState(false);
+  const handleCreate = useCallback(
+    (key: keyof DrawerType['create'], order: number) => {
+      setDrawerModal(true);
+      setDrawers((prev) => ({
+        ...prev,
+        create: { ...prev.create, [key]: { open: true, id: '', order } },
+      }));
+    },
+    [],
+  );
+  const handleDrawerClose = useCallback(() => {
+    setDrawerModal(false);
+    setTimeout(
+      () =>
+        setDrawers(
+          Object.entries(drawers).reduce((acc, [key, value]) => {
+            const safeKey = key as keyof DrawerType;
+            const safeValue = value as DrawerType[typeof safeKey];
+            acc[safeKey] = Object.keys(safeKey).reduce(
+              (acc, curr) => {
+                const safeCurr = curr as keyof typeof acc;
+                acc[safeCurr] = { open: false, id: '', order: -1 };
+                return acc;
+              },
+              {} as typeof safeValue,
+            );
+            return acc;
+          }, {} as DrawerType),
+        ),
+      400,
+    );
+  }, []);
+  const handleEdit = useCallback(
+    (key: keyof DrawerType['edit'], id: string, order: number) => {
+      setDrawerModal(true);
+      setDrawers((prev) => ({
+        ...prev,
+        edit: { ...prev.edit, [key]: { open: true, id, order } },
+      }));
+    },
+    [],
+  );
   return (
     <>
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
-        slotBody={data ? <InterviewPlan /> : <EnableInterviewPlan />}
+        slotTopbarRight={<Actions handleCreate={handleCreate} />}
+        slotBody={
+          data ? (
+            <Stack gap={1} margin={2} width={'800px'}>
+              <InterviewPlan
+                handleCreate={handleCreate}
+                handleEdit={handleEdit}
+              />
+            </Stack>
+          ) : (
+            <EnableInterviewPlan />
+          )
+        }
       />
+      <InterviewDrawers
+        open={drawerModal}
+        drawers={drawers}
+        handleClose={handleDrawerClose}
+      />
+    </>
+  );
+};
+
+const Actions = ({
+  handleCreate,
+}: {
+  // eslint-disable-next-line no-unused-vars
+  handleCreate: (key: keyof DrawerType['create'], order: number) => void;
+}) => {
+  const {
+    manageJob,
+    interviewPlans: { data },
+  } = useJobInterviewPlan();
+  const sessionsCount = data?.interview_session?.length ?? 0;
+  return (
+    <>
+      {manageJob && (
+        <ButtonSolid
+          textButton='Create Interview Type'
+          size={2}
+          iconName='bolt'
+          isLeftIcon
+          onClickButton={{
+            onClick: () => handleCreate('session', sessionsCount),
+          }}
+        />
+      )}
     </>
   );
 };
@@ -143,62 +232,33 @@ const initalDrawer = {
 };
 export type DrawerType = typeof initalDrawer;
 
-const InterviewPlan = () => {
+const InterviewPlan = ({
+  handleEdit,
+  handleCreate,
+}: {
+  handleEdit: (
+    // eslint-disable-next-line no-unused-vars
+    key: keyof DrawerType['edit'],
+    // eslint-disable-next-line no-unused-vars
+    id: string,
+    // eslint-disable-next-line no-unused-vars
+    order: number,
+  ) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleCreate: (key: keyof DrawerType['create'], order: number) => void;
+}) => {
   const {
     interviewPlans: { data },
     handleDeleteSession,
     getLoadingState,
   } = useJobInterviewPlan();
-  const [drawers, setDrawers] = useState<DrawerType>(initalDrawer);
-  const [drawerModal, setDrawerModal] = useState(false);
-  const handleDrawerClose = useCallback(() => {
-    setDrawerModal(false);
-    setTimeout(
-      () =>
-        setDrawers(
-          Object.entries(drawers).reduce((acc, [key, value]) => {
-            const safeKey = key as keyof DrawerType;
-            const safeValue = value as DrawerType[typeof safeKey];
-            acc[safeKey] = Object.keys(safeKey).reduce(
-              (acc, curr) => {
-                const safeCurr = curr as keyof typeof acc;
-                acc[safeCurr] = { open: false, id: '', order: -1 };
-                return acc;
-              },
-              {} as typeof safeValue,
-            );
-            return acc;
-          }, {} as DrawerType),
-        ),
-      400,
-    );
-  }, []);
   const [popup, setPopup] = useState<InterviewDeletePopupType['popup']>(null);
   const [popupModal, setPopupModal] = useState(false);
   const handlePopupClose = useCallback(() => {
     setPopupModal(false);
     setTimeout(() => setPopup(null), 400);
   }, []);
-  const handleCreate = useCallback(
-    (key: keyof DrawerType['create'], order: number) => {
-      setDrawerModal(true);
-      setDrawers((prev) => ({
-        ...prev,
-        create: { ...prev.create, [key]: { open: true, id: '', order } },
-      }));
-    },
-    [],
-  );
-  const handleEdit = useCallback(
-    (key: keyof DrawerType['edit'], id: string, order: number) => {
-      setDrawerModal(true);
-      setDrawers((prev) => ({
-        ...prev,
-        edit: { ...prev.edit, [key]: { open: true, id, order } },
-      }));
-    },
-    [],
-  );
+
   const handleDeletionSelect = useCallback(
     (args: InterviewDeletePopupType['popup']) => {
       setPopupModal(true);
@@ -226,28 +286,17 @@ const InterviewPlan = () => {
       lastSession={order === sessionsCount - 1}
     />
   ));
+  if (sessionsCount === 0)
+    return (
+      <GlobalEmptyState
+        iconName={'group'}
+        styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
+        textDesc={'No interview types found'}
+      />
+    );
   return (
     <>
-      <InterviewPlanDev
-        isCoordinatorVisible={false}
-        slotInterviewCoordinator={<></>}
-        isEmptyVisible={sessions.length === 0}
-        slotPrimaryButton={
-          <ButtonSolid
-            size={2}
-            textButton='Create Session'
-            onClickButton={{ onClick: () => handleCreate('session', 0) }}
-          />
-        }
-        slotInterviewPlan={
-          <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-        }
-      />
-      <InterviewDrawers
-        open={drawerModal}
-        drawers={drawers}
-        handleClose={handleDrawerClose}
-      />
+      {<DndProvider backend={HTML5Backend}>{sessions}</DndProvider>}
       <InterviewDeletePopup
         open={popupModal}
         popup={popup}
@@ -303,6 +352,7 @@ const InterviewSession = ({
     interviewPlans: { data },
     job,
     handleReorderSessions,
+    manageJob,
   } = useJobInterviewPlan();
   const [hover, setHover] = useState(false);
   const members = session.interview_session_relation.reduce(
@@ -389,7 +439,7 @@ const InterviewSession = ({
   drag(drop(ref));
   return (
     <Stack
-      ref={ref}
+      ref={manageJob ? ref : null}
       style={{ opacity: isDragging ? 0 : 1 }}
       data-handler-id={handlerId}
     >
@@ -465,44 +515,49 @@ const InterviewSession = ({
                     break: true,
                   })
                 }
+                manageJob={manageJob}
               />
             }
             isAddCardVisible={hover}
             slotAddScheduleCard={
-              <AddScheduleCard
-                handleCreate={handleCreate}
-                showBreak={!lastSession && session.break_duration === 0}
-                handleEdit={(key) => handleEdit(key, session.id)}
-              />
+              <Stack style={{ opacity: manageJob ? 100 : 0 }}>
+                <AddScheduleCard
+                  handleCreate={handleCreate}
+                  showBreak={!lastSession && session.break_duration === 0}
+                  handleEdit={(key) => handleEdit(key, session.id)}
+                />
+              </Stack>
             }
             slotButtons={
-              <>
-                <IconButtonSoft
-                  iconName={'delete'}
-                  size={1}
-                  color={'error'}
-                  onClickButton={{
-                    onClick: () =>
-                      handleDeletionSelect({
-                        id: session.id,
-                        name: session.name,
-                        break: false,
-                      }),
-                  }}
-                />
-                <IconButtonSoft
-                  iconName={'edit'}
-                  size={1}
-                  color={'neutral'}
-                  onClickButton={{
-                    onClick: () =>
-                      handleEdit(
-                        sessionToEdit(session.session_type),
-                        session.id,
-                      ),
-                  }}
-                />
-              </>
+              manageJob && (
+                <>
+                  <IconButtonSoft
+                    iconName={'delete'}
+                    size={1}
+                    color={'error'}
+                    onClickButton={{
+                      onClick: () =>
+                        handleDeletionSelect({
+                          id: session.id,
+                          name: session.name,
+                          break: false,
+                        }),
+                    }}
+                  />
+                  <IconButtonSoft
+                    iconName={'edit'}
+                    size={1}
+                    color={'neutral'}
+                    onClickButton={{
+                      onClick: () =>
+                        handleEdit(
+                          sessionToEdit(session.session_type),
+                          session.id,
+                        ),
+                    }}
+                  />
+                </>
+              )
             }
           />
         </Stack>
@@ -572,32 +627,36 @@ const InterviewBreak = ({
   duration,
   handleEdit,
   handleDelete,
+  manageJob,
 }: {
   duration: number;
   handleEdit: () => void;
   handleDelete: () => void;
+  manageJob: boolean;
 }) => {
   return (
     <InterviewBreakCard
       slotEditButton={
-        <>
-          <IconButtonSoft
-            iconName={'delete'}
-            size={1}
-            color={'error'}
-            onClickButton={{
-              onClick: () => handleDelete(),
-            }}
-          />
-          <IconButtonSoft
-            iconName={'edit'}
-            size={1}
-            color={'neutral'}
-            onClickButton={{
-              onClick: () => handleEdit(),
-            }}
-          />
-        </>
+        manageJob && (
+          <>
+            <IconButtonSoft
+              iconName={'delete'}
+              size={1}
+              color={'error'}
+              onClickButton={{
+                onClick: () => handleDelete(),
+              }}
+            />
+            <IconButtonSoft
+              iconName={'edit'}
+              size={1}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleEdit(),
+              }}
+            />
+          </>
+        )
       }
       textDuration={getBreakLabel(duration)}
     />

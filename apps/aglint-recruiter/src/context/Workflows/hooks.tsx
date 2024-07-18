@@ -53,21 +53,13 @@ const useWorkflowsContext = () => {
   const { devlinkProps: getDevlinkProps, checkPermissions } =
     useRolesAndPermissions();
 
-  const permissions = useMemo(
-    () => ({
-      enabled: checkPermissions(['workflow_module']),
-      view: checkPermissions(['workflow_module']),
-      manage: checkPermissions(['manage_workflow']),
-    }),
+  const manageWorkflow = useMemo(
+    () => checkPermissions(['manage_workflow']),
     [checkPermissions],
   );
 
   const devlinkProps = useMemo(
-    () => ({
-      enabled: getDevlinkProps(['workflow_module']),
-      view: getDevlinkProps(['workflow_module']),
-      manage: getDevlinkProps(['manage_workflow']),
-    }),
+    () => getDevlinkProps(['manage_workflow']),
     [getDevlinkProps],
   );
 
@@ -79,7 +71,7 @@ const useWorkflowsContext = () => {
     handleCreateWorkflow,
     handleDeleteWorkflow,
     devlinkProps,
-    permissions,
+    manageWorkflow,
   };
 };
 

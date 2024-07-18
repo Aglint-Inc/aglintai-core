@@ -2,9 +2,12 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Loader from '@/src/components/Common/Loader';
 import { useJob } from '@/src/context/JobContext';
+import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
@@ -18,7 +21,7 @@ const JobWorkflowDashboard = () => {
     job && job?.status !== 'closed' ? (
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
-        slotTopbarRight={<></>}
+        slotTopbarRight={<Actions />}
         slotBody={<JobWorkflow />}
       />
     ) : (
@@ -60,6 +63,26 @@ const BreadCrumbs = () => {
         showArrow
       />
       <Breadcrum textName={`Workflows`} showArrow />
+    </>
+  );
+};
+
+const Actions = () => {
+  const { manageJob } = useJobDashboard();
+  const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
+    setPopup,
+  }));
+  return (
+    <>
+      {manageJob && (
+        <ButtonSolid
+          textButton='Add Workflow'
+          size={2}
+          iconName='bolt'
+          isLeftIcon
+          onClickButton={{ onClick: () => setPopup({ open: true }) }}
+        />
+      )}
     </>
   );
 };
