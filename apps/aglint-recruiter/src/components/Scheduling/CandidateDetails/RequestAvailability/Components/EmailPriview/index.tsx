@@ -13,6 +13,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
 import { useSchedulingApplicationStore } from '../../../store';
+import { GlobalBannerInline, GlobalInfo } from '@/devlink2';
 
 function EmailPreview({
   setRequestSteps,
@@ -104,33 +105,49 @@ function EmailPreview({
           </ShowCode.When>
           <ShowCode.Else>
             <Stack
-              direction={'row'}
-              spacing={1}
-              justifyItems={'start'}
-              position={'absolute'}
-              top={'10px'}
-              right={'10px'}
+              display={'flex'}
+              gap={'32px'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              width={'100%'}
+              padding={'0px 20px'}
             >
-              <ButtonSoft
-                size={1}
-                textButton={'Edit Email Template'}
-                color={'accent'}
-                onClickButton={{
-                  onClick: () => {
-                    window.open(
-                      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
-                    );
-                  },
-                }}
-              />
-              <IconButtonSoft
-                size={1}
-                color={'neutral'}
-                iconName={'refresh'}
-                onClickButton={{
-                  onClick: getEmail,
-                }}
-              />
+              <Stack width={'447px'}>
+                <GlobalBannerInline
+                  textContent='This is a preview only. All actions in this email are disabled.'
+                  iconName='info'
+                  slotButton={<></>}
+                  color={'warning'}
+                />
+              </Stack>
+              <Stack
+                direction={'row'}
+                spacing={1}
+                justifyItems={'start'}
+                minWidth={'152px'}
+              >
+                <ButtonSoft
+                  size={1}
+                  textButton={'Edit Email Template'}
+                  color={'accent'}
+                  onClickButton={{
+                    onClick: () => {
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
+                      );
+                    },
+                  }}
+                />
+                <IconButtonSoft
+                  size={1}
+                  color={'neutral'}
+                  iconName={'refresh'}
+                  onClickButton={{
+                    onClick: getEmail,
+                  }}
+                />
+              </Stack>
             </Stack>
             <iframe
               width={'600px'}
