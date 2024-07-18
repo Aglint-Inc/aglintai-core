@@ -1,38 +1,53 @@
-create or replace function public.custom_access_token_hook(event jsonb)
-returns jsonb
-language plpgsql
-as $$
-  declare
+CREATE
+OR REPLACE FUNCTION public.custom_access_token_hook (event jsonb) RETURNS jsonb LANGUAGE plpgsql AS $$
+DECLARE
     claims jsonb;
-    perm jsonb;
-  begin
+    allpermissions jsonb;
+    role_name text;
+    recruiter_id uuid;
+BEGIN
     -- Retrieve and convert permissions to JSONB array
-    SELECT jsonb_agg(permissions.name) into perm
-    from public.permissions
-    join public.role_permissions on role_permissions.permission_id = permissions.id
-    join public.roles on roles.id = role_permissions.role_id
-    join public.recruiter_relation on recruiter_relation.role_id = roles.id
-    where recruiter_relation.user_id = (event->>'user_id')::uuid;
-    
+    SELECT jsonb_agg(permissions.name) INTO allpermissions
+    FROM public.permissions
+    JOIN public.role_permissions ON role_permissions.permission_id = permissions.id
+    JOIN public.roles ON roles.id = role_permissions.role_id
+    JOIN public.recruiter_relation ON recruiter_relation.role_id = roles.id
+    WHERE permissions.is_enable = true 
+      AND recruiter_relation.user_id = (event->>'user_id')::uuid;
+
+    -- Handle case where no permissions are found
+    allpermissions := COALESCE(allpermissions, '[]'::jsonb);
+
+    -- Retrieve the role name
+    SELECT roles.name, recruiter_relation.recruiter_id INTO role_name ,recruiter_id
+    FROM public.roles
+    JOIN public.recruiter_relation ON recruiter_relation.role_id = roles.id
+    WHERE recruiter_relation.user_id = (event->>'user_id')::uuid;
+
     -- Proceed with claims
     claims := event->'claims';
 
     -- Check if 'app_metadata' exists in claims
-    if jsonb_typeof(claims->'app_metadata') is null then
-      -- If 'app_metadata' does not exist, create an empty object
-      claims := jsonb_set(claims, '{app_metadata}', '{}');
-    end if;
+    IF jsonb_typeof(claims->'app_metadata') IS NULL THEN
+        -- If 'app_metadata' does not exist, create an empty object
+        claims := jsonb_set(claims, '{app_metadata}', '{}');
+    END IF;
 
-    -- Set a claim of 'permissions'
-    claims := jsonb_set(claims, '{app_metadata, permission}', coalesce(perm, '["asd"]'::jsonb));
+    -- Set a claim of 'permissions' and 'role'
+    claims := jsonb_set(
+        claims, 
+        '{app_metadata, role_permissions}', 
+        jsonb_build_object('permissions', allpermissions, 'role', role_name,'recruiter_id',recruiter_id)
+    );
 
     -- Update the 'claims' object in the original event
     event := jsonb_set(event, '{claims}', claims);
-    
+
     -- Return the modified event
-    return event;
-  end;
+    RETURN event;
+END;
 $$;
+
 
 grant usage on schema public to supabase_auth_admin;
 
