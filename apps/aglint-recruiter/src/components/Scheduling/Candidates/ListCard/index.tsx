@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactNode, useState } from 'react';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { AllInterviewCard } from '@/devlink2/AllInterviewCard';
 import { EmptyInterviewProgress } from '@/devlink2/EmptyInterviewProgress';
 import { ScheduleWithAgent } from '@/devlink2/ScheduleWithAgent';
@@ -11,7 +12,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
 import { ApplicationList } from '../utils';
-import { ButtonGhost, ButtonSoft } from '@/devlink';
 
 function ListCardInterviewSchedule({
   app,

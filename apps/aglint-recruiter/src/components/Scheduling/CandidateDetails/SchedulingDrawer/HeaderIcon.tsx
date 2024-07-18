@@ -1,8 +1,9 @@
+import { Stack } from '@mui/material';
+
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 import IconSessionType from '../RightPanel/IconSessionType';
 import { useSchedulingFlowStore } from './store';
-import { Stack } from '@mui/material';
 
 function HeaderIcon() {
   const { scheduleFlow, stepScheduling } = useSchedulingFlowStore((state) => ({
@@ -17,7 +18,7 @@ function HeaderIcon() {
         ''
       ) : scheduleFlow === 'self_scheduling' ? (
         <Stack display={'flex'} paddingTop={'3px'}>
-        <GlobalIcon iconName={'attach_email'} size={4} />
+          <GlobalIcon iconName={'attach_email'} size={4} />
         </Stack>
       ) : scheduleFlow === 'email_agent' ? (
         <GlobalIcon iconName={'mail'} size={4} />

@@ -3,8 +3,8 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PreviewEmail } from '@/devlink2/PreviewEmail';
-import { GlobalBannerInline } from '@/devlink2';
 
 interface Prop {
   Loading: boolean;
@@ -50,21 +50,30 @@ export default function EmailPreviewPopover({
             </Stack>
           ) : (
             <>
-            <Stack bgcolor={'rgb(241, 240, 239)'} display={'flex'} alignItems={'center'} paddingTop={'16px'}>
-              <Stack>
-              <GlobalBannerInline slotButton={<></>} textContent='This email contains sample data for preview purposes only.' iconName='info' color={'warning'}/>
+              <Stack
+                bgcolor={'rgb(241, 240, 239)'}
+                display={'flex'}
+                alignItems={'center'}
+                paddingTop={'16px'}
+              >
+                <Stack>
+                  <GlobalBannerInline
+                    slotButton={<></>}
+                    textContent='This email contains sample data for preview purposes only.'
+                    iconName='info'
+                    color={'warning'}
+                  />
+                </Stack>
               </Stack>
-            </Stack>
-            <Stack>
-           
-              <iframe
-                width={'100%'}
-                height={'800px'}
-                color='white'
-                srcDoc={isHtml}
-                title='Previw Email'
-              />
-            </Stack>
+              <Stack>
+                <iframe
+                  width={'100%'}
+                  height={'800px'}
+                  color='white'
+                  srcDoc={isHtml}
+                  title='Previw Email'
+                />
+              </Stack>
             </>
           )
         }
