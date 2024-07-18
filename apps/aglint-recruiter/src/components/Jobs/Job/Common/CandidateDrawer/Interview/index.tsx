@@ -6,6 +6,7 @@ import { JobDetailInterview } from '@/devlink/JobDetailInterview';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { SkeletonNewInterviewPlanCard } from '@/devlink3/SkeletonNewInterviewPlanCard';
 import ScheduleIndividualCard from '@/src/components/Scheduling/CandidateDetails/FullSchedule/ScheduleIndividual';
+import { WithPermission } from '@/src/components/withPermission';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { CASCADE_VISIBILITIES } from '@/src/context/ApplicationsContext/hooks';
 import ROUTES from '@/src/utils/routing/routes';
@@ -23,10 +24,7 @@ const Interview = () => {
   if (meta.status === 'success' && interview.status === 'success') {
     if (!CASCADE_VISIBILITIES.interview.includes(meta.data.status))
       return (
-        <ActionEmptyState
-          title='No interviews available.'
-          description='Move the candidate to the interview state to enable interview scheduling.'
-        />
+        <ActionEmptyState title='No interviews available.' description='' />
       );
     if ((interview.data ?? []).length === 0)
       return (
@@ -45,7 +43,9 @@ const Interview = () => {
     <JobDetailInterview
       slotNewInterviewPlanCard={
         <>
-          <Actions />
+          <WithPermission permission={['manage_job']}>
+            <Actions />
+          </WithPermission>
           <Content />
         </>
       }

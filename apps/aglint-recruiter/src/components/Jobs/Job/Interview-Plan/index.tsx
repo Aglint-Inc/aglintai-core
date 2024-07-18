@@ -156,7 +156,7 @@ const Actions = ({
           iconName='bolt'
           isLeftIcon
           onClickButton={{
-            onClick: () => handleCreate('session', sessionsCount + 1),
+            onClick: () => handleCreate('session', sessionsCount),
           }}
         />
       )}
