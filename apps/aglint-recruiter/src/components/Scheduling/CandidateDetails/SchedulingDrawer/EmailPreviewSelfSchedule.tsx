@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -14,7 +15,6 @@ import toast from '@/src/utils/toast';
 import { useSchedulingApplicationStore } from '../store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 import { setEmailData, useSchedulingFlowStore } from './store';
-import { GlobalBannerInline } from '@/devlink2';
 
 function EmailPreviewSelfSchedule() {
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
