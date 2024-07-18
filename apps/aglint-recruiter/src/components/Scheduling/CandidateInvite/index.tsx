@@ -24,6 +24,7 @@ import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Page404 } from '@/devlink/Page404';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
@@ -138,7 +139,7 @@ const CandidateInvitePlanPage = () => {
   if (meetings.length === 0)
     return (
       <Stack width={'100%'} height={'100vh'}>
-        <Page404 text404='The requested page was not found' />
+        <Page404 />
         <Stack bgcolor={'var(--neutral-2)'} height={'48px'}>
           <Footer brand={true} />
         </Stack>
@@ -455,7 +456,7 @@ export const ConfirmedInvitePage = (
             title={
               cancelReschedule === 'reschedule'
                 ? 'Reschedule'
-                : 'Cancel Schedule'
+                : 'Cancel Interview'
             }
             type={cancelReschedule}
           />
@@ -492,12 +493,23 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
-        slotButton={''}
+        slotButton={
+          <IconButtonGhost
+            color={'neutral'}
+            size={1}
+            iconName={'close'}
+            onClickButton={{
+              onClick: () => {
+                setDetailsPop(false);
+              },
+            }}
+          />
+        }
+        isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-        isSlotButtonVisible={false}
         isTitle={false}
       />
     </Dialog>
@@ -686,7 +698,7 @@ const CancelRescheduleDialog = ({
             )}
             {type === 'cancel' && (
               <ButtonSolid
-                textButton='Cancel Schedule'
+                textButton='Cancel Interview'
                 size={2}
                 color={'error'}
                 onClickButton={{ onClick: handleSubmit }}
