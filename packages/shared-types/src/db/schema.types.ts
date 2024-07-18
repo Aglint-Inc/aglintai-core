@@ -5387,6 +5387,7 @@ export type Database = {
         | "onQualified_slack_approved"
         | "onQualified_slack_approver"
         | "onQualified_email_approver"
+        | "interviewer_attend_comfirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
