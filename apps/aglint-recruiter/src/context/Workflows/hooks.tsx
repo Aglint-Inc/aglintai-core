@@ -59,7 +59,7 @@ const useWorkflowsContext = () => {
   );
 
   const devlinkProps = useMemo(
-    () => getDevlinkProps(['workflow_module']),
+    () => getDevlinkProps(['manage_workflow']),
     [getDevlinkProps],
   );
 

@@ -48,6 +48,7 @@ const ApplicationsComponent = () => {
     canPublish,
     total,
     applicationScoringPollEnabled,
+    manageJob,
   } = useJob();
   const { setImportPopup, checklist } = useApplicationsStore(
     ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
@@ -89,7 +90,7 @@ const ApplicationsComponent = () => {
                 }
               />
             )}
-            {job?.status !== 'closed' && (
+            {job?.status !== 'closed' && manageJob && (
               <ButtonSoft
                 size={2}
                 color='neutral'
@@ -102,10 +103,12 @@ const ApplicationsComponent = () => {
             {job?.status === 'draft' && (
               <JobsBanner
                 slotButton={
-                  <PublishButton
-                    onClick={() => handlePublish()}
-                    disabled={!canPublish}
-                  />
+                  manageJob && (
+                    <PublishButton
+                      onClick={() => handlePublish()}
+                      disabled={!canPublish}
+                    />
+                  )
                 }
               />
             )}
