@@ -443,7 +443,12 @@ function SubTaskProgress() {
                           </Stack>
                         </ShowCode.When>
                         <ShowCode.When
-                          isTrue={item.progress_type === 'self_schedule'}
+                          isTrue={
+                            item.progress_type === 'self_schedule' &&
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('interview_schedule')
+                          }
                         >
                           <SelfScheduleResend selectedTask={selectedTask} />
                         </ShowCode.When>
