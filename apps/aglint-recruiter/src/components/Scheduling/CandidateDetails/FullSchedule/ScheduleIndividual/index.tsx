@@ -163,13 +163,15 @@ function ScheduleIndividualCard({
         <RequestStatusUnconfirmed interview_meeting={interview_meeting} />
       }
       slotRequestDetail={
-        currentSession && (
+        currentSession ? (
           <BadgesRight
             cancelReasons={cancelReasons}
             users={users}
             interview_meeting={interview_meeting}
             interview_module={currentSession.interview_module}
           />
+        ) : (
+          ''
         )
       }
     />
