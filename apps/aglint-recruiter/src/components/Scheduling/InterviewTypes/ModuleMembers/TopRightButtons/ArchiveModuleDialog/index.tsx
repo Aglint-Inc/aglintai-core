@@ -10,6 +10,7 @@ import toast from '@/src/utils/toast';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
+import { GlobalBannerShort } from '@/devlink2';
 
 function ArchiveModuleDialog({
   editModule,
@@ -143,13 +144,30 @@ function ArchiveModuleDialog({
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
-            {errors.map((error, index) => (
-              <li key={index}>
-                <Typography key={index} variant='caption'>
-                  {error}
-                </Typography>
-              </li>
-            ))}
+
+            {errors.length > 0 && (
+              <GlobalBannerShort
+                color={'error'}
+                iconName='error'
+                textTitle='Unable to Archive'
+                textDescription=''
+                slotButtons={
+                  <Stack display={'flex'} flexDirection={'column'}>
+                    {errors.map((error, index) => (
+                      <li key={index} style={{ color: 'var(--error-11)' }}>
+                        <Typography
+                          key={index}
+                          variant='caption'
+                          color={'var(--error-11)'}
+                        >
+                          {error}
+                        </Typography>
+                      </li>
+                    ))}
+                  </Stack>
+                }
+              />
+            )}
           </Stack>
         }
       />

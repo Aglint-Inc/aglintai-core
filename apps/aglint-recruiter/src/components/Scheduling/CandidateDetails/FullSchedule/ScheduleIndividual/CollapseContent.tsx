@@ -156,7 +156,7 @@ function CollapseContent({
             {isCollapseButtonsVisible &&
               (interview_meeting?.status === 'waiting' ||
                 interview_meeting?.status === 'confirmed') && (
-                <Stack direction={'row'} spacing={'var(--space-2)'}>
+                <Stack direction={'row'} spacing={'var(--space-2)'} justifyContent={'flex-end'}>
                   <ButtonSoft
                     size={1}
                     color={'neutral'}
