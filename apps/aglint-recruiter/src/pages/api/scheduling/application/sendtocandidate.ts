@@ -345,6 +345,8 @@ const sendToCandidate = async ({
           supabase,
         });
 
+        update_task_id = resTask.id;
+
         console.log('created task and progress');
 
         await addScheduleActivity({
@@ -361,9 +363,52 @@ const sendToCandidate = async ({
           task_id: resTask.id,
         });
 
-        update_task_id = resTask.id;
+        await createTaskProgress({
+          type: 'self_scheduling',
+          data: {
+            progress_type: 'self_schedule',
+            created_by: {
+              id: recruiterUser.user_id,
+              name: getFullName(
+                recruiterUser.first_name,
+                recruiterUser.last_name,
+              ),
+            },
+            task_id: resTask.id,
+          },
+          optionData: {
+            candidateName: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            sessions: initialSessions
+              .filter((ses) =>
+                selectedSessionIds.includes(ses.interview_session.id),
+              )
+              .map((ele) => ({
+                id: ele.interview_session.id,
+                name: ele.interview_session.name,
+              })) as meetingCardType[],
+          },
+          supabaseCaller: supabase,
+        });
       } else {
         console.log(`task_id ${update_task_id}`);
+
+        await addScheduleActivity({
+          title: `Sent self scheduling link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${initialSessions
+            .filter((ses) =>
+              selectedSessionIds.includes(ses.interview_session.id),
+            )
+            .map((ses) => ses.interview_session.name)
+            .join(' , ')}`,
+          logged_by: 'user',
+          application_id: selectedApplication.id,
+          supabase,
+          created_by: recruiterUser.user_id,
+          task_id: update_task_id,
+        });
+
         await createTaskProgress({
           type: 'self_scheduling',
           data: {
