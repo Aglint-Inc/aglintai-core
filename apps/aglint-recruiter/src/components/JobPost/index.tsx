@@ -348,7 +348,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 })
               ) : (
                 <GlobalEmptyState
-                  textDesc='No more Jobs Postings'
+                  textDesc='No jobs found.'
                   iconName='work'
                   size={5}
                 />
