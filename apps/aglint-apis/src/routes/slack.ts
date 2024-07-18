@@ -1,6 +1,7 @@
 import express from 'express';
 import {feedback} from 'src/controllers/slack/feedBack';
 import {groupMessage} from 'src/controllers/slack/groupMessage';
+import {interviewerAttentedConfirmation} from 'src/controllers/slack/interviewerAttentedConfirmation';
 import {interviewReminder} from 'src/controllers/slack/interviewReminder';
 import {listForInteractions} from 'src/controllers/slack/listForInteractions';
 import {notifyInterviewConfirmation} from 'src/controllers/slack/notifyInterviewConfirmation';
@@ -14,7 +15,7 @@ import {slackEndPoints} from 'src/types/slack/routes.types';
 const slackRoutes = express.Router();
 
 slackRoutes.post(
-  slackEndPoints.candidateBook_slack_interviewerForConfirmation,
+  `/${slackEndPoints.candidateBook_slack_interviewerForConfirmation}`,
   notifyInterviewConfirmation
 );
 slackRoutes.post(
@@ -41,6 +42,10 @@ slackRoutes.post(
 slackRoutes.post(
   `/${slackEndPoints.onQualified_slack_approver}`,
   onQualifiedApprover
+);
+slackRoutes.post(
+  `/${slackEndPoints.interviewer_attend_comfirmation}`,
+  interviewerAttentedConfirmation
 );
 
 slackRoutes.post('/send-direct-message', sendDirectMessage);

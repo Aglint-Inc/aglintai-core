@@ -5,7 +5,8 @@ type SelectedEmailSlackTypes =
   | 'onQualified_slack_approver'
   | 'onQualified_slack_trainee'
   | 'onRShadowComplete_slack_trainee'
-  | 'onShadowComplete_slack_trainee';
+  | 'onShadowComplete_slack_trainee'
+  | 'interviewer_attend_comfirmation';
 
 export const slackEndPoints: {
   [key in SelectedEmailSlackTypes]: key;
@@ -19,4 +20,5 @@ export const slackEndPoints: {
   onQualified_slack_trainee: 'onQualified_slack_trainee',
   onRShadowComplete_slack_trainee: 'onRShadowComplete_slack_trainee',
   onShadowComplete_slack_trainee: 'onShadowComplete_slack_trainee',
+  interviewer_attend_comfirmation: 'interviewer_attend_comfirmation',
 };

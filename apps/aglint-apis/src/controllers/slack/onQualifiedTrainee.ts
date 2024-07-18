@@ -2,6 +2,7 @@ import {getFullName, supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function onQualifiedTrainee(req: Request, res: Response) {
   const {interview_module_relation_id, approver_id} = req.body;
@@ -31,20 +32,16 @@ export async function onQualifiedTrainee(req: Request, res: Response) {
 
     const {interview_module, recruiter_user: trainee} = data;
 
-    const userResponse = await slackWeb.users.lookupByEmail({
-      email: trainee.email,
-    });
-    const userId = userResponse.user.id;
+    const userId = await getUserIdByEmail(trainee.email);
 
     await slackWeb.chat.postMessage({
       channel: userId,
-
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)}, you have been moved from training to qualified by ${getFullName(approver.first_name, approver.last_name)} on "${interview_module.name}" interview type.`,
+            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\nCongratulations, ${getFullName(trainee.first_name, trainee.last_name)} ! Now you are qualified to conduct interviews for ${interview_module.name}.\n\n From,\n${getFullName(approver.first_name, approver.last_name)}`,
           },
         },
       ],

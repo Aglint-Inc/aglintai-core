@@ -2,9 +2,11 @@ import {getFullName, supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function onRShadowCompleteTrainee(req: Request, res: Response) {
-  const {interview_module_relation_id} = req.body;
+  const {interview_module_relation_id, interview_meeting_id, session_id} =
+    req.body;
 
   if (!interview_module_relation_id) {
     return res
@@ -19,23 +21,71 @@ export async function onRShadowCompleteTrainee(req: Request, res: Response) {
         .select('recruiter_user(*),interview_module(*)')
         .eq('id', interview_module_relation_id)
     );
+    const [interviewMeeting] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_meeting')
+        .select(
+          'recruiter_user(first_name,last_name),interview_schedule(applications(candidates(first_name,last_name),public_jobs(job_title)))'
+        )
+        .eq('id', interview_meeting_id)
+    );
+    const [session] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session')
+        .select('name')
+        .eq('id', session_id)
+    );
 
     const {interview_module, recruiter_user: trainee} = data;
-    const userResponse = await slackWeb.users.lookupByEmail({
-      email: trainee.email,
-    });
-    const userId = userResponse.user.id;
+
+    const userId = await getUserIdByEmail(trainee.email);
+
+    const organizer = interviewMeeting.recruiter_user;
+    const candidate =
+      interviewMeeting.interview_schedule.applications.candidates;
+    const job =
+      interviewMeeting.interview_schedule.applications.public_jobs.job_title;
 
     await slackWeb.chat.postMessage({
       channel: userId,
-
+      metadata: {
+        event_type: 'reverse_shadow_complete_trainee_confirmation',
+        event_payload: {name: 'shadow_complete_trainee_confirmation'},
+      },
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)}, you have completed all the reverse shadow interviews for the ${interview_module.name}.`,
+            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the [1st] reverse shadow session for ${interview_module.name} ? You were scheduled as a shadow interviewer in the ${session.name} for ${job} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
           },
+        },
+        {
+          type: 'actions',
+          elements: [
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                emoji: true,
+                text: 'Completed',
+              },
+              style: 'primary',
+              value: 'accept',
+              action_id: 'accept',
+            },
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                emoji: true,
+                text: 'Could not attend Interview',
+              },
+              style: 'danger',
+              value: 'decline',
+              action_id: 'decline',
+            },
+          ],
         },
       ],
     });

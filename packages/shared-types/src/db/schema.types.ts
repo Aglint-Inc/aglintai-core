@@ -4251,6 +4251,10 @@ export type Database = {
       }
       meeting_interviewers: {
         Row: {
+          accepted_status:
+            | Database["public"]["Enums"]["session_accepted_status"]
+            | null
+          cancel_reasons: Json | null
           email: string | null
           first_name: string | null
           interviewer_type:
@@ -5383,6 +5387,7 @@ export type Database = {
         | "onQualified_slack_approved"
         | "onQualified_slack_approver"
         | "onQualified_email_approver"
+        | "interviewer_attend_comfirmation"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
