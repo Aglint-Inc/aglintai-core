@@ -245,7 +245,10 @@ function SchedulingViewComp() {
                         setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                       />
                     )}
-                    <Overview schedule={schedule} />
+                    <Overview
+                      schedule={schedule}
+                      cancelReasons={data?.cancel_data}
+                    />
                   </Stack>
                 }
                 slotDarkPills={viewScheduleTabs

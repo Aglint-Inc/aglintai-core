@@ -1,19 +1,14 @@
 import { Collapse, Stack } from '@mui/material';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
-import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
 import { numberToText } from '@/src/utils/number/numberToText';
 
-import { getPauseMemberText } from '../../../InterviewTypes/ModuleMembers/SlotBodyComp/utils';
-import { formatTimeWithTimeZone, getShortTimeZone } from '../../../utils';
+import InterviewerUserDetail from '../../../Common/InterviewerUserDetail';
+import { formatTimeWithTimeZone } from '../../../utils';
 import {
   SchedulingApplication,
   setIndividualCancelOpen,
@@ -113,8 +108,8 @@ function CollapseContent({
               />
               {users.map((user) => {
                 const item = user.user_details;
-                const fullName = getFullName(item.first_name, item.last_name);
-                const isPaused = !!user?.interview_module_relation?.pause_json; //null check needed because debrief doesnt have module relation
+                const pause_json = user.interview_module_relation?.pause_json;
+                const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
                 const isCalendarConnected =
                   (!!recruiter.service_json &&
                     recruiter.email.split('@')[1] ===
@@ -128,125 +123,29 @@ function CollapseContent({
                 );
 
                 return (
-                  <GlobalUserDetail
-                    slotCandidateStatus={
-                      <Stack
-                        height={'100%'}
-                        alignItems={'center'}
-                        justifyContent={'center'}
-                        direction={'row'}
-                      >
-                        {(interview_meeting?.status === 'confirmed' ||
-                          interview_meeting?.status === 'completed') && (
-                          <>
-                            <CustomTooltip
-                              hidden={!cancelReason?.reason}
-                              title={
-                                <Stack
-                                  p={'var(--space-2)'}
-                                  spacing={'var(--space-1)'}
-                                >
-                                  <Text
-                                    size={2}
-                                    content={`Reason : ${cancelReason?.reason}`}
-                                    color={'info'}
-                                    weight={'regular'}
-                                  />
-                                  <Text
-                                    size={1}
-                                    content={`Notes : ${cancelReason?.other_details?.note}`}
-                                    weight={'regular'}
-                                    color={'neutral'}
-                                  />
-                                </Stack>
-                              }
-                            >
-                              <Stack
-                                sx={{
-                                  cursor: 'pointer',
-                                }}
-                              >
-                                <InterviewerAcceptDeclineIcon
-                                  type={
-                                    user.interview_session_relation
-                                      .accepted_status
-                                  }
-                                />
-                              </Stack>
-                            </CustomTooltip>
-                          </>
-                        )}
-
-                        {interview_meeting?.status !== 'confirmed' &&
-                          interview_meeting?.status !== 'completed' && (
-                            <>
-                              {!isCalendarConnected && (
-                                <GlobalBadge
-                                  size={1}
-                                  showIcon={true}
-                                  iconName={'warning'}
-                                  color={'error'}
-                                  textBadge={`Calendar not connected`}
-                                />
-                              )}
-                              {isPaused && (
-                                <GlobalBadge
-                                  size={1}
-                                  showIcon={true}
-                                  iconName={'error'}
-                                  color={'warning'}
-                                  textBadge={`Paused ${getPauseMemberText(
-                                    user.interview_module_relation.pause_json,
-                                  )}`}
-                                />
-                              )}
-                            </>
-                          )}
-                      </Stack>
-                    }
+                  <InterviewerUserDetail
                     key={item.user_id}
-                    textTimeZone={
-                      interview_meeting?.start_time
-                        ? formatTimeWithTimeZone({
-                            start_time: interview_meeting.start_time,
-                            end_time: interview_meeting.end_time,
-                            timeZone:
-                              user.user_details.scheduling_settings?.timeZone
-                                ?.tzCode,
-                          })
-                        : getShortTimeZone(
-                            user.user_details.scheduling_settings?.timeZone
-                              ?.tzCode,
-                          )
+                    accepted_status={
+                      user.interview_session_relation.accepted_status
                     }
-                    isRoleVisible={true}
-                    slotRole={
-                      item.position ? (
-                        <TextWithIcon
-                          fontWeight={'regular'}
-                          textContent={item.position}
-                          iconName={'work'}
-                          iconSize={4}
-                          color='neutral'
-                          fontSize={1}
-                        />
-                      ) : (
-                        '--'
-                      )
+                    cancelReason={cancelReason}
+                    interview_meeting={{
+                      end_time: interview_meeting.end_time,
+                      start_time: interview_meeting.start_time,
+                      status: interview_meeting.status,
+                    }}
+                    interviewerTimeZone={
+                      item.scheduling_settings?.timeZone.tzCode
                     }
-                    textName={fullName}
-                    slotImage={
-                      <MuiAvatar
-                        level={fullName}
-                        src={item.profile_image}
-                        variant={'rounded'}
-                        fontSize={'14px'}
-                        width='100%'
-                        height='100%'
-                      />
-                    }
-                    isSlotImageVisible={true}
-                    isCandidateAvatarVisible={false}
+                    isCalendarConnected={isCalendarConnected}
+                    isPaused={isPaused}
+                    pause_json={pause_json}
+                    userDetails={{
+                      first_name: item.first_name,
+                      last_name: item.last_name,
+                      position: item.position,
+                      profile_image: item.profile_image,
+                    }}
                   />
                 );
               })}

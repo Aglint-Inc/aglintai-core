@@ -85,6 +85,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (errSesRel) throw new Error(errSesRel.message);
 
+      await supabase
+        .from('interview_session_cancel')
+        .delete()
+        .eq('session_id', session_id)
+        .throwOnError();
+
       const { error: errIntSesCancel } = await supabase
         .from('interview_session_cancel')
         .insert({
