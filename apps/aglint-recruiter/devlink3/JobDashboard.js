@@ -237,7 +237,7 @@ export function JobDashboard({
                   tag="div"
                   {...onClickViewSchedule}
                 >
-                  <Text content="" color="accent" weight="" />
+                  <Text content="View All" color="accent" weight="" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>
