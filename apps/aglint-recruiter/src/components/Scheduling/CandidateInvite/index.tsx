@@ -5,6 +5,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Container,
   Dialog,
+  FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -584,6 +585,7 @@ const CancelRescheduleDialog = ({
       ),
     [formData.dateRange.start, formData.dateRange.end],
   );
+
   useEffect(
     () => setFormData((pre) => ({ ...pre, reason: options[0] })),
     [options],
@@ -663,32 +665,35 @@ const CancelRescheduleDialog = ({
           </Stack>
         }
         slotRadioText={
-          // <FormControl>
-          <RadioGroup
-            name='radio-buttons-group'
-            value={formData.reason}
-            onChange={(e) => {
-              setFormData((pre) => ({ ...pre, reason: e.currentTarget.value }));
-            }}
-            sx={{ gap: '4px' }}
-          >
-            {options.map((item) => (
-              <FormControlLabel
-                key={item}
-                value={item}
-                control={<Radio />}
-                label={capitalizeFirstLetter(item)}
-                sx={{
-                  ml: 0,
-                  '& .MuiRadio-root': {
-                    p: 0.5,
-                  },
-                  '& .MuiTypography-root': { fontSize: '14px' },
-                }}
-              />
-            ))}
-          </RadioGroup>
-          // {/* </FormControl> */}
+          <FormControl>
+            <RadioGroup
+              name='radio-buttons-group'
+              value={formData.reason}
+              onChange={(e) => {
+                setFormData((pre) => ({
+                  ...pre,
+                  reason: e.currentTarget.value,
+                }));
+              }}
+              sx={{ gap: '4px' }}
+            >
+              {options.map((item) => (
+                <FormControlLabel
+                  key={item}
+                  value={item}
+                  control={<Radio />}
+                  label={capitalizeFirstLetter(item)}
+                  sx={{
+                    ml: 0,
+                    '& .MuiRadio-root': {
+                      p: 0.5,
+                    },
+                    '& .MuiTypography-root': { fontSize: '14px' },
+                  }}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         }
         slotPrimaryButton={
           <Stack>
