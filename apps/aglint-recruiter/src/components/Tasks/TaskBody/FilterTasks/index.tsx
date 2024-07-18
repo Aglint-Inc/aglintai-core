@@ -9,7 +9,9 @@ function FilterTasks() {
     filter,
     handelSearch,
     handelFilter,
-    handelResetFilter
+    handelResetFilter,
+    sort,
+    handelSort,
   } = useTasksContext();
   // const allResetShow = !!Object.values(filter)
   //   .map((ele) => ele.values)
@@ -19,7 +21,6 @@ function FilterTasks() {
     <FilterHeader
       handelResetAll={handelResetFilter}
       isResetAll={true}
-
       search={{
         value: search,
         setValue: (e) => {
@@ -152,6 +153,29 @@ function FilterTasks() {
             ...filter,
             date: { ...filter.date, values: val },
           });
+        },
+      }}
+      sort={{
+        sortOptions: {
+          options: sort.options,
+          order: [
+            {
+              id: 'asc',
+              label: 'Ascending',
+            },
+            {
+              id: 'desc',
+              label: 'Descending',
+            },
+          ],
+        },
+        selected: sort.selected,
+        setOrder: (payload) => {
+          const temp = {
+            option: payload.type || sort.selected.option,
+            order: payload.order || sort.selected.order,
+          };
+          handelSort({ ...temp });
         },
       }}
     />
