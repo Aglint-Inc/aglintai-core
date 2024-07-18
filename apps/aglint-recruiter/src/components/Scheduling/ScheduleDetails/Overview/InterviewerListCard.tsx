@@ -44,7 +44,7 @@ function InterviewerListCard({
     getFullName(item.first_name, item.last_name) +
     `${item.email === recruiterUser.email ? ' ( You )' : ''}`;
 
-  const cancelReason = cancelReasons.find(
+  const cancelReason = cancelReasons?.find(
     (cancel) =>
       cancel.interview_session_cancel?.session_relation_id ===
       item.interview_session_relation.id,
