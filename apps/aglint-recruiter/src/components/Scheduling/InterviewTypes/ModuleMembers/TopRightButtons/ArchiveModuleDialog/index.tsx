@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
-import { GlobalBannerShort } from '@/devlink2';
 
 function ArchiveModuleDialog({
   editModule,
