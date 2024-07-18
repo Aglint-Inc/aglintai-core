@@ -439,7 +439,7 @@ const InterviewSession = ({
   drag(drop(ref));
   return (
     <Stack
-      ref={ref}
+      ref={manageJob ? ref : null}
       style={{ opacity: isDragging ? 0 : 1 }}
       data-handler-id={handlerId}
     >
