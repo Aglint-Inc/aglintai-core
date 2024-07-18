@@ -283,6 +283,7 @@ const SessionForms = ({
         <InterviewModulesField
           value={interview_module.value}
           handleModuleChange={handleModuleChange}
+          error={rest.interviewers.error}
         />
       }
       slotScheduleTypeDropdown={
@@ -506,6 +507,7 @@ const Interview = ({
         showInterviewingMembers && (
           <InterviewersField
             value={interviewers.value}
+            error={interviewers.error}
             type='interviewers'
             moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
             handleMemberAdd={handleMemberAdd}
@@ -664,11 +666,13 @@ const InterviewersField = ({
   moduleMemberRecommendations,
   type,
   handleMemberAdd,
+  error,
 }: {
   value: SessionFormProps['interviewers'];
   type: Parameters<HandleMemberAdd>['0'];
   moduleMemberRecommendations: SessionUser[];
   handleMemberAdd: HandleMemberAdd;
+  error?: boolean;
 }) => {
   const options = moduleMemberRecommendations.map((m) => ({
     name: getFullName(m.first_name, m.last_name),
@@ -690,21 +694,35 @@ const InterviewersField = ({
   };
 
   return (
-    <DropDown
-      placeholder='Select Interviewers'
-      onChange={onChange}
-      options={options}
-      value=''
-    />
+    <Stack gap={'2px'}>
+      <DropDown
+        placeholder='Select Interviewers'
+        onChange={onChange}
+        options={options}
+        value=''
+      />
+      {error && (
+        <Stack
+          alignItems={'center'}
+          direction={'row'}
+          color={'var(--error-a11)'}
+        >
+          <WarningSvg />
+          {'Interviewers cannot be empty'}
+        </Stack>
+      )}
+    </Stack>
   );
 };
 
 const InterviewModulesField = ({
   value,
   handleModuleChange,
+  error,
 }: {
   value: SessionFormProps['interview_module'];
   handleModuleChange: HandleModuleChange;
+  error?: boolean;
 }) => {
   const {
     interviewModules: { data },
@@ -727,13 +745,25 @@ const InterviewModulesField = ({
   };
 
   return (
-    <DropDown
-      placeholder='Select interview type'
-      onChange={onChange}
-      options={options}
-      value={value?.id}
-      showIcons={false}
-    />
+    <Stack gap={'2px'}>
+      <DropDown
+        placeholder='Select interview type'
+        onChange={onChange}
+        options={options}
+        value={value?.id}
+        showIcons={false}
+      />
+      {error && !value?.id && (
+        <Stack
+          alignItems={'center'}
+          direction={'row'}
+          color={'var(--error-a11)'}
+        >
+          <WarningSvg />
+          {'Interview Type cannot be empty'}
+        </Stack>
+      )}
+    </Stack>
   );
 };
 
@@ -993,4 +1023,21 @@ export const getSessionPayload = (
     session_order,
     interview_plan_id,
   };
+};
+
+const WarningSvg = () => {
+  return (
+    <svg
+      width='22'
+      height='12px'
+      viewBox='0 0 17 16'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M8 4C7.72386 4 7.5 4.22386 7.5 4.5V9C7.5 9.27614 7.72386 9.5 8 9.5C8.27614 9.5 8.5 9.27614 8.5 9V4.5C8.5 4.22386 8.27614 4 8 4ZM8 13C8.55228 13 9 12.5523 9 12C9 11.4477 8.55228 11 8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13ZM8 16C3.85786 16 0.5 12.6421 0.5 8.5C0.5 4.35786 3.85786 1 8 1C12.1421 1 15.5 4.35786 15.5 8.5C15.5 12.6421 12.1421 16 8 16ZM8 15C11.5899 15 14.5 12.0899 14.5 8.5C14.5 4.91015 11.5899 2 8 2C4.41015 2 1.5 4.91015 1.5 8.5C1.5 12.0899 4.41015 15 8 15Z'
+        fill='var(--error-9)'
+        fill-rule='evenodd'
+      ></path>
+    </svg>
+  );
 };
