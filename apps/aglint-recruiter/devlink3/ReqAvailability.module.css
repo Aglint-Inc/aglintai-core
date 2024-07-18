@@ -94,7 +94,7 @@
 
 .req_availability_body {
   display: flex;
-  max-width: 630px;
+  width: 100%;
   padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
