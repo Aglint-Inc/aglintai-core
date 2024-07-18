@@ -48,7 +48,7 @@ function InterviewerListCard({
     (cancel) =>
       cancel.interview_session_cancel?.session_relation_id ===
       item.interview_session_relation.id,
-  ).interview_session_cancel;
+  )?.interview_session_cancel;
 
   return (
     <>
@@ -113,6 +113,7 @@ function InterviewerListCard({
             isCalendarConnected={true}
             isPaused={false}
             pause_json={null}
+            trainingType={item.interview_session_relation.training_type}
           />
         </Stack>
       </CustomTooltip>

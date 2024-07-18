@@ -8,6 +8,7 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
+import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { CustomTooltip } from '../../Common/Tooltip';
 import { getPauseMemberText } from '../InterviewTypes/ModuleMembers/SlotBodyComp/utils';
@@ -22,6 +23,7 @@ function InterviewerUserDetail({
   pause_json,
   userDetails,
   interviewerTimeZone,
+  trainingType,
 }: {
   interview_meeting: Pick<
     DatabaseTable['interview_meeting'],
@@ -39,6 +41,7 @@ function InterviewerUserDetail({
     last_name: string;
   };
   interviewerTimeZone: string;
+  trainingType: DatabaseTable['interview_session_relation']['training_type'];
 }) {
   return (
     <GlobalUserDetail
@@ -49,7 +52,8 @@ function InterviewerUserDetail({
           justifyContent={'center'}
           direction={'row'}
         >
-          {interview_meeting.status === 'confirmed' && (
+          {trainingType && <InterviewerTrainingTypeIcon type={trainingType} />}
+          {interview_meeting?.status === 'confirmed' && (
             <>
               <CustomTooltip
                 disableHoverListener={!cancelReason?.reason}
@@ -84,8 +88,8 @@ function InterviewerUserDetail({
             </>
           )}
 
-          {interview_meeting.status !== 'confirmed' &&
-            interview_meeting.status !== 'completed' && (
+          {interview_meeting?.status !== 'confirmed' &&
+            interview_meeting?.status !== 'completed' && (
               <>
                 {!isCalendarConnected && (
                   <GlobalBadge
