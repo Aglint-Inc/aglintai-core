@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { AllInterviewCard } from '@/devlink2/AllInterviewCard';
 import { EmptyInterviewProgress } from '@/devlink2/EmptyInterviewProgress';
@@ -11,6 +11,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
 import { ApplicationList } from '../utils';
+import { ButtonGhost, ButtonSoft } from '@/devlink';
 
 function ListCardInterviewSchedule({
   app,
@@ -43,60 +44,78 @@ function ListCardInterviewSchedule({
         height: '100%',
         fontSize: '20px',
       };
+  const [isHover, setIsHovered] = useState(false);
 
   return (
-    <AllInterviewCard
-      onClickCard={{ onClick: () => onClickCard(app) }}
-      isDragVisible={isChecked}
-      slotScheduleWithAgent={<ScheduleWithAgent />}
-      textCurrentRole={
-        (app.file?.resume_json as unknown as ResumeJson)?.basics
-          ?.currentJobTitle || <></>
-      }
-      isSelected={isSelected}
-      propsGrid={{
-        style: {
-          gridTemplateColumns: isJobDasboard && '60px 300px 250px 1fr',
-        },
+    <Stack
+      onMouseEnter={() => {
+        setIsHovered(true);
       }}
-      slotBookmark={slotBookmark}
-      isSchedulerTable={!isJobDasboard}
-      isCheckBoxVisible={isJobDasboard}
-      slotCheckbox={slotCheckbox}
-      textName={getFullName(
-        app.candidates.first_name,
-        app.candidates.last_name,
-      )}
-      slotCandidateImage={
-        <Stack
-          width={'100%'}
-          height={'100%'}
-          alignItems={'center'}
-          justifyContent={'center'}
-        >
-          <MuiAvatar
-            level={getFullName(
-              app.candidates.first_name,
-              app.candidates.last_name,
-            )}
-            src={app.candidates.avatar}
-            variant={'circular'}
-            width={avatarStyles.width}
-            height={avatarStyles.height}
-            fontSize={avatarStyles.fontSize}
-          />
-        </Stack>
-      }
-      isResumeScoreVisible={isJobDasboard}
-      slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
-      textInterviewPanel={'0'}
-      slotInterviewProgress={<SessionProgressPipeline app={app} />}
-      textRelatedJob={app.public_jobs?.job_title}
-    />
+      onMouseLeave={() => {
+        setIsHovered(false);
+      }}
+    >
+      <AllInterviewCard
+        onClickCard={{ onClick: () => onClickCard(app) }}
+        isDragVisible={isChecked}
+        slotScheduleWithAgent={<ScheduleWithAgent />}
+        textCurrentRole={
+          (app.file?.resume_json as unknown as ResumeJson)?.basics
+            ?.currentJobTitle || <></>
+        }
+        isSelected={isSelected}
+        propsGrid={{
+          style: {
+            gridTemplateColumns: isJobDasboard && '60px 300px 250px 1fr',
+          },
+        }}
+        slotBookmark={slotBookmark}
+        isSchedulerTable={!isJobDasboard}
+        isCheckBoxVisible={isJobDasboard}
+        slotCheckbox={slotCheckbox}
+        textName={getFullName(
+          app.candidates.first_name,
+          app.candidates.last_name,
+        )}
+        slotCandidateImage={
+          <Stack
+            width={'100%'}
+            height={'100%'}
+            alignItems={'center'}
+            justifyContent={'center'}
+          >
+            <MuiAvatar
+              level={getFullName(
+                app.candidates.first_name,
+                app.candidates.last_name,
+              )}
+              src={app.candidates.avatar}
+              variant={'circular'}
+              width={avatarStyles.width}
+              height={avatarStyles.height}
+              fontSize={avatarStyles.fontSize}
+            />
+          </Stack>
+        }
+        isResumeScoreVisible={isJobDasboard}
+        slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
+        textInterviewPanel={'0'}
+        slotInterviewProgress={
+          <SessionProgressPipeline isHover={isHover} app={app} />
+        }
+        textRelatedJob={app.public_jobs?.job_title}
+      />
+    </Stack>
   );
 }
 
-const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
+const SessionProgressPipeline = ({
+  app,
+  isHover,
+}: {
+  app: ApplicationList;
+  isHover: boolean;
+}) => {
   const router = useRouter();
   const sessions: Parameters<typeof ScheduleProgress>[0]['sessions'] = (
     app?.interview_session_meetings ?? []
@@ -129,17 +148,27 @@ const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
     },
   );
   //  if sessions is empty, show empty interview progress
+
   return sessions.length ? (
     <ScheduleProgress sessions={sessions} />
   ) : (
-    <EmptyInterviewProgress
-      onClickCreateInterviewPlan={{
-        onClick: (e) => {
-          e.stopPropagation();
-          router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
-        },
-      }}
-    />
+    <Stack display={'flex'} flexDirection={'row'} gap={'4px'}>
+      <EmptyInterviewProgress />
+      {isHover && (
+        <ButtonGhost
+          iconName='add'
+          textButton='Create'
+          size={1}
+          isLeftIcon={true}
+          onClickButton={{
+            onClick: (e) => {
+              e.stopPropagation();
+              router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
+            },
+          }}
+        />
+      )}
+    </Stack>
   );
 };
 

@@ -41,7 +41,7 @@ function Instructions({
       >
         <GeneralPopupLarge
           isDescriptionVisibe={false}
-          textPopupTitle={'Edit Instruction'}
+          textPopupTitle={'Edit Instructions'}
           isIcon={false}
           textDescription={''}
           slotPopup={
@@ -92,7 +92,7 @@ function Instructions({
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>
               <Stack direction={'row'} justifyContent={'space-between'}>
-                <Text content='Instruction' weight={'medium'} />
+                <Text content='Instructions' weight={'medium'} />
                 <ButtonSoft
                   color={'neutral'}
                   isLeftIcon={true}
