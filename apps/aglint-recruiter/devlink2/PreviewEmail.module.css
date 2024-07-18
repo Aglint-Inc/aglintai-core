@@ -24,11 +24,10 @@
   grid-row-gap: var(--space-1);
 }
 
-.pe-top-icon-wrap {
-  color: var(--amber-9);
-}
-
 .pe-body-wrap {
+  display: flex;
   overflow: auto;
   height: 600px;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
