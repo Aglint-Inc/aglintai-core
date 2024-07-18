@@ -18,10 +18,11 @@ export async function agentHandler(payload: {
 }) {
   const llm = new ChatOpenAI({
     // modelName: 'gpt-3.5-turbo-0125',
-    modelName: 'gpt-4-turbo-preview',
+    modelName: 'gpt-4o',
     temperature: 0.7,
     verbose: envConfig.NODE_ENV === 'development.local',
     apiKey: envConfig.OPENAI_APIKEY,
+    streaming: true,
   });
 
   const chat_history = payload.history.map(message => {
