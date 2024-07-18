@@ -99,8 +99,8 @@ function SlotQualifiedMembers({
         const userSettings = user.recruiter_user.scheduling_settings;
         return (
           <MemberListCard
-            textWeekInterview={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
-            textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
+            textWeekInterview={`${user.weekly}  ${userSettings.interviewLoad.dailyLimit.type}`}
+            textTodayInterview={`${user.daily}  ${userSettings.interviewLoad.dailyLimit.type}`}
             onClickCard={{
               onClick: () => {
                 router.push(
