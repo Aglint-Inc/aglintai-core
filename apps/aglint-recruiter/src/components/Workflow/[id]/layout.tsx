@@ -81,7 +81,7 @@ const Edit = () => {
             size={'2'}
             iconName={'bolt'}
             isLeftIcon={true}
-            textButton={'Save'}
+            textButton={'Edit workflow'}
             onClickButton={{ onClick: () => setPopup({ open: true }) }}
           />
           <IconButtonGhost

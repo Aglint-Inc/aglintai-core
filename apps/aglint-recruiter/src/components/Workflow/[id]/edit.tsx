@@ -70,7 +70,7 @@ const Edit = () => {
           onClickAction={{ onClick: () => handleSubmit() }}
           onClickCancel={{ onClick: () => handleClose() }}
           textPopupTitle={'Edit Workflow'}
-          textPopupButton={'Edit Workflow'}
+          textPopupButton={'Save'}
           slotWidget={<Forms form={form} setForm={setForm} />}
           textPopupDescription={'Edit workflow details.'}
         />
