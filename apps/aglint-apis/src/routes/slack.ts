@@ -27,15 +27,15 @@ slackRoutes.post(
 );
 
 slackRoutes.post(
-  `/${slackEndPoints.onShadowComplete_slack__trainee}`,
+  `/${slackEndPoints.onShadowComplete_slack_trainee}`,
   onShadowCompleteTrainee
 );
 slackRoutes.post(
-  `/${slackEndPoints.onRShadowComplete_slack__trainee}`,
+  `/${slackEndPoints.onRShadowComplete_slack_trainee}`,
   onRShadowCompleteTrainee
 );
 slackRoutes.post(
-  `/${slackEndPoints.onQualified_slack__trainee}`,
+  `/${slackEndPoints.onQualified_slack_trainee}`,
   onQualifiedTrainee
 );
 slackRoutes.post(
