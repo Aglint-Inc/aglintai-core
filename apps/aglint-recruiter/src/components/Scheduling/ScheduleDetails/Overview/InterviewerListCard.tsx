@@ -3,27 +3,26 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { MemberDetail } from '@/devlink3/MemberDetail';
-import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
+import InterviewerUserDetail from '../../Common/InterviewerUserDetail';
 import { calculateHourDifference } from '../../InterviewTypes/utils';
-import { formatTimeWithTimeZone } from '../../utils';
-import { ScheduleMeeting } from '../types';
+import { ScheduleDetailsType } from '../hooks';
 
 function InterviewerListCard({
   schedule,
   item,
   disableHoverListener = false,
+  cancelReasons,
 }: {
-  schedule: ScheduleMeeting;
-  item: ScheduleMeeting['users'][0];
+  schedule: ScheduleDetailsType['schedule_data'];
+  item: ScheduleDetailsType['schedule_data']['users'][0];
   disableHoverListener: boolean;
+  cancelReasons: ScheduleDetailsType['cancel_data'];
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
@@ -44,6 +43,12 @@ function InterviewerListCard({
   const fullName =
     getFullName(item.first_name, item.last_name) +
     `${item.email === recruiterUser.email ? ' ( You )' : ''}`;
+
+  const cancelReason = cancelReasons.find(
+    (cancel) =>
+      cancel.interview_session_cancel?.session_relation_id ===
+      item.interview_session_relation.id,
+  ).interview_session_cancel;
 
   return (
     <>
@@ -90,51 +95,24 @@ function InterviewerListCard({
         }
       >
         <Stack>
-          <GlobalUserDetail
-            textTimeZone={formatTimeWithTimeZone({
-              start_time: schedule.interview_meeting.start_time,
+          <InterviewerUserDetail
+            interview_meeting={{
               end_time: schedule.interview_meeting.end_time,
-              timeZone: item.scheduling_settings?.timeZone?.tzCode,
-            })}
-            isRoleVisible={true}
-            slotRole={
-              item.position ? (
-                <TextWithIcon
-                  fontWeight={'regular'}
-                  textContent={item.position}
-                  iconName={'work'}
-                  iconSize={4}
-                  color='neutral'
-                />
-              ) : (
-                '--'
-              )
-            }
-            textName={fullName}
-            slotImage={
-              <MuiAvatar
-                level={fullName}
-                src={item.profile_image}
-                variant={'rounded'}
-                fontSize={'14px'}
-                width='100%'
-                height='100%'
-              />
-            }
-            isSlotImageVisible={true}
-            isCandidateAvatarVisible={false}
-            slotCandidateStatus={
-              <Stack
-                height={'100%'}
-                alignItems={'center'}
-                justifyContent={'center'}
-                direction={'row'}
-              >
-                <InterviewerAcceptDeclineIcon
-                  type={item.interview_session_relation.accepted_status}
-                />
-              </Stack>
-            }
+              start_time: schedule.interview_meeting.start_time,
+              status: schedule.interview_meeting.status,
+            }}
+            accepted_status={item.interview_session_relation.accepted_status}
+            cancelReason={cancelReason}
+            userDetails={{
+              first_name: item.first_name,
+              last_name: item.last_name,
+              position: item.position,
+              profile_image: item.profile_image,
+            }}
+            interviewerTimeZone={item.scheduling_settings?.timeZone?.tzCode}
+            isCalendarConnected={true}
+            isPaused={false}
+            pause_json={null}
           />
         </Stack>
       </CustomTooltip>

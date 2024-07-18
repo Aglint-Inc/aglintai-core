@@ -25,6 +25,8 @@ export const useScheduleDetails = () => {
   return { ...query, refetch };
 };
 
+export type ScheduleDetailsType = Awaited<ReturnType<typeof getSchedule>>;
+
 async function getSchedule(meeting_id: string) {
   const { data, error } = await supabase.rpc(
     'new_get_interview_schedule_by_meeting_id',
