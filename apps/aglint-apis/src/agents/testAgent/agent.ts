@@ -8,8 +8,8 @@ import {RunnableSequence} from '@langchain/core/runnables';
 
 import {AIMessage, HumanMessage} from 'langchain/schema';
 import {agentPrompt} from './agentPrompt';
-import {getCandidateInterviewStatus} from './tools/findslots';
 import {convertToOpenAIFunction} from '@langchain/core/utils/function_calling';
+import {sendSelfSchedulingLink} from './tools/sendSelfSchedulingLink';
 const MEMORY_KEY = 'chat_history';
 
 export async function agentHandler(payload: {
@@ -17,8 +17,8 @@ export async function agentHandler(payload: {
   history: {type: 'user' | 'agent'; value: string}[];
 }) {
   const llm = new ChatOpenAI({
-    modelName: 'gpt-3.5-turbo-0125',
-    // modelName: 'gpt-4-turbo-preview',
+    // modelName: 'gpt-3.5-turbo-0125',
+    modelName: 'gpt-4-turbo-preview',
     temperature: 0.7,
     verbose: envConfig.NODE_ENV === 'development.local',
     apiKey: envConfig.OPENAI_APIKEY,
@@ -38,7 +38,7 @@ export async function agentHandler(payload: {
     new MessagesPlaceholder('agent_scratchpad'),
   ]);
 
-  const tools = [getCandidateInterviewStatus()];
+  const tools = [sendSelfSchedulingLink()];
 
   const modelWithFunctions = llm.bind({
     functions: tools.map(tool => convertToOpenAIFunction(tool)),

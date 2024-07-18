@@ -6,7 +6,7 @@ const agent_payload_schema = z.object({
   msg: z.string(),
   history: z
     .object({
-      type: z.enum(['user', 'agent']),
+      type: z.enum(['user', 'assistant']),
       value: z.string(),
     })
     .array(),
