@@ -18,9 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed = v.parse(schema_candidate_direct_booking, req.body);
     const schedule_db_details = await fetchDBScheduleDetails(parsed);
-    const { filter_json_data } = schedule_db_details;
-    const interviewer_selected_options =
-      filter_json_data.selected_options as PlanCombinationRespType[];
+    const { filter_json_data, filered_selected_options } = schedule_db_details;
+    const interviewer_selected_options = filered_selected_options;
 
     const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
       interviewer_selected_options,

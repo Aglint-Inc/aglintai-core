@@ -25,10 +25,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { api_options, candidate_tz } =
     req.body as APIVerifyRecruiterSelectedSlots;
   try {
-    const { filter_json_data, end_date_str, start_date_str } =
-      await fetch_details_from_db(req.body);
-    const selected_options =
-      filter_json_data.selected_options as PlanCombinationRespType[];
+    const {
+      filter_json_data,
+      end_date_str,
+      start_date_str,
+      filered_selected_options,
+    } = await fetch_details_from_db(req.body);
+    const selected_options = filered_selected_options;
 
     let zod_options = v.parse(scheduling_options_schema, {
       ...api_options,
@@ -85,11 +88,19 @@ const fetch_details_from_db = async (
   if (!filter_json_data) throw new Error('invalid filter_json_id');
   let start_date_str = filter_json_data.filter_json.start_date;
   let end_date_str = filter_json_data.filter_json.end_date;
-  if (
-    filter_json_data.selected_options &&
-    filter_json_data.selected_options.length !== 0
-  ) {
-    const sorted_options = filter_json_data.selected_options.sort(
+
+  // NOTE: hadling cancelled interview_session
+  const filered_selected_options: PlanCombinationRespType[] =
+    filter_json_data.selected_options.map((plan) => {
+      let updated_plan = { ...plan };
+      updated_plan.sessions = updated_plan.sessions.filter((s) =>
+        filter_json_data.session_ids.includes(s.session_id),
+      );
+      return updated_plan;
+    });
+
+  if (filered_selected_options && filered_selected_options.length !== 0) {
+    const sorted_options = filered_selected_options.sort(
       (plan1, plan2) =>
         dayjsLocal(plan1.sessions[0].start_time).unix() -
         dayjsLocal(plan2.sessions[0].start_time).unix(),
@@ -109,6 +120,7 @@ const fetch_details_from_db = async (
   }
 
   return {
+    filered_selected_options,
     filter_json_data,
     start_date_str,
     end_date_str,
