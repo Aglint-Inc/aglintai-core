@@ -10566,8 +10566,6 @@ CREATE TRIGGER rescore_applications AFTER UPDATE OF jd_json ON public.public_job
 
 CREATE TRIGGER workflow_auto_connect AFTER INSERT ON public.public_jobs FOR EACH ROW EXECUTE FUNCTION trigger_workflow_auto_connect();
 
-CREATE TRIGGER new_recruiter AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('https://dev.aglinthq.com/api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
-
 CREATE TRIGGER recruiter_insert_trigger AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION company_email_template_init();
 
 CREATE TRIGGER workflow_action_deletion AFTER UPDATE OF trigger ON public.workflow FOR EACH ROW EXECUTE FUNCTION trigger_workflow_action_deletion();
