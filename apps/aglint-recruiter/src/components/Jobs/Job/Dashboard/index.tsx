@@ -66,6 +66,7 @@ import {
 
 import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
+import { distributeScoreWeights } from '../Profile-Score';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
@@ -691,6 +692,7 @@ const useBanners = () => {
           title: 'Revert',
           onClick: () =>
             handleJobUpdate({
+              parameter_weights: distributeScoreWeights(job.jd_json),
               draft: { ...job.draft, jd_json: job.jd_json },
             }),
         }}
