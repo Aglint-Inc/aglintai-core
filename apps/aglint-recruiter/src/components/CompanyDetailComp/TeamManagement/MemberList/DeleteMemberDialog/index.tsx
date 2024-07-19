@@ -2,10 +2,9 @@
 import { Dialog, Typography } from '@mui/material';
 import React from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { DeletePopup } from '@/devlink3/DeletePopup';
-import { ResumePop } from '@/devlink3/ResumePop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { GlobalBannerInline } from '@/devlink2';
 
 function DeleteMemberDialog({
   name,
