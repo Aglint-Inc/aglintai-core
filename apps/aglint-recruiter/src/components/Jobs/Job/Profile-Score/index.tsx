@@ -42,6 +42,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 
@@ -443,6 +444,16 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
     index: number,
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
+    if (
+      (jd_json?.[section] ?? []).find(
+        ({ field }, i) =>
+          (field ?? '').trim().toLowerCase() ===
+            (item?.field ?? '').trim().toLowerCase() && i !== index,
+      )
+    ) {
+      toast.error('Entry already present');
+      return;
+    }
     const newSection = jd_json[section].reduce(
       (acc, curr, i) => {
         if (i === index) acc.push(item);
@@ -461,6 +472,16 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const handleCreate = (
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
+    if (
+      (jd_json?.[section] ?? []).find(
+        ({ field }) =>
+          (field ?? '').trim().toLowerCase() ===
+          (item?.field ?? '').trim().toLowerCase(),
+      )
+    ) {
+      toast.error('Entry already present');
+      return;
+    }
     handleJobUpdate({
       draft: {
         ...draft,
