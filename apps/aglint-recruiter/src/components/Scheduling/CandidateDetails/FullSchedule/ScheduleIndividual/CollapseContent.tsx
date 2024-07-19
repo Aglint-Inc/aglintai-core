@@ -130,9 +130,9 @@ function CollapseContent({
                     }
                     cancelReason={cancelReason}
                     interview_meeting={{
-                      end_time: interview_meeting.end_time,
-                      start_time: interview_meeting.start_time,
-                      status: interview_meeting.status,
+                      end_time: interview_meeting?.end_time,
+                      start_time: interview_meeting?.start_time,
+                      status: interview_meeting?.status,
                     }}
                     interviewerTimeZone={
                       item.scheduling_settings?.timeZone.tzCode
@@ -146,6 +146,7 @@ function CollapseContent({
                       position: item.position,
                       profile_image: item.profile_image,
                     }}
+                    trainingType={user.interview_session_relation.training_type}
                   />
                 );
               })}
@@ -155,7 +156,7 @@ function CollapseContent({
             {isCollapseButtonsVisible &&
               (interview_meeting?.status === 'waiting' ||
                 interview_meeting?.status === 'confirmed') && (
-                <Stack direction={'row'} spacing={'var(--space-2)'}>
+                <Stack direction={'row'} spacing={'var(--space-2)'} justifyContent={'flex-end'}>
                   <ButtonSoft
                     size={1}
                     color={'neutral'}

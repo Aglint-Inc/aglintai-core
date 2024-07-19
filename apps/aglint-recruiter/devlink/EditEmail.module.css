@@ -33,12 +33,8 @@
 
 .eemail-body-wrap {
   margin-top: var(--space-4);
-  margin-bottom: var(--space-4);
   padding: var(--space-4);
-
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
-
   background-color: var(--neutral-2);
 }
 

@@ -121,6 +121,7 @@ const Content = () => {
             meeting_flow: session.meeting_flow,
           }
         }
+        currentSession={null}
       />
     </Stack>
   ));

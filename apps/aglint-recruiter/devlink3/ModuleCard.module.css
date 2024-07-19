@@ -123,40 +123,12 @@
 
 .errorr_warning-copy {
   padding: 0px;
-}
-
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.embed_flex.fixedd {
-  width: 23px;
+  color: var(--error-11);
 }
 
 .errorr_warning {
   padding: 0px;
+  color: var(--warning-11);
 }
 
 #w-node-_53814ccb-8d37-a9f3-f6e2-d636ceebd158-c0766ccb {

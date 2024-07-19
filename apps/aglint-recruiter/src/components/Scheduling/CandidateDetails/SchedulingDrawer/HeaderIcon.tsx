@@ -1,3 +1,5 @@
+import { Stack } from '@mui/material';
+
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 
 import IconSessionType from '../RightPanel/IconSessionType';
@@ -15,7 +17,9 @@ function HeaderIcon() {
       ) : stepScheduling === 'schedule_all_options' ? (
         ''
       ) : scheduleFlow === 'self_scheduling' ? (
-        <GlobalIcon iconName={'attach_email'} size={4} />
+        <Stack display={'flex'} paddingTop={'3px'}>
+          <GlobalIcon iconName={'attach_email'} size={4} />
+        </Stack>
       ) : scheduleFlow === 'email_agent' ? (
         <GlobalIcon iconName={'mail'} size={4} />
       ) : scheduleFlow === 'phone_agent' ? (

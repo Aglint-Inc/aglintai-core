@@ -3,7 +3,6 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
-import { ButtonGhost } from "./ButtonGhost";
 import * as _utils from "./utils";
 import _styles from "./EmptyInterviewProgress.module.css";
 
@@ -19,13 +18,6 @@ export function EmptyInterviewProgress({
       >
         <GlobalIcon iconName="warning" size="4" color="warning-11" />
         <Text color="neutral" weight="" content="No Interview plan set." />
-        <ButtonGhost
-          onClickButton={onClickCreateInterviewPlan}
-          size="1"
-          textButton="Create"
-          isLeftIcon={true}
-          iconName="add"
-        />
       </_Builtin.Block>
     </_Component>
   );

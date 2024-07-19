@@ -93,6 +93,7 @@ function ScheduleMeetingCard({
                           isCalendarConnected={true}
                           isPaused={false}
                           pause_json={null}
+                          trainingType={user.training_type}
                         />
                       </>
                     );

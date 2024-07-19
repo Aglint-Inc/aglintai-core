@@ -318,8 +318,8 @@ function ViewTaskDrawer() {
                       }}
                     >
                       Mark as Completed
-                    </Typography>
-                  </Stack>
+                    </Typography> 
+                   </Stack>
                   <Stack
                     direction={'row'}
                     padding={'8px 12px'}

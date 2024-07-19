@@ -52,7 +52,7 @@ export function SchedulerFilters({
           className={_utils.cx(_styles, "timeblock", "is_link")}
           tag="div"
         >
-          <GlobalIcon iconName="" color="neutral-11" />
+          <GlobalIcon iconName="calendar_today" color="neutral-11" />
           <Text content={textDateRange} weight="medium" />
         </_Builtin.Block>
       </_Builtin.Block>

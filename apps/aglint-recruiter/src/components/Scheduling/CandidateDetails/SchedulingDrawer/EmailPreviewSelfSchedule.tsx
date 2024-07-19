@@ -108,7 +108,7 @@ function EmailPreviewSelfSchedule() {
           </ShowCode.When>
           <ShowCode.Else>
           <Stack display={'flex'} gap={'32px'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} width={'100%'} padding={'0px 20px'}>
-              <Stack width={'447px'}>
+              <Stack>
             <GlobalBannerInline  textContent='This is a preview only. All actions in this email are disabled.' iconName='info' slotButton={<></>} color={'warning'}/>
             
            

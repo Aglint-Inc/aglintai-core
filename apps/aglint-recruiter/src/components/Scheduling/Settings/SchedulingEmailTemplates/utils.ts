@@ -29,7 +29,7 @@ export const template_tabs = [
     key: TEMPLATE_TABS.Agent,
   },
   {
-    label: 'Calender',
+    label: 'Calendar',
     key: TEMPLATE_TABS.Calender,
   },
 ] as const;
