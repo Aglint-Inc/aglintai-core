@@ -210,6 +210,13 @@ export type Database = {
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "application_email_status_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
         ]
       }
       application_logs: {
@@ -298,6 +305,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_application_logs_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
         ]
       }
@@ -412,6 +426,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "candidate_files"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["candidate_id"]
           },
           {
             foreignKeyName: "applications_candidate_id_fkey"
@@ -634,6 +655,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "assessment_results_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
             foreignKeyName: "public_assessment_results_assessment_id_fkey"
             columns: ["assessment_id"]
             isOneToOne: false
@@ -728,6 +756,13 @@ export type Database = {
           type?: Database["public"]["Enums"]["file_type"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "candidate_files_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["candidate_id"]
+          },
           {
             foreignKeyName: "candidate_files_candidate_id_fkey"
             columns: ["candidate_id"]
@@ -839,6 +874,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_request_availability_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
           {
             foreignKeyName: "candidate_request_availability_recruiter_id_fkey"
@@ -1468,6 +1510,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
           {
             foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
@@ -2218,6 +2267,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
           {
             foreignKeyName: "public_new_tasks_cretaed_by_fkey"
@@ -3260,6 +3316,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_scheduling-agent-chat-history_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
             foreignKeyName: "public_scheduling-agent-chat-history_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
@@ -3340,6 +3403,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_screening_answers_screening_id_fkey"
+            columns: ["screening_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
         ]
       }
@@ -3947,6 +4017,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "applications_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["candidate_id"]
+          },
+          {
             foreignKeyName: "applications_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
@@ -4006,6 +4083,35 @@ export type Database = {
             referencedRelation: "candidate_files"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidate_applications_view: {
+        Row: {
+          application_id: string | null
+          application_status:
+            | Database["public"]["Enums"]["application_status"]
+            | null
+          candidate_email: string | null
+          candidate_id: string | null
+          candidate_name: string | null
+          full_text_search: unknown | null
+          job_id: string | null
+        }
+        Relationships: [
           {
             foreignKeyName: "applications_job_id_fkey"
             columns: ["job_id"]
@@ -4259,6 +4365,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "interview_schedule_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
             foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
             columns: ["interview_schedule_id"]
             isOneToOne: false
@@ -4421,6 +4534,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "application_view"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
           {
             foreignKeyName: "public_new_tasks_cretaed_by_fkey"
@@ -5469,6 +5589,7 @@ export type Database = {
         | "onQualified_slack_approved"
         | "onQualified_slack_approver"
         | "onQualified_email_approver"
+        | "interviewer_resume_email_admin"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

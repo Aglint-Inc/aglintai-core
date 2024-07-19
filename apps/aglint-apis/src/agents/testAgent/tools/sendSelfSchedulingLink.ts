@@ -9,8 +9,7 @@ export const sendSelfSchedulingLink = () => {
       'collects details necessary for sending the sending self scheduling link and sends the link to the candidate',
     schema: z.object({
       candidate: z.object({
-        first_name: z.string(),
-        last_name: z.string().nullable().optional(),
+        candidate_name: z.string(),
         job_title: z.string(),
       }),
       date_range: z.object({
