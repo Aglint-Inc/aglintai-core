@@ -1,7 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -9,19 +7,13 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
-import {
-  setDateRange,
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '../../CandidateDetails/SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { onClickResendInvite } from '../../CandidateDetails/utils';
 import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
 import { fetchFilterJson, onClickAccept, onClickCopyLink } from '../utils';
+import CancelBannersScheduleDetails from './Cancel';
 
 interface CancelReasonCardsProps {
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
@@ -50,12 +42,8 @@ function Banners({
   setIsDeclineOpen,
   setIsRequestRescheduleOpen,
 }: CancelReasonCardsProps) {
-  const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const possibleUsers = schedule?.users.filter(
-    (user) =>
-      user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
-  );
+
   const [copied, setCopied] = useState(false);
 
   const meetingFlow = schedule.interview_meeting.meeting_flow;
@@ -217,130 +205,13 @@ function Banners({
           }
         />
       )}
-
-      {(schedule.interview_meeting.status === 'confirmed' ||
-        schedule.interview_meeting.status === 'waiting' ||
-        schedule.interview_meeting.status === 'cancelled') && (
-        <>
-          {cancelReasons?.map((item) => {
-            const isChangeInterviewerVisible =
-              item.interview_session_cancel.session_relation_id &&
-              schedule.interview_session.session_type != 'debrief' &&
-              possibleUsers.length > 0;
-
-            const isRescheduleVisible =
-              item.interview_session_cancel.type === 'reschedule';
-
-            return (
-              <>
-                <GlobalBanner
-                  isAdditionalNotes={
-                    !!item.interview_session_cancel.other_details?.note
-                  }
-                  textNotes={item.interview_session_cancel.other_details?.note}
-                  color={
-                    item.interview_session_cancel.type === 'reschedule'
-                      ? 'warning'
-                      : item.interview_session_cancel.type === 'declined'
-                        ? 'error'
-                        : 'neutral'
-                  }
-                  textTitle={`${
-                    item.interview_session_cancel.session_relation_id
-                      ? getFullName(
-                          item.recruiter_user.first_name,
-                          item.recruiter_user.last_name,
-                        )
-                      : getFullName(
-                          item.candidate?.first_name,
-                          item.candidate?.last_name,
-                        )
-                  } ${
-                    item.interview_session_cancel.schedule_id
-                      ? item.interview_session_cancel.type === 'reschedule'
-                        ? 'requested a reschedule'
-                        : 'cancelled this schedule'
-                      : item.interview_session_cancel.type === 'reschedule'
-                        ? 'requested a reschedule'
-                        : 'declined this schedule'
-                  }`}
-                  textDescription={`Reason: ${item.interview_session_cancel.reason}  ${item.interview_session_cancel?.other_details?.dateRange ? ` from ${dayjs(item.interview_session_cancel.other_details.dateRange.start).format('DD MMM')} - ${dayjs(item.interview_session_cancel.other_details.dateRange.end).format('DD MMM')}` : ''}`}
-                  slotButtons={
-                    <>
-                      {isChangeInterviewerVisible && (
-                        <ButtonSolid
-                          size={'1'}
-                          color={'error'}
-                          textButton={'Change Interviewer'}
-                          onClickButton={{
-                            onClick: () => {
-                              if (
-                                dayjs().isBefore(
-                                  dayjs(schedule.interview_meeting.start_time),
-                                )
-                              ) {
-                                setCancelUserId(item.recruiter_user.id);
-                                setIsChangeInterviewerOpen(true);
-                              } else {
-                                toast.warning(
-                                  'Cannot change interviewer after the meeting has started',
-                                );
-                              }
-                            },
-                          }}
-                        />
-                      )}
-                      {isRescheduleVisible && (
-                        <ButtonSolid
-                          size={'1'}
-                          textButton={'Reschedule Now'}
-                          onClickButton={{
-                            onClick: () => {
-                              setIsScheduleNowOpen(true);
-                              if (
-                                item.interview_session_cancel?.other_details
-                                  ?.dateRange?.start
-                              ) {
-                                setDateRange({
-                                  start_date:
-                                    item.interview_session_cancel.other_details
-                                      .dateRange.start,
-                                  end_date:
-                                    item.interview_session_cancel.other_details
-                                      .dateRange.end,
-                                });
-                              }
-                              setRescheduleSessionIds([
-                                schedule.interview_session.id,
-                              ]);
-                              setStepScheduling('reschedule');
-                              router.push(
-                                ROUTES[
-                                  '/scheduling/application/[application_id]'
-                                ]({
-                                  application_id:
-                                    schedule.schedule.application_id,
-                                }),
-                              );
-                            },
-                          }}
-                        />
-                      )}
-                    </>
-                  }
-                  iconName={
-                    item.interview_session_cancel.type === 'declined'
-                      ? 'event_busy'
-                      : item.interview_session_cancel.type === 'reschedule'
-                        ? 'event_repeat'
-                        : ''
-                  }
-                />
-              </>
-            );
-          })}
-        </>
-      )}
+      <CancelBannersScheduleDetails
+        cancelReasons={cancelReasons}
+        schedule={schedule}
+        cancelUserId={cancelUserId}
+        setCancelUserId={setCancelUserId}
+        setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
+      />
     </Stack>
   );
 }

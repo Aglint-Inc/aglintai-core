@@ -8,8 +8,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { cancelMailHandler } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import {
-  removeSessionFromFilterJson,
-  removeSessionFromRequestAvailibility,
+  removeSessionsFromFilterJson,
+  removeSessionsFromRequestAvailability,
 } from '@/src/components/Scheduling/ScheduleDetails/utils';
 
 export interface ApiBodyParamsCancelSchedule {
@@ -102,26 +102,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             note: notes,
           },
           cancel_user_id: cancel_user_id,
-          is_resolved: true,
+          is_resolved: false,
         });
       if (errIntSesCancel) throw new Error(errIntSesCancel.message);
 
       const meeting_flow = meetSession[0].meeting_flow;
       const session_name = meetSession[0].interview_session[0].name;
 
-      if (
-        meeting_flow === 'self_scheduling' ||
-        meeting_flow === 'mail_agent' ||
-        meeting_flow === 'phone_agent' ||
-        meeting_flow === 'debrief'
-      ) {
-        await removeSessionFromFilterJson({
-          session_id,
+      if (meeting_flow !== 'candidate_request') {
+        await removeSessionsFromFilterJson({
+          session_ids: [session_id],
           supabase,
         });
       } else if (meeting_flow === 'candidate_request') {
-        await removeSessionFromRequestAvailibility({
-          session_id,
+        await removeSessionsFromRequestAvailability({
+          session_ids: [session_id],
           supabase,
         });
       }
