@@ -53,7 +53,7 @@ export function ModuleCard({
               className={_utils.cx(_styles, "errorr_warning-copy")}
               tag="div"
             >
-              <GlobalIcon iconName="info" size="5" />
+              <GlobalIcon iconName="warning" size="5" />
             </_Builtin.Block>
           ) : null}
           {isWarning ? (
@@ -61,7 +61,7 @@ export function ModuleCard({
               className={_utils.cx(_styles, "errorr_warning")}
               tag="div"
             >
-              <GlobalIcon iconName="warning" color="error" size="5" />
+              <GlobalIcon iconName="info" color="error" size="5" />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
