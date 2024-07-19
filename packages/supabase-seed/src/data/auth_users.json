@@ -5,7 +5,7 @@
     "aud": "authenticated",
     "role": "authenticated",
     "email": "dheeraj@aglinthq.com",
-    "encrypted_password": "$2a$10$A189SP/rsknu7oHEP7yw/.rBTA5RO1l2Muy6Tb2o05gXv492Mkg4W",
+    "encrypted_password": "[REDACTED]",
     "email_confirmed_at": "2024-07-12 13:46:52.866371+00",
     "invited_at": null,
     "confirmation_token": "",
