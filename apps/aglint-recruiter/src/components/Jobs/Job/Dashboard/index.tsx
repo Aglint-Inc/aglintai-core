@@ -71,6 +71,7 @@ import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
+import { GlobalIcon } from '@/devlink';
 
 const JobDashboard = () => {
   const { job, jobLoad } = useJob();
@@ -904,7 +905,7 @@ const JobDetailsModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
-      slotIcon={<JobDetailsIcon />}
+      slotIcon={<GlobalIcon iconName='edit_square' color={'inherit'} size={6} weight={'regular'}/>}
     />
   );
 };
@@ -1127,13 +1128,13 @@ const Banner = (props: BannerProps) => {
       return (
         <GlobalBanner
           color={'warning'}
-          iconName={'warning'}
+          iconName={'info'}
           slotButtons={
             <>
               <ButtonSoft
                 textButton={props.secondary.title}
                 size={1}
-                color={'accent'}
+                color={'neutral'}
                 highContrast={'true'}
                 onClickButton={{
                   onClick: props.secondary.onClick,
@@ -1158,7 +1159,7 @@ const Banner = (props: BannerProps) => {
       return (
         <GlobalBanner
           color={'error'}
-          iconName={'error'}
+          iconName={'warning'}
           slotButtons={
             <ButtonSolid
               size={1}
