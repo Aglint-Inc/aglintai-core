@@ -182,7 +182,7 @@ const FeedbackWindow = ({
             <DynamicLoader />
           </Stack>
         </ShowCode.When>
-        <ShowCode.When isTrue={checkPermissions(['scheduler_update'])}>
+        <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
           <></>
           <AdminFeedback
             {...{

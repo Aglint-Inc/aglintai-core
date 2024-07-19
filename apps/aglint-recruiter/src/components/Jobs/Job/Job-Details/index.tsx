@@ -4,7 +4,6 @@ import {
   JobDetailsForm,
   JobMetaFormProps,
   useJobForms,
-  WarningSvg,
 } from '@components/Jobs/Create/form';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -25,6 +24,7 @@ import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 import JobNotFound from '../Common/JobNotFound';
+import { WarningSvg } from '../Interview-Plan/sessionForms';
 
 const JobDetailsDashboard = () => {
   const { jobLoad, job } = useJob();
@@ -82,7 +82,7 @@ const JobEdit = () => {
     },
     department: {
       value: department,
-      required: true,
+      required: false,
       error: {
         value: validateString(department),
         helper: `Department name can't be empty`,
@@ -98,7 +98,7 @@ const JobEdit = () => {
     },
     location: {
       value: location,
-      required: true,
+      required: false,
       error: {
         value: validateString(location),
         helper: `Job location can't be empty`,
@@ -266,11 +266,11 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   const forms = (
     <>
       {company}
-      {department}
       {job_title}
       {job_type}
-      {location}
       {workplace_type}
+      {department}
+      {location}
     </>
   );
 

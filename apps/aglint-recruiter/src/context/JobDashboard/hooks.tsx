@@ -16,7 +16,16 @@ import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { useJob } from '../JobContext';
 
 const useProviderJobDashboardActions = () => {
-  const { jobLoad, job, total, job_id, interviewPlans, status } = useJob();
+  const {
+    jobLoad,
+    job,
+    total,
+    job_id,
+    interviewPlans,
+    status,
+    manageJob,
+    devlinkProps,
+  } = useJob();
 
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
@@ -70,6 +79,8 @@ const useProviderJobDashboardActions = () => {
     locations,
     total,
     status,
+    manageJob,
+    devlinkProps,
   };
 
   return value;

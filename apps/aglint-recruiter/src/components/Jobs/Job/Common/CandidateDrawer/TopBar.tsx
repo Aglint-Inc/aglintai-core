@@ -1,10 +1,11 @@
 import { Stack } from '@mui/material';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -37,6 +38,8 @@ const Actions = () => {
   useEffect(() => {
     if (pressed) handleUpdateApplication({ bookmarked: !data?.bookmarked });
   }, [pressed]);
+  const { devlinkProps } = useRolesAndPermissions();
+  const props = useMemo(() => devlinkProps(['manage_job']), [devlinkProps]);
   return (
     <CandidateSidedrawerTop
       isBookmarked={data.bookmarked}
@@ -45,6 +48,7 @@ const Actions = () => {
       onClickBookMark={{
         onClick: () =>
           handleUpdateApplication({ bookmarked: !data.bookmarked }),
+        ...props,
       }}
       onClickClose={{ onClick: () => handlClose() }}
       onClickDown={{

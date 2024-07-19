@@ -153,3 +153,7 @@ export const onSignupEmailAdminSchema = v.object({
   recruiter_user_id: v.string(),
   recruiter_id: v.string(),
 });
+
+export const interviewerResumedEmailAdminSchema = v.object({
+  interviewe_module_relation_id: v.string(),
+});

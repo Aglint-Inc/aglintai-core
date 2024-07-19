@@ -21,6 +21,7 @@ const ApplicationCard = memo(
       sectionApplication: {
         data: { pages },
       },
+      manageJob,
     } = useApplications();
 
     const { checklist, setChecklist } = useApplicationsStore(
@@ -83,6 +84,11 @@ const ApplicationCard = memo(
       [application.applied_at],
     );
 
+    const checkEnabled = useMemo(
+      () => application?.resume_processing_state === 'processed' && manageJob,
+      [application?.resume_processing_state, manageJob],
+    );
+
     return (
       <CandidateListItem
         onClickCandidate={{
@@ -93,12 +99,11 @@ const ApplicationCard = memo(
         slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
         onClickSelect={{
-          onClick: handleCheck,
+          onClick: checkEnabled
+            ? () => handleCheck()
+            : () => handleOpen({ application_id: application.id }),
           style: {
-            display:
-              application?.resume_processing_state === 'processed'
-                ? 'flex'
-                : 'none',
+            opacity: checkEnabled ? 100 : 0,
           },
         }}
         isChecked={isChecked}

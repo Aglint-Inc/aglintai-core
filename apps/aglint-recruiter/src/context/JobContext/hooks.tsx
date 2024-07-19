@@ -33,7 +33,7 @@ const useJobContext = () => {
 
   const { recruiter_id, recruiter } = useAuthDetails();
 
-  const { jobs, initialLoad: jobsLoad } = useJobs();
+  const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 
   const jobLoad = useMemo(
     () => !!(recruiter_id && jobsLoad),
@@ -259,6 +259,8 @@ const useJobContext = () => {
     publishStatus,
     status,
     jdValidity,
+    manageJob,
+    devlinkProps,
   };
 };
 

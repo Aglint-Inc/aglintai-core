@@ -36,14 +36,14 @@ const Forms = () => {
 const TriggerForm = () => {
   const {
     workflow: { trigger, phase, interval },
-    permissions,
+    manageWorkflow,
     handleUpdateWorkflow,
   } = useWorkflow();
   const payload = { trigger, phase };
   return (
     <UISelect
       label='When will the event trigger?'
-      disabled={!permissions.update}
+      disabled={!manageWorkflow}
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
       onChange={(e) => {
@@ -61,13 +61,13 @@ const TriggerForm = () => {
 const DurationForm = () => {
   const {
     workflow: { interval },
-    permissions,
+    manageWorkflow,
     handleUpdateWorkflow,
   } = useWorkflow();
   return (
     <UISelect
       label='Interval between the trigger and action'
-      disabled={!permissions.update}
+      disabled={!manageWorkflow}
       value={interval}
       menuOptions={DURATION_OPTIONS}
       onChange={(e) => handleUpdateWorkflow({ interval: e.target.value })}

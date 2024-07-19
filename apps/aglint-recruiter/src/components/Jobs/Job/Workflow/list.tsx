@@ -4,13 +4,11 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssessmentError } from '@/devlink2/AssessmentError';
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
-import { EmptyAssessmentList } from '@/devlink2/EmptyAssessmentList';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
-import { JobsWorkflow } from '@/devlink3/JobsWorkflow';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
@@ -36,31 +34,13 @@ import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 const JobWorkflowComp = () => {
-  const { push } = useRouter();
-  const {
-    workflows: { data: jobWorkflows },
-  } = useJobDashboard();
-  const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
-    setPopup,
-  }));
   return (
-    <>
-      <JobsWorkflow
-        onClickCreateWorkflow={{ onClick: () => push(ROUTES['/workflows']()) }}
-        isVisible={(jobWorkflows ?? []).length !== 0}
-        slotWorflows={<JobWorkflows />}
-        slotButtonSoft={
-          <ButtonSoft
-            textButton='Add Workflow'
-            size={2}
-            iconName='add'
-            isLeftIcon
-            onClickButton={{ onClick: () => setPopup({ open: true }) }}
-          />
-        }
-      />
+    <Stack>
+      <Stack gap={1} margin={2} width={'800px'}>
+        <JobWorkflows />
+      </Stack>
       <WorkflowBrowser />
-    </>
+    </Stack>
   );
 };
 
@@ -69,12 +49,10 @@ export default JobWorkflowComp;
 const JobWorkflows = () => {
   const {
     job,
+    devlinkProps,
     workflows: { data: jobWorkflows, status, refetch },
   } = useJobDashboard();
   const { push } = useRouter();
-  const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
-    setPopup,
-  }));
   const updateMutations = useJobWorkflowUpdateMutations({ id: job?.id });
   const deleteMutations = useJobWorkflowDeleteMutations({ id: job?.id });
   const { mutate } = useJobWorkflowDisconnect({ id: job?.id });
@@ -90,8 +68,10 @@ const JobWorkflows = () => {
     return <AssessmentError onClickRetry={{ onClick: () => refetch() }} />;
   if (jobWorkflows.length === 0)
     return (
-      <EmptyAssessmentList
-        onClickBrowseAssessment={{ onClick: () => setPopup({ open: true }) }}
+      <GlobalEmptyState
+        iconName={'lan'}
+        styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
+        textDesc={'No workflows connected'}
       />
     );
   const cards = jobWorkflows.map((workflow) => {
@@ -104,13 +84,16 @@ const JobWorkflows = () => {
       <OptimisticWrapper key={workflow.id} loading={loading}>
         <WorkflowCard
           key={workflow.id}
+          showButtons={true}
           onClickDelete={{
             onClick: () =>
               mutate({
                 job_id: job?.id,
                 workflow_id: workflow.id,
               }),
+            ...devlinkProps,
           }}
+          isEditButton={false}
           onClickEdit={{
             onClick: () => push(ROUTES['/workflows/[id]']({ id: workflow.id })),
           }}

@@ -34,9 +34,9 @@ export type SelectedApplicationTypeDB = ResultType & {
 };
 
 export type SessionsType = {
-  interview_session: DatabaseTable['interview_session'];
-  interview_meeting: DatabaseTable['interview_meeting'] | null;
-  interview_module: DatabaseTable['interview_module'] | null;
+  interview_session: InterviewDataResponseType['interview_session'];
+  interview_meeting: InterviewDataResponseType['interview_meeting'];
+  interview_module: InterviewDataResponseType['interview_module'];
   users: {
     interview_session_relation: DatabaseTable['interview_session_relation'];
     interview_module_relation:
@@ -53,25 +53,7 @@ export type SessionsType = {
       schedule_auth: DatabaseTable['recruiter_user']['schedule_auth'];
     };
   }[];
-  cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;
-};
-
-export type ApplicationDataResponseType = {
-  application: JobApplcationDB;
-  candidate_files: {
-    id: string;
-    file_url: string;
-    candidate_id: string;
-    resume_json: any;
-    type: string;
-  };
-  public_jobs: {
-    id: string;
-    job_title: string;
-    location: string;
-    recruiter_id: string;
-  };
-  candidate: Candidate;
+  cancel_reasons: InterviewDataResponseType['cancel_reasons'];
 };
 
 export type InterviewDataResponseType = {
@@ -103,7 +85,36 @@ export type InterviewDataResponseType = {
       interview_session_relation: DatabaseTable['interview_session_relation'];
     }[];
   };
-  cancel_reasons: DatabaseTable['interview_session_cancel'][] | null;
+  cancel_reasons:
+    | {
+        interview_session_cancel: DatabaseTable['interview_session_cancel'];
+        recruiter_user: {
+          first_name: string;
+          last_name: string;
+          id: string;
+          profile_image: string;
+          position: string;
+          email: string;
+        };
+      }[]
+    | null;
 };
 
+export type ApplicationDataResponseType = {
+  application: JobApplcationDB;
+  candidate_files: {
+    id: string;
+    file_url: string;
+    candidate_id: string;
+    resume_json: any;
+    type: string;
+  };
+  public_jobs: {
+    id: string;
+    job_title: string;
+    location: string;
+    recruiter_id: string;
+  };
+  candidate: Candidate;
+};
 export type ApiResponseFindAvailability = DateRangePlansType[];

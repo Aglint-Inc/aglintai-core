@@ -74,6 +74,7 @@ export const emailTempKeys: DatabaseEnums['email_slack_types'][] = [
   'meetingDeclined_email_organizer',
   'meetingAccepted_email_organizer',
   'interviewEnd_email_interviewerForFeedback',
+  'interviewerResumed_email_admin',
 ];
 
 export const slackTempKeys: DatabaseEnums['email_slack_types'][] = [
