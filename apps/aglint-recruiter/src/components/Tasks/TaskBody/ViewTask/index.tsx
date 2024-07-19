@@ -260,9 +260,8 @@ function ViewTaskDrawer() {
             slotButtonFilter={
               <>
                 {selectedTask &&
-                  selectedTask.latest_progress?.progress_type !== 'closed' &&
-                  selectedTask.latest_progress?.progress_type !==
-                    'completed' && (
+                  selectedTask.status !== 'closed' &&
+                  selectedTask.status !== 'completed' && (
                     <ButtonSoft
                       size={1}
                       color={'neutral'}
@@ -304,6 +303,7 @@ function ViewTaskDrawer() {
                     }}
                     spacing={1}
                     onClick={() => {
+                      setAnchorEl(null);
                       updateTask({
                         status: 'completed',
                         currentStatus: selectedTask.status,
@@ -318,8 +318,8 @@ function ViewTaskDrawer() {
                       }}
                     >
                       Mark as Completed
-                    </Typography> 
-                   </Stack>
+                    </Typography>
+                  </Stack>
                   <Stack
                     direction={'row'}
                     padding={'8px 12px'}
@@ -332,6 +332,7 @@ function ViewTaskDrawer() {
                     }}
                     spacing={1}
                     onClick={() => {
+                      setAnchorEl(null);
                       updateTask({
                         status: 'closed',
                         currentStatus: selectedTask.status,
