@@ -32,7 +32,7 @@ export function ConfirmationPopup({
       tag="div"
       {...widthStyleProps}
     >
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "cp-title-wrap")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "popup_header")}
           tag="div"

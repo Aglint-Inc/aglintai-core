@@ -5,28 +5,28 @@ export const defaultRoles = [
       "Manage job postings, candidate information, interviews, reports, settings, workflows, and teams with the highest level of access.",
   },
   {
-    name: "hiring manager",
-    description:
-      "Assigned to jobs, view job postings, candidate information, interview schedules, and tasks.",
-  },
-  {
     name: "recruiter",
     description:
       "Manage job postings, candidate information, interview scheduling, and task management.",
   },
   {
-    name: "interviewer",
-    description: "View interview schedules and related tasks.",
+    name: "hiring manager",
+    description:
+      "Assigned to jobs, view job postings, candidate information, interview schedules, and tasks.",
   },
   {
     name: "recruiting coordinator",
     description:
-      "Manage interview scheduling and coordination, as well as task updates related to interviews.",
+    "Manage interview scheduling and coordination, as well as task updates related to interviews.",
   },
   {
     name: "sourcer",
     description:
-      "Add and manage candidate information and utilize sourcing tools to build talent pipelines.",
+    "Add and manage candidate information and utilize sourcing tools to build talent pipelines.",
+  },
+  {
+    name: "interviewer",
+    description: "View interview schedules and related tasks.",
   },
 ] as const;
 
