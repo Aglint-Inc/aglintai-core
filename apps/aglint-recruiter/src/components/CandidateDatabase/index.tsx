@@ -75,7 +75,8 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      // toast.error('Something went wrong. Please try again.');
+      return err.message;
     } finally {
       setIsHistoryLoading(false);
     }
@@ -96,7 +97,7 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again1.');
     }
   };
 
