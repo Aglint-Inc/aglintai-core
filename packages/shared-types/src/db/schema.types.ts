@@ -4110,6 +4110,7 @@ export type Database = {
           candidate_name: string | null
           full_text_search: unknown | null
           job_id: string | null
+          job_role: string | null
         }
         Relationships: [
           {
