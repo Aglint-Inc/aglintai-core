@@ -9,7 +9,6 @@ const main = async () => {
   await supabaseAdmin.auth.signOut();
   const tables_in_order: (keyof DatabaseTable)[] = [
     'recruiter',
-    'company_email_template',
     'roles',
     'permissions',
     'recruiter_user',
@@ -23,9 +22,10 @@ const main = async () => {
     'interview_module',
     'interview_module_relation',
     'interview_session',
-    'workflow',
-    'workflow_action',
-    'workflow_job_relation',
+    // 'company_email_template',
+    // 'workflow',
+    // 'workflow_action',
+    // 'workflow_job_relation',
   ];
 
   for (const table of tables_in_order) {
