@@ -22,31 +22,22 @@ export const server_check_permissions = async ({
           get(name: string) {
             return getVal(name);
           },
-          //   set(name: string, value: string, options: { [key: string]: any }) {
-          //     res.setHeader('Set-Cookie', `${name}=${value}; ${options}`);
-          //   },
-          //   remove(name: string) {
-          //     res.setHeader('Set-Cookie', `${name}=; Max-Age=0`);
-          //   },
         },
       },
     );
 
-    return await supabase.auth.getSession().then(({ data, error }) => {
+    return await supabase.auth.getUser().then(async ({ data, error }) => {
       if (error) throw new Error(error.message);
-      const user = data?.session?.user;
+      const user = data?.user;
       if (user?.id) {
+        const { data: sesData } = await supabase.auth.getSession();
         const decoded = jwtDecode(
-          data.session.access_token,
+          sesData.session.access_token,
         ) as EventSessionType;
-
         const userpermissions =
           decoded.app_metadata.role_permissions.permissions;
-
         const role = decoded.app_metadata.role_permissions.role;
-
         const rec_id = decoded.app_metadata.role_permissions.recruiter_id;
-
         let is_allowed = false;
 
         for (let permission of permissions) {
