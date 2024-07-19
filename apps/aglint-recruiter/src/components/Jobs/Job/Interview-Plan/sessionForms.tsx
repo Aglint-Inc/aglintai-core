@@ -283,6 +283,7 @@ const SessionForms = ({
         <InterviewModulesField
           value={interview_module.value}
           handleModuleChange={handleModuleChange}
+          error={rest.interviewers.error}
         />
       }
       slotScheduleTypeDropdown={
@@ -717,9 +718,11 @@ const InterviewersField = ({
 const InterviewModulesField = ({
   value,
   handleModuleChange,
+  error,
 }: {
   value: SessionFormProps['interview_module'];
   handleModuleChange: HandleModuleChange;
+  error?: boolean;
 }) => {
   const {
     interviewModules: { data },
@@ -742,13 +745,25 @@ const InterviewModulesField = ({
   };
 
   return (
-    <DropDown
-      placeholder='Select interview type'
-      onChange={onChange}
-      options={options}
-      value={value?.id}
-      showIcons={false}
-    />
+    <Stack gap={'2px'}>
+      <DropDown
+        placeholder='Select interview type'
+        onChange={onChange}
+        options={options}
+        value={value?.id}
+        showIcons={false}
+      />
+      {error && !value?.id && (
+        <Stack
+          alignItems={'center'}
+          direction={'row'}
+          color={'var(--error-a11)'}
+        >
+          <WarningSvg />
+          {'Interview Type cannot be empty'}
+        </Stack>
+      )}
+    </Stack>
   );
 };
 
@@ -1010,7 +1025,7 @@ export const getSessionPayload = (
   };
 };
 
-const WarningSvg = () => {
+export const WarningSvg = () => {
   return (
     <svg
       width='22'

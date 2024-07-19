@@ -14,7 +14,7 @@
   grid-template-rows: max-content auto;
 
   border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-2);
+  border-radius: var(--radius-4);
 
   background-color: var(--white);
 }

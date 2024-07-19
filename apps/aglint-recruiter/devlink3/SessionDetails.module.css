@@ -87,6 +87,8 @@
 }
 
 .timeblock.is_link {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
   cursor: pointer;
 }
 

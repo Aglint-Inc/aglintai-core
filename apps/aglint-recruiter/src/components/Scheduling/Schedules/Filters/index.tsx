@@ -137,12 +137,11 @@ function Filters() {
             type: 'filter',
             name: 'Date range',
             options: dateRange,
+            multiSelect: false,
             setValue: (val) => {
               updateFilterState('date_range', val);
             },
-            value: filterState.date_range.length
-              ? [filterState.date_range[filterState.date_range.length - 1]]
-              : [],
+            value: filterState.date_range,
             iconname: 'filter_tilt_shift',
           },
         ]}

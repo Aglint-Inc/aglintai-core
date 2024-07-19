@@ -66,7 +66,7 @@ function TaskBody() {
                 setShowAddNew(true);
               },
             }}
-            isNewTaskCardVisible={false}
+            isNewTaskCardVisible={true}
             slotTaskTableCard={
               <>
                 <Stack id='taskContainer' height={'100%'} overflow={'auto'}>

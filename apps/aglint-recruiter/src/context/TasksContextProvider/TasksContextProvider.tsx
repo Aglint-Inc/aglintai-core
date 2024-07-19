@@ -26,6 +26,7 @@ import {
   useState,
 } from 'react';
 
+import { sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import {
   getIndicator,
@@ -65,7 +66,10 @@ type TasksReducerType = {
     page: number;
     totalRows: number;
   };
-  sort: 'date' | 'status';
+  sort: {
+    options: sortComponentType['sortOptions']['options'];
+    selected: sortComponentType['selected'];
+  };
   loadingTasks: boolean;
 };
 /* eslint-disable no-unused-vars */
@@ -84,7 +88,7 @@ export type TasksAgentContextType = TasksReducerType & {
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
   handelResetFilter: () => void;
-  handelSort: (x: TasksReducerType['sort']) => void;
+  handelSort: (x: TasksReducerType['sort']['selected']) => void;
   loadingTasks: boolean;
 };
 /* eslint-enable no-unused-vars */
@@ -134,7 +138,16 @@ const reducerInitialState: TasksReducerType = {
     date: { values: [] },
     candidate: { options: [], values: [] },
   },
-  sort: 'date',
+  sort: {
+    options: [
+      { id: 'created_at', label: 'created at' },
+      { id: 'due_date', label: 'due date' },
+    ],
+    selected: {
+      option: 'created_at',
+      order: 'desc',
+    },
+  },
   loadingTasks: true,
 };
 
@@ -195,7 +208,7 @@ type TasksReducerActionType =
     }
   | {
       type: TasksReducerAction.SORT;
-      payload: TasksAgentContextType['sort'];
+      payload: TasksAgentContextType['sort']['selected'];
     }
   | {
       type: TasksReducerAction.SET_ASSIGNEE_OPTIONS;
@@ -233,7 +246,7 @@ const reducer = (
       return { ...state, filter: action.payload };
     }
     case TasksReducerAction.SORT: {
-      return { ...state, sort: action.payload };
+      return { ...state, sort: { ...state.sort, selected: action.payload } };
     }
     case TasksReducerAction.SET_ASSIGNEE_OPTIONS: {
       const temp = cloneDeep(state);
@@ -446,8 +459,26 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sortedTask: TasksAgentContextType['tasks'] = useMemo(() => {
-    return tasksReducer.tasks;
-  }, [tasksReducer.sort, tasksReducer.tasks]);
+    return [...tasksReducer.tasks].sort((a, b) => {
+      const valueA = a[tasksReducer.sort.selected.option] || '';
+      const valueB = b[tasksReducer.sort.selected.option] || '';
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        if (tasksReducer.sort.selected.order === 'asc')
+          return valueA.localeCompare(valueB);
+        else return valueB.localeCompare(valueA);
+      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+        if (tasksReducer.sort.selected.order === 'asc') return valueA - valueB;
+        else return valueB - valueA;
+      } else {
+        return valueA.toString().localeCompare(valueB.toString());
+      }
+    });
+  }, [
+    tasksReducer.sort.selected.option,
+    tasksReducer.sort.selected.order,
+    tasksReducer.tasks,
+  ]);
 
   const filterTask: TasksAgentContextType['tasks'] = useMemo(() => {
     const status = tasksReducer.filter.status;

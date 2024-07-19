@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -95,11 +96,28 @@ function EmailPreviewSelfSchedule() {
             <br />
             {`Click "Request Availability" to send.`}
           </Typography>
-          <Stack direction={'row'} spacing={1} justifyItems={'start'}>
-            <ButtonSoft
+         
+        </Stack>
+      }
+      slotEmailPreview={
+        <ShowCode>
+          <ShowCode.When isTrue={fetching}>
+            <Stack height={'80vh'} width={'538px'}>
+              <Loader />
+            </Stack>
+          </ShowCode.When>
+          <ShowCode.Else>
+          <Stack display={'flex'} gap={'32px'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} width={'100%'} padding={'0px 20px'}>
+              <Stack>
+            <GlobalBannerInline  textContent='This is a preview only. All actions in this email are disabled.' iconName='info' slotButton={<></>} color={'warning'}/>
+            
+           
+            </Stack>
+          <Stack direction={'row'} spacing={1} justifyItems={'start'} minWidth={'152px'}>
+          <ButtonSoft
               size={1}
               textButton={'Edit Email Template'}
-              color={'neutral'}
+              color={'accent'}
               onClickButton={{
                 onClick: () => {
                   window.open(
@@ -117,16 +135,7 @@ function EmailPreviewSelfSchedule() {
               }}
             />
           </Stack>
-        </Stack>
-      }
-      slotEmailPreview={
-        <ShowCode>
-          <ShowCode.When isTrue={fetching}>
-            <Stack height={'80vh'} width={'538px'}>
-              <Loader />
-            </Stack>
-          </ShowCode.When>
-          <ShowCode.Else>
+          </Stack>
             <Stack sx={{ py: 'var(--space-4)' }}>
               <iframe
                 width={'600px'}

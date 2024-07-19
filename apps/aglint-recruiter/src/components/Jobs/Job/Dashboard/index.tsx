@@ -1130,7 +1130,7 @@ const Banner = (props: BannerProps) => {
             <>
               <ButtonSoft
                 textButton={props.secondary.title}
-                size={2}
+                size={1}
                 color={'accent'}
                 highContrast={'true'}
                 onClickButton={{
@@ -1140,7 +1140,7 @@ const Banner = (props: BannerProps) => {
 
               <ButtonSolid
                 textButton={props.primary.title}
-                size={2}
+                size={1}
                 color={'accent'}
                 onClickButton={{
                   onClick: props.primary.onClick,
@@ -1159,10 +1159,10 @@ const Banner = (props: BannerProps) => {
           iconName={'error'}
           slotButtons={
             <ButtonSolid
-              size={2}
-              color={'accent'}
+              size={1}
+              color={'error'}
               textButton={props.primary.title}
-              highContrast='true'
+              highContrast='false'
               onClickButton={{
                 onClick: () => props.primary.title,
               }}

@@ -42,7 +42,9 @@
   display: flex;
   min-height: 300px;
   padding-top: var(--space-5);
+  flex-direction: column;
   justify-content: center;
+  flex-wrap: nowrap;
   align-items: center;
 
   border: 1px solid var(--neutral-6);

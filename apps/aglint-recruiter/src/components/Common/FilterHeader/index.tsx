@@ -52,36 +52,43 @@ export default function FilterHeader({
   });
 
   return (
-    <Stack direction={'row'} gap={2}>
-      {Boolean(search) && (
-        <SearchField
-          value={search.value}
-          onChange={(e) => search.setValue(e.target.value)}
-          onClear={() => search.setValue('')}
-          placeholder={search.placeholder}
-        />
-      )}
-      <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
-        <Stack direction={'row'} gap={2}>
-          <FiltersComponent
-            filters={filters}
-            showFilters={showFiltersByDefault}
-            setShowFilters={setShowFilters}
+    <Stack
+      direction={'row'}
+      justifyContent={'space-between'}
+      alignItems={'center'}
+      width={'100%'}
+    >
+      <Stack direction={'row'} gap={2}>
+        {Boolean(search) && (
+          <SearchField
+            value={search.value}
+            onChange={(e) => search.setValue(e.target.value)}
+            onClear={() => search.setValue('')}
+            placeholder={search.placeholder}
           />
-          {Boolean(dateRangeSelector) && (
-            <DateRangeSelector {...dateRangeSelector} />
-          )}
-          {isResetAll && isFiltersActive && (
-            <ButtonGhost
-              isDisabled={!isFiltersActive}
-              textButton='Reset All'
-              size={2}
-              iconName='refresh'
-              color={'neutral'}
-              isLeftIcon
-              onClickButton={{ onClick: handelResetAll }}
+        )}
+        <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
+          <Stack direction={'row'} gap={2}>
+            <FiltersComponent
+              filters={filters}
+              showFilters={showFiltersByDefault}
+              setShowFilters={setShowFilters}
             />
-          )}
+            {Boolean(dateRangeSelector) && (
+              <DateRangeSelector {...dateRangeSelector} />
+            )}
+            {isResetAll && isFiltersActive && (
+              <ButtonGhost
+                isDisabled={!isFiltersActive}
+                textButton='Reset All'
+                size={2}
+                iconName='refresh'
+                color={'neutral'}
+                isLeftIcon
+                onClickButton={{ onClick: handelResetAll }}
+              />
+            )}
+          </Stack>
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}

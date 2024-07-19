@@ -5,6 +5,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Container,
   Dialog,
+  FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -24,6 +25,7 @@ import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Page404 } from '@/devlink/Page404';
 import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
@@ -138,7 +140,7 @@ const CandidateInvitePlanPage = () => {
   if (meetings.length === 0)
     return (
       <Stack width={'100%'} height={'100vh'}>
-        <Page404 text404='The requested page was not found' />
+        <Page404 />
         <Stack bgcolor={'var(--neutral-2)'} height={'48px'}>
           <Footer brand={true} />
         </Stack>
@@ -157,6 +159,7 @@ const CandidateInvitePlanPage = () => {
         timezone={timezone}
       />
     );
+
   return (
     <Stack
       sx={{
@@ -229,18 +232,16 @@ export const ConfirmedInvitePage = (
     >[number]['other_details'];
     sessions: Awaited<ReturnType<typeof getCancelRescheduleData>>;
   }>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    get_scheduling_reason(candidate.recruiter_id).then((data) => {
-      setSchedulingReason(data);
-    });
-    if (
-      props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id
-    ) {
+    if (schedule?.id && candidate?.recruiter_id) {
+      get_scheduling_reason(candidate.recruiter_id).then((data) => {
+        setSchedulingReason(data);
+      });
       getCancelRescheduleData({
-        schedule_id:
-          props.rounds[0]?.sessions[0]?.interview_meeting
-            ?.interview_schedule_id,
+        schedule_id: schedule.id,
+        session_ids: meetings.flatMap((ses) => ses.interview_session.id),
       }).then((data) => {
         const temp = new Set(
           props.rounds
@@ -259,9 +260,11 @@ export const ConfirmedInvitePage = (
             other_details: data[0]?.other_details,
             sessions: data,
           });
+
+        setLoading(false);
       });
     }
-  }, [props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id]);
+  }, [props]);
 
   const handleCancelReschedule = async (
     detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
@@ -324,144 +327,146 @@ export const ConfirmedInvitePage = (
 
   return (
     <>
-      <Stack
-        sx={{
-          backgroundColor: 'var(--sand-3)',
-          width: '100%',
-          minHeight: '100vh',
-          overflow: 'auto',
-          paddingBottom: '24px',
-        }}
-      >
+      {!loading && (
         <Stack
           sx={{
-            backgroundColor: 'white',
-            maxWidth: '760px',
+            backgroundColor: 'var(--sand-3)',
             width: '100%',
-            marginInline: 'auto',
-            marginTop: '10px',
-            zIndex: '10',
-            transform: 'translateY(50px)',
+            minHeight: '100vh',
+            overflow: 'auto',
+            paddingBottom: '24px',
           }}
         >
-          {cancelReschedulingDetails?.all && (
-            <GlobalBanner
-              iconName='info'
-              textTitle=''
-              slotButtons={<></>}
-              color={'info'}
-              textDescription={
-                <>
-                  <Typography>
-                    {'Request to '}
-                    {capitalizeFirstLetter(
-                      cancelReschedulingDetails.type == 'declined'
-                        ? 'cancel'
-                        : 'reschedule',
+          <Stack
+            sx={{
+              backgroundColor: 'white',
+              maxWidth: '760px',
+              width: '100%',
+              marginInline: 'auto',
+              marginTop: '10px',
+              zIndex: '10',
+              transform: 'translateY(50px)',
+            }}
+          >
+            {cancelReschedulingDetails?.all && (
+              <GlobalBanner
+                iconName='info'
+                textTitle=''
+                slotButtons={<></>}
+                color={'info'}
+                textDescription={
+                  <>
+                    <Typography>
+                      {'Request to '}
+                      {capitalizeFirstLetter(
+                        cancelReschedulingDetails.type == 'declined'
+                          ? 'cancel'
+                          : 'reschedule',
+                      )}
+                      {' all Sessions'}
+                      {cancelReschedulingDetails.type == 'reschedule' &&
+                        ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
+                      {' received.'}
+                    </Typography>
+                    {reasons.length && (
+                      <Typography>
+                        <span style={{ fontWeight: '500' }}>Reason : </span>
+                        {reasons.join(', ')}
+                      </Typography>
                     )}
-                    {' all Sessions'}
-                    {cancelReschedulingDetails.type == 'reschedule' &&
-                      ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
-                    {' received.'}
-                  </Typography>
-                  {reasons.length && (
-                    <Typography>
-                      <span style={{ fontWeight: '500' }}>Reason : </span>
-                      {reasons.join(', ')}
+                    {cancelReschedulingDetails.other_details.note && (
+                      <Typography>
+                        <span style={{ fontWeight: '500' }}>
+                          Additional Notes :
+                        </span>
+                        {cancelReschedulingDetails.other_details.note}
+                      </Typography>
+                    )}
+                    <Typography fontWeight={500} marginTop={'5px'}>
+                      Your request to{' '}
+                      {capitalizeFirstLetter(
+                        cancelReschedulingDetails.type == 'declined'
+                          ? 'cancel'
+                          : 'reschedule',
+                      )}{' '}
+                      is pending company review.
                     </Typography>
-                  )}
-                  {cancelReschedulingDetails.other_details.note && (
-                    <Typography>
-                      <span style={{ fontWeight: '500' }}>
-                        Additional Notes :
-                      </span>
-                      {cancelReschedulingDetails.other_details.note}
-                    </Typography>
-                  )}
-                  <Typography fontWeight={500} marginTop={'5px'}>
-                    Your request to{' '}
-                    {capitalizeFirstLetter(
-                      cancelReschedulingDetails.type == 'declined'
-                        ? 'cancel'
-                        : 'reschedule',
-                    )}{' '}
-                    is pending company review.
-                  </Typography>
-                </>
+                  </>
+                }
+              />
+            )}
+          </Stack>
+          <InterviewConfirmed
+            isBannerVisible={Boolean(cancelReschedulingDetails?.all)}
+            slotCompanyLogo={
+              <Logo companyName={recruiter.name} logo={recruiter.logo} />
+            }
+            slotInterviewConfirmedCard={
+              <ConfirmedScheduleCards
+                rounds={props.rounds}
+                isValid={!cancelReschedulingDetails?.all}
+                timezone={timezone}
+              />
+            }
+            textDesc={
+              'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
+            }
+            textMailSent={candidate.email}
+            slotButton={
+              <Stack direction={'row'} gap={2}>
+                {(!cancelReschedulingDetails ||
+                  cancelReschedulingDetails.all == false) && (
+                  <Stack direction={'row'} gap={'var(--space-2)'}>
+                    <ButtonSoft
+                      textButton={'Reschedule'}
+                      size={2}
+                      color={'neutral'}
+                      iconName='event_repeat'
+                      isLeftIcon
+                      onClickButton={{
+                        onClick: () => setCancelReschedule('reschedule'),
+                      }}
+                    />
+                    <ButtonSoft
+                      textButton={'Cancel'}
+                      size={2}
+                      color={'error'}
+                      iconName='event_busy'
+                      isLeftIcon
+                      onClickButton={{
+                        onClick: () => setCancelReschedule('cancel'),
+                      }}
+                    />
+                  </Stack>
+                )}
+              </Stack>
+            }
+          />
+          {Boolean(cancelReschedule) && (
+            <CancelRescheduleDialog
+              onClickTryRescheduling={() => {
+                setCancelReschedule('reschedule');
+              }}
+              onSubmit={handleCancelReschedule}
+              onClose={() => {
+                setCancelReschedule(null);
+              }}
+              options={
+                (cancelReschedule === 'cancel'
+                  ? scheduling_reason?.candidate?.cancellation
+                  : scheduling_reason?.candidate?.rescheduling) || ['other']
               }
+              title={
+                cancelReschedule === 'reschedule'
+                  ? 'Reschedule'
+                  : 'Cancel Interview'
+              }
+              type={cancelReschedule}
             />
           )}
+          <Footer brand={true} />
         </Stack>
-        <InterviewConfirmed
-          isBannerVisible={Boolean(cancelReschedulingDetails?.all)}
-          slotCompanyLogo={
-            <Logo companyName={recruiter.name} logo={recruiter.logo} />
-          }
-          slotInterviewConfirmedCard={
-            <ConfirmedScheduleCards
-              rounds={props.rounds}
-              isValid={!cancelReschedulingDetails?.all}
-              timezone={timezone}
-            />
-          }
-          textDesc={
-            'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
-          }
-          textMailSent={candidate.email}
-          slotButton={
-            <Stack direction={'row'} gap={2}>
-              {(!cancelReschedulingDetails ||
-                cancelReschedulingDetails.all == false) && (
-                <Stack direction={'row'} gap={'var(--space-2)'}>
-                  <ButtonSoft
-                    textButton={'Reschedule'}
-                    size={2}
-                    color={'neutral'}
-                    iconName='event_repeat'
-                    isLeftIcon
-                    onClickButton={{
-                      onClick: () => setCancelReschedule('reschedule'),
-                    }}
-                  />
-                  <ButtonSoft
-                    textButton={'Cancel'}
-                    size={2}
-                    color={'error'}
-                    iconName='event_busy'
-                    isLeftIcon
-                    onClickButton={{
-                      onClick: () => setCancelReschedule('cancel'),
-                    }}
-                  />
-                </Stack>
-              )}
-            </Stack>
-          }
-        />
-        {Boolean(cancelReschedule) && (
-          <CancelRescheduleDialog
-            onClickTryRescheduling={() => {
-              setCancelReschedule('reschedule');
-            }}
-            onSubmit={handleCancelReschedule}
-            onClose={() => {
-              setCancelReschedule(null);
-            }}
-            options={
-              (cancelReschedule === 'cancel'
-                ? scheduling_reason?.candidate?.cancellation
-                : scheduling_reason?.candidate?.rescheduling) || ['other']
-            }
-            title={
-              cancelReschedule === 'reschedule'
-                ? 'Reschedule'
-                : 'Cancel Schedule'
-            }
-            type={cancelReschedule}
-          />
-        )}
-        <Footer brand={true} />
-      </Stack>
+      )}
     </>
   );
 };
@@ -492,12 +497,23 @@ const DetailsPopup = () => {
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}
-        slotButton={''}
+        slotButton={
+          <IconButtonGhost
+            color={'neutral'}
+            size={1}
+            iconName={'close'}
+            onClickButton={{
+              onClick: () => {
+                setDetailsPop(false);
+              },
+            }}
+          />
+        }
+        isSlotButtonVisible={true}
         textDuration={getDurationText(duration)}
         onClickClose={{ onClick: () => setDetailsPop(false) }}
         textPopupTitle={schedule_name}
         slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-        isSlotButtonVisible={false}
         isTitle={false}
       />
     </Dialog>
@@ -569,6 +585,7 @@ const CancelRescheduleDialog = ({
       ),
     [formData.dateRange.start, formData.dateRange.end],
   );
+
   useEffect(
     () => setFormData((pre) => ({ ...pre, reason: options[0] })),
     [options],
@@ -648,32 +665,35 @@ const CancelRescheduleDialog = ({
           </Stack>
         }
         slotRadioText={
-          // <FormControl>
-          <RadioGroup
-            name='radio-buttons-group'
-            value={formData.reason}
-            onChange={(e) => {
-              setFormData((pre) => ({ ...pre, reason: e.currentTarget.value }));
-            }}
-            sx={{ gap: '4px' }}
-          >
-            {options.map((item) => (
-              <FormControlLabel
-                key={item}
-                value={item}
-                control={<Radio />}
-                label={capitalizeFirstLetter(item)}
-                sx={{
-                  ml: 0,
-                  '& .MuiRadio-root': {
-                    p: 0.5,
-                  },
-                  '& .MuiTypography-root': { fontSize: '14px' },
-                }}
-              />
-            ))}
-          </RadioGroup>
-          // {/* </FormControl> */}
+          <FormControl>
+            <RadioGroup
+              name='radio-buttons-group'
+              value={formData.reason}
+              onChange={(e) => {
+                setFormData((pre) => ({
+                  ...pre,
+                  reason: e.currentTarget.value,
+                }));
+              }}
+              sx={{ gap: '4px' }}
+            >
+              {options.map((item) => (
+                <FormControlLabel
+                  key={item}
+                  value={item}
+                  control={<Radio />}
+                  label={capitalizeFirstLetter(item)}
+                  sx={{
+                    ml: 0,
+                    '& .MuiRadio-root': {
+                      p: 0.5,
+                    },
+                    '& .MuiTypography-root': { fontSize: '14px' },
+                  }}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         }
         slotPrimaryButton={
           <Stack>
@@ -686,7 +706,7 @@ const CancelRescheduleDialog = ({
             )}
             {type === 'cancel' && (
               <ButtonSolid
-                textButton='Cancel Schedule'
+                textButton='Cancel Interview'
                 size={2}
                 color={'error'}
                 onClickButton={{ onClick: handleSubmit }}
@@ -1320,13 +1340,18 @@ const saveCancelReschedule = async ({
 };
 
 const getCancelRescheduleData = async ({
+  session_ids,
   schedule_id,
 }: {
+  session_ids: string[];
   schedule_id: string;
 }) => {
   return supabase
     .from('interview_session_cancel')
     .select('reason, session_id, type, other_details')
+    .eq('is_resolved', false)
+    .eq('is_ignored', false)
+    .in('session_id', session_ids)
     .eq('schedule_id', schedule_id)
     .then(({ data, error }) => {
       if (error) {

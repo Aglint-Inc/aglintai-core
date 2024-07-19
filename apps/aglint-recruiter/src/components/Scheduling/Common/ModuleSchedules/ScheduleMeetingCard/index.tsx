@@ -19,7 +19,7 @@ import {
 } from '../../../Candidates/utils';
 import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
-import InterviewerDetailsCard from './InterviewerDetailCard';
+import InterviewerUserDetail from '../../InterviewerUserDetail';
 
 function ScheduleMeetingCard({
   meetingDetails,
@@ -67,20 +67,35 @@ function ScheduleMeetingCard({
                     }
                     textTime={null}
                   />
-                  {/* members profile */}
-                  {interviewers.map((user, i) => {
+                  {interviewers.map((user) => {
                     return (
-                      <InterviewerDetailsCard
-                        key={i}
-                        start_time={meetingDetails.start_time}
-                        end_time={meetingDetails.end_time}
-                        first_name={user.first_name}
-                        last_name={user.last_name}
-                        position={user.position}
-                        profile_image={user.profile_image}
-                        training_type={user.training_type}
-                        tzCode={user.tz_code}
-                      />
+                      <>
+                        <InterviewerUserDetail
+                          key={user.email}
+                          interview_meeting={{
+                            end_time: meetingDetails.end_time,
+                            start_time: meetingDetails.start_time,
+                            status: meetingDetails.status,
+                          }}
+                          accepted_status={user.accepted_status}
+                          cancelReason={user.cancel_reasons?.find(
+                            (can) =>
+                              can.session_relation_id ===
+                              user.session_relation_id,
+                          )}
+                          userDetails={{
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            position: user.position,
+                            profile_image: user.profile_image,
+                          }}
+                          interviewerTimeZone={user.tz_code}
+                          isCalendarConnected={true}
+                          isPaused={false}
+                          pause_json={null}
+                          trainingType={user.training_type}
+                        />
+                      </>
                     );
                   })}
                 </Stack>

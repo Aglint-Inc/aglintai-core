@@ -288,7 +288,7 @@ export const getMeetingsByModuleId = async (module_id: string) => {
       interview_meeting: sesRel.interview_session.interview_meeting,
     }))
     .filter((ses) => Boolean(ses.interview_meeting));
-
+  
   return resRel;
 };
 
