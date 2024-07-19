@@ -164,9 +164,8 @@ const Dashboard = () => {
   const handleFilter = (
     resume_score: ApplicationsParams['filters']['resume_score'][number],
   ) => {
-    push(
-      `/jobs/${job.id}/candidate-list?${getParams({ resume_score: [resume_score] })}`,
-    );
+    const params = getParams({ resume_score: [resume_score] });
+    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
   };
 
   const banners = useBanners();
@@ -450,7 +449,8 @@ const Pipeline = () => {
     },
   );
   const handlClick = (section: Application['status']) => {
-    push(`/jobs/${job.id}/candidate-list?${getParams({ section })}`);
+    const params = getParams({ section });
+    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
   };
   return (
     <>
