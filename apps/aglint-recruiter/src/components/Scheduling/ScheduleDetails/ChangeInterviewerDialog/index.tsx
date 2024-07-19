@@ -178,7 +178,7 @@ function ChangeInterviewerDialog({
     <Dialog
       open={isChangeInterviewerOpen}
       onClose={() => {
-        resetState();
+        if (!isSaving) resetState();
       }}
       maxWidth='lg'
     >
@@ -186,7 +186,7 @@ function ChangeInterviewerDialog({
         <ChangeInterviewer
           onClickClose={{
             onClick: () => {
-              resetState();
+              if (!isSaving) resetState();
             },
           }}
           textAvailableDesc={`Please select alternate interviewer available from ${dayjs(
