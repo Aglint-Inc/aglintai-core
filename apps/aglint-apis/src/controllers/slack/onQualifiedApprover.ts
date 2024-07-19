@@ -17,7 +17,9 @@ export async function onQualifiedApprover(req: Request, res: Response) {
     const [data] = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
-        .select('recruiter_user(first_name,last_name),interview_module(name)')
+        .select(
+          'user_id,recruiter_user(first_name,last_name),interview_module(name)'
+        )
         .eq('id', interview_module_relation_id)
     );
 
@@ -37,6 +39,13 @@ export async function onQualifiedApprover(req: Request, res: Response) {
         .eq('user_id', organizer_id)
     );
 
+    const [shadowCount] = supabaseWrap(
+      await supabaseAdmin
+        .from('module_relations_view')
+        .select('shadow_meeting_count,reverse_shadow_meeting_count')
+        .eq('user_id', data.user_id)
+    );
+
     const userId = await getUserIdByEmail(approver.email);
 
     await slackWeb.chat.postMessage({
@@ -50,7 +59,7 @@ export async function onQualifiedApprover(req: Request, res: Response) {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(approver.first_name, approver.last_name)},\n${getFullName(trainee.first_name, trainee.last_name)} has completed [# number] shadow sessions and [# number] reverse shadow sessions. Please review and approve ${getFullName(trainee.first_name, trainee.last_name)} to become qualified for conducting ${interview_module.name} interviews.\n\nThanks,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+            text: `Hi ${getFullName(approver.first_name, approver.last_name)},\n${getFullName(trainee.first_name, trainee.last_name)} has completed ${shadowCount.shadow_meeting_count} shadow sessions and ${shadowCount.reverse_shadow_meeting_count} reverse shadow sessions. Please review and approve ${getFullName(trainee.first_name, trainee.last_name)} to become qualified for conducting ${interview_module.name} interviews.\n\nThanks,\n${getFullName(organizer.first_name, organizer.last_name)}`,
           },
         },
         {
