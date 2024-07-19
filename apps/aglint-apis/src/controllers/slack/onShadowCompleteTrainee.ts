@@ -2,7 +2,7 @@ import {getFullName, supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
-import {getUserIdByEmail} from 'src/utils/slack';
+import {getUserIdByEmail, numberToOrdinal} from 'src/utils/slack';
 
 export async function onShadowCompleteTrainee(req: Request, res: Response) {
   const {interview_module_relation_id, interview_meeting_id, session_id} =
@@ -18,7 +18,7 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
     const [data] = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
-        .select('recruiter_user(*),interview_module(*)')
+        .select('user_id,recruiter_user(*),interview_module(*)')
         .eq('id', interview_module_relation_id)
     );
     const [interviewMeeting] = supabaseWrap(
@@ -35,6 +35,15 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
         .select('name')
         .eq('id', session_id)
     );
+
+    const [shadow] = supabaseWrap(
+      await supabaseAdmin
+        .from('module_relations_view')
+        .select('shadow_meeting_count')
+        .eq('user_id', data.user_id)
+    );
+
+    const shadowCount = shadow.shadow_meeting_count;
 
     const {interview_module, recruiter_user: trainee} = data;
     const userId = await getUserIdByEmail(trainee.email);
@@ -56,7 +65,7 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the [1st] shadow session for ${interview_module.name} ? You were scheduled as a shadow interviewer in the ${session.name} for ${job} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(shadowCount))} shadow session for ${interview_module.name} ? You were scheduled as a shadow interviewer in the ${session.name} for ${job} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
           },
         },
         {
