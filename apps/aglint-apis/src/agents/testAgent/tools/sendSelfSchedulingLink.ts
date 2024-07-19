@@ -8,6 +8,10 @@ export const sendSelfSchedulingLink = () => {
     description:
       'collects details necessary for sending the sending self scheduling link and sends the link to the candidate',
     schema: z.object({
+      interview_sessions: z
+        .string()
+        .array()
+        .describe('selected interview sessions to schedule'),
       candidate: z.object({
         candidate_name: z
           .string()

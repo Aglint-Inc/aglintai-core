@@ -11,6 +11,7 @@ import {agentPrompt} from './agentPrompt';
 import {convertToOpenAIFunction} from '@langchain/core/utils/function_calling';
 import {sendSelfSchedulingLink} from './tools/sendSelfSchedulingLink';
 import {findCandidateInSystem} from './tools/findCandidateInSystem';
+import {findCandidateInterviewSessions} from './tools/findCandidateInterviewSessions';
 const MEMORY_KEY = 'chat_history';
 
 export async function agentHandler(payload: {
@@ -21,9 +22,8 @@ export async function agentHandler(payload: {
     // modelName: 'gpt-3.5-turbo-0125',
     modelName: 'gpt-4o',
     temperature: 0.7,
-    verbose: true,
+    verbose: false,
     apiKey: envConfig.OPENAI_APIKEY,
-    streaming: true,
   });
 
   const chat_history = payload.history.map(message => {
@@ -40,7 +40,11 @@ export async function agentHandler(payload: {
     new MessagesPlaceholder('agent_scratchpad'),
   ]);
 
-  const tools = [findCandidateInSystem(), sendSelfSchedulingLink()];
+  const tools = [
+    findCandidateInSystem(),
+    sendSelfSchedulingLink(),
+    findCandidateInterviewSessions(),
+  ];
 
   const modelWithFunctions = llm.bind({
     functions: tools.map(tool => convertToOpenAIFunction(tool)),

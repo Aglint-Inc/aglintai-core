@@ -9,16 +9,19 @@ export const findCandidateInSystem = () => {
     description:
       "returns array of candidate's details like candidate name, email, job_role that matches the given candidate name.",
     schema: z.object({
-      candidate_name: z.string(),
+      candidate_name: z.string().describe('first name or full name'),
     }),
     func: async payload => {
       const matchedCandidates = supabaseWrap(
         await supabaseAdmin
           .from('candidate_applications_view')
           .select()
-          .textSearch('full_text_search', payload.candidate_name)
+          .textSearch(
+            'full_text_search',
+            payload.candidate_name.split(' ').join('<->')
+          )
       );
-      return matchedCandidates.toString();
+      return JSON.stringify(matchedCandidates);
     },
   });
 };
