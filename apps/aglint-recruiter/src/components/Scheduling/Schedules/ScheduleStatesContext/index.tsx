@@ -18,6 +18,7 @@ export type ScheduleFilerType = {
   jobs: string[];
   schedule_types: string[];
   date_range: string[];
+  session_types: DatabaseEnums['session_type'][];
   searchText: string;
 };
 export var initialFilterState: ScheduleFilerType = {
@@ -26,6 +27,7 @@ export var initialFilterState: ScheduleFilerType = {
   jobs: [],
   schedule_types: [],
   date_range: [],
+  session_types: [],
   searchText: null,
 };
 interface ContextValue {
@@ -60,10 +62,20 @@ function ScheduleStatesProvider({ children }) {
   const [scheduleFilterIds, setScheduleFilterIds] =
     useLocalStorage('scheduleFilterIds');
 
-  const [filterState, setFilterState] = useState(
-    scheduleFilterIds ? scheduleFilterIds : initialFilterState,
-  );
-
+  const [filterState, setFilterState] = useState(initialFilterState);
+  useEffect(() => {
+    if (scheduleFilterIds) {
+      setFilterState({
+        date_range: scheduleFilterIds?.date_range || [],
+        interviewers: scheduleFilterIds?.interviewers || [],
+        jobs: scheduleFilterIds?.jobs || [],
+        schedule_types: scheduleFilterIds?.schedule_types || [],
+        session_types: scheduleFilterIds?.session_types || [],
+        searchText: scheduleFilterIds?.searchText || '',
+        status: scheduleFilterIds?.status || [],
+      });
+    }
+  }, [scheduleFilterIds]);
   const updateFilterState = (
     key: keyof typeof initialFilterState,
     value: string[],
@@ -111,8 +123,15 @@ function ScheduleStatesProvider({ children }) {
 export { ScheduleStatesProvider, useScheduleStatesContext };
 
 export const useAllScheduleList = (filters: ScheduleFilerType) => {
-  const { date_range, interviewers, jobs, schedule_types, status, searchText } =
-    filters;
+  const {
+    date_range,
+    interviewers,
+    jobs,
+    schedule_types,
+    status,
+    searchText,
+    session_types,
+  } = filters;
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -123,6 +142,7 @@ export const useAllScheduleList = (filters: ScheduleFilerType) => {
       ...schedule_types,
       ...interviewers,
       ...date_range,
+      ...session_types,
       searchText,
     ],
 
@@ -145,8 +165,15 @@ export async function getAllScheduleList({
   filters: ScheduleFilerType;
   recruiter_id: string;
 }) {
-  const { date_range, interviewers, jobs, schedule_types, status, searchText } =
-    filters;
+  const {
+    date_range,
+    interviewers,
+    jobs,
+    schedule_types,
+    status,
+    searchText,
+    session_types,
+  } = filters;
   const filtersAll = schedulesSupabase()
     .eq('recruiter_id', recruiter_id)
     .eq('meeting_interviewers.is_confirmed', true);
@@ -160,6 +187,9 @@ export async function getAllScheduleList({
 
   if (schedule_types.length > 0) {
     filtersAll.in('schedule_type', schedule_types);
+  }
+  if (session_types.length > 0) {
+    filtersAll.in('session_type', session_types);
   }
 
   if (date_range.length > 0) {

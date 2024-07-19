@@ -11,7 +11,7 @@ import {
   useUpdateApplication,
 } from '@/src/queries/job-applications';
 import { Application } from '@/src/types/applications.types';
-import { capitalize } from '@/src/utils/text/textUtils';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useApplicationStore } from '../ApplicationContext/store';
 import { useJob } from '../JobContext';
@@ -22,25 +22,19 @@ const filterParams = [
   'search',
   'badges',
   'resume_score',
+  'type',
+  'order',
+  'section',
 ] as const;
 
 type FilterKeys = (typeof filterParams)[number];
 
 type FilterValues = {
+  section: Application['status'];
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
   resume_score: Application['application_match'][];
-};
-
-// eslint-disable-next-line no-unused-vars
-type Filters = { [id in FilterKeys]: FilterValues[id] };
-
-const sortParams = ['type', 'order'] as const;
-
-type SortKeys = (typeof sortParams)[number];
-
-type SortValue = {
   type:
     | keyof Pick<
         Application,
@@ -50,20 +44,18 @@ type SortValue = {
   order: 'asc' | 'desc';
 };
 
-const sectionDefaults: Application['status'] = 'new';
+// eslint-disable-next-line no-unused-vars
+type Filters = { [id in FilterKeys]: FilterValues[id] };
+
 const filterDefaults: Filters = {
   badges: [],
   bookmarked: false,
   resume_score: [],
   search: '',
-};
-const sortDefaults: SortValue = {
+  section: 'new',
   type: 'latest_activity',
   order: 'desc',
 };
-
-// eslint-disable-next-line no-unused-vars
-type Sort = { [id in SortKeys]: SortValue[id] };
 
 export const useApplicationsParams = () => {
   const { locations, setLocations, resetChecklist } = useApplicationsStore(
@@ -77,96 +69,71 @@ export const useApplicationsParams = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const section = useMemo(
-    () =>
-      JSON.parse(decodeURIComponent(searchParams.get('section'))) ??
-      sectionDefaults,
-    [searchParams, sectionDefaults],
-  );
+  const filters = filterParams.reduce((acc, curr) => {
+    const defaultFilter = filterDefaults[curr];
+    const safeFilter = Array.isArray(defaultFilter)
+      ? searchParams.getAll(curr)
+      : typeof defaultFilter === 'boolean'
+        ? searchParams.get(curr) === ''
+          ? true
+          : false
+        : searchParams.get(curr);
+    acc[curr] = (safeFilter ?? filterDefaults[curr]) as Filters[typeof curr];
+    return acc;
+  }, {}) as Filters;
 
-  const filters = useMemo(
-    () =>
-      filterParams.reduce((acc, curr) => {
-        acc[curr] =
-          JSON.parse(decodeURIComponent(searchParams.get(curr))) ??
-          (filterDefaults[curr] as Filters[typeof curr]);
+  const safeFilters = { ...filters, locations };
+
+  const getParams = (newParams: Partial<typeof filters>) => {
+    if (locations) setLocations(locations);
+    return Object.entries(newParams ?? {})
+      .reduce((acc, [key, value]) => {
+        if (JSON.stringify(value) === JSON.stringify(filterDefaults[key]))
+          return acc;
+        if (Array.isArray(value))
+          acc.push(value.map((val) => `${key}=${val}`).join('&'));
+        else if (typeof value === 'boolean' && value) acc.push(key);
+        else acc.push(`${key}=${value}`);
         return acc;
-      }, {}) as Filters,
-    [filterParams, searchParams],
-  );
+      }, [])
+      .join('&');
+  };
 
-  const sort = useMemo(
-    () =>
-      sortParams.reduce((acc, curr) => {
-        acc[curr] =
-          JSON.parse(
-            decodeURIComponent(searchParams.get(`sort${capitalize(curr)}`)),
-          ) ?? (sortDefaults[curr] as Sort[typeof curr]);
+  const setFilters = (newFilters: Partial<typeof safeFilters>) => {
+    const { locations, ...rest } = newFilters;
+    // eslint-disable-next-line no-unused-vars
+    const { search, ...safeFilters } = filters;
+    if (locations) setLocations(locations);
+    const params = Object.entries({ ...(safeFilters ?? {}), ...(rest ?? {}) })
+      .reduce((acc, [key, value]) => {
+        if (JSON.stringify(value) === JSON.stringify(filterDefaults[key]))
+          return acc;
+        if (Array.isArray(filterDefaults[key])) {
+          const newValues = (value as any[])
+            .map((val) => `${key}=${val}`)
+            .join('&');
+          if (newValues) acc.push(newValues);
+        } else if (typeof filterDefaults[key] === 'boolean') {
+          if (value) acc.push(key);
+        } else acc.push(`${key}=${value}`);
         return acc;
-      }, {}) as Sort,
-    [sortParams, searchParams],
-  );
+      }, [])
+      .join('&');
+    if (safeFilters['section']) resetChecklist();
+    router.push(
+      `${ROUTES['/jobs/[id]/candidate-list']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
+    );
+  };
 
-  const safeFilters = useMemo(
-    () => ({ ...filters, locations }),
-    [filters, locations],
-  );
-
-  const getParams = useCallback(
-    (
-      newParams: Partial<
-        typeof filters & typeof sort & { section: typeof section }
-      >,
-    ) => {
-      if (locations) setLocations(locations);
-      return Object.entries(newParams ?? {}).map(
-        ([key, value]) => `${key}=${encodeURIComponent(JSON.stringify(value))}`,
-      );
-    },
-    [router],
-  );
-
-  const setFilters = useCallback(
-    (filters: Partial<typeof safeFilters>) => {
-      const { locations, ...rest } = filters;
-      if (locations) setLocations(locations);
-      Object.entries(rest ?? {}).forEach(([key, value]) => {
-        router.query[key] = encodeURIComponent(JSON.stringify(value));
-      });
-      router.replace(router);
-    },
-    [router],
-  );
-
-  const setSort = useCallback(
-    (newSort: Partial<typeof sort>) => {
-      Object.entries(newSort ?? {}).forEach(([key, value]) => {
-        router.query[`sort${capitalize(key)}`] = encodeURIComponent(
-          JSON.stringify(value),
-        );
-      });
-      router.replace(router);
-    },
-    [router],
-  );
-
-  const setSection = useCallback(
-    (newSection: typeof section) => {
-      router.query['section'] = encodeURIComponent(JSON.stringify(newSection));
-      resetChecklist();
-      router.replace(router);
-    },
-    [router, resetChecklist],
-  );
+  const setSection = (section: (typeof safeFilters)['section']) =>
+    setFilters({ section });
 
   return {
-    section,
-    setSection,
     filters: safeFilters,
     setFilters,
-    sort,
-    setSort,
     getParams,
+    section: filters.section,
+    setSection,
   };
 };
 
@@ -183,10 +150,9 @@ export const useApplicationsActions = () => {
     }),
   );
 
-  const { filters, section, sort, setFilters, setSort, setSection } =
-    useApplicationsParams();
+  const { filters, section, setFilters, setSection } = useApplicationsParams();
 
-  const [params, setParams] = useState({ filters, sort });
+  const [params, setParams] = useState(filters);
   const ref = useRef(true);
 
   useDeepCompareEffect(() => {
@@ -194,9 +160,9 @@ export const useApplicationsActions = () => {
       ref.current = false;
       return;
     }
-    const timeout = setTimeout(() => setParams({ filters, sort }), 800);
+    const timeout = setTimeout(() => setParams(filters), 800);
     return () => clearTimeout(timeout);
-  }, [filters, sort]);
+  }, [filters]);
 
   const {
     mutate: handleUpdateApplication,
@@ -395,10 +361,8 @@ export const useApplicationsActions = () => {
     locationFilterOptions,
     badgesCount,
     filters,
-    sort,
     manageJob,
     setFilters,
-    setSort,
     setSection,
     handleUpdateApplication,
     handleAsyncUpdateApplication,

@@ -99,10 +99,10 @@ function FilterJobDashboard({
         sort={{
           selected: sortValue,
           setOrder: (order) => {
-            setSort({
-              ...sortValue,
-              ...(order as unknown as typeof sortValue),
-            });
+            const safeOrder = {};
+            if (order.order) safeOrder['order'] = order.order;
+            if (order.type) safeOrder['option'] = order.type;
+            setSort((prev) => ({ ...prev, ...safeOrder }));
           },
           sortOptions: sortOptions as unknown as {
             options: string[];
