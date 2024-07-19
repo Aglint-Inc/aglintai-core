@@ -49,7 +49,7 @@ function DayCardWrapper({
   const dates = item?.date_range || [];
   const header = dates
     .map((date) => dayjs(date).format('MMMM DD dddd'))
-    .join(' , ');
+    .join(', ');
   const slots = item?.plans || [];
   const isMultiDay = dates.length > 1 ? true : false;
 
