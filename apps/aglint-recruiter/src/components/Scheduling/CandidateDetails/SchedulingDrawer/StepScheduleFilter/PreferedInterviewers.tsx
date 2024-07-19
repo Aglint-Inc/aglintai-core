@@ -44,7 +44,7 @@ function PreferedInterviewers() {
   return (
     <Stack width={'100%'}>
       <MembersAutoComplete
-        pillColor={'#F5F5F5'}
+        pillColor={'var(--neutral-3)'}
         renderUsers={uniqueInterviewers}
         selectedUsers={filters.preferredInterviewers}
         maxWidth='100%'

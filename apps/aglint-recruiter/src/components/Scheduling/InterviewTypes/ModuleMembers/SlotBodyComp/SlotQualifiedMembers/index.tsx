@@ -26,6 +26,7 @@ import {
 } from '../../../store';
 import { ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
+import { ButtonSoft, GlobalIcon } from '@/devlink';
 
 function SlotQualifiedMembers({
   editModule,
@@ -75,11 +76,12 @@ function SlotQualifiedMembers({
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
-            <ButtonSurface
-              size={1}
+            <ButtonSoft
+              size={2}
               isRightIcon={false}
-              slotIcon={<IconPlusFilter />}
-              textButton={'Add'}
+              isLeftIcon={true}
+              slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+              textButton={'Add Qaulified Member'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
@@ -131,11 +133,12 @@ function SlotQualifiedMembers({
       })}
       {allQualified.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonSurface
-            size={1}
+          <ButtonSoft
+            size={2}
             isRightIcon={false}
-            slotIcon={<IconPlusFilter />}
-            textButton={'Add'}
+            isLeftIcon={true}
+            slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+            textButton={'Add Qualified Member'}
             onClickButton={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);

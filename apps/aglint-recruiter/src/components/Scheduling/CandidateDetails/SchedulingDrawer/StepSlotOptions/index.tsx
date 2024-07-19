@@ -83,7 +83,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
               />
 
               <Text
-                content={`Select multiple available options and then click 'send' to forward them to the candidate for selection.`}
+                content={`Select atleast 5 available time slots and then click 'Continue' to forward them to the candidate for selection.`}
               />
             </>
           )
