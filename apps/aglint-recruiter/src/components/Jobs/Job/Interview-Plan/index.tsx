@@ -152,7 +152,7 @@ const Actions = ({
     <>
       {manageJob && (
         <ButtonSolid
-          textButton='Create Interview Type'
+          textButton='Create'
           size={2}
           iconName='bolt'
           isLeftIcon
@@ -292,7 +292,7 @@ const InterviewPlan = ({
       <GlobalEmptyState
         iconName={'group'}
         styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
-        textDesc={'No interview types found'}
+        textDesc={'No interview plan found'}
       />
     );
   return (
