@@ -29,13 +29,13 @@ export const server_check_permissions = async ({
     );
 
     const tokenData = payload as unknown as EventSessionType;
-    const userpermissions = tokenData.app_metadata.role_permissions.permissions;
+    const userPermissions = tokenData.app_metadata.role_permissions.permissions;
     const role = tokenData.app_metadata.role_permissions.role;
     const rec_id = tokenData.app_metadata.role_permissions.recruiter_id;
     let is_allowed = permissions.includes('authorized');
 
     for (let permission of permissions) {
-      if (userpermissions.includes(permission)) {
+      if (userPermissions.includes(permission)) {
         is_allowed = true;
         break;
       }
