@@ -31,6 +31,7 @@ export const findCandidateInterviewSessions = () => {
           await supabaseAdmin
             .from('meeting_details')
             .select()
+            .eq('status', 'not_scheduled')
             .eq('application_id', matched_candidate.application_id),
           false
         ).map(s => ({
