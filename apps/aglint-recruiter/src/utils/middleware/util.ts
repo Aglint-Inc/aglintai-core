@@ -1,8 +1,13 @@
 import { DatabaseTable, DB } from '@aglint/shared-types';
-import { createServerClient } from '@supabase/ssr';
-import { jwtDecode } from 'jwt-decode';
+import { createClient } from '@supabase/supabase-js';
+import { jwtVerify } from 'jose';
 
 import { EventSessionType } from './type';
+
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export const server_check_permissions = async ({
   getVal,
@@ -14,51 +19,73 @@ export const server_check_permissions = async ({
 }) => {
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
-    const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return getVal(name);
-          },
-        },
-      },
+    // @ts-ignore
+    const jsonDetail = getToken(supabase.storageKey, getVal);
+    const user_id = jsonDetail.user.id;
+    const token = jsonDetail.access_token;
+    const { payload } = await jwtVerify(
+      token,
+      new TextEncoder().encode(process.env.SUPABASE_SECRET_KEY!),
     );
 
-    return await supabase.auth.getUser().then(async ({ data, error }) => {
-      if (error) throw new Error(error.message);
-      const user = data?.user;
-      if (user?.id) {
-        const { data: sesData } = await supabase.auth.getSession();
-        const decoded = jwtDecode(
-          sesData.session.access_token,
-        ) as EventSessionType;
-        const userPermissions =
-          decoded.app_metadata.role_permissions.permissions;
-        const role = decoded.app_metadata.role_permissions.role;
-        const rec_id = decoded.app_metadata.role_permissions.recruiter_id;
-        let is_allowed = permissions.includes('authorized');
+    const tokenData = payload as unknown as EventSessionType;
+    const userpermissions = tokenData.app_metadata.role_permissions.permissions;
+    const role = tokenData.app_metadata.role_permissions.role;
+    const rec_id = tokenData.app_metadata.role_permissions.recruiter_id;
+    let is_allowed = permissions.includes('authorized');
 
-        for (let permission of permissions) {
-          if (userPermissions.includes(permission)) {
-            is_allowed = true;
-            break;
-          }
-        }
-
-        return {
-          isAllowed: is_allowed,
-          id: user.id,
-          rec_id,
-          role,
-        };
+    for (let permission of permissions) {
+      if (userpermissions.includes(permission)) {
+        is_allowed = true;
+        break;
       }
-      throw new Error('Failed to load auth user.');
-    });
+    }
+    return {
+      isAllowed: is_allowed,
+      id: user_id,
+      rec_id,
+      role,
+    };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
     return { isAllowed: false, id: null, rec_id: null, role: null };
   }
 };
+
+function getToken(base: string, func: Function) {
+  let tryNext = true;
+  let count = 0;
+  let jsonData: {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    expires_at: number;
+    refresh_token: string;
+    user: { id: string };
+  } = null;
+  let tempData: string[] = [func(base)];
+  while (tryNext) {
+    const temp = func(`${base}.${count}`);
+    if (!temp) {
+      break;
+    }
+    tempData.push(temp);
+    count++;
+  }
+  tempData = tempData.filter((item) => Boolean(item));
+  try {
+    jsonData = JSON.parse(tempData.join('')) as {
+      access_token: string;
+      token_type: string;
+      expires_in: number;
+      expires_at: number;
+      refresh_token: string;
+      user: { id: string };
+    };
+  } catch (_) {
+    throw new Error('failed to load session');
+  }
+  // (new Date(1721397061*1000) - new Date())/(1000*60) < .3 && throw new Error('Access token Expired') //  reject
+  return jsonData;
+}
