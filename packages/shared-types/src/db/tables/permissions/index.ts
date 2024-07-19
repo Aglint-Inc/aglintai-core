@@ -5,12 +5,16 @@ export type CustomPermissions = TableType<
   "permissions",
   {
     name: permissionsEnum;
-    dependency_tree: DependencyTreeType;
+    meta: MetaType;
   }
 >;
 
-type DependencyTreeType = {
-  child: number[];
-  parent: number;
-  sibling: number;
+type MetaType = {
+  is_module: true;
+  description: string;
+  dependency_tree: {
+    child: string[];
+    parent: string;
+    sibling: string;
+  };
 };

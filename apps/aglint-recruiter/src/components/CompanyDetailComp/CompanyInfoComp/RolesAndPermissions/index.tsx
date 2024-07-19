@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
+import { RecruiterUserType } from '@aglint/shared-types';
 import {
   Avatar,
   List,
@@ -24,6 +24,10 @@ import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
 import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
+import {
+  allPermissions,
+  app_modules,
+} from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
@@ -301,7 +305,6 @@ const useRoleAndPermissions = () => {
     handelUpdateRole,
     ...query,
   };
-  // const updateRole;
 };
 
 const getRoleAndPermissionsWithUserCount = async () => {
@@ -350,6 +353,9 @@ function RoleDetails({
   }>(null);
   const { recruiterUser, members, handelMemberUpdate } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
+  const activePermissionCount = role.permissions.filter(
+    (item) => item.isActive && allPermissions.includes(item.name),
+  ).length;
   return (
     <>
       <RolesAndPermissionsDetail
@@ -357,7 +363,7 @@ function RoleDetails({
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
         // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
-        textTotalEnabledPermissions={`${role.permissions.filter((item) => item.isActive).length} out of ${role.permissions.length} permissions enabled.`}
+        textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
             size={2}
@@ -476,116 +482,6 @@ const rolesOrder = {
   sourcer: 3,
   interview: 4,
 };
-
-const app_modules: {
-  name: string;
-  description: string;
-  dependency: string;
-  permissions: DatabaseTable['permissions']['name'][];
-}[] = [
-  {
-    name: 'Enable or Disable Apps',
-    dependency: null,
-    description:
-      'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
-    permissions: [
-      'job_module',
-      'task_module',
-      'scheduling_module',
-      'workflow_module',
-      'integrations_module',
-      'company_settings_module',
-      // 'assessment_enabled',
-      // 'phone_screening_enabled',
-      // 'sourcing_enabled',
-      // 'settings_scheduler_enable',
-    ],
-  },
-  {
-    name: 'Tasks Application Permissions',
-    dependency: 'task_module',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
-    permissions: ['view_all_task'],
-  },
-  {
-    name: 'Jobs Application Permissions',
-    dependency: 'job_module',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
-    permissions: ['job_module', 'manage_job'],
-  },
-  {
-    name: 'Scheduling Application Permissions',
-    dependency: 'scheduling_module',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
-    permissions: [
-      'interview_types',
-      'scheduling_actions',
-      'manage_interviewers',
-      'scheduling_settings_and_reports',
-    ],
-  },
-  // {
-  // name: 'profile score permissions',
-  // dependency: null,
-  // description:
-  //   'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  // permissions: ['profileScore_view', 'profileScore_update'],
-  // },
-  // {
-  //   name: 'interview permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: ['interviews_read', 'interviews_update', 'interviews_delete'],
-  // },
-  // {
-  //   name: 'report permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: ['reports_view', 'reports_generate', 'reports_export'],
-  // },
-
-  {
-    name: 'Workflows Application Permissions',
-    dependency: 'workflow_module',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
-    permissions: ['workflow_module', 'manage_workflow'],
-  },
-
-  // {
-  //   name: 'User permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: [
-  //     'team_read',
-  //     'team_create',
-  //     'team_update',
-  //     'team_delete',
-  //     'settings_team_enable',
-  //     'settings_team_update',
-  //   ],
-  // },
-  {
-    name: 'Company Settings Permissions',
-    dependency: 'company_settings_module',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Company Settings',
-    permissions: [
-      'view_company',
-      'manage_company',
-      'view_roles',
-      'manage_roles',
-      'view_users',
-      'manage_users',
-    ],
-  },
-];
 
 const RoleDropDown = ({
   options,

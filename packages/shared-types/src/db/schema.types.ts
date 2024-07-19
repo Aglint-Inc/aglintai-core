@@ -2360,33 +2360,30 @@ export type Database = {
       permissions: {
         Row: {
           created_at: string | null;
-          dependency_tree: Json;
           description: string | null;
           id: number;
           is_enable: boolean | null;
+          meta: Json | null;
           name: string;
           title: string;
-          updated_at: string | null;
         };
         Insert: {
           created_at?: string | null;
-          dependency_tree?: Json;
           description?: string | null;
           id?: number;
           is_enable?: boolean | null;
+          meta?: Json | null;
           name: string;
           title: string;
-          updated_at?: string | null;
         };
         Update: {
           created_at?: string | null;
-          dependency_tree?: Json;
           description?: string | null;
           id?: number;
           is_enable?: boolean | null;
+          meta?: Json | null;
           name?: string;
           title?: string;
-          updated_at?: string | null;
         };
         Relationships: [];
       };
