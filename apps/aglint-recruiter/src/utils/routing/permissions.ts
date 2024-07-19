@@ -135,6 +135,8 @@ const PERMISSIONS: Permissions = {
   // sourcing
   '/api/ai/queryToJson': ['sourcing_enabled'],
   '/api/ai/create-embeddings': ['sourcing_enabled'],
+  '/api/candidatedb/query': ['sourcing_enabled'],
+  '/api/candidatedb/search': ['sourcing_enabled'],
 };
 
 export default PERMISSIONS;
