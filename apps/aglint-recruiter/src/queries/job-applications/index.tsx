@@ -113,14 +113,24 @@ type ApplicationsAllQueryPrerequistes = {
   polling?: boolean;
 };
 
-type Params = ApplicationsAllQueryPrerequistes & {
-  filters: ApplicationsParams['filters'];
-  sort: ApplicationsParams['sort'];
-  status: Application['status'];
-};
+type Params = ApplicationsAllQueryPrerequistes &
+  ApplicationsParams['filters'] & {
+    status: Application['status'];
+  };
 
 const getApplications = async ({
-  pageParam: { job_id, index, status, filters, sort },
+  pageParam: {
+    job_id,
+    index,
+    status,
+    badges,
+    bookmarked,
+    locations,
+    order,
+    resume_score,
+    search,
+    type,
+  },
 }: {
   pageParam: Params & { index: number };
 }) => {
@@ -131,29 +141,29 @@ const getApplications = async ({
     .eq('job_id', job_id)
     .eq('status', status);
 
-  if (filters?.bookmarked) {
+  if (bookmarked) {
     query.eq('bookmarked', true);
   }
 
-  if (filters?.search?.length) {
-    query.ilike('name', `%${filters.search}%`);
+  if (search?.length) {
+    query.ilike('name', `%${search}%`);
   }
 
-  if (filters?.resume_score?.length) {
+  if (resume_score?.length) {
     query.or(
-      `application_match.in.(${filters.resume_score.map((match) => match).join(',')})`,
+      `application_match.in.(${resume_score.map((match) => match).join(',')})`,
     );
   }
 
-  if (filters?.badges?.length) {
+  if (badges?.length) {
     query.or(
-      filters.badges
+      badges
         .map((badge) => `badges->${badge}.gt.${BADGE_CONSTANTS[badge]}`)
         .join(','),
     );
   }
 
-  const { country, state, city } = (filters?.locations ?? []).reduce(
+  const { country, state, city } = (locations ?? []).reduce(
     (acc, curr, i) => {
       let type: keyof typeof acc = null;
       switch (i) {
@@ -194,18 +204,17 @@ const getApplications = async ({
         .join(','),
     );
 
-  if (sort) {
-    if (sort.type === 'location')
+  if (type || order) {
+    if (type === 'location')
       ['city', 'state', 'country'].forEach((type) =>
-        query.order(type, { ascending: sort.order === 'asc' }),
+        query.order(type, { ascending: order === 'asc' }),
       );
     else
-      query.order(sort.type, {
-        ascending: sort.order === 'asc',
+      query.order(type, {
+        ascending: order === 'asc',
         nullsFirst: false,
       });
   }
-
   query.order('id');
 
   const applications = (await query.throwOnError()).data.map(
