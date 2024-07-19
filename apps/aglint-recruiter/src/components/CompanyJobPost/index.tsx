@@ -6,6 +6,7 @@ import React from 'react';
 
 import { CompanyListing } from '@/devlink/CompanyListing';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ROUTES from '@/src/utils/routing/routes';
@@ -23,8 +24,10 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
 
   const filteredJobs = jobs.filter((job: any) => job.status === 'published');
   return (
-    <Stack sx={{ overflow: 'auto' }}>
+    <Stack sx={{ overflow: 'auto', height: '100vh', paddingBottom: '24px' }}>
       <CompanyListing
+        isAboutJobVisible={!!recruiter.company_overview}
+        isOfficeLocationVisible={!!recruiter.office_locations}
         slotCompanyImage={
           <Avatar
             variant='rounded'
@@ -50,22 +53,29 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         // isHeaderDescriptionVisible={Boolean(recruiter.company_values)}
         textHeaderDiscription={recruiter.company_values}
         textOpenJobCount={filteredJobs.length}
-        slotOpenJobListing={filteredJobs.map((job, ind) => {
-          return (
-            <OpenJobListingCard
-              key={ind}
-              textJobRole={job.job_title || '--'}
-              textCompanyType={job.department || '--'}
-              textLocation={job.location || '--'}
-              textWorkingType={job.job_type || '--'}
-              onClickApplyNow={{
-                onClick: () => {
-                  router.push(ROUTES['/job-post/[id]']({ id: job.id }));
-                },
-              }}
-            />
-          );
-        })}
+        slotOpenJobListing={
+          <>
+            {filteredJobs.length == 0 && (
+              <GlobalEmptyState textDesc='No Jobs Found.' iconName='work' />
+            )}
+            {filteredJobs.map((job, ind) => {
+              return (
+                <OpenJobListingCard
+                  key={ind}
+                  textJobRole={job.job_title || '--'}
+                  textCompanyType={job.department || '--'}
+                  textLocation={job.location || '--'}
+                  textWorkingType={job.job_type || '--'}
+                  onClickApplyNow={{
+                    onClick: () => {
+                      router.push(ROUTES['/job-post/[id]']({ id: job.id }));
+                    },
+                  }}
+                />
+              );
+            })}
+          </>
+        }
         slotCompanyLinks={
           recruiter?.socials &&
           Object.entries(recruiter?.socials)?.map((soc, ind) => {
@@ -119,7 +129,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
           },
         )}
       />
-      <Footer brand={true}/>
+      <Footer brand={true} />
     </Stack>
   );
 };

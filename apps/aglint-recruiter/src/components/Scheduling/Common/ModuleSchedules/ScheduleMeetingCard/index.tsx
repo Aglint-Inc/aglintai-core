@@ -17,26 +17,19 @@ import {
   getScheduleTextcolor,
   getScheduleType,
 } from '../../../Candidates/utils';
+import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
-import { ScheduleListType } from '../hooks';
-import InterviewerDetailsCard from './InterviewerDetailCard';
+import InterviewerUserDetail from '../../InterviewerUserDetail';
 
 function ScheduleMeetingCard({
   meetingDetails,
 }: {
-  meetingDetails: ScheduleListType[number];
+  meetingDetails: Awaited<ReturnType<typeof getAllScheduleList>>[number];
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  let interviewers = meetingDetails.users || [];
-  if (
-    meetingDetails.interview_meeting.status === 'confirmed' ||
-    meetingDetails.interview_meeting.status === 'completed'
-  ) {
-    interviewers = meetingDetails.users.filter((user) => user.is_confirmed);
-  } else {
-    interviewers = [];
-  }
+  let interviewers = meetingDetails.meeting_interviewers || [];
+
   return (
     <>
       <Stack
@@ -45,7 +38,7 @@ function ScheduleMeetingCard({
         }}
         onClick={() => {
           router.push(
-            `/scheduling/view?meeting_id=${meetingDetails.interview_meeting.meeting_id}&tab=candidate_details`,
+            `/scheduling/view?meeting_id=${meetingDetails.id}&tab=candidate_details`,
           );
         }}
       >
@@ -65,8 +58,8 @@ function ScheduleMeetingCard({
                   <MembersList
                     slotImage={<CandidateDefaultIcon size={40} />}
                     textName={getFullName(
-                      meetingDetails.candidate?.first_name,
-                      meetingDetails.candidate?.last_name,
+                      meetingDetails.applications.candidates.first_name,
+                      meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
                     textDesignation={
@@ -74,71 +67,72 @@ function ScheduleMeetingCard({
                     }
                     textTime={null}
                   />
-                  {/* members profile */}
-                  {interviewers.map((user, i) => {
+                  {interviewers.map((user) => {
                     return (
-                      <InterviewerDetailsCard
-                        key={i}
-                        meetingTiming={{
-                          startDate:
-                            meetingDetails.interview_meeting.start_time,
-                          endDate: meetingDetails.interview_meeting.end_time,
-                        }}
-                        user={user}
-                      />
+                      <>
+                        <InterviewerUserDetail
+                          key={user.email}
+                          interview_meeting={{
+                            end_time: meetingDetails.end_time,
+                            start_time: meetingDetails.start_time,
+                            status: meetingDetails.status,
+                          }}
+                          accepted_status={user.accepted_status}
+                          cancelReason={user.cancel_reasons?.find(
+                            (can) =>
+                              can.session_relation_id ===
+                              user.session_relation_id,
+                          )}
+                          userDetails={{
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            position: user.position,
+                            profile_image: user.profile_image,
+                          }}
+                          interviewerTimeZone={user.tz_code}
+                          isCalendarConnected={true}
+                          isPaused={false}
+                          pause_json={null}
+                          trainingType={user.training_type}
+                        />
+                      </>
                     );
                   })}
                 </Stack>
               </Collapse>
             </>
           }
-          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
-          textMeetingPlatform={getScheduleType(
-            meetingDetails?.interview_meeting.schedule_type,
-          )}
-          textMeetingTitle={meetingDetails?.interview_meeting?.session_name}
+          textTime={`${dayjs(meetingDetails?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
+          textMeetingPlatform={getScheduleType(meetingDetails?.schedule_type)}
+          textMeetingTitle={meetingDetails?.session_name}
           slotMeetingIcon={
-            <IconScheduleType
-              type={meetingDetails?.interview_meeting?.schedule_type}
-            />
+            <IconScheduleType type={meetingDetails?.schedule_type} />
           }
           isMeetingPlatformVisible={
-            meetingDetails.interview_meeting?.schedule_type === 'google_meet' ||
-            meetingDetails.interview_meeting?.schedule_type === 'zoom'
+            meetingDetails?.schedule_type === 'google_meet' ||
+            meetingDetails?.schedule_type === 'zoom'
           }
           isDurationVisible={true}
           isPhoneCallVisible={false}
-          isTimeVisible={Boolean(meetingDetails.interview_meeting?.start_time)}
+          isTimeVisible={Boolean(meetingDetails?.start_time)}
           slotStatus={
             <StatusBadge
-              isCancelledVisible={
-                meetingDetails.interview_meeting?.status === 'cancelled'
-              }
-              isConfirmedVisible={
-                meetingDetails.interview_meeting?.status === 'confirmed'
-              }
-              isWaitingVisible={
-                meetingDetails.interview_meeting?.status === 'waiting'
-              }
-              isCompletedVisible={
-                meetingDetails.interview_meeting?.status === 'completed'
-              }
-              isNotScheduledVisible={
-                meetingDetails.interview_meeting?.status === 'not_scheduled'
-              }
+              isCancelledVisible={meetingDetails?.status === 'cancelled'}
+              isConfirmedVisible={meetingDetails?.status === 'confirmed'}
+              isWaitingVisible={meetingDetails?.status === 'waiting'}
+              isCompletedVisible={meetingDetails?.status === 'completed'}
+              isNotScheduledVisible={meetingDetails?.status === 'not_scheduled'}
             />
           }
           isLocationVisible={false}
-          textDuration={getBreakLabel(
-            meetingDetails.interview_meeting.session_duration,
-          )}
+          textDuration={getBreakLabel(meetingDetails.session_duration)}
           slotAvatarWithName={
             <AvatarWithName
               isAvatarVisible={false}
               isCandidateIconVisible={true}
               textName={getFullName(
-                meetingDetails.candidate.first_name,
-                meetingDetails.candidate.last_name,
+                meetingDetails.applications.candidates.first_name,
+                meetingDetails.applications.candidates.last_name,
               )}
             />
           }
@@ -149,17 +143,13 @@ function ScheduleMeetingCard({
               alignItems={'center'}
               spacing={'var(--space-5)'}
             >
-              <span>{meetingDetails?.interview_meeting?.job_title}</span>
+              <span>{meetingDetails?.public_jobs.job_title}</span>
             </Stack>
           }
           bgColorProps={{
             style: {
-              background: getScheduleBgcolor(
-                meetingDetails.interview_meeting?.status,
-              ),
-              color: getScheduleTextcolor(
-                meetingDetails.interview_meeting?.status,
-              ),
+              background: getScheduleBgcolor(meetingDetails.status),
+              color: getScheduleTextcolor(meetingDetails.status),
             },
           }}
         />

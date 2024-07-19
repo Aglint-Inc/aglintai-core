@@ -10,7 +10,7 @@ import SortComponent, { sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,
-  // handelResetAll,
+  handelResetAll,
   filters,
   isResetAll,
   sort,
@@ -20,21 +20,23 @@ export default function FilterHeader({
     x;
   },
 }: FilterHeaderType) {
-  const handelResetAll = () => {
-    filters.forEach((filter) => {
-      switch (filter.type) {
-        case 'filter':
-        case 'nested-filter': {
-          filter.setValue([]);
-          break;
+  handelResetAll =
+    handelResetAll ||
+    (() => {
+      filters.forEach((filter) => {
+        switch (filter.type) {
+          case 'filter':
+          case 'nested-filter': {
+            filter.setValue([]);
+            break;
+          }
+          case 'multi-section-filter': {
+            filter.setValue({});
+            break;
+          }
         }
-        case 'multi-section-filter': {
-          filter.setValue({});
-          break;
-        }
-      }
+      });
     });
-  };
   const isFiltersActive = filters.some((filter) => {
     switch (filter.type) {
       case 'filter': {
@@ -50,36 +52,43 @@ export default function FilterHeader({
   });
 
   return (
-    <Stack direction={'row'} gap={2}>
-      {Boolean(search) && (
-        <SearchField
-          value={search.value}
-          onChange={(e) => search.setValue(e.target.value)}
-          onClear={() => search.setValue('')}
-          placeholder={search.placeholder}
-        />
-      )}
-      <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
-        <Stack direction={'row'} gap={2}>
-          <FiltersComponent
-            filters={filters}
-            showFilters={showFiltersByDefault}
-            setShowFilters={setShowFilters}
+    <Stack
+      direction={'row'}
+      justifyContent={'space-between'}
+      alignItems={'center'}
+      width={'100%'}
+    >
+      <Stack direction={'row'} gap={2}>
+        {Boolean(search) && (
+          <SearchField
+            value={search.value}
+            onChange={(e) => search.setValue(e.target.value)}
+            onClear={() => search.setValue('')}
+            placeholder={search.placeholder}
           />
-          {Boolean(dateRangeSelector) && (
-            <DateRangeSelector {...dateRangeSelector} />
-          )}
-          {isResetAll && isFiltersActive && (
-            <ButtonGhost
-              isDisabled={!isFiltersActive}
-              textButton='Reset All'
-              size={2}
-              iconName='refresh'
-              color={'neutral'}
-              isLeftIcon
-              onClickButton={{ onClick: handelResetAll }}
+        )}
+        <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
+          <Stack direction={'row'} gap={2}>
+            <FiltersComponent
+              filters={filters}
+              showFilters={showFiltersByDefault}
+              setShowFilters={setShowFilters}
             />
-          )}
+            {Boolean(dateRangeSelector) && (
+              <DateRangeSelector {...dateRangeSelector} />
+            )}
+            {isResetAll && isFiltersActive && (
+              <ButtonGhost
+                isDisabled={!isFiltersActive}
+                textButton='Reset All'
+                size={2}
+                iconName='refresh'
+                color={'neutral'}
+                isLeftIcon
+                onClickButton={{ onClick: handelResetAll }}
+              />
+            )}
+          </Stack>
         </Stack>
       </Stack>
       {Boolean(sort) && <SortComponent {...sort} />}
@@ -88,7 +97,7 @@ export default function FilterHeader({
 }
 
 export type FilterHeaderType = {
-  // handelResetAll?: () => void;
+  handelResetAll?: () => void;
   search?: {
     value: string;
     // eslint-disable-next-line no-unused-vars

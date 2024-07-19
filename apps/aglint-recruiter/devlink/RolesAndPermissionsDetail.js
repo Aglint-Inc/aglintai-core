@@ -18,6 +18,7 @@ export function RolesAndPermissionsDetail({
   textUserCount = "Users (5)",
   textRoleName = "Role Name",
   textUserDescription = "These are the users with this role.",
+  slotBanner,
 }) {
   return (
     <_Component
@@ -66,6 +67,12 @@ export function RolesAndPermissionsDetail({
               content="Manage job postings, candidate information, interview scheduling, and task management."
               color="neutral"
             />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "rpd-banner")}
+              tag="div"
+            >
+              {slotBanner}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "count_permissions")}
               tag="div"

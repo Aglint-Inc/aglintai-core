@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -24,7 +24,12 @@ import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
 import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
+import {
+  allPermissions,
+  app_modules,
+} from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -151,6 +156,9 @@ const RoleTable = ({
 };
 
 const useRoleAndPermissions = () => {
+  const { queryParams, setQueryParams } = useSearchQuery<{
+    role: string;
+  }>();
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -158,6 +166,18 @@ const useRoleAndPermissions = () => {
     queryFn: getRoleAndPermissionsWithUserCount,
     enabled: Boolean(recruiter?.id),
   });
+  useEffect(() => {
+    if (
+      query.isFetched &&
+      queryParams.role &&
+      query.data?.rolesAndPermissions
+    ) {
+      const role_id = Object.values(query.data?.rolesAndPermissions).find(
+        (val) => val.name == queryParams.role,
+      )?.id;
+      role_id && setSelectRole(role_id);
+    }
+  }, [query.isFetched]);
 
   const [selectRole, setSelectRole] = useState<string>(null);
 
@@ -222,6 +242,7 @@ const useRoleAndPermissions = () => {
       );
     },
     onSuccess(resData, { add, delete: toDelete, role_id }) {
+      add;
       queryClient.setQueryData(
         ['app', recruiter?.id, 'role-and-permissions'],
         (
@@ -232,8 +253,10 @@ const useRoleAndPermissions = () => {
           const tempData = structuredClone(prevData);
           tempData.rolesAndPermissions[role_id].permissions =
             tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              if (add === item.id) {
-                const temp = resData.addedPermissions;
+              if (resData.addedPermissions?.length) {
+                const temp = resData.addedPermissions.find(
+                  (added) => added.id == item.id,
+                );
                 if (temp) {
                   item = { ...item, ...temp, isActive: true };
                 }
@@ -269,15 +292,19 @@ const useRoleAndPermissions = () => {
     },
   });
 
+  const handelSelectRole = (role_id: string) => {
+    setSelectRole(role_id);
+    const role = query.data?.rolesAndPermissions[role_id]?.name || null;
+    setQueryParams({ role });
+  };
   return {
     role,
     roleDetails,
     selectRole,
-    setSelectRole,
+    setSelectRole: handelSelectRole,
     handelUpdateRole,
     ...query,
   };
-  // const updateRole;
 };
 
 const getRoleAndPermissionsWithUserCount = async () => {
@@ -326,6 +353,9 @@ function RoleDetails({
   }>(null);
   const { recruiterUser, members, handelMemberUpdate } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
+  const activePermissionCount = role.permissions.filter(
+    (item) => item.isActive && allPermissions.includes(item.name),
+  ).length;
   return (
     <>
       <RolesAndPermissionsDetail
@@ -333,7 +363,7 @@ function RoleDetails({
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
         // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
-        textTotalEnabledPermissions={`${role.permissions.filter((item) => item.isActive).length} out of ${role.permissions.length} permissions enabled.`}
+        textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
             size={2}
@@ -345,15 +375,21 @@ function RoleDetails({
             onClickButton={{ onClick: back }}
           />
         }
-        slotPermissions={
+        slotBanner={
           <>
             {role.name === 'admin' && (
               <GlobalBannerInline
-                color={'warning'}
-                textContent={'Admin role can not be Edited.'}
+                color={'info'}
+                textContent={
+                  'You cannot edit the primary admin role permissions.'
+                }
                 slotButton={<></>}
               />
             )}
+          </>
+        }
+        slotPermissions={
+          <>
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => {
                 return (
@@ -446,158 +482,6 @@ const rolesOrder = {
   sourcer: 3,
   interview: 4,
 };
-
-const app_modules: {
-  name: string;
-  description: string;
-  dependency: string;
-  permissions: string[];
-}[] = [
-  {
-    name: 'Enable or Disable Apps',
-    dependency: null,
-    description:
-      'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
-    permissions: [
-      'tasks_enabled',
-      'jobs_enabled',
-      'scheduler_enabled',
-      'workflow_enabled',
-      'integrations_enabled',
-      'company_setting_enabled',
-      // 'assessment_enabled',
-      // 'phone_screening_enabled',
-      // 'sourcing_enabled',
-      // 'settings_scheduler_enable',
-    ],
-  },
-  {
-    name: 'Tasks Application Permissions',
-    dependency: 'tasks_enabled',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
-    permissions: ['tasks_read', 'tasks_create', 'tasks_update', 'tasks_delete'],
-  },
-  {
-    name: 'Jobs Application Permissions',
-    dependency: 'jobs_enabled',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
-    permissions: [
-      'jobs_read',
-      'jobs_create',
-      'jobs_update',
-      'jobs_publish',
-      'jobs_unpublish',
-      'jobs_archive',
-      'jobs_restore',
-      'jobs_delete',
-      'candidates_read',
-      'candidates_add',
-      'candidates_delete',
-      'profileScore_view',
-      'candidates_moveStage',
-      // 'candidates_update',
-      'jobs_assignHiringManager',
-      'jobs_assignRecruiter',
-      'jobs_assignCoordinator',
-      'jobs_assignSourcer',
-      // 'profileScore_update',
-    ],
-  },
-  {
-    name: 'Scheduling  Application Permissions',
-    dependency: 'scheduler_enabled',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
-    permissions: [
-      'scheduler_read',
-      'scheduler_create',
-      'scheduler_update',
-      'scheduler_delete',
-      'scheduler_request_availability',
-      'scheduler_send_scheduling',
-      'interviews_read',
-      'interviews_update',
-      'interviews_delete',
-      'scheduler_interview_types_create',
-      'scheduler_interview_types_read',
-      'scheduler_interview_types_update',
-      'scheduler_interviewer_edit',
-      'settings_scheduler_update',
-    ],
-  },
-  // {
-  // name: 'profile score permissions',
-  // dependency: null,
-  // description:
-  //   'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  // permissions: ['profileScore_view', 'profileScore_update'],
-  // },
-  // {
-  //   name: 'interview permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: ['interviews_read', 'interviews_update', 'interviews_delete'],
-  // },
-  // {
-  //   name: 'report permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: ['reports_view', 'reports_generate', 'reports_export'],
-  // },
-
-  {
-    name: 'Workflows Application Permissions',
-    dependency: 'workflow_enabled',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
-    permissions: [
-      'workflow_read',
-      'workflow_create',
-      'workflow_update',
-      'workflow_delete',
-    ],
-  },
-
-  // {
-  //   name: 'User permissions',
-  //   dependency: null,
-  //   description:
-  //     'Here are the permissions enabled for the Recruiting Coordinator role to manage the Tasks module:',
-  //   permissions: [
-  //     'team_read',
-  //     'team_create',
-  //     'team_update',
-  //     'team_delete',
-  //     'settings_team_enable',
-  //     'settings_team_update',
-  //   ],
-  // },
-  {
-    name: 'Company Settings Permissions',
-    dependency: 'company_setting_enabled',
-    description:
-      'Here are the permissions enabled for the [Role] role to manage the Company Settings',
-    permissions: [
-      'settings_view',
-      'settings_update',
-      'settings_company_enable',
-      'settings_company_update',
-      'settings_roles_enable',
-      'settings_roles_update',
-      'team_enabled',
-      'team_read',
-      'team_create',
-      'team_update',
-      'team_delete',
-      'settings_team_enable',
-      'settings_team_update',
-    ],
-  },
-];
 
 const RoleDropDown = ({
   options,

@@ -78,7 +78,6 @@ function JobPost() {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-
         addressLocality: (post?.location_json as any)?.state || '',
         addressCountry: (post?.location_json as any)?.country || '',
       },

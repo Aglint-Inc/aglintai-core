@@ -6,29 +6,46 @@ import { JobDetailInterview } from '@/devlink/JobDetailInterview';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { SkeletonNewInterviewPlanCard } from '@/devlink3/SkeletonNewInterviewPlanCard';
 import ScheduleIndividualCard from '@/src/components/Scheduling/CandidateDetails/FullSchedule/ScheduleIndividual';
+import { WithPermission } from '@/src/components/withPermission';
 import { useApplication } from '@/src/context/ApplicationContext';
+import { CASCADE_VISIBILITIES } from '@/src/context/ApplicationsContext/hooks';
 import ROUTES from '@/src/utils/routing/routes';
 
+import { ActionEmptyState } from '../Common/ActionEmptyState';
 import { EmptyState } from '../Common/EmptyState';
 import { Loader } from '../Common/Loader';
 import { Actions } from './Action2';
 
 const Interview = () => {
-  const {
-    application_id,
-    interview: { data: sessions, status },
-  } = useApplication();
+  const { job_id, meta, application_id, interview } = useApplication();
 
   const { push } = useRouter();
 
-  if (status === 'success' && (sessions ?? []).length === 0)
-    return <EmptyState tab='Interview' />;
-
+  if (meta.status === 'success' && interview.status === 'success') {
+    if (!CASCADE_VISIBILITIES.interview.includes(meta.data.status))
+      return (
+        <ActionEmptyState title='No interviews available.' description='' />
+      );
+    if ((interview.data ?? []).length === 0)
+      return (
+        <ActionEmptyState
+          title='No interview type found'
+          description='Set up interview types'
+          action={{
+            title: 'Set up',
+            onClick: () =>
+              push(ROUTES['/jobs/[id]/interview-plan']({ id: job_id })),
+          }}
+        />
+      );
+  }
   return (
     <JobDetailInterview
       slotNewInterviewPlanCard={
         <>
-          <Actions />
+          <WithPermission permission={['manage_job']}>
+            <Actions />
+          </WithPermission>
           <Content />
         </>
       }
@@ -104,6 +121,7 @@ const Content = () => {
             meeting_flow: session.meeting_flow,
           }
         }
+        currentSession={null}
       />
     </Stack>
   ));

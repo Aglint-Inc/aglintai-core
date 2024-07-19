@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { BackButton } from '@/devlink2/BackButton';
 import { LoginAtsInfo } from '@/devlink2/LoginAtsInfo';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { RcFormRadio } from '@/devlink2/RcFormRadio';
@@ -190,12 +189,16 @@ function SelectAtsSystem() {
               direction={'row'}
               mt={'13px'}
             >
-              <BackButton
-                onclickProps={{
-                  onClick: () => router.back(),
+              <ButtonGhost
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => {
+                    router.back();
+                  },
                 }}
+                textButton='Back'
+                size={2}
               />
-
               <Stack
                 direction={'row'}
                 alignItems={'center'}

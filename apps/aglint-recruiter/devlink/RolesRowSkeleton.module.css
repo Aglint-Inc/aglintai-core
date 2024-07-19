@@ -38,18 +38,8 @@
   border-radius: var(--radius-1);
 }
 
-.skeleton-width-20 {
-  width: 20%;
-  height: 16px;
-}
-
 .skeleton-width-60 {
   width: 60%;
-  height: 16px;
-}
-
-.skeleton-width-80 {
-  width: 80%;
   height: 16px;
 }
 

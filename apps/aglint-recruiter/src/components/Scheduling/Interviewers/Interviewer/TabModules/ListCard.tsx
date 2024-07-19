@@ -1,9 +1,11 @@
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapse, Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useState } from 'react';
 
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { MemberListCard } from '@/devlink2/MemberListCard';
+import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
@@ -48,7 +50,14 @@ function ListCardInterviewerModules({
             setCollapseOpen((pre) => !pre);
           },
         }}
-        isMoveToQualifierVisible={false}
+        slotThreeDot={
+          <QualifiedThreeDot
+            module={module}
+            module_id={module_id}
+            pause_json={pause_json}
+            setPauseResumeDialog={setPauseResumeDialog}
+          />
+        }
         isTrainingProgessVisible={true}
         isTrainingProgressDetailVisible={true}
         slotTrainingProgressDetail={
@@ -64,12 +73,8 @@ function ListCardInterviewerModules({
         textName={interview_module.name}
         isTextObjectiveVisible={false}
         isPauseResumeVisible={Boolean(pause_json)}
-        isPauseVisible={!pause_json}
-        isResumeVisible={Boolean(pause_json)}
         isScheduleCountVisible={true}
         isProfileVisible={false}
-        isRoleVisible={false}
-        isRemoveVisible={false}
         isInterviewsVisible={false}
         textConfirmed={confirmedCount}
         textCancel={cancelledCount}
@@ -80,46 +85,12 @@ function ListCardInterviewerModules({
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
-              ? 'Indefinately'
+              ? 'Indefinitely'
               : pause_json.end_date
                 ? `Until ${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
                 : '--'
             : ''
         }
-        onClickPauseInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'pause',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'resume',
-              panel_id: module_id,
-              isLoading: false,
-              end_time: module.pause_json.end_date,
-            }));
-          },
-        }}
-        onClickRemoveModule={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'remove',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
         onClickCard={{
           onClick: () => {
             router.push(
@@ -133,18 +104,19 @@ function ListCardInterviewerModules({
     );
 
   const completedMeetings = moduleMeetings.filter(
-    (item) => item.interview_meeting.status === 'completed',
+    (item) => item.status === 'completed',
   );
 
   const shadowMeetings = completedMeetings.filter((item) =>
-    item.users.some(
-      (user) => user.id === user_id && user.training_type === 'shadow',
+    item.meeting_interviewers.some(
+      (user) => user.user_id === user_id && user.training_type === 'shadow',
     ),
   );
 
   const reverseShadowMeetings = completedMeetings.filter((item) =>
-    item.users.some(
-      (user) => user.id === user_id && user.training_type === 'reverse_shadow',
+    item.meeting_interviewers.some(
+      (user) =>
+        user.user_id === user_id && user.training_type === 'reverse_shadow',
     ),
   );
 
@@ -159,7 +131,7 @@ function ListCardInterviewerModules({
   ].map((item, ind) => {
     return {
       ...item,
-      meeting: shadowMeetings[Number(ind)]?.interview_meeting,
+      meeting: shadowMeetings[Number(ind)],
     };
   });
 
@@ -174,7 +146,7 @@ function ListCardInterviewerModules({
   ].map((item, ind) => {
     return {
       ...item,
-      meeting: reverseShadowMeetings[Number(ind)]?.interview_meeting,
+      meeting: reverseShadowMeetings[Number(ind)],
     };
   });
 
@@ -192,9 +164,15 @@ function ListCardInterviewerModules({
         textPause={
           'Paused from assigning to new interviews with this interview type'
         }
-        isMoveToQualifierVisible={false}
+        slotThreeDot={
+          <TrainingThreeDot
+            module={module}
+            module_id={module_id}
+            pause_json={pause_json}
+            setPauseResumeDialog={setPauseResumeDialog}
+          />
+        }
         isTrainingProgessVisible={true}
-        isRemoveVisible={false}
         isInterviewsVisible={false}
         slotProgressBar={
           <>
@@ -276,54 +254,17 @@ function ListCardInterviewerModules({
         textName={interview_module.name}
         isTextObjectiveVisible={false}
         isPauseResumeVisible={Boolean(pause_json)}
-        isPauseVisible={!pause_json}
-        isResumeVisible={Boolean(pause_json)}
         isScheduleCountVisible={false}
         isProfileVisible={false}
-        isRoleVisible={false}
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
-              ? 'Indefinately'
+              ? 'Indefinitely'
               : pause_json.end_date
                 ? `${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
                 : '--'
             : ''
         }
-        onClickPauseInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'pause',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
-        onClickResumeInterview={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'resume',
-              panel_id: module_id,
-              isLoading: false,
-              end_time: module.pause_json.end_date,
-            }));
-          },
-        }}
-        onClickRemoveModule={{
-          onClick: () => {
-            setPauseResumeDialog((pre) => ({
-              ...pre,
-              isOpen: true,
-              type: 'remove',
-              panel_id: module_id,
-              isLoading: false,
-            }));
-          },
-        }}
         // onClickViewProgress={{
         //   onClick: () => {
         //     setMeetingDetails({
@@ -355,3 +296,201 @@ function ListCardInterviewerModules({
 }
 
 export default ListCardInterviewerModules;
+
+const QualifiedThreeDot = ({
+  pause_json,
+  setPauseResumeDialog,
+  module_id,
+  module,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    <>
+      <Stack onClick={handleClick}>
+        <IconButtonGhost
+          iconName='more_vert'
+          size={2}
+          iconSize={6}
+          color={'neutral'}
+        />
+      </Stack>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MemberListCardOption
+          isMoveToQualifierVisible={false}
+          isPauseVisible={!pause_json}
+          isRemoveVisible={false}
+          isResumeVisible={Boolean(pause_json)}
+          onClickPauseInterview={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'pause',
+                panel_id: module_id,
+                isLoading: false,
+              }));
+              handleClose();
+            },
+          }}
+          onClickResumeInterview={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'resume',
+                panel_id: module_id,
+                isLoading: false,
+                end_time: module.pause_json.end_date,
+              }));
+              handleClose();
+            },
+          }}
+          onClickRemoveModule={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'remove',
+                panel_id: module_id,
+                isLoading: false,
+              }));
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
+    </>
+  );
+};
+
+const TrainingThreeDot = ({
+  pause_json,
+  setPauseResumeDialog,
+  module_id,
+  module,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+  return (
+    <>
+      <Stack onClick={handleClick}>
+        <IconButtonGhost
+          iconName='more_vert'
+          size={2}
+          iconSize={6}
+          color={'neutral'}
+        />
+      </Stack>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MemberListCardOption
+          isMoveToQualifierVisible={false}
+          isPauseVisible={!pause_json}
+          isRemoveVisible={false}
+          isResumeVisible={Boolean(pause_json)}
+          // isRoleVisible={false}
+          onClickResumeInterview={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'resume',
+                panel_id: module_id,
+                isLoading: false,
+                end_time: module.pause_json.end_date,
+              }));
+              handleClose();
+            },
+          }}
+          onClickRemoveModule={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'remove',
+                panel_id: module_id,
+                isLoading: false,
+              }));
+              handleClose();
+            },
+          }}
+          onClickPauseInterview={{
+            onClick: () => {
+              setPauseResumeDialog((pre) => ({
+                ...pre,
+                isOpen: true,
+                type: 'pause',
+                panel_id: module_id,
+                isLoading: false,
+              }));
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
+    </>
+  );
+};

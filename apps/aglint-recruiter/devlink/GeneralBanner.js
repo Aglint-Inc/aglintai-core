@@ -13,9 +13,14 @@ export function GeneralBanner({
   textDesc = "Heading",
   titleColorProps = {},
   slotButton,
+  color,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "general-banner-wrap")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "general-banner-wrap")}
+      tag="div"
+      data-banner-color={color}
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "general-banner-header")}
         tag="div"
@@ -27,7 +32,7 @@ export function GeneralBanner({
         >
           {slotHeadingIcon}
         </_Builtin.Block>
-        <Text content={textHeading} weight="bold" />
+        <Text content={textHeading} weight="medium" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "general-banner-desc")}

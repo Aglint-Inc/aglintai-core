@@ -506,16 +506,6 @@
   text-transform: capitalize;
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .tittle-company-location {
   display: flex;
   height: 18px;

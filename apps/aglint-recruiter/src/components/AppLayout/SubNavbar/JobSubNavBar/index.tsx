@@ -31,7 +31,7 @@ function JobSubNavbar() {
       borderRight={'1px solid'}
       borderColor='var(--neutral-6)'
     >
-      {userPermissions?.permissions['jobs_create'] && <AddJob />}
+      {userPermissions?.permissions['manage_job'] && <AddJob />}
       <NavJobSubLink
         onClickJobAll={{
           onClick: () => router.push(`${ROUTES['/jobs']()}?status=all`),

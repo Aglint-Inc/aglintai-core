@@ -52,7 +52,7 @@ function TopBarButtons() {
               setIsScheduleNowOpen(true);
             },
           }}
-          textButton={'Send Self Scheduling Link'}
+          textButton={'Send Self-Scheduling Request'}
         />
       )}
       {!isDebrief && (

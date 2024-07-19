@@ -62,7 +62,6 @@ export const allowedPaths = new Set([
   '/api/scheduling/update-calender-event-status',
   '/api/scheduling/fetch-calender-atendees-status',
   '/api/scheduling/v1/find_availability',
-  '/api/invite_user',
   '/api/scheduling/mail-agent/email-webhook',
   '/api/scheduling/v1/find_interview_slots',
   '/api/scheduling/v1/find_slots_date_range',

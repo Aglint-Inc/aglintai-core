@@ -3,7 +3,15 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
-import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEventHandler,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -17,6 +25,7 @@ import { ScorePillNice } from '@/devlink/ScorePillNice';
 import { ScoreSetting } from '@/devlink/ScoreSetting';
 import { ScoreWeightage } from '@/devlink/ScoreWeightage';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { BannerAlert } from '@/devlink3/BannerAlert';
@@ -30,9 +39,11 @@ import ScoreWheel, {
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { palette } from '@/src/context/Theme/Theme';
-import NotFoundPage from '@/src/pages/404';
+import { useTour } from '@/src/context/TourContext';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
+
+import JobNotFound from '../Common/JobNotFound';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -40,10 +51,10 @@ const JobProfileScoreDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
@@ -153,8 +164,11 @@ const ProfileScoreControls = () => {
     >
       <ScoreWeightage
         slotResetButton={
-          <ButtonSolid
+          <ButtonSoft
+            color='neutral'
             textButton='Reset'
+            isLeftIcon
+            iconName='refresh'
             size={2}
             onClickButton={{
               onClick: () => handleReset(),
@@ -250,6 +264,7 @@ const ProfileScoreControls = () => {
             />
           </>
         }
+        slotBanner={<Tips />}
       />
     </Stack>
   );
@@ -687,6 +702,43 @@ const BreadCrumbs = () => {
         showArrow
       />
       <Breadcrum textName={`Profile Score`} showArrow />
+    </>
+  );
+};
+
+const Tips = () => {
+  const {
+    tour: { data },
+    handleCreateTourLog,
+  } = useTour();
+  const firstVisit = useMemo(
+    () => !(data ?? ['profile_score_intro']).includes('profile_score_intro'),
+    [data],
+  );
+  const handleTip = useCallback(() => {
+    if (firstVisit) handleCreateTourLog({ type: 'profile_score_intro' });
+  }, [handleCreateTourLog, firstVisit]);
+  return (
+    <>
+      {firstVisit && (
+        <GlobalInfo
+          color={'neutral'}
+          textTitle={'How It Works'}
+          textDescription={
+            "Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click 'Reset' to restore default settings."
+          }
+          showCloseButton
+          onClickClose={{ onClick: () => handleTip() }}
+        />
+      )}
+      <GlobalInfo
+        color={'purple'}
+        iconName='lightbulb'
+        textTitle={'Pro Tip'}
+        textDescription={
+          'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+        }
+      />
     </>
   );
 };

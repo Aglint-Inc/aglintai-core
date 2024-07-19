@@ -4,75 +4,68 @@ import axios from 'axios';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-export const removeSessionFromFilterJson = async ({
+export const removeSessionsFromFilterJson = async ({
   supabase,
-  session_id,
+  session_ids,
 }: {
   supabase: SupabaseType;
-  session_id: string;
+  session_ids: string[];
 }) => {
   try {
-    const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
-      .from('interview_filter_json')
-      .select('*')
-      .contains('session_ids', [session_id]);
-
-    if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-    if (checkFilterJson.length > 0) {
-      const updateDbArray = checkFilterJson.map((filterJson) => ({
-        ...filterJson,
-        session_ids: filterJson.session_ids.filter((id) => id !== session_id),
-      }));
-
-      const { error: errFilterJson } = await supabase
-        .from('interview_filter_json')
-        .upsert(updateDbArray);
-
-      if (errFilterJson) throw new Error(errFilterJson.message);
-    }
-
+    await supabase
+      .rpc('update_or_delete_filter_json', {
+        session_ids_to_remove: session_ids,
+      })
+      .throwOnError();
     return true;
-  } catch {
-    //
+  } catch (error) {
+    // Optionally, handle the error more specifically
+    console.error('Failed to update filter JSON:', error);
+    return false;
   }
 };
 
-export const removeSessionFromRequestAvailibility = async ({
+export const removeSessionsFromRequestAvailability = async ({
   supabase,
-  session_id,
+  session_ids,
 }: {
   supabase: SupabaseType;
-  session_id: string;
+  session_ids: string[];
 }) => {
   try {
-    const { data: reqSesRel } = await supabase
-      .from('request_session_relation')
-      .select()
-      .eq('session_id', session_id)
-      .single()
-      .throwOnError();
-
-    const req_id = reqSesRel.request_availability_id;
-
-    const { data: reqSesRels } = await supabase
-      .from('request_session_relation')
-      .select()
-      .eq('request_availability_id', req_id)
-      .throwOnError();
-
-    if (reqSesRels?.length === 1) {
-      await supabase
-        .from('candidate_request_availability')
-        .delete()
-        .eq('id', req_id)
-        .throwOnError();
-    } else {
-      await supabase
+    for (const session_id of session_ids) {
+      const { data: reqSesRel, error: reqSesRelError } = await supabase
         .from('request_session_relation')
-        .delete()
+        .select()
         .eq('session_id', session_id)
-        .throwOnError();
+        .single();
+
+      if (reqSesRelError) throw reqSesRelError;
+
+      const req_id = reqSesRel.request_availability_id;
+
+      const { data: reqSesRels, error: reqSesRelsError } = await supabase
+        .from('request_session_relation')
+        .select()
+        .eq('request_availability_id', req_id);
+
+      if (reqSesRelsError) throw reqSesRelsError;
+
+      if (reqSesRels?.length === 1) {
+        const { error: deleteReqError } = await supabase
+          .from('candidate_request_availability')
+          .delete()
+          .eq('id', req_id);
+
+        if (deleteReqError) throw deleteReqError;
+      } else {
+        const { error: deleteSesRelError } = await supabase
+          .from('request_session_relation')
+          .delete()
+          .eq('session_id', session_id);
+
+        if (deleteSesRelError) throw deleteSesRelError;
+      }
     }
   } catch (e) {
     // eslint-disable-next-line no-console

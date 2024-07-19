@@ -1,6 +1,5 @@
 import {
   DatabaseTable,
-  DatabaseTableInsert,
   EmailTemplateAPi,
   InterviewSessionTypeDB,
 } from '@aglint/shared-types';
@@ -41,6 +40,7 @@ import {
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
+import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -50,7 +50,12 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
-import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import {
+  setSelectedSessionIds,
+  setSelectedTasks,
+  useSchedulingApplicationStore,
+} from '../store';
+import { getTaskDetails } from '../utils';
 import EmailPreview from './Components/EmailPriview';
 import {
   createTask,
@@ -116,9 +121,9 @@ function RequestAvailability() {
     DatabaseTable['candidate_request_availability']['availability']
   >({
     day_offs: false,
-    free_keywords: false,
+    free_keywords: true,
     outside_work_hours: false,
-    recruiting_block_keywords: false,
+    recruiting_block_keywords: true,
   });
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
@@ -199,6 +204,9 @@ function RequestAvailability() {
               },
             };
           });
+
+          const data = await getTaskDetails(selectedApplication.id);
+          setSelectedTasks(data);
         } else {
           throw new Error();
         }
@@ -261,14 +269,13 @@ function RequestAvailability() {
 
       if (scheduleFlow === 'create_request_availibility') {
         const result = await insertCandidateRequestAvailability({
-          application_id: selectedApplication.id,
-          recruiter_id: recruiter.id,
+          application_id: String(selectedApplication.id),
+          recruiter_id: String(recruiter.id),
           availability: availability,
           date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
           is_task_created: markCreateTicket,
           number_of_days: selectedDays.value,
           number_of_slots: selectedSlots.value,
-
           total_slots: null,
         });
         setRequestDetails(result);
@@ -279,17 +286,12 @@ function RequestAvailability() {
           })),
         );
 
-        const updateMeetings: DatabaseTableInsert['interview_meeting'][] =
-          localSessions.map((ses) => {
-            return {
-              id: ses.interview_meeting.id,
-              interview_schedule_id:
-                ses.interview_meeting.interview_schedule_id,
-              status: 'waiting',
-              meeting_flow: 'candidate_request',
-            };
-          });
-        await supabase.from('interview_meeting').upsert(updateMeetings);
+        await handleMeetingsOrganizerResetRelations({
+          application_id: selectedApplication.id,
+          meeting_flow: 'candidate_request',
+          selectedSessions: localSessions,
+          supabase,
+        });
 
         // send request availability email to candidate
         const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
@@ -505,7 +507,7 @@ function RequestAvailability() {
                           return (
                             <GlobalBadge
                               key={i}
-                              color={'neutral'}
+                              color={'accent'}
                               textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
                             />
                           );
@@ -540,10 +542,10 @@ function RequestAvailability() {
                   direction={'row'}
                   alignItems={'center'}
                   spacing={'var(--space-2)'}
-                  width={'480px'}
+                  width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                    Minimum number of days should be selected.
+                    Minimum Number of Days:
                   </Typography>
                   <Autocomplete
                     fullWidth
@@ -570,10 +572,10 @@ function RequestAvailability() {
                   direction={'row'}
                   alignItems={'center'}
                   spacing={'var(--space-2)'}
-                  width={'480px'}
+                  width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                    Minimum number of slots selected per each day.
+                    Minimum Slots Per Day:
                   </Typography>
                   <Autocomplete
                     fullWidth
@@ -653,10 +655,11 @@ function RequestAvailability() {
                       setStepScheduling('pick_date');
                     },
                   }}
-                  textButton={'back'}
+                  textButton={'Back'}
                 />
                 <ButtonSolid
                   size={2}
+                  isDisabled={totalCount === 0}
                   textButton={'Continue'}
                   onClickButton={{
                     onClick: () => {

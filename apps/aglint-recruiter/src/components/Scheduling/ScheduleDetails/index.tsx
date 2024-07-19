@@ -10,6 +10,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -51,7 +52,6 @@ function SchedulingViewComp() {
   const schedule = data?.schedule_data;
   const cancelReasons = data?.cancel_data?.filter(
     (item) =>
-      !item.interview_session_cancel.cancel_user_id &&
       item.interview_session_cancel.is_ignored === false &&
       item.interview_session_cancel.is_resolved === false,
   );
@@ -122,14 +122,18 @@ function SchedulingViewComp() {
     DatabaseTable['interview_session_relation'] | null
   >();
 
+  const confirmedUsers = schedule?.users?.filter(
+    (user) => user.interview_session_relation.is_confirmed,
+  );
+
   useEffect(() => {
-    if (schedule?.users) {
+    if (confirmedUsers?.length > 0) {
       setSessionRelation(
-        schedule?.users?.find((user) => user.email === recruiterUser.email)
+        confirmedUsers.find((user) => user.email === recruiterUser.email)
           ?.interview_session_relation,
       );
     }
-  }, [schedule?.users]);
+  }, [confirmedUsers]);
   // if logged in user is interviewer session relation will be there or else null
 
   useEffect(() => {
@@ -172,6 +176,45 @@ function SchedulingViewComp() {
     }
   };
 
+  const sections = viewScheduleTabs
+    .filter(
+      (item) =>
+        !item.hide &&
+        (item.tab !== 'feedback' ||
+          schedule?.interview_meeting?.status === 'completed'),
+    )
+    .map((item) => item.tab);
+
+  const tabCount: number = sections.length - 1;
+  const currentTab: string = router.query.tab as string;
+  const currentIndex: number = sections.indexOf(currentTab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+
+    router.replace(
+      `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${pre}`,
+    );
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+
+    router.replace(
+      `/scheduling/view?meeting_id=${router.query.meeting_id}&tab=${next}`,
+    );
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
+
   return (
     <>
       {isLoading ? (
@@ -198,9 +241,13 @@ function SchedulingViewComp() {
                         sessionRelation={sessionRelation}
                         refetch={refetch}
                         setIsDeclineOpen={setIsDeclineOpen}
+                        setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                       />
                     )}
-                    <Overview schedule={schedule} />
+                    <Overview
+                      schedule={schedule}
+                      cancelReasons={data?.cancel_data}
+                    />
                   </Stack>
                 }
                 slotDarkPills={viewScheduleTabs
@@ -254,6 +301,8 @@ function SchedulingViewComp() {
                             recruiterUser.user_id
                         }
                         updateInstruction={updateInstruction}
+                        isBorder={false}
+                        isPadding={false}
                       />
                     </ShowCode.When>
                     <ShowCode.When isTrue={router.query.tab === 'feedback'}>
@@ -291,9 +340,7 @@ function SchedulingViewComp() {
               <ButtonGroup
                 setIsCancelOpen={setIsCancelOpen}
                 isMeetingJobHiringTeam={isMeetingJobHiringTeam}
-                cancelReasons={cancelReasons}
                 schedule={schedule}
-                setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                 setIsRescheduleOpen={setIsRescheduleOpen}
               />
             }

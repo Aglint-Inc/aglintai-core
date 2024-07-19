@@ -248,16 +248,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .div-block-289 {
   display: flex;
   max-width: 420px;

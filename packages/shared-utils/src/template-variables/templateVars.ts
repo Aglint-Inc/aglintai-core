@@ -1,5 +1,6 @@
 import {
   additionalRescheduleNotes,
+  admin,
   cancelReason,
   candidateProfileLink,
   candidates,
@@ -7,8 +8,11 @@ import {
   date_range,
   dates,
   interviewer,
+  interviewerInfo,
+  interviewerPauseLink,
   interviewFeedbackLink,
   interviewInstructionLink,
+  interviewTypes,
   jobDetails,
   meetingDetailsLink,
   organizer,
@@ -133,5 +137,13 @@ export const emailVariablePayloads = {
     ...interviewer,
     ...organizer,
     ...jobDetails,
+  ],
+  onSignup_email_admin: [...organizer],
+  interviewerResumed_email_admin: [
+    ...admin,
+    ...interviewer,
+    ...interviewerInfo,
+    interviewerPauseLink,
+    interviewTypes,
   ],
 };

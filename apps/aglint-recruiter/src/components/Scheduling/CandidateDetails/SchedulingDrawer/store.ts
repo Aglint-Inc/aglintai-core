@@ -20,7 +20,8 @@ export interface SchedulingFlow {
     | 'reschedule'
     | 'request_availibility'
     | 'self_scheduling_email_preview'
-    | 'success_screen';
+    | 'success_screen'
+    | 'schedule_all_options';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:

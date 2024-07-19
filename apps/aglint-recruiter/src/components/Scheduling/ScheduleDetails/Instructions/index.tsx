@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Text } from '@/devlink/Text';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
@@ -13,11 +14,15 @@ function Instructions({
   setTextValue,
   updateInstruction,
   showEditButton,
+  isBorder = false,
+  isPadding = true,
 }: {
   instruction: string;
   updateInstruction: any;
   showEditButton: boolean;
   setTextValue: any;
+  isBorder?: boolean;
+  isPadding?: boolean;
 }) {
   const [edit, setEdit] = useState(false);
 
@@ -36,17 +41,18 @@ function Instructions({
       >
         <GeneralPopupLarge
           isDescriptionVisibe={false}
-          textPopupTitle={'Edit Instruction'}
+          textPopupTitle={'Edit Instructions'}
           isIcon={false}
           textDescription={''}
           slotPopup={
             <Stack
               sx={{
+                border:'1px solid var(--neutral-6)',
                 // margin: '20px',
                 maxWidth: '800px',
                 minWidth: '800px',
-                border: '1px solid',
-                borderColor: 'var(--neutral-6)',
+                // border: '1px solid',
+                // borderColor: 'var(--neutral-6)',
                 borderRadius: 'var(--radius-2)',
               }}
               height={'500px'}
@@ -64,8 +70,8 @@ function Instructions({
           }
           textPopupButton={'Save'}
           onClickAction={{
-            onClick: () => {
-              updateInstruction();
+            onClick: async () => {
+              await updateInstruction();
               closeModal();
             },
           }}
@@ -74,32 +80,43 @@ function Instructions({
           }}
         />
       </Dialog>
-      <Stack gap={2} direction={'column'} p={'var(--space-5)'}>
-        <ShowCode>
-          <ShowCode.When isTrue={showEditButton}>
-            <Stack direction={'row'} justifyContent={'start'}>
-              <ButtonSoft
-                isLeftIcon={true}
-                slotIcon={<GlobalIcon iconName={'edit'} size={'3'}/>}
-                size={1}
-                textButton={'Edit Instruction'}
-                onClickButton={{
-                  onClick: () => {
-                    setEdit(true);
-                  },
-                }}
-              />
-            </Stack>
-          </ShowCode.When>
-        </ShowCode>
-        <div
-          style={{
-            maxWidth: '600px',
-          }}
-          dangerouslySetInnerHTML={{
-            __html: marked(instruction || 'Instructions not given'),
-          }}
-        ></div>
+      <Stack direction={'column'} p={'var(--space-5)'}>
+        <Stack
+          gap={2}
+          bgcolor={'white'}
+          padding={isPadding && 'var(--space-4)'}
+          border={isBorder && '1px solid var(--neutral-6)'}
+          borderRadius={'var(--radius-4)'}
+          width={'800px'}
+        >
+          <ShowCode>
+            <ShowCode.When isTrue={showEditButton}>
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Text content='Instructions' weight={'medium'} />
+                <ButtonSoft
+                  color={'neutral'}
+                  isLeftIcon={true}
+                  slotIcon={<GlobalIcon iconName={'edit'} size={'3'} />}
+                  size={1}
+                  textButton={'Edit'}
+                  onClickButton={{
+                    onClick: () => {
+                      setEdit(true);
+                    },
+                  }}
+                />
+              </Stack>
+            </ShowCode.When>
+          </ShowCode>
+          <div
+            style={{
+              maxWidth: '600px',
+            }}
+            dangerouslySetInnerHTML={{
+              __html: marked(instruction || 'Instructions not given'),
+            }}
+          ></div>
+        </Stack>
       </Stack>
     </>
   );

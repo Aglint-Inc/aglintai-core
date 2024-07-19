@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import Footer from '@/src/components/Common/Footer';
 import Loader from '@/src/components/Common/Loader';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
 
@@ -48,17 +47,16 @@ function JobPost() {
         description='AI for People Products'
       />
       {loading ? (
-        <Stack height= "100vh" justifyContent="center" alignItems="center">
+        <Stack height='100vh' justifyContent='center' alignItems='center'>
           <Loader />
         </Stack>
       ) : valid ? (
         <CompanyJobPost recruiter={recruiter} jobs={jobs} />
       ) : (
-        <Stack height="100vh" justifyContent="center" alignItems="center">
+        <Stack height='100vh' justifyContent='center' alignItems='center'>
           <JobNotFound />
         </Stack>
       )}
-      <Footer />
     </Stack>
   );
 }

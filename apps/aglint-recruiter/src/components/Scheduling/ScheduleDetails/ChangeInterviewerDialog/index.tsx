@@ -78,6 +78,7 @@ function ChangeInterviewerDialog({
             show_soft_conflicts: true,
             show_conflicts_events: true,
             out_of_working_hrs: true,
+            day_off: true,
           },
         },
       };
@@ -178,7 +179,7 @@ function ChangeInterviewerDialog({
     <Dialog
       open={isChangeInterviewerOpen}
       onClose={() => {
-        resetState();
+        if (!isSaving) resetState();
       }}
       maxWidth='lg'
     >
@@ -186,7 +187,7 @@ function ChangeInterviewerDialog({
         <ChangeInterviewer
           onClickClose={{
             onClick: () => {
-              resetState();
+              if (!isSaving) resetState();
             },
           }}
           textAvailableDesc={`Please select alternate interviewer available from ${dayjs(
@@ -295,7 +296,9 @@ function ChangeInterviewerDialog({
                           <MuiAvatar
                             level={getFullName(user.first_name, user.last_name)}
                             src={user.profile_image}
-                            variant={'circular-medium'}
+                            variant='rounded'
+                            width={'100%'}
+                            height='100%'
                           />
                         }
                         isShadow={false}

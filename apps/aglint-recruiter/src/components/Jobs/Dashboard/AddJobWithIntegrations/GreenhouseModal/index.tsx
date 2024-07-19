@@ -16,6 +16,7 @@ import { LeverApiKey } from '@/devlink/LeverApiKey';
 import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
+import { DarkPill } from '@/devlink3/DarkPill';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
 import UITextField from '@/src/components/Common/UITextField';
@@ -283,6 +284,48 @@ export function GreenhouseModal() {
             overflow={'hidden'}
           >
             <GreenhouseAts
+              slotNewTab={
+                <>
+                  <Stack display={'flex'} flexDirection={'row'} gap={'8px'}>
+                    <DarkPill
+                      textPill='All'
+                      isActive={greenhouseFilter == 'all'}
+                      onClickPill={{
+                        onClick: () => {
+                          setGreenhouseFilter('all');
+                        },
+                      }}
+                    />
+                    <DarkPill
+                      textPill='Active'
+                      isActive={greenhouseFilter == 'active'}
+                      onClickPill={{
+                        onClick: () => {
+                          setGreenhouseFilter('active');
+                        },
+                      }}
+                    />
+                    <DarkPill
+                      textPill='Live'
+                      isActive={greenhouseFilter == 'live'}
+                      onClickPill={{
+                        onClick: () => {
+                          setGreenhouseFilter('live');
+                        },
+                      }}
+                    />
+                    <DarkPill
+                      textPill='Closed'
+                      isActive={greenhouseFilter == 'closed'}
+                      onClickPill={{
+                        onClick: () => {
+                          setGreenhouseFilter('closed');
+                        },
+                      }}
+                    />
+                  </Stack>
+                </>
+              }
               textNumberofJobs={
                 <Typography variant='body1'>
                   {selectedGreenhousePostings.length == 0

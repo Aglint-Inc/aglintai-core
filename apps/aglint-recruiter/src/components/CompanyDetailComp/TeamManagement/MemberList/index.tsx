@@ -6,7 +6,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { TeamListItem } from '@/devlink/TeamListItem';
 import { TeamOptionList } from '@/devlink/TeamOptionList';
@@ -21,6 +23,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
 
@@ -36,7 +39,7 @@ const Member = ({
   updateMember: (
     // eslint-disable-next-line no-unused-vars
     x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
-  ) => void;
+  ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
@@ -45,8 +48,10 @@ const Member = ({
     e.stopPropagation();
     removeMember();
   };
-  const [openForDelete, setOpenForDelete] = useState(false);
-  const [openForCancel, setOpenForCancel] = useState(false);
+
+  const [dialogReason, setDialogReason] =
+    useState<Parameters<typeof DeleteMemberDialog>['0']['reason']>(null);
+
   const { userDetails } = useAuthDetails();
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
@@ -66,8 +71,7 @@ const Member = ({
   }, [memDetails]);
 
   function ClosePopUp() {
-    setOpenForDelete(false);
-    setOpenForCancel(false);
+    setDialogReason(null);
   }
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -87,11 +91,24 @@ const Member = ({
     <>
       <DeleteMemberDialog
         name={`${member.first_name} ${member.last_name}`.trim()}
-        action={handelRemove}
-        openForDelete={openForDelete}
-        openForCancel={openForCancel}
+        action={
+          dialogReason === 'suspend'
+            ? () => {
+                updateMember({
+                  is_suspended: true,
+                }).then(() => {
+                  toast.success(
+                    `${member.first_name}'s account is suspended successfully.`,
+                  );
+                  ClosePopUp();
+                });
+              }
+            : handelRemove
+        }
+        reason={dialogReason}
         warning={
-          openForDelete && membersDetails[member.user_id]?.allModules.length
+          dialogReason !== 'cancel_invite' &&
+          membersDetails[member.user_id]?.allModules.length
             ? `User is part of scheduling Module- ${membersDetails[member.user_id].allModules}.`.replaceAll(
                 ',',
                 ', ',
@@ -122,87 +139,115 @@ const Member = ({
           />
         }
         slotThreeDot={
-          <>
-            <Stack onClick={handleClick}>
-              <IconButtonGhost
-                iconName='more_vert'
-                size={2}
-                iconSize={6}
-                color={'neutral'}
-              />
-            </Stack>
+          member.role !== 'admin' && (
+            <>
+              <Stack onClick={handleClick}>
+                <IconButtonGhost
+                  iconName='more_vert'
+                  size={2}
+                  iconSize={6}
+                  color={'neutral'}
+                />
+              </Stack>
 
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <TeamOptionList
-                isMarkActiveVisible={canSuspend && member.is_suspended}
-                isSuspendVisible={canSuspend && !member.is_suspended}
-                isCancelInviteVisible={
-                  member.join_status === 'invited' ? true : false
-                }
-                isDeleteVisible={
-                  member.role === 'admin' || member.join_status === 'invited'
-                    ? false
-                    : true
-                }
-                isResetPasswordVisible={
-                  member.role !== 'admin' && member.join_status !== 'invited'
-                }
-                onClickMarkActive={{
-                  onClick: () => {
-                    updateMember({ is_suspended: false });
-                    handleClose();
-                  },
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
                 }}
-                onClickSuspend={{
-                  onClick: () => {
-                    updateMember({
-                      is_suspended: true,
-                    }),
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <TeamOptionList
+                  isMarkActiveVisible={canSuspend && member.is_suspended}
+                  isSuspendVisible={canSuspend && !member.is_suspended}
+                  isCancelInviteVisible={member.join_status === 'invited'}
+                  isDeleteVisible={member.join_status !== 'invited'}
+                  isResetPasswordVisible={member.join_status !== 'invited'}
+                  isEditVisible={member.join_status !== 'invited'}
+                  slotFilterOption={
+                    <>
+                      {member.join_status === 'invited' && (
+                        <FilterOption
+                          slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
+                          text={'Resend Invitation'}
+                          color={{
+                            style: {
+                              color: 'transparent',
+                            },
+                          }}
+                          onClickCancelInvite={{
+                            onClick: () => {
+                              reinviteUser(
+                                member.email,
+                                userDetails.user.id,
+                              ).then(({ error, emailSend }) => {
+                                if (!error && emailSend) {
+                                  return toast.success(
+                                    'Invite sent successfully.',
+                                  );
+                                }
+                                return toast.error(error);
+                              });
+                            },
+                          }}
+                        />
+                      )}
+                    </>
+                  }
+                  isFilterOptionVisible={true}
+                  onClickMarkActive={{
+                    onClick: () => {
+                      updateMember({ is_suspended: false }).then(() => {
+                        toast.success(
+                          `${member.first_name}'s account is activated successfully.`,
+                        );
+                        handleClose();
+                      });
+                    },
+                  }}
+                  onClickEdit={{
+                    onClick: (e) => {
+                      editMember(e);
                       handleClose();
-                  },
-                }}
-                onClickEdit={{
-                  onClick: (e) => {
-                    editMember(e);
-                    handleClose();
-                  },
-                }}
-                onClickCancelInvite={{
-                  onClick: () => {
-                    setOpenForCancel(true);
-                    handleClose();
-                  },
-                }}
-                onClickDelete={{
-                  onClick: () => {
-                    setOpenForDelete(true);
-                    handleClose();
-                  },
-                }}
-                onClickResetPassword={{
-                  onClick: () => {
-                    resetPassword(member.email)
-                      .then(() => toast.success('Password reset email sent.'))
-                      .catch(() => toast.error('Password reset failed.'));
-                    handleClose();
-                  },
-                }}
-              />
-            </Popover>
-          </>
+                    },
+                  }}
+                  onClickCancelInvite={{
+                    onClick: () => {
+                      setDialogReason('cancel_invite');
+                      handleClose();
+                    },
+                  }}
+                  onClickSuspend={{
+                    onClick: () => {
+                      setDialogReason('suspend');
+                      handleClose();
+                    },
+                  }}
+                  onClickDelete={{
+                    onClick: () => {
+                      setDialogReason('delete');
+                      handleClose();
+                    },
+                  }}
+                  onClickResetPassword={{
+                    onClick: () => {
+                      resetPassword(member.email)
+                        .then(() => toast.success('Password reset email sent.'))
+                        .catch(() => toast.error('Password reset failed.'));
+                      handleClose();
+                    },
+                  }}
+                />
+              </Popover>
+            </>
+          )
         }
         key={1}
         textLastActive={
@@ -226,18 +271,6 @@ const Member = ({
 };
 
 export default Member;
-
-// const setStatus = (id: string, is_suspended: boolean) => {
-//   return supabase
-//     .from('recruiter_user')
-//     .update({ is_suspended })
-//     .eq('user_id', id)
-//     .select()
-//     .then(({ data, error }) => {
-//       if (error) throw new Error(error.message);
-//       return data;
-//     });
-// };
 
 const resetPassword = (email: string) => {
   const body: API_reset_password['request'] = { email };

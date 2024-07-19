@@ -1,402 +1,175 @@
-import { Popover, Stack } from '@mui/material';
-import dayjs from 'dayjs';
-import _ from 'lodash';
-import { MouseEvent, useEffect, useState, useTransition } from 'react';
+import { DatabaseEnums } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Stack } from '@mui/material';
+import { useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { FilterList } from '@/devlink2/FilterList';
-import { FilterPill } from '@/devlink2/FilterPill';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import FilterHeader from '@/src/components/Common/FilterHeader';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobs } from '@/src/context/JobsContext';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
-import { FilterOptionsType } from '../types';
-import { filterOptions, getListItems } from '../utils';
-import FilterChip from './FilterChip';
-import IconPlusFilter from './FilterChip/IconPlusFilter';
-
-const initialFilter = filterOptions.reduce((acc, item) => {
-  acc[item.name] = [];
-  return acc;
-}, {});
 
 function Filters() {
-  const {
-    allSchedules,
-    setFilterSchedule,
-    filterSchedules,
-    setLoadingSchedules,
-  } = useScheduleStatesContext();
+  const { updateFilterState, filterState } = useScheduleStatesContext();
 
-  const [selectedFilters, setSelectedFilters] = useState<FilterOptionsType[]>(
-    [],
-  );
   const [searchText, setSearchText] = useState<string>('');
-  const [, startTransition] = useTransition();
-  const [selectedItem, setSelectedItem] = useState<any>(
-    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter,
-  );
 
-  const resetAll = () => {
-    setSelectedStatus([]);
-    setSelectedInterviewers([]);
-    setSelectedJob([]);
-    setSelectedScheduleType([]);
-    setSelectedDateRange([]);
-    setSelectedItem(initialFilter);
-    localStorage.setItem('scheduleFilterIds', JSON.stringify(initialFilter));
-    localStorage.setItem(
-      'schedulesFilter',
-      JSON.stringify([...filterOptions].map((ele) => ele.name)),
-    );
-    setSelectedFilters([...filterOptions]);
-  };
+  const { members } = useAuthDetails();
 
-  useEffect(() => {
-    if (typeof window != 'undefined') {
-      localStorage.setItem(
-        'schedulesFilter',
-        JSON.stringify([...filterOptions].map((ele) => ele.name)),
-      );
-      setSelectedFilters([...filterOptions]);
-    }
-    const local = JSON.parse(localStorage.getItem('scheduleFilterIds'));
+  const ScheduleTypes = [
+    {
+      id: 'google_meet' as DatabaseEnums['interview_schedule_type'],
+      label: 'google_meet' as DatabaseEnums['interview_schedule_type'],
+    },
+    {
+      id: 'zoom' as DatabaseEnums['interview_schedule_type'],
+      label: 'zoom' as DatabaseEnums['interview_schedule_type'],
+    },
+    {
+      id: 'in_person_meeting' as DatabaseEnums['interview_schedule_type'],
+      label: 'in_person_meeting' as DatabaseEnums['interview_schedule_type'],
+    },
+    {
+      id: 'phone_call' as DatabaseEnums['interview_schedule_type'],
+      label: 'phone_call' as DatabaseEnums['interview_schedule_type'],
+    },
+  ];
+  const dateRange = [
+    {
+      id: dayjsLocal().format('YYYY-MM-DD'),
+      label: 'today',
+    },
+    {
+      id: dayjsLocal().add(1, 'day').format('YYYY-MM-DD'),
+      label: 'Tomorrow',
+    },
+    {
+      id: dayjsLocal().add(7, 'day').format('YYYY-MM-DD'),
+      label: 'Next 7 days',
+    },
+    {
+      id: dayjsLocal().add(30, 'day').format('YYYY-MM-DD'),
+      label: 'Next 30 days',
+    },
+    {
+      id: dayjsLocal().add(-7, 'day').format('YYYY-MM-DD'),
+      label: 'Last 7 days',
+    },
+    {
+      id: dayjsLocal().add(-30, 'day').format('YYYY-MM-DD'),
+      label: 'Last 30 days',
+    },
+  ];
 
-    if (local) {
-      if (
-        !_.isEqual(Object.keys(local).sort(), Object.keys(initialFilter).sort())
-      ) {
-        localStorage.setItem(
-          'scheduleFilterIds',
-          JSON.stringify(initialFilter),
-        );
-      }
-    }
-  }, []);
-
-  const scheduleFilterIds =
-    JSON.parse(localStorage.getItem('scheduleFilterIds')) || initialFilter;
-
-  const [selectedStatus, setSelectedStatus] = useState<string[]>(
-    scheduleFilterIds?.status || [],
-  );
-  const [selectedInterviewers, setSelectedInterviewers] = useState<string[]>(
-    scheduleFilterIds?.interviewer || [],
-  );
-  const [selectedJob, setSelectedJob] = useState<string[]>(
-    scheduleFilterIds?.job || [],
-  );
-  const [selectedScheduleType, setSelectedScheduleType] = useState<string[]>(
-    scheduleFilterIds?.schedule_type || [],
-  );
-  const [selectedDateRange, setSelectedDateRange] = useState<string[]>(
-    scheduleFilterIds?.date_range || [],
-  );
-
-  // popOver
-  const [openFilterOptions, setOpenFilterOptions] =
-    useState<HTMLButtonElement | null>(null);
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setOpenFilterOptions(event.currentTarget);
-  };
-  const handleClose = () => {
-    setOpenFilterOptions(null);
-  };
-  const open = Boolean(openFilterOptions);
-  const id = open ? 'simple-popover' : undefined;
-
-  // popOver end
-
-  const handleOnSelectItem = (
-    ids: string[],
-    filterTypeName: FilterOptionsType['name'],
-  ) => {
-    if (filterTypeName === 'status') {
-      setSelectedStatus(ids);
-      scheduleFilterIds.status = ids;
-    }
-    if (filterTypeName === 'interviewer') {
-      setSelectedInterviewers(ids);
-      scheduleFilterIds.interviewer = ids;
-    }
-    if (filterTypeName === 'job') {
-      setSelectedJob(ids);
-      scheduleFilterIds.job = ids;
-    }
-    if (filterTypeName === 'schedule_type') {
-      setSelectedScheduleType(ids);
-      scheduleFilterIds.schedule_type = ids;
-    }
-    if (filterTypeName === 'date_range') {
-      setSelectedDateRange(ids);
-      scheduleFilterIds.date_range = ids;
-    }
-    localStorage.setItem(
-      'scheduleFilterIds',
-      JSON.stringify(scheduleFilterIds),
-    );
-  };
-
-  function getMeetingIdsForMembers() {
-    const filteredMeetingIds = allSchedules
-      .filter((schedule) =>
-        schedule.users?.some((user) => selectedInterviewers.includes(user.id)),
-      )
-      .map((schedule) => schedule.interview_meeting.meeting_id);
-    return filteredMeetingIds;
-  }
-  function getDateRangeSelected(e) {
-    const filteredByDateRange = allSchedules
-      .filter(
-        (schedule) =>
-          dayjs(schedule.interview_meeting.start_time).isAfter(
-            dayjs(e[0]).add(-1, 'day'),
-            'day',
-          ) &&
-          dayjs(schedule.interview_meeting.start_time).isBefore(
-            dayjs(e[1]).add(1, 'day'),
-            'day',
-          ),
-      )
-      .map((schedule) => schedule.interview_meeting.meeting_id);
-    return filteredByDateRange;
-  }
-
-  useEffect(() => {
-    if (Array.isArray(allSchedules)) {
-      const filteredSchedule = allSchedules.filter((schedule) => {
-        const statusMatch =
-          !selectedStatus.length ||
-          selectedStatus.includes(String(schedule.interview_meeting.status));
-        const memberMatch =
-          !getMeetingIdsForMembers().length ||
-          getMeetingIdsForMembers().includes(
-            String(schedule.interview_meeting.meeting_id),
-          );
-        const jobMatch =
-          !selectedJob.length ||
-          selectedJob.includes(String(schedule.interview_meeting.job_id));
-        const scheduleTypeMatch =
-          !selectedScheduleType.length ||
-          selectedScheduleType.includes(
-            String(schedule.interview_meeting.schedule_type),
-          );
-
-        const dateRangeMatch =
-          !selectedDateRange.length ||
-          getDateRangeSelected(selectedDateRange).includes(
-            String(schedule.interview_meeting.meeting_id),
-          );
-        return (
-          statusMatch &&
-          memberMatch &&
-          jobMatch &&
-          scheduleTypeMatch &&
-          dateRangeMatch
-        );
-      });
-
-      if (searchText) {
-        const filteredSchedules = filterSchedules.filter((ele) => {
-          if (
-            ele.interview_meeting.session_name
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
-          ) {
-            return ele;
-          }
-        });
-        setFilterSchedule(filteredSchedules);
-      } else {
-        setFilterSchedule(filteredSchedule);
-      }
-
-      // setFilterSchedule(filteredSchedule);
-      setLoadingSchedules(false);
-    }
-  }, [
-    selectedInterviewers,
-    selectedStatus,
-    selectedJob,
-    selectedScheduleType,
-    selectedDateRange,
-    allSchedules,
-  ]);
-
-  const handleTextChange = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-    startTransition(() => {
-      if (value) {
-        const filteredSchedules = filterSchedules.filter((ele) => {
-          if (
-            ele.interview_meeting.session_name
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          ) {
-            return ele;
-          }
-        });
-        setFilterSchedule(filteredSchedules);
-      } else {
-        setFilterSchedule(allSchedules);
-      }
-    });
-  };
-
-  const handleTextClear = () => {
-    setSearchText('');
-    startTransition(() => {
-      setFilterSchedule(allSchedules);
-    });
-  };
+  const { jobs } = useJobs();
   return (
     <Stack direction={'row'} spacing={'var(--space-3)'}>
-      <SearchField
-        value={searchText}
-        onChange={handleTextChange}
-        onClear={handleTextClear}
-        placeholder={'Search session.'}
-      />
-      {selectedFilters.map((filterType, i) => {
-        let itemList: { label: string; id: string }[] =
-          allSchedules &&
-          allSchedules.length &&
-          getListItems({
-            allSchedules,
-            filterType,
-          });
-        return (
-          <FilterChip
-            setSelectedItem={setSelectedItem}
-            selectedItem={selectedItem}
-            handleChange={(ids: string[]) => {
-              handleOnSelectItem(ids, filterType.name);
-            }}
-            resetSelectedItem={(ids) => {
-              handleOnSelectItem(ids, filterType.name);
-            }}
-            removeFilter={() => {
-              const tempList = selectedFilters.filter(
-                (ele) => ele.name !== filterType.name,
-              );
-              setSelectedFilters([...tempList]);
-              localStorage.setItem(
-                'schedulesFilter',
-                JSON.stringify([...tempList].map((ele) => ele.name)),
-              );
-            }}
-            itemList={itemList || []}
-            key={i}
-            filterType={filterType}
-          />
-        );
-      })}
-
-      <ShowCode.When isTrue={selectedFilters.length !== filterOptions.length}>
-        <ButtonGhost
-          size={'2'}
-          isLeftIcon={true}
-          isRightIcon={false}
-          onClickButton={{
-            onClick: handleClick,
-          }}
-          textButton={'Add Filter'}
-          slotIcon={<IconPlusFilter />}
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={!_.isEqual(selectedItem, initialFilter)}>
-        <ButtonGhost
-          textButton='Reset All'
-          size={2}
-          isLeftIcon={true}
-          color={'neutral'}
-          iconSize={4}
-          iconName='refresh'
-          onClickButton={{
-            onClick: () => {
-              resetAll();
-            },
-          }}
-        />
-      </ShowCode.When>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={openFilterOptions}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        sx={{
-          '& .MuiPopover-paper': {
-            border: 'none',
+      <FilterHeader
+        search={{
+          value: searchText,
+          setValue: (e) => {
+            // handelSearch(e);
+            setSearchText(e);
+            updateFilterState('searchText', e);
           },
+          placeholder: 'Search schedules.',
         }}
-      >
-        <FilterList
-          slotFilterPill={filterOptions.map((filterOption, i) => {
-            if (
-              !selectedFilters
-                .map((ele) => ele.name)
-                .includes(filterOption.name)
-            )
-              return (
-                <Stack
-                  direction={'row'}
-                  spacing={'var(--space-2)'}
-                  alignItems={'center'}
-                  key={i}
-                >
-                  {filterOption.Icon}
-                  <FilterPill
-                    key={i}
-                    onClickFilter={{
-                      onClick: () => {
-                        if (
-                          selectedFilters
-                            .map((ele) => ele.name)
-                            .includes(filterOption.name)
-                        ) {
-                          const tempList = selectedFilters.filter(
-                            (ele) => ele.name !== filterOption.name,
-                          );
-                          setSelectedFilters([...tempList]);
-                          localStorage.setItem(
-                            'schedulesFilter',
-                            JSON.stringify(
-                              [...tempList].map((ele) => ele.name),
-                            ),
-                          );
-                        } else {
-                          setOpenFilterOptions(null);
-                          localStorage.setItem(
-                            'schedulesFilter',
-                            JSON.stringify(
-                              [...selectedFilters, filterOption].map(
-                                (ele) => ele.name,
-                              ),
-                            ),
-                          );
-                          setSelectedFilters((pre) => [...pre, filterOption]);
-                        }
-                      },
-                    }}
-                    textFilterName={capitalizeAll(
-                      filterOption.name.replaceAll('-', ' '),
-                    )}
-                  />
-                </Stack>
-              );
-          })}
-        />
-      </Popover>
+        filters={[
+          {
+            type: 'filter',
+            name: 'Status',
+            options: [
+              { id: 'completed', label: 'Completed' },
+              { id: 'cancelled', label: 'Cancelled' },
+              { id: 'confirmed', label: 'Confirmed' },
+              { id: 'waiting', label: 'Waiting' },
+            ],
+            setValue: (val) => {
+              updateFilterState('status', val);
+            },
+            value: filterState.status,
+            iconname: 'filter_tilt_shift',
+          },
+          {
+            type: 'filter',
+            name: 'Interviewer',
+            options: members
+              ? members
+                  .filter((ele) => !ele.is_suspended)
+                  .map((member) => ({
+                    id: member.user_id,
+                    label: getFullName(member.first_name, member.last_name),
+                  }))
+              : [],
+            filterSearch: true,
+            searchPlaceholder: 'Interviewer',
+            setValue: (val) => {
+              updateFilterState('interviewers', val);
+            },
+            value: filterState.interviewers,
+            iconname: 'person',
+          },
+          {
+            type: 'filter',
+            name: 'Schedule types',
+            options: ScheduleTypes,
+            setValue: (val) => {
+              updateFilterState('schedule_types', val);
+            },
+            value: filterState.schedule_types,
+            iconname: 'filter_tilt_shift',
+          },
+          {
+            type: 'filter',
+            name: 'Interview mode',
+            options: [
+              {
+                id: 'panel' as DatabaseEnums['session_type'],
+                label: 'panel' as DatabaseEnums['session_type'],
+              },
+              {
+                id: 'individual' as DatabaseEnums['session_type'],
+                label: 'individual' as DatabaseEnums['session_type'],
+              },
+              {
+                id: 'debrief' as DatabaseEnums['session_type'],
+                label: 'debrief' as DatabaseEnums['session_type'],
+              },
+            ],
+            setValue: (val) => {
+              updateFilterState('session_types', val);
+            },
+
+            value: filterState.session_types,
+            iconname: 'filter_tilt_shift',
+          },
+          {
+            type: 'filter',
+            name: 'Jobs',
+            options:
+              jobs.isFetched &&
+              jobs.data.map((ele) => ({ id: ele.id, label: ele.job_title })),
+            setValue: (val) => {
+              updateFilterState('jobs', val);
+            },
+
+            value: filterState.jobs,
+            iconname: 'filter_tilt_shift',
+          },
+          {
+            type: 'filter',
+            name: 'Date range',
+            options: dateRange,
+            multiSelect: false,
+            setValue: (val) => {
+              updateFilterState('date_range', val);
+            },
+            value: filterState.date_range,
+            iconname: 'filter_tilt_shift',
+          },
+        ]}
+      />
     </Stack>
   );
 }

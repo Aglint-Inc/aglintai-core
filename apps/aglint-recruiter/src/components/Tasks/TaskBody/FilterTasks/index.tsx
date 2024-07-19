@@ -9,16 +9,18 @@ function FilterTasks() {
     filter,
     handelSearch,
     handelFilter,
-    // handelResetFilter
+    handelResetFilter,
+    sort,
+    handelSort,
   } = useTasksContext();
-  const allResetShow = !!Object.values(filter)
-    .map((ele) => ele.values)
-    .flat().length;
+  // const allResetShow = !!Object.values(filter)
+  //   .map((ele) => ele.values)
+  //   .flat().length;
 
   return (
     <FilterHeader
-      // handelResetAll={handelResetFilter}
-      isResetAll={allResetShow}
+      handelResetAll={handelResetFilter}
+      isResetAll={true}
       search={{
         value: search,
         setValue: (e) => {
@@ -27,60 +29,6 @@ function FilterTasks() {
         placeholder: 'Search candidates.',
       }}
       filters={[
-        {
-          type: 'filter',
-          name: 'Candidate',
-          options: filter.candidate.options,
-          filterSearch: true,
-          iconname: 'person',
-          searchPlaceholder: 'Search candidates',
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Candidate = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              candidate: { ...filter.candidate, values: val },
-            });
-          },
-          value: filter.candidate.values,
-        },
-        {
-          type: 'filter',
-          name: 'Status',
-          iconname: 'filter_tilt_shift',
-          options: filter.status.options,
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Status = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              status: { ...filter.status, values: val },
-            });
-          },
-          value: filter.status.values,
-        },
-        {
-          type: 'filter',
-          name: 'Priority',
-          iconname: 'arrow_drop_down_circle',
-          options: filter.priority.options,
-          setValue: (val) => {
-            const preData =
-              JSON.parse(localStorage.getItem('taskFilters')) || {};
-            preData.Priority = [...val];
-            localStorage.setItem('taskFilters', JSON.stringify(preData));
-            handelFilter({
-              ...filter,
-              priority: { ...filter.priority, values: val },
-            });
-          },
-          value: filter.priority.values,
-        },
-
         {
           type: 'filter',
           name: 'Assignee',
@@ -124,6 +72,26 @@ function FilterTasks() {
         },
         {
           type: 'filter',
+          name: 'Candidate',
+          options: filter.candidate.options,
+          filterSearch: true,
+          iconname: 'person',
+          searchPlaceholder: 'Search candidates',
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Candidate = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              candidate: { ...filter.candidate, values: val },
+            });
+          },
+          value: filter.candidate.values,
+        },
+
+        {
+          type: 'filter',
           name: 'Type',
           iconname: 'arrow_drop_down_circle',
           options: filter.type.options,
@@ -139,6 +107,40 @@ function FilterTasks() {
           },
           value: filter.type.values,
         },
+        {
+          type: 'filter',
+          name: 'Priority',
+          iconname: 'arrow_drop_down_circle',
+          options: filter.priority.options,
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Priority = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              priority: { ...filter.priority, values: val },
+            });
+          },
+          value: filter.priority.values,
+        },
+        {
+          type: 'filter',
+          name: 'Status',
+          iconname: 'filter_tilt_shift',
+          options: filter.status.options,
+          setValue: (val) => {
+            const preData =
+              JSON.parse(localStorage.getItem('taskFilters')) || {};
+            preData.Status = [...val];
+            localStorage.setItem('taskFilters', JSON.stringify(preData));
+            handelFilter({
+              ...filter,
+              status: { ...filter.status, values: val },
+            });
+          },
+          value: filter.status.values,
+        },
       ]}
       dateRangeSelector={{
         name: 'Interview Date',
@@ -151,6 +153,29 @@ function FilterTasks() {
             ...filter,
             date: { ...filter.date, values: val },
           });
+        },
+      }}
+      sort={{
+        sortOptions: {
+          options: sort.options,
+          order: [
+            {
+              id: 'asc',
+              label: 'Ascending',
+            },
+            {
+              id: 'desc',
+              label: 'Descending',
+            },
+          ],
+        },
+        selected: sort.selected,
+        setOrder: (payload) => {
+          const temp = {
+            option: payload.type || sort.selected.option,
+            order: payload.order || sort.selected.order,
+          };
+          handelSort({ ...temp });
         },
       }}
     />

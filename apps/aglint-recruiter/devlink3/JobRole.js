@@ -17,7 +17,7 @@ export function JobRole({
         className={_utils.cx(_styles, "jr-header-wrap")}
         tag="div"
       >
-        <Text content="Hirng Team" weight="medium" color="neutral" size="1" />
+        <Text content="Hiring Team" weight="medium" color="neutral" size="1" />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "jr-body-wrap")} tag="div">
         {slotRoleList ?? (

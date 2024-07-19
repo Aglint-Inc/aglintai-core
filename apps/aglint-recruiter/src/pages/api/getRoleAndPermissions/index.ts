@@ -1,10 +1,11 @@
-import { DatabaseEnums, DatabaseTable, DB } from '@aglint/shared-types';
+import { DatabaseTable, DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { allPermissions } from '@/src/constant/role_and_permissions';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
-import { GetRoleAndPermissionsAPI } from '../getRoleAndPermissions/type';
+import { GetRoleAndPermissionsAPI } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -32,32 +33,50 @@ export default async function handler(
 
 const getRoleAndPermissions = async (recruiter_id: string) => {
   return supabase
-    .from('role_permissions')
-    .select('id, role_id, permission_id, roles(id,name, description)')
+    .from('roles')
+    .select(
+      'id,name, description,permissions:role_permissions(id, role_id, permission_id)',
+    )
     .eq('recruiter_id', recruiter_id)
     .throwOnError()
     .then(({ data }) => {
       const rolesAndPermissions = data.reduce(
         (acc, curr) => {
-          acc[curr.roles.id] = {
-            ...acc[curr.roles.id],
-            id: curr.role_id,
-            name: curr.roles.name,
-            isEditable: curr.roles.name !== 'admin',
+          // acc[curr.id] = {
+          //   ...acc[curr.roles.id],
+          //   id: curr.role_id,
+          //   name: curr.roles.name,
+          //   isEditable: curr.roles.name !== 'admin',
+          //   assignedTo: [],
+          //   description: curr.roles.description,
+          //   permissions: [
+          //     ...(acc[curr.roles.id]?.permissions || []),
+          //     {
+          //       relation_id: curr.id,
+          //       id: curr.permission_id,
+          //       name: null,
+          //       title: null,
+          //       description: null,
+          //       meta: null,
+          //       isActive: true,
+          //     },
+          //   ],
+          // };
+          acc[curr.id] = {
+            id: curr.id,
+            name: curr.name,
+            isEditable: curr.name !== 'admin',
             assignedTo: [],
-            description: curr.roles.description,
-            permissions: [
-              ...(acc[curr.roles.id]?.permissions || []),
-              {
-                relation_id: curr.id,
-                id: curr.permission_id,
-                name: null,
-                title: null,
-                description: null,
-                dependency_tree: null,
-                isActive: true,
-              },
-            ],
+            description: curr.description,
+            permissions: curr.permissions.map((item) => ({
+              relation_id: item.id,
+              id: item.permission_id,
+              name: null,
+              title: null,
+              description: null,
+              meta: null,
+              isActive: true,
+            })),
           };
           return acc;
         },
@@ -72,9 +91,9 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
               relation_id: string;
               id: number;
               title: string;
-              name: DatabaseEnums['permissions_type'];
+              name: DatabaseTable['permissions']['name'];
               description: string;
-              dependency_tree: DatabaseTable['permissions']['dependency_tree'];
+              meta: DatabaseTable['permissions']['meta'];
               isActive: boolean;
             }[];
           };
@@ -85,7 +104,8 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
     .then(async (rolesAndPermissions) => {
       const permission = await supabase
         .from('permissions')
-        .select('id, name, title, description, dependency_tree')
+        .select('id, name, title, description, meta')
+        .in('name', allPermissions)
         .eq('is_enable', true)
         .throwOnError()
         .then(({ data }) => {
@@ -96,7 +116,7 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
                 name: curr.name,
                 title: curr.title,
                 description: curr.description,
-                dependency_tree: curr.dependency_tree,
+                meta: curr.meta,
                 isActive: false,
               };
               return acc;
@@ -104,10 +124,10 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
             {} as {
               [permission: number]: {
                 id: number;
-                name: DatabaseEnums['permissions_type'];
+                name: DatabaseTable['permissions']['name'];
                 title: string;
                 description: string;
-                dependency_tree: DatabaseTable['permissions']['dependency_tree'];
+                meta: DatabaseTable['permissions']['meta'];
                 isActive: boolean;
               };
             },

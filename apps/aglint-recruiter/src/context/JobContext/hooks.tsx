@@ -33,7 +33,7 @@ const useJobContext = () => {
 
   const { recruiter_id, recruiter } = useAuthDetails();
 
-  const { jobs, initialLoad: jobsLoad } = useJobs();
+  const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 
   const jobLoad = useMemo(
     () => !!(recruiter_id && jobsLoad),
@@ -208,7 +208,7 @@ const useJobContext = () => {
     job_id,
   });
 
-  const { removeJobQueries } = useInvalidateJobQueries();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
 
   useQueries({
     queries: [
@@ -234,7 +234,7 @@ const useJobContext = () => {
       return;
     }
     if (!jobPolling) {
-      removeJobQueries(job_id);
+      revalidateJobQueries(job_id);
     }
   }, [jobPolling]);
 
@@ -247,6 +247,7 @@ const useJobContext = () => {
     applicationScoringPollEnabled,
     jobPolling,
     interviewPlans,
+    revalidateJobQueries: () => revalidateJobQueries(job_id),
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleRegenerateJd,
@@ -258,6 +259,8 @@ const useJobContext = () => {
     publishStatus,
     status,
     jdValidity,
+    manageJob,
+    devlinkProps,
   };
 };
 

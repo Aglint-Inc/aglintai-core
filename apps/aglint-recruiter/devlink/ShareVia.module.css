@@ -195,16 +195,6 @@
   color: var(--blue600-aad8d97e);
 }
 
-.fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
 .cj-share-via-main {
   display: flex;
   flex-direction: column;

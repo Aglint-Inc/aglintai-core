@@ -36,7 +36,7 @@ const Tab = forwardRef(
       <Stack
         ref={dropRef}
         onClick={() => setSection(status)}
-        style={{ position: 'relative', cursor: 'pointer', width: '180px' }}
+        style={{ position: 'relative', cursor: 'pointer' }}
       >
         <NewTabPill
           isPillActive={section === status}

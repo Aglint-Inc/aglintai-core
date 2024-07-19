@@ -49,40 +49,6 @@
   align-items: center;
 }
 
-.ai_icon.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.ai_icon.custom_top {
-  margin-top: 2px;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.ai_icon.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.ai_icon.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.ai_icon.fixedd {
-  width: 23px;
-}
-
 .suggetion_right {
   position: relative;
   z-index: 2;

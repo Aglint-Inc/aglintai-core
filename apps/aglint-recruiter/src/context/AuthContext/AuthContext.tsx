@@ -28,6 +28,7 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import axios from '@/src/client/axios';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
@@ -45,7 +46,7 @@ export interface ContextValue {
   userPermissions: {
     role: string;
     permissions: Partial<{
-      [key in DatabaseEnums['permissions_type']]: boolean;
+      [key in DatabaseTable['permissions']['name']]: boolean;
     }>;
   };
   recruiter_id: string | null;
@@ -53,13 +54,13 @@ export interface ContextValue {
   allRecruiterRelation: RecruiterRelationsType[];
   setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
-  handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
   setLoading: (loading: boolean) => void;
   handleLogout: () => Promise<void>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
   members: RecruiterUserType[];
+  allMember: RecruiterUserType[];
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
   handelMemberUpdate: (x: {
     user_id: string;
@@ -94,13 +95,11 @@ export interface ContextValue {
   >;
 }
 
-const defaultProvider = {
+const defaultProvider: ContextValue = {
   userDetails: null,
   userCountry: 'us',
   setUserDetails: () => {},
-  handleUpdateProfile: undefined,
   handleUpdateEmail: undefined,
-  handleUpdatePassword: undefined,
   recruiter: null,
   userPermissions: null,
   recruiter_id: null,
@@ -113,6 +112,7 @@ const defaultProvider = {
   recruiterUser: null,
   setRecruiterUser: () => {},
   members: [],
+  allMember: [],
   setMembers: () => {},
   handelMemberUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
@@ -177,16 +177,15 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    const { data: recruiterRel, error: errorRel } = await supabase
-      .from('recruiter_relation')
-      .select(
-        '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), roles(name,role_permissions(permissions(name)))',
-      )
-      .match({ user_id: userDetails.user.id, is_active: true })
-      .single();
-
+    // const { data: recruiterRel, error: errorRel } = await supabase
+    //   .from('recruiter_relation')
+    //   .select(
+    //     '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions(name)))',
+    //   )
+    //   .match({ user_id: userDetails.user.id, is_active: true })
+    //   .single();
+    const recruiterRel = await getUserDetails();
     // get user permissions
-
     const rolePermissions: ContextValue['userPermissions'] = {
       role: recruiterRel?.roles?.name || null,
       permissions:
@@ -201,20 +200,26 @@ const AuthProvider = ({ children }) => {
 
     setUserPermissions(rolePermissions);
 
-    if (!errorRel && recruiterRel?.recruiter_user) {
+    if (recruiterRel?.recruiter_user) {
       posthog.identify(userDetails.user.email, {
         Email: userDetails.user.email,
         CompanyId: recruiterRel.recruiter.id,
       });
       const recruiterUser = recruiterRel.recruiter_user;
-      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
-        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
+
       setRecruiterUser({
         ...recruiterUser,
         role: recruiterRel.roles.name,
         role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,
+        manager_details: recruiterRel.manager_details
+          ? {
+              name: `${recruiterRel.manager_details.first_name} ${recruiterRel.manager_details.last_name}`.trim(),
+              position: recruiterRel.manager_details.position,
+            }
+          : null,
         created_by: recruiterRel.created_by,
+        recruiter_relation_id: recruiterRel.id,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
@@ -255,33 +260,6 @@ const AuthProvider = ({ children }) => {
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
       setUserCountry('us');
-    }
-  };
-
-  const handleUpdateProfile = async (
-    details: Partial<RecruiterUserType>,
-    id?: string,
-  ): Promise<boolean> => {
-    const { data, error } = await supabase
-      .from('recruiter_user')
-      .update({
-        ...details,
-        manager_id: undefined,
-        role: undefined,
-        last_login: undefined,
-      })
-      .eq('user_id', id || userDetails.user.id)
-      .select()
-      .single();
-    if (!error) {
-      setRecruiterUser({
-        ...details,
-        ...data,
-      } as RecruiterUserType);
-      return true;
-    } else {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
     }
   };
 
@@ -397,7 +375,6 @@ const AuthProvider = ({ children }) => {
         recruiter,
         userPermissions,
         recruiter_id,
-        handleUpdateProfile,
         handleUpdateEmail,
         setRecruiter,
         loading,
@@ -407,7 +384,10 @@ const AuthProvider = ({ children }) => {
         allRecruiterRelation: allRecruiterRelation,
         setAllRecruiterRelation,
         setRecruiterUser,
-        members,
+        members: (members || []).filter(
+          (item) => item.join_status == 'joined' && !item.is_suspended,
+        ),
+        allMember: members,
         setMembers,
         handelMemberUpdate,
         isAllowed,
@@ -455,6 +435,10 @@ const pageFeatureMapper = {
   [ROUTES['/support']()]: 'isSupportEnabled',
   [ROUTES['/candidates/history']()]: 'isSourcingEnabled',
 };
+
+async function getUserDetails() {
+  return axios.call<GetUserDetailsAPI>('GET', '/api/getUserDetails', {});
+}
 
 const updateMember = ({
   data,

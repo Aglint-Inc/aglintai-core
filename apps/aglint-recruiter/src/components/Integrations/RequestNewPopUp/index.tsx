@@ -2,8 +2,8 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IntegrationThanks } from '@/devlink2/IntegrationThanks';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -29,7 +29,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
           await axios.post('/api/sendgrid', {
             fromEmail: recruiter.email,
             fromName: recruiter?.name,
-            email: ['raj@aglinthq.com', 'ravi@aglinthq.com'],
+            email: 'ravi@aglinthq.com',
             subject: 'Integration Tool Request',
             text: `
                   <body>
@@ -49,17 +49,12 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   }
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      maxWidth={'md'}
-    >
+    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
       <ShowCode.When isTrue={showThanks}>
         <IntegrationThanks
           slotButtonClose={
-            <ButtonPrimaryDefaultRegular
-              buttonText={'Close'}
-              buttonProps={{
+            <ButtonSoft
+              onClickButton={{
                 onClick: () => {
                   close();
                   setTimeout(() => {
@@ -67,14 +62,26 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                   }, 500);
                 },
               }}
+              size={2}
+              textButton={'Close'}
             />
+            // <ButtonPrimaryDefaultRegular
+            //   buttonText={'Close'}
+            //   buttonProps={{
+            //     onClick: () => {
+            //       close();
+            //       setTimeout(() => {
+            //         setShowThanks(false);
+            //       }, 500);
+            //     },
+            //   }}
+            // />
           }
         />
       </ShowCode.When>
       <ShowCode.When isTrue={!showThanks}>
         <ConfirmationPopup
           isIcon={false}
-          
           textPopupTitle={'Request Integration'}
           textPopupDescription={
             <Stack direction={'column'} spacing={'16px'}>
@@ -89,12 +96,12 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
               </Stack>
               <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
-                  Description (Optional)
+                  Description
                 </Typography>
                 <TextField
                   multiline
                   minRows={5}
-                  placeholder='Add a brief description (optional)'
+                  placeholder='Add a brief description (Optional)'
                   inputRef={descriptionRef}
                 />
               </Stack>

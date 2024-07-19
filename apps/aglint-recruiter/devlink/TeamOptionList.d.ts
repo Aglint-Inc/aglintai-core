@@ -15,4 +15,6 @@ declare function TeamOptionList(props: {
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
   isResetPasswordVisible?: Types.Visibility.VisibilityConditions;
   onClickResetPassword?: Types.Devlink.RuntimeProps;
+  slotFilterOption?: Types.Devlink.Slot;
+  isFilterOptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

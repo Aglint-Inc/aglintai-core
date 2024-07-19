@@ -55,9 +55,9 @@ function GroupTaskCard({
   return (
     <Stack
       sx={{
-        bgcolor: taskId === task.id && 'var(--orange-2)',
+        bgcolor: taskId === task.id && 'var(--neutral-3)',
         '&:hover': {
-          bgcolor: 'var(--neutral-2)',
+          bgcolor: 'var(--neutral-3)',
           '& div:first-child div .checkboxClass': {
             opacity: 1,
           },
@@ -70,13 +70,13 @@ function GroupTaskCard({
             padding: '1%',
             gridTemplateColumns:
               selectedGroupBy.label === 'job'
-                ? `20px 1fr 150px 110px 160px 180px 1px`
+                ? `20px 1fr 180px 110px 160px 180px 1px`
                 : selectedGroupBy.label === 'candidate'
-                  ? `20px 1fr 150px 110px 160px 1px 180px`
+                  ? `20px 1fr 180px 110px 160px 1px 180px`
                   : selectedGroupBy.label === 'assignee'
-                    ? `20px 1fr 150px 110px 1px 160px 180px`
+                    ? `20px 1fr 180px 110px 1px 160px 180px`
                     : selectedGroupBy.label === 'priority'
-                      ? `20px 1fr 150px 1px 160px 160px 180px`
+                      ? `20px 1fr 180px 1px 160px 160px 180px`
                       : selectedGroupBy.label === 'status'
                         ? `20px 1fr 1px 160px 160px 160px 180px`
                         : null,

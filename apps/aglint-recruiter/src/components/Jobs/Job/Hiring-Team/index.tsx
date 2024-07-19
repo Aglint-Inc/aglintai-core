@@ -9,8 +9,6 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobContext/utils';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
@@ -21,15 +19,16 @@ import {
   JobMetaFormProps,
   useJobForms,
 } from '../../Create/form';
+import JobNotFound from '../Common/JobNotFound';
 
 const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job !== undefined && job.status !== 'closed' ? (
+    job && job.status !== 'closed' ? (
       <JobEdit />
     ) : (
-      <NotFoundPage />
+      <JobNotFound />
     )
   ) : (
     <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
@@ -218,14 +217,13 @@ const JobEditForm = ({
 const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } =
     useJobForms(fields, handleChange);
-  const { ifAllowed } = useRolesAndPermissions();
 
   const forms = (
     <>
-      {ifAllowed(hiring_manager, ['jobs_assignHiringManager'])}
-      {ifAllowed(recruiter, ['jobs_assignHiringManager'])}
-      {ifAllowed(recruiting_coordinator, ['jobs_assignCoordinator'])}
-      {ifAllowed(sourcer, ['jobs_assignSourcer'])}
+      {hiring_manager}
+      {recruiter}
+      {recruiting_coordinator}
+      {sourcer}
     </>
   );
 

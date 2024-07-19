@@ -4,7 +4,8 @@
     "lib": ["ES2020"],
     "outDir": "./dist",
     "types": ["node"],
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "noImplicitAny": false
   },
   "include": ["."],
   "exclude": ["node_modules", "dist"]

@@ -1,11 +1,14 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Popover } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
 import { DcPopup } from '@/devlink/DcPopup';
+import { DeleteCard } from '@/devlink/DeleteCard';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -58,8 +61,20 @@ const Edit = () => {
   const { setPopup, setDeletion } = useWorkflowStore(
     ({ setPopup, setDeletion }) => ({ setPopup, setDeletion }),
   );
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleDelete = () => {
+    setDeletion({
+      open: true,
+      workflow: { id: workflow.id, jobs: workflow.jobs },
+    });
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
-    <WithPermission permission={['workflow_update']}>
+    <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
           <ButtonSoft
@@ -69,19 +84,55 @@ const Edit = () => {
             textButton={'Edit Workflow'}
             onClickButton={{ onClick: () => setPopup({ open: true }) }}
           />
-          <ButtonSoft
-            size={2}
-            iconName={'delete'}
-            color={'error'}
-            textButton='Delete Workflow'
+          <IconButtonGhost
+            color={'neutral'}
+            iconSize={6}
+            iconName='more_vert'
             onClickButton={{
-              onClick: () =>
-                setDeletion({
-                  open: true,
-                  workflow: { id: workflow.id, jobs: workflow.jobs },
-                }),
+              onClick: (event) => {
+                setAnchorEl(event.currentTarget);
+              },
             }}
           />
+
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            sx={{
+              '& .MuiPaper-root': {
+                border: 'none !important',
+                background: 'transparent',
+                overflow: 'visible !important',
+                boxShadow: 'none',
+                top: '45px !important',
+              },
+            }}
+          >
+            <DeleteCard
+              textHeading='Delete workflow'
+              textDesc='Are you sure to delete the workflow'
+              slotButton={
+                <ButtonSolid
+                  size={2}
+                  iconName={'delete'}
+                  color={'error'}
+                  textButton='Delete Workflow'
+                  onClickButton={{
+                    onClick: handleDelete,
+                  }}
+                />
+              }
+            />
+          </Popover>
         </>
       ) : (
         <></>
@@ -110,7 +161,7 @@ const DeletePopup = () => {
     setValue('');
   };
   return (
-    <Dialog open={deletion.open}>
+    <Dialog open={deletion.open} onClose={handleClose}>
       <DcPopup
         onClickClosePopup={{ onClick: () => handleClose() }}
         popupName={'Delete workflow'}
@@ -145,12 +196,12 @@ const DeletePopup = () => {
         slotButtons={
           <>
             <ButtonSoft
-              color={'neutal'}
+              color={'neutral'}
               size={2}
               onClickButton={{ onClick: () => handleClose() }}
               textButton={'Cancel'}
             />
-            <ButtonSoft
+            <ButtonSolid
               color={'error'}
               size={2}
               isDisabled={!enabled}

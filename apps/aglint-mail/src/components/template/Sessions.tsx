@@ -1,6 +1,6 @@
 import { Container, Img, Text } from '@react-email/components';
 import { Parser } from 'html-to-react';
-import { durationIcon } from '../../utils/email/common/functions';
+import { durationIcon } from '../../utils/assets/common';
 
 export const Session = ({ meetingDetail }) => {
   const htmlParser = Parser();

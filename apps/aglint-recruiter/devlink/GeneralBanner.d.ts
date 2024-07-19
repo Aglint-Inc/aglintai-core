@@ -8,4 +8,5 @@ declare function GeneralBanner(props: {
   textDesc?: React.ReactNode;
   titleColorProps?: Types.Devlink.RuntimeProps;
   slotButton?: Types.Devlink.Slot;
+  color?: Types.Builtin.Text;
 }): React.JSX.Element;

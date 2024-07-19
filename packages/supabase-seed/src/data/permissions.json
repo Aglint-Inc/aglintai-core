@@ -1,0 +1,954 @@
+[
+  {
+    "id": 16,
+    "name": "candidates_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "candidates_update",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 3,
+    "name": "jobs_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view current job postings.",
+    "title": "View existing job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 5,
+    "name": "jobs_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to delete job postings.",
+    "title": "Delete job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 6,
+    "name": "jobs_publish",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to publish job postings.",
+    "title": "Publish job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 8,
+    "name": "jobs_archive",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to archive job postings.",
+    "title": "Archive job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 9,
+    "name": "jobs_restore",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to restore archived job postings.",
+    "title": "Restore archived job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 11,
+    "name": "jobs_assignRecruiter",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to assign a recruiter to job postings.",
+    "title": "Assign a recruiter to job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 13,
+    "name": "jobs_assignSourcer",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to assign a sourcer to job postings.",
+    "title": "Assign a sourcer to job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 14,
+    "name": "candidates_add",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to add new applications.",
+    "title": "Add new applications",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 15,
+    "name": "candidates_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view application details.",
+    "title": "View application information",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 20,
+    "name": "profileScore_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "profileScore_update",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 22,
+    "name": "interviews_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "interviews_read",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 23,
+    "name": "interviews_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "interviews_update",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 24,
+    "name": "interviews_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "interviews_delete",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 25,
+    "name": "reports_generate",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "reports_generate",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 26,
+    "name": "reports_view",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "reports_view",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 27,
+    "name": "reports_export",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "reports_export",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 34,
+    "name": "phone_screening_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "phone_screening_enabled",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 35,
+    "name": "assessment_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "assessment_enabled",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 52,
+    "name": "scheduler_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "scheduler_create",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 53,
+    "name": "scheduler_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "scheduler_read",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 54,
+    "name": "scheduler_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "scheduler_update",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 55,
+    "name": "scheduler_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "scheduler_delete",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 47,
+    "name": "team_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "Allow the role to remove users.",
+    "title": "Remove User",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 18,
+    "name": "candidates_moveStage",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to advance applications through hiring stages.",
+    "title": "Move applications",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 19,
+    "name": "profileScore_view",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view application score.",
+    "title": "View application score",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 31,
+    "name": "jobs_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Jobs app.",
+    "title": "Enable Jobs App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 32,
+    "name": "scheduler_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Scheduling app.",
+    "title": "Enable Scheduling App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 36,
+    "name": "integrations_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Integrations app.",
+    "title": "Enable Integrations App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 38,
+    "name": "workflow_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Workflow app.",
+    "title": "Enable Workflow App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 39,
+    "name": "workflow_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to create new workflows.",
+    "title": "Create workflows",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 40,
+    "name": "workflow_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view existing workflows.",
+    "title": "View workflows",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 42,
+    "name": "workflow_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to delete workflows.",
+    "title": "Delete workflows",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 45,
+    "name": "team_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "Allow the role to view existing users.",
+    "title": "View User Details",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 48,
+    "name": "tasks_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to create new tasks.",
+    "title": "Create tasks",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 49,
+    "name": "tasks_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view existing tasks.",
+    "title": "View tasks",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 51,
+    "name": "tasks_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to delete tasks.",
+    "title": "Delete tasks",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 28,
+    "name": "settings_view",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "View settings.",
+    "title": "View Company Settings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 29,
+    "name": "settings_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "Update settings.",
+    "title": "Update Company Settings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 56,
+    "name": "scheduler_request_availability",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Request candidate availability.",
+    "title": "Request candidate availability.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 58,
+    "name": "scheduler_interview_types_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Create interview types.",
+    "title": "Create interview types.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 59,
+    "name": "scheduler_interview_types_read",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "View interview types.",
+    "title": "View interview types.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 60,
+    "name": "scheduler_interview_types_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Update interview types.",
+    "title": "Update interview types.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 61,
+    "name": "scheduler_interviewer_edit",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Edit interviewers for scheduled interviews.",
+    "title": "Edit interviewers for scheduled interviews.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 43,
+    "name": "team_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Enable User settings.",
+    "title": "Enable User settings.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 21,
+    "name": "interviews_schedule",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": null,
+    "title": "interviews_schedule",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 2,
+    "name": "jobs_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to create new job postings.",
+    "title": "Create new job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 4,
+    "name": "jobs_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to update existing job postings.",
+    "title": "Update job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 7,
+    "name": "jobs_unpublish",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to unpublish job postings.",
+    "title": "Unpublish job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 10,
+    "name": "jobs_assignHiringManager",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to assign a hiring manager to job postings.",
+    "title": "Assign a hiring manager to job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 12,
+    "name": "jobs_assignCoordinator",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to assign a recruiting coordinator to job postings.",
+    "title": "Assign a recruiting coordinator to job postings",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 62,
+    "name": "settings_scheduler_enable",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": null,
+    "title": "settings_scheduler_enable",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 17,
+    "name": "candidates_delete",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to delete application information.",
+    "title": "Delete application information",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 30,
+    "name": "tasks_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Tasks app.",
+    "title": "Enable Tasks App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 33,
+    "name": "sourcing_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Sourcing app.",
+    "title": "Enable sourcing features.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 37,
+    "name": "company_setting_enabled",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "By enabling this, the role will have access to the Company Settings app.",
+    "title": "Enable Company Settings App",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 50,
+    "name": "tasks_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to update existing tasks.",
+    "title": "Update tasks",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 57,
+    "name": "scheduler_send_scheduling",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Send scheduling information to candidates.",
+    "title": "Send scheduling information to candidates.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 63,
+    "name": "settings_scheduler_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Update scheduler settings.",
+    "title": "Update scheduler settings.",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 64,
+    "name": "settings_company_enable",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view company details.",
+    "title": "View Company Details",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 65,
+    "name": "settings_company_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to edit company details.",
+    "title": "Manage Company Details",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 44,
+    "name": "team_create",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "Allow the role to create new user.",
+    "title": "Add New User",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 46,
+    "name": "team_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": false,
+    "description": "Allow the role to update existing users.",
+    "title": "Update User Details",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 41,
+    "name": "workflow_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to update existing workflows.",
+    "title": "Update workflows",
+    "dependency_tree": {
+      "child": [42],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 68,
+    "name": "settings_roles_enable",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view roles.",
+    "title": "View Roles",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 69,
+    "name": "settings_roles_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to add, edit, or remove roles.",
+    "title": "Manage Roles",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 66,
+    "name": "settings_team_enable",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to view user information.",
+    "title": "View Users",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  },
+  {
+    "id": 67,
+    "name": "settings_team_update",
+    "created_at": "2024-07-12 12:10:44.107157",
+    "updated_at": "2024-07-12 12:10:44.107157",
+    "is_enable": true,
+    "description": "Allow the role to add, edit, or remove users.",
+    "title": "Manage Users",
+    "dependency_tree": {
+      "child": [],
+      "parent": null,
+      "sibling": null
+    }
+  }
+]

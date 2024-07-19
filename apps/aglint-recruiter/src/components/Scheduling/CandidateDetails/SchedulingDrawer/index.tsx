@@ -9,11 +9,13 @@ import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 
 import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import ButtonAllOptions from './ButtonAllOptions';
 import ButtonReschedule from './ButtonReschedule';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
 import HeaderIcon from './HeaderIcon';
 import { useSchedulingDrawer } from './hooks';
 import RescheduleSlot from './RescheduleSlot';
+import ScheduleAllOptions from './ScheduleAllOptions';
 import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepScheduleFilter from './StepScheduleFilter';
 import SelectDateRange from './StepSelectDate/StepSelectDate';
@@ -117,19 +119,21 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           textDrawertitle={
             stepScheduling === 'reschedule'
               ? 'Reschedule'
-              : scheduleFlow === 'self_scheduling'
-                ? 'Send Self Scheduling Link'
-                : scheduleFlow === 'email_agent'
-                  ? 'Schedule With Email Agent'
-                  : scheduleFlow === 'phone_agent'
-                    ? 'Schedule With Phone Agent'
-                    : scheduleFlow === 'create_request_availibility'
-                      ? 'Request Availability'
-                      : scheduleFlow === 'update_request_availibility'
-                        ? 'Update Request Availability'
-                        : scheduleFlow === 'debrief'
-                          ? 'Schedule Debrief'
-                          : 'Schedule Now'
+              : stepScheduling === 'schedule_all_options'
+                ? 'Schedule'
+                : scheduleFlow === 'self_scheduling'
+                  ? 'Self Scheduling Request'
+                  : scheduleFlow === 'email_agent'
+                    ? 'Schedule with Email Agent'
+                    : scheduleFlow === 'phone_agent'
+                      ? 'Schedule with Phone Agent'
+                      : scheduleFlow === 'create_request_availibility'
+                        ? 'Request Availability'
+                        : scheduleFlow === 'update_request_availibility'
+                          ? 'Update Request Availability'
+                          : scheduleFlow === 'debrief'
+                            ? 'Schedule Debrief'
+                            : 'Schedule Now'
           }
           slotButtons={
             <>
@@ -159,6 +163,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
 
               {stepScheduling === 'reschedule' ? (
                 <ButtonReschedule />
+              ) : stepScheduling === 'schedule_all_options' ? (
+                <ButtonAllOptions />
               ) : (
                 <ButtonSolid
                   isLoading={isSendingToCandidate}
@@ -190,7 +196,11 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                   <EmailPreviewSelfSchedule />
                 ) : stepScheduling === 'success_screen' ? (
                   <SelfScheduleSuccess />
-                ) : null}
+                ) : stepScheduling === 'schedule_all_options' ? (
+                  <ScheduleAllOptions />
+                ) : (
+                  ''
+                )}
               </>
             ) : (
               <Stack height={'calc(100vh - 96px)'}>

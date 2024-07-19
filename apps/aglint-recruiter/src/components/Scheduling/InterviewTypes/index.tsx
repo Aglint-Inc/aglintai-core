@@ -6,7 +6,7 @@ import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
-import { ArchivedButton } from '@/devlink3/ArchivedButton';
+import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -19,7 +19,7 @@ import { setTextSearch, useFilterModuleStore } from './filter-store';
 import FilterCreatedBy from './Filters/FilterCreatedBy';
 import FilterDepartment from './Filters/FilterDepartment';
 import { useAllInterviewModules } from './queries/hooks';
-import { resetModulesStore } from './store';
+import { resetModulesStore, setInitalOpen } from './store';
 import { customSortModules } from './utils';
 
 export function Modules() {
@@ -44,7 +44,9 @@ export function Modules() {
           mod.interview_modules.name
             .toLowerCase()
             .includes(textSearch.toLowerCase())) &&
-        (showArchive || !mod.interview_modules.is_archived)
+        (showArchive
+          ? mod.interview_modules.is_archived
+          : mod.interview_modules.is_archived !== true)
       );
     })
     .sort(customSortModules);
@@ -66,29 +68,52 @@ export function Modules() {
         <>
           <InterviewModuleTable
             slotFilter={
-              <Stack direction={'row'} gap={2}>
-                <SearchField
-                  value={textSearch}
-                  onClear={() => setTextSearch('')}
-                  placeholder='Search by name.'
-                  onChange={(e) => {
-                    setTextSearch(e.target.value);
-                  }}
-                />
-                <FilterDepartment />
-                <FilterCreatedBy />
-                {(departments.length > 0 || createdBy.length > 0) && (
-                  <ButtonGhost
-                    textButton='Reset All'
-                    iconName='refresh'
-                    size={2}
-                    onClickButton={{
-                      onClick: filterReset,
+              <Stack
+                direction={'row'}
+                width={'100%'}
+                justifyContent={'space-between'}
+              >
+                <Stack direction={'row'} gap={2}>
+                  <SearchField
+                    value={textSearch}
+                    onClear={() => setTextSearch('')}
+                    placeholder='Search by name.'
+                    onChange={(e) => {
+                      setTextSearch(e.target.value);
                     }}
-                    isLeftIcon
-                    color={'neutral'}
                   />
-                )}
+                  <FilterDepartment />
+                  <FilterCreatedBy />
+                  {(departments.length > 0 || createdBy.length > 0) && (
+                    <ButtonGhost
+                      textButton='Reset All'
+                      iconName='refresh'
+                      size={2}
+                      onClickButton={{
+                        onClick: filterReset,
+                      }}
+                      isLeftIcon
+                      color={'neutral'}
+                    />
+                  )}
+                </Stack>{' '}
+                <TaskSwitchButton
+                  isIconVisible={false}
+                  isJobCandActive={!showArchive}
+                  isListActive={showArchive}
+                  onClickJobCand={{
+                    onClick: () => {
+                      setShowArchive(false);
+                    },
+                  }}
+                  onClickList={{
+                    onClick: () => {
+                      setShowArchive(true);
+                    },
+                  }}
+                  textFirst={'Active'}
+                  textSecond={'Archived'}
+                />
               </Stack>
             }
             slotInterviewModuleCard={
@@ -118,31 +143,48 @@ export function Modules() {
                           textObjective={mod.interview_modules.description}
                           textModuleName={mod.interview_modules.name}
                           slotMemberPic={
-                            <AvatarGroup
-                              variant='rounded'
-                              total={mod.users.length}
-                              sx={{
-                                '& .MuiAvatar-root': {
-                                  width: 28,
-                                  height: 28,
-                                  fontSize: 12,
-                                },
-                              }}
-                            >
-                              {mod.users.slice(0, 5).map((user) => {
-                                return (
-                                  <MuiAvatar
-                                    key={user.user_id}
-                                    src={user.profile_image}
-                                    level={getFullName(
-                                      user.first_name,
-                                      user.last_name,
-                                    )}
-                                    variant='rounded-small'
-                                  />
-                                );
-                              })}
-                            </AvatarGroup>
+                            <>
+                              {/* interview types */}
+                              {mod.users.length ? (
+                                <AvatarGroup
+                                  variant='rounded'
+                                  total={mod.users.length}
+                                  sx={{
+                                    '& .MuiAvatar-root': {
+                                      width: 'var(--space-5)',
+                                      height: 'var(--space-5)',
+                                      fontSize: 12,
+                                    },
+                                  }}
+                                >
+                                  {mod.users.slice(0, 5).map((user) => {
+                                    return (
+                                      <MuiAvatar
+                                        key={user.user_id}
+                                        src={user.profile_image}
+                                        level={getFullName(
+                                          user.first_name,
+                                          user.last_name,
+                                        )}
+                                        variant='rounded-small'
+                                      />
+                                    );
+                                  })}
+                                </AvatarGroup>
+                              ) : (
+                                <ButtonGhost
+                                  textButton='Add members'
+                                  size={1}
+                                  iconName='add'
+                                  isLeftIcon
+                                  onClickButton={{
+                                    onClick: () => {
+                                      setInitalOpen('qualified');
+                                    },
+                                  }}
+                                />
+                              )}
+                            </>
                           }
                           textMembersCount={
                             mod.users.length !== 0
@@ -167,21 +209,6 @@ export function Modules() {
                         />
                       );
                     })}
-
-                    <ArchivedButton
-                      isHideVisible={archives && showArchive}
-                      isShowVisible={archives && !showArchive}
-                      onClickHide={{
-                        onClick: () => {
-                          setShowArchive((prev) => !prev);
-                        },
-                      }}
-                      onClickShow={{
-                        onClick: () => {
-                          setShowArchive((prev) => !prev);
-                        },
-                      }}
-                    />
                   </>
                 ) : (
                   <Stack p={2}>

@@ -134,6 +134,19 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Slack Interview Reminder',
     description: 'Slack Interview Reminder',
   },
+  onSignup_email_admin: {
+    heading: '',
+    description: '',
+  },
+  onInvite_email_user: {
+    heading: '',
+    description: '',
+  },
+  interviewerResumed_email_admin: {
+    heading: 'Interviewer Resumed',
+    description:
+      'When the interviewer resumed automatically, this email will be sent.',
+  },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
   candidateBook_email_interviewerForFeedback: null,
@@ -141,4 +154,14 @@ export const emailTemplateCopy: CompanyEmailType = {
   candidateBook_slack_interviewerForConfirmation: null,
   interviewEnd_email_interviewerForFeedback: null,
   interviewEnd_slack_interviewerForFeedback: null,
+  onQualified_email_approved: null,
+  onQualified_slack_approved: null,
+  onQualified_slack_approver: null,
+  onQualified_email_approver: null,
+  onQualified_email_trainee: null,
+  onQualified_slack_trainee: null,
+  onRShadowComplete_email_trainee: null,
+  onRShadowComplete_slack_trainee: null,
+  onShadowComplete_email_trainee: null,
+  onShadowComplete_slack_trainee: null,
 };

@@ -1,0 +1,1069 @@
+[
+  {
+    "id": "f640a816-6a65-4d5d-9efa-75f2d4ed1338",
+    "recruiter_type": "Company",
+    "name": "",
+    "email": "dheeraj+2@aglinthq.com",
+    "company_website": "https://aglinthq.com",
+    "industry": "",
+    "logo": null,
+    "phone_number": "",
+    "primary_contact": null,
+    "hr_contact": null,
+    "available_roles": [],
+    "departments": [],
+    "technology_score": [],
+    "company_overview": "",
+    "e_o_statement": null,
+    "application_process": null,
+    "m_v_statement": null,
+    "employment_type": {
+      "contract": true,
+      "fulltime": true,
+      "parttime": true,
+      "temporary": true,
+      "volunteer": true,
+      "internship": true
+    },
+    "workplace_type": {
+      "hybrid": true,
+      "onsite": true,
+      "offsite": true
+    },
+    "company_values": null,
+    "benefits": null,
+    "employee_size": "",
+    "office_locations": [
+      {
+        "city": "",
+        "line1": "",
+        "line2": "",
+        "region": "",
+        "country": "",
+        "is_headquarter": true
+      }
+    ],
+    "socials": {
+      "custom": {
+        "angellist": "",
+        "crunchbase": ""
+      },
+      "twitter": "",
+      "youtube": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": ""
+    },
+    "lever_key": null,
+    "ai_avatar": null,
+    "audio_avatar_id": "0",
+    "video_assessment": false,
+    "ats_familiar": null,
+    "use_of_purpose": null,
+    "recruiter_active": true,
+    "greenhouse_key": null,
+    "assistant_id": null,
+    "ashby_key": null,
+    "ashby_sync_token": null,
+    "ashby_last_synced": null,
+    "created_at": "2024-07-15 11:46:19.892757+00",
+    "service_json": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:00",
+        "start_time": "12:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "zoom_auth": null,
+    "google_workspace_domain": null,
+    "scheduling_reason": {
+      "internal": {
+        "decline": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ],
+        "cancellation": [
+          "Position Filled",
+          "Budget Constraints",
+          "Reevaluation of Hiring Needs",
+          "Other"
+        ],
+        "rescheduling": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ]
+      },
+      "candidate": {
+        "cancellation": [
+          "Conflicting Schedule",
+          "Health Reasons",
+          "Unexpected Emergency",
+          "Job Offer Accepted",
+          "Other"
+        ],
+        "rescheduling": [
+          "Request for a Different Time",
+          "Request for a Different Date",
+          "Additional Preparation Needed",
+          "Change of Interview Mode",
+          "Other"
+        ]
+      }
+    },
+    "domain_admin_email": null
+  },
+  {
+    "id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "recruiter_type": "Company",
+    "name": "",
+    "email": "chinmai@aglinthq.com",
+    "company_website": "https://aglinthq.com",
+    "industry": "",
+    "logo": null,
+    "phone_number": "",
+    "primary_contact": null,
+    "hr_contact": null,
+    "available_roles": [],
+    "departments": [],
+    "technology_score": [],
+    "company_overview": "",
+    "e_o_statement": null,
+    "application_process": null,
+    "m_v_statement": null,
+    "employment_type": {
+      "contract": true,
+      "fulltime": true,
+      "parttime": true,
+      "temporary": true,
+      "volunteer": true,
+      "internship": true
+    },
+    "workplace_type": {
+      "hybrid": true,
+      "onsite": true,
+      "offsite": true
+    },
+    "company_values": null,
+    "benefits": null,
+    "employee_size": "",
+    "office_locations": [
+      {
+        "city": "",
+        "line1": "",
+        "line2": "",
+        "region": "",
+        "country": "",
+        "is_headquarter": true
+      }
+    ],
+    "socials": {
+      "custom": {
+        "angellist": "",
+        "crunchbase": ""
+      },
+      "twitter": "",
+      "youtube": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": ""
+    },
+    "lever_key": null,
+    "ai_avatar": null,
+    "audio_avatar_id": "0",
+    "video_assessment": false,
+    "ats_familiar": null,
+    "use_of_purpose": null,
+    "recruiter_active": true,
+    "greenhouse_key": "7ce80675fec46cc1b3ccc857b8cb6d06338f357e3974e123f2efe76e18a0f801cb3b79e61873de3e0d665b69ca803987",
+    "assistant_id": null,
+    "ashby_key": "bf556a43f101f30cd323b8013b8b450d0fe0294b6e64ba3956f70d880077a3b46ffb1d43c5e0bb02de023a2f196e17a44a08291695010b7360bb5ce887591a169bcfb50f3d1c1c9993fbef2cec33c80d",
+    "ashby_sync_token": null,
+    "ashby_last_synced": null,
+    "created_at": "2024-07-12 12:28:26.715926+00",
+    "service_json": "9a247e62cac5917a4d4c1ac2be20716b87ba5e8d03fd26d1918573321fbffa51302030c48ad2832af29850fbfd47402fe63f77f8aed11b6f08ea37a308da32fc83468ce02099463eebd1d79fcdc848fc6e1833b8ffe6ee2483b017e84e7adbc22a3732b4873c8de79423c6e36444ee6243e3e54d8b7348cc34e72ac3ae41417ce5b4e074ffd8f1aae215f8889f2d359baecd81453ede701cd9aa93e39013c9c957968f2cced04d62f469d8260d344111577ff39b29b96bddda65599f4350232390137010c9f4a90e1991384cddccc5a42ee957a0de1e91a4ec2e0c72d99d654b632f5f9c9f84117f0d0e797f071d5516205f741c3664e96ed5d32c4f6a0952538bfb7ed4a79747a17913cfe9db53abe2a8402e0a0f75dd594a12e56e15f0123f4b2638d8364d3693f6f6bc62eb6baf52666cd9075d18154ade37407ec4e25d6a252f4a541c98f92d6f74d62051a61e73268f1d646db219e77935826c315353b6c4a3d8ce4b82f62df66edff1045f51c32ae15615a40e961c4516753ab4053359719ca5042b55732b11639658eee884078299d7579dc97e7278e3b40718a6ec9a0fc77935beba15915d567bf44eab0b66202dbfbce0d44a0eac14d3c538a64db23055deca920249483ba746cd36849036ded716d7ba8a55e7f44be9f15508347deeb4671aac7bee4f5cdc3f7d18effd95519c1d48ffb253aef8cc5c2b30001137add8f9a302fd407120b15e91dc9eca6f42c35801f55bae45582c356fa4a7c3f61947d7b83021b3d3d87a5422d3bf6b54356b7bf07f82645b8e2587423ada5378c2c192a35fdd36e28de88b2091c3aed4101c2034e531c98ad7af41b88f3b42976303e329d06052388173befe8a90ef96d5d6696855dc651f72b25501ecf3fc4b8d3b12d97ae2ed3c46cb9caa8373712bf4fbb34f992ade60fe7f604c2c04130583ba69f5f4327f8f4247cdff21e489f3285f3559786e099662715ea82f1593116a3d987c176beb3819711941e6ae1e7aed8dbcc27730fd0017de30b2ac2a0aad123448697162192ac8273db21388a48e5958e1e84f12cb5adc4bfbed9e65153fa53de81f8fb7dc6c4948d90a246e3565951922d0616fb63e12db28eca64f38313f196e5680f2f75d8769215beb75ac3e27bd2e0616d5b3d16f18fb3848fc896ea7a5a69387de4e6ec904a9260e5a5e0a612d9da66d3206b4db1d0f6084863000f4c1ebee9b926a8ae042adc2c883bddb56630f5e18ea930ac2c1630dd7dcb6dfe824b19394eb9abd7da66b727de6a5dfd9323f44d60d12f8cf9abe930b7b36f79c51576884a2354786648870a79385a8fe15cdda0b3d9fafbbb3f6f9fb3b50e4baa4c8108672cc733b7237e73c3c17e1d7f367a6f42bdca7b430a1986fcafae56db346d5cc75e87082179d769fca3619de0d274863acaec5576a10361b62e2470f85f58aecaad9a997dbd6ccea437537f69140b74bbaa0842337dc64bc60a1e81cf1f44ad20e472a87012e1ab12797b655eb1eeb5d6b085384b670ee5c9fe39df77d962492593ca97ab34115804464c2dbb71a52c9a3215fb7b71be30a70056cd280804f63665fd7695fac8903ba891e7e8126e5f6d8bff0e4070f18da796529a38e25b48f4666b1591cda2327e6bb6e5e8b7d85193c2add1bf3f968352ebc947b17a4760b38220c48bc14ef0692b8b12f6cf8ce23968ac44315718634d26b18920273bbff7e1c678f81ad4601a24283ef5ec48ce1fb19274895cc0fae900b27e96b1955ddee4676ad5a36fda9f29a1b6f81939b221999f7d0415d83bbc263f2590c8e8a6694b082700dae929a3f2b9b37259af1ea7aeba4c0427479c6677f130fcef96673b3946740394718519ec49b9e12ce185aa083f02f5be45e2cbc6e5d2067e78bf05cd4353a0c218ae52fd93777c00a9ab87056ea32f5eb858ed67a005d23f50ed2fc744417951a9af3c0c3e2e25aa18fd6d51e73ab9f63725181ebd77f857ef0eb210935249d5a3670be5fbfe2c97781c71d625c24231e5ffa0ba3a47d3f7ab63712698bfeea02801036e2daf556c0f715a542244328e74c2e0b59e1410c30680720ddbc0020329a6197d748602fc04757818d55f8915ee4001e4441e8f4fac5f328e8e98f16de8ff5b53a6c9dda0bdca9775eceb806079a02fc0ee0aebd16fc50313f1d56c003e526c8a9010b915bacaf50528fd73f19893da5dee41cf0e512189d06ddffd35f6298490e2a259f0d9913d974d4e299cba4086d759b4fbe5d2ea406efedfe1c797f7829f17c1a90ef99dc9999ba1e68e0993b43f5e86d137faeb780932e347860da90b06a8c038bd6c354ec500a7216550dfdbae19b2adefa7cf8bb5f8ea0eb02bd35fe943109b3116de4b0eaf77acdbcae430948e6c0f39ad792e0a348ade83cba2cce081a37886723dcf7f67113a2ede153ab4f1a654bf86b9a66765a0eb5390d97e8a39b0368ae4f0d36e52806853300d7b83e07602d7ae071ffb5b60c6767dbd5d9ca3d98b0eee6f2b6c79c2856161dc18b37faca69b2ed416423610566ae907218ccff333e3dcf9c8fbe03ec7afeee606c7213015cb47fbb247a0e4aaf2abf5dd31908caa04c475217a89093ef6010735993f1d27a9e928b869619c6b057e542c1a382b7dcae0dcb2623c307e104e8a15e152b768c9060077abbb0a4c5d7ac732c377d8a1a9c037c404848e42d3ebd2acca67e78a42567fe9ee83ad44d0491c1ec1513a417b13f6eb96ce0adb9aa90bd0add299f6ab954f67e9830b87bdda46b1df94dcf2b1786fe34d7efeea36b76d7f2ab9bd7ae184788e3990086404cc9aa33d262094e47d9535520f03895c966c685b995ed678de38a19977596f48b37f6539ca8e8703d03aae45c35d7324ee63a3558a3b50cf4eb3af0dd3a30c29fc910e5b284fd1e94eb468d3eebe43f7ac4e95fd428cd57314a185aa770fcc39fc0291dac759e5150e8a0df8ffa90a5f7010fe54d2e8801d7c1d73edc13e86aefbeb765a893e108ea58941c1543d2a93cb18cd48f5fd518983129075635c7ba6423854323f4b53ad338f4969ab25c722719ac9ba6326129a903726283d4503df1e1d4bcdc96955ba7f73deb6aa118a20ab51fa00adb3ca5bffcac36eb3f5607aa306f7218b4802c75e38599429e04431f1659ae41e89f2dec0b77b9b96abdf7822c1eeb69970ff9919e82a4edcc1b74d9c6b13ed96ce173f5ba14c8cf319d26f0c273745a66940fb267532a3d5676edcd046d1de26528c78e7f912124a1c12f2c857c41d7c162df6ba015ceafe175d26db424922f3778b2fcef96ea4fdd61d3543b1441fd53907e97f68e7fe547bcf5e26c190091f95b4d8c0388bb51ea1a87d11262e05a6868ae57bdf78b421a986c99dbf4e0d80f",
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:00",
+        "start_time": "12:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": true,
+        "previous_interviewers": true,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      }
+    },
+    "zoom_auth": "000af6626e4694b2cfc1d5e39e2a22e76654d7dfdc53f2e65f410c2955613080d4e6b603347ac96af8c86fe9d489cc2e76e60cb9a524e38fbb2f397329c266bfe9d885c6d6bd56728c649d9339541282f2e460b074d1d0387adecbc761a33d02ffa1063ba39d6ce8f8095a90eb89c51212677bc3f55780c0513a24a721f93283",
+    "google_workspace_domain": "https://aglinthq.com",
+    "scheduling_reason": {
+      "internal": {
+        "decline": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ],
+        "cancellation": [
+          "Position Filled",
+          "Budget Constraints",
+          "Reevaluation of Hiring Needs",
+          "Other"
+        ],
+        "rescheduling": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ]
+      },
+      "candidate": {
+        "cancellation": [
+          "Conflicting Schedule",
+          "Health Reasons",
+          "Unexpected Emergency",
+          "Job Offer Accepted",
+          "Other"
+        ],
+        "rescheduling": [
+          "Request for a Different Time",
+          "Request for a Different Date",
+          "Additional Preparation Needed",
+          "Change of Interview Mode",
+          "Other"
+        ]
+      }
+    },
+    "domain_admin_email": null
+  },
+  {
+    "id": "edd40dc6-b173-4593-a6fa-8461a5e208f8",
+    "recruiter_type": "Company",
+    "name": "",
+    "email": "dheeraj+1@aglinthq.com",
+    "company_website": "https://google.com",
+    "industry": "",
+    "logo": null,
+    "phone_number": "",
+    "primary_contact": null,
+    "hr_contact": null,
+    "available_roles": [],
+    "departments": [],
+    "technology_score": [],
+    "company_overview": "",
+    "e_o_statement": null,
+    "application_process": null,
+    "m_v_statement": null,
+    "employment_type": {
+      "contract": true,
+      "fulltime": true,
+      "parttime": true,
+      "temporary": true,
+      "volunteer": true,
+      "internship": true
+    },
+    "workplace_type": {
+      "hybrid": true,
+      "onsite": true,
+      "offsite": true
+    },
+    "company_values": null,
+    "benefits": null,
+    "employee_size": "",
+    "office_locations": [
+      {
+        "city": "",
+        "line1": "",
+        "line2": "",
+        "region": "",
+        "country": "",
+        "is_headquarter": true
+      }
+    ],
+    "socials": {
+      "custom": {
+        "angellist": "",
+        "crunchbase": ""
+      },
+      "twitter": "",
+      "youtube": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": ""
+    },
+    "lever_key": null,
+    "ai_avatar": null,
+    "audio_avatar_id": "0",
+    "video_assessment": false,
+    "ats_familiar": null,
+    "use_of_purpose": null,
+    "recruiter_active": true,
+    "greenhouse_key": null,
+    "assistant_id": null,
+    "ashby_key": null,
+    "ashby_sync_token": null,
+    "ashby_last_synced": null,
+    "created_at": "2024-07-15 11:13:30.307813+00",
+    "service_json": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:00",
+        "start_time": "12:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "zoom_auth": null,
+    "google_workspace_domain": null,
+    "scheduling_reason": {
+      "internal": {
+        "decline": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ],
+        "cancellation": [
+          "Position Filled",
+          "Budget Constraints",
+          "Reevaluation of Hiring Needs",
+          "Other"
+        ],
+        "rescheduling": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ]
+      },
+      "candidate": {
+        "cancellation": [
+          "Conflicting Schedule",
+          "Health Reasons",
+          "Unexpected Emergency",
+          "Job Offer Accepted",
+          "Other"
+        ],
+        "rescheduling": [
+          "Request for a Different Time",
+          "Request for a Different Date",
+          "Additional Preparation Needed",
+          "Change of Interview Mode",
+          "Other"
+        ]
+      }
+    },
+    "domain_admin_email": null
+  },
+  {
+    "id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "recruiter_type": "Company",
+    "name": "",
+    "email": "dheeraj+3@aglinthq.com",
+    "company_website": "https://aglinthq.com",
+    "industry": "",
+    "logo": null,
+    "phone_number": "",
+    "primary_contact": null,
+    "hr_contact": null,
+    "available_roles": [],
+    "departments": [],
+    "technology_score": [],
+    "company_overview": "",
+    "e_o_statement": null,
+    "application_process": null,
+    "m_v_statement": null,
+    "employment_type": {
+      "contract": true,
+      "fulltime": true,
+      "parttime": true,
+      "temporary": true,
+      "volunteer": true,
+      "internship": true
+    },
+    "workplace_type": {
+      "hybrid": true,
+      "onsite": true,
+      "offsite": true
+    },
+    "company_values": null,
+    "benefits": null,
+    "employee_size": "",
+    "office_locations": [
+      {
+        "city": "",
+        "line1": "",
+        "line2": "",
+        "region": "",
+        "country": "",
+        "is_headquarter": true
+      }
+    ],
+    "socials": {
+      "custom": {
+        "angellist": "",
+        "crunchbase": ""
+      },
+      "twitter": "",
+      "youtube": "",
+      "facebook": "",
+      "linkedin": "",
+      "instagram": ""
+    },
+    "lever_key": null,
+    "ai_avatar": null,
+    "audio_avatar_id": "0",
+    "video_assessment": false,
+    "ats_familiar": null,
+    "use_of_purpose": null,
+    "recruiter_active": true,
+    "greenhouse_key": null,
+    "assistant_id": null,
+    "ashby_key": null,
+    "ashby_sync_token": null,
+    "ashby_last_synced": null,
+    "created_at": "2024-07-15 14:06:48.333269+00",
+    "service_json": null,
+    "scheduling_settings": {
+      "timeZone": {
+        "utc": "-08:00",
+        "name": "(GMT-08:00) Los Angeles, San Diego, San Jose, San Francisco, Seattle",
+        "label": "America/Los_Angeles (GMT-08:00)",
+        "tzCode": "America/Los_Angeles"
+      },
+      "break_hour": {
+        "end_time": "13:00",
+        "start_time": "12:00"
+      },
+      "totalDaysOff": [
+        {
+          "date": "01 Jan 2024",
+          "event_name": "New Year Day"
+        },
+        {
+          "date": "16 Jan 2024",
+          "event_name": "Martin Luther King Jr. Day"
+        },
+        {
+          "date": "19 Feb 2024",
+          "event_name": "Presidents Day"
+        },
+        {
+          "date": "27 May 2024",
+          "event_name": "Memorial Day"
+        },
+        {
+          "date": "19 Jun 2024",
+          "event_name": "Juneteenth National Independence Day"
+        },
+        {
+          "date": "04 Jul 2024",
+          "event_name": "Independence Day"
+        },
+        {
+          "date": "02 Sep 2024",
+          "event_name": "Labor Day"
+        },
+        {
+          "date": "14 Oct 2024",
+          "event_name": "Columbus Day"
+        },
+        {
+          "date": "11 Nov 2024",
+          "event_name": "Veterans Day"
+        },
+        {
+          "date": "28 Nov 2024",
+          "event_name": "Thanksgiving Day"
+        },
+        {
+          "date": "25 Dec 2024",
+          "event_name": "Christmas Day"
+        }
+      ],
+      "workingHours": [
+        {
+          "day": "sunday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "monday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "tuesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "wednesday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "thursday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "friday",
+          "isWorkDay": true,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        },
+        {
+          "day": "saturday",
+          "isWorkDay": false,
+          "timeRange": {
+            "endTime": "17:00",
+            "startTime": "09:00"
+          }
+        }
+      ],
+      "interviewLoad": {
+        "dailyLimit": {
+          "type": "Hours",
+          "value": 4
+        },
+        "weeklyLimit": {
+          "type": "Hours",
+          "value": 20
+        }
+      },
+      "debrief_defaults": {
+        "sourcer": false,
+        "recruiter": false,
+        "hiring_manager": false,
+        "previous_interviewers": false,
+        "recruiting_coordinator": false
+      },
+      "schedulingKeyWords": {
+        "free": [
+          "Personal Time",
+          "Break",
+          "Team Lunch",
+          "Networking Event",
+          "Office Hours",
+          "Casual Meetup"
+        ],
+        "outOfOffice": ["Maternity Leave", "Vacation", "PTO", "Out of Office"],
+        "SoftConflicts": [
+          "Daily Standup",
+          "Sync Up",
+          "Project Review",
+          "Sprint Planning",
+          "Strategy Session",
+          "Team Briefing"
+        ],
+        "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
+      },
+      "isAutomaticTimeZone": false
+    },
+    "zoom_auth": null,
+    "google_workspace_domain": null,
+    "scheduling_reason": {
+      "internal": {
+        "decline": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ],
+        "cancellation": [
+          "Position Filled",
+          "Budget Constraints",
+          "Reevaluation of Hiring Needs",
+          "Other"
+        ],
+        "rescheduling": [
+          "Conflict with Another Meeting",
+          "Unexpected Urgency",
+          "Travel Delays or Issues",
+          "Technical Difficulties",
+          "Other"
+        ]
+      },
+      "candidate": {
+        "cancellation": [
+          "Conflicting Schedule",
+          "Health Reasons",
+          "Unexpected Emergency",
+          "Job Offer Accepted",
+          "Other"
+        ],
+        "rescheduling": [
+          "Request for a Different Time",
+          "Request for a Different Date",
+          "Additional Preparation Needed",
+          "Change of Interview Mode",
+          "Other"
+        ]
+      }
+    },
+    "domain_admin_email": null
+  }
+]

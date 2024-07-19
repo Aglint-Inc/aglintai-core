@@ -1,9 +1,9 @@
-import { MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
 
-import { WarningSvg } from '../../Jobs/Create/form';
+import Icon from '../Icons/Icon';
 import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 
@@ -112,12 +112,13 @@ const AvatarSelectDropDown = ({
             <Stack
               px={1}
               style={{
-                fontStyle: 'italic',
                 color: 'var(--neutral-12)',
                 cursor: 'default',
+                padding: 'var(--space-2)',
+                pointerEvents: 'none',
               }}
             >
-              No options available
+              No options
             </Stack>
           ) : (
             menuOptions.map((menu, idx) => (
@@ -176,10 +177,20 @@ const AvatarSelectDropDown = ({
                     menu.start_icon_url
                   ))}
                 {menu.name}
-                <Stack direction={'row'} gap={2} ml={'auto'}>
-                  {(menu.meta ?? []).map(({ title, icon }, i) => (
-                    <Meta key={i} title={title} icon={icon} />
-                  ))}
+                <Stack
+                  direction={'row'}
+                  gap={2}
+                  ml={'auto'}
+                  maxWidth={'300px'}
+                  width={'100%'}
+                >
+                  <Grid container spacing={2}>
+                    {(menu.meta ?? []).map(({ title, icon }, i) => (
+                      <Grid item xs={6} key={i}>
+                        <Meta key={i} title={title} icon={icon} />
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Stack>
               </MenuItem>
             ))
@@ -202,7 +213,7 @@ const AvatarSelectDropDown = ({
       )}
       {error && helperText && (
         <Stack alignItems={'center'} direction={'row'} color='var(--error-11)'>
-          <WarningSvg />
+          <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
           {helperText}
         </Stack>
       )}
@@ -223,9 +234,13 @@ const Meta = ({
     return (
       <Stack
         direction={'row'}
-        minWidth={'120px'}
         gap={'var(--space-1)'}
-        style={{ fontSize: 'var(--font-size-1)', color: 'var(--neutral-11)' }}
+        style={{
+          fontSize: 'var(--font-size-1)',
+          color: 'var(--neutral-11)',
+          display: 'flex',
+          alignItems: 'center',
+        }}
       >
         {icon}
         {title}

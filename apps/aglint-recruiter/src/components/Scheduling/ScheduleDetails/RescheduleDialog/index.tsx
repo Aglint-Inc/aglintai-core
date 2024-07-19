@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useEffect, useState } from 'react';
 
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -28,8 +29,8 @@ import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
 import {
-  removeSessionFromFilterJson,
-  removeSessionFromRequestAvailibility,
+  removeSessionsFromFilterJson,
+  removeSessionsFromRequestAvailability,
 } from '../utils';
 
 function RescheduleDialog({
@@ -144,13 +145,13 @@ function RescheduleDialog({
         meeting_flow === 'phone_agent' ||
         meeting_flow === 'mail_agent'
       ) {
-        await removeSessionFromFilterJson({
-          session_id,
+        await removeSessionsFromFilterJson({
+          session_ids: [session_id],
           supabase,
         });
       } else {
-        await removeSessionFromRequestAvailibility({
-          session_id,
+        await removeSessionsFromRequestAvailability({
+          session_ids: [session_id],
           supabase,
         });
       }
@@ -302,10 +303,15 @@ function RescheduleDialog({
                 setNotes(e.target.value);
               }}
             />
-
-            <Typography variant='body1' color={'error'}>
-              Old meeting will be moved to cancelled status if you proceed.
-            </Typography>
+            <GlobalBanner
+              color={'warning'}
+              iconName={'warning'}
+              textDescription={
+                ' If you proceed, the old meeting will be marked as canceled.'
+              }
+              textTitle=''
+              slotButtons={<></>}
+            />
             <Stack spacing={1} direction={'row'} alignItems={'center'}>
               <Checkbox
                 checked={sendCancelMail}

@@ -3,7 +3,6 @@ import { Autocomplete, InputAdornment, Stack } from '@mui/material';
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
@@ -222,7 +221,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
           name={name}
           rest={{ ...params }}
           label='Job Location'
-          required
+          required={value.required}
           placeholder='Ex. San Fransisco, United States'
           error={value.error.value}
           helperText={value.error.helper}
@@ -312,26 +311,39 @@ JobDepartment.displayName = 'JobDepartment';
 type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
 
 const roles = {
-  hiring_manager: () => [...new Set<Roles>(['admin', 'hiring_manager'])],
+  'hiring manager': () => [...new Set<Roles>(['admin', 'hiring manager'])],
   recruiter: () => [
     ...new Set<Roles>([
-      ...roles.hiring_manager(),
-      'recruiting_coordinator',
+      ...roles['hiring manager'](),
+      'recruiting coordinator',
       'recruiter',
       'sourcer',
     ]),
   ],
-  recruiting_coordinator: () => [...new Set<Roles>([...roles.recruiter()])],
+  'recruiting coordinator': () => [...new Set<Roles>([...roles.recruiter()])],
   sourcer: () => [...new Set<Roles>([...roles.recruiter()])],
 } as const as {
   // eslint-disable-next-line no-unused-vars
   [id in Roles]: () => Roles[];
 };
 
+const nameToRole = (name: MetaForms['name']): Roles => {
+  switch (name) {
+    case 'recruiting_coordinator':
+      return 'recruiting coordinator';
+    case 'hiring_manager':
+      return 'hiring manager';
+    default:
+      return name as Roles;
+  }
+};
+
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
   const options = (data ?? [])
-    .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
+    .filter(({ role }) =>
+      (roles[nameToRole(name)] ?? (() => []))().includes(role),
+    )
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
       value: c.user_id,
@@ -424,24 +436,6 @@ export type JobMetaFormProps = {
   handleChange: (name: keyof Form, value: string | number) => void;
   handleCreate?: () => void;
   handleCancel?: () => void;
-};
-
-export const WarningSvg = () => {
-  return (
-    <GlobalIcon iconName='warning' />
-    // <svg
-    //   width='22'
-    //   height='13px'
-    //   viewBox='0 0 17 16'
-    //   xmlns='http://www.w3.org/2000/svg'
-    // >
-    //   <path
-    //     d='M8 4C7.72386 4 7.5 4.22386 7.5 4.5V9C7.5 9.27614 7.72386 9.5 8 9.5C8.27614 9.5 8.5 9.27614 8.5 9V4.5C8.5 4.22386 8.27614 4 8 4ZM8 13C8.55228 13 9 12.5523 9 12C9 11.4477 8.55228 11 8 11C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13ZM8 16C3.85786 16 0.5 12.6421 0.5 8.5C0.5 4.35786 3.85786 1 8 1C12.1421 1 15.5 4.35786 15.5 8.5C15.5 12.6421 12.1421 16 8 16ZM8 15C11.5899 15 14.5 12.0899 14.5 8.5C14.5 4.91015 11.5899 2 8 2C4.41015 2 1.5 4.91015 1.5 8.5C1.5 12.0899 4.41015 15 8 15Z'
-    //     fill='#e35b66'
-    //     fill-rule='evenodd'
-    //   ></path>
-    // </svg>
-  );
 };
 
 const UnassignedSvg = () => {

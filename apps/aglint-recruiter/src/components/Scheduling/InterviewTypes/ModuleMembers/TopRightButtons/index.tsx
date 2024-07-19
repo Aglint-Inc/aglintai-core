@@ -1,8 +1,9 @@
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import { MoreButton } from '@/devlink3/MoreButton';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { MoreMenu } from '@/devlink3/MoreMenu';
 import toast from '@/src/utils/toast';
 
 import { QueryKeysInteviewModules } from '../../queries/type';
@@ -15,47 +16,105 @@ import { unArchiveModuleById } from '../../utils';
 import ArchiveModuleDialog from './ArchiveModuleDialog';
 import DeleteModuleDialog from './DeleteModuleDialog';
 
-function TopRightButtons({ editModule }: { editModule: ModuleType }) {
+function TopRightButtons({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const queryClient = useQueryClient();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
-    <Stack direction={'row'} alignItems={'center'} spacing={1}>
-      <DeleteModuleDialog editModule={editModule} />
-      <ArchiveModuleDialog editModule={editModule} />
-      <MoreButton
-        onClickDelete={{
-          onClick: () => {
-            setIsDeleteModuleDialogOpen(true);
+    <>
+      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        <DeleteModuleDialog editModule={editModule} />
+        <ArchiveModuleDialog editModule={editModule} refetch={refetch} />
+
+        <Stack onClick={handleClick}>
+          <IconButtonGhost
+            iconName='more_vert'
+            size={2}
+            iconSize={6}
+            color={'neutral'}
+          />
+        </Stack>
+      </Stack>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
           },
         }}
-        onClickArchive={{
-          onClick: () => {
-            setIsArchiveDialogOpen(true);
-          },
-        }}
-        isArchiveVisible={!editModule?.is_archived}
-        isUnarchiveVisible={editModule?.is_archived}
-        onClickUnarchive={{
-          onClick: async () => {
-            const isUnArchived = await unArchiveModuleById(editModule.id);
-            if (isUnArchived) {
-              const updatedEditModule = {
-                ...editModule,
-                is_archived: false,
-              } as ModuleType;
-              queryClient.setQueryData<ModuleType>(
-                QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-                  moduleId: editModule.id,
-                }),
-                {
-                  ...updatedEditModule,
-                },
-              );
-              toast.success('Interview type unarchived successfully.');
-            }
-          },
-        }}
-      />
-    </Stack>
+      >
+        <MoreMenu
+          isArchiveVisible={!editModule?.is_archived}
+          isUnarchiveVisible={editModule?.is_archived}
+          onClickDelete={{
+            onClick: () => {
+              setIsDeleteModuleDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickArchive={{
+            onClick: () => {
+              setIsArchiveDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickUnarchive={{
+            onClick: async () => {
+              const isUnArchived = await unArchiveModuleById(editModule.id);
+              if (isUnArchived) {
+                const updatedEditModule = {
+                  ...editModule,
+                  is_archived: false,
+                } as ModuleType;
+                queryClient.setQueryData<ModuleType>(
+                  QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                    moduleId: editModule.id,
+                  }),
+                  {
+                    ...updatedEditModule,
+                  },
+                );
+                toast.success('Interview type unarchived successfully.');
+              }
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
+    </>
   );
 }
 

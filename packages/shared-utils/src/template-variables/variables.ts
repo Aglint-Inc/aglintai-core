@@ -1,12 +1,12 @@
+export const jobDetails = ["companyName", "jobRole"] as const;
+
+export const company = ["companyName"] as const;
+
 export const candidates = [
   "candidateFirstName",
   "candidateLastName",
   "candidateName",
 ] as const;
-
-export const jobDetails = ["companyName", "jobRole"] as const;
-
-export const company = ["companyName"] as const;
 
 export const organizer = [
   "organizerName",
@@ -21,26 +21,23 @@ export const interviewer = [
   "interviewerLastName",
 ] as const;
 
+export const interviewerInfo = [
+  "interviewerDepartment",
+  "interviewerLocation",
+  "interviewerEmail",
+] as const;
+
+export const admin = ["adminName", "adminFirstName", "adminLastName"] as const;
 export const dates = ["startDate", "endDate"] as const;
 export const date_range = "dateRange" as const;
 export const time = "time" as const;
+export const interviewTypes = "interviewTypes" as const;
 
 export const cancelReason = "cancelReason" as const;
 
 export const additionalRescheduleNotes = "additionalRescheduleNotes" as const;
 
 export const rescheduleReason = "rescheduleReason" as const;
-
-export const allTempvariables = [
-  ...candidates,
-  ...jobDetails,
-  ...company,
-  ...organizer,
-  ...interviewer,
-  ...dates,
-  time,
-] as const;
-
 export const candidateProfileLink = "candidateProfileLink" as const;
 export const interviewInstructionLink = "interviewInstructionLink" as const;
 export const interviewFeedbackLink = "interviewFeedbackLink" as const;
@@ -49,3 +46,19 @@ export const meetingDetailsLink = "meetingDetailsLink" as const;
 export const selfSchedulingLink = "selfScheduleLink" as const;
 export const supportLink = "supportLink" as const;
 export const availabilityReqLink = "availabilityReqLink" as const;
+export const interviewerPauseLink = "interviewerPauseLink" as const;
+
+export const allTempvariables = [
+  ...candidates,
+  ...jobDetails,
+  ...company,
+  ...organizer,
+  ...interviewer,
+  ...interviewerInfo,
+  ...admin,
+  ...dates,
+  interviewTypes,
+  meetingDetailsLink,
+  interviewerPauseLink,
+  time,
+] as const;

@@ -37,6 +37,16 @@ const all_possible_dynamic_values: {
   startDate: 'Fri, May 12, 2024',
   endDate: 'May 13, 2024',
   time: '10:30 AM - 11:00 PM',
+  meetingDetailsLink: '',
+  adminFirstName: 'Thomas Anthony',
+  adminLastName: 'Anthony',
+  adminName: 'Thomas',
+  interviewerDepartment: 'Software Development',
+  interviewerLocation: 'Pleasanton, California, United States',
+  interviewerEmail: 'Michael@aglinthq.com',
+  interviewTypes:
+    '<ul><li><p>Cultural Fit and Final Review</p></li><li><p>Archived Interview Type</p></li></ul>',
+  interviewerPauseLink: '<a href="#" target="_blank">here</a>',
 };
 
 export async function POST(req: Request) {

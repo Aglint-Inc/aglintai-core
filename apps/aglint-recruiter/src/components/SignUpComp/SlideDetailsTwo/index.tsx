@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { BackButton } from '@/devlink2/BackButton';
 import { RcInfoForm } from '@/devlink2/RcInfoForm';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
@@ -40,7 +39,7 @@ export interface Error1 {
 }
 function SlideDetailsTwo() {
   const router = useRouter();
-  const { setStep, recruiter, userDetails } = useSignupDetails();
+  const { recruiter, userDetails } = useSignupDetails();
 
   useEffect(() => {
     if (router.asPath == `${ROUTES['/signup']()}?step=${stepObj.detailsTwo}`) {
@@ -58,25 +57,6 @@ function SlideDetailsTwo() {
       slotMain={
         <>
           <CompanyDetails />
-
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            justifyContent={'center'}
-          >
-            <ButtonGhost
-              textButton='Skip this step'
-              size={2}
-              onClickButton={{
-                onClick: () => {
-                  router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                    shallow: true,
-                  });
-                  setStep(stepObj.atsSystem);
-                },
-              }}
-            />
-          </Stack>
         </>
       }
     />
@@ -270,10 +250,10 @@ export function CompanyDetails() {
         />
       }
       slotForm={
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <UITextField
             label='Company Name'
-            labelSize='medium'
+            labelSize='small'
             fullWidth
             value={recruiter?.name}
             placeholder={'Ex. Acme Inc.'}
@@ -310,7 +290,7 @@ export function CompanyDetails() {
               return (
                 <UITextField
                   rest={{ ...params }}
-                  labelSize='medium'
+                  labelSize='small'
                   fullWidth
                   label='Industry Type'
                   placeholder='Ex. Healthcare'
@@ -357,7 +337,7 @@ export function CompanyDetails() {
                 }}
                 label='Employee Size'
                 placeholder='Ex. 1000-2000'
-                labelSize='medium'
+                labelSize='small'
                 onChange={(event) => {
                   setRecruiter({
                     ...recruiter,
@@ -373,8 +353,9 @@ export function CompanyDetails() {
             onBlur={(value, country: phone) => {
               phoneValidation(country.format);
             }}
-            placeholder='Enter your phone number'
+            placeholder='Enter phone number with country code'
             value={phone}
+            labelSize='small'
             error={error.phone.error}
             onChange={(value, data: phone, event, formattedValue) => {
               setPhonePattern(data.format);
@@ -396,20 +377,41 @@ export function CompanyDetails() {
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <BackButton
-              onclickProps={{
+            <ButtonGhost
+              color={'neutral'}
+              onClickButton={{
                 onClick: () => {
                   router.back();
                 },
               }}
-            />
-            <ButtonSolid
+              textButton='Back'
               size={2}
-              textButton='Continue'
-              onClickButton={{
-                onClick: submitHandler,
-              }}
             />
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              gap={'var(--space-2)'}
+            >
+              <ButtonGhost
+                textButton='Skip'
+                size={2}
+                onClickButton={{
+                  onClick: () => {
+                    router.push(`?step=${stepObj.atsSystem}`, undefined, {
+                      shallow: true,
+                    });
+                    setStep(stepObj.atsSystem);
+                  },
+                }}
+              />
+              <ButtonSolid
+                size={2}
+                textButton='Continue'
+                onClickButton={{
+                  onClick: submitHandler,
+                }}
+              />
+            </Stack>
           </Stack>
         </Stack>
       }

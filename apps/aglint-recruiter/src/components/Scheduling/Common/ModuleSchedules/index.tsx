@@ -1,5 +1,4 @@
-import { Stack } from '@mui/material';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
@@ -8,7 +7,7 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
-import { ScheduleListType } from './hooks';
+import { fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
 type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';
@@ -17,7 +16,7 @@ function ModuleSchedules({
   newScheduleList,
 }: {
   isFetched: boolean;
-  newScheduleList: ScheduleListType;
+  newScheduleList: Awaited<ReturnType<typeof fetchModuleSchedules>>;
 }) {
   const [filter, setFilter] = React.useState<tabs>('confirmed');
   const [changeText, setChangeText] = useState('');
@@ -29,8 +28,8 @@ function ModuleSchedules({
   const countCalculation = (tab: tabs) => {
     return newScheduleList.filter(
       (sch) =>
-        sch.interview_meeting.status === tab &&
-        sch.interview_meeting.session_name
+        sch.status === tab &&
+        sch.session_name
           .toLowerCase()
           .includes(changeText.toLowerCase()),
     );

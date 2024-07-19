@@ -1,58 +1,118 @@
 /* eslint-disable no-unused-vars */
-import { RecruiterUserType } from '@aglint/shared-types';
+import { DatabaseEnums, RecruiterUserType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 
-import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
+import { SchedulesSupabase, schedulesSupabase } from '../../schedules-query';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
+export type ScheduleFilerType = {
+  status: DatabaseEnums['interview_schedule_status'][];
+  interviewers: string[];
+  jobs: string[];
+  schedule_types: string[];
+  date_range: string[];
+  session_types: DatabaseEnums['session_type'][];
+  searchText: string;
+};
+export var initialFilterState: ScheduleFilerType = {
+  status: ['confirmed', 'completed'],
+  interviewers: [],
+  jobs: [],
+  schedule_types: [],
+  date_range: [],
+  session_types: [],
+  searchText: null,
+};
 interface ContextValue {
-  allSchedules: ScheduleListType | null;
-  setAllSchedules: (x: ScheduleListType | null) => void;
-  filterSchedules: ScheduleListType;
-  setFilterSchedule: (x: ScheduleListType | null) => void;
+  filteredSchedules: SchedulesSupabase | null;
+  setFilteredSchedule: (x: SchedulesSupabase | null) => void;
   loadingSchedules: boolean;
   setLoadingSchedules: (x: boolean) => void;
+  filterState: typeof initialFilterState;
+  setFilterState: (x: typeof initialFilterState) => void;
+  updateFilterState: (
+    key: keyof typeof initialFilterState,
+    value: string[] | string,
+  ) => void;
 }
 
 const defaultProvider: ContextValue = {
-  allSchedules: null,
-  setAllSchedules: () => {},
-  filterSchedules: null,
-  setFilterSchedule: () => {},
+  filteredSchedules: null,
+  setFilteredSchedule: () => {},
   loadingSchedules: false,
   setLoadingSchedules: () => {},
+  filterState: initialFilterState,
+  setFilterState: () => {},
+  updateFilterState: () => {},
 };
 const ScheduleStatesContext = createContext<ContextValue>(defaultProvider);
 const useScheduleStatesContext = () => useContext(ScheduleStatesContext);
 function ScheduleStatesProvider({ children }) {
-  const [allSchedules, setAllSchedules] = useState<ScheduleListType | null>(
-    null,
-  );
-  const [filterSchedules, setFilterSchedule] =
-    useState<ScheduleListType | null>(null);
+  const [filteredSchedules, setFilteredSchedule] =
+    useState<SchedulesSupabase | null>(null);
   const [loadingSchedules, setLoadingSchedules] = useState(true);
-  const { data: schedules, isLoading, isFetched } = useAllScheduleList();
+
+  const [scheduleFilterIds, setScheduleFilterIds] =
+    useLocalStorage('scheduleFilterIds');
+
+  const [filterState, setFilterState] = useState(initialFilterState);
   useEffect(() => {
-    if (!isLoading && isFetched) {
-      setAllSchedules((schedules || []) as ScheduleListType);
-      setFilterSchedule((schedules || []) as ScheduleListType);
+    if (scheduleFilterIds) {
+      setFilterState({
+        date_range: scheduleFilterIds?.date_range || [],
+        interviewers: scheduleFilterIds?.interviewers || [],
+        jobs: scheduleFilterIds?.jobs || [],
+        schedule_types: scheduleFilterIds?.schedule_types || [],
+        session_types: scheduleFilterIds?.session_types || [],
+        searchText: scheduleFilterIds?.searchText || '',
+        status: scheduleFilterIds?.status || [],
+      });
     }
-  }, [isLoading, isFetched]);
+  }, [scheduleFilterIds]);
+  const updateFilterState = (
+    key: keyof typeof initialFilterState,
+    value: string[],
+  ) => {
+    setFilterState((prevState) => {
+      let states = {
+        ...prevState,
+        [key]: value,
+      };
+      setScheduleFilterIds({
+        ...states,
+      });
+
+      return states;
+    });
+  };
+
+  const {
+    data: schedules,
+    isLoading,
+    isFetched,
+  } = useAllScheduleList({ ...filterState });
+  useEffect(() => {
+    setLoadingSchedules(isLoading);
+    if (!isLoading && isFetched) setFilteredSchedule(schedules);
+  }, [filterState, schedules]);
+
   return (
     <ScheduleStatesContext.Provider
       value={{
-        allSchedules,
-        setAllSchedules,
-        filterSchedules,
-        setFilterSchedule,
+        filteredSchedules,
+        setFilteredSchedule,
         loadingSchedules,
         setLoadingSchedules,
+        filterState,
+        setFilterState,
+        updateFilterState,
       }}
     >
       {children}
@@ -62,12 +122,35 @@ function ScheduleStatesProvider({ children }) {
 
 export { ScheduleStatesProvider, useScheduleStatesContext };
 
-export const useAllScheduleList = () => {
+export const useAllScheduleList = (filters: ScheduleFilerType) => {
+  const {
+    date_range,
+    interviewers,
+    jobs,
+    schedule_types,
+    status,
+    searchText,
+    session_types,
+  } = filters;
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_All_Schedule_List'],
-    queryFn: () => getAllScheduleList(recruiter_id),
+    queryKey: [
+      'get_All_Schedule_List',
+      ...status,
+      ...jobs,
+      ...schedule_types,
+      ...interviewers,
+      ...date_range,
+      ...session_types,
+      searchText,
+    ],
+
+    queryFn: () =>
+      getAllScheduleList({
+        filters,
+        recruiter_id,
+      }),
     gcTime: 20000,
   });
   const refetch = () =>
@@ -75,13 +158,68 @@ export const useAllScheduleList = () => {
   return { ...query, refetch };
 };
 
-async function getAllScheduleList(recruiter_id: string) {
-  const { data, error } = await supabase.rpc(
-    'get_interview_schedule_by_rec_id',
-    {
-      target_rec_id: recruiter_id,
-    },
-  );
-  if (error) throw new Error();
-  return data as unknown as ScheduleListType;
+export async function getAllScheduleList({
+  filters,
+  recruiter_id,
+}: {
+  filters: ScheduleFilerType;
+  recruiter_id: string;
+}) {
+  const {
+    date_range,
+    interviewers,
+    jobs,
+    schedule_types,
+    status,
+    searchText,
+    session_types,
+  } = filters;
+  const filtersAll = schedulesSupabase()
+    .eq('recruiter_id', recruiter_id)
+    .eq('meeting_interviewers.is_confirmed', true);
+  if (jobs.length > 0) {
+    filtersAll.in('job_id', jobs);
+  }
+
+  if (status.length > 0) {
+    filtersAll.in('status', status);
+  }
+
+  if (schedule_types.length > 0) {
+    filtersAll.in('schedule_type', schedule_types);
+  }
+  if (session_types.length > 0) {
+    filtersAll.in('session_type', session_types);
+  }
+
+  if (date_range.length > 0) {
+    if (date_range[0] === dayjsLocal().format('YYYY-MM-DD')) {
+      filtersAll.eq('start_time', date_range[0]);
+    } else if (
+      date_range[0] === dayjsLocal().add(1, 'day').format('YYYY-MM-DD')
+    ) {
+      filtersAll.eq('start_time', date_range[0]);
+    } else {
+      if (dayjsLocal(date_range[0]).isAfter(dayjsLocal())) {
+        // checking if date is after current date
+        filtersAll.lte('start_time', date_range[0]);
+        filtersAll.gte('start_time', dayjsLocal().format('YYYY-MM-DD'));
+      } else {
+        filtersAll.gte('start_time', date_range[0]);
+        filtersAll.lte('start_time', dayjsLocal().format('YYYY-MM-DD'));
+      }
+    }
+  }
+  if (searchText) {
+    filtersAll.ilike('session_name', `%${searchText}%`);
+  }
+
+  if (interviewers.length > 0) {
+    filtersAll.contains('confirmed_user_ids', interviewers);
+  }
+
+  const { data: schedules } = await filtersAll
+    .order('start_time', { ascending: true })
+    .throwOnError();
+  return schedules;
 }

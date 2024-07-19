@@ -6,6 +6,7 @@ import { useJobCreate, useJobDelete, useJobsRead } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { handleGenerateJd } from '../JobContext/hooks';
+import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 
 export const getActiveSection = ({
   isAssessmentEnabled,
@@ -35,6 +36,9 @@ const useJobActions = () => {
   } = useAuthDetails();
 
   const jobs = useJobsRead();
+
+  const { checkPermissions, devlinkProps: getDevlinkProps } =
+    useRolesAndPermissions();
 
   const customJobs = useMemo(
     () => ({
@@ -82,12 +86,24 @@ const useJobActions = () => {
     }
   };
 
+  const manageJob = useMemo(
+    () => checkPermissions(['manage_job']),
+    [checkPermissions],
+  );
+
+  const devlinkProps = useMemo(
+    () => getDevlinkProps(['manage_job']),
+    [getDevlinkProps],
+  );
+
   const value = {
     jobs: customJobs,
     handleJobCreate,
     handleJobsRefresh: jobs.refetch,
     handleJobDelete,
     initialLoad,
+    manageJob,
+    devlinkProps,
   };
 
   return value;

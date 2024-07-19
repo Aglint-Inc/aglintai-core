@@ -10,6 +10,8 @@ export default function SearchField({
   value,
   onChange,
   onClear,
+  onFocus,
+  onBlur,
   placeholder,
   isFullWidth = false,
 }: {
@@ -21,12 +23,16 @@ export default function SearchField({
   ) => void;
   onClear: any;
   isFullWidth?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }) {
   return (
     <UITextField
       height={32}
       width={isFullWidth ? undefined : '250px'}
       fullWidth={isFullWidth}
+      onFocus={onFocus}
+      onBlur={onBlur}
       InputProps={{
         endAdornment: value ? (
           <Stack

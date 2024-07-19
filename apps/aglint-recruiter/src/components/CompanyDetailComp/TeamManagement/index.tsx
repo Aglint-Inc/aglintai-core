@@ -6,8 +6,10 @@ import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
@@ -29,7 +31,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
-  const { data: members, isFetching } = useTeamMembers();
+  const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
@@ -159,8 +161,28 @@ const TeamManagement = () => {
     Boolean(selectedRoles.length) ||
     Boolean(selectedLocations.length);
   return (
-    <>
+    <Stack bgcolor={'white'}>
       <TeamUsersList
+        slotBanner={
+          <GlobalBannerInline
+            iconName='history'
+            textContent='You currently have four pending invites awaiting your response.'
+            color={'warning'}
+            slotButton={
+              <ButtonSoft
+                onClickButton={{
+                  onClick: () => {
+                    setSelectedStatus(['invited']);
+                    // setOpenDrawer({ open: true, window: 'pendingMember' });
+                  },
+                }}
+                textButton='View pending invites'
+                color={'accent'}
+                size={2}
+              />
+            }
+          />
+        }
         slotSearchAndFilter={
           <>
             <Stack marginRight={5}>
@@ -168,7 +190,7 @@ const TeamManagement = () => {
                 value={searchText}
                 onChange={handleTextChange}
                 onClear={handleTextClear}
-                placeholder='Search Member'
+                placeholder='Search users'
               />
             </Stack>
             <Stack
@@ -264,13 +286,9 @@ const TeamManagement = () => {
                     }
                   }}
                   updateMember={(updatedMem) => {
-                    handelMemberUpdate({
+                    return handelMemberUpdate({
                       user_id: member.user_id,
                       data: updatedMem,
-                    }).then(() => {
-                      toast.success(
-                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'suspended successfully' : 'activated successfully'}.`,
-                      );
                     });
                   }}
                   canSuspend={
@@ -296,11 +314,12 @@ const TeamManagement = () => {
           />
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        onClickViewPendingInvites={{
-          onClick: () => {
-            setOpenDrawer({ open: true, window: 'pendingMember' });
-          },
-        }}
+        // onClickViewPendingInvites={{
+        //   onClick: () => {
+        //     setSelectedStatus(['invited']);
+        //     // setOpenDrawer({ open: true, window: 'pendingMember' });
+        //   },
+        // }}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
         )} pending invites awaiting your response.`}
@@ -309,7 +328,7 @@ const TeamManagement = () => {
       {editMember ? (
         <EditMember
           open={Boolean(editMember)}
-          memberList={members
+          memberList={activeMembers
             .map((mem) => ({
               id: mem.user_id,
               name: getFullName(mem.first_name, mem.last_name),
@@ -324,7 +343,7 @@ const TeamManagement = () => {
         <AddMember
           open={openDrawer.open}
           menu={openDrawer.window}
-          memberList={members.map((mem) => ({
+          memberList={activeMembers.map((mem) => ({
             id: mem.user_id,
             name: getFullName(mem.first_name, mem.last_name),
           }))}
@@ -334,14 +353,18 @@ const TeamManagement = () => {
           }}
         />
       )}
-    </>
+    </Stack>
   );
 };
 
 export default TeamManagement;
 
 const useTeamMembers = () => {
-  const { members, recruiter } = useAuthDetails();
+  const {
+    allMember: members,
+    members: activeMembers,
+    recruiter,
+  } = useAuthDetails();
   const query = useQuery({
     queryKey: ['TeamMembers'],
     queryFn: () => {
@@ -364,7 +387,7 @@ const useTeamMembers = () => {
       query.refetch();
     }
   }, [members, query.refetch]);
-  return query;
+  return { activeMembers, ...query };
 };
 
 const getLastLogins = (ids: string[], recruiter_id: string) => {

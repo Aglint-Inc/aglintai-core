@@ -8,4 +8,5 @@ declare function GlobalCta(props: {
   textDescription?: React.ReactNode;
   slotButton?: Types.Devlink.Slot;
   iconName?: React.ReactNode;
+  slotCustomIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

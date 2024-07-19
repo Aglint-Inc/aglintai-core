@@ -117,6 +117,7 @@ async function registerMember(
     role: relation.roles.name,
     manager_id: relation.manager_id,
     created_by: relation.created_by,
+    recruiter_relation_id: relation.id,
   };
 
   return recUserType;

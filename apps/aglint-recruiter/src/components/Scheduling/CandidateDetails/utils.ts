@@ -307,3 +307,11 @@ export const onClickResendInvite = async ({
     toast.error(e.message);
   }
 };
+
+export const getTaskDetails = async (application_id: string) => {
+  const { data } = await supabase
+    .from('tasks_view')
+    .select('*')
+    .eq('application_id', application_id);
+  return data;
+};

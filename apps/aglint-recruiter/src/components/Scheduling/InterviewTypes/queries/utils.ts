@@ -1,11 +1,11 @@
-import { PauseJson, SupabaseType } from '@aglint/shared-types';
+import { DatabaseTable, PauseJson, SupabaseType } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
+import { schedulesSupabase } from '../../schedules-query';
 import { initialEditModule } from '../store';
 import {
   MemberType,
@@ -16,15 +16,54 @@ import {
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
 
-export const fetchModules = async (module_id: string) => {
-  const { data, error } = await supabase.rpc(
-    'get_interview_schedule_by_module_id',
-    {
-      target_module_id: module_id,
-    },
+export const fetchSchedulesCountByModule = async (module_id: string) => {
+  const { data } = await supabase
+    .from('meeting_details')
+    .select()
+    .eq('module_id', module_id);
+
+  const upcomingCount = data.reduce(
+    (acc, cur) => (cur.status === 'confirmed' ? acc + 1 : acc),
+    0,
   );
-  if (error) throw new Error(error.message);
-  return data as unknown as ScheduleListType;
+
+  const completedCount = data.reduce(
+    (acc, cur) => (cur.status === 'completed' ? acc + 1 : acc),
+    0,
+  );
+
+  const cancelledCount = data.reduce(
+    (acc, cur) => (cur.status === 'cancelled' ? acc + 1 : acc),
+    0,
+  );
+
+  return {
+    upcomingCount,
+    completedCount,
+    cancelledCount,
+  };
+};
+
+export const fetchModuleSchedules = async (
+  module_id: string,
+  filter: DatabaseTable['interview_meeting']['status'],
+  changeText: string,
+) => {
+  const query = schedulesSupabase()
+    .eq('module_id', module_id)
+    .eq('meeting_interviewers.is_confirmed', true);
+
+  if (changeText) {
+    query.ilike('session_name', `%${changeText}%`);
+  }
+
+  if (filter) {
+    query.eq('status', filter);
+  }
+
+  const { data } = await query.throwOnError();
+
+  return data;
 };
 
 export const fetchProgress = async ({
@@ -249,7 +288,7 @@ export const getMeetingsByModuleId = async (module_id: string) => {
       interview_meeting: sesRel.interview_session.interview_meeting,
     }))
     .filter((ses) => Boolean(ses.interview_meeting));
-
+  
   return resRel;
 };
 

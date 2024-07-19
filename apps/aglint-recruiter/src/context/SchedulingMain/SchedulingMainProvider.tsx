@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 // import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { supabase } from '@/src/utils/supabase/client';
 
 export type InterviewScheduleContextType = {
@@ -48,9 +49,16 @@ const SchedulingProvider = ({ children }) => {
         setAllModules(modules);
       }
 
-      const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
+      const bodyParams: BodyParamsFetchUserDetails = {
         recruiter_id: recruiter.id,
-      });
+        status: 'joined',
+        is_suspended: false,
+      };
+
+      const resMem = await axios.post(
+        '/api/scheduling/fetchUserDetails',
+        bodyParams,
+      );
       if (resMem.data) {
         setMembers(resMem.data);
       }

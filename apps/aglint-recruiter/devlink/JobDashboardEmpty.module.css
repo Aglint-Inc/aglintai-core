@@ -452,3 +452,10 @@
 .text-color-white {
   color: white;
 }
+
+.cursor-pointer.discard-job {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+}

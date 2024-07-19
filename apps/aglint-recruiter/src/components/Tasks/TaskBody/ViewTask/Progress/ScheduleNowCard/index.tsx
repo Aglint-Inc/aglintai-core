@@ -2,7 +2,7 @@ import { DatabaseView } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import {
   setDateRange,
   setIsScheduleNowOpen,
@@ -23,7 +23,7 @@ function ScheduleNowCard({
   const router = useRouter();
 
   return (
-    <GlobalBanner
+    <GlobalBannerShort
       color={'warning'}
       iconName={'check_circle'}
       textTitle={'Schedule interview'}
@@ -53,7 +53,7 @@ function ScheduleNowCard({
                 setRescheduleSessionIds(
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
-                setStepScheduling('reschedule');
+                setStepScheduling('schedule_all_options');
                 if (selectedTask.type === 'availability') {
                   setScheduleFlow('create_request_availibility');
                   setStepScheduling('request_availibility');
@@ -68,7 +68,8 @@ function ScheduleNowCard({
                     selectedTask.session_ids.map((ele) => ele.id),
                   );
                 }
-                setSelectedTaskId(selectedTask.id)
+
+                setSelectedTaskId(selectedTask.id);
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );

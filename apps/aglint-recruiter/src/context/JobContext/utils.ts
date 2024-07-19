@@ -82,6 +82,13 @@ const getMessage = (invalidFields: string[]) => {
   } incomplete`;
 };
 
+const getTeamMessage = (invalidFields: string[]) => {
+  const titles = (invalidFields ?? []).map((field) => capitalizeAll(field));
+  return `${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
+    titles.length === 1 ? 'role is' : 'roles are'
+  } not assigned`;
+};
+
 type HiringTeamValidity = {
   validity: boolean;
   invalidFields: (keyof Pick<
@@ -97,7 +104,7 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
       'hiring_manager',
       'recruiter',
     ];
-    const message = getMessage(invalidFields);
+    const message = getTeamMessage(invalidFields);
     return {
       validity: false,
       invalidFields,
@@ -128,7 +135,7 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
     },
     { validity: true, invalidFields: [] } as HiringTeamValidity,
   );
-  result['message'] = getMessage(result.invalidFields);
+  result['message'] = getTeamMessage(result.invalidFields);
   return result;
 };
 

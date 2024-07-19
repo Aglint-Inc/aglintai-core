@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import React, { Dispatch } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
@@ -18,14 +18,20 @@ function TabInterviewModules({
   setPauseResumeDialog: Dispatch<React.SetStateAction<PauseDialog>>;
 }) {
   const qualifiedModulesList =
-    detailsWithCount.modules.filter(
-      (item) => item.training_status === 'qualified',
-    ) || [];
+    detailsWithCount.modules.filter((item) => {
+      return (
+        item.training_status === 'qualified' &&
+        item.interview_module.is_archived === false
+      );
+    }) || [];
 
   const trainingModulesList =
-    detailsWithCount.modules.filter(
-      (item) => item.training_status === 'training',
-    ) || [];
+    detailsWithCount.modules.filter((item) => {
+      return (
+        item.training_status === 'training' &&
+        item.interview_module.is_archived === false
+      );
+    }) || [];
 
   return (
     <>
@@ -70,7 +76,11 @@ function TabInterviewModules({
                 </Stack>
               </>
             ) : (
-              <AllInterviewEmpty textDynamic='No interview types added yet.' />
+              <GlobalEmptyState
+                textDesc='No Interview type found.'
+                size={6}
+                iconName='school'
+              />
             )}
           </>
         }

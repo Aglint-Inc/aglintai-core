@@ -1,0 +1,20 @@
+.scheduler_dash_option {
+  display: flex;
+  width: 210px;
+  padding: var(--space-2);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
+.slot-dash-menu {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}

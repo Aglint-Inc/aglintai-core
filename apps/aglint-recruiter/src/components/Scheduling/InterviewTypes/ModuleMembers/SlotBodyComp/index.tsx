@@ -1,24 +1,20 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
-import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import ModuleSchedules from '../../../Common/ModuleSchedules';
 import Instructions from '../../../ScheduleDetails/Instructions';
 import {
-  useAllSchedulesByModuleId,
-  useGetMeetingsByModuleId,
-  useModuleAndUsers,
+  useGetMeetingsByModuleId
 } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
@@ -31,8 +27,9 @@ import DeleteMemberDialog from '../DeleteMemberDialog';
 import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
+import SchedulesModules from '../Schedules';
 import { TabsModuleMembers } from '../type';
-import SettingsDialog from './AddMemberDialog';
+import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
@@ -41,31 +38,25 @@ interface SlotBodyCompProps {
   editModule: ModuleType;
   fetchingModule: boolean;
   isFetching: boolean;
+  refetch: () => void;
 }
 
 function SlotBodyComp({
   editModule,
   fetchingModule,
   isFetching,
+  refetch,
 }: SlotBodyCompProps) {
   const router = useRouter();
   const { loading } = useSchedulingContext();
-  const {
-    data: scheduleList,
-    isLoading: schedulesLoading,
-    isFetched,
-  } = useAllSchedulesByModuleId();
 
-  const { data: meetingData } = useGetMeetingsByModuleId({
-    schedulesLoading: schedulesLoading,
-    user_ids: editModule?.relations?.map((user) => user.user_id) || [],
-  });
+  const { data: meetingData, isLoading } = useGetMeetingsByModuleId();
 
-  const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
+  const currentTab = (router.query.tab ||
+    'members') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
-  const { refetch } = useModuleAndUsers();
   async function updateInstruction() {
     if (textValue) {
       const { data } = await supabase
@@ -79,6 +70,48 @@ function SlotBodyComp({
       }
     }
   }
+
+  let sections = tabsModuleMembers.map((item) => item.queryParams);
+  const tabCount: number = sections.length - 1;
+  const currentIndex: number = sections.indexOf(currentTab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+    router.push(
+      ROUTES['/scheduling/module/members/[module_id]']({
+        module_id: editModule.id,
+      }) + `?tab=${pre}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+
+    router.push(
+      ROUTES['/scheduling/module/members/[module_id]']({
+        module_id: editModule.id,
+      }) + `?tab=${next}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
+
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -138,7 +171,7 @@ function SlotBodyComp({
                       editModule.settings?.require_training
                     }
                     slotQualifiedMemberList={
-                      !schedulesLoading && (
+                      !isLoading && (
                         <SlotQualifiedMembers
                           editModule={editModule}
                           meetingData={meetingData}
@@ -165,34 +198,19 @@ function SlotBodyComp({
                     }}
                   />
                 )}
-                {currentTab === 'schedules' && (
-                  <ModuleSchedules
-                    newScheduleList={scheduleList}
-                    isFetched={isFetched}
-                  />
-                )}
+                {currentTab === 'schedules' && <SchedulesModules />}
 
                 {currentTab === 'instructions' && (
-                  <ShowCode>
-                    <ShowCode.When isTrue={!!editModule?.instructions}>
-                      <Instructions
-                        instruction={editModule?.instructions}
-                        setTextValue={setTextValue}
-                        showEditButton={true}
-                        updateInstruction={updateInstruction}
-                      />
-                    </ShowCode.When>
-                    <ShowCode.Else>
-                      <Stack
-                        direction={'row'}
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                        height={'calc(100vh - 185px)'}
-                      >
-                        <AllInterviewEmpty textDynamic='No Instructions' />
-                      </Stack>
-                    </ShowCode.Else>
-                  </ShowCode>
+                  <>
+                    <Instructions
+                      instruction={editModule?.instructions}
+                      setTextValue={setTextValue}
+                      showEditButton={true}
+                      updateInstruction={updateInstruction}
+                      isBorder={true}
+                      isPadding={true}
+                    />
+                  </>
                 )}
 
                 {currentTab === 'training' && (

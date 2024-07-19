@@ -19,7 +19,7 @@ import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys
 import { useJob } from '../JobContext';
 
 const useJobInterviewPlanActions = () => {
-  const { job, interviewPlans } = useJob();
+  const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
@@ -47,9 +47,10 @@ const useJobInterviewPlanActions = () => {
 
   const initialLoad = !!(
     job &&
-    !interviewModules.isPending &&
-    !companyMembers.isPending &&
-    !interviewPlans.isPending
+    jobLoad &&
+    interviewModules.status !== 'pending' &&
+    companyMembers.status !== 'pending' &&
+    interviewPlans.status !== 'pending'
   );
 
   const getLoadingState = (sessionId: string) => {
@@ -100,6 +101,7 @@ const useJobInterviewPlanActions = () => {
     handleReorderSessions,
     interviewPlans,
     plan_id,
+    manageJob,
   };
   return value;
 };

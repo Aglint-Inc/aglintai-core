@@ -6,13 +6,15 @@
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 
+  border-radius: var(--radius-2);
+
   transition: all 250ms ease;
 
   cursor: pointer;
 }
 
 .lever-card-map:hover {
-  background-color: var(--sky-a1);
+  background-color: var(--neutral-2);
 }
 
 .relative-1 {
@@ -214,5 +216,7 @@
   right: 0%;
   bottom: 0%;
 
-  background-color: var(--sky-a3);
+  border-radius: var(--radius-2);
+
+  background-color: var(--accent-3);
 }

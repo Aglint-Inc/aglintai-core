@@ -1,11 +1,35 @@
-import { Stack } from '@mui/material';
+import { EmailTemplateAPi } from '@aglint/shared-types';
+import { Stack, Typography } from '@mui/material';
+import axios from 'axios';
+import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
+import Loader from '@/src/components/Common/Loader';
+import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
 
+import { useSchedulingApplicationStore } from '../store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
-import { useSchedulingFlowStore } from './store';
+import { setEmailData, useSchedulingFlowStore } from './store';
 
 function EmailPreviewSelfSchedule() {
+  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+  }));
+  const [fetching, setFetching] = useState(false);
+
+  const { recruiterUser } = useAuthDetails();
+
+  const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+    {
+      application_id: selectedApplication.id,
+      organizer_id: recruiterUser.user_id,
+    };
+
   const { emailData, filteredSchedulingOptions, selectedCombIds } =
     useSchedulingFlowStore((state) => ({
       emailData: state.emailData,
@@ -14,12 +38,31 @@ function EmailPreviewSelfSchedule() {
     }));
 
   const selectedSlots = filteredSchedulingOptions
-    .filter((option) =>
-      option.plans.some((plan) => selectedCombIds.includes(plan.plan_comb_id)),
-    )
+    .map((option) => ({
+      ...option,
+      plans: option.plans.filter((plan) =>
+        selectedCombIds.includes(plan.plan_comb_id),
+      ),
+    }))
     .filter((option) => option.plans.length > 1);
 
   const numberOfDays = selectedSlots.length;
+
+  const getEmail = () => {
+    setFetching(true);
+    axios
+      .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
+        meta: { ...payload },
+      })
+      .then(({ data }) => {
+        setEmailData(data);
+        setFetching(false);
+      })
+      .catch(() => {
+        toast.error('Fail to fetch email preview');
+        setFetching(false);
+      });
+  };
 
   return (
     <EmailPreviewOnScheduling
@@ -41,24 +84,69 @@ function EmailPreviewSelfSchedule() {
             index={index}
             setSelectedCombIds={() => {}}
             isAutoCollapse={false}
+            isSelectedOptionsTextVisible={false}
           />
         );
       })}
       textEmailPreview={
-        'To proceed to self scheduling please click on the button below. Upon doing so, an email containing the following message will be sent to the candidate:'
+        <Stack spacing={1} direction={'column'}>
+          <Typography>
+            This email will be sent to the candidate. To edit the content, go to
+            the template section, make edits, then click refresh.
+            <br />
+            {`Click "Request Availability" to send.`}
+          </Typography>
+         
+        </Stack>
       }
       slotEmailPreview={
-        emailData?.html && (
-          <Stack sx={{ py: 'var(--space-4)' }}>
-            <iframe
-              width={'600px'}
-              height={'650px'}
-              color='white'
-              srcDoc={emailData?.html}
-              title='Previw Email'
+        <ShowCode>
+          <ShowCode.When isTrue={fetching}>
+            <Stack height={'80vh'} width={'538px'}>
+              <Loader />
+            </Stack>
+          </ShowCode.When>
+          <ShowCode.Else>
+          <Stack display={'flex'} gap={'32px'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} width={'100%'} padding={'0px 20px'}>
+              <Stack>
+            <GlobalBannerInline  textContent='This is a preview only. All actions in this email are disabled.' iconName='info' slotButton={<></>} color={'warning'}/>
+            
+           
+            </Stack>
+          <Stack direction={'row'} spacing={1} justifyItems={'start'} minWidth={'152px'}>
+          <ButtonSoft
+              size={1}
+              textButton={'Edit Email Template'}
+              color={'accent'}
+              onClickButton={{
+                onClick: () => {
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                  );
+                },
+              }}
+            />
+            <IconButtonSoft
+              size={1}
+              color={'neutral'}
+              iconName={'refresh'}
+              onClickButton={{
+                onClick: getEmail,
+              }}
             />
           </Stack>
-        )
+          </Stack>
+            <Stack sx={{ py: 'var(--space-4)' }}>
+              <iframe
+                width={'600px'}
+                height={'650px'}
+                color='white'
+                srcDoc={emailData?.html}
+                title='Previw Email'
+              />
+            </Stack>
+          </ShowCode.Else>
+        </ShowCode>
       }
     />
   );

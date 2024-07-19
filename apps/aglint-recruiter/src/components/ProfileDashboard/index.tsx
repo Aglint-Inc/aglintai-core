@@ -1,73 +1,29 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable security/detect-unsafe-regex */
-/* eslint-disable security/detect-object-injection */
-import { RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
+import { Autocomplete, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { EmailChangePop } from '@/devlink/EmailChangePop';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
-import { PasswordUpdated } from '@/devlink/PasswordUpdated';
-import { ProfileList } from '@/devlink/ProfileList';
-import { UserChangeEmail } from '@/devlink/UserChangeEmail';
-import { UserDetails } from '@/devlink/UserDetails';
-import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { PermissionEnums } from '@/src/utils/routing/permissions';
-import { supabase } from '@/src/utils/supabase/client';
-import { capitalize, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
+import { capitalize } from '@/src/utils/text/textUtils';
 
-import ImageUploadManual from '../Common/ImageUpload/ImageUploadManual';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
-type FormValues = {
-  value: string;
-  label: string;
-  type: 'text' | 'password';
-  placeholder: string;
-  error: boolean;
-  validation: 'string' | 'phone' | 'mail' | 'password' | 'linkedIn';
-  helperText: string;
-  blocked: boolean;
-  required: boolean;
-  disabled: boolean;
-  specialForm: boolean;
-  options: string[];
-  modal: boolean;
-};
-type FormFields = {
-  first_name: FormValues;
-  last_name: FormValues;
-  // email: FormValues;
-  phone: FormValues;
-  linked_in: FormValues;
-  // location: FormValues;
-  // designation: FormValues;
-  // department: FormValues;
-  // role: FormValues;
-};
-type PreferenceFormFields = {
-  language: FormValues;
-  timezone: FormValues;
-};
-type EmailFormFields = {
-  email: FormValues;
-};
-type PasswordFormFields = {
-  password: FormValues;
-  confirmPassword: FormValues;
-};
+import { ChangeEmail } from './components/ChangeEmail';
+import { PasswordUpdate } from './components/PasswordUpdate';
+import { UserDetail } from './components/UserDetails';
+import {
+  EmailFormFields,
+  FormFields,
+  FormValues,
+  PasswordFormFields,
+  PreferenceFormFields,
+} from './util';
 
 const navTabs: {
   label: string;
@@ -81,7 +37,6 @@ const navTabs: {
   {
     label: 'Change Email',
     route: 'change_email',
-    roles: ['settings_update'],
   },
   {
     label: 'Password Update',
@@ -90,540 +45,27 @@ const navTabs: {
 ];
 
 const ProfileDashboard = () => {
-  const { userDetails, handleUpdateProfile, recruiterUser, handleUpdateEmail } =
-    useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
-  const userMail = userDetails.user.email;
   const router = useRouter();
-  const initialFormValues: FormValues = {
-    value: null,
-    label: null,
-    type: 'text',
-    helperText: null,
-    placeholder: null,
-    error: false,
-    blocked: false,
-    validation: 'string',
-    required: false,
-    disabled: false,
-    specialForm: false,
-    options: null,
-    modal: false,
-  };
-  const initialProfileFormFields: FormFields = {
-    first_name: {
-      ...initialFormValues,
-      value: recruiterUser.first_name,
-      required: true,
-      label: 'First Name',
-      placeholder: 'Enter your first name.',
-    },
-    last_name: {
-      ...initialFormValues,
-      value: recruiterUser.last_name,
-      required: true,
-      label: 'Last Name',
-      placeholder: 'Enter your last name.',
-    },
-    // email: {
-    //   ...initialFormValues,
-    //   value: recruiterUser.email,
-    //   blocked: true,
-    //   required: false,
-    //   label: 'Email',
-    //   placeholder: 'Enter your email.',
-    // },
-    phone: {
-      ...initialFormValues,
-      value: recruiterUser.phone,
-      validation: 'phone',
-      label: 'Contact Number',
-      required: false,
-    },
-    linked_in: {
-      ...initialFormValues,
-      value: recruiterUser.linked_in,
-      validation: 'linkedIn',
-      label: 'LinkedIn',
-      required: false,
-    },
-  };
-  const initialEmail: EmailFormFields = {
-    email: {
-      ...initialFormValues,
-      value: '',
-      validation: 'mail',
-      placeholder: 'john.doe@example.com',
-      blocked: false,
-    },
-  };
-  const initialPassword: PasswordFormFields = {
-    password: {
-      ...initialFormValues,
-      value: '',
-      validation: 'password',
-      type: 'password',
-      required: true,
-      label: 'Create New Password',
-      placeholder: 'Enter a new password.',
-    },
-    confirmPassword: {
-      ...initialFormValues,
-      value: '',
-      validation: 'password',
-      type: 'password',
-      required: true,
-      label: 'Re-enter New Password',
-      placeholder: 'Re-enter the new password for confirmation.',
-    },
-  };
 
-  const [profileChange, setProfileChange] = useState(false);
-  const [profileForm, setProfileForm] = useState(false);
-  const [loading, setLoading] = React.useState({
-    profile: false,
-    preferences: false,
-    email: false,
-    password: false,
-  });
-
-  const [profile, setProfile] = React.useState<FormFields>(
-    structuredClone(initialProfileFormFields),
-  );
-  const [email, setEmail] = React.useState(initialEmail);
-  const [password, setPassword] = React.useState(initialPassword);
-  const [passwordChange, setPasswordChange] = React.useState(false);
   const [currTab, setCurrTab] = useState<
     'user_detail' | 'change_email' | 'password_update'
   >('user_detail');
-  // let currTab: 'user_detail' | 'change_email' | 'password_update' =
-  //   'user_detail';
-  // if (router.query?.tab === 'Change Email') {
-  //   currTab = 'Change Email';
-  // } else if (router.query?.tab === 'Change password') {
-  //   currTab = 'Change password';
-  // }
 
   useEffect(() => {
     if (router.query?.tab)
       setCurrTab(router.query?.tab as unknown as typeof currTab);
   }, [router.query?.tab]);
 
-  const handleValidatePassword = () => {
-    if (
-      validatePassword(password.password.value) &&
-      validatePassword(password.confirmPassword.value)
-    ) {
-      if (
-        password.password.value.trim() === password.confirmPassword.value.trim()
-      ) {
-        return {
-          newPassword: password.password.value.trim(),
-          error: null,
-        };
-      } else
-        return {
-          newPassword: null,
-          error: 'Passwords do not match',
-        };
-    } else
-      return {
-        newPassword: null,
-        error:
-          'Must contain more than 7 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
-      };
-  };
-  const handleValidateMail = () => {
-    if (validateMail(email.email.value)) {
-      if (validateGMail(email.email.value))
-        return {
-          newEmail: null,
-          error: 'Enter a valid work email',
-        };
-      return {
-        newEmail: refactorEmail(email.email.value).trim(),
-        error: null,
-      };
-    } else return { newEmail: null, error: 'Enter a valid work email' };
-  };
-
-  const refactorEmail = (email: string) => {
-    const regex = /\+.*@/;
-    if (regex.test(email)) return email.replace(regex, '@');
-    return email;
-  };
-
-  const handleSubmitPassword = async () => {
-    const { newPassword, error } = handleValidatePassword();
-    if (!error) {
-      await handleUpdatePassword(newPassword, false);
-      setPassword((prev) => ({
-        ...prev,
-        password: { ...prev.password, modal: true },
-      }));
-      setPasswordChange(true);
-    } else {
-      setPassword((prev) => {
-        return {
-          ...prev,
-          password: { ...prev.password, error: true, helperText: error },
-          confirmPassword: {
-            ...prev.confirmPassword,
-            error: true,
-            helperText: error,
-          },
-        };
-      });
-    }
-  };
-
-  const handleSubmitEmail = async () => {
-    const { newEmail, error } = handleValidateMail();
-    if (!error) {
-      const confirmation = await handleUpdateEmail(newEmail);
-      if (confirmation) {
-        setEmail((prev) => ({
-          ...prev,
-          email: { ...prev.email, modal: true },
-        }));
-        return true;
-      } else return false;
-    } else {
-      setEmail((prev) => {
-        return {
-          ...prev,
-          email: { ...prev.email, error: true, helperText: error },
-        };
-      });
-    }
-  };
-  const handleClosePassword = () => {
-    setPassword(initialPassword);
-  };
-  const handleCloseEmail = () => {
-    setEmail(initialEmail);
-  };
-  const [isError, setError] = useState(false);
-
-  const imageFile = useRef(null);
-
-  const { userDetails: userDetail } = useAuthDetails();
-
-  async function onUpdateSubmit() {
-    if (profileChange) {
-      if (profile) {
-        setLoading((prev) => {
-          return { ...prev, password: true };
-        });
-        const confirmation = await handleSubmit(
-          profile,
-          setProfile,
-          handleUpdateProfile,
-          recruiterUser,
-        );
-        if (confirmation) {
-          setProfileChange(false);
-          setProfileForm(false);
-        }
-        const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${userDetail?.user?.id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
-
-        if (data?.path && imageFile?.current?.size) {
-          setError(false);
-          await handleUpdateProfile({
-            profile_image: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`,
-          } as RecruiterUserType);
-        } else {
-          await handleUpdateProfile({
-            profile_image: null,
-          } as RecruiterUserType);
-        }
-
-        setLoading((prev) => {
-          return { ...prev, profile: false };
-        });
-      }
-    } else {
-      toast.error('No changes.');
-    }
-  }
   return (
     <>
-      {profileForm && (
-        <Dialog
-          open={profileForm}
-          onClose={() => {
-            setProfile(structuredClone(initialProfileFormFields));
-            setProfileForm(false);
-          }}
-        >
-          <UserDetails
-            slotClose={
-              <IconButtonGhost
-                iconName='close'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    setProfile(structuredClone(initialProfileFormFields));
-                    setProfileForm(false);
-                  },
-                }}
-              />
-            }
-            slotButton={
-              <>
-                <ButtonSoft
-                  textButton='Cancel'
-                  size={2}
-                  color={'neutral'}
-                  onClickButton={{
-                    onClick: () => {
-                      setProfile(structuredClone(initialProfileFormFields));
-                      setProfileForm(false);
-                    },
-                  }}
-                />
-                <ButtonSolid
-                  textButton='Update'
-                  size={2}
-                  onClickButton={{
-                    onClick: onUpdateSubmit,
-                  }}
-                />
-              </>
-            }
-            isWarningVisible={isError}
-            slotWarning={
-              <Typography variant='caption' color='error'>
-                The file you uploaded exceeds the maximum allowed size. Please
-                ensure that the file size is less than 5 MB
-              </Typography>
-            }
-            slotUserImage={
-              <ImageUploadManual
-                image={recruiterUser.profile_image}
-                size={64}
-                imageFile={imageFile}
-                setChanges={() => setProfileChange(true)}
-              />
-            }
-            slotUserForm={
-              // <></>
-              <>
-                <ProfileForms
-                  profile={profile}
-                  setProfile={setProfile}
-                  setChanges={() => setProfileChange(true)}
-                />
-              </>
-            }
-            slotUserInfoBtn={
-              <>
-                {/* <Stack
-                  style={{
-                    position: 'relative',
-                    pointerEvents: loading.profile ? 'none' : 'auto',
-                    zIndex: 0,
-                  }}
-                >
-                  <ButtonPrimaryRegular
-                    textLabel={'Save Changes'}
-                    isDisabled={!profileChange}
-                    onClickButton={{
-                      onClick: async () => {
-                        setLoading((prev) => {
-                          return { ...prev, password: true };
-                        });
-                        const confirmation = await handleSubmit(
-                          profile,
-                          setProfile,
-                          handleUpdateProfile,
-                          recruiterUser,
-                        );
-                        if (confirmation) setProfileChange(false);
-                        setLoading((prev) => {
-                          return { ...prev, profile: false };
-                        });
-                      },
-                    }}
-                  />
-                </Stack> */}
-              </>
-            }
-            onClickProfilePhotoChange={{
-              onClick: () => {
-                document.getElementById('image-upload').click();
-              },
-            }}
-          />
-        </Dialog>
-      )}
       <Stack>
         <UserProfile
           slotInfo={
             <>
-              {currTab === 'user_detail' && (
-                <ProfileList
-                  isLinkedInVisible={Boolean(recruiterUser.linked_in?.length)}
-                  onClickLinkedIn={{
-                    onClick: () => {
-                      recruiterUser.linked_in?.length &&
-                        window.open(recruiterUser.linked_in, '_ blank');
-                    },
-                  }}
-                  slotUserImage={
-                    <Avatar
-                      variant='rounded'
-                      src={recruiterUser.profile_image}
-                      alt={recruiterUser.first_name}
-                      sx={{
-                        width: '40px',
-                        height: '40px',
-                      }}
-                    />
-                  }
-                  textName={`${recruiterUser?.first_name ?? ''} ${
-                    recruiterUser?.last_name ?? ''
-                  }`.trim()}
-                  textDepartment={recruiterUser.department || '--'}
-                  textEmail={recruiterUser.email || '--'}
-                  textJobTitle={recruiterUser.position || '--'}
-                  textLocation={recruiterUser.interview_location || '--'}
-                  textRole={
-                    recruiterUser.role
-                      ? capitalizeFirstLetter(recruiterUser.role)
-                      : '--'
-                  }
-                  textNumber={recruiterUser.phone || '--'}
-                  onClickEdit={{
-                    onClick: () => {
-                      setProfileForm(true);
-                    },
-                  }}
-                />
-              )}
-              {currTab === 'change_email' && (
-                <>
-                  <Dialog
-                    open={email.email.modal}
-                    onClose={() => handleCloseEmail()}
-                  >
-                    <EmailChangePop
-                      textDesc={
-                        <>
-                          <>A confirmation link has been sent to </>
-                          <span
-                            style={{
-                              color: 'var(--accent-11)',
-                              fontWeight: 400,
-                            }}
-                          >
-                            {email.email.value}
-                          </span>
-                          <>. Please confirm it to update your email ID.</>
-                        </>
-                      }
-                      onClickClose={{
-                        onClick: () => handleCloseEmail(),
-                      }}
-                    />
-                  </Dialog>
-                  <UserChangeEmail
-                    texDesc={
-                      <>
-                        <>Your registered email is </>
-                        <span
-                          style={{ color: 'var(--accent-11)', fontWeight: 400 }}
-                        >
-                          {userMail}
-                        </span>
-                        <>
-                          . To change your email, enter the new email address
-                          below. A verification link will be sent to this new
-                          address.
-                        </>
-                      </>
-                    }
-                    onClickEmailChange={{
-                      onClick: async () => {
-                        setLoading((prev) => ({ ...prev, email: true }));
-                        await handleSubmitEmail();
-                        setLoading((prev) => ({ ...prev, email: false }));
-                      },
-                    }}
-                    slotEmail={
-                      <ProfileForms
-                        profile={email}
-                        setProfile={setEmail}
-                        setChanges={() => setPasswordChange(true)}
-                      />
-                    }
-                  />
-                </>
-              )}
-              <>
-                {currTab === 'password_update' && (
-                  <>
-                    <Dialog
-                      open={password.password.modal}
-                      onClose={() => handleClosePassword()}
-                    >
-                      <PasswordUpdated
-                        onClickClose={{
-                          onClick: () => handleClosePassword(),
-                        }}
-                      />
-                    </Dialog>
-                    <UserPasswordChange
-                      slotPassword={
-                        <>
-                          <ProfileForms
-                            profile={password}
-                            setProfile={setPassword}
-                            setChanges={() => setPasswordChange(true)}
-                          />
-                        </>
-                      }
-                      slotSavePassword={
-                        <>
-                          <Stack
-                            style={{
-                              pointerEvents: loading.password ? 'none' : 'auto',
-                              zIndex: 0,
-                            }}
-                          >
-                            <ButtonSolid
-                              textButton='Update Password'
-                              size={2}
-                              isDisabled={
-                                !passwordChange ||
-                                password.password.value === '' ||
-                                password.confirmPassword.value === ''
-                              }
-                              onClickButton={{
-                                onClick: async () => {
-                                  setLoading((prev) => {
-                                    return { ...prev, profile: true };
-                                  });
-                                  await handleSubmitPassword();
-                                  setLoading((prev) => {
-                                    return { ...prev, password: false };
-                                  });
-                                },
-                              }}
-                            />
-                          </Stack>
-                        </>
-                      }
-                    />
-                  </>
-                )}
-              </>
+              {currTab === 'user_detail' && <UserDetail />}
+              {currTab === 'change_email' && <ChangeEmail />}
+              {currTab === 'password_update' && <PasswordUpdate />}
             </>
           }
           // slotPreferenceForm={<>fjerknferjkn</>}
@@ -654,121 +96,7 @@ const ProfileDashboard = () => {
   );
 };
 
-const handleValidate = (profile: FormFields | PreferenceFormFields) => {
-  return Object.entries(profile).reduce(
-    (acc, [key, curr]) => {
-      let value = curr.value?.trim() || null;
-      let error = false;
-      if (curr.required || value?.length) {
-        switch (curr.validation) {
-          case 'string':
-            {
-              if (!validateString(value)) error = true;
-            }
-            break;
-          case 'mail':
-            {
-              if (!validateMail(value)) error = true;
-            }
-            break;
-          case 'phone':
-            {
-              if (!validatePhone(value)) error = true;
-            }
-            break;
-          case 'linkedIn': {
-            if (!validateLinkedIn(value)) error = true;
-          }
-        }
-      }
-      return {
-        newProfile: {
-          ...acc.newProfile,
-          [key]: { ...acc.newProfile[key], value, error },
-        },
-        error: error && !acc.error ? true : acc.error,
-      };
-    },
-    {
-      newProfile: profile,
-      error: false,
-    },
-  );
-};
-
-const handleSubmit = async (
-  profile: any,
-  setProfile: any,
-  // eslint-disable-next-line no-unused-vars
-  handleUpdateProfile: (userDetails: RecruiterUserType) => Promise<boolean>,
-  recruiterUser: RecruiterUserType,
-) => {
-  const { newProfile, error } = handleValidate(profile);
-
-  if (!error) {
-    const confirmation = await handleUpdateProfile({
-      ...recruiterUser,
-      first_name: profile.first_name.value,
-      last_name: profile.last_name.value,
-      phone: profile.phone.value,
-      linked_in: profile.linked_in.value,
-    });
-    if (confirmation) {
-      toast.success('Profile infomation saved successfully');
-      return true;
-    }
-  } else {
-    {
-      setProfile(newProfile);
-      return false;
-    }
-  }
-};
-
-const validateString = (value: string) => {
-  return value && value.trim() !== '';
-};
-const validatePassword = (value: string) => {
-  if (
-    validateString(value) &&
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-      value.trim(),
-    )
-  )
-    return true;
-};
-const validateMail = (value: string) => {
-  return (
-    value &&
-    value.trim() !== '' &&
-    /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
-      value.trim(),
-    )
-  );
-};
-const validateGMail = (value: string) => {
-  return (
-    value &&
-    value.trim() !== '' &&
-    /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@g(oogle)?mail([\.])com/g.test(
-      value.trim(),
-    )
-  );
-};
-const validatePhone = (value: string) => {
-  function countRept(string, regex) {
-    var numbers = string?.match(regex);
-    return numbers ? numbers.length : 0;
-  }
-  return !(
-    value.trim() === '' ||
-    !(
-      countRept(value.trim(), /\d/g) === countRept('+.. .....-.....', /\./g) ||
-      countRept(value.trim(), /\d/g) === countRept('+. ......-....', /\./g)
-    )
-  );
-};
-const ProfileForms = ({
+export const ProfileForms = ({
   profile,
   setProfile,
   setChanges = null,
@@ -790,7 +118,7 @@ const ProfileForms = ({
       return {
         ...prev,
         [key]: {
-          ...prev[key],
+          ...prev[String(key)],
           value: e.target.value,
           error: false,
         },
@@ -947,9 +275,3 @@ const ProfileForm = ({
   }
 };
 export default ProfileDashboard;
-
-const validateLinkedIn = (value: string) => {
-  const linkedInURLPattern =
-    /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
-  return linkedInURLPattern.test(value);
-};

@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { GlobalBadge } from "./GlobalBadge";
 import { GlobalIcon } from "./GlobalIcon";
 import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
@@ -44,11 +45,11 @@ export function IntegrationCard({
                 className={_utils.cx(_styles, "connected-status")}
                 tag="div"
               >
-                <GlobalIcon
-                  iconName="check_circle"
-                  size="3"
-                  weight="medium"
-                  color="success-9"
+                <GlobalBadge
+                  color="success"
+                  iconName=""
+                  textBadge="Connected"
+                  size="1"
                 />
               </_Builtin.Block>
             ) : null}

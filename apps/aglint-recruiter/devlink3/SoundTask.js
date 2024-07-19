@@ -32,7 +32,7 @@ export function SoundTask({
         >
           {isShowVisible ? (
             <_Builtin.Block tag="div" {...onClickShow}>
-              <Text weight="medium" color="accent" content="" />
+              <Text weight="medium" color="accent" content="View Transcript" />
             </_Builtin.Block>
           ) : null}
           {isHideVisible ? (
@@ -41,7 +41,7 @@ export function SoundTask({
               tag="div"
               {...onClickHide}
             >
-              <Text content="" weight="" color="accent" />
+              <Text content="Hide Transcript" weight="medium" color="accent" />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
