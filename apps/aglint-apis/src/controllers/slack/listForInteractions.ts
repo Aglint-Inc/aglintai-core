@@ -291,14 +291,14 @@ const shadow_complete_trainee_accept = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                text: '\nYou attented interview. ',
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                text: '\nYou attented interview. ',
               },
             ],
           },
@@ -324,15 +324,15 @@ const shadow_complete_trainee_decline = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou couldn't attented interview. `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou couldn't attented interview. `,
               },
             ],
           },
@@ -358,15 +358,15 @@ const reverse_shadow_trainee_accept = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou attented interview. `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou attented interview. `,
               },
             ],
           },
@@ -392,15 +392,15 @@ const reverse_shadow_trainee_decline = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou couldn't attented interview. `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou couldn't attented interview. `,
               },
             ],
           },
@@ -427,15 +427,15 @@ const interview_attent_confirmation_accept = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou attened the interview. `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou attened the interview. `,
               },
             ],
           },
@@ -462,15 +462,15 @@ const interview_attent_confirmation_decline = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou couldn't attened the interview. `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou couldn't attened the interview. `,
               },
             ],
           },
@@ -498,15 +498,15 @@ const qualified_approver_confirmation_accept = async (
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou accept the trainee to qualified `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou accept the trainee to qualified `,
               },
             ],
           },
@@ -534,15 +534,15 @@ const qualified_approver_confirmation_decline = async (
             elements: [
               {
                 type: 'text',
-                // eslint-disable-next-line quotes
-                text: `\nYou decline the trainee to qualified `,
-              },
-              {
-                type: 'text',
                 text: 'Thanks for confirmation,\n ',
                 style: {
                   bold: true,
                 },
+              },
+              {
+                type: 'text',
+                // eslint-disable-next-line quotes
+                text: `\nYou decline the trainee to qualified `,
               },
             ],
           },
