@@ -2,8 +2,8 @@
 import { Dialog, Typography } from '@mui/material';
 import React from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { DeletePopup } from '@/devlink3/DeletePopup';
-import { ResumePop } from '@/devlink3/ResumePop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function DeleteMemberDialog({
@@ -86,7 +86,7 @@ function DeleteMemberDialog({
         <ShowCode.When isTrue={reason === 'suspend'}>
           <DeletePopup
             textTitle={
-              <Typography variant='body1bold'>
+              <Typography variant='body1'>
                 Suspending:{' '}
                 <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
@@ -99,10 +99,9 @@ function DeleteMemberDialog({
                 </Typography>
                 {warning && (
                   <>
-                    <br />
-                    <Typography variant='body1' color={'var(--error-11)'}>
-                      Warning: {warning}
-                    </Typography>
+                   <br />
+                  <GlobalBannerInline textContent={warning} slotButton={<></>} iconName={'info'} color={'warning'}/>
+                   
                   </>
                 )}
               </>
@@ -113,7 +112,7 @@ function DeleteMemberDialog({
             onClickDelete={{
               onClick: action,
             }}
-            buttonText={'Suspended'}
+            buttonText={'Suspend'}
           />
         </ShowCode.When>
       </ShowCode>

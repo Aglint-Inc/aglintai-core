@@ -269,14 +269,14 @@ function RequestAvailability() {
 
       if (scheduleFlow === 'create_request_availibility') {
         const result = await insertCandidateRequestAvailability({
-          application_id: String(selectedApplication.id), //31241608-082e-4a8b-ac72-5957148aa604
-          recruiter_id: String(recruiter.id), //1a12a488-c3f3-462b-8b3b-ea429e4f7fdc
-          // availability: availability,
-          // date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
-          // is_task_created: markCreateTicket,
-          // number_of_days: selectedDays.value,
-          // number_of_slots: selectedSlots.value,
-          // total_slots: null,
+          application_id: String(selectedApplication.id),
+          recruiter_id: String(recruiter.id),
+          availability: availability,
+          date_range: selectedDate.map((ele) => ele.format('DD/MM/YYYY')),
+          is_task_created: markCreateTicket,
+          number_of_days: selectedDays.value,
+          number_of_slots: selectedSlots.value,
+          total_slots: null,
         });
         setRequestDetails(result);
         await supabase.from('request_session_relation').insert(
@@ -545,7 +545,7 @@ function RequestAvailability() {
                   width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                  Minimum Number of Days:
+                    Minimum Number of Days:
                   </Typography>
                   <Autocomplete
                     fullWidth
@@ -575,7 +575,7 @@ function RequestAvailability() {
                   width={'370px'}
                 >
                   <Typography variant='body1' width={'520px'}>
-                  Minimum Slots Per Day:
+                    Minimum Slots Per Day:
                   </Typography>
                   <Autocomplete
                     fullWidth

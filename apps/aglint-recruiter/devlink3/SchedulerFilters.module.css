@@ -35,6 +35,8 @@
 }
 
 .timeblock.is_link {
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
   cursor: pointer;
 }
 
@@ -52,7 +54,7 @@
 
   display: flex;
   overflow: hidden;
-  width: 280px;
+  width: 295px;
   padding: var(--space-2) var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;

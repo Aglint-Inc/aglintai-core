@@ -71,8 +71,8 @@ function IndividualCard({
   return (
     <>
       <MemberListCard
-        textWeekInterview={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
-        textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
+        textWeekInterview={`${user.weekly} ${userSettings.interviewLoad.dailyLimit.type}`}
+        textTodayInterview={`${user.daily} ${userSettings.interviewLoad.dailyLimit.type}`}
         isPauseResumeVisible={Boolean(user.pause_json)}
         onClickCard={{
           onClick: () => {

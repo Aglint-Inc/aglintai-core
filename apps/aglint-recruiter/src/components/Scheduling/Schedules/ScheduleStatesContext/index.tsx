@@ -21,11 +21,11 @@ export type ScheduleFilerType = {
   searchText: string;
 };
 export var initialFilterState: ScheduleFilerType = {
-  status: [],
+  status: ['confirmed', 'completed'],
   interviewers: [],
   jobs: [],
   schedule_types: [],
-  date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')], //dayjsLocal().add(7, 'day').format('YYYY-MM-DD')
+  date_range: [],
   searchText: null,
 };
 interface ContextValue {
@@ -73,12 +73,10 @@ function ScheduleStatesProvider({ children }) {
         ...prevState,
         [key]: value,
       };
-      if (key !== 'date_range') {
-        setScheduleFilterIds({
-          ...states,
-          date_range: [dayjsLocal().add(7, 'day').format('YYYY-MM-DD')],
-        });
-      }
+      setScheduleFilterIds({
+        ...states,
+      });
+
       return states;
     });
   };

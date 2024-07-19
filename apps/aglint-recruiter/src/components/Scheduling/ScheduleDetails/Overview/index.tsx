@@ -17,11 +17,17 @@ import IconSessionType from '../../CandidateDetails/RightPanel/IconSessionType';
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../utils';
-import { ScheduleMeeting } from '../types';
+import { ScheduleDetailsType } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
 
-function Overview({ schedule }: { schedule: ScheduleMeeting }) {
+function Overview({
+  schedule,
+  cancelReasons,
+}: {
+  schedule: ScheduleDetailsType['schedule_data'];
+  cancelReasons: ScheduleDetailsType['cancel_data'];
+}) {
   const { checkPermissions } = useRolesAndPermissions();
 
   // eslint-disable-next-line no-unused-vars
@@ -68,6 +74,7 @@ function Overview({ schedule }: { schedule: ScheduleMeeting }) {
                     disableHoverListener={true}
                     item={item}
                     schedule={schedule}
+                    cancelReasons={cancelReasons}
                   />
                 </>
               );

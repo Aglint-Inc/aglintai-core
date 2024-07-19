@@ -23,6 +23,7 @@ export function WorkflowCard({
   isCheckboxVisible = false,
   isChecked = false,
   isEditButton = true,
+  showButtons = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -31,7 +32,6 @@ export function WorkflowCard({
       className={_utils.cx(_styles, "workflow-card-outerwrap")}
       data-w-id="f286b9bf-e923-854f-6be0-d2c7cf58cde5"
       tag="div"
-      {...onClickEdit}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "workflow_card_wrap")}
@@ -59,7 +59,7 @@ export function WorkflowCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "wc_top", "relative-1")}
+              className={_utils.cx(_styles, "wc_top", "relative-1-copy")}
               tag="div"
             >
               <_Builtin.Block
@@ -69,6 +69,29 @@ export function WorkflowCard({
               >
                 <Text content={textWorkflowName} weight="medium" />
               </_Builtin.Block>
+              {showButtons ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "wc_icon_button_group")}
+                  tag="div"
+                >
+                  {isEditButton ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "wc_icon_button")}
+                      tag="div"
+                      {...onClickEdit}
+                    >
+                      <IconButtonSoft iconName="edit_square" color="neutral" />
+                    </_Builtin.Block>
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "wc_icon_button")}
+                    tag="div"
+                    {...onClickDelete}
+                  >
+                    <IconButtonSoft iconName="delete" color="error" />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "wc_bottom")}

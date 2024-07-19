@@ -29,5 +29,5 @@ export const getPauseMemberText = (
     ? pause_json?.end_date
       ? `Until ${dayjsLocal(pause_json.end_date).format('DD MMMM YYYY')}`
       : '--'
-    : 'Indefinately';
+    : 'Indefinitely';
 };

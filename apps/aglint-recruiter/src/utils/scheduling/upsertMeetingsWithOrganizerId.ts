@@ -41,10 +41,18 @@ export const handleMeetingsOrganizerResetRelations = async ({
     .select()
     .throwOnError();
 
+  // needed in reschedule flow
   await resetSessionRelations({
     session_ids: selectedSessionIds,
     supabase,
   });
+
+  await supabase
+    .from('interview_session_cancel')
+    .delete()
+    .in('session_id', selectedSessionIds)
+    .throwOnError();
+  // needed in reschedule flow
 
   return { meetings: data, organizer_id };
 };

@@ -85,7 +85,7 @@ function ListCardInterviewerModules({
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
-              ? 'Indefinately'
+              ? 'Indefinitely'
               : pause_json.end_date
                 ? `Until ${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
                 : '--'
@@ -259,7 +259,7 @@ function ListCardInterviewerModules({
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
-              ? 'Indefinately'
+              ? 'Indefinitely'
               : pause_json.end_date
                 ? `${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
                 : '--'

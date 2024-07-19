@@ -87,10 +87,7 @@ export function RequestReschedule({
         className={_utils.cx(_styles, "div-block-1494")}
         tag="div"
       >
-        <Text
-          color="neutral"
-          content="Please provide a reason for reschedule."
-        />
+        <Text color="neutral" content="Please provide a reason to cancel." />
         <_Builtin.Block
           className={_utils.cx(_styles, "rr-radio-slot-wrap")}
           tag="div"

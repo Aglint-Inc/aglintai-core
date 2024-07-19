@@ -38,7 +38,7 @@ export function WorkflowLanding({
             {slotWorkflowCard ?? (
               <>
                 <WorkflowEmpty />
-                <WorkflowCard />
+                <WorkflowCard isChecked={true} />
                 <WorkflowCard />
                 <WorkflowCard />
                 <WorkflowCard />
