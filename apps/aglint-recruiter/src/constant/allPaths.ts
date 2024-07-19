@@ -254,7 +254,7 @@ export const PATHS = [
 '/api/emails/InterviewCancelReq_email_recruiter',
 '/api/emails/interviewCancel_email_applicant',
 '/api/emails/interviewEnd_email_interviewerForFeedback',
-'/api/emails/interviewer_resume_email_admin',
+'/api/emails/interviewerResumed_email_admin',
 '/api/emails/interviewStart_email_applicant',
 '/api/emails/interviewStart_email_interviewers',
 '/api/emails/interviewStart_email_organizer',

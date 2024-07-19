@@ -56,15 +56,15 @@ const useInviteActions = () => {
   );
 
   const handleSubmit = async () => {
-    const candSelectedSlots = selectedSlots.map((s) => s.sessions).flat();
+    const candSelectedSlots = selectedSlots.map((s) => s.sessions)
 
     const bodyParams: CandidateDirectBookingType = {
       cand_tz: timezone.tzCode,
       filter_id: router.query.filter_id as string,
       task_id: router.query?.task_id as string,
       selected_plan: candSelectedSlots.map((slot) => ({
-        start_time: slot.start_time,
-        end_time: slot.end_time,
+        start_time: slot[0].start_time,
+        end_time: slot[slot.length-1].end_time,
       })),
     };
     try {
