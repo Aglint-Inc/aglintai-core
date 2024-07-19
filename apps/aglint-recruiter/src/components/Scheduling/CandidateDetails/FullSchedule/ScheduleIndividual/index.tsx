@@ -13,7 +13,7 @@ import { formatTimeWithTimeZone } from '../../../utils';
 import IconSessionType from '../../RightPanel/IconSessionType';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
-import CollapseContent from './CollapseContent';
+import CollapseContent from './Collapse';
 import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 import { ScheduleIndividualCardType } from './types';
 

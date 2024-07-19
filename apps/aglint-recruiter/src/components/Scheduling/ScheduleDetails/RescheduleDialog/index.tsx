@@ -29,8 +29,8 @@ import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
 import {
-  removeSessionFromFilterJson,
-  removeSessionFromRequestAvailibility,
+  removeSessionsFromFilterJson,
+  removeSessionsFromRequestAvailability,
 } from '../utils';
 
 function RescheduleDialog({
@@ -145,13 +145,13 @@ function RescheduleDialog({
         meeting_flow === 'phone_agent' ||
         meeting_flow === 'mail_agent'
       ) {
-        await removeSessionFromFilterJson({
-          session_id,
+        await removeSessionsFromFilterJson({
+          session_ids: [session_id],
           supabase,
         });
       } else {
-        await removeSessionFromRequestAvailibility({
-          session_id,
+        await removeSessionsFromRequestAvailability({
+          session_ids: [session_id],
           supabase,
         });
       }
