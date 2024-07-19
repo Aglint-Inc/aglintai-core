@@ -9,7 +9,7 @@ import {RunnableSequence} from '@langchain/core/runnables';
 import {AIMessage, HumanMessage} from 'langchain/schema';
 import {agentPrompt} from './agentPrompt';
 import {convertToOpenAIFunction} from '@langchain/core/utils/function_calling';
-import {sendSelfSchedulingLink} from './tools/sendSelfSchedulingLink';
+import {sendAvailReqLink} from './tools/sendAvailReqLink';
 import {findCandidateInSystem} from './tools/findCandidateInSystem';
 import {findCandidateInterviewSessions} from './tools/findCandidateInterviewSessions';
 const MEMORY_KEY = 'chat_history';
@@ -42,7 +42,7 @@ export async function agentHandler(payload: {
 
   const tools = [
     findCandidateInSystem(),
-    sendSelfSchedulingLink(),
+    sendAvailReqLink(),
     findCandidateInterviewSessions(),
   ];
 

@@ -2,11 +2,11 @@ import {DynamicStructuredTool} from 'langchain/tools';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import z from 'zod';
 
-export const sendSelfSchedulingLink = () => {
+export const sendAvailReqLink = () => {
   return new DynamicStructuredTool({
-    name: 'send-self-scheduling-link-to-candidate',
+    name: 'send-availability-request-link-to-candidate',
     description:
-      'collects details necessary for sending the sending self scheduling link and sends the link to the candidate',
+      'collects details necessary for sending the sending availability request link and sends the link to the candidate',
     schema: z.object({
       interview_sessions: z
         .string()
@@ -25,14 +25,14 @@ export const sendSelfSchedulingLink = () => {
           .default(
             dayjsLocal().add(1, 'week').startOf('week').format('DD/MM/YYYY')
           )
-          .describe('show slots from this date in DD/MM/YYYY'),
+          .describe('Request availability from this date in DD/MM/YYYY'),
         end_date: z
           .string()
           .optional()
           .default(
             dayjsLocal().add(1, 'week').endOf('week').format('DD/MM/YYYY')
           )
-          .describe('show slots till this date in DD/MM/YYYY'),
+          .describe('Request availabilitytill this date in DD/MM/YYYY'),
       }),
       options: z
         .object({
@@ -40,13 +40,13 @@ export const sendSelfSchedulingLink = () => {
             .boolean()
             .default(false)
             .describe(
-              'whther to allow candidate to schedule on soft conflicted slots'
+              'whether to show slot preference on soft conflicted slots'
             ),
           show_out_of_office_slots: z
             .boolean()
             .default(false)
             .describe(
-              'whether to allow candidate to schedule on Out Of Office conflicted slots'
+              'whether to show slot preference on Out Of Office conflicted slots'
             ),
         })
         .optional()
@@ -54,7 +54,7 @@ export const sendSelfSchedulingLink = () => {
     }),
     func: async payload => {
       try {
-        console.log(payload);
+        //
         return 'link sent sucessfully';
       } catch (error: any) {
         return 'Failed to perform the action';

@@ -12,16 +12,26 @@ export const findCandidateInSystem = () => {
       candidate_name: z.string().describe('first name or full name'),
     }),
     func: async payload => {
-      const matchedCandidates = supabaseWrap(
-        await supabaseAdmin
-          .from('candidate_applications_view')
-          .select()
-          .textSearch(
-            'full_text_search',
-            payload.candidate_name.split(' ').join('<->')
-          )
-      );
-      return JSON.stringify(matchedCandidates);
+      try {
+        const matchedCandidates = supabaseWrap(
+          await supabaseAdmin
+            .from('candidate_applications_view')
+            .select()
+            .textSearch(
+              'full_text_search',
+              payload.candidate_name.split(' ').join('<->')
+            ),
+          false
+        );
+
+        if (matchedCandidates.length === 0) {
+          return 'NO candidates found with that name';
+        }
+        return JSON.stringify(matchedCandidates);
+      } catch (error) {
+        console.error(error);
+        return 'TOOL Fail';
+      }
     },
   });
 };

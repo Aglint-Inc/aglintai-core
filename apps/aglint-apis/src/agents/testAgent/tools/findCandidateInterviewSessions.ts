@@ -60,11 +60,8 @@ export const findCandidateInterviewSessions = () => {
           }));
         }
 
-        console.log(cand_sessions);
-
         return JSON.stringify(cand_sessions);
       } catch (error) {
-        console.log(error);
         return 'Failed';
       }
     },
