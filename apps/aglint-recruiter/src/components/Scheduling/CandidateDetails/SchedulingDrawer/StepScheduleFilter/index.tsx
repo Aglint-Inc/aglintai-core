@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
+import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 
 import { setFilters, useSchedulingFlowStore } from '../store';
@@ -49,47 +50,67 @@ function StepScheduleFilter() {
           />
         }
         slotNoConflictToggle={
-          <AntSwitch
-            size='small'
-            checked={filters.isNoConflicts}
-            onChange={() => {
-              setFilters({
-                isNoConflicts: !filters.isNoConflicts,
-              });
-            }}
+          <ToggleWithText
+            slotToggle={
+              <AntSwitch
+                size='small'
+                checked={filters.isNoConflicts}
+                onChange={() => {
+                  setFilters({
+                    isNoConflicts: !filters.isNoConflicts,
+                  });
+                }}
+              />
+            }
+            textToggleLight={'Show only no conflicts slots'}
           />
         }
         slotSoftConflictToggle={
-          <AntSwitch
-            size='small'
-            checked={filters.isSoftConflicts}
-            onChange={() => {
-              setFilters({
-                isSoftConflicts: !filters.isSoftConflicts,
-              });
-            }}
+          <ToggleWithText
+            slotToggle={
+              <AntSwitch
+                size='small'
+                checked={filters.isSoftConflicts}
+                onChange={() => {
+                  setFilters({
+                    isSoftConflicts: !filters.isSoftConflicts,
+                  });
+                }}
+              />
+            }
+            textToggleLight={'Show soft conflict slots'}
           />
         }
         slotHardConflictToggle={
-          <AntSwitch
-            size='small'
-            checked={filters.isHardConflicts}
-            onChange={() => {
-              setFilters({
-                isHardConflicts: !filters.isHardConflicts,
-              });
-            }}
+          <ToggleWithText
+            slotToggle={
+              <AntSwitch
+                size='small'
+                checked={filters.isHardConflicts}
+                onChange={() => {
+                  setFilters({
+                    isHardConflicts: !filters.isHardConflicts,
+                  });
+                }}
+              />
+            }
+            textToggleLight={'Show hard conflicts slots'}
           />
         }
         slotOutsideToggle={
-          <AntSwitch
-            size='small'
-            checked={filters.isOutSideWorkHours}
-            onChange={() => {
-              setFilters({
-                isOutSideWorkHours: !filters.isOutSideWorkHours,
-              });
-            }}
+          <ToggleWithText
+            slotToggle={
+              <AntSwitch
+                size='small'
+                checked={filters.isOutSideWorkHours}
+                onChange={() => {
+                  setFilters({
+                    isOutSideWorkHours: !filters.isOutSideWorkHours,
+                  });
+                }}
+              />
+            }
+            textToggleLight={'Show out of work hours slots'}
           />
         }
         slotTimeRangeSelector={<DateRangeField />}
@@ -98,7 +119,6 @@ function StepScheduleFilter() {
         textNumberSoftConflicts={numberSoftConflicts}
         textNumberOutsideWorkHours={numberOutsideWorkHours}
         slotPreferedInterviewersSearch={<PreferedInterviewers />}
-        // slotSuggestionControlTooltip={<SuggesttionToggle />}
       />
     </Stack>
   );
