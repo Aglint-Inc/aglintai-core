@@ -44,6 +44,7 @@ import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
+import { GlobalBannerInline } from '@/devlink2';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -329,19 +330,33 @@ const Banners = () => {
   if (status.loading) return <></>;
   if (status.description_error)
     return (
-      <BannerWarning
-        textBanner={'Job description is unavailable'}
+      <GlobalBannerInline
+        textContent='Job description is unavailable'
+        iconName='warning'
+        color={'error'}
         slotButton={
           <ButtonSolid
             textButton='View'
-            size={2}
-            highContrast='true'
+            size={1}
             onClickButton={{
               onClick: () => push(`/jobs/${job.id}/edit`),
             }}
           />
         }
       />
+      // <BannerWarning
+      //   textBanner={'Job description is unavailable'}
+      //   slotButton={
+      //     <ButtonSolid
+      //       textButton='View'
+      //       size={2}
+      //       highContrast='true'
+      //       onClickButton={{
+      //         onClick: () => push(`/jobs/${job.id}/edit`),
+      //       }}
+      //     />
+      //   }
+      // />
     );
   if (status.jd_json_error)
     return (
@@ -355,24 +370,22 @@ const Banners = () => {
     );
   if (status.description_changed && !status.scoring_criteria_changed)
     return (
-      <BannerWarning
-        textBanner={
-          'Job description has changed. Regenerate for updated scoring criterias.'
-        }
+      <GlobalBannerInline
+        color={'warning'}
+        textContent=' Job description has changed. Regenerate for updated scoring criterias.'
         slotButton={
           <>
             <ButtonSoft
               textButton='Ignore'
-              size={2}
-              highContrast='true'
+              size={1}
+              color={'neutral'}
               onClickButton={{
                 onClick: () => {}, //handleWarningUpdate({ job_description: true }),
               }}
             />
             <ButtonSolid
               textButton='Regenerate'
-              size={2}
-              highContrast='true'
+              size={1}
               onClickButton={{
                 onClick: () => handleRegenerateJd(job),
               }}
@@ -380,6 +393,31 @@ const Banners = () => {
           </>
         }
       />
+      // <BannerWarning
+      //   textBanner={
+      //     'Job description has changed. Regenerate for updated scoring criterias.'
+      //   }
+      //   slotButton={
+      //     <>
+      //       <ButtonSoft
+      //         textButton='Ignore'
+      //         size={2}
+      //         highContrast='true'
+      //         onClickButton={{
+      //           onClick: () => {}, //handleWarningUpdate({ job_description: true }),
+      //         }}
+      //       />
+      //       <ButtonSolid
+      //         textButton='Regenerate'
+      //         size={2}
+      //         highContrast='true'
+      //         onClickButton={{
+      //           onClick: () => handleRegenerateJd(job),
+      //         }}
+      //       />
+      //     </>
+      //   }
+      // />
     );
   return <></>;
 };
