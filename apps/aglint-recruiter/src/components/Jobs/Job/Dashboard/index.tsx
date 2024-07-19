@@ -1166,7 +1166,7 @@ const Banner = (props: BannerProps) => {
               textButton={props.primary.title}
               highContrast='false'
               onClickButton={{
-                onClick: () => props.primary.title,
+                onClick: props.primary.onClick,
               }}
             />
           }
