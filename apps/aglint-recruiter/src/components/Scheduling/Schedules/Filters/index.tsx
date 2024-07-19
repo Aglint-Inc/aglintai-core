@@ -122,6 +122,30 @@ function Filters() {
           },
           {
             type: 'filter',
+            name: 'Interview mode',
+            options: [
+              {
+                id: 'panel' as DatabaseEnums['session_type'],
+                label: 'panel' as DatabaseEnums['session_type'],
+              },
+              {
+                id: 'individual' as DatabaseEnums['session_type'],
+                label: 'individual' as DatabaseEnums['session_type'],
+              },
+              {
+                id: 'debrief' as DatabaseEnums['session_type'],
+                label: 'debrief' as DatabaseEnums['session_type'],
+              },
+            ],
+            setValue: (val) => {
+              updateFilterState('session_types', val);
+            },
+
+            value: filterState.session_types,
+            iconname: 'filter_tilt_shift',
+          },
+          {
+            type: 'filter',
             name: 'Jobs',
             options:
               jobs.isFetched &&
