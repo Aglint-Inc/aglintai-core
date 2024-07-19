@@ -25,7 +25,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import { DepartmentIcon, RoleIcon } from '.';
-import { DropDown } from './sessionForms';
+import { DropDown, WarningSvg } from './sessionForms';
 import { getBreakLabel } from './utils';
 
 type DebriefFormProps = Pick<
@@ -148,14 +148,18 @@ const DebriefForms = ({
   const showMembers = memberRecommendations.length !== 0;
 
   const handleChange: HandleChange = useCallback((key, value) => {
-    setFields((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        error: false,
-        value,
-      },
-    }));
+    setFields((prev) => {
+      const result = {
+        ...prev,
+        [key]: {
+          ...prev[key],
+          error: false,
+          value,
+        },
+      };
+      if (key === 'members_meta') result['members']['error'] = false;
+      return result;
+    });
   }, []);
 
   const handleTypeChange: HandleTypeChange = useCallback((value) => {
@@ -241,6 +245,7 @@ const DebriefForms = ({
             value={members.value}
             memberRecommendations={memberRecommendations}
             handleChange={handleChange}
+            error={members.error}
           />
         )
       }
@@ -471,10 +476,12 @@ const InterviewersField = ({
   value,
   memberRecommendations,
   handleChange,
+  error,
 }: {
   value: DebriefFormProps['members'];
   memberRecommendations: CompanyMember[];
   handleChange: HandleChange;
+  error?: boolean;
 }) => {
   const options = memberRecommendations.map((m) => ({
     name: getFullName(m.first_name, m.last_name),
@@ -495,12 +502,24 @@ const InterviewersField = ({
   };
 
   return (
-    <DropDown
-      placeholder='Select Interviewers'
-      onChange={onChange}
-      options={options}
-      value=''
-    />
+    <Stack>
+      <DropDown
+        placeholder='Select Interviewers'
+        onChange={onChange}
+        options={options}
+        value=''
+      />
+      {error && (
+        <Stack
+          alignItems={'center'}
+          direction={'row'}
+          color={'var(--error-a11)'}
+        >
+          <WarningSvg />
+          {'Members cannot be empty'}
+        </Stack>
+      )}
+    </Stack>
   );
 };
 
@@ -562,7 +581,12 @@ export const validateDebriefSessionFields = (fields: DebriefFormFields) => {
         case 'members':
           {
             const safeValue = value as DebriefFormFields['members'];
-            if ((safeValue?.value ?? []).length === 0) {
+            if (
+              (safeValue?.value ?? []).length === 0 &&
+              !Object.values(fields?.members_meta?.value ?? {}).find(
+                (value) => value === true,
+              )
+            ) {
               acc.error = true;
               acc.newFields[safeKey].error = true;
             }

@@ -1025,7 +1025,7 @@ export const getSessionPayload = (
   };
 };
 
-const WarningSvg = () => {
+export const WarningSvg = () => {
   return (
     <svg
       width='22'
