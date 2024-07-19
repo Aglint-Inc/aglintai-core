@@ -12,6 +12,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
@@ -488,10 +489,10 @@ const InterviewSession = ({
             slotTrainees={members.training.map((member) => (
               <InterviewSessionMember key={member.user_id} member={member} />
             ))}
-            isInterviewersVisible={members.qualified.length !== 0}
-            slotInterviewers={members.qualified.map((member) => (
-              <InterviewSessionMember key={member.user_id} member={member} />
-            ))}
+            isInterviewersVisible={session.session_type === 'panel'}
+            slotInterviewers={
+              <InterviewSessionMembers members={members.qualified} />
+            }
             isMembersVisible={
               session.session_type === 'debrief' && members.members.length !== 0
             }
@@ -604,6 +605,25 @@ const sessionToEdit = (
     case 'debrief':
       return 'debrief';
   }
+};
+
+type InterviewSessionMembersProps = { members: CompanyMember[] };
+const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
+  if (members.length === 0)
+    return (
+      <GlobalBanner
+        color={'error'}
+        iconName={'warning'}
+        textTitle={'No interviewers assigned to this stage'}
+        textDescription={
+          'Please add interviewers to proceed with scheduling this stage'
+        }
+        slotButtons={<></>}
+      />
+    );
+  return members.map((member) => (
+    <InterviewSessionMember key={member.user_id} member={member} />
+  ));
 };
 
 type InterviewSessionMemberProps = { member: CompanyMember };
