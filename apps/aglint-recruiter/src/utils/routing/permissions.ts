@@ -132,6 +132,11 @@ const PERMISSIONS: Permissions = {
   '/api/invite_user/resend': ['team_enabled'],
   // general apis
   '/api/decryptApiKey': ['integrations_enabled'],
+  // sourcing
+  '/api/ai/queryToJson': ['sourcing_enabled'],
+  '/api/ai/create-embeddings': ['sourcing_enabled'],
+  '/api/candidatedb/query': ['sourcing_enabled'],
+  '/api/candidatedb/search': ['sourcing_enabled'],
 };
 
 export default PERMISSIONS;
