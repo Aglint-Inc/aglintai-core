@@ -114,8 +114,6 @@ function SideDrawerEdit() {
       .length > 0;
 
   const onChange = (e, type) => {
-    if (!e?.target?.value) return;
-
     if (type === 'interviewer') {
       errorValidation.find(
         (err) => err.field === 'qualified_interviewers',

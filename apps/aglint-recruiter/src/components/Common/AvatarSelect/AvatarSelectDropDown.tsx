@@ -115,6 +115,7 @@ const AvatarSelectDropDown = ({
                 color: 'var(--neutral-12)',
                 cursor: 'default',
                 padding: 'var(--space-2)',
+                pointerEvents: 'none',
               }}
             >
               No options
