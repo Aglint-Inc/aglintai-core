@@ -9,7 +9,7 @@ export const findCandidateInSystem = () => {
     description:
       "returns array of candidate's details like candidate name, email, job_role that matches the given candidate name.",
     schema: z.object({
-      candidate_name: z.string().describe('first name or full name'),
+      candidate_name: z.string().describe('either first name or full name'),
     }),
     func: async payload => {
       try {
@@ -23,6 +23,8 @@ export const findCandidateInSystem = () => {
             ),
           false
         );
+
+        console.log(matchedCandidates);
 
         if (matchedCandidates.length === 0) {
           return 'NO candidates found with that name';
