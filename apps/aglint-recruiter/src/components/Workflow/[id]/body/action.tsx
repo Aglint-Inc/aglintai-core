@@ -21,7 +21,7 @@ const Actions = () => {
   const {
     actions: { data, status },
     actionMutations: mutations,
-    permissions,
+    manageWorkflow,
     devlinkProps,
   } = useWorkflow();
   const { createAction, canCreateAction } = useActions();
@@ -40,13 +40,13 @@ const Actions = () => {
   return (
     <>
       {actions}
-      {canCreateAction && permissions.update && (
+      {canCreateAction && manageWorkflow && (
         <>
           <WorkflowConnector />
           <WorkflowAdd
             onClickAdd={{
               onClick: () => createAction(),
-              ...devlinkProps.update,
+              ...devlinkProps,
             }}
           />
         </>
@@ -72,7 +72,7 @@ const Action = (props: ActionProps) => {
       isDeleteVisible={true}
       onClickDelete={{
         onClick: () => handleDeleteAction({ id: props.action.id }),
-        ...devlinkProps.delete,
+        ...devlinkProps,
       }}
     />
   );
@@ -96,7 +96,7 @@ const ActionForm = ({
   const {
     emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
-  const { handleUpdateAction, permissions } = useWorkflow();
+  const { handleUpdateAction, manageWorkflow } = useWorkflow();
   const { globalOptions, getCurrentOption } = useActions();
   const options = useMemo(
     () => [...globalOptions, getCurrentOption(type)],
@@ -106,7 +106,7 @@ const ActionForm = ({
     <UISelect
       label='Do this'
       value={type}
-      disabled={!permissions.update}
+      disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
         const {

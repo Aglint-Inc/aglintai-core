@@ -23,7 +23,7 @@ const useWorkflowContext = () => {
       mutateAsync: updateWorkflowAsyncMuation,
     },
     devlinkProps,
-    permissions,
+    manageWorkflow,
   } = useWorkflows();
 
   const workflow = useMemo(
@@ -87,7 +87,7 @@ const useWorkflowContext = () => {
     handleDeleteAction,
     handleUpdateAction,
     devlinkProps,
-    permissions,
+    manageWorkflow,
   };
 };
 

@@ -16,10 +16,17 @@ const Filters = () => {
     job: { application_match },
     locationFilterOptions,
     badgesCount,
-    filters: { search, bookmarked, locations, ...filters },
-    sort,
+    filters: {
+      search,
+      bookmarked,
+      locations,
+      type,
+      order,
+      // eslint-disable-next-line no-unused-vars
+      section,
+      ...filters
+    },
     setFilters,
-    setSort,
   } = useApplications();
 
   const badges = useMemo(
@@ -39,39 +46,32 @@ const Filters = () => {
       })),
     [resumeScoreTypes, capitalize, application_match],
   );
+
   const filterOptions = { badges, resume_score };
-  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
-    () =>
-      Object.entries(filters).map(
-        ([key, value]) =>
-          ({
-            active: value.length,
-            name: key,
-            value: value ?? [],
-            type: 'filter',
-            iconname: '',
-            icon: <></>,
-            setValue: (newValue: typeof value) =>
-              setFilters({ [key]: structuredClone(newValue) }),
-            options: filterOptions[key] ?? [],
-          }) as (typeof safeFilters)[number],
-      ),
-    [filters],
-  );
+  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
+    Object.entries(filters).map(
+      ([key, value]) =>
+        ({
+          active: value.length,
+          name: key,
+          value: value ?? [],
+          type: 'filter',
+          iconname: '',
+          icon: <></>,
+          setValue: (newValue: typeof value) => setFilters({ [key]: newValue }),
+          options: filterOptions[key] ?? [],
+        }) as (typeof safeFilters)[number],
+    );
 
   const bookmarkedButton: Parameters<
     typeof FilterHeader
-  >[0]['filters'][number] = useMemo(
-    () => ({
-      type: 'button',
-      isActive: bookmarked,
-      isVisible: true,
-      name: 'Bookmarked',
-      onClick: () => setFilters({ bookmarked: !bookmarked }),
-    }),
-    [bookmarked, safeFilters],
-  );
-
+  >[0]['filters'][number] = {
+    type: 'button',
+    isActive: bookmarked,
+    isVisible: true,
+    name: 'Bookmarked',
+    onClick: () => setFilters({ bookmarked: !bookmarked }),
+  };
   const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Locations',
@@ -91,47 +91,39 @@ const Filters = () => {
     },
   };
 
-  const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = useMemo(
-    () =>
-      ({
-        sortOptions: {
-          options: sortTypes,
-          order: [
-            {
-              id: 'asc',
-              label: 'Ascending',
-            },
-            {
-              id: 'desc',
-              label: 'Descending',
-            },
-          ],
+  const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = {
+    sortOptions: {
+      options: sortTypes,
+      order: [
+        {
+          id: 'asc',
+          label: 'Ascending',
         },
-        selected: {
-          option: sort.type,
-          order: sort.order,
+        {
+          id: 'desc',
+          label: 'Descending',
         },
-        setOrder: (payload) => setSort(payload as typeof sort),
-      }) as typeof safeSort,
-    [sort],
+      ],
+    },
+    selected: {
+      option: type,
+      order: order,
+    },
+    setOrder: (payload) => setFilters({ ...payload } as any),
+  } as typeof safeSort;
+
+  return (
+    <FilterHeader
+      filters={[bookmarkedButton, ...safeFilters, Locations]}
+      sort={safeSort}
+      isResetAll={true}
+      search={{
+        value: search,
+        setValue: (newValue: typeof search) => setFilters({ search: newValue }),
+        placeholder: 'Search candidate',
+      }}
+    />
   );
-  const component = useMemo(
-    () => (
-      <FilterHeader
-        filters={[bookmarkedButton, ...safeFilters, Locations]}
-        sort={safeSort}
-        isResetAll={true}
-        search={{
-          value: search,
-          setValue: (newValue: typeof search) =>
-            setFilters({ search: newValue }),
-          placeholder: 'Search candidate',
-        }}
-      />
-    ),
-    [safeFilters, search, Locations, bookmarkedButton, safeSort],
-  );
-  return component;
 };
 
 export default Filters;
@@ -173,7 +165,7 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_score'] = [
   'not_a_match',
 ];
 
-const sortTypes: ApplicationsParams['sort']['type'][] = [
+const sortTypes: ApplicationsParams['filters']['type'][] = [
   'latest_activity',
   'resume_score',
   'applied_at',
