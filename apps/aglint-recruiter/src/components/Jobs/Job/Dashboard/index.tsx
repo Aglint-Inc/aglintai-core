@@ -10,6 +10,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
@@ -33,7 +34,6 @@ import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 // import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
-import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
 import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
@@ -71,7 +71,6 @@ import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
 import TenureAndExpSummary from './tenureAndExpSummary';
-import { GlobalIcon } from '@/devlink';
 
 const JobDashboard = () => {
   const { job, jobLoad } = useJob();

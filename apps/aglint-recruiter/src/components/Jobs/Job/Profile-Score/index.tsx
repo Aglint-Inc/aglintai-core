@@ -25,11 +25,11 @@ import { ScorePillNice } from '@/devlink/ScorePillNice';
 import { ScoreSetting } from '@/devlink/ScoreSetting';
 import { ScoreWeightage } from '@/devlink/ScoreWeightage';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { BannerAlert } from '@/devlink3/BannerAlert';
-import { BannerWarning } from '@/devlink3/BannerWarning';
 import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import Loader from '@/src/components/Common/Loader';
@@ -44,7 +44,6 @@ import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
-import { GlobalBannerInline } from '@/devlink2';
 
 type Sections = 'experience' | 'education' | 'skills';
 

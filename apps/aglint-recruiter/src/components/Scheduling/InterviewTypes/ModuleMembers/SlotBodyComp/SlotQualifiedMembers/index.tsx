@@ -3,13 +3,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import {GlobalIcon} from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
@@ -26,7 +26,6 @@ import {
 } from '../../../store';
 import { ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
-import { ButtonSoft, GlobalIcon } from '@/devlink';
 
 function SlotQualifiedMembers({
   editModule,
