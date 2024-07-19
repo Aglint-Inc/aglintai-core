@@ -17,6 +17,7 @@ import {
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
   interviewStartEmailOrganizerSchema,
+  interviewerResumedEmailAdminSchema,
   meetingDeclinedEmailOrganizerSchema,
   onSignupEmailAdminSchema,
   phoneScreenEmailCandidateSchema,
@@ -36,6 +37,7 @@ export type MeetingDetailCardType = {
   sessionTypeIcon: string;
   meetingIcon: string;
 };
+
 type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
@@ -328,6 +330,17 @@ type Payloads = {
     api_payload: v.InferInput<typeof onSignupEmailAdminSchema>;
     comp_email_placeholders: {
       [key in (typeof emailVariablePayloads)["onSignup_email_admin"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  interviewerResumed_email_admin: {
+    api_payload: v.InferInput<typeof interviewerResumedEmailAdminSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["interviewerResumed_email_admin"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;

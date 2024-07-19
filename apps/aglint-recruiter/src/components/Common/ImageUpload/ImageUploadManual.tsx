@@ -1,4 +1,4 @@
-import { Avatar, Dialog, Stack } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -6,7 +6,6 @@ import { FileUploader } from 'react-drag-drop-files';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { DeletePopup } from '@/devlink3/DeletePopup';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -27,7 +26,6 @@ function ImageUploadManual({
 
   const [initImage, setInitImage] = useState<any>(image);
 
-  const [deleteDialog, setDeleteDialog] = useState(false);
   function onImageChange(file) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
@@ -196,7 +194,9 @@ function ImageUploadManual({
                     <Stack
                       onClick={async (e) => {
                         e.stopPropagation();
-                        setDeleteDialog(true);
+                        setInitImage(null);
+                        imageFile.current = null;
+                        if (setChanges) setChanges();
                       }}
                       sx={{ color: 'var(--white)', cursor: 'pointer' }}
                     >
@@ -206,28 +206,6 @@ function ImageUploadManual({
                         iconName='delete'
                       />
                     </Stack>
-                    <Dialog open={deleteDialog}>
-                      <DeletePopup
-                        textDescription={
-                          'Are you sure you want to delete this profile photot ?'
-                        }
-                        textTitle={'Delete profile photo'}
-                        isIcon={false}
-                        onClickCancel={{
-                          onClick: () => {
-                            setDeleteDialog(false);
-                          },
-                        }}
-                        onClickDelete={{
-                          onClick: () => {
-                            setInitImage(null);
-                            imageFile.current = null;
-                            if (setChanges) setChanges();
-                            setDeleteDialog(false);
-                          },
-                        }}
-                      />
-                    </Dialog>
                   </Stack>
                 )}
               </Stack>

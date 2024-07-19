@@ -574,7 +574,7 @@ function CompanyDetails({
         onBlur={(value, country: phone) => {
           phoneValidation(country.format);
         }}
-        placeholder='Enter your phone number'
+        placeholder='Enter phone number with country code'
         value={phone}
         error={error.phone.error}
         onChange={(value, data: phone, event, formattedValue) => {

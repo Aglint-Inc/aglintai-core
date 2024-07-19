@@ -41,6 +41,7 @@ import ProgressTitle from './ProgressTitle';
 import RequestAvailabilityList from './RequestAvailabilityList';
 import RequestAvailabilityResend from './RequestAvailabilityResend';
 import ScheduleNowCard from './ScheduleNowCard';
+import SelfScheduleResend from './SelfScheduleResend';
 import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
@@ -440,6 +441,16 @@ function SubTaskProgress() {
                               textBadge={'Please Contact to support@aglint.com'}
                             />
                           </Stack>
+                        </ShowCode.When>
+                        <ShowCode.When
+                          isTrue={
+                            item.progress_type === 'self_schedule' &&
+                            !progressList
+                              .map((ele) => ele.progress_type)
+                              .includes('interview_schedule')
+                          }
+                        >
+                          <SelfScheduleResend selectedTask={selectedTask} />
                         </ShowCode.When>
                       </ShowCode>
                     }

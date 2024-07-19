@@ -78,7 +78,8 @@ export function getIndicator({
 
   if (
     (progress_type === 'request_availability' && checkCloseOrCompleted) ||
-    progress_type === 'send_email'
+    progress_type === 'send_email' ||
+    progress_type === 'self_schedule'
   ) {
     return 'AWAITING_RESPONSE' as indicatorType;
   }

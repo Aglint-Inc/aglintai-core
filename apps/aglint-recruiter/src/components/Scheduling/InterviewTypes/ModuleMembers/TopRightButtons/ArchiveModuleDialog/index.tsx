@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -143,13 +144,30 @@ function ArchiveModuleDialog({
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
-            {errors.map((error, index) => (
-              <li key={index}>
-                <Typography key={index} variant='caption'>
-                  {error}
-                </Typography>
-              </li>
-            ))}
+
+            {errors.length > 0 && (
+              <GlobalBannerShort
+                color={'error'}
+                iconName='error'
+                textTitle='Unable to Archive'
+                textDescription=''
+                slotButtons={
+                  <Stack display={'flex'} flexDirection={'column'}>
+                    {errors.map((error, index) => (
+                      <li key={index} style={{ color: 'var(--error-11)' }}>
+                        <Typography
+                          key={index}
+                          variant='caption'
+                          color={'var(--error-11)'}
+                        >
+                          {error}
+                        </Typography>
+                      </li>
+                    ))}
+                  </Stack>
+                }
+              />
+            )}
           </Stack>
         }
       />

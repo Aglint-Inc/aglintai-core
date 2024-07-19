@@ -227,7 +227,7 @@ export function JobDashboard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1606")}
+              className={_utils.cx(_styles, "graph_wrap_header")}
               tag="div"
             >
               <Text content="Upcoming Schedules" weight="medium" />
@@ -237,7 +237,7 @@ export function JobDashboard({
                   tag="div"
                   {...onClickViewSchedule}
                 >
-                  <Text content="View all" size="2" weight="" color="accent" />
+                  <Text content="View All" color="accent" weight="" />
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>

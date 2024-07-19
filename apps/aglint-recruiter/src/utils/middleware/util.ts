@@ -1,5 +1,8 @@
 import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
+import { jwtDecode } from 'jwt-decode';
+
+import { EventSessionType } from './type';
 
 export const server_check_permissions = async ({
   getVal,
@@ -19,61 +22,37 @@ export const server_check_permissions = async ({
           get(name: string) {
             return getVal(name);
           },
-          //   set(name: string, value: string, options: { [key: string]: any }) {
-          //     res.setHeader('Set-Cookie', `${name}=${value}; ${options}`);
-          //   },
-          //   remove(name: string) {
-          //     res.setHeader('Set-Cookie', `${name}=; Max-Age=0`);
-          //   },
         },
       },
     );
 
-    return await supabase.auth.getUser().then(({ data, error }) => {
+    return await supabase.auth.getUser().then(async ({ data, error }) => {
       if (error) throw new Error(error.message);
-      const user = data.user;
-      if (user.id) {
-        return supabase
-          .from('recruiter_relation')
-          .select(
-            'recruiter_id, roles( name, role_permissions!inner(permissions!inner( name )))',
-          )
-          .eq('user_id', user.id)
-          .eq('is_active', true)
-          .in('roles.role_permissions.permissions.name', permissions)
-          .eq('roles.role_permissions.permissions.is_enable', true)
-          .single()
-          .then(({ data, error }) => {
-            if (error) throw new Error(error.message);
-            const role = data?.roles?.name;
-            let is_allowed = false;
-            if (data?.roles?.role_permissions) {
-              const tempPermissions = data.roles.role_permissions.map(
-                (item) => item.permissions.name,
-              );
-              for (let permission of permissions) {
-                if (tempPermissions.includes(permission)) {
-                  is_allowed = true;
-                  break;
-                }
-              }
-              //     const permissions = data?.roles?.role_permissions.reduce(
-              //     (prev, curr) => {
-              //       if (curr.permissions?.name)
-              //         prev[curr.permissions.name] = true;
-              //       return prev;
-              //     },
-              //     // eslint-disable-next-line no-unused-vars
-              //     {} as { [key in DatabaseEnums['permissions_type']]: boolean },
-              //   );
-            }
-            return {
-              isAllowed: is_allowed,
-              id: user.id,
-              rec_id: data?.recruiter_id,
-              role,
-            };
-          });
+      const user = data?.user;
+      if (user?.id) {
+        const { data: sesData } = await supabase.auth.getSession();
+        const decoded = jwtDecode(
+          sesData.session.access_token,
+        ) as EventSessionType;
+        const userpermissions =
+          decoded.app_metadata.role_permissions.permissions;
+        const role = decoded.app_metadata.role_permissions.role;
+        const rec_id = decoded.app_metadata.role_permissions.recruiter_id;
+        let is_allowed = false;
+
+        for (let permission of permissions) {
+          if (userpermissions.includes(permission)) {
+            is_allowed = true;
+            break;
+          }
+        }
+
+        return {
+          isAllowed: is_allowed,
+          id: user.id,
+          rec_id,
+          role,
+        };
       }
       throw new Error('Failed to load auth user.');
     });

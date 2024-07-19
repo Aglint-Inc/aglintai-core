@@ -66,6 +66,7 @@ import {
 
 import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
+import { distributeScoreWeights } from '../Profile-Score';
 import DashboardBarChart from './BarChart2';
 import DashboardDoughnutChart from './doughnut';
 import DashboardLineChart from './lineChart';
@@ -164,9 +165,8 @@ const Dashboard = () => {
   const handleFilter = (
     resume_score: ApplicationsParams['filters']['resume_score'][number],
   ) => {
-    push(
-      `/jobs/${job.id}/candidate-list?${getParams({ resume_score: [resume_score] })}`,
-    );
+    const params = getParams({ resume_score: [resume_score] });
+    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
   };
 
   const banners = useBanners();
@@ -450,7 +450,8 @@ const Pipeline = () => {
     },
   );
   const handlClick = (section: Application['status']) => {
-    push(`/jobs/${job.id}/candidate-list?${getParams({ section })}`);
+    const params = getParams({ section });
+    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
   };
   return (
     <>
@@ -691,6 +692,7 @@ const useBanners = () => {
           title: 'Revert',
           onClick: () =>
             handleJobUpdate({
+              parameter_weights: distributeScoreWeights(job.jd_json),
               draft: { ...job.draft, jd_json: job.jd_json },
             }),
         }}
@@ -1126,7 +1128,7 @@ const Banner = (props: BannerProps) => {
             <>
               <ButtonSoft
                 textButton={props.secondary.title}
-                size={2}
+                size={1}
                 color={'accent'}
                 highContrast={'true'}
                 onClickButton={{
@@ -1136,7 +1138,7 @@ const Banner = (props: BannerProps) => {
 
               <ButtonSolid
                 textButton={props.primary.title}
-                size={2}
+                size={1}
                 color={'accent'}
                 onClickButton={{
                   onClick: props.primary.onClick,
@@ -1155,10 +1157,10 @@ const Banner = (props: BannerProps) => {
           iconName={'error'}
           slotButtons={
             <ButtonSolid
-              size={2}
-              color={'accent'}
+              size={1}
+              color={'error'}
               textButton={props.primary.title}
-              highContrast='true'
+              highContrast='false'
               onClickButton={{
                 onClick: () => props.primary.title,
               }}

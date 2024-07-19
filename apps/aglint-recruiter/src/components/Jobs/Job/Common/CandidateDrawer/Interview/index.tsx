@@ -24,8 +24,8 @@ const Interview = () => {
     if (!CASCADE_VISIBILITIES.interview.includes(meta.data.status))
       return (
         <ActionEmptyState
-          title='Candidate not eligible'
-          description='Enable interviews for candidates by moving them to the interview state'
+          title='No interviews available.'
+          description='Move the candidate to the interview state to enable interview scheduling.'
         />
       );
     if ((interview.data ?? []).length === 0)
@@ -121,6 +121,7 @@ const Content = () => {
             meeting_flow: session.meeting_flow,
           }
         }
+        currentSession={null}
       />
     </Stack>
   ));

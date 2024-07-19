@@ -29,7 +29,7 @@ export const template_tabs = [
     key: TEMPLATE_TABS.Agent,
   },
   {
-    label: 'Calender',
+    label: 'Calendar',
     key: TEMPLATE_TABS.Calender,
   },
 ] as const;
@@ -74,6 +74,7 @@ export const emailTempKeys: DatabaseEnums['email_slack_types'][] = [
   'meetingDeclined_email_organizer',
   'meetingAccepted_email_organizer',
   'interviewEnd_email_interviewerForFeedback',
+  'interviewerResumed_email_admin',
 ];
 
 export const slackTempKeys: DatabaseEnums['email_slack_types'][] = [

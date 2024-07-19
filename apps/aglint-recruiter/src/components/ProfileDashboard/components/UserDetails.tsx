@@ -136,51 +136,47 @@ export const UserDetail = () => {
         toast.error('No changes.');
       } else {
         const { error } = handleValidate(profile);
-
         if (error) return;
-
+        let profile_image = recruiterUser.profile_image;
         setLoading(true);
-        if (profileChange) {
-          let profile_image = recruiterUser.profile_image;
-          if (isImageChanged) {
-            const { data } = await supabase.storage
-              .from('recruiter-user')
-              .upload(`public/${userDetail?.user?.id}`, imageFile.current, {
-                cacheControl: '3600',
-                upsert: true,
-              });
+        if (isImageChanged) {
+          const { data } = await supabase.storage
+            .from('recruiter-user')
+            .upload(`public/${userDetail?.user?.id}`, imageFile.current, {
+              cacheControl: '3600',
+              upsert: true,
+            });
 
-            if (data?.path && imageFile?.current?.size) {
-              profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-              setError(false);
-            } else {
-              profile_image = null;
-            }
-            setIsImageChanged(false);
+          if (data?.path && imageFile?.current?.size) {
+            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+            setError(false);
+          } else {
+            profile_image = null;
           }
-          await supabase
-            .from('recruiter_user')
-            .update({
-              first_name: profile.first_name.value,
-              last_name: profile.last_name.value,
-              phone: profile.phone.value,
-              linked_in: profile.linked_in.value,
-              profile_image,
-            })
-            .eq('user_id', recruiterUser.user_id);
+          setIsImageChanged(false);
+        }
 
-          setRecruiterUser({
-            ...recruiterUser,
+        await supabase
+          .from('recruiter_user')
+          .update({
             first_name: profile.first_name.value,
             last_name: profile.last_name.value,
             phone: profile.phone.value,
             linked_in: profile.linked_in.value,
             profile_image,
-          });
+          })
+          .eq('user_id', recruiterUser.user_id);
 
-          setProfileChange(false);
-        }
+        setRecruiterUser({
+          ...recruiterUser,
+          first_name: profile.first_name.value,
+          last_name: profile.last_name.value,
+          phone: profile.phone.value,
+          linked_in: profile.linked_in.value,
+          profile_image,
+        });
         setProfileForm(false);
+        setProfileChange(false);
       }
     } catch (e) {
       toast.error('Unable to udpate profile. Please contact support');

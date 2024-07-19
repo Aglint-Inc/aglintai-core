@@ -1,3 +1,5 @@
+import { scheduleTypeIcons, sessionTypeIcons } from '../../assets/common';
+
 export function durationCalculator(min) {
   const m = min % 60;
   const h = Math.floor(min / 60);
@@ -9,27 +11,18 @@ export function durationCalculator(min) {
 }
 
 export function sessionTypeIcon(platform) {
-  if (platform === 'individual')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/individual.png';
-  if (platform === 'debrief')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png';
-  if (platform === 'panel')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/panel.png';
+  if (platform === 'individual') return sessionTypeIcons.individual;
+  if (platform === 'debrief') return sessionTypeIcons.debrief;
+  if (platform === 'panel') return sessionTypeIcons.panel;
 }
 
 export function scheduleTypeIcon(platform) {
-  if (platform === 'zoom')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png';
-  if (platform === 'google_meet')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png';
-  if (platform === 'phone_call')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png';
+  if (platform === 'zoom') return scheduleTypeIcons.zoom;
+  if (platform === 'google_meet') return scheduleTypeIcons.google_meet;
+  if (platform === 'phone_call') return scheduleTypeIcons.phone_call;
   if (platform === 'in_person_meeting')
-    return 'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/in_person_meeting.png';
+    return scheduleTypeIcons.in_person_meeting;
 }
-
-export const durationIcon =
-  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/duration.png';
 
 export function platformRemoveUnderscore(name) {
   if (name === 'google_meet') return 'Google Meet';

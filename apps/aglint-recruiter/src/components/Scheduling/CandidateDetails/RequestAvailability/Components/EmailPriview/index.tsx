@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -66,32 +67,11 @@ function EmailPreview({
       textEmailPreview={
         <Stack spacing={1} direction={'column'}>
           <Typography>
-            To proceed with requesting the candidate’s availability, please
-            click on the button below. Upon doing so, an email containing the
-            following message will be sent to the candidate:
+            This email will be sent to the candidate. To edit the content, go to
+            the template section, make edits, then click refresh.
+            <br />
+            {`Click "Request Availability" to send.`}
           </Typography>
-          <Stack direction={'row'} spacing={1} justifyItems={'start'}>
-            <ButtonSoft
-              size={1}
-              textButton={'Edit Email Template'}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  window.open(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
-                  );
-                },
-              }}
-            />
-            <IconButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'refresh'}
-              onClickButton={{
-                onClick: getEmail,
-              }}
-            />
-          </Stack>
         </Stack>
       }
       slotButton={
@@ -124,6 +104,51 @@ function EmailPreview({
             </Stack>
           </ShowCode.When>
           <ShowCode.Else>
+            <Stack
+              display={'flex'}
+              gap={'32px'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              width={'100%'}
+              padding={'0px 20px'}
+            >
+              <Stack>
+                <GlobalBannerInline
+                  textContent='This is a preview only. All actions in this email are disabled.'
+                  iconName='info'
+                  slotButton={<></>}
+                  color={'warning'}
+                />
+              </Stack>
+              <Stack
+                direction={'row'}
+                spacing={1}
+                justifyItems={'start'}
+                minWidth={'152px'}
+              >
+                <ButtonSoft
+                  size={1}
+                  textButton={'Edit Email Template'}
+                  color={'accent'}
+                  onClickButton={{
+                    onClick: () => {
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
+                      );
+                    },
+                  }}
+                />
+                <IconButtonSoft
+                  size={1}
+                  color={'neutral'}
+                  iconName={'refresh'}
+                  onClickButton={{
+                    onClick: getEmail,
+                  }}
+                />
+              </Stack>
+            </Stack>
             <iframe
               width={'600px'}
               height={'720px'}
