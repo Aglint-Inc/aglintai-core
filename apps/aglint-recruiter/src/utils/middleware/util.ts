@@ -34,14 +34,14 @@ export const server_check_permissions = async ({
         const decoded = jwtDecode(
           sesData.session.access_token,
         ) as EventSessionType;
-        const userpermissions =
+        const userPermissions =
           decoded.app_metadata.role_permissions.permissions;
         const role = decoded.app_metadata.role_permissions.role;
         const rec_id = decoded.app_metadata.role_permissions.recruiter_id;
-        let is_allowed = false;
+        let is_allowed = permissions.includes('authorized');
 
         for (let permission of permissions) {
-          if (userpermissions.includes(permission)) {
+          if (userPermissions.includes(permission)) {
             is_allowed = true;
             break;
           }
@@ -58,7 +58,7 @@ export const server_check_permissions = async ({
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    // console.error(error);
+    console.error(error);
     return { isAllowed: false, id: null, rec_id: null, role: null };
   }
 };

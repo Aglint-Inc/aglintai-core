@@ -127,7 +127,7 @@ const PERMISSIONS: Permissions = {
   '/api/emails/preview': ['scheduling_module'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],
-  '/api/getUserDetails': ['job_module'],
+  '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
 };

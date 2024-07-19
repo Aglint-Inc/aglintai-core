@@ -4,7 +4,7 @@ import { permissionsEnum } from "./type";
 export type CustomPermissions = TableType<
   "permissions",
   {
-    name: permissionsEnum;
+    name: permissionsEnum | "authorized";
     meta: MetaType;
   }
 >;
