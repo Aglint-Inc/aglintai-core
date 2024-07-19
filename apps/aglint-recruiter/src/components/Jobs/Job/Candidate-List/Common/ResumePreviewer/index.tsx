@@ -1,9 +1,11 @@
 import { Dialog, Stack } from '@mui/material';
+import { useMemo } from 'react';
 
 import { BookMark } from '@/devlink/BookMark';
 import { Download } from '@/devlink/Download';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import Loader from '@/src/components/Common/Loader';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const ResumePreviewer = ({
   open,
@@ -30,6 +32,11 @@ const ResumePreviewer = ({
   };
   download?: boolean;
 }) => {
+  const { checkPermissions } = useRolesAndPermissions();
+  const isAllowed = useMemo(
+    () => checkPermissions(['manage_job']),
+    [checkPermissions],
+  );
   const downloadFile = async () => {
     fetch(url).then((response) => {
       response.blob().then((blob) => {
@@ -73,7 +80,7 @@ const ResumePreviewer = ({
                 }}
               />
             )}
-            {bookmark && (
+            {isAllowed && bookmark && (
               <BookMark
                 isBookMarked={bookmark.isBookmarked}
                 onClickBookmark={{ onClick: () => bookmark.handleBookmark() }}

@@ -117,6 +117,7 @@ const Dashboard = () => {
     handleJobAsyncUpdate,
     handlePublish,
     canPublish,
+    manageJob,
   } = useJob();
   const {
     schedules: { data: schedule },
@@ -254,68 +255,70 @@ const Dashboard = () => {
         }
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={
-          <JobDashboardTopRight
-            slotJobStatus={
-              <AssistStatus
-                isCloseVisible={job?.status === 'closed'}
-                isDraftVisible={job?.status === 'draft'}
-                isPublishedVisible={job?.status === 'published'}
-              />
-            }
-            slotAddCandidateButton={
-              <>
-                {applicationScoringPollEnabled && (
-                  <ScoreSetting
-                    textScoreCount={`${
-                      job?.processing_count.processed +
-                      job?.processing_count.unavailable +
-                      job?.processing_count.unparsable
-                    }/${total ?? '---'}`}
-                    slotScoringLoader={
-                      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
-                        <CircularProgress
-                          color='inherit'
-                          size={'100%'}
-                          sx={{ color: 'var(--white)' }}
-                        />
-                      </Stack>
-                    }
-                  />
-                )}
-                {job?.status !== 'closed' && (
-                  <ButtonSoft
-                    size={2}
-                    color='neutral'
-                    textButton='Add candidates'
-                    onClickButton={{ onClick: () => setImportPopup(true) }}
-                    isLeftIcon
-                    iconName='person_add'
-                  />
-                )}
-              </>
-            }
-            slotPublishButton={publishButton}
-            isPublish={job.status !== 'closed'}
-            slotCloseJobButton={
-              <>
-                <IconButtonGhost
-                  color={'neutral'}
-                  iconSize={6}
-                  iconName='more_vert'
-                  onClickButton={{
-                    onClick: () => {
-                      setPopover(true);
-                    },
-                  }}
+          manageJob && (
+            <JobDashboardTopRight
+              slotJobStatus={
+                <AssistStatus
+                  isCloseVisible={job?.status === 'closed'}
+                  isDraftVisible={job?.status === 'draft'}
+                  isPublishedVisible={job?.status === 'published'}
                 />
-                <JobClose
-                  popover={popover}
-                  onClose={() => setPopover(false)}
-                  onSubmit={() => handleSubmit()}
-                />
-              </>
-            }
-          />
+              }
+              slotAddCandidateButton={
+                <>
+                  {applicationScoringPollEnabled && (
+                    <ScoreSetting
+                      textScoreCount={`${
+                        job?.processing_count.processed +
+                        job?.processing_count.unavailable +
+                        job?.processing_count.unparsable
+                      }/${total ?? '---'}`}
+                      slotScoringLoader={
+                        <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                          <CircularProgress
+                            color='inherit'
+                            size={'100%'}
+                            sx={{ color: 'var(--white)' }}
+                          />
+                        </Stack>
+                      }
+                    />
+                  )}
+                  {job?.status !== 'closed' && (
+                    <ButtonSoft
+                      size={2}
+                      color='neutral'
+                      textButton='Add candidates'
+                      onClickButton={{ onClick: () => setImportPopup(true) }}
+                      isLeftIcon
+                      iconName='person_add'
+                    />
+                  )}
+                </>
+              }
+              slotPublishButton={publishButton}
+              isPublish={job.status !== 'closed'}
+              slotCloseJobButton={
+                <>
+                  <IconButtonGhost
+                    color={'neutral'}
+                    iconSize={6}
+                    iconName='more_vert'
+                    onClickButton={{
+                      onClick: () => {
+                        setPopover(true);
+                      },
+                    }}
+                  />
+                  <JobClose
+                    popover={popover}
+                    onClose={() => setPopover(false)}
+                    onSubmit={() => handleSubmit()}
+                  />
+                </>
+              }
+            />
+          )
         }
       />
     </>
@@ -832,17 +835,18 @@ const JobClose = ({
 };
 
 const Modules = () => {
+  const { manageJob } = useJob();
   const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
     useAuthDetails();
   return (
     <>
-      <JobDetailsModule />
-      <ProfileScoreModule />
+      {manageJob && <JobDetailsModule />}
+      {manageJob && <ProfileScoreModule />}
       {isSchedulingEnabled && <InterviewModule />}
-      {isAssessmentEnabled && <AssessmentModule />}
-      {isScreeningEnabled && <ScreeningModule />}
-      <HiringTeamModule />
-      <EmailTemplatesModule />
+      {isAssessmentEnabled && manageJob && <AssessmentModule />}
+      {isScreeningEnabled && manageJob && <ScreeningModule />}
+      {manageJob && <HiringTeamModule />}
+      {manageJob && <EmailTemplatesModule />}
       <WorkflowModule />
     </>
   );

@@ -11,6 +11,7 @@ import { WorkflowAction } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { GC_TIME } from '..';
 import { workflowActionMutationKeys, workflowActionQueryKeys } from './keys';
 
 const WORKFLOW_ACTIONS_SELECT = '*, company_email_template(*)';
@@ -21,6 +22,7 @@ export const useWorkflowActions = (args: WorkflowActionKeys) => {
     queryKey,
     queryFn: () => getWorkflowActions(args),
     enabled: !!args.workflow_id,
+    gcTime: args.workflow_id ? GC_TIME : 0,
   });
 };
 export type WorkflowActionKeys = {
