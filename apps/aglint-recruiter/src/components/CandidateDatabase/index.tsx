@@ -97,7 +97,7 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error('Something went wrong. Please try again1.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
