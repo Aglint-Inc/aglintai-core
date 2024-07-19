@@ -14,7 +14,8 @@ import { useJobs } from '@/src/context/JobsContext';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { Form, JobMetaFormProps, useJobForms, WarningSvg } from './form';
+import { WarningSvg } from '../Job/Interview-Plan/sessionForms';
+import { Form, JobMetaFormProps, useJobForms } from './form';
 
 const JobCreateComponent = () => {
   const { status } = useCompanyMembers();
@@ -62,7 +63,7 @@ const JobCreate = () => {
     },
     department: {
       value: null,
-      required: true,
+      required: false,
       error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
@@ -72,7 +73,7 @@ const JobCreate = () => {
     },
     location: {
       value: '',
-      required: true,
+      required: false,
       error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
@@ -252,11 +253,11 @@ const JobForms = ({
   const forms = (
     <>
       {company}
-      {department}
       {job_title}
       {job_type}
-      {location}
       {workplace_type}
+      {department}
+      {location}
     </>
   );
 
