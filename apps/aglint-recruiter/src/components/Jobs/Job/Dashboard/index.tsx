@@ -10,6 +10,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
@@ -33,7 +34,6 @@ import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 // import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
-import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
 import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
@@ -609,7 +609,7 @@ const useBanners = () => {
     banners.push(
       <Banner
         type='warning'
-        title='Interview types not set'
+        title='Interview plan not set'
         description='Add one or more interview types to create an interview plan.'
         primary={{
           title: 'Ignore',
@@ -904,7 +904,7 @@ const JobDetailsModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
-      slotIcon={<JobDetailsIcon />}
+      slotIcon={<GlobalIcon iconName='edit_square' color={'inherit'} size={6} weight={'regular'}/>}
     />
   );
 };
@@ -1127,13 +1127,13 @@ const Banner = (props: BannerProps) => {
       return (
         <GlobalBanner
           color={'warning'}
-          iconName={'warning'}
+          iconName={'info'}
           slotButtons={
             <>
               <ButtonSoft
                 textButton={props.secondary.title}
                 size={1}
-                color={'accent'}
+                color={'neutral'}
                 highContrast={'true'}
                 onClickButton={{
                   onClick: props.secondary.onClick,
@@ -1158,7 +1158,7 @@ const Banner = (props: BannerProps) => {
       return (
         <GlobalBanner
           color={'error'}
-          iconName={'error'}
+          iconName={'warning'}
           slotButtons={
             <ButtonSolid
               size={1}

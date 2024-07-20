@@ -1,26 +1,27 @@
 .team_pill {
   display: flex;
   overflow: hidden;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2);
   align-items: center;
   grid-column-gap: var(--radius-2);
   grid-row-gap: var(--radius-2);
 
-  border: 1px none var(--neutral-3);
-  border-radius: 100px;
+  border-radius: var(--radius-2);
 
-  background-color: var(--neutral-2);
+  background-color: var(--neutral-3);
 }
 
 .member_photo {
   overflow: hidden;
-  width: 24px;
-  height: 24px;
-  border-radius: 100px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-2);
   background-color: hsla(0, 0.00%, 100.00%, 1.00);
 }
 
 .remove_member {
+  border-radius: var(--radius-1);
+  background-color: var(--neutral-a3);
   transition: all 200ms ease;
   color: #68737d;
   cursor: pointer;

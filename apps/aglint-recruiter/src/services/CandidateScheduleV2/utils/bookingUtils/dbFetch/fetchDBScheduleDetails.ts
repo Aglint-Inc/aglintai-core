@@ -1,3 +1,4 @@
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -37,7 +38,16 @@ export const fetchDBScheduleDetails = async (
     .tz(parsed_body.cand_tz)
     .startOf('day')
     .format('DD/MM/YYYY');
+  const filered_selected_options: PlanCombinationRespType[] =
+    filter_json_data.selected_options.map((plan) => {
+      let updated_plan = { ...plan };
+      updated_plan.sessions = updated_plan.sessions.filter((s) =>
+        filter_json_data.session_ids.includes(s.session_id),
+      );
+      return updated_plan;
+    });
   return {
+    filered_selected_options,
     filter_json_data,
     candidate: filter_json_data.interview_schedule.applications.candidates,
     application: filter_json_data.interview_schedule.applications,

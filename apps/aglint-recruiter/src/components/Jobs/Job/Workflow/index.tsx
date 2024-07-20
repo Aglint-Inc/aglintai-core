@@ -76,7 +76,7 @@ const Actions = () => {
     <>
       {manageJob && (
         <ButtonSolid
-          textButton='Add Workflow'
+          textButton='Add'
           size={2}
           iconName='bolt'
           isLeftIcon

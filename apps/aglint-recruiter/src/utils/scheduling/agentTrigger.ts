@@ -27,14 +27,12 @@ export const agentTrigger = async ({
   rec_user_phone: string;
   recruiter_user_id: string;
 }) => {
-  console.log({
-    type,
-    candidate_name,
-    candidate_email,
-    rec_user_phone: formatPhoneNumber(rec_user_phone),
-  });
-
   if (type === 'email_agent') {
+    console.log({
+      type,
+      candidate_name,
+      candidate_email,
+    });
     const bodyParams: InitAgentBodyParams = {
       filter_json_id: filterJsonId,
       task_id: task_id,
@@ -54,6 +52,12 @@ export const agentTrigger = async ({
 
     return res.status;
   } else if (type === 'phone_agent') {
+    console.log({
+      type,
+      candidate_name,
+      candidate_email,
+      rec_user_phone: formatPhoneNumber(rec_user_phone),
+    });
     const res = await axios.post(
       // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
       `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
@@ -83,7 +87,7 @@ export const agentTrigger = async ({
 
 function formatPhoneNumber(phoneNumber) {
   // Remove all non-numeric characters except '+'
-  const numericPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
+  const numericPhoneNumber = phoneNumber?.replace(/[^\d+]/g, '');
 
   return numericPhoneNumber;
 }
