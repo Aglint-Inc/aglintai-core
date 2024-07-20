@@ -609,7 +609,7 @@ const useBanners = () => {
     banners.push(
       <Banner
         type='warning'
-        title='Interview types not set'
+        title='Interview plan not set'
         description='Add one or more interview types to create an interview plan.'
         primary={{
           title: 'Ignore',
