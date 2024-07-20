@@ -10,7 +10,7 @@ import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
-import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { useAllActivities, useGetScheduleApplication } from '../queries/hooks';
 import {
   setCancelSessions,
   setMultipleCancelOpen,

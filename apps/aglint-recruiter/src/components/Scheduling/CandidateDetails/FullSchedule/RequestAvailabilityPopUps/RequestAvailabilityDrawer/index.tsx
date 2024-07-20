@@ -18,7 +18,10 @@ import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoade
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 
-import { useAllActivities, useGetScheduleApplication } from '../../../hooks';
+import {
+  useAllActivities,
+  useGetScheduleApplication,
+} from '../../../queries/hooks';
 import { updateCandidateRequestAvailability } from '../../../RequestAvailability/RequestAvailabilityContext';
 import DayCardWrapper from '../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import {

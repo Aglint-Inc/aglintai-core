@@ -14,7 +14,7 @@ import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { useGetScheduleApplication } from '../../hooks';
+import { useGetScheduleApplication } from '../../queries/hooks';
 import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
 import { useEditSessionDrawerStore } from '../EditDrawer/store';
 
