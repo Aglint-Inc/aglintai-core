@@ -9,8 +9,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../../Candidates/queries/utils';
-import { useGetScheduleApplication } from '../../hooks';
 import { cancelMailHandler } from '../../mailUtils';
+import { useGetScheduleApplication } from '../../queries/hooks';
 import {
   setMultipleCancelOpen,
   setSelectedApplicationLog,

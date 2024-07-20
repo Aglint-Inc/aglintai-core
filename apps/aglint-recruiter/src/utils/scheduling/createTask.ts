@@ -3,7 +3,7 @@ import { DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
 import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
-import { fetchInterviewDataJob } from '@/src/components/Scheduling/CandidateDetails/hooks';
+import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 
 export const createTask = async ({
@@ -18,9 +18,7 @@ export const createTask = async ({
   supabase,
   candidate_name,
 }: {
-  selectedSessions: Awaited<
-    ReturnType<typeof fetchInterviewDataJob>
-  >['sessions'];
+  selectedSessions: SchedulingApplication['initialSessions'];
   application_id: string;
   rec_user_id: string;
   recruiter_id: string;

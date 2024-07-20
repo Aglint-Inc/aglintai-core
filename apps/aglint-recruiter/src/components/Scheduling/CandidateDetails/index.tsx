@@ -14,7 +14,7 @@ import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
 import FullSchedule from './FullSchedule';
-import { useAllActivities, useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './queries/hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
 import {

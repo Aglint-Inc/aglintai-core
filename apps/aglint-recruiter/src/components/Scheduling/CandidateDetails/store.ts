@@ -8,6 +8,7 @@ import { create } from 'zustand';
 
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
+import { fetchApplicationDetails } from './queries/utils';
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 
 export type TabSchedulingType =
@@ -25,7 +26,9 @@ export interface SchedulingApplication {
   initialSessions: SessionsType[];
   selectedSessionIds: string[];
   requestSessionIds: string[];
-  selectedApplication: SelectedApplicationTypeDB;
+  selectedApplication: Awaited<
+    ReturnType<typeof fetchApplicationDetails>
+  > | null;
   selectedSession: SessionsType | null;
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];

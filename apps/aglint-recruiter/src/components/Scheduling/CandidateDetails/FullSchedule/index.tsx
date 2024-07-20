@@ -9,7 +9,7 @@ import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
 import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
-import { useGetScheduleApplication } from '../hooks';
+import { useGetScheduleApplication } from '../queries/hooks';
 import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
   setIndividualCancelOpen,

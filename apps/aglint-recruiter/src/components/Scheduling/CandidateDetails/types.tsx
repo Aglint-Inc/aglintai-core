@@ -91,7 +91,7 @@ export type InterviewDataResponseType = {
         recruiter_user: {
           first_name: string;
           last_name: string;
-          id: string;
+          user_id: string;
           profile_image: string;
           position: string;
           email: string;
