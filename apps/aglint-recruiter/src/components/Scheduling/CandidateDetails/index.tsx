@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -63,7 +64,10 @@ function SchedulingApplication() {
           route: ROUTES['/scheduling']() + `?tab=candidates`,
         },
         {
-          name: `${selectedApplication.candidates.first_name} ${selectedApplication.candidates.last_name}`.trim(),
+          name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
         },
       ]);
     }
