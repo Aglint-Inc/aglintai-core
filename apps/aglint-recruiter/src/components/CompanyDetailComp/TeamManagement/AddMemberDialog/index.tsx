@@ -156,8 +156,8 @@ const AddMember = ({
       flag = true;
     }
     if (
-      (form.role !== 'admin' && !form.manager_id) ||
-      form.manager_id?.trim() === ''
+      form.role !== 'admin' &&
+      (!form.manager_id || form.manager_id.trim() === '')
     ) {
       temp = { ...temp, manager: true };
       flag = true;
@@ -169,7 +169,6 @@ const AddMember = ({
     }
     return true;
   };
-
   const inviteUser = async () => {
     try {
       const resData = await inviteUserApi(
@@ -227,20 +226,13 @@ const AddMember = ({
     acc[curr.id] = curr.name;
     return acc;
   }, {});
-
-  const isEnabled =
-    form.role === 'admin'
-      ? form.email &&
-        form.first_name &&
-        form.designation &&
-        form.department &&
-        form.role_id
-      : form.email &&
-        form.first_name &&
-        form.designation &&
-        form.department &&
-        form.role_id &&
-        form.manager_id;
+  const isSubmittable = !(
+    form.email &&
+    form.first_name &&
+    form.designation &&
+    form.department &&
+    (form.role === 'admin' || Boolean(form.manager_id))
+  );
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
@@ -578,7 +570,7 @@ const AddMember = ({
                       isLeftIcon={false}
                       isRightIcon={false}
                       size='2'
-                      isDisabled={!isEnabled}
+                      isDisabled={isSubmittable}
                       onClickButton={{
                         onClick: () => {
                           setIsDisable(true);
