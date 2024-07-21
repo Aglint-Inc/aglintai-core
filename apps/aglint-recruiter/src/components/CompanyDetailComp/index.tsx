@@ -1,6 +1,5 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { CompanySetting } from '@/devlink/CompanySetting';
@@ -8,6 +7,7 @@ import { NavSublink } from '@/devlink/NavSublink';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import CompanyInfoComp from './CompanyInfoComp';
 import {
@@ -20,6 +20,7 @@ import {
 const CompanyDetailComp = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
+  const { ifAllowed } = useRolesAndPermissions();
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -42,9 +43,6 @@ const CompanyDetailComp = () => {
       router.replace('/company?tab=basic-info');
     }
   }, [router]);
-
-  const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
-  let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
 
   useEffect(() => {
     if (!isSaved && isSaving) setIsSaved(true);
@@ -73,55 +71,30 @@ const CompanyDetailComp = () => {
                 },
               }}
             />
-            {isAssesEnabled && (
+            {ifAllowed(
               <NavSublink
-                textLink={'Assessment'}
-                isActive={router.query?.tab === 'assessment'}
+                textLink={'Users'}
+                isActive={router.query?.tab === 'team'}
                 onClickNav={{
                   onClick: () => {
-                    router.replace(`/company?tab=${tabs.assessment}`);
+                    router.replace('/company?tab=team');
                   },
                 }}
-              />
+              />,
+              ['view_users'],
             )}
-            {isAssistantEnabled && (
+            {ifAllowed(
               <NavSublink
-                textLink={'Job Assistant'}
-                isActive={router.query?.tab === 'job-assistant'}
+                textLink={'Roles'}
+                isActive={router.query?.tab === 'roles'}
                 onClickNav={{
                   onClick: () => {
-                    router.replace(`/company?tab=${tabs.jobassistant}`);
+                    router.replace('/company?tab=roles');
                   },
                 }}
-              />
+              />,
+              ['view_roles'],
             )}
-            {/* <NavSublink
-              textLink={'Email Templates'}
-              isActive={router.query?.tab === 'email'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace(`/company?tab=${tabs.email}`);
-                },
-              }}
-            /> */}
-            <NavSublink
-              textLink={'Users'}
-              isActive={router.query?.tab === 'team'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace('/company?tab=team');
-                },
-              }}
-            />
-            <NavSublink
-              textLink={'Roles'}
-              isActive={router.query?.tab === 'roles'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace('/company?tab=roles');
-                },
-              }}
-            />
           </>
         }
         slotSavedChanges={
