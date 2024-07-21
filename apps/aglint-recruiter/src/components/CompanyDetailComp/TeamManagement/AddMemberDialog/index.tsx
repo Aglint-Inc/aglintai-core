@@ -226,6 +226,13 @@ const AddMember = ({
     acc[curr.id] = curr.name;
     return acc;
   }, {});
+  const isSubmittable = !(
+    form.email &&
+    form.first_name &&
+    form.designation &&
+    form.department &&
+    (form.role === 'admin' || Boolean(form.manager_id))
+  );
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
@@ -563,15 +570,7 @@ const AddMember = ({
                       isLeftIcon={false}
                       isRightIcon={false}
                       size='2'
-                      isDisabled={
-                        form.email &&
-                        form.first_name &&
-                        form.designation &&
-                        form.department &&
-                        form.role_id === 'admin'
-                          ? true
-                          : Boolean(form.manager_id)
-                      }
+                      isDisabled={isSubmittable}
                       onClickButton={{
                         onClick: () => {
                           setIsDisable(true);
