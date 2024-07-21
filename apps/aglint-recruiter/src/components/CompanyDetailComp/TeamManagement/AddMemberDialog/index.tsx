@@ -481,8 +481,8 @@ const AddMember = ({
                       onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          role: newValue.name,
-                          role_id: newValue.id,
+                          role: newValue && newValue.name,
+                          role_id: newValue && newValue.id,
                         });
                       }}
                       id='controllable-states-demo'
