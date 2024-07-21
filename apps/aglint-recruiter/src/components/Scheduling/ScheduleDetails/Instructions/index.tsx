@@ -43,7 +43,7 @@ function Instructions({
           isDescriptionVisibe={false}
           textPopupTitle={'Edit Instructions'}
           isIcon={false}
-          textDescription={''}
+          textDescription={'Please provide detailed instructions on how to conduct the interview, including dos and don’ts, and a clear guideline.'}
           slotPopup={
             <Stack
               sx={{
