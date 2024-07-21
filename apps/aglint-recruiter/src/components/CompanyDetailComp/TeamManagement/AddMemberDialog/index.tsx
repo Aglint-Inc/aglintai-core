@@ -228,6 +228,20 @@ const AddMember = ({
     return acc;
   }, {});
 
+  const isEnabled =
+    form.role === 'admin'
+      ? form.email &&
+        form.first_name &&
+        form.designation &&
+        form.department &&
+        form.role_id
+      : form.email &&
+        form.first_name &&
+        form.designation &&
+        form.department &&
+        form.role_id &&
+        form.manager_id;
+
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
       <Stack sx={{ width: '600px', height: '100%' }}>
@@ -564,15 +578,7 @@ const AddMember = ({
                       isLeftIcon={false}
                       isRightIcon={false}
                       size='2'
-                      isDisabled={
-                        form.email &&
-                        form.first_name &&
-                        form.designation &&
-                        form.department &&
-                        form.role_id
-                          ? false
-                          : true
-                      }
+                      isDisabled={!isEnabled}
                       onClickButton={{
                         onClick: () => {
                           setIsDisable(true);
