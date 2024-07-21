@@ -37,12 +37,15 @@ export const removeSessionsFromRequestAvailability = async ({
       const { data: reqSesRel, error: reqSesRelError } = await supabase
         .from('request_session_relation')
         .select()
-        .eq('session_id', session_id)
-        .single();
+        .eq('session_id', session_id);
 
       if (reqSesRelError) throw reqSesRelError;
 
-      const req_id = reqSesRel.request_availability_id;
+      if (reqSesRel.length === 0) {
+        continue;
+      }
+
+      const req_id = reqSesRel[0].request_availability_id;
 
       const { data: reqSesRels, error: reqSesRelsError } = await supabase
         .from('request_session_relation')
