@@ -363,34 +363,24 @@ export const ConfirmedInvitePage = (
                           ? 'cancel'
                           : 'reschedule',
                       )}
-                      {' all Sessions'}
+                      {' all sessions'}
                       {cancelReschedulingDetails.type == 'reschedule' &&
                         ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
-                      {' received.'}
+                      {' received,'} and under review.
                     </Typography>
                     {reasons.length && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>Reason : </span>
+                        <span style={{ fontWeight: '500' }}>Reason: </span>
                         {reasons.join(', ')}
                       </Typography>
                     )}
                     {cancelReschedulingDetails.other_details.note && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>
-                          Additional Notes :
-                        </span>
+                        <span style={{ fontWeight: '500' }}>Additional Notes: </span>
                         {cancelReschedulingDetails.other_details.note}
                       </Typography>
                     )}
-                    <Typography fontWeight={500} marginTop={'5px'}>
-                      Your request to{' '}
-                      {capitalizeFirstLetter(
-                        cancelReschedulingDetails.type == 'declined'
-                          ? 'cancel'
-                          : 'reschedule',
-                      )}{' '}
-                      is pending company review.
-                    </Typography>
+                    
                   </>
                 }
               />
