@@ -157,7 +157,7 @@ const AddMember = ({
     }
     if (
       (form.role !== 'admin' && !form.manager_id) ||
-      form.manager_id.trim() === ''
+      form.manager_id?.trim() === ''
     ) {
       temp = { ...temp, manager: true };
       flag = true;
@@ -169,6 +169,7 @@ const AddMember = ({
     }
     return true;
   };
+
   const inviteUser = async () => {
     try {
       const resData = await inviteUserApi(
@@ -568,8 +569,7 @@ const AddMember = ({
                         form.first_name &&
                         form.designation &&
                         form.department &&
-                        form.role_id &&
-                        form.manager_id
+                        form.role_id
                           ? false
                           : true
                       }
