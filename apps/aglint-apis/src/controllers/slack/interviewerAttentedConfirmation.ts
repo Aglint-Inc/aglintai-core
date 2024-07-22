@@ -63,14 +63,14 @@ export async function interviewerAttentedConfirmation(
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(interviewer.first_name, interviewer.last_name)},\nWe have an ${session.name} scheduled with ${getFullName(candidate.first_name, candidate.last_name)} for ${job}.\n\n*Place* : ${meetingPlatform(session.schedule_type)}\n*Time* : ${dayjs(session.interview_meeting.start_time).format('MMMM DD hh:mm A')} - ${dayjs(session.interview_meeting.end_time).format('hh:mm A')} \n*Duration* : ${session.session_duration} minutes`,
+            text: `Hi ${getFullName(interviewer.first_name, interviewer.last_name)},\nWe had an ${session.name}  scheduled with Terry Rodriguez for the ${job}.\n\n*Place* : ${meetingPlatform(session.schedule_type)}\n*Time* : ${dayjs(session.interview_meeting.start_time).format('MMMM DD hh:mm A')} - ${dayjs(session.interview_meeting.end_time).format('hh:mm A')} \n*Duration* : ${session.session_duration} minutes`,
           },
         },
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: '\n\nPlease let us know if you can attend or if you need to decline.',
+            text: '\n\nCould you please confirm whether you attended the interview ?',
           },
         },
         {
@@ -81,7 +81,7 @@ export async function interviewerAttentedConfirmation(
               text: {
                 type: 'plain_text',
                 emoji: true,
-                text: 'Accept',
+                text: 'Attended',
               },
               style: 'primary',
               value: 'accept',
@@ -92,7 +92,7 @@ export async function interviewerAttentedConfirmation(
               text: {
                 type: 'plain_text',
                 emoji: true,
-                text: 'Decline',
+                text: `Couldn't attend`,
               },
               style: 'danger',
               value: 'decline',
