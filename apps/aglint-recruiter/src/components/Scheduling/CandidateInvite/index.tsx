@@ -24,7 +24,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
-import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -36,6 +35,7 @@ import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -376,12 +376,11 @@ export const ConfirmedInvitePage = (
                     )}
                     {cancelReschedulingDetails.other_details.note && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>
-                          Additional Notes:{' '}
-                        </span>
+                        <span style={{ fontWeight: '500' }}>Additional Notes: </span>
                         {cancelReschedulingDetails.other_details.note}
                       </Typography>
                     )}
+                    
                   </>
                 }
               />
@@ -834,48 +833,32 @@ const SingleDayConfirmation = () => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack>
-            <Typography mb={2}>
-              Before we finalize your schedule, please take a moment to confirm
-              the chosen option. Your interview is crucial, and we want to
-              ensure it aligns perfectly with your availability.
-            </Typography>
-            <CandidateScheduleCard
-              isTitle={false}
-              textDuration={totalTimeDifference}
-              slotButton={<></>}
-              slotSessionInfo={
-                <SelectedDateAndTime
-                  slotSessionAndTime={<SingleDaySessions index={0} />}
-                  textDate={date}
-                  textDay={day}
-                  textMonth={month}
-                />
-              }
-            />
-          </Stack>
+      <ConfirmationPopup
+        isIcon={false}
+        textPopupTitle={'Confirm your interview'}
+        isDescriptionVisible={true}
+        textPopupDescription={
+          'Before we finalize your schedule, please take a moment to confirm the chosen option. Your interview is crucial, and we want to ensure it aligns perfectly with your availability.'
         }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
-          </>
+        isWidget={true}
+        slotWidget={
+          <CandidateScheduleCard
+            isTitle={false}
+            textDuration={totalTimeDifference}
+            slotButton={<></>}
+            slotSessionInfo={
+              <SelectedDateAndTime
+                slotSessionAndTime={<SingleDaySessions index={0} />}
+                textDate={date}
+                textDay={day}
+                textMonth={month}
+              />
+            }
+          />
         }
+        textPopupButton={'Confirm'}
+        onClickAction={{ onClick: () => handleSubmit() }}
+        onClickCancel={{ onClick: () => handleClose() }}
       />
     </Dialog>
   );
@@ -1082,35 +1065,17 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   };
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack>
-            <Typography>
-              Please review and confirm your selected time slot before we
-              finalize your schedule. It’s important that your interview time
-              aligns with your availability.
-            </Typography>
-          </Stack>
+      <ConfirmationPopup
+        isIcon={false}
+        textPopupTitle={'Confirm Your Interview'}
+        isDescriptionVisible={true}
+        textPopupDescription={
+          'Please review and confirm your selected time slot before we finalize your schedule. It’s important that your interview time aligns with your availability.'
         }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
-          </>
-        }
+        isWidget={false}
+        textPopupButton={'Confirm'}
+        onClickAction={{ onClick: () => handleSubmit() }}
+        onClickCancel={{ onClick: () => handleClose() }}
       />
     </Dialog>
   );

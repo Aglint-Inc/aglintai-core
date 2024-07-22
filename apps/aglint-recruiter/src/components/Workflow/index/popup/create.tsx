@@ -1,9 +1,8 @@
-import { Dialog, Stack, Typography } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
@@ -59,36 +58,20 @@ const Create = () => {
         onClickButton={{ onClick: () => setPopup({ open: true }) }}
       />
       <Dialog open={open} onClose={() => handleClose()}>
-        <DcPopup
-          popupName={'Create Workflow'}
-          slotBody={
-            <Stack>
-              <Typography mb={2}>
-                Enter the name for workflow. Next, you will be able to add steps
-                to the workflow.
-              </Typography>
-              <Stack spacing={2}>
-                <Forms form={form} setForm={setForm} />
-              </Stack>
-            </Stack>
-          }
-          onClickClosePopup={{ onClick: handleClose }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: handleClose,
-                }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Create Workflow'}
-                onClickButton={{ onClick: handleSubmit }}
-              />
-            </>
+        <ConfirmationPopup
+          isBlueButtonVisible={true}
+          isDescriptionVisible={false}
+          isIcon={false}
+          isGreyButtonVisible={true}
+          isWidget={true}
+          isYellowButtonVisible={false}
+          onClickAction={{ onClick: () => handleSubmit() }}
+          onClickCancel={{ onClick: () => handleClose() }}
+          textPopupTitle={'Create Workflow'}
+          textPopupButton={'Create Workflow'}
+          slotWidget={<Forms form={form} setForm={setForm} />}
+          textPopupDescription={
+            'Enter the name for workflow. Next, you will be able to add steps to the workflow.'
           }
         />
       </Dialog>

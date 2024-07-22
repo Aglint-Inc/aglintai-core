@@ -30,7 +30,6 @@ import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
@@ -46,10 +45,11 @@ import { TextWithBg } from '@/devlink2/TextWithBg';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
-import { DayOffHelper } from '@/devlink3/DayOffHelper';
-import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
-import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
-import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import {DayOffHelper} from '@/devlink3/DayOffHelper';
+import {DebreifHelperText } from '@/devlink3/DebreifHelperText';
+import {KeywordsHelper } from '@/devlink3/KeywordsHelper';
+import {WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
@@ -681,11 +681,17 @@ function SchedulingSettings({
                           />
                         );
                       })}
-                      <Dialog open={open} onClose={handleClose}>
-                        <DcPopup
-                          popupName={'Add Holiday'}
-                          onClickClosePopup={{ onClick: handleClose }}
-                          slotBody={
+                      <Dialog
+                        open={open}
+                        onClose={() => {
+                          // resetState();
+                          close();
+                        }}
+                      >
+                        <ConfirmationPopup
+                          isIcon={false}
+                          textPopupTitle='Add Holiday'
+                          textPopupDescription={
                             <Stack gap={1}>
                               {/* <Typography variant='body1'>Day off</Typography> */}
                               <Stack direction={'row'}>
@@ -793,72 +799,56 @@ function SchedulingSettings({
                               </ShowCode>
                             </Stack>
                           }
-                          slotButtons={
-                            <>
-                              <ButtonSoft
-                                textButton='Cancel'
-                                size={2}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: handleClose,
-                                }}
-                              />
-                              <ButtonSolid
-                                size={2}
-                                textButton={'Add'}
-                                onClickButton={{
-                                  onClick: () => {
-                                    if (!eventRef.current.value) {
-                                      toast.message('Please enter event name.');
-                                      return;
-                                    }
-                                    if (!selectedDate) {
-                                      toast.message('Please select a date.');
-                                      return;
-                                    }
-                                    if (
-                                      specificLocationOn ===
-                                        'specific_locations' &&
-                                      selectedLocations.length === 0
-                                    ) {
-                                      toast.message(
-                                        'Please select a locations.',
-                                      );
-                                      return;
-                                    }
-                                    setDaysOff(
-                                      (pre) =>
-                                        [
-                                          ...pre,
-                                          {
-                                            date: selectedDate,
-                                            event_name: eventRef.current.value,
-                                            locations:
-                                              specificLocationOn ===
-                                              'specific_locations'
-                                                ? selectedLocations
-                                                : recruiter?.office_locations.map(
-                                                    (
-                                                      item: interviewLocationType,
-                                                    ) =>
-                                                      `${item.city}, ${item.region}, ${item.country}`,
-                                                  ),
-                                          },
-                                        ] as holidayType[],
-                                    );
-                                    handleClose();
-                                    toast.success(
-                                      `Holiday added on ${dayjs(
-                                        selectedDate,
-                                      ).format('DD-MMM-YYYY')} ${
-                                        eventRef.current.value ? 'for' : ''
-                                      } ${eventRef.current.value}`,
-                                    );
-                                  },
-                                }}
-                              />
-                            </>
-                          }
+                          isGreyButtonVisible={true}
+                          textPopupButton='Add'
+                          onClickCancel={{
+                            onClick: handleClose,
+                          }}
+                          onClickAction={{
+                            onClick: () => {
+                              if (!eventRef.current.value) {
+                                toast.message('Please enter event name.');
+                                return;
+                              }
+                              if (!selectedDate) {
+                                toast.message('Please select a date.');
+                                return;
+                              }
+                              if (
+                                specificLocationOn === 'specific_locations' &&
+                                selectedLocations.length === 0
+                              ) {
+                                toast.message('Please select a locations.');
+                                return;
+                              }
+                              setDaysOff(
+                                (pre) =>
+                                  [
+                                    ...pre,
+                                    {
+                                      date: selectedDate,
+                                      event_name: eventRef.current.value,
+                                      locations:
+                                        specificLocationOn ===
+                                        'specific_locations'
+                                          ? selectedLocations
+                                          : recruiter?.office_locations.map(
+                                              (item: interviewLocationType) =>
+                                                `${item.city}, ${item.region}, ${item.country}`,
+                                            ),
+                                    },
+                                  ] as holidayType[],
+                              );
+                              handleClose();
+                              toast.success(
+                                `Holiday added on ${dayjs(selectedDate).format(
+                                  'DD-MMM-YYYY',
+                                )} ${
+                                  eventRef.current.value ? 'for' : ''
+                                } ${eventRef.current.value}`,
+                              );
+                            },
+                          }}
                         />
                       </Dialog>
                     </>
