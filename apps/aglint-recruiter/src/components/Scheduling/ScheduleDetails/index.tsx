@@ -10,6 +10,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -35,6 +36,7 @@ import { fetchFilterJson } from './utils';
 function SchedulingViewComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
   const { data, refetch, isLoading } = useScheduleDetails();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
@@ -98,11 +100,15 @@ function SchedulingViewComp() {
       setBreadcrum([
         {
           name: 'Scheduling',
-          route: ROUTES['/scheduling']() + `?tab=dashboard`,
+          route: checkPermissions(['scheduling_settings_and_reports'])
+            ? ROUTES['/scheduling']() + `?tab=dashboard`
+            : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
           name: 'Schedules',
-          route: ROUTES['/scheduling']() + `?tab=schedules`,
+          route: checkPermissions(['scheduling_actions'])
+            ? ROUTES['/scheduling']() + `?tab=schedules`
+            : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
           name: `${data.schedule_data.schedule.schedule_name}`.trim(),
@@ -227,9 +233,7 @@ function SchedulingViewComp() {
               <ScheduleDetailTabs
                 slotScheduleTabOverview={
                   <Stack spacing={'var(--space-4)'}>
-                    {(recruiterUser.role === 'admin' ||
-                      recruiterUser.role === 'recruiter' ||
-                      recruiterUser.role === 'hiring manager') && (
+                    {
                       <Banners
                         cancelReasons={cancelReasons}
                         schedule={schedule}
@@ -243,7 +247,7 @@ function SchedulingViewComp() {
                         setIsDeclineOpen={setIsDeclineOpen}
                         setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
                       />
-                    )}
+                    }
                     <Overview
                       schedule={schedule}
                       cancelReasons={data?.cancel_data}
