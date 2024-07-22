@@ -177,20 +177,12 @@ const AvatarSelectDropDown = ({
                     menu.start_icon_url
                   ))}
                 {menu.name}
-                <Stack
-                  direction={'row'}
-                  gap={2}
-                  ml={'auto'}
-                  maxWidth={'300px'}
-                  width={'100%'}
-                >
-                  <Grid container spacing={2}>
+                <Stack direction={'row'} ml={'auto'}>
+                  <Stack direction={'row'} gap={2}>
                     {(menu.meta ?? []).map(({ title, icon }, i) => (
-                      <Grid item xs={6} key={i}>
-                        <Meta key={i} title={title} icon={icon} />
-                      </Grid>
+                      <Meta key={i} title={title} icon={icon} />
                     ))}
-                  </Grid>
+                  </Stack>
                 </Stack>
               </MenuItem>
             ))

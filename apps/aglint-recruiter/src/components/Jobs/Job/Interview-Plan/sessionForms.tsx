@@ -736,6 +736,7 @@ const InterviewModulesField = ({
         url: profile_image,
       }),
     ),
+    meta: [{ title: m.department, icon: <DepartmentIcon /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,
@@ -751,7 +752,7 @@ const InterviewModulesField = ({
         onChange={onChange}
         options={options}
         value={value?.id}
-        showIcons={false}
+        showIcons={true}
       />
       {error && !value?.id && (
         <Stack

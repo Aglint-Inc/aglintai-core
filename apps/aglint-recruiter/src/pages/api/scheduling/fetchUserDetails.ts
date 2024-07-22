@@ -49,12 +49,12 @@ const fetchUsers = async (
     )
     .eq('recruiter_id', recruiter_id);
 
-  if (is_suspended !== undefined) {
+  if (is_suspended) {
     filSup.eq('recruiter_user.is_suspended', is_suspended);
   }
 
   return filSup
-    .eq('recruiter_user.status', status)
+    .eq('recruiter_user.join_status', status)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data
