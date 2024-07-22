@@ -20,23 +20,6 @@ export type CustomApplicationBadges = {
   jobHopping: number;
 };
 
-export type CustomEmailTypes = Extract<
-  Database["public"]["Enums"]["email_slack_types"],
-  | "selfScheduleReminder_email_applicant"
-  | "interviewStart_email_applicant"
-  | "interviewStart_email_interviewers"
-  | "interviewStart_email_organizer"
-  | "interviewStart_slack_interviewers"
-  | "sendAvailReqReminder_email_applicant"
-  | "interviewerConfirmation_slack_interviewers"
-  | "interviewEnd_email_interviewerForFeedback"
-  | "interviewEnd_slack_interviewerForFeedback"
-  | "agent_email_candidate"
-  | "meetingDeclined_email_organizer"
-  | "meetingAccepted_email_organizer"
-  | "candidateBook_slack_interviewerForConfirmation"
->;
-
 export type CustomJobParamters = Type<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],

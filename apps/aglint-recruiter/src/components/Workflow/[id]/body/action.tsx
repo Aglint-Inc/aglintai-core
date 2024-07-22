@@ -3,6 +3,7 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { memo, useMemo } from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
@@ -14,6 +15,7 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
+import toast from '@/src/utils/toast';
 
 import { useActions } from './context';
 
@@ -82,7 +84,15 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      <Template key={props.action.email_template_id} {...props} />
+      {props.action.company_email_template.type.split('_slack_').length ===
+      2 ? (
+        <GlobalBannerInline
+          textContent={'A slack notification will be sent for this action.'}
+          slotButton={<></>}
+        />
+      ) : (
+        <Template key={props.action.email_template_id} {...props} />
+      )}
     </>
   );
 };
@@ -109,23 +119,22 @@ const ActionForm = ({
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        const {
-          body,
-          id: email_template_id,
-          subject,
-        } = all_company_email_template.find(
+        const emailTemplate = all_company_email_template.find(
           ({ type }) => type === e.target.value,
         );
-        handleUpdateAction({
-          id,
-          payload: {
-            email_template_id,
+        if (emailTemplate) {
+          const { body, id: email_template_id, subject } = emailTemplate;
+          handleUpdateAction({
+            id,
             payload: {
-              subject,
-              body,
+              email_template_id,
+              payload: {
+                subject,
+                body,
+              },
             },
-          },
-        });
+          });
+        } else toast.error('Template for this action is missing');
       }}
     />
   );
