@@ -104,7 +104,7 @@ const RoleTable = ({
     x: string,
   ) => void;
 }) => {
-  const { members } = useAuthDetails();
+  const { allMember: members } = useAuthDetails();
   return loading
     ? [
         <RolesRowSkeleton key={'x'} slotSkeleton={<Skeleton />} />,
@@ -128,26 +128,32 @@ const RoleTable = ({
               }}
               slotAvatars={
                 <>
-                  {role.assignedTo.slice(0, 3).map((user_id) => {
-                    const user = members.find(
-                      (member) => member.user_id === user_id,
-                    );
-                    if (!user) return;
-                    return (
-                      <Avatar
-                        key={user_id}
-                        src={user.profile_image}
-                        variant='rounded'
-                        alt={user.first_name}
-                        sx={{ height: '24px', width: '24px' }}
-                      />
-                    );
-                  })}
-                  {count > 3 && (
-                    <GlobalBadge
-                      textBadge={`+${count - 3} more.`}
-                      color={'neutral'}
-                    />
+                  {count ? (
+                    <>
+                      {role.assignedTo.slice(0, 3).map((user_id) => {
+                        const user = members.find(
+                          (member) => member.user_id === user_id,
+                        );
+                        if (!user) return;
+                        return (
+                          <Avatar
+                            key={user_id}
+                            src={user.profile_image}
+                            variant='rounded'
+                            alt={user.first_name}
+                            sx={{ height: '24px', width: '24px' }}
+                          />
+                        );
+                      })}
+                      {count > 3 && (
+                        <GlobalBadge
+                          textBadge={`+${count - 3} more.`}
+                          color={'neutral'}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <Typography color={'neutral'}>No users assigned</Typography>
                   )}
                 </>
               }
@@ -354,7 +360,11 @@ function RoleDetails({
     user: RecruiterUserType;
     role: string;
   }>(null);
-  const { recruiterUser, members, handelMemberUpdate } = useAuthDetails();
+  const {
+    recruiterUser,
+    allMember: members,
+    handelMemberUpdate,
+  } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
