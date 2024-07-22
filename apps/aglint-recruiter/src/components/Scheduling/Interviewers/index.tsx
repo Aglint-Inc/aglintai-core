@@ -37,7 +37,7 @@ const InterviewTab = () => {
       <ShowCode.When isTrue={isFetched}>
         <Stack position={'relative'}>
           <Filters setFilteredInterviewer={setFilteredInterviewer} />
-          {filteredInterviewer.length > 0 ? (
+          {filteredInterviewer?.length > 0 ? (
             <AllInterviewers
               slotAllInterviewesCard={
                 filteredInterviewer
@@ -183,11 +183,11 @@ const InterviewTab = () => {
             />
           ) : (
             <EmptyState
-              textDescription={'No iInterviewers found'}
+              textDescription={'No interviewers found'}
               slotIcons={
                 <svg
-                  width='100'
-                  height='100'
+                  width='60'
+                  height='60'
                   viewBox='0 0 25 24'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
