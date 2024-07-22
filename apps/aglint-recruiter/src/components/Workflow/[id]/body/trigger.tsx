@@ -5,6 +5,11 @@ import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { Workflow } from '@/src/types/workflow.types';
+import {
+  DURATION_OPTIONS,
+  TRIGGER_PAYLOAD,
+  getTriggerOption,
+} from './constants';
 
 const Trigger = () => {
   return (
@@ -88,67 +93,6 @@ const TriggerInfo = () => {
   );
 };
 
-const DURATION_OPTIONS: { name: string; value: number }[] = [
-  {
-    name: 'No delay',
-    value: 0,
-  },
-  {
-    name: '30 mins',
-    value: 30,
-  },
-  {
-    name: '1 hour',
-    value: 60,
-  },
-  {
-    name: '2 hours',
-    value: 120,
-  },
-  {
-    name: '1 day',
-    value: 1440,
-  },
-];
-
-const TRIGGER_PAYLOAD: {
-  trigger: Workflow['trigger'];
-  phase: Workflow['phase'][];
-}[] = [
-  {
-    trigger: 'sendAvailReqReminder',
-    phase: ['after'],
-  },
-  {
-    trigger: 'selfScheduleReminder',
-    phase: ['after'],
-  },
-  {
-    trigger: 'interviewStart',
-    phase: ['before'],
-  },
-  {
-    trigger: 'interviewerConfirmation',
-    phase: ['after'],
-  },
-  {
-    trigger: 'interviewEnd',
-    phase: ['after'],
-  },
-  {
-    trigger: 'meetingDeclined',
-    phase: ['after'],
-  },
-  {
-    trigger: 'meetingAccepted',
-    phase: ['after'],
-  },
-  {
-    trigger: 'candidateBook',
-    phase: ['after'],
-  },
-];
-
 const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
   (acc, { trigger, phase: phases }) => {
     acc.push(
@@ -170,52 +114,6 @@ const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
     };
   }[],
 );
-
-export function getTriggerOption(
-  trigger: Workflow['trigger'],
-  phase: Workflow['phase'],
-): string {
-  let message = '';
-  switch (trigger) {
-    case 'sendAvailReqReminder':
-      message = 'sending an availability request';
-      break;
-    case 'selfScheduleReminder':
-      message = 'sending a self schedule request';
-      break;
-    case 'interviewStart':
-      message = 'starting an interview';
-      break;
-    case 'interviewerConfirmation':
-      message = 'an interviewer confirms an interview';
-      break;
-    case 'interviewEnd':
-      message = 'ending an interview';
-      break;
-    case 'meetingDeclined':
-      message = 'an interviewer declines a meeting invitation';
-      break;
-    case 'meetingAccepted':
-      message = 'an interviewer accepts a meeting invitation';
-      break;
-    case 'candidateBook':
-      message = 'a candidate books a meeting';
-      break;
-  }
-  let preMessage = '';
-  switch (phase) {
-    case 'before':
-      preMessage = 'Before';
-      break;
-    case 'after':
-      preMessage = 'After';
-      break;
-    case 'now':
-      preMessage = 'When';
-      break;
-  }
-  return `${preMessage} ${message}`;
-}
 
 const TriggerIcon = memo(() => {
   return (
