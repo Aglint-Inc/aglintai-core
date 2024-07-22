@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { ReqAvailability } from '@/devlink3/ReqAvailability';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
@@ -55,6 +56,7 @@ import {
   setSelectedTasks,
   useSchedulingApplicationStore,
 } from '../store';
+import { ApiResponseFindAvailability } from '../types';
 import { getTaskDetails } from '../utils';
 import EmailPreview from './Components/EmailPriview';
 import {
@@ -495,29 +497,72 @@ function RequestAvailability() {
             textFoundSlotsCount={`Found ${totalCount} slots for the suggestion`}
             slotBadge={
               !!filteredAvailabilitySlots &&
-              !!totalCount &&
               filteredAvailabilitySlots.map((ele) => {
                 return (
                   <>
                     <Stack spacing={1} direction={`column`}>
                       <Typography variant='body1'>Day-{ele.day}</Typography>
-                      <Stack
-                        flexDirection={'row'}
-                        flexWrap={'wrap'}
-                        gridColumn={'var(--space-2)'}
-                        gridRow={'var(--space-2)'}
-                        gap={1}
-                      >
-                        {ele.slots.map((ele, i) => {
-                          return (
-                            <GlobalBadge
-                              key={i}
-                              color={'accent'}
-                              textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
-                            />
-                          );
-                        })}
-                      </Stack>
+                      {ele.slots.length ? (
+                        <Stack
+                          flexDirection={'row'}
+                          flexWrap={'wrap'}
+                          gridColumn={'var(--space-2)'}
+                          gridRow={'var(--space-2)'}
+                          gap={1}
+                        >
+                          {ele.slots.map((ele, i) => {
+                            return (
+                              <GlobalBadge
+                                key={i}
+                                color={'accent'}
+                                textBadge={`${dayjsLocal(ele.date).format('DD MMMM')} - ${ele.count} slots`}
+                              />
+                            );
+                          })}
+                        </Stack>
+                      ) : (
+                        <GlobalInfo
+                          color={'warning'}
+                          textTitle={
+                            'No available slots found. Please try expanding the date ranges.'
+                          }
+                          showDescription={false}
+                          showWidget={true}
+                          slotWidget={
+                            <ul>
+                              {(
+                                selectedAvailabilitySlots &&
+                                (selectedAvailabilitySlots[Number(ele.day - 1)]
+                                  .slots as ApiResponseFindAvailability)
+                              )
+                                .map((ele) => ele?.interview_rounds)
+                                .flat()
+                                .map((error) => {
+                                  const formatDateTange = dayjsLocal(
+                                    error?.curr_date,
+                                  ).format('MMM DD');
+                                  const allReasons = [
+                                    ...new Set(
+                                      error?.plans
+                                        .flatMap(
+                                          (plan) => plan?.no_slot_reasons,
+                                        )
+                                        .flatMap((reason) => reason?.reason)
+                                        .flat(),
+                                    ),
+                                  ];
+                                  if (allReasons.length)
+                                    return (
+                                      <li key={error.curr_date}>
+                                        {formatDateTange} :{' '}
+                                        {allReasons.join(', ')}
+                                      </li>
+                                    );
+                                })}
+                            </ul>
+                          }
+                        />
+                      )}
                     </Stack>
                   </>
                 );
@@ -564,7 +609,11 @@ function RequestAvailability() {
                         return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField style={{width:'110px'}} {...params} placeholder='Days' />
+                      <TextField
+                        style={{ width: '110px' }}
+                        {...params}
+                        placeholder='Days'
+                      />
                     )}
                     onChange={(_, value) => {
                       setSelectedDays(value);
@@ -588,12 +637,16 @@ function RequestAvailability() {
                     disablePortal
                     value={selectedSlots}
                     options={slotsListOptions}
-                    sx={{ width: 200,}}
+                    sx={{ width: 200 }}
                     renderOption={(props, option) => {
                       return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField style={{width:'110px'}}{...params} placeholder='Days' />
+                      <TextField
+                        style={{ width: '110px' }}
+                        {...params}
+                        placeholder='Days'
+                      />
                     )}
                     onChange={(_, value) => {
                       setSelectedSlots(value);
