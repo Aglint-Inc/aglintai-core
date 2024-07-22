@@ -2,7 +2,6 @@ import {slackWeb} from 'src/services/slack/slackWeb';
 import {WebAPICallResult} from '@slack/web-api';
 
 export async function getUserIdByEmail(email: string) {
-  email = 'chandra@aglinthq.com';
   try {
     const {user} = await slackWeb.users.lookupByEmail({email});
     return user?.id;

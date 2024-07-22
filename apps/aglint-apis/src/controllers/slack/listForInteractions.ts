@@ -291,7 +291,7 @@ const shadow_complete_trainee_accept = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                text: '\nThank you for confirming that you have completed the shadow sessions.\n ',
+                text: '\nThank you for confirming that you were able to attend the interview.\n ',
                 style: {
                   bold: true,
                 },
@@ -349,7 +349,7 @@ const reverse_shadow_trainee_accept = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                text: '\nThank you for confirming that you have completed the reverse shadow sessions.',
+                text: '\nThank you for confirming that you were able to attend the reverse shadow sessions.',
                 style: {
                   bold: true,
                 },
@@ -378,7 +378,7 @@ const reverse_shadow_trainee_decline = async (interaction_data: any) => {
             elements: [
               {
                 type: 'text',
-                text: '\nThank you for confirming that you were unable to attend the interview.',
+                text: '\nThank you for confirming that you were unable to attend the reverse shadow sessions.',
                 style: {
                   bold: true,
                 },
