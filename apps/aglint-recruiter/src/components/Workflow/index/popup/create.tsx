@@ -67,7 +67,9 @@ const Create = () => {
                 Enter the name for workflow. Next, you will be able to add steps
                 to the workflow.
               </Typography>
-              <Forms form={form} setForm={setForm} />
+              <Stack spacing={2}>
+                <Forms form={form} setForm={setForm} />
+              </Stack>
             </Stack>
           }
           onClickClosePopup={{ onClick: handleClose }}
