@@ -46,7 +46,8 @@ const AddMember = ({
   pendingList: RecruiterUserType[];
   onClose: () => void;
 }) => {
-  const { userDetails, setMembers, recruiter } = useAuthDetails();
+  const { userDetails, setMembers, recruiter, recruiterUser } =
+    useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -125,17 +126,22 @@ const AddMember = ({
       temp = { ...temp, first_name: true };
       flag = true;
     }
-    if (
-      !form.email ||
-      form?.email?.trim() === '' ||
-      form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]
+    if (!form?.email?.trim().length) {
+      temp = { ...temp, email: true };
+      flag = true;
+    } else if (
+      !(
+        form?.email?.split('@')[1] === recruiter?.email?.split('@')[1] ||
+        recruiterUser.primary
+      )
     ) {
-      if (form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]) {
-        toast.error(`Email domain doesn't match organization.`);
-      }
+      toast.error(
+        'The user you are trying to invite is outside of the organization. Please contact your Primary Admin for assistance',
+      );
       temp = { ...temp, email: true };
       flag = true;
     }
+
     if (form.linked_in?.length) {
       const linkedInURLPattern =
         // eslint-disable-next-line security/detect-unsafe-regex
@@ -560,6 +566,10 @@ const AddMember = ({
                               email: null,
                               department: null,
                               designation: null,
+                              employment: null,
+                              role: null,
+                              role_id: null,
+                              manager_id: null,
                             });
                         },
                       }}

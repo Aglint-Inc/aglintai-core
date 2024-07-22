@@ -22,9 +22,11 @@ export default async function handler(
   requestHandler(
     'POST',
     async ({ requesterDetails, body }) => {
-      const { recruiter_id } = requesterDetails;
+      const { recruiter_id, user_id } = requesterDetails;
       const { add, delete: toDelete, role_id } = body;
-      if (await checkRole(role_id)) throw new Error('Cannot alter admin role.');
+      const roleMeta = await checkRole(role_id);
+      if (!roleMeta || !(roleMeta.role === 'auth' && roleMeta.id === user_id))
+        throw new Error('Cannot alter admin role.');
       if (!(add || toDelete))
         throw new Error('No permission added or deleted is required');
       const permission_dependency = await getPermissions({
@@ -70,14 +72,18 @@ export default async function handler(
   );
 }
 
-const checkRole = (role_id: string) => {
+const checkRole = async (role_id: string) => {
   return supabase
     .from('roles')
-    .select('name')
+    .select('name, recruiter(primary_admin)')
     .eq('id', role_id)
     .throwOnError()
     .single()
-    .then(({ data }) => data.name === 'admin');
+    .then(({ data }) =>
+      data.name === 'admin'
+        ? { role: data.name, id: data.recruiter.primary_admin }
+        : null,
+    );
 };
 
 const getPermissions = async ({

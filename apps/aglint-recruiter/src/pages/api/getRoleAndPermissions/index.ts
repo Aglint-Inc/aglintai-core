@@ -23,19 +23,22 @@ export default async function handler(
   requestHandler(
     'POST',
     async ({ requesterDetails }) => {
-      const { recruiter_id } = requesterDetails;
-      const result = await getRoleAndPermissionsWithUserCount(recruiter_id);
+      const { recruiter_id, user_id } = requesterDetails;
+      const result = await getRoleAndPermissionsWithUserCount(
+        recruiter_id,
+        user_id,
+      );
       return result;
     },
     [],
   );
 }
 
-const getRoleAndPermissions = async (recruiter_id: string) => {
+const getRoleAndPermissions = async (recruiter_id: string, user_id: string) => {
   return supabase
     .from('roles')
     .select(
-      'id,name, description,permissions:role_permissions(id, role_id, permission_id)',
+      'id,name, description,permissions:role_permissions(id, role_id, permission_id), recruiter(primary_admin)',
     )
     .eq('recruiter_id', recruiter_id)
     .throwOnError()
@@ -65,7 +68,8 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
           acc[curr.id] = {
             id: curr.id,
             name: curr.name,
-            isEditable: curr.name !== 'admin',
+            isEditable:
+              curr.name !== 'admin' || curr.recruiter.primary_admin === user_id,
             assignedTo: [],
             description: curr.description,
             permissions: curr.permissions.map((item) => ({
@@ -151,8 +155,14 @@ const getRoleAndPermissions = async (recruiter_id: string) => {
     });
 };
 
-const getRoleAndPermissionsWithUserCount = async (recruiter_id: string) => {
-  let rolesAndPermissionsDetails = await getRoleAndPermissions(recruiter_id);
+const getRoleAndPermissionsWithUserCount = async (
+  recruiter_id: string,
+  user_id: string,
+) => {
+  let rolesAndPermissionsDetails = await getRoleAndPermissions(
+    recruiter_id,
+    user_id,
+  );
   return supabase
     .from('recruiter_relation')
     .select('role_id, user_id')
