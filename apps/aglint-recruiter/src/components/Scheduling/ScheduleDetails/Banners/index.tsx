@@ -6,6 +6,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
@@ -43,6 +44,7 @@ function Banners({
   setIsRequestRescheduleOpen,
 }: CancelReasonCardsProps) {
   const { recruiterUser } = useAuthDetails();
+  const { checkPermissions } = useRolesAndPermissions();
 
   const [copied, setCopied] = useState(false);
 
@@ -51,7 +53,9 @@ function Banners({
   const isUnconfirmedBannerVisible =
     schedule.interview_meeting.status === 'waiting' &&
     schedule.interview_meeting.meeting_flow !== 'debrief' &&
-    (meetingFlow === 'self_scheduling' || meetingFlow === 'candidate_request');
+    (meetingFlow === 'self_scheduling' ||
+      meetingFlow === 'candidate_request') &&
+    checkPermissions(['scheduling_actions']);
 
   const isAcceptVisible =
     sessionRelation?.accepted_status === 'waiting' &&

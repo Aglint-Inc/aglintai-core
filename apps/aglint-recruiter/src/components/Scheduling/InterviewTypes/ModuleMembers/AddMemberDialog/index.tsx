@@ -87,7 +87,8 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
               Choose members from your team.
             </Typography>
             <MembersAutoComplete
-              pillColor='var(--neutral-2)'
+              maxWidth={'100%'}
+              pillColor='var(--neutral-4)'
               disabled={loading}
               renderUsers={allMembers}
               selectedUsers={selectedUsers}

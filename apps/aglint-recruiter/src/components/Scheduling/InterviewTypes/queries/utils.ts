@@ -3,7 +3,6 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { schedulesSupabase } from '../../schedules-query';
 import { initialEditModule } from '../store';
@@ -210,33 +209,14 @@ export const deleteRelationByUserDbDelete = async ({
 }: {
   module_relation_id: string;
 }) => {
-  const { data: intSesRel, error: errorSelRel } = await supabase
-    .from('interview_session_relation')
-    .select('*')
-    .eq('interview_module_relation_id', module_relation_id)
-    .eq('is_confirmed', true);
-
-  if (errorSelRel) {
-    toast.error(errorSelRel.message);
+  const { error } = await supabase
+    .from('interview_module_relation')
+    .delete()
+    .eq('id', module_relation_id);
+  if (error) {
     return false;
-  }
-
-  if (intSesRel.length === 0) {
-    const { error } = await supabase
-      .from('interview_module_relation')
-      .delete()
-      .eq('id', module_relation_id);
-    if (error) {
-      toast.error(errorSelRel.message);
-      return false;
-    } else {
-      return true;
-    }
   } else {
-    toast.warning(
-      'User cannot be deleted. Meetings are associated with this user.',
-    );
-    return false;
+    return true;
   }
 };
 
@@ -288,7 +268,7 @@ export const getMeetingsByModuleId = async (module_id: string) => {
       interview_meeting: sesRel.interview_session.interview_meeting,
     }))
     .filter((ses) => Boolean(ses.interview_meeting));
-  
+
   return resRel;
 };
 

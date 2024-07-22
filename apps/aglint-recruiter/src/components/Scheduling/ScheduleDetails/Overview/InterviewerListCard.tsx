@@ -114,6 +114,7 @@ function InterviewerListCard({
             isPaused={false}
             pause_json={null}
             trainingType={item.interview_session_relation.training_type}
+            interviewerType={item.interview_session_relation.interviewer_type}
           />
         </Stack>
       </CustomTooltip>

@@ -23,22 +23,25 @@ const PERMISSIONS: Permissions = {
    */
   '/tasks': ['task_module'],
   //
-  '/jobs': ['job_module'],
-  '/jobs/[id]': ['job_module'],
-  '/jobs/[id]/candidate-list': ['job_module'],
-  '/jobs/create': ['job_module', 'manage_job'],
-  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
+  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeReupload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeUpload': ['job_module', 'manage_job'],
+  '/jobs': ['job_module'],
+  '/jobs/create': ['job_module', 'manage_job'],
+  '/jobs/[id]': ['job_module'],
+  '/jobs/[id]/agent': ['job_module'],
+  '/jobs/[id]/assessment': ['job_module'],
+  '/jobs/[id]/candidate-list': ['job_module'],
+  '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
+  '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
+  '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
   '/jobs/[id]/job-details': ['job_module', 'manage_job'],
   '/jobs/[id]/profile-score': ['job_module', 'manage_job'],
-  '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
-  '/jobs/[id]/assessment': ['job_module', 'manage_job'],
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
-  '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
-  '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
+  '/jobs/[id]/workflows': ['job_module'],
+
   '/workflows': ['workflow_module'],
   '/workflows/[id]': ['workflow_module'],
 
@@ -115,7 +118,7 @@ const PERMISSIONS: Permissions = {
     'task_module',
   ],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
-  '/api/encryptData': ['integrations_module'],
+  '/api/encryptData': ['integrations_module','manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
@@ -131,6 +134,7 @@ const PERMISSIONS: Permissions = {
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
   '/api/decryptApiKey': ['manage_company'],
+  '/api/supabase/deleteuser': ['manage_users'],
 };
 
 export default PERMISSIONS;

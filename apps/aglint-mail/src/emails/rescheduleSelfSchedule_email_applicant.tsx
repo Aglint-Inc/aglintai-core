@@ -4,6 +4,10 @@ import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
 import { EmailContainer } from '../components/template/Container';
+import {
+  scheduleTypeIcon,
+  sessionTypeIcon,
+} from '../utils/email/common/functions';
 
 type EmailType = EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>;
 
@@ -19,10 +23,8 @@ export const dummy: EmailType['react_email_placeholders'] = {
       sessionType: 'Personality and cultural fit',
       platform: 'Google meet',
       duration: '45 minutes',
-      sessionTypeIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/debrief.png',
-      meetingIcon:
-        'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/google_meet.png',
+      sessionTypeIcon: sessionTypeIcon('debrief'),
+      meetingIcon: scheduleTypeIcon('google_meet'),
     },
   ],
   subject: '',

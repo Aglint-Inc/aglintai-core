@@ -11,6 +11,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
 import { TaskInfoIndividual } from '@/devlink3/TaskInfoIndividual';
 import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
+import TaskOwners from '@/src/components/Jobs/Job/Candidate-List/Actions/createTask/TaskOwners';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,
@@ -26,7 +27,6 @@ import AssigneeChip from '../../../Components/AssigneeChip';
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
 import { assigneeType, createTaskProgress } from '../../../utils';
-import AssigneeList from '../../AddNewTask/AssigneeList';
 import PriorityList from '../../AddNewTask/PriorityList';
 import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
@@ -542,7 +542,14 @@ function TaskCard({
                   </Stack>
                 ) : (
                   <Stack width={'100%'} direction={'column'}>
-                    <AssigneeList
+                    <TaskOwners
+                      hiringTeamIds={[
+                        task.applications?.public_jobs?.sourcer,
+                        task.applications?.public_jobs?.hiring_manager,
+                        task.applications?.public_jobs?.interview_coordinator,
+                        task.applications?.public_jobs?.recruiter,
+                      ]}
+                      hideAgents={task.type !== 'schedule'}
                       selectedAssignee={selectedAssignee}
                       setSelectedAssignee={setSelectedAssignee}
                       onChange={(assigner: AssignerType) => {
@@ -551,7 +558,14 @@ function TaskCard({
                           const currentAssignee = assignerList.find(
                             (ele) => ele.user_id === task.assignee[0],
                           );
-                          updateChanges({ assignee: [assigner.user_id] });
+                          updateChanges({
+                            assignee: [assigner.user_id],
+                            status:
+                              assigner.user_id === EmailAgentId ||
+                              assigner.user_id === PhoneAgentId
+                                ? 'scheduled'
+                                : 'not_started',
+                          });
                           createTaskProgress({
                             type: 'change_assignee',
                             data: {
@@ -591,10 +605,10 @@ function TaskCard({
                       }}
                       isOptionList={task.status === 'not_started'}
                     />
-                    <span ref={spanRef}></span>
                   </Stack>
                 )
               }
+              slotIconButton={<span ref={spanRef}></span>} // reference to open trigger time popover
             />
             {(task?.assignee[0] === EmailAgentId ||
               task?.assignee[0] === PhoneAgentId) && (
@@ -622,7 +636,10 @@ function TaskCard({
                       <TriggerTime
                         selectTriggerTime={selectTriggerTime}
                         setSelectTriggerTime={setSelectTriggerTime}
-                        isOptionList={task.status === 'not_started'}
+                        isOptionList={
+                          task.status === 'not_started' ||
+                          task.status === 'scheduled'
+                        }
                         openTriggerTime={openTriggerTime}
                         setOpenTriggerTime={setOpenTriggerTime}
                         onChange={(e: any) => {

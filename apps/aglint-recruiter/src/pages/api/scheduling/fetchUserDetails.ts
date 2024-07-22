@@ -49,7 +49,7 @@ const fetchUsers = async (
     )
     .eq('recruiter_id', recruiter_id);
 
-  if (is_suspended !== undefined) {
+  if (is_suspended) {
     filSup.eq('recruiter_user.is_suspended', is_suspended);
   }
 

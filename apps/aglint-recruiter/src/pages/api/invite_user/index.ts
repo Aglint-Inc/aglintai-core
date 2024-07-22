@@ -44,7 +44,7 @@ export default async function handler(
             };
           }
         } catch (error: any) {
-          user_id && supabase.auth.admin.deleteUser(user_id);
+          user_id && (await supabase.auth.admin.deleteUser(user_id));
           return { error: String(error.message) };
         }
       }
@@ -85,7 +85,7 @@ async function registerMember(
       interview_location: user.interview_location,
       department: user.department,
       email: email,
-      join_status: 'invited',
+      status: 'invited',
       scheduling_settings: user.scheduling_settings,
     })
     .throwOnError()
