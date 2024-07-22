@@ -1,5 +1,7 @@
 drop view if exists "public"."workflow_view";
 
+DROP TRIGGER IF EXISTS workflow_action_deletion ON "public"."workflow";
+
 alter type "public"."workflow_trigger" rename to "workflow_trigger__old_version_to_be_dropped";
 
 create type "public"."workflow_trigger" as enum ('selfScheduleReminder', 'interviewStart', 'sendAvailReqReminder', 'interviewerConfirmation', 'interviewEnd', 'meetingDeclined', 'meetingAccepted', 'candidateBook', 'onQualified');
@@ -25,5 +27,4 @@ create or replace view "public"."workflow_view" as  SELECT workflow.id,
              LEFT JOIN public_jobs ON ((workflow_job_relation.job_id = public_jobs.id)))
           GROUP BY workflow_job_relation.workflow_id) workflow_jobs ON ((workflow_jobs.workflow_id = workflow.id)));
 
-
-
+CREATE TRIGGER workflow_action_deletion AFTER UPDATE OF trigger ON public.workflow FOR EACH ROW EXECUTE FUNCTION trigger_workflow_action_deletion();
