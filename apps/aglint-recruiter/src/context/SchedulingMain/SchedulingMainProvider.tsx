@@ -51,8 +51,7 @@ const SchedulingProvider = ({ children }) => {
 
       const bodyParams: BodyParamsFetchUserDetails = {
         recruiter_id: recruiter.id,
-        status: 'joined',
-        is_suspended: false,
+        includeSupended: true,
       };
 
       const resMem = await axios.post(
