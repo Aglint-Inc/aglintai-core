@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { MoveAssessment } from '@/devlink2/MoveAssessment';
 import { TaskUpdateButton } from '@/devlink3/TaskUpdateButton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import TaskOwners from '@/src/components/Jobs/Job/Candidate-List/Actions/createTask/TaskOwners';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -18,7 +19,6 @@ import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { assigneeType, createTaskProgress } from '../../utils';
 import { CallIcon, EmailIcon } from '../AddNewTask';
-import AssigneeList from '../AddNewTask/AssigneeList';
 import PriorityList from '../AddNewTask/PriorityList';
 import TriggerTime from '../AddNewTask/TriggerTime';
 import PopUps from './PopUps';
@@ -257,7 +257,8 @@ function ToolBar() {
                   isStatusVisible={false}
                   slotAssignedTo={
                     <>
-                      <AssigneeList
+                      <TaskOwners
+                        hiringTeamIds={[]}
                         selectedAssignee={selectedAssignee}
                         setSelectedAssignee={setSelectedAssignee}
                         onChange={(assigner: assigneeType) => {

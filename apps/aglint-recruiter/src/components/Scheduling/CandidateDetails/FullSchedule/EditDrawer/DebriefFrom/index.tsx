@@ -69,8 +69,7 @@ function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
   const fetchAllMembers = async () => {
     const bodyParams: BodyParamsFetchUserDetails = {
       recruiter_id: recruiter.id,
-      status: 'joined',
-      is_suspended: false,
+      includeSupended: true,
     };
     const resMem = (await axios.post(
       '/api/scheduling/fetchUserDetails',

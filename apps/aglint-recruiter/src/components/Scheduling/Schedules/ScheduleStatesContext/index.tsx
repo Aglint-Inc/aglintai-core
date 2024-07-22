@@ -12,12 +12,20 @@ import { SchedulesSupabase, schedulesSupabase } from '../../schedules-query';
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
+export type interviewDateRangeType =
+  | 'today'
+  | 'tomorrow'
+  | 'last_7_days'
+  | 'last_30_days'
+  | 'next_7_days'
+  | 'next_30_days'
+  | 'date_range';
 export type ScheduleFilerType = {
   status: DatabaseEnums['interview_schedule_status'][];
   interviewers: string[];
   jobs: string[];
   schedule_types: string[];
-  date_range: string[];
+  date: interviewDateRangeType[];
   session_types: DatabaseEnums['session_type'][];
   searchText: string;
 };
@@ -26,7 +34,7 @@ export var initialFilterState: ScheduleFilerType = {
   interviewers: [],
   jobs: [],
   schedule_types: [],
-  date_range: [],
+  date: [],
   session_types: [],
   searchText: null,
 };
@@ -66,7 +74,7 @@ function ScheduleStatesProvider({ children }) {
   useEffect(() => {
     if (scheduleFilterIds) {
       setFilterState({
-        date_range: scheduleFilterIds?.date_range || [],
+        date: scheduleFilterIds?.date || [],
         interviewers: scheduleFilterIds?.interviewers || [],
         jobs: scheduleFilterIds?.jobs || [],
         schedule_types: scheduleFilterIds?.schedule_types || [],
@@ -124,7 +132,7 @@ export { ScheduleStatesProvider, useScheduleStatesContext };
 
 export const useAllScheduleList = (filters: ScheduleFilerType) => {
   const {
-    date_range,
+    date,
     interviewers,
     jobs,
     schedule_types,
@@ -141,7 +149,7 @@ export const useAllScheduleList = (filters: ScheduleFilerType) => {
       ...jobs,
       ...schedule_types,
       ...interviewers,
-      ...date_range,
+      ...date,
       ...session_types,
       searchText,
     ],
@@ -166,7 +174,7 @@ export async function getAllScheduleList({
   recruiter_id: string;
 }) {
   const {
-    date_range,
+    date,
     interviewers,
     jobs,
     schedule_types,
@@ -192,20 +200,47 @@ export async function getAllScheduleList({
     filtersAll.in('session_type', session_types);
   }
 
-  if (date_range.length > 0) {
-    if (date_range[0] === dayjsLocal().format('YYYY-MM-DD')) {
-      filtersAll.eq('start_time', date_range[0]);
+  if (date.length > 0) {
+    let selectedDate = null;
+    if (date[0] === 'today') {
+      selectedDate = dayjsLocal().format('YYYY-MM-DD');
+    }
+    if (date[0] === 'tomorrow') {
+      selectedDate = dayjsLocal().add(1, 'day').format('YYYY-MM-DD');
+    }
+    if (date[0] === 'next_7_days') {
+      selectedDate = dayjsLocal().add(7, 'day').format('YYYY-MM-DD');
+    }
+    if (date[0] === 'next_30_days') {
+      selectedDate = dayjsLocal().add(30, 'day').format('YYYY-MM-DD');
+    }
+    if (date[0] === 'last_7_days') {
+      selectedDate = dayjsLocal().add(-7, 'day').format('YYYY-MM-DD');
+    }
+    if (date[0] === 'last_30_days') {
+      selectedDate = dayjsLocal().add(-30, 'day').format('YYYY-MM-DD');
+    }
+    if (selectedDate === dayjsLocal().format('YYYY-MM-DD')) {
+      filtersAll.gte('start_time', selectedDate);
+      filtersAll.lt(
+        'start_time',
+        dayjsLocal().add(1, 'day').format('YYYY-MM-DD'),
+      );
     } else if (
-      date_range[0] === dayjsLocal().add(1, 'day').format('YYYY-MM-DD')
+      selectedDate === dayjsLocal().add(1, 'day').format('YYYY-MM-DD')
     ) {
-      filtersAll.eq('start_time', date_range[0]);
+      filtersAll.gte('start_time', selectedDate);
+      filtersAll.lt(
+        'start_time',
+        dayjsLocal().add(2, 'day').format('YYYY-MM-DD'),
+      );
     } else {
-      if (dayjsLocal(date_range[0]).isAfter(dayjsLocal())) {
+      if (dayjsLocal(selectedDate).isAfter(dayjsLocal())) {
         // checking if date is after current date
-        filtersAll.lte('start_time', date_range[0]);
+        filtersAll.lte('start_time', selectedDate);
         filtersAll.gte('start_time', dayjsLocal().format('YYYY-MM-DD'));
       } else {
-        filtersAll.gte('start_time', date_range[0]);
+        filtersAll.gte('start_time', selectedDate);
         filtersAll.lte('start_time', dayjsLocal().format('YYYY-MM-DD'));
       }
     }

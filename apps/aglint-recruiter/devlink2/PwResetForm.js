@@ -3,23 +3,13 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
-import { ButtonSolid } from "./ButtonSolid";
-import { ButtonGhost } from "./ButtonGhost";
 import * as _utils from "./utils";
 import _styles from "./PwResetForm.module.css";
 
 export function PwResetForm({
   as: _Component = _Builtin.Block,
   slotForm,
-
-  contactLink = {
-    href: "#",
-  },
-
-  onclickReset = {},
-  onclickBack = {},
-  isDisable = false,
-  logo,
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "block")} tag="div">
@@ -57,24 +47,7 @@ export function PwResetForm({
           <_Builtin.Block tag="div">
             {slotForm ?? <SlotComp componentName="Slot for MUI Form" />}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            <ButtonSolid
-              onClickButton={onclickReset}
-              textButton="Reset"
-              isRightIcon={false}
-              isLeftIcon={false}
-              isDisabled={false}
-              size="2"
-            />
-          </_Builtin.Block>
-          <ButtonGhost
-            onClickButton={onclickBack}
-            size="1"
-            isRightIcon={false}
-            isLeftIcon={false}
-            textButton="Back to login"
-            color="neutral"
-          />
+          <_Builtin.Block tag="div">{slotButton}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
