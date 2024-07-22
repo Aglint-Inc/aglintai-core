@@ -1,6 +1,8 @@
 import {
   CandidateType,
   DatabaseTable,
+  DatabaseView,
+  DB,
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
@@ -8,11 +10,9 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
+  PauseJson,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
-import { schedulingSettingType } from '@aglint/shared-types';
-import { PauseJson } from '@aglint/shared-types';
 
 import { ApplicationList } from '../Candidates/utils';
 
@@ -37,14 +37,7 @@ export type SchedulingSlice = {
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
   relations: (InterviewModuleRelationType & {
-    recruiter_user: {
-      user_id: string;
-      first_name: string;
-      last_name: string;
-      email: string;
-      profile_image: string;
-      scheduling_settings: schedulingSettingType;
-    };
+    recruiter_user: DatabaseView['all_interviewers'];
   })[];
   settings: {
     require_training: boolean;

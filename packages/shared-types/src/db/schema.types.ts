@@ -4547,6 +4547,7 @@ export type Database = {
           cal_event_id: string | null
           candidate_feedback: Json | null
           confirmed_date: string | null
+          confirmed_module_relation_ids: string[] | null
           confirmed_user_ids: string[] | null
           created_at: string | null
           end_time: string | null
@@ -4747,7 +4748,6 @@ export type Database = {
           reverse_shadow_meeting_count: number | null
           scheduling_settings: Json | null
           shadow_meeting_count: number | null
-          training_type: Database["public"]["Enums"]["interviewer_type"] | null
           user_id: string | null
         }
         Relationships: [
