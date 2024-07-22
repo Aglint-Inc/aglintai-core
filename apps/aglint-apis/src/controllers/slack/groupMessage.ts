@@ -1,15 +1,6 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
-
-async function getUserIdByEmail(email: string) {
-  try {
-    const user = await slackWeb.users.lookupByEmail({email});
-    return user.user?.id;
-  } catch (error) {
-    console.error(`Error fetching user by email (${email}):`, error);
-    throw error;
-  }
-}
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function groupMessage(req: Request, res: Response) {
   const {emails, text} = req.body;
