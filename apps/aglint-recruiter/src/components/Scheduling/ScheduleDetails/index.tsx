@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
@@ -14,6 +15,7 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
@@ -232,7 +234,26 @@ function SchedulingViewComp() {
             slotBody={
               <ScheduleDetailTabs
                 slotScheduleTabOverview={
-                  <Stack spacing={'var(--space-4)'}>
+                  <Stack spacing={'var(--space-2)'}>
+                    {((schedule?.interview_meeting.meeting_flow ===
+                      'phone_agent' &&
+                      schedule.interview_meeting.status === 'waiting') ||
+                      (schedule?.interview_meeting.meeting_flow ===
+                        'mail_agent' &&
+                        schedule.interview_meeting.status === 'waiting')) && (
+                      <GlobalBanner
+                        iconName={
+                          schedule?.interview_meeting.meeting_flow ===
+                          'phone_agent'
+                            ? 'smartphone'
+                            : 'mail'
+                        }
+                        textTitle={`This schedule is handling by ${capitalizeAll(schedule.interview_meeting.meeting_flow.replaceAll('_', ' '))}`}
+                        slotButtons={<></>}
+                        textDescription={''}
+                        color={'info'}
+                      />
+                    )}
                     {
                       <Banners
                         cancelReasons={cancelReasons}

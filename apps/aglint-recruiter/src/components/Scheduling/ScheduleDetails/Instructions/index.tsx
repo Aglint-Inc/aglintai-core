@@ -9,6 +9,7 @@ import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
+
 function Instructions({
   instruction,
   setTextValue,
@@ -59,6 +60,7 @@ function Instructions({
               overflow={'auto'}
             >
               <TipTapAIEditor
+                
                 enablAI={false}
                 placeholder={'Instructions'}
                 handleChange={(html) => {

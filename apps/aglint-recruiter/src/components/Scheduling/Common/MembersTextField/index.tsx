@@ -138,6 +138,7 @@ function MembersAutoComplete({
                   paddingTop: 0,
                   paddingBottom: 0,
                 },
+                maxHeight: '40vh',
               },
               onMouseDown: (event) => {
                 event.stopPropagation();

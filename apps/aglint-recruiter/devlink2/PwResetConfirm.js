@@ -3,18 +3,17 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
-import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./PwResetConfirm.module.css";
 
 export function PwResetConfirm({
   as: _Component = _Builtin.Block,
-  onclickBack = {},
-  onclickReset = {},
 
   contactLink = {
     href: "#",
   },
+
+  slotButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sl-main-wrapper")} tag="div">
@@ -30,12 +29,11 @@ export function PwResetConfirm({
             className={_utils.cx(_styles, "sl-login-header-block")}
             tag="div"
           >
-            <GlobalIcon iconName="" size="8" color="accent-8" weight="thin" />
-            <_Builtin.Block
-              tag="div"
-              icon-size="xxl"
-              icon-color="accent-11"
-              icon-weight="thin"
+            <GlobalIcon
+              iconName="Email "
+              size="8"
+              color="neutral"
+              weight="thin"
             />
             <Text
               size="2"
@@ -50,13 +48,7 @@ export function PwResetConfirm({
             className={_utils.cx(_styles, "sl-login-form")}
             tag="div"
           >
-            <ButtonSoft
-              onClickButton={onclickBack}
-              isLeftIcon={false}
-              isRightIcon={false}
-              textButton="Login"
-              size="2"
-            />
+            {slotButton}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

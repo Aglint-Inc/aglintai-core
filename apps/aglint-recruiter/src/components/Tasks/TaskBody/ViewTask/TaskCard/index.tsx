@@ -180,7 +180,7 @@ function TaskCard({
                   <Tooltip
                     enterDelay={1000}
                     arrow
-                    title={<Stack>Go to Schedule</Stack>}
+                    title={<Stack>View job</Stack>}
                   >
                     <IconButton
                       onClick={() => {
@@ -251,7 +251,7 @@ function TaskCard({
                   <Tooltip
                     enterDelay={1000}
                     arrow
-                    title={<Stack>Go to Schedule</Stack>}
+                    title={<Stack>View candidate details</Stack>}
                   >
                     <IconButton
                       onClick={() => {
@@ -336,7 +336,7 @@ function TaskCard({
                   <Tooltip
                     enterDelay={1000}
                     arrow
-                    title={<Stack>Go to Schedule</Stack>}
+                    title={<Stack>View all</Stack>}
                   >
                     <IconButton
                       onClick={() => {

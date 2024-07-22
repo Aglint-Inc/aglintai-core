@@ -4,7 +4,7 @@ import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
-  req_body: EmailTemplateAPi<'onQualified_email_approver'>['api_payload'],
+  req_body: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['api_payload'],
 ) {
   const [data] = supabaseWrap(
     await supabaseAdmin
@@ -41,10 +41,10 @@ export async function fetchUtil(
 
   const comp_email_temp = await fetchCompEmailTemp(
     data.interview_module.recruiter_id,
-    'onQualified_email_approver',
+    'onTrainingComplete_email_approverForTraineeMeetingQualification',
   );
 
-  const comp_email_placeholder: EmailTemplateAPi<'onQualified_email_approver'>['comp_email_placeholders'] =
+  const comp_email_placeholder: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['comp_email_placeholders'] =
     {
       approverFirstName: approver.first_name,
       approverLastName: approver.last_name,
@@ -67,7 +67,7 @@ export async function fetchUtil(
     comp_email_placeholder,
     comp_email_temp,
   );
-  const react_email_placeholders: EmailTemplateAPi<'onQualified_email_approver'>['react_email_placeholders'] =
+  const react_email_placeholders: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['react_email_placeholders'] =
     {
       companyLogo: company.logo,
       emailBody: filled_comp_template.body,

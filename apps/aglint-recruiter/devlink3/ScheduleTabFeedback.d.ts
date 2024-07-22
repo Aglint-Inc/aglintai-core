@@ -6,4 +6,5 @@ declare function ScheduleTabFeedback(props: {
   slotFeedbackTableRow?: Types.Devlink.Slot;
   isSessionVisible?: Types.Visibility.VisibilityConditions;
   styleMinWidth?: Types.Devlink.RuntimeProps;
+  border?: Types.Builtin.Text;
 }): React.JSX.Element;

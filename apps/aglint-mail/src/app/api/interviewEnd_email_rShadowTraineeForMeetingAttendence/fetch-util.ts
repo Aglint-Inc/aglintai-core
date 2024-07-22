@@ -5,7 +5,7 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { numberToOrdinal } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
-  req_body: EmailTemplateAPi<'onRShadowComplete_email_trainee'>['api_payload'],
+  req_body: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['api_payload'],
 ) {
   const [data] = supabaseWrap(
     await supabaseAdmin
@@ -45,10 +45,10 @@ export async function fetchUtil(
 
   const comp_email_temp = await fetchCompEmailTemp(
     job.recruiter_id,
-    'onRShadowComplete_email_trainee',
+    'interviewEnd_email_rShadowTraineeForMeetingAttendence',
   );
 
-  const comp_email_placeholder: EmailTemplateAPi<'onRShadowComplete_email_trainee'>['comp_email_placeholders'] =
+  const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
     {
       candidateFirstName: candidate.first_name,
       candidateLastName: candidate.last_name,
@@ -72,7 +72,7 @@ export async function fetchUtil(
     comp_email_placeholder,
     comp_email_temp,
   );
-  const react_email_placeholders: EmailTemplateAPi<'onRShadowComplete_email_trainee'>['react_email_placeholders'] =
+  const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
     {
       companyLogo: job.logo,
       emailBody: filled_comp_template.body,
