@@ -242,7 +242,13 @@ function SchedulingViewComp() {
                         'mail_agent' &&
                         schedule.interview_meeting.status === 'waiting')) && (
                       <GlobalBanner
-                        textTitle={`This scheduling is handled by ${capitalizeAll(schedule.interview_meeting.meeting_flow.replaceAll('_', ' '))}`}
+                        iconName={
+                          schedule?.interview_meeting.meeting_flow ===
+                          'phone_agent'
+                            ? 'smartphone'
+                            : 'mail'
+                        }
+                        textTitle={`This schedule is handling by ${capitalizeAll(schedule.interview_meeting.meeting_flow.replaceAll('_', ' '))}`}
                         slotButtons={<></>}
                         textDescription={''}
                         color={'info'}
