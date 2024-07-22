@@ -351,10 +351,10 @@ type Payloads = {
       companyLogo: string;
     };
   };
-  onShadowComplete_email_trainee: {
+  interviewEnd_email_shadowTraineeForMeetingAttendence: {
     api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onShadowComplete_email_trainee"][number]]: string;
+      [key in (typeof emailVariablePayloads)["interviewEnd_email_shadowTraineeForMeetingAttendence"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -362,10 +362,10 @@ type Payloads = {
       companyLogo: string;
     };
   };
-  onRShadowComplete_email_trainee: {
+  interviewEnd_email_rShadowTraineeForMeetingAttendence: {
     api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onRShadowComplete_email_trainee"][number]]: string;
+      [key in (typeof emailVariablePayloads)["interviewEnd_email_rShadowTraineeForMeetingAttendence"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -384,10 +384,10 @@ type Payloads = {
       companyLogo: string;
     };
   };
-  onQualified_email_approver: {
+  onTrainingComplete_email_approverForTraineeMeetingQualification: {
     api_payload: v.InferInput<typeof onQualifiedEmailApproverSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onQualified_email_approver"][number]]: string;
+      [key in (typeof emailVariablePayloads)["onTrainingComplete_email_approverForTraineeMeetingQualification"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
