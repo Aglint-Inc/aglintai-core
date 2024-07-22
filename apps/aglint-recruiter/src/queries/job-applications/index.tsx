@@ -113,7 +113,7 @@ type ApplicationsAllQueryPrerequistes = {
 };
 
 type Params = ApplicationsAllQueryPrerequistes &
-  ApplicationsParams['filters'] & {
+  Omit<ApplicationsParams['filters'], 'section'> & {
     status: Application['status'];
   };
 
