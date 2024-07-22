@@ -414,9 +414,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
     ({ status }) => status === 'rejected',
   ) as PromiseRejectedResult[];
   if (failedResponses.length !== 0)
-    throw new Error(
-      `Failed to upload ${failedResponses.length} resumes. (${failedResponses.map(({ reason }) => reason).join(', ')})`,
-    );
+    throw new Error(`Failed to upload ${failedResponses.length} resumes.`);
 };
 
 export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
