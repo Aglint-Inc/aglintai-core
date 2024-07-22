@@ -30,11 +30,10 @@ function AssigneeChip({
   disableHoverListener?: boolean;
   isOnlyName?: boolean;
 }) {
-  const { members } = useAuthDetails();
-  // const { data: members } = useInterviewerList();
+  const { data: members } = useInterviewerList();
   const assigneeDetails =
-    members && members.find((item) => item.user_id === assigneeId);
-
+    members &&
+    members.find((item) => item.rec_user.user_id === assigneeId)?.rec_user;
   return (
     <ShowCode>
       <ShowCode.When isTrue={assigneeId === EmailAgentId}>
