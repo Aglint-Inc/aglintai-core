@@ -1,10 +1,11 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Dialog } from '@mui/material';
+import { Autocomplete, Dialog, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -35,44 +36,42 @@ function RoleEditMember({
         close();
       }}
     >
-      <ConfirmationPopup
-        onClickCancel={{ onClick: close }}
-        isYellowButtonVisible={false}
-        isSlotButtonVisible={true}
-        slotButton={
-          <ButtonSolid
-            textButton='Update'
-            size={2}
-            isLoading={isLoading}
-            isDisabled={role_id === user.role_id}
-            onClickButton={{
-              onClick: async () => {
-                setIsLoading(true);
-                await handelMemberUpdate({
-                  user_id: user.user_id,
-                  data: { role_id: role_id },
-                });
-                setIsLoading(false);
-              },
-            }}
-          />
-        }
-        textPopupTitle={'Update Role'}
-        isIcon={false}
-        isBlueButtonVisible={false}
-        isDescriptionVisible={false}
-        textPopupDescription={`Update role for ${user.first_name} ${user.last_name}`}
-        textPopupButton={'Update'}
-        onClickAction={{
-          onClick: () => {
-            handelMemberUpdate({
-              user_id: user.user_id,
-              data: { role_id: role_id },
-            });
-          },
-        }}
-        slotWidget={
+      <DcPopup
+        popupName='Update Role'
+        onClickClosePopup={{ onClick: close }}
+        slotButtons={
           <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: close,
+              }}
+            />
+            <ButtonSolid
+              textButton='Update'
+              size={2}
+              isLoading={isLoading}
+              isDisabled={role_id === user.role_id}
+              onClickButton={{
+                onClick: async () => {
+                  setIsLoading(true);
+                  await handelMemberUpdate({
+                    user_id: user.user_id,
+                    data: { role_id: role_id },
+                  });
+                  setIsLoading(false);
+                },
+              }}
+            />
+          </>
+        }
+        slotBody={
+          <>
+            <Typography
+              marginBottom={'10px'}
+            >{`Update role for ${user.first_name} ${user.last_name}`}</Typography>
             {role_id && role_id !== user.role_id && (
               <GlobalBannerInline
                 color={'warning'}
@@ -113,12 +112,6 @@ function RoleEditMember({
                   name='Role'
                   placeholder='Choose Role'
                   label='Role: '
-                  //   required
-                  //   error={formError.role}
-                  //   helperText={formError.role ? 'Role must required' : ''}
-                  //   onFocus={() => {
-                  //     setFormError({ ...formError, role: false });
-                  //   }}
                 />
               )}
             />
