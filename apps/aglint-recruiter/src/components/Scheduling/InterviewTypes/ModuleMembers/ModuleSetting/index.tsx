@@ -1,5 +1,4 @@
 import { Checkbox, MenuItem, Stack, Switch, TextField } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -11,19 +10,23 @@ import toast from '@/src/utils/toast';
 import MembersAutoComplete, {
   MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
-import { QueryKeysInteviewModules } from '../../queries/type';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
 
-function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
-  const queryClient = useQueryClient();
-
+function ModuleSettingComp({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const { members } = useSchedulingContext();
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
   const [errorApproval, setErrorApproval] = useState(false);
   const [selectedUsers, setSelectedUsers] = React.useState<
     MemberTypeAutoComplete[]
   >([]);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (editModule) {
@@ -37,48 +40,41 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
   }, [editModule, members]);
 
   const updateModule = async () => {
-    if (localModule.settings.reqruire_approval && selectedUsers.length === 0) {
-      setErrorApproval(true);
-      return;
-    }
-    const { data, error } = await supabase
-      .from('interview_module')
-      .update({
-        name: localModule.name,
-        description: localModule.description,
-        settings: {
-          ...localModule.settings,
-        },
-        department: localModule.department,
-      })
-      .eq('id', editModule.id)
-      .select();
+    try {
+      setIsSaving(true);
+      if (
+        localModule.settings.reqruire_approval &&
+        selectedUsers.length === 0
+      ) {
+        setErrorApproval(true);
+        return;
+      }
+      await supabase
+        .from('interview_module')
+        .update({
+          name: localModule.name,
+          description: localModule.description,
+          settings: {
+            ...localModule.settings,
+          },
+          department: localModule.department,
+        })
+        .eq('id', editModule.id)
+        .select()
+        .throwOnError();
 
-    if (!error) {
       updateApproveUsers(
         editModule.settings.approve_users,
         selectedUsers.map((sel) => sel.user_id),
         editModule.id,
       );
 
-      const updatedEditModule: ModuleType = {
-        ...editModule,
-        ...data[0],
-        settings: {
-          ...editModule.settings,
-          approve_users: selectedUsers.map((sel) => sel.user_id),
-        },
-      };
-
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
+      refetch();
       setIsModuleSettingsDialogOpen(false);
+    } catch (e) {
+      toast.error('Failed to update module');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -190,7 +186,14 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
               <ButtonSolid
                 size={2}
                 textButton='Update'
-                onClickButton={{ onClick: updateModule }}
+                isLoading={isSaving}
+                onClickButton={{
+                  onClick: () => {
+                    if (!isSaving) {
+                      updateModule();
+                    }
+                  },
+                }}
               />
             )
           }

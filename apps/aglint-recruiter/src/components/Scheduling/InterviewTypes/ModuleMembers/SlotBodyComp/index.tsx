@@ -169,7 +169,10 @@ function SlotBodyComp({
                       <SlotQualifiedMembers editModule={editModule} />
                     }
                     slotMembersInTraining={
-                      <SlotTrainingMembers editModule={editModule} />
+                      <SlotTrainingMembers
+                        editModule={editModule}
+                        refetch={refetch}
+                      />
                     }
                     onClickAddMember={{
                       onClick: () => {
@@ -201,7 +204,10 @@ function SlotBodyComp({
                 )}
 
                 {currentTab === 'training' && (
-                  <ModuleSettingComp editModule={editModule} />
+                  <ModuleSettingComp
+                    editModule={editModule}
+                    refetch={refetch}
+                  />
                 )}
               </>
             }

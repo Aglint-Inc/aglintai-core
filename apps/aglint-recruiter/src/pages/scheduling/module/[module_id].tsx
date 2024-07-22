@@ -1,6 +1,3 @@
-// import SchedulingProvider, {
-//   useSchedulingContext,
-// } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
@@ -10,7 +7,6 @@ import { useMemo, useState } from 'react';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
-import { MutedShadowSession } from '@/devlink2/MutedShadowSession';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { ShadowSession } from '@/devlink2/ShadowSession';
 import { StatusBadge } from '@/devlink2/StatusBadge';
@@ -23,10 +19,8 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import SessionCard from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/ProgressDrawer/SessionCard';
 import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import {
-  // useGetMeetingsByModuleId,
   useModuleAndUsers,
   useProgressModuleUsers,
 } from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
@@ -37,11 +31,8 @@ import {
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-
-import IProgressDrawer from './IProgressDrawer';
 
 const ModuleMembers = () => {
   return (
@@ -152,7 +143,7 @@ function ModuleMembersComp() {
                           progress={
                             progress?.filter(
                               (item) =>
-                                item.interview_module_relation_id ===
+                                item.interview_module_relation.id ===
                                 selectedModule.relations.find(
                                   (item) =>
                                     item.user_id === recruiterUser.user_id,
@@ -193,6 +184,7 @@ function ModuleMembersComp() {
 
 const TrainingDetails = ({
   id,
+  // eslint-disable-next-line no-unused-vars
   module,
   members,
   progress,
@@ -207,21 +199,6 @@ const TrainingDetails = ({
     user: members?.find((item) => item.user_id === id),
   };
 
-  const shadowProgress = progressUser?.progress.filter(
-    (prog) => prog.training_type == 'shadow',
-  );
-
-  const mutatedShadowProgress = Array.from({
-    length: module.settings.noShadow - shadowProgress.length,
-  });
-
-  const reverseShadowProgress = progressUser?.progress.filter(
-    (prog) => prog.training_type == 'reverse_shadow',
-  );
-
-  const mutatedReverseShadowProgress = Array.from({
-    length: module.settings.noReverseShadow - reverseShadowProgress.length,
-  });
   return (
     <ShadowSession
       isHeadingCloseVisible={false}
@@ -238,65 +215,7 @@ const TrainingDetails = ({
           />
         )
       }
-      slotShadowSessionCard={
-        <>
-          {shadowProgress.map((prog, ind) => {
-            return (
-              <SessionCard
-                key={ind}
-                prog={prog}
-                isLineVisible={true}
-                session_name={`${numberToOrdinalText(ind + 1)} Shadow`}
-              />
-            );
-          })}
-          {mutatedShadowProgress.map((_, index) => (
-            <MutedShadowSession
-              slotStatusBadge={
-                <StatusBadge
-                  isNotScheduledVisible={true}
-                  isConfirmedVisible={false}
-                />
-              }
-              isReverseShadowIconVisible={false}
-              isShadowIconVisible={true}
-              textSessionHeader={`${numberToOrdinalText(
-                index + 1 + shadowProgress.length,
-              )} Shadow Session`}
-              key={index}
-              isLineVisible={index != mutatedShadowProgress.length - 1}
-            />
-          ))}
-
-          {reverseShadowProgress.map((prog, ind) => {
-            return (
-              <SessionCard
-                key={ind}
-                prog={prog}
-                isLineVisible={true}
-                session_name={`${numberToOrdinalText(ind + 1)} Reverse Shadow`}
-              />
-            );
-          })}
-          {mutatedReverseShadowProgress.map((_, index) => (
-            <MutedShadowSession
-              slotStatusBadge={
-                <StatusBadge
-                  isNotScheduledVisible={true}
-                  isConfirmedVisible={false}
-                />
-              }
-              isReverseShadowIconVisible={true}
-              isShadowIconVisible={false}
-              textSessionHeader={`${numberToOrdinalText(
-                index + 1 + reverseShadowProgress.length,
-              )} Reverse Shadow Session`}
-              key={index}
-              isLineVisible={index != mutatedReverseShadowProgress.length - 1}
-            />
-          ))}
-        </>
-      }
+      slotShadowSessionCard={<></>}
     />
   );
 };
@@ -352,26 +271,8 @@ function SlotQualifiedMembers({
   // const { members } = useSchedulingContext();
   const allQualified = editModule?.relations;
 
-  const [progressUser, setProgressUser] = useState<ProgressUser>({
-    user: null,
-    progress: [],
-  });
-
   return (
     <>
-      {progressUser && (
-        <IProgressDrawer
-          progressUser={progressUser}
-          open={Boolean(progressUser.user)}
-          onClose={() => {
-            setProgressUser({
-              user: null,
-              progress: [],
-            });
-          }}
-          module={editModule}
-        />
-      )}
       {allQualified.length === 0 && (
         <EmptyGeneral textEmpt={'No Members Added Yet'} />
       )}
@@ -384,14 +285,14 @@ function SlotQualifiedMembers({
 
         const tempUserProgress = {
           progress: progress.filter(
-            (prog) => prog.interview_module_relation_id === user.id,
+            (prog) => prog.interview_module_relation.id === user.id,
           ),
           user: members.filter((member) => member.user_id === user.user_id)[0],
         };
         const isTrainingDone = isTrainingComplete(tempUserProgress);
 
         const progressDataUser = progress.filter(
-          (prog) => prog.interview_module_relation_id === user.id,
+          (prog) => prog.interview_module_relation.id === user.id,
         );
 
         const tempMeetingData: {
@@ -399,12 +300,14 @@ function SlotQualifiedMembers({
         } = {};
 
         progressDataUser.forEach((prog) => {
-          if (prog.training_type === 'shadow') {
+          if (prog.interview_session_relation.training_type === 'shadow') {
             tempMeetingData['shadow'] = [
               ...(tempMeetingData['shadow'] || []),
               prog,
             ];
-          } else if (prog.training_type === 'reverse_shadow') {
+          } else if (
+            prog.interview_session_relation.training_type === 'reverse_shadow'
+          ) {
             tempMeetingData['reverse shadow'] = [
               ...(tempMeetingData['reverse shadow'] || []),
               prog,
@@ -595,7 +498,7 @@ const isTrainingComplete = (pro: ProgressUser) => {
     })
     .filter(
       (item) =>
-        item.training_type !== 'qualified' &&
+        item.interview_session_relation.training_type !== 'qualified' &&
         item.interview_meeting.status !== 'cancelled',
     )) {
     if (item.interview_meeting.status !== 'completed') {

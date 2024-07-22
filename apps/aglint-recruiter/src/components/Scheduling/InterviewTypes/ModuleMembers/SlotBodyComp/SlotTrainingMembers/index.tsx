@@ -1,10 +1,8 @@
 import { Stack } from '@mui/material';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
-import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
@@ -21,7 +19,13 @@ export type ProgressUser = {
   progress: ReturnType<typeof useProgressModuleUsers>['data'];
 };
 
-function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
+function SlotTrainingMembers({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const allUsers = editModule.relations.filter(
     (user) => user.training_status === 'training',
   );
@@ -43,11 +47,12 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
-            <ButtonSurface
-              size={1}
+            <ButtonSoft
+              size={2}
               isRightIcon={false}
-              slotIcon={<IconPlusFilter />}
-              textButton={'Add'}
+              isLeftIcon={true}
+              slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+              textButton={'Add Training Member'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
@@ -71,6 +76,7 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
             editModule={editModule}
             progressDataUser={progressDataUser}
             user={user}
+            refetch={refetch}
           />
         );
       })}
