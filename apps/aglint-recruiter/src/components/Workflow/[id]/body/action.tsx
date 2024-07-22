@@ -17,7 +17,6 @@ import { WorkflowAction } from '@/src/types/workflow.types';
 
 import { useActions } from './context';
 import toast from '@/src/utils/toast';
-import { GlobalBannerShort } from '@/devlink2';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 
 const Actions = () => {
