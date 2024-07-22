@@ -4372,15 +4372,12 @@ export type Database = {
           cancel_reasons: Json | null
           email: string | null
           first_name: string | null
-          interview_module_relation_id: string | null
           interviewer_type:
             | Database["public"]["Enums"]["status_training"]
             | null
           is_confirmed: boolean | null
-          job_id: string | null
           last_name: string | null
           meeting_id: string | null
-          module_id: string | null
           position: string | null
           profile_image: string | null
           session_id: string | null
@@ -4396,13 +4393,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "interview_panel_relation_panel_id_fkey"
-            columns: ["module_id"]
-            isOneToOne: false
-            referencedRelation: "interview_module"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "public_interview_session_meeting_id_fkey"
             columns: ["meeting_id"]
             isOneToOne: false
@@ -4415,20 +4405,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "meeting_details"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
-            columns: ["interview_module_relation_id"]
-            isOneToOne: false
-            referencedRelation: "interview_module_relation"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
-            columns: ["interview_module_relation_id"]
-            isOneToOne: false
-            referencedRelation: "module_relations_view"
-            referencedColumns: ["module_relation_id"]
           },
         ]
       }
@@ -5566,17 +5542,19 @@ export type Database = {
         | "candidateBook_slack_interviewerForConfirmation"
         | "onSignup_email_admin"
         | "onInvite_email_user"
-        | "onShadowComplete_email_trainee"
-        | "onRShadowComplete_email_trainee"
-        | "onShadowComplete_slack_trainee"
-        | "onRShadowComplete_slack_trainee"
+        | "interviewEnd_email_shadowTraineeForMeetingAttendence"
+        | "interviewEnd_email_rShadowTraineeForMeetingAttendence"
+        | "interviewEnd_slack_shadowTraineeForMeetingAttendence"
+        | "interviewEnd_slack_rShadowTraineeForMeetingAttendence"
         | "onQualified_email_trainee"
         | "onQualified_email_approved"
         | "onQualified_slack_trainee"
         | "onQualified_slack_approved"
-        | "onQualified_slack_approver"
-        | "onQualified_email_approver"
+        | "onTrainingComplete_slack_approverForTraineeMeetingQualification"
+        | "onTrainingComplete_email_approverForTraineeMeetingQualification"
         | "interviewerResumed_email_admin"
+        | "interviewEnd_slack_organizerForMeetingStatus"
+        | "interviewEnd_email_organizerForMeetingStatus"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
