@@ -133,7 +133,7 @@ const DebriefForms = ({
     members_meta,
   } = fields;
   const memberRecommendations =
-    data.filter(
+    (data ?? []).filter(
       ({ user_id }) =>
         ![
           ...(members?.value ?? []),
@@ -328,7 +328,7 @@ const Member = ({
   onClick: () => void;
 }) => {
   const { companyMembers } = useJobInterviewPlan();
-  const member = companyMembers.data.find(
+  const member = (companyMembers?.data ?? []).find(
     ({ user_id }) => user_id === memberId,
   );
   if (!member) return <></>;
