@@ -36,7 +36,6 @@ import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -1083,17 +1082,35 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   };
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Confirm Your Interview'}
-        isDescriptionVisible={true}
-        textPopupDescription={
-          'Please review and confirm your selected time slot before we finalize your schedule. It’s important that your interview time aligns with your availability.'
+      <DcPopup
+        popupName={'Confirm your interview'}
+        slotBody={
+          <Stack>
+            <Typography>
+              Please review and confirm your selected time slot before we
+              finalize your schedule. It’s important that your interview time
+              aligns with your availability.
+            </Typography>
+          </Stack>
         }
-        isWidget={false}
-        textPopupButton={'Confirm'}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        onClickCancel={{ onClick: () => handleClose() }}
+        onClickClosePopup={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Confirm'}
+              onClickButton={{ onClick: handleSubmit }}
+            />
+          </>
+        }
       />
     </Dialog>
   );
