@@ -137,7 +137,7 @@ const Member = ({
         }
         slotThreeDot={
           canManage &&
-          member.role !== 'admin' && (
+          (member.role !== 'admin' || member.status === 'invited') && (
             <>
               <Stack onClick={handleClick}>
                 <IconButtonGhost
