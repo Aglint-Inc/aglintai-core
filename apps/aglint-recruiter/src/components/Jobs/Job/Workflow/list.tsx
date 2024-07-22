@@ -13,7 +13,7 @@ import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { getTriggerOption } from '@/src/components/Workflow/[id]/body/trigger';
+import { getTriggerOption } from '@/src/components/Workflow/[id]/body/constants';
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';

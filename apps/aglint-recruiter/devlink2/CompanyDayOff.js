@@ -12,6 +12,7 @@ export function CompanyDayOff({
   as: _Component = _Builtin.Block,
   slotDayoffList,
   slotAddButton,
+  slotLearnButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cdo-wrap")} tag="div">
@@ -28,11 +29,17 @@ export function CompanyDayOff({
             tag="div"
           >
             <Text content="Standard Days Off" color="neutral-12" />
-            <Text
-              content="List company holidays to exclude them from scheduling."
-              weight=""
-              color="neutral"
-            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cdo-learn-wrap")}
+              tag="div"
+            >
+              <Text
+                content="List company holidays to exclude them from scheduling."
+                weight=""
+                color="neutral"
+              />
+              <_Builtin.Block tag="div">{slotLearnButton}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cdo-top-btn")}

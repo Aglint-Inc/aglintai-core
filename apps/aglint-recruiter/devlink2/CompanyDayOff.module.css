@@ -37,6 +37,14 @@
   grid-row-gap: var(--space-1);
 }
 
+.cdo-learn-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
 .cdo-top-btn {
   display: flex;
   justify-content: flex-start;

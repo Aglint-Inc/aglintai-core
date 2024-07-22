@@ -188,7 +188,7 @@ export const useApplicationsActions = () => {
     }),
   );
 
-  const { section: _, ...queryParams } = params;
+  const { ...queryParams } = params;
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({

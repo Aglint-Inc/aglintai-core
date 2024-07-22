@@ -156,7 +156,7 @@ export const emailVariablePayloads = {
     interviewerPauseLink,
     interviewTypes,
   ],
-  onShadowComplete_email_trainee: [
+  interviewEnd_email_shadowTraineeForMeetingAttendence: [
     ...trainee,
     ...jobDetails,
     interviewType,
@@ -166,7 +166,7 @@ export const emailVariablePayloads = {
     shadowCount,
     shadowConfirmLink,
   ],
-  onRShadowComplete_email_trainee: [
+  interviewEnd_email_rShadowTraineeForMeetingAttendence: [
     ...trainee,
     ...jobDetails,
     interviewType,
@@ -182,7 +182,7 @@ export const emailVariablePayloads = {
     interviewType,
     ...company,
   ],
-  onQualified_email_approver: [
+  onTrainingComplete_email_approverForTraineeMeetingQualification: [
     ...trainee,
     ...organizer,
     ...approver,
