@@ -17,6 +17,8 @@ import { WorkflowAction } from '@/src/types/workflow.types';
 
 import { useActions } from './context';
 import toast from '@/src/utils/toast';
+import { GlobalBannerShort } from '@/devlink2';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 
 const Actions = () => {
   const {
@@ -83,7 +85,15 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      <Template key={props.action.email_template_id} {...props} />
+      {props.action.company_email_template.type.split('_slack_').length ===
+      2 ? (
+        <GlobalBannerInline
+          textContent={'A slack notification will be sent for this action.'}
+          slotButton={<></>}
+        />
+      ) : (
+        <Template key={props.action.email_template_id} {...props} />
+      )}
     </>
   );
 };
