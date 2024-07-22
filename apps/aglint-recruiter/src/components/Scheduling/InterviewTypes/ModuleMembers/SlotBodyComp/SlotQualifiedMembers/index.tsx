@@ -80,7 +80,7 @@ function SlotQualifiedMembers({
               isRightIcon={false}
               isLeftIcon={true}
               slotIcon={<GlobalIcon iconName='person_add' size={5} />}
-              textButton={'Add Qaulified Member'}
+              textButton={'Add Qualified Member'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
