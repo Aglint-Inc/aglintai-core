@@ -3,6 +3,7 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { memo, useMemo } from 'react';
 
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
@@ -14,10 +15,9 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
+import toast from '@/src/utils/toast';
 
 import { useActions } from './context';
-import toast from '@/src/utils/toast';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 
 const Actions = () => {
   const {

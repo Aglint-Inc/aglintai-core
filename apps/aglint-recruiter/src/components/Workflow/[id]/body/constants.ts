@@ -1,5 +1,6 @@
-import { Workflow } from '@/src/types/workflow.types';
 import { DatabaseTable } from '@aglint/shared-types';
+
+import { Workflow } from '@/src/types/workflow.types';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
