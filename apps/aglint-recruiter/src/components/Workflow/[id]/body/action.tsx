@@ -14,9 +14,9 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
+import toast from '@/src/utils/toast';
 
 import { useActions } from './context';
-import toast from '@/src/utils/toast';
 
 const Actions = () => {
   const {
