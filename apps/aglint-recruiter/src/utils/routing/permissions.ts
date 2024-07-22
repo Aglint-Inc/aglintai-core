@@ -59,8 +59,6 @@ const PERMISSIONS: Permissions = {
   '/api/lever/saveApiKey': ['manage_company'],
   '/api/ashby/getPostings': ['job_module'],
   '/api/ashby/saveApiKey': ['manage_company'],
-  '/api/get_last_login': ['view_users'],
-  '/api/setMembersWithRole': ['view_users', 'scheduling_module'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
   '/api/scheduling/fetch_activities': ['scheduling_module'],
@@ -125,11 +123,14 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/emails/confirmInterview_email_applicant': ['scheduling_module'],
   '/api/emails/preview': ['scheduling_module'],
+  '/api/get_last_login': ['view_users'],
+  '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],
   '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
+  '/api/decryptApiKey': ['manage_company'],
 };
 
 export default PERMISSIONS;

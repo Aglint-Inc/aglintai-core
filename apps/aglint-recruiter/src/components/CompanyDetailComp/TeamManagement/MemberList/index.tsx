@@ -18,6 +18,7 @@ import {
   ContextValue,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -44,6 +45,7 @@ const Member = ({
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
 }) => {
+  const { checkPermissions } = useRolesAndPermissions();
   const handelRemove = (e) => {
     e.stopPropagation();
     removeMember();
@@ -87,6 +89,7 @@ const Member = ({
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const canManage = checkPermissions(['manage_users']);
   return (
     <>
       <DeleteMemberDialog
@@ -139,6 +142,7 @@ const Member = ({
           />
         }
         slotThreeDot={
+          canManage &&
           member.role !== 'admin' && (
             <>
               <Stack onClick={handleClick}>

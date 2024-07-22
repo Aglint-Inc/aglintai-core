@@ -49,7 +49,7 @@
   z-index: 2;
 
   display: flex;
-  width: 250px;
+  width: 320px;
   padding: var(--space-2) var(--space-4);
   align-items: center;
   grid-column-gap: var(--space-1);
@@ -131,24 +131,14 @@
 
   display: flex;
   padding: var(--space-4);
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   flex-wrap: nowrap;
-  align-items: flex-start;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   background-color: var(--white);
-}
-
-.link-wrap {
-  transition: all 200ms ease;
-  color: var(--sky-a11);
-  text-decoration: underline;
-}
-
-.link-wrap:hover {
-  color: var(--sky-12);
 }
 
 .abosulte_block_white {
@@ -196,6 +186,16 @@
 .flex-horizontal.align-center {
   justify-content: flex-start;
   align-items: center;
+}
+
+.link-wrap {
+  transition: all 200ms ease;
+  color: var(--sky-a11);
+  text-decoration: underline;
+}
+
+.link-wrap:hover {
+  color: var(--sky-12);
 }
 
 .candidate_cell {

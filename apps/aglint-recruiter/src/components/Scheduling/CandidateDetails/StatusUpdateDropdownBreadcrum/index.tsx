@@ -8,7 +8,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { useAllActivities, useGetScheduleApplication } from '../queries/hooks';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { updateApplicationStatus } from '../utils';
 

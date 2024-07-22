@@ -29,6 +29,7 @@ import {
   app_modules,
 } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
@@ -347,6 +348,8 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
+  const { checkPermissions } = useRolesAndPermissions();
+
   const [editUser, setEditUser] = useState<{
     user: RecruiterUserType;
     role: string;
@@ -356,6 +359,7 @@ function RoleDetails({
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
+  const editDisabled = !checkPermissions(['manage_roles']);
   return (
     <>
       <RolesAndPermissionsDetail
@@ -408,7 +412,7 @@ function RoleDetails({
                           slotToggle={
                             <AntSwitch
                               checked={permission.isActive}
-                              disabled={!role.isEditable}
+                              disabled={editDisabled || !role.isEditable}
                               onClick={() => {
                                 const data = {
                                   add: null,

@@ -106,6 +106,7 @@ function EmailFollowUp() {
         rec_user_id: recruiterUser.user_id,
         user_tz: dayjs.tz.guess(),
         trigger_count: 0,
+        job_id: selectedTask.applications.public_jobs.id,
       } as ApiBodyParamsScheduleAgent);
     }
     closePopUp();

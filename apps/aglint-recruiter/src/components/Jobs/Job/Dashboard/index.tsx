@@ -609,7 +609,7 @@ const useBanners = () => {
     banners.push(
       <Banner
         type='warning'
-        title='Interview types not set'
+        title='Interview plan not set'
         description='Add one or more interview types to create an interview plan.'
         primary={{
           title: 'Ignore',
@@ -645,10 +645,10 @@ const useBanners = () => {
       banners.push(
         <Banner
           type='error'
-          title={publishStatus.detailsValidity.message}
+          title='Hiring team not set'
           description='Please ensure that necessary hiring members are selected.'
           primary={{
-            title: 'Assign now',
+            title: 'Set Now',
             onClick: () =>
               push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}

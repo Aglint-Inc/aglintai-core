@@ -12,8 +12,12 @@ import {
 import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 import toast from '@/src/utils/toast';
 
-import { useGetScheduleApplication } from '../../hooks';
-import { setIsEditOpen, setSelectedTasks, useSchedulingApplicationStore } from '../../store';
+import { useGetScheduleApplication } from '../../queries/hooks';
+import {
+  setIsEditOpen,
+  setSelectedTasks,
+  useSchedulingApplicationStore,
+} from '../../store';
 import { getTaskDetails } from '../../utils';
 import {
   initialError,
