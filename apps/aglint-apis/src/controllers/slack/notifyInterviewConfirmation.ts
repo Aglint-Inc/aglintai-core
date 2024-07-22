@@ -6,14 +6,13 @@ import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {googleCalenderLogo} from 'src/utils/assests';
 import {meetingPlatform} from 'src/utils/platform';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const {session_id, application_id} = req.body;
 
   if (!session_id || !application_id) {
-    return res
-      .status(400)
-      .json({error: 'Session id, Recruiter user id, Application id required'});
+    return res.status(400).json({error: 'Session id, Application id required'});
   }
 
   try {
@@ -40,10 +39,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
 
     for (const interviewer of meeting_interviewers) {
       try {
-        const userResponse = await slackWeb.users.lookupByEmail({
-          email: interviewer.email,
-        });
-        const userId = userResponse.user.id;
+        const userId = await getUserIdByEmail(interviewer.email);
 
         await slackWeb.chat.postMessage({
           channel: userId,

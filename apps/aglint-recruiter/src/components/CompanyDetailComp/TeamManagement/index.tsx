@@ -12,6 +12,7 @@ import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
@@ -30,6 +31,7 @@ import Member from './MemberList';
 type ItemType = string;
 
 const TeamManagement = () => {
+  const { checkPermissions } = useRolesAndPermissions();
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
@@ -160,6 +162,8 @@ const TeamManagement = () => {
     Boolean(selectedDepartments.length) ||
     Boolean(selectedRoles.length) ||
     Boolean(selectedLocations.length);
+
+  const canManage = checkPermissions(['manage_users']);
   return (
     <Stack bgcolor={'white'}>
       <TeamUsersList
@@ -300,18 +304,22 @@ const TeamManagement = () => {
           </>
         }
         slotInviteBtn={
-          <ButtonSolid
-            isRightIcon={false}
-            isLeftIcon={true}
-            size={'2'}
-            textButton={'Invite'}
-            iconName={'send'}
-            onClickButton={{
-              onClick: () => {
-                setOpenDrawer({ open: true, window: 'addMember' });
-              },
-            }}
-          />
+          <>
+            {canManage && (
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={true}
+                size={'2'}
+                textButton={'Invite'}
+                iconName={'send'}
+                onClickButton={{
+                  onClick: () => {
+                    setOpenDrawer({ open: true, window: 'addMember' });
+                  },
+                }}
+              />
+            )}
+          </>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
         // onClickViewPendingInvites={{

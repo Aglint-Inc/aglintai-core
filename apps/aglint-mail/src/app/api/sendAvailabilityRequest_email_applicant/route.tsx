@@ -47,27 +47,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//     "meta": {
-//         "avail_req_id": "3534e9a6-4db6-4601-8d97-9118c726aaf8",
-//         "recruiter_user_id": "eedee99a-e323-48e6-a590-f25f7f18a704"
-//     }
-// }
-
-// {
-//   "meta": {
-//       "is_preview": true,
-//       "recruiter_user_id": "523ac2a1-d536-4a84-962c-60179a8bbc48",
-//       "preview_details": {
-//           "candidateFirstName": "chandra",
-//           "candidateLastName": "kumar",
-//           "companyName": "aglint",
-//           "jobRole": "jobRole",
-//           "organizerFirstName":"dheeraj",
-//           "organizerLastName": "kumar",
-//           "organizerTimeZone": "IST",
-//           "companyLogo": "https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/email_template_assets/company_logo.png"
-//       }
-//   }
-// }

@@ -13,6 +13,7 @@ import { supabase } from '@/src/utils/supabase/client';
 function ImageUpload({
   setImage,
   image,
+  disabled = false,
   size,
   table,
   handleUpdateProfile = null,
@@ -22,6 +23,7 @@ function ImageUpload({
 }: {
   setImage?: Dispatch<SetStateAction<string>>;
   image: string;
+  disabled?: boolean;
   size: number;
   table: 'company-logo' | 'recruiter-user';
   handleUpdateProfile?: any;
@@ -36,6 +38,7 @@ function ImageUpload({
 
   image = image === null ? '/images/logo/company.png' : image;
   const setProfilePicture = async (file) => {
+    if (disabled) return;
     setLoading(true);
     if (file.size > 5 * 1000000) {
       error && error(true);
@@ -148,30 +151,32 @@ function ImageUpload({
                 name='file'
                 types={['PNG', 'JPEG', 'JPG']}
               >
-                <Stack
-                  id={'image-upload'}
-                  sx={{
-                    position: 'relative',
-                    cursor: 'pointer',
-                    transition: 'all 0.5s ease',
-                    opacity: isStackHovered ? 1 : 0,
-                    borderRadius: 'var(--radius-2)',
-                    mt: 'var(--space-1)',
-                  }}
-                  height={`${size}px`}
-                  width={`${size}px`}
-                  direction={'row'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                >
-                  <IconButtonSoft
-                    iconSize={6}
-                    color='neutral'
-                    iconWeight='thin'
-                    iconName='cloud_upload'
-                    iconColor='neutral'
-                  />
-                </Stack>
+                {!disabled && (
+                  <Stack
+                    id={'image-upload'}
+                    sx={{
+                      position: 'relative',
+                      cursor: 'pointer',
+                      transition: 'all 0.5s ease',
+                      opacity: isStackHovered ? 1 : 0,
+                      borderRadius: 'var(--radius-2)',
+                      mt: 'var(--space-1)',
+                    }}
+                    height={`${size}px`}
+                    width={`${size}px`}
+                    direction={'row'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <IconButtonSoft
+                      iconSize={6}
+                      color='neutral'
+                      iconWeight='thin'
+                      iconName='cloud_upload'
+                      iconColor='neutral'
+                    />
+                  </Stack>
+                )}
               </FileUploader>
             ) : (
               <Stack
@@ -207,38 +212,42 @@ function ImageUpload({
                       name='file'
                       types={['PNG', 'JPEG', 'JPG']}
                     >
+                      {!disabled && (
+                        <Stack
+                          id={'image-upload'}
+                          sx={{
+                            cursor: 'pointer',
+                            color: 'var(--white)',
+                            transition: '',
+                          }}
+                        >
+                          <IconButtonSoft
+                            iconSize={4}
+                            color={'white'}
+                            iconName='restart_alt'
+                            iconColor='white'
+                          />
+                        </Stack>
+                      )}
+                    </FileUploader>
+
+                    {!disabled && (
                       <Stack
-                        id={'image-upload'}
-                        sx={{
-                          cursor: 'pointer',
-                          color: 'var(--white)',
-                          transition: '',
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          if (setImage) setImage(null);
+                          if (handleUpdateProfile)
+                            await handleUpdateProfile({ profile_image: null });
                         }}
+                        sx={{ color: 'var(--white)', cursor: 'pointer' }}
                       >
                         <IconButtonSoft
                           iconSize={4}
-                          color={'white'}
-                          iconName='restart_alt'
-                          iconColor='white'
+                          color={'error'}
+                          iconName='delete'
                         />
                       </Stack>
-                    </FileUploader>
-
-                    <Stack
-                      onClick={async (e) => {
-                        e.stopPropagation();
-                        if (setImage) setImage(null);
-                        if (handleUpdateProfile)
-                          await handleUpdateProfile({ profile_image: null });
-                      }}
-                      sx={{ color: 'var(--white)', cursor: 'pointer' }}
-                    >
-                      <IconButtonSoft
-                        iconSize={4}
-                        color={'error'}
-                        iconName='delete'
-                      />
-                    </Stack>
+                    )}
                   </Stack>
                 )}
               </Stack>

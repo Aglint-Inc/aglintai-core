@@ -156,8 +156,8 @@ const AddMember = ({
       flag = true;
     }
     if (
-      (form.role !== 'admin' && !form.manager_id) ||
-      form.manager_id.trim() === ''
+      form.role !== 'admin' &&
+      (!form.manager_id || form.manager_id.trim() === '')
     ) {
       temp = { ...temp, manager: true };
       flag = true;
@@ -226,6 +226,13 @@ const AddMember = ({
     acc[curr.id] = curr.name;
     return acc;
   }, {});
+  const isSubmittable = !(
+    form.email &&
+    form.first_name &&
+    form.designation &&
+    form.department &&
+    (form.role === 'admin' || Boolean(form.manager_id))
+  );
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
@@ -466,8 +473,8 @@ const AddMember = ({
                       onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          role: newValue.name,
-                          role_id: newValue.id,
+                          role: newValue && newValue.name,
+                          role_id: newValue && newValue.id,
                         });
                       }}
                       id='controllable-states-demo'
@@ -563,16 +570,7 @@ const AddMember = ({
                       isLeftIcon={false}
                       isRightIcon={false}
                       size='2'
-                      isDisabled={
-                        form.email &&
-                        form.first_name &&
-                        form.designation &&
-                        form.department &&
-                        form.role_id &&
-                        form.manager_id
-                          ? false
-                          : true
-                      }
+                      isDisabled={isSubmittable}
                       onClickButton={{
                         onClick: () => {
                           setIsDisable(true);

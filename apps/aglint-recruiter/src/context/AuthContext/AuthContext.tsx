@@ -229,7 +229,7 @@ const AuthProvider = ({ children }) => {
 
       const role = recruiterRel.roles.name;
 
-      if (role !== 'interviewer') {
+      if (rolePermissions.permissions['view_users']) {
         await getMembersFromDB();
       }
     } else {

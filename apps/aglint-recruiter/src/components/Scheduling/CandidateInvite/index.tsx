@@ -363,34 +363,24 @@ export const ConfirmedInvitePage = (
                           ? 'cancel'
                           : 'reschedule',
                       )}
-                      {' all Sessions'}
+                      {' all sessions'}
                       {cancelReschedulingDetails.type == 'reschedule' &&
                         ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
-                      {' received.'}
+                      {' received,'} and under review.
                     </Typography>
                     {reasons.length && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>Reason : </span>
+                        <span style={{ fontWeight: '500' }}>Reason: </span>
                         {reasons.join(', ')}
                       </Typography>
                     )}
                     {cancelReschedulingDetails.other_details.note && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>
-                          Additional Notes :
-                        </span>
+                        <span style={{ fontWeight: '500' }}>Additional Notes: </span>
                         {cancelReschedulingDetails.other_details.note}
                       </Typography>
                     )}
-                    <Typography fontWeight={500} marginTop={'5px'}>
-                      Your request to{' '}
-                      {capitalizeFirstLetter(
-                        cancelReschedulingDetails.type == 'declined'
-                          ? 'cancel'
-                          : 'reschedule',
-                      )}{' '}
-                      is pending company review.
-                    </Typography>
+                    
                   </>
                 }
               />
@@ -409,7 +399,7 @@ export const ConfirmedInvitePage = (
               />
             }
             textDesc={
-              'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
+              'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
             }
             textMailSent={candidate.email}
             slotButton={

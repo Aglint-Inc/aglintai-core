@@ -26,8 +26,7 @@ function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
   const { checkPermissions } = useRolesAndPermissions();
-  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
-    useAuthDetails();
+  const { isAssessmentEnabled, isScreeningEnabled } = useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
@@ -71,7 +70,7 @@ function SideNavbar() {
       SubComponents: null,
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
-      isVisible: isSchedulingEnabled,
+      isVisible: true,
       permission: ['scheduling_module'],
     },
     {
