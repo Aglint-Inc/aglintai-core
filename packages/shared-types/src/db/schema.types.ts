@@ -1348,6 +1348,46 @@ export type Database = {
           },
         ]
       }
+      interview_module_approve_users: {
+        Row: {
+          id: string
+          module_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          module_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          module_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_module_approve_users_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_module_approve_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_module_approve_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       interview_module_relation: {
         Row: {
           id: string
@@ -1806,6 +1846,73 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["session_id"]
+          },
+        ]
+      }
+      interview_training_progress: {
+        Row: {
+          created_at: string
+          id: string
+          is_approved: boolean
+          session_id: string
+          session_relation_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          session_id: string
+          session_relation_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          session_id?: string
+          session_relation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_training_progress_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "interview_training_progress_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "interview_session"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_training_progress_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_details"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "interview_training_progress_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["session_id"]
+          },
+          {
+            foreignKeyName: "interview_training_progress_session_relation_id_fkey"
+            columns: ["session_relation_id"]
+            isOneToOne: false
+            referencedRelation: "interview_session_relation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_training_progress_session_relation_id_fkey"
+            columns: ["session_relation_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["session_relation_id"]
           },
         ]
       }
@@ -4372,12 +4479,15 @@ export type Database = {
           cancel_reasons: Json | null
           email: string | null
           first_name: string | null
+          interview_module_relation_id: string | null
           interviewer_type:
             | Database["public"]["Enums"]["status_training"]
             | null
           is_confirmed: boolean | null
+          job_id: string | null
           last_name: string | null
           meeting_id: string | null
+          module_id: string | null
           position: string | null
           profile_image: string | null
           session_id: string | null
@@ -4393,6 +4503,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "interview_panel_relation_panel_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_interview_session_meeting_id_fkey"
             columns: ["meeting_id"]
             isOneToOne: false
@@ -4405,6 +4522,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "meeting_details"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
+            columns: ["interview_module_relation_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module_relation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
+            columns: ["interview_module_relation_id"]
+            isOneToOne: false
+            referencedRelation: "module_relations_view"
+            referencedColumns: ["module_relation_id"]
           },
         ]
       }
