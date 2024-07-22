@@ -4082,6 +4082,7 @@ export type Database = {
           candidate_name: string | null
           full_text_search: unknown | null
           job_id: string | null
+          job_role: string | null
         }
         Relationships: [
           {
@@ -4374,12 +4375,15 @@ export type Database = {
           cancel_reasons: Json | null
           email: string | null
           first_name: string | null
+          interview_module_relation_id: string | null
           interviewer_type:
             | Database["public"]["Enums"]["status_training"]
             | null
           is_confirmed: boolean | null
+          job_id: string | null
           last_name: string | null
           meeting_id: string | null
+          module_id: string | null
           position: string | null
           profile_image: string | null
           session_id: string | null
@@ -4395,6 +4399,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "interview_panel_relation_panel_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_interview_session_meeting_id_fkey"
             columns: ["meeting_id"]
             isOneToOne: false
@@ -4407,6 +4418,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "meeting_details"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
+            columns: ["interview_module_relation_id"]
+            isOneToOne: false
+            referencedRelation: "interview_module_relation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
+            columns: ["interview_module_relation_id"]
+            isOneToOne: false
+            referencedRelation: "module_relations_view"
+            referencedColumns: ["module_relation_id"]
           },
         ]
       }
@@ -4854,19 +4879,6 @@ export type Database = {
           module_ids?: string[]
         }
         Returns: number
-      }
-      get_interview_data_job: {
-        Args: {
-          application_id_param: string
-        }
-        Returns: Json
-      }
-      get_interview_data_schedule: {
-        Args: {
-          schedule_id_param: string
-          application_id_param: string
-        }
-        Returns: Json
       }
       get_interview_leaderboard: {
         Args: {
