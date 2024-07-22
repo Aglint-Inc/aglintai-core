@@ -174,8 +174,8 @@ export const emailTemplateCopy: CompanyEmailType = {
   onQualified_slack_approved: null,
   onTrainingComplete_slack_approverForTraineeMeetingQualification: null,
   onQualified_slack_trainee: null,
-  onRShadowComplete_slack_trainee: null,
-  onShadowComplete_slack_trainee: null,
   interviewEnd_slack_organizerForMeetingStatus: null,
   interviewEnd_email_organizerForMeetingStatus: null,
+  interviewEnd_slack_shadowTraineeForMeetingAttendence: null,
+  interviewEnd_slack_rShadowTraineeForMeetingAttendence: null,
 };

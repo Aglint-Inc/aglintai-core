@@ -28,11 +28,11 @@ slackRoutes.post(
 );
 
 slackRoutes.post(
-  `/${slackEndPoints.onShadowComplete_slack_trainee}`,
+  `/${slackEndPoints.interviewEnd_slack_shadowTraineeForMeetingAttendence}`,
   onShadowCompleteTrainee
 );
 slackRoutes.post(
-  `/${slackEndPoints.onRShadowComplete_slack_trainee}`,
+  `/${slackEndPoints.interviewEnd_slack_rShadowTraineeForMeetingAttendence}`,
   onRShadowCompleteTrainee
 );
 slackRoutes.post(
@@ -40,7 +40,7 @@ slackRoutes.post(
   onQualifiedTrainee
 );
 slackRoutes.post(
-  `/${slackEndPoints.onQualified_slack_approver}`,
+  `/${slackEndPoints.onTrainingComplete_slack_approverForTraineeMeetingQualification}`,
   onQualifiedApprover
 );
 slackRoutes.post(
