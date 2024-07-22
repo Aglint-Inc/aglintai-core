@@ -34,7 +34,7 @@ export interface ScheduleIndividualCardType {
   users?: SchedulingApplication['initialSessions'][0]['users'];
   isCollapseNeeded?: boolean;
   isEditIconVisible?: boolean;
-  cancelReasons?: DatabaseTable['interview_session_cancel'][];
+  cancelReasons?: SchedulingApplication['initialSessions'][0]['cancel_reasons'];
   gridStyle?: '1fr 1.8fr 0.8fr' | '1fr 1.7fr 0fr';
   isViewDetailVisible?: boolean;
   isCollapseButtonsVisible?: boolean;

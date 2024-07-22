@@ -7,15 +7,16 @@ import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { numberToText } from '@/src/utils/number/numberToText';
 
-import InterviewerUserDetail from '../../../Common/InterviewerUserDetail';
-import { formatTimeWithTimeZone } from '../../../utils';
+import InterviewerUserDetail from '../../../../Common/InterviewerUserDetail';
+import { formatTimeWithTimeZone } from '../../../../utils';
 import {
   SchedulingApplication,
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
   setSelectedSession,
-} from '../../store';
-import { ScheduleIndividualCardType } from './types';
+} from '../../../store';
+import { ScheduleIndividualCardType } from '../types';
+import CancelBanners from './AdminCancelBanners';
 
 function CollapseContent({
   currentSession,
@@ -117,10 +118,10 @@ function CollapseContent({
                   !!(user.user_details.schedule_auth as any)?.access_token;
 
                 const cancelReason = cancelReasons?.find(
-                  (reason) =>
-                    reason.session_relation_id ===
+                  (can) =>
+                    can.interview_session_cancel.session_relation_id ===
                     user.interview_session_relation.id,
-                );
+                )?.interview_session_cancel;
 
                 return (
                   <InterviewerUserDetail
@@ -156,7 +157,11 @@ function CollapseContent({
             {isCollapseButtonsVisible &&
               (interview_meeting?.status === 'waiting' ||
                 interview_meeting?.status === 'confirmed') && (
-                <Stack direction={'row'} spacing={'var(--space-2)'} justifyContent={'flex-end'}>
+                <Stack
+                  direction={'row'}
+                  spacing={'var(--space-2)'}
+                  justifyContent={'flex-end'}
+                >
                   <ButtonSoft
                     size={1}
                     color={'neutral'}
@@ -184,6 +189,7 @@ function CollapseContent({
                 </Stack>
               )}
           </>
+          <CancelBanners cancelReasons={cancelReasons} currentSession={currentSession} />
         </Stack>
       )}
     </Collapse>

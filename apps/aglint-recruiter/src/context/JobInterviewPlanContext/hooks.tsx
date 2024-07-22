@@ -19,7 +19,7 @@ import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys
 import { useJob } from '../JobContext';
 
 const useJobInterviewPlanActions = () => {
-  const { job, interviewPlans, jobLoad } = useJob();
+  const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
@@ -101,6 +101,7 @@ const useJobInterviewPlanActions = () => {
     handleReorderSessions,
     interviewPlans,
     plan_id,
+    manageJob,
   };
   return value;
 };

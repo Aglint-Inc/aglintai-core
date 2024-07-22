@@ -1,7 +1,9 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import toast from '@/src/utils/toast';
 
@@ -67,42 +69,65 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         setSelectedUsers([]);
       }}
     >
-      <ConfirmationPopup
-        textPopupTitle={
+      <DcPopup
+        popupName={
           trainingStatus === 'qualified'
             ? 'Add Qualified Members'
             : 'Add Trainee Members'
         }
-        textPopupDescription={'Choose members from your team.'}
-        isIcon={false}
-        slotWidget={
-          <MembersAutoComplete
-            pillColor='var(--neutral-2)'
-            disabled={loading}
-            renderUsers={allMembers}
-            selectedUsers={selectedUsers}
-            setSelectedUsers={(users) => {
-              const updateUsers = users.map((user) => ({
-                ...user,
-                role: null,
-              })); // role is not used in the code
-              setSelectedUsers(updateUsers);
-            }}
-          />
-        }
-        isWidget={true}
-        onClickCancel={{
+        onClickClosePopup={{
           onClick: () => {
             setIsAddMemberDialogOpen(false);
             setSelectedUsers([]);
           },
         }}
-        onClickAction={{
-          onClick: () => {
-            if (!loading) onClickAddMember();
-          },
-        }}
-        textPopupButton={'Add'}
+        slotBody={
+          <Stack>
+            <Typography marginBottom={1}>
+              Choose members from your team.
+            </Typography>
+            <MembersAutoComplete
+              pillColor='var(--neutral-2)'
+              disabled={loading}
+              renderUsers={allMembers}
+              selectedUsers={selectedUsers}
+              setSelectedUsers={(users) => {
+                const updateUsers = users.map((user) => ({
+                  ...user,
+                  role: null,
+                })); // role is not used in the code
+                setSelectedUsers(updateUsers);
+              }}
+            />
+          </Stack>
+        }
+        slotButtons={
+          <>
+            <ButtonSoft
+              size={2}
+              textButton='Cancel'
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setIsAddMemberDialogOpen(false);
+                  setSelectedUsers([]);
+                },
+              }}
+            />
+
+            <ButtonSolid
+              size={2}
+              textButton='Add'
+              isDisabled={selectedUsers.length === 0}
+              isLoading={loading}
+              onClickButton={{
+                onClick: () => {
+                  if (!loading) onClickAddMember();
+                },
+              }}
+            />
+          </>
+        }
       />
     </Dialog>
   );

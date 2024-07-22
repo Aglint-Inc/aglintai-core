@@ -488,6 +488,7 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
       '& + .MuiSwitch-track': {
         opacity: 1,
         backgroundColor: 'var(--accent-9)',
+        border:'1px solid var(--accent-a6)'
       },
     },
   },
@@ -503,7 +504,10 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   '& .MuiSwitch-track': {
     borderRadius: 16 / 2,
     opacity: 1,
-    backgroundColor: 'var(--neutral-7)',
+    backgroundColor: 'var(--neutral-a3)',
     boxSizing: 'border-box',
+    border:'1px solid var(--neutral-6)',
+    boxShadow:'0px 1.5px 2px 0px #25250007 inset; box-shadow: 0px 1.5px 2px 0px #0000001A inset',
+
   },
 }));

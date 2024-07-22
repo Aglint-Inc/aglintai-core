@@ -1,8 +1,8 @@
 .candidate-selection-popup {
   overflow: hidden;
   width: 100%;
-  max-width: 510px;
-  min-width: 440px;
+  max-width: 600px;
+  min-width: 580px;
 
   border-radius: 20px;
 

@@ -3,9 +3,10 @@ import { SupabaseType } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
-  fetchInterviewDataJob,
-  fetchInterviewDataSchedule,
-} from '@/src/components/Scheduling/CandidateDetails/hooks';
+  fetchApplicationDetails,
+  fetchSessionDetailsFromInterviewPlan,
+  fetchSessionDetailsFromSchedule,
+} from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
@@ -32,6 +33,7 @@ export interface ApiBodyParamsScheduleAgentWithoutTaskId {
   rec_user_id: string;
   user_tz: string;
   trigger_count: number;
+  job_id: string;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -48,6 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_name,
       company_name,
       user_tz,
+      job_id,
     } = req.body as ApiBodyParamsScheduleAgentWithoutTaskId;
 
     const resAgent = await scheduleWithAgentWithoutTaskId({
@@ -63,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rec_user_id,
       supabase: supabaseAdmin,
       user_tz,
+      job_id,
     });
 
     return res.status(200).send(resAgent);
@@ -86,6 +90,7 @@ const scheduleWithAgentWithoutTaskId = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  job_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -102,181 +107,180 @@ const scheduleWithAgentWithoutTaskId = async ({
   rec_user_id: string;
   supabase: SupabaseType;
   user_tz: string;
+  job_id: string;
 }) => {
-  try {
-    console.log(application_id, 'application_id');
+  console.log(application_id, 'application_id');
 
-    if (type) {
-      const { data: checkSch, error: errorCheckSch } = await supabase
-        .from('interview_schedule')
-        .select('id')
-        .eq('application_id', application_id);
+  if (type) {
+    const { data: checkSch, error: errorCheckSch } = await supabase
+      .from('interview_schedule')
+      .select('id')
+      .eq('application_id', application_id);
 
-      console.log(checkSch[0]);
+    const resApplicationDetails = await fetchApplicationDetails({
+      application_id,
+      supabaseCaller: supabase,
+    });
 
-      if (errorCheckSch) throw new Error(errorCheckSch.message);
+    console.log(checkSch[0]);
 
-      if (checkSch.length === 0) {
-        console.log('fetchInterviewDataJob');
+    if (errorCheckSch) throw new Error(errorCheckSch.message);
 
-        const sessionsWithPlan = await fetchInterviewDataJob({
-          application_id,
-          supabase,
-        });
+    if (checkSch.length === 0) {
+      console.log('fetchInterviewDataJob');
 
-        const scheduleName = getScheduleName({
-          job_title: sessionsWithPlan.application.public_jobs.job_title,
-          first_name: sessionsWithPlan.application.candidates.first_name,
-          last_name: sessionsWithPlan.application.candidates.last_name,
-        });
+      const sessionsWithPlan = await fetchSessionDetailsFromInterviewPlan({
+        job_id,
+        supabaseCaller: supabase,
+      });
 
-        const createCloneRes = await createCloneSession({
-          is_get_more_option: false,
-          application_id,
-          allSessions: sessionsWithPlan.sessions,
-          session_ids,
-          scheduleName,
-          supabase,
-          recruiter_id: recruiter_id,
-          rec_user_id,
-          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
-        });
+      const scheduleName = getScheduleName({
+        job_title: resApplicationDetails.public_jobs.job_title,
+        first_name: resApplicationDetails.candidates.first_name,
+        last_name: resApplicationDetails.candidates.last_name,
+      });
 
-        console.log(
-          createCloneRes.refSessions
-            .filter((ses) => ses.isSelected)
-            .map(
-              (ses) =>
-                `old session_id ${ses.interview_session.id} to ${ses.newId}`,
-            ),
-        );
+      const createCloneRes = await createCloneSession({
+        is_get_more_option: false,
+        application_id,
+        allSessions: sessionsWithPlan,
+        session_ids,
+        scheduleName,
+        supabase,
+        recruiter_id: recruiter_id,
+        rec_user_id,
+        meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
+      });
 
-        const filterJson = await createFilterJson({
-          dateRange,
-          organizer_name: recruiter_user_name,
-          sessions_ids: createCloneRes.session_ids,
-          schedule_id: createCloneRes.schedule.id,
-          supabase,
-          rec_user_id,
-        });
+      console.log(
+        createCloneRes.refSessions
+          .filter((ses) => ses.isSelected)
+          .map(
+            (ses) =>
+              `old session_id ${ses.interview_session.id} to ${ses.newId}`,
+          ),
+      );
 
-        console.log(filterJson.id, 'filter_id');
+      const filterJson = await createFilterJson({
+        dateRange,
+        organizer_name: recruiter_user_name,
+        sessions_ids: createCloneRes.session_ids,
+        schedule_id: createCloneRes.schedule.id,
+        supabase,
+        rec_user_id,
+      });
 
-        const selSes = createCloneRes.refSessions.filter(
-          (ses) => ses.isSelected,
-        );
+      console.log(filterJson.id, 'filter_id');
 
-        const task = await createTask({
-          application_id,
-          dateRange,
-          filter_id: filterJson.id,
-          rec_user_id,
-          recruiter_id,
-          selectedSessions: selSes,
-          type,
-          recruiter_user_name,
-          supabase,
-          candidate_name,
-        });
+      const selSes = createCloneRes.refSessions.filter((ses) => ses.isSelected);
 
-        addScheduleActivity({
-          title: `Candidate invited for session ${selSes
-            .map((ses) => ses.interview_session.name)
-            .join(' , ')} via ${
-            type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
-          }`,
-          logged_by: 'user',
+      const task = await createTask({
+        application_id,
+        dateRange,
+        filter_id: filterJson.id,
+        rec_user_id,
+        recruiter_id,
+        selectedSessions: selSes,
+        type,
+        recruiter_user_name,
+        supabase,
+        candidate_name,
+      });
 
-          application_id,
-          task_id: task.id,
-          supabase,
-          created_by: rec_user_id,
-        });
+      addScheduleActivity({
+        title: `Candidate invited for session ${selSes
+          .map((ses) => ses.interview_session.name)
+          .join(' , ')} via ${
+          type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
+        }`,
+        logged_by: 'user',
 
-        await agentTrigger({
-          type,
-          filterJsonId: filterJson.id,
-          task_id: task.id,
-          recruiter_user_name,
-          candidate_name,
-          company_name,
-          jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          candidate_email: sessionsWithPlan.application.candidates.email,
-          rec_user_phone,
-          recruiter_user_id: rec_user_id,
-        });
-      } else {
-        console.log('fetchInterviewDataSchedule');
+        application_id,
+        task_id: task.id,
+        supabase,
+        created_by: rec_user_id,
+      });
 
-        const sessionsWithPlan = await fetchInterviewDataSchedule(
-          checkSch[0].id,
-          application_id,
-          supabase,
-        );
+      await agentTrigger({
+        type,
+        filterJsonId: filterJson.id,
+        task_id: task.id,
+        recruiter_user_name,
+        candidate_name,
+        company_name,
+        jobRole: resApplicationDetails.public_jobs.job_title,
+        candidate_email: resApplicationDetails.candidates.email,
+        rec_user_phone,
+        recruiter_user_id: rec_user_id,
+      });
+    } else {
+      console.log('fetchInterviewDataSchedule');
 
-        const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
-          session_ids.includes(ses.interview_session.id),
-        );
+      const sessionsWithPlan = await fetchSessionDetailsFromSchedule({
+        application_id,
+        supabaseCaller: supabase,
+      });
 
-        await handleMeetingsOrganizerResetRelations({
-          application_id,
-          selectedSessions: selectedSessions,
-          supabase,
-          meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
-        });
+      const selectedSessions = sessionsWithPlan.filter((ses) =>
+        session_ids.includes(ses.interview_session.id),
+      );
 
-        const filterJson = await createFilterJson({
-          dateRange,
-          organizer_name: recruiter_user_name,
-          sessions_ids: session_ids,
-          schedule_id: checkSch[0].id,
-          supabase,
-          rec_user_id,
-        });
+      await handleMeetingsOrganizerResetRelations({
+        application_id,
+        selectedSessions: selectedSessions,
+        supabase,
+        meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
+      });
 
-        const task = await createTask({
-          application_id,
-          dateRange,
-          filter_id: filterJson.id,
-          rec_user_id,
-          recruiter_id,
-          selectedSessions,
-          type,
-          recruiter_user_name,
-          supabase,
-          candidate_name,
-        });
+      const filterJson = await createFilterJson({
+        dateRange,
+        organizer_name: recruiter_user_name,
+        sessions_ids: session_ids,
+        schedule_id: checkSch[0].id,
+        supabase,
+        rec_user_id,
+      });
 
-        await addScheduleActivity({
-          title: `Candidate invited for session ${selectedSessions
-            .map((ses) => ses.interview_session.name)
-            .join(' , ')} via ${
-            type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
-          }`,
-          logged_by: 'user',
+      const task = await createTask({
+        application_id,
+        dateRange,
+        filter_id: filterJson.id,
+        rec_user_id,
+        recruiter_id,
+        selectedSessions,
+        type,
+        recruiter_user_name,
+        supabase,
+        candidate_name,
+      });
 
-          application_id,
-          task_id: task.id,
-          supabase,
-          created_by: rec_user_id,
-        });
+      await addScheduleActivity({
+        title: `Candidate invited for session ${selectedSessions
+          .map((ses) => ses.interview_session.name)
+          .join(' , ')} via ${
+          type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
+        }`,
+        logged_by: 'user',
 
-        await agentTrigger({
-          type,
-          filterJsonId: filterJson.id,
-          task_id: task.id,
-          recruiter_user_name,
-          candidate_name,
-          company_name,
-          jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          candidate_email: sessionsWithPlan.application.candidates.email,
-          rec_user_phone,
-          recruiter_user_id: rec_user_id,
-        });
-      }
-      return true;
+        application_id,
+        task_id: task.id,
+        supabase,
+        created_by: rec_user_id,
+      });
+
+      await agentTrigger({
+        type,
+        filterJsonId: filterJson.id,
+        task_id: task.id,
+        recruiter_user_name,
+        candidate_name,
+        company_name,
+        jobRole: resApplicationDetails.public_jobs.job_title,
+        candidate_email: resApplicationDetails.candidates.email,
+        rec_user_phone,
+        recruiter_user_id: rec_user_id,
+      });
     }
-  } catch (e) {
-    console.log(e);
+    return true;
   }
 };

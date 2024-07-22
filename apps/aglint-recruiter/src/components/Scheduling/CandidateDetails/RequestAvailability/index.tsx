@@ -45,7 +45,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { useAllActivities, useGetScheduleApplication } from '../queries/hooks';
 import {
   setStepScheduling,
   useSchedulingFlowStore,
@@ -268,6 +268,12 @@ function RequestAvailability() {
       }
 
       if (scheduleFlow === 'create_request_availibility') {
+        await handleMeetingsOrganizerResetRelations({
+          application_id: selectedApplication.id,
+          meeting_flow: 'candidate_request',
+          selectedSessions: localSessions,
+          supabase,
+        });
         const result = await insertCandidateRequestAvailability({
           application_id: String(selectedApplication.id),
           recruiter_id: String(recruiter.id),
@@ -286,25 +292,24 @@ function RequestAvailability() {
           })),
         );
 
-        await handleMeetingsOrganizerResetRelations({
-          application_id: selectedApplication.id,
-          meeting_flow: 'candidate_request',
-          selectedSessions: localSessions,
-          supabase,
-        });
-
         // send request availability email to candidate
-        const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
-          {
-            organizer_user_id: recruiterUser.user_id,
-            avail_req_id: result.id,
-          };
-        axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
-          meta: {
-            ...payload,
-          },
-        });
-
+        try {
+          const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+            {
+              organizer_user_id: recruiterUser.user_id,
+              avail_req_id: result.id,
+            };
+          await axios.post(
+            `/api/emails/sendAvailabilityRequest_email_applicant`,
+            {
+              meta: {
+                ...payload,
+              },
+            },
+          );
+        } catch (error) {
+          toast.message('Failed to send email');
+        }
         // end
         let task = null as null | DatabaseTable['new_tasks'];
         if (markCreateTicket) {
@@ -559,7 +564,7 @@ function RequestAvailability() {
                         return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} placeholder='Days' />
+                      <TextField style={{width:'110px'}} {...params} placeholder='Days' />
                     )}
                     onChange={(_, value) => {
                       setSelectedDays(value);
@@ -583,12 +588,12 @@ function RequestAvailability() {
                     disablePortal
                     value={selectedSlots}
                     options={slotsListOptions}
-                    sx={{ width: 200 }}
+                    sx={{ width: 200,}}
                     renderOption={(props, option) => {
                       return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} placeholder='Days' />
+                      <TextField style={{width:'110px'}}{...params} placeholder='Days' />
                     )}
                     onChange={(_, value) => {
                       setSelectedSlots(value);

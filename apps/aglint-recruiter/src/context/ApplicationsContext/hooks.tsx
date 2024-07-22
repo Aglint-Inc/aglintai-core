@@ -140,7 +140,8 @@ export const useApplicationsParams = () => {
 export type ApplicationsParams = ReturnType<typeof useApplicationsParams>;
 
 export const useApplicationsActions = () => {
-  const { jobLoad, job, job_id, applicationScoringPollEnabled } = useJob();
+  const { jobLoad, job, job_id, applicationScoringPollEnabled, manageJob } =
+    useJob();
 
   const { checklist, resetChecklist } = useApplicationsStore(
     ({ checklist, resetChecklist }) => ({
@@ -360,6 +361,7 @@ export const useApplicationsActions = () => {
     locationFilterOptions,
     badgesCount,
     filters,
+    manageJob,
     setFilters,
     setSection,
     handleUpdateApplication,

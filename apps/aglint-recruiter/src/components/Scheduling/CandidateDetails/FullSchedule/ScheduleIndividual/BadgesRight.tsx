@@ -20,10 +20,10 @@ function BadgesRight({
   const { recruiter } = useAuthDetails();
 
   const cancelRequests = cancelReasons.filter(
-    (reason) => reason.type === 'declined',
+    (reason) => reason.interview_session_cancel.type === 'declined',
   );
   const rescheduleRequests = cancelReasons.filter(
-    (reason) => reason.type === 'reschedule',
+    (reason) => reason.interview_session_cancel.type === 'reschedule',
   );
 
   const pausedUser = users.filter(

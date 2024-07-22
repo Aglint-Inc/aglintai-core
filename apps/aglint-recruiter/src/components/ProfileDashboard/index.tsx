@@ -37,7 +37,6 @@ const navTabs: {
   {
     label: 'Change Email',
     route: 'change_email',
-    roles: ['settings_update'],
   },
   {
     label: 'Password Update',

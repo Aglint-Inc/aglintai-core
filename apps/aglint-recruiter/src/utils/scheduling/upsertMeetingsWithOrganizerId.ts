@@ -5,6 +5,10 @@ import {
 } from '@aglint/shared-types';
 
 import { SessionsType } from '@/src/components/Scheduling/CandidateDetails/types';
+import {
+  removeSessionsFromFilterJson,
+  removeSessionsFromRequestAvailability,
+} from '@/src/components/Scheduling/ScheduleDetails/utils';
 
 import { getOrganizerId } from './getOrganizerId';
 import { resetSessionRelations } from './resetSessionRelations';
@@ -46,6 +50,18 @@ export const handleMeetingsOrganizerResetRelations = async ({
     session_ids: selectedSessionIds,
     supabase,
   });
+
+  if (meeting_flow !== 'candidate_request') {
+    await removeSessionsFromFilterJson({
+      session_ids: selectedSessionIds,
+      supabase,
+    });
+  } else {
+    await removeSessionsFromRequestAvailability({
+      session_ids: selectedSessionIds,
+      supabase,
+    });
+  }
 
   await supabase
     .from('interview_session_cancel')

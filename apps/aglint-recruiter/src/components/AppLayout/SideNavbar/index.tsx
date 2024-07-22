@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -26,8 +26,7 @@ function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
   const { checkPermissions } = useRolesAndPermissions();
-  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
-    useAuthDetails();
+  const { isAssessmentEnabled, isScreeningEnabled } = useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
@@ -41,7 +40,7 @@ function SideNavbar() {
     route: string;
     comingSoon: boolean;
     isVisible: boolean;
-    permission?: DatabaseEnums['permissions_type'][];
+    permission?: DatabaseTable['permissions']['name'][];
   }[] = [
     {
       text: 'Agent',
@@ -56,7 +55,7 @@ function SideNavbar() {
       route: ROUTES['/tasks']() + '?myTasks',
       comingSoon: false,
       isVisible: isTasksEnabled,
-      permission: ['tasks_enabled'],
+      permission: ['task_module'],
     },
     {
       text: 'Jobs',
@@ -64,15 +63,15 @@ function SideNavbar() {
       route: ROUTES['/jobs']() + '?status=published',
       comingSoon: false,
       isVisible: true,
-      permission: ['jobs_enabled'],
+      permission: ['job_module'],
     },
     {
       text: 'Scheduler',
       SubComponents: null,
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
-      isVisible: isSchedulingEnabled,
-      permission: ['scheduler_enabled'],
+      isVisible: true,
+      permission: ['scheduling_module'],
     },
     {
       text: 'Workflows',
@@ -80,7 +79,7 @@ function SideNavbar() {
       route: ROUTES['/workflows'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['workflow_enabled'],
+      permission: ['workflow_module'],
     },
     {
       text: 'Sourcing Hub',
@@ -111,7 +110,7 @@ function SideNavbar() {
       route: ROUTES['/screening'](),
       comingSoon: false,
       isVisible: isScreeningEnabled,
-      permission: ['phone_screening_enabled'],
+      // permission: ['phone_screening_enabled'],
     },
 
     {
@@ -120,7 +119,7 @@ function SideNavbar() {
       route: ROUTES['/assessment-new'](),
       comingSoon: false,
       isVisible: isAssessmentEnabled,
-      permission: ['assessment_enabled'],
+      // permission: ['assessment_enabled'],
     },
     {
       text: 'Integrations',
@@ -128,7 +127,7 @@ function SideNavbar() {
       route: ROUTES['/integrations'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['integrations_enabled'],
+      permission: ['integrations_module'],
     },
     {
       text: 'Company Settings',
@@ -136,7 +135,7 @@ function SideNavbar() {
       route: ROUTES['/company'](),
       comingSoon: false,
       isVisible: true,
-      permission: ['company_setting_enabled'],
+      permission: ['company_settings_module'],
     },
   ];
 

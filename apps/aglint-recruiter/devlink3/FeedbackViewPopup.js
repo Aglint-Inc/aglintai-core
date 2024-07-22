@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./FeedbackViewPopup.module.css";
 
@@ -32,7 +33,7 @@ export function FeedbackViewPopup({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          <Text content="Feedback of" weight="" />
+          <Text content="Feedback from" weight="" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_for_icon")}
             tag="div"
@@ -75,12 +76,12 @@ export function FeedbackViewPopup({
                 weight=""
                 color="neutral"
               />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-link-accent")}
-                tag="div"
-                {...onClickRequestFeedback}
-              >
-                {"Request feedback"}
+              <_Builtin.Block tag="div">
+                <ButtonSoft
+                  onClickButton={onClickRequestFeedback}
+                  textButton="Request feedback"
+                  size="2"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -104,12 +105,12 @@ export function FeedbackViewPopup({
                 />
                 <Text content="Feedback Requested" weight="" />
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-link-accent")}
-                tag="div"
-                {...onClickResendRequest}
-              >
-                <Text weight="" color="" content="Resend Request" />
+              <_Builtin.Block tag="div" {...onClickResendRequest}>
+                <ButtonSoft
+                  onClickButton={onClickRequestFeedback}
+                  textButton="Resend Request"
+                  size="2"
+                />
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -125,16 +126,14 @@ export function FeedbackViewPopup({
         ) : null}
         {isEditFeedbackVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "fvp-edit-feedback")}
+            className={_utils.cx(_styles, "fvp-wrap-btn")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-link-accent")}
-              tag="div"
-              {...onClickEditFeedback}
-            >
-              {textEditFeedback}
-            </_Builtin.Block>
+            <ButtonSoft
+              textButton={textEditFeedback}
+              onClickButton={onClickEditFeedback}
+              size="2"
+            />
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>

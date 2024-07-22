@@ -128,7 +128,7 @@ export const ChangeEmail = () => {
               {userMail}
             </span>
             <>
-              To change your email, enter the new email address below. A
+              . To change your email, Enter the new email address below. A
               verification link will be sent to this new address.
             </>
           </>

@@ -109,7 +109,17 @@ Job description: ${(job.draft as any).description}`,
 };
 
 const arrItemToReactArr = (arr: any[]) => {
-  return arr.map((a) => ({ ...a, id: nanoid() }));
+  const unsafeArr = arr.map((a) => ({ ...a, id: nanoid() }));
+  return unsafeArr.reduce(
+    (acc, curr) => {
+      const field = (curr?.field ?? '').trim().toLowerCase();
+      if (acc.memo.includes(field)) return acc;
+      acc.arr.push(curr);
+      acc.memo.push(field);
+      return acc;
+    },
+    { arr: [], memo: [] },
+  ).arr;
 };
 
 // export const jdJson = async (description: string) => {

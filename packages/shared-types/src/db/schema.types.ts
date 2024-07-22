@@ -2387,33 +2387,30 @@ export type Database = {
       permissions: {
         Row: {
           created_at: string | null
-          dependency_tree: Json
           description: string | null
           id: number
           is_enable: boolean | null
-          name: Database["public"]["Enums"]["permissions_type"]
+          meta: Json | null
+          name: string
           title: string
-          updated_at: string | null
         }
         Insert: {
           created_at?: string | null
-          dependency_tree?: Json
           description?: string | null
           id?: number
           is_enable?: boolean | null
-          name: Database["public"]["Enums"]["permissions_type"]
+          meta?: Json | null
+          name: string
           title: string
-          updated_at?: string | null
         }
         Update: {
           created_at?: string | null
-          dependency_tree?: Json
           description?: string | null
           id?: number
           is_enable?: boolean | null
-          name?: Database["public"]["Enums"]["permissions_type"]
+          meta?: Json | null
+          name?: string
           title?: string
-          updated_at?: string | null
         }
         Relationships: []
       }

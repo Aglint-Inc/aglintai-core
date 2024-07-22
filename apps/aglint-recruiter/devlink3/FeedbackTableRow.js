@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./FeedbackTableRow.module.css";
 
@@ -97,12 +98,8 @@ export function FeedbackTableRow({
               weight="regular"
               color="neutral"
             />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "link-wrap")}
-              tag="div"
-              {...onClickRequestFeedback}
-            >
-              <Text content="Request Feedback" weight="regular" color="" />
+            <_Builtin.Block tag="div" {...onClickRequestFeedback}>
+              <ButtonSoft textButton="Request Feedback" size="1" />
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

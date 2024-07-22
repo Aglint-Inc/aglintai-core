@@ -3,13 +3,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import {GlobalIcon} from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
@@ -75,11 +75,12 @@ function SlotQualifiedMembers({
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
-            <ButtonSurface
-              size={1}
+            <ButtonSoft
+              size={2}
               isRightIcon={false}
-              slotIcon={<IconPlusFilter />}
-              textButton={'Add'}
+              isLeftIcon={true}
+              slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+              textButton={'Add Qaulified Member'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
@@ -131,11 +132,12 @@ function SlotQualifiedMembers({
       })}
       {allQualified.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonSurface
-            size={1}
+          <ButtonSoft
+            size={2}
             isRightIcon={false}
-            slotIcon={<IconPlusFilter />}
-            textButton={'Add'}
+            isLeftIcon={true}
+            slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+            textButton={'Add Qualified Member'}
             onClickButton={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);

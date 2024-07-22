@@ -48,6 +48,7 @@ const ApplicationsComponent = () => {
     canPublish,
     total,
     applicationScoringPollEnabled,
+    manageJob,
   } = useJob();
   const { setImportPopup, checklist } = useApplicationsStore(
     ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
@@ -57,7 +58,26 @@ const ApplicationsComponent = () => {
       <JobDetails
         isImportCandidates={false}
         isFetchingPillVisible={false}
-        slotRefresh={<></>}
+        slotRefresh={
+          applicationScoringPollEnabled && (
+            <ScoreSetting
+              textScoreCount={`${
+                job?.processing_count.processed +
+                job?.processing_count.unavailable +
+                job?.processing_count.unparsable
+              }/${total ?? '---'}`}
+              slotScoringLoader={
+                <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+                  <CircularProgress
+                    color='inherit'
+                    size={'100%'}
+                    sx={{ color: 'var(--white)' }}
+                  />
+                </Stack>
+              }
+            />
+          )
+        }
         slotShowFilterButton={<></>}
         slotLoadingLottie={
           <CircularProgress
@@ -89,7 +109,7 @@ const ApplicationsComponent = () => {
                 }
               />
             )}
-            {job?.status !== 'closed' && (
+            {job?.status !== 'closed' && manageJob && (
               <ButtonSoft
                 size={2}
                 color='neutral'
@@ -102,10 +122,12 @@ const ApplicationsComponent = () => {
             {job?.status === 'draft' && (
               <JobsBanner
                 slotButton={
-                  <PublishButton
-                    onClick={() => handlePublish()}
-                    disabled={!canPublish}
-                  />
+                  manageJob && (
+                    <PublishButton
+                      onClick={() => handlePublish()}
+                      disabled={!canPublish}
+                    />
+                  )
                 }
               />
             )}
