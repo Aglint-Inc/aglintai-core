@@ -2,7 +2,9 @@
 import { Dialog } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 
 import Loader from '../../Common/Lotties/Integration_Loader';
@@ -25,11 +27,7 @@ function SchedulingPopUps({
   isLoading: boolean;
 }) {
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      maxWidth={'md'}
-    >
+    <Dialog open={isOpen} onClose={close} maxWidth={'md'}>
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <Loader />
@@ -81,61 +79,48 @@ function SchedulingPopUps({
           />
         </ShowCode.When>
         <ShowCode.Else>
-          <ConfirmationPopup
-            isIcon={false}
-            textPopupTitle={
-              <ShowCode>
-                <ShowCode.When isTrue={reason === 'connect_google_workSpace'}>
-                  Connect Google Workspace
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_zoom'}>
-                  Connect Zoom
-                </ShowCode.When>
-
-                <ShowCode.When
-                  isTrue={reason === 'disconnect_google_workSpace'}
-                >
-                  Disconnect Google Workspace
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'disconnect_zoom'}>
-                  Disconnect Zoom
-                </ShowCode.When>
-
-                <ShowCode.When isTrue={reason === 'update_google_workspace'}>
-                  Google Workspace
-                </ShowCode.When>
-
-                <ShowCode.When isTrue={reason === 'update_zoom'}>
-                  Zoom
-                </ShowCode.When>
-              </ShowCode>
+          <DcPopup
+            popupName={
+              reason === 'connect_google_workSpace'
+                ? 'Connect Google Workspace'
+                : reason === 'connect_zoom'
+                  ? 'Connect Zoom'
+                  : reason === 'disconnect_google_workSpace'
+                    ? 'Disconnect Google Workspace'
+                    : reason === 'disconnect_zoom'
+                      ? 'Disconnect Zoom'
+                      : reason === 'update_google_workspace'
+                        ? 'Google Workspace'
+                        : reason === 'update_zoom'
+                          ? 'Zoom'
+                          : ''
             }
-            textPopupDescription={<>{popUpBody}</>}
-            // isGreyButtonVisible={reason === 'connect_google_workSpace'}
-            textPopupButton={
+            slotBody={popUpBody}
+            onClickClosePopup={{ onClick: close }}
+            slotButtons={
               <>
-                <ShowCode>
-                  <ShowCode.When
-                    isTrue={
-                      reason === 'connect_google_workSpace' ||
-                      reason === 'connect_zoom'
-                    }
-                  >
-                    Connect
-                  </ShowCode.When>
-                  <ShowCode.When
-                    isTrue={
-                      reason === 'update_google_workspace' ||
-                      reason === 'update_zoom'
-                    }
-                  >
-                    Update
-                  </ShowCode.When>
-                </ShowCode>
+                <ButtonSoft
+                  textButton='Cancel'
+                  size={2}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: close,
+                  }}
+                />
+                <ButtonSolid
+                  size={2}
+                  textButton={
+                    reason === 'connect_google_workSpace' ||
+                    reason === 'connect_zoom'
+                      ? 'Connect'
+                      : (reason === 'update_google_workspace' ||
+                          reason === 'update_zoom') &&
+                        'Update'
+                  }
+                  onClickButton={{ onClick: action }}
+                />
               </>
             }
-            onClickCancel={{ onClick: close }}
-            onClickAction={{ onClick: action }}
           />
         </ShowCode.Else>
       </ShowCode>
