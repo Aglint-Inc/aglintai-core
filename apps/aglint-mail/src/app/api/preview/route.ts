@@ -19,6 +19,7 @@ const ReqPayload = z.object({
   job_id: z.optional(z.string(), undefined),
 });
 
+const dummyLink = `<a href="#" target="_blank">here</a>`;
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
 } = {
@@ -34,6 +35,10 @@ const all_possible_dynamic_values: {
   interviewerName: 'Michael Johnson',
   interviewerFirstName: 'Michael',
   interviewerLastName: 'Johnson',
+  interviewType: 'culture fit',
+  traineeFirstName: 'Robert',
+  traineeLastName: 'Brown',
+  traineeName: 'Robert Brown',
   startDate: 'Fri, May 12, 2024',
   endDate: 'May 13, 2024',
   time: '10:30 AM - 11:00 PM',
@@ -46,7 +51,13 @@ const all_possible_dynamic_values: {
   interviewerEmail: 'Michael@aglinthq.com',
   interviewTypes:
     '<ul><li><p>Cultural Fit and Final Review</p></li><li><p>Archived Interview Type</p></li></ul>',
-  interviewerPauseLink: '<a href="#" target="_blank">here</a>',
+  interviewerPauseLink: dummyLink,
+  reverseShadowConfirmLink: dummyLink,
+  shadowConfirmLink: dummyLink,
+  qualifiedApproverConfirmLink: dummyLink,
+  approverFirstName: 'Thomas',
+  approverLastName: 'Anthony',
+  approverName: 'Thomas Anthony',
 };
 
 export async function POST(req: Request) {
@@ -94,7 +105,7 @@ export const renderEmailTemplates = async (
 
   const templateData = {
     body: emailBody,
-    emailBody: emailBody,
+    emailBody,
   };
   const element = createElement(Template, templateData);
   const html = render(element);

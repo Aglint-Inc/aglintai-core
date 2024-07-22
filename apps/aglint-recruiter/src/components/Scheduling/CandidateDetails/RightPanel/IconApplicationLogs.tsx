@@ -6,7 +6,7 @@ import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon
 import { SystemIcon } from '@/src/components/Tasks/Components/SystemIcon';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { useAllActivities } from '../hooks';
+import { useAllActivities } from '../queries/hooks';
 import IconCandidate from './IconCandidate';
 
 type Activities = ReturnType<typeof useAllActivities>['data'][0];

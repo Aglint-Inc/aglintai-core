@@ -3,9 +3,10 @@ import { SupabaseType } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
-  fetchInterviewDataJob,
-  fetchInterviewDataSchedule,
-} from '@/src/components/Scheduling/CandidateDetails/hooks';
+  fetchApplicationDetails,
+  fetchSessionDetailsFromInterviewPlan,
+  fetchSessionDetailsFromSchedule,
+} from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
@@ -30,6 +31,7 @@ export type ApiBodyParamsScheduleAgent = {
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
+  job_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -46,6 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       type,
       candidate_name,
       company_name,
+      job_id,
     } = req.body as ApiBodyParamsScheduleAgent;
 
     let resAgent = null;
@@ -64,6 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         rec_user_phone,
         rec_user_id,
         supabase: supabaseAdmin,
+        job_id,
       });
     } else {
       console.log('no task id');
@@ -92,6 +96,7 @@ export const scheduleWithAgent = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  job_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -108,36 +113,41 @@ export const scheduleWithAgent = async ({
   rec_user_phone: string;
   rec_user_id: string;
   supabase: SupabaseType;
+  job_id: string;
 }) => {
   console.log(application_id, 'application_id');
   console.log(task_id, 'task_id');
 
   if (type) {
-    const { data: checkSch, error: errorCheckSch } = await supabase
+    const { data: checkSch } = await supabase
       .from('interview_schedule')
       .select('id')
-      .eq('application_id', application_id);
+      .eq('application_id', application_id)
+      .throwOnError();
 
-    if (errorCheckSch) throw new Error(errorCheckSch.message);
+    const resApplicationDetails = await fetchApplicationDetails({
+      application_id,
+      supabaseCaller: supabase,
+    });
 
     if (checkSch.length === 0) {
       console.log('fetchInterviewDataJob');
 
-      const sessionsWithPlan = await fetchInterviewDataJob({
-        application_id,
-        supabase,
+      const sessionsWithPlan = await fetchSessionDetailsFromInterviewPlan({
+        job_id,
+        supabaseCaller: supabase,
       });
 
       const scheduleName = getScheduleName({
-        job_title: sessionsWithPlan.application.public_jobs.job_title,
-        first_name: sessionsWithPlan.application.candidates.first_name,
-        last_name: sessionsWithPlan.application.candidates.last_name,
+        job_title: resApplicationDetails.public_jobs.job_title,
+        first_name: resApplicationDetails.candidates.first_name,
+        last_name: resApplicationDetails.candidates.last_name,
       });
 
       const createCloneRes = await createCloneSession({
         is_get_more_option: false,
         application_id,
-        allSessions: sessionsWithPlan.sessions,
+        allSessions: sessionsWithPlan,
         session_ids,
         scheduleName,
         supabase,
@@ -199,21 +209,20 @@ export const scheduleWithAgent = async ({
         recruiter_user_name,
         candidate_name,
         company_name,
-        jobRole: sessionsWithPlan.application.public_jobs.job_title,
-        candidate_email: sessionsWithPlan.application.candidates.email,
+        jobRole: resApplicationDetails.public_jobs.job_title,
+        candidate_email: resApplicationDetails.candidates.email,
         rec_user_phone,
         recruiter_user_id: rec_user_id,
       });
     } else {
       console.log('fetchInterviewDataSchedule');
 
-      const sessionsWithPlan = await fetchInterviewDataSchedule(
-        checkSch[0].id,
+      const sessionsWithPlan = await fetchSessionDetailsFromSchedule({
         application_id,
-        supabase,
-      );
+        supabaseCaller: supabase,
+      });
 
-      const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
+      const selectedSessions = sessionsWithPlan.filter((ses) =>
         session_ids.includes(ses.interview_session.id),
       );
 
@@ -261,8 +270,8 @@ export const scheduleWithAgent = async ({
         recruiter_user_name,
         candidate_name,
         company_name,
-        jobRole: sessionsWithPlan.application.public_jobs.job_title,
-        candidate_email: sessionsWithPlan.application.candidates.email,
+        jobRole: resApplicationDetails.public_jobs.job_title,
+        candidate_email: resApplicationDetails.candidates.email,
         rec_user_phone,
         recruiter_user_id: rec_user_id,
       });

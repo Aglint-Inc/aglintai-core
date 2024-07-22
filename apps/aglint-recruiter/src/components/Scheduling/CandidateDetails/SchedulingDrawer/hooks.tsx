@@ -12,7 +12,7 @@ import {
 } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
-import { useGetScheduleApplication } from '../hooks';
+import { useGetScheduleApplication } from '../queries/hooks';
 import { useRequestAvailabilityContext } from '../RequestAvailability/RequestAvailabilityContext';
 import {
   setIsSendingToCandidate,
@@ -346,6 +346,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           rec_user_id: recruiterUser.user_id,
           user_tz: dayjs.tz.guess(),
           trigger_count: 0,
+          job_id: selectedApplication.job_id,
         };
 
         const res = await axios.post(
@@ -378,6 +379,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
           user_tz: dayjs.tz.guess(),
+          job_id: selectedApplication.job_id,
         };
 
         const res = await axios.post(

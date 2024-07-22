@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import {GlobalIcon} from '@/devlink/GlobalIcon';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
@@ -79,7 +79,7 @@ function SlotQualifiedMembers({
               size={2}
               isRightIcon={false}
               isLeftIcon={true}
-              slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+              slotIcon={<GlobalIcon iconName='person_add' size={5} />}
               textButton={'Add Qaulified Member'}
               onClickButton={{
                 onClick: () => {
@@ -136,7 +136,7 @@ function SlotQualifiedMembers({
             size={2}
             isRightIcon={false}
             isLeftIcon={true}
-            slotIcon={<GlobalIcon iconName='person_add' size={5}/>}
+            slotIcon={<GlobalIcon iconName='person_add' size={5} />}
             textButton={'Add Qualified Member'}
             onClickButton={{
               onClick: () => {

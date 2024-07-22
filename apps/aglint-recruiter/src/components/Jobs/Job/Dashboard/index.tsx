@@ -645,10 +645,10 @@ const useBanners = () => {
       banners.push(
         <Banner
           type='error'
-          title={publishStatus.detailsValidity.message}
+          title='Hiring team not set'
           description='Please ensure that necessary hiring members are selected.'
           primary={{
-            title: 'Assign now',
+            title: 'Set Now',
             onClick: () =>
               push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}
@@ -904,7 +904,14 @@ const JobDetailsModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
-      slotIcon={<GlobalIcon iconName='edit_square' color={'inherit'} size={6} weight={'regular'}/>}
+      slotIcon={
+        <GlobalIcon
+          iconName='edit_square'
+          color={'inherit'}
+          size={6}
+          weight={'regular'}
+        />
+      }
     />
   );
 };

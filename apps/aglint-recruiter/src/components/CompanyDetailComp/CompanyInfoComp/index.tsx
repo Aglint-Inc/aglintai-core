@@ -9,13 +9,12 @@ import { CompanyLocation } from '@/devlink/CompanyLocation';
 import { RolesPill } from '@/devlink/RolesPill';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
-import AssessmentSettings from '../AssessmentSettings';
-import Assistant from '../Assistant';
 import CompanyJdComp from '../CompanyJdComp';
 import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
@@ -28,17 +27,13 @@ import SocialComp from './SocialComp';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
+  const { checkPermissions } = useRolesAndPermissions();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
-  const [isVideoAssessment, setIsVideoAssessment] = useState(false);
   const [nameError, setNameError] = useState(false);
-
+  const [isError, setError] = useState(false);
   const initialCompanyName = useRef(recruiter?.name);
-
-  useEffect(() => {
-    setLogo(recruiter?.logo);
-  }, [recruiter]);
 
   const handleChange = async (
     recruit: RecruiterType,
@@ -81,9 +76,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   };
 
   useEffect(() => {
-    if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
+    setLogo(recruiter?.logo);
   }, [recruiter]);
-  const [isError, setError] = useState(false);
+
+  const isFormDisabled = !checkPermissions([
+    'company_settings_module',
+    'manage_company',
+  ]);
 
   return (
     <Stack
@@ -297,6 +296,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <>
                   <ImageUpload
                     image={logo}
+                    disabled={isFormDisabled}
                     setImage={(newLogo) => {
                       setLogo(newLogo);
                       if (recruiter) {
@@ -316,15 +316,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       }
                     }}
                   />
-                  {/* <ImageUpload
-                    image={logo}
-                    setImage={setLogo}
-                    size={70}
-                    table='company-logo'
-                    changeCallback={(logo: any) => {
-                      handleChange({ ...recruiter, logo: logo });
-                    }} 
-                  />*/}
                 </>
               }
               onClickChangeLogo={{
@@ -339,6 +330,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     labelSize='small'
                     fullWidth
                     label='Company Name'
+                    disabled={isFormDisabled}
                     required
                     error={nameError}
                     onFocus={() => setNameError(false)}
@@ -371,6 +363,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     labelSize='small'
                     fullWidth
                     label='Industry'
+                    disabled={isFormDisabled}
                     placeholder='Ex. Healthcare'
                     value={recruiter?.industry}
                     onChange={(e) => {
@@ -381,6 +374,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     disableClearable
                     freeSolo
                     fullWidth
+                    disabled={isFormDisabled}
                     options={sizes}
                     onChange={(event, value) => {
                       if (value) {
@@ -417,6 +411,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     labelSize='small'
                     fullWidth
                     label='Company Website'
+                    disabled={isFormDisabled}
                     placeholder='https://companydomain.com'
                     value={recruiter?.company_website}
                     onChange={(e) => {
@@ -427,28 +422,16 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <SocialComp setIsSaving={setIsSaving} />
+                  <SocialComp
+                    setIsSaving={setIsSaving}
+                    disabled={isFormDisabled}
+                  />
                 </Stack>
               }
               textLogoUpdate={'Update Logo'}
             />
           </>
         )}
-        {router.query?.tab === 'assessment' && (
-          <AssessmentSettings
-            isVideoAssessment={isVideoAssessment}
-            setIsVideoAssessment={setIsVideoAssessment}
-            setIsSaving={setIsSaving}
-          />
-        )}
-        {router.query?.tab === 'job-assistant' && (
-          <Assistant setIsSaving={setIsSaving} />
-        )}
-        {/* {router.query?.tab === 'email' && (
-          <>
-            <EmailTemplate setIsSaving={setIsSaving} />
-          </>
-        )} */}
         {router.query?.tab === 'team' && <TeamManagement />}
         {router.query?.tab === 'roles' && <RolesAndPermissions />}
       </YTransform>

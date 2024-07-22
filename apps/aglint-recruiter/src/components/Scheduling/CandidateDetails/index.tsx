@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -14,7 +15,7 @@ import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
 import CandidateFeedback from './CandidateFeedback';
 import FullSchedule from './FullSchedule';
-import { useAllActivities, useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './queries/hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
 import {
@@ -63,7 +64,10 @@ function SchedulingApplication() {
           route: ROUTES['/scheduling']() + `?tab=candidates`,
         },
         {
-          name: `${selectedApplication.candidates.first_name} ${selectedApplication.candidates.last_name}`.trim(),
+          name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
         },
       ]);
     }

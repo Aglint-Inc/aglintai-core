@@ -17,6 +17,7 @@ function PreferedInterviewers() {
     .flatMap((option) => option.plans)
     .forEach((option) => {
       option.sessions.forEach((session) => {
+        //quilifed interviewers
         session.qualifiedIntervs.forEach((interv) => {
           const existingIndex = uniqueInterviewers.findIndex(
             (existingInterv) => existingInterv.user_id === interv.user_id,
@@ -28,16 +29,18 @@ function PreferedInterviewers() {
           }
         });
 
-        session.trainingIntervs.forEach((interv) => {
-          const existingIndex = uniqueInterviewers.findIndex(
-            (existingInterv) => existingInterv.user_id === interv.user_id,
-          );
+        //trainee interviewers
 
-          if (existingIndex === -1) {
-            // Push the interv object directly if it doesn't already exist in the array
-            uniqueInterviewers.push(interv);
-          }
-        });
+        // session.trainingIntervs.forEach((interv) => {
+        //   const existingIndex = uniqueInterviewers.findIndex(
+        //     (existingInterv) => existingInterv.user_id === interv.user_id,
+        //   );
+
+        //   if (existingIndex === -1) {
+        //     // Push the interv object directly if it doesn't already exist in the array
+        //     uniqueInterviewers.push(interv);
+        //   }
+        // });
       });
     });
 

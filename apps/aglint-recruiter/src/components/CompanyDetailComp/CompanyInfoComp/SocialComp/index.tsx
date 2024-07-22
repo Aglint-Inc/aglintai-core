@@ -15,7 +15,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
 
-const SocialComp = ({ setIsSaving }) => {
+const SocialComp = ({ setIsSaving, disabled = false }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
 
   const socials = Object.keys(recruiter.socials)
@@ -291,6 +291,7 @@ const SocialComp = ({ setIsSaving }) => {
                 <UITextField
                   labelSize='small'
                   fullWidth
+                  disabled={disabled}
                   value={recruiter?.socials[socialName]}
                   placeholder={socialPlaceholder[socialName]}
                   onBlur={() => {

@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export const sendDirectMessage = async (req: Request, res: Response) => {
   const {recipients, text} = req.body;
@@ -31,10 +32,10 @@ export const sendDirectMessage = async (req: Request, res: Response) => {
 };
 
 async function sendMessageToUserByEmail(email: string, text: string) {
-  const user = await slackWeb.users.lookupByEmail({email});
-  if (user && user.user && user.user.id) {
+  const userId = await getUserIdByEmail(email);
+  if (userId) {
     await slackWeb.chat.postMessage({
-      channel: user.user.id,
+      channel: userId,
       text,
     });
   }

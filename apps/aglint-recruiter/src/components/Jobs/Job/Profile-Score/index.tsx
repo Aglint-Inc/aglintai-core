@@ -29,6 +29,7 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { Text } from '@/devlink2/Text';
 import { BannerAlert } from '@/devlink3/BannerAlert';
 import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
@@ -778,25 +779,42 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      {firstVisit && (
-        <GlobalInfo
-          color={'neutral'}
-          textTitle={'How It Works'}
-          textDescription={
-            "Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click 'Reset' to restore default settings."
-          }
-          showCloseButton
-          onClickClose={{ onClick: () => handleTip() }}
+      <Stack
+        bgcolor={'white'}
+        borderRadius={'4px'}
+        display={'flex'}
+        flexDirection={'column'}
+        gap={'4px'}
+        padding={'var(--space-3)'}
+      >
+        <Text
+          content='How It Works'
+          weight={'medium'}
+          size={2}
+          color={'info'}
         />
+        <Text
+          content='Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click "Reset" to restore default settings.'
+          size={2}
+          weight={'regular'}
+          color='neutral'
+        />
+      </Stack>
+
+      {firstVisit && (
+        <Stack marginTop={'16px'}>
+          <GlobalInfo
+            color={'purple'}
+            iconName='lightbulb'
+            textTitle={'Pro Tip'}
+            textDescription={
+              'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+            }
+            showCloseButton
+            onClickClose={{ onClick: () => handleTip() }}
+          />
+        </Stack>
       )}
-      <GlobalInfo
-        color={'purple'}
-        iconName='lightbulb'
-        textTitle={'Pro Tip'}
-        textDescription={
-          'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-        }
-      />
     </>
   );
 };
