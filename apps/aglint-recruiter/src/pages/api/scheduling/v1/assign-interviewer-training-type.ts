@@ -1,7 +1,6 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -15,32 +14,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { training_ints } = req.body as BodyParams;
   try {
     if (!training_ints) res.status(400).send('missing field');
-    const [module_relation] = supabaseWrap(
+    const module_relations = supabaseWrap(
       await supabaseAdmin
-        .from('interview_module_relation')
-        .select('*,interview_module(*)')
-        .eq('id', training_ints[0].interviewer_module_relation_id),
-    );
-    const ints_session = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session_relation')
+        .from('module_relations_view')
         .select()
         .in(
-          'interview_module_relation_id',
-          training_ints.map((t) => t.interviewer_module_relation_id),
+          'id',
+          training_ints.map((int) => int.interviewer_module_relation_id),
         ),
     );
-    const int_module = module_relation.interview_module;
-    const module_setting =
-      int_module.settings as unknown as ModuleType['settings'];
-    const required_shadows = module_setting.noShadow;
+
     const promises = training_ints.map(async (training_int) => {
-      const shadow_meetings_cnt = ints_session.filter(
-        (i) =>
-          i.training_type === 'shadow' &&
-          i.interview_module_relation_id ===
-            training_int.interviewer_module_relation_id,
-      ).length;
+      const int_module_data = module_relations.find(
+        (reln) => reln.id === training_int.interviewer_module_relation_id,
+      );
+      const required_shadows = int_module_data.number_of_shadow;
+
+      const shadow_meetings_cnt = int_module_data.shadow_meeting_count;
       let is_shadow = true;
       if (shadow_meetings_cnt < required_shadows) {
         is_shadow = true;
