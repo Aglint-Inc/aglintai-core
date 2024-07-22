@@ -5,10 +5,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
-import { DcPopup } from '@/devlink/DcPopup';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { ResumePop } from '@/devlink3/ResumePop';
 import Loader from '@/src/components/Common/Loader';
@@ -118,214 +116,177 @@ function PauseResumeDialog({
           <ShowCode.Else render={''}>
             <ShowCode>
               <ShowCode.When isTrue={pauseResumeDialog.type === 'pause'}>
-                <DcPopup
-                  popupName={`Pause Scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this Module'}.`}
-                  slotBody={
-                    <Stack>
-                      <Typography mb={2}>
-                        This member will be excluded from all new interview
-                        scheduling within
-                        {pauseResumeDialog.isAll
-                          ? 'all qualified'
-                          : 'this'}{' '}
-                        module until the pause period ends.
+                <ConfirmationPopup
+                  textPopupTitle={`Pause Scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this Module'}.`}
+                  textPopupDescription={`This member will be excluded from all new interview scheduling within ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause period ends.`}
+                  isIcon={false}
+                  slotWidget={
+                    <Stack spacing={2}>
+                      <Typography variant='body1' color={'#2F3941'}>
+                        Pause For
                       </Typography>
-                      <Stack spacing={2}>
-                        <Typography variant='body1' color={'#2F3941'}>
-                          Pause For
+                      <Stack
+                        direction={'row'}
+                        spacing={1}
+                        alignItems={'center'}
+                        onClick={() => {
+                          setSelectedType('isManual');
+                          setPauseJson({
+                            ...pause_json,
+                            isManual: true,
+                            end_date: '',
+                          });
+                        }}
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        <Checkbox isChecked={selectedType === 'isManual'} />
+                        <Typography variant='body1' color={'var(--neutral-12)'}>
+                          Indefinitely
                         </Typography>
-                        <Stack
-                          direction={'row'}
-                          spacing={1}
-                          alignItems={'center'}
-                          onClick={() => {
-                            setSelectedType('isManual');
-                            setPauseJson({
-                              ...pause_json,
-                              isManual: true,
-                              end_date: '',
-                            });
-                          }}
-                          sx={{ cursor: 'pointer' }}
-                        >
-                          <Checkbox isChecked={selectedType === 'isManual'} />
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            Indefinitely
-                          </Typography>
-                          <Typography variant='body1'>
-                            Until you manually resume
-                          </Typography>
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={1}
-                          alignItems={'center'}
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setSelectedType('twoWeek');
-                            setPauseJson({
-                              isManual: false,
-                              start_date: new Date().toISOString(),
-                              end_date: twoWeeks.toDate().toISOString(),
-                            });
-                          }}
-                        >
-                          <Checkbox isChecked={selectedType === 'twoWeek'} />
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            2 Weeks
-                          </Typography>
-                          <Typography variant='body1'>
-                            Resumes on {twoWeeks.format('MMMM DD, YYYY')}
-                          </Typography>
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={1}
-                          alignItems={'center'}
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setSelectedType('oneMonth');
-                            setPauseJson({
-                              isManual: false,
-                              start_date: new Date().toISOString(),
-                              end_date: oneMonth.toDate().toISOString(),
-                            });
-                          }}
-                        >
-                          <Checkbox isChecked={selectedType === 'oneMonth'} />
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            1 Month
-                          </Typography>
-                          <Typography variant='body1'>
-                            Resumes on {oneMonth.format('MMMM DD, YYYY')}
-                          </Typography>
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={1}
-                          alignItems={'center'}
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setSelectedType('threeMonth');
-                            setPauseJson({
-                              isManual: false,
-                              start_date: new Date().toISOString(),
-                              end_date: threeMonth.toDate().toISOString(),
-                            });
-                          }}
-                        >
-                          <Checkbox isChecked={selectedType === 'threeMonth'} />
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            3 Months
-                          </Typography>
-                          <Typography variant='body1'>
-                            Resumes on {threeMonth.format('MMMM DD, YYYY')}
-                          </Typography>
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={1}
-                          alignItems={'center'}
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            setSelectedType('custom');
-                            setPauseJson({
-                              isManual: false,
-                              start_date: new Date().toISOString(),
-                              end_date: '',
-                            });
-                          }}
-                        >
-                          <Checkbox isChecked={selectedType === 'custom'} />
-                          <Typography
-                            variant='body1'
-                            color={'var(--neutral-12)'}
-                          >
-                            Custom date
-                          </Typography>
-                        </Stack>
-                        {selectedType === 'custom' && (
-                          <Stack direction={'row'} width={'100%'} spacing={1}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                                value={dayjs(pause_json?.start_date)}
-                                onChange={(newValue) => {
-                                  if (
-                                    dayjs(newValue).toISOString() <
-                                    pause_json?.end_date
-                                  ) {
-                                    setPauseJson({
-                                      ...pause_json,
-                                      start_date: dayjs(newValue).toISOString(),
-                                    });
-                                  } else {
-                                    setPauseJson({
-                                      ...pause_json,
-                                      start_date: dayjs(newValue).toISOString(),
-                                      end_date: null,
-                                    });
-                                  }
-                                }}
-                                minDate={currentDate}
-                                slots={{
-                                  openPickerIcon: DateIcon,
-                                }}
-                              />
-                            </LocalizationProvider>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                                value={dayjs(pause_json?.end_date)}
-                                minDate={dayjs(pause_json?.start_date)}
-                                onChange={(newValue) => {
+                        <Typography variant='body1'>
+                          Until you manually resume
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction={'row'}
+                        spacing={1}
+                        alignItems={'center'}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSelectedType('twoWeek');
+                          setPauseJson({
+                            isManual: false,
+                            start_date: new Date().toISOString(),
+                            end_date: twoWeeks.toDate().toISOString(),
+                          });
+                        }}
+                      >
+                        <Checkbox isChecked={selectedType === 'twoWeek'} />
+                        <Typography variant='body1' color={'var(--neutral-12)'}>
+                          2 Weeks
+                        </Typography>
+                        <Typography variant='body1'>
+                          Resumes on {twoWeeks.format('MMMM DD, YYYY')}
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction={'row'}
+                        spacing={1}
+                        alignItems={'center'}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSelectedType('oneMonth');
+                          setPauseJson({
+                            isManual: false,
+                            start_date: new Date().toISOString(),
+                            end_date: oneMonth.toDate().toISOString(),
+                          });
+                        }}
+                      >
+                        <Checkbox isChecked={selectedType === 'oneMonth'} />
+                        <Typography variant='body1' color={'var(--neutral-12)'}>
+                          1 Month
+                        </Typography>
+                        <Typography variant='body1'>
+                          Resumes on {oneMonth.format('MMMM DD, YYYY')}
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction={'row'}
+                        spacing={1}
+                        alignItems={'center'}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSelectedType('threeMonth');
+                          setPauseJson({
+                            isManual: false,
+                            start_date: new Date().toISOString(),
+                            end_date: threeMonth.toDate().toISOString(),
+                          });
+                        }}
+                      >
+                        <Checkbox isChecked={selectedType === 'threeMonth'} />
+                        <Typography variant='body1' color={'var(--neutral-12)'}>
+                          3 Months
+                        </Typography>
+                        <Typography variant='body1'>
+                          Resumes on {threeMonth.format('MMMM DD, YYYY')}
+                        </Typography>
+                      </Stack>
+                      <Stack
+                        direction={'row'}
+                        spacing={1}
+                        alignItems={'center'}
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSelectedType('custom');
+                          setPauseJson({
+                            isManual: false,
+                            start_date: new Date().toISOString(),
+                            end_date: '',
+                          });
+                        }}
+                      >
+                        <Checkbox isChecked={selectedType === 'custom'} />
+                        <Typography variant='body1' color={'var(--neutral-12)'}>
+                          Custom date
+                        </Typography>
+                      </Stack>
+                      {selectedType === 'custom' && (
+                        <Stack direction={'row'} width={'100%'} spacing={1}>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              value={dayjs(pause_json?.start_date)}
+                              onChange={(newValue) => {
+                                if (
+                                  dayjs(newValue).toISOString() <
+                                  pause_json?.end_date
+                                ) {
                                   setPauseJson({
                                     ...pause_json,
-                                    end_date: newValue.toISOString(),
+                                    start_date: dayjs(newValue).toISOString(),
                                   });
-                                }}
-                                slots={{
-                                  openPickerIcon: DateIcon,
-                                }}
-                              />
-                            </LocalizationProvider>
-                          </Stack>
-                        )}
-                      </Stack>
+                                } else {
+                                  setPauseJson({
+                                    ...pause_json,
+                                    start_date: dayjs(newValue).toISOString(),
+                                    end_date: null,
+                                  });
+                                }
+                              }}
+                              minDate={currentDate}
+                              slots={{
+                                openPickerIcon: DateIcon,
+                              }}
+                            />
+                          </LocalizationProvider>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              value={dayjs(pause_json?.end_date)}
+                              minDate={dayjs(pause_json?.start_date)}
+                              onChange={(newValue) => {
+                                setPauseJson({
+                                  ...pause_json,
+                                  end_date: newValue.toISOString(),
+                                });
+                              }}
+                              slots={{
+                                openPickerIcon: DateIcon,
+                              }}
+                            />
+                          </LocalizationProvider>
+                        </Stack>
+                      )}
                     </Stack>
                   }
-                  onClickClosePopup={{ onClick: close }}
-                  slotButtons={
-                    <>
-                      <ButtonSoft
-                        textButton='Cancel'
-                        size={2}
-                        color={'neutral'}
-                        onClickButton={{
-                          onClick: close,
-                        }}
-                      />
-                      <ButtonSolid
-                        size={2}
-                        textButton={'Pause'}
-                        onClickButton={{
-                          onClick: () => {
-                            pause(pause_json);
-                          },
-                        }}
-                      />
-                    </>
-                  }
+                  isWidget={true}
+                  onClickCancel={{ onClick: close }}
+                  onClickAction={{
+                    onClick: () => {
+                      pause(pause_json);
+                    },
+                  }}
+                  textPopupButton={'Pause'}
                 />
               </ShowCode.When>
               <ShowCode.When isTrue={pauseResumeDialog.type === 'resume'}>
@@ -361,77 +322,65 @@ function PauseResumeDialog({
                   pauseResumeDialog.type === 'addTrainingModule'
                 }
               >
-                <DcPopup
-                  popupName={
+                <ConfirmationPopup
+                  textPopupTitle={
                     pauseResumeDialog.type === 'addQualifiedModule'
                       ? 'Add to Qualified'
                       : 'Add to Training'
                   }
-                  slotBody={
-                    <Stack>
-                      <Typography mb={1}>
-                        Pick an interview type from the list to add.
-                      </Typography>
-                      <Autocomplete
-                        fullWidth
-                        disableClearable
-                        options={allModules}
-                        // value={selectedTimeZone}
-                        onChange={(event, value) => {
-                          if (value) {
-                            setSelectedModule(value);
-                          }
-                        }}
-                        autoComplete={false}
-                        getOptionLabel={(option) => option.name}
-                        renderOption={(props, option) => {
-                          return (
-                            <li {...props}>
-                              <Typography
-                                variant='body1'
-                                color={'var(--neutral-12)'}
-                              >
-                                {option.name}
-                              </Typography>
-                            </li>
-                          );
-                        }}
-                        renderInput={(params) => {
-                          return (
-                            <UITextField
-                              rest={{ ...params }}
-                              labelSize='medium'
-                              // fullWidth
-                              label=''
-                              placeholder='Ex. Initial Screening'
-                              InputProps={{
-                                ...params.InputProps,
-                                autoComplete: 'new-password',
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    </Stack>
+                  textPopupDescription={
+                    'Pick an interview type from the list to add.'
                   }
-                  onClickClosePopup={{ onClick: close }}
-                  slotButtons={
-                    <>
-                      <ButtonSoft
-                        textButton='Cancel'
-                        size={2}
-                        color={'neutral'}
-                        onClickButton={{
-                          onClick: close,
-                        }}
-                      />
-                      <ButtonSolid
-                        size={2}
-                        textButton={'Add'}
-                        onClickButton={{ onClick: addModule }}
-                      />
-                    </>
+                  isIcon={false}
+                  slotWidget={
+                    <Autocomplete
+                      fullWidth
+                      disableClearable
+                      options={allModules}
+                      // value={selectedTimeZone}
+                      onChange={(event, value) => {
+                        if (value) {
+                          setSelectedModule(value);
+                        }
+                      }}
+                      autoComplete={false}
+                      getOptionLabel={(option) => option.name}
+                      renderOption={(props, option) => {
+                        return (
+                          <li {...props}>
+                            <Typography variant='body1' color={'var(--neutral-12)'}>
+                              {option.name}
+                            </Typography>
+                          </li>
+                        );
+                      }}
+                      renderInput={(params) => {
+                        return (
+                          <UITextField
+                            rest={{ ...params }}
+                            labelSize='medium'
+                            // fullWidth
+                            label=''
+                            placeholder='Ex. Initial Screening'
+                            InputProps={{
+                              ...params.InputProps,
+                              autoComplete: 'new-password',
+                            }}
+                          />
+                        );
+                      }}
+                    />
                   }
+                  isWidget={true}
+                  onClickCancel={{
+                    onClick: close,
+                  }}
+                  onClickAction={{
+                    onClick: () => {
+                      addModule();
+                    },
+                  }}
+                  textPopupButton={'Add'}
                 />
               </ShowCode.When>
             </ShowCode>

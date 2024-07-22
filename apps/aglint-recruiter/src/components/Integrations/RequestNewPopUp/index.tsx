@@ -3,9 +3,8 @@ import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
 import { IntegrationThanks } from '@/devlink2/IntegrationThanks';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -81,9 +80,10 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         />
       </ShowCode.When>
       <ShowCode.When isTrue={!showThanks}>
-        <DcPopup
-          popupName={'Request Integration'}
-          slotBody={
+        <ConfirmationPopup
+          isIcon={false}
+          textPopupTitle={'Request Integration'}
+          textPopupDescription={
             <Stack direction={'column'} spacing={'16px'}>
               <Stack direction={'column'} spacing={'var(--space-2)'}>
                 <Typography fontSize={'14px'} variant='body1'>
@@ -107,32 +107,17 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
               </Stack>
             </Stack>
           }
-          onClickClosePopup={{
+          onClickCancel={{
             onClick: () => {
               close();
               setShowThanks(false);
             },
           }}
-          slotButtons={
-            <>
-              <ButtonSoft
-                textButton='Cancel'
-                size={2}
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => {
-                    close();
-                    setShowThanks(false);
-                  },
-                }}
-              />
-              <ButtonSolid
-                size={2}
-                textButton={'Request'}
-                onClickButton={{ onClick: requestTool }}
-              />
-            </>
-          }
+          onClickAction={{
+            onClick: requestTool,
+          }}
+          isGreyButtonVisible={true}
+          textPopupButton={'Request'}
         />
       </ShowCode.When>
     </Dialog>

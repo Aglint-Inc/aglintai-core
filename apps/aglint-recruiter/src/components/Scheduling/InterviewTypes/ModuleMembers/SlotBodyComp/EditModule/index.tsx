@@ -8,9 +8,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -70,9 +68,11 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
         setIsSettingsDialogOpen(false);
       }}
     >
-      <DcPopup
-        popupName={'Edit'}
-        slotBody={
+      <ConfirmationPopup
+        textPopupTitle={'Edit'}
+        isDescriptionVisible={false}
+        isIcon={false}
+        slotWidget={
           <Stack spacing={2}>
             <TextField
               fullWidth
@@ -126,24 +126,16 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
             />
           </Stack>
         }
-        onClickClosePopup={{ onClick: () => setIsSettingsDialogOpen(false) }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => setIsSettingsDialogOpen(false),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Update'}
-              onClickButton={{ onClick: updateModule }}
-            />
-          </>
-        }
+        isWidget={true}
+        onClickCancel={{
+          onClick: () => {
+            setIsSettingsDialogOpen(false);
+          },
+        }}
+        onClickAction={{
+          onClick: updateModule,
+        }}
+        textPopupButton={'Update'}
       />
     </Dialog>
   );

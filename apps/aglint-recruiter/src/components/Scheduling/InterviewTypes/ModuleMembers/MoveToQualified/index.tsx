@@ -1,9 +1,7 @@
 import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { DcPopup } from '@/devlink/DcPopup';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -68,33 +66,19 @@ function MoveToQualifiedDialog({ editModule }: { editModule: ModuleType }) {
         setIsMovedToQualifiedDialogOpen(false);
       }}
     >
-      <DcPopup
-        popupName={'Move to Qualified Members'}
-        slotBody={`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified members?`}
-        onClickClosePopup={{
+      <ConfirmationPopup
+        textPopupTitle={'Move to Qualified Members'}
+        textPopupDescription={`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified members?`}
+        isIcon={false}
+        onClickCancel={{
           onClick: () => {
             setIsMovedToQualifiedDialogOpen(false);
           },
         }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => {
-                  setIsMovedToQualifiedDialogOpen(false);
-                },
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Move'}
-              onClickButton={{ onClick: moveToQualified }}
-            />
-          </>
-        }
+        onClickAction={{
+          onClick: moveToQualified,
+        }}
+        textPopupButton={'Move'}
       />
     </Dialog>
   );
