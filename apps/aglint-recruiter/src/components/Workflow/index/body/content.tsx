@@ -13,7 +13,7 @@ import {
   useWorkflowStore,
   WorkflowStore,
 } from '../../../../context/Workflows/store';
-import { getTriggerOption } from '../../[id]/body/trigger';
+import { getTriggerOption } from '../../[id]/body/constants';
 
 const Content = memo(() => {
   const {
