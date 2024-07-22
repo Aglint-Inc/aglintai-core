@@ -85,7 +85,7 @@ async function registerMember(
       interview_location: user.interview_location,
       department: user.department,
       email: email,
-      join_status: 'invited',
+      status: 'invited',
       scheduling_settings: user.scheduling_settings,
     })
     .throwOnError()

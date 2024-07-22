@@ -29,7 +29,7 @@ export function ImportResume({
             size="2"
           />
           <Text
-            content="Resumes should be in PDF/DOCX format and maximum file size of each should be less than 5 MB"
+            content="Resumes should be in PDF/DOCX format and maximum file size of each should be less than 4 MB"
             align="center"
             color="neutral"
           />

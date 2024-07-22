@@ -399,7 +399,7 @@ export const ConfirmedInvitePage = (
               />
             }
             textDesc={
-              'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
+              'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
             }
             textMailSent={candidate.email}
             slotButton={

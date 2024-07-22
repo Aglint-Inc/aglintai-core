@@ -6,6 +6,7 @@ import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {googleCalenderLogo} from 'src/utils/assests';
 import {meetingPlatform} from 'src/utils/platform';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function interviewReminder(req: Request, res: Response) {
   const {session_id, recruiter_user_id, application_id} = req.body;
@@ -39,10 +40,7 @@ export async function interviewReminder(req: Request, res: Response) {
 
     const candidate = application.candidates;
 
-    const userResponse = await slackWeb.users.lookupByEmail({
-      email: interviewer.email,
-    });
-    const userId = userResponse.user.id;
+    const userId = await getUserIdByEmail(interviewer.email);
 
     await slackWeb.chat.postMessage({
       channel: userId,

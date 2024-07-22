@@ -564,7 +564,7 @@ function RequestAvailability() {
                         return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} placeholder='Days' />
+                      <TextField style={{width:'110px'}} {...params} placeholder='Days' />
                     )}
                     onChange={(_, value) => {
                       setSelectedDays(value);
@@ -588,12 +588,12 @@ function RequestAvailability() {
                     disablePortal
                     value={selectedSlots}
                     options={slotsListOptions}
-                    sx={{ width: 200 }}
+                    sx={{ width: 200,}}
                     renderOption={(props, option) => {
                       return <li {...props}>{option.label}</li>;
                     }}
                     renderInput={(params) => (
-                      <TextField {...params} placeholder='Days' />
+                      <TextField style={{width:'110px'}}{...params} placeholder='Days' />
                     )}
                     onChange={(_, value) => {
                       setSelectedSlots(value);

@@ -96,7 +96,7 @@ function Filters() {
             name: 'Interviewer',
             options: members
               ? members
-                  .filter((ele) => !ele.is_suspended)
+                  .filter((ele) => ele.status === 'active')
                   .map((member) => ({
                     id: member.user_id,
                     label: getFullName(member.first_name, member.last_name),

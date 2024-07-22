@@ -40,6 +40,7 @@ const getInterviewModules = async ({
     .select(
       `*, interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
     )
+    .eq('is_archived', false)
     .eq('recruiter_id', recruiter_id);
   if (error) throw new Error(error.message);
   return data.map(({ interview_module_relation, ...rest }) => {

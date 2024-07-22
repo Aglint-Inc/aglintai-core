@@ -204,7 +204,7 @@ const BodyComp = ({ setSaving }) => {
           )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'schedules'}>
-          <Schedules />
+          {checkPermissions(['scheduling_actions']) && <Schedules />}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'myschedules'}>
           <MySchedule />

@@ -58,11 +58,11 @@ const ImportResume = () => {
       <Stack spacing={2} height={'100%'} p={'1px'}>
         {selectedfile.length == 0 && (
           <FileUploader
-            maxSize={5}
+            maxSize={4}
             onSizeError={(file: any) =>
-              file.size > 5
+              file.size > 4
                 ? null
-                : toast.error('Please upload a resume that is less than 5 MB.')
+                : toast.error('Please upload resumes that are less than 4 MB.')
             }
             handleChange={InputChange}
             multiple={true}
@@ -108,12 +108,12 @@ const ImportResume = () => {
                       multiple={true}
                       name='file'
                       types={fileTypes}
-                      maxSize={5}
+                      maxSize={4.5}
                       onSizeError={(file: any) =>
-                        file.size > 5
+                        file.size > 4
                           ? null
                           : toast.error(
-                              'Please upload a resume that is less than 5 MB.',
+                              'Please upload resumes that are less than 4 MB.',
                             )
                       }
                     >

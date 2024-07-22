@@ -67,7 +67,8 @@ function SessionIndividual({
               }
               isShadow={member.training_type === 'shadow'}
               isReverseShadow={member.training_type === 'reverse_shadow'}
-              textName={getFullName(member.first_name, member.last_name)}
+              textName={`${getFullName(member.first_name, member.last_name)} 
+                 ${member.interviewer_type === 'training' ? '(Training)' : ''}`}
               textTime={formatTimeWithTimeZone({
                 start_time: session.start_time,
                 end_time: session.end_time,
