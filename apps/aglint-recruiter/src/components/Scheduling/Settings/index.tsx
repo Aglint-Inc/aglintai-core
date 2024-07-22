@@ -61,6 +61,16 @@ import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
 import { settingsItems, settingSubNavItem } from './SubNav/utils';
+import {
+  DayOffHelper,
+  DebreifHelperText,
+  KeywordsHelper,
+  WorkingHoursHelper,
+} from '@/devlink3';
+import { Text } from '@/devlink2/Text';
+import { Span } from 'next/dist/trace';
+import { GlobalInfo } from '@/devlink2';
+import { ButtonSoft } from '@/devlink';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -122,7 +132,32 @@ function SchedulingSettings({
       max: LoadMax.weeklyHours,
     },
   });
-
+  const [helperWidth, setHelperWidth] = useState(420);
+  const [helperKeywords, setHelperKeywords] = useState(420);
+  const [helperWorking, setHelperWorking] = useState(420);
+  const toggleHelperTextWidth = () => {
+    // Toggle between 0px and 420px
+    setHelperWidth(helperWidth === 10 ? 420 : 10);
+  };
+  const toggleHelperKeywords = () => {
+    // Toggle between 0px and 420px
+    setHelperKeywords(helperKeywords === 10 ? 420 : 10);
+  };
+  const toggleHelperWorking = () => {
+    // Toggle between 0px and 420px
+    setHelperWorking(helperWorking === 10 ? 420 : 10);
+  };
+  const [isTipVisible, setIsTipVisible] = useState(true);
+  const handleCloseInfo = () => {
+    setIsTipVisible(false);
+  };
+  const [openDialog, setOpenDialog] = useState(false);
+  const openCompany = () => {
+    setOpenDialog(true);
+  };
+  const closeDialog = () => {
+    setOpenDialog(false);
+  };
   //value change handler
   function loadChangeHandle(value, module, type) {
     if (type === 'type') {
@@ -351,223 +386,262 @@ function SchedulingSettings({
               <ShowCode.When
                 isTrue={router.query.subtab == settingSubNavItem.WORKINGHOURS}
               >
-                <WorkingHours
-                  slotTimeZoneInput={
-                    <TimezoneSelector
-                      disabled={isTimeZone}
-                      value={selectedTimeZone}
-                      setValue={setSelectedTimeZone}
-                    />
-                  }
-                  // slotTimeZoneToggle={}
-                  slotWorkingHourDay={
-                    <Stack direction={'column'} paddingBottom={'50px'}>
-                      {!!workingHours.length &&
-                        workingHours.map((day, i) => {
-                          return (
-                            <>
-                              <WorkingHourDay
-                                slotRcCheckbox={
-                                  <RcCheckbox
-                                    onclickCheck={{
-                                      onClick: () => {
-                                        setWorkingHours((pre) => {
-                                          const data = pre;
-                                          data[Number(i)].isWorkDay =
-                                            !data[Number(i)].isWorkDay;
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  width={'100%'}
+                  justifyContent={'space-between'}
+                  alignItems={'start'}
+                  sx={{ overflowX: 'hidden' }}
+                >
+                  <Stack
+                    width={'100%'}
+                    overflow={'auto'}
+                    height={'calc(100vh - 48px)'}
+                  >
+                    <WorkingHours
+                      slotTimeZoneInput={
+                        <TimezoneSelector
+                          disabled={isTimeZone}
+                          value={selectedTimeZone}
+                          setValue={setSelectedTimeZone}
+                        />
+                      }
+                      // slotTimeZoneToggle={}
+                      slotWorkingHourDay={
+                        <Stack direction={'column'} paddingBottom={'50px'}>
+                          {!!workingHours.length &&
+                            workingHours.map((day, i) => {
+                              return (
+                                <>
+                                  <WorkingHourDay
+                                    slotRcCheckbox={
+                                      <RcCheckbox
+                                        onclickCheck={{
+                                          onClick: () => {
+                                            setWorkingHours((pre) => {
+                                              const data = pre;
+                                              data[Number(i)].isWorkDay =
+                                                !data[Number(i)].isWorkDay;
 
-                                          return [...data];
+                                              return [...data];
+                                            });
+                                          },
+                                        }}
+                                        isChecked={day.isWorkDay}
+                                        text={capitalize(day.day)}
+                                      />
+                                    }
+                                    slotTimeRageInput={
+                                      <TimeRangeInput
+                                        slotStartTimeInput={
+                                          <SelectTime
+                                            disable={!day.isWorkDay}
+                                            value={dayjs()
+                                              .set(
+                                                'hour',
+                                                parseInt(
+                                                  day.timeRange.startTime.split(
+                                                    ':',
+                                                  )[0],
+                                                ),
+                                              )
+                                              .set(
+                                                'minute',
+                                                parseInt(
+                                                  day.timeRange.startTime.split(
+                                                    ':',
+                                                  )[1],
+                                                ),
+                                              )}
+                                            onSelect={selectStartTime}
+                                            i={i}
+                                          />
+                                        }
+                                        slotEndTimeInput={
+                                          <SelectTime
+                                            disable={!day.isWorkDay}
+                                            value={dayjs()
+                                              .set(
+                                                'hour',
+                                                parseInt(
+                                                  day.timeRange.endTime.split(
+                                                    ':',
+                                                  )[0],
+                                                ),
+                                              )
+                                              .set(
+                                                'minute',
+                                                parseInt(
+                                                  day.timeRange.endTime.split(
+                                                    ':',
+                                                  )[1],
+                                                ),
+                                              )}
+                                            onSelect={selectEndTime}
+                                            i={i}
+                                          />
+                                        }
+                                      />
+                                    }
+                                  />
+                                </>
+                              );
+                            })}
+
+                          <Stack
+                            direction={'column'}
+                            spacing={2}
+                            marginTop={'var(--space-5)'}
+                          >
+                            <Stack direction={'column'}>
+                              <Typography variant='body1medium'>
+                                Default Break Times
+                              </Typography>
+                              <Typography variant='body1'>
+                                Define standard break times for the company.
+                              </Typography>
+                            </Stack>
+                            <Stack spacing={1} direction={'column'}>
+                              <Stack
+                                direction={'row'}
+                                alignItems={'center'}
+                                spacing={1}
+                              >
+                                <Typography width={120} fontSize={'14px'}>
+                                  Break Start Time
+                                </Typography>
+
+                                {selectedHourBreak?.start_time &&
+                                  workingHours[1]?.timeRange?.startTime && (
+                                    <SelectTime
+                                      disableIgnoringDatePartForTimeValidation={
+                                        true
+                                      }
+                                      value={dayjs()
+                                        .set(
+                                          'hour',
+                                          parseInt(
+                                            selectedHourBreak?.start_time?.split(
+                                              ':',
+                                            )[0],
+                                          ),
+                                        )
+                                        .set(
+                                          'minute',
+                                          parseInt(
+                                            selectedHourBreak?.start_time?.split(
+                                              ':',
+                                            )[1],
+                                          ),
+                                        )}
+                                      onSelect={(e) => {
+                                        setSelectedHourBreak((pre) => {
+                                          pre.start_time = `${dayjs(e).format(
+                                            'HH:mm',
+                                          )}`;
+                                          return { ...pre };
                                         });
-                                      },
-                                    }}
-                                    isChecked={day.isWorkDay}
-                                    text={capitalize(day.day)}
-                                  />
-                                }
-                                slotTimeRageInput={
-                                  <TimeRangeInput
-                                    slotStartTimeInput={
-                                      <SelectTime
-                                        disable={!day.isWorkDay}
-                                        value={dayjs()
-                                          .set(
-                                            'hour',
-                                            parseInt(
-                                              day.timeRange.startTime.split(
-                                                ':',
-                                              )[0],
-                                            ),
-                                          )
-                                          .set(
-                                            'minute',
-                                            parseInt(
-                                              day.timeRange.startTime.split(
-                                                ':',
-                                              )[1],
-                                            ),
-                                          )}
-                                        onSelect={selectStartTime}
-                                        i={i}
-                                      />
-                                    }
-                                    slotEndTimeInput={
-                                      <SelectTime
-                                        disable={!day.isWorkDay}
-                                        value={dayjs()
-                                          .set(
-                                            'hour',
-                                            parseInt(
-                                              day.timeRange.endTime.split(
-                                                ':',
-                                              )[0],
-                                            ),
-                                          )
-                                          .set(
-                                            'minute',
-                                            parseInt(
-                                              day.timeRange.endTime.split(
-                                                ':',
-                                              )[1],
-                                            ),
-                                          )}
-                                        onSelect={selectEndTime}
-                                        i={i}
-                                      />
-                                    }
-                                  />
-                                }
-                              />
-                            </>
-                          );
-                        })}
+                                      }}
+                                      key={0}
+                                    />
+                                  )}
+                              </Stack>
+                              <Stack
+                                spacing={1}
+                                direction={'row'}
+                                alignItems={'center'}
+                              >
+                                <Typography width={120} fontSize={'14px'}>
+                                  Break End Time
+                                </Typography>
 
-                      <Stack
-                        direction={'column'}
-                        spacing={2}
-                        marginTop={'var(--space-5)'}
-                      >
-                        <Stack direction={'column'}>
-                          <Typography variant='body1medium'>
-                            Default Break Times
-                          </Typography>
-                          <Typography variant='body1'>
-                            Define standard break times for the company.
-                          </Typography>
-                        </Stack>
-                        <Stack spacing={1} direction={'column'}>
-                          <Stack
-                            direction={'row'}
-                            alignItems={'center'}
-                            spacing={1}
-                          >
-                            <Typography width={120} fontSize={'14px'}>
-                              Break Start Time
-                            </Typography>
-
-                            {selectedHourBreak?.start_time &&
-                              workingHours[1]?.timeRange?.startTime && (
-                                <SelectTime
-                                  disableIgnoringDatePartForTimeValidation={
-                                    true
-                                  }
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        selectedHourBreak?.start_time?.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        selectedHourBreak?.start_time?.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  onSelect={(e) => {
-                                    setSelectedHourBreak((pre) => {
-                                      pre.start_time = `${dayjs(e).format(
-                                        'HH:mm',
-                                      )}`;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  key={0}
-                                />
-                              )}
-                          </Stack>
-                          <Stack
-                            spacing={1}
-                            direction={'row'}
-                            alignItems={'center'}
-                          >
-                            <Typography width={120} fontSize={'14px'}>
-                              Break End Time
-                            </Typography>
-
-                            {workingHours[1]?.timeRange?.endTime &&
-                              selectedHourBreak?.end_time && (
-                                <SelectTime
-                                  disableIgnoringDatePartForTimeValidation={
-                                    true
-                                  }
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        selectedHourBreak?.end_time?.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        selectedHourBreak?.end_time?.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  onSelect={(e) => {
-                                    setSelectedHourBreak((pre) => {
-                                      pre.end_time = `${dayjs(e).format(
-                                        'HH:mm',
-                                      )}`;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  key={0}
-                                />
-                              )}
+                                {workingHours[1]?.timeRange?.endTime &&
+                                  selectedHourBreak?.end_time && (
+                                    <SelectTime
+                                      disableIgnoringDatePartForTimeValidation={
+                                        true
+                                      }
+                                      value={dayjs()
+                                        .set(
+                                          'hour',
+                                          parseInt(
+                                            selectedHourBreak?.end_time?.split(
+                                              ':',
+                                            )[0],
+                                          ),
+                                        )
+                                        .set(
+                                          'minute',
+                                          parseInt(
+                                            selectedHourBreak?.end_time?.split(
+                                              ':',
+                                            )[1],
+                                          ),
+                                        )}
+                                      onSelect={(e) => {
+                                        setSelectedHourBreak((pre) => {
+                                          pre.end_time = `${dayjs(e).format(
+                                            'HH:mm',
+                                          )}`;
+                                          return { ...pre };
+                                        });
+                                      }}
+                                      key={0}
+                                    />
+                                  )}
+                              </Stack>
+                            </Stack>
                           </Stack>
                         </Stack>
-                      </Stack>
-                    </Stack>
-                  }
-                  slotTimeZoneToggle={
-                    <ToggleBtn
-                      handleChange={(e: any) => {
-                        setIsTimeZone(e);
-                        if (e) {
-                          setSelectedTimeZone(
-                            timeZones.filter((item) =>
-                              item.label.includes(dayjs.tz.guess()),
-                            )[0],
-                          );
-                        }
-                      }}
-                      isChecked={isTimeZone}
+                      }
+                      slotTimeZoneToggle={
+                        <ToggleBtn
+                          handleChange={(e: any) => {
+                            setIsTimeZone(e);
+                            if (e) {
+                              setSelectedTimeZone(
+                                timeZones.filter((item) =>
+                                  item.label.includes(dayjs.tz.guess()),
+                                )[0],
+                              );
+                            }
+                          }}
+                          isChecked={isTimeZone}
+                        />
+                      }
                     />
-                  }
-                />
+                  </Stack>
+                  <WorkingHoursHelper
+                    styleWidth={{ style: { width: helperWorking } }}
+                    onClickArrow={{
+                      style: {
+                        transform: `rotate(${helperWorking === 420 ? '0deg' : '180deg'})`,
+                      },
+                      onClick: () => {
+                        toggleHelperWorking();
+                      },
+                    }}
+                  />
+                </Stack>
               </ShowCode.When>
               <ShowCode.When
                 isTrue={router.query.subtab == settingSubNavItem.DAYOFF}
               >
                 <CompanyDayOff
+                  slotLearnButton={
+                    <>
+                      <ButtonSoft
+                        size={1}
+                        textButton='Learn How'
+                        onClickButton={{
+                          onClick: () => {
+                            openCompany();
+                          },
+                        }}
+                      />
+                    </>
+                  }
                   slotAddButton={
                     <ButtonSolid
                       textButton='Add Day Off'
@@ -783,282 +857,435 @@ function SchedulingSettings({
                     </>
                   }
                 />
+                <Dialog open={openDialog} onClose={closeDialog}>
+                  <DayOffHelper
+                    slotButton={
+                      <ButtonSolid
+                        textButton='Got It'
+                        size={2}
+                        onClickButton={{
+                          onClick: () => {
+                            closeDialog();
+                          },
+                        }}
+                      />
+                    }
+                  />
+                </Dialog>
               </ShowCode.When>
               <ShowCode.When
                 isTrue={router.query.subtab == settingSubNavItem.INTERVIEWLOAD}
               >
-                <InterviewLoad
-                  slotDailyLimit={
-                    <>
-                      <MuiNumberfield
-                        handleSelect={(e) =>
-                          loadChangeHandle(e, 'daily', 'value')
-                        }
-                        value={interviewLoad.daily.value}
-                        max={interviewLoad.daily.max}
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  width={'100%'}
+                  justifyContent={'space-between'}
+                  alignItems={'start'}
+                  overflow={'hidden'}
+                >
+                  <InterviewLoad
+                    slotDailyLimit={
+                      <>
+                        <MuiNumberfield
+                          handleSelect={(e) =>
+                            loadChangeHandle(e, 'daily', 'value')
+                          }
+                          value={interviewLoad.daily.value}
+                          max={interviewLoad.daily.max}
+                        />
+                        <MuiSelect
+                          width='150px'
+                          dataset={['Interviews', 'Hours']}
+                          handleSelect={(e) =>
+                            loadChangeHandle(e.target.value, 'daily', 'type')
+                          }
+                          value={interviewLoad.daily.type}
+                        />
+                      </>
+                    }
+                    slotWeeklyLimit={
+                      <>
+                        <MuiNumberfield
+                          handleSelect={(e) =>
+                            loadChangeHandle(e, 'weekly', 'value')
+                          }
+                          value={interviewLoad.weekly.value}
+                          max={interviewLoad.weekly.max}
+                        />
+                        <MuiSelect
+                          width='150px'
+                          dataset={['Interviews', 'Hours']}
+                          handleSelect={(e) =>
+                            loadChangeHandle(e.target.value, 'weekly', 'type')
+                          }
+                          value={interviewLoad.weekly.type}
+                        />
+                      </>
+                    }
+                  />
+                  <Stack
+                    width={'400px'}
+                    padding={'var(--space-4)'}
+                    borderLeft={'1px solid var(--neutral-6)'}
+                    height={'calc(100vh - 48px)'}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    gap={'var(--space-4)'}
+                  >
+                    {isTipVisible && (
+                      <Stack>
+                        <GlobalInfo
+                          color={'purple'}
+                          iconName='lightbulb'
+                          textTitle={'Pro Tip'}
+                          textDescription={
+                            'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+                          }
+                          showCloseButton
+                          onClickClose={{
+                            onClick: () => {
+                              handleCloseInfo();
+                            },
+                          }}
+                        />
+                      </Stack>
+                    )}
+                    <Stack
+                      bgcolor={'white'}
+                      borderRadius={'4px'}
+                      display={'flex'}
+                      flexDirection={'column'}
+                      gap={'4px'}
+                      padding={'var(--space-3)'}
+                    >
+                      <Text
+                        content='How It Works'
+                        weight={'medium'}
+                        size={2}
+                        color={'info'}
                       />
-                      <MuiSelect
-                        width='150px'
-                        dataset={['Interviews', 'Hours']}
-                        handleSelect={(e) =>
-                          loadChangeHandle(e.target.value, 'daily', 'type')
-                        }
-                        value={interviewLoad.daily.type}
-                      />
-                    </>
-                  }
-                  slotWeeklyLimit={
-                    <>
-                      <MuiNumberfield
-                        handleSelect={(e) =>
-                          loadChangeHandle(e, 'weekly', 'value')
-                        }
-                        value={interviewLoad.weekly.value}
-                        max={interviewLoad.weekly.max}
-                      />
-                      <MuiSelect
-                        width='150px'
-                        dataset={['Interviews', 'Hours']}
-                        handleSelect={(e) =>
-                          loadChangeHandle(e.target.value, 'weekly', 'type')
-                        }
-                        value={interviewLoad.weekly.type}
-                      />
-                    </>
-                  }
-                />
+
+                      <ul>
+                        <li style={{ color: 'var(--neutral-11)' }}>
+                          <span style={{ fontWeight: 'bold' }}>
+                            Daily Limit:{' '}
+                          </span>
+                          Specify the maximum number of interviews or hours an
+                          interviewer can handle each day.
+                        </li>
+                        <li style={{ color: 'var(--neutral-11)' }}>
+                          <span style={{ fontWeight: 'bold' }}>
+                            Weekly Limit:{' '}
+                          </span>
+                          Set the total number of interviews or hours per week
+                          to ensure balanced workloads.
+                        </li>
+                        <li style={{ color: 'var(--neutral-11)' }}>
+                          <span style={{ fontWeight: 'bold' }}>
+                            Customization:{' '}
+                          </span>
+                          Adjust settings for each interviewer based on their
+                          capacity and role requirements.
+                        </li>
+                        <li style={{ color: 'var(--neutral-11)' }}>
+                          <span style={{ fontWeight: 'bold' }}>
+                            Overrides:{' '}
+                          </span>
+                          You can override these settings in the interviewer
+                          settings for personalized scheduling needs.
+                        </li>
+                      </ul>
+                    </Stack>
+                  </Stack>
+                </Stack>
               </ShowCode.When>
             </ShowCode>
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.KEYWORDS}
             >
-              <Keywords
-                slotKeywordsCard={
-                  <>
-                    <KeywordCard
-                      textTitle={'Free'}
-                      textWarning={
-                        'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
-                      }
-                      slotInput={
-                        <FilterInput
-                          handleAdd={(s) => {
-                            const keyword = String(s).split(',');
-                            keyword.map((item) => {
-                              if (freeKeyWords.includes(item)) {
-                                toast.warning(`"${item}" keyword exists.`);
-                                return null;
-                              } else {
-                                setFreeKeywords((pre) => [item, ...pre]);
-                              }
-                            });
-                          }}
-                          path='freeKeywords'
-                          type='string'
-                        />
-                      }
-                      slotSuggestPill={
-                        freeKeyWords.length === 0 ? (
-                          <Alert severity='info' icon={false}>
-                            <Typography>No free keywords added.</Typography>
-                          </Alert>
-                        ) : (
-                          freeKeyWords.map((item) => {
-                            return (
-                              <>
-                                <Chip
-                                  clickable
-                                  onDelete={() => {
-                                    setFreeKeywords((pre) => {
-                                      return pre.filter((ele) => ele !== item);
-                                    });
-                                  }}
-                                  deleteIcon={
-                                    <Stack>
-                                      <GlobalIcon iconName='close' size='4' />
-                                    </Stack>
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                width={'100%'}
+                justifyContent={'space-between'}
+                alignItems={'start'}
+                sx={{ overflowX: 'hidden' }}
+              >
+                <Stack
+                  width={'100%'}
+                  overflow={'auto'}
+                  height={'calc(100vh - 48px)'}
+                >
+                  <Keywords
+                    slotKeywordsCard={
+                      <>
+                        <KeywordCard
+                          textTitle={'Free'}
+                          textWarning={
+                            'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
+                          }
+                          slotInput={
+                            <FilterInput
+                              handleAdd={(s) => {
+                                const keyword = String(s).split(',');
+                                keyword.map((item) => {
+                                  if (freeKeyWords.includes(item)) {
+                                    toast.warning(`"${item}" keyword exists.`);
+                                    return null;
+                                  } else {
+                                    setFreeKeywords((pre) => [item, ...pre]);
                                   }
-                                  label={item}
-                                />
-                              </>
-                            );
-                          })
-                        )
-                      }
-                    />
-                    <KeywordCard
-                      textTitle={'Soft Conflicts'}
-                      textWarning={
-                        'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
-                      }
-                      slotInput={
-                        <FilterInput
-                          handleAdd={(s) => {
-                            const keyword = String(s).split(',');
-                            keyword.map((item) => {
-                              if (freeKeyWords.includes(item)) {
-                                toast.warning(`"${item}" keyword exists.`);
-                                return null;
-                              } else {
-                                setSoftConflictsKeyWords((pre) => [
-                                  item,
-                                  ...pre,
-                                ]);
-                              }
-                            });
-                          }}
-                          path='softConflictsKeywords'
-                          type='string'
+                                });
+                              }}
+                              path='freeKeywords'
+                              type='string'
+                            />
+                          }
+                          slotSuggestPill={
+                            freeKeyWords.length === 0 ? (
+                              <Alert severity='info' icon={false}>
+                                <Typography>No free keywords added.</Typography>
+                              </Alert>
+                            ) : (
+                              freeKeyWords.map((item) => {
+                                return (
+                                  <>
+                                    <Chip
+                                      clickable
+                                      onDelete={() => {
+                                        setFreeKeywords((pre) => {
+                                          return pre.filter(
+                                            (ele) => ele !== item,
+                                          );
+                                        });
+                                      }}
+                                      deleteIcon={
+                                        <Stack>
+                                          <GlobalIcon
+                                            iconName='close'
+                                            size='4'
+                                          />
+                                        </Stack>
+                                      }
+                                      label={item}
+                                    />
+                                  </>
+                                );
+                              })
+                            )
+                          }
                         />
-                      }
-                      slotSuggestPill={
-                        softConflictsKeyWords.length === 0 ? (
-                          <Alert severity='info' icon={false}>
-                            <Typography>
-                              No soft conflict keyword added.
-                            </Typography>
-                          </Alert>
-                        ) : (
-                          softConflictsKeyWords.map((item) => {
-                            return (
-                              <>
-                                <Chip
-                                  clickable
-                                  onDelete={() => {
-                                    setSoftConflictsKeyWords((pre) => {
-                                      return pre.filter((ele) => ele !== item);
-                                    });
-                                  }}
-                                  deleteIcon={
-                                    <Stack>
-                                      <GlobalIcon iconName='close' size='4' />
-                                    </Stack>
+                        <KeywordCard
+                          textTitle={'Soft Conflicts'}
+                          textWarning={
+                            'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                          }
+                          slotInput={
+                            <FilterInput
+                              handleAdd={(s) => {
+                                const keyword = String(s).split(',');
+                                keyword.map((item) => {
+                                  if (freeKeyWords.includes(item)) {
+                                    toast.warning(`"${item}" keyword exists.`);
+                                    return null;
+                                  } else {
+                                    setSoftConflictsKeyWords((pre) => [
+                                      item,
+                                      ...pre,
+                                    ]);
                                   }
-                                  label={item}
-                                />
-                              </>
-                            );
-                          })
-                        )
-                      }
-                    />
-                    <KeywordCard
-                      textTitle={'Out of Office'}
-                      textWarning={
-                        'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
-                      }
-                      slotInput={
-                        <FilterInput
-                          handleAdd={(s) => {
-                            const keyword = String(s).split(',');
-                            keyword.map((itemX) => {
-                              const item = itemX.trim();
-                              if (item?.length) {
-                                if (outOfOffice.includes(item)) {
-                                  toast.warning(`"${item}" keyword exists.`);
-                                  return null;
-                                } else {
-                                  setOutOfOffice((pre) => [item, ...pre]);
-                                }
-                              }
-                            });
-                          }}
-                          path='outOfOfficeKeywords'
-                          type='string'
+                                });
+                              }}
+                              path='softConflictsKeywords'
+                              type='string'
+                            />
+                          }
+                          slotSuggestPill={
+                            softConflictsKeyWords.length === 0 ? (
+                              <Alert severity='info' icon={false}>
+                                <Typography>
+                                  No soft conflict keyword added.
+                                </Typography>
+                              </Alert>
+                            ) : (
+                              softConflictsKeyWords.map((item) => {
+                                return (
+                                  <>
+                                    <Chip
+                                      clickable
+                                      onDelete={() => {
+                                        setSoftConflictsKeyWords((pre) => {
+                                          return pre.filter(
+                                            (ele) => ele !== item,
+                                          );
+                                        });
+                                      }}
+                                      deleteIcon={
+                                        <Stack>
+                                          <GlobalIcon
+                                            iconName='close'
+                                            size='4'
+                                          />
+                                        </Stack>
+                                      }
+                                      label={item}
+                                    />
+                                  </>
+                                );
+                              })
+                            )
+                          }
                         />
-                      }
-                      slotSuggestPill={
-                        outOfOffice.length === 0 ? (
-                          <Alert severity='info' icon={false}>
-                            <Typography>
-                              No out of office keywords added.
-                            </Typography>
-                          </Alert>
-                        ) : (
-                          outOfOffice.map((item) => {
-                            return (
-                              <>
-                                <Chip
-                                  clickable
-                                  onDelete={() => {
-                                    setOutOfOffice((pre) => {
-                                      return pre.filter((ele) => ele !== item);
-                                    });
-                                  }}
-                                  deleteIcon={
-                                    <Stack>
-                                      <GlobalIcon iconName='close' size='4' />
-                                    </Stack>
+                        <KeywordCard
+                          textTitle={'Out of Office'}
+                          textWarning={
+                            'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
+                          }
+                          slotInput={
+                            <FilterInput
+                              handleAdd={(s) => {
+                                const keyword = String(s).split(',');
+                                keyword.map((itemX) => {
+                                  const item = itemX.trim();
+                                  if (item?.length) {
+                                    if (outOfOffice.includes(item)) {
+                                      toast.warning(
+                                        `"${item}" keyword exists.`,
+                                      );
+                                      return null;
+                                    } else {
+                                      setOutOfOffice((pre) => [item, ...pre]);
+                                    }
                                   }
-                                  label={item}
-                                />
-                              </>
-                            );
-                          })
-                        )
-                      }
-                    />
-                    <KeywordCard
-                      textTitle={'Recruiting Blocks'}
-                      textWarning={
-                        'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
-                      }
-                      slotInput={
-                        <FilterInput
-                          handleAdd={(s) => {
-                            const keyword = String(s).split(',');
-                            keyword.map((itemX) => {
-                              const item = itemX.trim();
-                              if (item?.length) {
-                                if (recruitingBlocks.includes(item)) {
-                                  toast.warning(`"${item}" keyword exists.`);
-                                  return null;
-                                } else {
-                                  setRecruitingBlocks((pre) => [item, ...pre]);
-                                }
-                              }
-                            });
-                          }}
-                          path='recruitingBlocksKeywords'
-                          type='string'
+                                });
+                              }}
+                              path='outOfOfficeKeywords'
+                              type='string'
+                            />
+                          }
+                          slotSuggestPill={
+                            outOfOffice.length === 0 ? (
+                              <Alert severity='info' icon={false}>
+                                <Typography>
+                                  No out of office keywords added.
+                                </Typography>
+                              </Alert>
+                            ) : (
+                              outOfOffice.map((item) => {
+                                return (
+                                  <>
+                                    <Chip
+                                      clickable
+                                      onDelete={() => {
+                                        setOutOfOffice((pre) => {
+                                          return pre.filter(
+                                            (ele) => ele !== item,
+                                          );
+                                        });
+                                      }}
+                                      deleteIcon={
+                                        <Stack>
+                                          <GlobalIcon
+                                            iconName='close'
+                                            size='4'
+                                          />
+                                        </Stack>
+                                      }
+                                      label={item}
+                                    />
+                                  </>
+                                );
+                              })
+                            )
+                          }
                         />
-                      }
-                      slotSuggestPill={
-                        recruitingBlocks.length === 0 ? (
-                          <Alert
-                            severity='info'
-                            variant='outlined'
-                            icon={false}
-                          >
-                            <Typography>No recruiting blocks added.</Typography>
-                          </Alert>
-                        ) : (
-                          recruitingBlocks.map((item) => {
-                            return (
-                              <>
-                                <Chip
-                                  clickable
-                                  onDelete={() => {
-                                    setRecruitingBlocks((pre) => {
-                                      return pre.filter((ele) => ele !== item);
-                                    });
-                                  }}
-                                  deleteIcon={
-                                    <Stack>
-                                      <GlobalIcon iconName='close' size='4' />
-                                    </Stack>
+                        <KeywordCard
+                          textTitle={'Recruiting Blocks'}
+                          textWarning={
+                            'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
+                          }
+                          slotInput={
+                            <FilterInput
+                              handleAdd={(s) => {
+                                const keyword = String(s).split(',');
+                                keyword.map((itemX) => {
+                                  const item = itemX.trim();
+                                  if (item?.length) {
+                                    if (recruitingBlocks.includes(item)) {
+                                      toast.warning(
+                                        `"${item}" keyword exists.`,
+                                      );
+                                      return null;
+                                    } else {
+                                      setRecruitingBlocks((pre) => [
+                                        item,
+                                        ...pre,
+                                      ]);
+                                    }
                                   }
-                                  label={item}
-                                />
-                              </>
-                            );
-                          })
-                        )
-                      }
-                    />
-                  </>
-                }
-              />
+                                });
+                              }}
+                              path='recruitingBlocksKeywords'
+                              type='string'
+                            />
+                          }
+                          slotSuggestPill={
+                            recruitingBlocks.length === 0 ? (
+                              <Alert
+                                severity='info'
+                                variant='outlined'
+                                icon={false}
+                              >
+                                <Typography>
+                                  No recruiting blocks added.
+                                </Typography>
+                              </Alert>
+                            ) : (
+                              recruitingBlocks.map((item) => {
+                                return (
+                                  <>
+                                    <Chip
+                                      clickable
+                                      onDelete={() => {
+                                        setRecruitingBlocks((pre) => {
+                                          return pre.filter(
+                                            (ele) => ele !== item,
+                                          );
+                                        });
+                                      }}
+                                      deleteIcon={
+                                        <Stack>
+                                          <GlobalIcon
+                                            iconName='close'
+                                            size='4'
+                                          />
+                                        </Stack>
+                                      }
+                                      label={item}
+                                    />
+                                  </>
+                                );
+                              })
+                            )
+                          }
+                        />
+                      </>
+                    }
+                  />
+                </Stack>
+                <KeywordsHelper
+                  styleWidth={{ style: { width: helperKeywords } }}
+                  onClickArrow={{
+                    style: {
+                      transform: `rotate(${helperKeywords === 420 ? '0deg' : '180deg'})`,
+                    },
+                    onClick: () => {
+                      toggleHelperKeywords();
+                    },
+                  }}
+                />
+              </Stack>
             </ShowCode.When>
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
@@ -1073,10 +1300,30 @@ function SchedulingSettings({
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.DEBRIEFDEFAULTS}
             >
-              <DebriefDefaults
-                value={debriefDefaults}
-                setValue={setDebriefDefaults}
-              />
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                width={'100%'}
+                justifyContent={'space-between'}
+                alignItems={'start'}
+                overflow={'hidden'}
+              >
+                <DebriefDefaults
+                  value={debriefDefaults}
+                  setValue={setDebriefDefaults}
+                />
+                <DebreifHelperText
+                  styleWidth={{ style: { width: helperWidth } }}
+                  onClickArrow={{
+                    style: {
+                      transform: `rotate(${helperWidth === 420 ? '0deg' : '180deg'})`,
+                    },
+                    onClick: () => {
+                      toggleHelperTextWidth();
+                    },
+                  }}
+                />
+              </Stack>
             </ShowCode.When>
           </>
         }
