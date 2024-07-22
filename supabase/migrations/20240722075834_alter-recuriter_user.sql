@@ -7,7 +7,7 @@ alter table "public"."recruiter_user" validate constraint "recruiter_user_status
 UPDATE recruiter_user
 SET status = 
   CASE 
-    WHEN is_suspended THEN 'suspend'
+    WHEN is_suspended THEN 'suspended'
     WHEN join_status = 'joined' THEN 'active'
     ELSE 'invited'
   END;
