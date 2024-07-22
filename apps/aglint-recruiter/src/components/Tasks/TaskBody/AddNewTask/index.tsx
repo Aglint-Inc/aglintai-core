@@ -215,7 +215,8 @@ function AddNewTask() {
     const { data, error } = await supabase
       .from('applications')
       .select('* ,candidates( * )')
-      .eq('job_id', selectedJob?.id);
+      .eq('job_id', selectedJob?.id)
+      .eq('status', 'interview');
     if (error) throw Error(error.message);
     else {
       setCandidates(data);
