@@ -19,7 +19,6 @@ import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks
 import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Application } from '@/src/types/applications.types';
-import { createBatches } from '@/src/utils/createBatches';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -403,16 +402,13 @@ const handleResumeUpload = async (payload: HandleUploadResume) => {
   return response;
 };
 const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
-  const batches = createBatches(payload.files, 5);
-  const promises = batches
-    .filter((batch) => batch.length !== 0)
-    .map((batch) =>
-      handleResumeUpload({
-        job_id: payload.job_id,
-        recruiter_id: payload.recruiter_id,
-        files: batch,
-      }),
-    );
+  const promises = payload.files.map((file) =>
+    handleResumeUpload({
+      job_id: payload.job_id,
+      recruiter_id: payload.recruiter_id,
+      files: [file],
+    }),
+  );
   const responses = await Promise.allSettled(promises);
   const failedResponses = responses.filter(
     ({ status }) => status === 'rejected',
