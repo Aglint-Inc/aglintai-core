@@ -50,6 +50,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
   '/company': ['company_settings_module'],
+  '/profile': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
@@ -118,7 +119,7 @@ const PERMISSIONS: Permissions = {
     'task_module',
   ],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
-  '/api/encryptData': ['integrations_module','manage_company'],
+  '/api/encryptData': ['integrations_module', 'manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
