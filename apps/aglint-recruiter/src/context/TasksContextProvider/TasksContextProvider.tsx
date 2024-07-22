@@ -874,6 +874,7 @@ export const agentsDetails = [
     last_name: 'agent',
     assignee: 'Agents',
     profile_image: '',
+    role: 'agent',
   },
   {
     user_id: PhoneAgentId,
@@ -881,6 +882,7 @@ export const agentsDetails = [
     last_name: 'agent',
     assignee: 'Agents',
     profile_image: '',
+    role: 'agent',
   },
   {
     user_id: SystemAgentId,
@@ -888,5 +890,6 @@ export const agentsDetails = [
     last_name: 'agent',
     assignee: 'Agents',
     profile_image: '',
+    role: 'agent',
   },
 ];
