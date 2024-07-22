@@ -8,9 +8,13 @@ import {
   useState,
 } from 'react';
 
-import { agentsDetails, TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  agentsDetails,
+  TasksAgentContextType,
+} from '@/src/context/TasksContextProvider/TasksContextProvider';
+
 import { useInterviewerList } from '../Components/AssigneeChip';
 import {
   AssigneeIcon,
