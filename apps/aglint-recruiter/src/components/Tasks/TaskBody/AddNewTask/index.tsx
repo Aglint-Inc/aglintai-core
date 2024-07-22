@@ -19,6 +19,8 @@ import { TaskInfoIndividual } from '@/devlink3/TaskInfoIndividual';
 import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import TaskOwners from '@/src/components/Jobs/Job/Candidate-List/Actions/createTask/TaskOwners';
+import { useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
@@ -39,7 +41,6 @@ import {
   JobCandidatesType,
 } from '../../utils';
 import { meetingCardType } from '../ViewTask/Progress/SessionCard';
-import AssigneeList from './AssigneeList';
 import CandidateList from './CandidateList';
 import JobList from './JobList';
 import PriorityList from './PriorityList';
@@ -72,10 +73,9 @@ function AddNewTask() {
   const [selectedType, setSelectedType] =
     useState<DB['public']['Enums']['task_type_enum']>('schedule');
 
-  const [selectedJob, setSelectedJob] = useState<{
-    name: string;
-    id: string;
-  } | null>(null);
+  const [selectedJob, setSelectedJob] = useState<
+    (ReturnType<typeof useApplicationsActions>['job'] & { name: string }) | null
+  >(null);
 
   const [selectedCandidate, setSelectedCandidate] =
     useState<JobCandidatesType>(null);
@@ -239,14 +239,14 @@ function AddNewTask() {
         setSelectedJob({
           name: selectedGroupTask?.applications.public_jobs.job_title,
           id: selectedGroupTask?.applications.public_jobs.id,
-        });
+        } as any);
         setSelectedCandidate(selectedGroupTask?.applications);
         break;
       case 'job':
         setSelectedJob({
           name: selectedGroupTask?.applications.public_jobs.job_title,
           id: selectedGroupTask?.applications.public_jobs.id,
-        });
+        } as any);
         break;
       case 'priority':
         setSelectedPriority(selectedGroupTask?.priority);
@@ -482,7 +482,7 @@ function AddNewTask() {
                       slotInfoData={
                         <JobList
                           selectedJob={selectedJob}
-                          setSelectedJob={setSelectedJob}
+                          setSelectedJob={setSelectedJob as any}
                           isOptionList={
                             selectedGroupBy.label !== 'candidate' &&
                             selectedGroupBy.label !== 'job'
@@ -573,7 +573,14 @@ function AddNewTask() {
                       textInfoName={'Assigned to'}
                       slotInfoData={
                         <Stack width={'100%'} direction={'column'}>
-                          <AssigneeList
+                          <TaskOwners
+                            hiringTeamIds={[
+                              selectedJob?.sourcer,
+                              selectedJob?.hiring_manager,
+                              selectedJob?.interview_coordinator,
+                              selectedJob?.recruiter,
+                            ]}
+                            isOptionList={true}
                             hideAgents={
                               selectedType === 'availability' ||
                               selectedType === 'self_schedule'

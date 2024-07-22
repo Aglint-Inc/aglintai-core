@@ -119,9 +119,9 @@ function AssigneeChip({
                               (assigneeDetails?.last_name ?? ''),
                           )}{' '}
                         </Typography>
-                        {/* <Typography variant='caption' fontSize={'12px'}>
-                          {capitalizeAll(assigneeDetails?.position)}
-                        </Typography> */}
+                        <Typography variant='caption' fontSize={'10px'}>
+                          {capitalizeAll(assigneeDetails?.role)}
+                        </Typography>
                       </Stack>
                     }
                   />

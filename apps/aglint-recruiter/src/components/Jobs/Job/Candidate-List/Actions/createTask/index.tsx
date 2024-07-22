@@ -14,6 +14,7 @@ import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList'
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
 import { assigneeType } from '@/src/components/Tasks/utils';
+import { useApplications } from '@/src/context/ApplicationsContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 
@@ -45,6 +46,9 @@ function CreateTask({
 }) {
   const { assignerList } = useTaskStatesContext();
   const { recruiterUser } = useAuthDetails();
+  const {
+    job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
+  } = useApplications();
 
   const [scheduleDate, setScheduleDate] = useState<{
     start_date: string;
@@ -166,6 +170,13 @@ function CreateTask({
         }
         slotAssignedTo={
           <TaskOwners
+            hiringTeamIds={[
+              hiring_manager,
+              recruiting_coordinator,
+              sourcer,
+              recruiter,
+            ]}
+            hideAgents={false}
             selectedAssignee={selectedAssignee}
             setSelectedAssignee={setSelectedAssignee}
             onChange={(owner: assigneeType) => {
