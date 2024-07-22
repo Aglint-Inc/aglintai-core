@@ -16,6 +16,7 @@ import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
 
 import { useActions } from './context';
+import toast from '@/src/utils/toast';
 
 const Actions = () => {
   const {
@@ -109,23 +110,22 @@ const ActionForm = ({
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        const {
-          body,
-          id: email_template_id,
-          subject,
-        } = all_company_email_template.find(
+        const emailTemplate = all_company_email_template.find(
           ({ type }) => type === e.target.value,
         );
-        handleUpdateAction({
-          id,
-          payload: {
-            email_template_id,
+        if (emailTemplate) {
+          const { body, id: email_template_id, subject } = emailTemplate;
+          handleUpdateAction({
+            id,
             payload: {
-              subject,
-              body,
+              email_template_id,
+              payload: {
+                subject,
+                body,
+              },
             },
-          },
-        });
+          });
+        } else toast.error('Template for this action is missing');
       }}
     />
   );
