@@ -44,7 +44,7 @@ export default async function handler(
             };
           }
         } catch (error: any) {
-          user_id && supabase.auth.admin.deleteUser(user_id);
+          user_id && (await supabase.auth.admin.deleteUser(user_id));
           return { error: String(error.message) };
         }
       }
