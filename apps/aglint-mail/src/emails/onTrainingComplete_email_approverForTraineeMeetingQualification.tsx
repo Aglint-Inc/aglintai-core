@@ -3,7 +3,8 @@ import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
 
-type EmailType = EmailTemplateAPi<'onQualified_email_approver'>;
+type EmailType =
+  EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>;
 
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
