@@ -1,9 +1,3 @@
-export const aglintLogo =
-  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/brand_logo.png?t=2024-07-19T04%3A12%3A33.952Z';
-
-export const companyLogoDummy =
-  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/company_logo.png?t=2024-07-19T04%3A22%3A16.344Z';
-
 interface SessionType {
   individual: string;
   debrief: string;
@@ -15,6 +9,16 @@ interface ScheduleType {
   phone_call: string;
   in_person_meeting: string;
 }
+
+export const durationIcon =
+  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/duration.png?t=2024-07-22T04%3A49%3A13.702Z';
+
+export const aglintLogo =
+  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/brand_logo.png?t=2024-07-19T04%3A12%3A33.952Z';
+
+export const companyLogoDummy =
+  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/company_logo.png?t=2024-07-19T04%3A22%3A16.344Z';
+
 export const sessionTypeIcons: SessionType = {
   individual:
     'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/individual.png?t=2024-07-19T04%3A24%3A25.281Z',
@@ -33,6 +37,3 @@ export const scheduleTypeIcons: ScheduleType = {
   in_person_meeting:
     'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/in_person_meeting.png?t=2024-07-19T04%3A27%3A29.064Z',
 };
-
-export const durationIcon =
-  'https://ecfwsyxpcuzxlxrkhxjz.supabase.co/storage/v1/object/public/email_template_assets/duration.png';
