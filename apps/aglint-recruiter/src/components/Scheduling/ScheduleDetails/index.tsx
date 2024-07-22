@@ -20,6 +20,7 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import CandidateInfo from '../Common/CandidateInfo';
 import Banners from './Banners';
+import ButtonGroup from './ButtonGroup';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
@@ -28,7 +29,6 @@ import { useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
-import ButtonGroup from './Overview/ButtonGroup';
 import RequestRescheduleDialog from './RequestRescheduleDialog';
 import RescheduleDialog from './RescheduleDialog';
 import { fetchFilterJson } from './utils';
@@ -345,7 +345,6 @@ function SchedulingViewComp() {
                 setIsCancelOpen={setIsCancelOpen}
                 isMeetingJobHiringTeam={isMeetingJobHiringTeam}
                 schedule={schedule}
-                setIsRescheduleOpen={setIsRescheduleOpen}
               />
             }
           />
