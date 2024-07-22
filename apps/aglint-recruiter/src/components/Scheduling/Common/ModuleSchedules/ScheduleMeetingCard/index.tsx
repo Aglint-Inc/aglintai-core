@@ -94,6 +94,7 @@ function ScheduleMeetingCard({
                           isPaused={false}
                           pause_json={null}
                           trainingType={user.training_type}
+                          interviewerType={user.interviewer_type}
                         />
                       </>
                     );
