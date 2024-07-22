@@ -54,7 +54,7 @@ const fetchUsers = async (
   }
 
   return filSup
-    .eq('recruiter_user.status', status)
+    .eq('recruiter_user.join_status', status)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data
