@@ -147,34 +147,38 @@ function TaskOwners({
                   })}
                 </>
               )}
-              Hiring Team
-              {(hiringTeam ?? []).map((ele, i) => {
-                return (
-                  <Stack
-                    width={'100%'}
-                    p={'var(--space-1)'}
-                    key={i}
-                    sx={{
-                      cursor: 'pointer',
-                      '&:hover': {
-                        bgcolor: 'var(--neutral-2)',
-                      },
-                    }}
-                    onClick={() => {
-                      setSelectedAssignee(ele);
-                      handleClose();
-                      if (onChange) {
-                        onChange(ele);
-                      }
-                    }}
-                  >
-                    <AssigneeChip
-                      disableHoverListener={true}
-                      assigneeId={ele.user_id}
-                    />
-                  </Stack>
-                );
-              })}
+              {hiringTeamIds.length ? (
+                <>
+                  Hiring Team
+                  {(hiringTeam ?? []).map((ele, i) => {
+                    return (
+                      <Stack
+                        width={'100%'}
+                        p={'var(--space-1)'}
+                        key={i}
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            bgcolor: 'var(--neutral-2)',
+                          },
+                        }}
+                        onClick={() => {
+                          setSelectedAssignee(ele);
+                          handleClose();
+                          if (onChange) {
+                            onChange(ele);
+                          }
+                        }}
+                      >
+                        <AssigneeChip
+                          disableHoverListener={true}
+                          assigneeId={ele.user_id}
+                        />
+                      </Stack>
+                    );
+                  })}
+                </>
+              ) : null}
               Others
               {(otherTeam ?? [])
                 .filter((ele) => ele.user_id !== SystemAgentId)
