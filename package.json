@@ -17,8 +17,8 @@
     "pull": "git pull origin development --no-rebase"
   },
   "devDependencies": {
-    "prettier": "^3.3.2",
-    "turbo": "^2.0.4"
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.6"
   },
   "packageManager": "npm@10.5.2",
   "engines": {
