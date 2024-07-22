@@ -1,7 +1,9 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import IconPlusFilter from '@/src/components/Scheduling/Schedules/Filters/FilterChip/IconPlusFilter';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -126,11 +128,12 @@ function SlotTrainingMembers({
 
       {allTrainees.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
-          <ButtonSurface
-            size={1}
+          <ButtonSoft
+            size={2}
             isRightIcon={false}
-            slotIcon={<IconPlusFilter />}
-            textButton={'Add'}
+            isLeftIcon={true}
+            slotIcon={<GlobalIcon iconName='person_add' size={5} />}
+            textButton={'Add Training Member'}
             onClickButton={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);
