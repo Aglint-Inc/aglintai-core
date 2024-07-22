@@ -22,7 +22,7 @@ export const initialEditModule: ModuleType = {
     noShadow: 2,
     noReverseShadow: 2,
     reqruire_approval: false,
-    approve_users: [],
+    approve_users: [], // this users come from interview_module_approve_users table
   },
   description: '',
   instructions: '',

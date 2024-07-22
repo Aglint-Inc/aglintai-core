@@ -14,9 +14,6 @@ import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import {
-  useGetMeetingsByModuleId
-} from '../../queries/hooks';
-import {
   setIsAddMemberDialogOpen,
   setIsSettingsDialogOpen,
   setTrainingStatus,
@@ -49,8 +46,6 @@ function SlotBodyComp({
 }: SlotBodyCompProps) {
   const router = useRouter();
   const { loading } = useSchedulingContext();
-
-  const { data: meetingData, isLoading } = useGetMeetingsByModuleId();
 
   const currentTab = (router.query.tab ||
     'members') as TabsModuleMembers['queryParams'];
@@ -115,7 +110,7 @@ function SlotBodyComp({
   return (
     <>
       <SettingsDialog editModule={editModule} />
-      <AddMemberDialog editModule={editModule} />
+      <AddMemberDialog editModule={editModule} refetch={refetch} />
       <DeleteMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
@@ -171,18 +166,10 @@ function SlotBodyComp({
                       editModule.settings?.require_training
                     }
                     slotQualifiedMemberList={
-                      !isLoading && (
-                        <SlotQualifiedMembers
-                          editModule={editModule}
-                          meetingData={meetingData}
-                        />
-                      )
+                      <SlotQualifiedMembers editModule={editModule} />
                     }
                     slotMembersInTraining={
-                      <SlotTrainingMembers
-                        editModule={editModule}
-                        meetingData={meetingData}
-                      />
+                      <SlotTrainingMembers editModule={editModule} />
                     }
                     onClickAddMember={{
                       onClick: () => {

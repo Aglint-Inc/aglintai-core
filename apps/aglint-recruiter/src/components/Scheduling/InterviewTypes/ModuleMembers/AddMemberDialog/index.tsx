@@ -17,7 +17,13 @@ import {
 } from '../../store';
 import { ModuleType } from '../../types';
 
-function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
+function AddMemberDialog({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
@@ -27,7 +33,10 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
   const initalOpen = useModulesStore((state) => state.initalOpen);
 
-  const { addMemberHandler } = useAddMemberHandler();
+  const { addMemberHandler } = useAddMemberHandler({
+    editModule,
+    refetch,
+  });
 
   const allMembers = members.filter(
     (user) =>
@@ -40,7 +49,6 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
     try {
       setLoading(true);
       await addMemberHandler({
-        module_id: editModule.id,
         selectedUsers: selectedUsers,
         trainingStatus: trainingStatus,
       });

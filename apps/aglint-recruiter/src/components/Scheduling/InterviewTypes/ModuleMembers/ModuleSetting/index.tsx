@@ -48,17 +48,27 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
         description: localModule.description,
         settings: {
           ...localModule.settings,
-          approve_users: selectedUsers.map((sel) => sel.user_id),
         },
         department: localModule.department,
       })
       .eq('id', editModule.id)
       .select();
+
     if (!error) {
-      const updatedEditModule = {
+      updateApproveUsers(
+        editModule.settings.approve_users,
+        selectedUsers.map((sel) => sel.user_id),
+        editModule.id,
+      );
+
+      const updatedEditModule: ModuleType = {
         ...editModule,
         ...data[0],
-      } as ModuleType;
+        settings: {
+          ...editModule.settings,
+          approve_users: selectedUsers.map((sel) => sel.user_id),
+        },
+      };
 
       queryClient.setQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({
@@ -69,6 +79,35 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
         },
       );
       setIsModuleSettingsDialogOpen(false);
+    }
+  };
+
+  const updateApproveUsers = async (
+    olduser_ids: string[],
+    newuser_ids: string[],
+    module_id: string,
+  ) => {
+    // Calculate the difference
+    const usersToDelete = olduser_ids.filter(
+      (user_id) => !newuser_ids.includes(user_id),
+    );
+    const usersToInsert = newuser_ids.filter(
+      (user_id) => !olduser_ids.includes(user_id),
+    );
+
+    // Delete users no longer approved
+    if (usersToDelete.length > 0) {
+      await supabase
+        .from('interview_module_approve_users')
+        .delete()
+        .in('user_id', usersToDelete);
+    }
+
+    // Insert new approved users
+    if (usersToInsert.length > 0) {
+      await supabase
+        .from('interview_module_approve_users')
+        .insert(usersToInsert.map((user_id) => ({ user_id, module_id })));
     }
   };
 
@@ -149,7 +188,7 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           slotButtonPrimary={
             localModule?.settings?.require_training && (
               <ButtonSolid
-                size={1}
+                size={2}
                 textButton='Update'
                 onClickButton={{ onClick: updateModule }}
               />

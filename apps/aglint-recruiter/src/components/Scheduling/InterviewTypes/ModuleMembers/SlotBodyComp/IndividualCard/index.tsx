@@ -2,6 +2,7 @@ import { Collapse, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
@@ -24,21 +25,16 @@ import {
   setIsResumeDialogOpen,
   setSelUser,
 } from '../../../store';
-import { MemberType, ModuleType } from '../../../types';
+import { ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
 
 function IndividualCard({
   editModule,
   user,
-  member,
   progressDataUser,
 }: {
   editModule: ModuleType;
-  user: ModuleType['relations'][0] & {
-    weekly: number;
-    daily: number;
-  };
-  member: MemberType;
+  user: ModuleType['relations'][0];
   progressDataUser: ReturnType<typeof useProgressModuleUsers>['data'];
 }) {
   const router = useRouter();
@@ -50,29 +46,41 @@ function IndividualCard({
     (editModule.settings.reqruire_approval &&
       editModule.settings.approve_users.includes(user.user_id));
 
-  const userSettings = user.recruiter_user.scheduling_settings;
-
   const shadowProgress = progressDataUser.filter(
-    (prog) => prog.training_type == 'shadow',
+    (prog) => prog.interview_session_relation.training_type == 'shadow',
   );
 
   const mutatedShadowProgress = Array.from({
-    length: editModule.settings.noShadow - shadowProgress.length,
+    length: user.number_of_shadow - shadowProgress.length,
   });
 
   const reverseShadowProgress = progressDataUser.filter(
-    (prog) => prog.training_type == 'reverse_shadow',
+    (prog) => prog.interview_session_relation.training_type == 'reverse_shadow',
   );
 
   const mutatedReverseShadowProgress = Array.from({
-    length: editModule.settings.noReverseShadow - reverseShadowProgress.length,
+    length: user.number_of_reverse_shadow - reverseShadowProgress.length,
   });
+
+  const userSettings = user.recruiter_user.scheduling_settings;
+
+  const member = user.recruiter_user;
+
+  const textWeekInterview =
+    userSettings.interviewLoad.dailyLimit.type === 'Hours'
+      ? `${user.recruiter_user.total_hours_this_week} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`
+      : `${user.recruiter_user.total_interviews_this_week} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`;
+
+  const textTodayInterview =
+    userSettings.interviewLoad.dailyLimit.type === 'Hours'
+      ? `${user.recruiter_user.total_hours_today} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`
+      : `${user.recruiter_user.total_interviews_today} / ${userSettings.interviewLoad.dailyLimit.value}  ${userSettings.interviewLoad.dailyLimit.type}`;
 
   return (
     <>
       <MemberListCard
-        textWeekInterview={`${user.weekly} ${userSettings.interviewLoad.dailyLimit.type}`}
-        textTodayInterview={`${user.daily} ${userSettings.interviewLoad.dailyLimit.type}`}
+        textWeekInterview={textWeekInterview}
+        textTodayInterview={textTodayInterview}
         isPauseResumeVisible={Boolean(user.pause_json)}
         onClickCard={{
           onClick: () => {
@@ -167,6 +175,7 @@ function IndividualCard({
                               }
                               textPanelName={prog.interview_session.name}
                             />
+                            <ButtonTextSmall />
                           </>
                         }
                       />
