@@ -4,9 +4,5 @@ import * as Types from "./types";
 declare function PwResetForm(props: {
   as?: React.ElementType;
   slotForm?: Types.Devlink.Slot;
-  contactLink?: Types.Basic.Link;
-  onclickReset?: Types.Devlink.RuntimeProps;
-  onclickBack?: Types.Devlink.RuntimeProps;
-  isDisable?: Types.Visibility.VisibilityConditions;
-  logo?: Types.Asset.Image;
+  slotButton?: Types.Devlink.Slot;
 }): React.JSX.Element;
