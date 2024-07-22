@@ -260,6 +260,8 @@ export const PATHS = [
 '/api/emails/interviewerResumed_email_admin',
 '/api/emails/meetingAccepted_email_organizer',
 '/api/emails/meetingDeclined_email_organizer',
+'/api/emails/onQualified_email_approver',
+'/api/emails/onQualified_email_trainee',
 '/api/emails/onRShadowComplete_email_trainee',
 '/api/emails/onShadowComplete_email_trainee',
 '/api/emails/onSignup_email_admin',
