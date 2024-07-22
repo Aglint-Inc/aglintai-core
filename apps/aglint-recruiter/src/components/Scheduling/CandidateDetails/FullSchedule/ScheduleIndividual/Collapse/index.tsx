@@ -148,6 +148,9 @@ function CollapseContent({
                       profile_image: item.profile_image,
                     }}
                     trainingType={user.interview_session_relation.training_type}
+                    interviewerType={
+                      user.interview_session_relation.interviewer_type
+                    }
                   />
                 );
               })}
@@ -189,7 +192,10 @@ function CollapseContent({
                 </Stack>
               )}
           </>
-          <CancelBanners cancelReasons={cancelReasons} currentSession={currentSession} />
+          <CancelBanners
+            cancelReasons={cancelReasons}
+            currentSession={currentSession}
+          />
         </Stack>
       )}
     </Collapse>
