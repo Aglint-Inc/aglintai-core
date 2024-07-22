@@ -147,11 +147,11 @@ export const emailTemplateCopy: CompanyEmailType = {
     description:
       'When the interviewer resumed automatically, this email will be sent.',
   },
-  onShadowComplete_email_trainee: {
+  interviewEnd_email_shadowTraineeForMeetingAttendence: {
     heading: 'Shadow Complete',
     description: '',
   },
-  onRShadowComplete_email_trainee: {
+  interviewEnd_email_rShadowTraineeForMeetingAttendence: {
     heading: 'Reverse Shadow Complete',
     description: '',
   },
@@ -159,7 +159,7 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Qualified Trainee',
     description: 'after qualified a trainee this mail is send to trainee',
   },
-  onQualified_email_approver: {
+  onTrainingComplete_email_approverForTraineeMeetingQualification: {
     heading: 'Qualified Confirmation Approver',
     description: 'qualified trainee confirmation for approver',
   },
@@ -172,8 +172,10 @@ export const emailTemplateCopy: CompanyEmailType = {
   interviewEnd_slack_interviewerForFeedback: null,
   onQualified_email_approved: null,
   onQualified_slack_approved: null,
-  onQualified_slack_approver: null,
+  onTrainingComplete_slack_approverForTraineeMeetingQualification: null,
   onQualified_slack_trainee: null,
   onRShadowComplete_slack_trainee: null,
   onShadowComplete_slack_trainee: null,
+  interviewEnd_slack_organizerForMeetingStatus: null,
+  interviewEnd_email_organizerForMeetingStatus: null,
 };
