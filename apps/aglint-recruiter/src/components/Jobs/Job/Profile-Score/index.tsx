@@ -45,6 +45,7 @@ import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Text } from '@/devlink2';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -778,25 +779,42 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      {firstVisit && (
+      
+        <Stack
+          bgcolor={'white'}
+          borderRadius={'4px'}
+          display={'flex'}
+          flexDirection={'column'}
+          gap={'4px'}
+          padding={'var(--space-3)'}
+        >
+          <Text content='How It Works' weight={'medium'} size={2} color={'info'}/>
+          <Text
+            content='Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click "Reset" to restore default settings.' 
+            size={2}
+            weight={'regular'}
+            color='neutral'
+
+          />
+         
+        </Stack>
+      
+      
+
+       {firstVisit && (
+        <Stack marginTop={'16px'}>
         <GlobalInfo
-          color={'neutral'}
-          textTitle={'How It Works'}
-          textDescription={
-            "Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click 'Reset' to restore default settings."
-          }
-          showCloseButton
-          onClickClose={{ onClick: () => handleTip() }}
-        />
-      )}
-      <GlobalInfo
         color={'purple'}
         iconName='lightbulb'
         textTitle={'Pro Tip'}
         textDescription={
           'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
         }
+        showCloseButton
+        onClickClose={{ onClick: () => handleTip() }}
       />
+      </Stack>
+       )}
     </>
   );
 };
