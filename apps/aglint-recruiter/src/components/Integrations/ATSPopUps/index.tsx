@@ -2,15 +2,15 @@
 import { Dialog, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { IntegrationLoading } from '@/devlink2/IntegrationLoading';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { LearnHowAshby } from '@/devlink3/LearnHowAshby';
 import { LearnHowGreenhouse } from '@/devlink3/LearnHowGreenhouse';
 import { LearnHowLever } from '@/devlink3/LearnHowLever';
-import toast from '@/src/utils/toast';
 
-import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { PopUpReasonTypes } from '../types';
@@ -145,40 +145,43 @@ function ATSPopUps({
           </ShowCode>
         </ShowCode.When>
         <ShowCode.Else>
-          <ConfirmationPopup
-            isIcon={false}
-            textPopupTitle={
-              <ShowCode>
-                <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
-                  Connect Greenhouse
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_lever'}>
-                  Connect Lever
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_ashby'}>
-                  Connect Ashby
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_greenhouse'}>
-                  Greenhouse
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_lever'}>
-                  Lever
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_ashby'}>
-                  Ashby
-                </ShowCode.When>
-              </ShowCode>
+          <DcPopup
+            popupName={
+              reason === 'connect_greenhouse'
+                ? 'Connect Greenhouse'
+                : reason === 'connect_lever'
+                  ? 'Connect Lever'
+                  : reason === 'connect_ashby'
+                    ? 'Connect Ashby'
+                    : reason === 'update_greenhouse'
+                      ? 'Greenhouse'
+                      : reason === 'update_lever'
+                        ? 'Lever'
+                        : reason === 'update_ashby' && 'Ashby'
             }
-            textPopupDescription={
+            slotBody={
               <Stack direction={'column'} gap={1}>
                 <>
-                  <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
+                  <ShowCode.When
+                    isTrue={
+                      reason === 'connect_greenhouse' ||
+                      reason === 'update_greenhouse'
+                    }
+                  >
                     Greenhouse API key
                   </ShowCode.When>
-                  <ShowCode.When isTrue={reason === 'connect_lever'}>
+                  <ShowCode.When
+                    isTrue={
+                      reason === 'connect_lever' || reason === 'update_lever'
+                    }
+                  >
                     Lever API key
                   </ShowCode.When>
-                  <ShowCode.When isTrue={reason === 'connect_ashby'}>
+                  <ShowCode.When
+                    isTrue={
+                      reason === 'connect_ashby' || reason === 'update_ashby'
+                    }
+                  >
                     Ashby API key
                   </ShowCode.When>
                 </>
@@ -191,39 +194,32 @@ function ATSPopUps({
                 </ShowCode>
               </Stack>
             }
-            isGreyButtonVisible={true}
-            // isGreyButtonVisible={
-            //   reason !== 'connect_greenhouse' &&
-            //   reason !== 'connect_ashby' &&
-            //   reason !== 'connect_lever'
-            // }
-            textPopupButton={
-              <ShowCode>
-                <ShowCode.When
-                  isTrue={
+            onClickClosePopup={{ onClick: close }}
+            slotButtons={
+              <>
+                <ButtonSoft
+                  textButton={'Cancel'}
+                  color={'neutral'}
+                  size={2}
+                  onClickButton={{ onClick: close }}
+                />
+                <ButtonSolid
+                  textButton={
                     reason === 'connect_greenhouse' ||
                     reason === 'connect_ashby' ||
                     reason === 'connect_lever'
+                      ? 'Connect'
+                      : reason === 'update_greenhouse' ||
+                          reason === 'update_ashby' ||
+                          reason === 'update_lever'
+                        ? 'Update'
+                        : ''
                   }
-                >
-                  Connect
-                </ShowCode.When>
-                <ShowCode.When
-                  isTrue={
-                    reason === 'update_greenhouse' ||
-                    reason === 'update_ashby' ||
-                    reason === 'update_lever'
-                  }
-                >
-                  Update
-                </ShowCode.When>
-              </ShowCode>
+                  size={2}
+                  onClickButton={{ onClick: action }}
+                />
+              </>
             }
-            
-            // isBlueButtonVisible={false}
-
-            onClickCancel={{ onClick: close }}
-            onClickAction={{ onClick: action }}
           />
         </ShowCode.Else>
       </ShowCode>
