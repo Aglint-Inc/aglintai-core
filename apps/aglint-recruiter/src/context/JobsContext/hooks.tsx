@@ -35,10 +35,15 @@ const useJobActions = () => {
     isScreeningEnabled,
   } = useAuthDetails();
 
-  const jobs = useJobsRead();
-
   const { checkPermissions, devlinkProps: getDevlinkProps } =
     useRolesAndPermissions();
+
+  const manageJob = useMemo(
+    () => checkPermissions(['manage_job']),
+    [checkPermissions],
+  );
+
+  const jobs = useJobsRead(manageJob);
 
   const customJobs = useMemo(
     () => ({
@@ -85,11 +90,6 @@ const useJobActions = () => {
       jobDelete(jobId);
     }
   };
-
-  const manageJob = useMemo(
-    () => checkPermissions(['manage_job']),
-    [checkPermissions],
-  );
 
   const devlinkProps = useMemo(
     () => getDevlinkProps(['manage_job']),

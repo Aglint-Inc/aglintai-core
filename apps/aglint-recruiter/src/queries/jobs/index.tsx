@@ -10,12 +10,12 @@ import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
 import { Job, JobCreate, JobInsert } from './types';
 
-export const useJobsRead = () => {
+export const useJobsRead = (manageJob: boolean = false) => {
   const { recruiter_id } = useAuthDetails();
   const { queryKey } = jobsQueryKeys.jobs();
   return useQuery({
     queryKey,
-    queryFn: () => readJobs(recruiter_id),
+    queryFn: () => readJobs(recruiter_id, manageJob),
     enabled: !!recruiter_id,
   });
 };
@@ -128,14 +128,16 @@ export const useJobDelete = () => {
   return mutation;
 };
 
-export const readJobs = async (recruiter_id: string) =>
-  (
-    await supabase
-      .from('job_view')
-      .select()
-      .eq('recruiter_id', recruiter_id)
-      .throwOnError()
-  ).data;
+export const readJobs = async (recruiter_id: string, manageJob: boolean) => {
+  const query = supabase
+    .from('job_view')
+    .select()
+    .eq('recruiter_id', recruiter_id);
+
+  if (!manageJob) query.eq('status', 'published');
+
+  return (await query.throwOnError()).data;
+};
 
 export const readJob = async (id: string) =>
   (

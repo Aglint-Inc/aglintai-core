@@ -85,10 +85,8 @@ const TeamManagement = () => {
   const uniqueStatus = [
     ...new Set(
       members
-        .filter((ele) => Boolean(ele.join_status?.length))
-        .map(
-          (item) => item.join_status && String(item.join_status).toLowerCase(),
-        ),
+        .filter((ele) => Boolean(ele.status?.length))
+        .map((item) => item.status && String(item.status).toLowerCase()),
     ),
   ].map((item) => (item === 'joined' ? 'active' : item));
 
@@ -104,7 +102,7 @@ const TeamManagement = () => {
         !selectedStatus.length ||
         selectedStatus
           .map((item) => (item === 'active' ? 'joined' : item))
-          .includes(String(member.join_status).toLowerCase());
+          .includes(String(member.status).toLowerCase());
       const roleMatch =
         !selectedRoles.length ||
         selectedRoles.includes(String(member.role).toLowerCase());
@@ -122,7 +120,7 @@ const TeamManagement = () => {
   ]);
 
   const pendingList = members.filter(
-    (member) => member.join_status?.toLocaleLowerCase() === 'invited',
+    (member) => member.status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
 
@@ -295,9 +293,7 @@ const TeamManagement = () => {
                       data: updatedMem,
                     });
                   }}
-                  canSuspend={
-                    member.join_status !== 'invited' && member.role !== 'admin'
-                  }
+                  canSuspend={member.role !== 'admin'}
                 />
               ))}
             </ShowCode.When>
