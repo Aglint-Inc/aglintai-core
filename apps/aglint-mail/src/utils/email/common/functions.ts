@@ -10,21 +10,21 @@ export function durationCalculator(min) {
   return `${m} Minutes`;
 }
 
-type sessionTypeEnum = 'individual' | 'debrief' | 'panel';
+type SessionTypeEnum = 'individual' | 'debrief' | 'panel';
 
-export function sessionTypeIcon(platform: sessionTypeEnum) {
+export function sessionTypeIcon(platform: SessionTypeEnum) {
   if (platform === 'individual') return sessionTypeIcons.individual;
   if (platform === 'debrief') return sessionTypeIcons.debrief;
   if (platform === 'panel') return sessionTypeIcons.panel;
 }
 
-type scheduleTypeEnum =
+type ScheduleTypeEnum =
   | 'zoom'
   | 'google_meet'
   | 'phone_call'
   | 'in_person_meeting';
 
-export function scheduleTypeIcon(platform: scheduleTypeEnum) {
+export function scheduleTypeIcon(platform: ScheduleTypeEnum) {
   if (platform === 'zoom') return scheduleTypeIcons.zoom;
   if (platform === 'google_meet') return scheduleTypeIcons.google_meet;
   if (platform === 'phone_call') return scheduleTypeIcons.phone_call;
