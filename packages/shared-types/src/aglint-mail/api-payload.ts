@@ -19,6 +19,9 @@ import {
   interviewStartEmailOrganizerSchema,
   interviewerResumedEmailAdminSchema,
   meetingDeclinedEmailOrganizerSchema,
+  onQualifiedEmailApproverSchema,
+  onQualifiedEmailTraineeSchema,
+  onShadowCompleteEmailTraineeSchema,
   onSignupEmailAdminSchema,
   phoneScreenEmailCandidateSchema,
   phoneScreenRemindEmailApplicantSchema,
@@ -341,6 +344,50 @@ type Payloads = {
     api_payload: v.InferInput<typeof interviewerResumedEmailAdminSchema>;
     comp_email_placeholders: {
       [key in (typeof emailVariablePayloads)["interviewerResumed_email_admin"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  onShadowComplete_email_trainee: {
+    api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["onShadowComplete_email_trainee"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  onRShadowComplete_email_trainee: {
+    api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["onRShadowComplete_email_trainee"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  onQualified_email_trainee: {
+    api_payload: v.InferInput<typeof onQualifiedEmailTraineeSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["onQualified_email_trainee"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+    };
+  };
+  onQualified_email_approver: {
+    api_payload: v.InferInput<typeof onQualifiedEmailApproverSchema>;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["onQualified_email_approver"][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;

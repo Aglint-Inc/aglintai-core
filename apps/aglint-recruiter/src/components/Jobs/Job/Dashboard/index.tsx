@@ -904,7 +904,14 @@ const JobDetailsModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
-      slotIcon={<GlobalIcon iconName='edit_square' color={'inherit'} size={6} weight={'regular'}/>}
+      slotIcon={
+        <GlobalIcon
+          iconName='edit_square'
+          color={'inherit'}
+          size={6}
+          weight={'regular'}
+        />
+      }
     />
   );
 };
