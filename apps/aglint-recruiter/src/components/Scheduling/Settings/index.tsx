@@ -28,21 +28,28 @@ import {
 } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
+import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { InterviewLoad } from '@/devlink2/InterviewLoad';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { SublinkTab } from '@/devlink2/SublinkTab';
+import { Text } from '@/devlink2/Text';
 import { TextWithBg } from '@/devlink2/TextWithBg';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import {DayOffHelper} from '@/devlink3/DayOffHelper';
+import {DebreifHelperText } from '@/devlink3/DebreifHelperText';
+import {KeywordsHelper } from '@/devlink3/KeywordsHelper';
+import {WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
@@ -61,16 +68,6 @@ import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
 import { settingsItems, settingSubNavItem } from './SubNav/utils';
-import {
-  DayOffHelper,
-  DebreifHelperText,
-  KeywordsHelper,
-  WorkingHoursHelper,
-} from '@/devlink3';
-import { Text } from '@/devlink2/Text';
-import { Span } from 'next/dist/trace';
-import { GlobalInfo } from '@/devlink2';
-import { ButtonSoft } from '@/devlink';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
