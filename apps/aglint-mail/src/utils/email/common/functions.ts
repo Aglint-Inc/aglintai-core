@@ -32,7 +32,7 @@ export function scheduleTypeIcon(platform: ScheduleTypeEnum) {
     return scheduleTypeIcons.in_person_meeting;
 }
 
-export function platformRemoveUnderscore(name) {
+export function platformRemoveUnderscore(name: ScheduleTypeEnum) {
   if (name === 'google_meet') return 'Google Meet';
   else if (name === 'in_person_meeting') return 'In Person Meeting';
   else if (name === 'phone_call') return 'Phone Call';
