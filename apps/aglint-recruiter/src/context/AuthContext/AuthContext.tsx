@@ -384,9 +384,7 @@ const AuthProvider = ({ children }) => {
         allRecruiterRelation: allRecruiterRelation,
         setAllRecruiterRelation,
         setRecruiterUser,
-        members: (members || []).filter(
-          (item) => item.join_status == 'joined' && !item.is_suspended,
-        ),
+        members: (members || []).filter((item) => item.status == 'active'),
         allMember: members,
         setMembers,
         handelMemberUpdate,
