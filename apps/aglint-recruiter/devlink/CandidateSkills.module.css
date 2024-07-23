@@ -1,5 +1,6 @@
 .cdb-card-tag {
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-2);
-  background-color: var(--sky-a3);
+  background-color: var(--accent-3);
+  color: var(--accent-11);
 }

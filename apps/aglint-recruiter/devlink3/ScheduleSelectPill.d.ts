@@ -7,4 +7,5 @@ declare function ScheduleSelectPill(props: {
   textScheduleName?: React.ReactNode;
   onClickClose?: Types.Devlink.RuntimeProps;
   textTime?: React.ReactNode;
+  isCloseVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
