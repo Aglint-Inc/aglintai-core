@@ -663,6 +663,7 @@ function RequestAvailability() {
                 ? selectedSessions.map((ele, i) => {
                     return (
                       <ScheduleSelectPill
+                        isCloseVisible={false}
                         slotIcons={
                           <ShowCode>
                             <ShowCode.When
