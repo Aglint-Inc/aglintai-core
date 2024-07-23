@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
@@ -6,6 +7,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
@@ -36,7 +38,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
       selectedSessionIds: state.selectedSessionIds,
       isSendingToCandidate: state.isSendingToCandidate,
     }));
-
+  const { selectedApplication } = useSchedulingApplicationStore();
   const {
     isScheduleNowOpen,
     scheduleFlow,
@@ -117,7 +119,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           }}
           slotHeaderIcon={<HeaderIcon />}
           textDrawertitle={
-            stepScheduling === 'reschedule'
+            (stepScheduling === 'reschedule'
               ? 'Reschedule'
               : stepScheduling === 'schedule_all_options'
                 ? 'Schedule'
@@ -133,7 +135,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                           ? 'Update Request Availability'
                           : scheduleFlow === 'debrief'
                             ? 'Schedule Debrief'
-                            : 'Schedule Now'
+                            : 'Schedule Now') +
+            ` to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${capitalizeFirstLetter(selectedApplication.public_jobs.job_title)}`
           }
           slotButtons={
             <>
