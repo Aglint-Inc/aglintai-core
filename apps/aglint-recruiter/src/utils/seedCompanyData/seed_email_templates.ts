@@ -241,4 +241,16 @@ export const seed_email_templates: Pick<
     from_name: '',
     subject: '',
   },
+  {
+    subject: '<p>Congratulations on Your Qualification</p>',
+    body: '<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span>,</p><p></p><p>Congratulations, <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> ! You are now qualified to conduct interviews for <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span>.</p><p></p><p>From, <span class="temp-variable" data-type="temp-variable" data-id="approverName">{{approverName}}</span></p>',
+    from_name: '{{companyName}}',
+    type: 'onQualified_email_trainee',
+  },
+  {
+    subject: '',
+    body: '',
+    from_name: '',
+    type: 'onQualified_slack_trainee',
+  },
 ];

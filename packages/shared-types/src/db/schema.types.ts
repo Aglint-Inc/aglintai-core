@@ -6134,6 +6134,7 @@ export type Database = {
         | "meetingAccepted"
         | "candidateBook"
         | "onQualified"
+        | "onTrainingComplete"
     }
     CompositeTypes: {
       location_type: {
