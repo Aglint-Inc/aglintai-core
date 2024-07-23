@@ -13,21 +13,21 @@ export async function fetchUtil(
 ) {
   const [data] = supabaseWrap(
     await supabaseAdmin
-      .from('interview_meeting')
+      .from('meeting_details')
       .select(
-        '*,recruiter_user(first_name,last_name,email,scheduling_settings),interview_schedule(applications(candidates(first_name,last_name,recruiter_id,recruiter(name,logo)),public_jobs(job_title)))',
+        '*,recruiter_id,recruiter_user(first_name,last_name,email,scheduling_settings),applications(candidates(first_name,last_name,recruiter_id,recruiter(name,logo)),public_jobs(job_title))',
       )
-      .eq('id', req_body.meeting_id),
+      .eq('session_id', req_body.session_id),
   );
 
-  const recruiter_id =
-    data.interview_schedule.applications.candidates.recruiter_id;
+  const recruiter_id = data.recruiter_id;
   const organizer = data.recruiter_user;
-  const candidate = data.interview_schedule.applications.candidates;
-  const meeting_details = data;
-  const company = data.interview_schedule.applications.candidates.recruiter;
-  const job = data.interview_schedule.applications.public_jobs.job_title;
+  const candidate = data.applications.candidates;
+  const company = data.applications.candidates.recruiter;
+  const job = data.applications.public_jobs.job_title;
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
+  const start_time = data.start_time;
+  const end_time = data.end_time;
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -45,10 +45,10 @@ export async function fetchUtil(
       OrganizerTimeZone: org_tz,
       companyName: company.name,
       jobRole: job,
-      dateRange: dayjsLocal(meeting_details.start_time)
+      dateRange: dayjsLocal(start_time)
         .tz(org_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      time: `${dayjsLocal(meeting_details.start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(meeting_details.end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
+      time: `${dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
       meetingStatusUpdateLink: `<a href="#" target="_blank">here</a>`,
     };
 

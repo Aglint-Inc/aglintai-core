@@ -178,5 +178,5 @@ export const onQualifiedEmailApproverSchema = v.object({
   organizer_id: v.string(),
 });
 export const interviewEndEmailOrganizerForMeetingStatusSchema = v.object({
-  meeting_id: v.string(),
+  session_id: v.string(),
 });
