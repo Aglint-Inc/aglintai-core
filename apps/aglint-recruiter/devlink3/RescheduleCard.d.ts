@@ -18,4 +18,5 @@ declare function RescheduleCard(props: {
   onClickIgnore?: Types.Devlink.RuntimeProps;
   isTakeActionVisible?: Types.Visibility.VisibilityConditions;
   onClickTakeAction?: Types.Devlink.RuntimeProps;
+  slotDateReason?: Types.Devlink.Slot;
 }): React.JSX.Element;

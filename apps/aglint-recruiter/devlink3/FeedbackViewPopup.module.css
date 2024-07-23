@@ -68,7 +68,7 @@
 
 .fvp-not-submitted-wrap {
   display: flex;
-  min-height: 420px;
+  min-height: 350px;
   justify-content: center;
   align-items: center;
 }

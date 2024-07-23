@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./CandidateHistoryCard.module.css";
 
@@ -72,21 +73,17 @@ export function CandidateHistoryCard({
           className={_utils.cx(_styles, "search-wrap-pill")}
           tag="div"
         >
-          {isSearchByJobVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "search-by-job")}
-              tag="div"
-              {...colorPropsCategory}
-            >
-              <Text content={textCategory} size="1" />
-            </_Builtin.Block>
-          ) : null}
           {isSearchByTypeVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "search-by-typing")}
               tag="div"
             >
               <Text size="1" content="Search by typing" />
+            </_Builtin.Block>
+          ) : null}
+          {isSearchByJobVisible ? (
+            <_Builtin.Block tag="div" {...colorPropsCategory}>
+              <GlobalBadge textBadge={textCategory} />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

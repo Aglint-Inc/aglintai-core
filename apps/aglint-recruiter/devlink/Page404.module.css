@@ -6,7 +6,7 @@
 
   background-color: var(--neutral-2);
 
-  height: calc(100vh - 48px);
+  height: 100vh;
 }
 
 @media screen and (max-width: 767px) {
@@ -59,6 +59,17 @@
   .page-404-grid {
     grid-template-columns: 1fr;
   }
+}
+
+._404_text {
+  display: flex;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 #w-node-_8f2cfa19-00d6-d9eb-a7b1-f3f7cdbabd27-cdbabd24 {

@@ -55,9 +55,13 @@ export function WorkflowDetail({
         >
           {slotConnectedJobs ?? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "connected_job")}
+              className={_utils.cx(_styles, "connected_job-copy")}
               tag="div"
             >
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
               <TextWithIcon iconName="work" textContent="Managing Director" />
             </_Builtin.Block>
           )}
