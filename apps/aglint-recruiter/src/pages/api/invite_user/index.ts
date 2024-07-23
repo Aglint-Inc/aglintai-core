@@ -23,32 +23,34 @@ export default async function handler(
     'POST',
     async ({ body }) => {
       const { users, recruiter_id } = body;
-      const { role, user_id: id } = await server_getUserRoleAndId({
+      const { 
+        // role,
+         user_id: id } = await server_getUserRoleAndId({
         getVal: (name) => req.cookies[String(name)],
       });
-      if (role === 'admin') {
-        let user_id: string = null;
-        try {
-          for (let user of users) {
-            const recUser = await registerMember(user, recruiter_id, id);
-            const { error: resetEmail } =
-              await supabase.auth.resetPasswordForEmail(recUser.email, {
-                redirectTo,
-              });
-            if (resetEmail) {
-              throw new Error('Sending reset password failed!');
-            }
-            return {
-              created: true,
-              user: recUser,
-            };
+      // if (role === 'admin') {
+      let user_id: string = null;
+      try {
+        for (let user of users) {
+          const recUser = await registerMember(user, recruiter_id, id);
+          const { error: resetEmail } =
+            await supabase.auth.resetPasswordForEmail(recUser.email, {
+              redirectTo,
+            });
+          if (resetEmail) {
+            throw new Error('Sending reset password failed!');
           }
-        } catch (error: any) {
-          user_id && (await supabase.auth.admin.deleteUser(user_id));
-          return { error: String(error.message) };
+          return {
+            created: true,
+            user: recUser,
+          };
         }
+      } catch (error: any) {
+        user_id && (await supabase.auth.admin.deleteUser(user_id));
+        return { error: String(error.message) };
       }
-      return { error: 'Permission denied!' };
+      // }
+      // return { error: 'Permission denied!' };
     },
     ['users', 'recruiter_id'],
   );

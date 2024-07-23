@@ -1,4 +1,5 @@
 import {
+  DatabaseTable,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -19,20 +20,12 @@ import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoade
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';
-export type interviewLocationType = {
-  city: string;
-  line1: string;
-  line2: string;
-  region: string;
-  country: string;
-  zipcode: string;
-  full_address: string;
-  is_headquarter: boolean;
-};
+
 const AddMember = ({
   open,
   menu,
@@ -46,7 +39,8 @@ const AddMember = ({
   pendingList: RecruiterUserType[];
   onClose: () => void;
 }) => {
-  const { userDetails, setMembers, recruiter } = useAuthDetails();
+  const { userDetails, setMembers, recruiter, recruiterUser } =
+    useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -54,7 +48,7 @@ const AddMember = ({
     linked_in: string;
     employment: employmentTypeEnum;
     designation: string;
-    interview_location: string;
+    location: DatabaseTable['recruiter']['office_locations'][number];
     department: string;
     role: string;
     role_id: string;
@@ -66,7 +60,7 @@ const AddMember = ({
     email: null,
     linked_in: null,
     employment: null,
-    interview_location: null,
+    location: null,
     designation: null,
     department: null,
     role: null,
@@ -83,7 +77,7 @@ const AddMember = ({
       linked_in: string;
       employment: employmentTypeEnum;
       department: string;
-      interview_location: string;
+      location: DatabaseTable['recruiter']['office_locations'][number];
       designation: string;
       role_id: string;
       manager_id: string;
@@ -96,7 +90,7 @@ const AddMember = ({
     linked_in: boolean;
     department: boolean;
     employment: boolean;
-    interview_location: boolean;
+    location: boolean;
     designation: boolean;
     role: boolean;
     manager: boolean;
@@ -106,7 +100,7 @@ const AddMember = ({
     linked_in: false,
     employment: false,
     department: false,
-    interview_location: false,
+    location: false,
     designation: false,
     role: false,
     manager: false,
@@ -125,17 +119,22 @@ const AddMember = ({
       temp = { ...temp, first_name: true };
       flag = true;
     }
-    if (
-      !form.email ||
-      form?.email?.trim() === '' ||
-      form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]
+    if (!form?.email?.trim().length) {
+      temp = { ...temp, email: true };
+      flag = true;
+    } else if (
+      !(
+        form?.email?.split('@')[1] === recruiter?.email?.split('@')[1] ||
+        recruiterUser.primary
+      )
     ) {
-      if (form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]) {
-        toast.error(`Email domain doesn't match organization.`);
-      }
+      toast.error(
+        'The user you are trying to invite is outside of the organization. Please contact your Primary Admin for assistance',
+      );
       temp = { ...temp, email: true };
       flag = true;
     }
+
     if (form.linked_in?.length) {
       const linkedInURLPattern =
         // eslint-disable-next-line security/detect-unsafe-regex
@@ -174,8 +173,13 @@ const AddMember = ({
       const resData = await inviteUserApi(
         {
           ...form,
-          scheduling_settings:
-            recruiter.scheduling_settings as schedulingSettingType,
+          interview_location: `${form.location.city}, ${form.location.region}, ${form.location.country}`,
+          scheduling_settings: {
+            ...recruiter.scheduling_settings,
+            timeZone: timeZone.find(
+              (item) => item.label === form.location?.timezone,
+            ),
+          } as schedulingSettingType,
         },
         recruiter.id,
       );
@@ -191,7 +195,7 @@ const AddMember = ({
             email: form.email,
             linked_in: form.linked_in,
             department: form.department,
-            interview_location: form.interview_location,
+            location: form.location,
             designation: form.designation,
             role_id: form.role_id,
             manager_id: form.manager_id,
@@ -207,7 +211,7 @@ const AddMember = ({
           email: null,
           linked_in: null,
           department: null,
-          interview_location: null,
+          location: null,
           designation: null,
           role: null,
           role_id: null,
@@ -402,26 +406,37 @@ const AddMember = ({
                   <Stack direction={'row'} gap={2}>
                     <Autocomplete
                       fullWidth
-                      value={form.interview_location || ''}
-                      onChange={(event: any, newValue: string | null) => {
+                      value={form.location || null}
+                      onChange={(event, newValue) => {
                         setForm({
                           ...form,
-                          interview_location: newValue,
+                          // @ts-ignore
+                          location: newValue,
                         });
                       }}
-                      options={recruiter?.office_locations.map(
-                        (item: interviewLocationType) => {
-                          return `${item.city}, ${item.region}, ${item.country}`;
-                        },
+                      getOptionLabel={(item) =>
+                        capitalizeFirstLetter(
+                          // @ts-ignore
+                          `${item.city}, ${item.region}, ${item.country}`,
+                        )
+                      }
+                      options={recruiter?.office_locations}
+                      renderOption={(props, item) => (
+                        <li {...props}>
+                          {capitalizeFirstLetter(
+                            // @ts-ignore
+                            `${item.city}, ${item.region}, ${item.country}`,
+                          )}
+                        </li>
                       )}
                       renderInput={(params) => (
                         <UITextField
                           {...params}
-                          error={formError.interview_location}
+                          error={formError.location}
                           onFocus={() => {
                             setFormError({
                               ...formError,
-                              interview_location: false,
+                              location: false,
                             });
                           }}
                           name='Location'
@@ -560,6 +575,12 @@ const AddMember = ({
                               email: null,
                               department: null,
                               designation: null,
+                              employment: null,
+                              role: null,
+                              role_id: null,
+                              manager_id: null,
+                              location: null,
+                              linked_in: null,
                             });
                         },
                       }}

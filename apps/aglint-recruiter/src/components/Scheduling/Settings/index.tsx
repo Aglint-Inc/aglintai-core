@@ -22,6 +22,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
+  DatabaseTable,
   holidayType,
   InterviewLoadType,
   schedulingSettingType,
@@ -58,7 +59,6 @@ import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import ToggleBtn from '../../Common/UIToggle';
-import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
@@ -778,7 +778,9 @@ function SchedulingSettings({
                                       setSelectedLocations(value);
                                     }}
                                     options={recruiter?.office_locations.map(
-                                      (item: interviewLocationType) => {
+                                      (
+                                        item: DatabaseTable['recruiter']['office_locations'][number],
+                                      ) => {
                                         return `${item.city}, ${item.region}, ${item.country}`;
                                       },
                                     )}
@@ -839,7 +841,7 @@ function SchedulingSettings({
                                                 ? selectedLocations
                                                 : recruiter?.office_locations.map(
                                                     (
-                                                      item: interviewLocationType,
+                                                      item: DatabaseTable['recruiter']['office_locations'][number],
                                                     ) =>
                                                       `${item.city}, ${item.region}, ${item.country}`,
                                                   ),

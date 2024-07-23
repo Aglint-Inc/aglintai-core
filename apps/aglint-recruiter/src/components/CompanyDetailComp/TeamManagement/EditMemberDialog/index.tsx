@@ -1,4 +1,8 @@
-import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  employmentTypeEnum,
+  RecruiterUserType,
+} from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -10,9 +14,9 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
-import { interviewLocationType } from '../AddMemberDialog';
 import { useRolesOptions } from '../hooks';
 
 const EditMember = ({
@@ -32,7 +36,7 @@ const EditMember = ({
     first_name: string;
     last_name: string;
     linked_in: string;
-    interview_location: string;
+    location: DatabaseTable['recruiter']['office_locations'][number];
     employment: employmentTypeEnum;
     designation: string;
     department: string;
@@ -45,7 +49,11 @@ const EditMember = ({
     first_name: member.first_name,
     last_name: member.last_name,
     linked_in: member.linked_in,
-    interview_location: member.interview_location,
+    location: recruiter.office_locations.find(
+      (loc) =>
+        `${loc.city}, ${loc.region}, ${loc.country}` ===
+        member.interview_location,
+    ),
     employment: member.employment,
     department: member.department,
     designation: member.position,
@@ -69,7 +77,7 @@ const EditMember = ({
     first_name: boolean;
     department: boolean;
     linked_in: boolean;
-    interview_location: boolean;
+    location: boolean;
     employment: boolean;
     designation: boolean;
     role: boolean;
@@ -78,7 +86,7 @@ const EditMember = ({
     first_name: false,
     department: false,
     linked_in: false,
-    interview_location: false,
+    location: false,
     employment: false,
     designation: false,
     role: false,
@@ -274,26 +282,37 @@ const EditMember = ({
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
                 <Autocomplete
                   fullWidth
-                  value={form.interview_location || ''}
-                  onChange={(event: any, newValue: string | null) => {
+                  value={form.location || null}
+                  onChange={(_, newValue) => {
                     setForm({
                       ...form,
-                      interview_location: newValue,
+                      // @ts-ignore
+                      location: newValue,
                     });
                   }}
-                  options={recruiter?.office_locations.map(
-                    (item: interviewLocationType) => {
-                      return `${item.city}, ${item.region}, ${item.country}`;
-                    },
+                  getOptionLabel={(item) =>
+                    capitalizeFirstLetter(
+                      // @ts-ignore
+                      `${item.city}, ${item.region}, ${item.country}`,
+                    )
+                  }
+                  options={recruiter?.office_locations}
+                  renderOption={(props, item) => (
+                    <li {...props}>
+                      {capitalizeFirstLetter(
+                        // @ts-ignore
+                        `${item.city}, ${item.region}, ${item.country}`,
+                      )}
+                    </li>
                   )}
                   renderInput={(params) => (
                     <UITextField
                       {...params}
-                      error={formError.interview_location}
+                      error={formError.location}
                       onFocus={() => {
                         setFormError({
                           ...formError,
-                          interview_location: false,
+                          location: false,
                         });
                       }}
                       name='Location'
@@ -432,7 +451,7 @@ const EditMember = ({
                           department: null,
                           employment: null,
                           linked_in: null,
-                          interview_location: null,
+                          location: null,
                           designation: null,
                           role: null,
                           role_id: null,
@@ -461,13 +480,20 @@ const EditMember = ({
                           data: {
                             first_name: form.first_name,
                             last_name: form.last_name,
-                            interview_location: form.interview_location,
+                            interview_location: `${form.location.city}, ${form.location.region}, ${form.location.country}`,
                             linked_in: form.linked_in,
                             employment: form.employment,
                             department: form.department,
                             position: form.designation,
                             role_id: form.role_id,
                             manager_id: form.manager_id,
+                            scheduling_settings: {
+                              ...member.scheduling_settings,
+                              timeZone: timeZone.find(
+                                (item) =>
+                                  item.label === form.location?.timezone,
+                              ),
+                            },
                           },
                         })
                           .then(() => {
@@ -497,7 +523,7 @@ const EditMember = ({
                   department: null,
                   employment: null,
                   linked_in: null,
-                  interview_location: null,
+                  location: null,
                   designation: null,
                   role: 'recruiter',
                   role_id: null,

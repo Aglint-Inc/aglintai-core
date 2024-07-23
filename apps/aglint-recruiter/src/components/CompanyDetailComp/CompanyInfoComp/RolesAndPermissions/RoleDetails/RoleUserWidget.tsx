@@ -15,6 +15,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { UserWithRole } from '@/devlink/UserWithRole';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -32,9 +33,12 @@ export const RoleUserWidget = ({
   // eslint-disable-next-line no-unused-vars
   setEditUser: (x: RecruiterUserType) => void;
 }) => {
+  const { ifAllowed } = useRolesAndPermissions();
   return (
     <>
-      <UserSearch members={members} setEditUser={setEditUser} />
+      {ifAllowed(<UserSearch members={members} setEditUser={setEditUser} />, [
+        'manage_roles',
+      ])}
       {role.assignedTo.length ? (
         role.assignedTo.map((user_id) => (
           <UserCard
@@ -173,6 +177,7 @@ const UserSearch = ({
 };
 
 const UserCard = ({ members, user_id, setEditUser }) => {
+  const { checkPermissions } = useRolesAndPermissions();
   const [isEdit, setEdit] = useState(false);
 
   const user = members.find((member) => member.user_id === user_id);
@@ -187,7 +192,7 @@ const UserCard = ({ members, user_id, setEditUser }) => {
         textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
         textRole={user.position}
         slotButton={
-          isEdit ? (
+          isEdit && checkPermissions(['manage_roles']) ? (
             <IconButtonGhost
               iconName={'edit'}
               color={'neutral'}
