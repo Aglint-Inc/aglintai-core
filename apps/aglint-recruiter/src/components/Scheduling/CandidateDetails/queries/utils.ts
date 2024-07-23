@@ -5,21 +5,36 @@ import { SessionsType } from '../types';
 export const fetchAllActivities = async ({
   application_id,
   supabase,
+  session_id,
 }: {
   application_id: string;
   supabase: SupabaseType;
+  session_id?: string;
 }) => {
-  const { data, error } = await supabase
+  const query = supabase
     .from('application_logs')
     .select(
-      '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
+      '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*),new_tasks(task_session_relation(session_id))',
     )
     .eq('application_id', application_id)
-    .order('created_at', {
-      ascending: true,
-    });
+    .eq('module', 'scheduler');
 
-  if (error) throw new Error(error.message);
+  if (session_id) {
+    const { data } = await supabase
+      .from('new_tasks')
+      .select('*,task_session_relation(id)')
+      .eq('task_session_relation.session_id', session_id)
+      .not('task_session_relation', 'is', null);
+
+    if (data.length === 0) {
+      return [];
+    } else {
+      const taskIds = [...new Set(data.map((item) => item.id))];
+      query.in('new_tasks.id', taskIds).not('new_tasks', 'is', null);
+    }
+  }
+
+  const { data } = await query.throwOnError();
 
   return data;
 };

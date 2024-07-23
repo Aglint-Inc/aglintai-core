@@ -108,6 +108,7 @@ function SchedulingViewComp() {
 
   const allActivities = useAllActivities({
     application_id: schedule?.schedule?.application_id,
+    session_id: schedule?.interview_session?.id,
   });
 
   return (
