@@ -89,6 +89,7 @@ function SelectDateRange() {
                 textTime={getBreakLabel(
                   session.interview_session.session_duration,
                 )}
+                isCloseVisible={selectedSessionIds.length > 1}
                 onClickClose={{
                   onClick: () => {
                     if (selectedSessionIds.length > 1) {
