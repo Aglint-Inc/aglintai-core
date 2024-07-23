@@ -167,7 +167,9 @@ export const deleteRelationByUserDbDelete = async ({
 }) => {
   const { error } = await supabase
     .from('interview_module_relation')
-    .delete()
+    .update({
+      is_archived: true,
+    })
     .eq('id', module_relation_id);
   if (error) {
     return false;
@@ -198,12 +200,26 @@ export const addMemberbyUserIds = async ({
       number_of_shadow,
     }));
 
-  const { data, error } = await supabase
+  await supabase
     .from('interview_module_relation')
     .insert(interviewModRelations)
-    .select();
-  if (error) {
-    return { data: null, error: error };
-  }
-  return { data, error };
+    .throwOnError();
+};
+
+export const updateRelations = async (
+  archivedRelations: DatabaseTable['interview_module_relation'][],
+) => {
+  const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
+    archivedRelations.map((user) => ({
+      id: user.id,
+      user_id: user.user_id,
+      module_id: user.module_id,
+      training_status: user.training_status,
+      is_archived: false,
+    }));
+
+  await supabase
+    .from('interview_module_relation')
+    .upsert(upsertRelations)
+    .throwOnError();
 };

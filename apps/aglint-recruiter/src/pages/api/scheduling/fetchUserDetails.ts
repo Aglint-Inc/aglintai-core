@@ -43,15 +43,15 @@ const fetchUsers = async (recruiter_id: string, includeSupended: boolean) => {
 
   return filSup.then(({ data, error }) => {
     if (error) throw new Error(error.message);
-    const res1 = data
+    const resAlter = data
       .filter((item) => item.recruiter_user)
       .map((item) => ({
         ...item.recruiter_user,
         role: item.roles.name as (typeof defaultRoles)[number]['name'],
       }));
 
-    if (includeSupended) return res1;
+    if (includeSupended) return resAlter;
 
-    return res1.filter((item) => item.status === 'active');
+    return resAlter.filter((item) => item.status === 'active');
   });
 };

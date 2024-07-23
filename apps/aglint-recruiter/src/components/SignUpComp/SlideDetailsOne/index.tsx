@@ -114,22 +114,19 @@ export function FetchCompanyDetails() {
               capitalize(companyDetails?.industry?.replaceAll('-', ' ')) || '',
             employee_size: company_size || '',
             logo: companyDetails?.logo_url || null,
-            office_locations:
-              [
-                {
-                  city: companyDetails?.city || '',
-                  line1: companyDetails?.city?.street_address || '',
-                  line2: '',
-                  region: companyDetails?.state || '',
-                  country: companyDetails?.country || '',
-                  zipcode: companyDetails?.postal_code,
-                  full_address: companyDetails?.raw_address,
-                  is_headquarter: true,
-                  //TODO:
-                  location_header: '',
-                  timezone: '',
-                },
-              ] || [],
+            // office_locations:
+            //   [
+            //     {
+            //       city: companyDetails?.city || '',
+            //       line1: companyDetails?.city?.street_address || '',
+            //       line2: '',
+            //       region: companyDetails?.state || '',
+            //       country: companyDetails?.country || '',
+            //       zipcode: companyDetails?.postal_code,
+            //       full_address: companyDetails?.raw_address,
+            //       is_headquarter: true,
+            //     },
+            //   ] || [],
             company_overview: companyDetails?.short_description || '',
             // technology_score: companyDetails.technologies || [],
             socials: {

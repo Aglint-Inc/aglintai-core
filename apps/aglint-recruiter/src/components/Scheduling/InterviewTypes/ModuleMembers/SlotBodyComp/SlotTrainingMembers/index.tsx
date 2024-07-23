@@ -30,7 +30,9 @@ function SlotTrainingMembers({
     (user) => user.training_status === 'training',
   );
 
-  const trainer_ids = allUsers
+  const filtererdUsers = allUsers.filter((rel) => !rel.is_archived);
+
+  const trainer_ids = filtererdUsers
     .filter((user) => user.training_status === 'training')
     .map((user) => {
       return user.id;
@@ -43,7 +45,7 @@ function SlotTrainingMembers({
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
 
-      {allUsers.length === 0 && (
+      {filtererdUsers.length === 0 && (
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
@@ -63,7 +65,7 @@ function SlotTrainingMembers({
           }
         />
       )}
-      {allUsers.map((user) => {
+      {filtererdUsers.map((user) => {
         const progressDataUser = Array.isArray(progress)
           ? progress.filter(
               (prog) => prog.interview_module_relation.id === user.id,
@@ -80,8 +82,7 @@ function SlotTrainingMembers({
           />
         );
       })}
-
-      {allUsers.length !== 0 && (
+      {filtererdUsers.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
           <ButtonSoft
             size={2}

@@ -15,6 +15,7 @@ import {
   setSelUser,
   useModulesStore,
 } from '../../store';
+import { ModuleType } from '../../types';
 
 function DeleteMemberDialog() {
   const isDeleteMemberDialogOpen = useModulesStore(
@@ -45,6 +46,7 @@ function DeleteMemberDialog() {
         .from('meeting_details')
         .select('*')
         .contains('confirmed_user_ids', [selUser.user_id])
+        .eq('module_id', selUser.module_id)
         .eq('status', 'confirmed')
         .throwOnError();
 
@@ -83,6 +85,21 @@ function DeleteMemberDialog() {
     setSelUser(null);
     setConnectedJobs([]);
     setIsDeleteMemberDialogOpen(false);
+    setIsOngoingSchedules(false);
+    setIsSaving(false);
+  };
+
+  const onClickRemove = async (selUser: ModuleType['relations'][0]) => {
+    if (selUser.id && !isOngoingSchedules) {
+      if (isSaving) return;
+      setIsSaving(true);
+      await deleteRelationByUserId({
+        module_id: selUser.module_id,
+        module_relation_id: selUser.id,
+      });
+      setIsSaving(false);
+      setIsDeleteMemberDialogOpen(false);
+    }
   };
 
   return (
@@ -177,15 +194,7 @@ function DeleteMemberDialog() {
               isLoading={isSaving}
               onClickButton={{
                 onClick: async () => {
-                  if (selUser.id && !isOngoingSchedules) {
-                    if (isSaving) return;
-                    setIsSaving(true);
-                    await deleteRelationByUserId({
-                      module_id: selUser.module_id,
-                      module_relation_id: selUser.id,
-                    });
-                    setIsDeleteMemberDialogOpen(false);
-                  }
+                  onClickRemove(selUser);
                 },
               }}
             />
