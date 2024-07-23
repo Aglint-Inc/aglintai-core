@@ -59,8 +59,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         request_availability_id: avail_data.id,
       })),
     );
+
+    const avail_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${avail_data.id}`;
     await sendMail(avail_data.application_id, organizer_id);
-    return res.status(200).send('ok');
+    return res.status(200).json({ avail_link: avail_link });
   } catch (error) {
     return res.status(400).send(error.message);
   }

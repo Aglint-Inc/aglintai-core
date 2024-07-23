@@ -30,6 +30,7 @@ export const ChatApp: React.FC = () => {
       } = await axios.post('http://localhost:8080/api/aglint-agent', {
         msg: newMessage.value,
         history: messages,
+        company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
       });
 
       setMessages(() => [...updated_history]);

@@ -64,7 +64,6 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
             .from('candidate_applications_view')
             .select()
             .eq('company_id', company_id)
-            .eq('job_role', func_params.candidate_info.job_role)
             .textSearch(
               'full_text_search',
               func_params.candidate_info.candidate_name.split(' ').join('<->')
@@ -81,14 +80,15 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
           })),
         };
 
-        await axios.post(
-          `${envConfig.CLIENT_APP_URL}/api/agent-scheduling/send-availability-request`,
+        const {data} = await axios.post(
+          `${envConfig.CLIENT_APP_URL}/api/agent-scheduling/send-availability-request-link`,
           {
             ...payload,
           }
         );
-        return 'link sent sucessfully';
+        return `link sent sucessfully, ${data.avail_link}`;
       } catch (error: any) {
+        console.error(error);
         return 'Failed to perform the action';
       }
     },

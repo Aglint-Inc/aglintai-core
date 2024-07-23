@@ -17,6 +17,7 @@ const MEMORY_KEY = 'chat_history';
 export async function agentHandler(payload: {
   msg: string;
   history: {type: 'user' | 'agent'; value: string}[];
+  company_id: string;
 }) {
   const llm = new ChatOpenAI({
     // modelName: 'gpt-3.5-turbo-0125',
@@ -41,8 +42,8 @@ export async function agentHandler(payload: {
   ]);
 
   const tools = [
-    findCandidateInSystem(),
-    sendAvailReqLink(),
+    findCandidateInSystem({company_id: payload.company_id}),
+    sendAvailReqLink({company_id: payload.company_id}),
     findCandidateInterviewSessions(),
   ];
 
