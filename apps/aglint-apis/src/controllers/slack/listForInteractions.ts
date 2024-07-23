@@ -50,12 +50,76 @@ export const listForInteractions = async (req: Request, res: Response) => {
         else if (action.value === 'decline')
           interview_attent_confirmation_decline(interaction_data);
         break;
+      case 'meeting_status_organizer':
+        if (action.value === 'meeting_completed')
+          meeting_status_organizer_accept(interaction_data);
+        else if (action.value === 'meeting_not_completed')
+          meeting_status_organizer_decline(interaction_data);
+        break;
     }
 
     return res.status(200).send('ok');
   } catch (error: any) {
     console.error('error : ', error.message);
   }
+};
+
+const meeting_status_organizer_accept = async (interaction_data: any) => {
+  const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const meeting_id = metadata.event_payload.meeting_id;
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .update({status: 'completed'})
+      .eq('id', meeting_id)
+  );
+  await slackWeb.chat.update({
+    channel: channel_id,
+    ts: interaction_data.message.ts,
+    text: 'Thanks for confirmation',
+    blocks: [
+      interaction_data.message.blocks[0],
+      {
+        type: 'rich_text',
+        elements: [
+          {
+            type: 'rich_text_section',
+            elements: [
+              {
+                type: 'text',
+                text: '\nThank you for confirming that the interview meeting has been completed.',
+                style: {
+                  bold: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+};
+const meeting_status_organizer_decline = async (interaction_data: any) => {
+  const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const meeting_id = metadata.event_payload.meeting_id;
+  await slackWeb.chat.update({
+    channel: channel_id,
+    ts: interaction_data.message.ts,
+    text: 'Thanks for confirmation',
+    blocks: [
+      interaction_data.message.blocks[0],
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
+        },
+      },
+    ],
+  });
 };
 
 const candidate_interview_accept = async (interaction_data: any) => {

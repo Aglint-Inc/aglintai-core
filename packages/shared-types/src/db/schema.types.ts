@@ -1426,6 +1426,7 @@ export type Database = {
       interview_module_relation: {
         Row: {
           id: string
+          is_archived: boolean
           module_id: string
           number_of_reverse_shadow: number
           number_of_shadow: number
@@ -1435,6 +1436,7 @@ export type Database = {
         }
         Insert: {
           id?: string
+          is_archived?: boolean
           module_id: string
           number_of_reverse_shadow?: number
           number_of_shadow?: number
@@ -1444,6 +1446,7 @@ export type Database = {
         }
         Update: {
           id?: string
+          is_archived?: boolean
           module_id?: string
           number_of_reverse_shadow?: number
           number_of_shadow?: number
@@ -4331,6 +4334,7 @@ export type Database = {
           candidate_email: string | null
           candidate_id: string | null
           candidate_name: string | null
+          company_id: string | null
           full_text_search: unknown | null
           job_id: string | null
           job_role: string | null
@@ -4348,6 +4352,13 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidates_recruiter_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]

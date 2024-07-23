@@ -24,6 +24,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+DROP TRIGGER IF EXISTS trigger_create_training_progress ON public.interview_meeting;
+
 CREATE TRIGGER trigger_create_training_progress
 AFTER UPDATE OF status ON public.interview_meeting
 FOR EACH ROW

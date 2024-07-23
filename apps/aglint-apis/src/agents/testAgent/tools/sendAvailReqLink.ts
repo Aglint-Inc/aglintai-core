@@ -63,6 +63,7 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
           await supabaseAdmin
             .from('candidate_applications_view')
             .select()
+            .eq('company_id', company_id)
             .eq('job_role', func_params.candidate_info.job_role)
             .textSearch(
               'full_text_search',
