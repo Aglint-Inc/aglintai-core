@@ -58,7 +58,10 @@ function AddMemberDialog({
     } catch {
       toast.error('Error adding member.');
     } finally {
-      setLoading(false);
+      // extra time for refetching
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 
