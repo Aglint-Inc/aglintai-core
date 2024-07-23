@@ -114,7 +114,10 @@ export const createCloneSession = async ({
           interviewer_type: user.interview_session_relation.interviewer_type,
           session_id: session.newId,
           training_type: user.interview_session_relation.training_type,
-          user_id: user.user_details.user_id,
+          user_id:
+            session.interview_session.session_type === 'debrief'
+              ? user.user_details.user_id
+              : null,
         };
         insertableUserRelation.push(insertRel);
       });

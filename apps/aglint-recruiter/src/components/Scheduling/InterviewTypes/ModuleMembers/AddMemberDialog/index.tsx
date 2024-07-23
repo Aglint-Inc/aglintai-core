@@ -24,6 +24,7 @@ function AddMemberDialog({
   editModule: ModuleType;
   refetch: () => void;
 }) {
+  //all active members
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
@@ -38,11 +39,11 @@ function AddMemberDialog({
     refetch,
   });
 
+  const relations = editModule?.relations.filter((rel) => !rel.is_archived);
+
   const allMembers = members.filter(
     (user) =>
-      editModule?.relations?.findIndex(
-        (rel) => rel.user_id === user.user_id,
-      ) === -1,
+      relations?.findIndex((rel) => rel.user_id === user.user_id) === -1,
   );
 
   const onClickAddMember = async () => {

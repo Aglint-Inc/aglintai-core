@@ -37,6 +37,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+import { updateJoinedStatus } from './utils';
 
 export interface ContextValue {
   userDetails: Session | null;
@@ -206,6 +207,10 @@ const AuthProvider = ({ children }) => {
         CompanyId: recruiterRel.recruiter.id,
       });
       const recruiterUser = recruiterRel.recruiter_user;
+
+      if (recruiterUser.status !== 'active') {
+        updateJoinedStatus(recruiterUser.user_id);
+      }
 
       setRecruiterUser({
         ...recruiterUser,
