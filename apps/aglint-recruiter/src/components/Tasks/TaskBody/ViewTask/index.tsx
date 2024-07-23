@@ -267,7 +267,9 @@ function ViewTaskDrawer() {
                       color={'neutral'}
                       textButton={'Action'}
                       isRightIcon={true}
-                      iconName={'keyboard_arrow_down'}
+                      iconName={
+                        anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
+                      }
                       onClickButton={{ onClick: handleClick }}
                     />
                   )}

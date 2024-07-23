@@ -103,7 +103,9 @@ function FilterCreatedBy() {
         textLabel={'Created by'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />

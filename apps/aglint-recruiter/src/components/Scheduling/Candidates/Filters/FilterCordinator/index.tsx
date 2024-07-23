@@ -129,13 +129,15 @@ function FilterCordinator() {
         <FilterDropdown
           slotOption={
             <Stack width={'450px'} p={'var(--space-1)'}>
-              <SearchField
-                isFullWidth
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                onClear={() => setSearchText('')}
-                placeholder='Search Co-ordinator'
-              />
+              <Stack>
+                <SearchField
+                  isFullWidth
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  onClear={() => setSearchText('')}
+                  placeholder='Search Co-ordinator'
+                />
+              </Stack>
               <Stack overflow={'hidden'}>
                 {members.map((member, i) => (
                   <Stack
