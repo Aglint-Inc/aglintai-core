@@ -1,8 +1,13 @@
+import {APISendAvailabilityRequestLink} from '@aglint/shared-types';
+import {supabaseWrap} from '@aglint/shared-utils';
+import axios from 'axios';
 import {DynamicStructuredTool} from 'langchain/tools';
+import {envConfig} from 'src/config';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import z from 'zod';
 
-export const sendAvailReqLink = () => {
+export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
   return new DynamicStructuredTool({
     name: 'send-availability-request-link-to-candidate',
     description:
@@ -12,12 +17,12 @@ export const sendAvailReqLink = () => {
         .string()
         .array()
         .describe('selected interview sessions to schedule'),
-      candidate: z.object({
-        candidate_name: z
-          .string()
-          .describe("candidate's first name or lastname or full name"),
-        job_title: z.string(),
-      }),
+      candidate_info: z
+        .object({
+          candidate_name: z.string().describe("candidate's name"),
+          job_role: z.string(),
+        })
+        .describe('candidate info as per system reponse'),
       date_range: z.object({
         start_date: z
           .string()
@@ -52,9 +57,35 @@ export const sendAvailReqLink = () => {
         .optional()
         .default({}),
     }),
-    func: async payload => {
+    func: async func_params => {
       try {
-        //
+        const [matchedCandidate] = supabaseWrap(
+          await supabaseAdmin
+            .from('candidate_applications_view')
+            .select()
+            .eq('job_role', func_params.candidate_info.job_role)
+            .textSearch(
+              'full_text_search',
+              func_params.candidate_info.candidate_name.split(' ').join('<->')
+            ),
+          false
+        );
+
+        const payload: APISendAvailabilityRequestLink = {
+          application_id: matchedCandidate.application_id,
+          company_id: company_id,
+          job_id: matchedCandidate.job_id,
+          session_details: func_params.interview_sessions.map(s => ({
+            session_name: s,
+          })),
+        };
+
+        await axios.post(
+          `${envConfig.CLIENT_APP_URL}/api/agent-scheduling/send-availability-request`,
+          {
+            ...payload,
+          }
+        );
         return 'link sent sucessfully';
       } catch (error: any) {
         return 'Failed to perform the action';

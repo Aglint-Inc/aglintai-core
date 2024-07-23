@@ -3,7 +3,7 @@ import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
-export const findCandidateInSystem = () => {
+export const findCandidateInSystem = ({company_id}: {company_id: string}) => {
   return new DynamicStructuredTool({
     name: 'find-candidate-in-system',
     description:
@@ -23,8 +23,6 @@ export const findCandidateInSystem = () => {
             ),
           false
         );
-
-        console.log(matchedCandidates);
 
         if (matchedCandidates.length === 0) {
           return 'NO candidates found with that name';
