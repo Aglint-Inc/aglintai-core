@@ -83,15 +83,6 @@
   grid-row-gap: var(--space-2);
 }
 
-.gsc-icon-wrap {
-  padding: var(--space-1);
-  border-radius: var(--radius-2);
-}
-
-.gsc-icon-wrap:hover {
-  background-color: var(--neutral-3);
-}
-
 .gsc-module-wrap {
   display: flex;
   justify-content: space-between;
@@ -134,19 +125,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
-
-.gsc-module-link {
-  display: flex;
-  padding: var(--space-2) var(--space-4);
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-
-  border-radius: var(--radius-3);
-
-  background-color: var(--neutral-3);
 }
 
 .gsc-interviewer-wrap {

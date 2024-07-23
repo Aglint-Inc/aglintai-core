@@ -1,5 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DatabaseTableInsert,
+  SessionsCombType,
+} from '@aglint/shared-types';
 import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
@@ -24,6 +28,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
+import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -35,7 +40,6 @@ import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -376,11 +380,12 @@ export const ConfirmedInvitePage = (
                     )}
                     {cancelReschedulingDetails.other_details.note && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>Additional Notes: </span>
+                        <span style={{ fontWeight: '500' }}>
+                          Additional Notes:{' '}
+                        </span>
                         {cancelReschedulingDetails.other_details.note}
                       </Typography>
                     )}
-                    
                   </>
                 }
               />
@@ -833,32 +838,48 @@ const SingleDayConfirmation = () => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()}>
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Confirm your interview'}
-        isDescriptionVisible={true}
-        textPopupDescription={
-          'Before we finalize your schedule, please take a moment to confirm the chosen option. Your interview is crucial, and we want to ensure it aligns perfectly with your availability.'
+      <DcPopup
+        popupName={'Confirm your interview'}
+        slotBody={
+          <Stack>
+            <Typography mb={2}>
+              Before we finalize your schedule, please take a moment to confirm
+              the chosen option. Your interview is crucial, and we want to
+              ensure it aligns perfectly with your availability.
+            </Typography>
+            <CandidateScheduleCard
+              isTitle={false}
+              textDuration={totalTimeDifference}
+              slotButton={<></>}
+              slotSessionInfo={
+                <SelectedDateAndTime
+                  slotSessionAndTime={<SingleDaySessions index={0} />}
+                  textDate={date}
+                  textDay={day}
+                  textMonth={month}
+                />
+              }
+            />
+          </Stack>
         }
-        isWidget={true}
-        slotWidget={
-          <CandidateScheduleCard
-            isTitle={false}
-            textDuration={totalTimeDifference}
-            slotButton={<></>}
-            slotSessionInfo={
-              <SelectedDateAndTime
-                slotSessionAndTime={<SingleDaySessions index={0} />}
-                textDate={date}
-                textDay={day}
-                textMonth={month}
-              />
-            }
-          />
+        onClickClosePopup={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Confirm'}
+              onClickButton={{ onClick: handleSubmit }}
+            />
+          </>
         }
-        textPopupButton={'Confirm'}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        onClickCancel={{ onClick: () => handleClose() }}
       />
     </Dialog>
   );
@@ -1049,7 +1070,11 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
           isDisabled={!enabled}
         />
       </Stack>
-      <MultiDayConfirmation open={open} setOpen={setOpen} />
+      <MultiDayConfirmation
+        rounds={props.rounds}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 };
@@ -1057,25 +1082,81 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
 type MultiDayConfirmationProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  rounds: ScheduleCardsProps['rounds'];
 };
 const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   const { handleSubmit } = useCandidateInvite();
   const handleClose = () => {
     props.setOpen(false);
   };
+  const { selectedSlots, timezone } = useCandidateInvite();
+
+  type SelectedDateAndSessionsType = {
+    date: string;
+    sessions: SessionsCombType['sessions'] | null;
+  }[];
+  const [selectedDateAndSessions, setSelectedDateAndSessions] =
+    useState<SelectedDateAndSessionsType>([]);
+
+  function getSelectedDateAndSessions() {
+    const sessions = selectedSlots.map((round, i) => {
+      return {
+        date: dayJS(
+          round?.sessions?.[0]?.start_time ?? null,
+          timezone.tzCode,
+        ).format('MMMM DD'),
+        sessions: selectedSlots?.[i]?.sessions,
+      };
+      //@ts-ignore
+    });
+    setSelectedDateAndSessions(sessions);
+  }
+  useEffect(() => {
+    getSelectedDateAndSessions();
+  }, [props.rounds]);
+
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Confirm Your Interview'}
-        isDescriptionVisible={true}
-        textPopupDescription={
-          'Please review and confirm your selected time slot before we finalize your schedule. It’s important that your interview time aligns with your availability.'
+      <DcPopup
+        popupName={'Confirm your interview'}
+        slotBody={
+          <Stack gap={'10px'}>
+            <Stack>
+              {selectedDateAndSessions.map((item, index) => (
+                <>
+                  <Typography variant='subtitle1'>
+                    Day-{index + 1} -{' '}
+                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
+                    {item.date}
+                  </Typography>
+                </>
+              ))}
+            </Stack>
+            <Typography>
+              Please review and confirm your selected time slot before we
+              finalize your schedule. It’s important that your interview time
+              aligns with your availability.
+            </Typography>
+          </Stack>
         }
-        isWidget={false}
-        textPopupButton={'Confirm'}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        onClickCancel={{ onClick: () => handleClose() }}
+        onClickClosePopup={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Confirm'}
+              onClickButton={{ onClick: handleSubmit }}
+            />
+          </>
+        }
       />
     </Dialog>
   );

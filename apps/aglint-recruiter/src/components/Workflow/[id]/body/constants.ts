@@ -1,5 +1,6 @@
-import { Workflow } from '@/src/types/workflow.types';
 import { DatabaseTable } from '@aglint/shared-types';
+
+import { Workflow } from '@/src/types/workflow.types';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
@@ -22,7 +23,7 @@ export const DURATION_OPTIONS: { name: string; value: number }[] = [
     name: '1 day',
     value: 1440,
   },
-];
+] as const;
 
 export const TRIGGER_PAYLOAD: {
   trigger: Workflow['trigger'];
@@ -64,7 +65,7 @@ export const TRIGGER_PAYLOAD: {
     trigger: 'onQualified',
     phase: ['after'],
   },
-];
+] as const;
 
 export function getTriggerOption(
   trigger: Workflow['trigger'],
@@ -220,4 +221,4 @@ export const ACTION_TRIGGER_MAP: {
       name: 'Send slack notification to trainee',
     },
   ],
-};
+} as const;

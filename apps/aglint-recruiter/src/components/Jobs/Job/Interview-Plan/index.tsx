@@ -459,7 +459,7 @@ const InterviewSession = ({
                     color: 'var(--neutral-9)',
                     fontSize: 'var(--font-size-1)',
                     fontWeight: 400,
-                    fontStyle: 'italic',
+                    // fontStyle: 'italic',
                   }}
                 >
                   {getSessionType(session.session_type)}

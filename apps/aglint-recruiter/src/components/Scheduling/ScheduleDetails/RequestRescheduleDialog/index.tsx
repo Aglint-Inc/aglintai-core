@@ -5,7 +5,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -15,9 +17,9 @@ import { DateIcon } from '../../Settings/Components/DateSelector';
 import { ScheduleMeeting } from '../types';
 
 function RequestRescheduleDialog({
-  isRequestRescheduleOpen,
   setIsRequestRescheduleOpen,
   sessionRelation,
+  isRequestRescheduleOpen,
   schedule,
   refetch,
 }: {
@@ -103,21 +105,14 @@ function RequestRescheduleDialog({
         setIsRequestRescheduleOpen(false);
       }}
     >
-      <ConfirmationPopup
-        textPopupTitle={'Request Reschedule'}
-        isIcon={false}
-        onClickCancel={{
+      <DcPopup
+        popupName={'Request Reschedule'}
+        onClickClosePopup={{
           onClick: () => {
             setIsRequestRescheduleOpen(false);
           },
         }}
-        onClickAction={{
-          onClick: onClickConfirm,
-        }}
-        textPopupDescription=''
-        isDescriptionVisible={false}
-        isWidget={true}
-        slotWidget={
+        slotBody={
           <Stack spacing={2}>
             <Typography variant='body1'>
               Please chose the new date range for the interview.
@@ -221,7 +216,25 @@ function RequestRescheduleDialog({
             />
           </Stack>
         }
-        textPopupButton={'Request Reschedule'}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setIsRequestRescheduleOpen(false);
+                },
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Request Reschedule'}
+              onClickButton={{ onClick: onClickConfirm }}
+            />
+          </>
+        }
       />
     </Dialog>
   );
