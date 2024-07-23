@@ -225,7 +225,6 @@ export const PATHS = [
 '/scheduling',
 '/scheduling/interviewer/[member_id]',
 '/scheduling/invite/[id]',
-'/scheduling/module/IProgressDrawer',
 '/scheduling/module/members/[module_id]',
 '/scheduling/module/[module_id]',
 '/scheduling/request-availability/[request_id]',
