@@ -61,7 +61,6 @@ function FilterDepartment() {
           key={label}
           sx={{
             fontSize: '14px',
-            fontWeight: 600,
             cursor: 'pointer',
           }}
           onClick={() => handleFilterClick(label)}

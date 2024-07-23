@@ -1,10 +1,4 @@
-import {
-  LinearProgress,
-  Popover,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
 import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
@@ -13,6 +7,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -39,7 +34,7 @@ function FilterCreatedBy() {
   const [members, setMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(false);
   const createdBy = useFilterModuleStore((state) => state.created_by);
-
+  const [createSearchText, setCreateSeachText] = useState('');
   useEffect(() => {
     handleSearch('');
   }, []);
@@ -56,6 +51,7 @@ function FilterCreatedBy() {
   };
 
   const handleSearch = (value) => {
+    setCreateSeachText(value);
     debouncedHandleSearch(value);
   };
 
@@ -132,12 +128,13 @@ function FilterCreatedBy() {
       >
         <FilterDropdown
           slotOption={
-            <Stack minWidth={'250px'}>
-              <TextField
-                type='search'
-                sx={{ pb: 1 }}
-                placeholder='Search users'
+            <Stack minWidth={'300px'}>
+              <SearchField
+                value={createSearchText}
                 onChange={(e) => handleSearch(e.target.value)}
+                placeholder='Search users'
+                isFullWidth
+                onClear={() => handleSearch('')}
               />
               <Stack height='10px'>
                 {loading && <LinearProgress color='info' />}
