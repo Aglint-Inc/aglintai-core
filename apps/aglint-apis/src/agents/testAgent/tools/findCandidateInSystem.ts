@@ -16,7 +16,7 @@ export const findCandidateInSystem = ({company_id}: {company_id: string}) => {
         const matchedCandidates = supabaseWrap(
           await supabaseAdmin
             .from('candidate_applications_view')
-            .select()
+            .select('candidate_name,email,job_role,candidate_email')
             .eq('company_id', company_id)
             .textSearch(
               'full_text_search',
@@ -24,7 +24,6 @@ export const findCandidateInSystem = ({company_id}: {company_id: string}) => {
             ),
           false
         );
-
         if (matchedCandidates.length === 0) {
           return 'NO candidates found with that name';
         }
