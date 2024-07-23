@@ -1,20 +1,21 @@
-import * as v from "valibot";
-import { RecruiterUserType } from "../data.types";
+import * as v from 'valibot';
+import { RecruiterUserType } from '../data.types';
 import {
   PlanCombinationRespType,
   SessionCombinationRespType,
-} from "../scheduleTypes";
+} from '../scheduleTypes';
 import {
   schema_candidate_direct_booking,
   schema_confirm_slot_no_conflict,
-} from "./valibotSchema/candidate-self-schedule";
+} from './valibotSchema/candidate-self-schedule';
 import {
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   schema_find_availability_payload,
   schema_find_interview_slot,
   schema_find_slots_date_range,
-} from "@aglint/shared-utils";
+  schema_send_avail_req_link,
+} from '@aglint/shared-utils';
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -37,7 +38,7 @@ export type APIFindAltenativeTimeSlot = {
 
 export type APIUpdateMeetingInterviewers = {
   meeting_id: string;
-  replaced_inters: Pick<RecruiterUserType, "email" | "user_id">[];
+  replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
   candidate_email: string;
 };
 
@@ -52,7 +53,7 @@ export type APICandScheduleMailThankYou = {
   is_debreif: boolean;
   schedule_id?: string;
   filter_id?: string;
-  booking_request_from?: "phone_agent" | "email_agent" | "candidate";
+  booking_request_from?: 'phone_agent' | 'email_agent' | 'candidate';
 };
 
 export type APIOptions = v.InferInput<typeof scheduling_options_schema>;
@@ -60,7 +61,9 @@ export type APIOptions = v.InferInput<typeof scheduling_options_schema>;
 export type APIFindAvailability = v.InferInput<
   typeof schema_find_availability_payload
 >;
-
+export type APISendAvailabilityRequestLink = v.InferInput<
+  typeof schema_send_avail_req_link
+>;
 export type APIFindInterviewSlot = v.InferInput<
   typeof schema_find_interview_slot
 >;
@@ -129,7 +132,7 @@ export type APICandidateConfirmSlot = {
   schedule_id: string;
   filter_id?: string;
   //  if tasks id is present
-  agent_type: "email" | "phone" | "self";
+  agent_type: 'email' | 'phone' | 'self';
   task_id: string | null;
   candidate_email?: string;
   candidate_name?: string;
