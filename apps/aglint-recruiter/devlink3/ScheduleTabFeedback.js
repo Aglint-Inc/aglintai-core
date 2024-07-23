@@ -73,6 +73,7 @@ export function ScheduleTabFeedback({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3CStyle%3E%0A%5Btable-border%3D'true'%5D%7B%0Aborder%3A%201px%20solid%20var(--neutral-6)%3B%0A%7D%0A%5Btable-border%3D'false'%5D%7B%0Aborder%3A%20none%3B%0Amin-width%3A100%25%3B%0Amax-width%3A%20100%25%3B%0A%7D%0A%3C%2FStyle%3E" />
     </_Component>
   );
 }

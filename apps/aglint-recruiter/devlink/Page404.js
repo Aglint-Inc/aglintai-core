@@ -59,6 +59,16 @@ export function Page404({
             {slot404}
           </_Builtin.Block>
         </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "_404_text")} tag="div">
+          <Text align="center" size="4" weight="medium" content="" />
+          <Text
+            align="center"
+            size="2"
+            weight="regular"
+            content="Oops! It looks like the page you're looking for doesn't exist. "
+            color="neutral"
+          />
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

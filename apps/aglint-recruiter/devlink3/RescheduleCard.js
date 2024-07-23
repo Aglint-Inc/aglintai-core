@@ -25,6 +25,7 @@ export function RescheduleCard({
   onClickIgnore = {},
   isTakeActionVisible = false,
   onClickTakeAction = {},
+  slotDateReason,
 }) {
   return (
     <_Component
@@ -61,8 +62,25 @@ export function RescheduleCard({
         className={_utils.cx(_styles, "request-reason")}
         tag="div"
       >
-        <Text content="Reason :" weight="" color="neutral" />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "first-part-title")}
+          tag="div"
+        >
+          <Text content="Reason :" weight="" color="neutral" />
+        </_Builtin.Block>
         <Text content={textReason} weight="" />
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "request-reason")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "first-part-title")}
+          tag="div"
+        >
+          <Text content="Date:" weight="" color="neutral" />
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotDateReason}</_Builtin.Block>
       </_Builtin.Block>
       {isButtonVisible ? (
         <_Builtin.Block
