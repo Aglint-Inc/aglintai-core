@@ -32,14 +32,17 @@ export const findCandidateInterviewSessions = () => {
             .from('meeting_details')
             .select()
             .eq('status', 'not_scheduled')
+
             .eq('application_id', matched_candidate.application_id),
           false
-        ).map(s => ({
-          name: s.session_name,
-          break_duration: s.break_duration,
-          session_type: s.session_type,
-          session_order: s.session_order,
-        }));
+        )
+          .filter(s => s.session_type !== 'debrief')
+          .map(s => ({
+            name: s.session_name,
+            break_duration: s.break_duration,
+            session_type: s.session_type,
+            session_order: s.session_order,
+          }));
 
         if (cand_sessions.length === 0) {
           const [int_plan] = supabaseWrap(
@@ -53,12 +56,14 @@ export const findCandidateInterviewSessions = () => {
               .from('interview_session')
               .select()
               .eq('interview_plan_id', int_plan.id)
-          ).map(s => ({
-            name: s.name,
-            break_duration: s.break_duration,
-            session_type: s.session_type,
-            session_order: s.session_order,
-          }));
+          )
+            .filter(s => s.session_type !== 'debrief')
+            .map(s => ({
+              name: s.name,
+              break_duration: s.break_duration,
+              session_type: s.session_type,
+              session_order: s.session_order,
+            }));
         }
 
         return JSON.stringify(cand_sessions);

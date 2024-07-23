@@ -13,6 +13,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const parsedData = v.parse(schema_send_avail_req_link, {
       ...req.body,
     });
+    const organizer_id = await getOrganizerId(
+      parsedData.application_id,
+      supabaseAdmin,
+    );
     const selected_session_names = parsedData.session_details.map((s) =>
       s.session_name.toLowerCase(),
     );
@@ -21,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         parsedData.application_id,
         parsedData.job_id,
         parsedData.company_id,
+        organizer_id,
       );
 
     const selected_sessions = await sessions_data
@@ -34,10 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         interview_schedule_id: schedule_id,
         interview_meeting_id: s.meeting_id,
       }));
-    const organizer_id = await getOrganizerId(
-      parsedData.application_id,
-      supabaseAdmin,
-    );
+
     await handleMeetingsOrganizerResetRelations({
       application_id: parsedData.application_id,
       meeting_flow: 'candidate_request',
@@ -50,6 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .insert({
           application_id: parsedData.application_id,
           recruiter_id: parsedData.company_id,
+          date_range: [parsedData.start_date, parsedData.end_date],
         })
         .select(),
     );
@@ -64,6 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await sendMail(avail_data.application_id, organizer_id);
     return res.status(200).json({ avail_link: avail_link });
   } catch (error) {
+    console.error(error);
     return res.status(400).send(error.message);
   }
 };
@@ -91,6 +95,7 @@ const getCandidateSessions = async (
   application_id: string,
   job_id: string,
   company_id: string,
+  organizer_id: string,
 ) => {
   let cand_sessions: (Pick<
     InterviewSession,
@@ -146,6 +151,7 @@ const getCandidateSessions = async (
           application_id: application_id,
           recruiter_id: company_id,
           schedule_name: '',
+          created_by: organizer_id,
         })
         .select(),
     );

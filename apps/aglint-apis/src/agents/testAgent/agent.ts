@@ -18,11 +18,12 @@ export async function agentHandler(payload: {
   msg: string;
   history: {type: 'user' | 'agent'; value: string}[];
   company_id: string;
+  user_tz: string;
 }) {
   const llm = new ChatOpenAI({
     // modelName: 'gpt-3.5-turbo-0125',
     modelName: 'gpt-4o',
-    temperature: 0.7,
+    temperature: 0.5,
     verbose: false,
     apiKey: envConfig.OPENAI_APIKEY,
   });
@@ -43,7 +44,10 @@ export async function agentHandler(payload: {
 
   const tools = [
     findCandidateInSystem({company_id: payload.company_id}),
-    sendAvailReqLink({company_id: payload.company_id}),
+    sendAvailReqLink({
+      company_id: payload.company_id,
+      user_tz: payload.user_tz,
+    }),
     findCandidateInterviewSessions(),
   ];
 

@@ -5,6 +5,7 @@ import {agentHandler} from 'src/agents/testAgent/agent';
 const agent_payload_schema = z.object({
   msg: z.string(),
   company_id: z.string(),
+  user_tz: z.string(),
   history: z
     .object({
       type: z.enum(['user', 'assistant']),
@@ -26,6 +27,7 @@ export const agentController = async (req: Request, res: Response) => {
       msg: api_body.msg,
       history: api_body.history as any, // TODO: fix
       company_id: api_body.company_id,
+      user_tz: api_body.user_tz,
     });
 
     return res.status(200).json({updated_history});

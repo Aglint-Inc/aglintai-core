@@ -83,6 +83,8 @@ export const schema_send_avail_req_link = v.object({
       session_name: v.string(),
     })
   ),
+  start_date: v.string(),
+  end_date: v.string(),
   job_id: v.string(),
   application_id: v.string(),
   company_id: v.string(),

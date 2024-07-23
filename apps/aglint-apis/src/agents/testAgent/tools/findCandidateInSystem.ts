@@ -16,7 +16,7 @@ export const findCandidateInSystem = ({company_id}: {company_id: string}) => {
         const matchedCandidates = supabaseWrap(
           await supabaseAdmin
             .from('candidate_applications_view')
-            .select('candidate_name,email,job_role,candidate_email')
+            .select('candidate_name,job_role,candidate_email')
             .eq('company_id', company_id)
             .textSearch(
               'full_text_search',

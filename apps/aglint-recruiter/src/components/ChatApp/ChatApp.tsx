@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import React, { useState } from 'react';
 
@@ -31,6 +32,7 @@ export const ChatApp: React.FC = () => {
         msg: newMessage.value,
         history: messages,
         company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
+        user_tz: dayjsLocal.tz.guess(),
       });
 
       setMessages(() => [...updated_history]);

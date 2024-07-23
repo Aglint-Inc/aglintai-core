@@ -7,7 +7,13 @@ import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import z from 'zod';
 
-export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
+export const sendAvailReqLink = ({
+  company_id,
+  user_tz,
+}: {
+  company_id: string;
+  user_tz: string;
+}) => {
   return new DynamicStructuredTool({
     name: 'send-availability-request-link-to-candidate',
     description:
@@ -23,22 +29,22 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
           job_role: z.string(),
         })
         .describe('candidate info as per system reponse'),
-      date_range: z.object({
-        start_date: z
-          .string()
-          .optional()
-          .default(
-            dayjsLocal().add(1, 'week').startOf('week').format('DD/MM/YYYY')
-          )
-          .describe('Request availability from this date in DD/MM/YYYY'),
-        end_date: z
-          .string()
-          .optional()
-          .default(
-            dayjsLocal().add(1, 'week').endOf('week').format('DD/MM/YYYY')
-          )
-          .describe('Request availabilitytill this date in DD/MM/YYYY'),
-      }),
+      date_range: z
+        .object({
+          start_date: z
+            .string()
+            .default(
+              dayjsLocal().add(1, 'week').startOf('week').format('DD/MM/YYYY')
+            )
+            .describe('Request availability from this date in DD/MM/YYYY'),
+          end_date: z
+            .string()
+            .default(
+              dayjsLocal().add(1, 'week').endOf('week').format('DD/MM/YYYY')
+            )
+            .describe('Request availabilitytill this date in DD/MM/YYYY'),
+        })
+        .default({}),
       options: z
         .object({
           show_soft_conflicts_slots: z
@@ -59,6 +65,16 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
     }),
     func: async func_params => {
       try {
+        if (!func_params.date_range.start_date) {
+          func_params.date_range.start_date = dayjsLocal()
+            .add(1, 'week')
+            .startOf('week')
+            .format('DD/MM/YYYY');
+          func_params.date_range.end_date = dayjsLocal()
+            .add(1, 'week')
+            .startOf('week')
+            .format('DD/MM/YYYY');
+        }
         const [matchedCandidate] = supabaseWrap(
           await supabaseAdmin
             .from('candidate_applications_view')
@@ -75,11 +91,12 @@ export const sendAvailReqLink = ({company_id}: {company_id: string}) => {
           application_id: matchedCandidate.application_id,
           company_id: company_id,
           job_id: matchedCandidate.job_id,
+          start_date: func_params.date_range.start_date,
+          end_date: func_params.date_range.end_date,
           session_details: func_params.interview_sessions.map(s => ({
             session_name: s,
           })),
         };
-
         const {data} = await axios.post(
           `${envConfig.CLIENT_APP_URL}/api/agent-scheduling/send-availability-request-link`,
           {
