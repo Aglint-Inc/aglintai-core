@@ -37,7 +37,7 @@ export const ChatApp: React.FC = () => {
 
       setMessages(() => [...updated_history]);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

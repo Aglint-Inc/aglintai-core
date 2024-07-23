@@ -125,6 +125,9 @@ export function FetchCompanyDetails() {
                   zipcode: companyDetails?.postal_code,
                   full_address: companyDetails?.raw_address,
                   is_headquarter: true,
+                  //TODO:
+                  location_header: '',
+                  timezone: '',
                 },
               ] || [],
             company_overview: companyDetails?.short_description || '',
