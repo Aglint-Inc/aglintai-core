@@ -20,6 +20,7 @@ export function YTransform({ children, uniqueKey }) {
   return (
     <AnimatePresence mode='wait'>
       <motion.div
+      style={{height:'100%'}}
         key={uniqueKey}
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
