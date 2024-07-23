@@ -4,7 +4,6 @@ import {
   SupabaseType,
 } from '@aglint/shared-types';
 
-import { SessionsType } from '@/src/components/Scheduling/CandidateDetails/types';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
@@ -21,11 +20,15 @@ export const handleMeetingsOrganizerResetRelations = async ({
 }: {
   application_id: string;
   supabase: SupabaseType;
-  selectedSessions: SessionsType[];
+  selectedSessions: {
+    interview_session_id: string;
+    interview_meeting_id: string;
+    interview_schedule_id: string;
+  }[];
   meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
   const selectedSessionIds = selectedSessions.map(
-    (ses) => ses.interview_session.id,
+    (ses) => ses.interview_session_id,
   );
 
   const organizer_id = await getOrganizerId(application_id, supabase);
@@ -33,8 +36,8 @@ export const handleMeetingsOrganizerResetRelations = async ({
   const upsertMeetings: DatabaseTableInsert['interview_meeting'][] =
     selectedSessions.map((ses) => ({
       status: 'waiting',
-      id: ses.interview_meeting.id,
-      interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+      id: ses.interview_meeting_id,
+      interview_schedule_id: ses.interview_schedule_id,
       organizer_id,
       meeting_flow,
     }));
