@@ -183,6 +183,7 @@ export const API_PATHS = [
 '/api/emails/interReschedReq_email_recruiter',
 '/api/emails/interviewCancel_email_applicant',
 '/api/emails/interviewEnd_email_interviewerForFeedback',
+'/api/emails/interviewEnd_email_organizerForMeetingStatus',
 '/api/emails/interviewEnd_email_rShadowTraineeForMeetingAttendence',
 '/api/emails/interviewEnd_email_shadowTraineeForMeetingAttendence',
 '/api/emails/interviewStart_email_applicant',

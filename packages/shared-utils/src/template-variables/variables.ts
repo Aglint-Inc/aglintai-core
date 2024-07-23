@@ -42,6 +42,7 @@ export const approver = [
 export const admin = ["adminName", "adminFirstName", "adminLastName"] as const;
 export const dates = ["startDate", "endDate"] as const;
 export const date_range = "dateRange" as const;
+export const date = "date" as const;
 export const time = "time" as const;
 export const interviewTypes = "interviewTypes" as const;
 export const interviewType = "interviewType" as const;
@@ -80,6 +81,7 @@ export const allTempvariables = [
   ...dates,
   ...trainee,
   ...approver,
+  date,
   time,
   interviewType,
   interviewTypes,

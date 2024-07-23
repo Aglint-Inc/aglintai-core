@@ -7,6 +7,7 @@ import {
   candidates,
   candidateScheduleLink,
   company,
+  date,
   date_range,
   dates,
   interviewer,
@@ -191,5 +192,12 @@ export const emailVariablePayloads = {
     reverseShadowCount,
     shadowCount,
     qualifiedApproverConfirmLink,
+  ],
+  interviewEnd_email_organizerForMeetingStatus: [
+    ...organizer,
+    ...candidates,
+    date,
+    time,
+    ...jobDetails,
   ],
 };
