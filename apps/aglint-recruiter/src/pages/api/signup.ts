@@ -45,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         recruiter_type: flow,
         recruiter_active: true,
         id: rec_id,
+        primary_admin: user_id,
       })
       .select()
       .single();

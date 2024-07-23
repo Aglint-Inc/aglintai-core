@@ -48,7 +48,6 @@ const PERMISSIONS: Permissions = {
   '/scheduling/module/members/[module_id]': ['scheduling_module'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
-  '/scheduling/view': ['scheduling_module'],
 
   '/integrations': ['integrations_module'],
   '/company': ['company_settings_module'],
