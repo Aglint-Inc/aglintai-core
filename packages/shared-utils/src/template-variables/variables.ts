@@ -68,6 +68,7 @@ export const shadowConfirmLink = "shadowConfirmLink" as const;
 export const reverseShadowConfirmLink = "reverseShadowConfirmLink" as const;
 export const qualifiedApproverConfirmLink =
   "qualifiedApproverConfirmLink" as const;
+export const meetingStatusUpdateLink = "meetingStatusUpdateLink" as const;
 
 export const allTempvariables = [
   ...candidates,
@@ -88,4 +89,5 @@ export const allTempvariables = [
   reverseShadowConfirmLink,
   qualifiedApproverConfirmLink,
   shadowConfirmLink,
+  meetingStatusUpdateLink,
 ] as const;

@@ -35,6 +35,9 @@ const all_possible_dynamic_values: {
   interviewerName: 'Michael Johnson',
   interviewerFirstName: 'Michael',
   interviewerLastName: 'Johnson',
+  approverFirstName: 'Thomas',
+  approverLastName: 'Anthony',
+  approverName: 'Thomas Anthony',
   interviewType: 'culture fit',
   traineeFirstName: 'Robert',
   traineeLastName: 'Brown',
@@ -55,9 +58,7 @@ const all_possible_dynamic_values: {
   reverseShadowConfirmLink: dummyLink,
   shadowConfirmLink: dummyLink,
   qualifiedApproverConfirmLink: dummyLink,
-  approverFirstName: 'Thomas',
-  approverLastName: 'Anthony',
-  approverName: 'Thomas Anthony',
+  meetingStatusUpdateLink: dummyLink,
 };
 
 export async function POST(req: Request) {

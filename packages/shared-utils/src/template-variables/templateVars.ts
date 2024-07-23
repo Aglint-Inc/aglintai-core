@@ -18,6 +18,7 @@ import {
   interviewTypes,
   jobDetails,
   meetingDetailsLink,
+  meetingStatusUpdateLink,
   organizer,
   qualifiedApproverConfirmLink,
   rescheduleReason,
@@ -191,5 +192,13 @@ export const emailVariablePayloads = {
     reverseShadowCount,
     shadowCount,
     qualifiedApproverConfirmLink,
+  ],
+  interviewEnd_email_organizerForMeetingStatus: [
+    ...organizer,
+    ...candidates,
+    date_range,
+    time,
+    ...jobDetails,
+    meetingStatusUpdateLink,
   ],
 };
