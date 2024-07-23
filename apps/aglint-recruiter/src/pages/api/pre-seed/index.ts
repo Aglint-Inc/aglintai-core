@@ -15,7 +15,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    console.log('executing');
     const { record } = req.body as { record: DatabaseTable['recruiter'] };
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
@@ -23,7 +22,6 @@ export default async function handler(
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
-    console.log('finished');
 
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -179,7 +177,7 @@ const seedWorkFlow = async (
           }
           return {
             order: action.order,
-            work_flow_id: workflow.id,
+            workflow_id: workflow.id,
             email_template_id: temp.id,
           };
         }),
