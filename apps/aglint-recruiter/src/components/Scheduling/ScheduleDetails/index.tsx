@@ -331,7 +331,7 @@ function SchedulingViewComp() {
                       />
                     </ShowCode.When>
                     <ShowCode.When isTrue={router.query.tab === 'feedback'}>
-                      <Stack margin={'var(--space-4)'}>
+                      <Stack>
                         <FeedbackWindow
                           interview_sessions={[
                             {

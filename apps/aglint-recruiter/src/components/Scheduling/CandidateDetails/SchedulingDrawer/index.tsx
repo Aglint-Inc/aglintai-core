@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Drawer, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -11,6 +11,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import RequestAvailability from '../RequestAvailability';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
+import AgentFinalScreenCta from './AgentFinalScreenCta';
 import ButtonAllOptions from './ButtonAllOptions';
 import ButtonReschedule from './ButtonReschedule';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
@@ -52,6 +53,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     fetchingPlan: state.fetchingPlan,
     dateRange: state.dateRange,
   }));
+  const [agentSchedulingLoading, setAgentSchedulingLoading] = useState(false);
 
   useEffect(() => {
     if (!(dateRange.start_date || dateRange.end_date)) {
@@ -170,12 +172,15 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
                 <ButtonAllOptions />
               ) : (
                 <ButtonSolid
-                  isLoading={isSendingToCandidate}
+                  isLoading={isSendingToCandidate || agentSchedulingLoading}
                   size={2}
                   textButton={primaryButtonText()}
                   onClickButton={{
                     onClick: async () => {
-                      await onClickPrimary();
+                      setAgentSchedulingLoading(true);
+                      await onClickPrimary().then(() => {
+                        setAgentSchedulingLoading(false);
+                      });
                     },
                   }}
                 />
@@ -187,6 +192,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
               <>
                 {stepScheduling === 'pick_date' ? (
                   <SelectDateRange />
+                ) : stepScheduling === 'agents_final_screen_cta' ? (
+                  <AgentFinalScreenCta />
                 ) : stepScheduling === 'reschedule' ? (
                   <RescheduleSlot />
                 ) : stepScheduling === 'preference' ? (
@@ -223,7 +230,8 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           isBottomBar={
             !fetchingPlan &&
             stepScheduling !== 'request_availibility' &&
-            stepScheduling !== 'success_screen'
+            stepScheduling !== 'success_screen' &&
+            stepScheduling !== 'agents_final_screen_cta'
           }
         />
       </Drawer>

@@ -13,6 +13,7 @@ import {
   interviewCancelEmailApplicantSchema,
   interviewCancelReqEmailRecruiterSchema,
   interviewEndEmailInterviewerForFeedbackSchema,
+  interviewEndEmailOrganizerForMeetingStatusSchema,
   interviewRescheduleEmailApplicantSchema,
   interviewStartEmailApplicantSchema,
   interviewStartEmailInterviewersSchema,
@@ -393,6 +394,20 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+    };
+  };
+  interviewEnd_email_organizerForMeetingStatus: {
+    api_payload: v.InferInput<
+      typeof interviewEndEmailOrganizerForMeetingStatusSchema
+    >;
+    comp_email_placeholders: {
+      [key in (typeof emailVariablePayloads)["interviewEnd_email_organizerForMeetingStatus"][number]]: string;
+    };
+    react_email_placeholders: {
+      emailBody: string;
+      subject: string;
+      companyLogo: string;
+      meetingStatusUpdateLink: string;
     };
   };
 };
