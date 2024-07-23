@@ -1,4 +1,5 @@
 export const API_PATHS = [
+'/api/agent-scheduling/send-availability-request-link',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
 '/api/ai/queryToJson',
@@ -108,6 +109,7 @@ export const API_PATHS = [
 '/api/scheduling/application/cancelschedule',
 '/api/scheduling/application/candidatesessioncache',
 '/api/scheduling/application/debrief-add-users',
+'/api/scheduling/application/fetchcandidatedetails',
 '/api/scheduling/application/fetchfeedbackdetails',
 '/api/scheduling/application/mailthankyou',
 '/api/scheduling/application/openselfscheduling',

@@ -2,6 +2,8 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { ButtonSoft } from "./ButtonSoft";
+import { GlobalIcon } from "./GlobalIcon";
 import { CandidateDetailsCard } from "./CandidateDetailsCard";
 import { CandidateEmpty } from "./CandidateEmpty";
 import { AddJobButton } from "./AddJobButton";
@@ -18,7 +20,7 @@ export function CandidateDatabaseDetail({
   slotSearchInput,
   onClickAll = {},
   isAllActive = true,
-  isBookMarkedActive = true,
+  isBookMarkedActive = false,
   slotCandidateDetailsCard,
   isSelected = true,
   textSelectedCount = "2",
@@ -79,23 +81,11 @@ export function CandidateDatabaseDetail({
             >
               {textRole}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "tablet-left-auto")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-blue-600",
-                  "ml-8",
-                  "cursor-pointer"
-                )}
-                tag="div"
-                {...onClickFilter}
-              >
-                {"Edit Query"}
-              </_Builtin.Block>
-            </_Builtin.Block>
+            <ButtonSoft
+              onClickButton={onClickFilter}
+              size="1"
+              textButton="Edit Query"
+            />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "cdb-header-button-wrapper", "hide")}
@@ -178,25 +168,34 @@ export function CandidateDatabaseDetail({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "cdb-tab-link", "pointer")}
+                  className={_utils.cx(_styles, "cd-tab-btn-wrap")}
                   tag="div"
                   {...onClickAll}
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "position-relative", "z-5")}
-                    tag="div"
-                  >
-                    {"All"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "number-wrap", "bg-grey-200")}
+                    className={_utils.cx(_styles, "cdb-tab-link", "pointer")}
                     tag="div"
                   >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-sm")}
+                      className={_utils.cx(_styles, "position-relative", "z-5")}
                       tag="div"
                     >
-                      {textAllCount}
+                      {"All"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "number-wrap",
+                        "non-active"
+                      )}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-sm")}
+                        tag="div"
+                      >
+                        {textAllCount}
+                      </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                   {isAllActive ? (
@@ -229,39 +228,40 @@ export function CandidateDatabaseDetail({
                   ) : null}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cdb-tab-link",
-                    "pointer",
-                    "color-grey-800"
-                  )}
+                  className={_utils.cx(_styles, "cd-tab-btn-wrap")}
                   tag="div"
-                  {...onClickBookmarked}
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "position-relative", "z-5")}
+                    className={_utils.cx(_styles, "cdb-tab-link")}
                     tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "icons")}
-                      value="%3Csvg%20width%3D%2215%22%20height%3D%2215%22%20viewbox%3D%220%200%2015%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3%202.625C3.01562%202.3125%203.125%202.04687%203.32812%201.82812C3.54688%201.625%203.8125%201.51563%204.125%201.5H10.875C11.1875%201.51563%2011.4531%201.625%2011.6719%201.82812C11.875%202.04687%2011.9844%202.3125%2012%202.625V12.9844C11.9688%2013.2969%2011.7969%2013.4688%2011.4844%2013.5C11.375%2013.5%2011.2812%2013.4688%2011.2031%2013.4062L7.5%2010.9453L3.79688%2013.4062C3.71875%2013.4688%203.625%2013.5%203.51562%2013.5C3.20312%2013.4688%203.03125%2013.2969%203%2012.9844V2.625ZM4.125%202.25C3.89062%202.26563%203.76562%202.39062%203.75%202.625V12.5391L7.28906%2010.1953C7.42969%2010.1016%207.57031%2010.1016%207.71094%2010.1953L11.25%2012.5391V2.625C11.2344%202.39062%2011.1094%202.26563%2010.875%202.25H4.125Z%22%20fill%3D%22%232F3941%22%20style%3D%22fill%3A%232F3941%3Bfill%3Acolor(display-p3%200.1843%200.2235%200.2549)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "position-relative", "z-5")}
-                    tag="div"
-                  >
-                    {"Bookmarked"}
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "number-wrap", "bg-grey-200")}
-                    tag="div"
+                    {...onClickBookmarked}
                   >
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "text-sm")}
+                      className={_utils.cx(_styles, "position-relative", "z-5")}
                       tag="div"
                     >
-                      {textBookmarkCount}
+                      <GlobalIcon iconName="bookmark" size="4" />
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "position-relative", "z-5")}
+                      tag="div"
+                    >
+                      {"Bookmarked"}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "number-wrap",
+                        "non-active"
+                      )}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "text-sm")}
+                        tag="div"
+                      >
+                        {textBookmarkCount}
+                      </_Builtin.Block>
                     </_Builtin.Block>
                   </_Builtin.Block>
                   {isBookMarkedActive ? (
@@ -277,10 +277,7 @@ export function CandidateDatabaseDetail({
                         )}
                         tag="div"
                       >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons", "color-white")}
-                          value="%3Csvg%20width%3D%2215%22%20height%3D%2215%22%20viewbox%3D%220%200%2015%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3%202.625C3.01562%202.3125%203.125%202.04687%203.32812%201.82812C3.54688%201.625%203.8125%201.51563%204.125%201.5H10.875C11.1875%201.51563%2011.4531%201.625%2011.6719%201.82812C11.875%202.04687%2011.9844%202.3125%2012%202.625V12.9844C11.9688%2013.2969%2011.7969%2013.4688%2011.4844%2013.5C11.375%2013.5%2011.2812%2013.4688%2011.2031%2013.4062L7.5%2010.9453L3.79688%2013.4062C3.71875%2013.4688%203.625%2013.5%203.51562%2013.5C3.20312%2013.4688%203.03125%2013.2969%203%2012.9844V2.625ZM4.125%202.25C3.89062%202.26563%203.76562%202.39062%203.75%202.625V12.5391L7.28906%2010.1953C7.42969%2010.1016%207.57031%2010.1016%207.71094%2010.1953L11.25%2012.5391V2.625C11.2344%202.39062%2011.1094%202.26563%2010.875%202.25H4.125Z%22%20fill%3D%22white%22%20style%3D%22fill%3Awhite%3Bfill%3Awhite%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
+                        <GlobalIcon iconName="bookmark" size="4" />
                       </_Builtin.Block>
                       <_Builtin.Block
                         className={_utils.cx(

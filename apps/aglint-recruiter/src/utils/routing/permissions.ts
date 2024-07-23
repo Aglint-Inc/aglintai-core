@@ -41,15 +41,13 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/profile-score': ['job_module', 'manage_job'],
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
   '/jobs/[id]/workflows': ['job_module'],
-
   '/workflows': ['workflow_module'],
   '/workflows/[id]': ['workflow_module'],
-
+  '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
   '/scheduling/module/members/[module_id]': ['scheduling_module'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
-  '/scheduling/view': ['scheduling_module'],
 
   '/integrations': ['integrations_module'],
   '/company': ['company_settings_module'],
@@ -133,6 +131,7 @@ const PERMISSIONS: Permissions = {
   '/api/get_last_login': ['view_users'],
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
+  '/api/scheduling/application/fetchcandidatedetails': ['scheduling_module'],
   '/api/setRoleAndPermission': ['manage_roles'],
   '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],

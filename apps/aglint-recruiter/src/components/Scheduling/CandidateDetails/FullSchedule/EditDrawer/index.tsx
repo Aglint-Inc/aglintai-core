@@ -95,7 +95,7 @@ function SideDrawerEdit() {
           selectedQuaInterviewerIds.indexOf(user.moduleUserId) === -1,
       )
       ?.map((member) => ({
-        name: member.first_name + ' ' + member.last_name,
+        name: getFullName(member.first_name, member.last_name),
         value: member.moduleUserId,
         start_icon_url: member.profile_image,
       })) || []) as Interviewer[];

@@ -8,3 +8,6 @@ create or replace view "public"."candidate_applications_view" as  SELECT concat(
    FROM ((applications
      LEFT JOIN candidates ON ((candidates.id = applications.candidate_id)))
      LEFT JOIN public_jobs ON ((public_jobs.id = applications.job_id)));
+
+
+

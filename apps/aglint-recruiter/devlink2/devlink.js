@@ -4524,14 +4524,16 @@ var no = u((to) => {
       s = (typeof mE[o] == "string" ? mE[o].toLowerCase() : null) || o;
     if (s.startsWith("#")) {
       let c = s.substring(1);
-      c.length === 3
+      c.length === 3 || c.length === 4
         ? ((r = parseInt(c[0] + c[0], 16)),
           (t = parseInt(c[1] + c[1], 16)),
-          (n = parseInt(c[2] + c[2], 16)))
-        : c.length === 6 &&
+          (n = parseInt(c[2] + c[2], 16)),
+          c.length === 4 && (i = parseInt(c[3] + c[3], 16) / 255))
+        : (c.length === 6 || c.length === 8) &&
           ((r = parseInt(c.substring(0, 2), 16)),
           (t = parseInt(c.substring(2, 4), 16)),
-          (n = parseInt(c.substring(4, 6), 16)));
+          (n = parseInt(c.substring(4, 6), 16)),
+          c.length === 8 && (i = parseInt(c.substring(6, 8), 16) / 255));
     } else if (s.startsWith("rgba")) {
       let c = s.match(/rgba\(([^)]+)\)/)[1].split(",");
       (r = parseInt(c[0], 10)),

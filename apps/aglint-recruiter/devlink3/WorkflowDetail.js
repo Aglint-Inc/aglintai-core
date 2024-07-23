@@ -33,6 +33,40 @@ export function WorkflowDetail({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "connected_jobs_wrap")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_965d923c-99e0-e5e3-fc3b-e0d10190b041-2b3cbc8e"
+        )}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "info_block")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "title_info", "is_neutral")}
+            tag="div"
+          >
+            <Text weight="medium" content="Connected Jobs" />
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_coneected_jobs")}
+          tag="div"
+        >
+          {slotConnectedJobs ?? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "connected_job-copy")}
+              tag="div"
+            >
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+              <TextWithIcon iconName="work" textContent="Managing Director" />
+            </_Builtin.Block>
+          )}
+        </_Builtin.Block>
+      </_Builtin.Block>
     </_Component>
   );
 }

@@ -41,8 +41,15 @@
 
 .request-reason {
   display: flex;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.first-part-title {
+  width: 56px;
+  flex: 0 0 auto;
 }
 
 .action_buttons {

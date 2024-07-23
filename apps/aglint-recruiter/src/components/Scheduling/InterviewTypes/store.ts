@@ -1,4 +1,3 @@
-import { InterviewModuleRelationType } from '@aglint/shared-types';
 import { PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
@@ -96,7 +95,7 @@ export const setIsDeleteModuleDialogOpen = (
 export const setIsPauseDialogOpen = (isPauseDialogOpen: boolean) =>
   useModulesStore.setState({ isPauseDialogOpen });
 
-export const setSelUser = (selUser: InterviewModuleRelationType | null) =>
+export const setSelUser = (selUser: ModuleType['relations'][0] | null) =>
   useModulesStore.setState({ selUser });
 
 export const setPauseJson = (pause_json: PauseJson | null) =>

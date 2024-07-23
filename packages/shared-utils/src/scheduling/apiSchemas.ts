@@ -76,3 +76,16 @@ export const schema_troubleshoot = v.object({
   user_tz: v.string(),
   api_options: v.optional(scheduling_options_schema, {}),
 });
+
+export const schema_send_avail_req_link = v.object({
+  session_details: v.array(
+    v.object({
+      session_name: v.string(),
+    })
+  ),
+  start_date: v.string(),
+  end_date: v.string(),
+  job_id: v.string(),
+  application_id: v.string(),
+  company_id: v.string(),
+});

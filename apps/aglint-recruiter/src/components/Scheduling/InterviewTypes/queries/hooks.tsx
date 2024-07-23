@@ -18,6 +18,7 @@ import {
   fetchProgress,
   resumePauseDbUpdate,
   updatePauseJsonByUserId,
+  updateRelations,
 } from './utils';
 
 export const useAllInterviewModules = () => {
@@ -59,6 +60,7 @@ export const useProgressModuleUsers = ({
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const module_id = router.query.module_id as string;
 
   const query = useQuery({
@@ -67,13 +69,21 @@ export const useProgressModuleUsers = ({
     }),
     queryFn: () =>
       fetchProgress({
-        module_id,
         trainer_ids: trainer_ids,
       }),
     enabled: router.query.module_id && trainer_ids.length > 0,
     refetchOnWindowFocus: false,
   });
-  return query;
+
+  const refetch = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: QueryKeysInteviewModules.PROGRESS_BY_MODULE_ID({
+        moduleId: module_id,
+      }),
+    });
+  };
+
+  return { ...query, refetch };
 };
 
 export const useModuleAndUsers = () => {
@@ -258,15 +268,28 @@ export const useAddMemberHandler = ({
     try {
       if (!editModule) throw new Error('Interview type not found');
 
-      const { error } = await addMemberbyUserIds({
-        module_id: editModule.id,
-        user_ids: selectedUsers.map((user) => user.user_id),
-        training_status: trainingStatus,
-        number_of_reverse_shadow: editModule.settings.noReverseShadow,
-        number_of_shadow: editModule.settings.noShadow,
-      });
-      if (error) {
-        throw new Error(error.message);
+      const archivedRelations = editModule.relations.filter(
+        (rel) => rel.is_archived,
+      );
+
+      if (archivedRelations.length > 0) {
+        await updateRelations(archivedRelations);
+      }
+
+      const newRelations = selectedUsers.filter(
+        (user) =>
+          archivedRelations.findIndex((rel) => rel.user_id === user.user_id) ===
+          -1,
+      );
+
+      if (newRelations.length > 0) {
+        await addMemberbyUserIds({
+          module_id: editModule.id,
+          user_ids: selectedUsers.map((user) => user.user_id),
+          training_status: trainingStatus,
+          number_of_reverse_shadow: editModule.settings.noReverseShadow,
+          number_of_shadow: editModule.settings.noShadow,
+        });
       }
 
       refetch();

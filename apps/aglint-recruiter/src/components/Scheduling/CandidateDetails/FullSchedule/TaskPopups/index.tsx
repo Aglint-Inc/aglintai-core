@@ -41,9 +41,10 @@ function TaskPopups() {
         selectedTasks.length === 1 &&
         selectedTasks[0].latest_progress?.progress_type === 'schedule' &&
         selectedTasks[0].assignee[0] !== EmailAgentId &&
-        selectedTasks[0].assignee[0] !== PhoneAgentId && (
+        selectedTasks[0].assignee[0] !== PhoneAgentId &&
+        selectedTasks[0].session_ids.length && (
           <GlobalBannerShort
-          color={'warning'}
+            color={'warning'}
             textTitle={`Task created for scheduling ${selectedTasks[0].session_ids.map((ele) => `${ele.name}`)}`}
             textDescription={''}
             iconName={'schedule'}

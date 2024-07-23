@@ -49,6 +49,6 @@ export const config = {
   matcher: ['/login', '/', '/signup', '/api/:function*'],
 };
 
-const isAllowedPaths = (reqUrl = '') => {
+const isAllowedPaths = (reqUrl: any) => {
   return allowedPaths.has(reqUrl);
 };

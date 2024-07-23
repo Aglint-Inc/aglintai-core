@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Checkbox } from "./Checkbox";
 import { CandidateSkills } from "./CandidateSkills";
 import { ViewMoreSkills } from "./ViewMoreSkills";
 import * as _utils from "./utils";
@@ -52,14 +53,9 @@ export function CandidateDetailsCard({
             {...onClickCheck}
           >
             {isChecked ? (
-              <_Builtin.Image
-                className={_utils.cx(_styles, "checkbox-image")}
-                loading="lazy"
-                width="auto"
-                height="auto"
-                alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544e03f56a77e2226e848a3_Frame%201%20(2).png"
-              />
+              <_Builtin.Block tag="div">
+                <Checkbox />
+              </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
           <_Builtin.Block

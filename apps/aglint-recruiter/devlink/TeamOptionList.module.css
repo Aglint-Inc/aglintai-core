@@ -30,6 +30,10 @@
   background-color: var(--neutral-2);
 }
 
+.team-action-item.red {
+  color: var(--error-11);
+}
+
 .icons {
   display: flex;
   flex-direction: column;

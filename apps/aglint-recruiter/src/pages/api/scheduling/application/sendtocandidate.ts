@@ -294,9 +294,13 @@ const sendToCandidate = async ({
 
     const { organizer_id } = await handleMeetingsOrganizerResetRelations({
       application_id: selectedApplication.id,
-      selectedSessions: initialSessions.filter((ses) =>
-        selectedSessionIds.includes(ses.interview_session.id),
-      ),
+      selectedSessions: initialSessions
+        .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+        .map((ses) => ({
+          interview_session_id: ses.interview_session.id,
+          interview_meeting_id: ses.interview_meeting.id,
+          interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        })),
       supabase,
       meeting_flow: 'self_scheduling',
     });

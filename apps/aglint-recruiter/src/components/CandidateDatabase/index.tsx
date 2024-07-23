@@ -453,12 +453,13 @@ function CandidateSearchHistory() {
                 {(currentTab === 'talent rediscovery' ||
                   currentTab === 'discover talent') &&
                   isWelMatVisible() && (
+                    
                     <SearchAglintCd
                       // isViewAllCandidateVisible={true}
                       slotSearchButton={
                         <ButtonSolid
                           textButton='Search'
-                          size={3}
+                          size={2}
                           isLoading={isQrySearching}
                           onClickButton={{
                             onClick: () => {
@@ -478,6 +479,7 @@ function CandidateSearchHistory() {
                       isInputVisible={isInputVisible}
                       slotInputSearch={
                         <UITextField
+                         height={32}
                           value={searchQuery}
                           placeholder={
                             currentTab === 'talent rediscovery'

@@ -2,12 +2,15 @@
   position: relative;
   z-index: 5;
 
+  display: flex;
   padding: 2px 8px;
+  justify-content: center;
+  align-items: center;
   order: 1;
 
   border-radius: 4px;
 
-  background-color: #e9ebed;
+  background-color: var(--neutral-3);
 }
 
 .view-less-text {

@@ -6,7 +6,6 @@ import {
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
-  InterviewScheduleTypeDB,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
@@ -28,7 +27,7 @@ export type SchedulingSlice = {
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: MemberType[];
-  selUser: InterviewModuleRelationType | null;
+  selUser: ModuleType['relations'][0] | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
@@ -61,7 +60,7 @@ export type ScheduleType = {
   };
   file: ApplicationList['file'];
   candidates: CandidateType;
-  schedule: InterviewScheduleTypeDB;
+  schedule: DatabaseTable['interview_schedule'];
   job: {
     id: string;
     created_at: string;
