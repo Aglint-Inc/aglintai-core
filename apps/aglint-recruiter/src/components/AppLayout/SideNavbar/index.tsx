@@ -1,6 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect } from 'react';
@@ -24,7 +23,7 @@ import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 
 function SideNavbar() {
   const router = useRouter();
-  const pathName = usePathname();
+  const pathName = router.pathname;
   const { checkPermissions } = useRolesAndPermissions();
   const { isAssessmentEnabled, isScreeningEnabled } = useAuthDetails();
 
@@ -141,11 +140,11 @@ function SideNavbar() {
 
   useEffect(() => {
     const tempR = navList.find((item) => {
-      return pathName?.includes(item.route);
+      return pathName?.includes(item.route.split('?')[0]);
     })?.permission;
     if (tempR && !checkPermissions(tempR)) {
       toast.error('This section of the application is not accessible to you.');
-      router.replace(ROUTES['/loading']());
+      router.back();
     }
   }, [pathName]);
 

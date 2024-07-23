@@ -1,4 +1,7 @@
-type SelectedEmailSlackTypes =
+import {DatabaseEnums} from '@aglint/shared-types';
+
+type SelectedEmailSlackTypes = Extract<
+  DatabaseEnums['email_slack_types'],
   | 'candidateBook_slack_interviewerForConfirmation'
   | 'interviewStart_slack_interviewers'
   | 'interviewEnd_slack_interviewerForFeedback'
@@ -6,7 +9,9 @@ type SelectedEmailSlackTypes =
   | 'onQualified_slack_trainee'
   | 'interviewEnd_slack_rShadowTraineeForMeetingAttendence'
   | 'interviewEnd_slack_shadowTraineeForMeetingAttendence'
-  | 'interviewer_attend_comfirmation';
+  | 'interviewer_attend_comfirmation'
+  | 'interviewEnd_slack_organizerForMeetingStatus'
+>;
 
 export const slackEndPoints: {
   [key in SelectedEmailSlackTypes]: key;
@@ -23,5 +28,6 @@ export const slackEndPoints: {
     'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
   interviewEnd_slack_shadowTraineeForMeetingAttendence:
     'interviewEnd_slack_shadowTraineeForMeetingAttendence',
-  interviewer_attend_comfirmation: 'interviewer_attend_comfirmation',
+  interviewEnd_slack_organizerForMeetingStatus:
+    'interviewEnd_slack_organizerForMeetingStatus',
 };
