@@ -407,6 +407,7 @@ type Payloads = {
       emailBody: string;
       subject: string;
       companyLogo: string;
+      meetingStatusUpdateLink: string;
     };
   };
 };

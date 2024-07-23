@@ -27,7 +27,8 @@ export async function fetchUtil(
   const job = data.applications.public_jobs.job_title;
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
   const start_time = data.start_time;
-  const end_time = data.end_time;
+  const meeting_id = data.id;
+  const cancelLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -45,11 +46,10 @@ export async function fetchUtil(
       OrganizerTimeZone: org_tz,
       companyName: company.name,
       jobRole: job,
-      dateRange: dayjsLocal(start_time)
+      date: dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.DATE_FORMAT),
+      time: dayjsLocal(start_time)
         .tz(org_tz)
-        .format(DAYJS_FORMATS.DATE_FORMAT),
-      time: `${dayjsLocal(start_time).tz(org_tz).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(end_time).tz(org_tz).format(DAYJS_FORMATS.END_TIME_FORMAT)}`,
-      meetingStatusUpdateLink: `<a href="#" target="_blank">here</a>`,
+        .format(DAYJS_FORMATS.END_TIME_FORMAT),
     };
 
   const filled_comp_template = fillCompEmailTemplate(
@@ -61,6 +61,7 @@ export async function fetchUtil(
       companyLogo: company.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
+      meetingStatusUpdateLink: cancelLink,
     };
 
   return {

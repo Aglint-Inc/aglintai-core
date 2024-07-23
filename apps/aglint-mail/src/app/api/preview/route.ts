@@ -20,6 +20,7 @@ const ReqPayload = z.object({
 });
 
 const dummyLink = `<a href="#" target="_blank">here</a>`;
+
 const all_possible_dynamic_values: {
   [K in (typeof allTempvariables)[number]]: string;
 } = {
@@ -54,11 +55,11 @@ const all_possible_dynamic_values: {
   interviewerEmail: 'Michael@aglinthq.com',
   interviewTypes:
     '<ul><li><p>Cultural Fit and Final Review</p></li><li><p>Archived Interview Type</p></li></ul>',
+  date: 'Jul 18, 2024',
   interviewerPauseLink: dummyLink,
   reverseShadowConfirmLink: dummyLink,
   shadowConfirmLink: dummyLink,
   qualifiedApproverConfirmLink: dummyLink,
-  meetingStatusUpdateLink: dummyLink,
 };
 
 export async function POST(req: Request) {

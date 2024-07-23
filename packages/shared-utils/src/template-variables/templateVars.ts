@@ -7,6 +7,7 @@ import {
   candidates,
   candidateScheduleLink,
   company,
+  date,
   date_range,
   dates,
   interviewer,
@@ -18,7 +19,6 @@ import {
   interviewTypes,
   jobDetails,
   meetingDetailsLink,
-  meetingStatusUpdateLink,
   organizer,
   qualifiedApproverConfirmLink,
   rescheduleReason,
@@ -196,9 +196,8 @@ export const emailVariablePayloads = {
   interviewEnd_email_organizerForMeetingStatus: [
     ...organizer,
     ...candidates,
-    date_range,
+    date,
     time,
     ...jobDetails,
-    meetingStatusUpdateLink,
   ],
 };

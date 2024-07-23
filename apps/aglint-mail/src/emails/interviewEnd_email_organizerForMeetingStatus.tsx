@@ -2,15 +2,18 @@ import * as React from 'react';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
+import { ButtonSolid } from '../components/template/Button';
 
 type EmailType =
   EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>;
 
 export const dummy: EmailType['react_email_placeholders'] = {
   emailBody:
-    '<p>Hi {{ candidateFirstName }},</p><p>Thank you for your interest in the {{ jobTitle }} position.</p><p>We have reviewed your application and carefully considered your qualifications. Based on your profile and the number of other qualified applications, for the moment, we are not able to move forward in the recruiting process with you.</p><p>Good luck in your search!</p><p>Sincerely,</p><p>{{ companyName }}</p>',
+    '<p><span>Dear </span><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span> <span>,</span></p><p><span>We hope this message finds you well. We are reaching out to confirm the status of the interview meeting scheduled for </span><span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> <span>on </span><span class="temp-variable" data-type="temp-variable" data-id="dateRange">{{dateRange}}</span> <span>at </span><span class="temp-variable" data-type="temp-variable" data-id="time">{{time}}</span> <span>. Your prompt response will help us ensure a smooth and efficient process for all parties involved. </span></p><p><span>Click the link below to update the meeting status in our system: </span><span class="temp-variable" data-type="temp-variable" data-id="meetingStatusUpdateLink">{{meetingStatusUpdateLink}}</span></p><p><span>Thank you for your cooperation. </span></p><p></p><p><span>Best regards,</span></p><p><span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> <span>Aglint AI Scheduling Team</span></p>',
   companyLogo: companyLogoDummy,
   subject: '',
+  meetingStatusUpdateLink:
+    'process.env.NEXT_PUBLIC_APP_URL/scheduling/view?meeting_id=meeting_ids&tab=candidate_details',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;
@@ -18,7 +21,12 @@ export const getSubject = (companyName: any) => `${companyName}`;
 export const interviewEndEmailOrganizerForMeetingStatus = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
+  meetingStatusUpdateLink,
 }: EmailType['react_email_placeholders']) => {
-  return <EmailContainer companyLogo={companyLogo} emailBody={emailBody} />;
+  return (
+    <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
+      <ButtonSolid buttonText="Update Status" href={meetingStatusUpdateLink} />
+    </EmailContainer>
+  );
 };
 export default interviewEndEmailOrganizerForMeetingStatus;
