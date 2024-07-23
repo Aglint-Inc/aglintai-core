@@ -28,12 +28,15 @@ export const ChatApp: React.FC = () => {
       setInput('');
       const {
         data: { updated_history },
-      } = await axios.post('http://localhost:8080/api/aglint-agent', {
-        msg: newMessage.value,
-        history: messages,
-        company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
-        user_tz: dayjsLocal.tz.guess(),
-      });
+      } = await axios.post(
+        `${process.env.NEXT_PUBLIC_AGENT_API}/api/aglint-agent`,
+        {
+          msg: newMessage.value,
+          history: messages,
+          company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
+          user_tz: dayjsLocal.tz.guess(),
+        },
+      );
 
       setMessages(() => [...updated_history]);
     } catch (err) {
