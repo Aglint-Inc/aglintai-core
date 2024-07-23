@@ -149,4 +149,75 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Email, Slack to Meeting organizer for Provide Meeting complete status',
+      trigger: 'interviewEnd',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'interviewEnd_slack_organizerForMeetingStatus',
+      },
+      {
+        order: 0,
+        template_type: 'interviewEnd_email_organizerForMeetingStatus',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '',
+      trigger: 'interviewEnd',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 1,
+        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 2,
+        template_type: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 3,
+        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '',
+      trigger: 'onTrainingComplete',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type:
+          'onTrainingComplete_email_approverForTraineeMeetingQualification',
+      },
+      {
+        order: 0,
+        template_type:
+          'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+      },
+    ],
+  },
 ];
