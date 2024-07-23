@@ -209,6 +209,7 @@ const AuthProvider = ({ children }) => {
 
       setRecruiterUser({
         ...recruiterUser,
+        primary: recruiterRel.primary,
         role: recruiterRel.roles.name,
         role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,

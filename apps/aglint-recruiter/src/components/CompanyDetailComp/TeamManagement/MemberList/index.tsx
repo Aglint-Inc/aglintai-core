@@ -54,7 +54,7 @@ const Member = ({
   const [dialogReason, setDialogReason] =
     useState<Parameters<typeof DeleteMemberDialog>['0']['reason']>(null);
 
-  const { userDetails } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
     const temp: {
@@ -137,7 +137,9 @@ const Member = ({
         }
         slotThreeDot={
           canManage &&
-          (member.role !== 'admin' || member.status === 'invited') && (
+          (member.role !== 'admin' ||
+            member.status === 'invited' ||
+            recruiterUser.primary) && (
             <>
               <Stack onClick={handleClick}>
                 <IconButtonGhost
@@ -186,7 +188,7 @@ const Member = ({
                             onClick: () => {
                               reinviteUser(
                                 member.email,
-                                userDetails.user.id,
+                                recruiterUser.user_id,
                               ).then(({ error, emailSend }) => {
                                 if (!error && emailSend) {
                                   return toast.success(
@@ -261,7 +263,7 @@ const Member = ({
           />
         }
         userEmail={member.email}
-        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === userDetails?.user?.id ? '(You)' : ''}`}
+        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
         textDepartment={member.department}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}

@@ -141,6 +141,7 @@ export interface RecruiterUserType extends TempRecruiterUser {
   role: string;
   role_id: string;
   last_login?: string;
+  primary?: boolean;
   manager_id: string;
   manager_details?: {
     name: string;
