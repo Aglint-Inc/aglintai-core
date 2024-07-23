@@ -8,6 +8,9 @@ import Edit from '../edit';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
+import { GlobalEmptyState } from '@/devlink';
+import { TextWithIcon } from '@/devlink2';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -26,9 +29,31 @@ const Body = () => {
             </ActionsProvider>
           </>
         }
+        slotConnectedJobs={<ConnectedJobs />}
       />
     </>
   );
 };
 
 export default Body;
+
+const ConnectedJobs = () => {
+  const { workflow } = useWorkflow();
+  const count = workflow?.jobs?.length ?? 0;
+  if (count === 0)
+    return (
+      <GlobalEmptyState
+        iconName={'work'}
+        size={4}
+        slotButton={<></>}
+        textDesc={'No jobs connected'}
+      />
+    );
+  return (workflow?.jobs ?? []).map(({ title }) => (
+    <TextWithIcon
+      iconName={'work'}
+      fontWeight={'regular'}
+      textContent={capitalizeAll(title)}
+    />
+  ));
+};
