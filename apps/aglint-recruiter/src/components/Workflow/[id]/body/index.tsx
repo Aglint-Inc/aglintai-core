@@ -1,16 +1,16 @@
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Page404 } from '@/devlink/Page404';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowDetail } from '@/devlink3/WorkflowDetail';
 import Loader from '@/src/components/Common/Loader';
 import Seo from '@/src/components/Common/Seo';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import Edit from '../edit';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
-import { GlobalEmptyState } from '@/devlink';
-import { TextWithIcon } from '@/devlink2';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -49,8 +49,9 @@ const ConnectedJobs = () => {
         textDesc={'No jobs connected'}
       />
     );
-  return (workflow?.jobs ?? []).map(({ title }) => (
+  return (workflow?.jobs ?? []).map(({ title }, i) => (
     <TextWithIcon
+      key={i}
       iconName={'work'}
       fontWeight={'regular'}
       textContent={capitalizeAll(title)}

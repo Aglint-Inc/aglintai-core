@@ -1,4 +1,4 @@
-import { Dialog, Popover, TextField, Typography } from '@mui/material';
+import { Dialog, Popover, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import { useState } from 'react';
@@ -186,8 +186,9 @@ const DeletePopup = () => {
                 textTitle={`Connected Jobs (${count})`}
                 slotTextWithIcon={
                   <>
-                    {(deletion?.workflow?.jobs ?? []).map(({ title }) => (
+                    {(deletion?.workflow?.jobs ?? []).map(({ title }, i) => (
                       <TextWithIcon
+                        key={i}
                         iconName={'work'}
                         fontWeight={'regular'}
                         textContent={capitalizeAll(title)}
