@@ -395,9 +395,10 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       }
       fetchInterviewDataByApplication();
       refetch();
+      setStepScheduling('agents_final_screen_cta');
       const data = await getTaskDetails(selectedApplication.id);
       setSelectedTasks(data);
-      resetStateSelfScheduling();
+      // resetStateSelfScheduling();
     } catch (e) {
       //
     } finally {
