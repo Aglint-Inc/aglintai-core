@@ -25,7 +25,8 @@ export default async function handler(
       const { recruiter_id, user_id } = requesterDetails;
       const { add, delete: toDelete, role_id } = body;
       const roleMeta = await checkRole(role_id);
-      if (!roleMeta || !(roleMeta.role === 'auth' && roleMeta.id === user_id))
+
+      if (!roleMeta || (roleMeta.role === 'auth' && roleMeta.id !== user_id))
         throw new Error('Cannot alter admin role.');
       if (!(add || toDelete))
         throw new Error('No permission added or deleted is required');
@@ -79,11 +80,10 @@ const checkRole = async (role_id: string) => {
     .eq('id', role_id)
     .throwOnError()
     .single()
-    .then(({ data }) =>
-      data.name === 'admin'
-        ? { role: data.name, id: data.recruiter.primary_admin }
-        : null,
-    );
+    .then(({ data }) => ({
+      role: data.name,
+      id: data.recruiter.primary_admin,
+    }));
 };
 
 const getPermissions = async ({
