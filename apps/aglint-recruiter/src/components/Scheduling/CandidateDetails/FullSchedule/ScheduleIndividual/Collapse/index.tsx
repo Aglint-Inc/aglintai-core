@@ -10,9 +10,13 @@ import { numberToText } from '@/src/utils/number/numberToText';
 import InterviewerUserDetail from '../../../../Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '../../../../utils';
 import {
+  setIsScheduleNowOpen,
+  setStepScheduling,
+} from '../../../SchedulingDrawer/store';
+import {
   SchedulingApplication,
   setIndividualCancelOpen,
-  setIndividualRescheduleOpen,
+  setRescheduleSessionIds,
   setSelectedSession,
 } from '../../../store';
 import { ScheduleIndividualCardType } from '../types';
@@ -173,7 +177,10 @@ function CollapseContent({
                       onClick: (e) => {
                         e.stopPropagation();
                         setSelectedSession(currentSession);
-                        setIndividualRescheduleOpen(true);
+                        const session_ids = currentSession.interview_session.id;
+                        setRescheduleSessionIds([session_ids]);
+                        setStepScheduling('reschedule');
+                        setIsScheduleNowOpen(true);
                       },
                     }}
                   />
