@@ -136,7 +136,7 @@ function Interviewer() {
       queryParam: 'allschedules',
     },
     {
-      name: 'Availibility',
+      name: 'Availability',
       queryParam: 'availibility',
     },
     {
