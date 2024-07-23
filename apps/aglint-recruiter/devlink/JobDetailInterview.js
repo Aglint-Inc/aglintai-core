@@ -21,7 +21,7 @@ export function JobDetailInterview({
           onClickButton={onClickViewScheduler}
           size="2"
           iconSize="3"
-          textButton="View In Scheduler"
+          textButton="View In Tasks"
           isRightIcon={true}
           iconName="north_east"
         />

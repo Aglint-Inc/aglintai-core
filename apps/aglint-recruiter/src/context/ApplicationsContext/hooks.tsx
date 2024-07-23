@@ -188,13 +188,15 @@ export const useApplicationsActions = () => {
     }),
   );
 
+  const { ...queryParams } = params;
+
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
       polling: applicationScoringPollEnabled,
       status: 'new',
       count: job?.section_count?.new ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
   const screeningApplications = useInfiniteQuery(
@@ -203,7 +205,7 @@ export const useApplicationsActions = () => {
       polling: applicationScoringPollEnabled,
       status: 'screening',
       count: job?.section_count?.screening ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
   const assessmentApplications = useInfiniteQuery(
@@ -212,7 +214,7 @@ export const useApplicationsActions = () => {
       polling: applicationScoringPollEnabled,
       status: 'assessment',
       count: job?.section_count?.assessment ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
   const interviewApplications = useInfiniteQuery(
@@ -221,7 +223,7 @@ export const useApplicationsActions = () => {
       polling: applicationScoringPollEnabled,
       status: 'interview',
       count: job?.section_count?.interview ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
   const qualifiedApplications = useInfiniteQuery(
@@ -230,7 +232,7 @@ export const useApplicationsActions = () => {
       polling: applicationScoringPollEnabled,
       status: 'qualified',
       count: job?.section_count?.qualified ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
   const disqualifiedApplications = useInfiniteQuery(
@@ -239,7 +241,7 @@ export const useApplicationsActions = () => {
       polling: applicationScoringPollEnabled,
       status: 'disqualified',
       count: job?.section_count?.disqualified ?? 0,
-      ...params,
+      ...queryParams,
     }),
   );
 

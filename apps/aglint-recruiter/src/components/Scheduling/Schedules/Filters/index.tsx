@@ -1,6 +1,5 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -37,27 +36,27 @@ function Filters() {
   ];
   const dateRange = [
     {
-      id: dayjsLocal().format('YYYY-MM-DD'),
+      id: 'today',
       label: 'today',
     },
     {
-      id: dayjsLocal().add(1, 'day').format('YYYY-MM-DD'),
+      id: 'tomorrow',
       label: 'Tomorrow',
     },
     {
-      id: dayjsLocal().add(7, 'day').format('YYYY-MM-DD'),
+      id: 'next_7_days',
       label: 'Next 7 days',
     },
     {
-      id: dayjsLocal().add(30, 'day').format('YYYY-MM-DD'),
+      id: 'next_30_days',
       label: 'Next 30 days',
     },
     {
-      id: dayjsLocal().add(-7, 'day').format('YYYY-MM-DD'),
+      id: 'last_7_days',
       label: 'Last 7 days',
     },
     {
-      id: dayjsLocal().add(-30, 'day').format('YYYY-MM-DD'),
+      id: 'last_30_days',
       label: 'Last 30 days',
     },
   ];
@@ -96,7 +95,7 @@ function Filters() {
             name: 'Interviewer',
             options: members
               ? members
-                  .filter((ele) => !ele.is_suspended)
+                  .filter((ele) => ele.status === 'active')
                   .map((member) => ({
                     id: member.user_id,
                     label: getFullName(member.first_name, member.last_name),
@@ -163,9 +162,9 @@ function Filters() {
             options: dateRange,
             multiSelect: false,
             setValue: (val) => {
-              updateFilterState('date_range', val);
+              updateFilterState('date', val);
             },
-            value: filterState.date_range,
+            value: filterState.date,
             iconname: 'filter_tilt_shift',
           },
         ]}

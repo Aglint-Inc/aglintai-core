@@ -18,6 +18,7 @@ import {
   ContextValue,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -44,6 +45,7 @@ const Member = ({
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
 }) => {
+  const { checkPermissions } = useRolesAndPermissions();
   const handelRemove = (e) => {
     e.stopPropagation();
     removeMember();
@@ -87,6 +89,7 @@ const Member = ({
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const canManage = checkPermissions(['manage_users']);
   return (
     <>
       <DeleteMemberDialog
@@ -95,7 +98,7 @@ const Member = ({
           dialogReason === 'suspend'
             ? () => {
                 updateMember({
-                  is_suspended: true,
+                  status: 'suspended',
                 }).then(() => {
                   toast.success(
                     `${member.first_name}'s account is suspended successfully.`,
@@ -123,23 +126,18 @@ const Member = ({
         slotBadge={
           <GlobalBadge
             color={
-              member.is_suspended
+              member.status === 'suspended'
                 ? 'error'
-                : member.join_status === 'joined'
+                : member.status === 'active'
                   ? 'success'
                   : 'warning'
             }
-            textBadge={capitalize(
-              member.is_suspended
-                ? 'Suspended'
-                : member.join_status === 'joined'
-                  ? 'Active'
-                  : member.join_status,
-            )}
+            textBadge={capitalize(member.status)}
           />
         }
         slotThreeDot={
-          member.role !== 'admin' && (
+          canManage &&
+          (member.role !== 'admin' || member.status === 'invited') && (
             <>
               <Stack onClick={handleClick}>
                 <IconButtonGhost
@@ -165,15 +163,17 @@ const Member = ({
                 }}
               >
                 <TeamOptionList
-                  isMarkActiveVisible={canSuspend && member.is_suspended}
-                  isSuspendVisible={canSuspend && !member.is_suspended}
-                  isCancelInviteVisible={member.join_status === 'invited'}
-                  isDeleteVisible={member.join_status !== 'invited'}
-                  isResetPasswordVisible={member.join_status !== 'invited'}
-                  isEditVisible={member.join_status !== 'invited'}
+                  isMarkActiveVisible={
+                    canSuspend && member.status === 'suspended'
+                  }
+                  isSuspendVisible={canSuspend && member.status === 'active'}
+                  isCancelInviteVisible={member.status === 'invited'}
+                  isDeleteVisible={member.status !== 'invited'}
+                  isResetPasswordVisible={member.status !== 'invited'}
+                  isEditVisible={member.status !== 'invited'}
                   slotFilterOption={
                     <>
-                      {member.join_status === 'invited' && (
+                      {member.status === 'invited' && (
                         <FilterOption
                           slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
                           text={'Resend Invitation'}
@@ -204,7 +204,7 @@ const Member = ({
                   isFilterOptionVisible={true}
                   onClickMarkActive={{
                     onClick: () => {
-                      updateMember({ is_suspended: false }).then(() => {
+                      updateMember({ status: 'active' }).then(() => {
                         toast.success(
                           `${member.first_name}'s account is activated successfully.`,
                         );

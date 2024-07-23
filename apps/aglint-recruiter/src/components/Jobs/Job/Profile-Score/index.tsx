@@ -25,11 +25,12 @@ import { ScorePillNice } from '@/devlink/ScorePillNice';
 import { ScoreSetting } from '@/devlink/ScoreSetting';
 import { ScoreWeightage } from '@/devlink/ScoreWeightage';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { Text } from '@/devlink2/Text';
 import { BannerAlert } from '@/devlink3/BannerAlert';
-import { BannerWarning } from '@/devlink3/BannerWarning';
 import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import Loader from '@/src/components/Common/Loader';
@@ -42,6 +43,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
 import { Job } from '@/src/queries/jobs/types';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 
@@ -329,19 +331,33 @@ const Banners = () => {
   if (status.loading) return <></>;
   if (status.description_error)
     return (
-      <BannerWarning
-        textBanner={'Job description is unavailable'}
+      <GlobalBannerInline
+        textContent='Job description is unavailable'
+        iconName='warning'
+        color={'error'}
         slotButton={
           <ButtonSolid
             textButton='View'
-            size={2}
-            highContrast='true'
+            size={1}
             onClickButton={{
               onClick: () => push(`/jobs/${job.id}/edit`),
             }}
           />
         }
       />
+      // <BannerWarning
+      //   textBanner={'Job description is unavailable'}
+      //   slotButton={
+      //     <ButtonSolid
+      //       textButton='View'
+      //       size={2}
+      //       highContrast='true'
+      //       onClickButton={{
+      //         onClick: () => push(`/jobs/${job.id}/edit`),
+      //       }}
+      //     />
+      //   }
+      // />
     );
   if (status.jd_json_error)
     return (
@@ -355,24 +371,22 @@ const Banners = () => {
     );
   if (status.description_changed && !status.scoring_criteria_changed)
     return (
-      <BannerWarning
-        textBanner={
-          'Job description has changed. Regenerate for updated scoring criterias.'
-        }
+      <GlobalBannerInline
+        color={'warning'}
+        textContent=' Job description has changed. Regenerate for updated scoring criterias.'
         slotButton={
           <>
             <ButtonSoft
               textButton='Ignore'
-              size={2}
-              highContrast='true'
+              size={1}
+              color={'neutral'}
               onClickButton={{
                 onClick: () => {}, //handleWarningUpdate({ job_description: true }),
               }}
             />
             <ButtonSolid
               textButton='Regenerate'
-              size={2}
-              highContrast='true'
+              size={1}
               onClickButton={{
                 onClick: () => handleRegenerateJd(job),
               }}
@@ -380,6 +394,31 @@ const Banners = () => {
           </>
         }
       />
+      // <BannerWarning
+      //   textBanner={
+      //     'Job description has changed. Regenerate for updated scoring criterias.'
+      //   }
+      //   slotButton={
+      //     <>
+      //       <ButtonSoft
+      //         textButton='Ignore'
+      //         size={2}
+      //         highContrast='true'
+      //         onClickButton={{
+      //           onClick: () => {}, //handleWarningUpdate({ job_description: true }),
+      //         }}
+      //       />
+      //       <ButtonSolid
+      //         textButton='Regenerate'
+      //         size={2}
+      //         highContrast='true'
+      //         onClickButton={{
+      //           onClick: () => handleRegenerateJd(job),
+      //         }}
+      //       />
+      //     </>
+      //   }
+      // />
     );
   return <></>;
 };
@@ -406,6 +445,16 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
     index: number,
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
+    if (
+      (jd_json?.[section] ?? []).find(
+        ({ field }, i) =>
+          (field ?? '').trim().toLowerCase() ===
+            (item?.field ?? '').trim().toLowerCase() && i !== index,
+      )
+    ) {
+      toast.error('Entry already present');
+      return;
+    }
     const newSection = jd_json[section].reduce(
       (acc, curr, i) => {
         if (i === index) acc.push(item);
@@ -424,6 +473,16 @@ const Section: FC<{ type: Sections }> = ({ type }) => {
   const handleCreate = (
     item: DatabaseTable['public_jobs']['jd_json']['rolesResponsibilities'][number],
   ) => {
+    if (
+      (jd_json?.[section] ?? []).find(
+        ({ field }) =>
+          (field ?? '').trim().toLowerCase() ===
+          (item?.field ?? '').trim().toLowerCase(),
+      )
+    ) {
+      toast.error('Entry already present');
+      return;
+    }
     handleJobUpdate({
       draft: {
         ...draft,
@@ -720,25 +779,42 @@ const Tips = () => {
   }, [handleCreateTourLog, firstVisit]);
   return (
     <>
-      {firstVisit && (
-        <GlobalInfo
-          color={'neutral'}
-          textTitle={'How It Works'}
-          textDescription={
-            "Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click 'Reset' to restore default settings."
-          }
-          showCloseButton
-          onClickClose={{ onClick: () => handleTip() }}
+      <Stack
+        bgcolor={'white'}
+        borderRadius={'4px'}
+        display={'flex'}
+        flexDirection={'column'}
+        gap={'4px'}
+        padding={'var(--space-3)'}
+      >
+        <Text
+          content='How It Works'
+          weight={'medium'}
+          size={2}
+          color={'info'}
         />
+        <Text
+          content='Adjust the weightage for Experience, Skills, and Education to customize the profile score. The total must equal 100%. Use the input fields to set percentages. Click "Reset" to restore default settings.'
+          size={2}
+          weight={'regular'}
+          color='neutral'
+        />
+      </Stack>
+
+      {firstVisit && (
+        <Stack marginTop={'16px'}>
+          <GlobalInfo
+            color={'purple'}
+            iconName='lightbulb'
+            textTitle={'Pro Tip'}
+            textDescription={
+              'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+            }
+            showCloseButton
+            onClickClose={{ onClick: () => handleTip() }}
+          />
+        </Stack>
       )}
-      <GlobalInfo
-        color={'purple'}
-        iconName='lightbulb'
-        textTitle={'Pro Tip'}
-        textDescription={
-          'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-        }
-      />
     </>
   );
 };

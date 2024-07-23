@@ -4,8 +4,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewers } from '@/devlink2/AllInterviewers';
 import { AllInterviewersCard } from '@/devlink2/AllInterviewersCard';
+import { EmptyState } from '@/devlink2/EmptyState';
 import { TextWithBg } from '@/devlink2/TextWithBg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -36,71 +38,112 @@ const InterviewTab = () => {
       <ShowCode.When isTrue={isFetched}>
         <Stack position={'relative'}>
           <Filters setFilteredInterviewer={setFilteredInterviewer} />
-          <AllInterviewers
-            slotAllInterviewesCard={
-              filteredInterviewer
-                ? filteredInterviewer
-                    .sort(
-                      (a, b) =>
-                        b.qualified_module_names.filter((ele) => ele).length -
-                          a.qualified_module_names.filter((ele) => ele)
-                            .length &&
-                        b.training_module_names.filter((ele) => ele).length -
-                          a.training_module_names.filter((ele) => ele).length,
-                    )
-                    .map((member) => {
-                      return (
-                        <Stack
-                          key={member.rec_user.user_id}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            // setSelectedInterviewer(member);
-                            router.push(
-                              `${router.route}/interviewer/${member.rec_user.user_id}`,
-                            );
-                          }}
-                        >
-                          <AllInterviewersCard
-                            textCompletedInterviews={
-                              member.completed_meeting_count
-                            }
-                            textUpcomingInterviews={
-                              member.upcoming_meeting_count
-                            }
-                            slotProfileImage={
-                              <MuiAvatar
-                                src={member.rec_user.profile_image}
-                                level={getFullName(
-                                  member.rec_user.first_name,
-                                  member.rec_user.last_name,
-                                )}
-                                variant='rounded-medium'
-                              />
-                            }
-                            isCalenderNotConnected={
-                              recruiter.service_json === null &&
-                              recruiter.email.split('@')[1] ===
-                                member.rec_user.email.split('@')[1] &&
-                              member.rec_user.schedule_auth === null
-                            }
-                            isConnectedCalenderVisible={
-                              (recruiter.service_json !== null &&
+          {filteredInterviewer?.length > 0 ? (
+            <AllInterviewers
+              slotAllInterviewesCard={
+                filteredInterviewer
+                  ? filteredInterviewer
+                      .sort(
+                        (a, b) =>
+                          b.qualified_module_names.filter((ele) => ele).length -
+                            a.qualified_module_names.filter((ele) => ele)
+                              .length &&
+                          b.training_module_names.filter((ele) => ele).length -
+                            a.training_module_names.filter((ele) => ele).length,
+                      )
+                      .map((member) => {
+                        return (
+                          <Stack
+                            key={member.rec_user.user_id}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              // setSelectedInterviewer(member);
+                              router.push(
+                                `${router.route}/interviewer/${member.rec_user.user_id}`,
+                              );
+                            }}
+                          >
+                            <AllInterviewersCard
+                              textCompletedInterviews={
+                                member.completed_meeting_count
+                              }
+                              textUpcomingInterviews={
+                                member.upcoming_meeting_count
+                              }
+                              slotProfileImage={
+                                <MuiAvatar
+                                  src={member.rec_user.profile_image}
+                                  level={getFullName(
+                                    member.rec_user.first_name,
+                                    member.rec_user.last_name,
+                                  )}
+                                  variant='rounded-medium'
+                                />
+                              }
+                              isCalenderNotConnected={
+                                recruiter.service_json === null &&
                                 recruiter.email.split('@')[1] ===
-                                  member.rec_user.email.split('@')[1]) ||
-                              member.rec_user.schedule_auth !== null
-                            }
-                            slotInterviewModules={
-                              <>
-                                <ShowCode>
-                                  <ShowCode.When
-                                    isTrue={Boolean(
-                                      member.qualified_module_names.filter(
-                                        (ele) => ele,
-                                      ).length,
-                                    )}
-                                  >
-                                    <>
-                                      {member.qualified_module_names
+                                  member.rec_user.email.split('@')[1] &&
+                                member.rec_user.schedule_auth === null
+                              }
+                              isConnectedCalenderVisible={
+                                (recruiter.service_json !== null &&
+                                  recruiter.email.split('@')[1] ===
+                                    member.rec_user.email.split('@')[1]) ||
+                                member.rec_user.schedule_auth !== null
+                              }
+                              slotInterviewModules={
+                                <>
+                                  <ShowCode>
+                                    <ShowCode.When
+                                      isTrue={Boolean(
+                                        member.qualified_module_names.filter(
+                                          (ele) => ele,
+                                        ).length,
+                                      )}
+                                    >
+                                      <>
+                                        {member.qualified_module_names
+                                          .filter((ele) => ele)
+                                          ?.slice(0, 2)
+                                          .map((item) => {
+                                            if (item)
+                                              return (
+                                                <TextWithBg
+                                                  key={item}
+                                                  text={item}
+                                                />
+                                              );
+                                            else return '--';
+                                          })}
+                                        {member.qualified_module_names.filter(
+                                          (ele) => ele,
+                                        )?.length > 2 && (
+                                          <TextWithBg
+                                            text={`+${
+                                              member.qualified_module_names.filter(
+                                                (ele) => ele,
+                                              ).length - 2
+                                            }`}
+                                          />
+                                        )}
+                                      </>
+                                    </ShowCode.When>
+                                    <ShowCode.Else>--</ShowCode.Else>
+                                  </ShowCode>
+                                </>
+                              }
+                              slotModulesTraining={
+                                <>
+                                  <ShowCode>
+                                    <ShowCode.When
+                                      isTrue={Boolean(
+                                        member.training_module_names.filter(
+                                          (ele) => ele,
+                                        ).length,
+                                      )}
+                                    >
+                                      {member.training_module_names
                                         .filter((ele) => ele)
                                         ?.slice(0, 2)
                                         .map((item) => {
@@ -111,74 +154,46 @@ const InterviewTab = () => {
                                                 text={item}
                                               />
                                             );
-                                          else return '--';
                                         })}
-                                      {member.qualified_module_names.filter(
+                                      {member.training_module_names.filter(
                                         (ele) => ele,
                                       )?.length > 2 && (
                                         <TextWithBg
                                           text={`+${
-                                            member.qualified_module_names.filter(
+                                            member.training_module_names.filter(
                                               (ele) => ele,
                                             ).length - 2
                                           }`}
                                         />
                                       )}
-                                    </>
-                                  </ShowCode.When>
-                                  <ShowCode.Else>--</ShowCode.Else>
-                                </ShowCode>
-                              </>
-                            }
-                            slotModulesTraining={
-                              <>
-                                <ShowCode>
-                                  <ShowCode.When
-                                    isTrue={Boolean(
-                                      member.training_module_names.filter(
-                                        (ele) => ele,
-                                      ).length,
-                                    )}
-                                  >
-                                    {member.training_module_names
-                                      .filter((ele) => ele)
-                                      ?.slice(0, 2)
-                                      .map((item) => {
-                                        if (item)
-                                          return (
-                                            <TextWithBg
-                                              key={item}
-                                              text={item}
-                                            />
-                                          );
-                                      })}
-                                    {member.training_module_names.filter(
-                                      (ele) => ele,
-                                    )?.length > 2 && (
-                                      <TextWithBg
-                                        text={`+${
-                                          member.training_module_names.filter(
-                                            (ele) => ele,
-                                          ).length - 2
-                                        }`}
-                                      />
-                                    )}
-                                  </ShowCode.When>
-                                  <ShowCode.Else>--</ShowCode.Else>
-                                </ShowCode>
-                              </>
-                            }
-                            textName={`${member.rec_user.first_name} ${
-                              member.rec_user.last_name || ''
-                            }`}
-                            textRole={member.rec_user?.position}
-                          />
-                        </Stack>
-                      );
-                    })
-                : ''
-            }
-          />
+                                    </ShowCode.When>
+                                    <ShowCode.Else>--</ShowCode.Else>
+                                  </ShowCode>
+                                </>
+                              }
+                              textName={`${member.rec_user.first_name} ${
+                                member.rec_user.last_name || ''
+                              }`}
+                              textRole={member.rec_user?.position}
+                            />
+                          </Stack>
+                        );
+                      })
+                  : ''
+              }
+            />
+          ) : (
+            <EmptyState
+              textDescription={'No interviewers found'}
+              slotIcons={
+                <GlobalIcon
+                  iconName='person_search'
+                  color={'var(--neutral-2)'}
+                  size={9}
+                />
+              }
+            />
+          )}
         </Stack>
       </ShowCode.When>
     </ShowCode>

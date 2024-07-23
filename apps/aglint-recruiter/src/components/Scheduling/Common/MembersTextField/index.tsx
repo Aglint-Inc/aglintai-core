@@ -88,9 +88,9 @@ function MembersAutoComplete({
                     <MuiAvatar
                       src={user.profile_image}
                       level={getFullName(user?.first_name, user?.last_name)}
-                      variant='circular'
-                      height='24px'
-                      width='24px'
+                      variant='rounded'
+                      height='20px'
+                      width='20px'
                       fontSize='12px'
                     />
                   }
@@ -138,6 +138,7 @@ function MembersAutoComplete({
                   paddingTop: 0,
                   paddingBottom: 0,
                 },
+                maxHeight: '40vh',
               },
               onMouseDown: (event) => {
                 event.stopPropagation();

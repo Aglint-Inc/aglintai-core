@@ -54,7 +54,7 @@ const TipTapAIEditor = ({
     count: 1,
   },
   singleLine = false,
-  height = 'auto',
+  height = '440px',
   minHeight = 'auto',
   disabled = false,
   border = false,
@@ -137,6 +137,7 @@ const TipTapAIEditor = ({
             border: '1px solid',
             borderColor: 'var(--neutral-6)',
             borderRadius: borderRadius || 'var(--radius-2)',
+            
           }),
         }}
       >
@@ -169,7 +170,7 @@ const TipTapAIEditor = ({
               overflow: 'auto',
               '& .ProseMirror': {
                 width: '100%',
-
+                height:'400px',
                 wordBreak: 'break-word',
                 color: disabled ? 'var(--neutral-3)' : 'var(--neutral-12)',
                 cursor: disabled ? 'default' : 'auto',
@@ -216,6 +217,7 @@ const TipTapAIEditor = ({
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
+                          
                         }
                       : {}
                   }

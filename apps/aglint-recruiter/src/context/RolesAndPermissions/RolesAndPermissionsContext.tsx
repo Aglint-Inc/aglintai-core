@@ -33,7 +33,11 @@ export const RolesAndPermissionsProvider = ({
     return (
       Boolean(permissions?.length) &&
       permissions.reduce(
-        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        (prev, curr) =>
+          prev &&
+          Boolean(
+            userPermissions['permissions'][curr] || curr === 'authorized',
+          ),
         true,
       )
     );
@@ -43,12 +47,12 @@ export const RolesAndPermissionsProvider = ({
     permissions,
   ) => {
     // eslint-disable-next-line security/detect-object-injection
-    const allow =
-      Boolean(permissions.length) &&
-      permissions.reduce(
-        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
-        true,
-      );
+    const allow = checkPermissions(permissions);
+    // Boolean(permissions.length) &&
+    // permissions.reduce(
+    //   (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+    //   true,
+    // );
     if (allow) {
       return func;
     }

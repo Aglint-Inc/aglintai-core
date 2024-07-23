@@ -12,21 +12,17 @@ const supabase = createClient<DB>(
 
 export interface BodyParamsFetchUserDetails {
   recruiter_id: string;
-  status?: 'joined' | 'invited';
-  is_suspended?: boolean | null;
+  includeSupended?: boolean;
 }
 
 export type CompanyMembersAPI = ReturnType<typeof fetchUsers>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const {
-      recruiter_id,
-      status = 'joined',
-      is_suspended,
-    } = req.body as BodyParamsFetchUserDetails;
+    const { recruiter_id, includeSupended } =
+      req.body as BodyParamsFetchUserDetails;
 
-    const resUsers = await fetchUsers(recruiter_id, status, is_suspended);
+    const resUsers = await fetchUsers(recruiter_id, includeSupended);
     if (resUsers.length) {
       return res.status(200).json(resUsers);
     }
@@ -37,11 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (
-  recruiter_id: string,
-  status: string,
-  is_suspended: boolean,
-) => {
+const fetchUsers = async (recruiter_id: string, includeSupended: boolean) => {
   const filSup = supabase
     .from('recruiter_relation')
     .select(
@@ -49,19 +41,17 @@ const fetchUsers = async (
     )
     .eq('recruiter_id', recruiter_id);
 
-  if (is_suspended !== undefined) {
-    filSup.eq('recruiter_user.is_suspended', is_suspended);
-  }
+  return filSup.then(({ data, error }) => {
+    if (error) throw new Error(error.message);
+    const res1 = data
+      .filter((item) => item.recruiter_user)
+      .map((item) => ({
+        ...item.recruiter_user,
+        role: item.roles.name as (typeof defaultRoles)[number]['name'],
+      }));
 
-  return filSup
-    .eq('recruiter_user.join_status', status)
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data
-        .filter((item) => item.recruiter_user)
-        .map((item) => ({
-          ...item.recruiter_user,
-          role: item.roles.name as (typeof defaultRoles)[number]['name'],
-        }));
-    });
+    if (includeSupended) return res1;
+
+    return res1.filter((item) => item.status === 'active');
+  });
 };

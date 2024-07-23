@@ -16,7 +16,6 @@ import {
   fetchInterviewModules,
   fetchModuleSchedules,
   fetchProgress,
-  getMeetingsByModuleId,
   resumePauseDbUpdate,
   updatePauseJsonByUserId,
 } from './utils';
@@ -54,32 +53,21 @@ export const useAllSchedulesByModuleId = ({
   return query;
 };
 
-export const useGetMeetingsByModuleId = () => {
-  const router = useRouter();
-  const query = useQuery({
-    queryKey: QueryKeysInteviewModules.MEETINGS_BY_MODULE_ID({
-      moduleId: router.query.module_id as string,
-    }),
-    queryFn: () => getMeetingsByModuleId(router.query.module_id as string),
-    enabled: !!router.query.module_id,
-  });
-  return query;
-};
-
 export const useProgressModuleUsers = ({
   trainer_ids,
 }: {
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
   const router = useRouter();
+  const module_id = router.query.module_id as string;
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.PROGRESS_BY_MODULE_ID({
-      moduleId: router.query.module_id as string,
+      moduleId: module_id,
     }),
     queryFn: () =>
       fetchProgress({
-        module_id: router.query.module_id as string,
+        module_id,
         trainer_ids: trainer_ids,
       }),
     enabled: router.query.module_id && trainer_ids.length > 0,
@@ -253,39 +241,35 @@ export const useDeleteRelationHandler = () => {
   return { deleteRelationByUserId };
 };
 
-export const useAddMemberHandler = () => {
-  const queryClient = useQueryClient();
-
+export const useAddMemberHandler = ({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) => {
   const addMemberHandler = async ({
-    module_id,
     selectedUsers,
     trainingStatus,
   }: {
-    module_id: string;
     selectedUsers: MemberType[];
     trainingStatus: 'training' | 'qualified';
   }) => {
     try {
-      const editModule = queryClient.getQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
-      );
-
       if (!editModule) throw new Error('Interview type not found');
 
       const { error } = await addMemberbyUserIds({
         module_id: editModule.id,
         user_ids: selectedUsers.map((user) => user.user_id),
         training_status: trainingStatus,
+        number_of_reverse_shadow: editModule.settings.noReverseShadow,
+        number_of_shadow: editModule.settings.noShadow,
       });
       if (error) {
         throw new Error(error.message);
       }
 
-      await queryClient.invalidateQueries({
-        queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-      });
+      refetch();
     } catch (e) {
       toast.error(e.message);
     }

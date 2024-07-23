@@ -157,3 +157,23 @@ export const onSignupEmailAdminSchema = v.object({
 export const interviewerResumedEmailAdminSchema = v.object({
   interviewe_module_relation_id: v.string(),
 });
+
+export const onShadowCompleteEmailTraineeSchema = v.object({
+  interview_module_relation_id: v.string(),
+  interview_meeting_id: v.string(),
+  session_id: v.string(),
+});
+export const onRShadowCompleteEmailTraineeSchema = v.object({
+  interview_module_relation_id: v.string(),
+  interview_meeting_id: v.string(),
+  session_id: v.string(),
+});
+export const onQualifiedEmailTraineeSchema = v.object({
+  interview_module_relation_id: v.string(),
+  approver_id: v.string(),
+});
+export const onQualifiedEmailApproverSchema = v.object({
+  interview_module_relation_id: v.string(),
+  approver_id: v.string(),
+  organizer_id: v.string(),
+});

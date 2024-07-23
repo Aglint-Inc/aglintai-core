@@ -29,6 +29,7 @@ import {
   app_modules,
 } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
@@ -103,7 +104,7 @@ const RoleTable = ({
     x: string,
   ) => void;
 }) => {
-  const { members } = useAuthDetails();
+  const { allMember: members } = useAuthDetails();
   return loading
     ? [
         <RolesRowSkeleton key={'x'} slotSkeleton={<Skeleton />} />,
@@ -127,26 +128,32 @@ const RoleTable = ({
               }}
               slotAvatars={
                 <>
-                  {role.assignedTo.slice(0, 3).map((user_id) => {
-                    const user = members.find(
-                      (member) => member.user_id === user_id,
-                    );
-                    if (!user) return;
-                    return (
-                      <Avatar
-                        key={user_id}
-                        src={user.profile_image}
-                        variant='rounded'
-                        alt={user.first_name}
-                        sx={{ height: '24px', width: '24px' }}
-                      />
-                    );
-                  })}
-                  {count > 3 && (
-                    <GlobalBadge
-                      textBadge={`+${count - 3} more.`}
-                      color={'neutral'}
-                    />
+                  {count ? (
+                    <>
+                      {role.assignedTo.slice(0, 3).map((user_id) => {
+                        const user = members.find(
+                          (member) => member.user_id === user_id,
+                        );
+                        if (!user) return;
+                        return (
+                          <Avatar
+                            key={user_id}
+                            src={user.profile_image}
+                            variant='rounded'
+                            alt={user.first_name}
+                            sx={{ height: '24px', width: '24px' }}
+                          />
+                        );
+                      })}
+                      {count > 3 && (
+                        <GlobalBadge
+                          textBadge={`+${count - 3} more.`}
+                          color={'neutral'}
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <Typography color={'neutral'}>No users assigned</Typography>
                   )}
                 </>
               }
@@ -347,15 +354,22 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
+  const { checkPermissions } = useRolesAndPermissions();
+
   const [editUser, setEditUser] = useState<{
     user: RecruiterUserType;
     role: string;
   }>(null);
-  const { recruiterUser, members, handelMemberUpdate } = useAuthDetails();
+  const {
+    recruiterUser,
+    allMember: members,
+    handelMemberUpdate,
+  } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
+  const editDisabled = !checkPermissions(['manage_roles']);
   return (
     <>
       <RolesAndPermissionsDetail
@@ -408,7 +422,7 @@ function RoleDetails({
                           slotToggle={
                             <AntSwitch
                               checked={permission.isActive}
-                              disabled={!role.isEditable}
+                              disabled={editDisabled || !role.isEditable}
                               onClick={() => {
                                 const data = {
                                   add: null,

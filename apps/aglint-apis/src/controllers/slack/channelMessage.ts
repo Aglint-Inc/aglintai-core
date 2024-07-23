@@ -1,29 +1,6 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
-import {WebAPICallResult} from '@slack/web-api';
-
-interface ConversationsListResponse extends WebAPICallResult {
-  channels?: {
-    id: string;
-    name: string;
-  }[];
-}
-
-async function getChannelIdByName(channelName: string): Promise<string | null> {
-  try {
-    const response = (await slackWeb.conversations.list(
-      {}
-    )) as ConversationsListResponse;
-    if (response.ok && response.channels) {
-      const channel = response.channels.find(ch => ch.name === channelName);
-      return channel ? channel.id : null;
-    }
-    return null;
-  } catch (error) {
-    console.error(`Error fetching channel by name (${channelName}):`, error);
-    throw error;
-  }
-}
+import {getChannelIdByName} from 'src/utils/slack';
 
 export default async function channelMessage(req: Request, res: Response) {
   if (req.method === 'POST') {

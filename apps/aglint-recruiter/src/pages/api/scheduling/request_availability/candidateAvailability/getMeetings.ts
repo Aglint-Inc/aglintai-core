@@ -3,7 +3,8 @@ import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/hooks';
+import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
+
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

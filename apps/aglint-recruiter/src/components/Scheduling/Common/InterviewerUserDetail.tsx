@@ -24,6 +24,7 @@ function InterviewerUserDetail({
   userDetails,
   interviewerTimeZone,
   trainingType,
+  interviewerType,
 }: {
   interview_meeting: Pick<
     DatabaseTable['interview_meeting'],
@@ -42,6 +43,7 @@ function InterviewerUserDetail({
   };
   interviewerTimeZone: string;
   trainingType: DatabaseTable['interview_session_relation']['training_type'];
+  interviewerType: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) {
   return (
     <GlobalUserDetail
@@ -52,7 +54,14 @@ function InterviewerUserDetail({
           justifyContent={'center'}
           direction={'row'}
         >
-          {trainingType && <InterviewerTrainingTypeIcon type={trainingType} />}
+          {trainingType ? (
+            <InterviewerTrainingTypeIcon type={trainingType} />
+          ) : interviewerType !== 'qualified' &&
+            trainingType !== 'qualified' ? (
+            <GlobalBadge color={'info'} textBadge={'Training'} size={1} />
+          ) : (
+            ''
+          )}
           {interview_meeting?.status === 'confirmed' && (
             <>
               <CustomTooltip

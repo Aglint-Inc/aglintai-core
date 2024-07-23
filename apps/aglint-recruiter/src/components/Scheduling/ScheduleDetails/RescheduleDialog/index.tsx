@@ -13,8 +13,10 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -187,21 +189,14 @@ function RescheduleDialog({
         setIsRescheduleOpen(false);
       }}
     >
-      <ConfirmationPopup
-        textPopupTitle={`Reschedule ${session_name}`}
-        isIcon={false}
-        onClickCancel={{
+      <DcPopup
+        popupName={`Reschedule ${session_name}`}
+        onClickClosePopup={{
           onClick: () => {
             setIsRescheduleOpen(false);
           },
         }}
-        onClickAction={{
-          onClick: onClickConfirm,
-        }}
-        textPopupDescription=''
-        isDescriptionVisible={false}
-        isWidget={true}
-        slotWidget={
+        slotBody={
           <Stack spacing={2}>
             <Typography variant='body1'>
               Please chose the new date range for the interview.
@@ -325,7 +320,25 @@ function RescheduleDialog({
             </Stack>
           </Stack>
         }
-        textPopupButton={'Proceed to Reschedule'}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => {
+                  setIsRescheduleOpen(false);
+                },
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Proceed to Reschedule'}
+              onClickButton={{ onClick: onClickConfirm }}
+            />
+          </>
+        }
       />
     </Dialog>
   );

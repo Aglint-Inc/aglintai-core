@@ -125,11 +125,7 @@ export function TaskTable({
           className={_utils.cx(_styles, "task_new_button")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "new_task")}
-            tag="div"
-            {...onClickNewTask}
-          >
+          <_Builtin.Block className={_utils.cx(_styles, "new_task")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "tjc-space-div")}
               tag="div"
@@ -138,6 +134,7 @@ export function TaskTable({
               <_Builtin.Block
                 className={_utils.cx(_styles, "link-flex-accent")}
                 tag="div"
+                {...onClickNewTask}
               >
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icons")}

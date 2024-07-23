@@ -83,17 +83,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.text-link-accent {
-  transition: opacity 200ms ease;
-  color: var(--accent-11);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.text-link-accent:hover {
-  opacity: 0.88;
-}
-
 .fvp-text-wrap {
   display: flex;
   justify-content: flex-start;
@@ -126,7 +115,7 @@
   cursor: pointer;
 }
 
-.fvp-edit-feedback {
+.fvp-wrap-btn {
   display: flex;
   justify-content: flex-start;
   align-items: center;

@@ -424,6 +424,14 @@
   color: var(--white);
 }
 
+.open-jobs-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
 .div-block-441 {
   display: flex;
   align-items: center;

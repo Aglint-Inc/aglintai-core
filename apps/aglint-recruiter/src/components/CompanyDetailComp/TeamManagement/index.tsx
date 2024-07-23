@@ -12,6 +12,7 @@ import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
@@ -30,6 +31,7 @@ import Member from './MemberList';
 type ItemType = string;
 
 const TeamManagement = () => {
+  const { checkPermissions } = useRolesAndPermissions();
   const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
@@ -83,10 +85,8 @@ const TeamManagement = () => {
   const uniqueStatus = [
     ...new Set(
       members
-        .filter((ele) => Boolean(ele.join_status?.length))
-        .map(
-          (item) => item.join_status && String(item.join_status).toLowerCase(),
-        ),
+        .filter((ele) => Boolean(ele.status?.length))
+        .map((item) => item.status && String(item.status).toLowerCase()),
     ),
   ].map((item) => (item === 'joined' ? 'active' : item));
 
@@ -102,7 +102,7 @@ const TeamManagement = () => {
         !selectedStatus.length ||
         selectedStatus
           .map((item) => (item === 'active' ? 'joined' : item))
-          .includes(String(member.join_status).toLowerCase());
+          .includes(String(member.status).toLowerCase());
       const roleMatch =
         !selectedRoles.length ||
         selectedRoles.includes(String(member.role).toLowerCase());
@@ -120,7 +120,7 @@ const TeamManagement = () => {
   ]);
 
   const pendingList = members.filter(
-    (member) => member.join_status?.toLocaleLowerCase() === 'invited',
+    (member) => member.status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
 
@@ -160,6 +160,8 @@ const TeamManagement = () => {
     Boolean(selectedDepartments.length) ||
     Boolean(selectedRoles.length) ||
     Boolean(selectedLocations.length);
+
+  const canManage = checkPermissions(['manage_users']);
   return (
     <Stack bgcolor={'white'}>
       <TeamUsersList
@@ -291,27 +293,29 @@ const TeamManagement = () => {
                       data: updatedMem,
                     });
                   }}
-                  canSuspend={
-                    member.join_status !== 'invited' && member.role !== 'admin'
-                  }
+                  canSuspend={member.role !== 'admin'}
                 />
               ))}
             </ShowCode.When>
           </>
         }
         slotInviteBtn={
-          <ButtonSolid
-            isRightIcon={false}
-            isLeftIcon={true}
-            size={'2'}
-            textButton={'Invite'}
-            iconName={'send'}
-            onClickButton={{
-              onClick: () => {
-                setOpenDrawer({ open: true, window: 'addMember' });
-              },
-            }}
-          />
+          <>
+            {canManage && (
+              <ButtonSolid
+                isRightIcon={false}
+                isLeftIcon={true}
+                size={'2'}
+                textButton={'Invite'}
+                iconName={'send'}
+                onClickButton={{
+                  onClick: () => {
+                    setOpenDrawer({ open: true, window: 'addMember' });
+                  },
+                }}
+              />
+            )}
+          </>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
         // onClickViewPendingInvites={{

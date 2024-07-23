@@ -33,6 +33,7 @@ const DashboardComp = () => {
   const router = useRouter();
   const {
     jobs: { data },
+    manageJob,
     initialLoad,
   } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<Job[]>(data);
@@ -47,12 +48,15 @@ const DashboardComp = () => {
         router.push(`?status=published`, undefined, {
           shallow: true,
         });
-      }
+      } else if (!manageJob && router.query.status !== 'published')
+        router.push(`?status=published`, undefined, {
+          shallow: true,
+        });
       if (data) {
         initialFilterJobs();
       }
     }
-  }, [recruiter, router, data]);
+  }, [recruiter, router, data, manageJob]);
 
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
@@ -135,7 +139,7 @@ const DashboardComp = () => {
             </>
           ) : (
             <Stack height={'100%'} direction={'row'}>
-              <SubNavBar />
+              {manageJob && <SubNavBar />}
               <JobsDashboard
                 slotFilters={
                   <FilterJobDashboard

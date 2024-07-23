@@ -80,7 +80,6 @@ export const createModule = async ({
         noShadow: 2,
         noReverseShadow: 2,
         reqruire_approval: false,
-        approve_users: [],
       },
       department,
     })

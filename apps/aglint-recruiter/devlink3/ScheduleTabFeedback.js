@@ -11,11 +11,13 @@ export function ScheduleTabFeedback({
   slotFeedbackTableRow,
   isSessionVisible = false,
   styleMinWidth = {},
+  border,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "feedback_layout")}
       tag="div"
+      table-border={border}
       {...styleMinWidth}
     >
       <_Builtin.Block

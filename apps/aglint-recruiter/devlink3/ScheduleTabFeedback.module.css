@@ -43,7 +43,7 @@
   width: 100%;
   align-items: center;
   grid-auto-columns: 1fr;
-  grid-template-columns: 25% max-content 250px auto;
+  grid-template-columns: 25% max-content 320px auto;
   grid-template-rows: auto;
 
   border-bottom: 1px solid var(--neutral-6);

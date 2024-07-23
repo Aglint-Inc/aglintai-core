@@ -26,13 +26,12 @@ function SideNavbar() {
   const router = useRouter();
   const pathName = usePathname();
   const { checkPermissions } = useRolesAndPermissions();
-  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
-    useAuthDetails();
+  const { isAssessmentEnabled, isScreeningEnabled } = useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
   const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
   const isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
-  const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
+  // const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
   let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
 
   const navList: {
@@ -71,7 +70,7 @@ function SideNavbar() {
       SubComponents: null,
       route: ROUTES['/scheduling']() + '?tab=dashboard',
       comingSoon: false,
-      isVisible: isSchedulingEnabled,
+      isVisible: true,
       permission: ['scheduling_module'],
     },
     {
@@ -87,7 +86,7 @@ function SideNavbar() {
       SubComponents: null,
       route: ROUTES['/candidates/history']() + '?currentTab=discover%20talent',
       comingSoon: false,
-      isVisible: isSourcingEnabled,
+      isVisible: false,
       // permission: '',
     },
     {

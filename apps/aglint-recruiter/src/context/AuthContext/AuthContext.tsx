@@ -229,7 +229,7 @@ const AuthProvider = ({ children }) => {
 
       const role = recruiterRel.roles.name;
 
-      if (role !== 'interviewer') {
+      if (rolePermissions.permissions['view_users']) {
         await getMembersFromDB();
       }
     } else {
@@ -384,9 +384,7 @@ const AuthProvider = ({ children }) => {
         allRecruiterRelation: allRecruiterRelation,
         setAllRecruiterRelation,
         setRecruiterUser,
-        members: (members || []).filter(
-          (item) => item.join_status == 'joined' && !item.is_suspended,
-        ),
+        members: (members || []).filter((item) => item.status == 'active'),
         allMember: members,
         setMembers,
         handelMemberUpdate,

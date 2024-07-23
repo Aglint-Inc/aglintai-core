@@ -24,6 +24,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
+import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -35,7 +36,6 @@ import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
 import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import { RequestReschedule } from '@/devlink2/RequestReschedule';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
@@ -363,34 +363,25 @@ export const ConfirmedInvitePage = (
                           ? 'cancel'
                           : 'reschedule',
                       )}
-                      {' all Sessions'}
+                      {' all sessions'}
                       {cancelReschedulingDetails.type == 'reschedule' &&
                         ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
-                      {' received.'}
+                      {' received,'} and under review.
                     </Typography>
                     {reasons.length && (
                       <Typography>
-                        <span style={{ fontWeight: '500' }}>Reason : </span>
+                        <span style={{ fontWeight: '500' }}>Reason: </span>
                         {reasons.join(', ')}
                       </Typography>
                     )}
                     {cancelReschedulingDetails.other_details.note && (
                       <Typography>
                         <span style={{ fontWeight: '500' }}>
-                          Additional Notes :
+                          Additional Notes:{' '}
                         </span>
                         {cancelReschedulingDetails.other_details.note}
                       </Typography>
                     )}
-                    <Typography fontWeight={500} marginTop={'5px'}>
-                      Your request to{' '}
-                      {capitalizeFirstLetter(
-                        cancelReschedulingDetails.type == 'declined'
-                          ? 'cancel'
-                          : 'reschedule',
-                      )}{' '}
-                      is pending company review.
-                    </Typography>
                   </>
                 }
               />
@@ -409,7 +400,7 @@ export const ConfirmedInvitePage = (
               />
             }
             textDesc={
-              'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
+              'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
             }
             textMailSent={candidate.email}
             slotButton={
@@ -843,32 +834,48 @@ const SingleDayConfirmation = () => {
 
   return (
     <Dialog open={open} onClose={() => handleClose()}>
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Confirm your interview'}
-        isDescriptionVisible={true}
-        textPopupDescription={
-          'Before we finalize your schedule, please take a moment to confirm the chosen option. Your interview is crucial, and we want to ensure it aligns perfectly with your availability.'
+      <DcPopup
+        popupName={'Confirm your interview'}
+        slotBody={
+          <Stack>
+            <Typography mb={2}>
+              Before we finalize your schedule, please take a moment to confirm
+              the chosen option. Your interview is crucial, and we want to
+              ensure it aligns perfectly with your availability.
+            </Typography>
+            <CandidateScheduleCard
+              isTitle={false}
+              textDuration={totalTimeDifference}
+              slotButton={<></>}
+              slotSessionInfo={
+                <SelectedDateAndTime
+                  slotSessionAndTime={<SingleDaySessions index={0} />}
+                  textDate={date}
+                  textDay={day}
+                  textMonth={month}
+                />
+              }
+            />
+          </Stack>
         }
-        isWidget={true}
-        slotWidget={
-          <CandidateScheduleCard
-            isTitle={false}
-            textDuration={totalTimeDifference}
-            slotButton={<></>}
-            slotSessionInfo={
-              <SelectedDateAndTime
-                slotSessionAndTime={<SingleDaySessions index={0} />}
-                textDate={date}
-                textDay={day}
-                textMonth={month}
-              />
-            }
-          />
+        onClickClosePopup={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Confirm'}
+              onClickButton={{ onClick: handleSubmit }}
+            />
+          </>
         }
-        textPopupButton={'Confirm'}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        onClickCancel={{ onClick: () => handleClose() }}
       />
     </Dialog>
   );
@@ -1075,17 +1082,35 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   };
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Confirm Your Interview'}
-        isDescriptionVisible={true}
-        textPopupDescription={
-          'Please review and confirm your selected time slot before we finalize your schedule. It’s important that your interview time aligns with your availability.'
+      <DcPopup
+        popupName={'Confirm your interview'}
+        slotBody={
+          <Stack>
+            <Typography>
+              Please review and confirm your selected time slot before we
+              finalize your schedule. It’s important that your interview time
+              aligns with your availability.
+            </Typography>
+          </Stack>
         }
-        isWidget={false}
-        textPopupButton={'Confirm'}
-        onClickAction={{ onClick: () => handleSubmit() }}
-        onClickCancel={{ onClick: () => handleClose() }}
+        onClickClosePopup={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{
+                onClick: () => handleClose(),
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton={'Confirm'}
+              onClickButton={{ onClick: handleSubmit }}
+            />
+          </>
+        }
       />
     </Dialog>
   );

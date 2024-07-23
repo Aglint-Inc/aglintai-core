@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function feedback(req: Request, res: Response) {
   const {session_id, recruiter_user_id, application_id} = req.body;
@@ -34,16 +35,14 @@ export async function feedback(req: Request, res: Response) {
         .eq('id', application_id)
     );
     const candidate = application.candidates;
-    const userResponse = await slackWeb.users.lookupByEmail({
-      email: interviewer.email,
-    });
-    const userId = userResponse.user.id;
+
+    const userId = await getUserIdByEmail(interviewer.email);
 
     await slackWeb.chat.postMessage({
       channel: userId,
       // text: message,
       metadata: {
-        event_type: 'candidate_confirm_slot',
+        event_type: 'interviewer_feedback',
         event_payload: {
           email: interviewer.email,
           session_relation_id: interviewer.session_relation_id,
@@ -195,13 +194,7 @@ export async function feedback(req: Request, res: Response) {
       ],
     });
     res.status(200).json({message: 'message sucessfully sended'});
-  } catch (err) {
-    res.status(500).json({error: 'message not sent'});
+  } catch (err: any) {
+    res.status(500).json(`message not sent ${err.message}`);
   }
 }
-
-// {
-//   "session_id": "78670a52-bc33-4a11-9615-2dec793d7d5a",
-//   "recruiter_user_id":"3521d240-eb11-4ae5-ac27-d4f4e2ac5ea5",
-//   "application_id":"3608fe82-bef4-4085-bec0-6fe82620240f"
-// }

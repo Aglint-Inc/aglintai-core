@@ -1,12 +1,12 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
+import {getUserIdByEmail} from 'src/utils/slack';
 
 export const reschedule = async (req: Request, res: Response) => {
   const {email, message} = req.body;
 
   try {
-    const userResponse = await slackWeb.users.lookupByEmail({email});
-    const userId = userResponse.user.id;
+    const userId = await getUserIdByEmail(email);
 
     const result = await slackWeb.chat.postMessage({
       channel: userId,

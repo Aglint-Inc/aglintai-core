@@ -13,7 +13,7 @@ import {
   useWorkflowStore,
   WorkflowStore,
 } from '../../../../context/Workflows/store';
-import { getTriggerOption } from '../../[id]/body/trigger';
+import { getTriggerOption } from '../../[id]/body/constants';
 
 const Content = memo(() => {
   const {
@@ -69,7 +69,7 @@ const Cards = (props: {
             onClickDelete={{
               onClick: () =>
                 setDeletion({ open: true, workflow: { id, jobs } }),
-              ...devlinkProps.manage,
+              ...devlinkProps,
             }}
             onClickEdit={{
               onClick: () => push(ROUTES['/workflows/[id]']({ id })),

@@ -10,13 +10,21 @@ export function durationCalculator(min) {
   return `${m} Minutes`;
 }
 
-export function sessionTypeIcon(platform) {
+type SessionTypeEnum = 'individual' | 'debrief' | 'panel';
+
+export function sessionTypeIcon(platform: SessionTypeEnum) {
   if (platform === 'individual') return sessionTypeIcons.individual;
   if (platform === 'debrief') return sessionTypeIcons.debrief;
   if (platform === 'panel') return sessionTypeIcons.panel;
 }
 
-export function scheduleTypeIcon(platform) {
+type ScheduleTypeEnum =
+  | 'zoom'
+  | 'google_meet'
+  | 'phone_call'
+  | 'in_person_meeting';
+
+export function scheduleTypeIcon(platform: ScheduleTypeEnum) {
   if (platform === 'zoom') return scheduleTypeIcons.zoom;
   if (platform === 'google_meet') return scheduleTypeIcons.google_meet;
   if (platform === 'phone_call') return scheduleTypeIcons.phone_call;
@@ -24,9 +32,25 @@ export function scheduleTypeIcon(platform) {
     return scheduleTypeIcons.in_person_meeting;
 }
 
-export function platformRemoveUnderscore(name) {
+export function platformRemoveUnderscore(name: ScheduleTypeEnum) {
   if (name === 'google_meet') return 'Google Meet';
   else if (name === 'in_person_meeting') return 'In Person Meeting';
   else if (name === 'phone_call') return 'Phone Call';
   else if (name === 'zoom') return 'Zoom';
+}
+
+export function numberToOrdinal(number: number): string {
+  const j = number % 10;
+  const k = number % 100;
+
+  if (j === 1 && k !== 11) {
+    return `${number}st`;
+  }
+  if (j === 2 && k !== 12) {
+    return `${number}nd`;
+  }
+  if (j === 3 && k !== 13) {
+    return `${number}rd`;
+  }
+  return `${number}th`;
 }

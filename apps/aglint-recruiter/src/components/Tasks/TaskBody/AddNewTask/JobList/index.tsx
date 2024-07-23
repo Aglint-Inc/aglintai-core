@@ -1,26 +1,23 @@
 /* eslint-disable no-unused-vars */
-import { Global } from '@emotion/react';
 import { Popover, Stack, Typography } from '@mui/material';
-import { capitalize } from 'lodash';
 import React from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { EmptyState } from '@/devlink2/EmptyState';
 import { ListCard } from '@/devlink3/ListCard';
-import { ListPop } from '@/devlink3/ListPop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import {
-  capitalizeAll,
-  capitalizeFirstLetter,
-} from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function JobList({
   selectedJob,
   setSelectedJob,
   isOptionList = true,
 }: {
-  selectedJob: { name: string; id: string };
+  selectedJob: ReturnType<typeof useApplicationsActions>['job'] & {
+    name: string;
+    id: string;
+  };
   setSelectedJob: (x: { name: string; id: string }) => void;
   isOptionList: boolean;
 }) {
@@ -98,7 +95,11 @@ function JobList({
                       },
                     }}
                     onClick={() => {
-                      setSelectedJob({ name: ele.job_title, id: ele.id });
+                      setSelectedJob({
+                        name: ele.job_title,
+                        id: ele.id,
+                        ...ele,
+                      });
                       handleClose();
                     }}
                   >

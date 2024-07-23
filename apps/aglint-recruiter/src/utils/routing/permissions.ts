@@ -23,22 +23,25 @@ const PERMISSIONS: Permissions = {
    */
   '/tasks': ['task_module'],
   //
-  '/jobs': ['job_module'],
-  '/jobs/[id]': ['job_module'],
-  '/jobs/[id]/candidate-list': ['job_module'],
-  '/jobs/create': ['job_module', 'manage_job'],
-  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
+  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeReupload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeUpload': ['job_module', 'manage_job'],
+  '/jobs': ['job_module'],
+  '/jobs/create': ['job_module', 'manage_job'],
+  '/jobs/[id]': ['job_module'],
+  '/jobs/[id]/agent': ['job_module'],
+  '/jobs/[id]/assessment': ['job_module'],
+  '/jobs/[id]/candidate-list': ['job_module'],
+  '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
+  '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
+  '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
   '/jobs/[id]/job-details': ['job_module', 'manage_job'],
   '/jobs/[id]/profile-score': ['job_module', 'manage_job'],
-  '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
-  '/jobs/[id]/assessment': ['job_module', 'manage_job'],
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
-  '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
-  '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
+  '/jobs/[id]/workflows': ['job_module'],
+
   '/workflows': ['workflow_module'],
   '/workflows/[id]': ['workflow_module'],
 
@@ -47,6 +50,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
   '/company': ['company_settings_module'],
+  '/profile': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
@@ -59,8 +63,6 @@ const PERMISSIONS: Permissions = {
   '/api/lever/saveApiKey': ['manage_company'],
   '/api/ashby/getPostings': ['job_module'],
   '/api/ashby/saveApiKey': ['manage_company'],
-  '/api/get_last_login': ['view_users'],
-  '/api/setMembersWithRole': ['view_users', 'scheduling_module'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
   '/api/scheduling/fetch_activities': ['scheduling_module'],
@@ -117,7 +119,7 @@ const PERMISSIONS: Permissions = {
     'task_module',
   ],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
-  '/api/encryptData': ['integrations_module'],
+  '/api/encryptData': ['integrations_module', 'manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option': [
@@ -125,11 +127,15 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/emails/confirmInterview_email_applicant': ['scheduling_module'],
   '/api/emails/preview': ['scheduling_module'],
+  '/api/get_last_login': ['view_users'],
+  '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],
-  '/api/getUserDetails': ['job_module'],
+  '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
+  '/api/decryptApiKey': ['manage_company'],
+  '/api/supabase/deleteuser': ['manage_users'],
 };
 
 export default PERMISSIONS;

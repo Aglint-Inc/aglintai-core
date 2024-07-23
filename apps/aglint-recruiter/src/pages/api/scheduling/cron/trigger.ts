@@ -84,6 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   rec_user_phone: task.recruiter_user.phone,
                   rec_user_id: task.recruiter_user.user_id,
                   user_tz: 'Asia/Calcutta',
+                  job_id: task.applications.public_jobs.id,
                 };
 
                 axios.post(agent_url, bodyParams);
