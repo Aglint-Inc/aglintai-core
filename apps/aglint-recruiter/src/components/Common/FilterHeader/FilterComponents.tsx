@@ -581,7 +581,7 @@ function NestedFilterComponent({
                   },
                 }}
                 slotItems={
-                  <Stack p={1}>
+                  <Stack p={1} maxHeight={'300px'} overflow={'hidden'}>
                     <FilterOptionsList
                       optionList={optionList}
                       title={title}
@@ -706,7 +706,7 @@ function FilterOptionsList({
       : [];
 
   return (
-    <Stack>
+    <Stack maxHeight={'280px'}>
       {Boolean(searchFilter) && (
         <UITextField
           value={search}
@@ -782,7 +782,7 @@ function FilterOptionsList({
             height={'150px'}
           >
             <GlobalIcon iconName='person' size={7} />
-            No {title}s found
+            No {title} found
           </Stack>
         )}
       </Stack>
