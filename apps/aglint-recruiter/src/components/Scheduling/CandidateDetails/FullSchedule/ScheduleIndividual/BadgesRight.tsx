@@ -19,9 +19,9 @@ function BadgesRight({
 }) {
   const { recruiter } = useAuthDetails();
 
-  const cancelRequests = cancelReasons.filter(
-    (reason) => reason.interview_session_cancel.type === 'declined',
-  );
+  // const cancelRequests = cancelReasons.filter(
+  //   (reason) => reason.interview_session_cancel.type === 'declined',
+  // );
   const rescheduleRequests = cancelReasons.filter(
     (reason) => reason.interview_session_cancel.type === 'reschedule',
   );
@@ -74,7 +74,7 @@ function BadgesRight({
           </>
         )}
 
-      {interview_meeting?.status !== 'cancelled' &&
+      {/* {interview_meeting?.status !== 'cancelled' && // when cancelled it should not show
         cancelRequests.length > 0 && (
           <GlobalBadge
             color={'error'}
@@ -83,7 +83,7 @@ function BadgesRight({
             showIcon={true}
             iconSize={2}
           />
-        )}
+        )} */}
 
       {rescheduleRequests.length > 0 && (
         <GlobalBadge
