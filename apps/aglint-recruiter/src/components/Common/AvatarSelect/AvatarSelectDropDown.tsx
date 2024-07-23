@@ -197,7 +197,7 @@ const AvatarSelectDropDown = ({
             height: '100%',
             color: palette.grey[500],
             pointerEvents: 'none',
-            transform: 'translate(12px, 32px)',
+            transform: `translate(12px, ${label ? 32 : 8}px)`,
           }}
         >
           {placeHolder}

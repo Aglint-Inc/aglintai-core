@@ -287,10 +287,11 @@ const TeamManagement = () => {
                       );
                     }
                   }}
-                  updateMember={(updatedMem) => {
+                  updateMember={(updatedMem, updateDB = true) => {
                     return handelMemberUpdate({
                       user_id: member.user_id,
                       data: updatedMem,
+                      updateDB,
                     });
                   }}
                   canSuspend={member.role !== 'admin'}
