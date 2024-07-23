@@ -290,6 +290,7 @@ const AdminFeedback = ({
   return (
     <>
       <ScheduleTabFeedback
+        border={'false'}
         styleMinWidth={{
           style: { minWidth: multiSession ? '1164px' : '700px' },
         }}
@@ -676,9 +677,9 @@ const AdminFeedback = ({
                     isEditFeedbackVisible={
                       selectedInterviewer.interviewer.user_id === user_id
                     }
-                    isFeedbackReqVisible={
-                      !selectedInterviewer.interviewer.feedback?.objective
-                    }
+                    isFeedbackReqVisible={Boolean(
+                      selectedInterviewer.interviewer.feedback?.objective,
+                    )}
                     isNotSubmittedVisible={
                       !selectedInterviewer.interviewer.feedback
                     }
