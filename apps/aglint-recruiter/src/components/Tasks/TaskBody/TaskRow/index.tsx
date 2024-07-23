@@ -56,6 +56,10 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           },
         },
       }}
+      onClick={() => {
+        route.replace(ROUTES['/tasks']() + '?task_id=' + task.id);
+        setTaskId(task.id);
+      }}
     >
       <TaskTableCard
         isOverdueVisible={
@@ -101,12 +105,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         //     </ShowCode.When>
         //   </ShowCode>
         // }
-        onClickCard={{
-          onClick: () => {
-            route.replace(ROUTES['/tasks']() + '?task_id=' + task.id);
-            setTaskId(task.id);
-          },
-        }}
+
         textTask={
           <LightTooltip
             enterDelay={100}
