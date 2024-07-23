@@ -131,6 +131,7 @@ const PERMISSIONS: Permissions = {
   '/api/get_last_login': ['view_users'],
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
+  '/api/scheduling/application/fetchcandidatedetails': ['scheduling_module'],
   '/api/setRoleAndPermission': ['manage_roles'],
   '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],

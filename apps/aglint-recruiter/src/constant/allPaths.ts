@@ -6,7 +6,10 @@ export const PATHS = [
 '/agent/jobs/[id]',
 '/agent/scheduler',
 '/agent/sourcing',
+<<<<<<< HEAD
+=======
 '/api/agent-scheduling/send-availability-request-link',
+>>>>>>> 23867a7b7fd466d3f90e1f7657e6592da1ab012d
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
 '/api/ai/queryToJson',
@@ -116,6 +119,10 @@ export const PATHS = [
 '/api/scheduling/application/cancelschedule',
 '/api/scheduling/application/candidatesessioncache',
 '/api/scheduling/application/debrief-add-users',
+<<<<<<< HEAD
+'/api/scheduling/application/fetchcandidatedetails',
+=======
+>>>>>>> 23867a7b7fd466d3f90e1f7657e6592da1ab012d
 '/api/scheduling/application/fetchfeedbackdetails',
 '/api/scheduling/application/mailthankyou',
 '/api/scheduling/application/openselfscheduling',
@@ -238,7 +245,10 @@ export const PATHS = [
 '/support',
 '/support/[id]',
 '/tasks',
+<<<<<<< HEAD
+=======
 '/test',
+>>>>>>> 23867a7b7fd466d3f90e1f7657e6592da1ab012d
 '/thanks-page',
 '/workflows',
 '/workflows/[id]',

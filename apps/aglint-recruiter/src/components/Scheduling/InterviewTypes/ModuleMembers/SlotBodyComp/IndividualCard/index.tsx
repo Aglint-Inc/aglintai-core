@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { Text } from '@/devlink/Text';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
-import { PanelBlock } from '@/devlink2/PanelBlock';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
@@ -175,16 +175,17 @@ function IndividualCard({
                           }
                           slotPanelBlock={
                             <>
-                              <PanelBlock
-                                slotPanelIcon={
-                                  <SessionIcon
-                                    session_type={
-                                      prog.interview_session.session_type
-                                    }
-                                  />
-                                }
-                                textPanelName={prog.interview_session.name}
-                              />
+                              <Stack
+                                direction={'row'}
+                                spacing={'var(--space-2)'}
+                              >
+                                <SessionIcon
+                                  session_type={
+                                    prog.interview_session.session_type
+                                  }
+                                />
+                                <Text content={prog.interview_session.name} />
+                              </Stack>
                               {!prog.is_approved && (
                                 <ButtonGhost
                                   textButton={'Approve'}
@@ -255,16 +256,18 @@ function IndividualCard({
                           }
                           slotPanelBlock={
                             <>
-                              <PanelBlock
-                                slotPanelIcon={
-                                  <SessionIcon
-                                    session_type={
-                                      prog.interview_session.session_type
-                                    }
-                                  />
-                                }
-                                textPanelName={prog.interview_session.name}
-                              />
+                              <Stack
+                                direction={'row'}
+                                spacing={'var(--space-2)'}
+                              >
+                                <SessionIcon
+                                  session_type={
+                                    prog.interview_session.session_type
+                                  }
+                                />
+                                <Text content={prog.interview_session.name} />
+                              </Stack>
+
                               {!prog.is_approved && (
                                 <ButtonGhost
                                   textButton={'Approve'}

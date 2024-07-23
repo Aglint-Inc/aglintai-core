@@ -60,6 +60,7 @@ export const useProgressModuleUsers = ({
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const module_id = router.query.module_id as string;
 
   const query = useQuery({
@@ -68,13 +69,21 @@ export const useProgressModuleUsers = ({
     }),
     queryFn: () =>
       fetchProgress({
-        module_id,
         trainer_ids: trainer_ids,
       }),
     enabled: router.query.module_id && trainer_ids.length > 0,
     refetchOnWindowFocus: false,
   });
-  return query;
+
+  const refetch = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: QueryKeysInteviewModules.PROGRESS_BY_MODULE_ID({
+        moduleId: module_id,
+      }),
+    });
+  };
+
+  return { ...query, refetch };
 };
 
 export const useModuleAndUsers = () => {

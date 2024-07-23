@@ -6,7 +6,6 @@ import {
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
-  InterviewScheduleTypeDB,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
@@ -61,7 +60,7 @@ export type ScheduleType = {
   };
   file: ApplicationList['file'];
   candidates: CandidateType;
-  schedule: InterviewScheduleTypeDB;
+  schedule: DatabaseTable['interview_schedule'];
   job: {
     id: string;
     created_at: string;
