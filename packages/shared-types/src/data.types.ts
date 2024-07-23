@@ -168,8 +168,6 @@ export type CandidateType = DatabaseTable["candidates"];
 
 export type CandidateFileTypeDB = DatabaseTable["candidate_files"];
 
-export type InterviewScheduleTypeDB = DatabaseTable["interview_schedule"];
-
 export type NewCandidateType = DatabaseTable["candidates"];
 
 export type PublicJobsType = DatabaseTable["public_jobs"];

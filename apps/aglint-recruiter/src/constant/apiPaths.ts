@@ -1,4 +1,5 @@
 export const API_PATHS = [
+'/api/agent-scheduling/send-availability-request-link',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
 '/api/ai/queryToJson',

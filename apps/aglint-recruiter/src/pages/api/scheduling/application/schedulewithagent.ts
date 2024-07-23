@@ -228,7 +228,11 @@ export const scheduleWithAgent = async ({
 
       await handleMeetingsOrganizerResetRelations({
         application_id,
-        selectedSessions,
+        selectedSessions: selectedSessions.map((ses) => ({
+          interview_session_id: ses.interview_session.id,
+          interview_meeting_id: ses.interview_meeting.id,
+          interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        })),
         supabase,
         meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
       });
