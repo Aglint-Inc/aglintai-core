@@ -1,5 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseTable,
+  DatabaseTableInsert,
+  SessionsCombType,
+} from '@aglint/shared-types';
 import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
@@ -1066,7 +1070,11 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
           isDisabled={!enabled}
         />
       </Stack>
-      <MultiDayConfirmation open={open} setOpen={setOpen} />
+      <MultiDayConfirmation
+        rounds={props.rounds}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 };
@@ -1074,18 +1082,56 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
 type MultiDayConfirmationProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  rounds: ScheduleCardsProps['rounds'];
 };
 const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   const { handleSubmit } = useCandidateInvite();
   const handleClose = () => {
     props.setOpen(false);
   };
+  const { selectedSlots, timezone } = useCandidateInvite();
+
+  type SelectedDateAndSessionsType = {
+    date: string;
+    sessions: SessionsCombType['sessions'] | null;
+  }[];
+  const [selectedDateAndSessions, setSelectedDateAndSessions] =
+    useState<SelectedDateAndSessionsType>([]);
+
+  function getSelectedDateAndSessions() {
+    const sessions = selectedSlots.map((round, i) => {
+      return {
+        date: dayJS(
+          round?.sessions?.[0]?.start_time ?? null,
+          timezone.tzCode,
+        ).format('MMMM DD'),
+        sessions: selectedSlots?.[i]?.sessions,
+      };
+      //@ts-ignore
+    });
+    setSelectedDateAndSessions(sessions);
+  }
+  useEffect(() => {
+    getSelectedDateAndSessions();
+  }, [props.rounds]);
+
   return (
     <Dialog open={props.open} onClose={() => handleClose()}>
       <DcPopup
         popupName={'Confirm your interview'}
         slotBody={
-          <Stack>
+          <Stack gap={'10px'}>
+            <Stack>
+              {selectedDateAndSessions.map((item, index) => (
+                <>
+                  <Typography variant='subtitle1'>
+                    Day-{index + 1} -{' '}
+                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
+                    {item.date}
+                  </Typography>
+                </>
+              ))}
+            </Stack>
             <Typography>
               Please review and confirm your selected time slot before we
               finalize your schedule. It’s important that your interview time
