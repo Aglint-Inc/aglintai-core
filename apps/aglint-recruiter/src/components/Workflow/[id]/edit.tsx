@@ -1,7 +1,9 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
@@ -60,19 +62,34 @@ const Edit = () => {
   return (
     <>
       <Dialog open={open} onClose={() => handleClose()}>
-        <ConfirmationPopup
-          isBlueButtonVisible={true}
-          isDescriptionVisible={true}
-          isIcon={false}
-          isGreyButtonVisible={true}
-          isWidget={true}
-          isYellowButtonVisible={false}
-          onClickAction={{ onClick: () => handleSubmit() }}
-          onClickCancel={{ onClick: () => handleClose() }}
-          textPopupTitle={'Edit Workflow'}
-          textPopupButton={'Save'}
-          slotWidget={<Forms form={form} setForm={setForm} />}
-          textPopupDescription={'Edit workflow details.'}
+        <DcPopup
+          popupName={'Edit Workflow'}
+          onClickClosePopup={{ onClick: handleClose }}
+          slotBody={
+            <Stack>
+              <Typography mb={2}>Edit workflow details.</Typography>
+              <Stack spacing={1}>
+                <Forms form={form} setForm={setForm} />
+              </Stack>
+            </Stack>
+          }
+          slotButtons={
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{
+                  onClick: handleClose,
+                }}
+              />
+              <ButtonSolid
+                size={2}
+                textButton={'Save'}
+                onClickButton={{ onClick: handleSubmit }}
+              />
+            </>
+          }
         />
       </Dialog>
     </>
