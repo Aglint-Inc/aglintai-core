@@ -21,7 +21,7 @@ export default async function handler(
     async ({ requesterDetails }) => {
       const { user_id } = requesterDetails;
       const result = await getRecruiterDetails(user_id);
-      return result;
+      return { ...result, primary: result.recruiter.primary_admin === user_id };
     },
     [],
   );
