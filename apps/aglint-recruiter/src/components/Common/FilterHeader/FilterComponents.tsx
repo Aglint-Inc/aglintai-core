@@ -284,6 +284,7 @@ export function FilterComponent({
                 searchFilter={filterSearch}
                 searchPlaceholder={searchPlaceholder}
                 multiSelect={multiSelect}
+                title={title}
                 setSelectedItems={(val) => {
                   if (multiSelect) {
                     let temp = [...selectedItems];
@@ -583,6 +584,7 @@ function NestedFilterComponent({
                   <Stack p={1}>
                     <FilterOptionsList
                       optionList={optionList}
+                      title={title}
                       // selectedItems={selectedItems?.[String(section)] || []}
                       selectedItems={[]}
                       searchFilter={searchEnabled}
@@ -622,12 +624,14 @@ function FilterOptionsList({
   optionList,
   searchFilter,
   searchPlaceholder,
+  title,
   setSelectedItems,
   nested = false,
   multiSelect = true,
 }: {
   selectedItems: string[];
   searchFilter: boolean;
+  title?: string;
   searchPlaceholder?: string;
   multiSelect?: boolean;
 } & (
@@ -686,8 +690,23 @@ function FilterOptionsList({
         })
     : [];
 
+  const filtered =
+    filteredOptions[0].options.length > 0
+      ? filteredOptions
+          ?.map((optionList) => {
+            let filteredOp = optionList.options;
+            if (searchFilter) {
+              filteredOp = optionList.options.filter((item) =>
+                item.label.toLowerCase().includes(search.toLowerCase()),
+              );
+            }
+            return { ...optionList, options: filteredOp };
+          })
+          .filter((item) => item.options?.length)
+      : [];
+
   return (
-    <>
+    <Stack>
       {Boolean(searchFilter) && (
         <UITextField
           value={search}
@@ -696,78 +715,78 @@ function FilterOptionsList({
         />
       )}
 
-      {filteredOptions[0].options.length > 0
-        ? filteredOptions
-            ?.map((optionList) => {
-              let filteredOp = optionList.options;
-              if (searchFilter) {
-                filteredOp = optionList.options.filter((item) =>
-                  item.label.toLowerCase().includes(search.toLowerCase()),
-                );
-              }
-              return { ...optionList, options: filteredOp };
-            })
-            .filter((item) => item.options?.length)
-            .map((optionList) => {
-              let filteredOp = optionList.options;
-              return (
-                <>
-                  {optionList.header && (
-                    <Typography paddingLeft={'4px'}>
-                      {optionList.header}
-                    </Typography>
-                  )}
-                  {filteredOp.map((option) => {
-                    return (
-                      <Stack
-                        key={option.id}
-                        direction={'row'}
-                        padding={'8px 12px'}
+      <Stack maxHeight={'300px'} overflow={'auto'}>
+        {filtered.length > 0 ? (
+          filtered.map((optionList) => {
+            let filteredOp = optionList.options;
+            return (
+              <>
+                {optionList.header && (
+                  <Typography paddingLeft={'4px'}>
+                    {optionList.header}
+                  </Typography>
+                )}
+                {filteredOp.map((option) => {
+                  return (
+                    <Stack
+                      key={option.id}
+                      direction={'row'}
+                      padding={'8px 12px'}
+                      sx={{
+                        alignItems: 'center',
+                        borderRadius: '4px',
+                        ':hover': {
+                          bgcolor: 'var(--neutral-2)',
+                        },
+                      }}
+                      spacing={1}
+                      onClick={() => {
+                        setSelectedItems(option.id, optionList.path || []);
+                      }}
+                    >
+                      {multiSelect ? (
+                        <Checkbox
+                          checked={
+                            nested
+                              ? // @ts-ignore
+                                option.status === 'active'
+                              : selectedItems.includes(option.id)
+                          }
+                          indeterminate={
+                            // @ts-ignore
+                            nested && option.status === 'partial'
+                          }
+                        />
+                      ) : (
+                        <Radio checked={selectedItems.includes(option.id)} />
+                      )}
+                      <Typography
                         sx={{
-                          alignItems: 'center',
-                          borderRadius: '4px',
-                          ':hover': {
-                            bgcolor: 'var(--neutral-2)',
-                          },
-                        }}
-                        spacing={1}
-                        onClick={() => {
-                          setSelectedItems(option.id, optionList.path || []);
+                          fontSize: '14px',
+                          fontWeight: 400,
+                          cursor: 'pointer',
                         }}
                       >
-                        {multiSelect ? (
-                          <Checkbox
-                            checked={
-                              nested
-                                ? // @ts-ignore
-                                  option.status === 'active'
-                                : selectedItems.includes(option.id)
-                            }
-                            indeterminate={
-                              // @ts-ignore
-                              nested && option.status === 'partial'
-                            }
-                          />
-                        ) : (
-                          <Radio checked={selectedItems.includes(option.id)} />
-                        )}
-                        <Typography
-                          sx={{
-                            fontSize: '14px',
-                            fontWeight: 400,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {option.label}
-                        </Typography>
-                      </Stack>
-                    );
-                  })}
-                </>
-              );
-            })
-        : 'No Locations Available'}
-    </>
+                        {option.label}
+                      </Typography>
+                    </Stack>
+                  );
+                })}
+              </>
+            );
+          })
+        ) : (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            height={'150px'}
+          >
+            <GlobalIcon iconName='person' size={7} />
+            No {title}s found
+          </Stack>
+        )}
+      </Stack>
+    </Stack>
   );
 }
 

@@ -128,8 +128,8 @@ function FilterCordinator() {
       >
         <FilterDropdown
           slotOption={
-            <Stack width={'450px'} p={'var(--space-1)'}>
-              <Stack>
+            <Stack width={'450px'} p={'var(--space-1)'} maxHeight={'340px'}>
+              <Stack height={'40px'}>
                 <SearchField
                   isFullWidth
                   value={searchText}
@@ -138,80 +138,92 @@ function FilterCordinator() {
                   placeholder='Search Co-ordinator'
                 />
               </Stack>
-              <Stack overflow={'hidden'}>
-                {members.map((member, i) => (
-                  <Stack
-                    key={i}
-                    direction={'row'}
-                    sx={{
-                      alignItems: 'center',
-                      ':hover': { bgcolor: 'var(--neutral-2)' },
-                      borderRadius: 'var(--radius-2)',
-                    }}
-                    spacing={1}
-                    padding={'var(--space-2) var(--space-3)'}
-                  >
-                    <Checkbox
-                      isChecked={
-                        !!filter.coordinator_ids.find(
-                          (mem) => mem.user_id === member.user_id,
-                        )
-                      }
-                      onClickCheck={{
-                        onClick: () => {
-                          const isThere = !!filter.coordinator_ids.find(
-                            (mem) => mem.user_id === member.user_id,
-                          );
-                          if (isThere) {
-                            setFilter({
-                              coordinator_ids: filter.coordinator_ids.filter(
-                                (mem) => mem.user_id !== member.user_id,
-                              ),
-                            });
-                          } else {
-                            setFilter({
-                              coordinator_ids: [
-                                ...filter.coordinator_ids,
-                                member,
-                              ],
-                            });
-                          }
-                        },
-                      }}
-                    />
-
+              <Stack overflow={'auto'} height={'310px'}>
+                {members.length > 0 ? (
+                  members.map((member, i) => (
                     <Stack
+                      key={i}
                       direction={'row'}
-                      width={'100%'}
-                      justifyContent={'space-between'}
-                      alignItems={'center'}
-                      spacing={'var(--space-1)'}
+                      sx={{
+                        alignItems: 'center',
+                        ':hover': { bgcolor: 'var(--neutral-2)' },
+                        borderRadius: 'var(--radius-2)',
+                      }}
+                      spacing={1}
+                      padding={'var(--space-2) var(--space-3)'}
                     >
+                      <Checkbox
+                        isChecked={
+                          !!filter.coordinator_ids.find(
+                            (mem) => mem.user_id === member.user_id,
+                          )
+                        }
+                        onClickCheck={{
+                          onClick: () => {
+                            const isThere = !!filter.coordinator_ids.find(
+                              (mem) => mem.user_id === member.user_id,
+                            );
+                            if (isThere) {
+                              setFilter({
+                                coordinator_ids: filter.coordinator_ids.filter(
+                                  (mem) => mem.user_id !== member.user_id,
+                                ),
+                              });
+                            } else {
+                              setFilter({
+                                coordinator_ids: [
+                                  ...filter.coordinator_ids,
+                                  member,
+                                ],
+                              });
+                            }
+                          },
+                        }}
+                      />
+
                       <Stack
                         direction={'row'}
+                        width={'100%'}
                         justifyContent={'space-between'}
                         alignItems={'center'}
                         spacing={'var(--space-1)'}
                       >
-                        <MuiAvatar
-                          level={getFullName(
-                            member.first_name,
-                            member.last_name,
-                          )}
-                          src={member.profile_image}
-                          variant={'rounded-small'}
-                        />
-                        <Typography variant='body1'>
-                          {getFullName(member.first_name, member.last_name)}
+                        <Stack
+                          direction={'row'}
+                          justifyContent={'space-between'}
+                          alignItems={'center'}
+                          spacing={'var(--space-1)'}
+                        >
+                          <MuiAvatar
+                            level={getFullName(
+                              member.first_name,
+                              member.last_name,
+                            )}
+                            src={member.profile_image}
+                            variant={'rounded-small'}
+                          />
+                          <Typography variant='body1'>
+                            {getFullName(member.first_name, member.last_name)}
+                          </Typography>
+                        </Stack>
+
+                        <Typography variant='caption'>
+                          {capitalize(member.position)}
                         </Typography>
                       </Stack>
-
-                      <Typography variant='caption'>
-                        {capitalize(member.position)}
-                      </Typography>
                     </Stack>
+                  ))
+                ) : (
+                  <Stack
+                    width={'100%'}
+                    height={'310px'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                  >
+                    <GlobalIcon iconName='person' size={8} />
+                    No Co-ordinator found
                   </Stack>
-                ))}
+                )}
               </Stack>
             </Stack>
           }
