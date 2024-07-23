@@ -169,10 +169,7 @@ function SlotBodyComp({
                       <SlotQualifiedMembers editModule={editModule} />
                     }
                     slotMembersInTraining={
-                      <SlotTrainingMembers
-                        editModule={editModule}
-                        refetch={refetch}
-                      />
+                      <SlotTrainingMembers editModule={editModule} />
                     }
                     onClickAddMember={{
                       onClick: () => {

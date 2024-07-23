@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import {
   CandidateType,
+  DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
-  InterviewScheduleTypeDB,
   InterviewSession,
   JobApplcationDB,
 } from '@aglint/shared-types';
@@ -36,7 +36,7 @@ export type ApplicationList = {
     resume_json: ResumeJson;
     type: string;
   };
-  schedule: InterviewScheduleTypeDB | null;
+  schedule: DatabaseTable['interview_schedule'] | null;
   public_jobs: {
     id: string;
     job_title: string;

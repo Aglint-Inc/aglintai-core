@@ -2,7 +2,6 @@ import {
   DatabaseTable,
   DatabaseView,
   InterviewModuleType,
-  InterviewScheduleTypeDB,
 } from '@aglint/shared-types';
 import { create } from 'zustand';
 
@@ -30,7 +29,7 @@ export interface SchedulingApplication {
     ReturnType<typeof fetchApplicationDetails>
   > | null;
   selectedSession: SessionsType | null;
-  selectedSchedule: InterviewScheduleTypeDB;
+  selectedSchedule: DatabaseTable['interview_schedule'] | null;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
   members: InterviewScheduleContextType['members'];
@@ -140,7 +139,7 @@ export const setSelectedSession = (
 ) => useSchedulingApplicationStore.setState({ selectedSession });
 
 export const setSelectedSchedule = (
-  selectedSchedule: InterviewScheduleTypeDB,
+  selectedSchedule: DatabaseTable['interview_schedule'],
 ) => useSchedulingApplicationStore.setState({ selectedSchedule });
 
 export const setinitialSessions = (

@@ -61,10 +61,8 @@ export const fetchModuleSchedules = async (
 };
 
 export const fetchProgress = async ({
-  module_id,
   trainer_ids,
 }: {
-  module_id: string;
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
   const { data } = await supabase
@@ -72,35 +70,41 @@ export const fetchProgress = async ({
     .select(
       '*,interview_session_relation(*,interview_session(*,interview_meeting(*)),interview_module_relation(*))',
     )
-    .eq('interview_session.module_id', module_id)
-    .in('interview_module_relation_id', trainer_ids)
-    .eq('is_confirmed', true)
+    .in('interview_session_relation.interview_module_relation_id', trainer_ids)
+    .eq('interview_session_relation.is_confirmed', true)
+    .not('interview_session_relation', 'is', null)
     .throwOnError();
 
-  const resRel = data.map((sesRel) => {
-    const interview_session_relation: DatabaseTable['interview_session_relation'] =
-      {
-        feedback: sesRel.interview_session_relation.feedback,
-        accepted_status: sesRel.interview_session_relation.accepted_status,
-        id: sesRel.interview_session_relation.id,
-        interview_module_relation_id:
-          sesRel.interview_session_relation.interview_module_relation_id,
-        interviewer_type: sesRel.interview_session_relation.interviewer_type,
-        is_confirmed: sesRel.interview_session_relation.is_confirmed,
-        session_id: sesRel.interview_session_relation.session_id,
-        training_type: sesRel.interview_session_relation.training_type,
-        user_id: sesRel.interview_session_relation.user_id,
+  const resRel = data
+    .filter(
+      (ses) =>
+        ses.interview_session_relation.interview_session.interview_meeting
+          .status === 'completed',
+    )
+    .map((sesRel) => {
+      const interview_session_relation: DatabaseTable['interview_session_relation'] =
+        {
+          feedback: sesRel.interview_session_relation.feedback,
+          accepted_status: sesRel.interview_session_relation.accepted_status,
+          id: sesRel.interview_session_relation.id,
+          interview_module_relation_id:
+            sesRel.interview_session_relation.interview_module_relation_id,
+          interviewer_type: sesRel.interview_session_relation.interviewer_type,
+          is_confirmed: sesRel.interview_session_relation.is_confirmed,
+          session_id: sesRel.interview_session_relation.session_id,
+          training_type: sesRel.interview_session_relation.training_type,
+          user_id: sesRel.interview_session_relation.user_id,
+        };
+      return {
+        ...sesRel,
+        interview_meeting:
+          sesRel.interview_session_relation.interview_session.interview_meeting,
+        interview_session_relation,
+        interview_module_relation:
+          sesRel.interview_session_relation.interview_module_relation,
+        interview_session: sesRel.interview_session_relation.interview_session,
       };
-    return {
-      ...sesRel,
-      interview_meeting:
-        sesRel.interview_session_relation.interview_session.interview_meeting,
-      interview_session_relation,
-      interview_module_relation:
-        sesRel.interview_session_relation.interview_module_relation,
-      interview_session: sesRel.interview_session_relation.interview_session,
-    };
-  });
+    });
 
   return resRel;
 };
