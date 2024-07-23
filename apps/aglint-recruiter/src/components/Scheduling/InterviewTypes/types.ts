@@ -28,7 +28,7 @@ export type SchedulingSlice = {
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: MemberType[];
-  selUser: InterviewModuleRelationType | null;
+  selUser: ModuleType['relations'][0] | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;

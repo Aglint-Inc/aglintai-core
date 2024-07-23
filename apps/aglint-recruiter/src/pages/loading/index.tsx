@@ -56,6 +56,7 @@ export default function Loading() {
             userDetails: userDetails,
           });
         } else {
+          // delete user from supabase for oauth flow
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails.user.id,
           });
@@ -100,9 +101,17 @@ export default function Loading() {
       });
 
       if (relationData?.recruiter_user) {
+        if (relationData.recruiter_user.status === 'suspended') {
+          toast.error(
+            'Your account has been suspended. Please reach out to your admin or the Aglint support team.',
+          );
+          await handleLogout();
+          return;
+        }
+
         if (userDetails?.user.user_metadata?.is_invite === 'true') {
           await supabase.auth.updateUser({
-            data: { is_invite: 'false' }, // for invite user flow this is needed
+            data: { is_invite: 'false' }, // for invite user flow this is needed mail switching reset password
           });
         }
         try {

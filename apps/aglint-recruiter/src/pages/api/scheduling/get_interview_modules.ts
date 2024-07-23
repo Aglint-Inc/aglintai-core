@@ -38,19 +38,19 @@ const getInterviewModules = async ({
   const { data, error } = await supabase
     .from('interview_module')
     .select(
-      `*, interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
+      `*, interview_module_relation(id, training_status,is_archived, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
     )
     .eq('is_archived', false)
     .eq('recruiter_id', recruiter_id);
   if (error) throw new Error(error.message);
   return data.map(({ interview_module_relation, ...rest }) => {
-    const members = interview_module_relation.map(
-      ({ recruiter_user, id, training_status }) => ({
+    const members = interview_module_relation
+      .filter((rel) => !rel.is_archived)
+      .map(({ recruiter_user, id, training_status }) => ({
         ...recruiter_user,
         moduleUserId: id,
         training_status,
-      }),
-    );
+      }));
     return { ...rest, members };
   });
 };

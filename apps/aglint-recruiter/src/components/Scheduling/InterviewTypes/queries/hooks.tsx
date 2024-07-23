@@ -18,6 +18,7 @@ import {
   fetchProgress,
   resumePauseDbUpdate,
   updatePauseJsonByUserId,
+  updateRelations,
 } from './utils';
 
 export const useAllInterviewModules = () => {
@@ -258,15 +259,28 @@ export const useAddMemberHandler = ({
     try {
       if (!editModule) throw new Error('Interview type not found');
 
-      const { error } = await addMemberbyUserIds({
-        module_id: editModule.id,
-        user_ids: selectedUsers.map((user) => user.user_id),
-        training_status: trainingStatus,
-        number_of_reverse_shadow: editModule.settings.noReverseShadow,
-        number_of_shadow: editModule.settings.noShadow,
-      });
-      if (error) {
-        throw new Error(error.message);
+      const archivedRelations = editModule.relations.filter(
+        (rel) => rel.is_archived,
+      );
+
+      if (archivedRelations.length > 0) {
+        await updateRelations(archivedRelations);
+      }
+
+      const newRelations = selectedUsers.filter(
+        (user) =>
+          archivedRelations.findIndex((rel) => rel.user_id === user.user_id) ===
+          -1,
+      );
+
+      if (newRelations.length > 0) {
+        await addMemberbyUserIds({
+          module_id: editModule.id,
+          user_ids: selectedUsers.map((user) => user.user_id),
+          training_status: trainingStatus,
+          number_of_reverse_shadow: editModule.settings.noReverseShadow,
+          number_of_shadow: editModule.settings.noShadow,
+        });
       }
 
       refetch();
