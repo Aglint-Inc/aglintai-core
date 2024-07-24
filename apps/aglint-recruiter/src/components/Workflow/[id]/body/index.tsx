@@ -51,7 +51,7 @@ const ConnectedJobs = () => {
     );
   return (workflow?.jobs ?? []).map(({ title }, i) => (
     <TextWithIcon
-      key={i}
+      key={title}
       iconName={'work'}
       fontWeight={'regular'}
       textContent={capitalizeAll(title)}

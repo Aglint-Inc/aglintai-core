@@ -188,7 +188,7 @@ const DeletePopup = () => {
                   <>
                     {(deletion?.workflow?.jobs ?? []).map(({ title }, i) => (
                       <TextWithIcon
-                        key={i}
+                        key={title}
                         iconName={'work'}
                         fontWeight={'regular'}
                         textContent={capitalizeAll(title)}

@@ -69,6 +69,7 @@ export interface ContextValue {
       role_id?: string;
       manager_id?: string;
     };
+    updateDB?: boolean;
   }) => Promise<boolean>;
   isAllowed: (
     //checkPermission
@@ -291,23 +292,25 @@ const AuthProvider = ({ children }) => {
   const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
     user_id,
     data,
+    updateDB = true,
   }) => {
     if (!user_id && data && recruiter.id) return Promise.resolve(false);
-    return updateMember({
-      data: { ...data, user_id },
-    }).then((data) => {
-      if (data) {
-        setMembers((prev) =>
-          prev.map((item) => {
-            return data.user_id === item.user_id
-              ? ({ ...item, ...data } as RecruiterUserType)
-              : item;
-          }),
-        );
-        return true;
-      }
-      return false;
-    });
+    if (updateDB) {
+      data = await updateMember({
+        data: { ...data, user_id },
+      });
+    }
+    if (data) {
+      setMembers((prev) =>
+        prev.map((item) => {
+          return data.user_id === item.user_id
+            ? ({ ...item, ...data } as RecruiterUserType)
+            : item;
+        }),
+      );
+      return true;
+    }
+    return false;
   };
 
   const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
