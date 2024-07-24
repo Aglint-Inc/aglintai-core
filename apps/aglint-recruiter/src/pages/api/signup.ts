@@ -29,16 +29,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
         first_name: first_name,
         last_name: last_name || '',
+        status: 'active',
       })
       .select()
       .single();
 
-    console.log('recUser', recUser);
+    console.log('recUser', recUser.user_id);
 
     if (errUser) throw new Error(errUser.message);
 
     let rec_id = uuidv4();
-    const { data: rec, error: errRec } = await supabase
+    const { data: rec } = await supabase
       .from('recruiter')
       .insert({
         email: email,
@@ -48,26 +49,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         primary_admin: user_id,
       })
       .select()
-      .single();
-
-    console.log('rec', rec);
-
-    if (errRec) throw new Error(errRec.message);
+      .single()
+      .throwOnError();
 
     await sleep(3000);
 
-    const { data: rol, error: errRol } = await supabase
+    const { data: rol } = await supabase
       .from('roles')
       .select()
       .eq('name', 'admin')
       .eq('recruiter_id', rec.id)
-      .single();
+      .single()
+      .throwOnError();
 
-    console.log(rol);
-
-    if (errRol) throw new Error(errRol.message);
-
-    const { error: errRel } = await supabase.from('recruiter_relation').insert({
+    await supabase.from('recruiter_relation').insert({
       role: 'admin',
       recruiter_id: rec_id,
       user_id: user_id,
@@ -75,8 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       created_by: user_id,
       role_id: rol.id,
     });
-
-    if (errRel) throw new Error(errRel.message);
 
     await supabase
       .from('recruiter_user')
@@ -91,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter: rec,
     });
   } catch (error) {
-    // console.log('error', error);
+    console.log('error', error.message);
     res.status(400).send(error.message);
   }
 };
