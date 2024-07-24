@@ -1,7 +1,10 @@
 import { Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { NewTabPill } from '@/devlink3/NewTabPill';
@@ -13,12 +16,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
+import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsAddMemberDialogOpen,
   setIsSettingsDialogOpen,
   setTrainingStatus,
 } from '../../store';
 import { ModuleType } from '../../types';
+import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
 import ModuleSettingComp from '../ModuleSetting';
@@ -107,6 +112,26 @@ function SlotBodyComp({
     else if (right) handleNext();
   }, [left, right]);
 
+  const queryClient = useQueryClient();
+
+  const unArcheive = async () => {
+    const isUnArchived = await unArchiveModuleById(editModule.id);
+    if (isUnArchived) {
+      const updatedEditModule = {
+        ...editModule,
+        is_archived: false,
+      } as ModuleType;
+      queryClient.setQueryData<ModuleType>(
+        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+          moduleId: editModule.id,
+        }),
+        {
+          ...updatedEditModule,
+        },
+      );
+      toast.success('Interview type unarchived successfully.');
+    }
+  };
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -114,102 +139,123 @@ function SlotBodyComp({
       <DeleteMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
-
+      {editModule?.is_archived && (
+        <Stack maxWidth={'866px'} margin={'16px 0 0 16px'}>
+          <GlobalBanner
+            color={'warning'}
+            slotButtons={
+              <>
+                <ButtonSolid
+                  textButton='Unarchived'
+                  size={1}
+                  onClickButton={{
+                    onClick: unArcheive,
+                  }}
+                />
+              </>
+            }
+            isDescriptionVisible={false}
+            textTitle={'This interview type is Archived '}
+          />
+        </Stack>
+      )}
       {fetchingModule || loading || (!editModule && isFetching) ? (
         <Stack height={'100%'} width={'100%'}>
           <Loader />
         </Stack>
       ) : (
-        editModule && (
-          <InterviewMemberList
-            onClickEdit={{
-              onClick: () => {
-                setIsSettingsDialogOpen(true);
-              },
-            }}
-            slotNewTabPill={
-              <Stack direction={'row'}>
-                {tabsModuleMembers.map((tab) => {
-                  return (
-                    <NewTabPill
-                      key={tab.queryParams}
-                      textLabel={tab.name}
-                      isPillActive={
-                        currentTab === tab.queryParams ||
-                        (!currentTab && tab.queryParams == 'members')
+        <>
+          {editModule && (
+            <InterviewMemberList
+              onClickEdit={{
+                onClick: () => {
+                  setIsSettingsDialogOpen(true);
+                },
+              }}
+              slotNewTabPill={
+                <Stack direction={'row'}>
+                  {tabsModuleMembers.map((tab) => {
+                    return (
+                      <NewTabPill
+                        key={tab.queryParams}
+                        textLabel={tab.name}
+                        isPillActive={
+                          currentTab === tab.queryParams ||
+                          (!currentTab && tab.queryParams == 'members')
+                        }
+                        onClickPill={{
+                          onClick: () => {
+                            router.push(
+                              ROUTES['/scheduling/module/members/[module_id]']({
+                                module_id: editModule.id,
+                              }) + `?tab=${tab.queryParams}`,
+                              undefined,
+                              {
+                                shallow: true,
+                              },
+                            );
+                          },
+                        }}
+                      />
+                    );
+                  })}
+                </Stack>
+              }
+              textDepartment={editModule.department || '--'}
+              textObjective={editModule.description || 'No description'}
+              slotModuleContent={
+                <>
+                  {(currentTab === 'members' || !currentTab) && (
+                    <ModuleMembers
+                      isMembersTrainingVisible={
+                        editModule.settings?.require_training
                       }
-                      onClickPill={{
+                      slotQualifiedMemberList={
+                        <SlotQualifiedMembers editModule={editModule} />
+                      }
+                      slotMembersInTraining={
+                        <SlotTrainingMembers editModule={editModule} />
+                      }
+                      onClickAddMember={{
                         onClick: () => {
-                          router.push(
-                            ROUTES['/scheduling/module/members/[module_id]']({
-                              module_id: editModule.id,
-                            }) + `?tab=${tab.queryParams}`,
-                            undefined,
-                            {
-                              shallow: true,
-                            },
-                          );
+                          setIsAddMemberDialogOpen(true);
+                          setTrainingStatus('qualified');
+                        },
+                      }}
+                      onClickAddTrainee={{
+                        onClick: () => {
+                          setIsAddMemberDialogOpen(true);
+                          setTrainingStatus('training');
                         },
                       }}
                     />
-                  );
-                })}
-              </Stack>
-            }
-            textDepartment={editModule.department || '--'}
-            textObjective={editModule.description || 'No description'}
-            slotModuleContent={
-              <>
-                {(currentTab === 'members' || !currentTab) && (
-                  <ModuleMembers
-                    isMembersTrainingVisible={
-                      editModule.settings?.require_training
-                    }
-                    slotQualifiedMemberList={
-                      <SlotQualifiedMembers editModule={editModule} />
-                    }
-                    slotMembersInTraining={
-                      <SlotTrainingMembers editModule={editModule} />
-                    }
-                    onClickAddMember={{
-                      onClick: () => {
-                        setIsAddMemberDialogOpen(true);
-                        setTrainingStatus('qualified');
-                      },
-                    }}
-                    onClickAddTrainee={{
-                      onClick: () => {
-                        setIsAddMemberDialogOpen(true);
-                        setTrainingStatus('training');
-                      },
-                    }}
-                  />
-                )}
-                {currentTab === 'schedules' && <SchedulesModules />}
+                  )}
+                  {currentTab === 'schedules' && <SchedulesModules />}
 
-                {currentTab === 'instructions' && (
-                  <>
-                    <Instructions
-                      instruction={editModule?.instructions}
-                      setTextValue={setTextValue}
-                      showEditButton={true}
-                      updateInstruction={updateInstruction}
-                      isBorder={true}
-                      isPadding={true}
+                  {currentTab === 'instructions' && (
+                    <>
+                      <Instructions
+                        instruction={editModule?.instructions}
+                        setTextValue={setTextValue}
+                        showEditButton={true}
+                        updateInstruction={updateInstruction}
+                        isBorder={true}
+                        isPadding={true}
+                      />
+                    </>
+                  )}
+
+                  {currentTab === 'training' && (
+                    <ModuleSettingComp
+                      editModule={editModule}
+                      refetch={refetch}
                     />
-                  </>
-                )}
-
-                {currentTab === 'training' && (
-                  <ModuleSettingComp
-                    editModule={editModule}
-                    refetch={refetch}
-                  />
-                )}
-              </>
-            }
-          />
-        )
+                  )}
+                </>
+              }
+            />
+          )}
+        </>
       )}
     </>
   );

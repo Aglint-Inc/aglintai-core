@@ -39,7 +39,9 @@ function GroupBy() {
         }
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />
@@ -62,7 +64,7 @@ function GroupBy() {
             border: 'none',
             marginTop: 'var(--space-4)',
             padding: 'var(--space-1) var(--space-2)',
-            bgcolor:'white'
+            bgcolor: 'white',
           },
         }}
       >
@@ -74,20 +76,22 @@ function GroupBy() {
                 direction={'row'}
                 alignItems={'center'}
                 spacing={'var(--space-1)'}
-                padding={'var(--space-2) var(--space-3)'}
-                sx={{':hover':{bgcolor:'var(--neutral-2)'}}}
+                padding={'var(--space-2)'}
+                sx={{
+                  bgcolor:
+                    item.label === selectedGroupBy.label
+                      ? 'var(--neutral-3)'
+                      : '',
+                  ':hover': { bgcolor: 'var(--neutral-2)', cursor: 'pointer' },
+                }}
                 borderRadius={'var(--radius-2)'}
+                onClick={() => {
+                  setSelectedGroupBy(item);
+                  setAnchorEl(null);
+                }}
               >
                 <Stack>{item.icon}</Stack>
-                <FilterPill
-                  onClickFilter={{
-                    onClick: () => {
-                      setSelectedGroupBy(item);
-                      setAnchorEl(null);
-                    },
-                  }}
-                  textFilterName={capitalize(item.label)}
-                />
+                <FilterPill textFilterName={capitalize(item.label)} />
               </Stack>
             );
           })}

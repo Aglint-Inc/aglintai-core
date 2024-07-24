@@ -157,7 +157,9 @@ export const DropdownSelectButton = <T,>({
         textLabel={capitalizeFirstLetter(selectedItem)}
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />
@@ -187,7 +189,11 @@ export const DropdownSelectButton = <T,>({
               <Stack
                 key={i}
                 direction={'row'}
-                sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }}
+                sx={{
+                  alignItems: 'center',
+                  ':hover': { bgcolor: 'var(--neutral-2)' },
+                  borderRadius: 'var(--radius-2)',
+                }}
                 spacing={1}
                 padding={'var(--space-2) var(--space-3)'}
                 onClick={() => {

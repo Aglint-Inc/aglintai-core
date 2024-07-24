@@ -1,10 +1,4 @@
-import {
-  LinearProgress,
-  Popover,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
 import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
@@ -13,6 +7,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -39,7 +34,7 @@ function FilterCreatedBy() {
   const [members, setMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(false);
   const createdBy = useFilterModuleStore((state) => state.created_by);
-
+  const [createSearchText, setCreateSeachText] = useState('');
   useEffect(() => {
     handleSearch('');
   }, []);
@@ -56,6 +51,7 @@ function FilterCreatedBy() {
   };
 
   const handleSearch = (value) => {
+    setCreateSeachText(value);
     debouncedHandleSearch(value);
   };
 
@@ -107,7 +103,9 @@ function FilterCreatedBy() {
         textLabel={'Created by'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />
@@ -132,46 +130,61 @@ function FilterCreatedBy() {
       >
         <FilterDropdown
           slotOption={
-            <Stack minWidth={'250px'}>
-              <TextField
-                type='search'
-                sx={{ pb: 1 }}
-                placeholder='Search users'
-                onChange={(e) => handleSearch(e.target.value)}
-              />
-              <Stack height='10px'>
-                {loading && <LinearProgress color='info' />}
+            <Stack minWidth={'300px'}>
+              <Stack height={'40px'}>
+                <SearchField
+                  value={createSearchText}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder='Search users'
+                  isFullWidth
+                  onClear={() => handleSearch('')}
+                />
+                <Stack height='10px'>
+                  {loading && <LinearProgress color='info' />}
+                </Stack>
               </Stack>
-
-              <Stack maxHeight={'50vh'} overflow={'auto'}>
-                {members.map((item, index) => (
+              <Stack height={'290px'} overflow={'auto'}>
+                {members.length > 0 ? (
+                  members.map((item, index) => (
+                    <Stack
+                      key={index}
+                      direction={'row'}
+                      spacing={1}
+                      sx={{
+                        p: 'var(--space-2) var(--space-3)',
+                        cursor: 'pointer',
+                        ':hover': { bgcolor: 'var(--neutral-2)' },
+                        borderRadius: 'var(--radius-2)',
+                      }}
+                      alignItems={'center'}
+                      onClick={() => {
+                        handleFilterClick(item.user_id);
+                      }}
+                    >
+                      <Checkbox isChecked={createdBy.includes(item.user_id)} />
+                      <MuiAvatar
+                        src={item.profile_image}
+                        level={getFullName(item.first_name, item.last_name)}
+                        variant='rounded-small'
+                      />
+                      <Typography variant='body1'>
+                        {capitalize(item.first_name)}
+                      </Typography>
+                      <Typography variant='caption'>
+                        - {item.position}
+                      </Typography>
+                    </Stack>
+                  ))
+                ) : (
                   <Stack
-                    key={index}
-                    direction={'row'}
-                    spacing={1}
-                    sx={{
-                      p: 'var(--space-2) var(--space-3)',
-                      cursor: 'pointer',
-                      ':hover': { bgcolor: 'var(--neutral-2)' },
-                      borderRadius: 'var(--radius-2)',
-                    }}
                     alignItems={'center'}
-                    onClick={() => {
-                      handleFilterClick(item.user_id);
-                    }}
+                    justifyContent={'center'}
+                    height={'100%'}
                   >
-                    <Checkbox isChecked={createdBy.includes(item.user_id)} />
-                    <MuiAvatar
-                      src={item.profile_image}
-                      level={getFullName(item.first_name, item.last_name)}
-                      variant='rounded-small'
-                    />
-                    <Typography variant='body1'>
-                      {capitalize(item.first_name)}
-                    </Typography>
-                    <Typography variant='caption'>- {item.position}</Typography>
+                    <GlobalIcon iconName='person' size={7} />
+                    No user found
                   </Stack>
-                ))}
+                )}
               </Stack>
             </Stack>
           }

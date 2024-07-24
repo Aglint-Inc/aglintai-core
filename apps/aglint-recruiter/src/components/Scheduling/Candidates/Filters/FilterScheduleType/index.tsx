@@ -49,7 +49,16 @@ function FilterScheduleType() {
     label: string,
   ) => {
     return (
-      <Stack direction={'row'} sx={{ alignItems: 'center', ':hover':{bgcolor:'var(--neutral-2)'}, borderRadius:'var(--radius-2)' }} spacing={1} padding={'var(--space-2) var(--space-3)'}>
+      <Stack
+        direction={'row'}
+        sx={{
+          alignItems: 'center',
+          ':hover': { bgcolor: 'var(--neutral-2)' },
+          borderRadius: 'var(--radius-2)',
+        }}
+        spacing={1}
+        padding={'var(--space-2) var(--space-3)'}
+      >
         <Checkbox
           isChecked={filter.scheduleType.includes(scheduleType)}
           onClickCheck={{
@@ -62,7 +71,6 @@ function FilterScheduleType() {
           key={label}
           sx={{
             fontSize: '14px',
-            fontWeight: 600,
             cursor: 'pointer',
           }}
           onClick={() => handleFilterClick(scheduleType)}
@@ -81,18 +89,6 @@ function FilterScheduleType() {
         slotLeftIcon={
           <Stack>
             <GlobalIcon iconName='flag' />
-            {/* <svg
-              width='15'
-              height='16'
-              viewBox='0 0 15 16'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M3 2.375V2.77344L12.3984 6.00781C12.6172 6.10156 12.7344 6.26562 12.75 6.5C12.7344 6.73438 12.6172 6.89844 12.3984 6.99219L3 10.2266V13.625C2.98438 13.8594 2.85938 13.9844 2.625 14C2.39062 13.9844 2.26562 13.8594 2.25 13.625V10.25V9.5V3.5V2.75V2.375C2.26562 2.14062 2.39062 2.01563 2.625 2C2.85938 2.01563 2.98438 2.14062 3 2.375ZM3 3.57031V9.42969L11.5312 6.5L3 3.57031Z'
-                fill='#0F3554'
-              />
-            </svg> */}
           </Stack>
         }
         textLabel={'Schedule Type'}
@@ -102,7 +98,9 @@ function FilterScheduleType() {
         }}
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />
