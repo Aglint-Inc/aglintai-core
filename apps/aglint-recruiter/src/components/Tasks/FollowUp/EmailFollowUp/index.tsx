@@ -1,5 +1,5 @@
 import { EmailAgentId } from '@aglint/shared-utils';
-import { Dialog } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import {
   DesktopDateTimePicker,
   LocalizationProvider,
@@ -10,7 +10,9 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { PopupAgentFollowup } from '@/devlink3/PopupAgentFollowup';
 import { RadioWithText } from '@/devlink3/RadioWithText';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -118,19 +120,36 @@ function EmailFollowUp() {
           background: 'transparent',
           border: 'none',
           borderRadius: 'var(--radius-4)',
+          backgroundColor: 'white',
         },
       }}
       open={openEmailFollowUp}
       onClose={closePopUp}
       maxWidth={'md'}
     >
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Contact via email'}
-        textPopupDescription={'Assignee will be changed to email agent'}
-        isWidget={true}
-        slotWidget={
+      <DcPopup
+        popupName='Contact via email'
+        onClickClosePopup={{ onClick: closePopUp }}
+        slotButtons={
           <>
+            <ButtonSoft
+              textButton='Cancel'
+              size={2}
+              color={'neutral'}
+              onClickButton={{ onClick: closePopUp }}
+            />
+            <ButtonSolid
+              textButton={isImmediate ? 'Email now' : 'Connect via email'}
+              size={2}
+              onClickButton={{ onClick: handleClick }}
+            />
+          </>
+        }
+        slotBody={
+          <Stack>
+            <Typography style={{ marginBottom: '12px' }}>
+              Assignee will be changed to email agent
+            </Typography>
             <PopupAgentFollowup
               isImmediately={isImmediate}
               isScheduleLater={!isImmediate}
@@ -182,11 +201,8 @@ function EmailFollowUp() {
                 </LocalizationProvider>
               }
             />
-          </>
+          </Stack>
         }
-        onClickCancel={{ onClick: closePopUp }}
-        textPopupButton={isImmediate ? 'Email now' : 'Connect via email'}
-        onClickAction={{ onClick: handleClick }}
       />
     </Dialog>
   );

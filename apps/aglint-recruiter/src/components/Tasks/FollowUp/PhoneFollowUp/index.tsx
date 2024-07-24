@@ -1,5 +1,5 @@
 import { PhoneAgentId } from '@aglint/shared-utils';
-import { Dialog } from '@mui/material';
+import { Dialog, Typography } from '@mui/material';
 import {
   DesktopDateTimePicker,
   LocalizationProvider,
@@ -10,7 +10,9 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { PopupAgentFollowup } from '@/devlink3/PopupAgentFollowup';
 import { RadioWithText } from '@/devlink3/RadioWithText';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -112,18 +114,32 @@ function PhoneFollowUp() {
     closePopUp();
   }
   return (
-    <Dialog
-      open={openPhoneFollowUp}
-      onClose={closePopUp}
-      maxWidth={'md'}
-    >
-      <ConfirmationPopup
-        isIcon={false}
-        textPopupTitle={'Make a  phone call'}
-        textPopupDescription={'Assignee will be changed to phone agent'}
-        isWidget={true}
-        slotWidget={
+    <Dialog open={openPhoneFollowUp} onClose={closePopUp} maxWidth={'md'}>
+      <DcPopup
+        popupName='Make a  phone call'
+        onClickClosePopup={{ onClick: closePopUp }}
+        slotButtons={
           <>
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{ onClick: closePopUp }}
+              />
+              <ButtonSolid
+                textButton={isImmediate ? 'Call now' : 'Schedule Call'}
+                size={2}
+                onClickButton={{ onClick: handleClick }}
+              />
+            </>
+          </>
+        }
+        slotBody={
+          <>
+            <Typography mb={2}>
+              Assignee will be changed to phone agent
+            </Typography>
             <PopupAgentFollowup
               isImmediately={isImmediate}
               isScheduleLater={!isImmediate}
@@ -177,9 +193,6 @@ function PhoneFollowUp() {
             />
           </>
         }
-        onClickCancel={{ onClick: closePopUp }}
-        textPopupButton={isImmediate ? 'Call now' : 'Schedule Call'}
-        onClickAction={{ onClick: handleClick }}
       />
     </Dialog>
   );
