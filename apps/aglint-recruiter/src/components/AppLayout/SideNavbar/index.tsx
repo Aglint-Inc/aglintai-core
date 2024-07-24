@@ -432,7 +432,9 @@ const SubContextMenu = ({
         </Stack>
       }
       sx={{
+        marginLeft: '4px !important',
         '& .MuiTooltip-tooltip': {
+          borderRadius: '10px',
           border: 'none',
           boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
         },
