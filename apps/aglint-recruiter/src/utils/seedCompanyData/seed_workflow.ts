@@ -239,7 +239,7 @@ export const seed_workflow_actions: {
       },
       {
         order: 1,
-        template_type: 'onQualified_email_trainee',
+        template_type: 'onQualified_slack_trainee',
       },
     ],
   },

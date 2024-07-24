@@ -23,7 +23,7 @@ BEGIN
             join workflow w on w.recruiter_id = i_m.recruiter_id
             JOIN workflow_action wa ON wa.workflow_id = w.id
             JOIN company_email_template c_e_t ON c_e_t.id = wa.email_template_id           
-            where i_m.id=NEW.interview_module_relation_id AND w.trigger::text ='onQualified' AND (
+            where i_m.id=NEW.module_id AND w.trigger::text ='onQualified' AND (
               c_e_t.type='onQualified_email_trainee' OR
               c_e_t.type='onQualified_slack_trainee' 
             )
@@ -185,5 +185,3 @@ CREATE TRIGGER workflow_log_on_update_interview_module_relation AFTER UPDATE OF 
 CREATE TRIGGER workflow_log_on_update_interview_training_progress AFTER UPDATE OF is_attended ON public.interview_training_progress FOR EACH ROW EXECUTE FUNCTION func_workflow_log_on_update_interview_training_progress();
 
 CREATE TRIGGER new_recruiters AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('https://rested-logically-lynx.ngrok-free.app/api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
-
-
