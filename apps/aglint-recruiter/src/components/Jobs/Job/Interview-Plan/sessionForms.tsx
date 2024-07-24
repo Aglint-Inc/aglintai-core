@@ -20,13 +20,12 @@ import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor'
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import { DepartmentIcon, RoleIcon } from '.';
+import { CompanyMember, DepartmentIcon, PausedBadge, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ButtonSolid } from '@/devlink2';
@@ -651,7 +650,12 @@ const InterviewerPills = ({
         key={interviewer.user_id}
         isCloseButton={true}
         onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
-        textMemberName={name}
+        textMemberName={
+          <Stack direction={'row'} alignItems={'center'} gap={1}>
+            <>{name}</>
+            {interviewer.paused && <PausedBadge />}
+          </Stack>
+        }
         slotMemberAvatar={
           <MuiAvatar
             src={interviewer.profile_image}
@@ -713,6 +717,7 @@ const InterviewersField = ({
     name: getFullName(m.first_name, m.last_name),
     value: m.user_id,
     start_icon_url: m.profile_image,
+    badge: m.paused && <PausedBadge />,
     meta: [
       { title: m.position, icon: <RoleIcon /> },
       { title: m.department, icon: <DepartmentIcon /> },
