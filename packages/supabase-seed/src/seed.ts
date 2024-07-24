@@ -21,13 +21,9 @@ const main = async () => {
     'interview_plan',
     'interview_module',
     'interview_module_relation',
+    'interview_plan',
     'interview_session',
     'interview_session_relation',
-    'interview_plan',
-    // 'company_email_template',
-    // 'workflow',
-    // 'workflow_action',
-    // 'workflow_job_relation',
   ];
 
   for (const table of tables_in_order) {
