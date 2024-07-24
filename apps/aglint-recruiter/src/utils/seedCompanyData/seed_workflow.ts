@@ -222,4 +222,25 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      trigger: 'onQualified',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Slack, Email confirmation for the Interviewer when he is moved to qualified',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'onQualified_email_trainee',
+      },
+      {
+        order: 1,
+        template_type: 'onQualified_email_trainee',
+      },
+    ],
+  },
 ];
