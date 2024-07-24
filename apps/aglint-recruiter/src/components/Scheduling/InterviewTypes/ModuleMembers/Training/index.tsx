@@ -147,7 +147,7 @@ function ModuleSettingComp({
   );
 
   return (
-    <Stack p={'var(--space-4)'} spacing={2} maxWidth={'900px'}>
+    <Stack p={'var(--space-4)'} spacing={'var(--space-2)'} maxWidth={'900px'}>
       <TrainingSetting
         isApprovalVisible={editModule?.settings?.reqruire_approval}
         isDisable={!localModule?.settings?.require_training}
