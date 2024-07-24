@@ -144,6 +144,7 @@ function SchedulingApplication() {
                             start: item.interview_meeting?.start_time,
                             end: item.interview_meeting?.end_time,
                           },
+                          session_type: item.interview_session.session_type,
                         }))}
                         candidate={{
                           email: selectedApplication.candidates.email,
