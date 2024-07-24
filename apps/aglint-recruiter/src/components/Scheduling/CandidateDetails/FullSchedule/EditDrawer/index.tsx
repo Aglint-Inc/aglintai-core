@@ -31,11 +31,21 @@ function SideDrawerEdit() {
   const { handleClose, handleSave } = useEditSession();
 
   return (
-    <Drawer open={isEditOpen} onClose={() => handleClose()} anchor='right'>
+    <Drawer
+      open={isEditOpen}
+      onClose={() => {
+        if (!saving) handleClose();
+      }}
+      anchor='right'
+    >
       <Stack overflow={'hidden'}>
         <SideDrawerBlock
           textTitle='Edit Session'
-          onClickClose={{ onClick: () => handleClose() }}
+          onClickClose={{
+            onClick: () => {
+              if (!saving) handleClose();
+            },
+          }}
           slotSidedrawerBody={
             <Stack>
               {editSession &&

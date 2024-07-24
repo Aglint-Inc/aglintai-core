@@ -19,7 +19,6 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
-import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 import { useEditSessionDrawerStore } from './EditDrawer/store';
 import { useSaveBreakDuration } from './hooks';
@@ -95,8 +94,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
   return (
     <>
       <SideDrawerEdit />
-      <BreakDrawerEdit />
-
       {selectedSession && (
         <>
           <CancelScheduleDialog

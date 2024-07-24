@@ -148,7 +148,6 @@ export const useEditSession = () => {
             editInterviewSession(editInterviewSessionParams);
             const data = await getTaskDetails(selectedApplication.id);
             setSelectedTasks(data);
-            toast.success('Session saved successfully.');
           } else {
             const updateDebriefParams: UpdateDebriefSession = {
               break_duration: editSession.interview_session.break_duration,
@@ -201,7 +200,6 @@ export const useEditSession = () => {
           };
 
           await editInterviewSession(editInterviewSessionParams);
-          toast.success('Session saved successfully.');
         } else {
           const updateDebriefParams: UpdateDebriefSession = {
             break_duration: editSession.interview_session.break_duration,
@@ -218,8 +216,8 @@ export const useEditSession = () => {
           await updateDebriefSession(updateDebriefParams);
         }
       }
-      handleClose();
       await fetchInterviewDataByApplication();
+      handleClose();
     } catch (e) {
       toast.error('Error saving session. Please contact support.');
     } finally {
