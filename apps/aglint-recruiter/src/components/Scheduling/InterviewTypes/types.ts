@@ -14,6 +14,7 @@ import {
 } from '@aglint/shared-types';
 
 import { ApplicationList } from '../Candidates/utils';
+import { fetchInterviewModules } from './queries/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -76,13 +77,7 @@ export type ScheduleType = {
     location: string;
   };
 };
-export type ModuleDashboard = {
-  interview_modules: InterviewModuleType;
-  users: MemberType[];
-  upcoming_meeting_count: number;
-  completed_meeting_count: number;
-  canceled_meeting_count: number;
-};
+export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
 export type MemberType = {
   user_id: string;

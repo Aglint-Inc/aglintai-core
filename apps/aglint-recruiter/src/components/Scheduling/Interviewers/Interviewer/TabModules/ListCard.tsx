@@ -15,7 +15,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
-import { DetailsWithCount, PauseDialog } from '../../type';
+import { DetailsWithCount, PauseDialog } from '../type';
 
 function ListCardInterviewerModules({
   module,

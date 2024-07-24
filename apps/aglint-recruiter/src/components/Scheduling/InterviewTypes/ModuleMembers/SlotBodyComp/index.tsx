@@ -132,6 +132,8 @@ function SlotBodyComp({
       toast.success('Interview type unarchived successfully.');
     }
   };
+  console.log(editModule?.relations, 'editModule');
+
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -155,7 +157,9 @@ function SlotBodyComp({
               </>
             }
             isDescriptionVisible={false}
-            textTitle={'This interview type is archived. Click "Unarchive" to reactivate.'}
+            textTitle={
+              'This interview type is archived. Click "Unarchive" to reactivate.'
+            }
           />
         </Stack>
       )}

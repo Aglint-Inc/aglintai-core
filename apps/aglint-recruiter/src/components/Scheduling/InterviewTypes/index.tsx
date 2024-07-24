@@ -37,16 +37,16 @@ export function Modules() {
       !archives && setArchives(true);
       return (
         (departments.length === 0 ||
-          departments.includes(mod.interview_modules.department)) &&
+          departments.includes(mod.department)) &&
         (createdBy.length == 0 ||
-          createdBy.includes(mod.interview_modules.created_by)) &&
+          createdBy.includes(mod.created_by)) &&
         (!textSearch ||
-          mod.interview_modules.name
+          mod.name
             .toLowerCase()
             .includes(textSearch.toLowerCase())) &&
         (showArchive
-          ? mod.interview_modules.is_archived
-          : mod.interview_modules.is_archived !== true)
+          ? mod.is_archived
+          : mod.is_archived !== true)
       );
     })
     .sort(customSortModules);
@@ -123,25 +123,25 @@ export function Modules() {
                     {filterModules.map((mod) => {
                       return (
                         <InterviewModuleCard
-                          textDepartment={mod.interview_modules.department}
+                          textDepartment={mod.department}
                           isArchivedIconVisible={
-                            mod.interview_modules.is_archived
+                            mod.is_archived
                           }
-                          key={mod.interview_modules.id}
+                          key={mod.id}
                           isObjectiveVisible={Boolean(
-                            mod.interview_modules.description,
+                            mod.description,
                           )}
                           onClickCard={{
                             onClick: () => {
                               router.push(
                                 ROUTES[
                                   '/scheduling/module/members/[module_id]'
-                                ]({ module_id: mod.interview_modules.id }),
+                                ]({ module_id: mod.id }),
                               );
                             },
                           }}
-                          textObjective={mod.interview_modules.description}
-                          textModuleName={mod.interview_modules.name}
+                          textObjective={mod.description}
+                          textModuleName={mod.name}
                           slotMemberPic={
                             <>
                               {/* interview types */}

@@ -1,4 +1,3 @@
-import { RecruiterUserType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -17,13 +16,7 @@ import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 import Filters from './Filters';
-type interviewerListType = {
-  rec_user: RecruiterUserType;
-  qualified_module_names: string[];
-  training_module_names: string[];
-  upcoming_meeting_count: number;
-  completed_meeting_count: number;
-};
+
 const InterviewTab = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
@@ -54,12 +47,12 @@ const InterviewTab = () => {
                       .map((member) => {
                         return (
                           <Stack
-                            key={member.rec_user.user_id}
+                            key={member.user_id}
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
                               // setSelectedInterviewer(member);
                               router.push(
-                                `${router.route}/interviewer/${member.rec_user.user_id}`,
+                                `${router.route}/interviewer/${member.user_id}`,
                               );
                             }}
                           >
@@ -72,25 +65,27 @@ const InterviewTab = () => {
                               }
                               slotProfileImage={
                                 <MuiAvatar
-                                  src={member.rec_user.profile_image}
+                                  src={member.profile_image}
                                   level={getFullName(
-                                    member.rec_user.first_name,
-                                    member.rec_user.last_name,
+                                    member.first_name,
+                                    member.last_name,
                                   )}
                                   variant='rounded-medium'
                                 />
                               }
                               isCalenderNotConnected={
                                 recruiter.service_json === null &&
-                                recruiter.email.split('@')[1] ===
-                                  member.rec_user.email.split('@')[1] &&
-                                member.rec_user.schedule_auth === null
+                                recruiter.google_workspace_domain.split(
+                                  '//',
+                                )[1] === member.email.split('@')[1] &&
+                                member.schedule_auth === null
                               }
                               isConnectedCalenderVisible={
                                 (recruiter.service_json !== null &&
-                                  recruiter.email.split('@')[1] ===
-                                    member.rec_user.email.split('@')[1]) ||
-                                member.rec_user.schedule_auth !== null
+                                  recruiter.google_workspace_domain.split(
+                                    '//',
+                                  )[1] === member.email.split('@')[1]) ||
+                                member.schedule_auth !== null
                               }
                               slotInterviewModules={
                                 <>
@@ -171,10 +166,10 @@ const InterviewTab = () => {
                                   </ShowCode>
                                 </>
                               }
-                              textName={`${member.rec_user.first_name} ${
-                                member.rec_user.last_name || ''
+                              textName={`${member.first_name} ${
+                                member.last_name || ''
                               }`}
-                              textRole={member.rec_user?.position}
+                              textRole={member?.position}
                             />
                           </Stack>
                         );
@@ -217,9 +212,12 @@ export const useInterviewerList = () => {
 };
 
 async function getInterviewerList(recruiter_id: string) {
-  const { data, error } = await supabase.rpc('get_interviewers', {
-    rec_id: recruiter_id,
-  });
-  if (error) throw Error(error.message);
-  else return data as unknown as interviewerListType[];
+  const { data } = await supabase
+    .from('all_interviewers')
+    .select()
+    .eq('recruiter_id', recruiter_id)
+    .eq('status', 'active')
+    .throwOnError();
+
+  return data;
 }
