@@ -489,7 +489,7 @@ const InterviewSession = ({
             slotTrainees={members.training.map((member) => (
               <InterviewSessionMember key={member.user_id} member={member} />
             ))}
-            isInterviewersVisible={session.session_type === 'panel'}
+            isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
