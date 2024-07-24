@@ -9,6 +9,7 @@ import {
   fetchSessionDetailsFromSchedule,
 } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 
@@ -59,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         let scheduleDetail = null;
         let applicationDetail = null;
         let scheduleName = '';
-        let sessions = [];
+        let sessions: SchedulingApplication['initialSessions'] = [];
 
         const { data: recruiter } = await supabase
           .from('recruiter')
@@ -121,6 +122,64 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
           scheduleName = scheduleDetail?.schedule_name;
         }
+
+        sessions = sessions.map((session) => {
+          let banners: BannerType[] = [];
+          if (session.users.length === 0) {
+            banners.push({
+              type: 'no_interviewers',
+              message: 'No Interviewers',
+              color: 'error',
+              session_relation_id: null,
+              user_id: null,
+            });
+          }
+          return {
+            ...session,
+            banners,
+            users: session.users.map((user) => {
+              const pause_json = user.interview_module_relation?.pause_json;
+              const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
+              const isCalendarConnected =
+                (!!recruiter.service_json &&
+                  recruiter.email.split('@')[1] ===
+                    user.user_details.email.split('@')[1]) ||
+                !!(user.user_details.schedule_auth as any)?.access_token;
+
+              if (
+                session.interview_meeting?.status !== 'confirmed' &&
+                session.interview_meeting?.status !== 'completed'
+              ) {
+                if (!isCalendarConnected) {
+                  banners.push({
+                    type: 'calender',
+                    message: 'Calendar Not Connected',
+                    color: 'error',
+                    session_relation_id: user.interview_session_relation.id,
+                    user_id: user.user_details.user_id,
+                  });
+                }
+
+                if (!isPaused) {
+                  banners.push({
+                    type: 'paused',
+                    message: 'Interviewer Paused',
+                    color: 'warning',
+                    session_relation_id: user.interview_session_relation.id,
+                    user_id: user.user_details.user_id,
+                  });
+                }
+              }
+
+              return {
+                ...user,
+                user_details: {
+                  ...user.user_details,
+                },
+              };
+            }),
+          };
+        });
 
         return {
           success: true,

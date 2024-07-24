@@ -25,8 +25,9 @@ import {
 } from '../store';
 import { ApiResponseFindAvailability } from '../types';
 import { getTaskDetails } from '../utils';
-import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 import {
+  setErrorNoSlotFilter,
   setFetchingPlan,
   setFilteredSchedulingOptions,
   setIsScheduleNowOpen,
@@ -149,8 +150,10 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       });
 
       if (filterSlots.numberTotal < 5) {
-        toast.warning('No availability found with the selected preferences.');
+        setErrorNoSlotFilter(true);
         return;
+      } else {
+        setErrorNoSlotFilter(false);
       }
 
       setFilteredSchedulingOptions(filterSlots.combs); // this is used for rendering combinations in slot options step
@@ -419,6 +422,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       setRequestSessionIds([]);
       setRescheduleSessionIds([]);
       setRequestAvailibityId(null);
+      setErrorNoSlotFilter(false);
     }
   };
 

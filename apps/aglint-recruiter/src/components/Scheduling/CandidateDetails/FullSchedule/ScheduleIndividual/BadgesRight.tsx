@@ -5,7 +5,6 @@ import {
   tooltipClasses,
   TooltipProps,
 } from '@mui/material';
-import React from 'react';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -50,9 +49,6 @@ function BadgesRight({
     },
   }));
 
-  // const cancelRequests = cancelReasons.filter(
-  //   (reason) => reason.interview_session_cancel.type === 'declined',
-  // );
   const rescheduleRequests = cancelReasons.filter(
     (reason) => reason.interview_session_cancel.type === 'reschedule',
   );
@@ -81,6 +77,7 @@ function BadgesRight({
           textBadge={'Interview Type Archived'}
         />
       )}
+
       {interview_meeting?.status !== 'confirmed' &&
         interview_meeting?.status !== 'completed' && (
           <>
