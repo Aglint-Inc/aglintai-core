@@ -3,8 +3,7 @@ import {
   capitalize,
   Dialog,
   Stack,
-  TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
+import RequiredField from '@/src/components/Common/UITextField/RequiredField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -36,12 +36,24 @@ function CreateModuleDialog() {
   const [department, setDepartment] = useState('');
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
+  const [departmentError, setDepartmentError] = useState(false);
 
-  const createModuleHandler = async () => {
+  const validate = () => {
+    let error = true;
     if (!name) {
       setNameError(true);
     }
-    if (name && !loading) {
+    if (!department) {
+      setDepartmentError(true);
+    }
+    if (name && department) {
+      error = false;
+    }
+    return error;
+  };
+
+  const createModuleHandler = async () => {
+    if (!validate() && !loading) {
       try {
         setLoading(true);
         const res = await createModule({
@@ -104,9 +116,16 @@ function CreateModuleDialog() {
                 }}
               />
               <Stack gap={'var(--space-1)'}>
-                <UITypography type={'small'} fontBold={'default'}>
-                  Department
-                </UITypography>
+                <Stack direction={'row'}>
+                  <UITypography
+                    type={'small'}
+                    fontBold={'default'}
+                    color='var(--neutral-12)'
+                  >
+                    Department
+                  </UITypography>
+                  <RequiredField />
+                </Stack>
                 <Autocomplete
                   fullWidth
                   value={department}
@@ -117,17 +136,20 @@ function CreateModuleDialog() {
                     capitalize(departments),
                   )}
                   renderInput={(params) => (
-                    <TextField
-                      margin='none'
+                    <UITextField
                       {...params}
+                      required
                       name='department'
                       placeholder='Select Department'
+                      error={departmentError}
+                      helperText='Department cannot be empty'
                     />
                   )}
                 />
               </Stack>
 
               <UITextField
+                required
                 label='Objective'
                 multiline
                 placeholder='Add a brief description of the interview'

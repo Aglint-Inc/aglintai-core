@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { deleteJsFilesInDir } from './utils';
+
 function processDirectory(
   rootDirs: {
     [key: string]: { basePath: string; appRouter: boolean };
@@ -74,7 +76,10 @@ function processDirectory(
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(
       item.path,
-      `export const ${item.objectName} = [\n${tempResult.map((item) => "'" + item + "'").join(',\n')}\n] as const`,
+      `export const ${item.objectName} = [\n${tempResult
+        .sort()
+        .map((item) => "'" + item + "'")
+        .join(',\n')}\n] as const`,
       'utf-8',
     );
   });
@@ -105,3 +110,6 @@ processDirectory(rootDirectory, [
     filter: (x) => x.filter((item) => item.startsWith('/api')),
   },
 ]);
+
+// deleted compiled file
+deleteJsFilesInDir(__filename);

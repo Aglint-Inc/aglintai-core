@@ -1,8 +1,8 @@
 import { DatabaseTable, PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
+import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
 import toast from '@/src/utils/toast';
@@ -88,27 +88,23 @@ export const useProgressModuleUsers = ({
 
 export const useModuleAndUsers = () => {
   const router = useRouter();
+  const module_id = router.query.module_id as string;
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-      moduleId: router.query.module_id as string,
+      moduleId: module_id,
     }),
     queryFn: async () => {
-      const {
-        data: resMod,
-        status,
-      }: AxiosResponse<ApiResponseInterviewModuleById> = await axios.post(
+      const res = await axios.call<ApiResponseInterviewModuleById>(
+        'POST',
         '/api/scheduling/fetch_interview_module_by_id',
         {
-          module_id: router.query.module_id,
+          module_id,
         },
       );
-      if (status !== 200 && resMod.error) {
-        toast.error('Error fetching Module Members');
-      }
-      return resMod.data;
+      return res;
     },
-    enabled: !!router.query.module_id,
+    enabled: !!module_id,
     refetchOnWindowFocus: false,
   });
   return query;
@@ -253,10 +249,8 @@ export const useDeleteRelationHandler = () => {
 
 export const useAddMemberHandler = ({
   editModule,
-  refetch,
 }: {
   editModule: ModuleType;
-  refetch: () => void;
 }) => {
   const addMemberHandler = async ({
     selectedUsers,
@@ -268,9 +262,11 @@ export const useAddMemberHandler = ({
     try {
       if (!editModule) throw new Error('Interview type not found');
 
-      const archivedRelations = editModule.relations.filter(
-        (rel) => rel.is_archived,
-      );
+      const seletedUserIds = selectedUsers.map((user) => user.user_id);
+
+      const archivedRelations = editModule.relations
+        .filter((rel) => rel.is_archived)
+        .filter((rel) => seletedUserIds.includes(rel.user_id));
 
       if (archivedRelations.length > 0) {
         await updateRelations(archivedRelations);
@@ -291,8 +287,6 @@ export const useAddMemberHandler = ({
           number_of_shadow: editModule.settings.noShadow,
         });
       }
-
-      refetch();
     } catch (e) {
       toast.error(e.message);
     }

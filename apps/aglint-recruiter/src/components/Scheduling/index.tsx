@@ -229,9 +229,7 @@ const InterviewerModule = ({
   const router = useRouter();
   const { data, isPending } = useInterviewModules({ recruiter_id, user_id });
 
-  const filteredData = data?.filter(
-    (item) => !item.interview_modules.is_archived,
-  );
+  const filteredData = data?.filter((item) => !item.is_archived);
 
   return (
     <InterviewModuleTable
@@ -242,26 +240,21 @@ const InterviewerModule = ({
             {filteredData.length < 0 ? (
               filteredData.map((mod) => {
                 return (
-                  <Stack
-                    key={mod.interview_modules.id}
-                    sx={{ pointerEvents: 'fill' }}
-                  >
+                  <Stack key={mod.id} sx={{ pointerEvents: 'fill' }}>
                     <InterviewModuleCard
-                      isObjectiveVisible={Boolean(
-                        mod.interview_modules.description,
-                      )}
+                      isObjectiveVisible={Boolean(mod.description)}
                       onClickCard={{
                         onClick: () => {
                           router.push(
                             ROUTES['/scheduling/module/[module_id]']({
-                              module_id: mod.interview_modules.id,
+                              module_id: mod.id,
                             }),
                           );
                         },
                       }}
-                      textObjective={mod.interview_modules.description}
-                      textModuleName={mod.interview_modules.name}
-                      textDepartment={mod.interview_modules.department}
+                      textObjective={mod.description}
+                      textModuleName={mod.name}
+                      textDepartment={mod.department}
                       slotMemberPic={
                         <AvatarGroup
                           total={mod.users.length}
