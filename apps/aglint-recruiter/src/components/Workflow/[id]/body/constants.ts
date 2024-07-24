@@ -221,4 +221,5 @@ export const ACTION_TRIGGER_MAP: {
       name: 'Send slack notification to trainee',
     },
   ],
+  onTrainingComplete: [], // fix this later causing lint error so added
 } as const;
