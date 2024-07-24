@@ -177,42 +177,42 @@ const SchedulerSubTabs: SubTabs[] = [
     icon: 'dashboard',
     url: '/scheduling?tab=dashboard',
     tab: 'dashboard',
-    permission: 'authorized',
+    permission: 'scheduling_settings_and_reports',
   },
   {
     name: 'Candidates',
     icon: 'account_circle',
     url: '/scheduling?tab=candidates',
     tab: 'candidates',
-    permission: 'authorized',
+    permission: 'scheduling_actions',
   },
   {
     name: 'Schedules',
     icon: 'today',
     url: '/scheduling?tab=schedules',
     tab: 'schedules',
-    permission: 'authorized',
+    permission: 'scheduling_actions',
   },
   {
     name: 'Interview Types',
     icon: 'supervised_user_circle',
     url: '/scheduling?tab=interviewtypes',
     tab: 'interviewtypes',
-    permission: 'authorized',
+    permission: 'interview_types',
   },
   {
     name: 'Interviewers',
     icon: 'supervisor_account',
     url: '/scheduling?tab=interviewers',
     tab: 'interviewers',
-    permission: 'authorized',
+    permission: 'manage_interviewers',
   },
   {
     name: 'Settings',
     icon: 'settings',
     url: '/scheduling?tab=settings&subtab=interviewLoad',
     tab: 'settings',
-    permission: 'authorized',
+    permission: 'scheduling_settings_and_reports',
   },
 ];
 
@@ -394,6 +394,18 @@ const SubContextMenu = ({
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
+  const subTabLists = SubTabs.filter((item) =>
+    checkPermissions([item.permission]),
+  );
+  if (subTabLists?.length === 0) {
+    return (
+      <NavLink
+        texttooltip={module}
+        isActive={active}
+        slotIcon={<SchedulerIcon />}
+      />
+    );
+  }
   return (
     <CustomTooltip
       placement='right'
@@ -403,9 +415,7 @@ const SubContextMenu = ({
         <Stack>
           <SchedulerDashMenu
             textHeader={module}
-            slotDashList={SubTabs.filter((item) =>
-              checkPermissions([item.permission]),
-            ).map((SubTab, i) => (
+            slotDashList={subTabLists.map((SubTab, i) => (
               <Link
                 href={SubTab.url}
                 key={i}
