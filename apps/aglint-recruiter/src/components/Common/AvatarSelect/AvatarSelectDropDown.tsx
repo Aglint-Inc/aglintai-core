@@ -17,6 +17,7 @@ type MenuOption = {
         name: string;
         url: string;
       }[];
+  badge?: React.JSX.Element;
   icon?: React.JSX.Element;
   meta?: {
     title: string;
@@ -177,6 +178,7 @@ const AvatarSelectDropDown = ({
                     menu.start_icon_url
                   ))}
                 {menu.name}
+                {menu.badge}
                 <Stack direction={'row'} ml={'auto'}>
                   <Stack direction={'row'} gap={2}>
                     {(menu.meta ?? []).map(({ title, icon }, i) => (

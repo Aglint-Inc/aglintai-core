@@ -59,15 +59,16 @@ export type GetInterviewPlansType = {
 };
 
 const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
-  const { data, error } = await supabase
-    .from('interview_plan')
-    .select(
-      `*, interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
-    )
-    .eq('job_id', job_id);
-  if (error) throw new Error(error.message);
-  if (data.length === 0) return null;
-  const response = data[0];
+  const response = (
+    await supabase
+      .from('interview_plan')
+      .select(
+        `*, interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, pause_json, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
+      )
+      .eq('job_id', job_id)
+      .single()
+      .throwOnError()
+  ).data;
   if (response?.interview_session)
     response.interview_session.sort(
       (a, b) => a.session_order - b.session_order,
