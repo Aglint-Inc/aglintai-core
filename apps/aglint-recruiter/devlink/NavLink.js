@@ -14,6 +14,7 @@ export function NavLink({
   isActive = false,
   texttooltip = "Module Name",
   slotIcon,
+  isTooltipVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -46,14 +47,16 @@ export function NavLink({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "navlink_tooltip")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "no_wrap")} tag="div">
-          {texttooltip}
+      {isTooltipVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "navlink_tooltip")}
+          tag="div"
+        >
+          <_Builtin.Block className={_utils.cx(_styles, "no_wrap")} tag="div">
+            {texttooltip}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

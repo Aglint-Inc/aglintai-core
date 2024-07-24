@@ -119,7 +119,7 @@ export const unArchiveModuleById = async (id: string) => {
 };
 
 export function customSortModules(a, b) {
-  if (a.interview_modules.is_archived === b.interview_modules.is_archived) {
+  if (a.is_archived === b.is_archived) {
     return 0;
   } else if (a.is_archived) {
     return 1;

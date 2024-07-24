@@ -1401,6 +1401,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "interview_module_approve_users_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "interview_module_approve_users_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -1460,6 +1467,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_panel_relation_panel_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
             referencedColumns: ["id"]
           },
           {
@@ -1711,6 +1725,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
             referencedColumns: ["id"]
           },
         ]
@@ -4207,8 +4228,10 @@ export type Database = {
           position: string | null
           profile_image: string | null
           qualified_module_names: string[] | null
+          recruiter_id: string | null
           schedule_auth: Json | null
           scheduling_settings: Json | null
+          status: string | null
           total_hours_this_week: number | null
           total_hours_today: number | null
           total_interviews_this_week: number | null
@@ -4218,6 +4241,13 @@ export type Database = {
           user_id: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "recruiter_relation_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
@@ -4424,6 +4454,51 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_types_view: {
+        Row: {
+          canceled_meeting_count: number | null
+          completed_meeting_count: number | null
+          created_by: string | null
+          department: string | null
+          description: string | null
+          id: string | null
+          is_archived: boolean | null
+          name: string | null
+          recruiter_id: string | null
+          upcoming_meeting_count: number | null
+          users: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_panel_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -4689,6 +4764,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_interview_session_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_jobs_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
@@ -4733,6 +4815,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_panel_relation_panel_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
             referencedColumns: ["id"]
           },
           {
@@ -4792,6 +4881,13 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_panel_relation_panel_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "interview_types_view"
             referencedColumns: ["id"]
           },
           {

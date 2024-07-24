@@ -36,7 +36,6 @@ function AddMemberDialog({
 
   const { addMemberHandler } = useAddMemberHandler({
     editModule,
-    refetch,
   });
 
   const relations = editModule?.relations.filter((rel) => !rel.is_archived);
@@ -55,6 +54,7 @@ function AddMemberDialog({
       });
       setIsAddMemberDialogOpen(false);
       setSelectedUsers([]);
+      await refetch();
     } catch {
       toast.error('Error adding member.');
     } finally {

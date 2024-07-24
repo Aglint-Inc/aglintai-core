@@ -2,6 +2,7 @@ import type { Database } from "../schema.types";
 import type { CustomizableTypes, Type } from "../utils.types";
 import { CustomAllInterviewers } from "./all_interviewer";
 import { CustomApplicationView } from "./application_view.types";
+import { CustomInterviewTypesView } from "./interview_types_view";
 import { CustomJobView } from "./job_view.types";
 import { CustomMeetingInterviewersView } from "./meeting_interviewers.types";
 import { CustomTasksView } from "./tasks_view";
@@ -38,5 +39,6 @@ export type Views = Type<
     job_view: CustomJobView;
     meeting_interviewers: CustomMeetingInterviewersView;
     all_interviewers: CustomAllInterviewers;
+    interview_types_view: CustomInterviewTypesView;
   }
 >;

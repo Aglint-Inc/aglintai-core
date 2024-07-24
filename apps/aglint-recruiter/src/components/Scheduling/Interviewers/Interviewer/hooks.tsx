@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { InterviewerDetailsType } from '../type';
+import { InterviewerDetailsType } from './type';
 
 const imrQueryKeys = {
   all: { queryKey: ['all'] },

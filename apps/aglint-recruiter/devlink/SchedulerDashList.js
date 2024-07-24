@@ -13,17 +13,20 @@ export function SchedulerDashList({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduler_dash_list")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-        {slotIcon}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+      <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
+      <_Builtin.Block tag="div">
         <Text content={text} />
       </_Builtin.Block>
       {isActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "scheduler_dash_active")}
           tag="div"
-        />
+        >
+          <_Builtin.Block tag="div">{slotIcon}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            <Text content={text} />
+          </_Builtin.Block>
+        </_Builtin.Block>
       ) : null}
     </_Component>
   );

@@ -6,7 +6,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
-import { DetailsWithCount, PauseDialog } from '../../type';
+import { DetailsWithCount, PauseDialog } from '../type';
 import ListCardInterviewerModules from './ListCard';
 import TraininingModules from './TraininingModules';
 

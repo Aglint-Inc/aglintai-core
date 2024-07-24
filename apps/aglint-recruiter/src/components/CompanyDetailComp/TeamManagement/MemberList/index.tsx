@@ -68,7 +68,7 @@ const Member = ({
       [key: string]: (typeof memDetails)[number] & { allModules: string[] };
     } = {};
     memDetails?.forEach((element) => {
-      temp[element.rec_user.user_id] = {
+      temp[element.user_id] = {
         ...element,
         allModules: [
           ...element.qualified_module_names,
