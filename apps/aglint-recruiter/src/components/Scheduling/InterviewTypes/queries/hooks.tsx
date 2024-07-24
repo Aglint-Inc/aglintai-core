@@ -249,10 +249,8 @@ export const useDeleteRelationHandler = () => {
 
 export const useAddMemberHandler = ({
   editModule,
-  refetch,
 }: {
   editModule: ModuleType;
-  refetch: () => void;
 }) => {
   const addMemberHandler = async ({
     selectedUsers,
@@ -262,21 +260,13 @@ export const useAddMemberHandler = ({
     trainingStatus: 'training' | 'qualified';
   }) => {
     try {
-      console.log(editModule.relations, 'editModule');
-
       if (!editModule) throw new Error('Interview type not found');
 
-      console.log(selectedUsers, 'selectedUsers');
-
       const seletedUserIds = selectedUsers.map((user) => user.user_id);
-
-      console.log(editModule.relations.filter((rel) => rel.is_archived));
 
       const archivedRelations = editModule.relations
         .filter((rel) => rel.is_archived)
         .filter((rel) => seletedUserIds.includes(rel.user_id));
-
-      console.log(archivedRelations, 'archivedRelations');
 
       if (archivedRelations.length > 0) {
         await updateRelations(archivedRelations);
@@ -297,8 +287,6 @@ export const useAddMemberHandler = ({
           number_of_shadow: editModule.settings.noShadow,
         });
       }
-
-      refetch();
     } catch (e) {
       toast.error(e.message);
     }

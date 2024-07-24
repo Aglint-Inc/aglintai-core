@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +15,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsAddMemberDialogOpen,
   setIsSettingsDialogOpen,
@@ -112,33 +110,19 @@ function SlotBodyComp({
     else if (right) handleNext();
   }, [left, right]);
 
-  const queryClient = useQueryClient();
-
   const unArcheive = async () => {
     const isUnArchived = await unArchiveModuleById(editModule.id);
     if (isUnArchived) {
-      const updatedEditModule = {
-        ...editModule,
-        is_archived: false,
-      } as ModuleType;
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
+      refetch();
       toast.success('Interview type unarchived successfully.');
     }
   };
-  console.log(editModule?.relations, 'editModule');
 
   return (
     <>
       <SettingsDialog editModule={editModule} />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
-      <DeleteMemberDialog />
+      <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
       {editModule?.is_archived && (
