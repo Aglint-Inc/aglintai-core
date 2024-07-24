@@ -8,7 +8,7 @@ import axios from 'axios';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { schedulesSupabase } from '../../schedules-query';
-import { MemberType, ModuleDashboard, StatusTraining } from '../types';
+import { MemberType, StatusTraining } from '../types';
 
 export const fetchSchedulesCountByModule = async (module_id: string) => {
   const { data } = await supabase
@@ -110,11 +110,12 @@ export const fetchProgress = async ({
 };
 
 export const fetchInterviewModules = async (rec_id: string) => {
-  const { data, error } = await supabase.rpc('get_interview_modules', {
-    rec_id: rec_id,
-  });
+  const { data, error } = await supabase
+    .from('interview_types_view')
+    .select('*')
+    .eq('recruiter_id', rec_id);
   if (error) throw new Error(error.message);
-  return data as unknown as ModuleDashboard[];
+  return data;
 };
 
 export const fetchMembers = async (rec_id: string) => {

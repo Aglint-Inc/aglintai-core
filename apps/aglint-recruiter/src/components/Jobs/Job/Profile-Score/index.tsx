@@ -373,7 +373,7 @@ const Banners = () => {
     return (
       <GlobalBannerInline
         color={'warning'}
-        textContent=' Job description has changed. Regenerate for updated scoring criterias.'
+        textContent='Job description has changed. Regenerate to update scoring criteria.'
         slotButton={
           <>
             <ButtonSoft

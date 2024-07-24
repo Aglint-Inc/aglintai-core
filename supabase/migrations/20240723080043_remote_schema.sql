@@ -1072,6 +1072,6 @@ create or replace view "public"."application_view" as  WITH application_candidat
      LEFT JOIN application_latest_activity_cte ON ((application_latest_activity_cte.application_id = application_candidate_cte.id)));
 
 
-CREATE TRIGGER new_recruiters AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('https://dev.aglinthq.com/api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
+-- CREATE TRIGGER new_recruiters AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('https://dev.aglinthq.com/api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
 
 

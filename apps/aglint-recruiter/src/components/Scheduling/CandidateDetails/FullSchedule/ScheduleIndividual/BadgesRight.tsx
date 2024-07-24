@@ -5,7 +5,6 @@ import {
   tooltipClasses,
   TooltipProps,
 } from '@mui/material';
-import React from 'react';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -26,6 +25,17 @@ function BadgesRight({
 }) {
   const { recruiter } = useAuthDetails();
 
+  let allUsers = users;
+
+  if (
+    interview_meeting?.status === 'confirmed' ||
+    interview_meeting?.status === 'completed'
+  ) {
+    allUsers = users?.filter(
+      (user) => user.interview_session_relation.is_confirmed,
+    );
+  }
+
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(() => ({
@@ -39,9 +49,6 @@ function BadgesRight({
     },
   }));
 
-  // const cancelRequests = cancelReasons.filter(
-  //   (reason) => reason.interview_session_cancel.type === 'declined',
-  // );
   const rescheduleRequests = cancelReasons.filter(
     (reason) => reason.interview_session_cancel.type === 'reschedule',
   );
@@ -70,6 +77,7 @@ function BadgesRight({
           textBadge={'Interview Type Archived'}
         />
       )}
+
       {interview_meeting?.status !== 'confirmed' &&
         interview_meeting?.status !== 'completed' && (
           <>
@@ -118,6 +126,46 @@ function BadgesRight({
                     iconName={'info'}
                     color={'warning'}
                     textBadge={pausedUser.length}
+                  />
+                </Stack>
+              </LightTooltip>
+            )}
+            {allUsers.length === 0 && (
+              <LightTooltip
+                enterDelay={100}
+                enterNextDelay={100}
+                PopperProps={{
+                  style: {
+                    marginTop: '0px', // Adjust this value to reduce the top margin
+                  },
+                }}
+                sx={{
+                  '& .MuiTooltip-tooltip': {
+                    padding: '0px 10px',
+                    fontSize: '5px',
+                  },
+                }}
+                placement='left'
+                title={
+                  <>
+                    <span
+                      style={{
+                        fontSize: 'var(--font-size-1)',
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: `No interviewers assigned`,
+                      }}
+                    ></span>
+                  </>
+                }
+              >
+                <Stack>
+                  <GlobalBadge
+                    size={1}
+                    showIcon={true}
+                    iconName={'warning'}
+                    color={'error'}
+                    textBadge={1}
                   />
                 </Stack>
               </LightTooltip>

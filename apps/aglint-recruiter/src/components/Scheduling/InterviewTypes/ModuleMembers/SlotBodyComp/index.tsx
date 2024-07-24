@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +15,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { QueryKeysInteviewModules } from '../../queries/type';
 import { setIsSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
@@ -107,31 +105,19 @@ function SlotBodyComp({
     else if (right) handleNext();
   }, [left, right]);
 
-  const queryClient = useQueryClient();
-
   const unArcheive = async () => {
     const isUnArchived = await unArchiveModuleById(editModule.id);
     if (isUnArchived) {
-      const updatedEditModule = {
-        ...editModule,
-        is_archived: false,
-      } as ModuleType;
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
+      refetch();
       toast.success('Interview type unarchived successfully.');
     }
   };
+
   return (
     <>
       <SettingsDialog editModule={editModule} />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
-      <DeleteMemberDialog />
+      <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
       {editModule?.is_archived && (
@@ -141,7 +127,7 @@ function SlotBodyComp({
             slotButtons={
               <>
                 <ButtonSolid
-                  textButton='Unarchived'
+                  textButton='Unarchive'
                   size={1}
                   onClickButton={{
                     onClick: unArcheive,
@@ -150,7 +136,9 @@ function SlotBodyComp({
               </>
             }
             isDescriptionVisible={false}
-            textTitle={'This interview type is Archived '}
+            textTitle={
+              'This interview type is archived. Click "Unarchive" to reactivate.'
+            }
           />
         </Stack>
       )}

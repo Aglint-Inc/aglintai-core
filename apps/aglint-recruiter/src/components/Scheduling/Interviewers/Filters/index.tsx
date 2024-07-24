@@ -65,15 +65,13 @@ function Filters({ setFilteredInterviewer }) {
 
       const filteredSearch =
         searchText.trim().length &&
-        (interviewer.rec_user.first_name
+        (interviewer.first_name
           .toLowerCase()
           .includes(searchText.toLowerCase()) ||
-          interviewer.rec_user.position
+          interviewer.position
             .toLowerCase()
             .includes(searchText.toLowerCase()) ||
-          interviewer.rec_user.email
-            .toLowerCase()
-            .includes(searchText.toLowerCase()));
+          interviewer.email.toLowerCase().includes(searchText.toLowerCase()));
 
       return isSearch && isFilter
         ? (qualifiedModuleMatch || trainingModuleMatch) && filteredSearch

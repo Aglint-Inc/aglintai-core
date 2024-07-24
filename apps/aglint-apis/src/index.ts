@@ -26,6 +26,7 @@ app.use(
     origin: [
       'http://localhost:3000',
       'https://dev.aglinthq.com',
+      'https://staging.aglinthq.com',
       'https://app.aglinthq.com',
     ],
   })

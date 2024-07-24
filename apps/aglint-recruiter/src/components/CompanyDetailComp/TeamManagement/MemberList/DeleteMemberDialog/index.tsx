@@ -150,17 +150,12 @@ function DeleteMemberDialog({
           <DeletePopup
             textTitle={
               <Typography variant='body1'>
-                Suspending:{' '}
+                Suspend user:{' '}
                 <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={
               <Stack spacing={2}>
-                <Typography variant='body1'>
-                  By clicking Suspend User will be suspended. and will we
-                  excluded from the members list.
-                </Typography>
-
                 <GlobalBannerInline
                   textContent={`You are about to suspend ${name} from the system. Once suspended, ${name} will not have login access. The user will be removed from interview
                             types, so no new interviews will be scheduled.

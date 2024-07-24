@@ -8,6 +8,7 @@ import { Text } from '@/devlink/Text';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { useDeleteRelationHandler } from '../../queries/hooks';
 import {
@@ -17,7 +18,7 @@ import {
 } from '../../store';
 import { ModuleType } from '../../types';
 
-function DeleteMemberDialog() {
+function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
   const isDeleteMemberDialogOpen = useModulesStore(
     (state) => state.isDeleteMemberDialogOpen,
   );
@@ -90,15 +91,20 @@ function DeleteMemberDialog() {
   };
 
   const onClickRemove = async (selUser: ModuleType['relations'][0]) => {
-    if (selUser.id && !isOngoingSchedules) {
-      if (isSaving) return;
-      setIsSaving(true);
-      await deleteRelationByUserId({
-        module_id: selUser.module_id,
-        module_relation_id: selUser.id,
-      });
+    try {
+      if (selUser.id && !isOngoingSchedules) {
+        setIsSaving(true);
+        await deleteRelationByUserId({
+          module_id: selUser.module_id,
+          module_relation_id: selUser.id,
+        });
+        setIsDeleteMemberDialogOpen(false);
+      }
+      refetch();
+    } catch (e) {
+      toast.error('Failed to remove member.Please contact support');
+    } finally {
       setIsSaving(false);
-      setIsDeleteMemberDialogOpen(false);
     }
   };
 
@@ -194,6 +200,7 @@ function DeleteMemberDialog() {
               isLoading={isSaving}
               onClickButton={{
                 onClick: async () => {
+                  if (isSaving) return;
                   onClickRemove(selUser);
                 },
               }}

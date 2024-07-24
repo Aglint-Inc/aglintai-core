@@ -18,7 +18,7 @@ import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
   fetchSchedulesCountByUserId,
   useAllSchedulesByUserId,
-} from '../Interviewers/query';
+} from '../Interviewers/Interviewer/query';
 import { transformDataSchedules } from '../schedules-query';
 import { DateIcon } from '../Settings/Components/DateSelector';
 
