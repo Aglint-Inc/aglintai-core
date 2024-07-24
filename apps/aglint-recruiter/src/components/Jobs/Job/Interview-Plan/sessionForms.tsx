@@ -28,6 +28,10 @@ import { sessionDurations } from '@/src/utils/scheduling/const';
 
 import { DepartmentIcon, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
+import { ButtonSolid } from '@/devlink2';
+import { useRouter } from 'next/router';
+import ROUTES from '@/src/utils/routing/routes';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
@@ -338,6 +342,10 @@ const Interview = ({
     modules?.find(({ id }) => id === interview_module?.value?.id)?.members ??
     [];
 
+  const currentQualifiedModuleMembers = (currentModuleMembers ?? []).filter(
+    ({ training_status }) => training_status === 'qualified',
+  );
+
   const moduleMemberRecommendations =
     currentModuleMembers.filter(
       ({ user_id }) =>
@@ -488,6 +496,8 @@ const Interview = ({
     [training],
   );
 
+  const { push } = useRouter();
+
   return (
     <InterviewMode
       isIndividual={session_type.value === 'individual'}
@@ -503,13 +513,41 @@ const Interview = ({
       }
       slotMemberCountDropdown={countField}
       slotInterviewersDropdown={
-        <InterviewersField
-          value={interviewers.value}
-          error={interviewers.error}
-          type='interviewers'
-          moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
-          handleMemberAdd={handleMemberAdd}
-        />
+        <>
+          {(currentQualifiedModuleMembers ?? []).length === 0 && (
+            <GlobalBannerShort
+              iconName={'warning'}
+              textTitle={'Interview type has no qualified members'}
+              textDescription={
+                'Please add members to the selected interview type'
+              }
+              color={'error'}
+              slotButtons={
+                <ButtonSolid
+                  color={'error'}
+                  size={1}
+                  textButton={'Go to interview type'}
+                  onClickButton={{
+                    onClick: () =>
+                      interview_module?.value?.id &&
+                      push(
+                        ROUTES['/scheduling/module/members/[module_id]']({
+                          module_id: interview_module.value.id,
+                        }),
+                      ),
+                  }}
+                />
+              }
+            />
+          )}
+          <InterviewersField
+            value={interviewers.value}
+            error={interviewers.error}
+            type='interviewers'
+            moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
+            handleMemberAdd={handleMemberAdd}
+          />
+        </>
       }
       isTrainingVisible={showTraining}
       slotInterviewersAvatarSelectionPill={
