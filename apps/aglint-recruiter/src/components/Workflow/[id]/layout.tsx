@@ -1,4 +1,4 @@
-import { Dialog, Popover, TextField, Typography } from '@mui/material';
+import { Dialog, Popover, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import { useState } from 'react';
@@ -188,6 +188,7 @@ const DeletePopup = () => {
                   <>
                     {(deletion?.workflow?.jobs ?? []).map(({ title }) => (
                       <TextWithIcon
+                        key={title}
                         iconName={'work'}
                         fontWeight={'regular'}
                         textContent={capitalizeAll(title)}

@@ -103,8 +103,8 @@ const TipTapMenus = ({
         <ButtonGhost
           color={'neutral'}
           isRightIcon
-          iconName='keyboard_arrow_down'
           size={2}
+          iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
           textButton={typography}
           onClickButton={{ onClick: handleOpenMenu }}
         />

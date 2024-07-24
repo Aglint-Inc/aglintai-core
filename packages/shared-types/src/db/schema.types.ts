@@ -5761,6 +5761,17 @@ export type Database = {
           total_results: number
         }[]
       }
+      transfer_user_responsibilities: {
+        Args: {
+          suspended_user: string
+          task_owner?: string
+          hiring_manager?: string
+          recruiter?: string
+          recruiting_coordinator?: string
+          sourcer?: string
+        }
+        Returns: undefined
+      }
       upd_get_interview_session_data: {
         Args: {
           session_ids: string[]
@@ -6123,6 +6134,7 @@ export type Database = {
         | "meetingAccepted"
         | "candidateBook"
         | "onQualified"
+        | "onTrainingComplete"
     }
     CompositeTypes: {
       location_type: {

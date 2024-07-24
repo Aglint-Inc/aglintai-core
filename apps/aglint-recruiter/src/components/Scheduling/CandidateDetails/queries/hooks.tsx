@@ -16,11 +16,15 @@ import {
   setSelectedApplication,
   setSelectedSchedule,
 } from '../store';
-import {
-  fetchRequestAvailibilities
-} from './utils';
+import { fetchRequestAvailibilities } from './utils';
 
-export const useAllActivities = ({ application_id }) => {
+export const useAllActivities = ({
+  application_id,
+  session_id,
+}: {
+  application_id: string;
+  session_id?: string;
+}) => {
   const queryClient = useQueryClient();
   const queryKey = ['activitiesCandidate', { application_id }];
   const query = useQuery({
@@ -29,6 +33,7 @@ export const useAllActivities = ({ application_id }) => {
       const { data: resAct, status }: AxiosResponse<ApiResponseActivities> =
         await axios.post('/api/scheduling/fetch_activities', {
           application_id,
+          session_id,
         });
       if (status !== 200) {
         toast.error('Unable to fetch activities');

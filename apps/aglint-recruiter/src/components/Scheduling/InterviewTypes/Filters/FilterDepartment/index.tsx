@@ -61,7 +61,6 @@ function FilterDepartment() {
           key={label}
           sx={{
             fontSize: '14px',
-            fontWeight: 600,
             cursor: 'pointer',
           }}
           onClick={() => handleFilterClick(label)}
@@ -84,7 +83,9 @@ function FilterDepartment() {
         textLabel={'Department'}
         slotRightIcon={
           <Stack>
-            <GlobalIcon iconName='keyboard_arrow_down' />
+            <GlobalIcon
+              iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            />
           </Stack>
         }
       />
