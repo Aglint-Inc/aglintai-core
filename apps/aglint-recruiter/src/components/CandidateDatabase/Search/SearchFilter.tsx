@@ -144,7 +144,11 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
 
   return (
     <CandidateFilter
-    onClickClose={{onClick:()=>{handleDialogClose();}}}
+      // onClickClose={{
+      //   onClick: () => {
+      //     handleDialogClose();
+      //   },
+      // }}
       slotProfileInput={
         <>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -157,7 +161,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
               valueLabelDisplay='auto'
               sx={{
                 mr: 3,
-                backgroundColor:'var(--neutral-3)'
+                backgroundColor: 'var(--neutral-3)',
               }}
               onChange={(e: any) => {
                 setFilters((p) => ({
