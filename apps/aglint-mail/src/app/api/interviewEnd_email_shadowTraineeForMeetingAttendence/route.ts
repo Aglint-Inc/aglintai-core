@@ -16,14 +16,19 @@ export async function POST(req: Request) {
       onShadowCompleteEmailTraineeSchema,
       req_body.meta,
     );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
+    const mail_details = await fetchUtil(parsed_body);
 
-    await sendMailFun({
+    for (let {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
-    });
+    } of mail_details) {
+      await sendMailFun({
+        filled_comp_template,
+        react_email_placeholders,
+        recipient_email,
+      });
+    }
 
     return NextResponse.json('success', {
       status: 200,
