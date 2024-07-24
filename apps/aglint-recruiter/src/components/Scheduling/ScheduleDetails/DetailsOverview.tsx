@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
@@ -190,12 +191,7 @@ function DetailsOverview({
           </Stack>
         }
         slotDarkPills={viewScheduleTabs
-          .filter(
-            (item) =>
-              !item.hide &&
-              (item.tab !== 'feedback' ||
-                schedule?.interview_meeting?.status === 'completed'),
-          )
+          .filter((item) => !item.hide)
           .map((item, i: number) => {
             return (
               <NewTabPill
@@ -242,25 +238,41 @@ function DetailsOverview({
             </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'feedback'}>
               <Stack>
-                <FeedbackWindow
-                  interview_sessions={[
-                    {
-                      id: schedule?.interview_session.id,
-                      title: schedule?.interview_session.name,
-                      created_at: schedule?.interview_session.created_at,
-                      time: {
-                        start: schedule?.interview_meeting.start_time,
-                        end: schedule?.interview_meeting.end_time,
+                {schedule?.interview_meeting?.status === 'completed' ? (
+                  <FeedbackWindow
+                    interview_sessions={[
+                      {
+                        id: schedule?.interview_session.id,
+                        title: schedule?.interview_session.name,
+                        created_at: schedule?.interview_session.created_at,
+                        time: {
+                          start: schedule?.interview_meeting.start_time,
+                          end: schedule?.interview_meeting.end_time,
+                        },
+                        status: schedule?.interview_meeting.status,
+                        session_type:schedule?.interview_session.session_type
                       },
-                      status: schedule?.interview_meeting.status,
-                    },
-                  ]}
-                  candidate={{
-                    email: schedule?.candidates.email,
-                    name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
-                    job_id: schedule?.job?.id,
-                  }}
-                />
+                    ]}
+                    candidate={{
+                      email: schedule?.candidates.email,
+                      name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+                      job_id: schedule?.job?.id,
+                    }}
+                  />
+                ) : (
+                  <Stack
+                    direction={'row'}
+                    width={'100%'}
+                    height={'200px'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <GlobalEmptyState
+                      textDesc='Feedback will be enabled once the interview is completed'
+                      iconName='chat'
+                    />
+                  </Stack>
+                )}
               </Stack>
             </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'job_details'}>

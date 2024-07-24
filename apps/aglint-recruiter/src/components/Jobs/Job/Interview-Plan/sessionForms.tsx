@@ -845,11 +845,11 @@ const InterviewModePills = ({
   );
 };
 
-export const PanelIcon = () => (
+export const PanelIcon = ({ size = 24 }: { size?: number }) => (
   // <GlobalIcon iconName='groups' />
   <svg
-    width='24'
-    height='24'
+    width={size}
+    height={size}
     viewBox='0 0 24 24'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
@@ -861,11 +861,11 @@ export const PanelIcon = () => (
   </svg>
 );
 
-export const IndividualIcon = () => (
+export const IndividualIcon = ({ size = 24 }: { size?: number }) => (
   // <GlobalIcon iconName='person' />
   <svg
-    width='24'
-    height='24'
+    width={size}
+    height={size}
     viewBox='0 0 24 24'
     fill='none'
     xmlns='http://www.w3.org/2000/svg'

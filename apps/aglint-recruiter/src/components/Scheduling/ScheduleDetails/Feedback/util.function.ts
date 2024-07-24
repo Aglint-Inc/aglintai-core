@@ -10,12 +10,12 @@ export const useInterviewerRelations = ({
 }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: [`interviewer_relations`],
+    queryKey: [`interviewer_relations`, session_ids.join(',')],
     queryFn: () => getInterviewersRelations({ session_ids }),
   });
   const refetch = () =>
     queryClient.invalidateQueries({
-      queryKey: [`interviewer_relations`],
+      queryKey: [`interviewer_relations`, session_ids.join(',')],
     });
   return { ...query, refetch };
 };
