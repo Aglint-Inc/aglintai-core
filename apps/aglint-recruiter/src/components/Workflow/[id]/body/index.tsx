@@ -49,7 +49,7 @@ const ConnectedJobs = () => {
         textDesc={'No jobs connected'}
       />
     );
-  return (workflow?.jobs ?? []).map(({ title }, i) => (
+  return (workflow?.jobs ?? []).map(({ title }) => (
     <TextWithIcon
       key={title}
       iconName={'work'}
