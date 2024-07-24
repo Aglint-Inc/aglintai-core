@@ -132,7 +132,10 @@ function InterviewModeComp() {
   return (
     <InterviewMode
       isIndividual={editSession.interview_session.session_type === 'individual'}
-      isPanel={editSession.interview_session.session_type === 'panel'}
+      isPanel={
+        selectedInterviewers?.length > 1 &&
+        editSession.interview_session.session_type === 'panel'
+      }
       isTraining={true}
       textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
       slotToggle={
