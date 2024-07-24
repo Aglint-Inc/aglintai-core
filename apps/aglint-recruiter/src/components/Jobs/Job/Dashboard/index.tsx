@@ -705,8 +705,8 @@ const useBanners = () => {
     banners.push(
       <Banner
         type='warning'
-        title={'Job details have changed'}
-        description='You may need to publish these changes.'
+        title={'Job details changed.'}
+        description='Please publish the updates.'
         primary={{
           title: 'View',
           onClick: () =>
