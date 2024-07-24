@@ -513,7 +513,7 @@ const Interview = ({
       }
       slotMemberCountDropdown={countField}
       slotInterviewersDropdown={
-        <>
+        <Stack gap={1}>
           {(currentQualifiedModuleMembers ?? []).length === 0 && (
             <GlobalBannerShort
               iconName={'warning'}
@@ -547,7 +547,7 @@ const Interview = ({
             moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
             handleMemberAdd={handleMemberAdd}
           />
-        </>
+        </Stack>
       }
       isTrainingVisible={showTraining}
       slotInterviewersAvatarSelectionPill={
