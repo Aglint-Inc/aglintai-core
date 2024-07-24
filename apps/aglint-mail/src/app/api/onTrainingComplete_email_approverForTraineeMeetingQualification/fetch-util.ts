@@ -6,41 +6,37 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['api_payload'],
 ) {
-  const [data] = supabaseWrap(
+  const [sessn_reln] = supabaseWrap(
     await supabaseAdmin
-      .from('interview_module_relation')
+      .from('interview_session_relation')
       .select(
-        'user_id,recruiter_user(first_name,last_name),interview_module(name,recruiter_id,recruiter(logo,name))',
+        '*, interview_module_relation(*,interview_module(*,recruiter(*)),recruiter_user(*))',
       )
-      .eq('id', req_body.interview_module_relation_id),
+      .eq('id', req_body.session_relation_id),
   );
 
-  const [approver] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,email')
-      .eq('user_id', req_body.approver_id),
-  );
+  const module_reln = sessn_reln.interview_module_relation;
 
-  const [organizer] = supabaseWrap(
+  const [approver_reln] = supabaseWrap(
     await supabaseAdmin
-      .from('recruiter_user')
-      .select('first_name,last_name,email,scheduling_settings')
-      .eq('user_id', req_body.organizer_id),
+      .from('interview_module_approve_users')
+      .select('*, recruiter_user(*)')
+      .eq('module_id', module_reln.interview_module.id),
   );
+  const approver = approver_reln.recruiter_user;
 
   const [shadowCount] = supabaseWrap(
     await supabaseAdmin
       .from('module_relations_view')
-      .select('shadow_meeting_count,reverse_shadow_meeting_count')
-      .eq('user_id', data.user_id),
+      .select()
+      .eq('user_id', module_reln.user_id),
   );
 
-  const { interview_module, recruiter_user: trainee } = data;
-  const company = data.interview_module.recruiter;
+  const { interview_module, recruiter_user: trainee } = module_reln;
+  const company = module_reln.interview_module.recruiter;
 
   const comp_email_temp = await fetchCompEmailTemp(
-    data.interview_module.recruiter_id,
+    interview_module.recruiter_id,
     'onTrainingComplete_email_approverForTraineeMeetingQualification',
   );
 
@@ -54,12 +50,8 @@ export async function fetchUtil(
       traineeLastName: trainee.last_name,
       traineeName: getFullName(trainee.first_name, trainee.last_name),
       companyName: company.name,
-      organizerFirstName: organizer.first_name,
-      organizerLastName: organizer.last_name,
-      organizerName: getFullName(organizer.first_name, organizer.last_name),
-      OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
-      reverseShadowCount: String(shadowCount.reverse_shadow_meeting_count),
-      shadowCount: String(shadowCount.shadow_meeting_count),
+      reverseShadowCount: String(shadowCount.reverse_shadow_confirmed_count),
+      shadowCount: String(shadowCount.shadow_confirmed_count),
       qualifiedApproverConfirmLink: `<a href="#" target="_blank">here</a>`,
     };
 

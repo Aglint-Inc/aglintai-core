@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 
-import { useSchedulingFlowStore } from '../store';
+import { useSchedulingFlowStore } from '../../store';
 
 function ErrorsFindAvailibility() {
   const { noOptions, noSlotReasons } = useSchedulingFlowStore((state) => ({

@@ -1,9 +1,9 @@
 import { GlobalCta } from '@/devlink3/GlobalCta';
 
-import { useSchedulingFlowStore } from '../store';
+import { useSchedulingFlowStore } from '../../store';
 
 function AgentFinalScreenCta() {
-  const { scheduleFlow } = useSchedulingFlowStore();
+  const scheduleFlow = useSchedulingFlowStore((state) => state.scheduleFlow);
   return (
     <GlobalCta
       iconName='check_circle'

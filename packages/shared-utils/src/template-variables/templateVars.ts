@@ -30,7 +30,7 @@ import {
   shadowCount,
   time,
   trainee,
-} from "./variables";
+} from './variables';
 
 export const emailVariablePayloads = {
   debrief_email_interviewer: [
@@ -185,7 +185,6 @@ export const emailVariablePayloads = {
   ],
   onTrainingComplete_email_approverForTraineeMeetingQualification: [
     ...trainee,
-    ...organizer,
     ...approver,
     interviewType,
     ...company,

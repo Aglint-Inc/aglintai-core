@@ -15,4 +15,5 @@ declare function SideDrawerLarge(props: {
   dynamicHeight?: Types.Devlink.RuntimeProps;
   slotButtons?: Types.Devlink.Slot;
   slotHeaderIcon?: Types.Devlink.Slot;
+  drawerSize?: Types.Builtin.Text;
 }): React.JSX.Element;

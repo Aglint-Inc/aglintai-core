@@ -21,10 +21,11 @@ const filterParams = [
   'bookmarked',
   'search',
   'badges',
-  'resume_score',
+  'resume_match',
   'type',
   'order',
   'section',
+  'schedule_status',
 ] as const;
 
 type FilterKeys = (typeof filterParams)[number];
@@ -34,13 +35,12 @@ type FilterValues = {
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
-  resume_score: Application['application_match'][];
+  resume_match: Application['application_match'][];
+  schedule_status: Application['meeting_details'][number]['status'][];
   type:
-    | keyof Pick<
-        Application,
-        'resume_score' | 'applied_at' | 'name' | 'latest_activity'
-      >
-    | 'location';
+    | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
+    | 'location'
+    | 'resume_match';
   order: 'asc' | 'desc';
 };
 
@@ -50,7 +50,8 @@ type Filters = { [id in FilterKeys]: FilterValues[id] };
 const filterDefaults: Filters = {
   badges: [],
   bookmarked: false,
-  resume_score: [],
+  resume_match: [],
+  schedule_status: [],
   search: '',
   section: 'new',
   type: 'latest_activity',
@@ -197,6 +198,7 @@ export const useApplicationsActions = () => {
       status: 'new',
       count: job?.section_count?.new ?? 0,
       ...queryParams,
+      schedule_status: [],
     }),
   );
   const screeningApplications = useInfiniteQuery(

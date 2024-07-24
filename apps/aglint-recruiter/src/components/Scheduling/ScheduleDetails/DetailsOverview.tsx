@@ -1,9 +1,13 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
@@ -150,6 +154,18 @@ function DetailsOverview({
   }, [confirmedUsers]);
   // if logged in user is interviewer session relation will be there or else null
 
+  const [task, setTask] = useState<DatabaseTable['new_tasks']>();
+  const fetchTask = async () => {
+    const { data: tasks } = await supabase
+      .from('task_session_relation')
+      .select('task_id,new_tasks(*)')
+      .eq('session_id', schedule.interview_session.id)
+      .order('new_tasks(created_at)', { ascending: false });
+    if (tasks?.length) setTask(tasks[0].new_tasks);
+  };
+  useEffect(() => {
+    fetchTask();
+  }, []);
   return (
     <Stack pb={'var(--space-8)'}>
       <ScheduleDetailTabs
@@ -165,8 +181,45 @@ function DetailsOverview({
                     ? 'smartphone'
                     : 'mail'
                 }
-                textTitle={`This schedule is handling by ${capitalizeAll(schedule.interview_meeting.meeting_flow.replaceAll('_', ' '))}`}
-                slotButtons={<></>}
+                textTitle={
+                  <Stack direction={'row'} spacing={2}>
+                    <Typography>
+                      This schedule is handling by{' '}
+                      {capitalizeAll(
+                        schedule.interview_meeting.meeting_flow.replaceAll(
+                          '_',
+                          ' ',
+                        ),
+                      )}
+                    </Typography>
+                    <GlobalBadge
+                      textBadge={capitalize(
+                        // eslint-disable-next-line no-unsafe-optional-chaining
+                        (task?.status ? task?.status : 'Loading...').replaceAll(
+                          '_',
+                          ' ',
+                        ),
+                      )}
+                      color={'info'}
+                    />
+                  </Stack>
+                }
+                slotButtons={
+                  task?.id ? (
+                    <ButtonSolid
+                      color={'neutral'}
+                      textButton='view task'
+                      size={1}
+                      onClickButton={{
+                        onClick: () => {
+                          router.push(`/tasks?task_id=${task.id}`);
+                        },
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )
+                }
                 textDescription={''}
                 color={'info'}
               />
@@ -190,12 +243,7 @@ function DetailsOverview({
           </Stack>
         }
         slotDarkPills={viewScheduleTabs
-          .filter(
-            (item) =>
-              !item.hide &&
-              (item.tab !== 'feedback' ||
-                schedule?.interview_meeting?.status === 'completed'),
-          )
+          .filter((item) => !item.hide)
           .map((item, i: number) => {
             return (
               <NewTabPill
@@ -242,25 +290,41 @@ function DetailsOverview({
             </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'feedback'}>
               <Stack>
-                <FeedbackWindow
-                  interview_sessions={[
-                    {
-                      id: schedule?.interview_session.id,
-                      title: schedule?.interview_session.name,
-                      created_at: schedule?.interview_session.created_at,
-                      time: {
-                        start: schedule?.interview_meeting.start_time,
-                        end: schedule?.interview_meeting.end_time,
+                {schedule?.interview_meeting?.status === 'completed' ? (
+                  <FeedbackWindow
+                    interview_sessions={[
+                      {
+                        id: schedule?.interview_session.id,
+                        title: schedule?.interview_session.name,
+                        created_at: schedule?.interview_session.created_at,
+                        time: {
+                          start: schedule?.interview_meeting.start_time,
+                          end: schedule?.interview_meeting.end_time,
+                        },
+                        status: schedule?.interview_meeting.status,
+                        session_type: schedule?.interview_session.session_type,
                       },
-                      status: schedule?.interview_meeting.status,
-                    },
-                  ]}
-                  candidate={{
-                    email: schedule?.candidates.email,
-                    name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
-                    job_id: schedule?.job?.id,
-                  }}
-                />
+                    ]}
+                    candidate={{
+                      email: schedule?.candidates.email,
+                      name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+                      job_id: schedule?.job?.id,
+                    }}
+                  />
+                ) : (
+                  <Stack
+                    direction={'row'}
+                    width={'100%'}
+                    height={'200px'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                  >
+                    <GlobalEmptyState
+                      textDesc='Feedback will be enabled once the interview is completed'
+                      iconName='chat'
+                    />
+                  </Stack>
+                )}
               </Stack>
             </ShowCode.When>
             <ShowCode.When isTrue={router.query.tab === 'job_details'}>

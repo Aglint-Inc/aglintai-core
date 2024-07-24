@@ -38,7 +38,7 @@ const Filters = () => {
     [badgesTypes, badgeLabel, badgesCount.data],
   );
 
-  const resume_score = useMemo(
+  const resume_match = useMemo(
     () =>
       resumeScoreTypes.map((id) => ({
         id,
@@ -47,7 +47,12 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  const filterOptions = { badges, resume_score };
+  const schedule_status = useMemo(
+    () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
+    [scheduleStatus, capitalize],
+  );
+
+  const filterOptions = { badges, resume_match, schedule_status };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
     Object.entries(filters).map(
       ([key, value]) =>
@@ -157,17 +162,27 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
   }
 }
 
-const resumeScoreTypes: ApplicationsParams['filters']['resume_score'] = [
+const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'top_match',
   'good_match',
   'average_match',
   'poor_match',
   'not_a_match',
+  'unknown_match',
+];
+
+const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+  'cancelled',
+  'completed',
+  'confirmed',
+  'not_scheduled',
+  'reschedule',
+  'waiting',
 ];
 
 const sortTypes: ApplicationsParams['filters']['type'][] = [
   'latest_activity',
-  'resume_score',
+  'resume_match',
   'applied_at',
   'name',
   'location',

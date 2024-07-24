@@ -1,11 +1,12 @@
 import { getFullName } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
 
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
+import UITextField from '@/src/components/Common/UITextField';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useInterviewModules } from '@/src/queries/interview-modules';
+import { sessionDurations } from '@/src/utils/scheduling/const';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
@@ -15,13 +16,12 @@ import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
   setIndividualCancelOpen,
   setIndividualRescheduleOpen,
-  setIsEditBreakOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
-import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
-import { setEditSession } from './EditDrawer/store';
+import { useEditSessionDrawerStore } from './EditDrawer/store';
+import { useSaveBreakDuration } from './hooks';
 import RequestAvailabilityPopUps from './RequestAvailabilityPopUps';
 import { AvailabilityProvider } from './RequestAvailabilityPopUps/RequestAvailabilityContext';
 import ScheduleIndividualCard from './ScheduleIndividual';
@@ -47,6 +47,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     selectedSession: state.selectedSession,
     isIndividualRescheduleOpen: state.isIndividualRescheduleOpen,
   }));
+
+  const saving = useEditSessionDrawerStore((state) => state.saving);
 
   useInterviewModules(); // required for edit drawer module dropdown
 
@@ -85,11 +87,13 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
+  const { handleSaveBreakDuration } = useSaveBreakDuration({
+    fetchInterviewDataByApplication,
+  });
+
   return (
     <>
       <SideDrawerEdit />
-      <BreakDrawerEdit />
-
       {selectedSession && (
         <>
           <CancelScheduleDialog
@@ -144,8 +148,9 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                     key={ind}
                     style={{
                       opacity:
-                        isNormalSession &&
-                        session.interview_session.session_type === 'debrief'
+                        saving === session.interview_session.id ||
+                        (isNormalSession &&
+                          session.interview_session.session_type === 'debrief')
                           ? 0.5
                           : isDebrief &&
                               (session.interview_session.session_type !==
@@ -156,8 +161,9 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                             ? 0.5
                             : 1,
                       pointerEvents:
-                        isNormalSession &&
-                        session.interview_session.session_type === 'debrief'
+                        saving === session.interview_session.id ||
+                        (isNormalSession &&
+                          session.interview_session.session_type === 'debrief')
                           ? 'none'
                           : isDebrief &&
                               (session.interview_session.session_type !==
@@ -217,29 +223,40 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                     {session.interview_session.break_duration > 0 && (
                       <Stack pt={'var(--space-2)'}>
                         <InterviewBreakCard
-                          textDuration={getBreakLabel(
-                            session.interview_session.break_duration,
-                          )}
-                          slotEditButton={
-                            (!session.interview_meeting ||
-                              session.interview_meeting?.status ===
-                                'not_scheduled' ||
-                              session.interview_meeting?.status ===
-                                'cancelled') && (
-                              <IconButtonSoft
-                                iconName={'edit'}
-                                size={1}
-                                iconSize={3}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: () => {
-                                    setEditSession(session);
-                                    setIsEditBreakOpen(true);
+                          textDuration={
+                            <UITextField
+                              select
+                              fullWidth
+                              rest={{
+                                sx: {
+                                  ml: 'var(--space-2)',
+                                  width: '120px',
+                                  '& .MuiOutlinedInput-root': {
+                                    padding: '0px',
+                                    paddingLeft: 'var(--space-2)',
                                   },
-                                }}
-                              />
-                            )
+                                },
+                              }}
+                              defaultValue={
+                                session.interview_session.break_duration
+                              }
+                              onChange={(e) => {
+                                handleSaveBreakDuration({
+                                  duration: e?.target?.value
+                                    ? Number(e?.target?.value)
+                                    : 30,
+                                  session_id: session.interview_session.id,
+                                });
+                              }}
+                            >
+                              {sessionDurations.map((item) => (
+                                <MenuItem value={item} key={item}>
+                                  {getBreakLabel(item)}
+                                </MenuItem>
+                              ))}
+                            </UITextField>
                           }
+                          slotEditButton={<></>}
                         />
                       </Stack>
                     )}

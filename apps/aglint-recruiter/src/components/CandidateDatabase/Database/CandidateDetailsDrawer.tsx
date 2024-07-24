@@ -291,12 +291,12 @@ const CandidateDrawer = ({
                 onClick: () => {
                   setIsExperienceShow((prev) => !prev);
                 },
-                style: {
-                  transform: isExperienceShow
-                    ? 'rotate(0deg)'
-                    : 'rotate(180deg)',
-                  'transition-duration': '500ms',
-                },
+                // style: {
+                //   transform: isExperienceShow
+                //     ? 'rotate(0deg)'
+                //     : 'rotate(180deg)',
+                //   'transition-duration': '500ms',
+                // },
               }}
               slotCandidateExperienceCard={
                 <>
@@ -327,12 +327,12 @@ const CandidateDrawer = ({
                 onClick: () => {
                   setIseducationShow((prev) => !prev);
                 },
-                style: {
-                  transform: isEducationShow
-                    ? 'rotate(0deg)'
-                    : 'rotate(180deg)',
-                  'transition-duration': '500ms',
-                },
+                // style: {
+                //   transform: isEducationShow
+                //     ? 'rotate(0deg)'
+                //     : 'rotate(180deg)',
+                //   'transition-duration': '500ms',
+                // },
               }}
               slotEducationCard={
                 <>
