@@ -1,11 +1,15 @@
+import { useRouter } from 'next/router';
+
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { InterviewMode } from '@/devlink2/InterviewMode';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
 import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import { getFullName } from '@/src/utils/jsonResume';
+import ROUTES from '@/src/utils/routing/routes';
 
 import {
   setEditSession,
@@ -20,6 +24,7 @@ import CountDropDown from './CountDropDown';
 import SelectSessionType from './SelectSessionType';
 
 function InterviewModeComp() {
+  const router = useRouter();
   const {
     editSession,
     selectedInterviewers,
@@ -154,19 +159,27 @@ function InterviewModeComp() {
       }
       slotInterviewersDropdown={
         moduleCurrent?.members.length === 0 ? (
-          <UITextField
-            value='Please add members to the interview type'
-            disabled
-            fullWidth
-            error={
-              errorValidation.find(
-                (err) => err.field === 'qualified_interviewers',
-              ).error
+          <GlobalBannerShort
+            iconName={'warning'}
+            textTitle={'Interview type has no qualified members'}
+            textDescription={
+              'Please add members to the selected interview type'
             }
-            helperText={
-              errorValidation.find(
-                (err) => err.field === 'qualified_interviewers',
-              ).message
+            color={'error'}
+            slotButtons={
+              <ButtonSolid
+                color={'error'}
+                size={1}
+                textButton={'Go to interview type'}
+                onClickButton={{
+                  onClick: () =>
+                    router.push(
+                      ROUTES['/scheduling/module/members/[module_id]']({
+                        module_id: moduleCurrent.id,
+                      }),
+                    ),
+                }}
+              />
             }
           />
         ) : (

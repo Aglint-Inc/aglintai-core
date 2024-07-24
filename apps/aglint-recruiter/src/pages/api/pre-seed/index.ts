@@ -40,6 +40,7 @@ export default async function handler(
       if (!recruiter_id) throw new Error('recruiter_id missing!!');
       // await seedRolesAndPermissions(recruiter_id); /// seed roles err
       const comp_templates = await seedCompTemplate(recruiter_id);
+
       await seedWorkFlow(recruiter_id, comp_templates);
       return { success: true };
     },
@@ -137,6 +138,7 @@ const seedCompTemplate = async (recruiter_id) => {
         recruiter_id: recruiter_id,
       })),
     )
+    .select()
     .throwOnError();
   return all_templates;
 };
@@ -160,6 +162,7 @@ const seedWorkFlow = async (
         recruiter_id,
       })
       .select();
+
     await supabaseAdmin.from('workflow_action').insert(
       work_flow_act.actions.map((action) => ({
         order: action.order,
