@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "id": "b6286297-402f-4da1-936f-8b6a6bc6a15e",
+    "created_at": "2024-07-24 05:09:40.096501+00",
+    "module_id": "42129877-23b8-46f7-b41a-e33039c067ed",
+    "interview_plan_id": "5d9574f8-6ff6-4ca5-bcc3-38c8ae7f406d",
+    "session_order": "1",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "Initial screening",
+    "meeting_id": null,
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  },
+  {
+    "id": "b14520d6-b97a-40cb-8fa9-27c4c6f015c4",
+    "created_at": "2024-07-24 05:10:26.811776+00",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "interview_plan_id": "5d9574f8-6ff6-4ca5-bcc3-38c8ae7f406d",
+    "session_order": "2",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "Technical deep dive",
+    "meeting_id": null,
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  },
+  {
+    "id": "4c8e1374-0670-4a1c-b2e3-0db515f24003",
+    "created_at": "2024-07-24 05:10:59.956902+00",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "interview_plan_id": "5d9574f8-6ff6-4ca5-bcc3-38c8ae7f406d",
+    "session_order": "3",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "Culture fit",
+    "meeting_id": null,
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  },
+  {
+    "id": "d841a6d7-08f0-4e57-bd1c-fe55ac3e8fd3",
+    "created_at": "2024-07-24 05:11:42.122002+00",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "interview_plan_id": "5d9574f8-6ff6-4ca5-bcc3-38c8ae7f406d",
+    "session_order": "4",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "System design",
+    "meeting_id": null,
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  }
+]
