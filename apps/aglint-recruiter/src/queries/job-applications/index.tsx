@@ -129,6 +129,7 @@ const getApplications = async ({
     resume_match,
     search,
     type,
+    schedule_status,
   },
 }: {
   pageParam: Params & { index: number };
@@ -151,6 +152,19 @@ const getApplications = async ({
   if (resume_match?.length) {
     query.or(
       `application_match.in.(${resume_match.map((match) => match).join(',')})`,
+    );
+  }
+
+  if (schedule_status?.length) {
+    query.or(
+      [
+        ...schedule_status.map(
+          (status) => `meeting_details.cs.[{"status":"${status}"}]`,
+        ),
+        schedule_status.includes('not_scheduled') && 'meeting_details.eq.[]',
+      ]
+        .filter(Boolean)
+        .join(','),
     );
   }
 
