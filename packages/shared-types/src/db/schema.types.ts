@@ -1463,6 +1463,7 @@ export type Database = {
           number_of_reverse_shadow: number
           number_of_shadow: number
           pause_json: Json | null
+          training_approver: string | null
           training_status: Database["public"]["Enums"]["status_training"]
           user_id: string
         }
@@ -1473,6 +1474,7 @@ export type Database = {
           number_of_reverse_shadow?: number
           number_of_shadow?: number
           pause_json?: Json | null
+          training_approver?: string | null
           training_status?: Database["public"]["Enums"]["status_training"]
           user_id: string
         }
@@ -1483,6 +1485,7 @@ export type Database = {
           number_of_reverse_shadow?: number
           number_of_shadow?: number
           pause_json?: Json | null
+          training_approver?: string | null
           training_status?: Database["public"]["Enums"]["status_training"]
           user_id?: string
         }
@@ -4895,11 +4898,11 @@ export type Database = {
           phone: string | null
           position: string | null
           profile_image: string | null
+          reverse_shadow_completed_count: number | null
           reverse_shadow_confirmed_count: number | null
-          reverse_shadow_meeting_count: number | null
           scheduling_settings: Json | null
+          shadow_completed_count: number | null
           shadow_confirmed_count: number | null
-          shadow_meeting_count: number | null
           user_id: string | null
         }
         Relationships: [

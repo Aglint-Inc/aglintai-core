@@ -173,9 +173,7 @@ export const onQualifiedEmailTraineeSchema = v.object({
   approver_id: v.string(),
 });
 export const onQualifiedEmailApproverSchema = v.object({
-  interview_module_relation_id: v.string(),
-  approver_id: v.string(),
-  organizer_id: v.string(),
+  session_relation_id: v.string(),
 });
 export const interviewEndEmailOrganizerForMeetingStatusSchema = v.object({
   session_id: v.string(),
