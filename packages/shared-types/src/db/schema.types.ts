@@ -1494,6 +1494,13 @@ export type Database = {
             foreignKeyName: "public_interview_module_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
