@@ -1,9 +1,12 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
@@ -150,6 +153,18 @@ function DetailsOverview({
   }, [confirmedUsers]);
   // if logged in user is interviewer session relation will be there or else null
 
+  const [task, setTask] = useState<DatabaseTable['new_tasks']>();
+  const fetchTask = async () => {
+    const { data: tasks } = await supabase
+      .from('task_session_relation')
+      .select('task_id,new_tasks(*)')
+      .eq('session_id', schedule.interview_session.id)
+      .order('new_tasks(created_at)', { ascending: false });
+    if (tasks?.length) setTask(tasks[0].new_tasks);
+  };
+  useEffect(() => {
+    fetchTask();
+  }, []);
   return (
     <Stack pb={'var(--space-8)'}>
       <ScheduleDetailTabs
@@ -165,8 +180,45 @@ function DetailsOverview({
                     ? 'smartphone'
                     : 'mail'
                 }
-                textTitle={`This schedule is handling by ${capitalizeAll(schedule.interview_meeting.meeting_flow.replaceAll('_', ' '))}`}
-                slotButtons={<></>}
+                textTitle={
+                  <Stack direction={'row'} spacing={2}>
+                    <Typography>
+                      This schedule is handling by{' '}
+                      {capitalizeAll(
+                        schedule.interview_meeting.meeting_flow.replaceAll(
+                          '_',
+                          ' ',
+                        ),
+                      )}
+                    </Typography>
+                    <GlobalBadge
+                      textBadge={capitalize(
+                        // eslint-disable-next-line no-unsafe-optional-chaining
+                        (task?.status ? task?.status : 'Loading...').replaceAll(
+                          '_',
+                          ' ',
+                        ),
+                      )}
+                      color={'info'}
+                    />
+                  </Stack>
+                }
+                slotButtons={
+                  task?.id ? (
+                    <ButtonSolid
+                      color={'neutral'}
+                      textButton='view task'
+                      size={1}
+                      onClickButton={{
+                        onClick: () => {
+                          router.push(`/tasks?task_id=${task.id}`);
+                        },
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )
+                }
                 textDescription={''}
                 color={'info'}
               />
