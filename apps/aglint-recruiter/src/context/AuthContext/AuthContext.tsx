@@ -535,31 +535,36 @@ const manageOfficeLocation = async (
 
 const manageDepartments = async (
   payload:
-    | { type: 'insert'; data: DatabaseTableInsert['departments'] }
-    | { type: 'delete'; data: number }
-    | { type: 'update'; data: DatabaseTableUpdate['departments'] },
+    | { type: 'insert'; data: DatabaseTableInsert['departments'][] }
+    | { type: 'delete'; data: number[] }
+    | { type: 'update'; data: DatabaseTable['departments'][] },
   departments: Pick<DatabaseTable['departments'], 'id' | 'name'>[],
 ) => {
   let temp = structuredClone(departments);
   const query = supabase.from('departments');
   switch (payload.type) {
     case 'insert': {
-      const res = (
-        await query.insert(payload.data).select().single().throwOnError()
-      ).data;
-      temp.push(res);
+      const res = (await query.insert(payload.data).select().throwOnError())
+        .data;
+      temp = [...temp, ...res];
       break;
     }
     case 'update': {
       const res = (
-        await query.update(payload.data).select().single().throwOnError()
+        await query
+          .upsert(payload.data, { onConflict: 'id' })
+          .select()
+          .throwOnError()
       ).data;
-      temp = temp.map((item) => (item.id === res.id ? res : item));
+      temp = temp.map((item) => {
+        const sRes = res.find((r) => r.id === item.id);
+        return sRes ? sRes : item;
+      });
       break;
     }
     case 'delete': {
-      await query.delete().eq('id', payload.data).throwOnError();
-      temp = temp.filter((item) => payload.data !== item.id);
+      await query.delete().in('id', payload.data).throwOnError();
+      temp = temp.filter((item) => !payload.data.includes(item.id));
       break;
     }
   }

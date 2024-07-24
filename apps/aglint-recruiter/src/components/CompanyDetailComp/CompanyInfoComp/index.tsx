@@ -27,7 +27,12 @@ import SocialComp from './SocialComp';
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const {
+    recruiter,
+    setRecruiter,
+    handleOfficeLocationsUpdate,
+    handleDepartmentsUpdate,
+  } = useAuthDetails();
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [nameError, setNameError] = useState(false);
@@ -57,21 +62,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     setDialog(initialDialog());
   };
 
-  const handleDeleteLocation = (i: number) => {
-    setRecruiter((recruiter) => {
-      const newRecruiter = {
-        ...recruiter,
-        office_locations: recruiter.office_locations.reduce(
-          (acc: any, curr, index) => {
-            if (i !== index) acc.push(curr);
-            return acc;
-          },
-          [],
-        ) as any,
-      };
-      debouncedSave(newRecruiter, newRecruiter.id);
-      return newRecruiter;
-    });
+  const handleDeleteLocation = (id: number) => {
+    handleOfficeLocationsUpdate({ type: 'delete', data: id });
   };
 
   useEffect(() => {
@@ -152,15 +144,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               slotLocation={
                 <>
                   {recruiter?.office_locations &&
-                    recruiter?.office_locations.map((loc: any, i) => {
+                    recruiter?.office_locations.map((loc) => {
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
-                      const [address] = [loc.full_address];
+                      const [address] = [loc.line1];
                       const timeZone = [loc.timezone];
-                      const isHeadQuaterVisible = loc?.is_headquarter
-                        ? loc.is_headquarterue
-                        : false;
+                      const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
 
                       return (
                         <>
@@ -171,7 +161,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                 onClick: () => {
                                   setDialog({
                                     ...dialog,
-                                    location: { open: true, edit: i },
+                                    location: { open: true, edit: loc.id },
                                   });
                                 },
                               }}
@@ -182,7 +172,10 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                 onClick: () => {
                                   setDialog({
                                     ...dialog,
-                                    deletelocation: { open: true, edit: i },
+                                    deletelocation: {
+                                      open: true,
+                                      edit: loc.id,
+                                    },
                                   });
                                 },
                               }}
@@ -212,19 +205,16 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   />
                 );
               })}
-              slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
+              slotDepartmentPills={recruiter?.departments?.map((dep) => {
                 return (
                   <RolesPill
-                    key={ind}
+                    key={dep.id}
                     textRoles={dep.name}
                     onClickRemoveRoles={{
                       onClick: () => {
-                        let departments = recruiter.departments.filter(
-                          (depart) => depart != dep,
-                        );
-                        handleChange({
-                          ...recruiter,
-                          departments: departments,
+                        handleDepartmentsUpdate({
+                          type: 'delete',
+                          data: [dep.id],
                         });
                       },
                     }}
