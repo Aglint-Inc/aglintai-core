@@ -25,11 +25,12 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { application_id } = req.body;
+      const { application_id, session_id } = req.body;
       if (application_id) {
         const resActivities = await fetchAllActivities({
           application_id,
           supabase,
+          session_id,
         });
         return res.send({
           data: resActivities,

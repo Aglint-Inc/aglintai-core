@@ -10,6 +10,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
 
+
 function Instructions({
   instruction,
   setTextValue,
@@ -44,11 +45,13 @@ function Instructions({
           isDescriptionVisibe={false}
           textPopupTitle={'Edit Instructions'}
           isIcon={false}
-          textDescription={'Please provide detailed instructions on how to conduct the interview, including dos and don’ts, and a clear guideline.'}
+          textDescription={
+            'Please provide detailed instructions on how to conduct the interview, including dos and don’ts, and a clear guideline.'
+          }
           slotPopup={
             <Stack
               sx={{
-                border:'1px solid var(--neutral-6)',
+                border: '1px solid var(--neutral-6)',
                 // margin: '20px',
                 maxWidth: '800px',
                 minWidth: '800px',
@@ -60,7 +63,7 @@ function Instructions({
               overflow={'auto'}
             >
               <TipTapAIEditor
-                
+                height='440px'
                 enablAI={false}
                 placeholder={'Instructions'}
                 handleChange={(html) => {

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
 import { PageLayout } from '@/devlink2/PageLayout';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { CreateJobLoader } from '@/devlink3/CreateJobLoader';
 import { EditJobTopbarLeft } from '@/devlink3/EditJobTopbarLeft';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
@@ -122,7 +121,6 @@ const JobCreate = () => {
       },
     },
   });
-  const [modal, setModal] = useState(false);
   return (
     <>
       <PageLayout
@@ -131,9 +129,6 @@ const JobCreate = () => {
         slotTopbarLeft={<EditJobTopbarLeft textName={'Create Job'} />}
         slotBody={<JobCreateForm fields={fields} setFields={setFields} />}
       />
-      <Dialog open={modal} onClose={() => setModal(false)}>
-        <ConfirmationPopup isIcon={false} />
-      </Dialog>
     </>
   );
 };

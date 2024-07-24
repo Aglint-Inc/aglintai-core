@@ -7,6 +7,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -25,7 +26,7 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember } from '@/src/queries/company-members';
+import { CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
 import {
   InterviewPlansType,
@@ -44,6 +45,8 @@ import JobNotFound from '../Common/JobNotFound';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
+
+export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
 const JobNewInterviewPlanDashboard = () => {
   const { initialLoad, job } = useJobInterviewPlan();
@@ -359,12 +362,17 @@ const InterviewSession = ({
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
-        if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
+        if (curr.recruiter_user)
+          acc.members.push({
+            ...curr.recruiter_user,
+            paused: !!curr?.interview_module_relation?.pause_json,
+          });
       } else {
         if (curr.interview_module_relation.recruiter_user) {
-          acc[curr.interviewer_type].push(
-            curr.interview_module_relation.recruiter_user,
-          );
+          acc[curr.interviewer_type].push({
+            ...curr.interview_module_relation.recruiter_user,
+            paused: !!curr?.interview_module_relation?.pause_json,
+          });
         }
       }
 
@@ -489,7 +497,7 @@ const InterviewSession = ({
             slotTrainees={members.training.map((member) => (
               <InterviewSessionMember key={member.user_id} member={member} />
             ))}
-            isInterviewersVisible={session.session_type === 'panel'}
+            isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
@@ -630,18 +638,21 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <AvatarWithName
-      textName={name}
-      textRole={member.position}
-      isRoleVisible={!!member?.position}
-      slotAvatar={
-        <MuiAvatar
-          src={member.profile_image}
-          level={name}
-          variant='rounded-small'
-        />
-      }
-    />
+    <Stack direction={'row'} alignItems={'center'} gap={1}>
+      <AvatarWithName
+        textName={name}
+        textRole={member.position}
+        isRoleVisible={!!member?.position}
+        slotAvatar={
+          <MuiAvatar
+            src={member.profile_image}
+            level={name}
+            variant='rounded-small'
+          />
+        }
+      />
+      {member.paused && <PausedBadge />}
+    </Stack>
   );
 };
 
@@ -752,4 +763,8 @@ export const DepartmentIcon = () => {
     //   ></path>
     // </svg>
   );
+};
+
+export const PausedBadge = () => {
+  return <GlobalBadge color={'warning'} textBadge={'Paused'} />;
 };

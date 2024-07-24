@@ -15,7 +15,7 @@ function IconApplicationLogs({
   act,
 }: {
   act: Type<
-    Activities,
+    Omit<Activities, 'new_tasks'>,
     {
       recruiter_user: Partial<Activities['recruiter_user']>;
       applications?: Activities['applications'];

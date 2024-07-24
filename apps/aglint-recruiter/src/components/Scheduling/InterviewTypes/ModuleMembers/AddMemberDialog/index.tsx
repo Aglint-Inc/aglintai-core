@@ -24,6 +24,7 @@ function AddMemberDialog({
   editModule: ModuleType;
   refetch: () => void;
 }) {
+  //all active members
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
@@ -35,14 +36,13 @@ function AddMemberDialog({
 
   const { addMemberHandler } = useAddMemberHandler({
     editModule,
-    refetch,
   });
+
+  const relations = editModule?.relations.filter((rel) => !rel.is_archived);
 
   const allMembers = members.filter(
     (user) =>
-      editModule?.relations?.findIndex(
-        (rel) => rel.user_id === user.user_id,
-      ) === -1,
+      relations?.findIndex((rel) => rel.user_id === user.user_id) === -1,
   );
 
   const onClickAddMember = async () => {
@@ -54,10 +54,14 @@ function AddMemberDialog({
       });
       setIsAddMemberDialogOpen(false);
       setSelectedUsers([]);
+      await refetch();
     } catch {
       toast.error('Error adding member.');
     } finally {
-      setLoading(false);
+      // extra time for refetching
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 

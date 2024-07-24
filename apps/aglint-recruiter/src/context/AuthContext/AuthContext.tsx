@@ -37,6 +37,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+import { updateJoinedStatus } from './utils';
 
 export interface ContextValue {
   userDetails: Session | null;
@@ -68,6 +69,7 @@ export interface ContextValue {
       role_id?: string;
       manager_id?: string;
     };
+    updateDB?: boolean;
   }) => Promise<boolean>;
   isAllowed: (
     //checkPermission
@@ -207,8 +209,13 @@ const AuthProvider = ({ children }) => {
       });
       const recruiterUser = recruiterRel.recruiter_user;
 
+      if (recruiterUser.status !== 'active') {
+        updateJoinedStatus(recruiterUser.user_id);
+      }
+
       setRecruiterUser({
         ...recruiterUser,
+        primary: recruiterRel.primary,
         role: recruiterRel.roles.name,
         role_id: recruiterRel.role_id,
         manager_id: recruiterRel.manager_id,
@@ -285,23 +292,25 @@ const AuthProvider = ({ children }) => {
   const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
     user_id,
     data,
+    updateDB = true,
   }) => {
     if (!user_id && data && recruiter.id) return Promise.resolve(false);
-    return updateMember({
-      data: { ...data, user_id },
-    }).then((data) => {
-      if (data) {
-        setMembers((prev) =>
-          prev.map((item) => {
-            return data.user_id === item.user_id
-              ? ({ ...item, ...data } as RecruiterUserType)
-              : item;
-          }),
-        );
-        return true;
-      }
-      return false;
-    });
+    if (updateDB) {
+      data = await updateMember({
+        data: { ...data, user_id },
+      });
+    }
+    if (data) {
+      setMembers((prev) =>
+        prev.map((item) => {
+          return data.user_id === item.user_id
+            ? ({ ...item, ...data } as RecruiterUserType)
+            : item;
+        }),
+      );
+      return true;
+    }
+    return false;
   };
 
   const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');

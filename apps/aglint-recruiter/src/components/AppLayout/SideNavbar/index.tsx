@@ -1,17 +1,21 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NavLink } from '@/devlink/NavLink';
+import { SchedulerDashList } from '@/devlink/SchedulerDashList';
+import { SchedulerDashMenu } from '@/devlink/SchedulerDashMenu';
 import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
+import { CustomTooltip } from '../../Common/Tooltip';
 import AssessmentIcon from '../IconsSideBar/AssessmentIcon';
 import CompanySettingsIcon from '../IconsSideBar/CompanySettingsIcon';
 import IntegrationIcon from '../IconsSideBar/IntegrationIcon';
@@ -24,7 +28,7 @@ import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 
 function SideNavbar() {
   const router = useRouter();
-  const pathName = usePathname();
+  const pathName = router.pathname;
   const { checkPermissions } = useRolesAndPermissions();
   const { isAssessmentEnabled, isScreeningEnabled } = useAuthDetails();
 
@@ -141,11 +145,11 @@ function SideNavbar() {
 
   useEffect(() => {
     const tempR = navList.find((item) => {
-      return pathName?.includes(item.route);
+      return pathName?.includes(item.route.split('?')[0]);
     })?.permission;
     if (tempR && !checkPermissions(tempR)) {
       toast.error('This section of the application is not accessible to you.');
-      router.replace(ROUTES['/loading']());
+      router.back();
     }
   }, [pathName]);
 
@@ -167,6 +171,51 @@ function SideNavbar() {
 
 export default SideNavbar;
 
+const SchedulerSubTabs: SubTabs[] = [
+  {
+    name: 'Dashboard',
+    icon: 'dashboard',
+    url: '/scheduling?tab=dashboard',
+    tab: 'dashboard',
+    permission: 'scheduling_settings_and_reports',
+  },
+  {
+    name: 'Candidates',
+    icon: 'account_circle',
+    url: '/scheduling?tab=candidates',
+    tab: 'candidates',
+    permission: 'scheduling_actions',
+  },
+  {
+    name: 'Schedules',
+    icon: 'today',
+    url: '/scheduling?tab=schedules',
+    tab: 'schedules',
+    permission: 'scheduling_actions',
+  },
+  {
+    name: 'Interview Types',
+    icon: 'supervised_user_circle',
+    url: '/scheduling?tab=interviewtypes',
+    tab: 'interviewtypes',
+    permission: 'interview_types',
+  },
+  {
+    name: 'Interviewers',
+    icon: 'supervisor_account',
+    url: '/scheduling?tab=interviewers',
+    tab: 'interviewers',
+    permission: 'manage_interviewers',
+  },
+  {
+    name: 'Settings',
+    icon: 'settings',
+    url: '/scheduling?tab=settings&subtab=interviewLoad',
+    tab: 'settings',
+    permission: 'scheduling_settings_and_reports',
+  },
+];
+
 const LinkIcon = ({
   module,
   active,
@@ -187,10 +236,10 @@ const LinkIcon = ({
       );
     case 'Scheduler':
       return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<SchedulerIcon />}
+        <SubContextMenu
+          active={active}
+          module={module}
+          SubTabs={SchedulerSubTabs}
         />
       );
     case 'Sourcing Hub':
@@ -323,3 +372,84 @@ type LinkProps =
       module: 'Tasks';
       path: Path<'/tasks'>;
     };
+
+type SubTabs = {
+  name: string;
+  icon: string;
+  url: string;
+  tab: string;
+  permission: DatabaseTable['permissions']['name'];
+};
+const SubContextMenu = ({
+  active,
+  module,
+  SubTabs,
+}: {
+  active: boolean;
+  module: string;
+  SubTabs: SubTabs[];
+}) => {
+  const router = useRouter();
+  const { checkPermissions } = useRolesAndPermissions();
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const subTabLists = SubTabs.filter((item) =>
+    checkPermissions([item.permission]),
+  );
+  if (subTabLists?.length === 0) {
+    return (
+      <NavLink
+        texttooltip={module}
+        isActive={active}
+        slotIcon={<SchedulerIcon />}
+      />
+    );
+  }
+  return (
+    <CustomTooltip
+      placement='right'
+      onClose={() => setTooltipOpen(false)}
+      open={tooltipOpen}
+      title={
+        <Stack>
+          <SchedulerDashMenu
+            textHeader={module}
+            slotDashList={subTabLists.map((SubTab, i) => (
+              <Link
+                href={SubTab.url}
+                key={i}
+                onClick={() => setTooltipOpen(false)}
+              >
+                <SchedulerDashList
+                  slotIcon={<GlobalIcon iconName={SubTab.icon} size={5} />}
+                  text={SubTab.name}
+                  isActive={router.query.tab === SubTab.tab}
+                />
+              </Link>
+            ))}
+          />
+        </Stack>
+      }
+      sx={{
+        marginLeft: '4px !important',
+        '& .MuiTooltip-tooltip': {
+          borderRadius: '10px',
+          border: 'none',
+          boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
+        },
+      }}
+    >
+      <Stack
+        onClick={() => setTooltipOpen(false)}
+        onMouseEnter={() => setTooltipOpen(true)}
+      >
+        <NavLink
+          isTooltipVisible={false}
+          isActive={active}
+          slotIcon={<SchedulerIcon />}
+        />
+      </Stack>
+    </CustomTooltip>
+  );
+};

@@ -1,7 +1,7 @@
 import { InterviewModuleType, RecruiterUserType } from '@aglint/shared-types';
 
-import { ModuleType } from '../InterviewTypes/types';
-import { SchedulesSupabase } from '../schedules-query';
+import { ModuleType } from '../../InterviewTypes/types';
+import { SchedulesSupabase } from '../../schedules-query';
 
 export interface InterviewerDetailsType {
   modules: {

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { schedulesSupabase } from '../schedules-query';
+import { schedulesSupabase } from '../../schedules-query';
 
 export const useAllSchedulesByUserId = ({
   filter,

@@ -15,6 +15,7 @@ import {envConfig} from './config';
 import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
 import {redisClient} from './services/cache/redis-cache';
+import aglintAgentRouter from './routes/testAgent';
 
 const PORT = envConfig.PORT;
 
@@ -43,6 +44,7 @@ app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
 app.use('/api/slack', slackRoutes);
+app.use('/api', aglintAgentRouter);
 app.get('/redis', async (req, res) => {
   console.time('verify-redis');
   await redisClient.set('foo', 'bar');

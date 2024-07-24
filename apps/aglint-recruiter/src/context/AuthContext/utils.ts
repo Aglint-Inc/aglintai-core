@@ -45,3 +45,11 @@ export const refershAccessToken = async ({ refresh_token }) => {
     refresh_token: refresh_token,
   });
 };
+
+export const updateJoinedStatus = async (user_id: string) => {
+  await supabase
+    .from('recruiter_user')
+    .update({ status: 'active' })
+    .eq('user_id', user_id)
+    .throwOnError();
+};

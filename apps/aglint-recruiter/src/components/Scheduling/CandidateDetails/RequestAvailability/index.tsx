@@ -273,7 +273,11 @@ function RequestAvailability() {
         await handleMeetingsOrganizerResetRelations({
           application_id: selectedApplication.id,
           meeting_flow: 'candidate_request',
-          selectedSessions: localSessions,
+          selectedSessions: localSessions.map((ses) => ({
+            interview_session_id: ses.interview_session.id,
+            interview_meeting_id: ses.interview_meeting.id,
+            interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+          })),
           supabase,
         });
         const result = await insertCandidateRequestAvailability({
@@ -663,6 +667,7 @@ function RequestAvailability() {
                 ? selectedSessions.map((ele, i) => {
                     return (
                       <ScheduleSelectPill
+                        isCloseVisible={false}
                         slotIcons={
                           <ShowCode>
                             <ShowCode.When

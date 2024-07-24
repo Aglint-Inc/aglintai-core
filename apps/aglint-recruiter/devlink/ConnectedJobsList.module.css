@@ -1,5 +1,7 @@
 .connected_jobs {
   display: flex;
+  overflow: auto;
+  max-height: 200px;
   padding: var(--space-3);
   flex-direction: column;
   flex-wrap: nowrap;

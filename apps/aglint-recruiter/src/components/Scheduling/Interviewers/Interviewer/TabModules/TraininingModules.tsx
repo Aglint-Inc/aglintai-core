@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
-import { PauseDialog } from '../../type';
+import { PauseDialog } from '../type';
 import ListCardInterviewerModules from './ListCard';
 
 function TraininingModules({

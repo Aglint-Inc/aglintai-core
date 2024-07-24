@@ -9,7 +9,6 @@ import {
   PlanCombinationRespType,
   SupabaseType,
 } from '@aglint/shared-types';
-import { BookingConfirmationMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -19,7 +18,6 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../Candidates/queries/utils';
 import { selfScheduleReminderMailToCandidate } from './mailUtils';
-import { SchedulingFlow } from './SchedulingDrawer/store';
 import { SchedulingApplication } from './store';
 
 export const fetchInterviewMeetingProgresstask = async ({

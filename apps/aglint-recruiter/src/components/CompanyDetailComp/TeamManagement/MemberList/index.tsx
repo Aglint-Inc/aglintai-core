@@ -21,11 +21,16 @@ import {
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { supabase } from '@/src/utils/supabase/client';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
+
 dayjs.extend(relativeTime);
 
 const Member = ({
@@ -40,6 +45,8 @@ const Member = ({
   updateMember: (
     // eslint-disable-next-line no-unused-vars
     x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
+    // eslint-disable-next-line no-unused-vars
+    updateDB?: boolean,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
   editMember: (member: RecruiterUserType) => void;
@@ -54,14 +61,14 @@ const Member = ({
   const [dialogReason, setDialogReason] =
     useState<Parameters<typeof DeleteMemberDialog>['0']['reason']>(null);
 
-  const { userDetails } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
     const temp: {
       [key: string]: (typeof memDetails)[number] & { allModules: string[] };
     } = {};
     memDetails?.forEach((element) => {
-      temp[element.rec_user.user_id] = {
+      temp[element.user_id] = {
         ...element,
         allModules: [
           ...element.qualified_module_names,
@@ -93,21 +100,44 @@ const Member = ({
   return (
     <>
       <DeleteMemberDialog
-        name={`${member.first_name} ${member.last_name}`.trim()}
+        name={capitalizeFirstLetter(
+          `${member.first_name} ${member.last_name}`.trim(),
+        )}
         action={
           dialogReason === 'suspend'
-            ? () => {
-                updateMember({
-                  status: 'suspended',
-                }).then(() => {
-                  toast.success(
-                    `${member.first_name}'s account is suspended successfully.`,
-                  );
-                  ClosePopUp();
-                });
+            ? ({
+                interviewTypes,
+                task,
+              }: {
+                interviewTypes: string;
+                task: string;
+              }) => {
+                supabase
+                  .rpc('transfer_user_responsibilities', {
+                    suspended_user: member.user_id,
+                    hiring_manager: interviewTypes,
+                    recruiter: interviewTypes,
+                    recruiting_coordinator: interviewTypes,
+                    sourcer: interviewTypes,
+                    task_owner: task,
+                  })
+                  .then(() => {
+                    updateMember(
+                      {
+                        user_id: member.user_id,
+                        status: 'suspended',
+                      },
+                      false,
+                    );
+                    toast.success(
+                      `${member.first_name}'s account is suspended successfully.`,
+                    );
+                    ClosePopUp();
+                  });
               }
             : handelRemove
         }
+        role={member.role}
         reason={dialogReason}
         warning={
           dialogReason !== 'cancel_invite' &&
@@ -137,7 +167,9 @@ const Member = ({
         }
         slotThreeDot={
           canManage &&
-          (member.role !== 'admin' || member.status === 'invited') && (
+          (member.role !== 'admin' ||
+            member.status === 'invited' ||
+            recruiterUser.primary) && (
             <>
               <Stack onClick={handleClick}>
                 <IconButtonGhost
@@ -168,7 +200,7 @@ const Member = ({
                   }
                   isSuspendVisible={canSuspend && member.status === 'active'}
                   isCancelInviteVisible={member.status === 'invited'}
-                  isDeleteVisible={member.status !== 'invited'}
+                  isDeleteVisible={false}
                   isResetPasswordVisible={member.status !== 'invited'}
                   isEditVisible={member.status !== 'invited'}
                   slotFilterOption={
@@ -186,7 +218,7 @@ const Member = ({
                             onClick: () => {
                               reinviteUser(
                                 member.email,
-                                userDetails.user.id,
+                                recruiterUser.user_id,
                               ).then(({ error, emailSend }) => {
                                 if (!error && emailSend) {
                                   return toast.success(
@@ -261,7 +293,7 @@ const Member = ({
           />
         }
         userEmail={member.email}
-        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === userDetails?.user?.id ? '(You)' : ''}`}
+        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
         textDepartment={member.department}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}

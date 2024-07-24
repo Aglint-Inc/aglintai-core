@@ -1,8 +1,11 @@
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Page404 } from '@/devlink/Page404';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowDetail } from '@/devlink3/WorkflowDetail';
 import Loader from '@/src/components/Common/Loader';
 import Seo from '@/src/components/Common/Seo';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import Edit from '../edit';
 import Actions from './action';
@@ -26,9 +29,32 @@ const Body = () => {
             </ActionsProvider>
           </>
         }
+        slotConnectedJobs={<ConnectedJobs />}
       />
     </>
   );
 };
 
 export default Body;
+
+const ConnectedJobs = () => {
+  const { workflow } = useWorkflow();
+  const count = workflow?.jobs?.length ?? 0;
+  if (count === 0)
+    return (
+      <GlobalEmptyState
+        iconName={'work'}
+        size={4}
+        slotButton={<></>}
+        textDesc={'No jobs connected'}
+      />
+    );
+  return (workflow?.jobs ?? []).map(({ title }) => (
+    <TextWithIcon
+      key={title}
+      iconName={'work'}
+      fontWeight={'regular'}
+      textContent={capitalizeAll(title)}
+    />
+  ));
+};

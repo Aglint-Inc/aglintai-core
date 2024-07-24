@@ -1,12 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
+import axios from '@/src/client/axios';
+import { ApiCandidateDetails } from '@/src/pages/api/scheduling/application/fetchcandidatedetails';
 import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { getScheduleName } from '../../utils';
 import {
   setAvailabilities,
   setFetchingSchedule,
@@ -15,14 +16,15 @@ import {
   setSelectedApplication,
   setSelectedSchedule,
 } from '../store';
-import {
-  fetchApplicationDetails,
-  fetchRequestAvailibilities,
-  fetchSessionDetailsFromInterviewPlan,
-  fetchSessionDetailsFromSchedule,
-} from './utils';
+import { fetchRequestAvailibilities } from './utils';
 
-export const useAllActivities = ({ application_id }) => {
+export const useAllActivities = ({
+  application_id,
+  session_id,
+}: {
+  application_id: string;
+  session_id?: string;
+}) => {
   const queryClient = useQueryClient();
   const queryKey = ['activitiesCandidate', { application_id }];
   const query = useQuery({
@@ -31,6 +33,7 @@ export const useAllActivities = ({ application_id }) => {
       const { data: resAct, status }: AxiosResponse<ApiResponseActivities> =
         await axios.post('/api/scheduling/fetch_activities', {
           application_id,
+          session_id,
         });
       if (status !== 200) {
         toast.error('Unable to fetch activities');
@@ -53,67 +56,27 @@ export const useGetScheduleApplication = () => {
     try {
       const application_id = router.query.application_id as string;
 
-      const { data: schedule, error } = await supabase
-        .from('interview_schedule')
-        .select('*')
-        .eq('application_id', application_id);
-
-      const resApplicationDetails = await fetchApplicationDetails({
+      fetchRequestAvailibilities({
         application_id,
         supabaseCaller: supabase,
+      }).then((ava) => {
+        setAvailabilities(ava);
       });
-      setSelectedApplication(resApplicationDetails);
 
-      if (!error) {
-        setSelectedSchedule(schedule[0]);
-
-        if (schedule.length == 0) {
-          const resSessionDetails = await fetchSessionDetailsFromInterviewPlan({
-            job_id: resApplicationDetails.public_jobs.id,
-            supabaseCaller: supabase,
-          });
-
-          setScheduleName(
-            getScheduleName({
-              job_title: resApplicationDetails?.public_jobs?.job_title,
-              first_name: resApplicationDetails?.candidates?.first_name,
-              last_name: resApplicationDetails?.candidates?.last_name,
-            }),
-          );
-          if (resSessionDetails?.length > 0) {
-            setinitialSessions(
-              resSessionDetails.sort(
-                (itemA, itemB) =>
-                  itemA.interview_session['session_order'] -
-                  itemB.interview_session['session_order'],
-              ),
-            );
-          }
-        } else {
-          fetchRequestAvailibilities({
+      await axios
+        .call<ApiCandidateDetails>(
+          'POST',
+          '/api/scheduling/application/fetchcandidatedetails',
+          {
             application_id,
-            supabaseCaller: supabase,
-          }).then((ava) => {
-            setAvailabilities(ava);
-          });
-
-          await fetchSessionDetailsFromSchedule({
-            application_id,
-            supabaseCaller: supabase,
-          }).then((sessionsWithPlan) => {
-            if (sessionsWithPlan?.length > 0) {
-              setinitialSessions(
-                sessionsWithPlan.sort(
-                  (itemA, itemB) =>
-                    itemA.interview_session['session_order'] -
-                    itemB.interview_session['session_order'],
-                ),
-              );
-            }
-          });
-          setScheduleName(schedule[0].schedule_name);
-        }
-      }
+          },
+        )
+        .then((res) => {
+          setSelectedApplication(res.application);
+          setSelectedSchedule(res.schedule);
+          setScheduleName(res.scheduleName);
+          setinitialSessions(res.sessions);
+        });
     } catch (error) {
       toast.error(error.message);
     } finally {

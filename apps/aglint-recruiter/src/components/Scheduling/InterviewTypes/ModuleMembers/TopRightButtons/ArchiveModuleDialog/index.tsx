@@ -47,8 +47,9 @@ function ArchiveModuleDialog({
 
       const isActiveMeeting = data.some(
         (meet) =>
-          meet.interview_meeting.status === 'confirmed' ||
-          meet.interview_meeting.status === 'waiting',
+          meet.interview_meeting &&
+          (meet.interview_meeting.status === 'confirmed' ||
+            meet.interview_meeting.status === 'waiting'),
       );
 
       if (isActiveMeeting) {
@@ -62,9 +63,9 @@ function ArchiveModuleDialog({
         });
       }
       setErrors([...errors]);
-    } catch {
+    } catch (e) {
       toast.error('Error fetching meetings.');
-    }finally{
+    } finally {
       setIsFetching(false);
     }
   };

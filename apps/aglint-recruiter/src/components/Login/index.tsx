@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -30,6 +30,21 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | null>(null);
+
+  useEffect(() => {
+    autoredirect();
+  }, []);
+
+  const autoredirect = async () => {
+    try {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user.id) {
+        router.push(ROUTES['/loading']());
+      }
+    } catch (e) {
+      //
+    }
+  };
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>,

@@ -141,6 +141,7 @@ export interface RecruiterUserType extends TempRecruiterUser {
   role: string;
   role_id: string;
   last_login?: string;
+  primary?: boolean;
   manager_id: string;
   manager_details?: {
     name: string;
@@ -166,8 +167,6 @@ export type RoleType = {
 export type CandidateType = DatabaseTable["candidates"];
 
 export type CandidateFileTypeDB = DatabaseTable["candidate_files"];
-
-export type InterviewScheduleTypeDB = DatabaseTable["interview_schedule"];
 
 export type NewCandidateType = DatabaseTable["candidates"];
 

@@ -18,12 +18,12 @@ import toast from '@/src/utils/toast';
 import DynamicLoader from '../DynamicLoader';
 import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
-import { useAllSchedulesByUserId } from '../query';
-import { DetailsWithCount, PauseDialog } from '../type';
 import { useImrQuery } from './hooks';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Overview from './Overview';
+import { useAllSchedulesByUserId } from './query';
 import TabInterviewModules from './TabModules';
+import { DetailsWithCount, PauseDialog } from './type';
 
 function Interviewer() {
   const router = useRouter();
@@ -136,7 +136,7 @@ function Interviewer() {
       queryParam: 'allschedules',
     },
     {
-      name: 'Availibility',
+      name: 'Availability',
       queryParam: 'availibility',
     },
     {

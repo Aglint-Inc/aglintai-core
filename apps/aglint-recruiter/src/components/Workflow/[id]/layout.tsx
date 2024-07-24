@@ -1,4 +1,4 @@
-import { Dialog, Popover } from '@mui/material';
+import { Dialog, Popover, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 import ROUTES from '@/src/utils/routing/routes';
-import { capitalizeSentence } from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import UITextField from '../../Common/UITextField';
 import { WithPermission } from '../../withPermission';
@@ -173,17 +173,40 @@ const DeletePopup = () => {
               textTitle={
                 count === 0
                   ? ' Are you sure you want to delete this workflow?'
-                  : `This workflow is being used in ${count} job${count === 1 ? '' : 's'}. Are you sure you want to unlink and Delete this workflow?`
+                  : 'Are you sure you want to unlink and delete this workflow?'
               }
-              textDescription={`Confirm  delete by typing the workflow name "${title.trim()}"`}
+              textDescription={
+                count === 0
+                  ? 'This workflow is not connected to any job'
+                  : 'By deleting this it will be unlinked from all connected jobs'
+              }
             />
             {count ? (
               <ConnectedJobsList
-                slotTextWithIcon={<TextWithIcon iconName={'work'} />}
+                textTitle={`Connected Jobs (${count})`}
+                slotTextWithIcon={
+                  <>
+                    {(deletion?.workflow?.jobs ?? []).map(({ title }) => (
+                      <TextWithIcon
+                        key={title}
+                        iconName={'work'}
+                        fontWeight={'regular'}
+                        textContent={capitalizeAll(title)}
+                      />
+                    ))}
+                  </>
+                }
               />
             ) : (
               <></>
             )}
+            <Typography>
+              Confirm by typing the workflow name &nbsp;
+              <span style={{ color: 'var(--accent-11)' }}>
+                {workflow?.title ?? '---'}
+              </span>
+              &nbsp; below.
+            </Typography>
             <UITextField
               value={value}
               placeholder='Enter workflow name here'

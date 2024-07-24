@@ -163,6 +163,11 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Qualified Confirmation Approver',
     description: 'qualified trainee confirmation for approver',
   },
+  interviewEnd_email_organizerForMeetingStatus: {
+    heading: 'Interview End Status Update',
+    description:
+      'After interview end this mail is send to organizer for ask to update the meeting status',
+  },
   phoneScreen_email_candidate: null,
   phoneScreenRemind_email_applicant: null,
   candidateBook_email_interviewerForFeedback: null,
@@ -175,7 +180,6 @@ export const emailTemplateCopy: CompanyEmailType = {
   onTrainingComplete_slack_approverForTraineeMeetingQualification: null,
   onQualified_slack_trainee: null,
   interviewEnd_slack_organizerForMeetingStatus: null,
-  interviewEnd_email_organizerForMeetingStatus: null,
   interviewEnd_slack_shadowTraineeForMeetingAttendence: null,
   interviewEnd_slack_rShadowTraineeForMeetingAttendence: null,
 };

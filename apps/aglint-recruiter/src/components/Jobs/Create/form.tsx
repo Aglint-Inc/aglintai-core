@@ -338,44 +338,46 @@ const nameToRole = (name: MetaForms['name']): Roles => {
   }
 };
 
-const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
-  const { data } = useCompanyMembers();
-  const options = (data ?? [])
-    .filter(({ role }) =>
-      (roles[nameToRole(name)] ?? (() => []))().includes(role),
-    )
-    .map((c) => ({
-      name: getFullName(c.first_name, c.last_name),
-      value: c.user_id,
-      start_icon_url: c.profile_image,
-    }));
-  if (!value.required)
-    options.push({
-      name: 'Unassigned',
-      value: '_',
-      start_icon_url: (<UnassignedSvg />) as any,
-    });
-  const handleChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => {
-    if (e.target.value === '_') onChange(name, null);
-    const coordinator = data.find((c) => c.user_id === e.target.value);
-    if (coordinator) onChange(name, coordinator.user_id);
-  };
-  const safeValue = value.value ?? '_';
-  return (
-    <AvatarSelectDropDown
-      onChange={handleChange}
-      label={capitalizeAll(name)}
-      menuOptions={options}
-      required={value.required}
-      showMenuIcons
-      value={safeValue}
-      error={value.error.value}
-      helperText={value.error.helper}
-    />
-  );
-});
+export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
+  ({ name, onChange, value, label = true }) => {
+    const { data } = useCompanyMembers();
+    const options = (data ?? [])
+      .filter(({ role }) =>
+        (roles[nameToRole(name)] ?? (() => []))().includes(role),
+      )
+      .map((c) => ({
+        name: getFullName(c.first_name, c.last_name),
+        value: c.user_id,
+        start_icon_url: c.profile_image,
+      }));
+    if (!value.required)
+      options.push({
+        name: 'Unassigned',
+        value: '_',
+        start_icon_url: (<UnassignedSvg />) as any,
+      });
+    const handleChange: React.ChangeEventHandler<
+      HTMLInputElement | HTMLTextAreaElement
+    > = (e) => {
+      if (e.target.value === '_') onChange(name, null);
+      const coordinator = data.find((c) => c.user_id === e.target.value);
+      if (coordinator) onChange(name, coordinator.user_id);
+    };
+    const safeValue = value.value ?? '_';
+    return (
+      <AvatarSelectDropDown
+        onChange={handleChange}
+        label={label && capitalizeAll(name)}
+        menuOptions={options}
+        required={value.required}
+        showMenuIcons
+        value={safeValue}
+        error={value.error.value}
+        helperText={value.error.helper}
+      />
+    );
+  },
+);
 JobCoordinator.displayName = 'JobCoordinator';
 
 const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {

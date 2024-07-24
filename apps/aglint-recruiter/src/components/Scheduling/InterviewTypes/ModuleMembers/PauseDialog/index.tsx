@@ -95,8 +95,36 @@ function PauseDialog() {
         }}
         popupName={'Pause from scheduling'}
         slotBody={
-          <Stack spacing={2}>
-            <Stack spacing={2}>
+          <Stack spacing={1}>
+            <GlobalBannerShort
+              color={'warning'}
+              iconName={'warning'}
+              textTitle={'Pausing the interviewer'}
+              textDescription={
+                'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
+              }
+              slotButtons={<></>}
+            />
+            {connectedJobs.length > 0 && (
+              <GlobalBannerShort
+                color={'warning'}
+                iconName={'warning'}
+                textTitle={`Here is a list of job's interview plan that will be impacted:`}
+                textDescription=''
+                slotButtons={
+                  <Stack display={'flex'} flexDirection={'column'}>
+                    <Text
+                      size={1}
+                      color={'neutral'}
+                      content={connectedJobs
+                        .flatMap((job) => job.job_title)
+                        .join(', ')}
+                    />
+                  </Stack>
+                }
+              />
+            )}
+            <Stack spacing={1}>
               <Typography variant='body1' color={'#2F3941'}>
                 Pause For
               </Typography>
@@ -251,34 +279,6 @@ function PauseDialog() {
                 </Stack>
               )}
             </Stack>
-            <GlobalBannerShort
-              color={'warning'}
-              iconName={'warning'}
-              textTitle={'Pausing the interviewer'}
-              textDescription={
-                'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
-              }
-              slotButtons={<></>}
-            />
-            {connectedJobs.length > 0 && (
-              <GlobalBannerShort
-                color={'warning'}
-                iconName={'warning'}
-                textTitle={`Here is a list of job's interview plan that will be impacted:`}
-                textDescription=''
-                slotButtons={
-                  <Stack display={'flex'} flexDirection={'column'}>
-                    <Text
-                      size={1}
-                      color={'neutral'}
-                      content={connectedJobs
-                        .flatMap((job) => job.job_title)
-                        .join(', ')}
-                    />
-                  </Stack>
-                }
-              />
-            )}
           </Stack>
         }
         slotButtons={

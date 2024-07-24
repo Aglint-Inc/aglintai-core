@@ -25,11 +25,15 @@ import { getPauseMemberText } from '../utils';
 
 function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
   const allUsers = editModule.relations;
+
+  const filtererdUsers = allUsers.filter(
+    (rel) => rel.training_status === 'qualified' && !rel.is_archived,
+  );
   const router = useRouter();
 
   return (
     <>
-      {allUsers.length === 0 && (
+      {filtererdUsers.length === 0 && (
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
@@ -49,7 +53,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
           }
         />
       )}
-      {allUsers.map((user) => {
+      {filtererdUsers.map((user) => {
         const member = user.recruiter_user;
         const userSettings = user.recruiter_user.scheduling_settings;
         const textWeekInterview =
@@ -93,7 +97,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
           />
         );
       })}
-      {allUsers.length !== 0 && (
+      {filtererdUsers.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
           <ButtonSoft
             size={2}
@@ -116,7 +120,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
 
 export default SlotQualifiedMembers;
 
-const ThreeDot = ({ user }) => {
+const ThreeDot = ({ user }: { user: ModuleType['relations'][0] }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {

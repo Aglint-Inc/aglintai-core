@@ -6,7 +6,6 @@ import {
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
-  InterviewScheduleTypeDB,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
@@ -15,6 +14,7 @@ import {
 } from '@aglint/shared-types';
 
 import { ApplicationList } from '../Candidates/utils';
+import { fetchInterviewModules } from './queries/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -28,7 +28,7 @@ export type SchedulingSlice = {
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: MemberType[];
-  selUser: InterviewModuleRelationType | null;
+  selUser: ModuleType['relations'][0] | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
@@ -61,7 +61,7 @@ export type ScheduleType = {
   };
   file: ApplicationList['file'];
   candidates: CandidateType;
-  schedule: InterviewScheduleTypeDB;
+  schedule: DatabaseTable['interview_schedule'];
   job: {
     id: string;
     created_at: string;
@@ -77,13 +77,7 @@ export type ScheduleType = {
     location: string;
   };
 };
-export type ModuleDashboard = {
-  interview_modules: InterviewModuleType;
-  users: MemberType[];
-  upcoming_meeting_count: number;
-  completed_meeting_count: number;
-  canceled_meeting_count: number;
-};
+export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
 export type MemberType = {
   user_id: string;

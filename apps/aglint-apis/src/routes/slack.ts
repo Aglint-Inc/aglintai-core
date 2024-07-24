@@ -1,7 +1,6 @@
 import express from 'express';
 import {feedback} from 'src/controllers/slack/feedBack';
-import {groupMessage} from 'src/controllers/slack/groupMessage';
-import {interviewerAttentedConfirmation} from 'src/controllers/slack/interviewerAttentedConfirmation';
+import {getMeetingStatusOrganizer} from 'src/controllers/slack/getMeetingStatusOrganizer';
 import {interviewReminder} from 'src/controllers/slack/interviewReminder';
 import {listForInteractions} from 'src/controllers/slack/listForInteractions';
 import {notifyInterviewConfirmation} from 'src/controllers/slack/notifyInterviewConfirmation';
@@ -9,7 +8,6 @@ import {onQualifiedApprover} from 'src/controllers/slack/onQualifiedApprover';
 import {onQualifiedTrainee} from 'src/controllers/slack/onQualifiedTrainee';
 import {onRShadowCompleteTrainee} from 'src/controllers/slack/onRShadowCompleteTrainee';
 import {onShadowCompleteTrainee} from 'src/controllers/slack/onShadowCompleteTrainee';
-import {sendDirectMessage} from 'src/controllers/slack/sendDirectMessage';
 import {slackEndPoints} from 'src/types/slack/routes.types';
 
 const slackRoutes = express.Router();
@@ -43,13 +41,17 @@ slackRoutes.post(
   `/${slackEndPoints.onTrainingComplete_slack_approverForTraineeMeetingQualification}`,
   onQualifiedApprover
 );
+
 slackRoutes.post(
-  `/${slackEndPoints.interviewer_attend_comfirmation}`,
-  interviewerAttentedConfirmation
+  `/${slackEndPoints.interviewEnd_slack_organizerForMeetingStatus}`,
+  getMeetingStatusOrganizer
 );
 
-slackRoutes.post('/send-direct-message', sendDirectMessage);
-slackRoutes.post('/group-message', groupMessage);
+// slackRoutes.post(
+//   `/${slackEndPoints.interviewer_attend_comfirmation}`,
+//   interviewerAttentedConfirmation
+// );
+
 slackRoutes.post('/interactions', listForInteractions);
 
 export default slackRoutes;

@@ -10,7 +10,13 @@
 
   border-radius: var(--radius-4);
 
+  background-color: var(--neutral-2);
+
   cursor: pointer;
+}
+
+.candidate-history-card:hover {
+  background-color: var(--neutral-3);
 }
 
 .skeleton-width-100 {
@@ -57,11 +63,12 @@
   bottom: auto;
 
   display: none;
-  padding: var(--space-1);
+  padding: var(--space-2) var(--space-4);
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
 
+  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-2);
 
   background-color: var(--neutral-2);

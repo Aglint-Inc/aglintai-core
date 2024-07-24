@@ -1,0 +1,25 @@
+.cdfeedback-wrap {
+  overflow: hidden;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
+.cdf-header-wrap {
+  display: flex;
+  padding: var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  background-color: var(--neutral-2);
+}
+
+.cdf-body-wrap {
+  display: flex;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}

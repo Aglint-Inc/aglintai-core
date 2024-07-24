@@ -7,8 +7,8 @@ import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview'
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
 import { SchedulesSupabase } from '../../../schedules-query';
-import { DetailsWithCount, PauseDialog } from '../../type';
 import TraininingModules from '../TabModules/TraininingModules';
+import { DetailsWithCount, PauseDialog } from '../type';
 
 function Overview({
   detailsWithCount,

@@ -19,31 +19,28 @@ export type ProgressUser = {
   progress: ReturnType<typeof useProgressModuleUsers>['data'];
 };
 
-function SlotTrainingMembers({
-  editModule,
-  refetch,
-}: {
-  editModule: ModuleType;
-  refetch: () => void;
-}) {
+function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
   const allUsers = editModule.relations.filter(
     (user) => user.training_status === 'training',
   );
 
-  const trainer_ids = allUsers
+  const filtererdUsers = allUsers.filter((rel) => !rel.is_archived);
+
+  const trainer_ids = filtererdUsers
     .filter((user) => user.training_status === 'training')
     .map((user) => {
       return user.id;
     });
 
-  const { data: progress } = useProgressModuleUsers({ trainer_ids });
+  const { data: progress, refetch: refetchTrainingProgress } =
+    useProgressModuleUsers({ trainer_ids });
   const selUser = useModulesStore((state) => state.selUser);
 
   return (
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
 
-      {allUsers.length === 0 && (
+      {filtererdUsers.length === 0 && (
         <EmptyGeneral
           textEmpt={'No members yet'}
           slotButton={
@@ -63,7 +60,7 @@ function SlotTrainingMembers({
           }
         />
       )}
-      {allUsers.map((user) => {
+      {filtererdUsers.map((user) => {
         const progressDataUser = Array.isArray(progress)
           ? progress.filter(
               (prog) => prog.interview_module_relation.id === user.id,
@@ -76,12 +73,11 @@ function SlotTrainingMembers({
             editModule={editModule}
             progressDataUser={progressDataUser}
             user={user}
-            refetch={refetch}
+            refetch={refetchTrainingProgress}
           />
         );
       })}
-
-      {allUsers.length !== 0 && (
+      {filtererdUsers.length !== 0 && (
         <Stack direction={'row'} pt={'var(--space-2)'}>
           <ButtonSoft
             size={2}

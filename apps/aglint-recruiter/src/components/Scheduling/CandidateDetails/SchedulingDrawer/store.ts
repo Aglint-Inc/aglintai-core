@@ -21,7 +21,8 @@ export interface SchedulingFlow {
     | 'request_availibility'
     | 'self_scheduling_email_preview'
     | 'success_screen'
-    | 'schedule_all_options';
+    | 'schedule_all_options'
+    | 'agents_final_screen_cta';
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   scheduleFlow:

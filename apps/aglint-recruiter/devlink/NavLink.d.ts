@@ -6,4 +6,5 @@ declare function NavLink(props: {
   isActive?: Types.Visibility.VisibilityConditions;
   texttooltip?: React.ReactNode;
   slotIcon?: Types.Devlink.Slot;
+  isTooltipVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
