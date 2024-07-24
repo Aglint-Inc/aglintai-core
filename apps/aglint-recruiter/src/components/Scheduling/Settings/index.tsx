@@ -868,6 +868,7 @@ function SchedulingSettings({
                 />
                 <Dialog open={openDialog} onClose={closeDialog}>
                   <DayOffHelper
+                  onClickClose={{onClick:()=>{closeDialog();}}}
                     slotButton={
                       <ButtonSolid
                         textButton='Got It'
@@ -934,6 +935,7 @@ function SchedulingSettings({
                     }
                   />
                   <Stack
+                  bgcolor={'white'}
                     width={'400px'}
                     padding={'var(--space-4)'}
                     borderLeft={'1px solid var(--neutral-6)'}
@@ -967,6 +969,7 @@ function SchedulingSettings({
                       flexDirection={'column'}
                       gap={'4px'}
                       padding={'var(--space-3)'}
+                      border={'1px solid var(--neutral-6)'}
                     >
                       <Text
                         content='How It Works'

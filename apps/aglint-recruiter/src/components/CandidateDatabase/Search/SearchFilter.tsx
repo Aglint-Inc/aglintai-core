@@ -6,9 +6,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { AddSkillPIll } from '@/devlink/AddSkillPIll';
-import { AiIcon } from '@/devlink/AiIcon';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateFilter } from '@/devlink/CandidateFilter';
 import { JobPills } from '@/devlink/JobPills';
 import { SkillsGenerate } from '@/devlink/SkillsGenerate';
@@ -145,6 +144,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
 
   return (
     <CandidateFilter
+    onClickClose={{onClick:()=>{handleDialogClose();}}}
       slotProfileInput={
         <>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -157,6 +157,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
               valueLabelDisplay='auto'
               sx={{
                 mr: 3,
+                backgroundColor:'var(--neutral-3)'
               }}
               onChange={(e: any) => {
                 setFilters((p) => ({
@@ -183,7 +184,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       }
       slotButtonPrimarySmall={
         <>
-          <ButtonSolid
+          <ButtonSoft
             textButton='Apply'
             size={2}
             iconName='trending_up'
@@ -505,7 +506,34 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                           sx={{ color: 'var(--neutral-6)' }}
                         />
                       ) : (
-                        <AiIcon />
+                        <svg
+                          width='16'
+                          height='16'
+                          viewBox='0 0 16 16'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <g clip-path='url(#clip0_4853_127528)'>
+                            <path
+                              d='M11.9531 7.75315C10.6062 7.41565 9.93125 7.25 9.46565 6.78435C9 6.3156 8.83435 5.64375 8.49685 4.29688L8 2.3125L7.50315 4.29688C7.16565 5.64375 7 6.31875 6.53435 6.78435C6.0656 7.25 5.39375 7.41565 4.04688 7.75315L2.0625 8.25L4.04688 8.74685C5.39375 9.08435 6.06875 9.25 6.53435 9.71565C7 10.1844 7.16565 10.8562 7.50315 12.2031L8 14.1875L8.49685 12.2031C8.83435 10.8562 9 10.1812 9.46565 9.71565C9.9344 9.25 10.6062 9.08435 11.9531 8.74685L13.9375 8.25L11.9531 7.75315Z'
+                              fill='currentColor'
+                            />
+                            <path
+                              d='M12.8177 2.5846C12.3687 2.4721 12.1437 2.41689 11.9885 2.26168C11.8333 2.10543 11.7781 1.88148 11.6656 1.43252L11.4999 0.771057L11.3343 1.43252C11.2218 1.88148 11.1666 2.10648 11.0114 2.26168C10.8552 2.41689 10.6312 2.4721 10.1822 2.5846L9.52077 2.75023L10.1822 2.91585C10.6312 3.02835 10.8562 3.08356 11.0114 3.23877C11.1666 3.39502 11.2218 3.61898 11.3343 4.06793L11.4999 4.72939L11.6656 4.06793C11.7781 3.61898 11.8333 3.39398 11.9885 3.23877C12.1447 3.08356 12.3687 3.02835 12.8177 2.91585L13.4791 2.75023L12.8177 2.5846Z'
+                              fill='currentColor'
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id='clip0_4853_127528'>
+                              <rect
+                                width='15'
+                                height='15.5'
+                                fill='white'
+                                transform='translate(0.5 0.250061)'
+                              />
+                            </clipPath>
+                          </defs>
+                        </svg>
                       )}
                     </>
                   }
@@ -557,7 +585,34 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
                             sx={{ color: 'var(--neutral-6)' }}
                           />
                         ) : (
-                          <AiIcon />
+                          <svg
+                            width='16'
+                            height='16'
+                            viewBox='0 0 16 16'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <g clip-path='url(#clip0_4853_127528)'>
+                              <path
+                                d='M11.9531 7.75315C10.6062 7.41565 9.93125 7.25 9.46565 6.78435C9 6.3156 8.83435 5.64375 8.49685 4.29688L8 2.3125L7.50315 4.29688C7.16565 5.64375 7 6.31875 6.53435 6.78435C6.0656 7.25 5.39375 7.41565 4.04688 7.75315L2.0625 8.25L4.04688 8.74685C5.39375 9.08435 6.06875 9.25 6.53435 9.71565C7 10.1844 7.16565 10.8562 7.50315 12.2031L8 14.1875L8.49685 12.2031C8.83435 10.8562 9 10.1812 9.46565 9.71565C9.9344 9.25 10.6062 9.08435 11.9531 8.74685L13.9375 8.25L11.9531 7.75315Z'
+                                fill='currentColor'
+                              />
+                              <path
+                                d='M12.8177 2.5846C12.3687 2.4721 12.1437 2.41689 11.9885 2.26168C11.8333 2.10543 11.7781 1.88148 11.6656 1.43252L11.4999 0.771057L11.3343 1.43252C11.2218 1.88148 11.1666 2.10648 11.0114 2.26168C10.8552 2.41689 10.6312 2.4721 10.1822 2.5846L9.52077 2.75023L10.1822 2.91585C10.6312 3.02835 10.8562 3.08356 11.0114 3.23877C11.1666 3.39502 11.2218 3.61898 11.3343 4.06793L11.4999 4.72939L11.6656 4.06793C11.7781 3.61898 11.8333 3.39398 11.9885 3.23877C12.1447 3.08356 12.3687 3.02835 12.8177 2.91585L13.4791 2.75023L12.8177 2.5846Z'
+                                fill='currentColor'
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id='clip0_4853_127528'>
+                                <rect
+                                  width='15'
+                                  height='15.5'
+                                  fill='white'
+                                  transform='translate(0.5 0.250061)'
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
                         )}
                       </>
                     }

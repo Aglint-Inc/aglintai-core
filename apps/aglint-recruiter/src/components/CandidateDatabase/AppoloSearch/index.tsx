@@ -288,7 +288,7 @@ function AppoloSearch() {
         slotCdTableAglint={
           <Stack
             overflow={'auto'}
-            height={'calc(100vh - 112px)'}
+            height={'calc(100vh - 96px)'}
             width={'100%'}
             pt={'2px'}
           >
