@@ -164,9 +164,9 @@ const Dashboard = () => {
   );
 
   const handleFilter = (
-    resume_score: ApplicationsParams['filters']['resume_score'][number],
+    resume_match: ApplicationsParams['filters']['resume_match'][number],
   ) => {
-    const params = getParams({ resume_score: [resume_score] });
+    const params = getParams({ resume_match: [resume_match] });
     push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
   };
 

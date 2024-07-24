@@ -9,8 +9,9 @@ import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 
-import { setFilters, useSchedulingFlowStore } from '../store';
+import { setFilters, useSchedulingFlowStore } from '../../store';
 import DateRangeField from './DateRangeField';
+import NoSlotError from './NoSlotError';
 import PreferedInterviewers from './PreferedInterviewers';
 import { filterSchedulingOptionsArray } from './utils';
 export type availabilityType =
@@ -20,13 +21,13 @@ export type availabilityType =
   | 'outside_work_hours';
 
 function StepScheduleFilter() {
-  const { dateRange, schedulingOptions, filters } = useSchedulingFlowStore(
-    (state) => ({
+  const { dateRange, schedulingOptions, filters, errorNoSlotFilter } =
+    useSchedulingFlowStore((state) => ({
       dateRange: state.dateRange,
       schedulingOptions: state.schedulingOptions,
       filters: state.filters,
-    }),
-  );
+      errorNoSlotFilter: state.errorNoSlotFilter,
+    }));
 
   const {
     numberHardConflicts,
@@ -95,6 +96,8 @@ function StepScheduleFilter() {
 
   return (
     <Stack height={'calc(100vh - 96px)'}>
+      {errorNoSlotFilter && <NoSlotError />}
+
       <SchedulerFilters
         textDateRange={`${dayjs(dateRange.start_date).format('MMMM DD')} - ${dayjs(dateRange.end_date).format('MMMM DD')}`}
         slotCheckbox={
