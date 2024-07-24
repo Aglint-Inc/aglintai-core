@@ -100,7 +100,7 @@ function SideDrawerEdit() {
                 isDisabled={errorValidation.some((err) => err.error)}
                 textButton='Save'
                 size={2}
-                isLoading={saving}
+                isLoading={Boolean(saving)}
                 onClickButton={{
                   onClick: () => {
                     if (!saving) {

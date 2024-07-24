@@ -83,7 +83,7 @@ export const useEditSession = () => {
           return;
         }
       }
-      setSaving(true);
+      setSaving(editSession.interview_session.id);
       if (!selectedSchedule && !saving) {
         const res = await axios.post(
           '/api/scheduling/application/candidatesessioncache',
@@ -223,7 +223,7 @@ export const useEditSession = () => {
     } catch (e) {
       toast.error('Error saving session. Please contact support.');
     } finally {
-      setSaving(false);
+      setSaving(null);
     }
   };
 
