@@ -177,7 +177,7 @@ export const seed_workflow_actions: {
       interval: 0,
       phase: 'after',
       title:
-        'Send Slack and Email notifications to the Trainee interviewer when they complete a shadow or reverse shadow session.',
+        'Send Slack and Email notifications to the Trainee interviewer for confirming whether He attended or not',
       trigger: 'interviewEnd',
     },
     actions: [
@@ -187,7 +187,7 @@ export const seed_workflow_actions: {
       },
       {
         order: 1,
-        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        template_type: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
       },
       {
         order: 2,
