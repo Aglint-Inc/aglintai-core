@@ -7,6 +7,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -44,7 +45,6 @@ import JobNotFound from '../Common/JobNotFound';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
