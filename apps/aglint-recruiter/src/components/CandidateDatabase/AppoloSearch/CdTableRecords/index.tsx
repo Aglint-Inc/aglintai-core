@@ -143,16 +143,16 @@ function CdTableRecords({ loading }) {
                           candidate?.organization?.id === exp?.organization_id
                         }
                         bgColorProps={{
-                          style: {
-                            backgroundColor:
-                              selectedCandidate?.id === candidate.id
-                                ? ind === 0
-                                  ? 'rgba(206, 226, 242, 0.50)'
-                                  : 'rgba(206, 226, 242, 0.30)'
-                                : ind === 0
-                                  ? 'rgba(233, 235, 237, 0.50)'
-                                  : '#F7F9FB',
-                          },
+                          // style: {
+                          //   backgroundColor:
+                          //     selectedCandidate?.id === candidate.id
+                          //       ? ind === 0
+                          //         ? 'rgba(206, 226, 242, 0.50)'
+                          //         : 'rgba(206, 226, 242, 0.30)'
+                          //       : ind === 0
+                          //         ? 'rgba(233, 235, 237, 0.50)'
+                          //         : '#F7F9FB',
+                          // },
                         }}
                         isActive={
                           ind === 0 &&
