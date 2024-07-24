@@ -47,7 +47,12 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  const filterOptions = { badges, resume_match };
+  const schedule_status = useMemo(
+    () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
+    [scheduleStatus, capitalize],
+  );
+
+  const filterOptions = { badges, resume_match, schedule_status };
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
     Object.entries(filters).map(
       ([key, value]) =>
@@ -164,6 +169,15 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'poor_match',
   'not_a_match',
   'unknown_match',
+];
+
+const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+  'cancelled',
+  'completed',
+  'confirmed',
+  'not_scheduled',
+  'reschedule',
+  'waiting',
 ];
 
 const sortTypes: ApplicationsParams['filters']['type'][] = [
