@@ -39,13 +39,13 @@ export const fetchDBScheduleDetails = async (
     .startOf('day')
     .format('DD/MM/YYYY');
   const filered_selected_options: PlanCombinationRespType[] =
-    filter_json_data.selected_options.map((plan) => {
+    filter_json_data.selected_options?.map((plan) => {
       let updated_plan = { ...plan };
       updated_plan.sessions = updated_plan.sessions.filter((s) =>
         filter_json_data.session_ids.includes(s.session_id),
       );
       return updated_plan;
-    });
+    }) ?? [];
   return {
     filered_selected_options,
     filter_json_data,
