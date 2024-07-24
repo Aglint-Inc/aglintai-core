@@ -17,11 +17,12 @@ export async function POST(req: Request) {
       req_body.meta,
     );
     const mail_details = await fetchUtil(parsed_body);
-    for (let {
+    for (const {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
     } of mail_details) {
+      // eslint-disable-next-line no-await-in-loop
       await sendMailFun({
         filled_comp_template,
         react_email_placeholders,

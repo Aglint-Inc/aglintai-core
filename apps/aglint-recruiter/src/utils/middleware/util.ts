@@ -40,7 +40,6 @@ export const server_check_permissions = async ({
         break;
       }
     }
-    console.log({ isAllowed: is_allowed, id: user_id, rec_id, role });
     return {
       isAllowed: is_allowed,
       id: user_id,
