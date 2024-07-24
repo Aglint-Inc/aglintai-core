@@ -10,6 +10,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
@@ -116,9 +117,15 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               <OfficeLocationCard
                 key={ind}
                 textAddress={
-                  [loc.region, loc.city].filter(Boolean).join(', ') || ''
+                  [
+                    capitalizeAll(loc.region),
+                    capitalizeAll(loc.country),
+                    capitalizeAll(loc.zipcode),
+                  ]
+                    .filter(Boolean)
+                    .join(', ') || ''
                 }
-                textCountry={loc.country}
+                textCountry={capitalizeAll(loc.city)}
                 textHeadquater={'asda'}
                 textJobPostCount={`${
                   jobs?.filter((job) => job?.location?.includes(loc.city))
