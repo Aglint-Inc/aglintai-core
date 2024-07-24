@@ -138,6 +138,7 @@ const PERMISSIONS: Permissions = {
   '/api/invite_user/resend': ['view_users'],
   '/api/decryptApiKey': ['manage_company'],
   '/api/supabase/deleteuser': ['manage_users'],
+  '/api/request_feedback': ['scheduling_module'],
 };
 
 export default PERMISSIONS;

@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -22,6 +22,7 @@ import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
@@ -34,6 +35,7 @@ import {
 } from '@/src/queries/interview-plans/types';
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
+import { breakDurations } from '@/src/utils/scheduling/const';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
@@ -356,6 +358,7 @@ const InterviewSession = ({
     interviewPlans: { data },
     job,
     handleReorderSessions,
+    handleUpdateSession,
     manageJob,
   } = useJobInterviewPlan();
   const [hover, setHover] = useState(false);
@@ -517,8 +520,13 @@ const InterviewSession = ({
             isBreakCardVisible={!lastSession && session.break_duration !== 0}
             slotBreakCard={
               <InterviewBreak
-                duration={session.break_duration}
-                handleEdit={() => handleEdit('break', session.id)}
+                value={session.break_duration}
+                handleEdit={(e) =>
+                  handleUpdateSession({
+                    session_id: session.id,
+                    session: { break_duration: +e.target.value },
+                  })
+                }
                 handleDelete={() =>
                   handleDeletionSelect({
                     id: session.id,
@@ -535,7 +543,12 @@ const InterviewSession = ({
                 <AddScheduleCard
                   handleCreate={handleCreate}
                   showBreak={!lastSession && session.break_duration === 0}
-                  handleEdit={(key) => handleEdit(key, session.id)}
+                  handleBreak={() =>
+                    handleUpdateSession({
+                      session: { break_duration: 30 },
+                      session_id: session.id,
+                    })
+                  }
                 />
               </Stack>
             }
@@ -657,13 +670,13 @@ const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
 };
 
 const InterviewBreak = ({
-  duration,
+  value,
   handleEdit,
   handleDelete,
   manageJob,
 }: {
-  duration: number;
-  handleEdit: () => void;
+  value: number;
+  handleEdit: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   handleDelete: () => void;
   manageJob: boolean;
 }) => {
@@ -680,18 +693,31 @@ const InterviewBreak = ({
                 onClick: () => handleDelete(),
               }}
             />
-            <IconButtonSoft
-              iconName={'edit'}
-              size={1}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleEdit(),
-              }}
-            />
           </>
         )
       }
-      textDuration={getBreakLabel(duration)}
+      textDuration={
+        <UITextField
+          select
+          fullWidth
+          value={value}
+          onChange={handleEdit}
+          rest={{
+            sx: {
+              width: '150px',
+              '& .MuiOutlinedInput-root': {
+                padding: '0px!important',
+              },
+            },
+          }}
+        >
+          {breakDurations.map((item) => (
+            <MenuItem key={item} value={item}>
+              {getBreakLabel(item)}
+            </MenuItem>
+          ))}
+        </UITextField>
+      }
     />
   );
 };
@@ -699,12 +725,11 @@ const InterviewBreak = ({
 const AddScheduleCard = ({
   handleCreate,
   showBreak,
-  handleEdit = () => {},
+  handleBreak = () => {},
 }: {
   handleCreate: InterviewSessionProps['handleCreate'];
   showBreak: boolean;
-  // eslint-disable-next-line no-unused-vars
-  handleEdit?: (key: keyof DrawerType['edit']) => void;
+  handleBreak?: () => void;
 }) => {
   const [hover, setHover] = useState(false);
   return (
@@ -722,7 +747,7 @@ const AddScheduleCard = ({
           onClick: () => handleCreate('debrief'),
         }}
         onClickAddBreak={{
-          onClick: () => handleEdit('break'),
+          onClick: () => handleBreak(),
         }}
       />
     </Stack>

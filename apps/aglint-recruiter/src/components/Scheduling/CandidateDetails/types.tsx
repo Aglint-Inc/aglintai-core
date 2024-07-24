@@ -33,7 +33,16 @@ export type SelectedApplicationTypeDB = ResultType & {
   };
 };
 
+export type BannerType = {
+  type: 'calender' | 'paused' | 'no_interviewers';
+  message: string;
+  color: 'error' | 'warning' | 'info' | 'success';
+  session_relation_id: string | null;
+  user_id: string | null;
+};
+
 export type SessionsType = {
+  banners?: BannerType[];
   interview_session: InterviewDataResponseType['interview_session'];
   interview_meeting: InterviewDataResponseType['interview_meeting'];
   interview_module: InterviewDataResponseType['interview_module'];

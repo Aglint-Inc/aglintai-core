@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 
 import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
-import { ApiResponseFindAvailability } from '../../types';
-import { SchedulingFlow } from '../store';
+import { ApiResponseFindAvailability } from '../../../types';
+import { SchedulingFlow } from '../../store';
 
 export const filterByDateRanges = ({
   schedulingOptions,

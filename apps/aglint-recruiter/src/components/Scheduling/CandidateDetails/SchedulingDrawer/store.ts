@@ -2,9 +2,10 @@ import { MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import dayjs from '@/src/utils/dayjs';
 
 import { ApiResponseFindAvailability } from '../types';
-import { filterSchedulingOptionsArray } from './StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;
@@ -60,13 +61,14 @@ export interface SchedulingFlow {
   requestAvailibityId: string | null;
   updateRequestAvailibityId: string | null;
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
+  errorNoSlotFilter: boolean;
 }
 
 const initialState: SchedulingFlow = {
   isScheduleNowOpen: false, //scheduling drawer open
   dateRange: {
-    start_date: '',
-    end_date: '',
+    start_date: dayjs().toISOString(),
+    end_date: dayjs().add(7, 'day').toISOString(),
   },
   schedulingOptions: [], // find availability api response
   filteredSchedulingOptions: [], // filtered options based on filters self scheduling flow
@@ -91,11 +93,15 @@ const initialState: SchedulingFlow = {
   requestAvailibityId: null, // request availibility id used when hr click schedule now after user submit request availibility
   updateRequestAvailibityId: null,
   noSlotReasons: [],
+  errorNoSlotFilter: false,
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
   ...initialState,
 }));
+
+export const setErrorNoSlotFilter = (errorNoSlotFilter: boolean) =>
+  useSchedulingFlowStore.setState({ errorNoSlotFilter });
 
 export const setNoSlotReasons = (
   noSlotReasons: SchedulingFlow['noSlotReasons'],
