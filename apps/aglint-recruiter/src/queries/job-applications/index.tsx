@@ -126,7 +126,7 @@ const getApplications = async ({
     bookmarked,
     locations,
     order,
-    resume_score,
+    resume_match,
     search,
     type,
   },
@@ -148,9 +148,9 @@ const getApplications = async ({
     query.ilike('name', `%${search}%`);
   }
 
-  if (resume_score?.length) {
+  if (resume_match?.length) {
     query.or(
-      `application_match.in.(${resume_score.map((match) => match).join(',')})`,
+      `application_match.in.(${resume_match.map((match) => match).join(',')})`,
     );
   }
 
