@@ -1,11 +1,12 @@
 import { Stack } from '@mui/material';
 import type { ReactNode } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
 import { GeneralError } from '@/devlink/GeneralError';
-import { ResumeNotFound } from '@/devlink/ResumeNotFound';
-import { ResumeNotParsable } from '@/devlink/ResumeNotParsable';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
+import { GlobalCta } from '@/devlink3/GlobalCta';
 import ResumeWait from '@/public/lottie/ResumeWait';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
@@ -102,11 +103,52 @@ const useBlocker = () => {
     case 'processing':
       return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'unavailable':
-      return <ResumeNotFound />;
+      return (
+        <GlobalCta
+          color={'error'}
+          iconName={'warning'}
+          textTitle={'Resume not found'}
+          textDescription={
+            "Unable to find the candidate resume.Please upload the resume manually to generate a score and analyse the candidate's profile."
+          }
+          slotButton={
+            <ButtonSoft
+              size={2}
+              color={'neutral'}
+              textButton={'Upload resume'}
+            />
+          }
+        />
+      );
     case 'unparsable':
       return (
-        <ResumeNotParsable
-          onClickViewResume={{ onClick: () => setPreview(true) }}
+        <GlobalCta
+          color={'warning'}
+          iconName={'error'}
+          textTitle={'Resume not parsable'}
+          textDescription={
+            "The system is unable to parse the candidate's resume. Please review it manually and proceed accordingly."
+          }
+          slotButton={
+            <>
+              <IconButtonSoft
+                color={'neutral'}
+                size={2}
+                iconName={'description'}
+                onClickButton={{ onClick: () => setPreview(true) }}
+              />
+              <ButtonSoft
+                size={2}
+                color={'neutral'}
+                textButton={'Re-upload resume'}
+              />
+              <ButtonSoft
+                size={2}
+                color={'error'}
+                textButton={'Delete application'}
+              />
+            </>
+          }
         />
       );
   }
