@@ -37,6 +37,7 @@ function SelectSessionType() {
               interview_session: {
                 ...editSession.interview_session,
                 session_type: 'individual',
+                interviewer_cnt: 1,
               },
             });
           },

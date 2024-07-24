@@ -26,7 +26,9 @@ import { getPauseMemberText } from '../utils';
 function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
   const allUsers = editModule.relations;
 
-  const filtererdUsers = allUsers.filter((rel) => !rel.is_archived);
+  const filtererdUsers = allUsers.filter(
+    (rel) => rel.training_status === 'qualified' && !rel.is_archived,
+  );
   const router = useRouter();
 
   return (
