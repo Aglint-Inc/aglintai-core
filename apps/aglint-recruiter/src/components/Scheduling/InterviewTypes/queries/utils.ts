@@ -213,13 +213,14 @@ export const addMemberbyUserIds = async ({
 
 export const updateRelations = async (
   archivedRelations: DatabaseTable['interview_module_relation'][],
+  training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
     archivedRelations.map((user) => ({
       id: user.id,
       user_id: user.user_id,
       module_id: user.module_id,
-      training_status: user.training_status,
+      training_status: training_status,
       is_archived: false,
     }));
 
