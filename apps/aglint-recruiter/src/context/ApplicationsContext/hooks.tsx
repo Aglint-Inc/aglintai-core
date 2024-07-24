@@ -21,7 +21,7 @@ const filterParams = [
   'bookmarked',
   'search',
   'badges',
-  'resume_score',
+  'resume_match',
   'type',
   'order',
   'section',
@@ -34,13 +34,11 @@ type FilterValues = {
   bookmarked: boolean;
   search: Application['name'];
   badges: (keyof Application['badges'])[];
-  resume_score: Application['application_match'][];
+  resume_match: Application['application_match'][];
   type:
-    | keyof Pick<
-        Application,
-        'resume_score' | 'applied_at' | 'name' | 'latest_activity'
-      >
-    | 'location';
+    | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
+    | 'location'
+    | 'resume_match';
   order: 'asc' | 'desc';
 };
 
@@ -50,7 +48,7 @@ type Filters = { [id in FilterKeys]: FilterValues[id] };
 const filterDefaults: Filters = {
   badges: [],
   bookmarked: false,
-  resume_score: [],
+  resume_match: [],
   search: '',
   section: 'new',
   type: 'latest_activity',

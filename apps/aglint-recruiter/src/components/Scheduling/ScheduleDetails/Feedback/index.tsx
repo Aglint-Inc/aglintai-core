@@ -1,25 +1,27 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 // import axios from 'axios';
-import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { StatusBadge } from '@/devlink2/StatusBadge';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { FeedbackTableRow } from '@/devlink3/FeedbackTableRow';
-import { FeedbackViewPopup } from '@/devlink3/FeedbackViewPopup';
-import { GroupFeedback } from '@/devlink3/GroupFeedback';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { CdFeedback } from '@/devlink3/CdFeedback';
+import { FeedbackCard } from '@/devlink3/FeedbackCard';
 import { MyFeedbackPopup } from '@/devlink3/MyFeedbackPopup';
 import { RoundedNumber } from '@/devlink3/RoundedNumber';
-import { ScheduleTabFeedback } from '@/devlink3/ScheduleTabFeedback';
 import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import {
+  IndividualIcon,
+  PanelIcon,
+} from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
@@ -55,6 +57,7 @@ type FeedbackWindowInterviewersType = {
         | 'cancelled'
         | 'reschedule'
         | 'not_scheduled';
+      session_type: DatabaseEnums['session_type'];
     };
     relation_id: string;
     first_name: string;
@@ -80,9 +83,10 @@ const FeedbackWindow = ({
     session_ids: interview_sessions.map((item) => item.id),
   });
 
-  const { userDetails } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
-  const user_id = userDetails?.user.id;
+  const user_id = recruiterUser?.user_id;
+  const isAdmin = recruiterUser?.role === 'admin';
 
   const tempRelations = useMemo(() => {
     const tempData = (
@@ -101,7 +105,6 @@ const FeedbackWindow = ({
       }[];
     } = {};
 
-    //   console.log(tempData.length);
     for (let item of tempData) {
       const temp = tempRelation[item.session_id] || [];
       temp.push({
@@ -110,7 +113,6 @@ const FeedbackWindow = ({
         user_id: item.interview_module_relation.user_id,
       });
       tempRelation[item.session_id] = temp;
-      // console.log({ item, tempRelation });
     }
     return tempRelation;
   }, [relationsData]);
@@ -173,7 +175,6 @@ const FeedbackWindow = ({
       }))
     );
   };
-
   return (
     <>
       <ShowCode>
@@ -183,11 +184,11 @@ const FeedbackWindow = ({
           </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
-          <></>
           <AdminFeedback
             {...{
               user_id,
-              multiSession: false,
+              isAdmin,
+
               interviewers: Object.keys(interviewers)
                 .map((key) => interviewers[String(key)])
                 .flat(),
@@ -197,9 +198,7 @@ const FeedbackWindow = ({
           />
         </ShowCode.When>
         <ShowCode.Else>
-          <></>
           <InterviewerFeedback
-            multiSession={false}
             interviewers={Object.keys(interviewers)
               .map((key) => interviewers[String(key)])
               .flat()
@@ -218,10 +217,11 @@ const AdminFeedback = ({
   user_id,
   interviewers,
   handelSubmit,
-  multiSession,
   candidate,
+  isAdmin,
 }: {
   user_id: string;
+  isAdmin: boolean;
   interviewers: FeedbackWindowInterviewersType[string];
   handelSubmit: ({
     // eslint-disable-next-line no-unused-vars
@@ -235,7 +235,7 @@ const AdminFeedback = ({
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
   }) => Promise<Boolean>;
-  multiSession: boolean;
+
   candidate: {
     email: string;
     name: string;
@@ -246,8 +246,6 @@ const AdminFeedback = ({
     index: number;
     interviewer: (typeof interviewers)[number];
   }>({ index: null, interviewer: null });
-
-  const [edit, setEdit] = useState(false);
 
   const handelFeedbackRequest = async ({
     e,
@@ -289,503 +287,108 @@ const AdminFeedback = ({
 
   return (
     <>
-      <ScheduleTabFeedback
-        border={'false'}
-        styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '700px' },
-        }}
-        isSessionVisible={multiSession}
-        slotFeedbackTableRow={
-          <>
-            {Object.keys(sessions).filter((key) =>
-              Boolean(sessions[key]?.length),
-            ).length > 1
-              ? Object.keys(sessions)
-                  .map((key) => {
-                    const session = sessions[key] || [];
-                    if (!session.length) return null;
-                    return (
-                      <GroupFeedback
-                        key={key}
-                        textInterviewType={session[0].session.title}
-                        textDate={
-                          <>
-                            {multiSession
-                              ? dayjs(session[0].session.created_at).format(
-                                  'DD MMMM YYYY',
-                                )
-                              : ''}
-                          </>
-                        }
-                        textTime={
-                          <>
-                            {`${
-                              multiSession
-                                ? dayjs(session[0].session.time?.start).format(
-                                    'hh:mm A',
-                                  )
-                                : ''
-                            } to ${
-                              multiSession
-                                ? dayjs(session[0].session.time?.end).format(
-                                    'hh:mm A',
-                                  )
-                                : ''
-                            }`}
-                          </>
-                        }
-                        slotStatusPill={
-                          <StatusBadge
-                            isCancelledVisible={
-                              session[0].session.status === 'cancelled'
-                            }
-                            isConfirmedVisible={
-                              session[0].session.status === 'confirmed'
-                            }
-                            isWaitingVisible={
-                              session[0].session.status === 'waiting'
-                            }
-                            isCompletedVisible={
-                              session[0].session.status === 'completed'
-                            }
-                            isNotScheduledVisible={
-                              session[0].session.status === 'not_scheduled'
-                            }
-                          />
-                        }
-                        slotFeedbackTableRow={
-                          <>
-                            {session.map((int, index) => {
-                              const isFeedBackEnabled =
-                                int.session.status === 'completed';
-                              return (
-                                <FeedbackTableRow
-                                  key={int.user_id}
-                                  isSessionVisible={multiSession}
-                                  isNoFeedback={
-                                    isFeedBackEnabled && !int.feedback
-                                  }
-                                  isFeedbackReqSubmitted={Boolean(
-                                    isFeedBackEnabled &&
-                                      int.feedback &&
-                                      !int.feedback.objective &&
-                                      int.user_id !== user_id,
-                                  )}
-                                  onClickRequestFeedback={{
-                                    onClick: (e) =>
-                                      handelFeedbackRequest({
-                                        e,
-                                        session_id: int.session.id,
-                                        relation_id: int.relation_id,
-                                        receiver: {
-                                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                                          email: int.email,
-                                        },
-                                      }),
-                                  }}
-                                  onClickResendRequest={{
-                                    onClick: (e) =>
-                                      handelFeedbackRequest({
-                                        e,
-                                        session_id: int.session.id,
-                                        relation_id: int.relation_id,
-                                        receiver: {
-                                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                                          email: int.email,
-                                        },
-                                      }),
-                                  }}
-                                  textSessionTitle={
-                                    multiSession ? int.session.title : ''
-                                  }
-                                  textSessionTime={
-                                    <>
-                                      {multiSession
-                                        ? dayjs(int.session.created_at).format(
-                                            'DD MMMM YYYY',
-                                          )
-                                        : ''}
-                                    </>
-                                  }
-                                  isAddFeedback={
-                                    isFeedBackEnabled &&
-                                    !int.feedback &&
-                                    int.user_id === user_id
-                                  }
-                                  onClickFeedback={{
-                                    onClick: () => {
-                                      if (isFeedBackEnabled) {
-                                        setSelectedInterviewer({
-                                          index,
-                                          interviewer: int,
-                                        });
-                                        !interviewers[Number(index)].feedback &&
-                                          int.user_id === user_id &&
-                                          setEdit(true);
-                                      }
-                                    },
-                                  }}
-                                  slotAvatar={
-                                    <Avatar
-                                      variant='rounded-medium'
-                                      src={int.profile_image}
-                                      level={getFullName(
-                                        int.first_name,
-                                        int.last_name,
-                                      )}
-                                    />
-                                  }
-                                  textInterviewerName={`${int?.first_name} ${int?.last_name}`.trim()}
-                                  // @ts-ignore
-                                  textFeedback={
-                                    <Typography
-                                      dangerouslySetInnerHTML={{
-                                        __html: int.feedback?.objective,
-                                      }}
-                                    />
-                                  }
-                                  // @ts-ignore
-                                  textRecommendation={
-                                    <Typography
-                                      dangerouslySetInnerHTML={{
-                                        __html: !isFeedBackEnabled
-                                          ? 'Interview session is not completed.'
-                                          : re_mapper[
-                                              int.feedback?.recommendation
-                                            ],
-                                        // || 'Feedback not Submitted.',
-                                      }}
-                                      {...(!isFeedBackEnabled ||
-                                      !int.feedback?.objective
-                                        ? { color: 'var(--neutral-11)' }
-                                        : {})}
-                                    />
-                                  }
-                                  textjobTitle={int.position}
-                                />
-                              );
-                            })}
-                          </>
-                        }
-                      />
-                    );
-                  })
-                  .filter((item) => Boolean(item))
-              : Object.values(sessions)[0]?.map((int, index) => {
-                  const isFeedBackEnabled = int.session.status === 'completed';
-                  return (
-                    <FeedbackTableRow
-                      key={int.user_id}
-                      isSessionVisible={multiSession}
-                      isNoFeedback={isFeedBackEnabled && !int.feedback}
-                      isFeedbackReqSubmitted={Boolean(
-                        isFeedBackEnabled &&
-                          int.feedback &&
-                          !int.feedback.objective &&
-                          int.user_id !== user_id,
-                      )}
-                      onClickRequestFeedback={{
-                        onClick: (e) =>
-                          handelFeedbackRequest({
-                            e,
-                            session_id: int.session.id,
-                            relation_id: int.relation_id,
-                            receiver: {
-                              name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                              email: int.email,
-                            },
-                          }),
-                      }}
-                      onClickResendRequest={{
-                        onClick: (e) =>
-                          handelFeedbackRequest({
-                            e,
-                            session_id: int.session.id,
-                            relation_id: int.relation_id,
-                            receiver: {
-                              name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                              email: int.email,
-                            },
-                          }),
-                      }}
-                      textSessionTitle={multiSession ? int.session.title : ''}
-                      textSessionTime={
+      <Stack direction={'column'} spacing={2} p={2}>
+        {Object.keys(sessions).filter((key) => Boolean(sessions[key]?.length))
+          .length > 1
+          ? Object.keys(sessions)
+              .map((key) => {
+                const session = sessions[key] || [];
+                if (!session.length) return null;
+                return (
+                  <>
+                    <CdFeedback
+                      slotHeader={
                         <>
-                          {multiSession
-                            ? dayjs(int.session.created_at).format(
-                                'DD MMMM YYYY',
-                              )
-                            : ''}
+                          {session[0].session.session_type === 'panel' ? (
+                            <TextWithIcon
+                              iconName={<PanelIcon size={18} />}
+                              iconSize={4}
+                              textContent={session[0].session.title}
+                            />
+                          ) : (
+                            <TextWithIcon
+                              iconName={<IndividualIcon size={18} />}
+                              iconSize={4}
+                              textContent={session[0].session.title}
+                            />
+                          )}
+                          <TextWithIcon
+                            iconName={'calendar_today'}
+                            iconSize={4}
+                            textContent={dayjsLocal(
+                              session[0].session.time.start,
+                            ).format('ddd, MMMM DD, YYYY')}
+                          />
+                          <TextWithIcon
+                            iconName={'schedule'}
+                            iconSize={4}
+                            textContent={`${dayjsLocal(
+                              session[0].session.time.start,
+                            ).format('hh:mm')} - ${dayjsLocal(
+                              session[0].session.time.end,
+                            ).format('hh:mm')}`}
+                            fontColor={'neutral'}
+                            fontSize={1}
+                          />
+
+                          <GlobalBadge
+                            color={'success'}
+                            textBadge={session[0].session.status}
+                            showIcon={true}
+                            iconName={'circle'}
+                          />
                         </>
                       }
-                      isAddFeedback={
-                        isFeedBackEnabled &&
-                        !int.feedback &&
-                        int.user_id === user_id
+                      slotBody={
+                        <>
+                          {session.map((int, index) => {
+                            const isFeedBackEnabled =
+                              int.session.status === 'completed';
+                            return (
+                              <>
+                                <FeedbackCardDetails
+                                  index={index}
+                                  int={int}
+                                  user_id={user_id}
+                                  isFeedBackEnabled={isFeedBackEnabled}
+                                  isAdmin={isAdmin}
+                                  setSelectedInterviewer={
+                                    setSelectedInterviewer
+                                  }
+                                  handelFeedbackRequest={handelFeedbackRequest}
+                                />
+                              </>
+                            );
+                          })}
+                        </>
                       }
-                      onClickFeedback={{
-                        onClick: () => {
-                          if (isFeedBackEnabled) {
-                            setSelectedInterviewer({
-                              index,
-                              interviewer: int,
-                            });
-                            !interviewers[Number(index)].feedback &&
-                              int.user_id === user_id &&
-                              setEdit(true);
-                          }
-                        },
-                      }}
-                      slotAvatar={
-                        <Avatar
-                          variant='circular'
-                          src={int.profile_image}
-                          level={getFullName(int.first_name, int.last_name)}
-                        />
-                      }
-                      textInterviewerName={`${int?.first_name} ${int?.last_name}`.trim()}
-                      // @ts-ignore
-                      textFeedback={
-                        <Typography
-                          dangerouslySetInnerHTML={{
-                            __html: int.feedback?.objective,
-                          }}
-                        />
-                      }
-                      // @ts-ignore
-                      textRecommendation={
-                        <Typography
-                          dangerouslySetInnerHTML={{
-                            __html: !isFeedBackEnabled
-                              ? 'Interview session is not completed.'
-                              : re_mapper[int.feedback?.recommendation],
-                            // || 'Feedback not Submitted.',
-                          }}
-                          {...(!isFeedBackEnabled || !int.feedback?.objective
-                            ? { color: 'var(--neutral-11)' }
-                            : {})}
-                        />
-                      }
-                      textjobTitle={int.position}
                     />
-                  );
-                })}
-          </>
-        }
+                  </>
+                );
+              })
+              .filter((item) => Boolean(item))
+          : Object.values(sessions)[0]?.map((int, index) => {
+              const isFeedBackEnabled = int.session.status === 'completed';
+              return (
+                <>
+                  <FeedbackCardDetails
+                    index={index}
+                    int={int}
+                    user_id={user_id}
+                    isFeedBackEnabled={isFeedBackEnabled}
+                    isAdmin={isAdmin}
+                    setSelectedInterviewer={setSelectedInterviewer}
+                    handelFeedbackRequest={handelFeedbackRequest}
+                  />
+                </>
+              );
+            })}
+      </Stack>
+      <EditFeedbackPopUp
+        setSelectedInterviewer={setSelectedInterviewer}
+        selectedInterviewer={selectedInterviewer}
+        handelSubmit={handelSubmit}
       />
-      {selectedInterviewer?.interviewer &&
-        [1].map(() => {
-          return (
-            <Dialog
-              key={1}
-              // fullWidth
-              open={selectedInterviewer.interviewer !== null}
-              onClose={() => {
-                setSelectedInterviewer(null);
-                setEdit(false);
-              }}
-              maxWidth={'lg'}
-              // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
-            >
-              <ShowCode>
-                <ShowCode.When isTrue={edit}>
-                  <FeedbackForm
-                    interviewerData={selectedInterviewer.interviewer}
-                    onSubmit={(feedback) =>
-                      handelSubmit(feedback).then(() => {
-                        toast.success('Feedback saved successfully.');
-                        setEdit(false);
-                        setSelectedInterviewer({
-                          index: null,
-                          interviewer: null,
-                        });
-                      })
-                    }
-                    onCancel={() => {
-                      setEdit(false);
-                    }}
-                    onClose={() => {
-                      setEdit(false);
-                      setSelectedInterviewer({
-                        index: null,
-                        interviewer: null,
-                      });
-                    }}
-                  />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <FeedbackViewPopup
-                    isNextPrevVisible={interviewers.length > 1}
-                    slotClose={
-                      <IconButtonGhost
-                        color={'neutral'}
-                        iconName='close'
-                        size={2}
-                        onClickButton={{
-                          onClick: () => {
-                            setSelectedInterviewer(null);
-                            setEdit(false);
-                          },
-                        }}
-                      />
-                    }
-                    slotButton={
-                      <>
-                        <ButtonSoft
-                          textButton='Previous'
-                          highContrast={'true'}
-                          size={2}
-                          color={'neutral'}
-                          iconName='arrow_back_ios'
-                          isLeftIcon
-                          iconSize={2}
-                          onClickButton={{
-                            onClick: () => {
-                              const index =
-                                selectedInterviewer.index - 1 > -1
-                                  ? selectedInterviewer.index - 1
-                                  : interviewers.length - 1;
-                              setSelectedInterviewer({
-                                index,
-                                interviewer: interviewers[Number(index)],
-                              });
-                            },
-                          }}
-                        />
-                        <ButtonSoft
-                          textButton='Next'
-                          highContrast={'true'}
-                          size={2}
-                          iconName='arrow_forward_ios'
-                          color={'neutral'}
-                          isRightIcon
-                          iconSize={2}
-                          onClickButton={{
-                            onClick: () => {
-                              const index =
-                                (selectedInterviewer.index + 1) %
-                                interviewers.length;
-                              setSelectedInterviewer({
-                                index,
-                                interviewer: interviewers[Number(index)],
-                              });
-                            },
-                          }}
-                        />
-                      </>
-                    }
-                    isEditFeedbackVisible={
-                      selectedInterviewer.interviewer.user_id === user_id
-                    }
-                    isFeedbackReqVisible={Boolean(
-                      selectedInterviewer.interviewer.feedback?.objective,
-                    )}
-                    isNotSubmittedVisible={
-                      !selectedInterviewer.interviewer.feedback
-                    }
-                    isEmpty={Boolean(
-                      selectedInterviewer.interviewer.feedback?.objective,
-                    )}
-                    onClickRequestFeedback={{
-                      onClick: (e) =>
-                        handelFeedbackRequest({
-                          e,
-                          session_id:
-                            selectedInterviewer.interviewer.session.id,
-                          relation_id:
-                            selectedInterviewer.interviewer.relation_id,
-                          receiver: {
-                            name: `${selectedInterviewer.interviewer.first_name || ''} ${selectedInterviewer.interviewer.last_name || ''}`.trim(),
-                            email: selectedInterviewer.interviewer.email,
-                          },
-                        }).then(() => {
-                          const temp = selectedInterviewer;
-                          temp.interviewer.feedback = {
-                            recommendation: null,
-                            objective: null,
-                          };
-                          setSelectedInterviewer(temp);
-                        }),
-                    }}
-                    onClickResendRequest={{
-                      onClick: (e) =>
-                        handelFeedbackRequest({
-                          e,
-                          session_id:
-                            selectedInterviewer.interviewer.session.id,
-                          relation_id:
-                            selectedInterviewer.interviewer.relation_id,
-                          receiver: {
-                            name: `${selectedInterviewer.interviewer.first_name || ''} ${selectedInterviewer.interviewer.last_name || ''}`.trim(),
-                            email: selectedInterviewer.interviewer.email,
-                          },
-                        }).then(() => {
-                          const temp = selectedInterviewer;
-                          temp.interviewer.feedback = {
-                            recommendation: null,
-                            objective: null,
-                          };
-                          setSelectedInterviewer(temp);
-                        }),
-                    }}
-                    onClickEditFeedback={{
-                      onClick: () => {
-                        setEdit(true);
-                      },
-                    }}
-                    slotAvatarWithName={
-                      <AvatarWithName
-                        textName={`${selectedInterviewer.interviewer.first_name} ${selectedInterviewer.interviewer.last_name}`}
-                        slotAvatar={
-                          <Avatar
-                            width='24px'
-                            height='24px'
-                            variant='circular'
-                            src={selectedInterviewer.interviewer?.profile_image}
-                            level={getFullName(
-                              selectedInterviewer.interviewer?.first_name,
-                              selectedInterviewer.interviewer?.last_name,
-                            )}
-                          />
-                        }
-                      />
-                    }
-                    textObjective={
-                      <Typography
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            selectedInterviewer.interviewer.feedback
-                              ?.objective || 'Feedback not Submitted',
-                        }}
-                        {...(!selectedInterviewer.interviewer.feedback
-                          ? { color: 'var(--neutral-11)' }
-                          : {})}
-                      />
-                    }
-                    textRecomendation={
-                      <Typography
-                        dangerouslySetInnerHTML={{
-                          __html: selectedInterviewer.interviewer.feedback
-                            ? re_mapper[
-                                Number(
-                                  selectedInterviewer.interviewer.feedback
-                                    .recommendation,
-                                )
-                              ]
-                            : 'Recommendation not submitted.',
-                        }}
-                        {...(!selectedInterviewer.interviewer.feedback
-                          ?.recommendation
-                          ? { color: 'var(--neutral-11)' }
-                          : {})}
-                      />
-                    }
-                  />
-                </ShowCode.Else>
-              </ShowCode>
-            </Dialog>
-          );
-        })}
     </>
   );
 };
@@ -793,7 +396,6 @@ const AdminFeedback = ({
 const InterviewerFeedback = ({
   interviewers,
   handelSubmit,
-  multiSession,
 }: {
   interviewers: FeedbackWindowInterviewersType[string];
   handelSubmit: ({
@@ -808,14 +410,12 @@ const InterviewerFeedback = ({
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
   }) => Promise<Boolean>;
-  multiSession: boolean;
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;
     interviewer: (typeof interviewers)[number];
   }>({ index: null, interviewer: null });
 
-  const [edit, setEdit] = useState(false);
   const sessions: { [key: string]: typeof interviewers } = {};
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
@@ -823,213 +423,114 @@ const InterviewerFeedback = ({
 
   return (
     <>
-      <ScheduleTabFeedback
-        styleMinWidth={{
-          style: { minWidth: multiSession ? '1164px' : '600px' },
-        }}
-        isSessionVisible={multiSession}
-        slotFeedbackTableRow={
-          <>
-            {Object.keys(sessions).filter((key) =>
-              Boolean(sessions[key]?.length),
-            ).length > 1
-              ? Object.keys(sessions)
-                  .map((key) => {
-                    const session = sessions[key] || [];
-                    if (!session.length) return null;
-                    return (
-                      <GroupFeedback
-                        key={key}
-                        textInterviewType={session[0].session.title}
-                        textDate={
-                          <>
-                            {dayjs(session[0].session.created_at).format(
-                              'DD MMMM YYYY',
-                            )}
-                          </>
-                        }
-                        textTime={
-                          <>
-                            {`${dayjs(session[0].session.time?.start).format(
-                              'hh:mm A',
-                            )} to ${dayjs(session[0].session.time?.end).format(
-                              'hh:mm A',
-                            )}`}
-                          </>
-                        }
-                        slotStatusPill={
-                          <StatusBadge
-                            isCancelledVisible={
-                              session[0].session.status === 'cancelled'
-                            }
-                            isConfirmedVisible={
-                              session[0].session.status === 'confirmed'
-                            }
-                            isWaitingVisible={
-                              session[0].session.status === 'waiting'
-                            }
-                            isCompletedVisible={
-                              session[0].session.status === 'completed'
-                            }
-                            isNotScheduledVisible={
-                              session[0].session.status === 'not_scheduled'
-                            }
-                          />
-                        }
-                        slotFeedbackTableRow={
-                          <>
-                            {session.map((int, index) => {
-                              const isFeedBackEnabled =
-                                int.session.status === 'completed';
-                              return (
-                                <FeedbackTableRow
-                                  key={int.user_id}
-                                  isSessionVisible={multiSession}
-                                  textSessionTime={
-                                    multiSession
-                                      ? //  new Date(int.session.created_at).toLocaleDateString()
-                                        dayjs(int.session.time.start).format(
-                                          'DD MMMM YYYY',
-                                        )
-                                      : ''
-                                  }
-                                  textSessionTitle={
-                                    multiSession ? int.session.title : ''
-                                  }
-                                  isAddFeedback={
-                                    !(
-                                      int.feedback?.objective ||
-                                      int.feedback?.recommendation
-                                    )
-                                  }
-                                  isNoFeedback={false}
-                                  onClickFeedback={{
-                                    onClick: () => {
-                                      if (isFeedBackEnabled) {
-                                        setSelectedInterviewer({
-                                          index,
-                                          interviewer:
-                                            interviewers[Number(index)],
-                                        });
-                                        !interviewers[Number(index)].feedback &&
-                                          setEdit(true);
-                                      }
-                                    },
-                                  }}
-                                  slotAvatar={
-                                    <Avatar
-                                      variant='circular'
-                                      src={int.profile_image}
-                                      level={getFullName(
-                                        int.first_name,
-                                        int.last_name,
-                                      )}
-                                    />
-                                  }
-                                  textInterviewerName={`${int?.first_name} ${int?.last_name}`.trim()}
-                                  // @ts-ignore
-                                  textFeedback={
-                                    <Typography
-                                      dangerouslySetInnerHTML={{
-                                        __html: int.feedback?.objective,
-                                      }}
-                                    />
-                                  }
-                                  // @ts-ignore
-                                  textRecommendation={
-                                    <Typography
-                                      dangerouslySetInnerHTML={{
-                                        __html: !isFeedBackEnabled
-                                          ? 'Interview session is not completed.'
-                                          : re_mapper[
-                                              int.feedback?.recommendation
-                                            ] || 'Feedback not Submitted.',
-                                      }}
-                                      {...(!isFeedBackEnabled ||
-                                      !int.feedback?.objective
-                                        ? { color: 'var(--neutral-11)' }
-                                        : {})}
-                                    />
-                                  }
-                                  textjobTitle={int.position}
-                                />
-                              );
-                            })}
-                          </>
-                        }
-                      />
-                    );
-                  })
-                  .filter((item) => Boolean(item))
-              : Object.values(sessions)[0]?.map((int, index) => {
-                  const isFeedBackEnabled = int.session.status === 'completed';
+      <Stack direction={'column'} spacing={2} p={2}>
+        <>
+          {Object.keys(sessions).filter((key) => Boolean(sessions[key]?.length))
+            .length > 1
+            ? Object.keys(sessions)
+                .map((key) => {
+                  const session = sessions[key] || [];
+                  if (!session.length) return null;
                   return (
-                    <FeedbackTableRow
-                      key={int.user_id}
-                      isSessionVisible={multiSession}
-                      textSessionTime={
-                        multiSession
-                          ? //  new Date(int.session.created_at).toLocaleDateString()
-                            dayjs(int.session.time.start).format('DD MMMM YYYY')
-                          : ''
+                    <CdFeedback
+                      key={key}
+                      slotHeader={
+                        <>
+                          {session[0].session.session_type === 'panel' ? (
+                            <TextWithIcon
+                              iconName={<PanelIcon size={18} />}
+                              iconSize={4}
+                              textContent={session[0].session.title}
+                            />
+                          ) : (
+                            <TextWithIcon
+                              iconName={<IndividualIcon size={18} />}
+                              iconSize={4}
+                              textContent={session[0].session.title}
+                            />
+                          )}
+                          <TextWithIcon
+                            iconName={'calendar_today'}
+                            iconSize={4}
+                            textContent={dayjsLocal(
+                              session[0].session.time.start,
+                            ).format('ddd, MMMM DD, YYYY')}
+                          />
+                          <TextWithIcon
+                            iconName={'schedule'}
+                            iconSize={4}
+                            textContent={`${dayjsLocal(
+                              session[0].session.time.start,
+                            ).format('hh:mm')} - ${dayjsLocal(
+                              session[0].session.time.end,
+                            ).format('hh:mm')}`}
+                            fontColor={'neutral'}
+                            fontSize={1}
+                          />
+
+                          <GlobalBadge
+                            color={'success'}
+                            textBadge={session[0].session.status}
+                            showIcon={true}
+                            iconName={'circle'}
+                          />
+                        </>
                       }
-                      textSessionTitle={multiSession ? int.session.title : ''}
-                      isAddFeedback={
-                        !(
-                          int.feedback?.objective ||
-                          int.feedback?.recommendation
-                        )
+                      slotBody={
+                        <>
+                          {session.map((int, index) => {
+                            const isFeedBackEnabled =
+                              int.session.status === 'completed';
+                            return (
+                              <FeedbackCardDetails
+                                key={index}
+                                isFeedBackEnabled={isFeedBackEnabled}
+                                index={index}
+                                setSelectedInterviewer={setSelectedInterviewer}
+                                int={int}
+                              />
+                            );
+                          })}
+                        </>
                       }
-                      isNoFeedback={false}
-                      onClickFeedback={{
-                        onClick: () => {
-                          if (isFeedBackEnabled) {
-                            setSelectedInterviewer({
-                              index,
-                              interviewer: interviewers[Number(index)],
-                            });
-                            !interviewers[Number(index)].feedback &&
-                              setEdit(true);
-                          }
-                        },
-                      }}
-                      slotAvatar={
-                        <Avatar
-                          variant='circular'
-                          src={int.profile_image}
-                          level={getFullName(int.first_name, int.last_name)}
-                        />
-                      }
-                      textInterviewerName={`${int?.first_name} ${int?.last_name}`.trim()}
-                      // @ts-ignore
-                      textFeedback={
-                        <Typography
-                          dangerouslySetInnerHTML={{
-                            __html: int.feedback?.objective,
-                          }}
-                        />
-                      }
-                      // @ts-ignore
-                      textRecommendation={
-                        <Typography
-                          dangerouslySetInnerHTML={{
-                            __html: !isFeedBackEnabled
-                              ? 'Interview session is not completed.'
-                              : re_mapper[int.feedback?.recommendation] ||
-                                'Feedback not Submitted.',
-                          }}
-                          {...(!isFeedBackEnabled || !int.feedback?.objective
-                            ? { color: 'var(--neutral-11)' }
-                            : {})}
-                        />
-                      }
-                      textjobTitle={int.position}
                     />
                   );
-                })}
-          </>
-        }
-      />
+                })
+                .filter((item) => Boolean(item))
+            : Object.values(sessions)[0]?.map((int, index) => {
+                const isFeedBackEnabled = int.session.status === 'completed';
+                return (
+                  <FeedbackCardDetails
+                    key={index}
+                    isFeedBackEnabled={isFeedBackEnabled}
+                    index={index}
+                    setSelectedInterviewer={setSelectedInterviewer}
+                    int={int}
+                  />
+                );
+              })}
+        </>
+        <EditFeedbackPopUp
+          setSelectedInterviewer={setSelectedInterviewer}
+          selectedInterviewer={selectedInterviewer}
+          handelSubmit={handelSubmit}
+        />
+      </Stack>
+    </>
+  );
+};
+
+function EditFeedbackPopUp({
+  setSelectedInterviewer,
+  selectedInterviewer,
+  handelSubmit,
+}: {
+  selectedInterviewer: any;
+  setSelectedInterviewer: any;
+  handelSubmit: any;
+}) {
+  return (
+    <>
       {selectedInterviewer?.interviewer &&
         [1].map(() => {
           return (
@@ -1037,162 +538,198 @@ const InterviewerFeedback = ({
               key={1}
               // fullWidth
               open={selectedInterviewer.interviewer !== null}
-              maxWidth={'lg'}
               onClose={() => {
                 setSelectedInterviewer(null);
-                setEdit(false);
               }}
+              maxWidth={'lg'}
               // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
             >
-              <ShowCode>
-                <ShowCode.When isTrue={edit}>
-                  <FeedbackForm
-                    onCancel={() => {
-                      setEdit(false);
-                    }}
-                    interviewerData={selectedInterviewer.interviewer}
-                    onSubmit={(feedback) =>
-                      handelSubmit(feedback).then(() => {
-                        toast.success('Feedback saved successfully.');
-                        setEdit(false);
-                        setSelectedInterviewer({
-                          index: null,
-                          interviewer: null,
-                        });
-                      })
-                    }
-                    onClose={() => {
-                      setEdit(false);
-                      setSelectedInterviewer({
-                        index: null,
-                        interviewer: null,
-                      });
-                    }}
-                  />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <FeedbackViewPopup
-                    isEditFeedbackVisible={true}
-                    isNextPrevVisible={interviewers.length > 1}
-                    onClickEditFeedback={{
-                      onClick: () => {
-                        setEdit(true);
-                      },
-                    }}
-                    slotClose={
-                      <IconButtonGhost
-                        color={'neutral'}
-                        iconName='close'
-                        size={2}
-                        onClickButton={{
-                          onClick: () => {
-                            setSelectedInterviewer(null);
-                            setEdit(false);
-                          },
-                        }}
-                      />
-                    }
-                    slotButton={
-                      <>
-                        <ButtonSoft
-                          textButton='Previous'
-                          highContrast={'true'}
-                          color={'neutral'}
-                          size={2}
-                          iconName='arrow_back_ios'
-                          isLeftIcon
-                          iconSize={2}
-                          onClickButton={{
-                            onClick: () => {
-                              const index =
-                                selectedInterviewer.index - 1 > -1
-                                  ? selectedInterviewer.index - 1
-                                  : interviewers.length - 1;
-                              setSelectedInterviewer({
-                                index,
-                                interviewer: interviewers[Number(index)],
-                              });
-                            },
-                          }}
-                        />
-                        <ButtonSoft
-                          textButton='Next'
-                          highContrast={'true'}
-                          color={'neutral'}
-                          size={2}
-                          iconName='arrow_forward_ios'
-                          isRightIcon
-                          iconSize={2}
-                          onClickButton={{
-                            onClick: () => {
-                              const index =
-                                (selectedInterviewer.index + 1) %
-                                interviewers.length;
-                              setSelectedInterviewer({
-                                index,
-                                interviewer: interviewers[Number(index)],
-                              });
-                            },
-                          }}
-                        />
-                      </>
-                    }
-                    slotAvatarWithName={
-                      <AvatarWithName
-                        textName={`${selectedInterviewer.interviewer.first_name} ${selectedInterviewer.interviewer.last_name}`}
-                        slotAvatar={
-                          <Avatar
-                            width='24px'
-                            height='24px'
-                            variant='circular'
-                            src={selectedInterviewer.interviewer?.profile_image}
-                            level={getFullName(
-                              selectedInterviewer.interviewer?.first_name,
-                              selectedInterviewer.interviewer?.last_name,
-                            )}
-                          />
-                        }
-                      />
-                    }
-                    textObjective={
-                      <Typography
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            selectedInterviewer.interviewer.feedback
-                              ?.objective || 'Feedback not Submitted',
-                        }}
-                        {...(!selectedInterviewer.interviewer.feedback
-                          ? { color: 'var(--neutral-11)' }
-                          : {})}
-                      />
-                    }
-                    textRecomendation={
-                      <Typography
-                        dangerouslySetInnerHTML={{
-                          __html: selectedInterviewer.interviewer.feedback
-                            ? re_mapper[
-                                Number(
-                                  selectedInterviewer.interviewer.feedback
-                                    .recommendation,
-                                )
-                              ]
-                            : 'Recommendation not submitted.',
-                        }}
-                        {...(!selectedInterviewer.interviewer.feedback
-                          ?.recommendation
-                          ? { color: 'var(--neutral-11)' }
-                          : {})}
-                      />
-                    }
-                  />
-                </ShowCode.Else>
-              </ShowCode>
+              <FeedbackForm
+                interviewerData={selectedInterviewer.interviewer}
+                onSubmit={(feedback) =>
+                  handelSubmit(feedback).then(() => {
+                    toast.success('Feedback saved successfully.');
+
+                    setSelectedInterviewer({
+                      index: null,
+                      interviewer: null,
+                    });
+                  })
+                }
+                onCancel={() => {
+                  setSelectedInterviewer({
+                    index: null,
+                    interviewer: null,
+                  });
+                }}
+                onClose={() => {
+                  setSelectedInterviewer({
+                    index: null,
+                    interviewer: null,
+                  });
+                }}
+              />
             </Dialog>
           );
         })}
     </>
   );
-};
+}
+function FeedbackCardDetails({
+  index,
+  int,
+  user_id,
+  isFeedBackEnabled,
+  isAdmin = false,
+  setSelectedInterviewer,
+  handelFeedbackRequest,
+}: {
+  index: number;
+  int: any;
+  user_id?: string;
+  isFeedBackEnabled: boolean;
+  isAdmin?: boolean;
+  setSelectedInterviewer: any;
+  handelFeedbackRequest?: any;
+}) {
+  return (
+    <FeedbackCard
+      slotImage={
+        <Avatar
+          variant='rounded-medium'
+          src={int.profile_image}
+          level={getFullName(int.first_name, int.last_name)}
+        />
+      }
+      textName={getFullName(int.first_name, int.last_name)}
+      textRole={int.position}
+      slotButton={
+        <ShowCode>
+          <ShowCode.When isTrue={isFeedBackEnabled && isAdmin}>
+            <ShowCode.When isTrue={Boolean(int.user_id === user_id)}>
+              <ButtonSoft
+                size={1}
+                color={
+                  int.feedback && int.feedback?.objective ? 'neutral' : 'accent'
+                }
+                textButton={
+                  int.feedback && int.feedback?.objective
+                    ? 'Edit Feedback'
+                    : 'Add Feedback'
+                }
+                isLeftIcon={true}
+                iconName={
+                  int.feedback && int.feedback?.objective
+                    ? 'edit_square'
+                    : 'add'
+                }
+                onClickButton={{
+                  onClick: () => {
+                    if (isFeedBackEnabled) {
+                      setSelectedInterviewer({
+                        index,
+                        interviewer: int,
+                      });
+                    }
+                  },
+                }}
+              />
+            </ShowCode.When>
+            <ShowCode>
+              <ShowCode.When
+                isTrue={
+                  Boolean(int.feedback && int.feedback?.objective) &&
+                  int.user_id !== user_id
+                }
+              >
+                {null}
+              </ShowCode.When>
+
+              <ShowCode.When isTrue={int.feedback && int.user_id !== user_id}>
+                <ButtonSoft
+                  size={1}
+                  textButton={
+                    !int.feedback ? 'Request Feedback' : 'Re-request Feedback'
+                  }
+                  onClickButton={{
+                    onClick: (e) => {
+                      handelFeedbackRequest({
+                        e,
+                        session_id: int.session.id,
+                        relation_id: int.relation_id,
+                        receiver: {
+                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                          email: int.email,
+                        },
+                      });
+                    },
+                  }}
+                />
+              </ShowCode.When>
+            </ShowCode>
+          </ShowCode.When>
+          <ShowCode.Else>
+            <ButtonSoft
+              size={1}
+              color={
+                int.feedback && int.feedback?.objective ? 'neutral' : 'accent'
+              }
+              textButton={
+                int.feedback && int.feedback?.objective
+                  ? 'Edit Feedback'
+                  : 'Add Feedback'
+              }
+              isLeftIcon={true}
+              iconName={
+                int.feedback && int.feedback?.objective ? 'edit_square' : 'add'
+              }
+              onClickButton={{
+                onClick: () => {
+                  if (isFeedBackEnabled) {
+                    setSelectedInterviewer({
+                      index,
+                      interviewer: int,
+                    });
+                  }
+                },
+              }}
+            />
+          </ShowCode.Else>
+        </ShowCode>
+      }
+      slotDesc={
+        <Stack direction={'column'} gap={'10px'}>
+          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+            <ShowCode>
+              <ShowCode.When isTrue={!!int.feedback?.recommendation}>
+                <>
+                  <Typography fontSize={20}>
+                    <GlobalIcon
+                      size={'30'}
+                      color={'#000'}
+                      iconName={'kid_star'}
+                    />
+                  </Typography>
+                  <Typography>
+                    Recommendation Level : {int.feedback?.recommendation}
+                  </Typography>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: int.feedback?.objective,
+                    }}
+                  ></div>
+                </>
+              </ShowCode.When>
+              <ShowCode.Else>
+                <Typography>Not Submitted Feedback</Typography>
+              </ShowCode.Else>
+            </ShowCode>
+          </Stack>
+        </Stack>
+      }
+    />
+  );
+}
 
 const FeedbackForm = ({
   interviewerData,
