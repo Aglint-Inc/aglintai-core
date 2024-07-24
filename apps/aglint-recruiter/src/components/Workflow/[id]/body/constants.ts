@@ -65,6 +65,10 @@ export const TRIGGER_PAYLOAD: {
     trigger: 'onQualified',
     phase: ['after'],
   },
+  {
+    trigger: 'onTrainingComplete',
+    phase: ['after'],
+  },
 ] as const;
 
 export function getTriggerOption(
@@ -99,6 +103,9 @@ export function getTriggerOption(
       break;
     case 'onQualified':
       message = 'a trainee qualifies';
+      break;
+    case 'onTrainingComplete':
+      message = 'a trainee completes training';
       break;
   }
   let preMessage = '';
@@ -221,5 +228,14 @@ export const ACTION_TRIGGER_MAP: {
       name: 'Send slack notification to trainee',
     },
   ],
-  onTrainingComplete: [], // fix this later causing lint error so added
+  onTrainingComplete: [
+    {
+      value: 'onTrainingComplete_email_approverForTraineeMeetingQualification',
+      name: 'Send email to approver',
+    },
+    {
+      value: 'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+      name: 'Send slack notification to approver',
+    },
+  ],
 } as const;
