@@ -9,8 +9,8 @@ import {
   setRequestSessionIds,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
-} from '../store';
-import { setScheduleFlow, setStepScheduling } from './store';
+} from '../../store';
+import { setScheduleFlow, setStepScheduling } from '../store';
 
 function ButtonAllOptions() {
   //popopver

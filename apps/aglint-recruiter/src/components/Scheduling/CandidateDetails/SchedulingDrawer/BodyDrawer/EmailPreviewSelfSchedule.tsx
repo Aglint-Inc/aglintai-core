@@ -12,9 +12,10 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
-import { useSchedulingApplicationStore } from '../store';
-import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
-import { setEmailData, useSchedulingFlowStore } from './store';
+import { useSchedulingApplicationStore } from '../../store';
+import DayCardWrapper from '../StepSlotOptions/DayCardWrapper';
+import { setEmailData, useSchedulingFlowStore } from '../store';
+
 
 function EmailPreviewSelfSchedule() {
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
