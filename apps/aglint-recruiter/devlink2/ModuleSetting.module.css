@@ -1,12 +1,7 @@
 .module-setting-wrap {
   position: relative;
-
-  width: 500px;
   padding: var(--space-4);
-
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
-
   background-color: var(--white);
 }
 
