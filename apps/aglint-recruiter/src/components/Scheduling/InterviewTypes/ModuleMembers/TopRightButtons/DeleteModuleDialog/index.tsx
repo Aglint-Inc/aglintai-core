@@ -128,7 +128,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
                 color={'error'}
                 iconName='warning'
                 textTitle='Cannot delete interview type'
-                textDescription={`Interview type is used in job's interview plan or scheduled interviews .`}
+                textDescription={`Interview type is used in job's interview plan or scheduled interviews.`}
                 slotButtons={<></>}
               />
             ) : (
@@ -136,7 +136,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
                 <Text
                   size={2}
                   color={'neutral'}
-                  content={`By clicking delete the module will be permanently deleted`}
+                  content={`By clicking delete the Interview Type will be permanently deleted.`}
                 />
                 <Stack direction={'row'} spacing={'4px'}>
                   <Text

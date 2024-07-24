@@ -146,7 +146,7 @@ function SlotBodyComp({
             slotButtons={
               <>
                 <ButtonSolid
-                  textButton='Unarchived'
+                  textButton='Unarchive'
                   size={1}
                   onClickButton={{
                     onClick: unArcheive,
@@ -155,7 +155,7 @@ function SlotBodyComp({
               </>
             }
             isDescriptionVisible={false}
-            textTitle={'This interview type is Archived '}
+            textTitle={'This interview type is archived. Click "Unarchive" to reactivate.'}
           />
         </Stack>
       )}
