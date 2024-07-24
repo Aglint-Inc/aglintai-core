@@ -238,7 +238,9 @@ function ModuleSettingComp({
                     onChange={() => {
                       if (
                         localModule.relations.filter(
-                          (relation) => relation.training_status === 'training',
+                          (relation) =>
+                            relation.training_status === 'training' &&
+                            !relation.is_archived,
                         ).length == 0
                       ) {
                         {
