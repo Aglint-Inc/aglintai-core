@@ -12,6 +12,7 @@ import MembersAutoComplete, {
 } from '../../../Common/MembersTextField';
 import { setIsModuleSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
+import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
 
 function ModuleSettingComp({
   editModule,
@@ -256,6 +257,7 @@ function ModuleSettingComp({
           }
         />
       )}
+      <SlotTrainingMembers editModule={editModule} />
     </Stack>
   );
 }
