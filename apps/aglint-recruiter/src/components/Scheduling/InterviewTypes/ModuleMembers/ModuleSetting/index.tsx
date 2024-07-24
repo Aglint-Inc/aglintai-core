@@ -58,6 +58,12 @@ function ModuleSettingComp({
   }, [editModule, members]);
 
   const updateModule = async () => {
+    if (localModule.settings.reqruire_approval) {
+      if (selectedUsers.length === 0) {
+        setErrorApproval(true);
+        return false;
+      }
+    }
     try {
       setIsSaving(true);
       if (
@@ -92,6 +98,7 @@ function ModuleSettingComp({
     } catch (e) {
       toast.error('Failed to update module');
     } finally {
+      setErrorApproval(false);
       setIsSaving(false);
       setOpen(false);
     }
@@ -138,9 +145,11 @@ function ModuleSettingComp({
   const approvers = members.filter((member) =>
     editModule.settings.approve_users.includes(member.user_id),
   );
+
   return (
     <Stack p={'var(--space-4)'} spacing={2} maxWidth={'900px'}>
       <TrainingSetting
+        isApprovalVisible={editModule?.settings?.reqruire_approval}
         isDisable={!localModule?.settings?.require_training}
         isEnable={localModule?.settings?.require_training}
         textDisable={'sdjfksdfj'}

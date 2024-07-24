@@ -16,6 +16,7 @@ export function TrainingSetting({
   isEnable = true,
   textDisable = "This is a global text component",
   isDisable = false,
+  isApprovalVisible = true,
 }) {
   return (
     <_Component
@@ -81,21 +82,23 @@ export function TrainingSetting({
               />
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ts-bottom-wrap")}
-            tag="div"
-          >
-            <Text
-              content="Following persons approval is required before moving to qualified state:"
-              weight="regular"
-            />
+          {isApprovalVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "ts-bottom-list-card")}
+              className={_utils.cx(_styles, "ts-bottom-wrap")}
               tag="div"
             >
-              {slotApproval ?? <TrainingSettingItem />}
+              <Text
+                content="Following persons approval is required before moving to qualified state:"
+                weight="regular"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ts-bottom-list-card")}
+                tag="div"
+              >
+                {slotApproval ?? <TrainingSettingItem />}
+              </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       ) : null}
     </_Component>

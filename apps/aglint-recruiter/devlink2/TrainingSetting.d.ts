@@ -11,4 +11,5 @@ declare function TrainingSetting(props: {
   isEnable?: Types.Visibility.VisibilityConditions;
   textDisable?: React.ReactNode;
   isDisable?: Types.Visibility.VisibilityConditions;
+  isApprovalVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
