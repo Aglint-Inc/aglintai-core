@@ -24,9 +24,8 @@ import {
   setErrorValidation,
   useEditSessionDrawerStore,
 } from '../store';
-import { Interviewer } from '../types';
 
-function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
+function DebriedForm() {
   const { recruiter } = useAuthDetails();
   const members = useSchedulingApplicationStore((state) => state.members);
   const { editSession, debriefMembers, errorValidation } =
@@ -35,6 +34,12 @@ function DebriedForm({ optionMembers }: { optionMembers: Interviewer[] }) {
       debriefMembers: state.debriefMembers,
       errorValidation: state.errorValidation,
     }));
+
+  const optionMembers = members.map((member) => ({
+    name: getFullName(member.first_name, member.last_name),
+    value: member.user_id,
+    start_icon_url: member.profile_image,
+  }));
 
   const onChange = (e) => {
     errorValidation.find(

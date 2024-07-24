@@ -5,6 +5,7 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
+import { useInterviewModules } from '@/src/queries/interview-modules';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
@@ -46,6 +47,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     selectedSession: state.selectedSession,
     isIndividualRescheduleOpen: state.isIndividualRescheduleOpen,
   }));
+
+  useInterviewModules(); // required for edit drawer module dropdown
 
   const isDebrief = initialSessions
     .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
