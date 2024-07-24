@@ -20,14 +20,17 @@ import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor'
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import { DepartmentIcon, RoleIcon } from '.';
+import { CompanyMember, DepartmentIcon, PausedBadge, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
+import { ButtonSolid } from '@/devlink2';
+import { useRouter } from 'next/router';
+import ROUTES from '@/src/utils/routing/routes';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
@@ -338,6 +341,10 @@ const Interview = ({
     modules?.find(({ id }) => id === interview_module?.value?.id)?.members ??
     [];
 
+  const currentQualifiedModuleMembers = (currentModuleMembers ?? []).filter(
+    ({ training_status }) => training_status === 'qualified',
+  );
+
   const moduleMemberRecommendations =
     currentModuleMembers.filter(
       ({ user_id }) =>
@@ -360,8 +367,6 @@ const Interview = ({
     },
   );
 
-  const showInterviewingMembers =
-    qualifiedModuleMemberRecommendations.length !== 0;
   const showTrainingMembers = trainingModuleMemberRecommendations.length !== 0;
   const showTraining = !!currentModuleMembers.find(
     ({ training_status }) => training_status === 'training',
@@ -417,7 +422,9 @@ const Interview = ({
             ...prev.interviewer_cnt,
             error: false,
             value:
-              type === 'interviewers' && prev.interviewer_cnt.value === null
+              type === 'interviewers' &&
+              (prev.interviewer_cnt.value === null ||
+                prev.interviewer_cnt.value === 0)
                 ? value.length
                 : prev.interviewer_cnt.value,
           },
@@ -488,6 +495,8 @@ const Interview = ({
     [training],
   );
 
+  const { push } = useRouter();
+
   return (
     <InterviewMode
       isIndividual={session_type.value === 'individual'}
@@ -501,10 +510,35 @@ const Interview = ({
           handleModeChange={handleModeChange}
         />
       }
-      isInterviewerDropVisible={showInterviewingMembers}
       slotMemberCountDropdown={countField}
       slotInterviewersDropdown={
-        showInterviewingMembers && (
+        <Stack gap={1}>
+          {(currentQualifiedModuleMembers ?? []).length === 0 && (
+            <GlobalBannerShort
+              iconName={'warning'}
+              textTitle={'Interview type has no qualified members'}
+              textDescription={
+                'Please add members to the selected interview type'
+              }
+              color={'error'}
+              slotButtons={
+                <ButtonSolid
+                  color={'error'}
+                  size={1}
+                  textButton={'Go to interview type'}
+                  onClickButton={{
+                    onClick: () =>
+                      interview_module?.value?.id &&
+                      push(
+                        ROUTES['/scheduling/module/members/[module_id]']({
+                          module_id: interview_module.value.id,
+                        }),
+                      ),
+                  }}
+                />
+              }
+            />
+          )}
           <InterviewersField
             value={interviewers.value}
             error={interviewers.error}
@@ -512,7 +546,7 @@ const Interview = ({
             moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
             handleMemberAdd={handleMemberAdd}
           />
-        )
+        </Stack>
       }
       isTrainingVisible={showTraining}
       slotInterviewersAvatarSelectionPill={
@@ -616,7 +650,12 @@ const InterviewerPills = ({
         key={interviewer.user_id}
         isCloseButton={true}
         onClickRemove={{ onClick: () => onChange(interviewer.user_id) }}
-        textMemberName={name}
+        textMemberName={
+          <Stack direction={'row'} alignItems={'center'} gap={1}>
+            <>{name}</>
+            {interviewer.paused && <PausedBadge />}
+          </Stack>
+        }
         slotMemberAvatar={
           <MuiAvatar
             src={interviewer.profile_image}
@@ -678,6 +717,7 @@ const InterviewersField = ({
     name: getFullName(m.first_name, m.last_name),
     value: m.user_id,
     start_icon_url: m.profile_image,
+    badge: m.paused && <PausedBadge />,
     meta: [
       { title: m.position, icon: <RoleIcon /> },
       { title: m.department, icon: <DepartmentIcon /> },
