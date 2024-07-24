@@ -2,11 +2,11 @@
 import {
   DatabaseEnums,
   DatabaseTable,
+  DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import {
   RecruiterRelationsType,
-  RecruiterType,
   RecruiterUserType,
   SocialsType,
 } from '@aglint/shared-types';
@@ -43,7 +43,7 @@ export interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
   setUserDetails: (details: Session | null) => void;
-  recruiter: RecruiterType | null;
+  recruiter: GetUserDetailsAPI['response']['recruiter'];
   userPermissions: {
     role: string;
     permissions: Partial<{
@@ -51,7 +51,7 @@ export interface ContextValue {
     }>;
   };
   recruiter_id: string | null;
-  setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
+  setRecruiter: Dispatch<SetStateAction<this['recruiter']>>;
   allRecruiterRelation: RecruiterRelationsType[];
   setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
@@ -63,7 +63,7 @@ export interface ContextValue {
   members: RecruiterUserType[];
   allMember: RecruiterUserType[];
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
-  handelMemberUpdate: (x: {
+  handleMemberUpdate: (x: {
     user_id: string;
     data: DatabaseTableUpdate['recruiter_user'] & {
       role_id?: string;
@@ -71,6 +71,12 @@ export interface ContextValue {
     };
     updateDB?: boolean;
   }) => Promise<boolean>;
+  handleOfficeLocationsUpdate: (
+    x: Parameters<typeof manageOfficeLocation>[0],
+  ) => Promise<boolean>;
+  handleDepartmentsUpdate: (
+    x: Parameters<typeof manageDepartments>[0],
+  ) => Promise<boolean>;
   isAllowed: (
     //checkPermission
     roles: DatabaseEnums['user_roles'][],
@@ -116,7 +122,9 @@ const defaultProvider: ContextValue = {
   members: [],
   allMember: [],
   setMembers: () => {},
-  handelMemberUpdate: (x) => Promise.resolve(true),
+  handleMemberUpdate: (x) => Promise.resolve(true),
+  handleOfficeLocationsUpdate: (x) => Promise.resolve(true),
+  handleDepartmentsUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
   allowAction: (func, role) => func,
   isAssessmentEnabled: false,
@@ -130,7 +138,7 @@ const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<Session | null>(null);
-  const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const [recruiter, setRecruiter] = useState<ContextValue['recruiter']>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
@@ -179,13 +187,6 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    // const { data: recruiterRel, error: errorRel } = await supabase
-    //   .from('recruiter_relation')
-    //   .select(
-    //     '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions(name)))',
-    //   )
-    //   .match({ user_id: userDetails.user.id, is_active: true })
-    //   .single();
     const recruiterRel = await getUserDetails();
     // get user permissions
     const rolePermissions: ContextValue['userPermissions'] = {
@@ -289,7 +290,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
+  const handleMemberUpdate: ContextValue['handleMemberUpdate'] = async ({
     user_id,
     data,
     updateDB = true,
@@ -312,6 +313,32 @@ const AuthProvider = ({ children }) => {
     }
     return false;
   };
+  const handleOfficeLocationsUpdate: ContextValue['handleOfficeLocationsUpdate'] =
+    async (data) => {
+      let res = await manageOfficeLocation(data, recruiter.office_locations);
+      if (res) {
+        setRecruiter((pre) => {
+          const temp = structuredClone(pre);
+          temp.office_locations = res;
+          return temp;
+        });
+        return true;
+      }
+      return false;
+    };
+  const handleDepartmentsUpdate: ContextValue['handleDepartmentsUpdate'] =
+    async (data) => {
+      let res = await manageDepartments(data, recruiter.departments);
+      if (res) {
+        setRecruiter((pre) => {
+          const temp = structuredClone(pre);
+          temp.departments = res;
+          return temp;
+        });
+        return true;
+      }
+      return false;
+    };
 
   const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
@@ -396,7 +423,9 @@ const AuthProvider = ({ children }) => {
         members: (members || []).filter((item) => item.status == 'active'),
         allMember: members,
         setMembers,
-        handelMemberUpdate,
+        handleMemberUpdate,
+        handleOfficeLocationsUpdate,
+        handleDepartmentsUpdate,
         isAllowed,
         allowAction,
         isAssessmentEnabled,
@@ -469,4 +498,70 @@ const getMembers = () => {
     '/api/getMembersWithRole',
     null,
   );
+};
+
+const manageOfficeLocation = async (
+  payload:
+    | { type: 'insert'; data: DatabaseTableInsert['office_locations'] }
+    | { type: 'delete'; data: number }
+    | { type: 'update'; data: DatabaseTableUpdate['office_locations'] },
+  office_locations: DatabaseTable['office_locations'][],
+) => {
+  let temp = structuredClone(office_locations);
+  const query = supabase.from('office_locations');
+  switch (payload.type) {
+    case 'insert': {
+      const res = (
+        await query.insert(payload.data).select().single().throwOnError()
+      ).data;
+      temp.push(res);
+      break;
+    }
+    case 'update': {
+      const res = (
+        await query.update(payload.data).select().single().throwOnError()
+      ).data;
+      temp = temp.map((item) => (item.id === res.id ? res : item));
+      break;
+    }
+    case 'delete': {
+      await query.delete().eq('id', payload.data).throwOnError();
+      temp = temp.filter((item) => payload.data !== item.id);
+      break;
+    }
+  }
+  return temp;
+};
+
+const manageDepartments = async (
+  payload:
+    | { type: 'insert'; data: DatabaseTableInsert['departments'] }
+    | { type: 'delete'; data: number }
+    | { type: 'update'; data: DatabaseTableUpdate['departments'] },
+  departments: Pick<DatabaseTable['departments'], 'id' | 'name'>[],
+) => {
+  let temp = structuredClone(departments);
+  const query = supabase.from('departments');
+  switch (payload.type) {
+    case 'insert': {
+      const res = (
+        await query.insert(payload.data).select().single().throwOnError()
+      ).data;
+      temp.push(res);
+      break;
+    }
+    case 'update': {
+      const res = (
+        await query.update(payload.data).select().single().throwOnError()
+      ).data;
+      temp = temp.map((item) => (item.id === res.id ? res : item));
+      break;
+    }
+    case 'delete': {
+      await query.delete().eq('id', payload.data).throwOnError();
+      temp = temp.filter((item) => payload.data !== item.id);
+      break;
+    }
+  }
+  return temp;
 };

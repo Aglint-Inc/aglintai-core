@@ -32,7 +32,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
+  const { recruiterUser, setMembers, handleMemberUpdate } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
@@ -288,7 +288,7 @@ const TeamManagement = () => {
                     }
                   }}
                   updateMember={(updatedMem, updateDB = true) => {
-                    return handelMemberUpdate({
+                    return handleMemberUpdate({
                       user_id: member.user_id,
                       data: updatedMem,
                       updateDB,

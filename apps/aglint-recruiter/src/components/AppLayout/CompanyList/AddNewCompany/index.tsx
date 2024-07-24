@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -466,16 +465,20 @@ function CompanyDetails({
   const submitHandler = async () => {
     if (formValidation(details?.name)) {
       const rec_id = uuidv4();
-      const { error } = await supabase.from('recruiter').insert({
-        ...details,
-        logo: logo,
-        phone_number: phone,
-        employee_size: details.employee_size,
-        name: details.name,
-        industry: details.industry,
-        recruiter_user_id: recruiterUser.user_id,
-        id: rec_id,
-      });
+      const { data: rec, error } = await supabase
+        .from('recruiter')
+        .insert({
+          ...details,
+          logo: logo,
+          phone_number: phone,
+          employee_size: details.employee_size,
+          name: details.name,
+          industry: details.industry,
+          recruiter_user_id: recruiterUser.user_id,
+          id: rec_id,
+        })
+        .select('*, office_locations(*)')
+        .single();
       if (!error) {
         // update_companies_status();
         await supabase.rpc('createrecuriterrelation', {
@@ -483,14 +486,7 @@ function CompanyDetails({
           in_user_id: userDetails.user.id,
           in_is_active: true,
         });
-        const { data: rec, error: recError } = await supabase
-          .from('recruiter')
-          .select()
-          .eq('id', rec_id);
-        if (recError) {
-          throw new Error(recError.message);
-        }
-        setRecruiter(rec[0] as RecruiterType);
+        setRecruiter(rec);
         setOpenSideBar(false);
         getCompanies();
         toast.success('Company added successfully.');

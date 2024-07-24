@@ -779,7 +779,7 @@ function SchedulingSettings({
                                     }}
                                     options={recruiter?.office_locations.map(
                                       (
-                                        item: DatabaseTable['recruiter']['office_locations'][number],
+                                        item: ReturnType<typeof useAuthDetails>['recruiter']['office_locations'][number],
                                       ) => {
                                         return `${item.city}, ${item.region}, ${item.country}`;
                                       },
@@ -841,7 +841,7 @@ function SchedulingSettings({
                                                 ? selectedLocations
                                                 : recruiter?.office_locations.map(
                                                     (
-                                                      item: DatabaseTable['recruiter']['office_locations'][number],
+                                                      item: ReturnType<typeof useAuthDetails>['recruiter']['office_locations'][number],
                                                     ) =>
                                                       `${item.city}, ${item.region}, ${item.country}`,
                                                   ),

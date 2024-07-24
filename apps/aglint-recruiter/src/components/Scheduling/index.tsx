@@ -352,13 +352,13 @@ export const useInterviewModules = ({
 };
 
 const InterviewerSetting = () => {
-  const { handelMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
+  const { handleMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
   return (
     <Stack height={'calc( 100vh - 60px)'}>
       <InterviewerLevelSettings
         initialData={recruiterUser.scheduling_settings}
         updateSettings={(x) => {
-          return handelMemberUpdate({
+          return handleMemberUpdate({
             user_id: userDetails.user.id,
             data: { scheduling_settings: x },
           });

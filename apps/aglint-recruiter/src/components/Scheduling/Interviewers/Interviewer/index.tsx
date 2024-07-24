@@ -29,7 +29,7 @@ function Interviewer() {
   const router = useRouter();
   const { handelUpdateSchedule, handelRemoveMemberFormPanel } =
     useInterviewerContext();
-  const { handelMemberUpdate } = useAuthDetails();
+  const { handleMemberUpdate } = useAuthDetails();
 
   const [pauseResumeDialog, setPauseResumeDialog] = useState<PauseDialog>({
     isOpen: false,
@@ -218,7 +218,7 @@ function Interviewer() {
                             ?.scheduling_settings as any
                         }
                         updateSettings={(x) => {
-                          return handelMemberUpdate({
+                          return handleMemberUpdate({
                             user_id: interviewerDetails.interviewer.user_id,
                             data: { scheduling_settings: x },
                           });
@@ -233,7 +233,7 @@ function Interviewer() {
                             ?.scheduling_settings as any
                         }
                         updateSettings={(x) => {
-                          return handelMemberUpdate({
+                          return handleMemberUpdate({
                             user_id: interviewerDetails.interviewer.user_id,
                             data: { scheduling_settings: x },
                           });

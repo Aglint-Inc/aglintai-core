@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -13,8 +12,10 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 interface StacksProps {
   handleClose: () => void;
   open: boolean;
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (recruiter: RecruiterType) => void;
+  handleChange: (
+    // eslint-disable-next-line no-unused-vars
+    recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
+  ) => void;
 }
 
 const AddSpecialityDialog: React.FC<StacksProps> = ({

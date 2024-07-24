@@ -44,7 +44,7 @@ const Member = ({
   removeMember: () => void;
   updateMember: (
     // eslint-disable-next-line no-unused-vars
-    x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
+    x: Parameters<ContextValue['handleMemberUpdate']>[number]['data'],
     // eslint-disable-next-line no-unused-vars
     updateDB?: boolean,
   ) => Promise<boolean>;

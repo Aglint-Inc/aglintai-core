@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -36,7 +35,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const initialCompanyName = useRef(recruiter?.name);
 
   const handleChange = async (
-    recruit: RecruiterType,
+    recruit: typeof recruiter,
     isEmptyName?: boolean,
   ) => {
     setIsSaving(true);
@@ -217,7 +216,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 return (
                   <RolesPill
                     key={ind}
-                    textRoles={dep}
+                    textRoles={dep.name}
                     onClickRemoveRoles={{
                       onClick: () => {
                         let departments = recruiter.departments.filter(
@@ -303,7 +302,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         handleChange({
                           ...recruiter,
                           logo: newLogo,
-                        } as RecruiterType);
+                        });
                       }
                     }}
                     size={48}

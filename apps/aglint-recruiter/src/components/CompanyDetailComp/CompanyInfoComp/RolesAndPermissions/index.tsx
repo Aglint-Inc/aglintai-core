@@ -363,7 +363,7 @@ function RoleDetails({
   const {
     recruiterUser,
     allMember: members,
-    handelMemberUpdate,
+    handleMemberUpdate,
   } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
   const activePermissionCount = role.permissions.filter(
@@ -467,8 +467,8 @@ function RoleDetails({
             recruiterUser.user_id === editUser.user.user_id &&
             'You can not edit your own role'
           }
-          handelMemberUpdate={async (x) => {
-            const res = await handelMemberUpdate(x);
+          handleMemberUpdate={async (x) => {
+            const res = await handleMemberUpdate(x);
             toast.success('Role updated successfully');
             setEditUser(null);
             refetch();

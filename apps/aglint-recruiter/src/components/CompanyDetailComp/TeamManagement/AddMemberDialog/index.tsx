@@ -48,7 +48,7 @@ const AddMember = ({
     linked_in: string;
     employment: employmentTypeEnum;
     designation: string;
-    location: DatabaseTable['recruiter']['office_locations'][number];
+    location: DatabaseTable['office_locations'];
     department: string;
     role: string;
     role_id: string;
@@ -77,7 +77,7 @@ const AddMember = ({
       linked_in: string;
       employment: employmentTypeEnum;
       department: string;
-      location: DatabaseTable['recruiter']['office_locations'][number];
+      location: DatabaseTable['office_locations'];
       designation: string;
       role_id: string;
       manager_id: string;
@@ -447,15 +447,19 @@ const AddMember = ({
                     />
                     <Autocomplete
                       fullWidth
-                      value={form.department}
-                      onChange={(event: any, newValue: string | null) => {
+                      value={recruiter?.departments.find(
+                        (dep) => dep.name === form.department,
+                      )}
+                      onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          department: newValue,
+                          department: newValue.name,
                         });
                       }}
-                      options={recruiter?.departments?.map((departments) =>
-                        capitalizeFirstLetter(departments),
+                      getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
+                      options={recruiter?.departments}
+                      renderOption={(props, op) => (
+                        <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                       )}
                       renderInput={(params) => (
                         <UITextField

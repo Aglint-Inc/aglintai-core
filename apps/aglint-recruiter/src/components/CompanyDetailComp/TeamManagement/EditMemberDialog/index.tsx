@@ -1,8 +1,4 @@
-import {
-  DatabaseTable,
-  employmentTypeEnum,
-  RecruiterUserType,
-} from '@aglint/shared-types';
+import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -31,12 +27,14 @@ const EditMember = ({
   onClose: () => void;
 }) => {
   const { data: roleOptions } = useRolesOptions();
-  const { handelMemberUpdate, recruiter, recruiterUser } = useAuthDetails();
+  const { handleMemberUpdate, recruiter, recruiterUser } = useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
     linked_in: string;
-    location: DatabaseTable['recruiter']['office_locations'][number];
+    location: ReturnType<
+      typeof useAuthDetails
+    >['recruiter']['office_locations'][number];
     employment: employmentTypeEnum;
     designation: string;
     department: string;
@@ -323,15 +321,19 @@ const EditMember = ({
                 />
                 <Autocomplete
                   fullWidth
-                  value={capitalizeFirstLetter(form.department)}
-                  onChange={(event: any, newValue: string | null) => {
+                  value={recruiter?.departments.find(
+                    (dep) => dep.name === form.department,
+                  )}
+                  onChange={(event: any, newValue) => {
                     setForm({
                       ...form,
-                      department: newValue,
+                      department: newValue.name,
                     });
                   }}
-                  options={recruiter?.departments?.map((departments) =>
-                    capitalizeFirstLetter(departments),
+                  getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
+                  options={recruiter?.departments}
+                  renderOption={(props, op) => (
+                    <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                   )}
                   renderInput={(params) => (
                     <UITextField
@@ -340,15 +342,15 @@ const EditMember = ({
                       onFocus={() => {
                         setFormError({ ...formError, department: false });
                       }}
+                      name='Department'
+                      placeholder='Select Department'
+                      label='Department'
                       required
                       helperText={
                         formError.department
                           ? 'Department is must required'
                           : ''
                       }
-                      name='Department'
-                      placeholder='Select Department'
-                      label='Department'
                     />
                   )}
                 />
@@ -475,12 +477,14 @@ const EditMember = ({
                       setIsDisable(true);
                       if (checkValidation()) {
                         // inviteUser();
-                        handelMemberUpdate({
+                        handleMemberUpdate({
                           user_id: member.user_id,
                           data: {
                             first_name: form.first_name,
                             last_name: form.last_name,
-                            interview_location: `${form.location.city}, ${form.location.region}, ${form.location.country}`,
+                            interview_location:
+                              form.location &&
+                              `${form.location.city}, ${form.location.region}, ${form.location.country}`,
                             linked_in: form.linked_in,
                             employment: form.employment,
                             department: form.department,
