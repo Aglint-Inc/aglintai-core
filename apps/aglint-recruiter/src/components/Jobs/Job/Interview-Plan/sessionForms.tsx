@@ -360,8 +360,6 @@ const Interview = ({
     },
   );
 
-  const showInterviewingMembers =
-    qualifiedModuleMemberRecommendations.length !== 0;
   const showTrainingMembers = trainingModuleMemberRecommendations.length !== 0;
   const showTraining = !!currentModuleMembers.find(
     ({ training_status }) => training_status === 'training',
@@ -417,7 +415,9 @@ const Interview = ({
             ...prev.interviewer_cnt,
             error: false,
             value:
-              type === 'interviewers' && prev.interviewer_cnt.value === null
+              type === 'interviewers' &&
+              (prev.interviewer_cnt.value === null ||
+                prev.interviewer_cnt.value === 0)
                 ? value.length
                 : prev.interviewer_cnt.value,
           },
@@ -501,18 +501,15 @@ const Interview = ({
           handleModeChange={handleModeChange}
         />
       }
-      isInterviewerDropVisible={showInterviewingMembers}
       slotMemberCountDropdown={countField}
       slotInterviewersDropdown={
-        showInterviewingMembers && (
-          <InterviewersField
-            value={interviewers.value}
-            error={interviewers.error}
-            type='interviewers'
-            moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
-            handleMemberAdd={handleMemberAdd}
-          />
-        )
+        <InterviewersField
+          value={interviewers.value}
+          error={interviewers.error}
+          type='interviewers'
+          moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
+          handleMemberAdd={handleMemberAdd}
+        />
       }
       isTrainingVisible={showTraining}
       slotInterviewersAvatarSelectionPill={
