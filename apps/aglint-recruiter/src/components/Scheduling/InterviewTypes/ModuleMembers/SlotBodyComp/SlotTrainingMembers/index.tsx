@@ -44,7 +44,7 @@ function SlotTrainingMembers({
 
   return (
     <>
-      {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
+      {selUser?.user_id && <MoveToQualifiedDialog refetch={refetch} />}
 
       {filtererdUsers.length === 0 && (
         <EmptyGeneral
