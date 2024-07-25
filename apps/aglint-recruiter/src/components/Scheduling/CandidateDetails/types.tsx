@@ -39,6 +39,7 @@ export type BannerType = {
   color: 'error' | 'warning' | 'info' | 'success';
   session_relation_id: string | null;
   user_id: string | null;
+  user_message: string | null;
 };
 
 export type SessionsType = {
