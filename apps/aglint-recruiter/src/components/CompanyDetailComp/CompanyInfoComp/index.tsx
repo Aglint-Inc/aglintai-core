@@ -79,10 +79,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     setLogo(recruiter?.logo);
   }, [recruiter]);
 
-  const isFormDisabled = !checkPermissions([
-    'company_settings_module',
-    'manage_company',
-  ]);
+  const isFormDisabled = !checkPermissions(['manage_company']);
 
   return (
     <Stack
@@ -150,6 +147,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               />
             </MuiPopup>
             <CompanyInfo
+              isEditable={!isFormDisabled}
               slotLocation={
                 <>
                   {recruiter?.office_locations &&
@@ -168,6 +166,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                           <Stack p={'var(--space-1)'}>
                             <CompanyLocation
                               isHeadQuaterVisible={isHeadQuaterVisible}
+                              isEditDeleteVisible={!isFormDisabled}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({
@@ -199,6 +198,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   <RolesPill
                     key={ind}
                     textRoles={rol}
+                    isCloseIconVisible={!isFormDisabled}
                     onClickRemoveRoles={{
                       onClick: () => {
                         let roles = recruiter.available_roles.filter(
@@ -218,6 +218,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   <RolesPill
                     key={ind}
                     textRoles={dep}
+                    isCloseIconVisible={!isFormDisabled}
                     onClickRemoveRoles={{
                       onClick: () => {
                         let departments = recruiter.departments.filter(
@@ -238,6 +239,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     <RolesPill
                       key={ind}
                       textRoles={stack}
+                      isCloseIconVisible={!isFormDisabled}
                       onClickRemoveRoles={{
                         onClick: () => {
                           let technologies = recruiter.technology_score.filter(
@@ -292,6 +294,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   ensure that the file size is less than 5 MB
                 </Typography>
               }
+              isChangeLogoVisible={!isFormDisabled}
               slotCompanyLogo={
                 <>
                   <ImageUpload

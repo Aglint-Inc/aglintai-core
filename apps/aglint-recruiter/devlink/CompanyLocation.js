@@ -20,6 +20,7 @@ export function CompanyLocation({
   textFullAddress = "2930 Pearl St Boulder, CO 80301, United States",
   textTimeZone = "Asia Calcutta (GMT +05:30)",
   isHeadQuaterVisible = true,
+  isEditDeleteVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -41,23 +42,25 @@ export function CompanyLocation({
         />
         <Text content={textTimeZone} />
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "location-delete-wrappers")}
-        tag="div"
-      >
-        <IconButtonGhost
-          onClickButton={onClickEdit}
-          iconName="edit_square"
-          iconColor="neutral"
-          color="neutral"
-        />
-        <IconButtonGhost
-          onClickButton={onClickDelete}
-          iconName="delete"
-          iconColor="error"
-          color="error"
-        />
-      </_Builtin.Block>
+      {isEditDeleteVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "location-delete-wrappers")}
+          tag="div"
+        >
+          <IconButtonGhost
+            onClickButton={onClickEdit}
+            iconName="edit_square"
+            iconColor="neutral"
+            color="neutral"
+          />
+          <IconButtonGhost
+            onClickButton={onClickDelete}
+            iconName="delete"
+            iconColor="error"
+            color="error"
+          />
+        </_Builtin.Block>
+      ) : null}
       {isHeadQuaterVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "cl-badge-wrap")}

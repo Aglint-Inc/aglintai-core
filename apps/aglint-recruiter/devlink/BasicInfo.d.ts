@@ -9,4 +9,5 @@ declare function BasicInfo(props: {
   slotBasicForm?: Types.Devlink.Slot;
   slotWarning?: Types.Devlink.Slot;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
+  isChangeLogoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
