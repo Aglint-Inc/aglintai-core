@@ -53,12 +53,10 @@
 
 .cv-list-column-wrapper {
   position: relative;
-
   display: flex;
   width: 100%;
   padding: var(--space-2) var(--space-4);
   align-self: stretch;
-  flex: 1;
 }
 
 .cv-list-column-wrapper.header {
@@ -95,6 +93,11 @@
 
 .cv-list-column-wrapper.header.width-auto.no_border-copy.gap-12.z-index-6 {
   z-index: 6;
+}
+
+.cv-list-column-wrapper.header.progress {
+  width: 500px;
+  flex: 0 0 auto;
 }
 
 .cv-list-column-wrapper.width-auto {
@@ -139,6 +142,18 @@
 
 .cv-list-column-wrapper.items-v-center.z_index {
   z-index: 100;
+}
+
+.cv-list-column-wrapper.items-v-center.z_index.progress {
+  width: 500px;
+  max-width: 500px;
+  flex: 0 0 auto;
+}
+
+.cv-list-column-wrapper.items-v-center.progress {
+  max-width: 420px;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .cv-list-column-wrapper.chackbox_column {

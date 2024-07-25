@@ -12,6 +12,7 @@ import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDeta
 import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { getFullName } from '@/src/utils/jsonResume';
 
 export type ApiCandidateDetails = {
   request: {
@@ -132,6 +133,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               color: 'error',
               session_relation_id: null,
               user_id: null,
+              user_message: 'No interviewers assigned to this stage.',
             });
           }
           return {
@@ -146,29 +148,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     user.user_details.email.split('@')[1]) ||
                 !!(user.user_details.schedule_auth as any)?.access_token;
 
-              if (
-                session.interview_meeting?.status !== 'confirmed' &&
-                session.interview_meeting?.status !== 'completed'
-              ) {
-                if (!isCalendarConnected) {
-                  banners.push({
-                    type: 'calender',
-                    message: 'Calendar Not Connected',
-                    color: 'error',
-                    session_relation_id: user.interview_session_relation.id,
-                    user_id: user.user_details.user_id,
-                  });
-                }
+              if (!isCalendarConnected) {
+                banners.push({
+                  type: 'calender',
+                  message: 'Calendar Not Connected',
+                  color: 'error',
+                  session_relation_id: user.interview_session_relation.id,
+                  user_id: user.user_details.user_id,
+                  user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)}'s calendar is not connected.`,
+                });
+              }
 
-                if (!isPaused) {
-                  banners.push({
-                    type: 'paused',
-                    message: 'Interviewer Paused',
-                    color: 'warning',
-                    session_relation_id: user.interview_session_relation.id,
-                    user_id: user.user_details.user_id,
-                  });
-                }
+              if (isPaused) {
+                banners.push({
+                  type: 'paused',
+                  message: 'Interviewer Paused',
+                  color: 'warning',
+                  session_relation_id: user.interview_session_relation.id,
+                  user_id: user.user_details.user_id,
+                  user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)} is paused.`,
+                });
               }
 
               return {

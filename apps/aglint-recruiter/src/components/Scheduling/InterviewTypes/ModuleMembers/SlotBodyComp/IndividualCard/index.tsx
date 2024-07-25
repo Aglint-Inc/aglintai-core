@@ -14,7 +14,7 @@ import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
 import InterviewerTrainingTypeIcon from '@/src/components/Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
+import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
