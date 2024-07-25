@@ -176,6 +176,10 @@ const seedWorkFlow = async (
             throw new Error(`${temp.type} not found`);
           }
           return {
+            payload: {
+              body: temp.body,
+              subject: temp.subject,
+            },
             order: action.order,
             workflow_id: workflow.id,
             email_template_id: temp.id,

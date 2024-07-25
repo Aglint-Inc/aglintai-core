@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
@@ -341,6 +342,15 @@ const interview_feedback_submit = async (interaction_data: any) => {
 
 const shadow_complete_trainee_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const session_relation_id = metadata.event_payload.session_relation_id;
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_training_progress')
+      .update({is_attended: true})
+      .eq('session_relation_id', session_relation_id)
+  );
   await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
@@ -399,6 +409,16 @@ const shadow_complete_trainee_decline = async (interaction_data: any) => {
 
 const reverse_shadow_trainee_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const session_relation_id = metadata.event_payload.session_relation_id;
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_training_progress')
+      .update({is_attended: true})
+      .eq('session_relation_id', session_relation_id)
+  );
+
   await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
