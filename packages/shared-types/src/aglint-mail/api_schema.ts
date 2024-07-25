@@ -1,4 +1,4 @@
-import * as v from "valibot";
+import * as v from 'valibot';
 export const applicationRecievedEmailApplicantSchema = v.object({
   application_id: v.string(),
 });
@@ -18,8 +18,8 @@ export const agentEmailCandidateSchema = v.object({
   recruiter_user_id: v.string(),
   filter_id: v.string(),
   mail_headers: v.object({
-    "Message-ID": v.string(),
-    "In-Reply-To": v.string(),
+    'Message-ID': v.string(),
+    'In-Reply-To': v.string(),
   }),
 });
 
@@ -117,7 +117,7 @@ export const sendSelfScheduleRequest_email_applicant = v.object({
 
 export const sendAvailabilityRequestEmailApplicantSchema = v.object({
   organizer_user_id: v.string(),
-  avail_req_id: v.nullish(v.string("missing avail_req_id"), undefined),
+  avail_req_id: v.nullish(v.string('missing avail_req_id'), undefined),
   preview_details: v.nullish(
     v.object({
       application_id: v.string(),
@@ -159,23 +159,21 @@ export const interviewerResumedEmailAdminSchema = v.object({
 });
 
 export const onShadowCompleteEmailTraineeSchema = v.object({
-  interview_module_relation_id: v.string(),
-  interview_meeting_id: v.string(),
+  meeting_id: v.string(),
+  application_id: v.string(),
   session_id: v.string(),
 });
 export const onRShadowCompleteEmailTraineeSchema = v.object({
-  interview_module_relation_id: v.string(),
-  interview_meeting_id: v.string(),
+  meeting_id: v.string(),
   session_id: v.string(),
+  application_id: v.string(),
 });
 export const onQualifiedEmailTraineeSchema = v.object({
   interview_module_relation_id: v.string(),
   approver_id: v.string(),
 });
 export const onQualifiedEmailApproverSchema = v.object({
-  interview_module_relation_id: v.string(),
-  approver_id: v.string(),
-  organizer_id: v.string(),
+  session_relation_id: v.string(),
 });
 export const interviewEndEmailOrganizerForMeetingStatusSchema = v.object({
   session_id: v.string(),

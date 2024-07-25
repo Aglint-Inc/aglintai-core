@@ -5,8 +5,12 @@ import { TabsModuleMembers } from '../type';
 
 export const tabsModuleMembers: TabsModuleMembers[] = [
   {
-    name: 'Members',
-    queryParams: 'members',
+    name: 'Qualified Members',
+    queryParams: 'qualified_members',
+  },
+  {
+    name: 'Training',
+    queryParams: 'training',
   },
   {
     name: 'Schedules',
@@ -15,10 +19,6 @@ export const tabsModuleMembers: TabsModuleMembers[] = [
   {
     name: 'Instructions',
     queryParams: 'instructions',
-  },
-  {
-    name: 'Training',
-    queryParams: 'training',
   },
 ];
 

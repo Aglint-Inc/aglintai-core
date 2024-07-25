@@ -269,7 +269,7 @@ export const useAddMemberHandler = ({
         .filter((rel) => seletedUserIds.includes(rel.user_id));
 
       if (archivedRelations.length > 0) {
-        await updateRelations(archivedRelations);
+        await updateRelations(archivedRelations, trainingStatus);
       }
 
       const newRelations = selectedUsers.filter(
