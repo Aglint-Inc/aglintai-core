@@ -56,7 +56,7 @@ export const RoleUserWidget = ({
             },
           }}
           iconName={'group'}
-          textDesc={'No Users Assigned'}
+          textDesc={'No users found with this role'}
         />
       )}
     </>
