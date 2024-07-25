@@ -17,6 +17,7 @@ export function SidedrawerBodyDebrief({
   slotMembersDropdown,
   slotAttendee,
   isAttendeeVisible = true,
+  textMembers = "Add Additional Members",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sidedrawer_session")} tag="div">
@@ -127,7 +128,7 @@ export function SidedrawerBodyDebrief({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <Text content="Add Additional Members" weight="" />
+        <Text content={textMembers} weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_avatarselectionpill")}
           tag="div"

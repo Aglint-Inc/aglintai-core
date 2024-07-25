@@ -1,0 +1,40 @@
+.hover_block {
+  z-index: 4;
+
+  display: flex;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: max-content;
+  grid-template-rows: auto auto;
+
+  border-radius: var(--radius-2);
+
+  background-color: var(--white);
+}
+
+.hoverblock_top {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.module_name_type {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}

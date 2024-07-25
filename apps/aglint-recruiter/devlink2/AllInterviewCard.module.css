@@ -22,7 +22,7 @@
 }
 
 .allinterview_row_-candidate.new {
-  grid-template-columns: 0px 300px 500px 1fr;
+  grid-template-columns: 0px 300px 1fr 400px;
 }
 
 .div-block-1704 {
@@ -137,6 +137,11 @@
 
 .candidate_cell.z-index-none {
   z-index: auto;
+}
+
+.candidate_cell.z-index-none.overflow-hidden {
+  overflow-y: visible;
+  overflow-x: auto;
 }
 
 .div-block-834 {

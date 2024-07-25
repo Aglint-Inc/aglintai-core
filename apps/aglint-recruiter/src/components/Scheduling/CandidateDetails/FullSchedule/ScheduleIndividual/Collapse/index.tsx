@@ -1,7 +1,7 @@
 import { Collapse, Stack } from '@mui/material';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
@@ -118,15 +118,22 @@ function CollapseContent({
               )}
 
               {count === 0 ? (
-                <GlobalBanner
-                  color={'error'}
-                  iconName={'warning'}
-                  textTitle={'No interviewers assigned to this stage'}
-                  textDescription={
-                    'Please add interviewers to proceed with scheduling this stage'
-                  }
-                  slotButtons={<></>}
-                />
+                 <GlobalBannerInline
+                   color={'error'}
+                   iconName={'warning'}
+                   textContent={'No interviewers assigned. Click on edit to assign interviewers.'}
+                   slotButton={<></>} 
+                   // TODO: @punit You can provide the edit button here inline and make the message take 100% width.
+                 />
+                // <GlobalBanner
+                //   color={'error'}
+                //   iconName={'warning'}
+                //   textTitle={'No interviewers assigned to this stage'}
+                //   textDescription={
+                //     'Please add interviewers to proceed with scheduling this stage'
+                //   }
+                //   slotButtons={<></>}
+                // />
               ) : (
                 users.map((user) => {
                   const item = user.user_details;

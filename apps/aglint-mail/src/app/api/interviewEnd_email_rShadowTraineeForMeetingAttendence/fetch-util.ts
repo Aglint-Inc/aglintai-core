@@ -53,9 +53,14 @@ export async function fetchUtil(
       .public_jobs;
 
   const mail_details = training_ints.map((trainee) => {
-    const shadowCount = module_relations.find(
-      (s) => s.user_id === trainee.user_id,
-    ).number_of_reverse_shadow;
+    const trainee_data = module_relations.find(
+      (s) => s.user_id === trainee.user_id && s.module_id === trainee.module_id,
+    );
+    const reverseShadowCount =
+      trainee_data.reverse_shadow_confirmed_count +
+      trainee_data.reverse_shadow_completed_count;
+    const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_detail.id}&tab=candidate_details`;
+
     const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
       {
         candidateFirstName: candidate.first_name,
@@ -72,8 +77,8 @@ export async function fetchUtil(
         interviewType: meeting_detail.interview_module.name,
         companyName: job.company,
         jobRole: job.job_title,
-        reverseShadowCount: numberToOrdinal(shadowCount),
-        reverseShadowConfirmLink: `<a href="#' target="_blank">here</a>`,
+        reverseShadowCount: numberToOrdinal(reverseShadowCount),
+        reverseShadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
       };
 
     const filled_comp_template = fillCompEmailTemplate(
