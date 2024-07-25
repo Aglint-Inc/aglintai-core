@@ -292,6 +292,7 @@ export * from "./Priority";
 export * from "./PrioritySmall";
 export * from "./ProfileList";
 export * from "./ProfileShare";
+export * from "./ProgressHoverCard";
 export * from "./RadioButton";
 export * from "./ResetPassword";
 export * from "./ResumeFeedbackScore";
