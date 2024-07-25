@@ -26,6 +26,9 @@ export function RescheduleCard({
   isTakeActionVisible = false,
   onClickTakeAction = {},
   slotDateReason,
+  slotAdditionalNotes,
+  isNotesVisible = true,
+  isDateVisible = true,
 }) {
   return (
     <_Component
@@ -33,55 +36,48 @@ export function RescheduleCard({
       tag="div"
       {...bgColorProps}
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "reschedule_request_name")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "avatar-24")} tag="div">
-          {slotProfileImage ?? (
-            <_Builtin.Image
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
-            />
-          )}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "rc-title-wrap")}
-          tag="div"
-        >
-          <Text content={textName} weight="medium" color="neutral-12" />
-          <_Builtin.Block tag="div" {...textColorProps}>
-            <Text content={textReschedule} weight="" />
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "request-reason")}
-        tag="div"
-      >
+      <_Builtin.Block className={_utils.cx(_styles, "rc-notes-wrap")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "first-part-title")}
           tag="div"
         >
-          <Text content="Reason :" weight="" color="neutral" />
+          <Text content="Reason" weight="" color="neutral" size="1" />
         </_Builtin.Block>
         <Text content={textReason} weight="" />
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "request-reason")}
-        tag="div"
-      >
+      {isNotesVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "first-part-title")}
+          className={_utils.cx(_styles, "rc-notes-wrap")}
           tag="div"
         >
-          <Text content="Date:" weight="" color="neutral" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "first-part-title")}
+            tag="div"
+          >
+            <Text
+              content="Additional Notes"
+              weight=""
+              color="neutral"
+              size="1"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotAdditionalNotes}</_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotDateReason}</_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
+      {isDateVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "rc-notes-wrap")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "first-part-title")}
+            tag="div"
+          >
+            <Text content="Proposed Date" weight="" color="neutral" size="1" />
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotDateReason}</_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       {isButtonVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "action_buttons")}
