@@ -657,7 +657,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={1}>
+    <Stack direction={'row'}  gap={3}>
       <AvatarWithName
         textName={name}
         textRole={member.position}
