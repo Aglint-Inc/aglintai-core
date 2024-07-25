@@ -25,7 +25,7 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
     if (training_ints.length === 0) {
       return res.status(200).send('no shadow trinees');
     }
-    const [meeting_detail] = supabaseWrap(
+    const [session_detail] = supabaseWrap(
       await supabaseAdmin
         .from('interview_session')
         .select(
@@ -45,12 +45,12 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
       false
     );
     const candidate =
-      meeting_detail.interview_meeting.interview_schedule.applications
+      session_detail.interview_meeting.interview_schedule.applications
         .candidates;
-    const organizer = meeting_detail.interview_meeting.recruiter_user;
+    const organizer = session_detail.interview_meeting.recruiter_user;
 
     const job =
-      meeting_detail.interview_meeting.interview_schedule.applications
+      session_detail.interview_meeting.interview_schedule.applications
         .public_jobs;
 
     for (const trainee of training_ints) {
@@ -77,7 +77,7 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(shadowCount))} shadow session for ${meeting_detail.interview_module.name} ? You were scheduled as a shadow interviewer in the ${meeting_detail.name} for ${job.job_title} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+              text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(shadowCount))} shadow session for ${session_detail.interview_module.name} ? You were scheduled as a shadow interviewer in the ${session_detail.name} for ${job.job_title} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
             },
           },
           {
@@ -109,7 +109,6 @@ export async function onShadowCompleteTrainee(req: Request, res: Response) {
           },
         ],
       });
-
       //
     }
 
