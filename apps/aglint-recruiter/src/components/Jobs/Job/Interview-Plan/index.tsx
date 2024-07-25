@@ -632,7 +632,7 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
       <GlobalBannerInline
-        color={'error'}
+        color={'error'}
         iconName={'warning'}
         textContent={'No interviewers assigned. Click on edit to assign interviewers.'}
         slotButton={<></>} 

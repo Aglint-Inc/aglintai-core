@@ -5,7 +5,7 @@ import { ScheduleProgress as ScheduleProgressDev } from '@/devlink/ScheduleProgr
 
 import ScheduleProgressPill, {
   type ScheduleProgressPillProps,
-} from './scheduleProgressPill';
+} from './ScheduleProgressPillComp';
 
 type ScheduleProgressProps = {
   sessions: Omit<ScheduleProgressPillProps, 'position'>[];

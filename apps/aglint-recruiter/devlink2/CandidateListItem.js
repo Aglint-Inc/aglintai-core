@@ -175,10 +175,10 @@ export function CandidateListItem({
             _styles,
             "cv-list-column-wrapper",
             "items-v-center",
-            "z_index"
+            "z_index",
+            "progress"
           )}
           tag="div"
-          table-column="interview"
           {...onClickCandidate}
         >
           {isHighlighted ? (
