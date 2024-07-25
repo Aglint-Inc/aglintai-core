@@ -1,9 +1,10 @@
-import { Stack } from '@mui/material';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { ScheduleProgress } from '@/devlink/ScheduleProgress';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import Loader from '@/src/components/Common/Loader';
+import { Skeleton } from '@/devlink2/Skeleton';
+import { SkeletonAllInterviewCard } from '@/devlink2/SkeletonAllInterviewCard';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ListCardInterviewSchedule from '../ListCard';
@@ -48,7 +49,31 @@ function AllList({
       isPending ||
       (isFetching && applicationList.length === 0) ? (
         <Stack width={'100%'} height={'100%'}>
-          <Loader />
+          {Array.from({
+            length: 15,
+          }).map((_, index) => (
+            <SkeletonAllInterviewCard
+              key={index}
+              slotInterviewProgress={
+                <Stack borderRadius={'var(--radius-2)'} overflow={'hidden'}>
+                  <ScheduleProgress
+                    slotScheduleProgressPill={Array.from({
+                      length: index === 0 || !!(index && !(index % 2)) ? 5 : 2,
+                    }).map((_, index) => (
+                      <Stack
+                        key={index}
+                        width={'60px'}
+                        height={'20px'}
+                        position={'relative'}
+                      >
+                        <Skeleton />
+                      </Stack>
+                    ))}
+                  />
+                </Stack>
+              }
+            />
+          ))}
         </Stack>
       ) : isError ? (
         <Stack
