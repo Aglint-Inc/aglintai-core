@@ -1,61 +1,36 @@
 import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { QueryKeysInteviewModules } from '../../queries/type';
 import { setIsMovedToQualifiedDialogOpen, useModulesStore } from '../../store';
-import { ModuleType } from '../../types';
 
-function MoveToQualifiedDialog({ editModule }: { editModule: ModuleType }) {
+function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
+  const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
   const isMovedToQualifiedDialogOpen = useModulesStore(
     (state) => state.isMovedToQualifiedDialogOpen,
   );
   const selUser = useModulesStore((state) => state.selUser);
-  const queryClient = useQueryClient();
 
   const moveToQualified = async () => {
     try {
-      const { error } = await supabase
+      await supabase
         .from('interview_module_relation')
-        .update({ training_status: 'qualified' })
-        .eq('id', selUser.id);
-      if (error) throw new Error(error.message);
-
-      const { error: errorSelRel } = await supabase
-        .from('interview_session_relation')
-        .update({ interviewer_type: 'qualified' })
-        .eq('interview_module_relation_id', selUser.id)
-        .eq('is_confirmed', false)
-        .select();
-      if (errorSelRel) throw new Error(error.message);
-
-      const updatedEditModule = {
-        ...editModule,
-        relations: editModule.relations.map((rel) => {
-          if (rel.user_id === selUser.user_id) {
-            return { ...rel, training_status: 'qualified' };
-          }
-          return rel;
-        }),
-      } as ModuleType;
-
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
+        .update({
+          training_status: 'qualified',
+          training_approver: recruiterUser.user_id,
+        })
+        .eq('id', selUser.id)
+        .throwOnError();
+      refetch();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     } finally {
       setIsMovedToQualifiedDialogOpen(false);
     }
