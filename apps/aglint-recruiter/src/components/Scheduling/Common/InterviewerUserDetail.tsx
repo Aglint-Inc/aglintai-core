@@ -66,7 +66,7 @@ function InterviewerUserDetail({
             <>
               <CustomTooltip
                 disableHoverListener={!cancelReason?.reason}
-                hidden={!cancelReason?.reason}
+                // hidden={!cancelReason?.reason}
                 title={
                   <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
                     <Text

@@ -68,7 +68,7 @@ export const fetchProgress = async ({
   const { data } = await supabase
     .from('interview_training_progress')
     .select(
-      '*,interview_session_relation(*,interview_session(*,interview_meeting(*)),interview_module_relation(*))',
+      '*,interview_session_relation(*,interview_session(*,interview_meeting(*)),interview_module_relation(*)),recruiter_user(first_name,last_name)',
     )
     .in('interview_session_relation.interview_module_relation_id', trainer_ids)
     .eq('interview_session_relation.is_confirmed', true)

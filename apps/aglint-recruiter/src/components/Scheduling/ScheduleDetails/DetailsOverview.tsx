@@ -270,7 +270,6 @@ function DetailsOverview({
               {schedule && (
                 <CandidateInfo
                   application_id={schedule.schedule.application_id}
-                  job_id={schedule.job.id}
                 />
               )}
             </ShowCode.When>

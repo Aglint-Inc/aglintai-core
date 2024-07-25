@@ -1,9 +1,12 @@
-import { Checkbox } from '@mui/material';
+'use strict';
+
+import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
+import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
@@ -50,6 +53,21 @@ function ScheduleIndividualCard({
 
   return (
     <GlobalScheduleCard
+      slotStatus={
+        currentSession.interview_meeting?.status === 'confirmed' && (
+          <Stack direction={'row'} spacing={'4px'} alignContent={'center'}>
+            {currentSession.users
+              .filter((user) => user.interview_session_relation.is_confirmed)
+              .map((user, i) => (
+                <InterviewerAcceptDeclineIcon
+                  key={i}
+                  isIcon={true}
+                  type={user.interview_session_relation.accepted_status}
+                />
+              ))}
+          </Stack>
+        )
+      }
       isCheckboxVisible={
         isCheckboxVisible &&
         (!interview_meeting ||

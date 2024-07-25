@@ -154,16 +154,18 @@ const Member = ({
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
         slotBadge={
-          <GlobalBadge
-            color={
-              member.status === 'suspended'
-                ? 'error'
-                : member.status === 'active'
-                  ? 'success'
-                  : 'warning'
-            }
-            textBadge={capitalize(member.status)}
-          />
+          member.status !== 'active' && (
+            <GlobalBadge
+              color={
+                member.status === 'suspended'
+                  ? 'error'
+                  : member.status === 'invited'
+                    ? 'warning'
+                    : 'success'
+              }
+              textBadge={capitalize(member.status)}
+            />
+          )
         }
         slotThreeDot={
           canManage &&
