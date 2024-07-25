@@ -1,0 +1,49 @@
+.connected-jobs-card-wrap {
+  display: flex;
+  padding: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  cursor: pointer;
+}
+
+.connected-jobs-card-wrap:hover {
+  background-color: var(--neutral-2);
+}
+
+.cjc-header-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.cjc-detail-wrap {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.cjc-icon-btn-wrap {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+
+  display: none;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
