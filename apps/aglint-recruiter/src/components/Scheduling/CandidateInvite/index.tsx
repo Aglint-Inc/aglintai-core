@@ -5,7 +5,7 @@ import {
   SessionsCombType,
 } from '@aglint/shared-types';
 import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { getFullName, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Container,
   Dialog,
@@ -290,7 +290,7 @@ export const ConfirmedInvitePage = (
         title:
           detail.type === 'declined'
             ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
-            : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
+            : `${getFullName(candidate.first_name, candidate.last_name)} requested to reschedule the ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
         application_id: schedule.application_id,
         logged_by: 'candidate',
         supabase: supabase,

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
@@ -313,3 +314,9 @@ export const getTaskDetails = async (application_id: string) => {
     .eq('application_id', application_id);
   return data;
 };
+
+export function getOrdinal(num: number) {
+  const suffixes = ['th', 'st', 'nd', 'rd'];
+  const value = num % 100;
+  return num + (suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0]);
+}
