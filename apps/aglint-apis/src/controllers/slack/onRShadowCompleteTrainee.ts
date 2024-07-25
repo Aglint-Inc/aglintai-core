@@ -55,9 +55,12 @@ export async function onRShadowCompleteTrainee(req: Request, res: Response) {
         .public_jobs;
 
     for (const trainee of training_ints) {
-      const reverseShadowCount = module_relations.find(
-        s => s.user_id === trainee.user_id
-      ).number_of_reverse_shadow;
+      const trainee_data = module_relations.find(
+        s => s.user_id === trainee.user_id && s.module_id === trainee.module_id
+      );
+      const reverseShadowCount =
+        trainee_data.reverse_shadow_completed_count +
+        trainee_data.reverse_shadow_confirmed_count;
 
       const userId = await getUserIdByEmail(trainee.email);
 
@@ -65,14 +68,17 @@ export async function onRShadowCompleteTrainee(req: Request, res: Response) {
         channel: userId,
         metadata: {
           event_type: 'reverse_shadow_complete_trainee_confirmation',
-          event_payload: {name: 'shadow_complete_trainee_confirmation'},
+          event_payload: {
+            name: 'shadow_complete_trainee_confirmation',
+            session_relation_id: trainee.session_relation_id,
+          },
         },
         blocks: [
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(reverseShadowCount))} reverse shadow session for ${meeting_detail.interview_module.name} ? You were scheduled as a shadow interviewer in the ${meeting_detail.name} for ${job} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+              text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(reverseShadowCount))} reverse shadow session for ${meeting_detail.interview_module.name} ? You were scheduled as a shadow interviewer in the ${meeting_detail.name} for ${job.job_title} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
             },
           },
           {
