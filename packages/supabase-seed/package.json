@@ -5,7 +5,6 @@
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
     "seed": "tsup && node dist/seed.js\"",
-    "dev": "tsup --watch --onSuccess \"console-ninja && node dist/seed.js\"",
     "compile": "tsc",
     "fix": "gts fix"
   },

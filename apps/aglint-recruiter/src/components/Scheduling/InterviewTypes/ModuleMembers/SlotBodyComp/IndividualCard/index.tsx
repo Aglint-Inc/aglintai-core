@@ -20,6 +20,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
@@ -37,11 +38,13 @@ function IndividualCard({
   user,
   progressDataUser,
   refetch,
+  refetchTrainingProgress,
 }: {
   editModule: ModuleType;
   user: ModuleType['relations'][0];
   progressDataUser: ReturnType<typeof useProgressModuleUsers>['data'];
   refetch: () => void;
+  refetchTrainingProgress: () => void;
 }) {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
@@ -93,7 +96,7 @@ function IndividualCard({
       })
       .eq('id', id);
 
-    refetch();
+    refetchTrainingProgress();
   };
 
   const alterCount = async ({
@@ -106,6 +109,10 @@ function IndividualCard({
     module_relation_id: string;
   }) => {
     try {
+      if (count === 0) {
+        toast.warning('Minimum count should be 1');
+        return;
+      }
       setIsSaving(true);
       if (type === 'shadow') {
         await supabase
@@ -310,7 +317,7 @@ function IndividualCard({
                                   onClick: async () => {
                                     await alterCount({
                                       type: 'reverse_shadow',
-                                      count: user.number_of_shadow - 1,
+                                      count: user.number_of_reverse_shadow - 1,
                                       module_relation_id: user.id,
                                     });
                                   },

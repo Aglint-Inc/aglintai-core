@@ -149,4 +149,98 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Email, Slack to Meeting organizer for Provide Meeting complete status',
+      trigger: 'interviewEnd',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'interviewEnd_slack_organizerForMeetingStatus',
+      },
+      {
+        order: 0,
+        template_type: 'interviewEnd_email_organizerForMeetingStatus',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Slack and Email notifications to the Trainee interviewer for confirming whether He attended or not',
+      trigger: 'interviewEnd',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 1,
+        template_type: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 2,
+        template_type: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+      },
+      {
+        order: 3,
+        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Email, Slack notification to the approver when all Shadow and Reverse Shadow training is completed',
+      trigger: 'onTrainingComplete',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type:
+          'onTrainingComplete_email_approverForTraineeMeetingQualification',
+      },
+      {
+        order: 0,
+        template_type:
+          'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+      },
+    ],
+  },
+  {
+    workflow: {
+      trigger: 'onQualified',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        'Send Slack, Email confirmation for the Interviewer when he is moved to qualified',
+    },
+    actions: [
+      {
+        order: 0,
+        template_type: 'onQualified_email_trainee',
+      },
+      {
+        order: 1,
+        template_type: 'onQualified_slack_trainee',
+      },
+    ],
+  },
 ];

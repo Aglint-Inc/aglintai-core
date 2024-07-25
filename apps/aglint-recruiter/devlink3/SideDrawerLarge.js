@@ -23,9 +23,14 @@ export function SideDrawerLarge({
   dynamicHeight = {},
   slotButtons,
   slotHeaderIcon,
+  drawerSize,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "large_sidedrawer")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "large_sidedrawer")}
+      tag="div"
+      drawerSize={drawerSize}
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "sidedrawer_top_bar")}
         tag="div"
@@ -73,6 +78,7 @@ export function SideDrawerLarge({
           )}
         </_Builtin.Block>
       ) : null}
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5BdrawerSize%3D%22small%22%5D%7B%0Awidth%3A450px%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

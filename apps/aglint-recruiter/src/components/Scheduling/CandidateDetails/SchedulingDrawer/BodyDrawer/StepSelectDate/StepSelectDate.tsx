@@ -7,13 +7,13 @@ import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 
-import IconSessionType from '../../RightPanel/IconSessionType';
+import IconSessionType from '../../../RightPanel/IconSessionType';
 import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
-} from '../../store';
-import InfoStepSelectState from '../InfoStepSelectState';
-import { setDateRange, useSchedulingFlowStore } from '../store';
+} from '../../../store';
+import InfoStepSelectState from '../../InfoStepSelectState';
+import { setDateRange, useSchedulingFlowStore } from '../../store';
 import ErrorsFindAvailibility from './ErrorsFindAvailibility';
 
 function SelectDateRange() {

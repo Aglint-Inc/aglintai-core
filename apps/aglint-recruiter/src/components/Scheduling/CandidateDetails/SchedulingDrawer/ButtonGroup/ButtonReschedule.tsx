@@ -5,12 +5,8 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { RescheduleOptions } from '@/devlink2/RescheduleOptions';
 import toast from '@/src/utils/toast';
 
-import {
-  setRequestSessionIds,
-  setSelectedSessionIds,
-  useSchedulingApplicationStore,
-} from '../store';
-import { setScheduleFlow, setStepScheduling } from './store';
+import { setRequestSessionIds, setSelectedSessionIds, useSchedulingApplicationStore } from '../../store';
+import { setScheduleFlow, setStepScheduling } from '../store';
 
 function ButtonReschedule() {
   //popopver

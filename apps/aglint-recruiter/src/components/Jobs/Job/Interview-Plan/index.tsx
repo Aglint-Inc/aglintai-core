@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { MenuItem, Stack } from '@mui/material';
+import { MenuItem, Stack, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef, useState } from 'react';
@@ -22,7 +22,6 @@ import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
@@ -697,17 +696,17 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <UITextField
+        <TextField
           select
           fullWidth
           value={value}
           onChange={handleEdit}
-          rest={{
-            sx: {
-              width: '150px',
-              '& .MuiOutlinedInput-root': {
-                padding: '0px!important',
-              },
+          sx={{
+            ml: 'var(--space-2)',
+            width: '120px',
+            '& .MuiOutlinedInput-root': {
+              padding: '0px',
+              paddingLeft: 'var(--space-2)',
             },
           }}
         >
@@ -716,7 +715,7 @@ const InterviewBreak = ({
               {getBreakLabel(item)}
             </MenuItem>
           ))}
-        </UITextField>
+        </TextField>
       }
     />
   );

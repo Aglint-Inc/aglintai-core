@@ -15,19 +15,15 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import {
-  setIsAddMemberDialogOpen,
-  setIsSettingsDialogOpen,
-  setTrainingStatus,
-} from '../../store';
+import { setIsAddMemberDialogOpen, setIsSettingsDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
-import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import SchedulesModules from '../Schedules';
+import ModuleSettingComp from '../Training';
 import { TabsModuleMembers } from '../type';
 import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
@@ -51,7 +47,7 @@ function SlotBodyComp({
   const { loading } = useSchedulingContext();
 
   const currentTab = (router.query.tab ||
-    'members') as TabsModuleMembers['queryParams'];
+    'qualified_members') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
@@ -169,7 +165,8 @@ function SlotBodyComp({
                         textLabel={tab.name}
                         isPillActive={
                           currentTab === tab.queryParams ||
-                          (!currentTab && tab.queryParams == 'members')
+                          (!currentTab &&
+                            tab.queryParams == 'qualified_members')
                         }
                         onClickPill={{
                           onClick: () => {
@@ -193,16 +190,17 @@ function SlotBodyComp({
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>
-                  {(currentTab === 'members' || !currentTab) && (
+                  {(currentTab === 'qualified_members' || !currentTab) && (
                     <ModuleMembers
-                      isMembersTrainingVisible={
-                        editModule.settings?.require_training
-                      }
+                      isMembersTrainingVisible={false}
                       slotQualifiedMemberList={
                         <SlotQualifiedMembers editModule={editModule} />
                       }
                       slotMembersInTraining={
-                        <SlotTrainingMembers editModule={editModule} />
+                        <SlotTrainingMembers
+                          editModule={editModule}
+                          refetch={refetch}
+                        />
                       }
                       onClickAddMember={{
                         onClick: () => {

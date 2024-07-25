@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
       const required_shadows = int_module_data.number_of_shadow;
 
-      const shadow_meetings_cnt = int_module_data.shadow_meeting_count;
+      const shadow_meetings_cnt = int_module_data.shadow_completed_count;
       let is_shadow = true;
       if (shadow_meetings_cnt < required_shadows) {
         is_shadow = true;

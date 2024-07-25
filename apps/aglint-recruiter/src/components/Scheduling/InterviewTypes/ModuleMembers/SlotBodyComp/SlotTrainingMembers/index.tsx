@@ -19,7 +19,13 @@ export type ProgressUser = {
   progress: ReturnType<typeof useProgressModuleUsers>['data'];
 };
 
-function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
+function SlotTrainingMembers({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const allUsers = editModule.relations.filter(
     (user) => user.training_status === 'training',
   );
@@ -73,7 +79,8 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
             editModule={editModule}
             progressDataUser={progressDataUser}
             user={user}
-            refetch={refetchTrainingProgress}
+            refetchTrainingProgress={refetchTrainingProgress}
+            refetch={refetch}
           />
         );
       })}

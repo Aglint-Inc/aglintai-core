@@ -1,108 +1,26 @@
-import { getFullName } from '@aglint/shared-utils';
-import { Drawer, Stack } from '@mui/material';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { Drawer } from '@mui/material';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import RequestAvailability from '../RequestAvailability';
-import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
-import AgentFinalScreenCta from './AgentFinalScreenCta';
-import ButtonAllOptions from './ButtonAllOptions';
-import ButtonReschedule from './ButtonReschedule';
-import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
+import BodyDrawer from './BodyDrawer';
+import ButtonMain from './ButtonGroup';
 import HeaderIcon from './HeaderIcon';
 import { useSchedulingDrawer } from './hooks';
-import RescheduleSlot from './RescheduleSlot';
-import ScheduleAllOptions from './ScheduleAllOptions';
-import SelfScheduleSuccess from './SelfScheduleSuccess';
-import StepScheduleFilter from './StepScheduleFilter';
-import SelectDateRange from './StepSelectDate/StepSelectDate';
-import StepSlotOptions from './StepSlotOptions';
-import {
-  resetSchedulingFlowStore,
-  setDateRange,
-  setStepScheduling,
-  useSchedulingFlowStore,
-} from './store';
+import { useSchedulingFlowStore } from './store';
+import TextDrawerTitle from './TextDrawerTitle';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const currentDate = dayjs();
-  const initialEndDate = currentDate.add(7, 'day');
-  const { initialSessions, selectedSessionIds, isSendingToCandidate } =
-    useSchedulingApplicationStore((state) => ({
-      initialSessions: state.initialSessions,
-      selectedSessionIds: state.selectedSessionIds,
-      isSendingToCandidate: state.isSendingToCandidate,
+  const { isScheduleNowOpen,  stepScheduling, fetchingPlan } =
+    useSchedulingFlowStore((state) => ({
+      isScheduleNowOpen: state.isScheduleNowOpen,
+      scheduleFlow: state.scheduleFlow,
+      stepScheduling: state.stepScheduling,
+      fetchingPlan: state.fetchingPlan,
     }));
-  const { selectedApplication } = useSchedulingApplicationStore();
-  const {
-    isScheduleNowOpen,
-    scheduleFlow,
-    stepScheduling,
-    fetchingPlan,
-    dateRange,
-  } = useSchedulingFlowStore((state) => ({
-    isScheduleNowOpen: state.isScheduleNowOpen,
-    scheduleFlow: state.scheduleFlow,
-    stepScheduling: state.stepScheduling,
-    fetchingPlan: state.fetchingPlan,
-    dateRange: state.dateRange,
-  }));
-  const [agentSchedulingLoading, setAgentSchedulingLoading] = useState(false);
 
-  useEffect(() => {
-    if (!(dateRange.start_date || dateRange.end_date)) {
-      setDateRange({
-        start_date: currentDate.toISOString(),
-        end_date: initialEndDate.toISOString(),
-      });
-    }
-    return () => {
-      resetSchedulingFlowStore();
-      setSelectedSessionIds([]);
-    };
-  }, []);
-
-  const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
-    .some((ses) => ses.interview_session.session_type === 'debrief');
-
-  const { resetStateSelfScheduling, onClickPrimary } = useSchedulingDrawer({
+  const { resetStateSelfScheduling } = useSchedulingDrawer({
     refetch,
   });
-
-  const primaryButtonText = () => {
-    if (!isDebrief) {
-      if (scheduleFlow === 'self_scheduling') {
-        if (
-          stepScheduling === 'preference' ||
-          stepScheduling === 'pick_date' ||
-          stepScheduling === 'slot_options'
-        ) {
-          return 'Continue';
-        } else if (stepScheduling === 'self_scheduling_email_preview') {
-          return 'Send to Candidate';
-        }
-      } else if (scheduleFlow === 'email_agent') {
-        return 'Schedule Via Email';
-      } else if (scheduleFlow === 'phone_agent') {
-        return 'Schedule Via Phone';
-      } else {
-        return 'Continue';
-      }
-    } else {
-      if (stepScheduling === 'preference' || stepScheduling === 'pick_date') {
-        return 'Continue';
-      } else if (stepScheduling === 'slot_options') {
-        return 'Schedule Now';
-      }
-    }
-  };
 
   return (
     <>
@@ -120,113 +38,9 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
             },
           }}
           slotHeaderIcon={<HeaderIcon />}
-          textDrawertitle={
-            (stepScheduling === 'reschedule'
-              ? 'Reschedule'
-              : stepScheduling === 'schedule_all_options'
-                ? 'Schedule'
-                : scheduleFlow === 'self_scheduling'
-                  ? 'Self Scheduling Request'
-                  : scheduleFlow === 'email_agent'
-                    ? 'Schedule with Email Agent'
-                    : scheduleFlow === 'phone_agent'
-                      ? 'Schedule with Phone Agent'
-                      : scheduleFlow === 'create_request_availibility'
-                        ? 'Request Availability'
-                        : scheduleFlow === 'update_request_availibility'
-                          ? 'Update Request Availability'
-                          : scheduleFlow === 'debrief'
-                            ? 'Schedule Debrief'
-                            : 'Schedule Now') +
-            ` to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} for ${capitalizeFirstLetter(selectedApplication.public_jobs.job_title)}`
-          }
-          slotButtons={
-            <>
-              <ButtonSoft
-                size={2}
-                color={'neutral'}
-                textButton={stepScheduling === 'pick_date' ? 'Close' : 'Back'}
-                onClickButton={{
-                  onClick: () => {
-                    if (stepScheduling === 'pick_date') {
-                      resetStateSelfScheduling();
-                    } else if (stepScheduling === 'slot_options') {
-                      if (!isSendingToCandidate)
-                        setStepScheduling('preference');
-                    } else if (stepScheduling === 'preference') {
-                      setStepScheduling('pick_date');
-                    } else if (
-                      stepScheduling === 'self_scheduling_email_preview'
-                    ) {
-                      setStepScheduling('slot_options');
-                    } else if (stepScheduling === 'reschedule') {
-                      resetStateSelfScheduling();
-                    }
-                  },
-                }}
-              />
-
-              {stepScheduling === 'reschedule' ? (
-                <ButtonReschedule />
-              ) : stepScheduling === 'schedule_all_options' ? (
-                <ButtonAllOptions />
-              ) : (
-                <ButtonSolid
-                  isLoading={isSendingToCandidate || agentSchedulingLoading}
-                  size={2}
-                  textButton={primaryButtonText()}
-                  onClickButton={{
-                    onClick: async () => {
-                      setAgentSchedulingLoading(true);
-                      await onClickPrimary().then(() => {
-                        setAgentSchedulingLoading(false);
-                      });
-                    },
-                  }}
-                />
-              )}
-            </>
-          }
-          slotSideDrawerbody={
-            !fetchingPlan ? (
-              <>
-                {stepScheduling === 'pick_date' ? (
-                  <SelectDateRange />
-                ) : stepScheduling === 'agents_final_screen_cta' ? (
-                  <AgentFinalScreenCta />
-                ) : stepScheduling === 'reschedule' ? (
-                  <RescheduleSlot />
-                ) : stepScheduling === 'preference' ? (
-                  <StepScheduleFilter />
-                ) : stepScheduling === 'request_availibility' ? (
-                  <RequestAvailability />
-                ) : stepScheduling === 'slot_options' ? (
-                  <StepSlotOptions isDebrief={isDebrief} />
-                ) : stepScheduling === 'self_scheduling_email_preview' ? (
-                  <EmailPreviewSelfSchedule />
-                ) : stepScheduling === 'success_screen' ? (
-                  <SelfScheduleSuccess />
-                ) : stepScheduling === 'schedule_all_options' ? (
-                  <ScheduleAllOptions />
-                ) : (
-                  ''
-                )}
-              </>
-            ) : (
-              <Stack height={'calc(100vh - 96px)'}>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'center'}
-                  height={'100%'}
-                  alignItems={'center'}
-                >
-                  <Stack height={'150px'} width={'150px'}>
-                    <CandidateSlotLoad />
-                  </Stack>
-                </Stack>
-              </Stack>
-            )
-          }
+          textDrawertitle={<TextDrawerTitle />}
+          slotButtons={<ButtonMain refetch={refetch} />}
+          slotSideDrawerbody={<BodyDrawer />}
           isBottomBar={
             !fetchingPlan &&
             stepScheduling !== 'request_availibility' &&
