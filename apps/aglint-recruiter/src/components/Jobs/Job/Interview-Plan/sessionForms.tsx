@@ -720,7 +720,6 @@ const InterviewersField = ({
     badge: m.paused && <PausedBadge />,
     meta: [
       { title: m.position, icon: <RoleIcon /> },
-      { title: m.department, icon: <DepartmentIcon /> },
     ],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (

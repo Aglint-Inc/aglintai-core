@@ -1,5 +1,4 @@
 import {
-  DatabaseTable,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -47,12 +46,15 @@ const AddMember = ({
     email: string;
     linked_in: string;
     employment: employmentTypeEnum;
-    designation: string;
-    location: DatabaseTable['office_locations'];
-    department: string;
+    position: string;
+    location: ReturnType<
+      typeof useAuthDetails
+    >['members'][number]['office_location'];
+    department: ReturnType<
+      typeof useAuthDetails
+    >['members'][number]['department'];
     role: string;
     role_id: string;
-    scheduling_settings: schedulingSettingType;
     manager_id: string;
   }>({
     first_name: null,
@@ -61,28 +63,14 @@ const AddMember = ({
     linked_in: null,
     employment: null,
     location: null,
-    designation: null,
+    position: null,
     department: null,
     role: null,
     role_id: null,
-    scheduling_settings: null,
     manager_id: null,
   });
 
-  const [inviteData, setInviteData] = useState<
-    {
-      first_name: string;
-      last_name: string;
-      email: string;
-      linked_in: string;
-      employment: employmentTypeEnum;
-      department: string;
-      location: DatabaseTable['office_locations'];
-      designation: string;
-      role_id: string;
-      manager_id: string;
-    }[]
-  >([]);
+  const [inviteData, setInviteData] = useState<Omit<typeof form, 'role'>[]>([]);
 
   const [formError, setFormError] = useState<{
     first_name: boolean;
@@ -91,7 +79,7 @@ const AddMember = ({
     department: boolean;
     employment: boolean;
     location: boolean;
-    designation: boolean;
+    position: boolean;
     role: boolean;
     manager: boolean;
   }>({
@@ -101,7 +89,7 @@ const AddMember = ({
     employment: false,
     department: false,
     location: false,
-    designation: false,
+    position: false,
     role: false,
     manager: false,
   });
@@ -142,12 +130,12 @@ const AddMember = ({
       temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
       flag = true;
     }
-    if (!form.department || form.department.trim() === '') {
+    if (!form.department) {
       temp = { ...temp, department: true };
       flag = true;
     }
-    if (!form.designation || form.designation.trim() === '') {
-      temp = { ...temp, designation: true };
+    if (!form.position || form.position.trim() === '') {
+      temp = { ...temp, position: true };
       flag = true;
     }
     if (!form.role_id || form.role_id.trim() === '') {
@@ -173,7 +161,8 @@ const AddMember = ({
       const resData = await inviteUserApi(
         {
           ...form,
-          interview_location: `${form.location.city}, ${form.location.region}, ${form.location.country}`,
+          department_id: form.department.id,
+          office_location_id: form.location.id,
           scheduling_settings: {
             ...recruiter.scheduling_settings,
             timeZone: timeZone.find(
@@ -196,7 +185,7 @@ const AddMember = ({
             linked_in: form.linked_in,
             department: form.department,
             location: form.location,
-            designation: form.designation,
+            position: form.position,
             role_id: form.role_id,
             manager_id: form.manager_id,
             employment: form.employment,
@@ -212,10 +201,9 @@ const AddMember = ({
           linked_in: null,
           department: null,
           location: null,
-          designation: null,
+          position: null,
           role: null,
           role_id: null,
-          scheduling_settings: null,
           employment: null,
           manager_id: null,
         });
@@ -233,7 +221,7 @@ const AddMember = ({
   const isSubmittable = !(
     form.email &&
     form.first_name &&
-    form.designation &&
+    form.position &&
     form.department &&
     (form.role === 'admin' || Boolean(form.manager_id))
   );
@@ -260,7 +248,7 @@ const AddMember = ({
                           last_name: null,
                           email: null,
                           department: null,
-                          designation: null,
+                          position: null,
                         });
                     },
                   }}
@@ -350,20 +338,20 @@ const AddMember = ({
                   <Stack direction={'row'} gap={2}>
                     <UITextField
                       fullWidth
-                      value={form.designation ? form.designation : ''}
+                      value={form.position ? form.position : ''}
                       name='title'
                       placeholder='Enter title'
                       label='Title'
                       required
-                      error={formError.designation}
+                      error={formError.position}
                       helperText={
-                        formError.designation ? 'Title must required' : ''
+                        formError.position ? 'Title must required' : ''
                       }
                       onFocus={() => {
-                        setFormError({ ...formError, designation: false });
+                        setFormError({ ...formError, position: false });
                       }}
                       onChange={(e) => {
-                        setForm({ ...form, designation: e.target.value });
+                        setForm({ ...form, position: e.target.value });
                       }}
                     />
                     <Autocomplete
@@ -447,13 +435,11 @@ const AddMember = ({
                     />
                     <Autocomplete
                       fullWidth
-                      value={recruiter?.departments.find(
-                        (dep) => dep.name === form.department,
-                      )}
+                      value={form.department}
                       onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          department: newValue.name,
+                          department: newValue,
                         });
                       }}
                       getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
@@ -578,7 +564,7 @@ const AddMember = ({
                               last_name: null,
                               email: null,
                               department: null,
-                              designation: null,
+                              position: null,
                               employment: null,
                               role: null,
                               role_id: null,
@@ -619,7 +605,7 @@ const AddMember = ({
                       last_name: null,
                       email: null,
                       department: null,
-                      designation: null,
+                      position: null,
                     });
                 },
               }}

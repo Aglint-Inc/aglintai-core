@@ -1,5 +1,4 @@
 import { DB } from '@aglint/shared-types';
-import { defaultRoles } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -33,25 +32,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (recruiter_id: string, includeSupended: boolean) => {
-  const filSup = supabase
+const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
+  const query = supabase
     .from('recruiter_relation')
     .select(
       `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}), roles(name)`,
     )
-    .eq('recruiter_id', recruiter_id);
+    .eq('recruiter_id', recruiter_id)
+    .eq('is_active', true);
 
-  return filSup.then(({ data, error }) => {
+  if (includeSuspended) {
+    query.in('recruiter_user.status', ['active', 'suspended']);
+  } else {
+    query.in('recruiter_user.status', ['active']);
+  }
+
+  return query.throwOnError().then(({ data, error }) => {
     if (error) throw new Error(error.message);
     const resAlter = data
-      .filter((item) => item.recruiter_user)
+      .filter((item) => Boolean(item.recruiter_user))
       .map((item) => ({
         ...item.recruiter_user,
-        role: item.roles.name as (typeof defaultRoles)[number]['name'],
+        role: item.roles.name,
       }));
 
-    if (includeSupended) return resAlter;
-
-    return resAlter.filter((item) => item.status === 'active');
+    return resAlter;
   });
 };

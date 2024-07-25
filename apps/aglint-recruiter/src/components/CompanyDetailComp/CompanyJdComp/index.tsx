@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
@@ -15,10 +14,16 @@ const CompanyJdComp = ({ setIsSaving, disabled = false }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
   let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
-  const handleChange = async (recruit: RecruiterType) => {
+  const handleChange = async (
+    recruit: ReturnType<typeof useAuthDetails>['recruiter'],
+  ) => {
     setIsSaving(true);
     debouncedSave(recruit, recruiter.id);
-    setRecruiter(recruit);
+    setRecruiter({
+      ...recruiter,
+      departments: undefined,
+      office_locations: undefined,
+    });
     setTimeout(() => {
       setIsSaving(false);
     }, 1500);

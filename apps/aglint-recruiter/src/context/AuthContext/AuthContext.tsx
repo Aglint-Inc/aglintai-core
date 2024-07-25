@@ -28,7 +28,7 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import axios from '@/src/client/axios';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
-import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
+import type { GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
@@ -214,28 +214,12 @@ const AuthProvider = ({ children }) => {
         updateJoinedStatus(recruiterUser.user_id);
       }
 
-      setRecruiterUser({
-        ...recruiterUser,
-        primary: recruiterRel.primary,
-        role: recruiterRel.roles.name,
-        role_id: recruiterRel.role_id,
-        manager_id: recruiterRel.manager_id,
-        manager_details: recruiterRel.manager_details
-          ? {
-              name: `${recruiterRel.manager_details.first_name} ${recruiterRel.manager_details.last_name}`.trim(),
-              position: recruiterRel.manager_details.position,
-            }
-          : null,
-        created_by: recruiterRel.created_by,
-        recruiter_relation_id: recruiterRel.id,
-      });
+      setRecruiterUser(recruiterUser);
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
       setLoading(false);
-
-      const role = recruiterRel.roles.name;
 
       if (rolePermissions.permissions['view_users']) {
         await getMembersFromDB();
@@ -296,18 +280,17 @@ const AuthProvider = ({ children }) => {
     updateDB = true,
   }) => {
     if (!user_id && data && recruiter.id) return Promise.resolve(false);
+    let tempData = { ...data, user_id };
     if (updateDB) {
-      data = await updateMember({
-        data: { ...data, user_id },
+      tempData = await updateMember({
+        data: tempData,
       });
     }
-    if (data) {
+    if (tempData) {
       setMembers((prev) =>
-        prev.map((item) => {
-          return data.user_id === item.user_id
-            ? ({ ...item, ...data } as RecruiterUserType)
-            : item;
-        }),
+        prev.map((item) =>
+          tempData.user_id === item.user_id ? { ...item, ...tempData } : item,
+        ),
       );
       return true;
     }

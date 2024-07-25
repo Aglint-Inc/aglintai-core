@@ -1541,20 +1541,6 @@ export type Database = {
             foreignKeyName: "public_interview_module_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "all_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_interview_module_relation_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "all_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_interview_module_relation_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -3325,16 +3311,16 @@ export type Database = {
       recruiter_user: {
         Row: {
           created_at: string
-          department: string | null
+          department_id: number | null
           email: string | null
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
-          interview_location: string | null
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
+          office_location_id: number | null
           phone: string | null
           position: string | null
           profile_image: string | null
@@ -3345,16 +3331,16 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
-          interview_location?: string | null
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
+          office_location_id?: number | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -3365,16 +3351,16 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
-          interview_location?: string | null
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
+          office_location_id?: number | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -3384,6 +3370,20 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "recruiter_user_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_office_location_id_fkey"
+            columns: ["office_location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]

@@ -32,7 +32,8 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser, setMembers, handleMemberUpdate } = useAuthDetails();
+  const { recruiter, recruiterUser, setMembers, handleMemberUpdate } =
+    useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
@@ -58,21 +59,9 @@ const TeamManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
 
-  const uniqueDepartments = [
-    ...new Set(
-      members
-        .filter((ele) => Boolean(ele.department?.length))
-        .map((item) => item.department),
-    ),
-  ];
+  const uniqueDepartments = recruiter.departments.map((dep) => dep.name);
 
-  const uniqueLocations = [
-    ...new Set(
-      members
-        .filter((ele) => Boolean(ele.interview_location?.length))
-        .map((item) => item.interview_location),
-    ),
-  ];
+  const uniqueLocations = recruiter.office_locations.map((loc) => loc.city);
 
   const uniqueRoles = [
     ...new Set(
@@ -97,7 +86,7 @@ const TeamManagement = () => {
         selectedDepartments.includes(String(member.department));
       const locationMatch =
         !selectedLocations.length ||
-        selectedLocations.includes(String(member.interview_location));
+        selectedLocations.includes(member.office_location?.city);
       const statusMatch =
         !selectedStatus.length ||
         selectedStatus

@@ -294,7 +294,7 @@ const Member = ({
         }
         userEmail={member.email}
         userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
-        textDepartment={member.department}
+        textDepartment={member.department?.name}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
       />

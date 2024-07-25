@@ -142,6 +142,8 @@ export interface RecruiterUserType extends TempRecruiterUser {
   role_id: string;
   last_login?: string;
   primary?: boolean;
+  department: Pick<DatabaseTable["departments"], "id" | "name">;
+  office_location: DatabaseTable["office_locations"];
   manager_id: string;
   manager_details?: {
     name: string;
