@@ -310,6 +310,7 @@ function ModuleSettingComp({
                 isDisable={!localModule?.settings?.require_training}
                 slotRequiresTrainingToggle={
                   <Switch
+                  sx={{marginLeft:'-9px'}}
                     size='small'
                     checked={localModule?.settings?.require_training}
                     onChange={() => {
@@ -376,7 +377,7 @@ function ModuleSettingComp({
                 }
                 slotInputNoOfReverse={
                   <TextField
-                    sx={{ width: '200px' }}
+                    sx={{ width: '100px' }}
                     select
                     value={localModule.settings.noReverseShadow}
                     onChange={(e) => {
@@ -398,7 +399,7 @@ function ModuleSettingComp({
                 }
                 slotInputNoOfShadow={
                   <TextField
-                    sx={{ width: '200px' }}
+                    sx={{ width: '100px' }}
                     select
                     value={localModule.settings.noShadow}
                     onChange={(e) => {
