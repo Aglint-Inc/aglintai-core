@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Text } from '@/devlink/Text';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
@@ -12,7 +13,6 @@ import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
 import { HistoryPill } from '@/devlink3/HistoryPill';
-import InterviewerTrainingTypeIcon from '@/src/components/Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -384,13 +384,13 @@ function IndividualCard({
                           //   iconName={'delete'}
                           //   color={'neutral'}
                           //   onClickButton={{
-                          //     onClick: async () => {
-                          //       await alterCount({
-                          //         type: 'reverse_shadow',
-                          //         count: user.number_of_reverse_shadow - 1,
-                          //         module_relation_id: user.id,
-                          //       });
-                          //     },
+                          // onClick: async () => {
+                          //   await alterCount({
+                          //     type: 'reverse_shadow',
+                          //     count: user.number_of_reverse_shadow - 1,
+                          //     module_relation_id: user.id,
+                          //   });
+                          // },
                           //   }}
                           // />
                         }
@@ -405,41 +405,89 @@ function IndividualCard({
               spacing={'var(--space-2)'}
               px={'var(--space-4)'}
               pb={'var(--space-4)'}
+              gap={3}
             >
-              <ButtonGhost
-                textButton={'Add Shadow'}
-                isLeftIcon={true}
-                color={'neutral'}
-                slotIcon={<InterviewerTrainingTypeIcon type='shadow' />}
-                size={1}
-                onClickButton={{
-                  onClick: () => {
-                    if (isSaving) return;
-                    alterCount({
-                      type: 'shadow',
-                      count: user.number_of_shadow + 1,
-                      module_relation_id: user.id,
-                    });
-                  },
-                }}
-              />
-              <ButtonGhost
-                textButton={'Add Reverse Shadow'}
-                color={'neutral'}
-                isLeftIcon={true}
-                slotIcon={<InterviewerTrainingTypeIcon type='reverse_shadow' />}
-                size={1}
-                onClickButton={{
-                  onClick: () => {
-                    if (isSaving) return;
-                    alterCount({
-                      type: 'reverse_shadow',
-                      count: user.number_of_reverse_shadow + 1,
-                      module_relation_id: user.id,
-                    });
-                  },
-                }}
-              />
+              <Stack direction={'row'} gap={1}>
+                Shadow
+                <IconButtonSoft
+                  isDisabled={
+                    shadowProgress.length // shadow complete
+                      ? mutatedShadowProgress.length === 0
+                      : mutatedShadowProgress.length === 1
+                  }
+                  color={'neutral'}
+                  iconName='remove'
+                  size={1}
+                  onClickButton={{
+                    onClick: async () => {
+                      await alterCount({
+                        type: 'shadow',
+                        count: user.number_of_shadow - 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+                <Typography paddingInline={'2px'}>
+                  {mutatedShadowProgress.length + shadowProgress.length}
+                </Typography>
+                <IconButtonSoft
+                  iconName='Add'
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      if (isSaving) return;
+                      alterCount({
+                        type: 'shadow',
+                        count: user.number_of_shadow + 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+              </Stack>
+              <Stack direction={'row'} gap={1}>
+                Reverse Shadow
+                <IconButtonSoft
+                  iconName='remove'
+                  isDisabled={
+                    reverseShadowProgress.length
+                      ? mutatedReverseShadowProgress.length === 0
+                      : mutatedReverseShadowProgress.length === 1
+                  }
+                  color={'neutral'}
+                  size={1}
+                  onClickButton={{
+                    onClick: async () => {
+                      await alterCount({
+                        type: 'reverse_shadow',
+                        count: user.number_of_reverse_shadow - 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+                <Typography paddingInline={'2px'}>
+                  {mutatedReverseShadowProgress.length +
+                    reverseShadowProgress.length}
+                </Typography>
+                <IconButtonSoft
+                  iconName='Add'
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      if (isSaving) return;
+                      alterCount({
+                        type: 'reverse_shadow',
+                        count: user.number_of_reverse_shadow + 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+              </Stack>
             </Stack>
           </Collapse>
         }
