@@ -256,6 +256,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
     session_ids,
     rec_id,
     dateRange,
+    isNoConflictsOnly = false,
   }: {
     session_ids: string[];
     rec_id: string;
@@ -263,6 +264,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
       start_date: string;
       end_date: string;
     };
+    isNoConflictsOnly?: boolean;
   }) => {
     try {
       setFetchingPlan(true);
@@ -280,6 +282,9 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
           },
         },
       };
+      if (isNoConflictsOnly) {
+        delete bodyParams.options;
+      }
       const res = await axios.post(
         '/api/scheduling/v1/find_availability',
         bodyParams,
@@ -311,6 +316,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
         dateRange: dateRange,
         session_ids: selectedSessionIds,
         rec_id: recruiter.id,
+        isNoConflictsOnly: true,
       });
 
       if (resOptions.length === 0) {
