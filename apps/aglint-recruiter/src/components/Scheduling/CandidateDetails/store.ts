@@ -8,7 +8,7 @@ import { create } from 'zustand';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import { fetchApplicationDetails } from './queries/utils';
-import { SelectedApplicationTypeDB, SessionsType } from './types';
+import { SessionsType } from './types';
 
 export type TabSchedulingType =
   | 'interview_plan'
@@ -53,6 +53,7 @@ export interface SchedulingApplication {
       }[]
     | null;
   selectedTasks: DatabaseView['tasks_view'][];
+  feedback: DatabaseTable['applications']['feedback'];
 }
 
 const initialState: SchedulingApplication = {
@@ -79,6 +80,7 @@ const initialState: SchedulingApplication = {
   selectedApplicationLog: null, // selected application log details while cancelling or rescheduling from activity panel
   rescheduleSessionIds: [], // reschedule session ids,
   selectedTasks: [],
+  feedback: null,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -150,7 +152,7 @@ export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useSchedulingApplicationStore.setState({ selectedSessionIds });
 
 export const setSelectedApplication = (
-  selectedApplication: SelectedApplicationTypeDB,
+  selectedApplication: SchedulingApplication['selectedApplication'],
 ) => useSchedulingApplicationStore.setState({ selectedApplication });
 
 export const setInterviewModules = (interviewModules: InterviewModuleType[]) =>
@@ -166,17 +168,8 @@ export const setMembers = (members: InterviewScheduleContextType['members']) =>
   useSchedulingApplicationStore.setState({ members });
 
 export const setApplicationCandidateFeedback = (
-  feedback: SchedulingApplication['selectedApplication']['feedback'],
-) =>
-  useSchedulingApplicationStore.setState((pre) => {
-    const temp = {
-      selectedApplication: pre.selectedApplication,
-    };
-    if (temp.selectedApplication) {
-      temp.selectedApplication.feedback = feedback;
-    }
-    return temp;
-  });
+  feedback: DatabaseTable['applications']['feedback'],
+) => useSchedulingApplicationStore.setState({ feedback });
 
 export const resetSchedulingApplicationState = () =>
   useSchedulingApplicationStore.setState({ ...initialState });

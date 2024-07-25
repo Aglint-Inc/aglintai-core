@@ -112,21 +112,14 @@ const scheduleWithAgentWithoutTaskId = async ({
   console.log(application_id, 'application_id');
 
   if (type) {
-    const { data: checkSch, error: errorCheckSch } = await supabase
-      .from('interview_schedule')
-      .select('id')
-      .eq('application_id', application_id);
-
     const resApplicationDetails = await fetchApplicationDetails({
       application_id,
       supabaseCaller: supabase,
     });
 
-    console.log(checkSch[0]);
+    const checkSch = resApplicationDetails.interview_schedule;
 
-    if (errorCheckSch) throw new Error(errorCheckSch.message);
-
-    if (checkSch.length === 0) {
+    if (!checkSch?.id) {
       console.log('fetchInterviewDataJob');
 
       const sessionsWithPlan = await fetchSessionDetailsFromInterviewPlan({
@@ -225,22 +218,11 @@ const scheduleWithAgentWithoutTaskId = async ({
         session_ids.includes(ses.interview_session.id),
       );
 
-      await handleMeetingsOrganizerResetRelations({
-        application_id,
-        selectedSessions: selectedSessions.map((ses) => ({
-          interview_session_id: ses.interview_session.id,
-          interview_meeting_id: ses.interview_meeting.id,
-          interview_schedule_id: ses.interview_meeting.interview_schedule_id,
-        })),
-        supabase,
-        meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
-      });
-
       const filterJson = await createFilterJson({
         dateRange,
         organizer_name: recruiter_user_name,
         sessions_ids: session_ids,
-        schedule_id: checkSch[0].id,
+        schedule_id: checkSch.id,
         supabase,
         rec_user_id,
       });
@@ -258,6 +240,30 @@ const scheduleWithAgentWithoutTaskId = async ({
         candidate_name,
       });
 
+      await agentTrigger({
+        type,
+        filterJsonId: filterJson.id,
+        task_id: task.id,
+        recruiter_user_name,
+        candidate_name,
+        company_name,
+        jobRole: resApplicationDetails.public_jobs.job_title,
+        candidate_email: resApplicationDetails.candidates.email,
+        rec_user_phone,
+        recruiter_user_id: rec_user_id,
+      });
+
+      await handleMeetingsOrganizerResetRelations({
+        application_id,
+        selectedSessions: selectedSessions.map((ses) => ({
+          interview_session_id: ses.interview_session.id,
+          interview_meeting_id: ses.interview_meeting.id,
+          interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        })),
+        supabase,
+        meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
+      });
+
       await addScheduleActivity({
         title: `Candidate invited for session ${selectedSessions
           .map((ses) => ses.interview_session.name)
@@ -270,19 +276,6 @@ const scheduleWithAgentWithoutTaskId = async ({
         task_id: task.id,
         supabase,
         created_by: rec_user_id,
-      });
-
-      await agentTrigger({
-        type,
-        filterJsonId: filterJson.id,
-        task_id: task.id,
-        recruiter_user_name,
-        candidate_name,
-        company_name,
-        jobRole: resApplicationDetails.public_jobs.job_title,
-        candidate_email: resApplicationDetails.candidates.email,
-        rec_user_phone,
-        recruiter_user_id: rec_user_id,
       });
     }
     return true;
