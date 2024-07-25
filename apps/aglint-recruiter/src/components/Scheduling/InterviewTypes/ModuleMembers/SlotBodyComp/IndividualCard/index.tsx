@@ -1,5 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Collapse, Popover, Stack } from '@mui/material';
+import { Collapse, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -15,6 +15,7 @@ import { HistoryPill } from '@/devlink3/HistoryPill';
 import InterviewerTrainingTypeIcon from '@/src/components/Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
@@ -52,6 +53,7 @@ function IndividualCard({
   refetchTrainingProgress: () => void;
 }) {
   const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -98,10 +100,12 @@ function IndividualCard({
       .from('interview_training_progress')
       .update({
         is_approved: true,
+        approved_user_id: recruiterUser.user_id,
       })
       .eq('id', id);
 
-    refetchTrainingProgress();
+    await refetchTrainingProgress();
+    toast.success('Approved');
   };
 
   const alterCount = async ({
@@ -227,18 +231,36 @@ function IndividualCard({
                                   }
                                 />
                                 <Text content={prog.interview_session.name} />
+
+                                {prog.is_approved ? (
+                                  <Typography
+                                    color={'var(--accent-11)'}
+                                    fontSize={11}
+                                  >
+                                    Approved by{' '}
+                                    <span
+                                      style={{
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {getFullName(
+                                        prog.recruiter_user?.first_name,
+                                        prog.recruiter_user?.last_name,
+                                      )}
+                                    </span>
+                                  </Typography>
+                                ) : (
+                                  <ButtonGhost
+                                    textButton={'Approve'}
+                                    size={1}
+                                    onClickButton={{
+                                      onClick: async () => {
+                                        await approveTrainingProgress(prog.id);
+                                      },
+                                    }}
+                                  />
+                                )}
                               </Stack>
-                              {!prog.is_approved && (
-                                <ButtonGhost
-                                  textButton={'Approve'}
-                                  size={1}
-                                  onClickButton={{
-                                    onClick: async () => {
-                                      await approveTrainingProgress(prog.id);
-                                    },
-                                  }}
-                                />
-                              )}
                             </>
                           }
                         />
@@ -307,7 +329,24 @@ function IndividualCard({
                                 <Text content={prog.interview_session.name} />
                               </Stack>
 
-                              {!prog.is_approved && (
+                              {prog.is_approved ? (
+                                <Typography
+                                  color={'var(--accent-11)'}
+                                  fontSize={11}
+                                >
+                                  Approved by{' '}
+                                  <span
+                                    style={{
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {getFullName(
+                                      prog.recruiter_user?.first_name,
+                                      prog.recruiter_user?.last_name,
+                                    )}
+                                  </span>
+                                </Typography>
+                              ) : (
                                 <ButtonGhost
                                   textButton={'Approve'}
                                   size={1}
