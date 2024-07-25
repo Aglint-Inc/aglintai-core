@@ -3,6 +3,7 @@ import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 // import axios from 'axios';
 import { useMemo, useState } from 'react';
 
@@ -284,12 +285,11 @@ const AdminFeedback = ({
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
   });
-
+  const router = useRouter();
   return (
     <>
       <Stack direction={'column'} spacing={2} p={2}>
-        {Object.keys(sessions).filter((key) => Boolean(sessions[key]?.length))
-          .length > 1
+        {router.pathname !== '/scheduling/view'
           ? Object.keys(sessions)
               .map((key) => {
                 const session = sessions[key] || [];
@@ -420,13 +420,12 @@ const InterviewerFeedback = ({
   interviewers.forEach((item) => {
     sessions[item.session.id] = [...(sessions[item.session.id] || []), item];
   });
-
+  const router = useRouter();
   return (
     <>
       <Stack direction={'column'} spacing={2} p={2}>
         <>
-          {Object.keys(sessions).filter((key) => Boolean(sessions[key]?.length))
-            .length > 1
+          {router.pathname !== '/scheduling/view'
             ? Object.keys(sessions)
                 .map((key) => {
                   const session = sessions[key] || [];
@@ -585,7 +584,7 @@ function FeedbackCardDetails({
   handelFeedbackRequest,
 }: {
   index: number;
-  int: any;
+  int: FeedbackWindowInterviewersType[string][number];
   user_id?: string;
   isFeedBackEnabled: boolean;
   isAdmin?: boolean;
@@ -606,7 +605,96 @@ function FeedbackCardDetails({
       slotButton={
         <ShowCode>
           <ShowCode.When isTrue={isFeedBackEnabled && isAdmin}>
-            <ShowCode.When isTrue={Boolean(int.user_id === user_id)}>
+            <ShowCode>
+              <ShowCode.When isTrue={Boolean(int.user_id === user_id)}>
+                <ButtonSoft
+                  size={1}
+                  color={
+                    int.feedback && int.feedback?.recommendation
+                      ? 'neutral'
+                      : 'accent'
+                  }
+                  textButton={
+                    int.feedback && int.feedback?.recommendation
+                      ? 'Edit Feedback'
+                      : 'Add Feedback'
+                  }
+                  isLeftIcon={true}
+                  iconName={
+                    int.feedback && int.feedback?.recommendation
+                      ? 'edit_square'
+                      : 'add'
+                  }
+                  onClickButton={{
+                    onClick: () => {
+                      if (isFeedBackEnabled) {
+                        setSelectedInterviewer({
+                          index,
+                          interviewer: int,
+                        });
+                      }
+                    },
+                  }}
+                />
+              </ShowCode.When>
+              <ShowCode.When
+                isTrue={
+                  Boolean(int.feedback && int.feedback?.recommendation) &&
+                  int.user_id !== user_id
+                }
+              >
+                {null}
+              </ShowCode.When>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={
+                    int.feedback &&
+                    !int.feedback?.recommendation &&
+                    int.user_id !== user_id
+                  }
+                >
+                  <ButtonSoft
+                    size={1}
+                    textButton={'Re-request Feedback'}
+                    onClickButton={{
+                      onClick: (e) => {
+                        handelFeedbackRequest({
+                          e,
+                          session_id: int.session.id,
+                          relation_id: int.relation_id,
+                          receiver: {
+                            name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                            email: int.email,
+                          },
+                        });
+                      },
+                    }}
+                  />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <ButtonSoft
+                    size={1}
+                    textButton={'Request Feedback'}
+                    onClickButton={{
+                      onClick: (e) => {
+                        handelFeedbackRequest({
+                          e,
+                          session_id: int.session.id,
+                          relation_id: int.relation_id,
+                          receiver: {
+                            name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                            email: int.email,
+                          },
+                        });
+                      },
+                    }}
+                  />
+                </ShowCode.Else>
+              </ShowCode>
+            </ShowCode>
+          </ShowCode.When>
+          <ShowCode.Else>
+            <>
               <ButtonSoft
                 size={1}
                 color={
@@ -634,66 +722,7 @@ function FeedbackCardDetails({
                   },
                 }}
               />
-            </ShowCode.When>
-            <ShowCode>
-              <ShowCode.When
-                isTrue={
-                  Boolean(int.feedback && int.feedback?.objective) &&
-                  int.user_id !== user_id
-                }
-              >
-                {null}
-              </ShowCode.When>
-
-              <ShowCode.When isTrue={int.feedback && int.user_id !== user_id}>
-                <ButtonSoft
-                  size={1}
-                  textButton={
-                    !int.feedback ? 'Request Feedback' : 'Re-request Feedback'
-                  }
-                  onClickButton={{
-                    onClick: (e) => {
-                      handelFeedbackRequest({
-                        e,
-                        session_id: int.session.id,
-                        relation_id: int.relation_id,
-                        receiver: {
-                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                          email: int.email,
-                        },
-                      });
-                    },
-                  }}
-                />
-              </ShowCode.When>
-            </ShowCode>
-          </ShowCode.When>
-          <ShowCode.Else>
-            <ButtonSoft
-              size={1}
-              color={
-                int.feedback && int.feedback?.objective ? 'neutral' : 'accent'
-              }
-              textButton={
-                int.feedback && int.feedback?.objective
-                  ? 'Edit Feedback'
-                  : 'Add Feedback'
-              }
-              isLeftIcon={true}
-              iconName={
-                int.feedback && int.feedback?.objective ? 'edit_square' : 'add'
-              }
-              onClickButton={{
-                onClick: () => {
-                  if (isFeedBackEnabled) {
-                    setSelectedInterviewer({
-                      index,
-                      interviewer: int,
-                    });
-                  }
-                },
-              }}
-            />
+            </>
           </ShowCode.Else>
         </ShowCode>
       }
@@ -702,23 +731,25 @@ function FeedbackCardDetails({
           <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
             <ShowCode>
               <ShowCode.When isTrue={!!int.feedback?.recommendation}>
-                <>
-                  <Typography fontSize={20}>
-                    <GlobalIcon
-                      size={'30'}
-                      color={'#000'}
-                      iconName={'kid_star'}
-                    />
-                  </Typography>
-                  <Typography>
-                    Recommendation Level : {int.feedback?.recommendation}
-                  </Typography>
+                <Stack direction={'column'} gap={'10px'}>
+                  <Stack direction={'row'} gap={'10px'}>
+                    <Typography fontSize={20}>
+                      <GlobalIcon
+                        size={'30'}
+                        color={'#000'}
+                        iconName={'kid_star'}
+                      />
+                    </Typography>
+                    <Typography>
+                      Recommendation Level : {int.feedback?.recommendation}
+                    </Typography>
+                  </Stack>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: int.feedback?.objective,
                     }}
                   ></div>
-                </>
+                </Stack>
               </ShowCode.When>
               <ShowCode.Else>
                 <Typography>Not Submitted Feedback</Typography>
