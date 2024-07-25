@@ -180,6 +180,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .location-delete-wrappers {
   position: absolute;
   left: auto;

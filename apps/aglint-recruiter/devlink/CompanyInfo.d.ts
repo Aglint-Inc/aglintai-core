@@ -15,4 +15,5 @@ declare function CompanyInfo(props: {
   isSpecialistVisible?: Types.Visibility.VisibilityConditions;
   isAvailableRolesVisible?: Types.Visibility.VisibilityConditions;
   slotEmploymentType?: Types.Devlink.Slot;
+  isEditable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

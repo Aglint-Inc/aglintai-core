@@ -9,4 +9,5 @@ declare function CompanyLocation(props: {
   textFullAddress?: React.ReactNode;
   textTimeZone?: React.ReactNode;
   isHeadQuaterVisible?: Types.Visibility.VisibilityConditions;
+  isEditDeleteVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
