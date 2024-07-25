@@ -150,7 +150,7 @@ function DeleteMemberDialog({
           <DeletePopup
             textTitle={
               <Typography variant='body1'>
-                Suspend user:{' '}
+                Suspend{' '}
                 <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
             }

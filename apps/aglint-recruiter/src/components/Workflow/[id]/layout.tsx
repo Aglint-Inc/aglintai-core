@@ -171,14 +171,10 @@ const DeletePopup = () => {
               textTitle={
                 count === 0
                   ? ' Are you sure you want to delete this workflow?'
-                  : 'Are you sure you want to unlink and delete this workflow?'
+                  : 'By deleting this it will be unlinked from all connected jobs.'
               }
               textDescription=''
-              // textDescription={
-              //   count === 0
-              //     ? 'This workflow is not connected to any job'
-              //     : 'By deleting this it will be unlinked from all connected jobs'
-              // }
+
               // textTitle={
               //   count === 0
               //     ? ' Are you sure you want to delete this workflow?'
