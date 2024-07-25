@@ -191,12 +191,12 @@ const DeletePopup = () => {
                 textTitle={`Connected Jobs (${count})`}
                 slotTextWithIcon={
                   <>
-                    {(deletion?.workflow?.jobs ?? []).map(({ title }) => (
+                    {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
                       <TextWithIcon
-                        key={title}
+                        key={job_title}
                         iconName={'work'}
                         fontWeight={'regular'}
-                        textContent={capitalizeAll(title)}
+                        textContent={capitalizeAll(job_title)}
                       />
                     ))}
                   </>
