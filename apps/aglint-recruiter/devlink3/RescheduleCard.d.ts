@@ -19,4 +19,7 @@ declare function RescheduleCard(props: {
   isTakeActionVisible?: Types.Visibility.VisibilityConditions;
   onClickTakeAction?: Types.Devlink.RuntimeProps;
   slotDateReason?: Types.Devlink.Slot;
+  slotAdditionalNotes?: Types.Devlink.Slot;
+  isNotesVisible?: Types.Visibility.VisibilityConditions;
+  isDateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
