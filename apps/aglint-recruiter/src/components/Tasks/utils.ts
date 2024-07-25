@@ -117,6 +117,9 @@ type optionDataType = {
   selectedSession?: meetingCardType[];
   timeFormat?: string;
   debriefDateRange?: { start_date: string; end_date: string };
+  creatorDesignation?: string;
+  creatorName?: string;
+  creatorId?: string;
 };
 
 export async function createTaskProgress({
@@ -157,6 +160,9 @@ export async function createTaskProgress({
     selectedSession,
     timeFormat,
     debriefDateRange,
+    creatorDesignation,
+    creatorName,
+    creatorId,
   } = optionData;
   const removedSessions = currentSessions?.filter(
     (ele) => !selectedSession?.map((ele) => ele.id).includes(ele.id),
@@ -177,7 +183,7 @@ export async function createTaskProgress({
       case 'priority_update':
         return `Priority changed from {currentPriority} to {priority}`;
       case 'create_task':
-        return `Created task for {candidate} to schedule interviews for {selectedSessions}`;
+        return `{creatorDesignation}: {creatorId} requested {assigneeName} to schedule an interview for {selectedSessions} between {scheduleDateRange} .`;
       case 'change_assignee':
         return `Assignee changed from {currentAssigneeName} to {assigneeName}`;
       case 'status_update':
@@ -231,6 +237,9 @@ export async function createTaskProgress({
         '{removedSessions}': removedSessions,
         '{time_format}': timeFormat,
         '{debriefDateRange}': debriefDateRange,
+        '{creatorDesignation}': creatorDesignation,
+        '{creatorId}': creatorId,
+        '{creatorName}': creatorName,
       },
     })
     .select();

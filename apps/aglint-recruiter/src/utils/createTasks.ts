@@ -54,6 +54,15 @@ export const createTasks = async (
       optionData: {
         candidateName: candidate.name,
         sessions: session_ids,
+        creatorDesignation: 'Admin', // need to change
+        creatorName: recruiterUser?.name,
+        assignerName: assignerName,
+        creatorId: recruiterUser?.id,
+        assignerId: assigner.user_id,
+        scheduleDateRange: {
+          start_date: eachTask.schedule_date_range.start_date,
+          end_date: eachTask.schedule_date_range.end_date,
+        },
       },
     });
     addScheduleActivity({
