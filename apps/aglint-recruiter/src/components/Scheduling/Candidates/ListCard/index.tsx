@@ -101,7 +101,9 @@ function ListCardInterviewSchedule({
         slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
         textInterviewPanel={'0'}
         slotInterviewProgress={
-          <SessionProgressPipeline isHover={isHover} app={app} />
+          <>
+            <SessionProgressPipeline isHover={isHover} app={app} />
+          </>
         }
         textRelatedJob={app.public_jobs?.job_title}
       />

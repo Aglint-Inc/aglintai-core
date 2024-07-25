@@ -9,6 +9,7 @@ import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 
+import { useSchedulingApplicationStore } from '../../../store';
 import { setFilters, useSchedulingFlowStore } from '../../store';
 import DateRangeField from './DateRangeField';
 import NoSlotError from './NoSlotError';
@@ -21,6 +22,12 @@ export type availabilityType =
   | 'outside_work_hours';
 
 function StepScheduleFilter() {
+  const { initialSessions, selectedSessionIds } = useSchedulingApplicationStore(
+    (state) => ({
+      initialSessions: state.initialSessions,
+      selectedSessionIds: state.selectedSessionIds,
+    }),
+  );
   const { dateRange, schedulingOptions, filters, errorNoSlotFilter } =
     useSchedulingFlowStore((state) => ({
       dateRange: state.dateRange,
@@ -30,24 +37,32 @@ function StepScheduleFilter() {
     }));
 
   const {
-    numberHardConflicts,
-    numberNoConflicts,
-    numberOutsideWorkHours,
-    numberSoftConflicts,
+    numberHardConflicts: totalNumberHardConflicts,
+    numberNoConflicts: totalNumberNoConflicts,
+    numberOutsideWorkHours: totalNumberOutsideWorkHours,
+    numberSoftConflicts: totalNumberSoftConflicts,
   } = useMemo(
     () =>
       filterSchedulingOptionsArray({
         schedulingOptions,
-        filters,
+        filters: {
+          isNoConflicts: true,
+          isSoftConflicts: true,
+          isHardConflicts: true,
+          isOutSideWorkHours: true,
+          preferredInterviewers: [],
+          preferredDateRanges: [],
+          isWorkLoad: false,
+        },
       }),
-    [filters],
+    [],
   );
 
   let availabilityCards = [
     {
       heading: 'No Conflicts',
       title: 'Show only no conflicts slots',
-      number: numberNoConflicts,
+      number: totalNumberHardConflicts,
       color: 'success',
       iconName: 'check_circle',
       disableColor: 'neutral',
@@ -58,7 +73,7 @@ function StepScheduleFilter() {
     {
       heading: 'Soft Conflicts',
       title: 'Show soft conflict slots',
-      number: numberSoftConflicts,
+      number: totalNumberNoConflicts,
       color: 'warning',
       iconName: 'info',
       disableColor: 'neutral',
@@ -70,7 +85,7 @@ function StepScheduleFilter() {
     {
       heading: 'Hard Conflicts',
       title: 'Show hard conflicts slots',
-      number: numberHardConflicts,
+      number: totalNumberSoftConflicts,
       color: 'error',
       iconName: 'warning',
       disableColor: 'neutral',
@@ -83,7 +98,7 @@ function StepScheduleFilter() {
     {
       heading: 'Outside Work Hours',
       title: 'Show out of work hours slots',
-      number: numberOutsideWorkHours,
+      number: totalNumberOutsideWorkHours,
       color: 'info',
       iconName: 'dark_mode',
       disableColor: 'neutral',
@@ -94,11 +109,24 @@ function StepScheduleFilter() {
     },
   ];
 
+  const isDebrief = initialSessions
+    .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
+    .some((ses) => ses.interview_session.session_type === 'debrief');
+
   return (
     <Stack height={'calc(100vh - 96px)'}>
-      {errorNoSlotFilter && <NoSlotError />}
+      {errorNoSlotFilter && (
+        <NoSlotError
+          totalNumberHardConflicts={totalNumberHardConflicts}
+          totalNumberNoConflicts={totalNumberNoConflicts}
+          totalNumberOutsideWorkHours={totalNumberOutsideWorkHours}
+          totalNumberSoftConflicts={totalNumberSoftConflicts}
+        />
+      )}
 
       <SchedulerFilters
+        showWorkloadPreference={!isDebrief}
+        textMembers={isDebrief ? 'Sort by Interviewers' : 'Sort by Members'}
         textDateRange={`${dayjs(dateRange.start_date).format('MMMM DD')} - ${dayjs(dateRange.end_date).format('MMMM DD')}`}
         slotCheckbox={
           <Checkbox

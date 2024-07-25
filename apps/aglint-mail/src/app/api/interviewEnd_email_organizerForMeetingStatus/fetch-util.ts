@@ -28,7 +28,7 @@ export async function fetchUtil(
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
   const start_time = data.start_time;
   const meeting_id = data.id;
-  const cancelLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
+  const meetingStatusUpdateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
 
   const comp_email_temp = await fetchCompEmailTemp(
     recruiter_id,
@@ -61,7 +61,7 @@ export async function fetchUtil(
       companyLogo: company.logo,
       emailBody: filled_comp_template.body,
       subject: filled_comp_template.subject,
-      meetingStatusUpdateLink: cancelLink,
+      meetingStatusUpdateLink,
     };
 
   return {

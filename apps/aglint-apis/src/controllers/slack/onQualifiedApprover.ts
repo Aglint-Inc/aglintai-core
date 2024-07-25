@@ -5,46 +5,41 @@ import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {getUserIdByEmail} from 'src/utils/slack';
 
 export async function onQualifiedApprover(req: Request, res: Response) {
-  const {interview_module_relation_id, approver_id, organizer_id} = req.body;
+  const {session_relation_id} = req.body;
 
-  if (!interview_module_relation_id || !approver_id) {
-    return res
-      .status(400)
-      .json({error: 'interview_module_relation_id and approver_id required'});
+  if (!session_relation_id) {
+    return res.status(400).json({error: 'session_relation_id required'});
   }
 
   try {
-    const [data] = supabaseWrap(
+    const [sessn_reln] = supabaseWrap(
       await supabaseAdmin
-        .from('interview_module_relation')
+        .from('interview_session_relation')
         .select(
-          'user_id,recruiter_user(first_name,last_name),interview_module(name)'
+          '*, interview_module_relation(*,interview_module(*,recruiter(*)),recruiter_user(*))'
         )
-        .eq('id', interview_module_relation_id)
+        .eq('id', session_relation_id)
     );
 
-    const {interview_module, recruiter_user: trainee} = data;
+    const module_reln = sessn_reln.interview_module_relation;
 
-    const [approver] = supabaseWrap(
+    const [approver_reln] = supabaseWrap(
       await supabaseAdmin
-        .from('recruiter_user')
-        .select('first_name,last_name,email')
-        .eq('user_id', approver_id)
+        .from('interview_module_approve_users')
+        .select('*, recruiter_user(*)')
+        .eq('module_id', module_reln.interview_module.id)
     );
-
-    const [organizer] = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter_user')
-        .select('first_name,last_name,email')
-        .eq('user_id', organizer_id)
-    );
+    const approver = approver_reln.recruiter_user;
 
     const [shadowCount] = supabaseWrap(
       await supabaseAdmin
         .from('module_relations_view')
-        .select('shadow_meeting_count,reverse_shadow_meeting_count')
-        .eq('user_id', data.user_id)
+        .select()
+        .eq('user_id', module_reln.user_id)
     );
+
+    const {interview_module, recruiter_user: trainee} = module_reln;
+    const company = module_reln.interview_module.recruiter;
 
     const userId = await getUserIdByEmail(approver.email);
 
@@ -59,7 +54,7 @@ export async function onQualifiedApprover(req: Request, res: Response) {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Hi ${getFullName(approver.first_name, approver.last_name)},\n${getFullName(trainee.first_name, trainee.last_name)} has completed ${shadowCount.shadow_meeting_count} shadow sessions and ${shadowCount.reverse_shadow_meeting_count} reverse shadow sessions. Please review and approve ${getFullName(trainee.first_name, trainee.last_name)} to become qualified for conducting ${interview_module.name} interviews.\n\nThanks,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+            text: `Hi ${getFullName(approver.first_name, approver.last_name)},\n${getFullName(trainee.first_name, trainee.last_name)} has completed ${shadowCount.shadow_completed_count} shadow sessions and ${shadowCount.reverse_shadow_completed_count} reverse shadow sessions. Please review and approve ${getFullName(trainee.first_name, trainee.last_name)} to become qualified for conducting ${interview_module.name} interviews.\n\nThanks,\n ${company.name}`,
           },
         },
         {
