@@ -12,6 +12,7 @@ import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
+import { HistoryPill } from '@/devlink3/HistoryPill';
 import InterviewerTrainingTypeIcon from '@/src/components/Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
@@ -33,6 +34,11 @@ import {
 import { ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
 
+interface Pills {
+  sessionType: 'shadow' | 'rshadow';
+  // sessionType: 'shadow' | 'rshadow';
+  completed: boolean;
+}
 function IndividualCard({
   editModule,
   user,
@@ -139,11 +145,41 @@ function IndividualCard({
     }
   };
 
+  const pills: Pills[] = [
+    ...shadowProgress.map(() => {
+      return { sessionType: 'shadow' as 'shadow', completed: true };
+    }),
+    ...mutatedShadowProgress.map(() => {
+      return { sessionType: 'shadow' as 'shadow', completed: false };
+    }),
+    ...reverseShadowProgress.map(() => {
+      return { sessionType: 'rshadow' as 'rshadow', completed: true };
+    }),
+    ...mutatedReverseShadowProgress.map(() => {
+      return { sessionType: 'rshadow' as 'rshadow', completed: false };
+    }),
+  ];
+
   return (
     <>
       <MemberListCard
         textWeekInterview={textWeekInterview}
         textTodayInterview={textTodayInterview}
+        isTrainingProgessVisible={true}
+        isInterviewsVisible={false}
+        slotProgressBar={pills.map((pill, i) => (
+          <HistoryPill
+            key={i}
+            isShadow={pill.sessionType === 'shadow'}
+            isReverseShadow={pill.sessionType === 'rshadow'}
+            isStart={i === 0}
+            isMiddle={i > 0 && i < pills.length - 1}
+            isEnd={i === pills.length - 1}
+            isStartActive={pill.completed && i === 0}
+            isMiddleActive={pill.completed && i > 0 && i < pills.length - 1}
+            isEndActive={pill.completed && i === pills.length - 1}
+          />
+        ))}
         isPauseResumeVisible={Boolean(user.pause_json)}
         onClickCard={{
           onClick: () => {
@@ -209,42 +245,15 @@ function IndividualCard({
                         />
                       );
                     })}
-                    {mutatedShadowProgress.map((_, index) => {
-                      return (
-                        <TrainingDetailList
-                          key={index}
-                          isReverse={false}
-                          isShadow={true}
-                          textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
-                          slotTrainingStatus={
-                            <TrainingStatus
-                              isNotCompletedVisible={true}
-                              isCompletedVisible={false}
-                              isReverseShadow={false}
-                              isShadow={true}
-                            />
-                          }
-                          slotPanelBlock={
-                            <>
-                              <IconButtonSoft
-                                size={1}
-                                iconName={'delete'}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: async () => {
-                                    await alterCount({
-                                      type: 'shadow',
-                                      count: user.number_of_shadow - 1,
-                                      module_relation_id: user.id,
-                                    });
-                                  },
-                                }}
-                              />
-                            </>
-                          }
-                        />
-                      );
-                    })}
+                    {mutatedShadowProgress.map((_, index) => (
+                      <ShadowSession
+                        key={index}
+                        index={index}
+                        alterCount={alterCount}
+                        shadowProgress={shadowProgress}
+                        user={user}
+                      />
+                    ))}
                     {reverseShadowProgress.map((prog, ind) => {
                       return (
                         <TrainingDetailList
@@ -291,43 +300,15 @@ function IndividualCard({
                         />
                       );
                     })}
-                    {mutatedReverseShadowProgress.map((_, index) => {
-                      return (
-                        <TrainingDetailList
-                          key={index}
-                          isReverse={true}
-                          isShadow={false}
-                          textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
-                          slotTrainingStatus={
-                            <TrainingStatus
-                              isNotCompletedVisible={true}
-                              isCompletedVisible={false}
-                              isReverseShadow={true}
-                              isShadow={false}
-                              isPendingApprovalVisible={false}
-                            />
-                          }
-                          slotPanelBlock={
-                            <>
-                              <IconButtonSoft
-                                size={1}
-                                iconName={'delete'}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: async () => {
-                                    await alterCount({
-                                      type: 'reverse_shadow',
-                                      count: user.number_of_reverse_shadow - 1,
-                                      module_relation_id: user.id,
-                                    });
-                                  },
-                                }}
-                              />
-                            </>
-                          }
-                        />
-                      );
-                    })}
+                    {mutatedReverseShadowProgress.map((_, index) => (
+                      <ReverseShadowSession
+                        key={index}
+                        alterCount={alterCount}
+                        index={index}
+                        reverseShadowProgress={reverseShadowProgress}
+                        user={user}
+                      />
+                    ))}
                   </>
                 }
               />
@@ -487,5 +468,97 @@ const ThreeDot = ({ isMoveToQualifierVisible, user }) => {
         />
       </Popover>
     </>
+  );
+};
+
+const ShadowSession = ({ shadowProgress, alterCount, user, index }) => {
+  const [hover, setHover] = useState(false);
+  return (
+    <Stack
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <TrainingDetailList
+        key={index}
+        isReverse={false}
+        isShadow={true}
+        textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
+        slotTrainingStatus={
+          <TrainingStatus
+            isNotCompletedVisible={true}
+            isCompletedVisible={false}
+            isReverseShadow={false}
+            isShadow={true}
+          />
+        }
+        slotPanelBlock={
+          hover && (
+            <IconButtonSoft
+              size={1}
+              iconName={'delete'}
+              color={'neutral'}
+              onClickButton={{
+                onClick: async () => {
+                  await alterCount({
+                    type: 'shadow',
+                    count: user.number_of_shadow - 1,
+                    module_relation_id: user.id,
+                  });
+                },
+              }}
+            />
+          )
+        }
+      />
+    </Stack>
+  );
+};
+
+const ReverseShadowSession = ({
+  reverseShadowProgress,
+  index,
+  alterCount,
+  user,
+}) => {
+  const [hover, setHover] = useState(false);
+  return (
+    <Stack
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <TrainingDetailList
+        key={index}
+        isReverse={true}
+        isShadow={false}
+        textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
+        slotTrainingStatus={
+          <TrainingStatus
+            isNotCompletedVisible={true}
+            isCompletedVisible={false}
+            isReverseShadow={true}
+            isShadow={false}
+            isPendingApprovalVisible={false}
+          />
+        }
+        slotPanelBlock={
+          hover && (
+            <IconButtonSoft
+              size={1}
+              iconName={'delete'}
+              color={'neutral'}
+              onClickButton={{
+                onClick: async () => {
+                  await alterCount({
+                    type: 'reverse_shadow',
+                    count: user.number_of_reverse_shadow - 1,
+                    module_relation_id: user.id,
+                  });
+                },
+              }}
+            />
+          )
+        }
+      />
+    </Stack>
   );
 };

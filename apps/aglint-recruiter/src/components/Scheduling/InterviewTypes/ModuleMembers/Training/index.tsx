@@ -1,19 +1,23 @@
 import { getFullName } from '@aglint/shared-utils';
 import {
   Checkbox,
+  Dialog,
   Drawer,
   MenuItem,
   Stack,
   Switch,
   TextField,
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -57,7 +61,7 @@ function ModuleSettingComp({
     }
   }, [editModule, members]);
 
-  const updateModule = async () => {
+  const updateModule = async (isEnable?: boolean) => {
     if (localModule.settings.reqruire_approval) {
       if (selectedUsers.length === 0) {
         setErrorApproval(true);
@@ -73,19 +77,37 @@ function ModuleSettingComp({
         setErrorApproval(true);
         return;
       }
-      await supabase
-        .from('interview_module')
-        .update({
-          name: localModule.name,
-          description: localModule.description,
-          settings: {
-            ...localModule.settings,
-          },
-          department: localModule.department,
-        })
-        .eq('id', editModule.id)
-        .select()
-        .throwOnError();
+
+      if (isEnable) {
+        await supabase
+          .from('interview_module')
+          .update({
+            name: localModule.name,
+            description: localModule.description,
+            settings: {
+              ...localModule.settings,
+              require_training: true,
+            },
+            department: localModule.department,
+          })
+          .eq('id', editModule.id)
+          .select()
+          .throwOnError();
+      } else {
+        await supabase
+          .from('interview_module')
+          .update({
+            name: localModule.name,
+            description: localModule.description,
+            settings: {
+              ...localModule.settings,
+            },
+            department: localModule.department,
+          })
+          .eq('id', editModule.id)
+          .select()
+          .throwOnError();
+      }
 
       updateApproveUsers(
         editModule.settings.approve_users,
@@ -93,7 +115,7 @@ function ModuleSettingComp({
         editModule.id,
       );
 
-      refetch();
+      await refetch();
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
       toast.error('Failed to update module');
@@ -146,16 +168,69 @@ function ModuleSettingComp({
     editModule.settings.approve_users.includes(member.user_id),
   );
 
+  const trainingRequireToggle = () => {
+    if (
+      localModule.relations.filter(
+        (relation) =>
+          relation.training_status === 'training' && !relation.is_archived,
+      ).length == 0
+    ) {
+      {
+        setEditLocalModule((prev) => ({
+          ...prev,
+          settings: {
+            ...prev.settings,
+            require_training: !prev.settings.require_training,
+          },
+        }));
+      }
+    } else if (
+      localModule.settings.require_training === false &&
+      localModule.relations.filter(
+        (relation) => relation.training_status === 'training',
+      ).length > 0
+    ) {
+      //this condition is not needed actually just temporary
+      setEditLocalModule((prev) => ({
+        ...prev,
+        settings: {
+          ...prev.settings,
+          require_training: !prev.settings.require_training,
+        },
+      }));
+    } else {
+      toast.warning(
+        'Cannot disable training while members are still in training.',
+      );
+    }
+  };
+
+  const [disableOpen, setDisableOpen] = React.useState(false);
   return (
-    <Stack p={'var(--space-4)'} spacing={'var(--space-2)'} maxWidth={'900px'}>
+    <Stack p={'var(--space-4)'} spacing={'var(--space-4)'} maxWidth={'900px'}>
+      {!editModule?.settings?.require_training && (
+        <GlobalBanner
+          textTitle='To add trainee interviewers and track their progress, enable training using the button on the right.'
+          textDescription=''
+          color={'warning'}
+          slotButtons={
+            <ButtonSolid
+              textButton='Enable'
+              isLoading={isSaving}
+              isDisabled={isSaving}
+              size={1}
+              onClickButton={{ onClick: () => updateModule(true) }}
+            />
+          }
+        />
+      )}
       <TrainingSetting
         isApprovalVisible={editModule?.settings?.reqruire_approval}
-        isDisable={!localModule?.settings?.require_training}
-        isEnable={localModule?.settings?.require_training}
-        textDisable={'sdjfksdfj'}
+        isDisable={!editModule?.settings?.require_training}
+        isEnable={editModule?.settings?.require_training}
         textHeading={
-          localModule?.settings?.require_training
-            ? 'Training is enabled for this module'
+          editModule?.settings?.require_training
+            ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
             : 'Training is disabled for this module'
         }
         textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
@@ -191,8 +266,10 @@ function ModuleSettingComp({
           />
         ))}
       />
-      {localModule?.settings?.require_training && (
-        <SlotTrainingMembers editModule={editModule} refetch={refetch} />
+      {editModule?.settings?.require_training && (
+        <Stack spacing={'var(--space-2)'}>
+          <SlotTrainingMembers editModule={editModule} refetch={refetch} />
+        </Stack>
       )}
       <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
         <SideDrawerLarge
@@ -236,40 +313,22 @@ function ModuleSettingComp({
                     size='small'
                     checked={localModule?.settings?.require_training}
                     onChange={() => {
-                      if (
-                        localModule.relations.filter(
-                          (relation) =>
-                            relation.training_status === 'training' &&
-                            !relation.is_archived,
-                        ).length == 0
-                      ) {
-                        {
-                          setEditLocalModule((prev) => ({
-                            ...prev,
-                            settings: {
-                              ...prev.settings,
-                              require_training: !prev.settings.require_training,
-                            },
-                          }));
+                      if (localModule?.settings?.require_training) {
+                        if (
+                          localModule.relations.filter(
+                            (relation) =>
+                              relation.training_status === 'training' &&
+                              !relation.is_archived,
+                          ).length > 0
+                        ) {
+                          toast.warning(
+                            'Cannot disable training while members are still in training.',
+                          );
+                        } else {
+                          setDisableOpen(true);
                         }
-                      } else if (
-                        localModule.settings.require_training === false &&
-                        localModule.relations.filter(
-                          (relation) => relation.training_status === 'training',
-                        ).length > 0
-                      ) {
-                        //this condition is not needed actually just temporary
-                        setEditLocalModule((prev) => ({
-                          ...prev,
-                          settings: {
-                            ...prev.settings,
-                            require_training: !prev.settings.require_training,
-                          },
-                        }));
                       } else {
-                        toast.warning(
-                          'Cannot disable training while members are still in training.',
-                        );
+                        trainingRequireToggle();
                       }
                     }}
                   />
@@ -292,17 +351,28 @@ function ModuleSettingComp({
                 }
                 slotButtonPrimary={<></>}
                 slotApprovalDoneInput={
-                  <MembersAutoComplete
-                    error={errorApproval}
-                    helperText='Please select users to approve or uncheck require approval'
-                    disabled={false}
-                    renderUsers={dropDownMembers}
-                    setSelectedUsers={setSelectedUsers}
-                    selectedUsers={selectedUsers}
-                    pillColor='var(--neutral-3)'
-                    maxWidth='430px'
-                    setError={setErrorApproval}
-                  />
+                  <>
+                    {selectedUsers.length === 0 && (
+                      <Typography
+                        color={'var(--error-9)'}
+                        mb={'var(--space-2)'}
+                      >
+                        Please select users to approve or uncheck require
+                        approval
+                      </Typography>
+                    )}
+                    <MembersAutoComplete
+                      error={errorApproval || selectedUsers.length === 0}
+                      // helperText='Please select users to approve or uncheck require approval'
+                      disabled={false}
+                      renderUsers={dropDownMembers}
+                      setSelectedUsers={setSelectedUsers}
+                      selectedUsers={selectedUsers}
+                      pillColor='var(--neutral-3)'
+                      maxWidth='430px'
+                      setError={setErrorApproval}
+                    />
+                  </>
                 }
                 slotInputNoOfReverse={
                   <TextField
@@ -353,6 +423,27 @@ function ModuleSettingComp({
           }
         />
       </Drawer>
+      <Dialog open={disableOpen} onClose={() => setDisableOpen(false)}>
+        <DeletePopup
+          buttonText='Disable Training'
+          textTitle='Are you sure you want to disable training?'
+          textDescription={
+            <Stack>
+              <ul>
+                <li>Stop tracking trainee progress</li>
+                <li>Remove access to trainee interviewer features</li>
+              </ul>
+            </Stack>
+          }
+          onClickCancel={{ onClick: () => setDisableOpen(false) }}
+          onClickDelete={{
+            onClick: () => {
+              trainingRequireToggle();
+              setDisableOpen(false);
+            },
+          }}
+        />
+      </Dialog>
     </Stack>
   );
 }

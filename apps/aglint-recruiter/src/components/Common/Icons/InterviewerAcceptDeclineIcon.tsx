@@ -6,12 +6,34 @@ import { GlobalBadge } from '@/devlink/GlobalBadge';
 
 function InterviewerAcceptDeclineIcon({
   type,
+  isIcon = false,
 }: {
   type: DatabaseTable['interview_session_relation']['accepted_status'];
+  isIcon?: boolean;
 }) {
   return (
     <>
-      {type === 'request_reschedule' && (
+      {type === 'request_reschedule' && isIcon === true && (
+        <Tooltip
+          title={
+            <React.Fragment>
+              <Typography variant='body2'>Requested Reschedule</Typography>
+            </React.Fragment>
+          }
+        >
+          <Stack>
+            <GlobalBadge
+              iconName={'event_repeat'}
+              size={1}
+              showIcon={true}
+              textBadge={null}
+              color={'warning'}
+              // showText={false}
+            />
+          </Stack>
+        </Tooltip>
+      )}
+      {type === 'request_reschedule' && isIcon === false && (
         <Tooltip
           title={
             <React.Fragment>

@@ -156,15 +156,29 @@ function DeleteMemberDialog({
             }
             textDescription={
               <Stack spacing={2}>
-                <GlobalBannerInline
+                {/* <GlobalBannerInline
                   textContent={`You are about to suspend ${name} from the system. Once suspended, ${name} will not have login access. The user will be removed from interview
                             types, so no new interviews will be scheduled.
                             However, they can still attend and complete current
                             interviews.`}
                   slotButton={<></>}
-                  iconName={'info'}
+                  iconName={''}
                   color={'warning'}
-                />
+                /> */}
+                <Typography fontWeight={500}>
+                  You are about to suspend {name} from the system.
+                </Typography>
+                <ul>
+                  <li> Once suspended, {name} will not have login access.</li>
+                  <li>
+                    The user will be removed from interview types, so no new
+                    interviews will be scheduled.
+                  </li>
+                  <li>
+                    However, they can still attend and complete current
+                    interviews.
+                  </li>
+                </ul>
 
                 <Typography variant='body1'>
                   To suspend the user, you must Assign their job roles to
