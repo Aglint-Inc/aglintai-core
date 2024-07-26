@@ -125,19 +125,6 @@
   grid-row-gap: 10px;
 }
 
-.modulesettingactions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: flex-end;
-}
-
-.div-block-1703 {
-  display: flex;
-  padding-top: 20px;
-}
-
 .div-block-1711 {
   position: absolute;
   left: 0%;

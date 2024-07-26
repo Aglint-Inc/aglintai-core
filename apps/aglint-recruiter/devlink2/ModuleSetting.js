@@ -93,17 +93,6 @@ export function ModuleSetting({
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "modulesettingactions")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1703")}
-            tag="div"
-          >
-            {slotButtonPrimary}
-          </_Builtin.Block>
-        </_Builtin.Block>
         {isDisable ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1711")}
