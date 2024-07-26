@@ -43,12 +43,14 @@ export const getRecruiterDetails = async (user_id: string) => {
     ...temp.recruiter_user,
     role: temp.roles.name,
     role_id: temp.role_id,
-    department: temp.recruiter?.departments?.find(
-      (dep) => dep.id == temp.recruiter_user.department_id,
-    ),
-    office_location: temp.recruiter?.office_locations?.find(
-      (loc) => loc.id == temp.recruiter_user.office_location_id,
-    ),
+    department:
+      temp.recruiter?.departments?.find(
+        (dep) => dep.id == temp.recruiter_user.department_id,
+      ) || [],
+    office_location:
+      temp.recruiter?.office_locations?.find(
+        (loc) => loc.id == temp.recruiter_user.office_location_id,
+      ) || [],
     manager_id: temp.manager_id,
     manager_details: temp.manager_details
       ? {
