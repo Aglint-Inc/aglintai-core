@@ -202,5 +202,6 @@ export const API_PATHS = [
 '/api/support/notificationEmail',
 '/api/updateUsers',
 '/api/webhook',
-'/api/workflow-cron'
+'/api/workflow-cron',
+'/api/workflow-cron/execute'
 ] as const
