@@ -160,7 +160,7 @@ const BodyComp = ({ setSaving }) => {
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
       .eq('id', recruiter.id)
-      .select()
+      .select('*,office_locations(*), departments(id,name)')
       .single();
     if (!error) {
       setRecruiter(

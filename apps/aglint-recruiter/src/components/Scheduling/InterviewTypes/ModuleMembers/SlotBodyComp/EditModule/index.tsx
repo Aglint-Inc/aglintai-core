@@ -98,8 +98,8 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                     department: newValue,
                   }));
                 }}
-                options={recruiter?.departments?.map((departments) =>
-                  capitalize(departments),
+                options={recruiter?.departments?.map((department) =>
+                  capitalize(department?.name),
                 )}
                 renderInput={(params) => (
                   <TextField

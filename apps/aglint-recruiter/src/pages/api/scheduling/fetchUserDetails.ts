@@ -36,7 +36,7 @@ const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
   const query = supabase
     .from('recruiter_relation')
     .select(
-      `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}), roles(name)`,
+      `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery}, office_locations(*), departments(id,name)), roles(name)`,
     )
     .eq('recruiter_id', recruiter_id)
     .eq('is_active', true);
@@ -59,3 +59,4 @@ const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
     return resAlter;
   });
 };
+export type fetchUsersType = Awaited<ReturnType<typeof fetchUsers>>;

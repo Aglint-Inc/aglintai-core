@@ -111,7 +111,7 @@ function FilterDepartment() {
         <FilterDropdown
           slotOption={
             <Stack maxHeight={'50vh'} overflow={'auto'} spacing={1.5}>
-              {recruiter.departments.map((item) => renderStatus(item))}
+              {recruiter.departments.map((item) => renderStatus(item?.name))}
             </Stack>
           }
           isRemoveVisible={false}

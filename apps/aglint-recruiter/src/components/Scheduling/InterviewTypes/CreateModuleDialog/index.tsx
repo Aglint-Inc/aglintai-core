@@ -3,7 +3,7 @@ import {
   capitalize,
   Dialog,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -133,7 +133,7 @@ function CreateModuleDialog() {
                     setDepartment(newValue);
                   }}
                   options={recruiter?.departments?.map((departments) =>
-                    capitalize(departments),
+                    capitalize(departments?.name),
                   )}
                   renderInput={(params) => (
                     <UITextField

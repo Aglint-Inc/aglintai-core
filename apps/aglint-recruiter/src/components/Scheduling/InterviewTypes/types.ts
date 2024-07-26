@@ -9,9 +9,10 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  PauseJson,
-  RecruiterUserType,
+  PauseJson
 } from '@aglint/shared-types';
+
+import { fetchUsersType } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 import { ApplicationList } from '../Candidates/utils';
 import { fetchInterviewModules } from './queries/utils';
@@ -79,16 +80,7 @@ export type ScheduleType = {
 };
 export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
-export type MemberType = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  profile_image: string;
-  position: string;
-  schedule_auth?: JSON | null;
-  role: RecruiterUserType['role'] | null;
-};
+export type MemberType = fetchUsersType[number];
 
 export type TransformSchedule = ScheduleType & {
   interview_meeting: InterviewMeetingTypeDb;
