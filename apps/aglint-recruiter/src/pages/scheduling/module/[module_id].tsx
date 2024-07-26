@@ -360,6 +360,15 @@ function SlotQualifiedMembers({
                     <HistoryPill
                       key={index}
                       isActive={item.state}
+                      isShadow={item.text === 'shadow'}
+                      isReverseShadow={item.text === 'reverse shadow'}
+                      position={
+                        index === 0
+                          ? 'start'
+                          : index === trainingStatusArray.length - 1
+                            ? 'end'
+                            : ''
+                      }
                       slotHistoryTrainingCard={
                         <HistoryTrainingCard
                           textInterviewType={
@@ -431,8 +440,6 @@ function SlotQualifiedMembers({
                           )}
                         />
                       }
-                      isShadow={item.text === 'shadow'}
-                      isReverseShadow={item.text === 'reverse shadow'}
                     />
                   ))}
                 </>

@@ -180,8 +180,17 @@ function ListCardInterviewerModules({
               return (
                 <HistoryPill
                   key={index}
-                  isShadow={item.text === 'shadow'}
                   isReverseShadow={item.text === 'reverse shadow'}
+                  isShadow={item.text === 'shadow'}
+                  isActive={!!item.meeting}
+                  position={
+                    index === 0
+                      ? 'start'
+                      : index === trainingStatusArray.length - 1
+                        ? 'end'
+                        : ''
+                  }
+                  isHistoryTrainingCardVisible={false}
                   slotHistoryTrainingCard={
                     <HistoryTrainingCard
                       textInterviewType={item.meeting?.session_name}
