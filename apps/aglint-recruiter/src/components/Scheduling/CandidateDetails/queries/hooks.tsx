@@ -41,7 +41,6 @@ export const useAllActivities = ({
       return resAct.data;
     },
     enabled: !!application_id,
-    initialData: [],
   });
   const refetch = async () => {
     await queryClient.invalidateQueries({ queryKey });

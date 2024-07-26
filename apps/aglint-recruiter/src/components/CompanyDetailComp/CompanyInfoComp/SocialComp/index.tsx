@@ -414,7 +414,7 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
             </CustomTooltip>
           );
         })}
-        <AddSocialLinkButton setError={setError} />
+        {!disabled && <AddSocialLinkButton setError={setError} />}
       </Stack>
     </Stack>
   );

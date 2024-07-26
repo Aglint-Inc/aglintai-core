@@ -6,7 +6,6 @@ import {
   JobApplcationDB,
 } from '@aglint/shared-types';
 
-import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 export async function getApplicationSchedule({
@@ -26,12 +25,6 @@ export async function getApplicationSchedule({
 }
 
 export type ResultType = Awaited<ReturnType<typeof getApplicationSchedule>>;
-
-export type SelectedApplicationTypeDB = ResultType & {
-  candidate_files: ResultType['candidate_files'] & {
-    resume_json: ResumeJson | null;
-  };
-};
 
 export type BannerType = {
   type: 'calender' | 'paused' | 'no_interviewers';
