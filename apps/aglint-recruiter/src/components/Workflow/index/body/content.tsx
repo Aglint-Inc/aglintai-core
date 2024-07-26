@@ -49,7 +49,7 @@ const Cards = (props: {
             return (
               filters.job.length === 0 ||
               !!jobs.reduce((acc, curr) => {
-                if ((value as string[]).includes(curr.job_id)) acc.push(curr);
+                if ((value as string[]).includes(curr.id)) acc.push(curr);
                 return acc;
               }, []).length
             );

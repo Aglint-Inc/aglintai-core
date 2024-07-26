@@ -43,6 +43,7 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/workflows': ['job_module'],
   '/workflows': ['workflow_module'],
   '/workflows/[id]': ['workflow_module'],
+  '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
   '/scheduling/module/members/[module_id]': ['scheduling_module'],
@@ -139,6 +140,7 @@ const PERMISSIONS: Permissions = {
   '/api/decryptApiKey': ['manage_company'],
   '/api/supabase/deleteuser': ['manage_users'],
   '/api/request_feedback': ['scheduling_module'],
+  '/api/workflow-cron/execute': ['workflow_module'],
 };
 
 export default PERMISSIONS;
