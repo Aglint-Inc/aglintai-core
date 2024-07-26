@@ -147,6 +147,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-red-500 {
   color: var(--red500-2e806c7d);
 }

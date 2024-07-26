@@ -20,7 +20,7 @@ export function PanelBlock({
           />
         )}
       </_Builtin.Block>
-      <Text content={textPanelName} weight="bold" />
+      <Text content={textPanelName} weight="medium" />
     </_Component>
   );
 }

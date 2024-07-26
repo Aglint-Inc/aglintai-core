@@ -154,6 +154,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .jd-analysis-right {
   display: flex;
   align-items: center;
@@ -161,20 +165,27 @@
   grid-row-gap: var(--space-2);
 }
 
-.dropdown-icon-wrap {
+.mlc-drop-wrap {
   display: flex;
-  width: 22px;
-  height: 22px;
-  flex-direction: column;
+  width: 26px;
+  height: 26px;
   justify-content: center;
   align-items: center;
 
-  border: 0.5px solid var(--neutral-6);
-  border-radius: var(--radius-full);
+  border-radius: 4px;
 
-  background-color: var(--neutral-3);
+  transition: all 200ms ease;
 
   cursor: pointer;
+}
+
+.mlc-drop-wrap:hover {
+  background-color: rgba(32, 16, 0, 0.06);
+}
+
+.mlc-drop-wrap.small {
+  width: 22px;
+  height: 22px;
 }
 
 .cvs-experiences-wrapper {

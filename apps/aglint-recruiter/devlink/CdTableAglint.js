@@ -33,7 +33,7 @@ export function CdTableAglint({
 
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-683")}
+      className={_utils.cx(_styles, "cd-table-aglint-wrap")}
       data-w-id="7a3bcb75-6206-c6cc-8531-425f7bd60dbc"
       tag="div"
       {...onClickCard}

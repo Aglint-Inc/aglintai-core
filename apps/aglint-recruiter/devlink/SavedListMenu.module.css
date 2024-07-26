@@ -12,10 +12,11 @@
   background-color: white;
 }
 
-.div-block-735 {
+.slm-item-wrap {
   overflow: scroll;
   width: 100%;
   max-height: 195px;
+  padding: var(--space-3);
 }
 
 .save-list-slot-item {
@@ -175,6 +176,10 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .div-block-736 {

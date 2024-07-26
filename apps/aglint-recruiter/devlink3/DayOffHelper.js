@@ -2,10 +2,15 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { IconButtonSoft } from "./IconButtonSoft";
 import * as _utils from "./utils";
 import _styles from "./DayOffHelper.module.css";
 
-export function DayOffHelper({ as: _Component = _Builtin.Block, slotButton }) {
+export function DayOffHelper({
+  as: _Component = _Builtin.Block,
+  slotButton,
+  onClickClose = {},
+}) {
   return (
     <_Component className={_utils.cx(_styles, "debrief-helper-wrap")} tag="div">
       <_Builtin.Block
@@ -21,13 +26,18 @@ export function DayOffHelper({ as: _Component = _Builtin.Block, slotButton }) {
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "title_info")}
+              className={_utils.cx(_styles, "title_info_header")}
               tag="div"
             >
-              <Text
-                size="4"
-                content="Help Article: How the Company Day Off Feature Works"
-              />
+              <Text content="Help Article: How the Company Day Off Feature Works" />
+              <_Builtin.Block tag="div">
+                <IconButtonSoft
+                  onClickButton={onClickClose}
+                  iconName="close"
+                  size="1"
+                  color="neutral"
+                />
+              </_Builtin.Block>
             </_Builtin.Block>
             <Text
               weight="medium"

@@ -152,6 +152,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .div-block-829 {
   display: flex;
   align-items: center;

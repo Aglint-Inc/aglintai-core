@@ -138,6 +138,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .button-wrappers-unable-fetch {
   display: flex;
   grid-column-gap: 6px;

@@ -155,6 +155,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 ._wf-radio-range-wrapper {
   display: flex;
   margin-left: 20px;

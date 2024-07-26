@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { DarkPill } from "./DarkPill";
 import * as _utils from "./utils";
 import _styles from "./CompletedInterviews.module.css";
 
@@ -33,58 +34,16 @@ export function CompletedInterviews({
           className={_utils.cx(_styles, "ci_option_switch")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "normal_menulink")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-hover-link")}
-              tag="div"
-              {...onClickLastMonth}
-            >
-              {textMonth}
-            </_Builtin.Block>
-            {isLastMonthsActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "active-menulink")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-active-link")}
-                  tag="div"
-                  {...onClickLastMonth}
-                >
-                  {textMonth}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "normal_menulink")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-hover-link")}
-              tag="div"
-              {...onClickLastDays}
-            >
-              {textLastDays}
-            </_Builtin.Block>
-            {isLastDaysActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "active-menulink")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-active-link")}
-                  tag="div"
-                  {...onClickLastDays}
-                >
-                  {textLastDays}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
+          <DarkPill
+            textPill={textMonth}
+            onClickPill={onClickLastMonth}
+            isActive={isLastMonthsActive}
+          />
+          <DarkPill
+            textPill={textLastDays}
+            onClickPill={onClickLastDays}
+            isActive={isLastDaysActive}
+          />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">

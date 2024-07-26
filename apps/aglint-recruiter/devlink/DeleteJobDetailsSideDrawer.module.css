@@ -260,6 +260,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .job-sidebar-wrapper {
   display: flex;
   height: 100%;

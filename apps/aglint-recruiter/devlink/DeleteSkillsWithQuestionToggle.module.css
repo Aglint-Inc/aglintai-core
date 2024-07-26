@@ -361,6 +361,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 1.4;
