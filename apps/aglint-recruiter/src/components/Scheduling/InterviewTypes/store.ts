@@ -1,11 +1,11 @@
 import { PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
+import { MemberTypeAutoComplete } from '../Common/MembersTextField';
 import {
-  MemberType,
   ModuleType,
   SchedulingSlice,
-  StatusTraining,
+  StatusTraining
 } from './types';
 
 export const initialEditModule: ModuleType = {
@@ -68,7 +68,7 @@ export const setIsMovedToQualifiedDialogOpen = (
   isMovedToQualifiedDialogOpen: boolean,
 ) => useModulesStore.setState({ isMovedToQualifiedDialogOpen });
 
-export const setSelectedUsers = (selectedUsers: MemberType[]) =>
+export const setSelectedUsers = (selectedUsers: MemberTypeAutoComplete[]) =>
   useModulesStore.setState({ selectedUsers });
 
 export const setIsDeleteMemberDialogOpen = (

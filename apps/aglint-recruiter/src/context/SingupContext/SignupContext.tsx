@@ -1,6 +1,8 @@
 // ** React Imports
 
-import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
+import {
+  DatabaseTable
+} from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
@@ -24,10 +26,12 @@ interface ContextValue {
   setFlow: Dispatch<React.SetStateAction<string>>;
   companyName: null;
   setCompanyName: Dispatch<React.SetStateAction<string>>;
-  recruiter: RecruiterType;
-  setRecruiter: Dispatch<React.SetStateAction<RecruiterType>>;
-  recruiterUser: RecruiterUserType;
-  setRecruiterUser: Dispatch<React.SetStateAction<RecruiterUserType>>;
+  recruiter: DatabaseTable['recruiter'];
+  setRecruiter: Dispatch<React.SetStateAction<DatabaseTable['recruiter']>>;
+  recruiterUser: DatabaseTable['recruiter_user'];
+  setRecruiterUser: Dispatch<
+    React.SetStateAction<DatabaseTable['recruiter_user']>
+  >;
   userDetails: Session;
   setUserDetails: Dispatch<React.SetStateAction<Session>>;
 }
@@ -55,10 +59,9 @@ const SignupProvider = ({ children }) => {
   const [flow, setFlow] = useState<string>(companyType.COMPANY);
   const [companyName, setCompanyName] = useState(null);
   const [userDetails, setUserDetails] = useState<Session | null>(null);
-  const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
-  const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
-    null,
-  );
+  const [recruiter, setRecruiter] = useState<DatabaseTable['recruiter']>(null);
+  const [recruiterUser, setRecruiterUser] =
+    useState<DatabaseTable['recruiter_user']>(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -94,11 +97,6 @@ const SignupProvider = ({ children }) => {
 
       setRecruiterUser({
         ...recruiterUser,
-        role: recruiterRel.role,
-        manager_id: recruiterRel.manager_id,
-        role_id: recruiterRel.role_id,
-        created_by: recruiterRel.created_by,
-        recruiter_relation_id: recruiterRel.id,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
@@ -131,3 +129,4 @@ const SignupProvider = ({ children }) => {
 };
 
 export { SignupContext, SignupProvider };
+

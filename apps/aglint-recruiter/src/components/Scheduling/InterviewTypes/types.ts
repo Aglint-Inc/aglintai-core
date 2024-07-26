@@ -15,6 +15,7 @@ import {
 import { fetchUsersType } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 import { ApplicationList } from '../Candidates/utils';
+import { MemberTypeAutoComplete } from '../Common/MembersTextField';
 import { fetchInterviewModules } from './queries/utils';
 
 export type SchedulingSlice = {
@@ -28,7 +29,7 @@ export type SchedulingSlice = {
   isModuleSettingsDialogOpen: boolean;
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
-  selectedUsers: MemberType[];
+  selectedUsers: MemberTypeAutoComplete[];
   selUser: ModuleType['relations'][0] | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;

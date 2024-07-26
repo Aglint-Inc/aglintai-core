@@ -1,7 +1,9 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import {
   Autocomplete,
   capitalize,
   Dialog,
+  MenuItem,
   Stack,
   Typography,
 } from '@mui/material';
@@ -16,6 +18,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import RequiredField from '@/src/components/Common/UITextField/RequiredField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -28,25 +31,28 @@ import { createModule } from '../utils';
 
 function CreateModuleDialog() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter_id } = useAuthDetails();
   const { isCreateDialogOpen } = useModulesStore();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
-  const [department, setDepartment] = useState('');
+  const [selDepartment, setSelDepartment] =
+    useState<DatabaseTable['departments']>(null);
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
+
+  const query = useAllDepartments(recruiter_id);
 
   const validate = () => {
     let error = true;
     if (!name) {
       setNameError(true);
     }
-    if (!department) {
+    if (!selDepartment) {
       setDepartmentError(true);
     }
-    if (name && department) {
+    if (name && selDepartment) {
       error = false;
     }
     return error;
@@ -60,8 +66,8 @@ function CreateModuleDialog() {
           name: name,
           description: objective,
           isTraining: isTraining,
-          recruiter_id: recruiter.id,
-          department: department,
+          recruiter_id,
+          department_id: selDepartment.id,
         });
         await router.push(
           ROUTES['/scheduling/module/members/[module_id]']({
@@ -78,6 +84,8 @@ function CreateModuleDialog() {
       }
     }
   };
+
+  const departments = query.data;
 
   return (
     <Dialog
@@ -127,22 +135,27 @@ function CreateModuleDialog() {
                   <RequiredField />
                 </Stack>
                 <Autocomplete
-                  fullWidth
-                  value={department}
-                  onChange={(event: any, newValue: string | null) => {
-                    setDepartment(newValue);
+                  id='country-select-demo'
+                  options={departments}
+                  value={selDepartment}
+                  onChange={(event, newValue) => {
+                    setSelDepartment(newValue);
                   }}
-                  options={recruiter?.departments?.map((departments) =>
-                    capitalize(departments?.name),
-                  )}
+                  renderOption={(props, option) => {
+                    const { ...optionProps } = props;
+                    return (
+                      <MenuItem {...optionProps}>
+                        {capitalize(option.name)}
+                      </MenuItem>
+                    );
+                  }}
                   renderInput={(params) => (
                     <UITextField
                       {...params}
-                      required
-                      name='department'
                       placeholder='Select Department'
+                      fullWidth
                       error={departmentError}
-                      helperText='Department cannot be empty'
+                      helperText={`Department is required`}
                     />
                   )}
                 />
