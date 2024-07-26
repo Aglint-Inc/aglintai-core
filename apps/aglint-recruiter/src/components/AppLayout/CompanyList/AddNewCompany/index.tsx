@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -396,8 +397,7 @@ function CompanyDetails({
   getCompanies,
   onClickBack,
 }) {
-  const { setRecruiter, recruiterUser, userDetails, userCountry } =
-    useAuthDetails();
+  const { recruiterUser, userDetails, userCountry } = useAuthDetails();
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const defaultCountry = details.phone_number ? null : userCountry;
@@ -486,7 +486,7 @@ function CompanyDetails({
           in_user_id: userDetails.user.id,
           in_is_active: true,
         });
-        setRecruiter(rec);
+        // setRecruiter(rec);
         setOpenSideBar(false);
         getCompanies();
         toast.success('Company added successfully.');

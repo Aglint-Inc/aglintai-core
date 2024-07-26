@@ -292,7 +292,7 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                   labelSize='small'
                   fullWidth
                   disabled={disabled}
-                  value={recruiter?.socials[socialName]}
+                  value={recruiter?.socials[socialName] as string}
                   placeholder={socialPlaceholder[socialName]}
                   onBlur={() => {
                     handleChange(
