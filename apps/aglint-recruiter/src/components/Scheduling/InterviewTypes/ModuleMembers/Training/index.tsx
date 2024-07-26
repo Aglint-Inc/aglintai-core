@@ -270,9 +270,14 @@ function ModuleSettingComp({
             !_.isEqual(
               {
                 ...localModule?.settings,
-                approve_users: selectedUsers.map((user) => user.user_id),
+                approve_users: selectedUsers
+                  ?.map((user) => user.user_id)
+                  .sort(),
               },
-              editModule?.settings,
+              {
+                ...editModule?.settings,
+                approve_users: editModule?.settings.approve_users.sort(),
+              },
             )
           ) {
             setTimeout(() => {
