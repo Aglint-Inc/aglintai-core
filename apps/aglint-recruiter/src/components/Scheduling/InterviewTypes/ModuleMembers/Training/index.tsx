@@ -15,6 +15,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
@@ -428,7 +429,7 @@ function ModuleSettingComp({
               )}
               {editModule?.settings?.require_training && (
                 <Stack marginInline={2}>
-                  <GlobalBanner
+                  <GlobalBannerShort
                     color={'error'}
                     textTitle='Disable Training'
                     textDescription='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
