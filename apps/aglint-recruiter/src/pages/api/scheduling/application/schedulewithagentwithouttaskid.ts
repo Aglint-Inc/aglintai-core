@@ -134,7 +134,6 @@ const scheduleWithAgentWithoutTaskId = async ({
       });
 
       const createCloneRes = await createCloneSession({
-        is_get_more_option: false,
         application_id,
         allSessions: sessionsWithPlan,
         session_ids,
