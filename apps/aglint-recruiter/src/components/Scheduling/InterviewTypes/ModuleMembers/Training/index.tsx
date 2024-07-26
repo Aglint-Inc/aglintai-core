@@ -88,7 +88,7 @@ function ModuleSettingComp({
               ...localModule.settings,
               require_training: true,
             },
-            department: localModule.department,
+            department: localModule.department_id,
           })
           .eq('id', editModule.id)
           .select()
@@ -102,7 +102,7 @@ function ModuleSettingComp({
             settings: {
               ...localModule.settings,
             },
-            department: localModule.department,
+            department: localModule.department_id,
           })
           .eq('id', editModule.id)
           .select()

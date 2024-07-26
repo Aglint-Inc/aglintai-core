@@ -15,7 +15,7 @@ function RoleEditMember({
   defaultRole,
   close,
   errorMessage,
-  handelMemberUpdate,
+  handleMemberUpdate,
   options,
 }: {
   user: RecruiterUserType;
@@ -23,7 +23,7 @@ function RoleEditMember({
   close: () => void;
   errorMessage: string;
   // eslint-disable-next-line no-unused-vars
-  handelMemberUpdate: ReturnType<typeof useAuthDetails>['handelMemberUpdate'];
+  handleMemberUpdate: ReturnType<typeof useAuthDetails>['handleMemberUpdate'];
   options: { role: string; id: string }[];
 }) {
   const [role_id, setRole_id] = useState<string>(defaultRole || user.role_id);
@@ -57,7 +57,7 @@ function RoleEditMember({
               onClickButton={{
                 onClick: async () => {
                   setIsLoading(true);
-                  await handelMemberUpdate({
+                  await handleMemberUpdate({
                     user_id: user.user_id,
                     data: { role_id: role_id },
                   });

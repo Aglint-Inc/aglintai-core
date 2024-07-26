@@ -23,9 +23,10 @@ export default async function handler(
     'POST',
     async ({ body }) => {
       const { users, recruiter_id } = body;
-      const { 
+      const {
         // role,
-         user_id: id } = await server_getUserRoleAndId({
+        user_id: id,
+      } = await server_getUserRoleAndId({
         getVal: (name) => req.cookies[String(name)],
       });
       // if (role === 'admin') {
@@ -82,16 +83,18 @@ async function registerMember(
       user_id: userId,
       first_name: user.first_name,
       last_name: user.last_name,
-      position: user.designation,
-      employment: user.employment,
-      interview_location: user.interview_location,
-      department: user.department,
       email: email,
+      position: user.position,
+      department_id: user.department_id,
+      office_location_id: user.office_location_id,
+      employment: user.employment,
       status: 'invited',
       scheduling_settings: user.scheduling_settings,
     })
     .throwOnError()
-    .select()
+    .select(
+      '*,  office_location:office_locations(*), department:departments(id,name)',
+    )
     .single();
 
   const { data: relation, error: relationError } = await supabase
@@ -105,7 +108,7 @@ async function registerMember(
       is_active: true,
       created_by: create_id,
     })
-    .select('*, roles(name)')
+    .select('id, role_id, manager_id, created_by, roles(name)')
     .single();
   if (relationError) {
     throw new Error(
@@ -121,6 +124,5 @@ async function registerMember(
     created_by: relation.created_by,
     recruiter_relation_id: relation.id,
   };
-
   return recUserType;
 }

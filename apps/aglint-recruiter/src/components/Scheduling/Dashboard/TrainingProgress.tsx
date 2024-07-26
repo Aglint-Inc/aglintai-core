@@ -92,21 +92,15 @@ const HistoryPills = ({
   const shadowPills = [...new Array(module.settings.noShadow)].reduce(
     (acc, curr, index) => {
       const isActive = index < shadow;
-      const isStart = index === 0;
-      const isEnd =
-        index ===
-        module.settings.noShadow + module.settings.noReverseShadow - 1;
-      const isMiddle = !(isStart || isEnd);
+      // const isStart = index === 0;
+      // const isEnd =
+      //   index ===
+      //   module.settings.noShadow + module.settings.noReverseShadow - 1;
+      // const isMiddle = !(isStart || isEnd);
       acc.push(
         <HistoryPillDev
           key={index}
           isActive={isActive}
-          isStart={isStart}
-          isStartActive={isStart && isActive}
-          isMiddle={isMiddle}
-          isMiddleActive={isMiddle && isActive}
-          isEnd={isEnd}
-          isEndActive={isEnd && isActive}
           isReverseShadow={false}
           isShadow={true}
         />,
@@ -118,22 +112,16 @@ const HistoryPills = ({
   const reverseShadowPills = [
     ...new Array(module.settings.noReverseShadow),
   ].reduce((acc, curr, i) => {
-    const index = i+(shadowPills||[]).length
+    const index = i + (shadowPills || []).length;
     const isActive = index < reverse_shadow;
-    const isStart = module.settings.noShadow + index === 0;
-    const isEnd =
-      index === (module.settings.noShadow + module.settings.noReverseShadow - 1);
-    const isMiddle = !(isStart || isEnd);
+    // const isStart = module.settings.noShadow + index === 0;
+    // const isEnd =
+    //   index === module.settings.noShadow + module.settings.noReverseShadow - 1;
+    // const isMiddle = !(isStart || isEnd);
     acc.push(
       <HistoryPillDev
         key={index}
         isActive={isActive}
-        isStart={isStart}
-        isStartActive={isStart && isActive}
-        isMiddle={isMiddle}
-        isMiddleActive={isMiddle && isActive}
-        isEnd={isEnd}
-        isEndActive={isEnd && isActive}
         isReverseShadow={true}
         isShadow={false}
       />,

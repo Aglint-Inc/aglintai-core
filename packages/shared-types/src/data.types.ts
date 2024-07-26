@@ -18,12 +18,17 @@ export type AddressType = {
 export type SupabaseType = ReturnType<typeof createServerClient<DB>>;
 
 export type SocialsType = {
-  [key: string]: string;
+  custom: {
+    [key: string]: string;
+  };
+  twitter: string;
+  youtube: string;
+  facebook: string;
+  linkedin: string;
+  instagram: string;
 };
 
-export type RecruiterType = Omit<DatabaseTable["recruiter"], "socials"> & {
-  socials: SocialsType | null;
-};
+export type RecruiterType = DatabaseTable["recruiter"];
 
 export type JobTypeDB = DatabaseTable["public_jobs"];
 export type JobAssistantChats = DatabaseTable["job_assiatan_chat"];
@@ -142,6 +147,8 @@ export interface RecruiterUserType extends TempRecruiterUser {
   role_id: string;
   last_login?: string;
   primary?: boolean;
+  department: Pick<DatabaseTable["departments"], "id" | "name">;
+  office_location: DatabaseTable["office_locations"];
   manager_id: string;
   manager_details?: {
     name: string;
