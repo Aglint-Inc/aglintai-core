@@ -254,7 +254,7 @@ const InterviewerModule = ({
                       }}
                       textObjective={mod.description}
                       textModuleName={mod.name}
-                      textDepartment={mod.department}
+                      textDepartment={''}
                       slotMemberPic={
                         <AvatarGroup
                           total={mod.users.length}

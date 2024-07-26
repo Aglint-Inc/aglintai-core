@@ -2,11 +2,7 @@ import { PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { MemberTypeAutoComplete } from '../Common/MembersTextField';
-import {
-  ModuleType,
-  SchedulingSlice,
-  StatusTraining
-} from './types';
+import { ModuleType, SchedulingSlice, StatusTraining } from './types';
 
 export const initialEditModule: ModuleType = {
   id: '',
@@ -15,7 +11,7 @@ export const initialEditModule: ModuleType = {
   duration_available: { activeDuration: 0, availabletimeSlots: [] },
   created_at: '',
   recruiter_id: '',
-  department: '',
+  department_id: null,
   settings: {
     require_training: false,
     noShadow: 2,

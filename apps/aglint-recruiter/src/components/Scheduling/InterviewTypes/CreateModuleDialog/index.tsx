@@ -42,7 +42,7 @@ function CreateModuleDialog() {
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
 
-  const query = useAllDepartments(recruiter_id);
+  const { data: departments } = useAllDepartments();
 
   const validate = () => {
     let error = true;
@@ -84,8 +84,6 @@ function CreateModuleDialog() {
       }
     }
   };
-
-  const departments = query.data;
 
   return (
     <Dialog

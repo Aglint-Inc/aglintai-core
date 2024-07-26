@@ -74,7 +74,7 @@ export const fetchProgress = async ({
     .eq('interview_session_relation.is_confirmed', true)
     .not('interview_session_relation', 'is', null)
     .throwOnError();
-
+    data[0].recruiter_user
   const resRel = data
     .filter(
       (ses) =>

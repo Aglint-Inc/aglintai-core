@@ -40,14 +40,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     .or(req.body.query);
 
   if (!error && data?.length > 0) {
-    if (data[0]?.status == 'closed' || data[0]?.status == ('archived' as any)) {
+    if (data[0]?.status == 'closed' ) {
       isValid = false;
     } else {
+
+      
       if ((req.body.preview || data[0]?.status == 'draft') && data[0]?.draft) {
         post = data[0].draft;
       } else {
         post = data[0];
       }
+
+
       isValid = true;
     }
     const { data: rec } = await supabase
