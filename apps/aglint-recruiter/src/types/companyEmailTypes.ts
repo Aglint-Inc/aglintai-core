@@ -148,11 +148,11 @@ export const emailTemplateCopy: CompanyEmailType = {
       'When the interviewer resumed automatically, this email will be sent.',
   },
   interviewEnd_email_shadowTraineeForMeetingAttendence: {
-    heading: 'Shadow Complete',
+    heading: 'Shadow Trainee Meeting Attendence',
     description: '',
   },
   interviewEnd_email_rShadowTraineeForMeetingAttendence: {
-    heading: 'Reverse Shadow Complete',
+    heading: 'Reverse Shadow Trainee Meeting Attendence',
     description: '',
   },
   onQualified_email_trainee: {
@@ -173,13 +173,36 @@ export const emailTemplateCopy: CompanyEmailType = {
   candidateBook_email_interviewerForFeedback: null,
   candidateBook_slack_interviewerForFeedback: null,
   candidateBook_slack_interviewerForConfirmation: null,
-  interviewEnd_email_interviewerForFeedback: null,
-  interviewEnd_slack_interviewerForFeedback: null,
+  interviewEnd_email_interviewerForFeedback: {
+    heading: 'Inteview Feedback from interviewer',
+    description:
+      'After interview end this mail is send to interviewer for asking feedback',
+  },
+  interviewEnd_slack_interviewerForFeedback: {
+    heading: 'Inteview Feedback from interviewer',
+    description:
+      'After interview ends slack message will go to interviewer for asking feedback',
+  },
   onQualified_email_approved: null,
   onQualified_slack_approved: null,
-  onTrainingComplete_slack_approverForTraineeMeetingQualification: null,
-  onQualified_slack_trainee: null,
-  interviewEnd_slack_organizerForMeetingStatus: null,
-  interviewEnd_slack_shadowTraineeForMeetingAttendence: null,
-  interviewEnd_slack_rShadowTraineeForMeetingAttendence: null,
+  onQualified_slack_trainee: {
+    heading: 'Notify of Trainee Qualify',
+    description: '',
+  },
+  onTrainingComplete_slack_approverForTraineeMeetingQualification: {
+    heading: 'Interview Type Trainee Approval',
+    description: '',
+  },
+  interviewEnd_slack_organizerForMeetingStatus: {
+    heading: 'Meeting Complete Status',
+    description: '',
+  },
+  interviewEnd_slack_shadowTraineeForMeetingAttendence: {
+    heading: 'Shadow Trainee Meeting Attendence',
+    description: '',
+  },
+  interviewEnd_slack_rShadowTraineeForMeetingAttendence: {
+    heading: 'Reverse Shadow Trainee Meeting Attendence',
+    description: '',
+  },
 };
