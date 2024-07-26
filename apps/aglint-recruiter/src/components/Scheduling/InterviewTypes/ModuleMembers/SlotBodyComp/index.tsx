@@ -15,7 +15,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { setIsAddMemberDialogOpen, setIsSettingsDialogOpen, setTrainingStatus } from '../../store';
+import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
@@ -151,11 +151,11 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
-              onClickEdit={{
-                onClick: () => {
-                  setIsSettingsDialogOpen(true);
-                },
-              }}
+              // onClickEdit={{
+              //   onClick: () => {
+              //     setIsSettingsDialogOpen(true);
+              //   },
+              // }}
               slotNewTabPill={
                 <Stack direction={'row'}>
                   {tabsModuleMembers.map((tab) => {
@@ -186,7 +186,7 @@ function SlotBodyComp({
                   })}
                 </Stack>
               }
-              textDepartment={editModule.department || '--'}
+              textDepartment={editModule.department_id || '--'}
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>

@@ -53,23 +53,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
         <RescheduleCard
           slotAdditionalNotes={rescheduleDetails.other_details.note}
           isNotesVisible={Boolean(rescheduleDetails.other_details.note)}
-          textColorProps={{
-            style: {
-              color:
-                rescheduleDetails.response_type === 'reschedule'
-                  ? '#703815'
-                  : '#681219',
-            },
-          }}
-          isButtonVisible={false}
-          textReschedule={
-            rescheduleDetails.response_type === 'reschedule'
-              ? 'requested a reschedule'
-              : 'cancelled this schedule'
-          }
-          isChangeInterviewerVisible={false}
           textReason={rescheduleDetails.reason}
-          isRescheduleBtnVisible={false}
           slotDateReason={
             <>
               {`${dayjsLocal(

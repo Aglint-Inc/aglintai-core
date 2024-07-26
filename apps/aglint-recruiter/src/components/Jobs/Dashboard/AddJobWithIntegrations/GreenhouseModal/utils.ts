@@ -4,11 +4,11 @@ import {
   GreenhouseRefDbType,
   GreenhouseType,
   NewCandidateType,
-  RecruiterDB,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -233,7 +233,7 @@ export const fetchAllJobs = async (
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
-  recruiter: RecruiterDB,
+  recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
 ): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
@@ -251,14 +251,14 @@ export const createJobObject = async (
           skills: [],
           title: post.title,
         },
-        department: recruiter?.departments?.[0] ?? null,
+        department: recruiter?.departments?.[0]?.name ?? null,
       },
       location: post.location.name,
       job_title: post.title,
       status: 'draft',
       scoring_criteria_loading: true,
       posted_by: POSTED_BY.GREENHOUSE,
-      department: recruiter?.departments?.[0] ?? null,
+      department: recruiter?.departments?.[0]?.name ?? null,
       id: post.public_job_id,
       recruiter_id: recruiter.id,
       description: post.content,

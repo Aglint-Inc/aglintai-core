@@ -1,6 +1,6 @@
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -21,7 +21,8 @@ function ImageUpload({
   changeCallback,
   error,
 }: {
-  setImage?: Dispatch<SetStateAction<string>>;
+  // eslint-disable-next-line no-unused-vars
+  setImage?: (url: string) => void;
   image: string;
   disabled?: boolean;
   size: number;

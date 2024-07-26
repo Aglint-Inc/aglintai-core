@@ -6,18 +6,22 @@ import {
 } from '@aglint/shared-utils';
 import { Box, Stack, Typography, Zoom } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AgentPill } from '@/devlink3/AgentPill';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
+import { MemberType } from '../../Scheduling/InterviewTypes/types';
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import AssigneeDetailsCard, { LightTooltip } from './AssigneeDetailsCard';
 
@@ -30,10 +34,29 @@ function AssigneeChip({
   disableHoverListener?: boolean;
   isOnlyName?: boolean;
 }) {
-  const { data: members } = useInterviewerList();
-  const assigneeDetails =
-    members &&
-    members.find((item) => item.rec_user.user_id === assigneeId)?.rec_user;
+  const { recruiter_id } = useAuthDetails();
+  const bodyParams: BodyParamsFetchUserDetails = {
+    recruiter_id: recruiter_id,
+    includeSupended: true,
+  };
+  const [assigneeDetails, setAssigneeDetails] = useState(null);
+
+  async function getAssigneeDetails() {
+    const resMem = (await axios.post(
+      '/api/scheduling/fetchUserDetails',
+      bodyParams,
+    )) as { data: MemberType[] };
+    const members = resMem.data;
+    const memberDetails =
+      members && members.find((item) => item.user_id === assigneeId);
+
+    setAssigneeDetails(memberDetails);
+  }
+  useEffect(() => {
+    if (!assigneeDetails) {
+      getAssigneeDetails();
+    }
+  }, [recruiter_id]);
   return (
     <ShowCode>
       <ShowCode.When isTrue={assigneeId === EmailAgentId}>
