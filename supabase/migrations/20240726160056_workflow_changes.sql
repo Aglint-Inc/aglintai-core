@@ -12,14 +12,14 @@ alter table "public"."workflow" add column "workflow_type" workflow_type not nul
 
 alter table "public"."workflow_action" drop column "email_template_id";
 
-alter table "public"."workflow_action" add column "target_api" text not null;
+alter table "public"."workflow_action" add column "target_api" email_slack_types not null;
 
 alter table "public"."workflow_action_logs" add column "related_table" workflow_cron_trigger_tables not null;
 
 alter table "public"."workflow_action_logs" add column "related_table_pkey" uuid not null;
 
-ALTER TABLE "public"."workflow_action_logs" DROP COLUMN "status";
-ALTER TABLE "public"."workflow_action_logs"
-ADD COLUMN "status" workflow_cron_run_status NOT NULL DEFAULT 'not_started';
+alter table "public"."workflow_action_logs" alter column "status" set default 'not_started'::workflow_cron_run_status;
+
+alter table "public"."workflow_action_logs" alter column "status" set data type workflow_cron_run_status using "status"::text::workflow_cron_run_status;
 
 
