@@ -17,7 +17,7 @@ const SchedulingDropdown = <T extends any>({
     { label: 'All Time', value: 'year' },
   ].map(({ label, value }, i) => (
     <MenuItem key={i} value={value}>
-      <Stack sx={{fontSize:'14px'}}>{label}</Stack>
+      <Stack sx={{fontSize:'12px'}}>{label}</Stack>
     </MenuItem>
   ));
   return (

@@ -150,15 +150,16 @@ export const DropdownSelectButton = <T,>({
         slotLeftIcon={<Stack>{icon}</Stack>}
         onClickStatus={{
           onClick: handleClick,
-          style: {
-            padding: '4px',
-          },
+          // style: {
+          //   padding: '4px',
+          // },
         }}
         textLabel={capitalizeFirstLetter(selectedItem)}
         slotRightIcon={
           <Stack>
             <GlobalIcon
               iconName={anchorEl ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+              size={4}
             />
           </Stack>
         }

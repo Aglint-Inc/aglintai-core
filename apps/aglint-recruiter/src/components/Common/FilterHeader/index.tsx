@@ -68,7 +68,7 @@ export default function FilterHeader({
           />
         )}
         <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
-          <Stack direction={'row'} gap={2}>
+          <Stack direction={'row'} gap={'12px'} alignItems={'center'}>
             <FiltersComponent
               filters={filters}
               showFilters={showFiltersByDefault}
@@ -81,7 +81,7 @@ export default function FilterHeader({
               <ButtonGhost
                 isDisabled={!isFiltersActive}
                 textButton='Reset All'
-                size={2}
+                size={1}
                 iconName='refresh'
                 color={'neutral'}
                 isLeftIcon

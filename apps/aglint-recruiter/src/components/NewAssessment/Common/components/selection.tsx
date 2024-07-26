@@ -21,7 +21,7 @@ const SelectionComp: FC<{
             },
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid (var(--neutral--11)) !important',
+            border: '1px solid (var(--neutral--6)) !important',
             // boxShadow: '0 0 0 2.5px #b4cce4',
           },
         }}
