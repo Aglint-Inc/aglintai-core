@@ -151,6 +151,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .navlink_current {
   position: absolute;
   left: 0%;

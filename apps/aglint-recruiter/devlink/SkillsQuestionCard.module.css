@@ -242,3 +242,7 @@
 .icons.cursor-pointer:hover {
   opacity: 0.8;
 }
+
+.icons.pointer {
+  cursor: pointer;
+}

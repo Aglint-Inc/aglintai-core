@@ -5,7 +5,7 @@ import { WorkflowItem } from "./WorkflowItem";
 import { WorkflowConnector } from "./WorkflowConnector";
 import { WorkflowAdd } from "./WorkflowAdd";
 import { Text } from "./Text";
-import { TextWithIcon } from "./TextWithIcon";
+import { WorkflowConnectedCard } from "./WorkflowConnectedCard";
 import * as _utils from "./utils";
 import _styles from "./WorkflowDetail.module.css";
 
@@ -53,18 +53,7 @@ export function WorkflowDetail({
           className={_utils.cx(_styles, "slot_coneected_jobs")}
           tag="div"
         >
-          {slotConnectedJobs ?? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "connected_job-copy")}
-              tag="div"
-            >
-              <TextWithIcon iconName="work" textContent="Managing Director" />
-              <TextWithIcon iconName="work" textContent="Managing Director" />
-              <TextWithIcon iconName="work" textContent="Managing Director" />
-              <TextWithIcon iconName="work" textContent="Managing Director" />
-              <TextWithIcon iconName="work" textContent="Managing Director" />
-            </_Builtin.Block>
-          )}
+          {slotConnectedJobs ?? <WorkflowConnectedCard />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -26,8 +26,6 @@
 }
 
 .feedback-pic-wrap {
-  width: 32px;
-  height: 32px;
   flex: 0 0 auto;
   border-radius: var(--radius-2);
 }

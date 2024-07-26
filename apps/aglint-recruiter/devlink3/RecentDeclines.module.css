@@ -22,6 +22,8 @@
   border-bottom: 1px solid var(--neutral-5);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+
+  background-color: var(--neutral-2);
 }
 
 .slot_recent {

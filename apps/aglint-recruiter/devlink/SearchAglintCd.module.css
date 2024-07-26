@@ -172,6 +172,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .db-req-text-wrap {
   display: flex;
   flex-direction: column;

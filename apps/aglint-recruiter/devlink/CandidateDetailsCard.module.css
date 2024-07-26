@@ -27,8 +27,8 @@
   display: flex;
   align-items: flex-start;
   flex: 1;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .cdb-card-checkmark {
@@ -40,7 +40,6 @@
   height: 16px;
   min-height: 16px;
   min-width: 16px;
-  margin-top: 4px;
   justify-content: center;
   align-items: center;
 
@@ -57,19 +56,26 @@
   grid-row-gap: 12px;
 }
 
+.cdb-card-profile-info {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.cdb-card-company-info-block {
+  display: flex;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
 .cdb-card-profile-image-block {
   width: 20px;
   height: 20px;
   min-height: 20px;
   min-width: 20px;
   border-radius: 6px;
-}
-
-.cdb-card-profile-info {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
 }
 
 .fw-semibold {
@@ -229,39 +235,22 @@
 
 .cdb-card-company-info {
   display: flex;
-  margin-top: 8px;
-  margin-left: -32px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
 
-.cdb-card-company-info-block {
+.cdb-card-company-info-wrapper {
   display: flex;
   align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+  color: var(--neutral-11);
 }
 
 .icon-block-4 {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.icon-embed {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon-embed.absolute {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
 }
 
 .text-grey-600-3 {
@@ -282,138 +271,15 @@
   max-width: 380px;
 }
 
-.cdb-card-header-right {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
-.job-icon-count-wrap {
-  display: flex;
-  padding: 2px 7px;
-  align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 4px;
-
-  background-color: white;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer.three-dot {
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-}
-
-.icons.curser-hover-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.curser-hover-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.icons.avatar-play {
-  border-radius: 4px;
-}
-
-.icons.db-star-icons {
-  position: absolute;
-  left: auto;
-  top: -6px;
-  right: -6px;
-  bottom: auto;
-}
-
-.icons.ml-5 {
-  margin-left: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.icons.ml-20 {
-  margin-left: 20px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
-.icons.hide {
-  display: none;
-}
-
-.mt-4 {
-  margin-top: 4px;
-}
-
-.icons.mt-3 {
-  margin-top: 3px;
-}
-
-.icons.mt-2 {
-  margin-top: 2px;
-}
-
-.mt-2 {
-  margin-top: var(--space-2);
-}
-
-.icons.bookmarked {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
-.icons.start {
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.cdb-star-block {
-  position: relative;
-  z-index: 4;
-  cursor: pointer;
-}
-
 .cdb-card-body {
   position: relative;
   z-index: 1;
 
   display: flex;
-  margin-left: 28px;
+  margin-top: var(--space-1);
   flex-direction: column;
-  grid-column-gap: 22px;
-  grid-row-gap: 22px;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .text-kale-600-4 {
@@ -430,6 +296,35 @@
   flex-wrap: wrap;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.cdb-card-header-right {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.cdb-star-block {
+  position: relative;
+  z-index: 4;
+  cursor: pointer;
+}
+
+.icon-embed {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-embed.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .border-active-blue {

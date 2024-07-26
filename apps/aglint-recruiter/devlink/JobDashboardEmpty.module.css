@@ -243,6 +243,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .cj-imports-wrapper {
   display: flex;
   max-width: 750px;

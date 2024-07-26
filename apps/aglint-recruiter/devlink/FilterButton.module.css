@@ -138,6 +138,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .number-text {
   display: flex;
   width: 16px;
