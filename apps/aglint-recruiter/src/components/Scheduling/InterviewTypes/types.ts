@@ -9,10 +9,10 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  PauseJson
+  PauseJson,
 } from '@aglint/shared-types';
 
-import { fetchUsersType } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 import { ApplicationList } from '../Candidates/utils';
 import { MemberTypeAutoComplete } from '../Common/MembersTextField';
@@ -81,7 +81,7 @@ export type ScheduleType = {
 };
 export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
-export type MemberType = fetchUsersType[number];
+export type MemberType = CompanyMembersAPI[number];
 
 export type TransformSchedule = ScheduleType & {
   interview_meeting: InterviewMeetingTypeDb;

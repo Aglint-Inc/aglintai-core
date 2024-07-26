@@ -1,10 +1,7 @@
-import {
-  GreenhouseRefDbType,
-  GreenhouseType,
-  RecruiterDB,
-} from '@aglint/shared-types';
+import { GreenhouseRefDbType, GreenhouseType } from '@aglint/shared-types';
 import axios from 'axios';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -67,7 +64,7 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobAshby[],
-  recruiter: RecruiterDB,
+  recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
 ): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
@@ -82,7 +79,7 @@ export const createJobObject = async (
         location: post.location,
         job_title: post.title,
         description: post.description,
-        department: recruiter?.departments?.[0] ?? null,
+        department: recruiter?.departments?.[0]?.name ?? null,
         job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
         workplace_type: 'on site',
         company: recruiter.name,
@@ -94,7 +91,7 @@ export const createJobObject = async (
       status: 'draft',
       id: post.public_job_id,
       description: post.description,
-      department: recruiter?.departments?.[0] ?? null,
+      department: recruiter?.departments?.[0]?.name ?? null,
       job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
       workplace_type: 'on site',
       company: recruiter.name,
