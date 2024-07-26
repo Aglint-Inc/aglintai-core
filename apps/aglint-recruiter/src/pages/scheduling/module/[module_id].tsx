@@ -359,18 +359,17 @@ function SlotQualifiedMembers({
                   {trainingStatusArray.map((item, index) => (
                     <HistoryPill
                       key={index}
-                      isStart={index === 0}
-                      isStartActive={index === 0 && item.state}
-                      isEnd={trainingStatusArray.length - 1 === index}
-                      isEndActive={
-                        trainingStatusArray.length - 1 === index && item.state
+                      isShadow={item.text === 'shadow'}
+                      isReverseShadow={item.text === 'reverse shadow'}
+                      isActive={item.state}
+                      position={
+                        index === 0
+                          ? 'start'
+                          : trainingStatusArray.length - 1 === index
+                            ? 'end'
+                            : ''
                       }
-                      isMiddle={index > 0 && index < trainingStatusArray.length}
-                      isMiddleActive={
-                        index > 0 &&
-                        index < trainingStatusArray.length &&
-                        item.state
-                      }
+                      isHistoryTrainingCardVisible={false}
                       slotHistoryTrainingCard={
                         <HistoryTrainingCard
                           textInterviewType={
@@ -442,8 +441,6 @@ function SlotQualifiedMembers({
                           )}
                         />
                       }
-                      isShadow={item.text === 'shadow'}
-                      isReverseShadow={item.text === 'reverse shadow'}
                     />
                   ))}
                 </>
