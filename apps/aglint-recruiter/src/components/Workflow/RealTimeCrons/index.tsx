@@ -1,4 +1,6 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types/src/db/schema.types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
@@ -20,11 +22,24 @@ import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+type CronEntryRowType = {
+  completed_at: string | null;
+  created_at: string;
+  execute_at: string;
+  id: number;
+  meta: any;
+  started_at: string;
+  status: Database['public']['Enums']['application_processing_status'];
+  tries: number;
+  workflow_title: string;
+};
+
 const RealTimeCrons: React.FC = () => {
-  const [cronEntries, setCronEntries] = useState<
-    DatabaseTable['workflow_action_logs'][]
-  >([]);
+  const [cronEntries, setCronEntries] = useState<CronEntryRowType[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [allWorkflows, setAllWorkflows] = useState<DatabaseTable['workflow'][]>(
+    [],
+  );
   const [statusFilter, setStatusFilter] =
     useState<DatabaseTable['workflow_action_logs']['status']>(null);
 
@@ -33,13 +48,29 @@ const RealTimeCrons: React.FC = () => {
       if (isRefresh) {
         setIsRefreshing(true);
       }
+
+      const fetchedWorkflows = supabaseWrap(
+        await supabase.from('workflow').select(),
+      );
       const entries = supabaseWrap(
-        await supabase
-          .from('workflow_action_logs')
-          .select('*,workflow_action(*)'),
+        await supabase.from('workflow_action_logs').select('*'),
         false,
       );
-      setCronEntries(entries);
+      setCronEntries(
+        entries.map((e) => ({
+          completed_at: e.completed_at,
+          created_at: e.created_at,
+          execute_at: e.execute_at,
+          id: e.id,
+          meta: e.meta,
+          started_at: e.started_at,
+          status: e.status,
+          tries: e.tries,
+          workflow_title: fetchedWorkflows.find((w) => w.id === e.workflow_id)
+            ?.title,
+        })),
+      );
+      setAllWorkflows(fetchedWorkflows);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -69,27 +100,57 @@ const RealTimeCrons: React.FC = () => {
           schema: 'public',
           table: 'workflow_action_logs',
         },
-        (payload) => {
+        async (payload) => {
           if (!payload.new) {
             console.error('unknown change', payload);
             return;
           }
-
           const updatedEntry =
             payload.new as DatabaseTable['workflow_action_logs'];
-          setCronEntries((prevEntries) => {
-            const entryIndex = prevEntries.findIndex(
-              (e) => e.id === updatedEntry.id,
+          let updatedWorkFlows = [...allWorkflows];
+          if (
+            !updatedWorkFlows.find((a) => a.id === updatedEntry.workflow_id)
+          ) {
+            updatedWorkFlows = supabaseWrap(
+              await supabase.from('workflow').select(),
             );
-            if (entryIndex !== -1) {
-              const updatedEntries = [...prevEntries];
-              // eslint-disable-next-line security/detect-object-injection
-              updatedEntries[entryIndex] = updatedEntry;
-              return updatedEntries;
-            } else {
-              return [...prevEntries, updatedEntry];
-            }
-          });
+            setAllWorkflows(updatedWorkFlows);
+          }
+          const existingEntryIdx = cronEntries.findIndex(
+            (c) => c.id === updatedEntry.id,
+          );
+          let newCronEnrtries = [...cronEntries];
+          if (existingEntryIdx !== -1) {
+            newCronEnrtries[existingEntryIdx] = {
+              completed_at: updatedEntry.completed_at,
+              created_at: updatedEntry.created_at,
+              execute_at: updatedEntry.execute_at,
+              id: updatedEntry.id,
+              meta: updatedEntry.meta,
+              started_at: updatedEntry.started_at,
+              status: updatedEntry.status,
+              tries: updatedEntry.tries,
+              workflow_title: allWorkflows.find(
+                (w) => w.id === updatedEntry.workflow_id,
+              )?.title,
+            };
+          } else {
+            newCronEnrtries.push({
+              completed_at: updatedEntry.completed_at,
+              created_at: updatedEntry.created_at,
+              execute_at: updatedEntry.execute_at,
+              id: updatedEntry.id,
+              meta: updatedEntry.meta,
+              started_at: updatedEntry.started_at,
+              status: updatedEntry.status,
+              tries: updatedEntry.tries,
+              workflow_title: allWorkflows.find(
+                (w) => w.id === updatedEntry.workflow_id,
+              )?.title,
+            });
+          }
+
+          setCronEntries(newCronEnrtries);
         },
       )
       .subscribe();
@@ -181,6 +242,11 @@ const handleExecuteAction = async (id: number) => {
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
+  {
+    field: 'workflow_title',
+    headerName: 'Workflow Title',
+    width: 250,
+  },
   {
     field: 'meta',
     headerName: 'Action',
