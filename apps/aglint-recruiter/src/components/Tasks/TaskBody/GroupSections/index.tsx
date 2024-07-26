@@ -1,5 +1,5 @@
 import { Box, Collapse, Stack, Tooltip, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
@@ -30,15 +30,14 @@ function GroupSections({
     useTaskStatesContext();
   const [sectionIndex, setSectionIndex] = useState(false);
 
+  useEffect(() => {
+    if (selectedGroupBy.label) {
+      setSectionIndex(selectedGroupBy.label === 'candidate' ? true : false);
+    }
+  }, [selectedGroupBy]);
+
   return (
-    <Collapse
-      in={
-        index === sectionIndex ||
-        sectionIndex ||
-        Object.keys(item)[0] === 'applications'
-      }
-      collapsedSize={60}
-    >
+    <Collapse in={sectionIndex} collapsedSize={60}>
       <TaskTableJobCard
         slotDropIcon={
           <ShowCode>

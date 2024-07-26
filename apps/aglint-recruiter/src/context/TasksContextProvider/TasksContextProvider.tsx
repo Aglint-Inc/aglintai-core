@@ -13,6 +13,7 @@ import {
   SystemAgentId,
 } from '@aglint/shared-utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -359,6 +360,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       async (taskData) => {
         const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
         handelTaskChanges(tempTask, 'add');
+        refetch();
         return taskData;
       },
     );
@@ -586,41 +588,43 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       : filterTask;
   }, [tasksReducer.search, filterTask]);
   const [loadingTasks, setLoading] = useState(true);
-
+  const {
+    data: tasks,
+    isFetched,
+    refetch,
+  } = useTasksList({
+    id: recruiter_id,
+    pagination: {
+      page: tasksReducer.pagination.page,
+      rows: tasksReducer.pagination.rows,
+    },
+    getCount: true,
+    user_id: checkPermissions(['view_all_task'])
+      ? undefined
+      : recruiterUser.user_id,
+  });
   useEffect(() => {
-    if (recruiter_id && members) {
-      getTasks({
-        id: recruiter_id,
-        pagination: {
-          page: tasksReducer.pagination.page,
-          rows: tasksReducer.pagination.rows,
-        },
-        getCount: true,
-        user_id: checkPermissions(['view_all_task'])
-          ? undefined
-          : recruiterUser.user_id,
-      }).then((data) => {
-        const preFilterData = JSON.parse(
-          localStorage.getItem('taskFilters'),
-        ) as taskFilterType;
-        const temp = cloneDeep(reducerInitialState);
-        if (preFilterData) {
-          temp.filter.assignee.values = preFilterData?.Assignee || [];
-          temp.filter.priority.values = preFilterData?.Priority || [];
-          temp.filter.status.values = preFilterData?.Status || [];
-          temp.filter.jobTitle.values = preFilterData?.Job || [];
-          temp.filter.type.values = preFilterData?.Type || [];
-          temp.filter.candidate.values = preFilterData?.Candidate || [];
-          temp.filter.date.values = preFilterData?.Date || [];
-        }
-        temp.tasks = data.data;
-        temp.pagination.totalRows = data.count;
+    if (isFetched) {
+      const preFilterData = JSON.parse(
+        localStorage.getItem('taskFilters'),
+      ) as taskFilterType;
+      const temp = cloneDeep(reducerInitialState);
+      if (preFilterData) {
+        temp.filter.assignee.values = preFilterData?.Assignee || [];
+        temp.filter.priority.values = preFilterData?.Priority || [];
+        temp.filter.status.values = preFilterData?.Status || [];
+        temp.filter.jobTitle.values = preFilterData?.Job || [];
+        temp.filter.type.values = preFilterData?.Type || [];
+        temp.filter.candidate.values = preFilterData?.Candidate || [];
+        temp.filter.date.values = preFilterData?.Date || [];
+      }
+      temp.tasks = tasks.data;
+      temp.pagination.totalRows = tasks.count;
 
-        init({ ...temp, tasks: data.data });
-        setLoading(false);
-      });
+      init({ ...temp, tasks: tasks.data });
+      setLoading(false);
     }
-  }, [recruiter_id, members]);
+  }, [isFetched, recruiter_id, members]);
 
   useEffect(() => {
     let channel: RealtimeChannel;
@@ -702,7 +706,7 @@ export const useTasksContext = () => {
   return context;
 };
 
-const getTasks = ({
+export const useTasksList = ({
   id,
   pagination,
   getCount,
@@ -713,7 +717,32 @@ const getTasks = ({
   getCount: boolean;
   user_id: string;
 }) => {
-  return (
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_task_List'],
+
+    queryFn: () => {
+      return getTasks({ id, pagination, getCount, user_id });
+    },
+    gcTime: 20000,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['get_task_List'] });
+  return { ...query, refetch };
+};
+
+const getTasks = async ({
+  id,
+  pagination,
+  getCount,
+  user_id,
+}: {
+  id: string;
+  pagination: { page: number; rows: number };
+  getCount: boolean;
+  user_id: string;
+}) => {
+  const { data, count } = await (
     user_id
       ? supabase
           .from('tasks_view')
@@ -739,10 +768,8 @@ const getTasks = ({
       pagination.page * pagination.rows,
       pagination.page * pagination.rows + pagination.rows - 1,
     )
-    .then(({ data, count, error }) => {
-      if (error) throw new Error(error.message);
-      return { data, count };
-    });
+    .throwOnError();
+  return { data, count };
 };
 
 export const updateTask = (
