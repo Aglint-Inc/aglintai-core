@@ -1,8 +1,6 @@
 // ** React Imports
 
-import {
-  DatabaseTable
-} from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
@@ -28,7 +26,9 @@ interface ContextValue {
   setCompanyName: Dispatch<React.SetStateAction<string>>;
   recruiter: DatabaseTable['recruiter'];
   setRecruiter: Dispatch<React.SetStateAction<DatabaseTable['recruiter']>>;
-  recruiterUser: DatabaseTable['recruiter_user'];
+  recruiterUser: DatabaseTable['recruiter_user'] & {
+    role: string;
+  };
   setRecruiterUser: Dispatch<
     React.SetStateAction<DatabaseTable['recruiter_user']>
   >;
@@ -60,8 +60,11 @@ const SignupProvider = ({ children }) => {
   const [companyName, setCompanyName] = useState(null);
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<DatabaseTable['recruiter']>(null);
-  const [recruiterUser, setRecruiterUser] =
-    useState<DatabaseTable['recruiter_user']>(null);
+  const [recruiterUser, setRecruiterUser] = useState<
+    DatabaseTable['recruiter_user'] & {
+      role: string;
+    }
+  >(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -87,7 +90,7 @@ const SignupProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*),roles(*)',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
@@ -97,10 +100,11 @@ const SignupProvider = ({ children }) => {
 
       setRecruiterUser({
         ...recruiterUser,
+        role: recruiterRel.roles.name,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
-      } as any);
+      });
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
@@ -129,4 +133,3 @@ const SignupProvider = ({ children }) => {
 };
 
 export { SignupContext, SignupProvider };
-

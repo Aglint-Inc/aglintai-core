@@ -1,3 +1,4 @@
+import { SocialsType } from "../../data.types";
 import type { CustomSchedulingSettings } from "./common.types";
 import type { TableType } from "./index.types";
 
@@ -6,6 +7,7 @@ export type CustomRecruiter = TableType<
   {
     scheduling_settings: CustomSchedulingSettings;
     scheduling_reason: CustomSchedulingReason;
+    socials: SocialsType;
   }
 >;
 
