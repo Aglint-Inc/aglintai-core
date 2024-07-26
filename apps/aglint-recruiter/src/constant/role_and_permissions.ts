@@ -10,7 +10,7 @@ const app_modules: {
     name: 'Enable or Disable Apps',
     dependency: null,
     description:
-      'Manage the apps available for the [Role Name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
+      'Manage the apps available for the [role_name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
     permissions: [
       'job_module',
       'task_module',
@@ -24,21 +24,21 @@ const app_modules: {
     name: 'Tasks Application Permissions',
     dependency: 'task_module',
     description:
-      'Here are the permissions enabled for the [Role] role to manage the Tasks Application:',
+      'Here are the permissions enabled for the [role_name] role to manage the Tasks Application:',
     permissions: ['view_all_task'],
   },
   {
     name: 'Jobs Application Permissions',
     dependency: 'job_module',
     description:
-      'Here are the permissions enabled for the [Role] role to manage the Jobs Application:',
+      'Here are the permissions enabled for the [role_name] role to manage the Jobs Application:',
     permissions: ['manage_job'],
   },
   {
     name: 'Scheduling Application Permissions',
     dependency: 'scheduling_module',
     description:
-      'Here are the permissions enabled for the [Role] role to manage the Scheduling Application:',
+      'Here are the permissions enabled for the [role_name] role to manage the Scheduling Application:',
     permissions: [
       'interview_types',
       'scheduling_actions',
@@ -50,14 +50,14 @@ const app_modules: {
     name: 'Workflows Application Permissions',
     dependency: 'workflow_module',
     description:
-      'Here are the permissions enabled for the [Role] role to manage the Workflows Application:',
+      'Here are the permissions enabled for the [role_name] role to manage the Workflows Application:',
     permissions: ['manage_workflow'],
   },
   {
     name: 'Company Settings Permissions',
     dependency: 'company_settings_module',
     description:
-      'Here are the permissions enabled for the [Role] role to manage the Company Settings',
+      'Here are the permissions enabled for the [role_name] role to manage the Company Settings',
     permissions: [
       'view_company',
       'manage_company',
