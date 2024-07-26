@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./ModuleSetting.module.css";
 
@@ -22,30 +21,6 @@ export function ModuleSetting({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "module-setting-wrap")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "modulesettingtoggle")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "ms-top-wrap")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "ms-slot-training")}
-            tag="div"
-          >
-            {slotRequiresTrainingToggle}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            <Text
-              weight=""
-              content={
-                <>
-                  {"Requires Training"}
-                  <br />
-                </>
-              }
-            />
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "modulesettings")}
         tag="div"
@@ -117,17 +92,6 @@ export function ModuleSetting({
               ) : null}
             </_Builtin.Block>
           ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "modulesettingactions")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1703")}
-            tag="div"
-          >
-            {slotButtonPrimary}
-          </_Builtin.Block>
         </_Builtin.Block>
         {isDisable ? (
           <_Builtin.Block

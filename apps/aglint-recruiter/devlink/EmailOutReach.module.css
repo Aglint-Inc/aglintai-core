@@ -160,6 +160,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .email-outreach-fetching {
   display: flex;
   padding: 3px 9px;

@@ -126,6 +126,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .connected-mail-text-wrap {
   display: flex;
   align-items: center;

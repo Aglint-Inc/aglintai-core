@@ -6,10 +6,9 @@
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
 
-  background-color: var(--white);
+  background-color: var(--neutral-2);
 }
 
 .reason-header-wrap {

@@ -13,7 +13,10 @@ export function CdTableLoader({ as: _Component = _Builtin.Block }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
-    <_Component className={_utils.cx(_styles, "div-block-683")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "cd-table-aglint-wrap")}
+      tag="div"
+    >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-684")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-770")}

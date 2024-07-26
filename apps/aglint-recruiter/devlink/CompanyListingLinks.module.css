@@ -1,6 +1,12 @@
 .company-list-pill {
+  position: relative;
+
   display: flex;
+  width: 150px;
+  max-width: 140px;
+  min-width: 100px;
   padding: var(--space-1) var(--space-4);
+  justify-content: center;
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
@@ -22,10 +28,21 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 0 0 auto;
+}
+
+.cll-hover {
+  position: absolute;
+  left: auto;
+  top: 7px;
+  right: 14px;
+  bottom: auto;
+
+  width: 14px;
 }
 
 .link-out-wrap {
-  display: flex;
+  width: 14px;
   justify-content: center;
   align-items: center;
 }

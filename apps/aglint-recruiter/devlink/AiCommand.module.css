@@ -163,6 +163,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-kale-600 {
   color: var(--kale600-c60cbc05);
 }

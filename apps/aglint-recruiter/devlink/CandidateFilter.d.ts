@@ -26,4 +26,5 @@ declare function CandidateFilter(props: {
   slotDegreeSuggestion?: Types.Devlink.Slot;
   slotGenerate?: Types.Devlink.Slot;
   slotCurrentJobSuggestion?: Types.Devlink.Slot;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

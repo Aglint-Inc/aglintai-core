@@ -1,9 +1,9 @@
-.div-block-683 {
+.cd-table-aglint-wrap {
   position: relative;
 
   display: flex;
   width: 100%;
-  padding: 20px;
+  padding: var(--space-4);
 
   border-bottom: 1px solid #e9ebed;
 
@@ -18,7 +18,8 @@
   max-width: 516px;
   min-width: 516px;
   padding-right: 20px;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -43,7 +44,7 @@
   align-items: center;
   flex: 0 0 auto;
 
-  border-radius: 100%;
+  border-radius: var(--radius-2);
 }
 
 .profile-image-hover {
@@ -182,6 +183,10 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .div-block-686 {
@@ -438,5 +443,5 @@
 
   width: 100%;
 
-  background-color: var(--blue-100\<deleted\|variable-d2a1a159\>);
+  background-color: var(--neutral-2);
 }

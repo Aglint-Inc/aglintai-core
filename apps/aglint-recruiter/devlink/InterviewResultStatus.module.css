@@ -154,6 +154,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .fw-semibold {
   font-weight: 600;
 }

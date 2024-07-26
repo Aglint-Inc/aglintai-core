@@ -140,6 +140,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .msl-text-wrap {
   margin-top: var(--space-4);
 }
