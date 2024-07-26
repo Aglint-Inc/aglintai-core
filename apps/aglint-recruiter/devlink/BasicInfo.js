@@ -14,6 +14,7 @@ export function BasicInfo({
   slotBasicForm,
   slotWarning,
   isWarningVisible = false,
+  isChangeLogoVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "basic-info-wrap")} tag="div">
@@ -31,26 +32,28 @@ export function BasicInfo({
           >
             {slotCompanyLogo ?? <SlotComp componentName="Slot for logo" />}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "change-profile-content")}
-            tag="div"
-          >
+          {isChangeLogoVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "profile-link-wrap")}
+              className={_utils.cx(_styles, "change-profile-content")}
               tag="div"
-              {...onClickChangeLogo}
             >
-              <Text content={textLogoUpdate} color="accent" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "profile-link-wrap")}
+                tag="div"
+                {...onClickChangeLogo}
+              >
+                <Text content={textLogoUpdate} color="accent" />
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">
+                <Text
+                  size="1"
+                  color="neutral"
+                  content="Upload a square company logo (PNG or JPEG)."
+                />
+                <Text size="1" color="neutral" content="Maximum size: 2 MB. " />
+              </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">
-              <Text
-                size="1"
-                color="neutral"
-                content="Upload a square company logo (PNG or JPEG)."
-              />
-              <Text size="1" color="neutral" content="Maximum size: 2 MB. " />
-            </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
         {isWarningVisible ? (
           <_Builtin.Block className={_utils.cx(_styles, "mt-2")} tag="div">

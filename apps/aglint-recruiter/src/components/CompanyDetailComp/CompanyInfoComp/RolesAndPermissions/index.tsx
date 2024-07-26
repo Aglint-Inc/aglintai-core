@@ -409,7 +409,10 @@ function RoleDetails({
                 return (
                   <Permissions
                     key={module}
-                    textDescription={description}
+                    textDescription={description.replace(
+                      '[role_name]',
+                      capitalizeFirstLetter(role.name),
+                    )}
                     textTitle={capitalizeFirstLetter(module)}
                     slotToggleWithText={permissions?.map((permission) => {
                       if (!permission) return null;

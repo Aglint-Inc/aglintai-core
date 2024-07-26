@@ -120,16 +120,31 @@ export const useJobWorkflowDisconnect = (args: JobRequisite) => {
     mutationKey,
     mutationFn: disconnectJobWorkflow,
     onSuccess: async (_data, variables) => {
-      const prevWorkflows = queryClient.getQueryData<JobWorkflow[]>(queryKey);
-      const newWorkflows = structuredClone(prevWorkflows).reduce(
-        (acc, curr) => {
+      const prevJobWorkflows =
+        queryClient.getQueryData<JobWorkflow[]>(queryKey);
+      if (prevJobWorkflows) {
+        const newJobWorkflows = prevJobWorkflows.reduce((acc, curr) => {
           if (curr.id !== variables.workflow_id) acc.push(curr);
           return acc;
-        },
-        [] as JobWorkflow[],
-      );
-      queryClient.setQueryData<JobWorkflow[]>(queryKey, newWorkflows);
-      await queryClient.invalidateQueries({ queryKey: workflowQueryKey });
+        }, [] as JobWorkflow[]);
+        queryClient.setQueryData<JobWorkflow[]>(queryKey, newJobWorkflows);
+      }
+      const prevWorkflows =
+        queryClient.getQueryData<Workflow[]>(workflowQueryKey);
+      if (prevWorkflows) {
+        const newWorkflows = prevWorkflows.reduce((acc, curr) => {
+          if (curr.id === variables.workflow_id)
+            acc.push({
+              ...curr,
+              jobs: (curr.jobs ?? []).filter(
+                ({ id }) => id !== variables.job_id,
+              ),
+            });
+          else acc.push(curr);
+          return acc;
+        }, [] as Workflow[]);
+        queryClient.setQueryData<Workflow[]>(workflowQueryKey, newWorkflows);
+      }
     },
   });
 };

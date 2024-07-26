@@ -1,5 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Collapse, Popover, Stack } from '@mui/material';
+import { Collapse, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -12,9 +12,10 @@ import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
-import InterviewerTrainingTypeIcon from '@/src/components/Common/Icons/InterviewerTrainingTypeIcon';
+import { HistoryPill } from '@/devlink3/HistoryPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
@@ -33,6 +34,11 @@ import {
 import { ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
 
+interface Pills {
+  sessionType: 'shadow' | 'rshadow';
+  // sessionType: 'shadow' | 'rshadow';
+  completed: boolean;
+}
 function IndividualCard({
   editModule,
   user,
@@ -47,6 +53,7 @@ function IndividualCard({
   refetchTrainingProgress: () => void;
 }) {
   const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -93,10 +100,12 @@ function IndividualCard({
       .from('interview_training_progress')
       .update({
         is_approved: true,
+        approved_user_id: recruiterUser.user_id,
       })
       .eq('id', id);
 
-    refetchTrainingProgress();
+    await refetchTrainingProgress();
+    toast.success('Approved');
   };
 
   const alterCount = async ({
@@ -139,11 +148,41 @@ function IndividualCard({
     }
   };
 
+  const pills: Pills[] = [
+    ...shadowProgress.map(() => {
+      return { sessionType: 'shadow' as 'shadow', completed: true };
+    }),
+    ...mutatedShadowProgress.map(() => {
+      return { sessionType: 'shadow' as 'shadow', completed: false };
+    }),
+    ...reverseShadowProgress.map(() => {
+      return { sessionType: 'rshadow' as 'rshadow', completed: true };
+    }),
+    ...mutatedReverseShadowProgress.map(() => {
+      return { sessionType: 'rshadow' as 'rshadow', completed: false };
+    }),
+  ];
+
   return (
     <>
       <MemberListCard
         textWeekInterview={textWeekInterview}
         textTodayInterview={textTodayInterview}
+        isTrainingProgessVisible={true}
+        isInterviewsVisible={false}
+        slotProgressBar={pills.map((pill, i) => (
+          <HistoryPill
+            key={i}
+            isShadow={pill.sessionType === 'shadow'}
+            isReverseShadow={pill.sessionType === 'rshadow'}
+            isStart={i === 0}
+            isMiddle={i > 0 && i < pills.length - 1}
+            isEnd={i === pills.length - 1}
+            isStartActive={pill.completed && i === 0}
+            isMiddleActive={pill.completed && i > 0 && i < pills.length - 1}
+            isEndActive={pill.completed && i === pills.length - 1}
+          />
+        ))}
         isPauseResumeVisible={Boolean(user.pause_json)}
         onClickCard={{
           onClick: () => {
@@ -192,59 +231,74 @@ function IndividualCard({
                                   }
                                 />
                                 <Text content={prog.interview_session.name} />
+
+                                {prog.is_approved ? (
+                                  <Typography
+                                    color={'var(--accent-11)'}
+                                    fontSize={11}
+                                  >
+                                    Approved by{' '}
+                                    <span
+                                      style={{
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {getFullName(
+                                        prog.recruiter_user?.first_name,
+                                        prog.recruiter_user?.last_name,
+                                      )}
+                                    </span>
+                                  </Typography>
+                                ) : (
+                                  <ButtonGhost
+                                    textButton={'Approve'}
+                                    size={1}
+                                    onClickButton={{
+                                      onClick: async () => {
+                                        await approveTrainingProgress(prog.id);
+                                      },
+                                    }}
+                                  />
+                                )}
                               </Stack>
-                              {!prog.is_approved && (
-                                <ButtonGhost
-                                  textButton={'Approve'}
-                                  size={1}
-                                  onClickButton={{
-                                    onClick: async () => {
-                                      await approveTrainingProgress(prog.id);
-                                    },
-                                  }}
-                                />
-                              )}
                             </>
                           }
                         />
                       );
                     })}
-                    {mutatedShadowProgress.map((_, index) => {
-                      return (
-                        <TrainingDetailList
-                          key={index}
-                          isReverse={false}
-                          isShadow={true}
-                          textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
-                          slotTrainingStatus={
-                            <TrainingStatus
-                              isNotCompletedVisible={true}
-                              isCompletedVisible={false}
-                              isReverseShadow={false}
-                              isShadow={true}
-                            />
-                          }
-                          slotPanelBlock={
-                            <>
-                              <IconButtonSoft
-                                size={1}
-                                iconName={'delete'}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: async () => {
-                                    await alterCount({
-                                      type: 'shadow',
-                                      count: user.number_of_shadow - 1,
-                                      module_relation_id: user.id,
-                                    });
-                                  },
-                                }}
-                              />
-                            </>
-                          }
-                        />
-                      );
-                    })}
+                    {mutatedShadowProgress.map((_, index) => (
+                      <TrainingDetailList
+                        key={index}
+                        isReverse={false}
+                        isShadow={true}
+                        textTraining={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
+                        slotTrainingStatus={
+                          <TrainingStatus
+                            isNotCompletedVisible={true}
+                            isCompletedVisible={false}
+                            isReverseShadow={false}
+                            isShadow={true}
+                          />
+                        }
+                        slotPanelBlock={
+                          <></>
+                          // <IconButtonSoft
+                          //   size={1}
+                          //   iconName={'delete'}
+                          //   color={'neutral'}
+                          //   onClickButton={{
+                          //     onClick: async () => {
+                          //       await alterCount({
+                          //         type: 'shadow',
+                          //         count: user.number_of_shadow - 1,
+                          //         module_relation_id: user.id,
+                          //       });
+                          //     },
+                          //   }}
+                          // />
+                        }
+                      />
+                    ))}
                     {reverseShadowProgress.map((prog, ind) => {
                       return (
                         <TrainingDetailList
@@ -275,7 +329,24 @@ function IndividualCard({
                                 <Text content={prog.interview_session.name} />
                               </Stack>
 
-                              {!prog.is_approved && (
+                              {prog.is_approved ? (
+                                <Typography
+                                  color={'var(--accent-11)'}
+                                  fontSize={11}
+                                >
+                                  Approved by{' '}
+                                  <span
+                                    style={{
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {getFullName(
+                                      prog.recruiter_user?.first_name,
+                                      prog.recruiter_user?.last_name,
+                                    )}
+                                  </span>
+                                </Typography>
+                              ) : (
                                 <ButtonGhost
                                   textButton={'Approve'}
                                   size={1}
@@ -291,43 +362,40 @@ function IndividualCard({
                         />
                       );
                     })}
-                    {mutatedReverseShadowProgress.map((_, index) => {
-                      return (
-                        <TrainingDetailList
-                          key={index}
-                          isReverse={true}
-                          isShadow={false}
-                          textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
-                          slotTrainingStatus={
-                            <TrainingStatus
-                              isNotCompletedVisible={true}
-                              isCompletedVisible={false}
-                              isReverseShadow={true}
-                              isShadow={false}
-                              isPendingApprovalVisible={false}
-                            />
-                          }
-                          slotPanelBlock={
-                            <>
-                              <IconButtonSoft
-                                size={1}
-                                iconName={'delete'}
-                                color={'neutral'}
-                                onClickButton={{
-                                  onClick: async () => {
-                                    await alterCount({
-                                      type: 'reverse_shadow',
-                                      count: user.number_of_reverse_shadow - 1,
-                                      module_relation_id: user.id,
-                                    });
-                                  },
-                                }}
-                              />
-                            </>
-                          }
-                        />
-                      );
-                    })}
+                    {mutatedReverseShadowProgress.map((_, index) => (
+                      <TrainingDetailList
+                        key={index}
+                        isReverse={true}
+                        isShadow={false}
+                        textTraining={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
+                        slotTrainingStatus={
+                          <TrainingStatus
+                            isNotCompletedVisible={true}
+                            isCompletedVisible={false}
+                            isReverseShadow={true}
+                            isShadow={false}
+                            isPendingApprovalVisible={false}
+                          />
+                        }
+                        slotPanelBlock={
+                          <></>
+                          // <IconButtonSoft
+                          //   size={1}
+                          //   iconName={'delete'}
+                          //   color={'neutral'}
+                          //   onClickButton={{
+                          // onClick: async () => {
+                          //   await alterCount({
+                          //     type: 'reverse_shadow',
+                          //     count: user.number_of_reverse_shadow - 1,
+                          //     module_relation_id: user.id,
+                          //   });
+                          // },
+                          //   }}
+                          // />
+                        }
+                      />
+                    ))}
                   </>
                 }
               />
@@ -337,41 +405,89 @@ function IndividualCard({
               spacing={'var(--space-2)'}
               px={'var(--space-4)'}
               pb={'var(--space-4)'}
+              gap={3}
             >
-              <ButtonGhost
-                textButton={'Add Shadow'}
-                isLeftIcon={true}
-                color={'neutral'}
-                slotIcon={<InterviewerTrainingTypeIcon type='shadow' />}
-                size={1}
-                onClickButton={{
-                  onClick: () => {
-                    if (isSaving) return;
-                    alterCount({
-                      type: 'shadow',
-                      count: user.number_of_shadow + 1,
-                      module_relation_id: user.id,
-                    });
-                  },
-                }}
-              />
-              <ButtonGhost
-                textButton={'Add Reverse Shadow'}
-                color={'neutral'}
-                isLeftIcon={true}
-                slotIcon={<InterviewerTrainingTypeIcon type='reverse_shadow' />}
-                size={1}
-                onClickButton={{
-                  onClick: () => {
-                    if (isSaving) return;
-                    alterCount({
-                      type: 'reverse_shadow',
-                      count: user.number_of_reverse_shadow + 1,
-                      module_relation_id: user.id,
-                    });
-                  },
-                }}
-              />
+              <Stack direction={'row'} gap={1}>
+                Shadow
+                <IconButtonSoft
+                  isDisabled={
+                    shadowProgress.length // shadow complete
+                      ? mutatedShadowProgress.length === 0
+                      : mutatedShadowProgress.length === 1
+                  }
+                  color={'neutral'}
+                  iconName='remove'
+                  size={1}
+                  onClickButton={{
+                    onClick: async () => {
+                      await alterCount({
+                        type: 'shadow',
+                        count: user.number_of_shadow - 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+                <Typography paddingInline={'2px'}>
+                  {mutatedShadowProgress.length + shadowProgress.length}
+                </Typography>
+                <IconButtonSoft
+                  iconName='Add'
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      if (isSaving) return;
+                      alterCount({
+                        type: 'shadow',
+                        count: user.number_of_shadow + 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+              </Stack>
+              <Stack direction={'row'} gap={1}>
+                Reverse Shadow
+                <IconButtonSoft
+                  iconName='remove'
+                  isDisabled={
+                    reverseShadowProgress.length
+                      ? mutatedReverseShadowProgress.length === 0
+                      : mutatedReverseShadowProgress.length === 1
+                  }
+                  color={'neutral'}
+                  size={1}
+                  onClickButton={{
+                    onClick: async () => {
+                      await alterCount({
+                        type: 'reverse_shadow',
+                        count: user.number_of_reverse_shadow - 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+                <Typography paddingInline={'2px'}>
+                  {mutatedReverseShadowProgress.length +
+                    reverseShadowProgress.length}
+                </Typography>
+                <IconButtonSoft
+                  iconName='Add'
+                  size={1}
+                  color={'neutral'}
+                  onClickButton={{
+                    onClick: () => {
+                      if (isSaving) return;
+                      alterCount({
+                        type: 'reverse_shadow',
+                        count: user.number_of_reverse_shadow + 1,
+                        module_relation_id: user.id,
+                      });
+                    },
+                  }}
+                />
+              </Stack>
             </Stack>
           </Collapse>
         }

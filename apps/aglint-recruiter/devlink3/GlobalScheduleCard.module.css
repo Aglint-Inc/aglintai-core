@@ -137,6 +137,10 @@
   display: none;
 }
 
+.gsc-btn-wrap {
+  flex: 0 0 auto;
+}
+
 .schedule_notifications {
   display: flex;
   flex-direction: column;

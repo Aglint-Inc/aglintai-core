@@ -212,6 +212,7 @@ export const PATHS = [
 '/api/updateUsers',
 '/api/webhook',
 '/api/workflow-cron',
+'/api/workflow-cron/execute',
 '/assessment-new',
 '/assessment-new/[id]',
 '/assessment-thanks',
@@ -273,5 +274,6 @@ export const PATHS = [
 '/test',
 '/thanks-page',
 '/workflows',
-'/workflows/[id]'
+'/workflows/[id]',
+'/workflows/real-time-crons'
 ] as const

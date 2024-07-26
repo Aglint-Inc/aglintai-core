@@ -81,7 +81,18 @@ function RightPanel({
                     textTime={dayjs(act.created_at).fromNow()}
                     isLineVisible={!(ind == activities.length - 1)}
                     isViewTaskVisible={Boolean(act.task_id)}
-                    textDesc={act.description}
+                    textDesc={
+                      act?.metadata?.type ===
+                      'candidate_response_self_schedule' ? (
+                        <>
+                          {act.metadata.response_type === 'reschedule'
+                            ? 'Requested a reschedule'
+                            : 'Cancelled this schedule'}
+                        </>
+                      ) : (
+                        act.description
+                      )
+                    }
                     onClickViewTask={{
                       onClick: () => {
                         router.push(`/tasks?task_id=${act.task_id}`);

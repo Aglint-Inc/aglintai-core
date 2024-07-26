@@ -15,6 +15,7 @@ import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
 import {
   setIsScheduleNowOpen,
+  setScheduleFlow,
   setStepScheduling,
 } from '../../SchedulingDrawer/store';
 import {
@@ -23,6 +24,7 @@ import {
   setMultipleCancelOpen,
   setRescheduleSessionIds,
   setSelectedApplicationLog,
+  setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 import IconSessionType from '../IconSessionType';
@@ -110,6 +112,7 @@ function BookingConfirmation({
         initialSessions.find((ses) => ses.interview_session.id === session.id)
           ?.interview_meeting?.status === 'confirmed',
     );
+    const isDebrief = sessions[0].session_type === 'debrief';
 
     return (
       <Stack spacing={2} width={'100%'}>
@@ -164,9 +167,17 @@ function BookingConfirmation({
                   onClickButton={{
                     onClick: () => {
                       const session_ids = sessions.map((session) => session.id);
-                      setRescheduleSessionIds(session_ids);
-                      setStepScheduling('reschedule');
-                      setSelectedApplicationLog(act);
+
+                      if (!isDebrief) {
+                        setRescheduleSessionIds(session_ids);
+                        setStepScheduling('reschedule');
+                        setSelectedApplicationLog(act);
+                      } else {
+                        setSelectedSessionIds(session_ids);
+                        setStepScheduling('pick_date');
+                        setScheduleFlow('debrief');
+                      }
+
                       setIsScheduleNowOpen(true);
                     },
                   }}
