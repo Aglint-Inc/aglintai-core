@@ -359,18 +359,7 @@ function SlotQualifiedMembers({
                   {trainingStatusArray.map((item, index) => (
                     <HistoryPill
                       key={index}
-                      isStart={index === 0}
-                      isStartActive={index === 0 && item.state}
-                      isEnd={trainingStatusArray.length - 1 === index}
-                      isEndActive={
-                        trainingStatusArray.length - 1 === index && item.state
-                      }
-                      isMiddle={index > 0 && index < trainingStatusArray.length}
-                      isMiddleActive={
-                        index > 0 &&
-                        index < trainingStatusArray.length &&
-                        item.state
-                      }
+                      isActive={item.state}
                       slotHistoryTrainingCard={
                         <HistoryTrainingCard
                           textInterviewType={
