@@ -175,12 +175,6 @@ function IndividualCard({
             key={i}
             isShadow={pill.sessionType === 'shadow'}
             isReverseShadow={pill.sessionType === 'rshadow'}
-            isStart={i === 0}
-            isMiddle={i > 0 && i < pills.length - 1}
-            isEnd={i === pills.length - 1}
-            isStartActive={pill.completed && i === 0}
-            isMiddleActive={pill.completed && i > 0 && i < pills.length - 1}
-            isEndActive={pill.completed && i === pills.length - 1}
           />
         ))}
         isPauseResumeVisible={Boolean(user.pause_json)}

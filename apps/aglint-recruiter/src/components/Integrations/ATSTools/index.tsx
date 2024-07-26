@@ -36,21 +36,21 @@ function ATSTools() {
     if (reason === 'disconnect_greenhouse') {
       await updateRecruiter(recruiter.id, {
         greenhouse_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
+      } as RecruiterType).then((data) => {
         setRecruiter(data);
       });
     }
     if (reason === 'disconnect_ashby') {
       await updateRecruiter(recruiter.id, {
         ashby_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
+      } as RecruiterType).then((data) => {
         setRecruiter(data);
       });
     }
     if (reason === 'disconnect_lever') {
       await updateRecruiter(recruiter.id, {
         lever_key: null,
-      } as RecruiterType).then((data: RecruiterType) => {
+      } as RecruiterType).then((data) => {
         setRecruiter(data);
       });
     }

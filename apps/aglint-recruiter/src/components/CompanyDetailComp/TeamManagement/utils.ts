@@ -1,8 +1,4 @@
-import {
-  employmentTypeEnum,
-  RecruiterUserType,
-  schedulingSettingType,
-} from '@aglint/shared-types';
+import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
 
 import axios from '@/src/client/axios';
 import { supabase } from '@/src/utils/supabase/client';
@@ -49,18 +45,20 @@ export const reinviteUser = (email: string, id: string) => {
 
 export type InviteUserAPIType = {
   request: {
-    users: {
-      first_name: string;
-      last_name: string;
-      email: string;
-      designation: string;
-      interview_location: string;
-      employment: employmentTypeEnum;
-      department: string;
+    users: (Pick<
+      DatabaseTable['recruiter_user'],
+      | 'first_name'
+      | 'last_name'
+      | 'email'
+      | 'position'
+      | 'department_id'
+      | 'office_location_id'
+      | 'employment'
+      | 'scheduling_settings'
+    > & {
       role_id: string;
       manager_id: string;
-      scheduling_settings: schedulingSettingType;
-    }[];
+    })[];
     recruiter_id: string;
   };
   response: {

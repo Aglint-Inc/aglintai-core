@@ -92,7 +92,7 @@ function AssigneeDetailsCard({
       )}
       isDesignationVisible={true}
       textDesignation={capitalizeAll(assigneeDetails?.role)}
-      textLocation={assigneeDetails.interview_location || '--'}
+      textLocation={assigneeDetails?.department?.name || '--'}
       textMail={assigneeDetails.email}
       textTimeZone={assigneeDetails?.scheduling_settings?.timeZone.tzCode}
       //   textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
