@@ -11,6 +11,7 @@ export const createTasks = async (
   recruiterUser: {
     name: string;
     id: string;
+    role: string;
   },
   candidates: { name: string; id: string }[],
   task: TaskType,
@@ -54,11 +55,11 @@ export const createTasks = async (
       optionData: {
         candidateName: candidate.name,
         sessions: session_ids,
-        creatorDesignation: 'Admin', // need to change
-        creatorName: recruiterUser?.name,
+        assignerId: assigner.user_id,
         assignerName: assignerName,
         creatorId: recruiterUser?.id,
-        assignerId: assigner.user_id,
+        creatorName: recruiterUser?.name,
+        creatorDesignation: recruiterUser.role, // need to change
         scheduleDateRange: {
           start_date: eachTask.schedule_date_range.start_date,
           end_date: eachTask.schedule_date_range.end_date,

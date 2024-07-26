@@ -221,6 +221,7 @@ const MoveCandidateInterview = () => {
       {
         id: recruiterUser.user_id,
         name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
+        role:recruiterUser?.role
       },
       (sectionApplication?.data?.pages ?? [])
         .flatMap((page) => page)

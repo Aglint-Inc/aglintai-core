@@ -183,7 +183,7 @@ export async function createTaskProgress({
       case 'priority_update':
         return `Priority changed from {currentPriority} to {priority}`;
       case 'create_task':
-        return `{creatorDesignation}: {creatorId} requested {assigneeName} to schedule an interview for {selectedSessions} between {scheduleDateRange} .`;
+        return `{creatorDesignation} : {creatorName} requested {assigneeName} to schedule an interview for {selectedSessions} between {scheduleDateRange} .`;
       case 'change_assignee':
         return `Assignee changed from {currentAssigneeName} to {assigneeName}`;
       case 'status_update':

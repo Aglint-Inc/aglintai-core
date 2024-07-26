@@ -52,7 +52,7 @@ function ProgressTitle({
     titleMetaData['{scheduleDateRange}']?.start_date,
   ).format('MMM DD')} ${
     titleMetaData['{scheduleDateRange}']?.end_date
-      ? ' to ' +
+      ? ' and ' +
         dayjs(titleMetaData['{scheduleDateRange}']?.end_date).format('MMM DD')
       : ''
   }`;
