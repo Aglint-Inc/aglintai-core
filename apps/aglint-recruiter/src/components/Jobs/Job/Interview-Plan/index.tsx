@@ -364,11 +364,12 @@ const InterviewSession = ({
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
-        if (curr.recruiter_user)
+        if (curr.recruiter_user) {
           acc.members.push({
             ...curr.recruiter_user,
             paused: !!curr?.interview_module_relation?.pause_json,
           });
+        }
       } else {
         if (curr.interview_module_relation.recruiter_user) {
           acc[curr.interviewer_type].push({
@@ -634,8 +635,10 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
       <GlobalBannerInline
         color={'error'}
         iconName={'warning'}
-        textContent={'No interviewers assigned. Click on edit to assign interviewers.'}
-        slotButton={<></>} 
+        textContent={
+          'No interviewers assigned. Click on edit to assign interviewers.'
+        }
+        slotButton={<></>}
         // TODO: @punit You can provide the edit button here inline and make the message take 100% width.
       />
       // <GlobalBanner
@@ -657,7 +660,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'}  gap={3}>
+    <Stack direction={'row'} gap={3}>
       <AvatarWithName
         textName={name}
         textRole={member.position}

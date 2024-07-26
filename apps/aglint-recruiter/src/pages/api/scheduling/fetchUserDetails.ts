@@ -14,7 +14,7 @@ export interface BodyParamsFetchUserDetails {
   includeSupended?: boolean;
 }
 
-export type CompanyMembersAPI = ReturnType<typeof fetchUsers>;
+export type CompanyMembersAPI = Awaited<ReturnType<typeof fetchUsers>>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -59,4 +59,3 @@ const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
     return resAlter;
   });
 };
-export type fetchUsersType = Awaited<ReturnType<typeof fetchUsers>>;
