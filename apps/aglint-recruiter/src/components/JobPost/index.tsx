@@ -239,8 +239,6 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             Object.entries(recruiter?.socials)?.map((soc, ind) => {
               if (soc[0] === 'custom') {
                 return null;
-              } else if (soc[0] !== 'custom' && !soc[1]) {
-                return null;
               }
               return (
                 <CompanyListingLinks
@@ -256,7 +254,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   textLinkName={soc[0]}
                   onClickLink={{
                     onClick: () => {
-                      window.open(soc[1], '_blank');
+                      window.open(soc[1] as string, '_blank');
                     },
                   }}
                 />

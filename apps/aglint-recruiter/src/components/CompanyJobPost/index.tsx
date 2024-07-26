@@ -101,7 +101,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 textLinkName={soc[0]}
                 onClickLink={{
                   onClick: () => {
-                    window.open(soc[1], '_blank');
+                    window.open(soc[1] as string, '_blank');
                   },
                 }}
               />

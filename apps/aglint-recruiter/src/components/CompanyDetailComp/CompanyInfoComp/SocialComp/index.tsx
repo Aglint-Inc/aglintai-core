@@ -1,9 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { RecruiterType } from '@aglint/shared-types';
-import { Box, Dialog, Stack, Typography } from '@mui/material';
-import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+import { Box, Dialog, Stack, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -11,7 +9,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  ContextValue,
+  useAuthDetails,
+} from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';
 
@@ -64,7 +65,7 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
   const [error, setError] = useState(initialError);
 
   const handleChange = async (
-    recruit: RecruiterType,
+    recruit: ContextValue['recruiter'],
     socialName?: string,
     custom: boolean = false,
   ) => {
@@ -93,7 +94,9 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
         }, 1500);
       }
     }
-    setRecruiter(recruit);
+    setRecruiter({
+      ...recruit,
+    });
   };
 
   function validateFacebookUrl(url) {
