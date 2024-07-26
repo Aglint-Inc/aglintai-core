@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
-import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 const RealTimeCrons: React.FC = () => {
   const [cronEntries, setCronEntries] = useState<
@@ -41,7 +41,7 @@ const RealTimeCrons: React.FC = () => {
       );
       setCronEntries(entries);
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     } finally {
       setTimeout(() => {
         setIsRefreshing(false);
@@ -83,6 +83,7 @@ const RealTimeCrons: React.FC = () => {
             );
             if (entryIndex !== -1) {
               const updatedEntries = [...prevEntries];
+              // eslint-disable-next-line security/detect-object-injection
               updatedEntries[entryIndex] = updatedEntry;
               return updatedEntries;
             } else {
@@ -107,10 +108,6 @@ const RealTimeCrons: React.FC = () => {
   let filteredEntries = cronEntries.filter(
     (entry) => !statusFilter || (statusFilter && entry.status === statusFilter),
   );
-
-  if (isArray(filteredEntries)) {
-    filteredEntries = filteredEntries.sort((r1, r2) => r1.id - r2.id);
-  }
 
   return (
     <Box sx={{ height: 600, width: '100%' }}>
@@ -177,6 +174,7 @@ const handleExecuteAction = async (id: number) => {
     );
     await axios.post('/api/workflow-cron/execute');
   } catch (err) {
+    toast.error(err.message);
     console.error(err);
   }
 };
@@ -203,7 +201,7 @@ const columns: GridColDef[] = [
   {
     field: 'created_at',
     headerName: 'Created At',
-    width: 200,
+    width: 170,
     renderCell: (params) =>
       dayjsLocal(params.value).format('DD MMMM YYYY, hh:mm ss A'),
   },
@@ -211,7 +209,8 @@ const columns: GridColDef[] = [
   {
     field: 'execute_at',
     headerName: 'Execute At',
-    width: 200,
+    width: 170,
+
     renderCell: (params) =>
       dayjsLocal(params.value).format('DD MMMM YYYY, hh:mm ss A'),
   },
@@ -219,13 +218,13 @@ const columns: GridColDef[] = [
   {
     field: 'completed_at',
     headerName: 'Completed At',
-    width: 200,
+    width: 170,
     renderCell: (params) =>
       params.value
         ? dayjsLocal(params.value).format('DD MMMM YYYY, hh:mm ss A')
         : 'NA',
   },
-  { field: 'tries', headerName: 'Tries', width: 100 },
+  { field: 'tries', headerName: 'Tries', width: 50 },
 
   {
     field: 'status',
