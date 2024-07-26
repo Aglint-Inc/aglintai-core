@@ -1,4 +1,3 @@
-import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import Seo from '@components/Common/Seo';
 import { Stack } from '@mui/material';
 import axios from 'axios';
@@ -8,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Loader from '@/src/components/Common/Loader';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
 
+import { CompanyPostAPI } from '../../api/jobpost/company';
 import JobNotFound from '../JobNotFound';
 
 function JobPost() {
@@ -15,14 +15,14 @@ function JobPost() {
   let jobId = router.query.id;
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [recruiter, setRecruiter] = useState<RecruiterDB>();
-  const [jobs, setJobs] = useState<JobTypeDB[]>([]);
+  const [recruiter, setRecruiter] = useState<CompanyPostAPI['recruiter']>();
+  const [jobs, setJobs] = useState<CompanyPostAPI['jobs']>([]);
 
   useEffect(() => {
     if (router.isReady && jobId) {
       let jobId = router.query.id;
       (async () => {
-        const response = await axios.post(
+        const response = await axios.post<CompanyPostAPI>(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/company`,
           {
             job_id: jobId,

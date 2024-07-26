@@ -31,46 +31,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send('No query provided');
   }
 
-  let isValid = false;
-  let post;
+  const response = await getResponse(req);
 
-  const { data, error } = await supabase
-    .from('public_jobs')
-    .select('*')
-    .or(req.body.query);
-
-  if (!error && data?.length > 0) {
-    if (data[0]?.status == 'closed' ) {
-      isValid = false;
-    } else {
-
-      
-      if ((req.body.preview || data[0]?.status == 'draft') && data[0]?.draft) {
-        post = data[0].draft;
-      } else {
-        post = data[0];
-      }
-
-
-      isValid = true;
-    }
-    const { data: rec } = await supabase
-      .from('recruiter')
-      .select(
-        'id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry',
-      )
-      .eq('id', data[0].recruiter_id);
-
-    const { data: jobs } = await supabase
-      .from('public_jobs')
-      .select('*')
-      .eq('recruiter_id', data[0].recruiter_id)
-      .eq('status', 'published');
-
-    return res
-      .status(200)
-      .send({ recruiter: rec[0], jobs: jobs, isValid: isValid, post: post });
-  }
+  return res.status(200).send(response);
 };
 
 export default handler;
+
+const getResponse = async (req: NextApiRequest) => {
+  const { recruiter_data: recruiter, ...job } = await getJob(req.body.query);
+  let post = { ...job };
+
+  if (req.body.preview || job.status === 'draft') {
+    post = { ...post, ...post.draft };
+  }
+  const isValid = job.status !== 'closed';
+
+  return { recruiter, jobs: [job], isValid: isValid, post: post };
+};
+
+const getJob = async (query: string) =>
+  (
+    await supabase
+      .from('public_jobs')
+      .select(
+        '*, recruiter_data:recruiter!public_jobs_recruiter_id_fkey(id, logo, name, office_locations(*),company_overview, employee_size, socials, company_website, industry)',
+      )
+      .eq('status', 'published')
+      .or(query)
+      .single()
+      .throwOnError()
+  ).data;
+
+export type PublicJobAPI = Awaited<ReturnType<typeof getResponse>>;

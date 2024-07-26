@@ -3,8 +3,6 @@ import {
   CandidateType,
   JobApplcationDB,
   JobTypeDB,
-  RecruiterDB,
-  RecruiterType,
 } from '@aglint/shared-types';
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -29,6 +27,7 @@ import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ThankYou from '@/public/lottie/ThankYouLottie';
+import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -37,21 +36,9 @@ import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
 
-interface JobsListProps {
-  post: JobTypeDB;
-  recruiter: RecruiterDB;
-  jobs: JobTypeDB[];
-}
+type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
 
-const JobPostPublic: React.FC<JobsListProps> = ({
-  post,
-  recruiter,
-  jobs,
-}: {
-  post: JobTypeDB;
-  recruiter: RecruiterType;
-  jobs: JobTypeDB[];
-}) => {
+const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const router = useRouter();
   const [email, setEmail] = useState<string>();
   const [error, setError] = useState<boolean>(false);
@@ -152,33 +139,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 </Typography>
                 <Typography variant='body1'>
                   {[
-                    (
-                      recruiter as {
-                        office_locations: {
-                          city?: string;
-                          region?: string;
-                          country?: string;
-                        }[];
-                      }
-                    )?.office_locations[0]?.city,
-                    (
-                      recruiter as {
-                        office_locations: {
-                          city?: string;
-                          region?: string;
-                          country?: string;
-                        }[];
-                      }
-                    )?.office_locations[0]?.region,
-                    (
-                      recruiter as {
-                        office_locations: {
-                          city?: string;
-                          region?: string;
-                          country?: string;
-                        }[];
-                      }
-                    )?.office_locations[0]?.country,
+                    recruiter?.office_locations[0]?.city,
+                    recruiter?.office_locations[0]?.region,
+                    recruiter?.office_locations[0]?.country,
                   ]
                     .filter(Boolean)
                     .join(', ')}

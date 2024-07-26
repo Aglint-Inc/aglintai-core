@@ -1,4 +1,3 @@
-import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -9,16 +8,14 @@ import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
+import { CompanyPostAPI } from '@/src/pages/api/jobpost/company';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
 
-interface CompanyJobPostType {
-  recruiter: RecruiterDB;
-  jobs: JobTypeDB[];
-}
+type CompanyJobPostType = CompanyPostAPI;
 
 const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
   const router = useRouter();
