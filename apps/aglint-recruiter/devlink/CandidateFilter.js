@@ -2,6 +2,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { Text } from "./Text";
+import { ButtonSoft } from "./ButtonSoft";
+import { IconButtonSoft } from "./IconButtonSoft";
 import { JobPills } from "./JobPills";
 import { SkillsGenerate } from "./SkillsGenerate";
 import * as _utils from "./utils";
@@ -36,6 +39,7 @@ export function CandidateFilter({
   slotDegreeSuggestion,
   slotGenerate,
   slotCurrentJobSuggestion,
+  onClickClose = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -45,29 +49,32 @@ export function CandidateFilter({
         className={_utils.cx(_styles, "filter-wrap-header")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-580")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Edit Query"}
-          </_Builtin.Block>
+        <_Builtin.Block tag="div">
+          <Text content="Edit Query" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "filter-wrap-right")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-blue-600", "cursor-pointer")}
-            tag="div"
-            {...onClickResetFilter}
-          >
-            {"Reset Query"}
+          <_Builtin.Block tag="div">
+            <ButtonSoft
+              onClickButton={onClickResetFilter}
+              textButton="Reset Query"
+              size="2"
+              color="neutral"
+            />
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotButtonPrimarySmall}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cf-close-wrap")}
+            tag="div"
+          >
+            <IconButtonSoft
+              onClickButton={onClickClose}
+              iconName="close"
+              color="neutral"
+            />
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-581")} tag="div">

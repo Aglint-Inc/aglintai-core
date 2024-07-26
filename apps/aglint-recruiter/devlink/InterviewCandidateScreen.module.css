@@ -266,6 +266,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .interview-edit-done-wrapper {
   display: none;
   width: 40px;

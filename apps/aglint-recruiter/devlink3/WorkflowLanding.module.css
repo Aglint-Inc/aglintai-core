@@ -132,6 +132,7 @@
 }
 
 .workflow_helper_animated_block {
+  overflow: hidden;
   width: 400px;
   transition: all 300ms ease;
 }

@@ -18,7 +18,7 @@ export function InterviewLoad({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <Text content="Interview Load" weight="bold" />
+          <Text content="Interview Load" weight="medium" />
           <Text
             content="Setup maximum interviews per day and week."
             weight=""

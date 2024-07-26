@@ -162,6 +162,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .save-list-icon-wrap {
   display: flex;
   align-items: center;

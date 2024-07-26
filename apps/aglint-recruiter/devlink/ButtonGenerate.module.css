@@ -1,18 +1,22 @@
 .generate-btn-cd {
   display: flex;
-  padding: 8px 12px;
+  padding: var(--space-1) var(--space-3);
   align-items: center;
-  grid-column-gap: 7px;
-  grid-row-gap: 7px;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 
-  border: 1px solid #daeded;
+  border: 1px solid var(--accent-6);
   border-radius: 4px;
 
-  background-color: #f5fcfc;
+  background-color: var(--accent-3);
 
-  color: #012b30;
+  color: var(--accent-11);
 
   cursor: pointer;
+}
+
+.generate-btn-cd:hover {
+  background-color: var(--accent-4);
 }
 
 .icons {
@@ -134,4 +138,8 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }

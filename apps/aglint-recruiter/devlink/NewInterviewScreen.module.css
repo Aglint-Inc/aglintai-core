@@ -205,6 +205,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .new-end-interview-btn {
   display: flex;
   padding: 10px 20px;

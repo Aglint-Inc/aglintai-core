@@ -13,6 +13,7 @@ import {
   SystemAgentId,
 } from '@aglint/shared-utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
@@ -28,11 +29,13 @@ import {
 
 import { sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import {
   getIndicator,
   indicatorType,
 } from '@/src/components/Tasks/Components/TaskStatusTag/utils';
 import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -763,7 +766,7 @@ export const updateTask = (
       : supabase.from('new_tasks').insert(task)
   )
     .select(
-      'id, recruiter_user(first_name,last_name), applications(* , candidates( * ), public_jobs( * ))',
+      'id, recruiter_user(first_name,last_name), applications(* , candidates( * ), public_jobs( * )),recruiter_id,assignee,schedule_date_range,created_by',
     )
     .single()
     .then(async ({ data, error }) => {
@@ -774,25 +777,49 @@ export const updateTask = (
             task_id: data.id,
           })),
         );
-        const candidateName = getFullName(
-          data.applications.candidates.first_name,
-          data.applications.candidates.last_name,
+
+        const bodyParams: BodyParamsFetchUserDetails = {
+          recruiter_id: data.recruiter_id,
+          includeSupended: true,
+        };
+        const resMem = (await axios.post(
+          '/api/scheduling/fetchUserDetails',
+          bodyParams,
+        )) as { data: MemberType[] };
+        const members = resMem.data;
+        const assignee = [...members, ...agentsDetails].find(
+          (item) => item.user_id === data.assignee[0],
+        );
+        const creator = [...members, ...agentsDetails].find(
+          (item) => item.user_id === data.created_by,
         );
 
         await createTaskProgress({
           task_id: data?.id as string,
-          title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
+          title: `{creatorDesignation} : {creatorName} requested {assigneeName} to schedule an interview for {selectedSessions} between {scheduleDateRange} .`,
           created_by: {
             id: task.created_by,
             name: getFullName(
               data.recruiter_user.first_name,
-              data.recruiter_user.first_name,
+              data.recruiter_user.last_name,
             ),
           },
           title_meta: {
-            '{candidate}': candidateName,
             '{selectedSessions}': sessions,
+            '{creatorDesignation}': creator.role,
+            '{creatorName}': getFullName(creator.first_name, creator.last_name),
+            '{creatorId}': creator.user_id,
+            '{assigneeName}': getFullName(
+              assignee.first_name,
+              assignee.last_name,
+            ),
+            '{assigneeId}': assignee.user_id,
+            '{scheduleDateRange}': {
+              end_date: data.schedule_date_range.end_date,
+              start_date: data.schedule_date_range.start_date,
+            },
           },
+
           progress_type:
             task.type === 'schedule' ||
             task.type === 'self_schedule' ||

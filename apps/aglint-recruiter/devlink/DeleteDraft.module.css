@@ -270,6 +270,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .clear-hisitory-text-wrap {
   padding: 20px 28px;
 }

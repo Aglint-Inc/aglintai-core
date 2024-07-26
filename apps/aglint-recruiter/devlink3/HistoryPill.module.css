@@ -1,26 +1,36 @@
-.div-block-1524 {
+.history-pill-wrapper {
   position: relative;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
-.div-block-1523 {
+.history-pills-sub-wrap {
   position: relative;
-  z-index: 1;
-
-  display: flex;
-  width: 60px;
-  height: 28px;
-  justify-content: center;
-  align-items: center;
 }
 
-.div-block-1523.active {
+.history-pills {
+  display: flex;
+  width: 60px;
+  height: 26px;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--neutral-3);
+
+  color: var(--neutral-9);
+}
+
+.history-pills.active {
   position: absolute;
   left: 0%;
   top: 0%;
   right: 0%;
   bottom: 0%;
-  z-index: 1;
+
+  background-color: var(--success-4);
+
+  color: var(--success-11);
 }
 
 .icons {
@@ -45,49 +55,4 @@
 
 .icons.pointer {
   cursor: pointer;
-}
-
-.div-block-1552 {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 2;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: var(--success-9);
-}
-
-.div-block-1552.start-active {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.div-block-1552.end-active {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.div-block-1553 {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: var(--neutral-3);
-}
-
-.div-block-1553.start {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.div-block-1553.end {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
 }

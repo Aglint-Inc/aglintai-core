@@ -180,6 +180,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .edit-icon {
   display: flex;
   width: 30px;

@@ -3,12 +3,22 @@
   border-radius: var(--radius-4);
 }
 
+.ga-ats-wrap {
+  display: flex;
+  padding: var(--space-3) var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+
+  border-bottom: 1px solid var(--neutral-6);
+}
+
 .ats-import-wrappers {
   position: relative;
   display: flex;
-  margin-top: var(--space-5);
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .relative-1 {
@@ -20,76 +30,13 @@
   padding-top: 2px;
 }
 
-.aui-button-wrap {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-}
-
-.aui-button-wrap:focus-visible {
-  outline-color: #2f3941;
-  outline-offset: 0px;
-  outline-style: none;
-  outline-width: 3px;
-}
-
-.aui-button-wrap.mt-16 {
-  margin-top: 16px;
-}
-
-.mt-16 {
-  margin-top: 16px;
-}
-
-.relative {
-  position: relative;
-}
-
-.relative.ai-comm {
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.ats-btn-disable {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 1;
-}
-
-.selected-div-wrap {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: var(--neutral-2);
-}
-
-.ats-search-wrappers {
-  display: flex;
-  margin-top: var(--space-4);
-  justify-content: space-between;
-}
-
-.ats-tab-wappers {
-  display: flex;
-  align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
-}
-
 .slot-ats-cards-wrappers {
   display: flex;
-  overflow: scroll;
-  max-height: 450px;
   margin-top: var(--space-3);
-  padding: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   flex-direction: column;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   border-radius: var(--radius-3);
 

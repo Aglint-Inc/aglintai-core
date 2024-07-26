@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { APIWorkFlowCron } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -37,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await supabaseAdmin
       .from('workflow_action_logs')
-      .update({ status: 'success' })
+      .update({ status: 'success', completed_at: dayjsLocal().toISOString() })
       .eq('id', id)
       .throwOnError();
     return getResponse({ data: { success: true } });
