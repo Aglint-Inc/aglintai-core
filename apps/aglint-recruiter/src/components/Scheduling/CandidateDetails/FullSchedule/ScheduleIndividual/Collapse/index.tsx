@@ -1,7 +1,7 @@
 import { Collapse, Stack } from '@mui/material';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
@@ -12,6 +12,7 @@ import InterviewerUserDetail from '../../../../Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '../../../../utils';
 import {
   setIsScheduleNowOpen,
+  setScheduleFlow,
   setStepScheduling,
 } from '../../../SchedulingDrawer/store';
 import {
@@ -19,6 +20,7 @@ import {
   setIndividualCancelOpen,
   setRescheduleSessionIds,
   setSelectedSession,
+  setSelectedSessionIds,
 } from '../../../store';
 import { ScheduleIndividualCardType } from '../types';
 import CancelBanners from './AdminCancelBanners';
@@ -118,16 +120,25 @@ function CollapseContent({
               )}
 
               {count === 0 ? (
-                <GlobalBanner
+                <GlobalBannerInline
                   color={'error'}
                   iconName={'warning'}
-                  textTitle={'No interviewers assigned to this stage'}
-                  textDescription={
-                    'Please add interviewers to proceed with scheduling this stage'
+                  textContent={
+                    'No interviewers assigned. Click on edit to assign interviewers.'
                   }
-                  slotButtons={<></>}
+                  slotButton={<></>}
+                  // TODO: @punit You can provide the edit button here inline and make the message take 100% width.
                 />
               ) : (
+                // <GlobalBanner
+                //   color={'error'}
+                //   iconName={'warning'}
+                //   textTitle={'No interviewers assigned to this stage'}
+                //   textDescription={
+                //     'Please add interviewers to proceed with scheduling this stage'
+                //   }
+                //   slotButtons={<></>}
+                // />
                 users.map((user) => {
                   const item = user.user_details;
                   const pause_json = user.interview_module_relation?.pause_json;
@@ -196,10 +207,22 @@ function CollapseContent({
                     onClickButton={{
                       onClick: (e) => {
                         e.stopPropagation();
-                        setSelectedSession(currentSession);
-                        const session_ids = currentSession.interview_session.id;
-                        setRescheduleSessionIds([session_ids]);
-                        setStepScheduling('reschedule');
+                        if (
+                          currentSession.interview_session.session_type !==
+                          'debrief'
+                        ) {
+                          setSelectedSession(currentSession);
+                          const session_ids =
+                            currentSession.interview_session.id;
+                          setRescheduleSessionIds([session_ids]);
+                          setStepScheduling('reschedule');
+                        } else {
+                          setSelectedSessionIds([
+                            currentSession.interview_session.id,
+                          ]);
+                          setStepScheduling('pick_date');
+                          setScheduleFlow('debrief');
+                        }
                         setIsScheduleNowOpen(true);
                       },
                     }}

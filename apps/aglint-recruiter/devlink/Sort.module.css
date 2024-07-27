@@ -164,6 +164,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .relative-1.pt-2 {
   padding-top: 2px;
 }

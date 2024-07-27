@@ -123,8 +123,7 @@ export function CandidateDatabaseTable({
                 _styles,
                 "cv-list-row-2",
                 "top",
-                "bg-grey-100",
-                "height-60"
+                "height-48"
               )}
               tag="div"
             >

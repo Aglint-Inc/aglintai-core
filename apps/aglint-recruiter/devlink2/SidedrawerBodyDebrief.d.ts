@@ -12,4 +12,5 @@ declare function SidedrawerBodyDebrief(props: {
   slotMembersDropdown?: Types.Devlink.Slot;
   slotAttendee?: Types.Devlink.Slot;
   isAttendeeVisible?: Types.Visibility.VisibilityConditions;
+  textMembers?: React.ReactNode;
 }): React.JSX.Element;

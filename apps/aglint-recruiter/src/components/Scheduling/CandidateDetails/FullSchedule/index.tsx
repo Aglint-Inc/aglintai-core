@@ -1,12 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
 import { MenuItem, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
+import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
+import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import UITextField from '@/src/components/Common/UITextField';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useInterviewModules } from '@/src/queries/interview-modules';
-import { sessionDurations } from '@/src/utils/scheduling/const';
+import { breakDurations } from '@/src/utils/scheduling/const';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
@@ -28,6 +31,7 @@ import ScheduleIndividualCard from './ScheduleIndividual';
 import TaskPopups from './TaskPopups';
 
 function FullSchedule({ refetch }: { refetch: () => void }) {
+  const router = useRouter();
   const {
     availabilities,
     initialSessions,
@@ -134,7 +138,25 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
       <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={
-          !fetchingSchedule && (
+          fetchingSchedule ? (
+            <>
+              {Array.from({
+                length: 5,
+              }).map((_, index) => (
+                <SkeletonScheduleCard key={index} />
+              ))}
+            </>
+          ) : initialSessions.length === 0 ? (
+            <InterviewPlanEmpty
+              onClickCreateInterviewPlan={{
+                onClick: () => {
+                  router.push(
+                    `/jobs/${selectedApplication.job_id}/interview-plan`,
+                  );
+                },
+              }}
+            />
+          ) : (
             <>
               {availabilities?.length > 0 && (
                 <AvailabilityProvider>
@@ -249,7 +271,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                                 });
                               }}
                             >
-                              {sessionDurations.map((item) => (
+                              {breakDurations.map((item) => (
                                 <MenuItem value={item} key={item}>
                                   {getBreakLabel(item)}
                                 </MenuItem>

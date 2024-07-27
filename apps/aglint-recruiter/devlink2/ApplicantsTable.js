@@ -101,9 +101,13 @@ export function ApplicantsTable({
         </_Builtin.Block>
         {isInterviewVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column-wrapper",
+              "header",
+              "progress"
+            )}
             tag="div"
-            table-column="interview"
           >
             <_Builtin.Block
               className={_utils.cx(

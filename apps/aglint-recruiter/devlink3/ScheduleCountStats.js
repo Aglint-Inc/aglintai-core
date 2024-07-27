@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./ScheduleCountStats.module.css";
 
@@ -30,129 +30,157 @@ export function ScheduleCountStats({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu")}
+        className={_utils.cx(_styles, "scheduling-menu", "success")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "event_available")}
-          tag="div"
-        >
-          <GlobalIcon size="8" iconName="event_available" weight="thin" />
-        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <Text content={textCompletedCount} size="6" weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "menu-scheduling-wrap")}
+            tag="div"
+          >
+            <Text content={textCompletedCount} size="7" weight="medium" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "event_available")}
+              tag="div"
+            >
+              <GlobalIcon size="6" iconName="event_available" weight="medium" />
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Completed" weight="medium" color="neutral" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
-              tag="div"
-            >
-              {textIncreasedCompleted}
-            </_Builtin.Block>
+            <Text content="Completed" weight="medium" color="neutral-12" />
+            <Text
+              content={textIncreasedCompleted}
+              weight="regular"
+              color="neutral"
+              size="1"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu")}
+        className={_utils.cx(_styles, "scheduling-menu", "not-scheduled")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "hourglass_empty")}
-          tag="div"
-        >
-          <GlobalIcon size="8" iconName="hourglass_empty" weight="thin" />
-        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <Text content={textNotScheduledCount} size="6" weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "menu-scheduling-wrap")}
+            tag="div"
+          >
+            <Text content={textNotScheduledCount} size="7" weight="medium" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "hourglass_empty")}
+              tag="div"
+            >
+              <GlobalIcon size="6" iconName="calendar_add_on" weight="medium" />
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Not Scheduled" weight="medium" color="neutral" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
-              tag="div"
-            >
-              {textIncreasedNotScheduled}
-            </_Builtin.Block>
+            <Text content="Not Scheduled" weight="medium" color="neutral-12" />
+            <Text
+              content={textIncreasedNotScheduled}
+              weight="regular"
+              color="neutral"
+              size="1"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu")}
+        className={_utils.cx(_styles, "scheduling-menu", "waiting")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "calendar_clock")}
-          tag="div"
-        >
-          <GlobalIcon size="8" iconName="calendar_clock" weight="thin" />
-        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <Text content={textWaitingCount} size="6" weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "menu-scheduling-wrap")}
+            tag="div"
+          >
+            <Text content={textWaitingCount} size="7" weight="medium" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "calendar_clock")}
+              tag="div"
+            >
+              <GlobalIcon size="6" iconName="calendar_clock" weight="medium" />
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Waiting" weight="medium" color="neutral" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
-              tag="div"
-            >
-              {textIncreasedWaiting}
-            </_Builtin.Block>
+            <Text content="Waiting" weight="medium" color="neutral-12" />
+            <Text
+              content={textIncreasedWaiting}
+              weight="regular"
+              color="neutral"
+              size="1"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu")}
+        className={_utils.cx(_styles, "scheduling-menu", "confirmed")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "event_upcoming")}
-          tag="div"
-        >
-          <GlobalIcon size="8" iconName="event_upcoming" weight="thin" />
-        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <Text content={textConfirmedCount} size="6" weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "menu-scheduling-wrap")}
+            tag="div"
+          >
+            <Text content={textConfirmedCount} size="7" weight="medium" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "event_upcoming")}
+              tag="div"
+            >
+              <GlobalIcon size="6" iconName="event_upcoming" weight="medium" />
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Confirmed" weight="medium" color="neutral" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
-              tag="div"
-            >
-              {textIncreasedConfirmed}
-            </_Builtin.Block>
+            <Text content="Confirmed" weight="medium" color="neutral-12" />
+            <Text
+              content={textIncreasedConfirmed}
+              weight="regular"
+              color="neutral"
+              size="1"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu")}
+        className={_utils.cx(_styles, "scheduling-menu", "cancelled")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "event_busy")} tag="div">
-          <GlobalIcon size="8" iconName="event_busy" weight="thin" />
-        </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <Text content={textCancelledCount} size="6" weight="medium" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "menu-scheduling-wrap")}
+            tag="div"
+          >
+            <Text content={textCancelledCount} size="7" weight="medium" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "event_busy")}
+              tag="div"
+            >
+              <GlobalIcon size="6" iconName="event_busy" weight="medium" />
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Cancelled" weight="medium" color="neutral" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "accent-text")}
-              tag="div"
-            >
-              {textIncreasedCancelled}
-            </_Builtin.Block>
+            <Text content="Cancelled" weight="medium" color="neutral-12" />
+            <Text
+              content={textIncreasedCancelled}
+              weight="regular"
+              color="neutral"
+              size="1"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

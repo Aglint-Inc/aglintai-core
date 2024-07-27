@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { RecruiterType } from '@aglint/shared-types';
 import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useRef, useState } from 'react';
@@ -56,7 +55,7 @@ function AssessmentSettings({
       .eq('id', recruiter.id)
       .select();
     if (!error) {
-      setRecruiter(data[0] as RecruiterType);
+      setRecruiter(data[0] as ReturnType<typeof useAuthDetails>['recruiter']);
       return data[0];
     }
   }
@@ -77,7 +76,7 @@ function AssessmentSettings({
       .eq('id', recruiter.id)
       .select();
     if (!error) {
-      setRecruiter(data[0] as RecruiterType);
+      setRecruiter(data[0] as ReturnType<typeof useAuthDetails>['recruiter']);
       return data[0];
     }
   }

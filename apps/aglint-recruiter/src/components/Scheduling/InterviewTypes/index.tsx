@@ -36,17 +36,11 @@ export function Modules() {
     ?.filter((mod) => {
       !archives && setArchives(true);
       return (
-        (departments.length === 0 ||
-          departments.includes(mod.department)) &&
-        (createdBy.length == 0 ||
-          createdBy.includes(mod.created_by)) &&
+        (departments.length === 0 || departments.includes(mod.department_id)) &&
+        (createdBy.length == 0 || createdBy.includes(mod.created_by)) &&
         (!textSearch ||
-          mod.name
-            .toLowerCase()
-            .includes(textSearch.toLowerCase())) &&
-        (showArchive
-          ? mod.is_archived
-          : mod.is_archived !== true)
+          mod.name.toLowerCase().includes(textSearch.toLowerCase())) &&
+        (showArchive ? mod.is_archived : mod.is_archived !== true)
       );
     })
     .sort(customSortModules);
@@ -123,14 +117,10 @@ export function Modules() {
                     {filterModules.map((mod) => {
                       return (
                         <InterviewModuleCard
-                          textDepartment={mod.department}
-                          isArchivedIconVisible={
-                            mod.is_archived
-                          }
+                          textDepartment={mod.department_name}
+                          isArchivedIconVisible={mod.is_archived}
                           key={mod.id}
-                          isObjectiveVisible={Boolean(
-                            mod.description,
-                          )}
+                          isObjectiveVisible={Boolean(mod.description)}
                           onClickCard={{
                             onClick: () => {
                               router.push(

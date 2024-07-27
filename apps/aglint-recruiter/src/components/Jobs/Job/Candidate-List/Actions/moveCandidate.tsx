@@ -1,18 +1,20 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { Collapse, Dialog, Stack } from '@mui/material';
+import { Checkbox, Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
+import { DcPopup } from '@/devlink/DcPopup';
+import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
 import { TaskStatesProvider } from '@/src/components/Tasks/TaskStatesContext';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { createTasks } from '@/src/utils/createTasks';
+import { capitalize } from '@/src/utils/text/textUtils';
 
 // import { createTasks } from '@/src/utils/createTasks';
 import CreateTask from './createTask';
@@ -87,47 +89,78 @@ const MoveCandidateNew = () => {
     resetActionPopup();
   });
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={false}
-      isChecked={false}
-      textCheck={null}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      isWarningVisible={false}
-      onclickCheck={null}
-      onclickClose={{ onClick: () => resetActionPopup() }}
+    <DcPopup
+      popupName={title}
+      slotBody={
+        <Stack gap={2}>
+          <GlobalBannerShort
+            color={'error'}
+            iconName={'warning'}
+            slotButtons={<></>}
+            textTitle={`You are about to ${description}`}
+            textDescription={
+              <Stack px={1}>
+                <li>All the schedules will be deleted</li>
+              </Stack>
+            }
+          />
+        </Stack>
+      }
+      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
 };
+
+//     <DcPopup
+//   popupName={title}
+//   slotBody={
+//     <Stack gap={1}>
+//       <GlobalBannerShort
+//         color={'error'}
+//         iconName={'warning'}
+//         slotButtons={<></>}
+//         textTitle={`You are about to ${description}`}
+//       />
+//       <Stack direction={'row'} alignItems={'center'} gap={1}>
+//         <Checkbox checked={checked} onClick={()=>setChecked((prev)=>!prev)}/>
+//         {capitalize(action)}
+//       </Stack>
+//     </Stack>
+//   }
+//   onClickClosePopup={{ onClick: () => resetActionPopup() }}
+//   slotButtons={buttons}
+// />
 
 const MoveCandidateScreening = () => {
   const { handleMoveApplications } = useApplications();
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
     resetActionPopup,
   }));
-  const [check, setCheck] = useState(false);
+  const [checked, setChecked] = useState(false);
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
       status: 'screening',
-      email: check ? 'phoneScreen_email_candidate' : null,
+      email: checked ? 'phoneScreen_email_candidate' : null,
     });
     resetActionPopup();
   });
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={true}
-      textCheck={action}
-      isChecked={check}
-      isWarningVisible={false}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      onclickCheck={{ onClick: () => setCheck((prev) => !prev) }}
-      onclickClose={{ onClick: () => resetActionPopup() }}
+    <DcPopup
+      popupName={title}
+      slotBody={
+        <Stack gap={2}>
+          {capitalize(description)}
+          <Stack direction={'row'} alignItems={'center'} gap={1}>
+            <Checkbox
+              checked={checked}
+              onClick={() => setChecked((prev) => !prev)}
+            />
+            {capitalize(action)}
+          </Stack>
+        </Stack>
+      }
+      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
@@ -138,7 +171,7 @@ const MoveCandidateAssessment = () => {
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
     resetActionPopup,
   }));
-  const { buttons, title, description, action } = useMeta(() => {
+  const { buttons, title, description } = useMeta(() => {
     handleMoveApplications({
       status: 'assessment',
       email: null,
@@ -146,17 +179,10 @@ const MoveCandidateAssessment = () => {
     resetActionPopup();
   });
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={true}
-      textCheck={action}
-      isChecked={false}
-      isWarningVisible={false}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      onclickCheck={null}
-      onclickClose={{ onClick: () => resetActionPopup() }}
+    <DcPopup
+      popupName={title}
+      slotBody={<Stack gap={2}>{capitalize(description)}</Stack>}
+      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
@@ -195,6 +221,7 @@ const MoveCandidateInterview = () => {
       {
         id: recruiterUser.user_id,
         name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
+        role:recruiterUser?.role
       },
       (sectionApplication?.data?.pages ?? [])
         .flatMap((page) => page)
@@ -215,26 +242,29 @@ const MoveCandidateInterview = () => {
 
   return (
     <TaskStatesProvider>
-      <CandidateSelectionPopup
-        textHeader={title}
-        textDescription={description}
-        isCheckVisible={true}
-        textCheck={'Create scheduling task'}
-        isChecked={taskCheck}
-        isWarningVisible={false}
-        textWarning={null}
-        slotMoveAssessment={
-          <Collapse in={taskCheck}>
-            <CreateTask
-              applications={checklist}
-              setTask={setTask}
-              setAssigner={setAssigner}
-              job_id={job?.id}
-            />
-          </Collapse>
+      <DcPopup
+        popupName={title}
+        slotBody={
+          <Stack gap={2}>
+            {capitalize(description)}
+            <Stack direction={'row'} alignItems={'center'} gap={1}>
+              <Checkbox
+                checked={taskCheck}
+                onClick={() => setTaskCheck((prev) => !prev)}
+              />
+              {'Create scheduling task'}
+            </Stack>
+            <Collapse in={taskCheck}>
+              <CreateTask
+                applications={checklist}
+                setTask={setTask}
+                setAssigner={setAssigner}
+                job_id={job?.id}
+              />
+            </Collapse>
+          </Stack>
         }
-        onclickCheck={{ onClick: () => setTaskCheck((prev) => !prev) }}
-        onclickClose={{ onClick: () => resetActionPopup() }}
+        onClickClosePopup={{ onClick: () => resetActionPopup() }}
         slotButtons={buttons}
       />
     </TaskStatesProvider>
@@ -254,17 +284,10 @@ const MoveCandidateQualified = () => {
     resetActionPopup();
   });
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={false}
-      textCheck={null}
-      isChecked={false}
-      isWarningVisible={false}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      onclickCheck={null}
-      onclickClose={{ onClick: () => resetActionPopup() }}
+    <DcPopup
+      popupName={title}
+      slotBody={<Stack gap={2}>{capitalize(description)}</Stack>}
+      onClickClosePopup={{ onClick: () => resetActionPopup() }}
       slotButtons={buttons}
     />
   );
@@ -275,28 +298,47 @@ const MoveCandidateDisqualified = () => {
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
     resetActionPopup,
   }));
-  const [check, setCheck] = useState(false);
+  const [checked, setChecked] = useState(false);
   const { buttons, title, description, action } = useMeta(() => {
     handleMoveApplications({
       status: 'disqualified',
-      email: check ? 'applicantReject_email_applicant' : null,
+      email: checked ? 'applicantReject_email_applicant' : null,
     });
     resetActionPopup();
   });
   return (
-    <CandidateSelectionPopup
-      textHeader={title}
-      textDescription={description}
-      isCheckVisible={true}
-      textCheck={action}
-      isChecked={check}
-      isWarningVisible={false}
-      textWarning={null}
-      slotMoveAssessment={<></>}
-      onclickCheck={{ onClick: () => setCheck((prev) => !prev) }}
-      onclickClose={{ onClick: () => resetActionPopup() }}
-      slotButtons={buttons}
-    />
+    <>
+      <DcPopup
+        popupName={title}
+        slotBody={
+          <Stack gap={1}>
+            <GlobalBannerShort
+              color={'error'}
+              iconName={'warning'}
+              slotButtons={<></>}
+              textTitle={`You are about to ${description}`}
+              textDescription={
+                <Stack px={1}>
+                  <li>All the schedules will be cancelled</li>
+                  <li>All the related tasks will be closed</li>
+                  <li>You can still view the candidate details</li>
+                  <li>Move to new state to start the process again</li>
+                </Stack>
+              }
+            />
+            <Stack direction={'row'} alignItems={'center'} gap={1}>
+              <Checkbox
+                checked={checked}
+                onClick={() => setChecked((prev) => !prev)}
+              />
+              {capitalize(action)}
+            </Stack>
+          </Stack>
+        }
+        onClickClosePopup={{ onClick: () => resetActionPopup() }}
+        slotButtons={buttons}
+      />
+    </>
   );
 };
 
@@ -309,7 +351,7 @@ function useMeta(onSubmit: () => void) {
     }),
   );
   const buttons = (
-    <Stack spacing={'10px'} mt={'10px'} direction={'row'} alignItems={'center'}>
+    <>
       <ButtonSoft
         textButton='Cancel'
         color={'neutral'}
@@ -324,11 +366,11 @@ function useMeta(onSubmit: () => void) {
           onClick: () => onSubmit(),
         }}
       />
-    </Stack>
+    </>
   );
   const count = checklist.length;
   const title = `Move to ${actionPopup}`;
-  const description = `Move ${count} candidate${count === 1 ? '' : 's'} to ${actionPopup}`;
+  const description = `move ${count} candidate${count === 1 ? '' : 's'} to ${actionPopup}`;
   const action = `Send ${actionPopup} email${count === 1 ? '' : 's'} to ${count} candidate${count === 1 ? '' : 's'}`;
   return { title, description, buttons, action, count };
 }

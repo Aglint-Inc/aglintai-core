@@ -2,7 +2,6 @@ import {
   CandidateType,
   JobApplcationDB,
   JobTypeDB,
-  RecruiterType,
 } from '@aglint/shared-types';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -14,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -78,7 +78,7 @@ function UploadDB({
   setThank: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setApplication: Dispatch<SetStateAction<JobApplcationDB>>;
-  recruiter: RecruiterType;
+  recruiter: PublicJobAPI['recruiter'];
   setCandidate: Dispatch<SetStateAction<CandidateType[]>>;
 }) {
   const [profile, setProfile] = useState<any>({

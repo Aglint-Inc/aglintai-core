@@ -119,18 +119,14 @@ export const scheduleWithAgent = async ({
   console.log(task_id, 'task_id');
 
   if (type) {
-    const { data: checkSch } = await supabase
-      .from('interview_schedule')
-      .select('id')
-      .eq('application_id', application_id)
-      .throwOnError();
-
     const resApplicationDetails = await fetchApplicationDetails({
       application_id,
       supabaseCaller: supabase,
     });
 
-    if (checkSch.length === 0) {
+    const checkSch = resApplicationDetails.interview_schedule;
+
+    if (!checkSch?.id) {
       console.log('fetchInterviewDataJob');
 
       const sessionsWithPlan = await fetchSessionDetailsFromInterviewPlan({
@@ -145,7 +141,6 @@ export const scheduleWithAgent = async ({
       });
 
       const createCloneRes = await createCloneSession({
-        is_get_more_option: false,
         application_id,
         allSessions: sessionsWithPlan,
         session_ids,
@@ -241,7 +236,7 @@ export const scheduleWithAgent = async ({
         dateRange,
         organizer_name: recruiter_user_name,
         sessions_ids: session_ids,
-        schedule_id: checkSch[0].id,
+        schedule_id: checkSch.id,
         supabase,
         rec_user_id,
       });

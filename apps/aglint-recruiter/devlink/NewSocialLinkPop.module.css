@@ -156,6 +156,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .roles-btn-wrap {
   display: flex;
   margin-top: var(--space-4);

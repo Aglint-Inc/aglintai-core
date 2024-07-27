@@ -39,10 +39,7 @@ export function KeywordsHelper({
               className={_utils.cx(_styles, "title_info")}
               tag="div"
             >
-              <Text
-                size="4"
-                content="Help Article: Using Keywords for Scheduling in Aglint AI"
-              />
+              <Text content="Help Article: Using Keywords for Scheduling in Aglint AI" />
             </_Builtin.Block>
             <Text
               weight="medium"
@@ -246,7 +243,7 @@ export function KeywordsHelper({
               className={_utils.cx(_styles, "title_info")}
               tag="div"
             >
-              <Text size="4" content="Setting Keywords" />
+              <Text size="2" content="Setting Keywords" />
             </_Builtin.Block>
             <Text
               weight="regular"

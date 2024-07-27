@@ -1,6 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { capitalize } from 'lodash';
 import React from 'react';
 
 import AssigneeChip from '@/src/components/Tasks/Components/AssigneeChip';
@@ -51,7 +52,7 @@ function ProgressTitle({
     titleMetaData['{scheduleDateRange}']?.start_date,
   ).format('MMM DD')} ${
     titleMetaData['{scheduleDateRange}']?.end_date
-      ? ' - ' +
+      ? ' and ' +
         dayjs(titleMetaData['{scheduleDateRange}']?.end_date).format('MMM DD')
       : ''
   }`;
@@ -71,6 +72,7 @@ function ProgressTitle({
         )
       : ''
   }`;
+
   return (
     <Stack
       flexWrap={'wrap'}
@@ -119,6 +121,13 @@ function ProgressTitle({
                   isOnlyName={true}
                 />
               );
+            case '{creatorName}':
+              return (
+                <AssigneeChip
+                  assigneeId={titleMetaData['{creatorId}']}
+                  isOnlyName={true}
+                />
+              );
             case '{prevScheduleDateRange}':
               return (
                 <span className='progress_date_section'>
@@ -127,9 +136,9 @@ function ProgressTitle({
               );
             case '{scheduleDateRange}':
               return (
-                <span className='progress_date_section'>
-                  {scheduleDateRange}
-                </span>
+                // <span className='progress_date_section'>
+                scheduleDateRange
+                // </span>
               );
             case '{currentTriggerTime}':
               return (
@@ -197,6 +206,8 @@ function ProgressTitle({
                   debriefDateRange={titleMetaData['{debriefDateRange}']}
                 />
               );
+            case '{creatorDesignation}':
+              return capitalize(titleMetaData['{creatorDesignation}']);
             default:
               return <span key={wordIndex}>{word}</span>;
           }

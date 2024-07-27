@@ -49,13 +49,12 @@ export const fetchApplicationDetails = async ({
   const { data } = await supabaseCaller
     .from('applications')
     .select(
-      `*,candidates(*),public_jobs(id,job_title,location,recruiter_id),candidate_files(id,file_url,resume_json,type,candidate_id)`,
+      `id,job_id,status,candidates(*),public_jobs(id,job_title,location,recruiter!public_jobs_recruiter_id_fkey(id,service_json,google_workspace_domain)),candidate_files(id,file_url,resume_json,type,candidate_id),interview_schedule(id,schedule_name)`,
     )
     .eq('id', application_id)
-    .single()
     .throwOnError();
 
-  return data;
+  return data[0];
 };
 
 const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;

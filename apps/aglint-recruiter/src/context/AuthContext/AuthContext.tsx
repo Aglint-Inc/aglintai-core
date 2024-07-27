@@ -2,11 +2,11 @@
 import {
   DatabaseEnums,
   DatabaseTable,
+  DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import {
   RecruiterRelationsType,
-  RecruiterType,
   RecruiterUserType,
   SocialsType,
 } from '@aglint/shared-types';
@@ -28,7 +28,7 @@ import {
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import axios from '@/src/client/axios';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
-import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
+import type { GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import { featureFlag } from '@/src/utils/Constants';
@@ -43,7 +43,7 @@ export interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
   setUserDetails: (details: Session | null) => void;
-  recruiter: RecruiterType | null;
+  recruiter: GetUserDetailsAPI['response']['recruiter'];
   userPermissions: {
     role: string;
     permissions: Partial<{
@@ -51,7 +51,7 @@ export interface ContextValue {
     }>;
   };
   recruiter_id: string | null;
-  setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
+  setRecruiter: Dispatch<SetStateAction<this['recruiter']>>;
   allRecruiterRelation: RecruiterRelationsType[];
   setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
@@ -63,7 +63,7 @@ export interface ContextValue {
   members: RecruiterUserType[];
   allMember: RecruiterUserType[];
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
-  handelMemberUpdate: (x: {
+  handleMemberUpdate: (x: {
     user_id: string;
     data: DatabaseTableUpdate['recruiter_user'] & {
       role_id?: string;
@@ -71,6 +71,12 @@ export interface ContextValue {
     };
     updateDB?: boolean;
   }) => Promise<boolean>;
+  handleOfficeLocationsUpdate: (
+    x: Parameters<typeof manageOfficeLocation>[0],
+  ) => Promise<boolean>;
+  handleDepartmentsUpdate: (
+    x: Parameters<typeof manageDepartments>[0],
+  ) => Promise<boolean>;
   isAllowed: (
     //checkPermission
     roles: DatabaseEnums['user_roles'][],
@@ -116,7 +122,9 @@ const defaultProvider: ContextValue = {
   members: [],
   allMember: [],
   setMembers: () => {},
-  handelMemberUpdate: (x) => Promise.resolve(true),
+  handleMemberUpdate: (x) => Promise.resolve(true),
+  handleOfficeLocationsUpdate: (x) => Promise.resolve(true),
+  handleDepartmentsUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
   allowAction: (func, role) => func,
   isAssessmentEnabled: false,
@@ -130,7 +138,7 @@ const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<Session | null>(null);
-  const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
+  const [recruiter, setRecruiter] = useState<ContextValue['recruiter']>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
@@ -179,13 +187,6 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    // const { data: recruiterRel, error: errorRel } = await supabase
-    //   .from('recruiter_relation')
-    //   .select(
-    //     '*, recruiter(*), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions(name)))',
-    //   )
-    //   .match({ user_id: userDetails.user.id, is_active: true })
-    //   .single();
     const recruiterRel = await getUserDetails();
     // get user permissions
     const rolePermissions: ContextValue['userPermissions'] = {
@@ -213,28 +214,12 @@ const AuthProvider = ({ children }) => {
         updateJoinedStatus(recruiterUser.user_id);
       }
 
-      setRecruiterUser({
-        ...recruiterUser,
-        primary: recruiterRel.primary,
-        role: recruiterRel.roles.name,
-        role_id: recruiterRel.role_id,
-        manager_id: recruiterRel.manager_id,
-        manager_details: recruiterRel.manager_details
-          ? {
-              name: `${recruiterRel.manager_details.first_name} ${recruiterRel.manager_details.last_name}`.trim(),
-              position: recruiterRel.manager_details.position,
-            }
-          : null,
-        created_by: recruiterRel.created_by,
-        recruiter_relation_id: recruiterRel.id,
-      });
+      setRecruiterUser(recruiterUser);
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
       setLoading(false);
-
-      const role = recruiterRel.roles.name;
 
       if (rolePermissions.permissions['view_users']) {
         await getMembersFromDB();
@@ -289,29 +274,54 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
+  const handleMemberUpdate: ContextValue['handleMemberUpdate'] = async ({
     user_id,
     data,
     updateDB = true,
   }) => {
     if (!user_id && data && recruiter.id) return Promise.resolve(false);
+    let tempData = { ...data, user_id };
     if (updateDB) {
-      data = await updateMember({
-        data: { ...data, user_id },
+      tempData = await updateMember({
+        data: tempData,
       });
     }
-    if (data) {
+    if (tempData) {
       setMembers((prev) =>
-        prev.map((item) => {
-          return data.user_id === item.user_id
-            ? ({ ...item, ...data } as RecruiterUserType)
-            : item;
-        }),
+        prev.map((item) =>
+          tempData.user_id === item.user_id ? { ...item, ...tempData } : item,
+        ),
       );
       return true;
     }
     return false;
   };
+  const handleOfficeLocationsUpdate: ContextValue['handleOfficeLocationsUpdate'] =
+    async (data) => {
+      let res = await manageOfficeLocation(data, recruiter.office_locations);
+      if (res) {
+        setRecruiter((pre) => {
+          const temp = structuredClone(pre);
+          temp.office_locations = res;
+          return temp;
+        });
+        return true;
+      }
+      return false;
+    };
+  const handleDepartmentsUpdate: ContextValue['handleDepartmentsUpdate'] =
+    async (data) => {
+      let res = await manageDepartments(data, recruiter.departments);
+      if (res) {
+        setRecruiter((pre) => {
+          const temp = structuredClone(pre);
+          temp.departments = res;
+          return temp;
+        });
+        return true;
+      }
+      return false;
+    };
 
   const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
@@ -396,7 +406,9 @@ const AuthProvider = ({ children }) => {
         members: (members || []).filter((item) => item.status == 'active'),
         allMember: members,
         setMembers,
-        handelMemberUpdate,
+        handleMemberUpdate,
+        handleOfficeLocationsUpdate,
+        handleDepartmentsUpdate,
         isAllowed,
         allowAction,
         isAssessmentEnabled,
@@ -469,4 +481,75 @@ const getMembers = () => {
     '/api/getMembersWithRole',
     null,
   );
+};
+
+const manageOfficeLocation = async (
+  payload:
+    | { type: 'insert'; data: DatabaseTableInsert['office_locations'] }
+    | { type: 'delete'; data: number }
+    | { type: 'update'; data: DatabaseTableUpdate['office_locations'] },
+  office_locations: DatabaseTable['office_locations'][],
+) => {
+  let temp = structuredClone(office_locations);
+  const query = supabase.from('office_locations');
+  switch (payload.type) {
+    case 'insert': {
+      const res = (
+        await query.insert(payload.data).select().single().throwOnError()
+      ).data;
+      temp.push(res);
+      break;
+    }
+    case 'update': {
+      const res = (
+        await query.update(payload.data).select().single().throwOnError()
+      ).data;
+      temp = temp.map((item) => (item.id === res.id ? res : item));
+      break;
+    }
+    case 'delete': {
+      await query.delete().eq('id', payload.data).throwOnError();
+      temp = temp.filter((item) => payload.data !== item.id);
+      break;
+    }
+  }
+  return temp;
+};
+
+const manageDepartments = async (
+  payload:
+    | { type: 'insert'; data: DatabaseTableInsert['departments'][] }
+    | { type: 'delete'; data: number[] }
+    | { type: 'update'; data: DatabaseTable['departments'][] },
+  departments: Pick<DatabaseTable['departments'], 'id' | 'name'>[],
+) => {
+  let temp = structuredClone(departments);
+  const query = supabase.from('departments');
+  switch (payload.type) {
+    case 'insert': {
+      const res = (await query.insert(payload.data).select().throwOnError())
+        .data;
+      temp = [...temp, ...res];
+      break;
+    }
+    case 'update': {
+      const res = (
+        await query
+          .upsert(payload.data, { onConflict: 'id' })
+          .select()
+          .throwOnError()
+      ).data;
+      temp = temp.map((item) => {
+        const sRes = res.find((r) => r.id === item.id);
+        return sRes ? sRes : item;
+      });
+      break;
+    }
+    case 'delete': {
+      await query.delete().in('id', payload.data).throwOnError();
+      temp = temp.filter((item) => !payload.data.includes(item.id));
+      break;
+    }
+  }
+  return temp;
 };

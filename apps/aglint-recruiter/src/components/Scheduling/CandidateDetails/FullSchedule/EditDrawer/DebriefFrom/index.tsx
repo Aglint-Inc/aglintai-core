@@ -178,25 +178,24 @@ function DebriedForm() {
           />
         }
         slotMembersDropdown={
-          filterDebriefMembers.length > 0 && (
-            <DropDown
-              placeholder='Select Members'
-              onChange={(e) => onChange(e)}
-              options={filterDebriefMembers}
-              value={''}
-              error={
-                errorValidation.find(
-                  (err) => err.field === 'qualified_interviewers',
-                ).error
-              }
-              helperText={
-                errorValidation.find(
-                  (err) => err.field === 'qualified_interviewers',
-                ).message
-              }
-            />
-          )
+          <DropDown
+            placeholder='Select Members'
+            onChange={(e) => onChange(e)}
+            options={filterDebriefMembers}
+            value={''}
+            error={
+              errorValidation.find(
+                (err) => err.field === 'qualified_interviewers',
+              ).error
+            }
+            helperText={
+              errorValidation.find(
+                (err) => err.field === 'qualified_interviewers',
+              ).message
+            }
+          />
         }
+        textMembers={'Members'}
       />
     </>
   );

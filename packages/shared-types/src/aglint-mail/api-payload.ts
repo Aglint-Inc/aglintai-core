@@ -410,6 +410,13 @@ type Payloads = {
       meetingStatusUpdateLink: string;
     };
   };
+  interviewEnd_slack_interviewerForFeedback: {
+    api_payload: v.InferInput<
+      typeof interviewEndEmailInterviewerForFeedbackSchema
+    >;
+    comp_email_placeholders: {};
+    react_email_placeholders: {};
+  };
 };
 
 export type EmailTemplateAPi<T extends DatabaseEnums["email_slack_types"]> =

@@ -154,6 +154,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .badge {
   display: flex;
   padding: 2px 6px;

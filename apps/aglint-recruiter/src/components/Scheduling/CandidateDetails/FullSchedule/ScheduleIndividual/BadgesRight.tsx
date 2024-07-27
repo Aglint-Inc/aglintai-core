@@ -184,15 +184,17 @@ function BadgesRight({
           />
         )} */}
 
-      {rescheduleRequests.length > 0 && (
-        <GlobalBadge
-          color={'warning'}
-          iconName='refresh'
-          textBadge={`${rescheduleRequests.length} Reschedule Request`}
-          showIcon={true}
-          iconSize={2}
-        />
-      )}
+      {rescheduleRequests.length > 0 &&
+        interview_meeting?.status !== 'completed' &&
+        interview_meeting?.status !== 'cancelled' && (
+          <GlobalBadge
+            color={'warning'}
+            iconName='refresh'
+            textBadge={`${rescheduleRequests.length} Reschedule Request`}
+            showIcon={true}
+            iconSize={2}
+          />
+        )}
     </>
   );
 }

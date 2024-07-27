@@ -221,6 +221,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .next-wrap-cand {
   position: fixed;
   left: 0%;

@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Avatar, Popover, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
@@ -24,8 +23,7 @@ type CompanyTYpe = {
 };
 function CompanyList() {
   // const router = useRouter();
-  const { userDetails, setRecruiter, recruiter, setAllRecruiterRelation } =
-    useAuthDetails();
+  const { userDetails, recruiter, setAllRecruiterRelation } = useAuthDetails();
   const [allCompanies, setAllCompanies] = useState<CompanyTYpe[]>([]);
   const [anchorlEl, setAnchorEl] = useState(null);
   async function getCompanies() {
@@ -83,11 +81,11 @@ function CompanyList() {
       in_recruiter_id: id,
       in_user_id: userDetails.user.id,
     });
-    const { data: rec } = await supabase
-      .from('recruiter')
-      .select()
-      .eq('id', id);
-    setRecruiter(rec[0] as RecruiterType);
+    // const { data: rec } = await supabase
+    //   .from('recruiter')
+    //   .select()
+    //   .eq('id', id);
+    // setRecruiter(rec[0]);
     setCompanyUploadLoader(null);
   }
 

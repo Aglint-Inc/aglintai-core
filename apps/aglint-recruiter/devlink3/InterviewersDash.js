@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { DarkPill } from "./DarkPill";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewersDash.module.css";
@@ -16,7 +17,7 @@ export function InterviewersDash({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "dashboard_widget_wrap")}
+      className={_utils.cx(_styles, "interview-dash-wrappers")}
       tag="div"
     >
       <_Builtin.Block
@@ -28,36 +29,16 @@ export function InterviewersDash({
           className={_utils.cx(_styles, "ci_option_switch")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "normal_menulink")}
-            tag="div"
-            {...onClickQualified}
-          >
-            <_Builtin.Block tag="div">{"Qualified"}</_Builtin.Block>
-            {isQualifiedActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "active-menulink")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Qualified"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "normal_menulink")}
-            tag="div"
-            {...onClickTrainee}
-          >
-            <_Builtin.Block tag="div">{"Trainees"}</_Builtin.Block>
-            {isTraineeActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "active-menulink")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Trainees"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
+          <DarkPill
+            onClickPill={onClickQualified}
+            isActive={isQualifiedActive}
+            textPill="Qualified"
+          />
+          <DarkPill
+            onClickPill={onClickTrainee}
+            isActive={isTraineeActive}
+            textPill="Trainees"
+          />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "sd_table")} tag="div">

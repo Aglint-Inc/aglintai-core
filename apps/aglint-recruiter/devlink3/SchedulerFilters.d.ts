@@ -9,4 +9,6 @@ declare function SchedulerFilters(props: {
   textDateRange?: React.ReactNode;
   slotNoConflictToggle?: Types.Devlink.Slot;
   slotSchedulerConflictCard?: Types.Devlink.Slot;
+  showWorkloadPreference?: Types.Visibility.VisibilityConditions;
+  textMembers?: React.ReactNode;
 }): React.JSX.Element;

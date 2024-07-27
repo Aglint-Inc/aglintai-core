@@ -12,7 +12,7 @@ import {
 } from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
-import IndividualCard from '../IndividualCard';
+import IndividualCard from './IndividualCard';
 
 export type ProgressUser = {
   user: MemberType;
@@ -44,7 +44,7 @@ function SlotTrainingMembers({
 
   return (
     <>
-      {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
+      {selUser?.user_id && <MoveToQualifiedDialog refetch={refetch} />}
 
       {filtererdUsers.length === 0 && (
         <EmptyGeneral

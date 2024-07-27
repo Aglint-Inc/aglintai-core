@@ -18,7 +18,7 @@ export async function fetchUtil(
   if (training_ints.length === 0) {
     return [];
   }
-  const [meeting_detail] = supabaseWrap(
+  const [session_detail] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
       .select(
@@ -39,22 +39,23 @@ export async function fetchUtil(
   );
 
   const comp_email_temp = await fetchCompEmailTemp(
-    meeting_detail.interview_meeting.interview_schedule.recruiter_id,
+    session_detail.interview_meeting.interview_schedule.recruiter_id,
     'interviewEnd_email_shadowTraineeForMeetingAttendence',
   );
 
   const candidate =
-    meeting_detail.interview_meeting.interview_schedule.applications.candidates;
-  const organizer = meeting_detail.interview_meeting.recruiter_user;
+    session_detail.interview_meeting.interview_schedule.applications.candidates;
+  const organizer = session_detail.interview_meeting.recruiter_user;
 
   const job =
-    meeting_detail.interview_meeting.interview_schedule.applications
+    session_detail.interview_meeting.interview_schedule.applications
       .public_jobs;
+  const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
 
   const mail_details = training_ints.map((trainee) => {
-    const shadowCount = module_relations.find(
-      (s) => s.user_id === trainee.user_id,
-    ).number_of_shadow;
+    const trainee_data = module_relations.find(
+      (s) => s.user_id === trainee.user_id && s.module_id === trainee.module_id,
+    );
     const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
       {
         candidateFirstName: candidate.first_name,
@@ -67,12 +68,15 @@ export async function fetchUtil(
         organizerLastName: organizer.last_name,
         organizerName: getFullName(trainee.first_name, trainee.last_name),
         OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
-        sessionName: meeting_detail.name,
-        interviewType: meeting_detail.interview_module.name,
+        sessionName: session_detail.name,
+        interviewType: session_detail.interview_module.name,
         companyName: job.company,
         jobRole: job.job_title,
-        shadowCount: numberToOrdinal(shadowCount),
-        shadowConfirmLink: `<a href="#' target="_blank">here</a>`,
+        shadowCount: numberToOrdinal(
+          trainee_data.shadow_confirmed_count +
+            trainee_data.shadow_completed_count,
+        ),
+        shadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
       };
 
     const filled_comp_template = fillCompEmailTemplate(

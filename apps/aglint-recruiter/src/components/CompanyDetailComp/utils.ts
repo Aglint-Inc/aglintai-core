@@ -10,7 +10,11 @@ export const saveToDatabase = async (
   recruit: RecruiterDB,
   id: string,
 ): Promise<boolean> => {
-  await supabase.from('recruiter').update(recruit).eq('id', id).select();
+  await supabase
+    .from('recruiter')
+    .update({ ...recruit, departments: undefined, office_locations: undefined })
+    .eq('id', id)
+    .select();
   return true;
 };
 

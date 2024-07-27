@@ -199,9 +199,9 @@ export const seed_email_templates: Pick<
   },
   {
     type: 'interviewEnd_email_organizerForMeetingStatus',
-    subject: '<p>Interview Meeting Completion Confirmation</p>',
-    body: '<p>Interview Meeting Completion Confirmation</p>',
+    subject: 'interviewEnd_email_organizerForMeetingStatus',
     from_name: '{{companyName}}',
+    body: '<p><span>Dear </span><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span> <span>, </span></p><p><span>We hope this message finds you well. We are reaching out to confirm the status of the interview meeting scheduled for </span><span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> <span>on </span><span class="temp-variable" data-type="temp-variable" data-id="date">{{date}}</span> <span>at </span><span class="temp-variable" data-type="temp-variable" data-id="time">{{time}}</span> <span>. </span></p><p><span>Your prompt response will help us ensure a smooth and efficient process for all parties involved. </span></p><p><span>Click the link below to update the meeting status in our system</span></p><p><span>Thank you for your cooperation.</span></p><p><span>Best regards,  </span></p><p><span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> </p>',
   },
   {
     type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',

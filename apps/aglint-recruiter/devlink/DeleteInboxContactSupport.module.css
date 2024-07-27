@@ -294,6 +294,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .ticket-submitted-text {
   display: flex;
   margin-top: var(--space-6);

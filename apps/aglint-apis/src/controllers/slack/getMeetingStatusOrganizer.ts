@@ -27,8 +27,7 @@ export async function getMeetingStatusOrganizer(req: Request, res: Response) {
     const org_tz = organizer.scheduling_settings.timeZone.tzCode;
     const start_time = data.start_time;
 
-    const userId = await getUserIdByEmail('chandra@aglinthq.com');
-    // const userId = await getUserIdByEmail(organizer.email);
+    const userId = await getUserIdByEmail(organizer.email);
 
     await slackWeb.chat.postMessage({
       channel: userId,

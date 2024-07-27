@@ -29,8 +29,11 @@ export const getCompanyMembers = async ({
   const res = await axios.post('/api/scheduling/fetchUserDetails', {
     recruiter_id,
   });
-  const allUsers = (res.data as unknown as Awaited<CompanyMembersAPI>) || [];
+  const allUsers = (res.data as unknown as CompanyMembersAPI) || [];
   return allUsers;
 };
 
-export type CompanyMember = Omit<Awaited<CompanyMembersAPI>[number], 'role'>;
+export type CompanyMember = Omit<
+  CompanyMembersAPI[number],
+  'role' | 'office_locations' | 'departments'
+>;

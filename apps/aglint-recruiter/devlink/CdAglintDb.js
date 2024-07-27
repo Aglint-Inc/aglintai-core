@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { ButtonSoft } from "./ButtonSoft";
 import { CdSavedList } from "./CdSavedList";
 import { CdTableAglint } from "./CdTableAglint";
 import * as _utils from "./utils";
@@ -46,7 +47,7 @@ export function CdAglintDb({
     <_Component className={_utils.cx(_styles, "cd-table")} tag="div">
       {isCdHeaderVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-680")}
+          className={_utils.cx(_styles, "cad-header-wrap")}
           tag="div"
         >
           <_Builtin.Block
@@ -71,16 +72,12 @@ export function CdAglintDb({
             />
             <_Builtin.Block tag="div">{textHeader}</_Builtin.Block>
             {isEditQueryVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "edit-query-btn",
-                  "cursor-pointer"
-                )}
-                tag="div"
-                {...onClickEditQuery}
-              >
-                {"Edit Query"}
+              <_Builtin.Block tag="div">
+                <ButtonSoft
+                  onClickButton={onClickEditQuery}
+                  size="1"
+                  textButton="Edit Query"
+                />
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>

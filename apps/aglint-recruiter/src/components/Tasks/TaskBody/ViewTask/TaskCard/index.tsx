@@ -582,13 +582,13 @@ function TaskCard({
                               assignerId: assigner.user_id,
                               currentAssigneeId: task.assignee[0],
                               assignerName:
-                                assigner.first_name +
+                                assigner?.first_name +
                                 ' ' +
-                                (assigner.last_name ?? ''),
+                                (assigner?.last_name ?? ''),
                               currentAssigneeName:
-                                currentAssignee.first_name +
+                                currentAssignee?.first_name +
                                 ' ' +
-                                (currentAssignee.last_name ?? ''),
+                                (currentAssignee?.last_name ?? ''),
                             },
                           });
 
