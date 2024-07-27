@@ -164,8 +164,8 @@ function DetailsOverview({
     if (tasks?.length) setTask(tasks[0].new_tasks);
   };
   useEffect(() => {
-    fetchTask();
-  }, []);
+    if (schedule) fetchTask();
+  }, [schedule]);
   return (
     <Stack pb={'var(--space-8)'}>
       <ScheduleDetailTabs
@@ -287,7 +287,12 @@ function DetailsOverview({
                 isPadding={false}
               />
             </ShowCode.When>
-            <ShowCode.When isTrue={router.query.tab === 'feedback'}>
+            <ShowCode.When
+              isTrue={
+                router.query.tab === 'feedback' &&
+                schedule.interview_session.session_type !== 'debrief'
+              }
+            >
               <Stack>
                 {schedule?.interview_meeting?.status === 'completed' ? (
                   <FeedbackWindow
@@ -308,6 +313,7 @@ function DetailsOverview({
                       email: schedule?.candidates.email,
                       name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
                       job_id: schedule?.job?.id,
+                      application_id: schedule?.schedule.application_id,
                     }}
                   />
                 ) : (

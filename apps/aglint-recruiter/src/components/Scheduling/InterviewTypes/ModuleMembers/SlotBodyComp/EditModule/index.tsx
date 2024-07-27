@@ -89,10 +89,11 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                 value={departments?.find(
                   (dep) => dep.id === localModule?.department_id,
                 )}
+                getOptionLabel={(option) => option.name}
                 onChange={(event, newValue) => {
                   setEditLocalModule((prev) => ({
                     ...prev,
-                    department: newValue,
+                    department_id: newValue?.id,
                   }));
                 }}
                 renderOption={(props, option) => {

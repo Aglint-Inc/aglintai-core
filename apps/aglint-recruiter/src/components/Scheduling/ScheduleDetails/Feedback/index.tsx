@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Dialog, Stack, Typography } from '@mui/material';
+import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
@@ -74,7 +74,12 @@ const FeedbackWindow = ({
   candidate,
 }: {
   interview_sessions: FeedbackWindowInterviewersType[string][number]['session'][];
-  candidate: { name: string; email: string; job_id: string };
+  candidate: {
+    name: string;
+    email: string;
+    job_id: string;
+    application_id: string;
+  };
 }) => {
   const {
     data: relationsData,
@@ -241,6 +246,7 @@ const AdminFeedback = ({
     email: string;
     name: string;
     job_id: string;
+    application_id: string;
   };
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
@@ -252,32 +258,30 @@ const AdminFeedback = ({
     e,
     session_id,
     relation_id,
-    receiver,
+    tool = 'email',
+    recruiter_user_id,
   }: {
     e: MouseEvent;
     session_id: string;
     relation_id: string;
-    receiver: { name: string; email: string };
+    tool: 'email' | 'slack';
+    recruiter_user_id;
   }) => {
     e.stopPropagation();
 
-    await requestFeedback({
+    sendReminderForEmailAndStack({
       session_id,
-      relation_id,
-      job_id: candidate.job_id,
-      receiver,
-      candidate: {
-        email: candidate.email,
-        name: candidate.name,
-      },
-    });
+      application_id: candidate.application_id,
+      recruiter_user_id,
+      tool,
+    } as API_request_feedback['request']);
 
     return handelSubmit({
       session_id: session_id,
       relation_id: relation_id,
       feedback: { recommendation: null, objective: null },
     }).then(() => {
-      toast.success('Feedback request email sent successfully.');
+      toast.success(`Feedback request sent to ${tool} successfully.`);
       return true;
     });
   };
@@ -589,6 +593,7 @@ function FeedbackCardDetails({
   isFeedBackEnabled: boolean;
   isAdmin?: boolean;
   setSelectedInterviewer: any;
+  // eslint-disable-next-line no-unused-vars
   handelFeedbackRequest?: any;
 }) {
   return (
@@ -637,58 +642,131 @@ function FeedbackCardDetails({
                   }}
                 />
               </ShowCode.When>
-              <ShowCode.When
+              {/* <ShowCode.When
                 isTrue={
                   Boolean(int.feedback && int.feedback?.recommendation) &&
                   int.user_id !== user_id
                 }
               >
                 {null}
-              </ShowCode.When>
+              </ShowCode.When> */}
               <ShowCode>
-                <ShowCode.When
-                  isTrue={
-                    int.feedback &&
-                    !int.feedback?.recommendation &&
-                    int.user_id !== user_id
-                  }
-                >
-                  <ButtonSoft
-                    size={1}
-                    textButton={'Re-request Feedback'}
-                    onClickButton={{
-                      onClick: (e) => {
-                        handelFeedbackRequest({
-                          e,
-                          session_id: int.session.id,
-                          relation_id: int.relation_id,
-                          receiver: {
-                            name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                            email: int.email,
+                <ShowCode.When isTrue={true}>
+                  <Tooltip
+                    placement='bottom-end'
+                    slotProps={{
+                      popper: {
+                        sx: {
+                          '& .MuiTooltip-tooltip': {
+                            margin: '5px !important',
                           },
-                        });
+                        },
                       },
                     }}
-                  />
+                    title={
+                      <Stack gap={1}>
+                        <ButtonSoft
+                          size={1}
+                          textButton={'Stack'}
+                          isLeftIcon={true}
+                          iconName={'alternate_email'}
+                          color={'neutral'}
+                          onClickButton={{
+                            onClick: (e) => {
+                              handelFeedbackRequest({
+                                e,
+                                session_id: int.session.id,
+                                relation_id: int.relation_id,
+                                recruiter_user_id: int.user_id,
+                                tool: 'slack',
+                              });
+                            },
+                          }}
+                        />
+                        <ButtonSoft
+                          textButton={'Email'}
+                          isLeftIcon={true}
+                          iconName={'mail'}
+                          color={'neutral'}
+                          size={1}
+                          onClickButton={{
+                            onClick: (e) => {
+                              handelFeedbackRequest({
+                                e,
+                                session_id: int.session.id,
+                                relation_id: int.relation_id,
+                                recruiter_user_id: int.user_id,
+                                tool: 'email',
+                              });
+                            },
+                          }}
+                        />
+                      </Stack>
+                    }
+                  >
+                    <Stack>
+                      <ButtonSoft size={1} textButton={'Re-request Feedback'} />
+                    </Stack>
+                  </Tooltip>
                 </ShowCode.When>
                 <ShowCode.Else>
-                  <ButtonSoft
-                    size={1}
-                    textButton={'Request Feedback'}
-                    onClickButton={{
-                      onClick: (e) => {
-                        handelFeedbackRequest({
-                          e,
-                          session_id: int.session.id,
-                          relation_id: int.relation_id,
-                          receiver: {
-                            name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
-                            email: int.email,
+                  <Tooltip
+                    placement='bottom-end'
+                    slotProps={{
+                      popper: {
+                        sx: {
+                          '& .MuiTooltip-tooltip': {
+                            marginTop: '5px !important',
                           },
-                        });
+                        },
                       },
                     }}
-                  />
+                    arrow={false}
+                    title={
+                      <Stack gap={1}>
+                        <ButtonSoft
+                          size={1}
+                          textButton={'Stack'}
+                          isLeftIcon={true}
+                          iconName={'alternate_email'}
+                          color={'neutral'}
+                          onClickButton={{
+                            onClick: (e) => {
+                              handelFeedbackRequest({
+                                e,
+                                session_id: int.session.id,
+                                relation_id: int.relation_id,
+                                recruiter_user_id: int.user_id,
+                                tool: 'slack',
+                              });
+                            },
+                          }}
+                        />
+                        <ButtonSoft
+                          textButton={'Email'}
+                          isLeftIcon={true}
+                          iconName={'mail'}
+                          color={'neutral'}
+                          size={1}
+                          onClickButton={{
+                            onClick: (e) => {
+                              handelFeedbackRequest({
+                                e,
+                                session_id: int.session.id,
+                                relation_id: int.relation_id,
+                                recruiter_user_id: int.user_id,
+                                tool: 'email',
+                              });
+                            },
+                          }}
+                        />
+                      </Stack>
+                    }
+                  >
+                    <Stack>
+                      <ButtonSoft size={1} textButton={'Request Feedback'} />
+                    </Stack>
+                  </Tooltip>
                 </ShowCode.Else>
               </ShowCode>
             </ShowCode>
@@ -864,11 +942,12 @@ const FeedbackForm = ({
   );
 };
 
-const requestFeedback = (body: API_request_feedback['request']) => {
+const sendReminderForEmailAndStack = (
+  body: API_request_feedback['request'],
+) => {
   return axios
     .post<API_request_feedback['response']>('/api/request_feedback', body)
     .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.mailSent;
+      return data;
     });
 };

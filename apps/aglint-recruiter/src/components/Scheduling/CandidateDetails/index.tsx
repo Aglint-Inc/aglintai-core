@@ -127,6 +127,7 @@ function SchedulingApplication() {
                           email: selectedApplication.candidates.email,
                           name: `${selectedApplication.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
                           job_id: selectedApplication.job_id,
+                          application_id: selectedApplication.id,
                         }}
                       />
                     </Stack>

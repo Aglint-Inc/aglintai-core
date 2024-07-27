@@ -17,7 +17,7 @@ export function InterviewersDash({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "dashboard_widget_wrap")}
+      className={_utils.cx(_styles, "interview-dash-wrappers")}
       tag="div"
     >
       <_Builtin.Block

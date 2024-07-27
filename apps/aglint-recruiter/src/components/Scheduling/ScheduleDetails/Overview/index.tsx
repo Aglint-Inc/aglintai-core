@@ -162,7 +162,7 @@ function Overview({
             <ButtonSoft
               size={1}
               color={'accent'}
-              textButton={schedule.interview_module.name}
+              textButton={schedule?.interview_module?.name}
               isRightIcon={true}
               iconName='north_east'
               iconSize={3}
