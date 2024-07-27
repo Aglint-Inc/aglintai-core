@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
@@ -15,7 +16,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
+import {
+  setIsAddMemberDialogOpen,
+  setIsSettingsDialogOpen,
+  setTrainingStatus,
+} from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
@@ -151,6 +156,18 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
+              slotEditButton={
+                <ButtonSoft
+                  color={'neutral'}
+                  size={2}
+                  textButton='Edit interview type'
+                  onClickButton={{
+                    onClick: () => {
+                      setIsSettingsDialogOpen(true);
+                    },
+                  }}
+                />
+              }
               // onClickEdit={{
               //   onClick: () => {
               //     setIsSettingsDialogOpen(true);
