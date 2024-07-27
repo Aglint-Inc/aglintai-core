@@ -1,6 +1,6 @@
-.dashboard_widget_wrap {
+.ims-wrappers {
   overflow: hidden;
-  height: 420px;
+  height: 296px;
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
   background-color: var(--white);
