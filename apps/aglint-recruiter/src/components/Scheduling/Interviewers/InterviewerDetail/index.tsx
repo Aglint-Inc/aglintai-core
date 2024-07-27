@@ -1,6 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PageLayout } from '@/devlink2/PageLayout';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
@@ -13,17 +13,13 @@ import { useInterviewerContext } from '@/src/context/InterviewerContext/Intervie
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
 
 import DynamicLoader from '../DynamicLoader';
 import Interviews from '../Interviews';
-import PauseResumeDialog from '../PauseResumeDialog';
-import { useImrQuery } from './hooks';
+import { useImrQuery, useModuleRelations } from './hooks';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
-import Overview from './Overview';
 import { useAllSchedulesByUserId } from './query';
 import TabInterviewModules from './TabModules';
-import { DetailsWithCount, PauseDialog } from './type';
 
 function Interviewer() {
   const router = useRouter();
@@ -31,14 +27,6 @@ function Interviewer() {
     useInterviewerContext();
   const { handleMemberUpdate } = useAuthDetails();
 
-  const [pauseResumeDialog, setPauseResumeDialog] = useState<PauseDialog>({
-    isOpen: false,
-    isAll: false,
-    type: 'pause',
-    panel_id: null,
-    isLoading: false,
-    end_time: '',
-  });
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
   const [changeText, setChangeText] = useState('');
@@ -50,6 +38,10 @@ function Interviewer() {
     isLoading: isLoadingInterviewer,
     refetch,
   } = useImrQuery({ user_id });
+
+  const queryModuleRelations = useModuleRelations({
+    user_id,
+  });
 
   const {
     data: {
@@ -73,37 +65,10 @@ function Interviewer() {
     | 'availibility'
     | 'keywords';
 
-  const detailsWithCount: DetailsWithCount = useMemo(() => {
-    return {
-      ...interviewerDetails,
-      modules: interviewerDetails?.modules.map((item) => {
-        const moduleMeetings = allSchedules.filter(
-          (sch) => sch.module_id === item.module_id,
-        );
-        const completedCount = moduleMeetings.filter(
-          (sch) => sch.status === 'completed',
-        ).length;
-        const cancelledCount = moduleMeetings.filter(
-          (sch) => sch.status === 'cancelled',
-        ).length;
-        const confirmedCount = moduleMeetings.filter(
-          (sch) => sch.status === 'confirmed',
-        ).length;
-        return {
-          ...item,
-          completedCount,
-          cancelledCount,
-          confirmedCount,
-          moduleMeetings,
-        };
-      }),
-    };
-  }, [interviewerDetails]);
-
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
 
   useEffect(() => {
-    if (interviewerDetails?.interviewer?.user_id) {
+    if (interviewerDetails?.user_id) {
       setBreadcrum([
         {
           name: 'Scheduling',
@@ -114,11 +79,11 @@ function Interviewer() {
           route: ROUTES['/scheduling']() + `?tab=interviewers`,
         },
         {
-          name: `${interviewerDetails.interviewer.first_name || ''} ${interviewerDetails.interviewer.last_name || ''}`.trim(),
+          name: `${interviewerDetails.first_name || ''} ${interviewerDetails.last_name || ''}`.trim(),
         },
       ]);
     }
-  }, [interviewerDetails?.interviewer?.user_id]);
+  }, [interviewerDetails?.user_id]);
 
   // let sections = tabsMo
 
@@ -154,7 +119,7 @@ function Interviewer() {
       // eslint-disable-next-line security/detect-object-injection
       currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
     router.push(
-      `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${pre}`,
+      `/scheduling/interviewer/${interviewerDetails.user_id}?tab=${pre}`,
     );
   };
   const handleNext = () => {
@@ -162,7 +127,7 @@ function Interviewer() {
       currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
 
     router.push(
-      `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${next}`,
+      `/scheduling/interviewer/${interviewerDetails.user_id}?tab=${next}`,
     );
   };
 
@@ -194,7 +159,7 @@ function Interviewer() {
                         onClickPill={{
                           onClick: () => {
                             router.push(
-                              `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=${item.queryParam}`,
+                              `/scheduling/interviewer/${interviewerDetails.user_id}?tab=${item.queryParam}`,
                             );
                           },
                         }}
@@ -205,21 +170,19 @@ function Interviewer() {
                 slotTabContent={
                   <>
                     {tab === 'overview' && (
-                      <Overview
-                        detailsWithCount={detailsWithCount}
-                        setPauseResumeDialog={setPauseResumeDialog}
-                        scheduleList={allSchedules}
-                      />
+                      <></>
+                      // <Overview
+                      //   detailsWithCount={detailsWithCount}
+                      //   setPauseResumeDialog={setPauseResumeDialog}
+                      //   scheduleList={allSchedules}
+                      // />
                     )}
                     {tab === 'keywords' && (
                       <InterviewerLevelSettings
-                        initialData={
-                          interviewerDetails.interviewer
-                            ?.scheduling_settings as any
-                        }
+                        initialData={interviewerDetails?.scheduling_settings}
                         updateSettings={(x) => {
                           return handleMemberUpdate({
-                            user_id: interviewerDetails.interviewer.user_id,
+                            user_id: interviewerDetails.user_id,
                             data: { scheduling_settings: x },
                           });
                         }}
@@ -229,12 +192,11 @@ function Interviewer() {
                     {tab === 'availibility' && (
                       <InterviewerLevelSettings
                         initialData={
-                          interviewerDetails.interviewer
-                            ?.scheduling_settings as any
+                          interviewerDetails?.scheduling_settings as any
                         }
                         updateSettings={(x) => {
                           return handleMemberUpdate({
-                            user_id: interviewerDetails.interviewer.user_id,
+                            user_id: interviewerDetails.user_id,
                             data: { scheduling_settings: x },
                           });
                         }}
@@ -243,8 +205,7 @@ function Interviewer() {
                     )}
                     {tab === 'interviewtypes' && (
                       <TabInterviewModules
-                        detailsWithCount={detailsWithCount}
-                        setPauseResumeDialog={setPauseResumeDialog}
+                        queryModuleRelations={queryModuleRelations}
                       />
                     )}
                     {tab === 'allschedules' && (
@@ -259,22 +220,22 @@ function Interviewer() {
                     )}
                   </>
                 }
-                textMail={interviewerDetails.interviewer?.email}
-                textDepartment={interviewerDetails.interviewer.position}
+                textMail={interviewerDetails?.email}
+                textDepartment={interviewerDetails.position}
                 textInterviewerName={
-                  interviewerDetails.interviewer.first_name +
+                  interviewerDetails.first_name +
                   ' ' +
-                  (interviewerDetails.interviewer.last_name
-                    ? interviewerDetails.interviewer.last_name
+                  (interviewerDetails.last_name
+                    ? interviewerDetails.last_name
                     : '')
                 }
                 slotInterviewerAvatar={
                   <MuiAvatar
-                    key={interviewerDetails.interviewer.user_id}
-                    src={interviewerDetails.interviewer.profile_image}
+                    key={interviewerDetails.user_id}
+                    src={interviewerDetails.profile_image}
                     level={getFullName(
-                      interviewerDetails.interviewer.first_name,
-                      interviewerDetails.interviewer.last_name,
+                      interviewerDetails.first_name,
+                      interviewerDetails.last_name,
                     )}
                     variant='rounded'
                     height='100%'
@@ -282,33 +243,32 @@ function Interviewer() {
                   />
                 }
                 textTimeZone={
-                  interviewerDetails.interviewer.scheduling_settings?.timeZone
-                    .label
+                  interviewerDetails.scheduling_settings?.timeZone.label
                 }
                 textInterviewPerDay={
                   <ShowCode>
                     <ShowCode.When
                       isTrue={
-                        interviewerDetails.interviewer?.scheduling_settings
-                          ?.interviewLoad?.dailyLimit.type === 'Interviews'
+                        interviewerDetails?.scheduling_settings?.interviewLoad
+                          ?.dailyLimit.type === 'Interviews'
                       }
                     >
                       {totalInterviewsToday +
                         ' / ' +
-                        interviewerDetails.interviewer.scheduling_settings
-                          ?.interviewLoad?.dailyLimit.value || 0}{' '}
+                        interviewerDetails.scheduling_settings?.interviewLoad
+                          ?.dailyLimit.value || 0}{' '}
                       Interviews
                     </ShowCode.When>
                     <ShowCode.When
                       isTrue={
-                        interviewerDetails.interviewer?.scheduling_settings
-                          ?.interviewLoad?.dailyLimit.type === 'Hours'
+                        interviewerDetails?.scheduling_settings?.interviewLoad
+                          ?.dailyLimit.type === 'Hours'
                       }
                     >
                       {totalHoursToday +
                         ' / ' +
-                        interviewerDetails.interviewer.scheduling_settings
-                          ?.interviewLoad?.dailyLimit.value || 0}{' '}
+                        interviewerDetails.scheduling_settings?.interviewLoad
+                          ?.dailyLimit.value || 0}{' '}
                       Hours
                     </ShowCode.When>
                   </ShowCode>
@@ -317,26 +277,26 @@ function Interviewer() {
                   <ShowCode>
                     <ShowCode.When
                       isTrue={
-                        interviewerDetails.interviewer?.scheduling_settings
-                          ?.interviewLoad?.weeklyLimit.type === 'Interviews'
+                        interviewerDetails?.scheduling_settings?.interviewLoad
+                          ?.weeklyLimit.type === 'Interviews'
                       }
                     >
                       {totalInterviewsThisWeek +
                         ' / ' +
-                        interviewerDetails.interviewer.scheduling_settings
-                          ?.interviewLoad?.weeklyLimit.value || 0}{' '}
+                        interviewerDetails.scheduling_settings?.interviewLoad
+                          ?.weeklyLimit.value || 0}{' '}
                       Interviews
                     </ShowCode.When>
                     <ShowCode.When
                       isTrue={
-                        interviewerDetails.interviewer?.scheduling_settings
-                          ?.interviewLoad?.weeklyLimit.type === 'Hours'
+                        interviewerDetails?.scheduling_settings?.interviewLoad
+                          ?.weeklyLimit.type === 'Hours'
                       }
                     >
                       {totalHoursThisWeek +
                         ' / ' +
-                        interviewerDetails.interviewer.scheduling_settings
-                          ?.interviewLoad?.weeklyLimit.value || 0}{' '}
+                        interviewerDetails.scheduling_settings?.interviewLoad
+                          ?.weeklyLimit.value || 0}{' '}
                       Hours
                     </ShowCode.When>
                   </ShowCode>
@@ -347,7 +307,8 @@ function Interviewer() {
         }
       />
 
-      <PauseResumeDialog
+      {/* <PauseResumeDialog
+        queryModuleRelations={queryModuleRelations}
         pauseResumeDialog={pauseResumeDialog}
         close={() => {
           setPauseResumeDialog((pre) => ({
@@ -416,7 +377,7 @@ function Interviewer() {
             isOpen: false,
           }));
         }}
-      />
+      /> */}
     </>
   );
 }

@@ -9,6 +9,7 @@ import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import ROUTES from '@/src/utils/routing/routes';
 
@@ -178,52 +179,63 @@ function ListCardInterviewerModules({
           <>
             {trainingStatusArray.map((item, index) => {
               return (
-                <HistoryPill
+                <CustomTooltip
                   key={index}
-                  isShadow={item.text === 'shadow'}
-                  isReverseShadow={item.text === 'reverse shadow'}
-                  slotHistoryTrainingCard={
-                    <HistoryTrainingCard
-                      textInterviewType={item.meeting?.session_name}
-                      isNotScheduleVisible={!item.meeting}
-                      isReverseShadow={item.text === 'reverse shadow'}
-                      isShadow={item.text === 'shadow'}
-                      slotStatus={
-                        <StatusBadge
-                          isCancelledVisible={
-                            item.meeting?.status === 'cancelled'
-                          }
-                          isConfirmedVisible={
-                            item.meeting?.status === 'confirmed'
-                          }
-                          isWaitingVisible={item.meeting?.status === 'waiting'}
-                          isCompletedVisible={
-                            item.meeting?.status === 'completed'
-                          }
-                          isNotScheduledVisible={
-                            item.meeting?.status === 'not_scheduled'
-                          }
-                        />
-                      }
-                      slotMeetingIcon={
-                        <IconScheduleType type={item.meeting?.schedule_type} />
-                      }
-                      textDate={dayjs(item.meeting?.start_time).format(
-                        'ddd DD MMM YYYY',
-                      )}
-                      textTime={`${dayjs(item.meeting?.start_time).format(
-                        'HH:mm',
-                      )} to ${dayjs(item.meeting?.end_time).format('HH:mm')}`}
-                      isSchedule={Boolean(item.meeting?.status)}
-                      textDuration={getBreakLabel(
-                        item.meeting?.session_duration,
-                      )}
-                      textPlatformName={getScheduleType(
-                        item.meeting?.schedule_type,
-                      )}
-                    />
+                  title={
+                    <Stack>
+                      <HistoryTrainingCard
+                        textInterviewType={item.meeting?.session_name}
+                        isNotScheduleVisible={!item.meeting}
+                        isReverseShadow={item.text === 'reverse shadow'}
+                        isShadow={item.text === 'shadow'}
+                        slotStatus={
+                          <StatusBadge
+                            isCancelledVisible={
+                              item.meeting?.status === 'cancelled'
+                            }
+                            isConfirmedVisible={
+                              item.meeting?.status === 'confirmed'
+                            }
+                            isWaitingVisible={
+                              item.meeting?.status === 'waiting'
+                            }
+                            isCompletedVisible={
+                              item.meeting?.status === 'completed'
+                            }
+                            isNotScheduledVisible={
+                              item.meeting?.status === 'not_scheduled'
+                            }
+                          />
+                        }
+                        slotMeetingIcon={
+                          <IconScheduleType
+                            type={item.meeting?.schedule_type}
+                          />
+                        }
+                        textDate={dayjs(item.meeting?.start_time).format(
+                          'ddd DD MMM YYYY',
+                        )}
+                        textTime={`${dayjs(item.meeting?.start_time).format(
+                          'HH:mm',
+                        )} to ${dayjs(item.meeting?.end_time).format('HH:mm')}`}
+                        isSchedule={Boolean(item.meeting?.status)}
+                        textDuration={getBreakLabel(
+                          item.meeting?.session_duration,
+                        )}
+                        textPlatformName={getScheduleType(
+                          item.meeting?.schedule_type,
+                        )}
+                      />
+                    </Stack>
                   }
-                />
+                >
+                  <HistoryPill
+                    key={index}
+                    isShadow={item.text === 'shadow'}
+                    isReverseShadow={item.text === 'reverse shadow'}
+                    slotHistoryTrainingCard={<></>}
+                  />
+                </CustomTooltip>
               );
             })}
           </>
@@ -285,200 +297,4 @@ function ListCardInterviewerModules({
 
 export default ListCardInterviewerModules;
 
-const QualifiedThreeDot = ({
-  pause_json,
-  setPauseResumeDialog,
-  module_id,
-  module,
-}) => {
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
-  return (
-    <>
-      <Stack onClick={handleClick}>
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
-
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MemberListCardOption
-          isMoveToQualifierVisible={false}
-          isPauseVisible={!pause_json}
-          isRemoveVisible={false}
-          isResumeVisible={Boolean(pause_json)}
-          onClickPauseInterview={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'pause',
-                panel_id: module_id,
-                isLoading: false,
-              }));
-              handleClose();
-            },
-          }}
-          onClickResumeInterview={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'resume',
-                panel_id: module_id,
-                isLoading: false,
-                end_time: module.pause_json.end_date,
-              }));
-              handleClose();
-            },
-          }}
-          onClickRemoveModule={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'remove',
-                panel_id: module_id,
-                isLoading: false,
-              }));
-              handleClose();
-            },
-          }}
-        />
-      </Popover>
-    </>
-  );
-};
-
-const TrainingThreeDot = ({
-  pause_json,
-  setPauseResumeDialog,
-  module_id,
-  module,
-}) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  return (
-    <>
-      <Stack onClick={handleClick}>
-        <IconButtonGhost
-          iconName='more_vert'
-          size={2}
-          iconSize={6}
-          color={'neutral'}
-        />
-      </Stack>
-
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          style: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MemberListCardOption
-          isMoveToQualifierVisible={false}
-          isPauseVisible={!pause_json}
-          isRemoveVisible={false}
-          isResumeVisible={Boolean(pause_json)}
-          // isRoleVisible={false}
-          onClickResumeInterview={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'resume',
-                panel_id: module_id,
-                isLoading: false,
-                end_time: module.pause_json.end_date,
-              }));
-              handleClose();
-            },
-          }}
-          onClickRemoveModule={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'remove',
-                panel_id: module_id,
-                isLoading: false,
-              }));
-              handleClose();
-            },
-          }}
-          onClickPauseInterview={{
-            onClick: () => {
-              setPauseResumeDialog((pre) => ({
-                ...pre,
-                isOpen: true,
-                type: 'pause',
-                panel_id: module_id,
-                isLoading: false,
-              }));
-              handleClose();
-            },
-          }}
-        />
-      </Popover>
-    </>
-  );
-};

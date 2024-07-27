@@ -19,19 +19,20 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { DateIcon } from '../../Settings/Components/DateSelector';
-import { useImrQuery } from '../Interviewer/hooks';
 
 export type ModuleType = {
   id: string;
   name: string;
 };
 function PauseResumeDialog({
+  queryModuleRelations,
   pauseResumeDialog,
   close,
   pause,
   resume,
   remove,
 }: {
+  queryModuleRelations;
   pauseResumeDialog: {
     isOpen: boolean;
     isAll: boolean;
@@ -76,6 +77,8 @@ function PauseResumeDialog({
   const { data, refetch } = useImrQuery({
     user_id: router.query.member_id as string,
   });
+
+  const { data, isLoading } = queryModuleRelations;
 
   const existingModule = data?.modules.map((item) => item.module_id);
   const allModules = modules.filter(

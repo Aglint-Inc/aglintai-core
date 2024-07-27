@@ -81,7 +81,7 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
       },
     }),
     {
-      name: 'filter-candidate',
+      name: 'schedule_candidate_list',
       storage: createJSONStorage(() => sessionStorage),
     },
   ),
