@@ -14,7 +14,7 @@ export function InterviewModuleStats({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "dashboard_widget_wrap")}
+      className={_utils.cx(_styles, "ims-wrappers")}
       tag="div"
       col-span="3"
     >

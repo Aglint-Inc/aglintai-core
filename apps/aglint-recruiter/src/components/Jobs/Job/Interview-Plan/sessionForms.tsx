@@ -29,7 +29,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import { CompanyMember, DepartmentIcon, PausedBadge, RoleIcon } from '.';
+import { CompanyMember, PausedBadge, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
 
 export type SessionUser = CompanyMember & {
@@ -718,10 +718,7 @@ const InterviewersField = ({
     value: m.user_id,
     start_icon_url: m.profile_image,
     badge: m.paused && <PausedBadge />,
-    meta: [
-      { title: m.position, icon: <RoleIcon /> },
-      { title: m.department, icon: <DepartmentIcon /> },
-    ],
+    meta: [{ title: m.position, icon: <RoleIcon /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,
@@ -776,7 +773,6 @@ const InterviewModulesField = ({
         url: profile_image,
       }),
     ),
-    meta: [{ title: m.department, icon: <DepartmentIcon /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,

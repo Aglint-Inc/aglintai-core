@@ -128,14 +128,18 @@ function SubTaskProgress() {
                   getUpdateCallAudio();
                 }
                 async function getUpdateCallAudio() {
-                  await axios.post(
-                    `${process.env.NEXT_PUBLIC_AGENT_API}/api/retell/call-details`,
-                    {
-                      call_id: callDetails?.retell_call_id,
-                      task_progress_id: item.id,
-                      candidate_id: selectedTask?.applications?.candidate_id,
-                    },
-                  );
+                  try {
+                    await axios.post(
+                      `${process.env.NEXT_PUBLIC_AGENT_API}/api/retell/call-details`,
+                      {
+                        call_id: callDetails?.retell_call_id,
+                        task_progress_id: item.id,
+                        candidate_id: selectedTask?.applications?.candidate_id,
+                      },
+                    );
+                  } catch (error) {
+                    return error.message;
+                  }
                 }
                 return (
                   <TaskProgress

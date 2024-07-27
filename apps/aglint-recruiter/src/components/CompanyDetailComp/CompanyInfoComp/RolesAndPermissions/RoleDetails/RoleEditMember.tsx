@@ -1,33 +1,43 @@
-import { RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Dialog, Typography } from '@mui/material';
+import { Avatar, Dialog, Stack } from '@mui/material';
+import { capitalize } from 'lodash';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import UITextField from '@/src/components/Common/UITextField';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { RolesPopover } from '@/devlink/RolesPopover';
+import { UserNameRoleCard } from '@/devlink/UserNameRoleCard';
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function RoleEditMember({
-  user,
-  defaultRole,
+  role,
   close,
-  errorMessage,
-  handelMemberUpdate,
-  options,
+  handleMemberUpdate,
 }: {
-  user: RecruiterUserType;
-  defaultRole?: string;
+  role: { role: string; id: string };
   close: () => void;
-  errorMessage: string;
   // eslint-disable-next-line no-unused-vars
-  handelMemberUpdate: ReturnType<typeof useAuthDetails>['handelMemberUpdate'];
-  options: { role: string; id: string }[];
+  handleMemberUpdate: ReturnType<typeof useAuthDetails>['handleMemberUpdate'];
 }) {
-  const [role_id, setRole_id] = useState<string>(defaultRole || user.role_id);
+  const { members } = useAuthDetails();
+  const [search, setSearch] = useState('');
+  const [selectedMember, setSelectedMember] = useState<
+    (typeof members)[number] | null
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
+  const filteredMember = members
+    .filter((member) => member.role_id !== role.id)
+    .filter(
+      (member) =>
+        `${member.first_name || ''} ${member.last_name || ''}`
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        member.role.toLowerCase().includes(search.toLowerCase()),
+    );
+
   return (
     <Dialog
       open={true}
@@ -53,13 +63,13 @@ function RoleEditMember({
               textButton='Update'
               size={2}
               isLoading={isLoading}
-              isDisabled={role_id === user.role_id}
+              isDisabled={!selectedMember}
               onClickButton={{
                 onClick: async () => {
                   setIsLoading(true);
-                  await handelMemberUpdate({
-                    user_id: user.user_id,
-                    data: { role_id: role_id },
+                  await handleMemberUpdate({
+                    user_id: selectedMember.user_id,
+                    data: { role_id: role.id },
                   });
                   setIsLoading(false);
                 },
@@ -68,54 +78,98 @@ function RoleEditMember({
           </>
         }
         slotBody={
-          <>
-            <Typography
-              marginBottom={'10px'}
-            >{`Update role for ${user.first_name} ${user.last_name}`}</Typography>
-            {role_id && role_id !== user.role_id && (
-              <GlobalBannerInline
-                color={'warning'}
-                textContent={
-                  'User role will be changed to ' +
-                  capitalizeFirstLetter(
-                    options.find((item) => item.id === role_id).role,
-                  )
-                }
-                slotButton={<></>}
+          <RolesPopover
+            slotSearch={
+              <SearchField
+                key={'search-role'}
+                value={search}
+                isFullWidth
+                placeholder='Search users to Add'
+                onClear={() => {
+                  setSearch(null);
+                }}
+                onChange={({ target }) => {
+                  setSearch(target.value);
+                }}
               />
-            )}
-            {errorMessage && (
-              <GlobalBannerInline
-                textContent={errorMessage}
-                slotButton={<></>}
-                color={'warning'}
-              />
-              // <Typography fontWeight={600} color={'var(--warning-11)'}>Warning: {errorMessage}</Typography>
-            )}
-            <Autocomplete
-              fullWidth
-              disableClearable
-              disabled={Boolean(errorMessage)}
-              value={options.find((item) => item.id === role_id)}
-              getOptionLabel={(option) => capitalizeFirstLetter(option.role)}
-              onChange={(_, newValue) => {
-                setRole_id(newValue.id);
-              }}
-              id='controllable-states-demo'
-              options={options}
-              renderOption={(props, op) => (
-                <li {...props}>{capitalizeFirstLetter(op.role)}</li>
-              )}
-              renderInput={(params) => (
-                <UITextField
-                  {...params}
-                  name='Role'
-                  placeholder='Choose Role'
-                  label='Role: '
-                />
-              )}
-            />
-          </>
+            }
+            isHeaderVisible={!selectedMember}
+            slotCard={
+              <>
+                {selectedMember ? (
+                  <>
+                    <GlobalBanner
+                      color={'error'}
+                      textTitle={
+                        'You are about to change a role of the selected user'
+                      }
+                      textDescription={`You are attempting to change ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()} current role "${capitalize(selectedMember?.role || '')}" to new role "${capitalize(role.role || '')}".`}
+                      iconName={'warning'}
+                      slotButtons={<></>}
+                    />
+                    <UserNameRoleCard
+                      textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                      textRole={selectedMember.role}
+                      slotImage={
+                        <Avatar
+                          key={selectedMember.user_id}
+                          src={selectedMember.profile_image}
+                          variant='rounded'
+                          alt={selectedMember.first_name}
+                          sx={{ height: '100%', width: '100%' }}
+                        />
+                      }
+                    />
+                    <Stack
+                      alignItems={'center'}
+                      width={'100%'}
+                      sx={{ translate: 'rotateY(180)' }}
+                    >
+                      <GlobalIcon iconName={'arrow_warm_up'} size={5} />
+                    </Stack>
+                    <UserNameRoleCard
+                      textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
+                      textRole={role.role}
+                      borderStyle={'dash'}
+                      slotImage={
+                        <Avatar
+                          key={selectedMember.user_id}
+                          src={selectedMember.profile_image}
+                          variant='rounded'
+                          alt={selectedMember.first_name}
+                          sx={{ height: '100%', width: '100%' }}
+                        />
+                      }
+                    />
+                  </>
+                ) : (
+                  filteredMember.map((member) => {
+                    return (
+                      <UserNameRoleCard
+                        key={member.user_id}
+                        textName={`${member.first_name || ''} ${member.last_name || ''}`.trim()}
+                        textRole={member.role}
+                        slotImage={
+                          <Avatar
+                            key={member.user_id}
+                            src={member.profile_image}
+                            variant='rounded'
+                            alt={member.first_name}
+                            sx={{ height: '100%', width: '100%' }}
+                          />
+                        }
+                        onClickCard={{
+                          onClick: () => {
+                            setSelectedMember(member);
+                          },
+                        }}
+                      />
+                    );
+                  })
+                )}
+              </>
+            }
+          />
         }
       />
     </Dialog>

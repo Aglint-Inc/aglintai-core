@@ -1,8 +1,4 @@
-import {
-  DatabaseTable,
-  employmentTypeEnum,
-  RecruiterUserType,
-} from '@aglint/shared-types';
+import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -31,37 +27,33 @@ const EditMember = ({
   onClose: () => void;
 }) => {
   const { data: roleOptions } = useRolesOptions();
-  const { handelMemberUpdate, recruiter, recruiterUser } = useAuthDetails();
+  const { handleMemberUpdate, recruiter, recruiterUser } = useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
     linked_in: string;
-    location: DatabaseTable['recruiter']['office_locations'][number];
+    location: ReturnType<
+      typeof useAuthDetails
+    >['recruiter']['office_locations'][number];
     employment: employmentTypeEnum;
-    designation: string;
-    department: string;
+    position: string;
+    department: ReturnType<
+      typeof useAuthDetails
+    >['members'][number]['department'];
     role: string;
     role_id: string;
     manager_id: string;
-    created_by: string;
-    user_id: string;
   }>({
     first_name: member.first_name,
     last_name: member.last_name,
     linked_in: member.linked_in,
-    location: recruiter.office_locations.find(
-      (loc) =>
-        `${loc.city}, ${loc.region}, ${loc.country}` ===
-        member.interview_location,
-    ),
+    location: member.office_location,
     employment: member.employment,
     department: member.department,
-    designation: member.position,
+    position: member.position,
     role: member.role,
     role_id: member.role_id,
     manager_id: member.manager_id,
-    created_by: member?.created_by,
-    user_id: member?.user_id,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -79,7 +71,7 @@ const EditMember = ({
     linked_in: boolean;
     location: boolean;
     employment: boolean;
-    designation: boolean;
+    position: boolean;
     role: boolean;
     manager: boolean;
   }>({
@@ -88,7 +80,7 @@ const EditMember = ({
     linked_in: false,
     location: false,
     employment: false,
-    designation: false,
+    position: false,
     role: false,
     manager: false,
   });
@@ -104,12 +96,12 @@ const EditMember = ({
       temp.first_name = true;
       flag = true;
     }
-    if (!form.department || form.department.trim() === '') {
+    if (!form.department) {
       temp.department = true;
       flag = true;
     }
-    if (!form.designation || form.designation.trim() === '') {
-      temp.designation = true;
+    if (!form.position || form.position.trim() === '') {
+      temp.position = true;
       flag = true;
     }
     if (!form.role_id || form.role_id.trim() === '') {
@@ -131,21 +123,21 @@ const EditMember = ({
   function permissionCheck() {
     if (recruiterUser.role === 'admin') {
       if (
-        recruiterUser.user_id === form.user_id ||
+        recruiterUser.user_id === member.user_id ||
         form.role !== 'admin' ||
-        recruiterUser.user_id === form.created_by
+        recruiterUser.user_id === member.created_by
       ) {
         return true;
       } else if (
         form.role === 'admin' &&
-        recruiterUser.created_by === form.user_id
+        recruiterUser.created_by === member.user_id
       ) {
         toast.error('Permission Denied');
-        // toast.error('You cannot edit power admin detail');
+
         return false;
       } else if (
         form.role === 'admin' &&
-        recruiterUser.user_id !== form.created_by
+        recruiterUser.user_id !== member.created_by
       ) {
         toast.error('Permission Denied');
         // toast.error('You cannot edit another admin detail');
@@ -225,19 +217,17 @@ const EditMember = ({
               />
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
                 <UITextField
-                  value={form.designation ? form.designation : ''}
+                  value={form.position ? form.position : ''}
                   placeholder='Enter Title'
                   label='Title'
                   required
-                  helperText={
-                    formError.designation ? 'Title must required' : ''
-                  }
-                  error={formError.designation}
+                  helperText={formError.position ? 'Title must required' : ''}
+                  error={formError.position}
                   onFocus={() => {
-                    setFormError({ ...formError, designation: false });
+                    setFormError({ ...formError, position: false });
                   }}
                   onChange={(e) => {
-                    setForm({ ...form, designation: e.target.value });
+                    setForm({ ...form, position: e.target.value });
                   }}
                 />
                 <Autocomplete
@@ -323,15 +313,17 @@ const EditMember = ({
                 />
                 <Autocomplete
                   fullWidth
-                  value={capitalizeFirstLetter(form.department)}
-                  onChange={(event: any, newValue: string | null) => {
+                  value={form.department}
+                  onChange={(event: any, newValue) => {
                     setForm({
                       ...form,
                       department: newValue,
                     });
                   }}
-                  options={recruiter?.departments?.map((departments) =>
-                    capitalizeFirstLetter(departments),
+                  getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
+                  options={recruiter?.departments}
+                  renderOption={(props, op) => (
+                    <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                   )}
                   renderInput={(params) => (
                     <UITextField
@@ -340,15 +332,15 @@ const EditMember = ({
                       onFocus={() => {
                         setFormError({ ...formError, department: false });
                       }}
+                      name='Department'
+                      placeholder='Select Department'
+                      label='Department'
                       required
                       helperText={
                         formError.department
                           ? 'Department is must required'
                           : ''
                       }
-                      name='Department'
-                      placeholder='Select Department'
-                      label='Department'
                     />
                   )}
                 />
@@ -452,12 +444,10 @@ const EditMember = ({
                           employment: null,
                           linked_in: null,
                           location: null,
-                          designation: null,
+                          position: null,
                           role: null,
                           role_id: null,
                           manager_id: null,
-                          created_by: null,
-                          user_id: null,
                         });
                     },
                   }}
@@ -474,17 +464,16 @@ const EditMember = ({
                     onClick: () => {
                       setIsDisable(true);
                       if (checkValidation()) {
-                        // inviteUser();
-                        handelMemberUpdate({
+                        handleMemberUpdate({
                           user_id: member.user_id,
                           data: {
                             first_name: form.first_name,
                             last_name: form.last_name,
-                            interview_location: `${form.location.city}, ${form.location.region}, ${form.location.country}`,
+                            office_location_id: form.location?.id,
                             linked_in: form.linked_in,
                             employment: form.employment,
-                            department: form.department,
-                            position: form.designation,
+                            department_id: form.department?.id,
+                            position: form.position,
                             role_id: form.role_id,
                             manager_id: form.manager_id,
                             scheduling_settings: {
@@ -524,12 +513,10 @@ const EditMember = ({
                   employment: null,
                   linked_in: null,
                   location: null,
-                  designation: null,
-                  role: 'recruiter',
+                  position: null,
+                  role: null,
                   role_id: null,
                   manager_id: null,
-                  created_by: null,
-                  user_id: null,
                 });
             },
           }}

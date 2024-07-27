@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
@@ -15,7 +16,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
-import { setIsAddMemberDialogOpen, setIsSettingsDialogOpen, setTrainingStatus } from '../../store';
+import {
+  setIsAddMemberDialogOpen,
+  setIsSettingsDialogOpen,
+  setTrainingStatus,
+} from '../../store';
 import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
@@ -151,11 +156,18 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
-              onClickEdit={{
-                onClick: () => {
-                  setIsSettingsDialogOpen(true);
-                },
-              }}
+              slotEditButton={
+                <ButtonSoft
+                  color={'neutral'}
+                  size={2}
+                  textButton='Edit'
+                  onClickButton={{
+                    onClick: () => {
+                      setIsSettingsDialogOpen(true);
+                    },
+                  }}
+                />
+              }
               slotNewTabPill={
                 <Stack direction={'row'}>
                   {tabsModuleMembers.map((tab) => {
@@ -186,7 +198,7 @@ function SlotBodyComp({
                   })}
                 </Stack>
               }
-              textDepartment={editModule.department || '--'}
+              textDepartment={editModule.department_id || '--'}
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>

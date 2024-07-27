@@ -1,8 +1,8 @@
 .leader_board {
+  height: 430px;
   padding: 0px;
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
-  background-color: var(--white);
+  background-color: var(--neutral-2);
 }
 
 .leaderboard_header {

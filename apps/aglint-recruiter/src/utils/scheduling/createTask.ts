@@ -1,10 +1,14 @@
 /* eslint-disable no-console */
 import { DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
 import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import { EmailAgentId, getFullName, PhoneAgentId } from '@aglint/shared-utils';
+import axios from 'axios';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
+import { agentsDetails } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 export const createTask = async ({
   selectedSessions,
@@ -76,7 +80,21 @@ export const createTask = async ({
     .insert(insertTaskSesRels);
 
   if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
-
+  const bodyParams: BodyParamsFetchUserDetails = {
+    recruiter_id: task.recruiter_id,
+    includeSupended: true,
+  };
+  const resMem = (await axios.post(
+    '/api/scheduling/fetchUserDetails',
+    bodyParams,
+  )) as { data: MemberType[] };
+  const members = resMem.data;
+  const assigner = [...members, ...agentsDetails].find(
+    (item) => item.user_id === task.assignee[0],
+  );
+  const creator = [...members, ...agentsDetails].find(
+    (item) => item.user_id === task.created_by,
+  );
   await createTaskProgress({
     type: 'create_task',
     data: {
@@ -90,6 +108,15 @@ export const createTask = async ({
         id: ele.interview_session.id,
         name: ele.interview_session.name,
       })) as meetingCardType[],
+      creatorDesignation: creator.role, // need to change
+      creatorName: getFullName(creator.first_name, creator.last_name),
+      assignerName: getFullName(assigner.first_name, assigner.last_name),
+      creatorId: creator.user_id,
+      assignerId: assigner.user_id,
+      scheduleDateRange: {
+        start_date: task.schedule_date_range.start_date,
+        end_date: task.schedule_date_range.end_date,
+      },
     },
     supabaseCaller: supabase,
   });

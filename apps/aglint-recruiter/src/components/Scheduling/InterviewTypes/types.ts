@@ -10,10 +10,12 @@ import {
   InterviewSessionTypeDB,
   JobApplcationDB,
   PauseJson,
-  RecruiterUserType,
 } from '@aglint/shared-types';
 
+import { CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
+
 import { ApplicationList } from '../Candidates/utils';
+import { MemberTypeAutoComplete } from '../Common/MembersTextField';
 import { fetchInterviewModules } from './queries/utils';
 
 export type SchedulingSlice = {
@@ -27,7 +29,7 @@ export type SchedulingSlice = {
   isModuleSettingsDialogOpen: boolean;
   isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
-  selectedUsers: MemberType[];
+  selectedUsers: MemberTypeAutoComplete[];
   selUser: ModuleType['relations'][0] | null;
   pause_json: PauseJson | null;
   trainingStatus: StatusTraining;
@@ -79,16 +81,7 @@ export type ScheduleType = {
 };
 export type ModuleDashboard = Awaited<ReturnType<typeof fetchInterviewModules>>;
 
-export type MemberType = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  profile_image: string;
-  position: string;
-  schedule_auth?: JSON | null;
-  role: RecruiterUserType['role'] | null;
-};
+export type MemberType = CompanyMembersAPI[number];
 
 export type TransformSchedule = ScheduleType & {
   interview_meeting: InterviewMeetingTypeDb;

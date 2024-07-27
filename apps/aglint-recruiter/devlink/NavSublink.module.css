@@ -162,6 +162,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .nav-link-muted {
   position: absolute;
   left: 0%;

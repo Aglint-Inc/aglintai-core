@@ -290,8 +290,8 @@ JobType.displayName = 'JobType';
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
   const options = recruiter.departments.map((department) => ({
-    name: department,
-    value: department,
+    name: department.name,
+    value: department.name,
   }));
 
   return (

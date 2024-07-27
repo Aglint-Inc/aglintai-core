@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { ButtonGhost } from "./ButtonGhost";
 import * as _utils from "./utils";
 import _styles from "./CompanyInfo.module.css";
 
@@ -50,16 +51,14 @@ export function CompanyInfo({
           {slotLocation ?? <SlotComp componentName="CompanyLocation" />}
         </_Builtin.Block>
         {isEditable ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cj-add-skill-btn-new")}
-            tag="div"
-            {...onClickAddLocation}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%201C5.69318%201%205.44444%201.24873%205.44444%201.55556V5.44444H1.55556C1.24873%205.44444%201%205.69318%201%206C1%206.30683%201.24873%206.55556%201.55556%206.55556H5.44444V10.4444C5.44444%2010.7513%205.69318%2011%206%2011C6.30683%2011%206.55556%2010.7513%206.55556%2010.4444V6.55556H10.4444C10.7513%206.55556%2011%206.30683%2011%206C11%205.69318%2010.7513%205.44444%2010.4444%205.44444H6.55556V1.55556C6.55556%201.24873%206.30683%201%206%201Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+          <_Builtin.Block tag="div">
+            <ButtonGhost
+              onClickButton={onClickAddLocation}
+              size="2"
+              iconName="add"
+              isLeftIcon={true}
+              textButton="Add Location"
             />
-            <_Builtin.Block tag="div">{"Add Location"}</_Builtin.Block>
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
@@ -85,17 +84,14 @@ export function CompanyInfo({
           {slotDepartmentPills}
         </_Builtin.Block>
         {isEditable ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cj-add-skill-btn-new")}
-            tag="div"
-            font-color="accent"
-            {...onClickAddDepartments}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%201C5.69318%201%205.44444%201.24873%205.44444%201.55556V5.44444H1.55556C1.24873%205.44444%201%205.69318%201%206C1%206.30683%201.24873%206.55556%201.55556%206.55556H5.44444V10.4444C5.44444%2010.7513%205.69318%2011%206%2011C6.30683%2011%206.55556%2010.7513%206.55556%2010.4444V6.55556H10.4444C10.7513%206.55556%2011%206.30683%2011%206C11%205.69318%2010.7513%205.44444%2010.4444%205.44444H6.55556V1.55556C6.55556%201.24873%206.30683%201%206%201Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+          <_Builtin.Block tag="div">
+            <ButtonGhost
+              onClickButton={onClickAddDepartments}
+              size="2"
+              iconName="add"
+              isLeftIcon={true}
+              textButton="Add Departments"
             />
-            <_Builtin.Block tag="div">{"Add Departments"}</_Builtin.Block>
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
@@ -122,17 +118,14 @@ export function CompanyInfo({
             {slotTechStackPills}
           </_Builtin.Block>
           {isEditable ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cj-add-skill-btn-new")}
-              tag="div"
-              font-color="accent"
-              {...onClickAddTechStacks}
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%201C5.69318%201%205.44444%201.24873%205.44444%201.55556V5.44444H1.55556C1.24873%205.44444%201%205.69318%201%206C1%206.30683%201.24873%206.55556%201.55556%206.55556H5.44444V10.4444C5.44444%2010.7513%205.69318%2011%206%2011C6.30683%2011%206.55556%2010.7513%206.55556%2010.4444V6.55556H10.4444C10.7513%206.55556%2011%206.30683%2011%206C11%205.69318%2010.7513%205.44444%2010.4444%205.44444H6.55556V1.55556C6.55556%201.24873%206.30683%201%206%201Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+            <_Builtin.Block tag="div">
+              <ButtonGhost
+                onClickButton={onClickAddTechStacks}
+                size="2"
+                iconName="add"
+                isLeftIcon={true}
+                textButton="Add Specialities"
               />
-              <_Builtin.Block tag="div">{"Add Specialities"}</_Builtin.Block>
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
@@ -171,6 +164,17 @@ export function CompanyInfo({
                 value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewbox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%201C5.69318%201%205.44444%201.24873%205.44444%201.55556V5.44444H1.55556C1.24873%205.44444%201%205.69318%201%206C1%206.30683%201.24873%206.55556%201.55556%206.55556H5.44444V10.4444C5.44444%2010.7513%205.69318%2011%206%2011C6.30683%2011%206.55556%2010.7513%206.55556%2010.4444V6.55556H10.4444C10.7513%206.55556%2011%206.30683%2011%206C11%205.69318%2010.7513%205.44444%2010.4444%205.44444H6.55556V1.55556C6.55556%201.24873%206.30683%201%206%201Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
               />
               <_Builtin.Block tag="div">{"Add Roles"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+          {isEditable ? (
+            <_Builtin.Block tag="div">
+              <ButtonGhost
+                onClickButton={onClickAddAvailableRoles}
+                size="2"
+                iconName="add"
+                isLeftIcon={true}
+                textButton="Add Roles"
+              />
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

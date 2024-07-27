@@ -13,6 +13,8 @@ import {
   SystemAgentId,
 } from '@aglint/shared-utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
@@ -28,11 +30,13 @@ import {
 
 import { sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import {
   getIndicator,
   indicatorType,
 } from '@/src/components/Tasks/Components/TaskStatusTag/utils';
 import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -356,6 +360,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       async (taskData) => {
         const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
         handelTaskChanges(tempTask, 'add');
+        refetch();
         return taskData;
       },
     );
@@ -583,41 +588,43 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       : filterTask;
   }, [tasksReducer.search, filterTask]);
   const [loadingTasks, setLoading] = useState(true);
-
+  const {
+    data: tasks,
+    isFetched,
+    refetch,
+  } = useTasksList({
+    id: recruiter_id,
+    pagination: {
+      page: tasksReducer.pagination.page,
+      rows: tasksReducer.pagination.rows,
+    },
+    getCount: true,
+    user_id: checkPermissions(['view_all_task'])
+      ? undefined
+      : recruiterUser.user_id,
+  });
   useEffect(() => {
-    if (recruiter_id && members) {
-      getTasks({
-        id: recruiter_id,
-        pagination: {
-          page: tasksReducer.pagination.page,
-          rows: tasksReducer.pagination.rows,
-        },
-        getCount: true,
-        user_id: checkPermissions(['view_all_task'])
-          ? undefined
-          : recruiterUser.user_id,
-      }).then((data) => {
-        const preFilterData = JSON.parse(
-          localStorage.getItem('taskFilters'),
-        ) as taskFilterType;
-        const temp = cloneDeep(reducerInitialState);
-        if (preFilterData) {
-          temp.filter.assignee.values = preFilterData?.Assignee || [];
-          temp.filter.priority.values = preFilterData?.Priority || [];
-          temp.filter.status.values = preFilterData?.Status || [];
-          temp.filter.jobTitle.values = preFilterData?.Job || [];
-          temp.filter.type.values = preFilterData?.Type || [];
-          temp.filter.candidate.values = preFilterData?.Candidate || [];
-          temp.filter.date.values = preFilterData?.Date || [];
-        }
-        temp.tasks = data.data;
-        temp.pagination.totalRows = data.count;
+    if (isFetched) {
+      const preFilterData = JSON.parse(
+        localStorage.getItem('taskFilters'),
+      ) as taskFilterType;
+      const temp = cloneDeep(reducerInitialState);
+      if (preFilterData) {
+        temp.filter.assignee.values = preFilterData?.Assignee || [];
+        temp.filter.priority.values = preFilterData?.Priority || [];
+        temp.filter.status.values = preFilterData?.Status || [];
+        temp.filter.jobTitle.values = preFilterData?.Job || [];
+        temp.filter.type.values = preFilterData?.Type || [];
+        temp.filter.candidate.values = preFilterData?.Candidate || [];
+        temp.filter.date.values = preFilterData?.Date || [];
+      }
+      temp.tasks = tasks.data;
+      temp.pagination.totalRows = tasks.count;
 
-        init({ ...temp, tasks: data.data });
-        setLoading(false);
-      });
+      init({ ...temp, tasks: tasks.data });
+      setLoading(false);
     }
-  }, [recruiter_id, members]);
+  }, [isFetched, recruiter_id, members]);
 
   useEffect(() => {
     let channel: RealtimeChannel;
@@ -699,7 +706,7 @@ export const useTasksContext = () => {
   return context;
 };
 
-const getTasks = ({
+export const useTasksList = ({
   id,
   pagination,
   getCount,
@@ -710,7 +717,32 @@ const getTasks = ({
   getCount: boolean;
   user_id: string;
 }) => {
-  return (
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_task_List'],
+
+    queryFn: () => {
+      return getTasks({ id, pagination, getCount, user_id });
+    },
+    gcTime: 20000,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['get_task_List'] });
+  return { ...query, refetch };
+};
+
+const getTasks = async ({
+  id,
+  pagination,
+  getCount,
+  user_id,
+}: {
+  id: string;
+  pagination: { page: number; rows: number };
+  getCount: boolean;
+  user_id: string;
+}) => {
+  const { data, count } = await (
     user_id
       ? supabase
           .from('tasks_view')
@@ -736,10 +768,8 @@ const getTasks = ({
       pagination.page * pagination.rows,
       pagination.page * pagination.rows + pagination.rows - 1,
     )
-    .then(({ data, count, error }) => {
-      if (error) throw new Error(error.message);
-      return { data, count };
-    });
+    .throwOnError();
+  return { data, count };
 };
 
 export const updateTask = (
@@ -763,7 +793,7 @@ export const updateTask = (
       : supabase.from('new_tasks').insert(task)
   )
     .select(
-      'id, recruiter_user(first_name,last_name), applications(* , candidates( * ), public_jobs( * ))',
+      'id, recruiter_user(first_name,last_name), applications(* , candidates( * ), public_jobs( * )),recruiter_id,assignee,schedule_date_range,created_by',
     )
     .single()
     .then(async ({ data, error }) => {
@@ -774,25 +804,49 @@ export const updateTask = (
             task_id: data.id,
           })),
         );
-        const candidateName = getFullName(
-          data.applications.candidates.first_name,
-          data.applications.candidates.last_name,
+
+        const bodyParams: BodyParamsFetchUserDetails = {
+          recruiter_id: data.recruiter_id,
+          includeSupended: true,
+        };
+        const resMem = (await axios.post(
+          '/api/scheduling/fetchUserDetails',
+          bodyParams,
+        )) as { data: MemberType[] };
+        const members = resMem.data;
+        const assignee = [...members, ...agentsDetails].find(
+          (item) => item.user_id === data.assignee[0],
+        );
+        const creator = [...members, ...agentsDetails].find(
+          (item) => item.user_id === data.created_by,
         );
 
         await createTaskProgress({
           task_id: data?.id as string,
-          title: `Created task for {candidate} to schedule interviews for {selectedSessions}`,
+          title: `{creatorDesignation} : {creatorName} requested {assigneeName} to schedule an interview for {selectedSessions} between {scheduleDateRange} .`,
           created_by: {
             id: task.created_by,
             name: getFullName(
               data.recruiter_user.first_name,
-              data.recruiter_user.first_name,
+              data.recruiter_user.last_name,
             ),
           },
           title_meta: {
-            '{candidate}': candidateName,
             '{selectedSessions}': sessions,
+            '{creatorDesignation}': creator.role,
+            '{creatorName}': getFullName(creator.first_name, creator.last_name),
+            '{creatorId}': creator.user_id,
+            '{assigneeName}': getFullName(
+              assignee.first_name,
+              assignee.last_name,
+            ),
+            '{assigneeId}': assignee.user_id,
+            '{scheduleDateRange}': {
+              end_date: data.schedule_date_range.end_date,
+              start_date: data.schedule_date_range.start_date,
+            },
           },
+
           progress_type:
             task.type === 'schedule' ||
             task.type === 'self_schedule' ||

@@ -160,7 +160,7 @@ const BodyComp = ({ setSaving }) => {
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
       .eq('id', recruiter.id)
-      .select()
+      .select('*,office_locations(*), departments(id,name)')
       .single();
     if (!error) {
       setRecruiter(
@@ -254,7 +254,7 @@ const InterviewerModule = ({
                       }}
                       textObjective={mod.description}
                       textModuleName={mod.name}
-                      textDepartment={mod.department}
+                      textDepartment={''}
                       slotMemberPic={
                         <AvatarGroup
                           total={mod.users.length}
@@ -352,13 +352,13 @@ export const useInterviewModules = ({
 };
 
 const InterviewerSetting = () => {
-  const { handelMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
+  const { handleMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
   return (
     <Stack height={'calc( 100vh - 60px)'}>
       <InterviewerLevelSettings
         initialData={recruiterUser.scheduling_settings}
         updateSettings={(x) => {
-          return handelMemberUpdate({
+          return handleMemberUpdate({
             user_id: userDetails.user.id,
             data: { scheduling_settings: x },
           });

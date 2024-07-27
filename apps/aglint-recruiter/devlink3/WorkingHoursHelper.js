@@ -39,10 +39,7 @@ export function WorkingHoursHelper({
               className={_utils.cx(_styles, "title_info")}
               tag="div"
             >
-              <Text
-                size="4"
-                content="How It Works: Default Time Zone, Working Hours, and Break Times"
-              />
+              <Text content="How It Works: Default Time Zone, Working Hours, and Break Times" />
             </_Builtin.Block>
             <Text weight="medium" content="Overview:" />
             <Text

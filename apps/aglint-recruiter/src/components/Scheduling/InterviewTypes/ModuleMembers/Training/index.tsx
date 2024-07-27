@@ -84,12 +84,9 @@ function ModuleSettingComp({
       await supabase
         .from('interview_module')
         .update({
-          name: localModule.name,
-          description: localModule.description,
           settings: {
             ...localModule.settings,
           },
-          department: localModule.department,
         })
         .eq('id', editModule.id)
         .select()
@@ -164,13 +161,10 @@ function ModuleSettingComp({
       await supabase
         .from('interview_module')
         .update({
-          name: localModule.name,
-          description: localModule.description,
           settings: {
             ...localModule.settings,
             require_training: type === 'disable' ? false : true,
           },
-          department: localModule.department,
         })
         .eq('id', editModule.id)
         .select()

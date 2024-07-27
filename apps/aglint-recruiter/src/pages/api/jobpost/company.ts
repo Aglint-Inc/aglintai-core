@@ -31,22 +31,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send('No job_id provided');
   }
 
-  let jobs = [];
+  const response = await getResponse(req.body.job_id);
 
-  const { data: recruiter, error } = await supabase
-    .from('recruiter')
-    .select('*')
-    .eq('id', req.body.job_id);
-  if (!error && recruiter?.length > 0) {
-    const { data: jobsDb, error: errorJob } = await supabase
-      .from('public_jobs')
-      .select('*')
-      .eq('recruiter_id', recruiter[0].id);
-    if (!errorJob) {
-      jobs = jobsDb;
-    }
-    return res.status(200).send({ recruiter: recruiter[0], jobs: jobs });
-  }
+  res.status(200).send(response);
 };
 
 export default handler;
+
+const getResponse = async (req: NextApiRequest) => {
+  const { recruiter_data: recruiter, ...job } = await getJob(req.body.job_id);
+  return { recruiter, jobs: [job] };
+};
+
+const getJob = async (job_id: string) =>
+  (
+    await supabase
+      .from('public_jobs')
+      .select(
+        '*, recruiter_data:recruiter!public_jobs_recruiter_id_fkey(id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry)',
+      )
+      .eq('id', job_id)
+      .single()
+      .throwOnError()
+  ).data;
+
+export type CompanyPostAPI = Awaited<ReturnType<typeof getResponse>>;
