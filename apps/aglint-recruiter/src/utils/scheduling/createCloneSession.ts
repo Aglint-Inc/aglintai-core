@@ -11,7 +11,6 @@ import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDeta
 import { getOrganizerId } from './getOrganizerId';
 
 export const createCloneSession = async ({
-  is_get_more_option,
   application_id,
   allSessions,
   session_ids,
@@ -21,7 +20,6 @@ export const createCloneSession = async ({
   rec_user_id,
   meeting_flow,
 }: {
-  is_get_more_option: boolean;
   application_id: string;
   allSessions: SchedulingApplication['initialSessions'];
   session_ids: string[]; // selected session ids this will be their in scheduling flow it will empty array in session edit
@@ -37,7 +35,6 @@ export const createCloneSession = async ({
     const { data, error } = await supabase
       .from('interview_schedule')
       .insert({
-        is_get_more_option: is_get_more_option,
         application_id: application_id,
         schedule_name: scheduleName,
         id: new_schedule_id,

@@ -58,7 +58,6 @@ type TrainingTypes = Exclude<Enums['interviewer_type'], 'qualified'>;
 type InterviewTrainingProgressType = ({
   recruiter_user: Pick<
     ReturnType<typeof useCompanyMembers>['data'][number],
-    | 'department'
     | 'email'
     | 'first_name'
     | 'last_name'

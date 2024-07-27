@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface FilterModuleState {
   textSearch: string;
-  departments: string[];
+  departments: number[];
   created_by: string[];
   reset?: () => void;
 }
@@ -32,7 +32,7 @@ export const useFilterModuleStore = create<FilterModuleState>()(
 export const setTextSearch = (textSearch: string) =>
   useFilterModuleStore.setState({ textSearch });
 
-export const setDepartments = (departments: string[]) =>
+export const setDepartments = (departments: number[]) =>
   useFilterModuleStore.setState({ departments });
 
 export const setCreatedBy = (created_by: string[]) =>

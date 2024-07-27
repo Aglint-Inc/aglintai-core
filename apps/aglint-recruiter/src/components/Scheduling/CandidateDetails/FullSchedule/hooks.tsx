@@ -34,17 +34,18 @@ export const useSaveBreakDuration = ({
     try {
       setSaving(session_id);
       if (!selectedSchedule && !saving) {
+        const bodyParams: ApiBodyParamsSessionCache = {
+          allSessions: allSessions,
+          application_id: selectedApplication.id,
+          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+          recruiter_id: recruiter.id,
+          rec_user_id: recruiterUser.user_id,
+          session_ids: [],
+        };
+
         const res = await axios.post(
           '/api/scheduling/application/candidatesessioncache',
-          {
-            allSessions: allSessions,
-            application_id: selectedApplication.id,
-            is_get_more_option: false,
-            scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-            session_ids: [],
-            recruiter_id: recruiter.id,
-            rec_user_id: recruiterUser.user_id,
-          } as ApiBodyParamsSessionCache,
+          bodyParams,
         );
 
         let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;

@@ -1,14 +1,8 @@
-import { DatabaseTable } from '@aglint/shared-types';
-
 import { ApiInterface } from '@/src/interface/NextApiRequest.interface';
 
+import type { getMembers } from '.';
+
 export interface API_getMembersWithRole extends ApiInterface {
-  request: any;
-  response: (DatabaseTable['recruiter_user'] & {
-    role: string;
-    role_id: string;
-    manager_id: string;
-    created_by: string;
-    recruiter_relation_id: number;
-  })[];
+  request: {};
+  response: Awaited<ReturnType<typeof getMembers>>;
 }

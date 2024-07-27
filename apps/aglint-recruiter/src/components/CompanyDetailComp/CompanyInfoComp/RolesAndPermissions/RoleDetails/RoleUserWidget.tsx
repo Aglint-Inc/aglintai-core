@@ -150,7 +150,7 @@ const UserSearch = ({
                           )}
                         </Typography>
                         <Typography>
-                          {capitalizeFirstLetter(item.department)}
+                          {capitalizeFirstLetter(item.department.name)}
                         </Typography>
                       </Stack>
                     </Stack>

@@ -1,6 +1,6 @@
 // ** React Imports
 
-import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
@@ -24,10 +24,14 @@ interface ContextValue {
   setFlow: Dispatch<React.SetStateAction<string>>;
   companyName: null;
   setCompanyName: Dispatch<React.SetStateAction<string>>;
-  recruiter: RecruiterType;
-  setRecruiter: Dispatch<React.SetStateAction<RecruiterType>>;
-  recruiterUser: RecruiterUserType;
-  setRecruiterUser: Dispatch<React.SetStateAction<RecruiterUserType>>;
+  recruiter: DatabaseTable['recruiter'];
+  setRecruiter: Dispatch<React.SetStateAction<DatabaseTable['recruiter']>>;
+  recruiterUser: DatabaseTable['recruiter_user'] & {
+    role: string;
+  };
+  setRecruiterUser: Dispatch<
+    React.SetStateAction<DatabaseTable['recruiter_user']>
+  >;
   userDetails: Session;
   setUserDetails: Dispatch<React.SetStateAction<Session>>;
 }
@@ -55,10 +59,12 @@ const SignupProvider = ({ children }) => {
   const [flow, setFlow] = useState<string>(companyType.COMPANY);
   const [companyName, setCompanyName] = useState(null);
   const [userDetails, setUserDetails] = useState<Session | null>(null);
-  const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
-  const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
-    null,
-  );
+  const [recruiter, setRecruiter] = useState<DatabaseTable['recruiter']>(null);
+  const [recruiterUser, setRecruiterUser] = useState<
+    DatabaseTable['recruiter_user'] & {
+      role: string;
+    }
+  >(null);
 
   useEffect(() => {
     if (router.isReady) {
@@ -84,7 +90,7 @@ const SignupProvider = ({ children }) => {
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*),roles(*)',
       )
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
@@ -94,15 +100,11 @@ const SignupProvider = ({ children }) => {
 
       setRecruiterUser({
         ...recruiterUser,
-        role: recruiterRel.role,
-        manager_id: recruiterRel.manager_id,
-        role_id: recruiterRel.role_id,
-        created_by: recruiterRel.created_by,
-        recruiter_relation_id: recruiterRel.id,
+        role: recruiterRel.roles.name,
       });
       setRecruiter({
         ...recruiterRel.recruiter,
-      } as any);
+      });
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
