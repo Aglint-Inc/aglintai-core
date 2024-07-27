@@ -160,7 +160,7 @@ function SlotBodyComp({
                 <ButtonSoft
                   color={'neutral'}
                   size={2}
-                  textButton='Edit interview type'
+                  textButton='Edit'
                   onClickButton={{
                     onClick: () => {
                       setIsSettingsDialogOpen(true);
@@ -168,11 +168,6 @@ function SlotBodyComp({
                   }}
                 />
               }
-              // onClickEdit={{
-              //   onClick: () => {
-              //     setIsSettingsDialogOpen(true);
-              //   },
-              // }}
               slotNewTabPill={
                 <Stack direction={'row'}>
                   {tabsModuleMembers.map((tab) => {
