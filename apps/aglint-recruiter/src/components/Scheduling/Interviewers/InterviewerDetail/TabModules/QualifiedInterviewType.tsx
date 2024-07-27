@@ -25,11 +25,7 @@ function QualifiedInterviewTypeCard({
           setCollapseOpen((pre) => !pre);
         },
       }}
-      slotThreeDot={
-        <ThreeDot
-          relation={relation}
-        />
-      }
+      slotThreeDot={<ThreeDot relation={relation} />}
       isTrainingProgessVisible={true}
       isTrainingProgressDetailVisible={true}
       slotTrainingProgressDetail={
@@ -44,7 +40,7 @@ function QualifiedInterviewTypeCard({
       key={relation.module_id}
       textName={relation.module_name}
       isTextObjectiveVisible={false}
-      isPauseResumeVisible={Boolean(relation.pause_json)}
+      isPauseResumeVisible={relation.pause_json ? true : false}
       isScheduleCountVisible={true}
       isProfileVisible={false}
       isInterviewsVisible={false}

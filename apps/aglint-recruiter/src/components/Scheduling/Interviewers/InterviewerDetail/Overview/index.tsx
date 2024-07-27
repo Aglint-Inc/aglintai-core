@@ -1,45 +1,43 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { Dispatch } from 'react';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
+import Loader from '@/src/components/Common/Loader';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
+import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { SchedulesSupabase } from '../../../schedules-query';
-import TraininingModules from '../TabModules/TraininingModules';
-import { DetailsWithCount, PauseDialog } from '../type';
+import { useModuleRelations } from '../hooks';
+import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
+import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
 
-function Overview({
-  detailsWithCount,
-  setPauseResumeDialog,
-  scheduleList,
-}: {
-  detailsWithCount: DetailsWithCount;
-  setPauseResumeDialog: Dispatch<React.SetStateAction<PauseDialog>>;
-  scheduleList: SchedulesSupabase;
-}) {
+function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
   const router = useRouter();
   const upcomingScheduleList =
     scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
-  const trainingModulesList =
-    detailsWithCount.modules.filter(
-      (item) => item.training_status === 'training',
-    ) || [];
+  const user_id = router?.query?.member_id as string;
+  const { data, isLoading } = useModuleRelations({
+    user_id,
+  });
+  const trainingModulesList = data?.filter(
+    (rel) => rel.module_training_status === 'training',
+  );
 
   return (
     <>
       <InterviewerDetailOverview
         slotButtonSchedule={
-          upcomingScheduleList.length ? (
+          upcomingScheduleList?.length ? (
             <ButtonSurface
               textButton='View all'
               size={1}
               onClickButton={{
                 onClick: () => {
                   router.push(
-                    `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=allschedules`,
+                    `/scheduling/interviewer/${user_id}?tab=allschedules`,
                   );
                 },
               }}
@@ -49,14 +47,14 @@ function Overview({
           )
         }
         slotButtonTraining={
-          trainingModulesList.length ? (
+          trainingModulesList?.length ? (
             <ButtonSurface
               textButton='View all'
               size={1}
               onClickButton={{
                 onClick: () => {
                   router.push(
-                    `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=interviewtypes`,
+                    `/scheduling/interviewer/${user_id}?tab=interviewtypes`,
                   );
                 },
               }}
@@ -73,7 +71,6 @@ function Overview({
               );
             })
           ) : (
-            // <AllInterviewEmpty textDynamic='No upcoming schedules found.' />
             <GlobalEmptyState
               textDesc='No upcoming schedules found.'
               size={6}
@@ -82,11 +79,44 @@ function Overview({
           )
         }
         slotTrainingModules={
-          <TraininingModules
-            user_id={detailsWithCount.interviewer.user_id}
-            trainingModulesList={trainingModulesList}
-            setPauseResumeDialog={setPauseResumeDialog}
-          />
+          !isLoading ? (
+            <>
+              {trainingModulesList.length ? (
+                <>
+                  {trainingModulesList.map((relation) => {
+                    return (
+                      <TrainingInterviewerType
+                        relation={relation}
+                        key={relation.id}
+                      />
+                    );
+                  })}
+                  <Stack direction={'row'} pt={'var(--space-2)'}>
+                    <ButtonSurface
+                      size={1}
+                      isRightIcon={false}
+                      slotIcon={<IconPlusFilter />}
+                      textButton={'Add'}
+                      onClickButton={{
+                        onClick: () => {
+                          setAddInterviewType('training');
+                          setIsAddInterviewTypeDialogOpen(true);
+                        },
+                      }}
+                    />
+                  </Stack>
+                </>
+              ) : (
+                <GlobalEmptyState
+                  textDesc='No Interview type found.'
+                  size={6}
+                  iconName='school'
+                />
+              )}
+            </>
+          ) : (
+            <Loader />
+          )
         }
       />
     </>
