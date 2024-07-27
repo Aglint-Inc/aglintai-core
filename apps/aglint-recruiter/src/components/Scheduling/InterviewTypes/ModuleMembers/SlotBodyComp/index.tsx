@@ -11,6 +11,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
+import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -119,9 +120,14 @@ function SlotBodyComp({
     }
   };
 
+  const { data } = useAllDepartments();
+
+  const department =
+    data?.find((item) => item.id === editModule?.department_id)?.name || '--';
+
   return (
     <>
-      <SettingsDialog editModule={editModule} />
+      <SettingsDialog editModule={editModule}  />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
@@ -198,7 +204,7 @@ function SlotBodyComp({
                   })}
                 </Stack>
               }
-              textDepartment={editModule.department_id || '--'}
+              textDepartment={department}
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>

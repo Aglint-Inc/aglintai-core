@@ -13,11 +13,11 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import { useModuleDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useAllDepartments } from '@/src/queries/departments';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { useModuleAndUsers } from '../../../queries/hooks';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
 
@@ -28,7 +28,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
   );
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
 
-  const { refetch } = useModuleDetails();
+  const { refetch } = useModuleAndUsers();
 
   useEffect(() => {
     if (editModule) {
@@ -48,7 +48,7 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
         .eq('id', editModule.id)
         .throwOnError();
 
-      await refetch();
+      refetch();
       setIsSettingsDialogOpen(false);
     } catch (e) {
       //

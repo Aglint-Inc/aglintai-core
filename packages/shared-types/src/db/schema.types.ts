@@ -4578,6 +4578,7 @@ export type Database = {
           completed_meeting_count: number | null
           created_by: string | null
           department_id: number | null
+          department_name: string | null
           description: string | null
           id: string | null
           is_archived: boolean | null
