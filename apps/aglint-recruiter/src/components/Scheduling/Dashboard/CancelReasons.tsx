@@ -13,6 +13,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { DoughnutChart } from '../../Jobs/Job/Dashboard/doughnut';
 import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
+import { FilterDropDownDash } from './FilterDropDownDash';
 
 const CancelReasons = () => {
   const [reasonType, setReasonType] =
@@ -40,15 +41,13 @@ const CancelReasons = () => {
   return (
     <Reason
       slotReasonDropdown={
-        <DropdownSelectButton
-          itemList={
-            [
-              'reschedule',
-              'declined',
-            ] as unknown as DatabaseTable['interview_session_cancel']['type'][]
-          }
-          selectedItem={reasonType}
-          setSelectedItem={(e) => setReasonType(e)}
+        <FilterDropDownDash
+          itemList={[
+            { label: 'Reschedule', value: 'reschedule' },
+            { label: 'Declined', value: 'declined' },
+          ]}
+          value={reasonType}
+          onChange={setReasonType}
         />
       }
       slotReasonGraph={

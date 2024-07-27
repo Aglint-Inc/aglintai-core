@@ -72,6 +72,7 @@ export const fetchProgress = async ({
     )
     .in('interview_session_relation.interview_module_relation_id', trainer_ids)
     .eq('interview_session_relation.is_confirmed', true)
+    .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
     data[0].recruiter_user
