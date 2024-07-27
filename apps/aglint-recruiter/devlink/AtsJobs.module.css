@@ -6,9 +6,8 @@
 .ats-import-wrappers {
   position: relative;
   display: flex;
-  margin-top: var(--space-5);
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .relative-1 {
@@ -105,11 +104,11 @@
 
 .slot-ats-cards-wrappers {
   display: flex;
-  overflow: scroll;
-  max-height: 450px;
   margin-top: var(--space-3);
-  padding: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   flex-direction: column;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 
   border-radius: var(--radius-3);
 

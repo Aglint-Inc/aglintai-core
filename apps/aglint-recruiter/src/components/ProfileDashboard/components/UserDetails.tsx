@@ -209,10 +209,10 @@ export const UserDetail = () => {
         textName={`${recruiterUser?.first_name ?? ''} ${
           recruiterUser?.last_name ?? ''
         }`.trim()}
-        textDepartment={recruiterUser.department || '--'}
+        textDepartment={recruiterUser.department?.name || '--'}
         textEmail={recruiterUser.email || '--'}
         textJobTitle={recruiterUser.position || '--'}
-        textLocation={recruiterUser.interview_location || '--'}
+        textLocation={recruiterUser.office_location?.line1 || '--'}
         isRoleLinkVisible={recruiterUser.role === 'admin'}
         isManagerVisible={recruiterUser.role !== 'admin'}
         onClickRole={{

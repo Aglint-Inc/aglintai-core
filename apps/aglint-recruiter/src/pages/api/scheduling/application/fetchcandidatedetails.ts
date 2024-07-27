@@ -70,6 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (resApplicationDetails) {
           applicationDetail = resApplicationDetails;
+          scheduleDetail = resApplicationDetails.interview_schedule;
         } else {
           return {
             success: false,
@@ -81,8 +82,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         const recruiter = resApplicationDetails?.public_jobs?.recruiter;
-
-        console.log(recruiter);
 
         if (!resApplicationDetails.interview_schedule?.id) {
           const resSessionDetails = await fetchSessionDetailsFromInterviewPlan({

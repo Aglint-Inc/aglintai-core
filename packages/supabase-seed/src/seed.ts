@@ -22,6 +22,7 @@ const main = async () => {
     'interview_module',
     'interview_module_relation',
     'interview_plan',
+    'interview_meeting',
     'interview_session',
     'interview_session_relation',
   ];

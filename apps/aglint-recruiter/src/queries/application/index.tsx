@@ -265,7 +265,7 @@ const getApplicationTasks = async ({
     await supabase
       .from('tasks_view')
       .select(
-        'id, name, created_by, status, type, session_ids, schedule_date_range',
+        'id, name, created_by, status, type, session_ids, schedule_date_range,assignee,latest_progress',
       )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })

@@ -1,3 +1,5 @@
+'use strict';
+
 import { Checkbox, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -52,7 +54,7 @@ function ScheduleIndividualCard({
   return (
     <GlobalScheduleCard
       slotStatus={
-        currentSession.interview_meeting.status === 'confirmed' && (
+        currentSession?.interview_meeting?.status === 'confirmed' && (
           <Stack direction={'row'} spacing={'4px'} alignContent={'center'}>
             {currentSession.users
               .filter((user) => user.interview_session_relation.is_confirmed)

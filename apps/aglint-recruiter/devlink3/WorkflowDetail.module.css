@@ -42,6 +42,9 @@
   padding-left: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 
@@ -105,27 +108,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
-.connected_job-copy {
-  display: flex;
-  padding: var(--space-3) var(--space-2);
-  flex-direction: column;
-  flex-wrap: nowrap;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-
-  border-radius: var(--radius-3);
-
-  background-color: var(--neutral-2);
-
-  cursor: pointer;
-}
-
-.connected_job-copy:hover {
-  background-color: var(--neutral-3);
 }
 
 #w-node-_965d923c-99e0-e5e3-fc3b-e0d10190b041-2b3cbc8e {

@@ -8,7 +8,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
-import { debouncedSave } from '../../utils';
 import { debounce, geoCodeLocation, handleValidate } from './until';
 
 type initialValueType = {
@@ -44,7 +43,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   open,
   edit,
 }) => {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter, handleOfficeLocationsUpdate } = useAuthDetails();
   const address1Ref = useRef<HTMLInputElement>(null);
   const address2Ref = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
@@ -56,9 +55,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const [timeValue, setTimeZoneValue] = useState(null);
   const [isRequired, setIsRequired] = useState(false);
 
-  const initialValue = (
-    edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
-  ) as initialValueType;
+  const initialValue = recruiter.office_locations.find(
+    (item) => item.id === edit,
+  );
 
   const hasHeadquarter = (
     recruiter.office_locations as initialValueType[]
@@ -74,42 +73,22 @@ const AddLocationDialog: React.FC<LocationProps> = ({
 
     const { error } = handleValidate();
     if (!error) {
-      setRecruiter((recruiter) => {
-        const textLocationHeader = `${cityRef.current.value},${regionRef.current.value},${countryRef.current.value}`;
-        const addressParts = [
-          address1Ref.current.value,
-          address2Ref.current.value,
-          zipRef.current.value,
-        ];
-        const fullAddress = addressParts.filter((part) => part).join(', ');
-
-        const newLocation = {
-          full_address: fullAddress,
-          location_header: textLocationHeader,
+      handleOfficeLocationsUpdate({
+        type: edit === -1 ? 'insert' : 'update',
+        data: {
+          id: edit !== -1 ? edit : undefined,
           city: cityRef.current.value,
           country: countryRef.current.value,
-          is_headquarter: isHeadQ,
+          is_headquarter: Boolean(isHeadQ),
           line1: address1Ref.current.value,
           line2: address2Ref.current.value,
           region: regionRef.current.value,
           timezone: timeValue,
           zipcode: zipRef.current.value,
-        } as initialValueType;
-        const newRecruiter = {
-          ...recruiter,
-          office_locations:
-            edit > -1
-              ? (recruiter.office_locations.reduce((acc: any, curr, i) => {
-                  if (i === edit) acc.push(newLocation);
-                  else acc.push(curr);
-                  return acc;
-                }, []) as any)
-              : ([...recruiter.office_locations, newLocation] as any),
-        };
-        debouncedSave(newRecruiter, newRecruiter.id);
-        handleClose();
-        return newRecruiter;
+          recruiter_id: recruiter.id,
+        },
       });
+      handleClose();
     }
     setLoading(false);
   };

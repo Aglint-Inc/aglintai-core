@@ -203,7 +203,7 @@ function SlotBodyComp({
                   })}
                 </Stack>
               }
-              textDepartment={editModule.department || '--'}
+              textDepartment={editModule.department_id || '--'}
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>

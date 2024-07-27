@@ -1,12 +1,8 @@
 import { PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import {
-  MemberType,
-  ModuleType,
-  SchedulingSlice,
-  StatusTraining,
-} from './types';
+import { MemberTypeAutoComplete } from '../Common/MembersTextField';
+import { ModuleType, SchedulingSlice, StatusTraining } from './types';
 
 export const initialEditModule: ModuleType = {
   id: '',
@@ -15,7 +11,7 @@ export const initialEditModule: ModuleType = {
   duration_available: { activeDuration: 0, availabletimeSlots: [] },
   created_at: '',
   recruiter_id: '',
-  department: '',
+  department_id: null,
   settings: {
     require_training: false,
     noShadow: 2,
@@ -68,7 +64,7 @@ export const setIsMovedToQualifiedDialogOpen = (
   isMovedToQualifiedDialogOpen: boolean,
 ) => useModulesStore.setState({ isMovedToQualifiedDialogOpen });
 
-export const setSelectedUsers = (selectedUsers: MemberType[]) =>
+export const setSelectedUsers = (selectedUsers: MemberTypeAutoComplete[]) =>
   useModulesStore.setState({ selectedUsers });
 
 export const setIsDeleteMemberDialogOpen = (

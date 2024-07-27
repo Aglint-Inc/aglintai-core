@@ -66,7 +66,7 @@ export function CandidateDatabaseRow({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-profile-image-2")}
+            className={_utils.cx(_styles, "cdr-profile-image-wrap")}
             tag="div"
           >
             {slotNameAvatar}

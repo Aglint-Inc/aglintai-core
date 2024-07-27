@@ -16,12 +16,7 @@ const LeaderBoardWidget = () => {
   const [type, setType] = useState<LeaderBoardWidgetRowsProps['type']>('month');
   return (
     <LeaderBoard
-      slotDropdownButton={
-        <SchedulingDropdown
-          type={type}
-          onChange={(e) => setType(e.target.value as typeof type)}
-        />
-      }
+      slotDropdownButton={<SchedulingDropdown type={type} setType={setType} />}
       slotLeaderboardCard={<LeaderBoardWidgetRows type={type} />}
     />
   );

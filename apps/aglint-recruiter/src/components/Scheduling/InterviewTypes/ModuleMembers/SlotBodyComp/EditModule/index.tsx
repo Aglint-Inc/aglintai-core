@@ -2,10 +2,10 @@ import {
   Autocomplete,
   capitalize,
   Dialog,
+  MenuItem,
   Stack,
   TextField,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -13,22 +13,23 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useModuleDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useAllDepartments } from '@/src/queries/departments';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { QueryKeysInteviewModules } from '../../../queries/type';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
 
 function SettingsDialog({ editModule }: { editModule: ModuleType }) {
   const { members } = useSchedulingContext();
-  const { recruiter } = useAuthDetails();
   const isSettingDialogOpen = useModulesStore(
     (state) => state.isSettingDialogOpen,
   );
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
-  const queryClient = useQueryClient();
+
+  const { refetch } = useModuleDetails();
+
   useEffect(() => {
     if (editModule) {
       setEditLocalModule(editModule);
@@ -36,32 +37,25 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
   }, [editModule, members]);
 
   const updateModule = async () => {
-    const { data, error } = await supabase
-      .from('interview_module')
-      .update({
-        name: localModule.name,
-        description: localModule.description,
-        department: localModule.department,
-      })
-      .eq('id', editModule.id)
-      .select();
-    if (!error) {
-      const updatedEditModule = {
-        ...editModule,
-        ...data[0],
-      } as ModuleType;
+    try {
+      await supabase
+        .from('interview_module')
+        .update({
+          name: localModule.name,
+          description: localModule.description,
+          department_id: localModule.department_id,
+        })
+        .eq('id', editModule.id)
+        .throwOnError();
 
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
+      await refetch();
       setIsSettingsDialogOpen(false);
+    } catch (e) {
+      //
     }
   };
+
+  const { data: departments } = useAllDepartments();
 
   return (
     <Dialog
@@ -90,23 +84,30 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
                 Department
               </UITypography>
               <Autocomplete
-                fullWidth
-                value={localModule?.department}
-                onChange={(event: any, newValue: string | null) => {
+                id='country-select-demo'
+                options={departments}
+                value={departments?.find(
+                  (dep) => dep.id === localModule?.department_id,
+                )}
+                onChange={(event, newValue) => {
                   setEditLocalModule((prev) => ({
                     ...prev,
                     department: newValue,
                   }));
                 }}
-                options={recruiter?.departments?.map((departments) =>
-                  capitalize(departments),
-                )}
+                renderOption={(props, option) => {
+                  const { ...optionProps } = props;
+                  return (
+                    <MenuItem {...optionProps}>
+                      {capitalize(option.name)}
+                    </MenuItem>
+                  );
+                }}
                 renderInput={(params) => (
-                  <TextField
-                    margin='none'
+                  <UITextField
                     {...params}
-                    name='department'
                     placeholder='Select Department'
+                    fullWidth
                   />
                 )}
               />

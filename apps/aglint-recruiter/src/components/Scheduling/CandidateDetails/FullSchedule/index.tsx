@@ -9,7 +9,7 @@ import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import UITextField from '@/src/components/Common/UITextField';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useInterviewModules } from '@/src/queries/interview-modules';
-import { sessionDurations } from '@/src/utils/scheduling/const';
+import { breakDurations } from '@/src/utils/scheduling/const';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
@@ -271,7 +271,7 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                                 });
                               }}
                             >
-                              {sessionDurations.map((item) => (
+                              {breakDurations.map((item) => (
                                 <MenuItem value={item} key={item}>
                                   {getBreakLabel(item)}
                                 </MenuItem>

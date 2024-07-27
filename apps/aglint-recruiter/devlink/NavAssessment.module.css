@@ -138,6 +138,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .nav-bar-icon-active {
   position: absolute;
   left: 0%;

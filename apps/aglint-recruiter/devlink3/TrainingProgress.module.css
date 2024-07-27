@@ -1,6 +1,6 @@
 .dashboard_widget_wrap {
   overflow: hidden;
-  height: 420px;
+  height: 300px;
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
   background-color: var(--white);
@@ -16,6 +16,8 @@
   border-bottom: 1px solid var(--neutral-5);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+
+  background-color: var(--neutral-2);
 }
 
 .text-link-accent {

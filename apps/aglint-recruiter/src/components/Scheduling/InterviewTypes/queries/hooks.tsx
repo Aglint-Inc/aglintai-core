@@ -7,8 +7,9 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
 import toast from '@/src/utils/toast';
 
+import { MemberTypeAutoComplete } from '../../Common/MembersTextField';
 import { PauseType } from '../ModuleMembers/type';
-import { MemberType, ModuleType } from '../types';
+import { ModuleType } from '../types';
 import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
@@ -31,6 +32,8 @@ export const useAllInterviewModules = () => {
   });
   return query;
 };
+
+
 
 export const useAllSchedulesByModuleId = ({
   filter,
@@ -256,7 +259,7 @@ export const useAddMemberHandler = ({
     selectedUsers,
     trainingStatus,
   }: {
-    selectedUsers: MemberType[];
+    selectedUsers: MemberTypeAutoComplete[];
     trainingStatus: 'training' | 'qualified';
   }) => {
     try {

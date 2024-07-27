@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
+import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
@@ -116,7 +117,7 @@ const meeting_status_organizer_decline = async (interaction_data: any) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
+          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
         },
       },
     ],

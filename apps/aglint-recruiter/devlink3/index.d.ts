@@ -274,6 +274,7 @@ export * from "./WidgetUserCard";
 export * from "./WidgetUserCardWithCompany";
 export * from "./WorkflowAdd";
 export * from "./WorkflowCard";
+export * from "./WorkflowConnectedCard";
 export * from "./WorkflowConnector";
 export * from "./WorkflowDetail";
 export * from "./WorkflowEmpty";
