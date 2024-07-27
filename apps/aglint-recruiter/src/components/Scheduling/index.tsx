@@ -25,7 +25,7 @@ import { SyncStatus } from '../NewScreening/PhoneScreenTemplate';
 import AllSchedules from './Candidates';
 import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';
-import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
+import InterviewerLevelSettings from './Interviewers/InterviewerDetail/InterviewerLevelSettings';
 import { Modules } from './InterviewTypes';
 import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import { setIsCreateDialogOpen } from './InterviewTypes/store';

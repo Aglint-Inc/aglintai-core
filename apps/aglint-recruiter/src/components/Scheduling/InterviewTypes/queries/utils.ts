@@ -75,7 +75,6 @@ export const fetchProgress = async ({
     .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
-    data[0].recruiter_user
   const resRel = data
     .filter(
       (ses) =>

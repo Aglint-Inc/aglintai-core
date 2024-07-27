@@ -4978,11 +4978,15 @@ export type Database = {
       }
       module_relations_view: {
         Row: {
+          cancelled_meeting_count: number | null
           completed_meeting_count: number | null
+          confirmed_meeting_count: number | null
           first_name: string | null
           id: string | null
           meetings: Json | null
+          module_description: string | null
           module_id: string | null
+          module_name: string | null
           module_training_status:
             | Database["public"]["Enums"]["status_training"]
             | null
