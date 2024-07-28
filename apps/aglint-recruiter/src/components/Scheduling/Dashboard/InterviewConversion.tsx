@@ -23,12 +23,7 @@ const InterviewConversion = () => {
     useState<InterviewConversionGraphProps['type']>('month');
   return (
     <InterviewRatio
-      slotDropdownButton={
-        <SchedulingDropdown
-          type={type}
-          onChange={(e) => setType(e.target.value as typeof type)}
-        />
-      }
+      slotDropdownButton={<SchedulingDropdown type={type} setType={setType} />}
       slotInterviewGraph={
         <Stack
           width={'100%'}

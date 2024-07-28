@@ -5,6 +5,7 @@ import { CustomApplicationView } from "./application_view.types";
 import { CustomInterviewTypesView } from "./interview_types_view";
 import { CustomJobView } from "./job_view.types";
 import { CustomMeetingInterviewersView } from "./meeting_interviewers.types";
+import { CustomModuleRelationView } from "./module_relation_view";
 import { CustomTasksView } from "./tasks_view";
 import type { CustomWorkflowView } from "./workflow_view.types";
 
@@ -40,5 +41,6 @@ export type Views = Type<
     meeting_interviewers: CustomMeetingInterviewersView;
     all_interviewers: CustomAllInterviewers;
     interview_types_view: CustomInterviewTypesView;
+    module_relations_view: CustomModuleRelationView;
   }
 >;

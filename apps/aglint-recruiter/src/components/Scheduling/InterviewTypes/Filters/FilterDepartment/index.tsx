@@ -56,7 +56,7 @@ function FilterDepartment() {
         marginTop={'0px !important'}
       >
         <Checkbox
-          isChecked={allDepartments.some((dep) => dep.id === item.id)}
+          isChecked={!!departments.find((id) => id === item.id)}
           onClickCheck={{
             onClick: () => {
               handleFilterClick(item);

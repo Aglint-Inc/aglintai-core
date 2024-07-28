@@ -1,11 +1,7 @@
+import { EmailTemplateAPi } from "@aglint/shared-types";
+
 export type API_request_feedback = {
-  request: {
-    session_id: string;
-    relation_id: string;
-    job_id: string;
-    receiver: { name: string; email: string };
-    candidate: { name: string; email: string };
-  };
+  request: requestFeedbackType;
   response:
     | {
         mailSent: boolean;
@@ -16,3 +12,9 @@ export type API_request_feedback = {
         error: string;
       };
 };
+
+
+type requestFeedbackType =
+  EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'] & {
+    tool: 'email' | 'slack';
+  };
