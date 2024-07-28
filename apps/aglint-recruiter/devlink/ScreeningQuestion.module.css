@@ -353,6 +353,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .slot-drag-drop-video {
   display: flex;
   width: 100%;

@@ -50,13 +50,13 @@ function Scheduling() {
         await updateRecruiter(recruiter.id, {
           service_json: fileData,
           google_workspace_domain,
-        } as RecruiterType).then((data: RecruiterType) => {
+        } as RecruiterType).then((data) => {
           setRecruiter(data);
         });
       } else {
         await updateRecruiter(recruiter.id, {
           google_workspace_domain,
-        } as RecruiterType).then((data: RecruiterType) => {
+        } as RecruiterType).then((data) => {
           setRecruiter(data);
         });
       }
@@ -64,7 +64,7 @@ function Scheduling() {
     if (reason === 'disconnect_google_workSpace') {
       await updateRecruiter(recruiter.id, {
         service_json: null,
-      } as RecruiterType).then((data: RecruiterType) => {
+      } as RecruiterType).then((data) => {
         setRecruiter(data);
       });
     }
@@ -72,7 +72,7 @@ function Scheduling() {
     if (reason === 'disconnect_zoom') {
       await updateRecruiter(recruiter.id, {
         zoom_auth: null,
-      } as RecruiterType).then((data: RecruiterType) => {
+      } as RecruiterType).then((data) => {
         setRecruiter(data);
       });
     }
@@ -255,10 +255,10 @@ function Scheduling() {
           zoom_auth: encrypted_cred,
         })
         .eq('id', recruiter.id)
-        .select()
+        .select('*, office_locations(*), departments(id,name)')
         .single(),
     );
-    setRecruiter(data as RecruiterType);
+    setRecruiter(data);
   };
 
   return (

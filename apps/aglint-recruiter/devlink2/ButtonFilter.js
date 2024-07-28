@@ -28,7 +28,7 @@ export function ButtonFilter({
         {slotLeftIcon}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
-        <Text content={textLabel} size={fontSize} weight="" />
+        <Text content={textLabel} weight="" size="1" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "relative-1", "icon-center")}

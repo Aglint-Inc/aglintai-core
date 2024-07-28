@@ -21,6 +21,7 @@ export const server_check_permissions = async ({
     if (!permissions?.length) throw new Error('Permission not provided.');
     // @ts-ignore
     const jsonDetail = getToken(supabase.storageKey, getVal);
+
     const user_id = jsonDetail.user.id;
     const token = jsonDetail.access_token;
     const { payload } = await jwtVerify(

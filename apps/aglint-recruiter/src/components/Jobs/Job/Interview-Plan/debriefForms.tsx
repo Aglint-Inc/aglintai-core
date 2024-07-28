@@ -24,7 +24,7 @@ import { Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 
-import { DepartmentIcon, RoleIcon } from '.';
+import { RoleIcon } from '.';
 import { DropDown, WarningSvg } from './sessionForms';
 import { getBreakLabel } from './utils';
 
@@ -487,10 +487,7 @@ const InterviewersField = ({
     name: getFullName(m.first_name, m.last_name),
     value: m.user_id,
     start_icon_url: m.profile_image,
-    meta: [
-      { title: m.position, icon: <RoleIcon /> },
-      { title: m.department, icon: <DepartmentIcon /> },
-    ],
+    meta: [{ title: m.position, icon: <RoleIcon /> }],
   }));
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
     e,

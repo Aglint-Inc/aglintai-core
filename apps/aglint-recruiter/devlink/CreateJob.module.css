@@ -159,6 +159,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .code-embed-2 {
   display: flex;
   width: 18px;

@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { RecruiterUserType } from '@aglint/shared-types';
 import {
   Avatar,
   List,
@@ -356,15 +355,8 @@ function RoleDetails({
 }) {
   const { checkPermissions } = useRolesAndPermissions();
 
-  const [editUser, setEditUser] = useState<{
-    user: RecruiterUserType;
-    role: string;
-  }>(null);
-  const {
-    recruiterUser,
-    allMember: members,
-    handelMemberUpdate,
-  } = useAuthDetails();
+  const [editUser, setEditUser] = useState(false);
+  const { allMember: members, handleMemberUpdate } = useAuthDetails();
   const { refetch } = useRoleAndPermissions();
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
@@ -456,24 +448,18 @@ function RoleDetails({
           <RoleUserWidget
             role={role}
             members={members}
-            setEditUser={(x) => setEditUser({ user: x, role: role.id })}
+            setEditUser={() => setEditUser(true)}
           />
         }
       />
       {editUser && (
         <RoleEditMember
-          close={() => setEditUser(null)}
-          user={editUser.user}
-          defaultRole={editUser.role}
-          options={AllRoles.map((role) => ({ role: role.role, id: role.id }))}
-          errorMessage={
-            recruiterUser.user_id === editUser.user.user_id &&
-            'You can not edit your own role'
-          }
-          handelMemberUpdate={async (x) => {
-            const res = await handelMemberUpdate(x);
+          close={() => setEditUser(false)}
+          role={{ id: role.id, role: role.name }}
+          handleMemberUpdate={async (x) => {
+            const res = await handleMemberUpdate(x);
             toast.success('Role updated successfully');
-            setEditUser(null);
+            setEditUser(false);
             refetch();
             return res;
           }}

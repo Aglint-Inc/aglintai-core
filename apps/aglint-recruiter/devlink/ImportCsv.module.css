@@ -148,6 +148,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .flex-horizontal {
   display: flex;
 }

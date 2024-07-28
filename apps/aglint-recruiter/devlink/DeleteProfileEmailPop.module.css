@@ -232,6 +232,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .email-input-wrappers {
   display: flex;
   margin-top: 10px;

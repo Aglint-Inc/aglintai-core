@@ -7,8 +7,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { MemberType } from '../../InterviewTypes/types';
-
 export type MemberTypeAutoComplete = {
   user_id: string;
   first_name: string;
@@ -16,11 +14,11 @@ export type MemberTypeAutoComplete = {
   email: string;
   profile_image: string;
   position: string;
-} & Record<string, any>;
+};
 
 type MembersAutoCompleteProps = {
   disabled: boolean;
-  renderUsers: InterviewScheduleContextType['members'];
+  renderUsers: MemberTypeAutoComplete[];
   selectedUsers: MemberTypeAutoComplete[];
   setSelectedUsers: (val: MemberTypeAutoComplete[]) => void;
   pillColor?: string;

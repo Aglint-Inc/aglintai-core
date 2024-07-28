@@ -259,6 +259,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .job-desc-warn-wrap {
   position: absolute;
   left: -74px;

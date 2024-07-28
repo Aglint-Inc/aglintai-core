@@ -67,7 +67,9 @@ const setMembers = (
     .from('recruiter_user')
     .update(data)
     .eq('user_id', data.user_id)
-    .select()
+    .select(
+      '*, office_location:office_locations(*), department:departments(id,name)',
+    )
     .single()
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);

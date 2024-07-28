@@ -39,7 +39,10 @@ export function DebreifHelperText({
               className={_utils.cx(_styles, "title_info")}
               tag="div"
             >
-              <Text size="4" content="" />
+              <Text
+                size="2"
+                content="Guide to Using Debrief Defaults in Aglint Ai "
+              />
             </_Builtin.Block>
             <Text
               weight="medium"

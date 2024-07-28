@@ -1056,6 +1056,32 @@ export type Database = {
         }
         Relationships: []
       }
+      departments: {
+        Row: {
+          id: number
+          name: string
+          recruiter_id: string
+        }
+        Insert: {
+          id?: number
+          name: string
+          recruiter_id: string
+        }
+        Update: {
+          id?: number
+          name?: string
+          recruiter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_recruiter"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       env: {
         Row: {
           created_at: string
@@ -1309,7 +1335,7 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string | null
-          department: string | null
+          department_id: number | null
           description: string | null
           duration_available: Json | null
           id: string
@@ -1322,7 +1348,7 @@ export type Database = {
         Insert: {
           created_at?: string
           created_by?: string | null
-          department?: string | null
+          department_id?: number | null
           description?: string | null
           duration_available?: Json | null
           id?: string
@@ -1335,7 +1361,7 @@ export type Database = {
         Update: {
           created_at?: string
           created_by?: string | null
-          department?: string | null
+          department_id?: number | null
           description?: string | null
           duration_available?: Json | null
           id?: string
@@ -1346,6 +1372,13 @@ export type Database = {
           settings?: Json | null
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_module_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "interview_panel_recruiter_id_fkey"
             columns: ["recruiter_id"]
@@ -2565,6 +2598,53 @@ export type Database = {
         }
         Relationships: []
       }
+      office_locations: {
+        Row: {
+          city: string
+          country: string
+          id: number
+          is_headquarter: boolean
+          line1: string
+          line2: string | null
+          recruiter_id: string
+          region: string
+          timezone: string
+          zipcode: string
+        }
+        Insert: {
+          city: string
+          country: string
+          id?: number
+          is_headquarter: boolean
+          line1: string
+          line2?: string | null
+          recruiter_id: string
+          region: string
+          timezone: string
+          zipcode: string
+        }
+        Update: {
+          city?: string
+          country?: string
+          id?: number
+          is_headquarter?: boolean
+          line1?: string
+          line2?: string | null
+          recruiter_id?: string
+          region?: string
+          timezone?: string
+          zipcode?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_recruiter"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       outreached_emails: {
         Row: {
           candidate_id: string
@@ -2993,7 +3073,6 @@ export type Database = {
           company_values: string | null
           company_website: string | null
           created_at: string
-          departments: string[]
           domain_admin_email: string | null
           e_o_statement: string | null
           email: string | null
@@ -3008,7 +3087,6 @@ export type Database = {
           logo: string | null
           m_v_statement: string | null
           name: string | null
-          office_locations: Json[] | null
           phone_number: string | null
           primary_admin: string | null
           primary_contact: Json | null
@@ -3039,7 +3117,6 @@ export type Database = {
           company_values?: string | null
           company_website?: string | null
           created_at?: string
-          departments?: string[]
           domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
@@ -3054,7 +3131,6 @@ export type Database = {
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: Json[] | null
           phone_number?: string | null
           primary_admin?: string | null
           primary_contact?: Json | null
@@ -3085,7 +3161,6 @@ export type Database = {
           company_values?: string | null
           company_website?: string | null
           created_at?: string
-          departments?: string[]
           domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
@@ -3100,7 +3175,6 @@ export type Database = {
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
-          office_locations?: Json[] | null
           phone_number?: string | null
           primary_admin?: string | null
           primary_contact?: Json | null
@@ -3243,16 +3317,16 @@ export type Database = {
       recruiter_user: {
         Row: {
           created_at: string
-          department: string | null
+          department_id: number | null
           email: string | null
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
-          interview_location: string | null
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
+          office_location_id: number | null
           phone: string | null
           position: string | null
           profile_image: string | null
@@ -3263,16 +3337,16 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
-          interview_location?: string | null
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
+          office_location_id?: number | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -3283,16 +3357,16 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
-          interview_location?: string | null
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
+          office_location_id?: number | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -3302,6 +3376,20 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "recruiter_user_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_office_location_id_fkey"
+            columns: ["office_location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
@@ -4489,7 +4577,8 @@ export type Database = {
           canceled_meeting_count: number | null
           completed_meeting_count: number | null
           created_by: string | null
-          department: string | null
+          department_id: number | null
+          department_name: string | null
           description: string | null
           id: string | null
           is_archived: boolean | null
@@ -4499,6 +4588,13 @@ export type Database = {
           users: Json | null
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_module_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "interview_panel_recruiter_id_fkey"
             columns: ["recruiter_id"]
@@ -4883,11 +4979,15 @@ export type Database = {
       }
       module_relations_view: {
         Row: {
+          cancelled_meeting_count: number | null
           completed_meeting_count: number | null
+          confirmed_meeting_count: number | null
           first_name: string | null
           id: string | null
           meetings: Json | null
+          module_description: string | null
           module_id: string | null
+          module_name: string | null
           module_training_status:
             | Database["public"]["Enums"]["status_training"]
             | null

@@ -10,9 +10,9 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: rgba(248, 249, 249, 0.8);
+  background-color: var(--neutral-2);
 }
 
 .cd-experience-card.loader-details {
@@ -51,10 +51,10 @@
   width: 56px;
   padding: 3px 10px;
 
-  border: 1px solid #cee2f2;
+  border: 1px solid var(--neutral-6);
   border-radius: 100px;
 
-  background-color: #edf7ff;
+  background-color: var(--neutral-3);
 }
 
 .text-xsm {
@@ -159,7 +159,7 @@
   right: 0%;
   bottom: 0%;
 
-  border-radius: 10px;
+  border-radius: var(--radius-4);
 
-  background-color: rgba(233, 235, 237, 0.5);
+  background-color: var(--neutral-3);
 }

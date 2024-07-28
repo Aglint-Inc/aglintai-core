@@ -143,7 +143,6 @@
 
 .mssc-member-list {
   display: flex;
-  width: 400px;
   margin-top: var(--space-2);
   flex-direction: column;
   flex-wrap: nowrap;

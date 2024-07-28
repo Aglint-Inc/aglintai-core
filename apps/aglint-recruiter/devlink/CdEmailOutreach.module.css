@@ -297,6 +297,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .email-out-back {
   display: flex;
   padding: 5px;

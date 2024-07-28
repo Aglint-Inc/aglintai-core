@@ -61,13 +61,13 @@ export const createModule = async ({
   recruiter_id,
   description,
   isTraining,
-  department,
+  department_id,
 }: {
   name: string;
   description: string;
   isTraining: boolean;
   recruiter_id: string;
-  department: string;
+  department_id: number;
 }) => {
   const { data: interMod, error: errorModule } = await supabase
     .from('interview_module')
@@ -81,7 +81,7 @@ export const createModule = async ({
         noReverseShadow: 2,
         reqruire_approval: false,
       },
-      department,
+      department_id,
     })
     .select();
 

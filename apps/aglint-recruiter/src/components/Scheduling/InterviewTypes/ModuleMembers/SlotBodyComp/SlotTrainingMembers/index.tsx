@@ -12,7 +12,7 @@ import {
 } from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
-import IndividualCard from '../IndividualCard';
+import IndividualCard from './IndividualCard';
 
 export type ProgressUser = {
   user: MemberType;

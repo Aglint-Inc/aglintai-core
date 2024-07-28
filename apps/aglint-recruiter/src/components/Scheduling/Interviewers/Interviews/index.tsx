@@ -15,7 +15,7 @@ import {
   transformDataSchedules,
 } from '../../schedules-query';
 import { DateIcon } from '../../Settings/Components/DateSelector';
-import { fetchSchedulesCountByUserId } from '../Interviewer/query';
+import { fetchSchedulesCountByUserId } from '../InterviewerDetail/query';
 
 function Interviews({
   allSchedules,

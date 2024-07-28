@@ -191,6 +191,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .div-block-553 {
   position: absolute;
   left: 0%;

@@ -15,7 +15,7 @@ import {
   useScheduleSessionsAnalytics,
 } from '@/src/queries/scheduling-dashboard';
 
-import { DropdownSelectButton } from './CancelReasons';
+import { FilterDropDownDash, ItemList } from './FilterDropDownDash';
 
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();
@@ -28,6 +28,11 @@ const RecentRescheduleCancel = () => {
   } = useCancelRescheduleReasonsUsers();
 
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
+
+  const itemList: ItemList[] = [
+    { label: 'Interview', value: 'interviewer' },
+    { label: 'Candidate', value: 'candidate' },
+  ];
   const processedRescheduleData = (CancelReasonsData || [])
     .filter((item) => item.type == 'reschedule')
     .reduce(
@@ -146,12 +151,10 @@ const RecentRescheduleCancel = () => {
           )
         }
         slotDropdown={
-          <DropdownSelectButton
-            itemList={
-              ['interviewer', 'candidate'] as unknown as (typeof type)[]
-            }
-            selectedItem={type}
-            setSelectedItem={(e) => setType(e)}
+          <FilterDropDownDash
+            itemList={itemList}
+            onChange={setType}
+            value={type}
           />
         }
       />

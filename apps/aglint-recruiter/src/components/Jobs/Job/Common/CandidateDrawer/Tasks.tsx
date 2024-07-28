@@ -1,3 +1,4 @@
+import { DatabaseView } from '@aglint/shared-types';
 import { EmailAgentId, getFullName, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -9,7 +10,7 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
-import StatusChip from '@/src/components/Tasks/Components/StatusChip';
+import TaskStatusTag from '@/src/components/Tasks/Components/TaskStatusTag';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -71,7 +72,7 @@ const Content = () => {
     >
       <TaskDetailBlock
         slotIcon={<TaskIcon created_by={task.created_by} />}
-        slotStatus={<StatusChip status={task.status} />}
+        slotStatus={<TaskStatusTag task={task as DatabaseView['tasks_view']} />}
         textDesc={task.name}
         textName={<TaskName created_by={task.created_by} />}
       />

@@ -1,5 +1,4 @@
 import SchedulingMainComp from '@/src/components/Scheduling';
-import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 function SchedulingMainPage() {
@@ -11,11 +10,7 @@ function SchedulingMainPage() {
 }
 
 SchedulingMainPage.privateProvider = function privateProvider(page) {
-  return (
-    <SchedulingProvider>
-      <InterviewerContextProvider>{page}</InterviewerContextProvider>
-    </SchedulingProvider>
-  );
+  return <SchedulingProvider>{page}</SchedulingProvider>;
 };
 
 export default SchedulingMainPage;

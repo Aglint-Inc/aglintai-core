@@ -207,6 +207,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .default_stage {
   position: absolute;
   left: 0%;
