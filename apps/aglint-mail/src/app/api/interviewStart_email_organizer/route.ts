@@ -23,6 +23,7 @@ export async function POST(req: Request) {
       recipient_email,
       is_preview,
       api_target: 'interviewStart_email_organizer',
+      payload: req_body.payload,
     });
 
     if (is_preview) {

@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { onRShadowCompleteEmailTraineeSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import {
-  ClientError,
-  MailArgValidationError,
-} from '../../../utils/apiUtils/customErrors';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
@@ -27,6 +23,7 @@ export async function POST(req: Request) {
         react_email_placeholders,
         recipient_email,
         api_target: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        payload: parsed_body.payload,
       });
     }
 
@@ -35,35 +32,13 @@ export async function POST(req: Request) {
     });
   } catch (e: any) {
     console.error(e);
-    if (e instanceof ClientError) {
-      return NextResponse.json(
-        {
-          error: `${e.name} : ${e.message}`,
-        },
-        {
-          status: e.status,
-        },
-      );
-    }
-    if (e instanceof MailArgValidationError) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:rejection,  ${e.message}`,
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}: mail_type:rejection,  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return NextResponse.json(
+      {
+        error: `${e.name} : ${e.message}`,
+      },
+      {
+        status: e.status,
+      },
+    );
   }
 }

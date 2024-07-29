@@ -25,6 +25,7 @@ export async function POST(req: Request) {
       company_id,
       job_id,
       api_target: 'applicantReject_email_applicant',
+      payload: parsed_body.payload,
     });
 
     return NextResponse.json('success', {

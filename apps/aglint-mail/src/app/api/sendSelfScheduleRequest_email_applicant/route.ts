@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
+      payload: req_body.payload,
       is_preview,
     });
     if (is_preview) {

@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
       api_target: 'interviewStart_email_applicant',
+      payload: req_body.payload,
     });
     return NextResponse.json('success', {
       status: 200,

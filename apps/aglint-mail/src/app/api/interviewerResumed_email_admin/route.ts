@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       company_id,
       recipient_email,
       api_target: 'interviewerResumed_email_admin',
+      payload: req_body.payload,
     });
     return NextResponse.json('success', {
       status: 200,

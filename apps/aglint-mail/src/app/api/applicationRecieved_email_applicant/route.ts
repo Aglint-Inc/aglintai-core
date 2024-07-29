@@ -26,6 +26,7 @@ export async function POST(req: Request) {
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email,
+      payload: parsed_body.payload,
       api_target: 'applicationRecieved_email_applicant',
     });
 

@@ -56,10 +56,11 @@ export const sendMailFun = async <
   const emailIdx = emails.findIndex((e) => e === api_target);
   if (emailIdx === -1)
     throw new ClientError(`${api_target} does not match any mail_type`, 400);
-  const { html } = await renderEmailTemplate<T>(
-    api_target as T,
-    react_email_placeholders,
-  );
+  const { html } = await renderEmailTemplate<T>(api_target as T, {
+    ...react_email_placeholders,
+    subject: filled_comp_template.subject,
+    emailBody: filled_comp_template.body,
+  });
   if (is_preview) {
     return { html, subject: filled_comp_template.subject };
   }

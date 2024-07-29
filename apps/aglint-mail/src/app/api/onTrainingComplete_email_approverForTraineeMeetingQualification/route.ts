@@ -24,6 +24,7 @@ export async function POST(req: Request) {
       comp_email_placeholder,
       company_id,
       react_email_placeholders,
+      payload: req_body.payload,
       recipient_email,
       api_target:
         'onTrainingComplete_email_approverForTraineeMeetingQualification',

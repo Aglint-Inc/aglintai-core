@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       comp_email_placeholder: details.comp_email_placeholder,
       company_id: details.company_id,
       react_email_placeholders: details.react_email_placeholders,
+      payload: req_body.payload,
       recipient_email: details.recipient_email,
     });
     return NextResponse.json('success', {

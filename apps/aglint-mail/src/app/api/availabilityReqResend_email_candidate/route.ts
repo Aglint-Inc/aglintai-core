@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
       api_target: 'availabilityReqResend_email_candidate',
+      payload: req_body.payload,
     });
 
     return NextResponse.json('success', {

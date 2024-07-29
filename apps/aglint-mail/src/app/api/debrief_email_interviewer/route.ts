@@ -24,6 +24,7 @@ export async function POST(req: Request) {
         react_email_placeholders,
         recipient_email,
         api_target: 'debrief_email_interviewer',
+        payload: req_body.payload,
       });
     }
 

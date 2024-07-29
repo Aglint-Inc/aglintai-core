@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
       api_target: 'interviewEnd_email_interviewerForFeedback',
+      payload: parsed_body.payload,
     });
 
     return NextResponse.json('success', {
