@@ -8,6 +8,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   applicationsQueries,
   useMoveApplications,
+  useReuploadResume,
   useUpdateApplication,
 } from '@/src/queries/job-applications';
 import { Application } from '@/src/types/applications.types';
@@ -292,6 +293,18 @@ export const useApplicationsActions = () => {
     }
   };
 
+  const { mutateAsync: reuploadResume } = useReuploadResume({ job_id });
+
+  const handleReuploadResume = async (
+    payload: Parameters<typeof reuploadResume>[0],
+  ) => {
+    try {
+      return await reuploadResume(payload);
+    } catch {
+      //
+    }
+  };
+
   const sectionApplication = useMemo(() => {
     switch (section) {
       case 'assessment':
@@ -374,6 +387,7 @@ export const useApplicationsActions = () => {
     handleMoveApplications,
     handleSelectNextApplication,
     handleSelectPrevApplication,
+    handleReuploadResume,
   };
 };
 

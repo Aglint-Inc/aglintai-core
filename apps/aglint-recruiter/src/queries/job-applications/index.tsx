@@ -24,6 +24,7 @@ import toast from '@/src/utils/toast';
 
 import { GC_TIME } from '..';
 import { jobQueries, useInvalidateJobQueries } from '../job';
+import { applicationMutationKeys } from './keys';
 
 const ROWS = 30;
 
@@ -473,7 +474,9 @@ export const useMoveApplications = (
   applications: ApplicationsStore['checklist'],
 ) => {
   const { revalidateJobQueries } = useInvalidateJobQueries();
+  const { mutationKey } = applicationMutationKeys.move();
   return useMutation({
+    mutationKey,
     mutationFn: async (
       args: Omit<
         Parameters<typeof moveApplications>[0],
@@ -535,4 +538,70 @@ const moveApplications = async ({
       }
     })(),
   ]);
+};
+
+export const useReuploadResume = (params: Pick<Params, 'job_id'>) => {
+  const { revalidateJobQueries } = useInvalidateJobQueries();
+  const { mutationKey } = applicationMutationKeys.reupload();
+  return useMutation({
+    mutationKey,
+    mutationFn: async (
+      payload: Pick<
+        HandleReUploadResume,
+        'application_id' | 'candidate_id' | 'files'
+      >,
+    ) => {
+      toast.message('Uploading applications');
+      return await handleResumeReUpload({
+        ...payload,
+        job_id: params.job_id,
+      });
+    },
+    onError: (error) => toast.error(`Upload failed. (${error.message})`),
+    onSuccess: async () => {
+      revalidateJobQueries(params.job_id);
+      toast.success('Uploaded successfully');
+    },
+  });
+};
+type HandleReUploadResume = ApplicationsAllQueryPrerequistes & {
+  application_id: string;
+  candidate_id: string;
+  files: File[];
+};
+const handleResumeReUpload = async (payload: HandleReUploadResume) => {
+  const formData = new FormData();
+  payload.files.forEach((file) =>
+    formData.append(UploadApiFormData.FILES, file),
+  );
+  const request = {
+    params: {
+      application_id: payload.application_id,
+      candidate_id: payload.candidate_id,
+    },
+    files: formData,
+  };
+  const response = await handleJobApi(
+    'candidateUpload/resumeReupload',
+    request,
+  );
+  if (!response.confirmation) throw new Error('Failed to upload resume');
+  return response;
+};
+
+// eslint-disable-next-line no-unused-vars
+const useDeleteApplication = (params: ApplicationsAllQueryPrerequistes) => {
+  const { mutationKey } = applicationMutationKeys.delete();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
+  return useMutation({
+    mutationKey,
+    mutationFn: async (application_id: string) =>
+      await supabase.from('applications').delete().eq('id', application_id),
+    onError: (error) =>
+      toast.error(`Failed to delte application. (${error.message})`),
+    onSuccess: async () => {
+      revalidateJobQueries(params.job_id);
+      toast.success('Uploaded successfully');
+    },
+  });
 };

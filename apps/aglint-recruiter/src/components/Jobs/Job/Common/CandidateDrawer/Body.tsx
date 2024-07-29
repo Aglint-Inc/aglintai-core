@@ -1,16 +1,20 @@
 import { Stack } from '@mui/material';
-import type { ReactNode } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
 import { GeneralError } from '@/devlink/GeneralError';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
+import { ButtonSolid } from '@/devlink3/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import ResumeWait from '@/public/lottie/ResumeWait';
+import Loader from '@/src/components/Common/Loader';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
+import { ResumeUploadComp } from '../UploadApplications/importManual';
 import { Activity } from './Activity';
 import { Details } from './Details';
 import { Interview } from './Interview';
@@ -83,7 +87,6 @@ const TabContent = (
 
 const useBlocker = () => {
   const { details, meta } = useApplication();
-  const setPreview = useApplicationStore(({ setPreview }) => setPreview);
   if (details.status === 'error' || meta.status === 'error')
     return (
       <Stack width={'700px'}>
@@ -121,36 +124,91 @@ const useBlocker = () => {
         />
       );
     case 'unparsable':
-      return (
-        <GlobalCta
-          color={'warning'}
-          iconName={'error'}
-          textTitle={'Resume not parsable'}
-          textDescription={
-            "The system is unable to parse the candidate's resume. Please review it manually and proceed accordingly."
-          }
-          slotButton={
-            <>
-              <IconButtonSoft
-                color={'neutral'}
-                size={2}
-                iconName={'description'}
-                onClickButton={{ onClick: () => setPreview(true) }}
-              />
-              <ButtonSoft
-                size={2}
-                color={'neutral'}
-                textButton={'Re-upload resume'}
-              />
-              <ButtonSoft
-                size={2}
-                color={'error'}
-                textButton={'Delete application'}
-              />
-            </>
-          }
-        />
-      );
+      return <Unparsable />;
   }
   return undefined;
+};
+
+const Unparsable = () => {
+  const { handleResumeReUpload } = useApplication();
+  const setPreview = useApplicationStore(({ setPreview }) => setPreview);
+
+  const [file, setFile] = useState<File>(undefined);
+  const [loading, setLoading] = useState(false);
+
+  const handleUpload = useCallback(async () => {
+    setLoading(true);
+    await handleResumeReUpload([file]);
+    setLoading(true);
+  }, [file, loading]);
+
+  return (
+    <Stack alignItems={'center'} justifyContent={'center'}>
+      <OptimisticWrapper loading={loading}>
+        {file ? (
+          <GlobalCta
+            color={'neutral'}
+            slotCustomIcon={<></>}
+            textTitle={'Upload resume'}
+            textDescription={'Upload the resume to score the candidate'}
+            slotButton={
+              <Stack gap={2} alignItems={'center'}>
+                <ResumeUploadComp
+                  value={file}
+                  handleChange={(e) => setFile(e)}
+                  label={false}
+                />
+                <Stack direction={'row'} gap={1}>
+                  <ButtonSolid
+                    size={2}
+                    color={'accent'}
+                    textButton={'Upload resume'}
+                    onClickButton={{
+                      onClick: () => handleUpload(),
+                    }}
+                  />
+                </Stack>
+              </Stack>
+            }
+          />
+        ) : (
+          <GlobalCta
+            color={'warning'}
+            iconName={'error'}
+            textTitle={'Resume not parsable'}
+            textDescription={
+              "The system is unable to parse the candidate's resume. Please review it manually and proceed accordingly."
+            }
+            slotButton={
+              <Stack gap={2} alignItems={'center'}>
+                <ResumeUploadComp
+                  value={file}
+                  handleChange={(e) => setFile(e)}
+                  label={false}
+                />
+                <Stack direction={'row'} gap={1}>
+                  <IconButtonSoft
+                    color={'neutral'}
+                    size={2}
+                    iconName={'description'}
+                    onClickButton={{ onClick: () => setPreview(true) }}
+                  />
+                  <ButtonSoft
+                    size={2}
+                    color={'error'}
+                    textButton={'Delete application'}
+                  />
+                </Stack>
+              </Stack>
+            }
+          />
+        )}
+      </OptimisticWrapper>
+      {loading && (
+        <Stack style={{ position: 'absolute' }}>
+          <Loader />
+        </Stack>
+      )}
+    </Stack>
+  );
 };

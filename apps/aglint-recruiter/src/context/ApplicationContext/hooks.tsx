@@ -24,6 +24,8 @@ export const useApplicationContext = (
     useAuthDetails();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
+  const resumeReupload = useApplications()?.handleReuploadResume;
+
   const { setTab, tab } = useApplicationStore(({ setTab, tab }) => ({
     setTab,
     tab,
@@ -94,6 +96,17 @@ export const useApplicationContext = (
     ],
   );
 
+  const handleResumeReUpload = async (
+    files: Parameters<typeof resumeReupload>[0]['files'],
+  ) => {
+    if (resumeReupload)
+      return await resumeReupload({
+        application_id: props.application_id,
+        candidate_id: meta?.data?.candidate_id,
+        files,
+      });
+  };
+
   useEffect(() => {
     setTab(props?.defaultTab ?? 'Details');
     return () => setTab(props?.defaultTab ?? 'Details');
@@ -106,6 +119,7 @@ export const useApplicationContext = (
     tasks,
     activity,
     handleUpdateApplication,
+    handleResumeReUpload,
     ...props,
   };
 };

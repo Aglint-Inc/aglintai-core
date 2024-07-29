@@ -55,6 +55,7 @@ const Drawer = () => {
           activity_count: placeholderData?.activity_count,
           task_count: placeholderData?.task_count,
           status: placeholderData?.status,
+          candidate_id: placeholderData?.candidate_id,
         }
       : undefined;
 
