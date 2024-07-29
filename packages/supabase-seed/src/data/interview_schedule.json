@@ -1,0 +1,17 @@
+[
+  {
+    "id": "6c727696-4dc2-42e2-b8d4-a04afba21726",
+    "created_at": "2024-07-27 12:00:17.16238+00",
+    "application_id": "453eb80c-a2da-4a1b-80b3-6ad47587f75d",
+    "schedule_name": "Interview for Software Engineer - Abdul Kollikathara",
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "calender_event_api_status": {
+      "error": null,
+      "api_status": "not_started"
+    },
+    "coordinator_id": null,
+    "is_get_more_option": false,
+    "is_completed": false,
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
+  }
+]

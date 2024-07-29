@@ -59,7 +59,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
       if (!isDebrief)
         axios
           .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
-            meta: { ...payload },
+            ...payload,
           })
           .then(({ data }) => {
             setEmailData(data);

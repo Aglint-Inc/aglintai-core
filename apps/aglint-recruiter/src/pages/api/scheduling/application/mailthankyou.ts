@@ -96,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         };
       await axios.post(
         `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confirmInterview_email_applicant`,
-        { meta: payload },
+        { ...payload },
       );
 
       if (filter_id) {

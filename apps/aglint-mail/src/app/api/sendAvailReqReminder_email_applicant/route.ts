@@ -5,10 +5,10 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(sendAvailReqReminderEmailApplicant, meta);
+    const req_body = v.parse(sendAvailReqReminderEmailApplicant, body);
     const details = await dbUtil(req_body);
     if (!details) {
       return NextResponse.json('success', {
@@ -16,8 +16,11 @@ export async function POST(req: Request) {
       });
     }
     await sendMailFun({
-      filled_comp_template: details.filled_comp_template,
+      api_target: 'sendAvailReqReminder_email_applicant',
+      comp_email_placeholder: details.comp_email_placeholder,
+      company_id: details.company_id,
       react_email_placeholders: details.react_email_placeholders,
+      payload: req_body.payload,
       recipient_email: details.recipient_email,
     });
     return NextResponse.json('success', {

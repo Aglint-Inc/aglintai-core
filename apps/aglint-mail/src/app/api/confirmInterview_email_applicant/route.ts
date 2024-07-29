@@ -8,12 +8,10 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(
-      confirmInterviewEmailApplicantSchema,
-      req_body.meta,
-    );
+    const parsed_body = v.parse(confirmInterviewEmailApplicantSchema, req_body);
     const {
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
       mail_attachments,
@@ -21,11 +19,14 @@ export async function POST(req: Request) {
 
     const is_preview = Boolean(parsed_body.preview_details);
     const resp = await sendMailFun({
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
       attachments: mail_attachments,
       is_preview,
+      api_target: 'confirmInterview_email_applicant',
+      payload: req_body.payload,
     });
     if (is_preview) {
       return NextResponse.json(

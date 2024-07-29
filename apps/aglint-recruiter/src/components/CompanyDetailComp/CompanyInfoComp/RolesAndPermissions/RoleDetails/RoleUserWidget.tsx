@@ -12,7 +12,6 @@ import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/
 export const RoleUserWidget = ({
   role,
   members,
-  setEditUser,
 }: {
   role: Awaited<
     GetRoleAndPermissionsAPI['response']
@@ -20,24 +19,9 @@ export const RoleUserWidget = ({
     name: string;
   };
   members: RecruiterUserType[];
-  // eslint-disable-next-line no-unused-vars
-  setEditUser: () => void;
 }) => {
-  const { ifAllowed } = useRolesAndPermissions();
   return (
     <>
-      {ifAllowed(
-        <Stack direction={'row'}>
-          <ButtonGhost
-            onClickButton={{ onClick: () => setEditUser() }}
-            textButton={'Add'}
-            size={2}
-            isLeftIcon={true}
-            iconName={'add'}
-          />
-        </Stack>,
-        ['manage_roles'],
-      )}
       {role.assignedTo.length ? (
         role.assignedTo.map((user_id) => (
           <UserCard members={members} user_id={user_id} key={user_id} />

@@ -19,6 +19,7 @@ export function RolesAndPermissionsDetail({
   textRoleName = "Role Name",
   textUserDescription = "These are the users with this role.",
   slotBanner,
+  slotAddButton,
 }) {
   return (
     <_Component
@@ -108,7 +109,13 @@ export function RolesAndPermissionsDetail({
             tag="div"
           >
             <Text content={textUserCount} weight="medium" />
-            <Text content={textUserDescription} color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "rpd-wrapper")}
+              tag="div"
+            >
+              <Text content={textUserDescription} color="neutral" />
+              <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "userwithrole-wrap")}
               tag="div"

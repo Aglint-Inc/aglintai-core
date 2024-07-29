@@ -32,13 +32,7 @@ export async function fetchUtil(
   const {
     interview_schedule: {
       applications: {
-        candidates: {
-          email: cand_email,
-          recruiter_id,
-          first_name,
-          last_name,
-          recruiter: { logo },
-        },
+        candidates: { email: cand_email, recruiter_id, first_name, last_name },
         public_jobs: { company, job_title },
       },
     },
@@ -79,16 +73,8 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const react_email_placeholders: EmailTemplateAPi<'agent_email_candidate'>['react_email_placeholders'] =
-    {
-      companyLogo: logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
-    };
-
   return {
     filled_comp_template,
-    react_email_placeholders,
     recipient_email: cand_email,
   };
 }

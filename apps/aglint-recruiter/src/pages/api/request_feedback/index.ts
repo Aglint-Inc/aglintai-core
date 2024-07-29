@@ -1,11 +1,8 @@
 import { EmailTemplateAPi } from '@aglint/shared-types';
-import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { API_request_feedback } from './type';
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,12 +15,10 @@ export default async function handler(
       await axios.post(
         `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/interviewEnd_email_interviewerForFeedback`,
         {
-          meta: {
-            application_id,
-            recruiter_user_id,
-            session_id,
-          } as EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
-        },
+          application_id,
+          recruiter_user_id,
+          session_id,
+        } as EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
       );
     } else {
       await axios.post(

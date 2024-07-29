@@ -12,22 +12,13 @@ import { CompletedInterviews } from "./CompletedInterviews";
 import { InterviewersDash } from "./InterviewersDash";
 import { RecentReschedule } from "./RecentReschedule";
 import { RecentDeclines } from "./RecentDeclines";
-import { Text } from "./Text";
-import { TextWithIcon } from "./TextWithIcon";
 import * as _utils from "./utils";
 import _styles from "./SchedulingDashboard.module.css";
 
 export function SchedulingDashboard({
   as: _Component = _Builtin.Block,
-  onClickCandidates = {},
-  onClickMySchedule = {},
-  onClickInterviewTypes = {},
-  onClickInterviewers = {},
-  onClickScheduleSetting = {},
   slotFirstGrid,
   slotGridInterviewDetail,
-  slotInterviewStatic,
-  slotInterviewModuleStats,
   slotTrainingProgress,
   slotScheduleCount,
   slotsCradsWithNumber,
@@ -143,92 +134,6 @@ export function SchedulingDashboard({
           )}
         </_Builtin.Block>
         <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bcol-span%3D%222%22%5D%20%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%202%3B%0A%20%20%20%20grid-column-end%3A%20span%202%3B%0A%20%20%7D%0A%0A%20%20%5Bcol-span%3D%223%22%5D%7B%0A%20%20%20%20grid-row-start%3A%20span%201%3B%0A%20%20%20%20grid-row-end%3A%20span%201%3B%0A%20%20%20%20grid-column-start%3A%20span%203%3B%0A%20%20%20%20grid-column-end%3A%20span%203%3B%0A%20%20%7D%0A%3C%2Fstyle%3E" />
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-dashboard-right")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "sd-right-wraps")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "quick-link-wrapper")}
-            tag="div"
-          >
-            <Text weight="" color="neutral" size="1" content="Quick Links" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "quick-link-sub-wrap")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "scheduler-links-quick")}
-                tag="div"
-                {...onClickCandidates}
-              >
-                <TextWithIcon
-                  iconName="group"
-                  iconWeight="medium"
-                  fontWeight="medium"
-                  textContent="Candidates"
-                  iconSize="4"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "scheduler-links-quick")}
-                tag="div"
-                {...onClickMySchedule}
-              >
-                <TextWithIcon
-                  iconName="Calendar_today"
-                  iconWeight="medium"
-                  fontWeight="medium"
-                  textContent="Schedules"
-                  iconSize="4"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "scheduler-links-quick")}
-                tag="div"
-                {...onClickInterviewTypes}
-              >
-                <TextWithIcon
-                  iconName="co_present"
-                  iconWeight="medium"
-                  fontWeight="medium"
-                  textContent="Interview Types"
-                  iconSize="4"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "scheduler-links-quick")}
-                tag="div"
-                {...onClickInterviewers}
-              >
-                <TextWithIcon
-                  iconName="3p"
-                  iconWeight="medium"
-                  fontWeight="medium"
-                  textContent="Interviewers"
-                  iconSize="4"
-                />
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "scheduler-links-quick")}
-                tag="div"
-                {...onClickScheduleSetting}
-              >
-                <TextWithIcon
-                  iconName="settings"
-                  iconWeight="medium"
-                  fontWeight="medium"
-                  textContent="Settings"
-                  iconSize="4"
-                />
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

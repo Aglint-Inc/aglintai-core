@@ -166,9 +166,7 @@ function TaskActionButtons({
                   axios.post(
                     `/api/emails/sendAvailReqReminder_email_applicant`,
                     {
-                      meta: {
-                        avail_req_id: selectedTask.request_availability_id,
-                      },
+                      avail_req_id: selectedTask.request_availability_id,
                     },
                   );
 

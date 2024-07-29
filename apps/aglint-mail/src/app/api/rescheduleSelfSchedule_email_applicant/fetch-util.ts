@@ -3,11 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -15,7 +11,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['api_payload'],
@@ -40,7 +35,6 @@ export async function fetchUtil(
   );
   const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
   const org_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
-  //
   const {
     candidates: {
       email: cand_email,
@@ -51,11 +45,6 @@ export async function fetchUtil(
     },
     public_jobs: { company, job_title },
   } = candidateJob;
-
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'rescheduleSelfSchedule_email_applicant',
-  );
 
   const meeting_details: MeetingDetailCardType[] = int_sessions.map(
     (session) => {
@@ -96,22 +85,16 @@ export async function fetchUtil(
       OrganizerTimeZone: org_tz,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const react_email_placeholders: EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
       resheduleLink: self_schedule_link ? self_schedule_link : '',
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: recruiter_id,
     react_email_placeholders,
     recipient_email: cand_email,
   };
