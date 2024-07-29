@@ -26,6 +26,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   const { recruiter, handleDepartmentsUpdate } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
   let initialDepartments = [];
+
   if (localStorage?.getItem('departments')) {
     if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
       initialDepartments = JSON.parse(localStorage?.getItem('departments'));
@@ -60,6 +61,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     }
   };
 
+  const currentDeps = recruiter.departments.map((dep) => dep.name);
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <AddDepartmentPop
@@ -84,7 +87,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
             fullWidth
             freeSolo
             id='free-solo-2-demo'
-            options={options}
+            options={options.filter((dep) => !currentDeps.includes(dep))}
             inputValue={inputValue}
             onInputChange={handleInputChange}
             getOptionLabel={(option) => option}
@@ -190,6 +193,13 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               size={2}
               onClickButton={{
                 onClick: () => {
+                  const exitingDep = currentDeps.filter((item) =>
+                    departmentState.includes(item),
+                  );
+                  if (exitingDep.length > 0) {
+                    toast.error(`${exitingDep.join(', ')} are already exists`);
+                    return;
+                  }
                   handleDepartmentsUpdate({
                     type: 'insert',
                     data: departmentState.map((item) => ({
