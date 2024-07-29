@@ -9,3 +9,11 @@ export type TabsModuleMembers = {
   name: string;
   queryParams: 'qualified' | 'schedules' | 'instructions' | 'training';
 };
+
+export type ConnectedJob = {
+  job_title: string;
+  department: string;
+  location: string;
+  status: 'closed' | 'draft' | 'published';
+  id: string;
+};

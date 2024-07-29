@@ -20,6 +20,7 @@ export function WorkflowConnectedCard({
   textLocation = "This is a global text component",
   onClickJob = {},
   onClickLinkOff = {},
+  isLinkOffVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -62,12 +63,16 @@ export function WorkflowConnectedCard({
             color="neutral"
             size="1"
           />
-          <IconButtonSoft
-            onClickButton={onClickLinkOff}
-            iconName="link_off"
-            color="error"
-            size="1"
-          />
+          {isLinkOffVisible ? (
+            <_Builtin.Block tag="div">
+              <IconButtonSoft
+                onClickButton={onClickLinkOff}
+                iconName="link_off"
+                color="error"
+                size="1"
+              />
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

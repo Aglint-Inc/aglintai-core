@@ -1,22 +1,26 @@
-import { Popover, Stack } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
+import { Popover, Stack, Typography } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
@@ -183,6 +187,9 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
+              slotJobsCard={
+                editModule?.id && <ConnectedJobs module_id={editModule?.id} />
+              }
               slotEditButton={
                 <Stack direction={'row'} spacing={1}>
                   <ButtonSoft
@@ -358,3 +365,78 @@ function SlotBodyComp({
 }
 
 export default SlotBodyComp;
+
+const ConnectedJobs = ({ module_id }: { module_id: string }) => {
+  useEffect(() => {
+    if (module_id) getConnectedJobs();
+  }, [module_id]);
+
+  const router = useRouter();
+  const getConnectedJobs = async () => {
+    const { data, error } = await supabase
+      .from('interview_session')
+      .select(
+        'interview_plan(public_jobs(job_title,department,location,status,id))',
+      )
+      .eq('module_id', module_id)
+      .throwOnError();
+
+    if (!error) {
+      const jobs = data
+        .filter((data) => data.interview_plan)
+        .map((data) => data?.interview_plan?.public_jobs);
+      return jobs;
+    }
+  };
+  const { isLoading, data: connectedJobs } = useQuery({
+    queryKey: ['interview_type_connected_jobs', module_id],
+    queryFn: getConnectedJobs,
+  });
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  return (
+    <>
+      <Typography fontWeight={500}>Connected Jobs</Typography>
+      <Stack mt={2} spacing={1}>
+        {connectedJobs.length > 0 ? (
+          connectedJobs.map((job, i) => (
+            <WorkflowConnectedCard
+              key={i}
+              isLinkOffVisible={false}
+              role={capitalizeAll(job.job_title)}
+              textLocation={job.location || '---'}
+              textRoleCategory={job.department || '---'}
+              slotBadges={
+                job.status && (
+                  <GlobalBadge
+                    color={
+                      job.status === 'published'
+                        ? 'success'
+                        : status === 'closed'
+                          ? 'error'
+                          : 'warning'
+                    }
+                    textBadge={capitalizeAll(job.status)}
+                  />
+                )
+              }
+              onClickJob={{
+                onClick: () =>
+                  router.push(ROUTES['/jobs/[id]']({ id: job?.id })),
+              }}
+            />
+          ))
+        ) : (
+          <GlobalEmptyState
+            iconName={'work'}
+            size={4}
+            slotButton={<></>}
+            textDesc={'No jobs connected'}
+          />
+        )}
+      </Stack>
+    </>
+  );
+};
