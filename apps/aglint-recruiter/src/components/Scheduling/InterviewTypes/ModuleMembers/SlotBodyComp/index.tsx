@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
@@ -10,6 +11,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
+import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -24,10 +26,10 @@ import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
-import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import SchedulesModules from '../Schedules';
+import ModuleSettingComp from '../Training';
 import { TabsModuleMembers } from '../type';
 import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
@@ -51,7 +53,7 @@ function SlotBodyComp({
   const { loading } = useSchedulingContext();
 
   const currentTab = (router.query.tab ||
-    'members') as TabsModuleMembers['queryParams'];
+    'qualified_members') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
@@ -118,9 +120,14 @@ function SlotBodyComp({
     }
   };
 
+  const { data } = useAllDepartments();
+
+  const department =
+    data?.find((item) => item.id === editModule?.department_id)?.name || '--';
+
   return (
     <>
-      <SettingsDialog editModule={editModule} />
+      <SettingsDialog editModule={editModule}  />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
@@ -155,11 +162,18 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
-              onClickEdit={{
-                onClick: () => {
-                  setIsSettingsDialogOpen(true);
-                },
-              }}
+              slotEditButton={
+                <ButtonSoft
+                  color={'neutral'}
+                  size={2}
+                  textButton='Edit'
+                  onClickButton={{
+                    onClick: () => {
+                      setIsSettingsDialogOpen(true);
+                    },
+                  }}
+                />
+              }
               slotNewTabPill={
                 <Stack direction={'row'}>
                   {tabsModuleMembers.map((tab) => {
@@ -169,7 +183,8 @@ function SlotBodyComp({
                         textLabel={tab.name}
                         isPillActive={
                           currentTab === tab.queryParams ||
-                          (!currentTab && tab.queryParams == 'members')
+                          (!currentTab &&
+                            tab.queryParams == 'qualified_members')
                         }
                         onClickPill={{
                           onClick: () => {
@@ -189,20 +204,21 @@ function SlotBodyComp({
                   })}
                 </Stack>
               }
-              textDepartment={editModule.department || '--'}
+              textDepartment={department}
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>
-                  {(currentTab === 'members' || !currentTab) && (
+                  {(currentTab === 'qualified_members' || !currentTab) && (
                     <ModuleMembers
-                      isMembersTrainingVisible={
-                        editModule.settings?.require_training
-                      }
+                      isMembersTrainingVisible={false}
                       slotQualifiedMemberList={
                         <SlotQualifiedMembers editModule={editModule} />
                       }
                       slotMembersInTraining={
-                        <SlotTrainingMembers editModule={editModule} />
+                        <SlotTrainingMembers
+                          editModule={editModule}
+                          refetch={refetch}
+                        />
                       }
                       onClickAddMember={{
                         onClick: () => {

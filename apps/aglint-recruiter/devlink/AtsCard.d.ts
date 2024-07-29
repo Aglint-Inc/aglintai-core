@@ -9,4 +9,5 @@ declare function AtsCard(props: {
   propsTextColor?: Types.Devlink.RuntimeProps;
   onClickCheck?: Types.Devlink.RuntimeProps;
   isChecked?: Types.Visibility.VisibilityConditions;
+  slotGlobalBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

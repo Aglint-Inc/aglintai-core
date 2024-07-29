@@ -146,6 +146,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .slot-location-forms {
   margin-top: 16px;
 }

@@ -5,98 +5,112 @@ import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {getUserIdByEmail, numberToOrdinal} from 'src/utils/slack';
 
 export async function onShadowCompleteTrainee(req: Request, res: Response) {
-  const {interview_module_relation_id, interview_meeting_id, session_id} =
-    req.body;
+  const {meeting_id, application_id, session_id} = req.body;
 
-  if (!interview_module_relation_id) {
+  if (!application_id || !session_id || !session_id) {
     return res
       .status(400)
       .json({error: 'interview_module_relation_id required'});
   }
 
   try {
-    const [data] = supabaseWrap(
+    const training_ints = supabaseWrap(
       await supabaseAdmin
-        .from('interview_module_relation')
-        .select('user_id,recruiter_user(*),interview_module(*)')
-        .eq('id', interview_module_relation_id)
+        .from('meeting_interviewers')
+        .select()
+        .eq('training_type', 'shadow')
+        .eq('session_id', session_id),
+      false
     );
-    const [interviewMeeting] = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_meeting')
-        .select(
-          'recruiter_user(first_name,last_name),interview_schedule(applications(candidates(first_name,last_name),public_jobs(job_title)))'
-        )
-        .eq('id', interview_meeting_id)
-    );
-    const [session] = supabaseWrap(
+    if (training_ints.length === 0) {
+      return res.status(200).send('no shadow trinees');
+    }
+    const [session_detail] = supabaseWrap(
       await supabaseAdmin
         .from('interview_session')
-        .select('name')
+        .select(
+          '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*),candidates(*))))'
+        )
         .eq('id', session_id)
     );
 
-    const [shadow] = supabaseWrap(
+    const module_relations = supabaseWrap(
       await supabaseAdmin
         .from('module_relations_view')
-        .select('shadow_meeting_count')
-        .eq('user_id', data.user_id)
+        .select()
+        .in(
+          'user_id',
+          training_ints.map(int => int.user_id)
+        ),
+      false
     );
-
-    const shadowCount = shadow.shadow_meeting_count;
-
-    const {interview_module, recruiter_user: trainee} = data;
-    const userId = await getUserIdByEmail(trainee.email);
-
-    const organizer = interviewMeeting.recruiter_user;
     const candidate =
-      interviewMeeting.interview_schedule.applications.candidates;
-    const job =
-      interviewMeeting.interview_schedule.applications.public_jobs.job_title;
+      session_detail.interview_meeting.interview_schedule.applications
+        .candidates;
+    const organizer = session_detail.interview_meeting.recruiter_user;
 
-    await slackWeb.chat.postMessage({
-      channel: userId,
-      metadata: {
-        event_type: 'shadow_complete_trainee_confirmation',
-        event_payload: {name: 'shadow_complete_trainee_confirmation'},
-      },
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(shadowCount))} shadow session for ${interview_module.name} ? You were scheduled as a shadow interviewer in the ${session.name} for ${job} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
+    const job =
+      session_detail.interview_meeting.interview_schedule.applications
+        .public_jobs;
+
+    for (const trainee of training_ints) {
+      const trainee_data = module_relations.find(
+        s => s.user_id === trainee.user_id && s.module_id === trainee.module_id
+      );
+      const shadowCount =
+        trainee_data.shadow_completed_count +
+        trainee_data.shadow_confirmed_count;
+
+      const userId = await getUserIdByEmail(trainee.email);
+
+      await slackWeb.chat.postMessage({
+        channel: userId,
+        metadata: {
+          event_type: 'shadow_complete_trainee_confirmation',
+          event_payload: {
+            name: 'shadow_complete_trainee_confirmation',
+            session_relation_id: trainee.session_relation_id,
           },
         },
-        {
-          type: 'actions',
-          elements: [
-            {
-              type: 'button',
-              text: {
-                type: 'plain_text',
-                emoji: true,
-                text: 'Completed',
-              },
-              style: 'primary',
-              value: 'accept',
-              action_id: 'accept',
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `Hi ${getFullName(trainee.first_name, trainee.last_name)},\n Could you please confirm if you've completed the ${numberToOrdinal(Number(shadowCount))} shadow session for ${session_detail.interview_module.name} ? You were scheduled as a shadow interviewer in the ${session_detail.name} for ${job.job_title} with ${getFullName(candidate.first_name, candidate.last_name)}\n\nFrom,\n${getFullName(organizer.first_name, organizer.last_name)}`,
             },
-            {
-              type: 'button',
-              text: {
-                type: 'plain_text',
-                emoji: true,
-                text: 'Could not attend Interview',
+          },
+          {
+            type: 'actions',
+            elements: [
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  emoji: true,
+                  text: 'Completed',
+                },
+                style: 'primary',
+                value: 'accept',
+                action_id: 'accept',
               },
-              style: 'danger',
-              value: 'decline',
-              action_id: 'decline',
-            },
-          ],
-        },
-      ],
-    });
+              {
+                type: 'button',
+                text: {
+                  type: 'plain_text',
+                  emoji: true,
+                  text: 'Could not attend Interview',
+                },
+                style: 'danger',
+                value: 'decline',
+                action_id: 'decline',
+              },
+            ],
+          },
+        ],
+      });
+      //
+    }
 
     res.status(200).json({message: 'message sucessfully sended'});
   } catch (err: any) {

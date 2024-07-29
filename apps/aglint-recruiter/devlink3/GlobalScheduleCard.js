@@ -36,6 +36,7 @@ export function GlobalScheduleCard({
   styleGrid = {},
   isButtonBlockVisible = true,
   isRoleVisible = true,
+  slotStatus,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "new-gsc-wrap")} tag="div">
@@ -198,7 +199,11 @@ export function GlobalScheduleCard({
                   className={_utils.cx(_styles, "flex-h2")}
                   tag="div"
                 >
-                  <_Builtin.Block tag="div">
+                  <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "gsc-btn-wrap")}
+                    tag="div"
+                  >
                     {slotButtonViewDetail ?? (
                       <ButtonSolid
                         size="1"
@@ -211,7 +216,11 @@ export function GlobalScheduleCard({
                     )}
                   </_Builtin.Block>
                   {isDropdownIconVisible ? (
-                    <_Builtin.Block tag="div" {...onClickDropdown}>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "gsc-btn-wrap")}
+                      tag="div"
+                      {...onClickDropdown}
+                    >
                       <IconButtonSoft
                         iconName="keyboard_double_arrow_down"
                         color="neutral"

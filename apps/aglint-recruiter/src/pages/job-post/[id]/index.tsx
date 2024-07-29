@@ -1,4 +1,3 @@
-import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -10,21 +9,23 @@ import InvalidJobPostLottie from '@/public/lottie/InvalidJobPostLottie';
 import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
 
+import { PublicJobAPI } from '../../api/jobpost/read';
+
 function JobPost() {
   const router = useRouter();
-  let jobId = router.query.id;
-  const [post, setPost] = useState<JobTypeDB>();
+  let jobId = router.query.id as string;
+  const [post, setPost] = useState<PublicJobAPI['post']>();
   const [valid, setValid] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [recruiter, setRecruiter] = useState<RecruiterDB>();
-  const [jobs, setJobs] = useState<JobTypeDB[]>([]);
+  const [recruiter, setRecruiter] = useState<PublicJobAPI['recruiter']>();
+  const [jobs, setJobs] = useState<PublicJobAPI['jobs']>([]);
 
   useEffect(() => {
     if (router.isReady) {
       let query = isValidUUID(jobId) ? `id.eq.${jobId}` : `slug.eq.${jobId}`;
 
       (async () => {
-        const response = await axios.post(
+        const response = await axios.post<PublicJobAPI>(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/read`,
           {
             query: query,

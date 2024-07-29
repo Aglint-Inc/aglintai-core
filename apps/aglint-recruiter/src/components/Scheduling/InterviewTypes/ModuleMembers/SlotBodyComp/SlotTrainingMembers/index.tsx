@@ -12,14 +12,20 @@ import {
 } from '../../../store';
 import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
-import IndividualCard from '../IndividualCard';
+import IndividualCard from './IndividualCard';
 
 export type ProgressUser = {
   user: MemberType;
   progress: ReturnType<typeof useProgressModuleUsers>['data'];
 };
 
-function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
+function SlotTrainingMembers({
+  editModule,
+  refetch,
+}: {
+  editModule: ModuleType;
+  refetch: () => void;
+}) {
   const allUsers = editModule.relations.filter(
     (user) => user.training_status === 'training',
   );
@@ -38,7 +44,7 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
 
   return (
     <>
-      {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
+      {selUser?.user_id && <MoveToQualifiedDialog refetch={refetch} />}
 
       {filtererdUsers.length === 0 && (
         <EmptyGeneral
@@ -73,7 +79,8 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
             editModule={editModule}
             progressDataUser={progressDataUser}
             user={user}
-            refetch={refetchTrainingProgress}
+            refetchTrainingProgress={refetchTrainingProgress}
+            refetch={refetch}
           />
         );
       })}

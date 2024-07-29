@@ -1,38 +1,23 @@
 import { Stack } from '@mui/material';
-import { useMemo } from 'react';
 
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 
 import { useSchedulingFlowStore } from '../../store';
-import { filterSchedulingOptionsArray } from './utils';
 
-function NoSlotError() {
-  const { schedulingOptions, filters } = useSchedulingFlowStore((state) => ({
+function NoSlotError({
+  totalNumberHardConflicts,
+  totalNumberNoConflicts,
+  totalNumberOutsideWorkHours,
+  totalNumberSoftConflicts,
+}: {
+  totalNumberHardConflicts: number;
+  totalNumberNoConflicts: number;
+  totalNumberOutsideWorkHours: number;
+  totalNumberSoftConflicts: number;
+}) {
+  const { filters } = useSchedulingFlowStore((state) => ({
     filters: state.filters,
-    schedulingOptions: state.schedulingOptions,
   }));
-
-  const {
-    numberHardConflicts: totalNumberHardConflicts,
-    numberNoConflicts: totalNumberNoConflicts,
-    numberOutsideWorkHours: totalNumberOutsideWorkHours,
-    numberSoftConflicts: totalNumberSoftConflicts,
-  } = useMemo(
-    () =>
-      filterSchedulingOptionsArray({
-        schedulingOptions,
-        filters: {
-          isNoConflicts: true,
-          isSoftConflicts: true,
-          isHardConflicts: true,
-          isOutSideWorkHours: true,
-          preferredInterviewers: [],
-          preferredDateRanges: [],
-          isWorkLoad: false,
-        },
-      }),
-    [],
-  );
 
   return (
     <Stack padding={'var(--space-4)'}>

@@ -7,82 +7,96 @@ import { numberToOrdinal } from '../../../utils/email/common/functions';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['api_payload'],
 ) {
-  const [data] = supabaseWrap(
+  const training_ints = supabaseWrap(
     await supabaseAdmin
-      .from('interview_module_relation')
-      .select('user_id,recruiter_user(*),interview_module(*)')
-      .eq('id', req_body.interview_module_relation_id),
+      .from('meeting_interviewers')
+      .select()
+      .eq('training_type', 'shadow')
+      .eq('session_id', req_body.session_id),
+    false,
   );
-
-  const [interviewMeeting] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_meeting')
-      .select(
-        'recruiter_user(first_name,last_name,scheduling_settings),interview_schedule(applications(candidates(first_name,last_name),public_jobs(id,company,job_title,logo,recruiter_id)))',
-      )
-      .eq('id', req_body.interview_meeting_id),
-  );
-  const [session] = supabaseWrap(
+  if (training_ints.length === 0) {
+    return [];
+  }
+  const [session_detail] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select('name')
+      .select(
+        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*),candidates(*))))',
+      )
       .eq('id', req_body.session_id),
   );
 
-  const [shadow] = supabaseWrap(
+  const module_relations = supabaseWrap(
     await supabaseAdmin
       .from('module_relations_view')
-      .select('shadow_meeting_count')
-      .eq('user_id', data.user_id),
+      .select()
+      .in(
+        'user_id',
+        training_ints.map((int) => int.user_id),
+      ),
+    false,
   );
 
-  const shadowCount = shadow.shadow_meeting_count;
-
-  const { interview_module, recruiter_user: trainee } = data;
-
-  const organizer = interviewMeeting.recruiter_user;
-  const candidate = interviewMeeting.interview_schedule.applications.candidates;
-  const job = interviewMeeting.interview_schedule.applications.public_jobs;
-
   const comp_email_temp = await fetchCompEmailTemp(
-    job.recruiter_id,
+    session_detail.interview_meeting.interview_schedule.recruiter_id,
     'interviewEnd_email_shadowTraineeForMeetingAttendence',
   );
 
-  const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
-    {
-      candidateFirstName: candidate.first_name,
-      candidateLastName: candidate.last_name,
-      candidateName: getFullName(candidate.first_name, candidate.last_name),
-      traineeFirstName: trainee.first_name,
-      traineeLastName: trainee.last_name,
-      traineeName: getFullName(trainee.first_name, trainee.last_name),
-      organizerFirstName: organizer.first_name,
-      organizerLastName: organizer.last_name,
-      organizerName: getFullName(trainee.first_name, trainee.last_name),
-      OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
-      sessionName: session.name,
-      interviewType: interview_module.name,
-      companyName: job.company,
-      jobRole: job.job_title,
-      shadowCount: numberToOrdinal(shadowCount),
-      shadowConfirmLink: `<a href="#' target="_blank">here</a>`,
-    };
+  const candidate =
+    session_detail.interview_meeting.interview_schedule.applications.candidates;
+  const organizer = session_detail.interview_meeting.recruiter_user;
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-  const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
-    {
-      companyLogo: job.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
-    };
+  const job =
+    session_detail.interview_meeting.interview_schedule.applications
+      .public_jobs;
+  const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
 
-  return {
-    filled_comp_template,
-    react_email_placeholders,
-    recipient_email: trainee.email,
-  };
+  const mail_details = training_ints.map((trainee) => {
+    const trainee_data = module_relations.find(
+      (s) => s.user_id === trainee.user_id && s.module_id === trainee.module_id,
+    );
+    const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['comp_email_placeholders'] =
+      {
+        candidateFirstName: candidate.first_name,
+        candidateLastName: candidate.last_name,
+        candidateName: getFullName(candidate.first_name, candidate.last_name),
+        traineeFirstName: trainee.first_name,
+        traineeLastName: trainee.last_name,
+        traineeName: getFullName(trainee.first_name, trainee.last_name),
+        organizerFirstName: organizer.first_name,
+        organizerLastName: organizer.last_name,
+        organizerName: getFullName(trainee.first_name, trainee.last_name),
+        OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
+        sessionName: session_detail.name,
+        interviewType: session_detail.interview_module.name,
+        companyName: job.company,
+        jobRole: job.job_title,
+        shadowCount: numberToOrdinal(
+          trainee_data.shadow_confirmed_count +
+            trainee_data.shadow_completed_count,
+        ),
+        shadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
+      };
+
+    const filled_comp_template = fillCompEmailTemplate(
+      comp_email_placeholder,
+      comp_email_temp,
+    );
+    const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
+      {
+        companyLogo: job.logo,
+        emailBody: filled_comp_template.body,
+        subject: filled_comp_template.subject,
+      };
+
+    return {
+      comp_email_placeholder,
+      filled_comp_template,
+      react_email_placeholders,
+      recipient_email: trainee.email,
+    };
+  });
+
+  return mail_details;
 }

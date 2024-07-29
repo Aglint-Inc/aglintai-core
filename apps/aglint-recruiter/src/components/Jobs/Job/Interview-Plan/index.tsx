@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { MenuItem, Stack } from '@mui/material';
+import { MenuItem, Stack, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef, useState } from 'react';
@@ -13,7 +13,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
@@ -22,7 +22,6 @@ import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
@@ -365,11 +364,12 @@ const InterviewSession = ({
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
-        if (curr.recruiter_user)
+        if (curr.recruiter_user) {
           acc.members.push({
             ...curr.recruiter_user,
             paused: !!curr?.interview_module_relation?.pause_json,
           });
+        }
       } else {
         if (curr.interview_module_relation.recruiter_user) {
           acc[curr.interviewer_type].push({
@@ -632,15 +632,24 @@ type InterviewSessionMembersProps = { members: CompanyMember[] };
 const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
-      <GlobalBanner
+      <GlobalBannerInline
         color={'error'}
         iconName={'warning'}
-        textTitle={'No interviewers assigned to this stage'}
-        textDescription={
-          'Please add interviewers to proceed with scheduling this stage'
+        textContent={
+          'No interviewers assigned. Click on edit to assign interviewers.'
         }
-        slotButtons={<></>}
+        slotButton={<></>}
+        // TODO: @punit You can provide the edit button here inline and make the message take 100% width.
       />
+      // <GlobalBanner
+      //   color={'error'}
+      //   iconName={'warning'}
+      //   textTitle={'No interviewers assigned to this stage'}
+      //   textDescription={
+      //     'Please add interviewers to proceed with scheduling this stage'
+      //   }
+      //   slotButtons={<></>}
+      // />
     );
   return members.map((member) => (
     <InterviewSessionMember key={member.user_id} member={member} />
@@ -651,7 +660,7 @@ type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={1}>
+    <Stack direction={'row'} gap={3}>
       <AvatarWithName
         textName={name}
         textRole={member.position}
@@ -697,17 +706,17 @@ const InterviewBreak = ({
         )
       }
       textDuration={
-        <UITextField
+        <TextField
           select
           fullWidth
           value={value}
           onChange={handleEdit}
-          rest={{
-            sx: {
-              width: '150px',
-              '& .MuiOutlinedInput-root': {
-                padding: '0px!important',
-              },
+          sx={{
+            ml: 'var(--space-2)',
+            width: '120px',
+            '& .MuiOutlinedInput-root': {
+              padding: '0px',
+              paddingLeft: 'var(--space-2)',
             },
           }}
         >
@@ -716,7 +725,7 @@ const InterviewBreak = ({
               {getBreakLabel(item)}
             </MenuItem>
           ))}
-        </UITextField>
+        </TextField>
       }
     />
   );

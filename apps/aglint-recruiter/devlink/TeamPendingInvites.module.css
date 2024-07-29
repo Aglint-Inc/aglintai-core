@@ -152,6 +152,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .pi-header-block {
   max-width: 80%;
   flex-direction: column;

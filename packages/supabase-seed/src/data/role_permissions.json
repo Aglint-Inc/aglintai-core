@@ -1368,57 +1368,9 @@
     "recruiter_id": "edd40dc6-b173-4593-a6fa-8461a5e208f8"
   },
   {
-    "id": "c2df3158-fe62-4142-aa39-d78a4df5a1f2",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 78,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "f165163c-c694-42f6-ab9a-c6400164da7c",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 77,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
     "id": "90063e36-791d-4329-97bc-eae364cbd370",
     "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
     "permission_id": 80,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "89c6451e-989f-4f9c-90ad-ecad86117f1a",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 79,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "8ed29f94-21f8-404b-b3e9-ca1f6bb909b3",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 126,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "843f55d8-e73f-4e4c-9665-4ce026a23fab",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 90,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "50790f2f-58be-4174-8b21-d8548e0b9a2e",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 97,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "313186f0-d41e-4501-9751-04f14429f0a2",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 110,
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
-  },
-  {
-    "id": "66729218-adb2-4565-8313-536e72d060be",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
-    "permission_id": 125,
     "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
   },
   {
@@ -1689,6 +1641,18 @@
     "id": "3fdf0103-5e1d-4243-947f-4d6149e6265a",
     "role_id": "6192d18c-8f57-4235-81e7-069b2f3910ba",
     "permission_id": 124,
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
+  },
+  {
+    "id": "18a51b89-9a2b-45b5-ba93-1dec289c7eab",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
+    "permission_id": 126,
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
+  },
+  {
+    "id": "2aefad74-034b-4574-9483-c5762eb33a8f",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376",
+    "permission_id": 78,
     "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc"
   }
 ]

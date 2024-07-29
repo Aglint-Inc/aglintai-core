@@ -124,7 +124,7 @@ function TaskActionButtons({
                 setRescheduleSessionIds(
                   selectedTask.session_ids.map((ele) => ele.id),
                 );
-                setStepScheduling('reschedule');
+                setStepScheduling('schedule_all_options');
                 if (selectedTask.type === 'availability') {
                   setScheduleFlow('create_request_availibility');
                   setStepScheduling('request_availibility');

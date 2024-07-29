@@ -26,7 +26,7 @@ export function SavedListMenu({
 
   return (
     <_Component className={_utils.cx(_styles, "saved-list-menu")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-735")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "slm-item-wrap")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "save-list-slot-item")}
           tag="div"

@@ -275,6 +275,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-grey-600.mt-5 {
   margin-top: 5px;
 }

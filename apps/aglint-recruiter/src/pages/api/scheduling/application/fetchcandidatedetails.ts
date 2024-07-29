@@ -12,6 +12,7 @@ import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDeta
 import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
 import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { getFullName } from '@/src/utils/jsonResume';
 
 export type ApiCandidateDetails = {
   request: {
@@ -53,29 +54,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     requestHandler(
       'POST',
-      async ({ requesterDetails, body }) => {
-        const { recruiter_id } = requesterDetails;
+      async ({ body }) => {
         const { application_id } = body;
 
         let scheduleDetail = null;
-        let applicationDetail = null;
+        let applicationDetail: SchedulingApplication['selectedApplication'] =
+          null;
         let scheduleName = '';
         let sessions: SchedulingApplication['initialSessions'] = [];
-
-        const { data: recruiter } = await supabase
-          .from('recruiter')
-          .select('*')
-          .eq('id', recruiter_id)
-          .single()
-          .throwOnError();
-
-        console.log('recruiter', recruiter.id);
-
-        const { data: schedule } = await supabase
-          .from('interview_schedule')
-          .select('*')
-          .eq('application_id', application_id)
-          .throwOnError();
 
         const resApplicationDetails = await fetchApplicationDetails({
           application_id,
@@ -84,11 +70,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (resApplicationDetails) {
           applicationDetail = resApplicationDetails;
+          scheduleDetail = resApplicationDetails.interview_schedule;
+        } else {
+          return {
+            success: false,
+            sessions: [],
+            schedule: null,
+            application: null,
+            scheduleName: '',
+          };
         }
 
-        scheduleDetail = schedule[0];
+        const recruiter = resApplicationDetails?.public_jobs?.recruiter;
 
-        if (schedule.length == 0) {
+        if (!resApplicationDetails.interview_schedule?.id) {
           const resSessionDetails = await fetchSessionDetailsFromInterviewPlan({
             job_id: resApplicationDetails.public_jobs.id,
             supabaseCaller: supabase,
@@ -122,7 +117,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
           scheduleName = scheduleDetail?.schedule_name;
         }
-
         sessions = sessions.map((session) => {
           let banners: BannerType[] = [];
           if (session.users.length === 0) {
@@ -132,6 +126,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               color: 'error',
               session_relation_id: null,
               user_id: null,
+              user_message: 'No interviewers assigned to this stage.',
             });
           }
           return {
@@ -142,35 +137,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
               const isCalendarConnected =
                 (!!recruiter.service_json &&
-                  recruiter.email.split('@')[1] ===
+                  recruiter.google_workspace_domain.split('//')[1] ===
                     user.user_details.email.split('@')[1]) ||
                 !!(user.user_details.schedule_auth as any)?.access_token;
-
-              if (
-                session.interview_meeting?.status !== 'confirmed' &&
-                session.interview_meeting?.status !== 'completed'
-              ) {
-                if (!isCalendarConnected) {
-                  banners.push({
-                    type: 'calender',
-                    message: 'Calendar Not Connected',
-                    color: 'error',
-                    session_relation_id: user.interview_session_relation.id,
-                    user_id: user.user_details.user_id,
-                  });
-                }
-
-                if (!isPaused) {
-                  banners.push({
-                    type: 'paused',
-                    message: 'Interviewer Paused',
-                    color: 'warning',
-                    session_relation_id: user.interview_session_relation.id,
-                    user_id: user.user_details.user_id,
-                  });
-                }
+              if (!isCalendarConnected) {
+                banners.push({
+                  type: 'calender',
+                  message: 'Calendar Not Connected',
+                  color: 'error',
+                  session_relation_id: user.interview_session_relation.id,
+                  user_id: user.user_details.user_id,
+                  user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)}'s calendar is not connected.`,
+                });
               }
-
+              if (isPaused) {
+                banners.push({
+                  type: 'paused',
+                  message: 'Interviewer Paused',
+                  color: 'warning',
+                  session_relation_id: user.interview_session_relation.id,
+                  user_id: user.user_details.user_id,
+                  user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)} is paused.`,
+                });
+              }
               return {
                 ...user,
                 user_details: {

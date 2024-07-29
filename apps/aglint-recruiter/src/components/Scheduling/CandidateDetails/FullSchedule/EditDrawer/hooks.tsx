@@ -83,19 +83,19 @@ export const useEditSession = () => {
           return;
         }
       }
-      setSaving(true);
+      setSaving(editSession.interview_session.id);
       if (!selectedSchedule && !saving) {
+        const bodyParams: ApiBodyParamsSessionCache = {
+          allSessions,
+          application_id: selectedApplication.id,
+          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+          recruiter_id: recruiter.id,
+          rec_user_id: recruiterUser.user_id,
+          session_ids: [],
+        };
         const res = await axios.post(
           '/api/scheduling/application/candidatesessioncache',
-          {
-            allSessions,
-            application_id: selectedApplication.id,
-            is_get_more_option: false,
-            scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-            session_ids: [],
-            recruiter_id: recruiter.id,
-            rec_user_id: recruiterUser.user_id,
-          } as ApiBodyParamsSessionCache,
+          bodyParams,
         );
 
         let createCloneRes: Awaited<ReturnType<typeof createCloneSession>>;
@@ -148,7 +148,6 @@ export const useEditSession = () => {
             editInterviewSession(editInterviewSessionParams);
             const data = await getTaskDetails(selectedApplication.id);
             setSelectedTasks(data);
-            toast.success('Session saved successfully.');
           } else {
             const updateDebriefParams: UpdateDebriefSession = {
               break_duration: editSession.interview_session.break_duration,
@@ -201,7 +200,6 @@ export const useEditSession = () => {
           };
 
           await editInterviewSession(editInterviewSessionParams);
-          toast.success('Session saved successfully.');
         } else {
           const updateDebriefParams: UpdateDebriefSession = {
             break_duration: editSession.interview_session.break_duration,
@@ -218,12 +216,12 @@ export const useEditSession = () => {
           await updateDebriefSession(updateDebriefParams);
         }
       }
-      handleClose();
       await fetchInterviewDataByApplication();
+      handleClose();
     } catch (e) {
       toast.error('Error saving session. Please contact support.');
     } finally {
-      setSaving(false);
+      setSaving(null);
     }
   };
 

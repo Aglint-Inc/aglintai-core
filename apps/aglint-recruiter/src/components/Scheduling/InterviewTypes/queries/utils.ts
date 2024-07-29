@@ -68,13 +68,13 @@ export const fetchProgress = async ({
   const { data } = await supabase
     .from('interview_training_progress')
     .select(
-      '*,interview_session_relation(*,interview_session(*,interview_meeting(*)),interview_module_relation(*))',
+      '*,interview_session_relation(*,interview_session(*,interview_meeting(*)),interview_module_relation(*)),recruiter_user(first_name,last_name)',
     )
     .in('interview_session_relation.interview_module_relation_id', trainer_ids)
     .eq('interview_session_relation.is_confirmed', true)
+    .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
-
   const resRel = data
     .filter(
       (ses) =>
@@ -213,13 +213,14 @@ export const addMemberbyUserIds = async ({
 
 export const updateRelations = async (
   archivedRelations: DatabaseTable['interview_module_relation'][],
+  training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
     archivedRelations.map((user) => ({
       id: user.id,
       user_id: user.user_id,
       module_id: user.module_id,
-      training_status: user.training_status,
+      training_status: training_status,
       is_archived: false,
     }));
 

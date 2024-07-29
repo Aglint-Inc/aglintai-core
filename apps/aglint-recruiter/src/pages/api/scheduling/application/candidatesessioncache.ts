@@ -8,12 +8,10 @@ import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDeta
 import { createCloneSession } from '@/src/utils/scheduling/createCloneSession';
 
 export interface ApiBodyParamsSessionCache {
-  is_get_more_option: boolean;
   application_id: string;
   allSessions: SchedulingApplication['initialSessions'];
   session_ids: string[];
   scheduleName: string;
-  coordinator_id: string;
   recruiter_id: string;
   rec_user_id: string;
 }
@@ -44,7 +42,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const {
       allSessions,
       application_id,
-      is_get_more_option,
       scheduleName,
       session_ids,
       recruiter_id,
@@ -54,7 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const resClone = await createCloneSession({
       allSessions,
       application_id,
-      is_get_more_option,
       scheduleName,
       session_ids,
       supabase,

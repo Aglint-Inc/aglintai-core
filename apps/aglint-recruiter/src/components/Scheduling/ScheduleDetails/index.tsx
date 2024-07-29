@@ -33,7 +33,7 @@ function SchedulingViewComp() {
     {
       name: 'Feedback',
       tab: 'feedback',
-      hide: false,
+      hide: schedule?.interview_session?.session_type === 'debrief',
     },
   ];
 

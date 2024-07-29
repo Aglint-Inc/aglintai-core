@@ -138,7 +138,6 @@ const sendToCandidate = async ({
 
     // if not then cache all the sessions on candidate level
     const createCloneRes = await createCloneSession({
-      is_get_more_option: false,
       application_id: selectedApplication.id,
       allSessions: initialSessions,
       session_ids: selectedSessionIds,

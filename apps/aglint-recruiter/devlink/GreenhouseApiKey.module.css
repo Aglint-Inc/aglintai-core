@@ -170,6 +170,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
 }

@@ -150,26 +150,31 @@ function DeleteMemberDialog({
           <DeletePopup
             textTitle={
               <Typography variant='body1'>
-                Suspend user:{' '}
+                Suspend{' '}
                 <span style={{ color: 'var(--warning-11)' }}>{name}</span>
               </Typography>
             }
             textDescription={
               <Stack spacing={2}>
-                <GlobalBannerInline
-                  textContent={`You are about to suspend ${name} from the system. Once suspended, ${name} will not have login access. The user will be removed from interview
-                            types, so no new interviews will be scheduled.
-                            However, they can still attend and complete current
-                            interviews.`}
-                  slotButton={<></>}
-                  iconName={'info'}
-                  color={'warning'}
-                />
-
-                <Typography variant='body1'>
-                  To suspend the user, you must Assign their job roles to
-                  another user.
+                <Typography fontWeight={500}>
+                  You are about to suspend {name} from the system.
                 </Typography>
+                <ul>
+                  <li> Once suspended, {name} will not have login access.</li>
+                  <li>
+                    The user will be removed from interview types, so no new
+                    interviews will be scheduled.
+                  </li>
+                  <li>
+                    However, they can still attend and complete current
+                    interviews.
+                  </li>
+                  <li>
+                    To suspend the user, you must Assign their job roles to
+                    another user.
+                  </li>
+                </ul>
+
                 <Stack spacing={2}>
                   {isInterviewTypesRequire && (
                     <Stack spacing={1}>

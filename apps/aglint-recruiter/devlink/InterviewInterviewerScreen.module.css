@@ -240,6 +240,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-interviewer-wrappers {
   overflow: auto;
   width: 100%;

@@ -3,17 +3,14 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
-import Loader from '@/src/components/Common/Loader';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/src/utils/routing/routes';
 
 import CandidateInfo from '../Common/CandidateInfo';
 import ScheduleProgress from '../Common/ScheduleProgress';
 import FeedbackWindow from '../ScheduleDetails/Feedback';
-import CandidateFeedback from './CandidateFeedback';
 import FullSchedule from './FullSchedule';
 import { useAllActivities, useGetScheduleApplication } from './queries/hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
@@ -30,25 +27,20 @@ import TopBarButtons from './TopBarButtons';
 
 function SchedulingApplication() {
   const router = useRouter();
-  const {
-    fetchingSchedule,
-    initialSessions,
-    selectedSessionIds,
-    selectedApplication,
-  } = useSchedulingApplicationStore((state) => ({
-    fetchingSchedule: state.fetchingSchedule,
-    initialSessions: state.initialSessions,
-    selectedSessionIds: state.selectedSessionIds,
-    selectedApplication: state.selectedApplication,
-    scheduleName: state.scheduleName,
-  }));
+  const application_id = router?.query?.application_id as string;
+  const { initialSessions, selectedSessionIds, selectedApplication } =
+    useSchedulingApplicationStore((state) => ({
+      initialSessions: state.initialSessions,
+      selectedSessionIds: state.selectedSessionIds,
+      selectedApplication: state.selectedApplication,
+    }));
 
   const tab = router.query.tab as TabSchedulingType;
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   const allActivities = useAllActivities({
-    application_id: selectedApplication?.id,
+    application_id,
   });
 
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
@@ -89,32 +81,20 @@ function SchedulingApplication() {
         slotTopbarLeft={<>{breadcrum}</>}
         slotBody={
           <>
-            {fetchingSchedule ? (
-              <Loader />
-            ) : initialSessions.length === 0 ? (
-              <InterviewPlanEmpty
-                onClickCreateInterviewPlan={{
-                  onClick: () => {
-                    router.push(
-                      `/jobs/${selectedApplication.job_id}/interview-plan`,
-                    );
-                  },
-                }}
-              />
-            ) : (
-              <CandidateSchedule
-                textSelectedNumber={`${selectedSessionIds.length} selected`}
-                slotScheduleButton={<TopBarButtons />}
-                slotDarkPill={<TabsSchedulingApplication />}
-                onClickClose={{
-                  onClick: () => {
-                    setSelectedSessionIds([]);
-                  },
-                }}
-                isScheduleNowVisible={selectedSessionIds.length > 0}
-                slotCandidateCard={<RightPanel allActivities={allActivities} />}
-                slotFullScheduleCard={
-                  tab === 'candidate_detail' ? (
+            <CandidateSchedule
+              textSelectedNumber={`${selectedSessionIds.length} selected`}
+              slotScheduleButton={<TopBarButtons />}
+              slotDarkPill={<TabsSchedulingApplication />}
+              onClickClose={{
+                onClick: () => {
+                  setSelectedSessionIds([]);
+                },
+              }}
+              isScheduleNowVisible={selectedSessionIds.length > 0}
+              slotCandidateCard={<RightPanel allActivities={allActivities} />}
+              slotFullScheduleCard={
+                <>
+                  {tab === 'candidate_detail' ? (
                     <Stack p={`var(--radius-4)`}>
                       <Stack
                         sx={{
@@ -122,10 +102,7 @@ function SchedulingApplication() {
                           background: 'var(--white)',
                         }}
                       >
-                        <CandidateInfo
-                          application_id={selectedApplication.id}
-                          job_id={selectedApplication.job_id}
-                        />
+                        <CandidateInfo application_id={application_id} />
                       </Stack>
                     </Stack>
                   ) : tab === 'interview_plan' || !tab ? (
@@ -150,20 +127,21 @@ function SchedulingApplication() {
                           email: selectedApplication.candidates.email,
                           name: `${selectedApplication.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
                           job_id: selectedApplication.job_id,
+                          application_id: selectedApplication.id,
                         }}
                       />
                     </Stack>
-                  ) : tab === 'candidate_feedback' ? (
-                    <CandidateFeedback
-                      feedback={selectedApplication.feedback}
-                      id={selectedApplication.id}
-                    />
                   ) : (
+                    // ) : tab === 'candidate_feedback' ? (
+                    //   <CandidateFeedback
+                    //     feedback={selectedApplication.feedback}
+                    //     id={selectedApplication.id}
+                    //   />
                     ''
-                  )
-                }
-              />
-            )}
+                  )}
+                </>
+              }
+            />
           </>
         }
         slotTopbarRight={

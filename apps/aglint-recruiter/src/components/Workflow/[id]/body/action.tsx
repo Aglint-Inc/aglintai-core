@@ -187,7 +187,7 @@ const EmailSubject: React.FC<FormsType> = memo(
             toolbar={false}
             disabled={disabled}
             editor_type='email'
-            initialValue={value[name]}
+            initialValue={value?.[name]}
             handleChange={null}
             placeholder=''
           />
@@ -215,7 +215,7 @@ const EmailBody: React.FC<FormsType> = memo(
             toolbar={false}
             disabled={disabled}
             editor_type='email'
-            initialValue={value[name]}
+            initialValue={value?.[name]}
             handleChange={null}
             placeholder=''
           />

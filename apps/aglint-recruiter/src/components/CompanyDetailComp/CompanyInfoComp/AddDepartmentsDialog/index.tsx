@@ -1,6 +1,5 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -9,25 +8,32 @@ import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { RolesPill } from '@/devlink/RolesPill';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
 
 interface DepartmentsProps {
   handleClose: () => void;
   open: any;
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (recruiter: RecruiterType) => void;
+  handleChange: (
+    // eslint-disable-next-line no-unused-vars
+    recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
+  ) => void;
 }
 
 const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   handleClose,
   open,
-  handleChange,
 }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, handleDepartmentsUpdate } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
-  const [options, setOptions] = useState([]);
+  let initialDepartments = [];
+  if (localStorage?.getItem('departments')) {
+    if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
+      initialDepartments = JSON.parse(localStorage?.getItem('departments'));
+    }
+  }
+  const [options, setOptions] = useState(initialDepartments);
   const [departmentState, setDepartmentState] = useState<string[]>([]);
   const [inputError, setInputError] = useState(false);
-  const iniDepartments = useRef([]);
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -42,42 +48,17 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (recruiter?.departments && open) {
-      setDepartmentState(recruiter?.departments);
-      setOptions(initialDepartments);
-      iniDepartments.current = recruiter?.departments;
-    }
-  }, [recruiter?.departments, open]);
-
-  let initialDepartments = [];
-  if (localStorage?.getItem('departments')) {
-    if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
-      initialDepartments = JSON.parse(localStorage?.getItem('departments'));
-    }
-  }
-
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       const newValue = inputValue.trim();
-      if (!departmentState.includes(newValue)) {
-        setDepartmentState([...new Set([...departmentState, newValue])]);
-      }
+
+      setDepartmentState([...new Set([...departmentState, newValue])]);
       setTimeout(() => {
         setInputValue('');
         setOptions(initialDepartments);
       }, 10);
     }
   };
-
-  function compareChanges() {
-    const set1 = new Set(departmentState);
-    const set2 = new Set(iniDepartments.current);
-    if (set1.size !== set2.size) {
-      return false;
-    }
-    return [...set1].every((element) => set2.has(element));
-  }
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
@@ -181,6 +162,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
             color={'neutral'}
             onClickButton={{
               onClick: () => {
+                setDepartmentState([]);
+                setInputValue('');
+                setOptions(initialDepartments);
                 handleClose();
               },
             }}
@@ -194,6 +178,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               color={'neutral'}
               onClickButton={{
                 onClick: () => {
+                  setDepartmentState([]);
+                  setInputValue('');
+                  setOptions(initialDepartments);
                   handleClose();
                 },
               }}
@@ -203,15 +190,25 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               size={2}
               onClickButton={{
                 onClick: () => {
-                  if (!compareChanges()) {
-                    handleChange({
-                      ...recruiter,
-                      departments: departmentState,
-                    });
-                    handleClose();
-                  } else {
-                    setInputError(true);
-                  }
+                  handleDepartmentsUpdate({
+                    type: 'insert',
+                    data: departmentState.map((item) => ({
+                      recruiter_id: recruiter.id,
+                      name: item,
+                    })),
+                  }).catch((err) => {
+                    toast.error(
+                      String(err).includes('unique_deps')
+                        ? `Department is already exists.`
+                        : String(err),
+                    );
+                  });
+                  setTimeout(() => {
+                    setDepartmentState([]);
+                    setInputValue('');
+                    setOptions(initialDepartments);
+                  }, 10);
+                  handleClose();
                 },
               }}
             />

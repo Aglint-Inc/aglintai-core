@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {supabaseWrap} from '@aglint/shared-utils';
 import {Request, Response} from 'express';
+import {envConfig} from 'src/config';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
@@ -115,7 +117,7 @@ const meeting_status_organizer_decline = async (interaction_data: any) => {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
+          text: `Thank you for confirmation. please cancel the meeting and provide the reason <${envConfig.CLIENT_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|here>`,
         },
       },
     ],
@@ -341,6 +343,15 @@ const interview_feedback_submit = async (interaction_data: any) => {
 
 const shadow_complete_trainee_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const session_relation_id = metadata.event_payload.session_relation_id;
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_training_progress')
+      .update({is_attended: true})
+      .eq('session_relation_id', session_relation_id)
+  );
   await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
@@ -399,6 +410,16 @@ const shadow_complete_trainee_decline = async (interaction_data: any) => {
 
 const reverse_shadow_trainee_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
+  const metadata = interaction_data.message.metadata;
+  const session_relation_id = metadata.event_payload.session_relation_id;
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_training_progress')
+      .update({is_attended: true})
+      .eq('session_relation_id', session_relation_id)
+  );
+
   await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,

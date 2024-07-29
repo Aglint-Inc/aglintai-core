@@ -10,7 +10,7 @@ import { BookmarkEmpty } from '@/devlink/BookmarkEmpty';
 import { CandidateDatabaseDetail } from '@/devlink/CandidateDatabaseDetail';
 import { CandidateDetailsCard } from '@/devlink/CandidateDetailsCard';
 import { CandidateEmpty } from '@/devlink/CandidateEmpty';
-import { CandidateSkills } from '@/devlink/CandidateSkills';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ViewMoreSkills } from '@/devlink/ViewMoreSkills';
 import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -409,7 +409,7 @@ const CandidateDetailCard = ({
           {!showMore &&
             get(candidate.json_resume, 'skills', [])
               .slice(0, 10)
-              .map((s, index) => <CandidateSkills key={index} textSkill={s} />)}
+              .map((s, index) => <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/> )}
           {candidate.json_resume.skills.length > 10 && (
             <ViewMoreSkills
               isViewMoreVisible={!showMore}
@@ -424,7 +424,8 @@ const CandidateDetailCard = ({
           )}
           {showMore &&
             get(candidate.json_resume, 'skills', []).map((s, index) => (
-              <CandidateSkills key={index} textSkill={s} />
+              // <CandidateSkills key={index} textSkill={s} />
+              <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/>
             ))}
         </>
       }

@@ -1,4 +1,4 @@
-import { Dialog, Popover, Typography } from '@mui/material';
+import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import { useState } from 'react';
@@ -7,11 +7,11 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
 import { DcPopup } from '@/devlink/DcPopup';
-import { DeleteCard } from '@/devlink/DeleteCard';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { MoreMenu } from '@/devlink3/MoreMenu';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import { useWorkflows } from '@/src/context/Workflows';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
@@ -117,21 +117,19 @@ const Edit = () => {
               },
             }}
           >
-            <DeleteCard
-              textHeading='Delete workflow'
-              textDesc='Are you sure to delete the workflow'
-              slotButton={
-                <ButtonSolid
-                  size={2}
-                  iconName={'delete'}
-                  color={'error'}
-                  textButton='Delete Workflow'
-                  onClickButton={{
-                    onClick: handleDelete,
-                  }}
-                />
-              }
-            />
+            <Stack
+              bgcolor={'white'}
+              borderRadius={'var(--space-2)'}
+              onClick={() => setAnchorEl(null)}
+            >
+              <MoreMenu
+                isArchiveVisible={false}
+                isUnarchiveVisible={false}
+                onClickDelete={{
+                  onClick: handleDelete,
+                }}
+              />
+            </Stack>
           </Popover>
         </>
       ) : (
@@ -173,25 +171,32 @@ const DeletePopup = () => {
               textTitle={
                 count === 0
                   ? ' Are you sure you want to delete this workflow?'
-                  : 'Are you sure you want to unlink and delete this workflow?'
+                  : 'By deleting this it will be unlinked from all connected jobs.'
               }
-              textDescription={
-                count === 0
-                  ? 'This workflow is not connected to any job'
-                  : 'By deleting this it will be unlinked from all connected jobs'
-              }
+              textDescription=''
+
+              // textTitle={
+              //   count === 0
+              //     ? ' Are you sure you want to delete this workflow?'
+              //     : 'Are you sure you want to unlink and delete this workflow?'
+              // }
+              // textDescription={
+              //   count === 0
+              //     ? 'This workflow is not connected to any job'
+              //     : 'By deleting this it will be unlinked from all connected jobs'
+              // }
             />
             {count ? (
               <ConnectedJobsList
                 textTitle={`Connected Jobs (${count})`}
                 slotTextWithIcon={
                   <>
-                    {(deletion?.workflow?.jobs ?? []).map(({ title }) => (
+                    {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
                       <TextWithIcon
-                        key={title}
+                        key={job_title}
                         iconName={'work'}
                         fontWeight={'regular'}
-                        textContent={capitalizeAll(title)}
+                        textContent={capitalizeAll(job_title)}
                       />
                     ))}
                   </>

@@ -191,4 +191,66 @@ export const seed_email_templates: Pick<
       '<p>Reminder: Provide Your Availability for the <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> Position at <span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> </p>',
     body: '<p>Dear <span class="temp-variable" data-type="temp-variable" data-id="candidateFirstName">{{candidateFirstName}}</span>,</p><p></p><p style="text-align: start">I hope this message finds you well.</p><p style="text-align: start">I am writing to follow up on my previous email regarding the interview for the <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> position at <span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span>. We are very interested in discussing your application and learning more about your experiences.</p><p style="text-align: start">If you could please click on the link below to select your availability for an interview, it would be greatly appreciated .</p><p style="text-align: start">If you have any questions or need further information, please feel free to reach out.</p><p style="text-align: start">Thank you, and I look forward to hearing from you soon.</p><p style="text-align: start"></p><p style="text-align: start">Best regards,</p><p style="text-align: start"><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span></p><p><span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> Recruitment Team</p>',
   },
+  {
+    type: 'interviewEnd_slack_organizerForMeetingStatus',
+    body: '',
+    from_name: '',
+    subject: '',
+  },
+  {
+    type: 'interviewEnd_email_organizerForMeetingStatus',
+    subject: 'interviewEnd_email_organizerForMeetingStatus',
+    from_name: '{{companyName}}',
+    body: '<p><span>Dear </span><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span> <span>, </span></p><p><span>We hope this message finds you well. We are reaching out to confirm the status of the interview meeting scheduled for </span><span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> <span>on </span><span class="temp-variable" data-type="temp-variable" data-id="date">{{date}}</span> <span>at </span><span class="temp-variable" data-type="temp-variable" data-id="time">{{time}}</span> <span>. </span></p><p><span>Your prompt response will help us ensure a smooth and efficient process for all parties involved. </span></p><p><span>Click the link below to update the meeting status in our system</span></p><p><span>Thank you for your cooperation.</span></p><p><span>Best regards,  </span></p><p><span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> </p>',
+  },
+  {
+    type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+    subject:
+      '<p><span>Confirmation for </span><span class="temp-variable" data-type="temp-variable" data-id="shadowCount">{{shadowCount}}</span> <span>Shadow Session</span></p>',
+    from_name: '{{companyName}}',
+    body: `<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> ,</p><p></p><p>Could you please confirm if you've completed the <span class="temp-variable" data-type="temp-variable" data-id="shadowCount">{{shadowCount}}</span> shadow session for <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span>  ? You were scheduled as a shadow interviewer in the <span class="temp-variable" data-type="temp-variable" data-id="sessionName">{{sessionName}}</span> for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> .</p><p></p><p>Please click the link below to confirm: <span class="temp-variable" data-type="temp-variable" data-id="shadowConfirmLink">{{shadowConfirmLink}}</span> </p><p>From,</p><p><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span></p>`,
+  },
+  {
+    type: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+    body: `<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> ,</p><p></p><p>Could you please confirm if you've completed the <span class="temp-variable" data-type="temp-variable" data-id="reverseShadowCount">{{reverseShadowCount}}</span> reverse shadow session for <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span> ? You were scheduled as a shadow interviewer in the <span class="temp-variable" data-type="temp-variable" data-id="sessionName">{{sessionName}}</span> for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> .</p><p></p><p>Please click the link below to confirm: <span class="temp-variable" data-type="temp-variable" data-id="reverseShadowConfirmLink">{{reverseShadowConfirmLink}}</span></p><p>From,</p><p><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span></p>`,
+    from_name: '{{companyName}}',
+    subject: `<p>Confirmation for <span class="temp-variable" data-type="temp-variable" data-id="reverseShadowCount">{{reverseShadowCount}}</span> Shadow Session</p>`,
+  },
+  {
+    type: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+    body: '',
+    from_name: '',
+    subject: '',
+  },
+  {
+    type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+    body: '',
+    from_name: '',
+    subject: '',
+  },
+  {
+    type: 'onTrainingComplete_email_approverForTraineeMeetingQualification',
+    from_name: '{{companyName}}',
+    subject:
+      '<p><span>Approval Request for Interviewer Qualification</span></p>',
+    body: '<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="approverName">{{approverName}}</span> ,</p><p></p><p><span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> has completed <span class="temp-variable" data-type="temp-variable" data-id="shadowCount">{{shadowCount}}</span> shadow sessions and <span class="temp-variable" data-type="temp-variable" data-id="reverseShadowCount">{{reverseShadowCount}}</span> reverse shadow sessions. Please review and approve <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> to become qualified for conducting <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span> interviews.</p><p></p><p>Please click the link below to confirm : <span class="temp-variable" data-type="temp-variable" data-id="qualifiedApproverConfirmLink">{{qualifiedApproverConfirmLink}}</span></p><p></p><p>Thanks,</p><p><span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span> </p>',
+  },
+  {
+    type: 'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+    body: '',
+    from_name: '',
+    subject: '',
+  },
+  {
+    subject: '<p>Congratulations on Your Qualification</p>',
+    body: '<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span>,</p><p></p><p>Congratulations, <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> ! You are now qualified to conduct interviews for <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span>.</p><p></p><p>From, <span class="temp-variable" data-type="temp-variable" data-id="approverName">{{approverName}}</span></p>',
+    from_name: '{{companyName}}',
+    type: 'onQualified_email_trainee',
+  },
+  {
+    subject: '',
+    body: '',
+    from_name: '',
+    type: 'onQualified_slack_trainee',
+  },
 ];

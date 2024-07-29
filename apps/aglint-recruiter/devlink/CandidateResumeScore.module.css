@@ -192,6 +192,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .cvs-score-details-wrapper {
   display: flex;
   width: 100%;

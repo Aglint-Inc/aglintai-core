@@ -1,11 +1,12 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { RescheduleCard } from '@/devlink3/RescheduleCard';
-import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import ROUTES from '@/src/utils/routing/routes';
 
 import {
@@ -23,11 +24,10 @@ import BookingConfirmation from './BookingConfirmation';
 
 function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
   const router = useRouter();
-  const { selectedApplication, initialSessions } =
-    useSchedulingApplicationStore((state) => ({
-      selectedApplication: state.selectedApplication,
-      initialSessions: state.initialSessions,
-    }));
+  const { initialSessions } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+    initialSessions: state.initialSessions,
+  }));
 
   if (act.metadata.type === 'booking_confirmation') {
     return <BookingConfirmation act={act} />;
@@ -45,32 +45,34 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
         initialSessions.find((ses) => ses.interview_session.id === id)
           ?.interview_meeting?.status === 'confirmed',
     );
-
+    const checkDate = dayjsLocal(
+      act.metadata.other_details.dateRange.end,
+    ).isBefore(dayjsLocal().add(-1, 'day'));
     return (
       <Stack spacing={2} width={'100%'}>
         <RescheduleCard
-          textColorProps={{
-            style: {
-              color:
-                rescheduleDetails.response_type === 'reschedule'
-                  ? '#703815'
-                  : '#681219',
-            },
-          }}
-          isButtonVisible={false}
-          textName={selectedApplication?.candidates?.first_name}
-          textReschedule={
-            rescheduleDetails.response_type === 'reschedule'
-              ? 'requested a reschedule'
-              : 'cancelled this schedule'
-          }
-          slotProfileImage={<CandidateDefaultIcon size={20} />}
-          isChangeInterviewerVisible={false}
+          slotAdditionalNotes={rescheduleDetails.other_details.note}
+          isNotesVisible={Boolean(rescheduleDetails.other_details.note)}
           textReason={rescheduleDetails.reason}
-          isRescheduleBtnVisible={false}
+          slotDateReason={
+            <>
+              {`${dayjsLocal(
+                rescheduleDetails.other_details.dateRange.start,
+              ).format('DD MMMM, YYYY')} - ${dayjsLocal(
+                rescheduleDetails.other_details.dateRange.end,
+              ).format('DD MMMM, YYYY')}`}
+            </>
+          }
         />
-
-        {isButtonVisible &&
+        {checkDate && (
+          <GlobalBannerInline
+            color={'warning'}
+            textContent={'Proposed date is expired'}
+            slotButton={<></>}
+          />
+        )}
+        {!checkDate &&
+          isButtonVisible &&
           rescheduleDetails?.filter_id &&
           act?.metadata?.action === 'waiting' && (
             <Stack direction={'row'} spacing={2}>

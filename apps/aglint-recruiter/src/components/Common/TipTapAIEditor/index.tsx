@@ -54,7 +54,7 @@ const TipTapAIEditor = ({
     count: 1,
   },
   singleLine = false,
-  height = '440px',
+  height = 'auto',
   minHeight = 'auto',
   disabled = false,
   border = false,
@@ -137,7 +137,6 @@ const TipTapAIEditor = ({
             border: '1px solid',
             borderColor: 'var(--neutral-6)',
             borderRadius: borderRadius || 'var(--radius-2)',
-            
           }),
         }}
       >
@@ -217,7 +216,6 @@ const TipTapAIEditor = ({
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          
                         }
                       : {}
                   }

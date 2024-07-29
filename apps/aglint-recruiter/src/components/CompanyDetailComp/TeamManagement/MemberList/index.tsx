@@ -44,7 +44,7 @@ const Member = ({
   removeMember: () => void;
   updateMember: (
     // eslint-disable-next-line no-unused-vars
-    x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
+    x: Parameters<ContextValue['handleMemberUpdate']>[number]['data'],
     // eslint-disable-next-line no-unused-vars
     updateDB?: boolean,
   ) => Promise<boolean>;
@@ -154,16 +154,18 @@ const Member = ({
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
         slotBadge={
-          <GlobalBadge
-            color={
-              member.status === 'suspended'
-                ? 'error'
-                : member.status === 'active'
-                  ? 'success'
-                  : 'warning'
-            }
-            textBadge={capitalize(member.status)}
-          />
+          member.status !== 'active' && (
+            <GlobalBadge
+              color={
+                member.status === 'suspended'
+                  ? 'error'
+                  : member.status === 'invited'
+                    ? 'warning'
+                    : 'success'
+              }
+              textBadge={capitalize(member.status)}
+            />
+          )
         }
         slotThreeDot={
           canManage &&
@@ -294,7 +296,7 @@ const Member = ({
         }
         userEmail={member.email}
         userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
-        textDepartment={member.department}
+        textDepartment={member.department?.name}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
       />

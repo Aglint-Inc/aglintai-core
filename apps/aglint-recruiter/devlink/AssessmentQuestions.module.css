@@ -336,6 +336,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .add-tool-tip-wrap {
   position: absolute;
   left: -30px;

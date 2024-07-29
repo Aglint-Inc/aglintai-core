@@ -8,7 +8,7 @@ export interface EditSessionDrawer {
   trainingInterviewers: Interviewer[];
   debriefMembers: Interviewer[];
   trainingToggle: boolean;
-  saving: boolean;
+  saving: string | null;
   editSession: SessionsType;
   errorValidation: {
     field: 'session_name' | 'qualified_interviewers' | 'training_interviewers';
@@ -43,7 +43,7 @@ const initialState: EditSessionDrawer = {
   trainingInterviewers: [],
   debriefMembers: [],
   trainingToggle: false,
-  saving: false,
+  saving: null,
   editSession: null,
   errorValidation: initialError(),
 };
@@ -56,7 +56,7 @@ export const setErrorValidation = (
   errorValidation: EditSessionDrawer['errorValidation'],
 ) => useEditSessionDrawerStore.setState({ errorValidation });
 
-export const setSaving = (saving: boolean) =>
+export const setSaving = (saving: string | null) =>
   useEditSessionDrawerStore.setState({ saving });
 
 export const setTrainingToggle = (trainingToggle: boolean) =>

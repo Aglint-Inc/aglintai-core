@@ -11,17 +11,16 @@
     "role_id": "561cee75-dbc4-4020-9899-4341bcc03b35"
   },
   {
-    "id": 2,
-    "created_at": "2024-07-12 12:28:30.338993+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "id": 20,
+    "created_at": "2024-07-15 14:06:52.008959+00",
+    "recruiter_id": "075c2ed6-12c4-40cc-bab6-97d123ea2bf5",
+    "user_id": "6dc62f60-567d-4cb4-b74b-aaafaf695737",
     "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "created_by": "6dc62f60-567d-4cb4-b74b-aaafaf695737",
     "manager_id": null,
     "role": "admin",
-    "role_id": "fd6d42b4-12fe-4e3f-a3d5-fc164f6cae32"
+    "role_id": "80197e71-2d37-45ff-b943-e9a8c0fb1568"
   },
-
   {
     "id": 18,
     "created_at": "2024-07-15 11:13:34.47165+00",
@@ -32,83 +31,6 @@
     "manager_id": null,
     "role": "admin",
     "role_id": "946bdfa3-9b36-4d84-bf4d-59980e1f3ea7"
-  },
-  {
-    "id": 8,
-    "created_at": "2024-07-12 14:12:32.366227+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 17,
-    "created_at": "2024-07-14 08:26:17.374053+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "0f7d2be5-db9d-4f3f-9cef-ea59f418faa1",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 15,
-    "created_at": "2024-07-12 18:14:21.205093+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "eb767434-1a33-4e6e-930d-68c7620b1022",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 5,
-    "created_at": "2024-07-12 13:53:49.159788+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "ae5eceb7-24f3-4550-9784-b56c354e0978",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 4,
-    "created_at": "2024-07-12 13:46:53.541559+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 3,
-    "created_at": "2024-07-12 13:45:50.582029+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
-  },
-  {
-    "id": 6,
-    "created_at": "2024-07-12 13:55:16.377786+00",
-    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
-    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
-    "is_active": true,
-    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
-    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
-    "role": "interviewer",
-    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
   },
   {
     "id": 13,
@@ -163,6 +85,138 @@
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
+  },
+  {
+    "id": 6,
+    "created_at": "2024-07-12 13:55:16.377786+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "role": "interviewer",
+    "role_id": "6192d18c-8f57-4235-81e7-069b2f3910ba"
+  },
+  {
+    "id": 21,
+    "created_at": "2024-07-19 05:56:17.905571+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "5f5775f4-f831-48ce-b764-30187fc5a958",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "role": "interviewer",
+    "role_id": "801cfac0-f245-4408-a612-15ba330ee7d3"
+  },
+  {
+    "id": 22,
+    "created_at": "2024-07-19 05:59:50.774528+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "6a314f6d-e828-475a-bc2f-f97ee4e3ccc4",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "role": "interviewer",
+    "role_id": "f500fe46-3f2d-4bfe-bafc-0f518ded97cb"
+  },
+  {
+    "id": 3,
+    "created_at": "2024-07-12 13:45:50.582029+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
+  },
+  {
+    "id": 23,
+    "created_at": "2024-07-20 18:26:07.694706+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "e77092ce-a7b3-4be8-b702-bfe9800b6514",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "5ecdc2cf-f8a2-467d-9b5a-3b2a83beda87",
+    "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
+  },
+  {
+    "id": 25,
+    "created_at": "2024-07-21 14:04:21.909341+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "3ab3b184-5cb5-4bd2-abbc-5dd1b63f29e2",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": null,
+    "role": "interviewer",
+    "role_id": "fd6d42b4-12fe-4e3f-a3d5-fc164f6cae32"
+  },
+  {
+    "id": 17,
+    "created_at": "2024-07-14 08:26:17.374053+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "0f7d2be5-db9d-4f3f-9cef-ea59f418faa1",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "role": "interviewer",
     "role_id": "5aac490c-cfcb-4e41-8756-5aca8532edf8"
+  },
+  {
+    "id": 5,
+    "created_at": "2024-07-12 13:53:49.159788+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "ae5eceb7-24f3-4550-9784-b56c354e0978",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "role": "interviewer",
+    "role_id": "fd6d42b4-12fe-4e3f-a3d5-fc164f6cae32"
+  },
+  {
+    "id": 15,
+    "created_at": "2024-07-12 18:14:21.205093+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "eb767434-1a33-4e6e-930d-68c7620b1022",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
+  },
+  {
+    "id": 2,
+    "created_at": "2024-07-12 12:28:30.338993+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": null,
+    "role": "admin",
+    "role_id": "fd6d42b4-12fe-4e3f-a3d5-fc164f6cae32"
+  },
+  {
+    "id": 4,
+    "created_at": "2024-07-12 13:46:53.541559+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "d0ad9f54-521a-4fc1-bd2f-face74c29f6a",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
+  },
+  {
+    "id": 8,
+    "created_at": "2024-07-12 14:12:32.366227+00",
+    "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
+    "user_id": "10ee2995-f932-4a85-960b-f666ddea3d97",
+    "is_active": true,
+    "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
+    "manager_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "role": "interviewer",
+    "role_id": "6e41fa87-c455-43b5-94f4-d37ff6388376"
   }
 ]

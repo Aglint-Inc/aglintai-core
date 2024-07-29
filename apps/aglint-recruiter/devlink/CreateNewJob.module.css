@@ -162,6 +162,10 @@
   opacity: 0.8;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-grey-600 {
   color: var(--grey600-d5bebe21);
 }

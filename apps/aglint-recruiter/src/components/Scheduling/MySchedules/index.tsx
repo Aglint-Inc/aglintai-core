@@ -15,10 +15,7 @@ import toast from '@/src/utils/toast';
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
-import {
-  fetchSchedulesCountByUserId,
-  useAllSchedulesByUserId,
-} from '../Interviewers/Interviewer/query';
+import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
 import { DateIcon } from '../Settings/Components/DateSelector';
 
