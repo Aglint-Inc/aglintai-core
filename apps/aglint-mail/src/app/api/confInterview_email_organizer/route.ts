@@ -12,13 +12,15 @@ export async function POST(req: Request) {
     const fetch_details = await fetchUtil(parsed_body);
 
     for (const {
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
     } of fetch_details) {
       // eslint-disable-next-line no-await-in-loop
       await sendMailFun({
-        filled_comp_template,
+        comp_email_placeholder,
+        company_id,
         react_email_placeholders,
         recipient_email,
         api_target: 'confInterview_email_organizer',

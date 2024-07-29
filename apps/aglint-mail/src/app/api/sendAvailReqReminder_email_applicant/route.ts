@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       });
     }
     await sendMailFun({
-      filled_comp_template: details.filled_comp_template,
+      api_target: 'sendAvailReqReminder_email_applicant',
+      comp_email_placeholder: details.comp_email_placeholder,
+      company_id: details.company_id,
       react_email_placeholders: details.react_email_placeholders,
       recipient_email: details.recipient_email,
     });

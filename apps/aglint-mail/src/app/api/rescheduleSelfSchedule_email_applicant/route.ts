@@ -12,11 +12,17 @@ export async function POST(req: Request) {
       interviewRescheduleEmailApplicantSchema,
       req_body,
     );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await fetchUtil(parsed_body);
 
     await sendMailFun({
-      filled_comp_template,
+      api_target: 'rescheduleSelfSchedule_email_applicant',
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
     });
@@ -35,11 +41,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   "meta": {
-//       "application_id": "3608fe82-bef4-4085-bec0-6fe82620240f",
-//       "session_ids":["2575741a-952a-44d8-bcde-f8377f926b22","bab013be-3fe8-4671-a84e-002e3e96146a"],
-//       "self_schedule_link":"http://www.google.in"
-//   }
-// }

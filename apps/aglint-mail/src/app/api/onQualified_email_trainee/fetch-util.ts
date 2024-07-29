@@ -1,19 +1,15 @@
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onQualified_email_trainee'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'onQualified_email_trainee';
   const [data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
       .select(
-        'recruiter_user(first_name,last_name,email),interview_module(name,recruiter_id,recruiter(logo,name))',
+        'recruiter_user(first_name,last_name,email),interview_module(name,recruiter_id,recruiter(logo,name,id))',
       )
       .eq('id', req_body.interview_module_relation_id),
   );
@@ -39,36 +35,15 @@ export async function fetchUtil(
       traineeName: getFullName(trainee.first_name, trainee.last_name),
       companyName: company.name,
     };
-  let mail_payload: MailPayloadType;
 
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(
-      data.interview_module.recruiter_id,
-      api_target,
-    );
-
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    mail_payload,
-  );
   const react_email_placeholders: EmailTemplateAPi<'onQualified_email_trainee'>['react_email_placeholders'] =
     {
       companyLogo: company.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: company.id,
     react_email_placeholders,
     recipient_email: trainee.email,
   };

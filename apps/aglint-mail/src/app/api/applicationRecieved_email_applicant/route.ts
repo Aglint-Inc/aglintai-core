@@ -12,11 +12,18 @@ export async function POST(req: Request) {
       applicationRecievedEmailApplicantSchema,
       req_body,
     );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
+    const {
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email,
+      company_id,
+      job_id,
+    } = await fetchUtil(parsed_body);
 
     await sendMailFun({
-      filled_comp_template,
+      company_id,
+      job_id,
+      comp_email_placeholder,
       react_email_placeholders,
       recipient_email,
       api_target: 'applicationRecieved_email_applicant',

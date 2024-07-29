@@ -1,15 +1,11 @@
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { numberToOrdinal } from '../../../utils/email/common/functions';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'interviewEnd_email_shadowTraineeForMeetingAttendence';
   const training_ints = supabaseWrap(
     await supabaseAdmin
       .from('meeting_interviewers')
@@ -40,23 +36,6 @@ export async function fetchUtil(
       ),
     false,
   );
-
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(
-      session_detail.interview_meeting.interview_schedule.recruiter_id,
-      api_target,
-    );
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
 
   const candidate =
     session_detail.interview_meeting.interview_schedule.applications.candidates;
@@ -94,20 +73,14 @@ export async function fetchUtil(
         shadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
       };
 
-    const filled_comp_template = fillCompEmailTemplate(
-      comp_email_placeholder,
-      mail_payload,
-    );
     const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
       {
         companyLogo: job.logo,
-        emailBody: filled_comp_template.body,
-        subject: filled_comp_template.subject,
       };
 
     return {
+      company_id: candidate.recruiter_id,
       comp_email_placeholder,
-      filled_comp_template,
       react_email_placeholders,
       recipient_email: trainee.email,
     };

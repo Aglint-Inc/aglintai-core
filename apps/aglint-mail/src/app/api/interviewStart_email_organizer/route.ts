@@ -9,11 +9,16 @@ export async function POST(req: Request) {
   try {
     const req_body = v.parse(interviewStartEmailOrganizerSchema, body);
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await fetchUtil(req_body);
     const is_preview = req_body.is_preview;
     const htmlSub = await sendMailFun({
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
       is_preview,

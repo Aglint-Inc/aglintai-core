@@ -1,12 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import {
   platformRemoveUnderscore,
   durationCalculator,
@@ -14,13 +9,10 @@ import {
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
 import { createICSAttachment } from '../../../utils/ceateIcsContent';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'confirmInterview_email_applicant';
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -56,20 +48,6 @@ export async function fetchUtil(
     },
     public_jobs: { company, job_title },
   } = candidateJob;
-
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(recruiter_id, api_target);
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
 
   const meeting_details = int_sessions.map((int_session, idx) => {
     let meeting_start_time = int_session.interview_meeting.start_time;
@@ -138,21 +116,16 @@ export async function fetchUtil(
       ),
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    mail_payload,
-  );
   const react_email_placeholders: EmailTemplateAPi<'confirmInterview_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       candidateLink: cand_link,
       meetingDetails: meeting_details,
     };
 
   return {
-    filled_comp_template,
+    company_id: recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,
     mail_attachments,

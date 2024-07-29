@@ -22,5 +22,5 @@ export const renderEmailTemplate = async <
 
   const element = createElement(Template, payload);
   const html = render(element);
-  return { html, subject: getSubject(payload.subject) };
+  return { html };
 };

@@ -13,13 +13,19 @@ export async function POST(req: Request) {
       throw new Error('missing details');
     }
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await dbUtil(req_body);
 
     const is_preview = Boolean(req_body.application_id);
 
     const htmlSub = await sendMailFun({
-      filled_comp_template,
+      api_target: 'sendSelfScheduleRequest_email_applicant',
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
       is_preview,

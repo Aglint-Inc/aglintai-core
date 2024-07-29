@@ -12,11 +12,17 @@ export async function POST(req: Request) {
       body,
     );
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await fetchUtil(req_body);
 
     await sendMailFun({
-      filled_comp_template,
+      api_target: 'interviewEnd_email_interviewerForFeedback',
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
     });
@@ -29,15 +35,13 @@ export async function POST(req: Request) {
     );
   } catch (e) {
     console.error(e);
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}:  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return NextResponse.json(
+      {
+        error: `${e.name}:  ${e.message}`,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

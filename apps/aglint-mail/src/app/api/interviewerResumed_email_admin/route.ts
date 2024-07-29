@@ -10,11 +10,16 @@ export async function POST(req: Request) {
   try {
     const req_body = v.parse(interviewerResumedEmailAdminSchema, body);
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbFetch(req_body);
-    await sendMailFun({
-      filled_comp_template,
+    const {
+      comp_email_placeholder,
+      company_id,
+      recipient_email,
       react_email_placeholders,
+    } = await dbFetch(req_body);
+    await sendMailFun({
+      comp_email_placeholder,
+      react_email_placeholders,
+      company_id,
       recipient_email,
       api_target: 'interviewerResumed_email_admin',
     });

@@ -1,13 +1,10 @@
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onSignup_email_admin'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] = 'onSignup_email_admin';
   const [recruiterUser] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -18,27 +15,10 @@ export async function fetchUtil(
   const [recruiter] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter')
-      .select('logo')
+      .select('logo,id')
       .eq('id', req_body.recruiter_id),
   );
 
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(
-      req_body.recruiter_id,
-      api_target,
-    );
-
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
   const comp_email_placeholder: EmailTemplateAPi<'onSignup_email_admin'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(
@@ -49,19 +29,15 @@ export async function fetchUtil(
       organizerLastName: recruiterUser.last_name,
       OrganizerTimeZone: recruiterUser.scheduling_settings.timeZone.tzCode,
     };
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    mail_payload,
-  );
+
   const react_email_placeholders: EmailTemplateAPi<'onSignup_email_admin'>['react_email_placeholders'] =
     {
       companyLogo: recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
     };
 
   return {
-    filled_comp_template,
+    company_id: recruiter.id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: recruiterUser.email,
   };

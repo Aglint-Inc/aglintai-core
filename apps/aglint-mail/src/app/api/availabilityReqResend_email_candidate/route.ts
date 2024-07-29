@@ -9,11 +9,16 @@ export async function POST(req: Request) {
 
   try {
     const req_body = v.parse(availabilityReqResendEmailCandidateSchema, body);
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await dbUtil(req_body);
 
     await sendMailFun({
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
       api_target: 'availabilityReqResend_email_candidate',

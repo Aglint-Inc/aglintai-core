@@ -1,9 +1,5 @@
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
@@ -12,14 +8,10 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'confInterview_email_organizer'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'confInterview_email_organizer';
   const int_sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -49,20 +41,6 @@ export async function fetchUtil(
 
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
 
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(recruiter_id, api_target);
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
-
   return int_sessions.map((int_session) => {
     const comp_email_placeholder: EmailTemplateAPi<'confInterview_email_organizer'>['comp_email_placeholders'] =
       {
@@ -77,19 +55,12 @@ export async function fetchUtil(
         jobRole: public_jobs.job_title,
       };
 
-    const filled_comp_template = fillCompEmailTemplate(
-      comp_email_placeholder,
-      mail_payload,
-    );
-
     const candidateLink = req_body.application_id
       ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
       : '';
     const react_email_placeholders: EmailTemplateAPi<'confInterview_email_organizer'>['react_email_placeholders'] =
       {
         companyLogo: logo,
-        emailBody: filled_comp_template.body,
-        subject: filled_comp_template.subject,
         meetingDetails: {
           date: dayjsLocal(int_session.interview_meeting.start_time)
             .tz(org_tz)
@@ -104,7 +75,8 @@ export async function fetchUtil(
         candidateDetails: candidateLink,
       };
     return {
-      filled_comp_template,
+      comp_email_placeholder,
+      company_id: recruiter_id,
       react_email_placeholders,
       recipient_email: int_session.interview_meeting.recruiter_user.email,
     };

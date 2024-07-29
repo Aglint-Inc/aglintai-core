@@ -1,18 +1,10 @@
-import type {
-  DatabaseEnums,
-  DatabaseTable,
-  EmailTemplateAPi,
-} from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import type { DatabaseTable, EmailTemplateAPi } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function dbFetch(
   req_body: EmailTemplateAPi<'interviewerResumed_email_admin'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'interviewerResumed_email_admin';
   const [interview_module] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
@@ -50,24 +42,6 @@ export async function dbFetch(
   const interviewer = interview_module.recruiter_user;
   const interviewModule = interview_module.interview_module;
 
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(
-      interviewModule.recruiter_id,
-      api_target,
-    );
-
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
-
   const comp_email_placeholder: EmailTemplateAPi<'interviewerResumed_email_admin'>['comp_email_placeholders'] =
     {
       adminFirstName: admin.first_name,
@@ -85,20 +59,15 @@ export async function dbFetch(
       interviewTypes: `<ul>${interviewtypes.join('')}</ul>`,
       interviewerPauseLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/interviewer/${interview_module.user_id}?tab=interviewtypes" target="_blank">here</a>`,
     };
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    mail_payload,
-  );
 
   const react_email_placeholders: EmailTemplateAPi<'interviewerResumed_email_admin'>['react_email_placeholders'] =
     {
       companyLogo: interviewModule.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
     };
 
   return {
-    filled_comp_template,
+    company_id: interviewModule.recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: admin.email,
   };

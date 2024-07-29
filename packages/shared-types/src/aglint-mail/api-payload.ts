@@ -47,8 +47,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['debrief_email_interviewer'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       meetingDetails: MeetingDetailCardType;
       companyLogo: string;
       candidateLink: string;
@@ -60,8 +58,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['applicationRecieved_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
     };
   };
@@ -71,8 +67,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewCancel_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
       meetingDetails: MeetingDetailCardType[];
     };
@@ -83,8 +77,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['agent_email_candidate'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
     };
   };
@@ -95,8 +87,7 @@ type Payloads = {
     };
     react_email_placeholders: {
       companyLogo: string;
-      emailBody: string;
-      subject: string;
+
       meetingDetails: MeetingDetailCardType;
       candidateDetails: string;
     };
@@ -107,8 +98,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['confirmInterview_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
       meetingDetails: MeetingDetailCardType[];
       candidateLink: string;
@@ -120,8 +109,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['applicantReject_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
     };
   };
@@ -131,8 +118,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['availabilityReqResend_email_candidate'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       availabilityReqLink: string;
     };
@@ -143,8 +128,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['InterviewCancelReq_email_recruiter'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
       meetingDetails: MeetingDetailCardType[];
     };
@@ -155,8 +138,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interReschedReq_email_recruiter'][number]]: string;
     };
     react_email_placeholders: {
-      subject: string;
-      emailBody: string;
       companyLogo: string;
       meetingDetails: MeetingDetailCardType[];
     };
@@ -168,8 +149,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['rescheduleSelfSchedule_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       resheduleLink: string;
       meetingDetails: MeetingDetailCardType[];
@@ -182,8 +161,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewStart_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       meetingDetail: MeetingDetailCardType;
     };
@@ -194,8 +171,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewStart_email_interviewers'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       candidateLink: string;
       meetingDetails: MeetingDetailCardType[];
@@ -207,8 +182,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewStart_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       candidateLink: string;
       meetingDetail: MeetingDetailCardType;
@@ -220,8 +193,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['sendSelfScheduleRequest_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       selfScheduleLink: string;
     };
@@ -234,8 +205,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['sendAvailabilityRequest_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       availabilityReqLink: string;
     };
@@ -246,8 +215,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['sendAvailReqReminder_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       availabilityReqLink: string;
     };
@@ -258,8 +225,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['selfScheduleReminder_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       selfScheduleLink: string;
       companyLogo: string;
     };
@@ -271,8 +236,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['meetingAccepted_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       meetingDetailsLink: string;
       candidateScheduleLink: string;
@@ -285,8 +248,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['meetingDeclined_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       meetingDetail: MeetingDetailCardType;
     };
@@ -299,8 +260,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewEnd_email_interviewerForFeedback'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       interviewFeedbackLink: string;
     };
@@ -311,8 +270,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['onSignup_email_admin'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -322,8 +279,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewerResumed_email_admin'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -333,8 +288,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewEnd_email_shadowTraineeForMeetingAttendence'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -344,8 +297,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewEnd_email_rShadowTraineeForMeetingAttendence'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -355,8 +306,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['onQualified_email_trainee'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -366,8 +315,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['onTrainingComplete_email_approverForTraineeMeetingQualification'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
     };
   };
@@ -379,8 +326,6 @@ type Payloads = {
       [key in (typeof emailVariablePayloads)['interviewEnd_email_organizerForMeetingStatus'][number]]: string;
     };
     react_email_placeholders: {
-      emailBody: string;
-      subject: string;
       companyLogo: string;
       meetingStatusUpdateLink: string;
     };

@@ -1,10 +1,6 @@
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
@@ -12,15 +8,10 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
-import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'meetingAccepted_email_organizer'>['api_payload'],
 ) {
-  const api_target: DatabaseEnums['email_slack_types'] =
-    'meetingAccepted_email_organizer';
-
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -72,24 +63,6 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
 
-  let mail_payload: MailPayloadType;
-
-  if (req_body.payload) {
-    mail_payload = {
-      from_name: '',
-      ...req_body.payload,
-    };
-  } else {
-    const comp_email_temp = await fetchCompEmailTemp(
-      candidateJob.candidates.recruiter_id,
-      api_target,
-    );
-
-    mail_payload = {
-      ...comp_email_temp,
-    };
-  }
-
   const comp_email_placeholder: EmailTemplateAPi<'meetingAccepted_email_organizer'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(organizer.first_name, organizer.last_name),
@@ -109,28 +82,15 @@ export async function fetchUtil(
       interviewerLastName: interviewer.last_name,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    mail_payload,
-  );
-
-  // const candSchLink = req_body.application_id
-  //   ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
-  //   : '';
-  // const meetLink = recruiter_user.interview_meeting.id
-  //   ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`
-  //   : '';
-
   const react_email_placeholders: EmailTemplateAPi<'meetingDeclined_email_organizer'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: candidateJob.candidates.recruiter_id,
     react_email_placeholders,
     recipient_email: organizer.email,
   };
