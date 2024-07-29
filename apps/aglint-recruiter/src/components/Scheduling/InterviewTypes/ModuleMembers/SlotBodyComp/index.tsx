@@ -53,7 +53,7 @@ function SlotBodyComp({
   const { loading } = useSchedulingContext();
 
   const currentTab = (router.query.tab ||
-    'qualified_members') as TabsModuleMembers['queryParams'];
+    'qualified') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
