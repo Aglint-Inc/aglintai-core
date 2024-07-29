@@ -8,6 +8,7 @@ import type { ICSAttachment } from '../ceateIcsContent';
 import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
+import { MailPayloadType } from '../../types/app.types';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -17,24 +18,21 @@ export const sendMailFun = async <
   recipient_email,
   attachments,
   is_preview,
+  api_target,
 }: {
-  filled_comp_template:
-    | DatabaseTable['job_email_template']
-    | DatabaseTable['company_email_template'];
+  filled_comp_template: MailPayloadType;
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
   recipient_email: string;
+  api_target: DatabaseEnums['email_slack_types'];
   is_preview?: boolean;
   attachments?: ICSAttachment[];
 }) => {
   const { emails } = await getEmails();
-  const emailIdx = emails.findIndex((e) => e === filled_comp_template.type);
+  const emailIdx = emails.findIndex((e) => e === api_target);
   if (emailIdx === -1)
-    throw new ClientError(
-      `${filled_comp_template.type} does not match any mail_type`,
-      400,
-    );
+    throw new ClientError(`${api_target} does not match any mail_type`, 400);
   const { html, subject } = await renderEmailTemplate<T>(
-    filled_comp_template.type as T,
+    api_target as T,
     react_email_placeholders,
   );
   if (is_preview) {

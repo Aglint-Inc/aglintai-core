@@ -5,10 +5,10 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(sendAvailReqReminderEmailApplicant, meta);
+    const req_body = v.parse(sendAvailReqReminderEmailApplicant, body);
     const details = await dbUtil(req_body);
     if (!details) {
       return NextResponse.json('success', {

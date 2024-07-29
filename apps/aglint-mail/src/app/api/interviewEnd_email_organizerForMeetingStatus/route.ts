@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   try {
     const parsed_body = v.parse(
       interviewEndEmailOrganizerForMeetingStatusSchema,
-      req_body.meta,
+      req_body,
     );
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await fetchUtil(parsed_body);

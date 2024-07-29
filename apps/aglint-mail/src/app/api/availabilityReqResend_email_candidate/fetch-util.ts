@@ -1,11 +1,14 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function dbUtil(
   req_body: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'availabilityReqResend_email_candidate';
   const [avail_req_data] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -37,10 +40,19 @@ export async function dbUtil(
     ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
     : '';
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'availabilityReqResend_email_candidate',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(recruiter_id, api_target);
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
   const comp_email_placeholder: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
@@ -59,7 +71,7 @@ export async function dbUtil(
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
 
   const react_email_placeholders: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['react_email_placeholders'] =

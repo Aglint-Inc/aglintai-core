@@ -5,9 +5,9 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
   try {
-    const req_body = v.parse(sendSelfScheduleRequest_email_applicant, meta);
+    const req_body = v.parse(sendSelfScheduleRequest_email_applicant, body);
 
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');

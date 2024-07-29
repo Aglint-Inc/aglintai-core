@@ -5,9 +5,9 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
   try {
-    const req_body = v.parse(MeetingAcceptedEmailOrganizerSchema, meta);
+    const req_body = v.parse(MeetingAcceptedEmailOrganizerSchema, body);
 
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await fetchUtil(req_body);

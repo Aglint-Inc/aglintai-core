@@ -1,11 +1,14 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchJobEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
-export async function fetchUtil(
+export const fetchUtil = async (
   req_body: EmailTemplateAPi<'applicationRecieved_email_applicant'>['api_payload'],
-) {
+) => {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'applicationRecieved_email_applicant';
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -25,10 +28,22 @@ export async function fetchUtil(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const comp_email_temp = await fetchJobEmailTemp(
-    candidateJob.public_jobs.id,
-    'applicationRecieved_email_applicant',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchJobEmailTemp(
+      candidateJob.public_jobs.id,
+      api_target,
+    );
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
 
   const comp_email_placeholder: EmailTemplateAPi<'applicationRecieved_email_applicant'>['comp_email_placeholders'] =
     {
@@ -41,7 +56,7 @@ export async function fetchUtil(
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
   const react_email_placeholders: EmailTemplateAPi<'applicationRecieved_email_applicant'>['react_email_placeholders'] =
     {
@@ -55,4 +70,4 @@ export async function fetchUtil(
     react_email_placeholders,
     recipient_email: cand_email,
   };
-}
+};

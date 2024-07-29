@@ -12,10 +12,7 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(
-      onShadowCompleteEmailTraineeSchema,
-      req_body.meta,
-    );
+    const parsed_body = v.parse(onShadowCompleteEmailTraineeSchema, req_body);
     const mail_details = await fetchUtil(parsed_body);
 
     for (const {

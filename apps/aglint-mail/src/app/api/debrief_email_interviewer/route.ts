@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body.meta);
+    const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body);
     const { interviewers_mail_data } = await fetchUtil(parsed_body);
 
     for (const {

@@ -5,10 +5,10 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbFetch } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(interviewStartEmailApplicantSchema, meta);
+    const req_body = v.parse(interviewStartEmailApplicantSchema, body);
     const { filled_comp_template, react_email_placeholders, recipient_email } =
       await dbFetch(req_body);
     await sendMailFun({

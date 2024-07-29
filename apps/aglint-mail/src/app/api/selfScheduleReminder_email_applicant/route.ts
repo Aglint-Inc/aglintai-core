@@ -5,10 +5,10 @@ import { dbUtil } from './fetch-util';
 import { selfScheduleReminderEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(selfScheduleReminderEmailApplicantSchema, meta);
+    const req_body = v.parse(selfScheduleReminderEmailApplicantSchema, body);
     const details = await dbUtil(req_body);
     if (!details) {
       return NextResponse.json('success', {

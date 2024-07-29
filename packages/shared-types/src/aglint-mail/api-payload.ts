@@ -1,5 +1,5 @@
-import v from "valibot";
-import { DatabaseEnums } from "..";
+import v from 'valibot';
+import { DatabaseEnums } from '..';
 import {
   MeetingAcceptedEmailOrganizerSchema,
   agentEmailCandidateSchema,
@@ -24,14 +24,12 @@ import {
   onQualifiedEmailTraineeSchema,
   onShadowCompleteEmailTraineeSchema,
   onSignupEmailAdminSchema,
-  phoneScreenEmailCandidateSchema,
-  phoneScreenRemindEmailApplicantSchema,
   selfScheduleReminderEmailApplicantSchema,
   sendAvailReqReminderEmailApplicant,
   sendAvailabilityRequestEmailApplicantSchema,
   sendSelfScheduleRequest_email_applicant,
-} from "./api_schema";
-import { emailVariablePayloads } from "@aglint/shared-utils";
+} from './api_schema';
+import { emailVariablePayloads } from '@aglint/shared-utils';
 export type MeetingDetailCardType = {
   date: string;
   time: string;
@@ -46,7 +44,7 @@ type Payloads = {
   debrief_email_interviewer: {
     api_payload: v.InferInput<typeof debriefEmailInterviewerSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["debrief_email_interviewer"][number]]: string;
+      [key in (typeof emailVariablePayloads)['debrief_email_interviewer'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -59,7 +57,7 @@ type Payloads = {
   applicationRecieved_email_applicant: {
     api_payload: v.InferInput<typeof applicationRecievedEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["applicationRecieved_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['applicationRecieved_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -70,7 +68,7 @@ type Payloads = {
   interviewCancel_email_applicant: {
     api_payload: v.InferInput<typeof interviewCancelEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewCancel_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewCancel_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -82,7 +80,7 @@ type Payloads = {
   agent_email_candidate: {
     api_payload: v.InferInput<typeof agentEmailCandidateSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["agent_email_candidate"][number]]: string;
+      [key in (typeof emailVariablePayloads)['agent_email_candidate'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -93,7 +91,7 @@ type Payloads = {
   confInterview_email_organizer: {
     api_payload: v.InferInput<typeof confInterviewEmailOrganizerSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["confInterview_email_organizer"][number]]: string;
+      [key in (typeof emailVariablePayloads)['confInterview_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
       companyLogo: string;
@@ -106,7 +104,7 @@ type Payloads = {
   confirmInterview_email_applicant: {
     api_payload: v.InferInput<typeof confirmInterviewEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["confirmInterview_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['confirmInterview_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -119,7 +117,7 @@ type Payloads = {
   applicantReject_email_applicant: {
     api_payload: v.InferInput<typeof applicantRejectEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["applicantReject_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['applicantReject_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -130,7 +128,7 @@ type Payloads = {
   availabilityReqResend_email_candidate: {
     api_payload: v.InferInput<typeof availabilityReqResendEmailCandidateSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["availabilityReqResend_email_candidate"][number]]: string;
+      [key in (typeof emailVariablePayloads)['availabilityReqResend_email_candidate'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -139,33 +137,10 @@ type Payloads = {
       availabilityReqLink: string;
     };
   };
-
-  phoneScreen_email_candidate: {
-    api_payload: v.InferInput<typeof phoneScreenEmailCandidateSchema>;
-    comp_email_placeholders: {};
-    react_email_placeholders: {
-      subject: string;
-    };
-  };
-  phoneScreenRemind_email_applicant: {
-    api_payload: v.InferInput<typeof phoneScreenRemindEmailApplicantSchema>;
-    comp_email_placeholders: {
-      "{{ candidateFirstName }}": string;
-      "{{ jobTitle }}": string;
-      "{{ companyName }}": string;
-      "{{ phoneScreeningLink }}": string;
-      "{{ recruiterFullName }}": string;
-    };
-    react_email_placeholders: {
-      subject: string;
-      emailBody: string;
-      companyLogo: string;
-    };
-  };
   InterviewCancelReq_email_recruiter: {
     api_payload: v.InferInput<typeof interviewCancelReqEmailRecruiterSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["InterviewCancelReq_email_recruiter"][number]]: string;
+      [key in (typeof emailVariablePayloads)['InterviewCancelReq_email_recruiter'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -177,7 +152,7 @@ type Payloads = {
   interReschedReq_email_recruiter: {
     api_payload: v.InferInput<typeof interReschedReqEmailRecruiterSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interReschedReq_email_recruiter"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interReschedReq_email_recruiter'][number]]: string;
     };
     react_email_placeholders: {
       subject: string;
@@ -190,7 +165,7 @@ type Payloads = {
   rescheduleSelfSchedule_email_applicant: {
     api_payload: v.InferInput<typeof interviewRescheduleEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["rescheduleSelfSchedule_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['rescheduleSelfSchedule_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -204,7 +179,7 @@ type Payloads = {
   interviewStart_email_applicant: {
     api_payload: v.InferInput<typeof interviewStartEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewStart_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewStart_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -216,7 +191,7 @@ type Payloads = {
   interviewStart_email_interviewers: {
     api_payload: v.InferInput<typeof interviewStartEmailInterviewersSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewStart_email_interviewers"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewStart_email_interviewers'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -229,7 +204,7 @@ type Payloads = {
   interviewStart_email_organizer: {
     api_payload: v.InferInput<typeof interviewStartEmailOrganizerSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewStart_email_organizer"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewStart_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -242,7 +217,7 @@ type Payloads = {
   sendSelfScheduleRequest_email_applicant: {
     api_payload: v.InferInput<typeof sendSelfScheduleRequest_email_applicant>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["sendSelfScheduleRequest_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['sendSelfScheduleRequest_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -256,7 +231,7 @@ type Payloads = {
       typeof sendAvailabilityRequestEmailApplicantSchema
     >;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["sendAvailabilityRequest_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['sendAvailabilityRequest_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -268,7 +243,7 @@ type Payloads = {
   sendAvailReqReminder_email_applicant: {
     api_payload: v.InferInput<typeof sendAvailReqReminderEmailApplicant>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["sendAvailReqReminder_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['sendAvailReqReminder_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -280,7 +255,7 @@ type Payloads = {
   selfScheduleReminder_email_applicant: {
     api_payload: v.InferInput<typeof selfScheduleReminderEmailApplicantSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["selfScheduleReminder_email_applicant"][number]]: string;
+      [key in (typeof emailVariablePayloads)['selfScheduleReminder_email_applicant'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -293,7 +268,7 @@ type Payloads = {
   meetingAccepted_email_organizer: {
     api_payload: v.InferInput<typeof MeetingAcceptedEmailOrganizerSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["meetingAccepted_email_organizer"][number]]: string;
+      [key in (typeof emailVariablePayloads)['meetingAccepted_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -307,7 +282,7 @@ type Payloads = {
   meetingDeclined_email_organizer: {
     api_payload: v.InferInput<typeof meetingDeclinedEmailOrganizerSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["meetingDeclined_email_organizer"][number]]: string;
+      [key in (typeof emailVariablePayloads)['meetingDeclined_email_organizer'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -321,7 +296,7 @@ type Payloads = {
       typeof interviewEndEmailInterviewerForFeedbackSchema
     >;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewEnd_email_interviewerForFeedback"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewEnd_email_interviewerForFeedback'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -333,7 +308,7 @@ type Payloads = {
   onSignup_email_admin: {
     api_payload: v.InferInput<typeof onSignupEmailAdminSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onSignup_email_admin"][number]]: string;
+      [key in (typeof emailVariablePayloads)['onSignup_email_admin'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -344,7 +319,7 @@ type Payloads = {
   interviewerResumed_email_admin: {
     api_payload: v.InferInput<typeof interviewerResumedEmailAdminSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewerResumed_email_admin"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewerResumed_email_admin'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -355,7 +330,7 @@ type Payloads = {
   interviewEnd_email_shadowTraineeForMeetingAttendence: {
     api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewEnd_email_shadowTraineeForMeetingAttendence"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewEnd_email_shadowTraineeForMeetingAttendence'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -366,7 +341,7 @@ type Payloads = {
   interviewEnd_email_rShadowTraineeForMeetingAttendence: {
     api_payload: v.InferInput<typeof onShadowCompleteEmailTraineeSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewEnd_email_rShadowTraineeForMeetingAttendence"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewEnd_email_rShadowTraineeForMeetingAttendence'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -377,7 +352,7 @@ type Payloads = {
   onQualified_email_trainee: {
     api_payload: v.InferInput<typeof onQualifiedEmailTraineeSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onQualified_email_trainee"][number]]: string;
+      [key in (typeof emailVariablePayloads)['onQualified_email_trainee'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -388,7 +363,7 @@ type Payloads = {
   onTrainingComplete_email_approverForTraineeMeetingQualification: {
     api_payload: v.InferInput<typeof onQualifiedEmailApproverSchema>;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["onTrainingComplete_email_approverForTraineeMeetingQualification"][number]]: string;
+      [key in (typeof emailVariablePayloads)['onTrainingComplete_email_approverForTraineeMeetingQualification'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -401,7 +376,7 @@ type Payloads = {
       typeof interviewEndEmailOrganizerForMeetingStatusSchema
     >;
     comp_email_placeholders: {
-      [key in (typeof emailVariablePayloads)["interviewEnd_email_organizerForMeetingStatus"][number]]: string;
+      [key in (typeof emailVariablePayloads)['interviewEnd_email_organizerForMeetingStatus'][number]]: string;
     };
     react_email_placeholders: {
       emailBody: string;
@@ -419,5 +394,5 @@ type Payloads = {
   };
 };
 
-export type EmailTemplateAPi<T extends DatabaseEnums["email_slack_types"]> =
+export type EmailTemplateAPi<T extends DatabaseEnums['email_slack_types']> =
   T extends keyof Payloads ? Payloads[T] : never;
