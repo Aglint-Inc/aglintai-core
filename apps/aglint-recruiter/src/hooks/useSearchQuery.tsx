@@ -1,6 +1,8 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function useSearchQuery<T extends Record<string, string | number>>() {
+export function useSearchQuery<
+  T extends Record<string, string | number | boolean>,
+>() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathName = usePathname();

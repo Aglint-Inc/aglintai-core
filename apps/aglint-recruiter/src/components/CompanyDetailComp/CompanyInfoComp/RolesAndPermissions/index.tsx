@@ -98,10 +98,8 @@ const RoleTable = ({
   roles: Awaited<
     ReturnType<typeof getRoleAndPermissionsWithUserCount>
   >['rolesAndPermissions'];
-  setRole: (
-    // eslint-disable-next-line no-unused-vars
-    x: string,
-  ) => void;
+  // eslint-disable-next-line no-unused-vars
+  setRole: (role_id: string, addMode?: boolean) => void;
 }) => {
   const { allMember: members } = useAuthDetails();
   return loading
@@ -152,7 +150,24 @@ const RoleTable = ({
                       )}
                     </>
                   ) : (
-                    <Typography color={'neutral'}>No users assigned</Typography>
+                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                      <Typography color={'neutral'}>
+                        {`No users with ${details.name}`}
+                      </Typography>
+                      <ButtonGhost
+                        textButton='Add'
+                        size={1}
+                        iconName='Add'
+                        isLeftIcon
+                        onClickButton={{
+                          onClick: (e) => {
+                            e.stopPropagation();
+                            // setQueryParams({ add: true, role: details.name });
+                            setRole(key, true);
+                          },
+                        }}
+                      />
+                    </Stack>
                   )}
                 </>
               }
@@ -164,6 +179,7 @@ const RoleTable = ({
 const useRoleAndPermissions = () => {
   const { queryParams, setQueryParams } = useSearchQuery<{
     role: string;
+    add: boolean;
   }>();
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
@@ -298,10 +314,10 @@ const useRoleAndPermissions = () => {
     },
   });
 
-  const handelSelectRole = (role_id: string) => {
+  const handelSelectRole = (role_id: string, addMode?: boolean) => {
     setSelectRole(role_id);
     const role = query.data?.rolesAndPermissions[role_id]?.name || null;
-    setQueryParams({ role });
+    setQueryParams({ role, add: addMode });
   };
   return {
     role,
@@ -354,6 +370,7 @@ function RoleDetails({
   ) => void;
 }) {
   const { checkPermissions } = useRolesAndPermissions();
+  const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
   const { allMember: members, handleMemberUpdate } = useAuthDetails();
@@ -362,6 +379,11 @@ function RoleDetails({
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
   const editDisabled = !checkPermissions(['manage_roles']);
+  useEffect(() => {
+    if (queryParams?.add) {
+      setEditUser(true);
+    }
+  }, [queryParams?.add]);
   return (
     <>
       <RolesAndPermissionsDetail
