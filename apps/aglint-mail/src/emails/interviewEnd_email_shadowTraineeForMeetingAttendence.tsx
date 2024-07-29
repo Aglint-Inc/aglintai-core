@@ -1,10 +1,10 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
+import type { ReactTempPayload } from '../types/app.types';
 
 type EmailType =
-  EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>;
+  ReactTempPayload<'interviewEnd_email_shadowTraineeForMeetingAttendence'>;
 
 export const dummy: EmailType = {
   emailBody: `<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="traineeName">{{traineeName}}</span> ,</p><p></p><p>Could you please confirm if you've completed the <span class="temp-variable" data-type="temp-variable" data-id="shadowCount">{{shadowCount}}</span> shadow session for <span class="temp-variable" data-type="temp-variable" data-id="interviewType">{{interviewType}}</span>  ? You were scheduled as a shadow interviewer in the <span class="temp-variable" data-type="temp-variable" data-id="sessionName">{{sessionName}}</span> for <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> with <span class="temp-variable" data-type="temp-variable" data-id="candidateName">{{candidateName}}</span> .</p><p></p><p>Please click the link below to confirm: <span class="temp-variable" data-type="temp-variable" data-id="shadowConfirmLink">{{shadowConfirmLink}}</span> </p><p>From,</p><p><span class="temp-variable" data-type="temp-variable" data-id="organizerName">{{organizerName}}</span></p>`,

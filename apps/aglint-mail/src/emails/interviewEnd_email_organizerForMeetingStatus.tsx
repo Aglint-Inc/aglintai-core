@@ -1,11 +1,11 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
 import { ButtonSolid } from '../components/template/Button';
+import type { ReactTempPayload } from '../types/app.types';
 
 type EmailType =
-  EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>;
+  ReactTempPayload<'interviewEnd_email_organizerForMeetingStatus'>;
 
 export const dummy: EmailType = {
   emailBody:

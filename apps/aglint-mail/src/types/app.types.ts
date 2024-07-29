@@ -5,3 +5,7 @@ export type ReactTempPayload<T extends DatabaseEnums['email_slack_types']> =
     emailBody: string;
     subject: string;
   };
+export interface MailPayloadType {
+  body: string;
+  subject: string;
+}

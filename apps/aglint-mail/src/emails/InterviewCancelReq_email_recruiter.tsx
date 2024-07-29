@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
@@ -7,8 +6,9 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
+type EmailType = ReactTempPayload<'InterviewCancelReq_email_recruiter'>;
 
 // export dummy
 export const dummy: EmailType = {
