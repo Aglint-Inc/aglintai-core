@@ -7,9 +7,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Permissions } from '@/devlink/Permissions';
@@ -362,9 +362,22 @@ function RoleDetails({
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
   const editDisabled = !checkPermissions(['manage_roles']);
+  const { ifAllowed } = useRolesAndPermissionsContext();
   return (
     <>
       <RolesAndPermissionsDetail
+        slotAddButton={ifAllowed(
+          <Stack direction={'row'}>
+            <ButtonGhost
+              onClickButton={{ onClick: () => setEditUser(true) }}
+              textButton={'Add'}
+              size={2}
+              isLeftIcon={true}
+              iconName={'add'}
+            />
+          </Stack>,
+          ['manage_roles'],
+        )}
         textRoleName={
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
@@ -444,13 +457,7 @@ function RoleDetails({
           </>
         }
         textUserCount={`Users (${role.assignedTo.length || 0})`}
-        slotUserWithRole={
-          <RoleUserWidget
-            role={role}
-            members={members}
-            setEditUser={() => setEditUser(true)}
-          />
-        }
+        slotUserWithRole={<RoleUserWidget role={role} members={members} />}
       />
       {editUser && (
         <RoleEditMember
