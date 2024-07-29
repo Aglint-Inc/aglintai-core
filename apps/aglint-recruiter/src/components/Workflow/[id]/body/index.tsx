@@ -1,5 +1,10 @@
+import { Dialog, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Page404 } from '@/devlink/Page404';
@@ -92,36 +97,72 @@ const WorkflowJob = ({
   const loading = !!(mutationState ?? []).find(
     ({ job_id, workflow_id: wf_id }) => job_id === id && wf_id == workflow_id,
   );
+
+  const [open, setOpen] = useState<boolean>(false);
   return (
-    <OptimisticWrapper loading={loading}>
-      <WorkflowConnectedCard
-        key={id}
-        role={capitalizeAll(job_title)}
-        textLocation={location || '---'}
-        textRoleCategory={department || '---'}
-        slotBadges={
-          status && (
-            <GlobalBadge
-              color={
-                status === 'published'
-                  ? 'success'
-                  : status === 'closed'
-                    ? 'error'
-                    : 'warning'
-              }
-              textBadge={capitalizeAll(status)}
-            />
-          )
-        }
-        onClickJob={{
-          onClick: () => push(ROUTES['/jobs/[id]/workflows']({ id })),
-          ...devlinkProps,
-        }}
-        onClickLinkOff={{
-          onClick: async () => await mutateAsync({ job_id: id, workflow_id }),
-          ...devlinkProps,
-        }}
-      />
-    </OptimisticWrapper>
+    <>
+      <OptimisticWrapper loading={loading}>
+        <WorkflowConnectedCard
+          key={id}
+          role={capitalizeAll(job_title)}
+          textLocation={location || '---'}
+          textRoleCategory={department || '---'}
+          slotBadges={
+            status && (
+              <GlobalBadge
+                color={
+                  status === 'published'
+                    ? 'success'
+                    : status === 'closed'
+                      ? 'error'
+                      : 'warning'
+                }
+                textBadge={capitalizeAll(status)}
+              />
+            )
+          }
+          onClickJob={{
+            onClick: () => push(ROUTES['/jobs/[id]/workflows']({ id })),
+            ...devlinkProps,
+          }}
+          onClickLinkOff={{
+            onClick: () => setOpen(true),
+          }}
+          // onClickLinkOff={{
+          //   onClick: async () => await mutateAsync({ job_id: id, workflow_id }),
+          //   ...devlinkProps,
+          // }}
+        />
+      </OptimisticWrapper>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DcPopup
+          onClickClosePopup={{ onClick: () => setOpen(false) }}
+          popupName='Unlink confirmation'
+          slotBody={
+            <Typography>
+              Are you sure to unlink this job from this workflow ?
+            </Typography>
+          }
+          slotButtons={
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{ onClick: () => setOpen(false) }}
+              />
+              <ButtonSolid
+                textButton='Unlink'
+                size={2}
+                onClickButton={{
+                  onClick: async () =>
+                    await mutateAsync({ job_id: id, workflow_id }),
+                }}
+              />
+            </>
+          }
+        />
+      </Dialog>
+    </>
   );
 };
