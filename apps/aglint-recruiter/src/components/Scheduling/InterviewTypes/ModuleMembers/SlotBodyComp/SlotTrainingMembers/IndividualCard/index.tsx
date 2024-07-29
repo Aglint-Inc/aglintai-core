@@ -63,7 +63,9 @@ function IndividualCard({
       (editModule.settings.reqruire_approval &&
         editModule.settings.approve_users.includes(user.user_id))) &&
     mutatedShadowProgress.length === 0 &&
-    reverseShadowProgress.length === 0;
+    mutatedReverseShadowProgress.length === 0 &&
+    shadowProgress.length > 0 &&
+    reverseShadowProgress.length > 0;
 
   const userSettings = user.recruiter_user.scheduling_settings;
 
