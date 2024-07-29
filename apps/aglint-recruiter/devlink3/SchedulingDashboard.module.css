@@ -46,7 +46,7 @@
 
 .sd_row_9 {
   display: grid;
-  height: 420px;
+  height: 296px;
   grid-auto-columns: 1fr;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);

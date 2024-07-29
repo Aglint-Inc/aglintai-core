@@ -92,17 +92,17 @@ const HistoryPills = ({
   const shadowPills = [...new Array(module.settings.noShadow)].reduce(
     (acc, curr, index) => {
       const isActive = index < shadow;
-      // const isStart = index === 0;
-      // const isEnd =
-      //   index ===
-      //   module.settings.noShadow + module.settings.noReverseShadow - 1;
-      // const isMiddle = !(isStart || isEnd);
+      const isStart = index === 0;
+      const isEnd =
+        index ===
+        module.settings.noShadow + module.settings.noReverseShadow - 1;
       acc.push(
         <HistoryPillDev
           key={index}
           isActive={isActive}
-          isReverseShadow={false}
           isShadow={true}
+          isReverseShadow={false}
+          position={isStart ? 'start' : isEnd ? 'end' : ''}
         />,
       );
       return acc;
@@ -114,16 +114,17 @@ const HistoryPills = ({
   ].reduce((acc, curr, i) => {
     const index = i + (shadowPills || []).length;
     const isActive = index < reverse_shadow;
-    // const isStart = module.settings.noShadow + index === 0;
-    // const isEnd =
-    //   index === module.settings.noShadow + module.settings.noReverseShadow - 1;
-    // const isMiddle = !(isStart || isEnd);
+    const isStart = module.settings.noShadow + index === 0;
+    const isEnd =
+      index === module.settings.noShadow + module.settings.noReverseShadow - 1;
+
     acc.push(
       <HistoryPillDev
         key={index}
         isActive={isActive}
-        isReverseShadow={true}
         isShadow={false}
+        isReverseShadow={true}
+        position={isStart ? 'start' : isEnd ? 'end' : ''}
       />,
     );
     return acc;

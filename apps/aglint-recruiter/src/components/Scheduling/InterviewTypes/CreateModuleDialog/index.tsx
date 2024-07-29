@@ -139,6 +139,7 @@ function CreateModuleDialog() {
                   onChange={(event, newValue) => {
                     setSelDepartment(newValue);
                   }}
+                  getOptionLabel={(option) => option.name}
                   renderOption={(props, option) => {
                     const { ...optionProps } = props;
                     return (

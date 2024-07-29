@@ -117,7 +117,7 @@ export function Modules() {
                     {filterModules.map((mod) => {
                       return (
                         <InterviewModuleCard
-                          textDepartment={mod.department_id}
+                          textDepartment={mod.department_name}
                           isArchivedIconVisible={mod.is_archived}
                           key={mod.id}
                           isObjectiveVisible={Boolean(mod.description)}
