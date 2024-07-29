@@ -1,19 +1,12 @@
 import { getFullName } from '@aglint/shared-utils';
-import {
-  Checkbox,
-  Dialog,
-  Drawer,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
@@ -381,48 +374,92 @@ function ModuleSettingComp({
                     </>
                   }
                   slotInputNoOfReverse={
-                    <TextField
-                      sx={{ width: '200px' }}
-                      select
-                      value={localModule.settings.noReverseShadow}
-                      onChange={(e) => {
-                        setEditLocalModule((prev) => ({
-                          ...prev,
-                          settings: {
-                            ...prev.settings,
-                            noReverseShadow: Number(e.target.value),
+                    <Stack direction={'row'} gap={1}>
+                      <IconButtonSoft
+                        isDisabled={localModule.settings.noReverseShadow === 1}
+                        color={'neutral'}
+                        iconName='remove'
+                        size={1}
+                        onClickButton={{
+                          onClick: () => {
+                            setEditLocalModule((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                noReverseShadow: Number(
+                                  localModule.settings.noReverseShadow - 1,
+                                ),
+                              },
+                            }));
                           },
-                        }));
-                      }}
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </TextField>
+                        }}
+                      />
+                      <Typography paddingInline={'2px'}>
+                        {localModule.settings.noReverseShadow}
+                      </Typography>
+                      <IconButtonSoft
+                        iconName='Add'
+                        size={1}
+                        color={'neutral'}
+                        onClickButton={{
+                          onClick: () => {
+                            setEditLocalModule((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                noReverseShadow: Number(
+                                  localModule.settings.noReverseShadow + 1,
+                                ),
+                              },
+                            }));
+                          },
+                        }}
+                      />
+                    </Stack>
                   }
                   slotInputNoOfShadow={
-                    <TextField
-                      sx={{ width: '200px' }}
-                      select
-                      value={localModule.settings.noShadow}
-                      onChange={(e) => {
-                        setEditLocalModule((prev) => ({
-                          ...prev,
-                          settings: {
-                            ...prev.settings,
-                            noShadow: Number(e.target.value),
+                    <Stack direction={'row'} gap={1}>
+                      <IconButtonSoft
+                        isDisabled={localModule.settings.noShadow === 1}
+                        color={'neutral'}
+                        iconName='remove'
+                        size={1}
+                        onClickButton={{
+                          onClick: () => {
+                            setEditLocalModule((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                noShadow: Number(
+                                  localModule.settings.noShadow - 1,
+                                ),
+                              },
+                            }));
                           },
-                        }));
-                      }}
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                      <MenuItem value={5}>5</MenuItem>
-                    </TextField>
+                        }}
+                      />
+                      <Typography paddingInline={'2px'}>
+                        {localModule.settings.noShadow}
+                      </Typography>
+                      <IconButtonSoft
+                        iconName='Add'
+                        size={1}
+                        color={'neutral'}
+                        onClickButton={{
+                          onClick: () => {
+                            setEditLocalModule((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                noShadow: Number(
+                                  localModule.settings.noShadow + 1,
+                                ),
+                              },
+                            }));
+                          },
+                        }}
+                      />
+                    </Stack>
                   }
                 />
               )}
