@@ -22,7 +22,7 @@ export const selfScheduleMailToCandidate = async ({
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendSelfScheduleRequest_email_applicant`,
       {
-        meta: bodyParams,
+        ...bodyParams,
       },
     );
     if (res.status === 200) {
@@ -52,7 +52,7 @@ export const selfScheduleReminderMailToCandidate = async ({
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/selfScheduleReminder_email_applicant`,
       {
-        meta: bodyParams,
+        ...bodyParams,
       },
     );
     if (res.status === 200) {
@@ -79,7 +79,7 @@ export const cancelMailHandler = async ({
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/interviewCancel_email_applicant`,
       {
-        meta: bodyParams,
+        ...bodyParams,
       },
     );
 

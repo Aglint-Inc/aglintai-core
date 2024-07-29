@@ -82,9 +82,7 @@ const sendMail = async (avail_req_id: string, organizer_id) => {
         avail_req_id: avail_req_id,
       };
     await axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
-      meta: {
-        ...payload,
-      },
+      ...payload,
     });
   } catch (error) {
     console.error(error);

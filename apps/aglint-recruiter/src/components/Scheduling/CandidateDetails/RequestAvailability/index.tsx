@@ -308,9 +308,7 @@ function RequestAvailability() {
           await axios.post(
             `/api/emails/sendAvailabilityRequest_email_applicant`,
             {
-              meta: {
-                ...payload,
-              },
+              ...payload,
             },
           );
         } catch (error) {

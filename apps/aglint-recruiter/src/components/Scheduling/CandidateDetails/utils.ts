@@ -298,7 +298,7 @@ export const onClickResendInvite = async ({
       await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/sendAvailabilityRequest_email_applicant`,
         {
-          meta: bodyParams,
+          ...bodyParams,
         },
       );
     }
