@@ -1,12 +1,15 @@
-import { Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
+import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -17,8 +20,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
+import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsAddMemberDialogOpen,
+  setIsArchiveDialogOpen,
+  setIsDeleteModuleDialogOpen,
   setIsSettingsDialogOpen,
   setTrainingStatus,
 } from '../../store';
@@ -125,6 +131,21 @@ function SlotBodyComp({
   const department =
     data?.find((item) => item.id === editModule?.department_id)?.name || '--';
 
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const queryClient = useQueryClient();
+
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -163,16 +184,29 @@ function SlotBodyComp({
           {editModule && (
             <InterviewMemberList
               slotEditButton={
-                <ButtonSoft
-                  color={'neutral'}
-                  size={2}
-                  textButton='Edit'
-                  onClickButton={{
-                    onClick: () => {
-                      setIsSettingsDialogOpen(true);
-                    },
-                  }}
-                />
+                <Stack direction={'row'} spacing={1}>
+                  <ButtonSoft
+                    color={'neutral'}
+                    size={2}
+                    textButton='Edit'
+                    iconName='edit'
+                    isLeftIcon
+                    iconSize={2}
+                    onClickButton={{
+                      onClick: () => {
+                        setIsSettingsDialogOpen(true);
+                      },
+                    }}
+                  />
+                  <Stack onClick={handleClick}>
+                    <IconButtonGhost
+                      iconName='more_vert'
+                      size={2}
+                      iconSize={6}
+                      color={'neutral'}
+                    />
+                  </Stack>
+                </Stack>
               }
               slotNewTabPill={
                 <Stack direction={'row'}>
@@ -260,6 +294,65 @@ function SlotBodyComp({
           )}
         </>
       )}
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MoreMenu
+          isArchiveVisible={!editModule?.is_archived}
+          isUnarchiveVisible={editModule?.is_archived}
+          onClickDelete={{
+            onClick: () => {
+              setIsDeleteModuleDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickArchive={{
+            onClick: () => {
+              setIsArchiveDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickUnarchive={{
+            onClick: async () => {
+              const isUnArchived = await unArchiveModuleById(editModule.id);
+              if (isUnArchived) {
+                const updatedEditModule = {
+                  ...editModule,
+                  is_archived: false,
+                } as ModuleType;
+                queryClient.setQueryData<ModuleType>(
+                  QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                    moduleId: editModule.id,
+                  }),
+                  {
+                    ...updatedEditModule,
+                  },
+                );
+                toast.success('Interview type unarchived successfully.');
+              }
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
     </>
   );
 }
