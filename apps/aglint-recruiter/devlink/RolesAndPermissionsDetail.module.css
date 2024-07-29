@@ -81,6 +81,14 @@
   grid-row-gap: var(--space-1);
 }
 
+.rpd-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .userwithrole-wrap {
   display: flex;
   padding-top: var(--space-3);

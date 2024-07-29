@@ -127,6 +127,7 @@ export * from "./CloseDeleteJob";
 export * from "./CloseJobButton";
 export * from "./CloseJobModal";
 export * from "./CompanyInfo";
+export * from "./CompanyInfoDetails";
 export * from "./CompanyListing";
 export * from "./CompanyListingLinks";
 export * from "./CompanyLocation";

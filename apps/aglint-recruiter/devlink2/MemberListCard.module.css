@@ -226,14 +226,14 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .mlc-drop-wrap {
   display: flex;
-  width: 26px;
-  height: 26px;
+  width: var(--space-6);
+  height: var(--space-6);
   justify-content: center;
   align-items: center;
 
@@ -250,12 +250,9 @@
 
 .mlc-three-dot {
   position: relative;
-
   display: flex;
-  padding: var(--space-2);
   justify-content: flex-end;
   align-items: center;
-
   cursor: pointer;
 }
 

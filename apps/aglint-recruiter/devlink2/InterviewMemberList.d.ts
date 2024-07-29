@@ -8,4 +8,5 @@ declare function InterviewMemberList(props: {
   slotNewTabPill?: Types.Devlink.Slot;
   slotModuleContent?: Types.Devlink.Slot;
   slotEditButton?: Types.Devlink.Slot;
+  slotJobsCard?: Types.Devlink.Slot;
 }): React.JSX.Element;

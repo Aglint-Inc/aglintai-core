@@ -1,5 +1,6 @@
 .module-setting-wrap {
   position: relative;
+  margin-bottom: var(--space-3);
   padding: var(--space-4);
   border-radius: var(--radius-4);
   background-color: var(--white);
