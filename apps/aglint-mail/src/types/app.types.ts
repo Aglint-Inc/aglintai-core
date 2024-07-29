@@ -1,6 +1,7 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 
-export type MailPayloadType = Pick<
-  DatabaseTable['company_email_template'],
-  'from_name' | 'body' | 'subject'
->;
+export type ReactTempPayload<T extends DatabaseEnums['email_slack_types']> =
+  EmailTemplateAPi<T>['react_email_placeholders'] & {
+    emailBody: string;
+    subject: string;
+  };

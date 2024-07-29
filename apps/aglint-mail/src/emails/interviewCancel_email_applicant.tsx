@@ -9,7 +9,7 @@ import {
 } from '../utils/email/common/functions';
 
 type EmailType = EmailTemplateAPi<'interviewCancel_email_applicant'>;
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Dear {{ candidateFirstName }},</p><p>I regret to inform you that we need to cancel your scheduled interview session at {{ companyName }}.</p><p>We apologize for any inconvenience caused and will be in touch soon to reschedule.</p><p>Best regards,<br>{{ companyName }}</p>',
   companyLogo: companyLogoDummy,
@@ -33,7 +33,7 @@ export const InterviewBookingConfirmation = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetails = dummy.meetingDetails,
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       {meetingDetails.map((meetingDetail, i) => (
