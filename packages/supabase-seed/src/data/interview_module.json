@@ -17,7 +17,6 @@
       "reqruire_approval": true
     },
     "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>In-Depth Technical Questions:</strong></p><ul><li><p>Conduct a 1-2 hour interview focusing on system design, software architecture, and real-world problem-solving.</p></li><li><p>Ask about past projects, challenges faced, and how they were resolved.</p></li></ul></li><li><p><strong>Live Coding Session:</strong></p><ul><li><p>Provide a coding task to be completed during the interview.</p></li><li><p>Evaluate coding style, logical approach, and problem-solving under pressure.</p></li></ul></li></ol>",
-    "department": "Software Development",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": false
   },
@@ -39,7 +38,6 @@
       "reqruire_approval": false
     },
     "instructions": "<p>ASDASD</p>",
-    "department": "",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": true
   },
@@ -61,7 +59,6 @@
       "reqruire_approval": false
     },
     "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>System Design Problem:</strong></p><ul><li><p>Present a real-world problem relevant to the company’s domain.</p></li><li><p>Ask the candidate to design a system or component, considering scalability, reliability, and maintainability.</p></li></ul></li><li><p><strong>Discussion and Evaluation:</strong></p><ul><li><p>Discuss the candidate's design choices, trade-offs, and technologies used.</p></li><li><p>Evaluate their understanding of system architecture, cloud infrastructure, and best practices.</p></li></ul></li></ol>",
-    "department": "Software Development",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": false
   },
@@ -83,7 +80,6 @@
       "reqruire_approval": true
     },
     "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>Behavioral Interview:</strong></p><ul><li><p>Conduct a 1-hour interview focusing on behavioral questions and situational responses.</p></li><li><p>Assess the candidate’s alignment with the company’s values, teamwork, and conflict resolution skills.</p></li></ul></li><li><p><strong>Team Meeting:</strong></p><ul><li><p>Arrange a meeting with potential team members.</p></li><li><p>Evaluate how well the candidate interacts with the team and fits into the company culture.</p></li></ul></li><li><p><strong>Final Review:</strong></p><ul><li><p>Gather feedback from all interviewers.</p></li><li><p>Discuss the candidate's performance across all stages.</p></li><li><p>Make the final hiring decision.</p></li></ul></li></ol>",
-    "department": "Software Development",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": false
   },
@@ -105,7 +101,6 @@
       "reqruire_approval": false
     },
     "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>Resume Review:</strong></p><ul><li><p>Check the candidate's educational background, work experience, and relevant skills.</p></li><li><p>Look for experience with SaaS and software development methodologies.</p></li></ul></li><li><p><strong>Phone/Video Screening:</strong></p><ul><li><p>Conduct a 30-minute interview to discuss the candidate’s resume and experience.</p></li><li><p>Assess communication skills and cultural fit.</p></li><li><p>Ask general questions about their motivation, career goals, and understanding of SaaS.</p></li></ul></li></ol>",
-    "department": "Software Development",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": false
   },
@@ -127,7 +122,6 @@
       "reqruire_approval": false
     },
     "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>Online Coding Test:</strong></p><ul><li><p>Send a coding challenge via a platform like HackerRank or Codility.</p></li><li><p>Include questions on algorithms, data structures, and problem-solving.</p></li></ul></li><li><p><strong>Review of Results:</strong></p><ul><li><p>Assess the quality of code, efficiency, and problem-solving approach.</p></li><li><p>Select candidates who meet the required technical standards.</p></li></ul></li></ol>",
-    "department": "Software Development",
     "created_by": "5fb53f5f-5b21-42b7-89e8-93718b104cdc",
     "is_archived": false
   }

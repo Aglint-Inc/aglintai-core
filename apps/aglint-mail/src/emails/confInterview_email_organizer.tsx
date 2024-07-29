@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
@@ -8,10 +7,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'confInterview_email_organizer'>;
+type EmailType = ReactTempPayload<'confInterview_email_organizer'>;
 
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Dear {{ recruiterFirstName }},</p><p></p><p>Please find the details for the interview below:</p><p>Candidate name: {{ candidateFirstName }}<br></p><p>Thank you</p><p>Aglint Team</p><p></p><p></p>',
   companyLogo: companyLogoDummy,
@@ -36,11 +36,11 @@ export const ConfirmMailToOrganizer = ({
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
   candidateDetails = '',
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Session meetingDetail={meetingDetails} />
-      <ButtonSolid href={candidateDetails} buttonText="Candidate Details" />
+      <ButtonSolid buttonText="Candidate Details" href={candidateDetails} />
     </EmailContainer>
   );
 };

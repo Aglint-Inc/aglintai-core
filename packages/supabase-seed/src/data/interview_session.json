@@ -86,5 +86,71 @@
       "previous_interviewers": false,
       "recruiting_coordinator": false
     }
+  },
+  {
+    "id": "e0222bca-0f17-46d5-abbd-fc4a0adf0755",
+    "created_at": "2024-07-27 12:00:18.771725+00",
+    "module_id": "912197f8-8feb-4004-82b7-f33d060d3f65",
+    "interview_plan_id": null,
+    "session_order": "2",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "Technical deep dive",
+    "meeting_id": "26da8156-6bda-4838-a047-6eb4ba847d33",
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  },
+  {
+    "id": "b33cf773-8e4a-42e1-9a91-a249bea7233e",
+    "created_at": "2024-07-27 12:00:18.771725+00",
+    "module_id": "9253a0bd-09a3-4cba-a8bd-d24db963a7c5",
+    "interview_plan_id": null,
+    "session_order": "3",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "Culture fit",
+    "meeting_id": "ae855b97-71f7-489f-a853-06161edc794f",
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
+  },
+  {
+    "id": "d587e162-c082-4940-aef1-706c3fa34def",
+    "created_at": "2024-07-27 12:00:18.771725+00",
+    "module_id": "e6f79ab6-9b41-49d3-9e27-c040782c66a4",
+    "interview_plan_id": null,
+    "session_order": "4",
+    "session_duration": "30",
+    "break_duration": "0",
+    "interviewer_cnt": "1",
+    "session_type": "panel",
+    "location": null,
+    "schedule_type": "google_meet",
+    "name": "System design",
+    "meeting_id": "384db61e-1168-4970-9aa0-8f5dea74448c",
+    "members_meta": {
+      "sourcer": false,
+      "recruiter": false,
+      "hiring_manager": false,
+      "previous_interviewers": false,
+      "recruiting_coordinator": false
+    }
   }
 ]

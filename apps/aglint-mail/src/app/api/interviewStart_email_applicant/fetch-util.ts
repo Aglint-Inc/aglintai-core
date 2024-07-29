@@ -3,13 +3,8 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import {
   durationCalculator,
   platformRemoveUnderscore,
@@ -54,11 +49,6 @@ export async function dbFetch(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'interviewStart_email_applicant',
-  );
-
   // const cand_tz = 'America/Los_angeles';
   const rec_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
@@ -86,10 +76,6 @@ export async function dbFetch(
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,
     };
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
 
   const meeting_detail_card: MeetingDetailCardType = {
     date: dayjsLocal(meeting_details.start_time)
@@ -106,13 +92,12 @@ export async function dbFetch(
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetail: meeting_detail_card,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: recruiter_id,
     react_email_placeholders,
     recipient_email: email,
   };

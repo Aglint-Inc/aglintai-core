@@ -11,7 +11,6 @@
     "primary_contact": null,
     "hr_contact": null,
     "available_roles": [],
-    "departments": [],
     "technology_score": [],
     "company_overview": "",
     "e_o_statement": null,
@@ -33,16 +32,6 @@
     "company_values": null,
     "benefits": null,
     "employee_size": "",
-    "office_locations": [
-      {
-        "city": "",
-        "line1": "",
-        "line2": "",
-        "region": "",
-        "country": "",
-        "is_headquarter": true
-      }
-    ],
     "socials": {
       "custom": {
         "angellist": "",
@@ -278,7 +267,6 @@
     "primary_contact": null,
     "hr_contact": null,
     "available_roles": [],
-    "departments": [],
     "technology_score": [],
     "company_overview": "",
     "e_o_statement": null,
@@ -300,16 +288,6 @@
     "company_values": null,
     "benefits": null,
     "employee_size": "",
-    "office_locations": [
-      {
-        "city": "",
-        "line1": "",
-        "line2": "",
-        "region": "",
-        "country": "",
-        "is_headquarter": true
-      }
-    ],
     "socials": {
       "custom": {
         "angellist": "",
@@ -544,7 +522,6 @@
     "primary_contact": null,
     "hr_contact": null,
     "available_roles": [],
-    "departments": [],
     "technology_score": [],
     "company_overview": "",
     "e_o_statement": null,
@@ -566,16 +543,6 @@
     "company_values": null,
     "benefits": null,
     "employee_size": "",
-    "office_locations": [
-      {
-        "city": "",
-        "line1": "",
-        "line2": "",
-        "region": "",
-        "country": "",
-        "is_headquarter": true
-      }
-    ],
     "socials": {
       "custom": {
         "angellist": "",
@@ -811,7 +778,6 @@
     "primary_contact": null,
     "hr_contact": null,
     "available_roles": [],
-    "departments": [],
     "technology_score": [],
     "company_overview": "",
     "e_o_statement": null,
@@ -833,16 +799,6 @@
     "company_values": null,
     "benefits": null,
     "employee_size": "",
-    "office_locations": [
-      {
-        "city": "",
-        "line1": "",
-        "line2": "",
-        "region": "",
-        "country": "",
-        "is_headquarter": true
-      }
-    ],
     "socials": {
       "custom": {
         "angellist": "",

@@ -1,1 +1,131 @@
-[]
+[
+  {
+    "id": "ae855b97-71f7-489f-a853-06161edc794f",
+    "created_at": "2024-07-27 12:00:18.017704+00",
+    "interview_schedule_id": "6c727696-4dc2-42e2-b8d4-a04afba21726",
+    "meeting_json": null,
+    "status": "not_scheduled",
+    "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>Behavioral Interview:</strong></p><ul><li><p>Conduct a 1-hour interview focusing on behavioral questions and situational responses.</p></li><li><p>Assess the candidate’s alignment with the company’s values, teamwork, and conflict resolution skills.</p></li></ul></li><li><p><strong>Team Meeting:</strong></p><ul><li><p>Arrange a meeting with potential team members.</p></li><li><p>Evaluate how well the candidate interacts with the team and fits into the company culture.</p></li></ul></li><li><p><strong>Final Review:</strong></p><ul><li><p>Gather feedback from all interviewers.</p></li><li><p>Discuss the candidate's performance across all stages.</p></li><li><p>Make the final hiring decision.</p></li></ul></li></ol>",
+    "meeting_link": null,
+    "confirmed_date": null,
+    "start_time": null,
+    "end_time": null,
+    "cal_event_id": null,
+    "candidate_feedback": null,
+    "organizer_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "meeting_flow": "self_scheduling"
+  },
+  {
+    "id": "384db61e-1168-4970-9aa0-8f5dea74448c",
+    "created_at": "2024-07-27 12:00:18.017704+00",
+    "interview_schedule_id": "6c727696-4dc2-42e2-b8d4-a04afba21726",
+    "meeting_json": null,
+    "status": "not_scheduled",
+    "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>System Design Problem:</strong></p><ul><li><p>Present a real-world problem relevant to the company’s domain.</p></li><li><p>Ask the candidate to design a system or component, considering scalability, reliability, and maintainability.</p></li></ul></li><li><p><strong>Discussion and Evaluation:</strong></p><ul><li><p>Discuss the candidate's design choices, trade-offs, and technologies used.</p></li><li><p>Evaluate their understanding of system architecture, cloud infrastructure, and best practices.</p></li></ul></li></ol>",
+    "meeting_link": null,
+    "confirmed_date": null,
+    "start_time": null,
+    "end_time": null,
+    "cal_event_id": null,
+    "candidate_feedback": null,
+    "organizer_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "meeting_flow": "self_scheduling"
+  },
+  {
+    "id": "26da8156-6bda-4838-a047-6eb4ba847d33",
+    "created_at": "2024-07-27 12:00:18.017704+00",
+    "interview_schedule_id": "6c727696-4dc2-42e2-b8d4-a04afba21726",
+    "meeting_json": {
+      "id": "1los2j8u9ri6npa3uoj3br9t5g",
+      "end": {
+        "dateTime": "2024-08-01T10:00:00+05:30",
+        "timeZone": "Asia/Colombo"
+      },
+      "etag": "\"3444164906328000\"",
+      "kind": "calendar#event",
+      "start": {
+        "dateTime": "2024-08-01T09:30:00+05:30",
+        "timeZone": "Asia/Colombo"
+      },
+      "status": "confirmed",
+      "created": "2024-07-27T12:14:13.000Z",
+      "creator": {
+        "self": true,
+        "email": "ravi@aglinthq.com"
+      },
+      "iCalUID": "1los2j8u9ri6npa3uoj3br9t5g@google.com",
+      "summary": "Technical Deep Dive : Abdul Kollikathara for Software Engineer",
+      "updated": "2024-07-27T12:14:13.164Z",
+      "htmlLink": "https://www.google.com/calendar/event?eid=MWxvczJqOHU5cmk2bnBhM3VvajNicjl0NWcgcmF2aUBhZ2xpbnRocS5jb20",
+      "sequence": 0,
+      "eventType": "default",
+      "organizer": {
+        "self": true,
+        "email": "ravi@aglinthq.com"
+      },
+      "reminders": {
+        "overrides": [
+          {
+            "method": "popup",
+            "minutes": 10
+          },
+          {
+            "method": "email",
+            "minutes": 1440
+          }
+        ],
+        "useDefault": false
+      },
+      "description": "<p>Interview Details:</p><p>Candidate Profile: <a href=\"http://localhost:3000/scheduling/view?meeting_id=26da8156-6bda-4838-a047-6eb4ba847d33&tab=candidate_details\">here</a>.</p><p>Interview Instructions:</p><p>Please review the interview instructions <a href=\"http://localhost:3000/scheduling/view?meeting_id=26da8156-6bda-4838-a047-6eb4ba847d33&tab=instructions\">here</a>.</p><p>Provide Feedback:</p><p>After the interview, kindly provide your feedback <a href=\"http://localhost:3000/scheduling/view?meeting_id=26da8156-6bda-4838-a047-6eb4ba847d33&tab=feedback\">here</a>.</p><p>Reschedule or Cancel:</p><p>If you need to reschedule or cancel this meeting, please use the following <a href=\"http://localhost:3000/scheduling/view?meeting_id=26da8156-6bda-4838-a047-6eb4ba847d33&tab=candidate_details\">here</a>.</p>",
+      "hangoutLink": "https://meet.google.com/rry-aicx-gtq",
+      "conferenceData": {
+        "entryPoints": [
+          {
+            "uri": "https://meet.google.com/rry-aicx-gtq",
+            "label": "meet.google.com/rry-aicx-gtq",
+            "entryPointType": "video"
+          },
+          {
+            "pin": "2487098307075",
+            "uri": "https://tel.meet/rry-aicx-gtq?pin=2487098307075",
+            "entryPointType": "more"
+          },
+          {
+            "pin": "556673492",
+            "uri": "tel:+1-681-238-9302",
+            "label": "+1 681-238-9302",
+            "regionCode": "US",
+            "entryPointType": "phone"
+          }
+        ],
+        "conferenceId": "rry-aicx-gtq",
+        "createRequest": {
+          "status": {
+            "statusCode": "success"
+          },
+          "requestId": "a59a8b81-e194-46b4-b4fc-0970198c3e50",
+          "conferenceSolutionKey": {
+            "type": "hangoutsMeet"
+          }
+        },
+        "conferenceSolution": {
+          "key": {
+            "type": "hangoutsMeet"
+          },
+          "name": "Google Meet",
+          "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+        }
+      }
+    },
+    "status": "confirmed",
+    "instructions": "<p><strong>Instructions:</strong></p><ol><li><p><strong>In-Depth Technical Questions:</strong></p><ul><li><p>Conduct a 1-2 hour interview focusing on system design, software architecture, and real-world problem-solving.</p></li><li><p>Ask about past projects, challenges faced, and how they were resolved.</p></li></ul></li><li><p><strong>Live Coding Session:</strong></p><ul><li><p>Provide a coding task to be completed during the interview.</p></li><li><p>Evaluate coding style, logical approach, and problem-solving under pressure.</p></li></ul></li></ol>",
+    "meeting_link": "https://meet.google.com/rry-aicx-gtq",
+    "confirmed_date": "2024-07-27 12:14:14.319+00",
+    "start_time": "2024-08-01 04:00:00+00",
+    "end_time": "2024-08-01 04:30:00+00",
+    "cal_event_id": "1los2j8u9ri6npa3uoj3br9t5g",
+    "candidate_feedback": null,
+    "organizer_id": "86d5afa6-0717-4df7-b33c-cc318093dbe3",
+    "meeting_flow": "candidate_request"
+  }
+]

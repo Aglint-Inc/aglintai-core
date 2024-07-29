@@ -5,21 +5,28 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(sendAvailabilityRequestEmailApplicantSchema, meta);
+    const req_body = v.parse(sendAvailabilityRequestEmailApplicantSchema, body);
     if (!req_body.avail_req_id && !req_body.preview_details) {
       throw new Error('missing details');
     }
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await dbUtil(req_body);
 
     const is_preview = req_body.preview_details;
     const htmlSub = await sendMailFun({
-      filled_comp_template,
+      api_target: 'availabilityReqResend_email_candidate',
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+      payload: req_body.payload,
       is_preview,
     });
 

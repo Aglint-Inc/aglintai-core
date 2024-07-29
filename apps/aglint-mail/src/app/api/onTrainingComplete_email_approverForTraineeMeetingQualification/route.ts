@@ -12,14 +12,22 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(onQualifiedEmailApproverSchema, req_body.meta);
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const parsed_body = v.parse(onQualifiedEmailApproverSchema, req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await fetchUtil(parsed_body);
+
+    await sendMailFun({
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      payload: req_body.payload,
+      recipient_email,
+      api_target:
+        'onTrainingComplete_email_approverForTraineeMeetingQualification',
     });
 
     return NextResponse.json('success', {

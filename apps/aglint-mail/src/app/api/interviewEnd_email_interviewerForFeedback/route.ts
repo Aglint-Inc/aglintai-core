@@ -5,20 +5,27 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
   try {
     const req_body = v.parse(
       interviewEndEmailInterviewerForFeedbackSchema,
-      meta,
+      body,
     );
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(req_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await fetchUtil(req_body);
+
+    await sendMailFun({
+      api_target: 'interviewEnd_email_interviewerForFeedback',
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+      payload: req_body.payload,
     });
 
     return NextResponse.json(
@@ -29,15 +36,13 @@ export async function POST(req: Request) {
     );
   } catch (e) {
     console.error(e);
-    if (e) {
-      return NextResponse.json(
-        {
-          error: `${e.name}:  ${e.message}`,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
+    return NextResponse.json(
+      {
+        error: `${e.name}:  ${e.message}`,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

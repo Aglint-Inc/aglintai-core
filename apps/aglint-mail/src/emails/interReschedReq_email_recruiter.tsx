@@ -1,6 +1,5 @@
 import { Text } from '@react-email/components';
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
@@ -8,11 +7,12 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'interReschedReq_email_recruiter'>;
+type EmailType = ReactTempPayload<'interReschedReq_email_recruiter'>;
 
 // export dummy
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Dear {{ recruiterName }},</p><p></p><p>{{ candidateFirstName }} is requesting to reschedule their interview between {{ dateRange }} stating the reason: "{{ rescheduleReason }}".</p><p></p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p></p><p>Thank you,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo: companyLogoDummy,
@@ -37,7 +37,7 @@ export const CandidateRescheduleRequest = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Text className="text-[12px] my-0  text-text-sm text-neutral-12">

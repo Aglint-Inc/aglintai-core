@@ -5,23 +5,30 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
   try {
-    const req_body = v.parse(sendSelfScheduleRequest_email_applicant, meta);
+    const req_body = v.parse(sendSelfScheduleRequest_email_applicant, body);
 
     if (!req_body.filter_json_id && !req_body.application_id) {
       throw new Error('missing details');
     }
 
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+    } = await dbUtil(req_body);
 
     const is_preview = Boolean(req_body.application_id);
 
     const htmlSub = await sendMailFun({
-      filled_comp_template,
+      api_target: 'sendSelfScheduleRequest_email_applicant',
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+      payload: req_body.payload,
       is_preview,
     });
     if (is_preview) {
