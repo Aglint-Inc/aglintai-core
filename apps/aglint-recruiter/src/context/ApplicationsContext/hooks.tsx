@@ -189,7 +189,8 @@ export const useApplicationsActions = () => {
     }),
   );
 
-  const { ...queryParams } = params;
+  // eslint-disable-next-line no-unused-vars
+  const { section: _section, ...queryParams } = params;
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
