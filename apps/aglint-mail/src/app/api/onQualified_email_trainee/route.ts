@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
+      api_target: 'onQualified_email_trainee',
     });
 
     return NextResponse.json('success', {

@@ -1,4 +1,4 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import {
   DAYJS_FORMATS,
   fillCompEmailTemplate,
@@ -7,10 +7,13 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'interviewEnd_email_organizerForMeetingStatus';
   const [data] = supabaseWrap(
     await supabaseAdmin
       .from('meeting_details')
@@ -20,7 +23,6 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
-  const recruiter_id = data.recruiter_id;
   const organizer = data.recruiter_user;
   const candidate = data.applications.candidates;
   const company = data.applications.candidates.recruiter;
@@ -30,10 +32,22 @@ export async function fetchUtil(
   const meeting_id = data.id;
   const meetingStatusUpdateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'interviewEnd_email_organizerForMeetingStatus',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(
+      candidate.recruiter_id,
+      api_target,
+    );
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['comp_email_placeholders'] =
     {
@@ -54,7 +68,7 @@ export async function fetchUtil(
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
   const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['react_email_placeholders'] =
     {

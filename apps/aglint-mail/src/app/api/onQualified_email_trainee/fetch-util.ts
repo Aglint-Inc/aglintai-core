@@ -1,11 +1,14 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onQualified_email_trainee'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'onQualified_email_trainee';
   const [data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
@@ -25,11 +28,6 @@ export async function fetchUtil(
   const { interview_module, recruiter_user: trainee } = data;
   const company = data.interview_module.recruiter;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    data.interview_module.recruiter_id,
-    'onQualified_email_trainee',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'onQualified_email_trainee'>['comp_email_placeholders'] =
     {
       approverFirstName: approver.first_name,
@@ -41,10 +39,26 @@ export async function fetchUtil(
       traineeName: getFullName(trainee.first_name, trainee.last_name),
       companyName: company.name,
     };
+  let mail_payload: MailPayloadType;
 
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(
+      data.interview_module.recruiter_id,
+      api_target,
+    );
+
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
   const react_email_placeholders: EmailTemplateAPi<'onQualified_email_trainee'>['react_email_placeholders'] =
     {

@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
+      api_target: 'interviewerResumed_email_admin',
     });
     return NextResponse.json('success', {
       status: 200,

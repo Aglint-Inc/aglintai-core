@@ -1,14 +1,10 @@
-import type {
-  DatabaseEnums,
-  DatabaseTable,
-  EmailTemplateAPi,
-} from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import sendMail from '../../config/sendgrid';
 import type { ICSAttachment } from '../ceateIcsContent';
+import type { MailPayloadType } from '../../types/app.types';
 import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
-import { MailPayloadType } from '../../types/app.types';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],

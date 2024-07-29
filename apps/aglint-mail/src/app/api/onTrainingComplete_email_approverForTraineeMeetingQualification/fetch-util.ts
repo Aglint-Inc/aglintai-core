@@ -1,4 +1,4 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
@@ -6,6 +6,9 @@ import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'onTrainingComplete_email_approverForTraineeMeetingQualification';
+
   const [sessn_reln] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')

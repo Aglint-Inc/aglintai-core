@@ -4,7 +4,7 @@ import {
   getFullName,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
@@ -13,10 +13,14 @@ import {
   sessionTypeIcon,
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'meetingAccepted_email_organizer'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'meetingAccepted_email_organizer';
+
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -68,10 +72,23 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    public_jobs.recruiter_id,
-    'meetingAccepted_email_organizer',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(
+      candidateJob.candidates.recruiter_id,
+      api_target,
+    );
+
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
 
   const comp_email_placeholder: EmailTemplateAPi<'meetingAccepted_email_organizer'>['comp_email_placeholders'] =
     {
@@ -94,7 +111,7 @@ export async function fetchUtil(
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
 
   // const candSchLink = req_body.application_id

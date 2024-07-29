@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { interviewStartEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { fetchUtil } from './fetch-util';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -17,6 +17,7 @@ export async function POST(req: Request) {
       react_email_placeholders,
       recipient_email,
       is_preview,
+      api_target: 'interviewStart_email_organizer',
     });
 
     if (is_preview) {

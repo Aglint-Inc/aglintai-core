@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         filled_comp_template,
         react_email_placeholders,
         recipient_email,
+        api_target: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
       });
     }
 

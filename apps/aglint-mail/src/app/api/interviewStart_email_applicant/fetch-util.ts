@@ -1,4 +1,5 @@
 import type {
+  DatabaseEnums,
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
@@ -16,10 +17,14 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../../utils/email/common/functions';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function dbFetch(
   req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'interviewStart_email_applicant';
+
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')
@@ -54,10 +59,20 @@ export async function dbFetch(
     public_jobs: { company, job_title },
   } = candidateJob;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'interviewStart_email_applicant',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(recruiter_id, api_target);
+
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
 
   // const cand_tz = 'America/Los_angeles';
   const rec_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
@@ -88,7 +103,7 @@ export async function dbFetch(
     };
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
 
   const meeting_detail_card: MeetingDetailCardType = {

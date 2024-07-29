@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
+      api_target: 'interviewCancel_email_applicant',
     });
     return NextResponse.json('success', {
       status: 200,

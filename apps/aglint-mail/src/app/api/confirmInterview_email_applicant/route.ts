@@ -23,6 +23,7 @@ export async function POST(req: Request) {
       recipient_email,
       attachments: mail_attachments,
       is_preview,
+      api_target: 'confirmInterview_email_applicant',
     });
     if (is_preview) {
       return NextResponse.json(

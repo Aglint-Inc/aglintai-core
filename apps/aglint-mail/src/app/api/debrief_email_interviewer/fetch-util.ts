@@ -1,4 +1,5 @@
 import type {
+  DatabaseEnums,
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
@@ -16,10 +17,13 @@ import {
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'debrief_email_interviewer';
   const [session] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -47,6 +51,23 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(
+      candidateJob.candidates.recruiter_id,
+      api_target,
+    );
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
+
   const meeting_organizer = session.interview_meeting.recruiter_user;
 
   const org_tz =
@@ -71,11 +92,6 @@ export async function fetchUtil(
     meetingIcon: scheduleTypeIcon(schedule_type),
   };
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'debrief_email_interviewer',
-  );
-
   const interviewers_mail_data = debrief_email_interviewers.map((inter) => {
     const comp_email_placeholder: EmailTemplateAPi<'debrief_email_interviewer'>['comp_email_placeholders'] =
       {
@@ -98,7 +114,7 @@ export async function fetchUtil(
 
     const filled_comp_template = fillCompEmailTemplate(
       comp_email_placeholder,
-      comp_email_temp,
+      mail_payload,
     );
 
     const candidateLink = req_body.application_id
@@ -111,7 +127,7 @@ export async function fetchUtil(
         emailBody: filled_comp_template.body,
         subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: candidateLink,
+        candidateLink,
       };
 
     return {

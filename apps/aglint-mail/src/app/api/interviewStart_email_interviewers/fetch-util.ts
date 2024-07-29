@@ -1,4 +1,4 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import {
   DAYJS_FORMATS,
   fillCompEmailTemplate,
@@ -13,10 +13,14 @@ import {
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
+import type { MailPayloadType } from '../../../types/app.types';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
 ) {
+  const api_target: DatabaseEnums['email_slack_types'] =
+    'interviewStart_email_interviewers';
+
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -67,10 +71,23 @@ export async function fetchUtil(
       };
     });
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'interviewStart_email_interviewers',
-  );
+  let mail_payload: MailPayloadType;
+
+  if (req_body.payload) {
+    mail_payload = {
+      from_name: '',
+      ...req_body.payload,
+    };
+  } else {
+    const comp_email_temp = await fetchCompEmailTemp(
+      candidateJob.candidates.recruiter_id,
+      api_target,
+    );
+
+    mail_payload = {
+      ...comp_email_temp,
+    };
+  }
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
@@ -105,7 +122,7 @@ export async function fetchUtil(
 
   const filled_comp_template = fillCompEmailTemplate(
     comp_email_placeholder,
-    comp_email_temp,
+    mail_payload,
   );
 
   const candLink = req_body.meeting_id

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
 import { meetingDeclinedEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
-import { fetchUtil } from './fetch-util';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
+import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       filled_comp_template,
       react_email_placeholders,
       recipient_email,
+      api_target: 'meetingDeclined_email_organizer',
     });
 
     return NextResponse.json(
