@@ -1,5 +1,7 @@
+'use client';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React from 'react';
 
 const defaultMeta = {
@@ -27,7 +29,7 @@ export default function Seo(props: {
   robots?: string;
   jsonLd?: any;
 }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const meta = {
     ...defaultMeta,
     ...props,

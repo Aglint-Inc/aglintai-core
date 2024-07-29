@@ -53,6 +53,7 @@ const PERMISSIONS: Permissions = {
   '/integrations': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
+  '/profile/[id]': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'

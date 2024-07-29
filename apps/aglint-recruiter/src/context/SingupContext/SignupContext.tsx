@@ -1,5 +1,4 @@
-// ** React Imports
-
+'use client';
 import { DatabaseTable } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import React, {
