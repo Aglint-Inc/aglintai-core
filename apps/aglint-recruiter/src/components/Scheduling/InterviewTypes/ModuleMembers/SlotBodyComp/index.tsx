@@ -127,7 +127,7 @@ function SlotBodyComp({
 
   return (
     <>
-      <SettingsDialog editModule={editModule}  />
+      <SettingsDialog editModule={editModule} />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
@@ -183,8 +183,7 @@ function SlotBodyComp({
                         textLabel={tab.name}
                         isPillActive={
                           currentTab === tab.queryParams ||
-                          (!currentTab &&
-                            tab.queryParams == 'qualified_members')
+                          (!currentTab && tab.queryParams == 'qualified')
                         }
                         onClickPill={{
                           onClick: () => {
@@ -208,7 +207,7 @@ function SlotBodyComp({
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>
-                  {(currentTab === 'qualified_members' || !currentTab) && (
+                  {(currentTab === 'qualified' || !currentTab) && (
                     <ModuleMembers
                       isMembersTrainingVisible={false}
                       slotQualifiedMemberList={
