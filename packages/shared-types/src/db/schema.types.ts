@@ -5184,6 +5184,7 @@ export type Database = {
           description: string | null
           id: string | null
           interval: number | null
+          is_paused: boolean | null
           jobs: Json | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
