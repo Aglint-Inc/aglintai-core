@@ -104,8 +104,8 @@ function SlotBodyComp({
       currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
 
     router.push(
-      ROUTES['/scheduling/module/members/[module_id]']({
-        module_id: editModule.id,
+      ROUTES['/scheduling/interview-types/[type_id]']({
+        type_id: editModule.id,
       }) + `?tab=${next}`,
       undefined,
       {
@@ -229,8 +229,8 @@ function SlotBodyComp({
                         onClickPill={{
                           onClick: () => {
                             router.push(
-                              ROUTES['/scheduling/module/members/[module_id]']({
-                                module_id: editModule.id,
+                              ROUTES['/scheduling/interview-types/[type_id]']({
+                                type_id: editModule.id,
                               }) + `?tab=${tab.queryParams}`,
                               undefined,
                               {
