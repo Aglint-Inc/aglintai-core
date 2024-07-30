@@ -5,16 +5,23 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbFetch } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(interviewStartEmailApplicantSchema, meta);
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbFetch(req_body);
-    await sendMailFun({
-      filled_comp_template,
+    const req_body = v.parse(interviewStartEmailApplicantSchema, body);
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await dbFetch(req_body);
+    await sendMailFun({
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+      api_target: 'interviewStart_email_applicant',
+      payload: req_body.payload,
     });
     return NextResponse.json('success', {
       status: 200,

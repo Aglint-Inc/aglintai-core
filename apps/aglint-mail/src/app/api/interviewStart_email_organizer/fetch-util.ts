@@ -1,18 +1,13 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
   platformRemoveUnderscore,
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../../utils/email/common/functions';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_organizer'>['api_payload'],
@@ -61,11 +56,6 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    public_jobs.recruiter_id,
-    'interviewStart_email_organizer',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_organizer'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(organizer.first_name, organizer.last_name),
@@ -79,11 +69,6 @@ export async function fetchUtil(
       candidateLastName: candidate.last_name,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const candLink = recruiter_user.interview_meeting.id
     ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details`
     : '';
@@ -91,14 +76,13 @@ export async function fetchUtil(
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_organizer'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
       candidateLink: candLink,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: candidateJob.candidates.recruiter_id,
     react_email_placeholders,
     recipient_email: organizer.email,
   };

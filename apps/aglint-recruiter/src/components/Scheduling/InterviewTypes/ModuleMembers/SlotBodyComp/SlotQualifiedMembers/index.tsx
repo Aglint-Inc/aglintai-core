@@ -35,7 +35,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
     <>
       {filtererdUsers.length === 0 && (
         <EmptyGeneral
-          textEmpt={'No members yet'}
+          textEmpt={'No interviewers added yet.'}
           slotButton={
             <ButtonSoft
               size={2}

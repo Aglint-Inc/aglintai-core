@@ -48,14 +48,14 @@ function SlotTrainingMembers({
 
       {filtererdUsers.length === 0 && (
         <EmptyGeneral
-          textEmpt={'No members yet'}
+          textEmpt={'No interviewers added yet.'}
           slotButton={
             <ButtonSoft
               size={2}
               isRightIcon={false}
               isLeftIcon={true}
               slotIcon={<GlobalIcon iconName='person_add' size={5} />}
-              textButton={'Add Training Member'}
+              textButton={'Add Trainee'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
@@ -91,7 +91,7 @@ function SlotTrainingMembers({
             isRightIcon={false}
             isLeftIcon={true}
             slotIcon={<GlobalIcon iconName='person_add' size={5} />}
-            textButton={'Add Training Member'}
+            textButton={'Add Trainee'}
             onClickButton={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);

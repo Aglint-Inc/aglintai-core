@@ -29,4 +29,5 @@ declare function GlobalScheduleCard(props: {
   isButtonBlockVisible?: Types.Visibility.VisibilityConditions;
   isRoleVisible?: Types.Visibility.VisibilityConditions;
   slotStatus?: Types.Devlink.Slot;
+  isCandidateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

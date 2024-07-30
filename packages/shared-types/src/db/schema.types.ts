@@ -4160,10 +4160,12 @@ export type Database = {
           description: string | null
           id: string
           interval: number
+          is_paused: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"]
+          workflow_type: Database["public"]["Enums"]["workflow_type"]
         }
         Insert: {
           auto_connect?: boolean
@@ -4171,10 +4173,12 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
+          is_paused?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title?: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"]
+          workflow_type?: Database["public"]["Enums"]["workflow_type"]
         }
         Update: {
           auto_connect?: boolean
@@ -4182,10 +4186,12 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
+          is_paused?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           title?: string | null
           trigger?: Database["public"]["Enums"]["workflow_trigger"]
+          workflow_type?: Database["public"]["Enums"]["workflow_type"]
         }
         Relationships: [
           {
@@ -4200,36 +4206,29 @@ export type Database = {
       workflow_action: {
         Row: {
           created_at: string
-          email_template_id: string
           id: string
           order: number
           payload: Json | null
+          target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id: string
         }
         Insert: {
           created_at?: string
-          email_template_id: string
           id?: string
           order: number
           payload?: Json | null
+          target_api: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
         Update: {
           created_at?: string
-          email_template_id?: string
           id?: string
           order?: number
           payload?: Json | null
+          target_api?: Database["public"]["Enums"]["email_slack_types"]
           workflow_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "workflow_action_email_template_id_fkey"
-            columns: ["email_template_id"]
-            isOneToOne: false
-            referencedRelation: "company_email_template"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "workflow_action_workflow_id_fkey"
             columns: ["workflow_id"]
@@ -4253,8 +4252,10 @@ export type Database = {
           execute_at: string
           id: number
           meta: Json | null
+          related_table: Database["public"]["Enums"]["workflow_cron_trigger_tables"]
+          related_table_pkey: string
           started_at: string | null
-          status: Database["public"]["Enums"]["application_processing_status"]
+          status: Database["public"]["Enums"]["workflow_cron_run_status"]
           tries: number
           workflow_action_id: string
           workflow_id: string
@@ -4265,8 +4266,10 @@ export type Database = {
           execute_at: string
           id?: number
           meta?: Json | null
+          related_table: Database["public"]["Enums"]["workflow_cron_trigger_tables"]
+          related_table_pkey: string
           started_at?: string | null
-          status?: Database["public"]["Enums"]["application_processing_status"]
+          status?: Database["public"]["Enums"]["workflow_cron_run_status"]
           tries?: number
           workflow_action_id: string
           workflow_id: string
@@ -4277,8 +4280,10 @@ export type Database = {
           execute_at?: string
           id?: number
           meta?: Json | null
+          related_table?: Database["public"]["Enums"]["workflow_cron_trigger_tables"]
+          related_table_pkey?: string
           started_at?: string | null
-          status?: Database["public"]["Enums"]["application_processing_status"]
+          status?: Database["public"]["Enums"]["workflow_cron_run_status"]
           tries?: number
           workflow_action_id?: string
           workflow_id?: string
@@ -5179,11 +5184,13 @@ export type Database = {
           description: string | null
           id: string | null
           interval: number | null
+          is_paused: boolean | null
           jobs: Json | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
+          workflow_type: Database["public"]["Enums"]["workflow_type"] | null
         }
         Relationships: [
           {
@@ -5299,17 +5306,44 @@ export type Database = {
         }
         Returns: undefined
       }
-      create_new_workflow_action_log: {
-        Args: {
-          workflow_id: string
-          workflow_action_id: string
-          interval_minutes: number
-          phase: string
-          meta: Json
-          base_time?: string
-        }
-        Returns: undefined
-      }
+      create_new_workflow_action_log:
+        | {
+            Args: {
+              triggered_table: Database["public"]["Enums"]["workflow_cron_trigger_tables"]
+              triggered_table_pkey: string
+              workflow_id: string
+              workflow_action_id: string
+              interval_minutes: number
+              phase: string
+              meta: Json
+              base_time?: string
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              triggered_table: string
+              triggered_table_pkey: string
+              workflow_id: string
+              workflow_action_id: string
+              interval_minutes: number
+              phase: string
+              meta: Json
+              base_time?: string
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              workflow_id: string
+              workflow_action_id: string
+              interval_minutes: number
+              phase: string
+              meta: Json
+              base_time?: string
+            }
+            Returns: undefined
+          }
       createrecuriterrelation: {
         Args: {
           in_user_id: string
@@ -6388,6 +6422,19 @@ export type Database = {
         | "recruiting_coordinator"
         | "sourcer"
         | "hiring_manager"
+      workflow_cron_run_status:
+        | "not_started"
+        | "processing"
+        | "failed"
+        | "success"
+        | "stopped"
+      workflow_cron_trigger_tables:
+        | "interview_meeting"
+        | "interview_session_relation"
+        | "interview_filter_json"
+        | "candidate_request_availability"
+        | "interview_module_relation"
+        | "interview_training_progress"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
         | "selfScheduleReminder"
@@ -6400,6 +6447,7 @@ export type Database = {
         | "candidateBook"
         | "onQualified"
         | "onTrainingComplete"
+      workflow_type: "system" | "job"
     }
     CompositeTypes: {
       location_type: {

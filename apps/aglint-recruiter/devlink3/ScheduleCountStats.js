@@ -61,7 +61,7 @@ export function ScheduleCountStats({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu", "not-scheduled")}
+        className={_utils.cx(_styles, "scheduling-menu", "confirmed")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
@@ -69,21 +69,21 @@ export function ScheduleCountStats({
             className={_utils.cx(_styles, "menu-scheduling-wrap")}
             tag="div"
           >
-            <Text content={textNotScheduledCount} size="7" weight="medium" />
+            <Text content={textConfirmedCount} size="7" weight="medium" />
             <_Builtin.Block
-              className={_utils.cx(_styles, "hourglass_empty")}
+              className={_utils.cx(_styles, "event_upcoming")}
               tag="div"
             >
-              <GlobalIcon size="6" iconName="calendar_add_on" weight="medium" />
+              <GlobalIcon size="6" iconName="event_upcoming" weight="medium" />
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-count-wrap")}
             tag="div"
           >
-            <Text content="Not Scheduled" weight="medium" color="neutral-12" />
+            <Text content="Confirmed" weight="medium" color="neutral-12" />
             <Text
-              content={textIncreasedNotScheduled}
+              content={textIncreasedConfirmed}
               weight="regular"
               color="neutral"
               size="1"
@@ -115,37 +115,6 @@ export function ScheduleCountStats({
             <Text content="Waiting" weight="medium" color="neutral-12" />
             <Text
               content={textIncreasedWaiting}
-              weight="regular"
-              color="neutral"
-              size="1"
-            />
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "scheduling-menu", "confirmed")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "count_info")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "menu-scheduling-wrap")}
-            tag="div"
-          >
-            <Text content={textConfirmedCount} size="7" weight="medium" />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "event_upcoming")}
-              tag="div"
-            >
-              <GlobalIcon size="6" iconName="event_upcoming" weight="medium" />
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "schedule-count-wrap")}
-            tag="div"
-          >
-            <Text content="Confirmed" weight="medium" color="neutral-12" />
-            <Text
-              content={textIncreasedConfirmed}
               weight="regular"
               color="neutral"
               size="1"

@@ -14,15 +14,22 @@ export async function POST(req: Request) {
   try {
     const parsed_body = v.parse(
       interviewEndEmailOrganizerForMeetingStatusSchema,
-      req_body.meta,
+      req_body,
     );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await fetchUtil(parsed_body);
+
+    await sendMailFun({
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+      api_target: 'interviewEnd_email_interviewerForFeedback',
+      payload: parsed_body.payload,
     });
 
     return NextResponse.json('success', {

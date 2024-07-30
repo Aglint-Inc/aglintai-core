@@ -85,7 +85,7 @@ function AddMemberDialog({
         popupName={
           trainingStatus === 'qualified'
             ? 'Add Qualified Members'
-            : 'Add Trainee Members'
+            : 'Add Trainee.'
         }
         onClickClosePopup={{
           onClick: () => {

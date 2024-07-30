@@ -154,8 +154,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Software Development",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": null,
     "status": "active"
@@ -326,8 +324,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": null,
-    "interview_location": null,
     "employment": "fulltime",
     "linked_in": null,
     "status": "active"
@@ -499,8 +495,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": null,
     "employment": "fulltime",
     "linked_in": null,
     "status": "suspended"
@@ -660,8 +654,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Product Management",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": null,
     "status": "active"
@@ -837,8 +829,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "1. Software Development",
-    "interview_location": "bangalore, Karnataka, India",
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -1010,8 +1000,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Product Management",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": null,
     "status": "active"
@@ -1183,8 +1171,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": "Bengaluru, Karnataka, India",
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -1356,8 +1342,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": "Bengaluru, Karnataka, India",
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -1529,8 +1513,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": "Bengaluru, Karnataka, India",
     "employment": "contractor",
     "linked_in": null,
     "status": "invited"
@@ -1702,8 +1684,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": "Bengaluru, Karnataka, India",
     "employment": "parttime",
     "linked_in": null,
     "status": "invited"
@@ -1875,8 +1855,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": "Software Development",
-    "interview_location": "Bengaluru, Karnataka, India",
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -2036,8 +2014,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Software Development",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": "https://in.linkedin.com/in/chinmai-c-r",
     "status": "active"
@@ -2208,8 +2184,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": null,
-    "interview_location": null,
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -2380,8 +2354,6 @@
       },
       "isAutomaticTimeZone": false
     },
-    "department": null,
-    "interview_location": null,
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -2552,8 +2524,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "2. Information Security",
-    "interview_location": "bangalore, Karnataka, India",
     "employment": "contractor",
     "linked_in": null,
     "status": "invited"
@@ -2724,8 +2694,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "1. Software Development",
-    "interview_location": "bangalore, Karnataka, India",
     "employment": "fulltime",
     "linked_in": null,
     "status": "invited"
@@ -2891,8 +2859,6 @@
         "recruitingBlocks": ["dedicated recruiting", "Recruiting Block"]
       }
     },
-    "department": "Engineering",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": "https://www.linkedin.com/in/ravik/",
     "status": "active"
@@ -3068,8 +3034,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "1. Software Development",
-    "interview_location": null,
     "employment": "fulltime",
     "linked_in": null,
     "status": "active"
@@ -3229,8 +3193,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Software Development",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": null,
     "status": "suspended"
@@ -3390,8 +3352,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Product Management",
-    "interview_location": "Pleasanton, California, United States",
     "employment": "fulltime",
     "linked_in": null,
     "status": "suspended"
@@ -3556,8 +3516,6 @@
         "recruitingBlocks": ["Dedicated Recruiting", "Recruiting Block"]
       }
     },
-    "department": "Software Development",
-    "interview_location": null,
     "employment": "contractor",
     "linked_in": null,
     "status": "active"

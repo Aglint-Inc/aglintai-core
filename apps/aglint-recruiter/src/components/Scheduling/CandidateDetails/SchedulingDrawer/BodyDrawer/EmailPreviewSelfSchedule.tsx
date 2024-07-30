@@ -16,7 +16,6 @@ import { useSchedulingApplicationStore } from '../../store';
 import DayCardWrapper from '../StepSlotOptions/DayCardWrapper';
 import { setEmailData, useSchedulingFlowStore } from '../store';
 
-
 function EmailPreviewSelfSchedule() {
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
@@ -53,7 +52,7 @@ function EmailPreviewSelfSchedule() {
     setFetching(true);
     axios
       .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
-        meta: { ...payload },
+        ...payload,
       })
       .then(({ data }) => {
         setEmailData(data);
@@ -97,7 +96,6 @@ function EmailPreviewSelfSchedule() {
             <br />
             {`Click "Request Availability" to send.`}
           </Typography>
-         
         </Stack>
       }
       slotEmailPreview={
@@ -108,35 +106,51 @@ function EmailPreviewSelfSchedule() {
             </Stack>
           </ShowCode.When>
           <ShowCode.Else>
-          <Stack display={'flex'} gap={'32px'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} width={'100%'} padding={'0px 20px'}>
+            <Stack
+              display={'flex'}
+              gap={'32px'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              width={'100%'}
+              padding={'0px 20px'}
+            >
               <Stack>
-            <GlobalBannerInline  textContent='This is a preview only. All actions in this email are disabled.' iconName='info' slotButton={<></>} color={'warning'}/>
-            
-           
+                <GlobalBannerInline
+                  textContent='This is a preview only. All actions in this email are disabled.'
+                  iconName='info'
+                  slotButton={<></>}
+                  color={'warning'}
+                />
+              </Stack>
+              <Stack
+                direction={'row'}
+                spacing={1}
+                justifyItems={'start'}
+                minWidth={'152px'}
+              >
+                <ButtonSoft
+                  size={1}
+                  textButton={'Edit Email Template'}
+                  color={'accent'}
+                  onClickButton={{
+                    onClick: () => {
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                      );
+                    },
+                  }}
+                />
+                <IconButtonSoft
+                  size={1}
+                  color={'neutral'}
+                  iconName={'refresh'}
+                  onClickButton={{
+                    onClick: getEmail,
+                  }}
+                />
+              </Stack>
             </Stack>
-          <Stack direction={'row'} spacing={1} justifyItems={'start'} minWidth={'152px'}>
-          <ButtonSoft
-              size={1}
-              textButton={'Edit Email Template'}
-              color={'accent'}
-              onClickButton={{
-                onClick: () => {
-                  window.open(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
-                  );
-                },
-              }}
-            />
-            <IconButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'refresh'}
-              onClickButton={{
-                onClick: getEmail,
-              }}
-            />
-          </Stack>
-          </Stack>
             <Stack sx={{ py: 'var(--space-4)' }}>
               <iframe
                 width={'600px'}

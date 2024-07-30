@@ -6,15 +6,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { WorkflowAction } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { GC_TIME } from '..';
 import { workflowActionMutationKeys, workflowActionQueryKeys } from './keys';
-
-const WORKFLOW_ACTIONS_SELECT = '*, company_email_template(*)';
 
 export const useWorkflowActions = (args: WorkflowActionKeys) => {
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
@@ -31,7 +28,7 @@ export type WorkflowActionKeys = {
 const getWorkflowActions = async ({ workflow_id }: WorkflowActionKeys) => {
   const { data, error } = await supabase
     .from('workflow_action')
-    .select(WORKFLOW_ACTIONS_SELECT)
+    .select('*')
     .order('order', { ascending: true })
     .eq('workflow_id', workflow_id);
   if (error) throw new Error(error.message);
@@ -83,9 +80,6 @@ const deleteWorkflowAction = async ({ id }: DeleteWorkflowAction) => {
 };
 
 export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
-  const {
-    emailTemplates: { data: all_company_email_template },
-  } = useAuthDetails();
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
   const queryClient = useQueryClient();
@@ -99,13 +93,11 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         previousWorkflowActions,
       ).reduce((acc, curr) => {
         if (curr.id === variables.id) {
-          const newPayload = structuredClone({ ...curr, ...variables.payload });
-          if (variables.payload.email_template_id)
-            (newPayload['company_email_template'] =
-              all_company_email_template.find(
-                ({ id }) => id === variables.payload.email_template_id,
-              ) as any), //TODO: punith fix this;
-              acc.push(newPayload);
+          const newPayload: WorkflowAction = structuredClone({
+            ...curr,
+            ...variables.payload,
+          });
+          acc.push(newPayload);
         } else acc.push(curr);
         return acc;
       }, [] as WorkflowAction[]);
@@ -133,15 +125,12 @@ const updateWorkflowAction = async ({ id, payload }: UpdateWorkflowAction) => {
     .from('workflow_action')
     .update(payload)
     .eq('id', id)
-    .select(WORKFLOW_ACTIONS_SELECT);
+    .select('*');
   if (error) throw new Error(error.message);
   return data;
 };
 
 export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
-  const {
-    emailTemplates: { data: all_company_email_template },
-  } = useAuthDetails();
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
   const queryClient = useQueryClient();
@@ -156,9 +145,6 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         ...(payload as WorkflowAction),
         id,
         workflow_id,
-        company_email_template: all_company_email_template.find(
-          ({ id }) => id === payload.email_template_id,
-        ) as any, //TODO: punith fix this
       });
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
@@ -201,7 +187,7 @@ const createWorkflowAction = async ({
   const { data, error } = await supabase
     .from('workflow_action')
     .insert({ ...payload, id, workflow_id })
-    .select(WORKFLOW_ACTIONS_SELECT)
+    .select('*')
     .single();
   if (error) throw new Error(error.message);
   return data;

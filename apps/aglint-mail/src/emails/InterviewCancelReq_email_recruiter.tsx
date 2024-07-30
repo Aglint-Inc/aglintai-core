@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
@@ -7,11 +6,12 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>;
+type EmailType = ReactTempPayload<'InterviewCancelReq_email_recruiter'>;
 
 // export dummy
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Dear {{ recruiterName }},</p><p></p><p>{{ candidateFirstName }} is requesting to cancel the interview, stating the reason: "{{ cancelReason }}".</p><p>Additional notes from {{ candidateFirstName }}: "{{ additionalRescheduleNotes }}".</p><p></p><p>Thank you,</p><p>{{ companyName }} Recruitment Team</p>',
   companyLogo: companyLogoDummy,
@@ -36,9 +36,9 @@ export const CandidateCancelRequest = ({
   emailBody = dummy.emailBody,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
-    <EmailContainer emailBody={emailBody} companyLogo={companyLogo}>
+    <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       {meetingDetails.map((meetingDetail, i) => (
         <Session key={i} meetingDetail={meetingDetail} />
       ))}

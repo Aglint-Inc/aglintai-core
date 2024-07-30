@@ -5,8 +5,8 @@ import { TabsModuleMembers } from '../type';
 
 export const tabsModuleMembers: TabsModuleMembers[] = [
   {
-    name: 'Qualified Members',
-    queryParams: 'qualified_members',
+    name: 'Qualified',
+    queryParams: 'qualified',
   },
   {
     name: 'Training',

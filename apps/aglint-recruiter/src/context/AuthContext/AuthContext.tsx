@@ -502,7 +502,12 @@ const manageOfficeLocation = async (
     }
     case 'update': {
       const res = (
-        await query.update(payload.data).select().single().throwOnError()
+        await query
+          .update(payload.data)
+          .eq('id', payload.data.id)
+          .select()
+          .single()
+          .throwOnError()
       ).data;
       temp = temp.map((item) => (item.id === res.id ? res : item));
       break;

@@ -55,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/agent_email_candidate`,
       {
-        meta: mailPayload,
+        ...mailPayload,
       },
     );
     const email_details = data as APISendgridPayload;

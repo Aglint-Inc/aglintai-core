@@ -1,9 +1,5 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
@@ -12,7 +8,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
@@ -67,11 +62,6 @@ export async function fetchUtil(
       };
     });
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'interviewStart_email_interviewers',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'interviewStart_email_interviewers'>['comp_email_placeholders'] =
     {
       organizerFirstName: organizer.first_name,
@@ -103,11 +93,6 @@ export async function fetchUtil(
       ),
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const candLink = req_body.meeting_id
     ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
     : '';
@@ -115,14 +100,13 @@ export async function fetchUtil(
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
       candidateLink: candLink,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: candidateJob.candidates.recruiter_id,
     react_email_placeholders,
     recipient_email: meeting_interviewer.email,
   };

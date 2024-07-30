@@ -738,7 +738,7 @@ const InterviewersField = ({
         options={options}
         value=''
       />
-      {error && (
+      {(error || value.length === 0) && (
         <Stack
           alignItems={'center'}
           direction={'row'}

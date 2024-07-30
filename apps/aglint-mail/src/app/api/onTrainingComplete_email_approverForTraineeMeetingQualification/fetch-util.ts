@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['api_payload'],
@@ -35,11 +34,6 @@ export async function fetchUtil(
   const { interview_module, recruiter_user: trainee } = module_reln;
   const company = module_reln.interview_module.recruiter;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    interview_module.recruiter_id,
-    'onTrainingComplete_email_approverForTraineeMeetingQualification',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['comp_email_placeholders'] =
     {
       approverFirstName: approver.first_name,
@@ -55,19 +49,14 @@ export async function fetchUtil(
       qualifiedApproverConfirmLink: `<a href="#" target="_blank">here</a>`,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
   const react_email_placeholders: EmailTemplateAPi<'onTrainingComplete_email_approverForTraineeMeetingQualification'>['react_email_placeholders'] =
     {
       companyLogo: company.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
     };
 
   return {
-    filled_comp_template,
+    company_id: company.id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: approver.email,
   };

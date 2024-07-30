@@ -1,13 +1,17 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 
 export const seed_workflow_actions: {
   workflow: Pick<
     DatabaseTable['workflow'],
-    'auto_connect' | 'description' | 'interval' | 'phase' | 'title' | 'trigger'
+    | 'auto_connect'
+    | 'description'
+    | 'interval'
+    | 'phase'
+    | 'title'
+    | 'trigger'
+    | 'workflow_type'
   >;
-  actions: (Pick<DatabaseTable['workflow_action'], 'order'> & {
-    template_type: DatabaseEnums['email_slack_types'];
-  })[];
+  actions: Pick<DatabaseTable['workflow_action'], 'order' | 'target_api'>[];
 }[] = [
   {
     workflow: {
@@ -18,19 +22,20 @@ export const seed_workflow_actions: {
         'Send Email Reminders to candidate, interviewers, organizer 30 Min Before Interview',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewStart_email_applicant',
+        target_api: 'interviewStart_email_applicant',
       },
       {
         order: 1,
-        template_type: 'interviewStart_email_interviewers',
+        target_api: 'interviewStart_email_interviewers',
       },
       {
         order: 2,
-        template_type: 'interviewStart_email_organizer',
+        target_api: 'interviewStart_email_organizer',
       },
     ],
   },
@@ -42,11 +47,12 @@ export const seed_workflow_actions: {
       title: 'Send Slack Reminders 30 Minutes Before Interview',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 1,
-        template_type: 'interviewStart_slack_interviewers',
+        target_api: 'interviewStart_slack_interviewers',
       },
     ],
   },
@@ -58,11 +64,12 @@ export const seed_workflow_actions: {
       title: 'Slack Interviewer for Confirmation After Candidate Scheduling',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'candidateBook_slack_interviewerForConfirmation',
+        target_api: 'candidateBook_slack_interviewerForConfirmation',
       },
     ],
   },
@@ -75,11 +82,12 @@ export const seed_workflow_actions: {
       auto_connect: true,
       description:
         'Send a reminder to the candidate if they do not respond to the Avalibility request link within 24 hours',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'sendAvailReqReminder_email_applicant',
+        target_api: 'sendAvailReqReminder_email_applicant',
       },
     ],
   },
@@ -92,11 +100,12 @@ export const seed_workflow_actions: {
         'Send a reminder to the candidate if they do not respond to the self-scheduling link within 24 hours.',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'selfScheduleReminder_email_applicant',
+        target_api: 'selfScheduleReminder_email_applicant',
       },
     ],
   },
@@ -109,10 +118,11 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack Reminder to Provide Feedback for the Candidate After the Interview',
       trigger: 'interviewEnd',
+      workflow_type: 'job',
     },
     actions: [
-      { order: 0, template_type: 'interviewEnd_email_interviewerForFeedback' },
-      { order: 0, template_type: 'interviewEnd_slack_interviewerForFeedback' },
+      { order: 0, target_api: 'interviewEnd_email_interviewerForFeedback' },
+      { order: 0, target_api: 'interviewEnd_slack_interviewerForFeedback' },
     ],
   },
   {
@@ -124,11 +134,12 @@ export const seed_workflow_actions: {
       title:
         'Send an Email to the Organizer When the Interviewer Declines the Meeting',
       trigger: 'meetingDeclined',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'meetingDeclined_email_organizer',
+        target_api: 'meetingDeclined_email_organizer',
       },
     ],
   },
@@ -141,11 +152,12 @@ export const seed_workflow_actions: {
       title:
         'Send an Email to the Organizer When the Interviewer accepts the Meeting',
       trigger: 'meetingAccepted',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'meetingAccepted_email_organizer',
+        target_api: 'meetingAccepted_email_organizer',
       },
     ],
   },
@@ -158,15 +170,16 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack to Meeting organizer for Provide Meeting complete status',
       trigger: 'interviewEnd',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewEnd_slack_organizerForMeetingStatus',
+        target_api: 'interviewEnd_slack_organizerForMeetingStatus',
       },
       {
         order: 0,
-        template_type: 'interviewEnd_email_organizerForMeetingStatus',
+        target_api: 'interviewEnd_email_organizerForMeetingStatus',
       },
     ],
   },
@@ -179,23 +192,24 @@ export const seed_workflow_actions: {
       title:
         'Send Slack and Email notifications to the Trainee interviewer for confirming whether He attended or not',
       trigger: 'interviewEnd',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
       },
       {
         order: 1,
-        template_type: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
       },
       {
         order: 2,
-        template_type: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
       },
       {
         order: 3,
-        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
       },
     ],
   },
@@ -208,16 +222,17 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack notification to the approver when all Shadow and Reverse Shadow training is completed',
       trigger: 'onTrainingComplete',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type:
+        target_api:
           'onTrainingComplete_email_approverForTraineeMeetingQualification',
       },
       {
         order: 0,
-        template_type:
+        target_api:
           'onTrainingComplete_slack_approverForTraineeMeetingQualification',
       },
     ],
@@ -231,15 +246,16 @@ export const seed_workflow_actions: {
       phase: 'after',
       title:
         'Send Slack, Email confirmation for the Interviewer when he is moved to qualified',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type: 'onQualified_email_trainee',
+        target_api: 'onQualified_email_trainee',
       },
       {
         order: 1,
-        template_type: 'onQualified_slack_trainee',
+        target_api: 'onQualified_slack_trainee',
       },
     ],
   },

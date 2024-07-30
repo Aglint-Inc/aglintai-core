@@ -10,15 +10,24 @@ export async function POST(req: Request) {
   try {
     const parsed_body = v.parse(
       applicationRecievedEmailApplicantSchema,
-      req_body.meta,
+      req_body,
     );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const {
+      comp_email_placeholder,
       react_email_placeholders,
       recipient_email,
+      company_id,
+      job_id,
+    } = await fetchUtil(parsed_body);
+
+    await sendMailFun({
+      company_id,
+      job_id,
+      comp_email_placeholder,
+      react_email_placeholders,
+      recipient_email,
+      payload: parsed_body.payload,
+      api_target: 'applicationRecieved_email_applicant',
     });
 
     return NextResponse.json('success', {
