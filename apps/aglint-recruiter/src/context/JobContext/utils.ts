@@ -151,12 +151,9 @@ export const validateJd = (
 };
 
 export const validateString = (str: string | number) => {
-  return (
-    typeof str === 'number' ||
-    !str ||
-    typeof str !== 'string' ||
-    str.length === 0
-  );
+  return typeof str === 'number'
+    ? false
+    : !str || typeof str !== 'string' || str.length === 0;
 };
 
 export const validateDescription = (str: string) => {
