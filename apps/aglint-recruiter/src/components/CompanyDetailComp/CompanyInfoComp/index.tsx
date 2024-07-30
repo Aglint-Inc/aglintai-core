@@ -134,6 +134,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
             onClose={() => setEditDrawer(false)}
           >
             <SideDrawerLarge
+            isHeaderIconVisible={false}
               textDrawertitle={'Edit Basic Info'}
               drawerSize={'small'}
               onClickCancel={{ onClick: () => setEditDrawer(false) }}
@@ -337,6 +338,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               }}
             />
           </MuiPopup>
+          <Stack width={'100%'} height={'calc(100vh - 48px)'} bgcolor={'white'} overflow={'auto'}>
           <CompanyInfo
             isEditable={!isFormDisabled}
             slotCompanyInfoDetails={
@@ -556,6 +558,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
             isSpecialistVisible={true}
             slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
           />
+          </Stack>
         </>
       )}
       {router.query?.tab === 'team' && <TeamManagement />}
