@@ -84,38 +84,32 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      {props.action.company_email_template.type.split('_slack_').length ===
-      2 ? (
+      {props.action.target_api.split('_slack_').length === 2 ? (
         <GlobalBannerInline
           textContent={'A slack notification will be sent for this action.'}
           slotButton={<></>}
         />
       ) : (
-        <Template key={props.action.email_template_id} {...props} />
+        <Template key={props.action.target_api} {...props} />
       )}
     </>
   );
 };
 
-const ActionForm = ({
-  action: {
-    id,
-    company_email_template: { type },
-  },
-}: ActionProps) => {
+const ActionForm = ({ action: { id, target_api } }: ActionProps) => {
   const {
     emailTemplates: { data: all_company_email_template },
   } = useAuthDetails();
   const { handleUpdateAction, manageWorkflow } = useWorkflow();
   const { globalOptions, getCurrentOption } = useActions();
   const options = useMemo(
-    () => [...globalOptions, getCurrentOption(type)],
-    [globalOptions, type],
+    () => [...globalOptions, getCurrentOption(target_api)],
+    [globalOptions, target_api],
   );
   return (
     <UISelect
       label='Do this'
-      value={type}
+      value={target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
@@ -123,11 +117,11 @@ const ActionForm = ({
           ({ type }) => type === e.target.value,
         );
         if (emailTemplate) {
-          const { body, id: email_template_id, subject } = emailTemplate;
+          const { body, type, subject } = emailTemplate;
           handleUpdateAction({
             id,
             payload: {
-              email_template_id,
+              target_api: type,
               payload: {
                 subject,
                 body,
