@@ -19,7 +19,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
+import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
   useProgressModuleUsers,

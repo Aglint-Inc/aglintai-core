@@ -1,5 +1,5 @@
 import Seo from '@/src/components/Common/Seo';
-import ModuleMembersComp from '@/src/components/Scheduling/InterviewTypes/ModuleMembers';
+import ModuleMembersComp from '@/src/components/Scheduling/InterviewTypes/DetailPage';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 const ModuleMembers = () => {

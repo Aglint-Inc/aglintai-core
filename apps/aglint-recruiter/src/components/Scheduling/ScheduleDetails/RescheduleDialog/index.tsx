@@ -17,6 +17,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -29,7 +30,6 @@ import {
 } from '../../CandidateDetails/SchedulingDrawer/store';
 import { setRescheduleSessionIds } from '../../CandidateDetails/store';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { DateIcon } from '../../Settings/Components/DateSelector';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,

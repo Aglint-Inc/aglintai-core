@@ -160,6 +160,15 @@ const previewAssessment = {
       assessment_id,
     ]),
 } as const;
+
+const user = {
+  '/user/profile/[user_id]': ({ user_id }: { user_id: string }) =>
+    pageRouteBuilder([
+      pageRouteBuilder([ROUTES.app(), 'user']),
+      'profile',
+      user_id,
+    ]),
+} as const;
 const profile = {
   '/profile': () => pageRouteBuilder([ROUTES.app(), 'profile']),
 } as const;
@@ -172,6 +181,14 @@ const resetPassword = {
 } as const;
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
+  '/scheduling/application': () =>
+    pageRouteBuilder([ROUTES.app(), '/scheduling/application']),
+  '/scheduling/interviewer': () =>
+    pageRouteBuilder([ROUTES.app(), '/scheduling/interviewer']),
+  '/scheduling/interview-types': () =>
+    pageRouteBuilder([ROUTES.app(), '/scheduling/interview-types']),
+  '/scheduling/interview-types/[type_id]': ({ type_id }: { type_id: string }) =>
+    pageRouteBuilder([scheduling['/scheduling'](), 'interview-types', type_id]),
   '/scheduling/application/[application_id]': ({
     application_id,
   }: {
@@ -190,17 +207,6 @@ const scheduling = {
     pageRouteBuilder([scheduling['/scheduling'](), 'interviewer', member_id]),
   '/scheduling/invite/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([scheduling['/scheduling'](), 'invite', id]),
-  '/scheduling/module/members/[module_id]': ({
-    module_id,
-  }: {
-    module_id: string;
-  }) =>
-    pageRouteBuilder([
-      scheduling['/scheduling'](),
-      'module',
-      'members',
-      module_id,
-    ]),
   '/scheduling/module/IProgressDrawer': () =>
     pageRouteBuilder([
       scheduling['/scheduling'](),
@@ -279,6 +285,7 @@ const ROUTES = {
   ...support,
   ...tasks,
   ...thanksPage,
+  ...user,
   ...workflows,
 } as const;
 export default ROUTES;

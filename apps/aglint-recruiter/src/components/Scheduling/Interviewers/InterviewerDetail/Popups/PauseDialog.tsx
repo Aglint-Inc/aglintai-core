@@ -8,10 +8,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { Text } from '@/devlink/Text';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
+import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { useModuleRelations } from '../hooks';
 import { setIsPauseDialogOpen, useInterviewerDetailStore } from '../store';
 

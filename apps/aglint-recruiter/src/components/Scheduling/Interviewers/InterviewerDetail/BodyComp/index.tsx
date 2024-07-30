@@ -28,7 +28,7 @@ function BodyComp() {
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
   const [changeText, setChangeText] = useState('');
 
-  const user_id = router.query.member_id as string;
+  const user_id = router.query.user_id as string;
 
   const { data: interviewerDetails, isLoading: isLoadingInterviewer } =
     useImrQuery({ user_id });
@@ -44,7 +44,7 @@ function BodyComp() {
     isLoading,
   } = useAllSchedulesByUserId({
     filter,
-    member_id: router.query.member_id as string,
+    member_id: user_id,
     textSearch: changeText,
   });
 
@@ -96,7 +96,7 @@ function BodyComp() {
               )}
             </>
           }
-          textMail={interviewerDetails?.email}
+          textMail={interviewerDetails.email}
           textDepartment={interviewerDetails.position}
           textInterviewerName={
             interviewerDetails.first_name +

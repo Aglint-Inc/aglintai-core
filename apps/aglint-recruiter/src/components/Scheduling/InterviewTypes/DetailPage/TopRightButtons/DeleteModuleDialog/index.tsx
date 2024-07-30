@@ -59,7 +59,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         if (data.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
-            router.push(`${ROUTES['/scheduling']()}?tab=interviewtypes`);
+            router.push(`${ROUTES['/scheduling/interview-types']()}`);
             toast.success('Interview type deleted successfully.');
           } else {
             throw new Error();

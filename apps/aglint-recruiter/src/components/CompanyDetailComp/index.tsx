@@ -1,3 +1,4 @@
+import { schedulingSettingType } from '@aglint/shared-types';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -8,8 +9,10 @@ import { SavedChanges } from '@/devlink/SavedChanges';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { supabase } from '@/src/utils/supabase/client';
 
 import CompanyInfoComp from './CompanyInfoComp';
+import SchedulingSettings, { SettingsSubNabItem } from './SettingsSchedule';
 import {
   generateDepartments,
   generateRoles,
@@ -19,7 +22,7 @@ import {
 
 const CompanyDetailComp = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, setRecruiter } = useAuthDetails();
   const { ifAllowed } = useRolesAndPermissions();
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -47,6 +50,25 @@ const CompanyDetailComp = () => {
   useEffect(() => {
     if (!isSaved && isSaving) setIsSaved(true);
   }, [isSaving]);
+
+  async function updateSettings(schedulingSettingObj: schedulingSettingType) {
+    setIsSaving(true);
+    const { data: updatedRecruiter, error } = await supabase
+      .from('recruiter')
+      .update({ scheduling_settings: schedulingSettingObj })
+      .eq('id', recruiter.id)
+      .select('*,office_locations(*), departments(id,name)')
+      .single();
+    if (!error) {
+      setRecruiter(
+        {
+          ...updatedRecruiter,
+          socials: updatedRecruiter?.socials,
+        }!,
+      );
+    }
+    setIsSaving(false);
+  }
 
   return (
     <Stack overflow={'hidden'}>
@@ -95,6 +117,7 @@ const CompanyDetailComp = () => {
               />,
               ['view_roles'],
             )}
+            <SettingsSubNabItem />
           </>
         }
         slotSavedChanges={
@@ -114,7 +137,16 @@ const CompanyDetailComp = () => {
         }
         slotSavingLottie={<LoaderGrey />}
         isSaved={isSaved}
-        slotCompany={<CompanyInfoComp setIsSaving={setIsSaving} />}
+        slotCompany={
+          <>
+            <CompanyInfoComp setIsSaving={setIsSaving} />
+            <SchedulingSettings
+              setSaving={setIsSaving}
+              initialData={recruiter?.scheduling_settings}
+              updateSettings={updateSettings}
+            />
+          </>
+        }
       />
     </Stack>
   );
