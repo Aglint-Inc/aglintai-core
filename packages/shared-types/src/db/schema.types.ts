@@ -1599,36 +1599,36 @@ export type Database = {
           calender_event_api_status: Json | null
           coordinator_id: string | null
           created_at: string
-          created_by: string
+          created_by: string | null
           id: string
           is_completed: boolean
           is_get_more_option: boolean
           recruiter_id: string
-          schedule_name: string
+          schedule_name: string | null
         }
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
           coordinator_id?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: string
           is_completed?: boolean
           is_get_more_option?: boolean
           recruiter_id: string
-          schedule_name: string
+          schedule_name?: string | null
         }
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
           coordinator_id?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: string
           is_completed?: boolean
           is_get_more_option?: boolean
           recruiter_id?: string
-          schedule_name?: string
+          schedule_name?: string | null
         }
         Relationships: [
           {
@@ -5269,6 +5269,13 @@ export type Database = {
           app_id: string
         }
         Returns: boolean
+      }
+      clone_sessions: {
+        Args: {
+          app_id: string
+          organizer_user_id: string
+        }
+        Returns: Json
       }
       connectassessmenttemplate: {
         Args: {

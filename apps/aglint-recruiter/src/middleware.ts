@@ -6,10 +6,7 @@ import PERMISSIONS from './utils/routing/permissions';
 
 export async function middleware(request: NextRequest) {
   const requestUrl = request.nextUrl.pathname;
-  if (
-    isAllowedPaths(requestUrl)
-    // || process.env.NODE_ENV === 'development'
-  ) {
+  if (isAllowedPaths(requestUrl) || process.env.NODE_ENV === 'development') {
     return NextResponse.next({
       request: {
         headers: request.headers,

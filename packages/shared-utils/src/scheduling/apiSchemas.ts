@@ -89,3 +89,25 @@ export const schema_send_avail_req_link = v.object({
   application_id: v.string(),
   company_id: v.string(),
 });
+
+export const candidate_avail_request_schema = v.object({
+  application_id: v.string(),
+  recruiter_id: v.string(),
+  availability: v.nullish(
+    v.object({
+      day_offs: v.optional(v.boolean(), false),
+      free_keywords: v.optional(v.boolean(), false),
+      outside_work_hours: v.optional(v.boolean(), false),
+      recruiting_block_keywords: v.optional(v.boolean(), false),
+    }),
+    {}
+  ),
+  date_range: v.object({
+    start_date: v.string(),
+    end_date: v.string(),
+  }),
+  session_ids: v.array(v.string()),
+  is_task_created: v.boolean(),
+  number_of_days: v.number(),
+  number_of_slots: v.number(),
+});

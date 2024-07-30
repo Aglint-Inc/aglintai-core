@@ -9,6 +9,7 @@ import {
   schema_confirm_slot_no_conflict,
 } from './valibotSchema/candidate-self-schedule';
 import {
+  candidate_avail_request_schema,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   schema_find_availability_payload,
@@ -148,3 +149,7 @@ export type CurrRoundCandidateAvailReq = {
     is_slot_available: boolean;
   }[];
 };
+
+export type APICandidateAvailableRequestType = v.InferOutput<
+  typeof candidate_avail_request_schema
+>;
