@@ -39,7 +39,7 @@ const CompanyDetailComp = () => {
 
   useEffect(() => {
     if (router.isReady && !router.query?.tab) {
-      router.replace('/company?tab=basic-info');
+      router.replace('/company?tab=company-info');
     }
   }, [router]);
 
