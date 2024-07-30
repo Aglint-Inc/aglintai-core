@@ -1,24 +1,34 @@
-import { Stack } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
+import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
+import { QueryKeysInteviewModules } from '../../queries/type';
 import {
   setIsAddMemberDialogOpen,
+  setIsArchiveDialogOpen,
+  setIsDeleteModuleDialogOpen,
   setIsSettingsDialogOpen,
   setTrainingStatus,
 } from '../../store';
@@ -53,7 +63,7 @@ function SlotBodyComp({
   const { loading } = useSchedulingContext();
 
   const currentTab = (router.query.tab ||
-    'qualified_members') as TabsModuleMembers['queryParams'];
+    'qualified') as TabsModuleMembers['queryParams'];
 
   const [textValue, setTextValue] = useState(null);
 
@@ -125,9 +135,24 @@ function SlotBodyComp({
   const department =
     data?.find((item) => item.id === editModule?.department_id)?.name || '--';
 
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const queryClient = useQueryClient();
+
   return (
     <>
-      <SettingsDialog editModule={editModule}  />
+      <SettingsDialog editModule={editModule} />
       <AddMemberDialog editModule={editModule} refetch={refetch} />
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
@@ -162,17 +187,33 @@ function SlotBodyComp({
         <>
           {editModule && (
             <InterviewMemberList
+              slotJobsCard={
+                editModule?.id && <ConnectedJobs module_id={editModule?.id} />
+              }
               slotEditButton={
-                <ButtonSoft
-                  color={'neutral'}
-                  size={2}
-                  textButton='Edit'
-                  onClickButton={{
-                    onClick: () => {
-                      setIsSettingsDialogOpen(true);
-                    },
-                  }}
-                />
+                <Stack direction={'row'} spacing={1}>
+                  <ButtonSoft
+                    color={'neutral'}
+                    size={2}
+                    textButton='Edit'
+                    iconName='edit'
+                    isLeftIcon
+                    iconSize={2}
+                    onClickButton={{
+                      onClick: () => {
+                        setIsSettingsDialogOpen(true);
+                      },
+                    }}
+                  />
+                  <Stack onClick={handleClick}>
+                    <IconButtonGhost
+                      iconName='more_vert'
+                      size={2}
+                      iconSize={6}
+                      color={'neutral'}
+                    />
+                  </Stack>
+                </Stack>
               }
               slotNewTabPill={
                 <Stack direction={'row'}>
@@ -183,8 +224,7 @@ function SlotBodyComp({
                         textLabel={tab.name}
                         isPillActive={
                           currentTab === tab.queryParams ||
-                          (!currentTab &&
-                            tab.queryParams == 'qualified_members')
+                          (!currentTab && tab.queryParams == 'qualified')
                         }
                         onClickPill={{
                           onClick: () => {
@@ -208,7 +248,7 @@ function SlotBodyComp({
               textObjective={editModule.description || 'No description'}
               slotModuleContent={
                 <>
-                  {(currentTab === 'qualified_members' || !currentTab) && (
+                  {(currentTab === 'qualified' || !currentTab) && (
                     <ModuleMembers
                       isMembersTrainingVisible={false}
                       slotQualifiedMemberList={
@@ -261,8 +301,142 @@ function SlotBodyComp({
           )}
         </>
       )}
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: 'none',
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+          },
+        }}
+      >
+        <MoreMenu
+          isArchiveVisible={!editModule?.is_archived}
+          isUnarchiveVisible={editModule?.is_archived}
+          onClickDelete={{
+            onClick: () => {
+              setIsDeleteModuleDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickArchive={{
+            onClick: () => {
+              setIsArchiveDialogOpen(true);
+              handleClose();
+            },
+          }}
+          onClickUnarchive={{
+            onClick: async () => {
+              const isUnArchived = await unArchiveModuleById(editModule.id);
+              if (isUnArchived) {
+                const updatedEditModule = {
+                  ...editModule,
+                  is_archived: false,
+                } as ModuleType;
+                queryClient.setQueryData<ModuleType>(
+                  QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                    moduleId: editModule.id,
+                  }),
+                  {
+                    ...updatedEditModule,
+                  },
+                );
+                toast.success('Interview type unarchived successfully.');
+              }
+              handleClose();
+            },
+          }}
+        />
+      </Popover>
     </>
   );
 }
 
 export default SlotBodyComp;
+
+const ConnectedJobs = ({ module_id }: { module_id: string }) => {
+  useEffect(() => {
+    if (module_id) getConnectedJobs();
+  }, [module_id]);
+
+  const router = useRouter();
+  const getConnectedJobs = async () => {
+    const { data, error } = await supabase
+      .from('interview_session')
+      .select(
+        'interview_plan(public_jobs(job_title,department,location,status,id))',
+      )
+      .eq('module_id', module_id)
+      .throwOnError();
+
+    if (!error) {
+      const jobs = data
+        .filter((data) => data.interview_plan)
+        .map((data) => data?.interview_plan?.public_jobs);
+      return jobs;
+    }
+  };
+  const { isLoading, data: connectedJobs } = useQuery({
+    queryKey: ['interview_type_connected_jobs', module_id],
+    queryFn: getConnectedJobs,
+  });
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  return (
+    <>
+      <Typography fontWeight={500}>Connected Jobs</Typography>
+      <Stack mt={2} spacing={1}>
+        {connectedJobs.length > 0 ? (
+          connectedJobs.map((job, i) => (
+            <WorkflowConnectedCard
+              key={i}
+              isLinkOffVisible={false}
+              role={capitalizeAll(job.job_title)}
+              textLocation={job.location || '---'}
+              textRoleCategory={job.department || '---'}
+              slotBadges={
+                job.status && (
+                  <GlobalBadge
+                    color={
+                      job.status === 'published'
+                        ? 'success'
+                        : status === 'closed'
+                          ? 'error'
+                          : 'warning'
+                    }
+                    textBadge={capitalizeAll(job.status)}
+                  />
+                )
+              }
+              onClickJob={{
+                onClick: () =>
+                  router.push(ROUTES['/jobs/[id]']({ id: job?.id })),
+              }}
+            />
+          ))
+        ) : (
+          <GlobalEmptyState
+            iconName={'work'}
+            size={4}
+            slotButton={<></>}
+            textDesc={'No jobs connected'}
+          />
+        )}
+      </Stack>
+    </>
+  );
+};

@@ -2,11 +2,9 @@ import { RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
 import React from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { UserWithRole } from '@/devlink/UserWithRole';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 
 export const RoleUserWidget = ({
