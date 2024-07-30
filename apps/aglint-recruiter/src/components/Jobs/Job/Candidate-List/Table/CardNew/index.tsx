@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
@@ -22,6 +23,7 @@ const ApplicationCard = memo(
         data: { pages },
       },
       manageJob,
+      applicationMutations,
     } = useApplications();
 
     const { checklist, setChecklist } = useApplicationsStore(
@@ -89,50 +91,57 @@ const ApplicationCard = memo(
       [application?.resume_processing_state, manageJob],
     );
 
+    const applicationLoading = useMemo(
+      () => applicationMutations.includes(application.id),
+      [applicationMutations, application.id],
+    );
+
     return (
-      <CandidateListItem
-        onClickCandidate={{
-          onClick: () => handleOpen({ application_id: application.id }),
-        }}
-        isHighlighted={isSelected || isChecked}
-        highlightType={isSelected ? 'highlighted' : 'checked'}
-        slotBookmark={<Banners application={application} />}
-        isDragVisible={isChecked}
-        onClickSelect={{
-          onClick: checkEnabled
-            ? () => handleCheck()
-            : () => handleOpen({ application_id: application.id }),
-          style: {
-            opacity: checkEnabled ? 100 : 0,
-          },
-        }}
-        isChecked={isChecked}
-        slotProfileImage={<></>}
-        name={capitalizeAll(application.name)}
-        jobTitle={application.current_job_title || '---'}
-        location={location || '---'}
-        slotResumeScore={
-          status === 'draft' ? (
-            <>---</>
-          ) : (
-            <ResumeScore
-              resume_processing_state={application.resume_processing_state}
-              resume_score={application.resume_score}
-            />
-          )
-        }
-        isScreeningVisible={cascadeVisibilites.screening}
-        isAssessmentVisible={cascadeVisibilites.assessment}
-        isInterviewVisible={cascadeVisibilites.interview}
-        isDisqualifiedVisible={cascadeVisibilites.disqualified}
-        slotScreening={<>---</>}
-        slotAssessmentScore={<>---</>}
-        slotInterviewPipline={
-          <ScheduleProgress meeting_details={application.meeting_details} />
-        }
-        slotDisqualified={<>---</>}
-        appliedDate={appliedDate}
-      />
+      <OptimisticWrapper loading={applicationLoading}>
+        <CandidateListItem
+          onClickCandidate={{
+            onClick: () => handleOpen({ application_id: application.id }),
+          }}
+          isHighlighted={isSelected || isChecked}
+          highlightType={isSelected ? 'highlighted' : 'checked'}
+          slotBookmark={<Banners application={application} />}
+          isDragVisible={isChecked}
+          onClickSelect={{
+            onClick: checkEnabled
+              ? () => handleCheck()
+              : () => handleOpen({ application_id: application.id }),
+            style: {
+              opacity: checkEnabled ? 100 : 0,
+            },
+          }}
+          isChecked={isChecked}
+          slotProfileImage={<></>}
+          name={capitalizeAll(application.name)}
+          jobTitle={application.current_job_title || '---'}
+          location={location || '---'}
+          slotResumeScore={
+            status === 'draft' ? (
+              <>---</>
+            ) : (
+              <ResumeScore
+                resume_processing_state={application.resume_processing_state}
+                resume_score={application.resume_score}
+              />
+            )
+          }
+          isScreeningVisible={cascadeVisibilites.screening}
+          isAssessmentVisible={cascadeVisibilites.assessment}
+          isInterviewVisible={cascadeVisibilites.interview}
+          isDisqualifiedVisible={cascadeVisibilites.disqualified}
+          slotScreening={<>---</>}
+          slotAssessmentScore={<>---</>}
+          slotInterviewPipline={
+            <ScheduleProgress meeting_details={application.meeting_details} />
+          }
+          slotDisqualified={<>---</>}
+          appliedDate={appliedDate}
+        />
+      </OptimisticWrapper>
     );
   },
 );

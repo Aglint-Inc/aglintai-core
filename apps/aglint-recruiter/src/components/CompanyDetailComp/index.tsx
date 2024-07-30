@@ -76,20 +76,11 @@ const CompanyDetailComp = () => {
         slotNavSublink={
           <>
             <NavSublink
-              isActive={router.query?.tab === 'basic-info'}
-              textLink={'Basic Info'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace(`/company?tab=${tabs.basicinfo}`);
-                },
-              }}
-            />
-            <NavSublink
-              textLink={'Additional Info'}
+              textLink={'Company Info'}
               isActive={router.query?.tab === 'additional-info'}
               onClickNav={{
                 onClick: () => {
-                  router.replace(`/company?tab=${tabs.additionalinfo}`);
+                  router.replace(`/company?tab=${tabs.companyInfo}`);
                 },
               }}
             />

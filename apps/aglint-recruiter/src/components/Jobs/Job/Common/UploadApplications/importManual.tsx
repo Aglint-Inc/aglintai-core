@@ -13,6 +13,8 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 
+const fileTypes = ['PDF', 'DOCX', 'TXT'];
+
 type FormEntries = {
   first_name: FormField;
   last_name: FormField;
@@ -200,7 +202,6 @@ const FormBody = ({
   setApplicant: Dispatch<SetStateAction<FormEntries>>;
 }) => {
   const { userCountry } = useAuthDetails();
-  const fileTypes = ['PDF', 'DOCX', 'TXT'];
   const handleChange = (e, key) => {
     setApplicant((prev) => {
       return {
@@ -289,53 +290,71 @@ const FormBody = ({
         helperText={applicant.linkedin.error && getHelper('LinkedIn url')}
         onChange={(e) => handleChange(e, 'linkedin')}
       />
-      <Stack spacing={1}>
+      <ResumeUploadComp
+        value={applicant.resume.value}
+        error={applicant.resume.error}
+        handleChange={(e) => handleChange(e, 'resume')}
+      />
+    </Stack>
+  );
+};
+
+export const ResumeUploadComp = ({
+  value,
+  handleChange,
+  error = false,
+  label = true,
+}: {
+  value: File;
+  // eslint-disable-next-line no-unused-vars
+  handleChange: (e: any) => any;
+  error?: boolean;
+  label?: boolean;
+}) => {
+  return (
+    <Stack spacing={1}>
+      {label && (
         <Stack flexDirection={'row'} gap={'4px'}>
           Upload Resume
           <Stack style={{ color: 'var(--error-11)' }}>*</Stack>
         </Stack>
-        <Stack>
-          <FileUploader
-            handleChange={(e) => handleChange(e, 'resume')}
-            types={fileTypes}
+      )}
+      <Stack>
+        <FileUploader handleChange={handleChange} types={fileTypes}>
+          <Stack
+            sx={{
+              border: '1px dashed',
+              borderColor: 'var(--neutral-6)',
+              borderRadius: 1,
+              py: '32px',
+              px: '32px',
+              cursor: 'pointer',
+              background: 'var(--neutral-2)',
+            }}
+            direction='row'
+            spacing={'8px'}
+            alignItems={'center'}
+            justifyContent={'center'}
           >
-            <Stack
-              sx={{
-                border: '1px dashed',
-                borderColor: 'var(--neutral-6)',
-                borderRadius: 1,
-                py: '32px',
-                px: '32px',
-                cursor: 'pointer',
-                background: 'var(--neutral-2)',
+            {value ? <FileIcon /> : <UploadIcon />}
+            <Typography
+              variant='body1'
+              sx={{ textAlgin: 'center', fontSize: '14px' }}
+              style={{
+                color: error ? 'var(--error-11)' : 'inherit',
+                fontWeight: value ? 500 : 400,
               }}
-              direction='row'
-              spacing={'8px'}
-              alignItems={'center'}
-              justifyContent={'center'}
             >
-              {applicant.resume.value ? <FileIcon /> : <UploadIcon />}
-              <Typography
-                variant='body1'
-                sx={{ textAlgin: 'center', fontSize: '14px' }}
-                style={{
-                  color: applicant.resume.error ? 'var(--error-11)' : 'inherit',
-                  fontWeight: applicant.resume.value ? 500 : 400,
-                }}
-              >
-                {applicant.resume.value
-                  ? applicant.resume.value.name
-                  : 'Upload candidate resume [PDF/DOCX]'}
-              </Typography>
-              {applicant.resume.value && <CheckIcon />}
-            </Stack>
-          </FileUploader>
-          {applicant.resume.error && (
-            <Stack fontSize={'0.75rem'} style={{ color: 'var(--error-11)' }}>
-              Please upload the candidate resume
-            </Stack>
-          )}
-        </Stack>
+              {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
+            </Typography>
+            {value && <CheckIcon />}
+          </Stack>
+        </FileUploader>
+        {error && (
+          <Stack fontSize={'0.75rem'} style={{ color: 'var(--error-11)' }}>
+            Please upload the candidate resume
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
