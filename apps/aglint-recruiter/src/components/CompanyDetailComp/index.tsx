@@ -77,7 +77,7 @@ const CompanyDetailComp = () => {
           <>
             <NavSublink
               textLink={'Company Info'}
-              isActive={router.query?.tab === 'additional-info'}
+              isActive={router.query?.tab === 'company-info'}
               onClickNav={{
                 onClick: () => {
                   router.replace(`/company?tab=${tabs.companyInfo}`);
