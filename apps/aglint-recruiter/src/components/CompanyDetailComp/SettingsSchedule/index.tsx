@@ -64,7 +64,6 @@ import UITextField from '../../Common/UITextField';
 import ToggleBtn from '../../Common/UIToggle';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
-import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
@@ -925,7 +924,33 @@ function SchedulingSettings({
             >
               <InterviewLoad
                 slotDailyLimit={
-                  <>
+                  <Stack spacing={1}>
+                    <RadioGroup
+                      row
+                      aria-labelledby='demo-row-radio-buttons-group-label'
+                      name='row-radio-buttons-group'
+                    >
+                      {['Hours', 'Interviews'].map((ele, i) => {
+                        return (
+                          <FormControlLabel
+                            checked={interviewLoad.daily.type === ele}
+                            key={i}
+                            onChange={(e: any) => {
+                              loadChangeHandle(e.target.value, 'daily', 'type');
+                            }}
+                            sx={{
+                              marginLeft: '0px',
+                              '& .MuiRadio-root': {
+                                marginRight: 'var(--space-1)',
+                              },
+                            }}
+                            value={ele}
+                            control={<Radio />}
+                            label={capitalize(ele.replaceAll('_', ' '))}
+                          />
+                        );
+                      })}
+                    </RadioGroup>
                     <MuiNumberfield
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'daily', 'value')
@@ -933,18 +958,40 @@ function SchedulingSettings({
                       value={interviewLoad.daily.value}
                       max={interviewLoad.daily.max}
                     />
-                    <MuiSelect
-                      width='150px'
-                      dataset={['Interviews', 'Hours']}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e.target.value, 'daily', 'type')
-                      }
-                      value={interviewLoad.daily.type}
-                    />
-                  </>
+                  </Stack>
                 }
                 slotWeeklyLimit={
-                  <>
+                  <Stack spacing={1}>
+                    <RadioGroup
+                      row
+                      aria-labelledby='demo-row-radio-buttons-group-label'
+                      name='row-radio-buttons-group'
+                    >
+                      {['Hours', 'Interviews'].map((ele, i) => {
+                        return (
+                          <FormControlLabel
+                            checked={interviewLoad.weekly.type === ele}
+                            key={i}
+                            onChange={(e: any) => {
+                              loadChangeHandle(
+                                e.target.value,
+                                'weekly',
+                                'type',
+                              );
+                            }}
+                            sx={{
+                              marginLeft: '0px',
+                              '& .MuiRadio-root': {
+                                marginRight: 'var(--space-1)',
+                              },
+                            }}
+                            value={ele}
+                            control={<Radio />}
+                            label={capitalize(ele.replaceAll('_', ' '))}
+                          />
+                        );
+                      })}
+                    </RadioGroup>
                     <MuiNumberfield
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'weekly', 'value')
@@ -952,15 +999,7 @@ function SchedulingSettings({
                       value={interviewLoad.weekly.value}
                       max={interviewLoad.weekly.max}
                     />
-                    <MuiSelect
-                      width='150px'
-                      dataset={['Interviews', 'Hours']}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e.target.value, 'weekly', 'type')
-                      }
-                      value={interviewLoad.weekly.type}
-                    />
-                  </>
+                  </Stack>
                 }
               />
               <DebriefDefaults
