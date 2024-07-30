@@ -196,11 +196,13 @@ const validateForms = (fields: JobDetailsForm) => {
       required: value.required,
       error: {
         value:
-          value?.value && typeof value.value === 'string'
-            ? key === 'description'
-              ? value.value.length < 100
-              : value.value.length === 0
-            : value.required,
+          typeof value?.value === 'number'
+            ? false
+            : value?.value
+              ? key === 'description'
+                ? value.value.length < 100
+                : value.value.length === 0
+              : value.required,
         helper: value.error.helper,
       },
     };
