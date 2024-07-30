@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Autocomplete,
   Chip,
@@ -15,7 +18,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
@@ -26,6 +29,7 @@ import {
   InterviewLoadType,
   schedulingSettingType,
 } from '@aglint/shared-types';
+import { ArrowDropDownIcon } from '@mui/x-date-pickers';
 import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -872,16 +876,34 @@ function SchedulingSettings({
               />
             </Dialog>
           </ShowCode.When>
-          <ShowCode.When
-            isTrue={router.query.tab == settingSubNavItem.INTERVIEWLOAD}
+        </ShowCode>
+
+        <ShowCode.When
+          isTrue={router.query.tab == settingSubNavItem.EMAILTEMPLATE}
+        >
+          <SchedulerEmailTemps setSaving={setSaving} />
+        </ShowCode.When>
+        <ShowCode.When isTrue={router.query.tab == settingSubNavItem.REASONS}>
+          <SchedulingRegions />
+        </ShowCode.When>
+
+        <ShowCode.When
+          isTrue={router.query.tab == settingSubNavItem.SCHEDULING}
+        >
+          <Stack
+            display={'flex'}
+            flexDirection={'row'}
+            width={'100%'}
+            justifyContent={'space-between'}
+            alignItems={'start'}
+            overflow={'hidden'}
           >
             <Stack
-              display={'flex'}
-              flexDirection={'row'}
               width={'100%'}
-              justifyContent={'space-between'}
-              alignItems={'start'}
-              overflow={'hidden'}
+              overflow={'auto'}
+              height={'calc(100vh - 48px)'}
+              padding={2}
+              spacing={2}
             >
               <InterviewLoad
                 slotDailyLimit={
@@ -923,93 +945,10 @@ function SchedulingSettings({
                   </>
                 }
               />
-              <Stack
-                bgcolor={'white'}
-                width={'400px'}
-                padding={'var(--space-4)'}
-                borderLeft={'1px solid var(--neutral-6)'}
-                height={'calc(100vh - 48px)'}
-                display={'flex'}
-                flexDirection={'column'}
-                gap={'var(--space-4)'}
-              >
-                {isTipVisible && (
-                  <Stack>
-                    <GlobalInfo
-                      color={'purple'}
-                      iconName='lightbulb'
-                      textTitle={'Pro Tip'}
-                      textDescription={
-                        'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-                      }
-                      showCloseButton
-                      onClickClose={{
-                        onClick: () => {
-                          handleCloseInfo();
-                        },
-                      }}
-                    />
-                  </Stack>
-                )}
-                <Stack
-                  bgcolor={'white'}
-                  borderRadius={'4px'}
-                  display={'flex'}
-                  flexDirection={'column'}
-                  gap={'4px'}
-                  padding={'var(--space-3)'}
-                  border={'1px solid var(--neutral-6)'}
-                >
-                  <Text
-                    content='How It Works'
-                    weight={'medium'}
-                    size={2}
-                    color={'info'}
-                  />
-
-                  <ul>
-                    <li style={{ color: 'var(--neutral-11)' }}>
-                      <span style={{ fontWeight: 'bold' }}>Daily Limit: </span>
-                      Specify the maximum number of interviews or hours an
-                      interviewer can handle each day.
-                    </li>
-                    <li style={{ color: 'var(--neutral-11)' }}>
-                      <span style={{ fontWeight: 'bold' }}>Weekly Limit: </span>
-                      Set the total number of interviews or hours per week to
-                      ensure balanced workloads.
-                    </li>
-                    <li style={{ color: 'var(--neutral-11)' }}>
-                      <span style={{ fontWeight: 'bold' }}>
-                        Customization:{' '}
-                      </span>
-                      Adjust settings for each interviewer based on their
-                      capacity and role requirements.
-                    </li>
-                    <li style={{ color: 'var(--neutral-11)' }}>
-                      <span style={{ fontWeight: 'bold' }}>Overrides: </span>
-                      You can override these settings in the interviewer
-                      settings for personalized scheduling needs.
-                    </li>
-                  </ul>
-                </Stack>
-              </Stack>
-            </Stack>
-          </ShowCode.When>
-        </ShowCode>
-        <ShowCode.When isTrue={router.query.tab == settingSubNavItem.KEYWORDS}>
-          <Stack
-            display={'flex'}
-            flexDirection={'row'}
-            width={'100%'}
-            justifyContent={'space-between'}
-            alignItems={'start'}
-            sx={{ overflowX: 'hidden' }}
-          >
-            <Stack
-              width={'100%'}
-              overflow={'auto'}
-              height={'calc(100vh - 48px)'}
-            >
+              <DebriefDefaults
+                value={debriefDefaults}
+                setValue={setDebriefDefaults}
+              />
               <Keywords
                 slotKeywordsCard={
                   <>
@@ -1238,53 +1177,117 @@ function SchedulingSettings({
                 }
               />
             </Stack>
-            <KeywordsHelper
-              styleWidth={{ style: { width: helperKeywords } }}
-              onClickArrow={{
-                style: {
-                  transform: `rotate(${helperKeywords === 420 ? '0deg' : '180deg'})`,
-                },
-                onClick: () => {
-                  toggleHelperKeywords();
-                },
+            <Stack
+              bgcolor={'white'}
+              width={'400px'}
+              minWidth={'400px'}
+              padding={'var(--space-4)'}
+              borderLeft={'1px solid var(--neutral-6)'}
+              height={'calc(100vh - 48px)'}
+              display={'flex'}
+              flexDirection={'column'}
+              gap={'var(--space-4)'}
+              sx={{
+                overflowY: 'auto',
               }}
-            />
-          </Stack>
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={router.query.tab == settingSubNavItem.EMAILTEMPLATE}
-        >
-          <SchedulerEmailTemps setSaving={setSaving} />
-        </ShowCode.When>
-        <ShowCode.When isTrue={router.query.tab == settingSubNavItem.REASONS}>
-          <SchedulingRegions />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={router.query.tab == settingSubNavItem.DEBRIEFDEFAULTS}
-        >
-          <Stack
-            display={'flex'}
-            flexDirection={'row'}
-            width={'100%'}
-            justifyContent={'space-between'}
-            alignItems={'start'}
-            overflow={'hidden'}
-          >
-            <DebriefDefaults
-              value={debriefDefaults}
-              setValue={setDebriefDefaults}
-            />
-            <DebreifHelperText
-              styleWidth={{ style: { width: helperWidth } }}
-              onClickArrow={{
-                style: {
-                  transform: `rotate(${helperWidth === 420 ? '0deg' : '180deg'})`,
-                },
-                onClick: () => {
-                  toggleHelperTextWidth();
-                },
-              }}
-            />
+            >
+              {isTipVisible && (
+                <Stack>
+                  <GlobalInfo
+                    color={'purple'}
+                    iconName='lightbulb'
+                    textTitle={'Pro Tip'}
+                    textDescription={
+                      'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+                    }
+                    showCloseButton
+                    onClickClose={{
+                      onClick: () => {
+                        handleCloseInfo();
+                      },
+                    }}
+                  />
+                </Stack>
+              )}
+              <TipAccordion
+                title='Interview Load Tips'
+                body={
+                  <Stack
+                    borderRadius={'4px'}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    gap={'4px'}
+                    padding={'16px'}
+                  >
+                    <Text
+                      content='How It Works'
+                      weight={'medium'}
+                      size={2}
+                      color={'info'}
+                    />
+
+                    <ul>
+                      <li style={{ color: 'var(--neutral-11)' }}>
+                        <span style={{ fontWeight: 'bold' }}>
+                          Daily Limit:{' '}
+                        </span>
+                        Specify the maximum number of interviews or hours an
+                        interviewer can handle each day.
+                      </li>
+                      <li style={{ color: 'var(--neutral-11)' }}>
+                        <span style={{ fontWeight: 'bold' }}>
+                          Weekly Limit:{' '}
+                        </span>
+                        Set the total number of interviews or hours per week to
+                        ensure balanced workloads.
+                      </li>
+                      <li style={{ color: 'var(--neutral-11)' }}>
+                        <span style={{ fontWeight: 'bold' }}>
+                          Customization:{' '}
+                        </span>
+                        Adjust settings for each interviewer based on their
+                        capacity and role requirements.
+                      </li>
+                      <li style={{ color: 'var(--neutral-11)' }}>
+                        <span style={{ fontWeight: 'bold' }}>Overrides: </span>
+                        You can override these settings in the interviewer
+                        settings for personalized scheduling needs.
+                      </li>
+                    </ul>
+                  </Stack>
+                }
+              />
+              <TipAccordion
+                title='Debrief Tips'
+                body={
+                  <DebreifHelperText
+                    onClickArrow={{
+                      style: {
+                        transform: `rotate(${helperWidth === 420 ? '0deg' : '180deg'})`,
+                      },
+                      onClick: () => {
+                        toggleHelperTextWidth();
+                      },
+                    }}
+                  />
+                }
+              />
+              <TipAccordion
+                title='Keyword Tips'
+                body={
+                  <KeywordsHelper
+                    onClickArrow={{
+                      style: {
+                        transform: `rotate(${helperKeywords === 420 ? '0deg' : '180deg'})`,
+                      },
+                      onClick: () => {
+                        toggleHelperKeywords();
+                      },
+                    }}
+                  />
+                }
+              />
+            </Stack>
           </Stack>
         </ShowCode.When>
       </>
@@ -1401,3 +1404,35 @@ export function SettingsSubNabItem() {
     </>
   );
 }
+
+const TipAccordion = ({ title, body }: { title: string; body: ReactNode }) => {
+  return (
+    <Stack>
+      <Accordion
+        sx={{
+          borderRadius: '80px',
+          border: '1px solid var(--neutral-6)',
+          boxShadow: 'none',
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ArrowDropDownIcon />}
+          aria-controls='panel2-content'
+          id='panel2-header'
+          sx={{
+            background: 'white',
+            borderRadius: '3px',
+          }}
+        >
+          <Typography fontWeight={500}>{title}</Typography>
+        </AccordionSummary>
+        {/* <AccordionDetails> */}
+        <AccordionDetails
+          sx={{ backgroundColor: 'white', borderRadius: '3px', padding: 0 }}
+        >
+          {body}
+        </AccordionDetails>
+      </Accordion>
+    </Stack>
+  );
+};

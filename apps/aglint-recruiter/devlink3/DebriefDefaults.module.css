@@ -1,7 +1,6 @@
 .debrief_company_settings {
   display: flex;
-  width: 600px;
-  margin: var(--space-4);
+  width: 700px;
   padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
