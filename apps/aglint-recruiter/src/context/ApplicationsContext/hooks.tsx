@@ -7,6 +7,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import {
   applicationsQueries,
+  useDeleteApplication,
   useMoveApplications,
   useReuploadResume,
   useUpdateApplication,
@@ -275,31 +276,48 @@ export const useApplicationsActions = () => {
     [CASCADE_VISIBILITIES, job?.flags, section],
   );
 
-  const { mutateAsync: moveApplications } = useMoveApplications(
-    {
-      job_id,
-    },
-    checklist,
-  );
+  const { mutateAsync: moveApplications } = useMoveApplications({
+    job_id,
+  });
 
   const handleMoveApplications = async (
-    payload: Parameters<typeof moveApplications>[0],
+    payload: Omit<Parameters<typeof moveApplications>[0], 'applications'>,
   ) => {
     try {
-      await moveApplications(payload);
+      await moveApplications({ ...payload, applications: checklist });
       resetChecklist();
     } catch {
       //
     }
   };
 
-  const { mutateAsync: reuploadResume } = useReuploadResume({ job_id });
+  const { mutateAsync: reuploadResume, mutationQueue: reuploadMutationQueue } =
+    useReuploadResume({ job_id });
+
+  const {
+    mutateAsync: deleteApplication,
+    mutationQueue: deleteApplicationQueue,
+  } = useDeleteApplication({
+    job_id,
+  });
+
+  const { mutationQueue: moveMutationQueue } = useMoveApplications({ job_id });
 
   const handleReuploadResume = async (
     payload: Parameters<typeof reuploadResume>[0],
   ) => {
     try {
       return await reuploadResume(payload);
+    } catch {
+      //
+    }
+  };
+
+  const handleDeleteApplication = async (
+    payload: Parameters<typeof deleteApplication>[0],
+  ) => {
+    try {
+      return await deleteApplication(payload);
     } catch {
       //
     }
@@ -369,6 +387,17 @@ export const useApplicationsActions = () => {
     });
   }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
 
+  const applicationMutations = useMemo(() => {
+    const reuploads = reuploadMutationQueue.map(
+      ({ application_id }) => application_id,
+    );
+    const deletes = deleteApplicationQueue.map(
+      ({ application_id }) => application_id,
+    );
+    const moves = moveMutationQueue.flatMap(({ applications }) => applications);
+    return [...reuploads, ...deletes, ...moves];
+  }, [reuploadMutationQueue, deleteApplicationQueue, moveMutationQueue]);
+
   return {
     job,
     jobLoad,
@@ -380,6 +409,7 @@ export const useApplicationsActions = () => {
     badgesCount,
     filters,
     manageJob,
+    applicationMutations,
     setFilters,
     setSection,
     handleUpdateApplication,
@@ -388,6 +418,7 @@ export const useApplicationsActions = () => {
     handleSelectNextApplication,
     handleSelectPrevApplication,
     handleReuploadResume,
+    handleDeleteApplication,
   };
 };
 

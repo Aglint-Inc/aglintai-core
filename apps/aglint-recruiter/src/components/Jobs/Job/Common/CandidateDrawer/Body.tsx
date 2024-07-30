@@ -130,17 +130,27 @@ const useBlocker = () => {
 };
 
 const Unparsable = () => {
-  const { handleResumeReUpload } = useApplication();
+  const { handleResumeReUpload, handleDeleteApplication } = useApplication();
   const setPreview = useApplicationStore(({ setPreview }) => setPreview);
 
   const [file, setFile] = useState<File>(undefined);
   const [loading, setLoading] = useState(false);
 
   const handleUpload = useCallback(async () => {
-    setLoading(true);
-    await handleResumeReUpload([file]);
-    setLoading(true);
+    if (!loading) {
+      setLoading(true);
+      await handleResumeReUpload([file]);
+      setLoading(false);
+    }
   }, [file, loading]);
+
+  const handleDelete = useCallback(async () => {
+    if (!loading) {
+      setLoading(true);
+      await handleDeleteApplication();
+      setLoading(false);
+    }
+  }, [loading]);
 
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
@@ -197,6 +207,7 @@ const Unparsable = () => {
                     size={2}
                     color={'error'}
                     textButton={'Delete application'}
+                    onClickButton={{ onClick: () => handleDelete() }}
                   />
                 </Stack>
               </Stack>

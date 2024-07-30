@@ -10,13 +10,13 @@ import {
   keepPreviousData,
   queryOptions,
   useMutation,
+  useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
 
 import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/src/apiUtils/job/utils';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { ApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Application } from '@/src/types/applications.types';
 import { supabase } from '@/src/utils/supabase/client';
@@ -337,17 +337,15 @@ export const useUploadApplication = ({ job_id }: Pick<Params, 'job_id'>) => {
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
     ) => {
       toast.message('Uploading application');
-      return await handleUploadApplication({
+      await handleUploadApplication({
         job_id,
         recruiter_id,
         ...payload,
       });
+      await revalidateJobQueries(job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
-    onSuccess: async () => {
-      revalidateJobQueries(job_id);
-      toast.success('Uploaded successfully');
-    },
+    onSuccess: () => toast.success('Uploaded successfully'),
   });
 };
 type HandleUploadApplication = ApplicationsAllQueryPrerequistes & {
@@ -387,12 +385,10 @@ export const useUploadResume = (params: Pick<Params, 'job_id'>) => {
         recruiter_id,
         ...payload,
       });
+      await revalidateJobQueries(params.job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
-    onSuccess: async () => {
-      revalidateJobQueries(params.job_id);
-      toast.success('Uploaded successfully');
-    },
+    onSuccess: () => toast.success('Uploaded successfully'),
   });
 };
 type HandleUploadResume = ApplicationsAllQueryPrerequistes & {
@@ -445,12 +441,10 @@ export const useUploadCsv = (params: Pick<Params, 'job_id'>) => {
         recruiter_id,
         ...payload,
       });
+      await revalidateJobQueries(params.job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
-    onSuccess: async () => {
-      revalidateJobQueries(params.job_id);
-      toast.success('Uploaded successfully');
-    },
+    onSuccess: () => toast.success('Uploaded successfully'),
   });
 };
 type HandleUploadCsv = ApplicationsAllQueryPrerequistes & {
@@ -469,27 +463,33 @@ const handleBulkCsvUpload = async (payload: HandleUploadCsv) => {
   if (!response.confirmation) throw new Error(response.error);
 };
 
+type MoveApplicationArgs = Omit<
+  Parameters<typeof moveApplications>[0],
+  'job_id'
+>;
 export const useMoveApplications = (
   payload: ApplicationsAllQueryPrerequistes,
-  applications: ApplicationsStore['checklist'],
 ) => {
   const { revalidateJobQueries } = useInvalidateJobQueries();
   const { mutationKey } = applicationMutationKeys.move();
-  return useMutation({
-    mutationKey,
-    mutationFn: async (
-      args: Omit<
-        Parameters<typeof moveApplications>[0],
-        'job_id' | 'applications'
-      >,
-    ) => {
-      await moveApplications({ job_id: payload.job_id, applications, ...args });
-    },
-    onSuccess: async () => {
-      revalidateJobQueries(payload.job_id);
-      toast.success('Moved successfully');
-    },
+  const mutationQueue = useMutationState({
+    filters: { mutationKey, status: 'pending' },
+    select: (mutation) => mutation.state.variables as MoveApplicationArgs,
   });
+  return {
+    ...useMutation({
+      mutationKey,
+      mutationFn: async (args: MoveApplicationArgs) => {
+        await moveApplications({
+          job_id: payload.job_id,
+          ...args,
+        });
+        await revalidateJobQueries(payload.job_id);
+      },
+      onSuccess: () => toast.success('Moved successfully'),
+    }),
+    mutationQueue,
+  };
 };
 type MoveApplications = ApplicationsAllQueryPrerequistes & {
   applications: DatabaseTable['applications']['id'][];
@@ -540,29 +540,33 @@ const moveApplications = async ({
   ]);
 };
 
+type ReuploadResumeArgs = Pick<
+  HandleReUploadResume,
+  'application_id' | 'candidate_id' | 'files'
+>;
 export const useReuploadResume = (params: Pick<Params, 'job_id'>) => {
   const { revalidateJobQueries } = useInvalidateJobQueries();
   const { mutationKey } = applicationMutationKeys.reupload();
-  return useMutation({
-    mutationKey,
-    mutationFn: async (
-      payload: Pick<
-        HandleReUploadResume,
-        'application_id' | 'candidate_id' | 'files'
-      >,
-    ) => {
-      toast.message('Uploading applications');
-      return await handleResumeReUpload({
-        ...payload,
-        job_id: params.job_id,
-      });
-    },
-    onError: (error) => toast.error(`Upload failed. (${error.message})`),
-    onSuccess: async () => {
-      revalidateJobQueries(params.job_id);
-      toast.success('Uploaded successfully');
-    },
+  const mutationQueue = useMutationState({
+    filters: { mutationKey, status: 'pending' },
+    select: (mutation) => mutation.state.variables as ReuploadResumeArgs,
   });
+  return {
+    ...useMutation({
+      mutationKey,
+      mutationFn: async (payload: ReuploadResumeArgs) => {
+        toast.message('Re-Uploading resume');
+        await handleResumeReUpload({
+          ...payload,
+          job_id: params.job_id,
+        });
+        await revalidateJobQueries(params.job_id);
+      },
+      onError: (error) => toast.error(`Re-Upload failed. (${error.message})`),
+      onSuccess: () => toast.success('Re-Uploaded successfully'),
+    }),
+    mutationQueue,
+  };
 };
 type HandleReUploadResume = ApplicationsAllQueryPrerequistes & {
   application_id: string;
@@ -589,19 +593,31 @@ const handleResumeReUpload = async (payload: HandleReUploadResume) => {
   return response;
 };
 
-// eslint-disable-next-line no-unused-vars
-const useDeleteApplication = (params: ApplicationsAllQueryPrerequistes) => {
+type DeleteApplicationArgs = { application_id: string };
+export const useDeleteApplication = (
+  params: ApplicationsAllQueryPrerequistes,
+) => {
   const { mutationKey } = applicationMutationKeys.delete();
-  const { revalidateJobQueries } = useInvalidateJobQueries();
-  return useMutation({
-    mutationKey,
-    mutationFn: async (application_id: string) =>
-      await supabase.from('applications').delete().eq('id', application_id),
-    onError: (error) =>
-      toast.error(`Failed to delte application. (${error.message})`),
-    onSuccess: async () => {
-      revalidateJobQueries(params.job_id);
-      toast.success('Uploaded successfully');
-    },
+  const mutationQueue = useMutationState({
+    filters: { mutationKey, status: 'pending' },
+    select: (mutation) => mutation.state.variables as DeleteApplicationArgs,
   });
+  const { revalidateJobQueries } = useInvalidateJobQueries();
+  return {
+    ...useMutation({
+      mutationKey,
+      mutationFn: async (args: DeleteApplicationArgs) => {
+        toast.message('Deleting applications');
+        await supabase
+          .from('applications')
+          .delete()
+          .eq('id', args.application_id);
+        await revalidateJobQueries(params.job_id);
+      },
+      onError: (error) =>
+        toast.error(`Failed to delte application. (${error.message})`),
+      onSuccess: () => toast.success('Deleted successfully'),
+    }),
+    mutationQueue,
+  };
 };
