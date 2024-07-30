@@ -47,7 +47,7 @@ export const useJobForms = (
             <JobCompany name={safeKey} value={value} onChange={handleChange} />
           );
           break;
-        case 'department':
+        case 'department_id':
           acc[safeKey] = (
             <JobDepartment
               name={safeKey}
@@ -291,7 +291,7 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
   const options = recruiter.departments.map((department) => ({
     name: department.name,
-    value: department.name,
+    value: department.id,
   }));
 
   return (

@@ -218,7 +218,7 @@ export const createJobObject = async (
         location: post.categories.location,
         job_title: post.text,
         description: post.content.descriptionHtml,
-        department: recruiter?.departments?.[0] ?? null,
+        department_id: recruiter?.departments?.[0]?.id ?? null,
         job_type:
           post.categories.commitment === 'Part Time'
             ? 'part time'
