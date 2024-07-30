@@ -5189,6 +5189,7 @@ export type Database = {
           recruiter_id: string | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
+          workflow_type: Database["public"]["Enums"]["workflow_type"] | null
         }
         Relationships: [
           {
