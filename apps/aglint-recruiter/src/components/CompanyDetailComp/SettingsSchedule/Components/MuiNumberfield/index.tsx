@@ -36,7 +36,7 @@ function MuiNumberfield({
     <FormControl>
       <TextField
         sx={{
-          width: '70px',
+          width: '160px',
         }}
         value={Number(tempValue).toString()}
         onChange={handlerMinMax}
