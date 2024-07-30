@@ -372,7 +372,7 @@ function SchedulingSettings({
       <>
         <ShowCode>
           <ShowCode.When
-            isTrue={router.query.subtab == settingSubNavItem.WORKINGHOURS}
+            isTrue={router.query.tab == settingSubNavItem.WORKINGHOURS}
           >
             <Stack
               display={'flex'}
@@ -613,9 +613,7 @@ function SchedulingSettings({
               />
             </Stack>
           </ShowCode.When>
-          <ShowCode.When
-            isTrue={router.query.subtab == settingSubNavItem.DAYOFF}
-          >
+          <ShowCode.When isTrue={router.query.tab == settingSubNavItem.DAYOFF}>
             <CompanyDayOff
               slotLearnButton={
                 <>
@@ -875,7 +873,7 @@ function SchedulingSettings({
             </Dialog>
           </ShowCode.When>
           <ShowCode.When
-            isTrue={router.query.subtab == settingSubNavItem.INTERVIEWLOAD}
+            isTrue={router.query.tab == settingSubNavItem.INTERVIEWLOAD}
           >
             <Stack
               display={'flex'}
@@ -998,9 +996,7 @@ function SchedulingSettings({
             </Stack>
           </ShowCode.When>
         </ShowCode>
-        <ShowCode.When
-          isTrue={router.query.subtab == settingSubNavItem.KEYWORDS}
-        >
+        <ShowCode.When isTrue={router.query.tab == settingSubNavItem.KEYWORDS}>
           <Stack
             display={'flex'}
             flexDirection={'row'}
@@ -1256,17 +1252,15 @@ function SchedulingSettings({
           </Stack>
         </ShowCode.When>
         <ShowCode.When
-          isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
+          isTrue={router.query.tab == settingSubNavItem.EMAILTEMPLATE}
         >
           <SchedulerEmailTemps setSaving={setSaving} />
         </ShowCode.When>
-        <ShowCode.When
-          isTrue={router.query.subtab == settingSubNavItem.REASONS}
-        >
+        <ShowCode.When isTrue={router.query.tab == settingSubNavItem.REASONS}>
           <SchedulingRegions />
         </ShowCode.When>
         <ShowCode.When
-          isTrue={router.query.subtab == settingSubNavItem.DEBRIEFDEFAULTS}
+          isTrue={router.query.tab == settingSubNavItem.DEBRIEFDEFAULTS}
         >
           <Stack
             display={'flex'}
@@ -1388,18 +1382,16 @@ export function SettingsSubNabItem() {
           <SublinkTab
             key={i}
             text={item.label}
-            isActtive={router.query.subtab === item.value}
+            isActtive={router.query.tab === item.value}
             onClickTab={{
               onClick: (e: any) => {
                 e.stopPropagation();
                 if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
                   router.push(
-                    `${ROUTES['/company']()}?tab=settings&subtab=${item.value}&email=${firstTemplate}`,
+                    `${ROUTES['/company']()}?tab=${item.value}&email=${firstTemplate}`,
                   );
                 } else {
-                  router.push(
-                    `${ROUTES['/company']()}?tab=settings&subtab=${item.value}`,
-                  );
+                  router.push(`${ROUTES['/company']()}?tab=${item.value}`);
                 }
               },
             }}
