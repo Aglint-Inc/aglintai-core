@@ -9,10 +9,10 @@ import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 import Loader from '@/src/components/Common/Loader';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
+import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import { transformDataSchedules } from '../../schedules-query';
-import { DateIcon } from '../../Settings/Components/DateSelector';
 import { useAllSchedulesByModuleId } from '../queries/hooks';
 import { fetchSchedulesCountByModule } from '../queries/utils';
 

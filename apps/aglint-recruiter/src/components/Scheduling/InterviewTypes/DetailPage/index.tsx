@@ -22,16 +22,12 @@ function ModuleMembersComp() {
     if (editModule?.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: ROUTES['/scheduling']() + `?tab=dashboard`,
-        },
-        {
           name: 'Interview Types',
-          route: ROUTES['/scheduling']() + `?tab=interviewtypes`,
+          route: ROUTES['/scheduling/interview-types'](),
         },
         {
           name: `${editModule.name}`,
-          route: ROUTES['/scheduling'](),
+          route: '',
         },
       ]);
     }

@@ -111,6 +111,8 @@ export * from "./GlobalCta";
 export * from "./GlobalIcon";
 export * from "./GlobalScheduleCard";
 export * from "./GlobalStyles";
+export * from "./GlobalSwitch";
+export * from "./GlobalSwitchPill";
 export * from "./GlobalUserDetail";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
