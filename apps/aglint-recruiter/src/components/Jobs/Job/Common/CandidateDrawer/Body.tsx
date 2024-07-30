@@ -106,23 +106,7 @@ const useBlocker = () => {
     case 'processing':
       return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'unavailable':
-      return (
-        <GlobalCta
-          color={'error'}
-          iconName={'warning'}
-          textTitle={'Resume not found'}
-          textDescription={
-            "Unable to find the candidate resume.Please upload the resume manually to generate a score and analyse the candidate's profile."
-          }
-          slotButton={
-            <ButtonSoft
-              size={2}
-              color={'neutral'}
-              textButton={'Upload resume'}
-            />
-          }
-        />
-      );
+      return <Unavailable />;
     case 'unparsable':
       return <Unparsable />;
   }
@@ -203,6 +187,94 @@ const Unparsable = () => {
                     iconName={'description'}
                     onClickButton={{ onClick: () => setPreview(true) }}
                   />
+                  <ButtonSoft
+                    size={2}
+                    color={'error'}
+                    textButton={'Delete application'}
+                    onClickButton={{ onClick: () => handleDelete() }}
+                  />
+                </Stack>
+              </Stack>
+            }
+          />
+        )}
+      </OptimisticWrapper>
+      {loading && (
+        <Stack style={{ position: 'absolute' }}>
+          <Loader />
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+
+const Unavailable = () => {
+  const { handleResumeReUpload, handleDeleteApplication } = useApplication();
+
+  const [file, setFile] = useState<File>(undefined);
+  const [loading, setLoading] = useState(false);
+
+  const handleUpload = useCallback(async () => {
+    if (!loading) {
+      setLoading(true);
+      await handleResumeReUpload([file]);
+      setLoading(false);
+    }
+  }, [file, loading]);
+
+  const handleDelete = useCallback(async () => {
+    if (!loading) {
+      setLoading(true);
+      await handleDeleteApplication();
+      setLoading(false);
+    }
+  }, [loading]);
+
+  return (
+    <Stack alignItems={'center'} justifyContent={'center'}>
+      <OptimisticWrapper loading={loading}>
+        {file ? (
+          <GlobalCta
+            color={'neutral'}
+            slotCustomIcon={<></>}
+            textTitle={'Upload resume'}
+            textDescription={'Upload the resume to score the candidate'}
+            slotButton={
+              <Stack gap={2} alignItems={'center'}>
+                <ResumeUploadComp
+                  value={file}
+                  handleChange={(e) => setFile(e)}
+                  label={false}
+                />
+                <Stack direction={'row'} gap={1}>
+                  <ButtonSolid
+                    size={2}
+                    color={'accent'}
+                    textButton={'Upload resume'}
+                    onClickButton={{
+                      onClick: () => handleUpload(),
+                    }}
+                  />
+                </Stack>
+              </Stack>
+            }
+          />
+        ) : (
+          <GlobalCta
+            color={'error'}
+            iconName={'warning'}
+            textTitle={'Resume not found'}
+            textDescription={
+              'Unable to find the candidate resume. Upload the resume to score the candidate'
+            }
+            slotButton={
+              <Stack gap={2} alignItems={'center'}>
+                <ResumeUploadComp
+                  value={file}
+                  handleChange={(e) => setFile(e)}
+                  label={false}
+                />
+                <Stack direction={'row'} gap={1}>
                   <ButtonSoft
                     size={2}
                     color={'error'}
