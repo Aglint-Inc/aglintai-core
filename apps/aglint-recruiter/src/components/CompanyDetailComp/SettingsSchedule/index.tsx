@@ -54,6 +54,7 @@ import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
 import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
 import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -63,7 +64,6 @@ import UITextField from '../../Common/UITextField';
 import ToggleBtn from '../../Common/UIToggle';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
-import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
@@ -617,7 +617,9 @@ function SchedulingSettings({
               />
             </Stack>
           </ShowCode.When>
-          <ShowCode.When isTrue={router.query.tab == settingSubNavItem.DAYOFF}>
+          <ShowCode.When
+            isTrue={router.query.tab == settingSubNavItem.HOLIDAYS}
+          >
             <CompanyDayOff
               slotLearnButton={
                 <>
@@ -883,6 +885,21 @@ function SchedulingSettings({
         >
           <SchedulerEmailTemps setSaving={setSaving} />
         </ShowCode.When>
+        <ShowCode.When
+          isTrue={router.query.tab == settingSubNavItem.SLACKTEMPLATE}
+        >
+          <SchedulerEmailTemps setSaving={setSaving} />
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={router.query.tab == settingSubNavItem.AGENTTEMPLATE}
+        >
+          <SchedulerEmailTemps setSaving={setSaving} />
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={router.query.tab == settingSubNavItem.CALENDERTEMPLATE}
+        >
+          <SchedulerEmailTemps setSaving={setSaving} />
+        </ShowCode.When>
         <ShowCode.When isTrue={router.query.tab == settingSubNavItem.REASONS}>
           <SchedulingRegions />
         </ShowCode.When>
@@ -907,7 +924,33 @@ function SchedulingSettings({
             >
               <InterviewLoad
                 slotDailyLimit={
-                  <>
+                  <Stack spacing={1}>
+                    <RadioGroup
+                      row
+                      aria-labelledby='demo-row-radio-buttons-group-label'
+                      name='row-radio-buttons-group'
+                    >
+                      {['Hours', 'Interviews'].map((ele, i) => {
+                        return (
+                          <FormControlLabel
+                            checked={interviewLoad.daily.type === ele}
+                            key={i}
+                            onChange={(e: any) => {
+                              loadChangeHandle(e.target.value, 'daily', 'type');
+                            }}
+                            sx={{
+                              marginLeft: '0px',
+                              '& .MuiRadio-root': {
+                                marginRight: 'var(--space-1)',
+                              },
+                            }}
+                            value={ele}
+                            control={<Radio />}
+                            label={capitalize(ele.replaceAll('_', ' '))}
+                          />
+                        );
+                      })}
+                    </RadioGroup>
                     <MuiNumberfield
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'daily', 'value')
@@ -915,18 +958,40 @@ function SchedulingSettings({
                       value={interviewLoad.daily.value}
                       max={interviewLoad.daily.max}
                     />
-                    <MuiSelect
-                      width='150px'
-                      dataset={['Interviews', 'Hours']}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e.target.value, 'daily', 'type')
-                      }
-                      value={interviewLoad.daily.type}
-                    />
-                  </>
+                  </Stack>
                 }
                 slotWeeklyLimit={
-                  <>
+                  <Stack spacing={1}>
+                    <RadioGroup
+                      row
+                      aria-labelledby='demo-row-radio-buttons-group-label'
+                      name='row-radio-buttons-group'
+                    >
+                      {['Hours', 'Interviews'].map((ele, i) => {
+                        return (
+                          <FormControlLabel
+                            checked={interviewLoad.weekly.type === ele}
+                            key={i}
+                            onChange={(e: any) => {
+                              loadChangeHandle(
+                                e.target.value,
+                                'weekly',
+                                'type',
+                              );
+                            }}
+                            sx={{
+                              marginLeft: '0px',
+                              '& .MuiRadio-root': {
+                                marginRight: 'var(--space-1)',
+                              },
+                            }}
+                            value={ele}
+                            control={<Radio />}
+                            label={capitalize(ele.replaceAll('_', ' '))}
+                          />
+                        );
+                      })}
+                    </RadioGroup>
                     <MuiNumberfield
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'weekly', 'value')
@@ -934,15 +999,7 @@ function SchedulingSettings({
                       value={interviewLoad.weekly.value}
                       max={interviewLoad.weekly.max}
                     />
-                    <MuiSelect
-                      width='150px'
-                      dataset={['Interviews', 'Hours']}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e.target.value, 'weekly', 'type')
-                      }
-                      value={interviewLoad.weekly.type}
-                    />
-                  </>
+                  </Stack>
                 }
               />
               <DebriefDefaults
@@ -1360,7 +1417,7 @@ export function SettingsSubNabItem() {
   const router = useRouter();
   const { emailTemplates } = useAuthDetails();
   const [firstTemplate, setFirstTemplate] = useState(null);
-
+  const { ifAllowed } = useRolesAndPermissions();
   //for select the first email template type
 
   useEffect(() => {
@@ -1377,11 +1434,30 @@ export function SettingsSubNabItem() {
       }
     }
   }, [router]);
-  // console.log(router.query);
   return (
     <>
       {settingsItems.map((item, i) => {
-        return (
+        return item?.permission ? (
+          ifAllowed(
+            <SublinkTab
+              text={item.label}
+              isActtive={router.query.tab === item.value}
+              onClickTab={{
+                onClick: (e: any) => {
+                  e.stopPropagation();
+                  if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
+                    router.push(
+                      `${ROUTES['/company']()}?tab=${item.value}&email=${firstTemplate}`,
+                    );
+                  } else {
+                    router.push(`${ROUTES['/company']()}?tab=${item.value}`);
+                  }
+                },
+              }}
+            />,
+            [item?.permission],
+          )
+        ) : (
           <SublinkTab
             key={i}
             text={item.label}

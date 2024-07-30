@@ -1,17 +1,20 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Box, Stack } from '@mui/material';
+import { Box, Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { Checkbox } from '@/devlink/Checkbox';
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
@@ -20,13 +23,14 @@ import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import {
   fetchEmailTemplates,
   filterEmailByTemplateTab,
   SortCurrentTabTemps,
-  TEMPLATE_TABS,
+  tempFilterOptions,
   template_tabs,
 } from './utils';
 
@@ -49,7 +53,7 @@ function SchedulerEmailTemps({ setSaving }) {
 
   const [isFocus, setIsFocus] = useState(false);
 
-  const temp_tab = router.query.template_tab as any;
+  const temp_tab = router.query.tab as any;
   const temp_email = router.query.email as DatabaseEnums['email_slack_types'];
 
   useEffect(() => {
@@ -125,19 +129,6 @@ function SchedulerEmailTemps({ setSaving }) {
     }
   };
 
-  const handleChangeTemplateTab = (update_tab: TEMPLATE_TABS) => {
-    const current_filtered_temp = templates.filter((t) =>
-      filterEmailByTemplateTab(update_tab, t.type),
-    );
-    setEmailRoute(current_filtered_temp[0].type);
-    setTipTapLoder(true);
-    setTimeout(() => {
-      setTipTapLoder(false);
-    }, 500);
-    setSearchQry('');
-    setTabRoute(update_tab);
-  };
-
   const debouncedUpdateEmail = useCallback(debounce(updateEmailToDB, 300), []);
   const handleUpdateEmailTemp = async (
     updatedTemplate: DatabaseTable['company_email_template'],
@@ -153,21 +144,6 @@ function SchedulerEmailTemps({ setSaving }) {
   };
   const selectedTemplate = templates.find((t) => t.type === temp_email);
 
-  const sections = template_tabs.map((tab) => tab.key);
-  const tabCount: number = sections.length - 1;
-  const currentIndex: number = sections.indexOf(temp_tab);
-
-  const handlePrevious = () => {
-    const pre =
-      // eslint-disable-next-line security/detect-object-injection
-      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
-    handleChangeTemplateTab(pre);
-  };
-  const handleNext = () => {
-    const next =
-      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
-    handleChangeTemplateTab(next);
-  };
   const handleup = () => {
     const templates = currentTabQueryTemplates().map(
       (t) => t.type,
@@ -188,17 +164,13 @@ function SchedulerEmailTemps({ setSaving }) {
     );
   };
 
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
 
   useEffect(() => {
-    if (left && !isFocus) handlePrevious();
-    else if (right && !isFocus) handleNext();
-    else if (up && !isFocus) handleup();
+    if (up && !isFocus) handleup();
     else if (down && !isFocus) handleDown();
-  }, [left, right, up, down]);
+  }, [up, down]);
 
   function setEmailRoute(temp) {
     router.query.email = temp;
@@ -238,25 +210,86 @@ function SchedulerEmailTemps({ setSaving }) {
       });
   };
 
+  const [filter, setFilter] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentTabQueryTemplates().length > 0) {
+      setEmailRoute(currentTabQueryTemplates()[0]?.type);
+    }
+  }, [isEditorLoad]);
+
+  //dropdown filter logic
+  const [anchorElFilter, setAnchorElFilter] =
+    React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElFilter(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorElFilter(null);
+  };
+
+  const open = Boolean(anchorElFilter);
+
+  const filterOptions = Object.keys(tempFilterOptions[temp_tab]);
+
+  const filteredEnum = Object.keys(tempFilterOptions[temp_tab])
+    .filter((key) => filter.includes(key))
+    .reduce((arr, key) => {
+      return arr.concat(tempFilterOptions[temp_tab][key]);
+    }, []);
+
+  const Options = () => {
+    return filterOptions.map((opt, i) => {
+      return (
+        <Stack
+          direction={'row'}
+          sx={{
+            alignItems: 'center',
+
+            ': hover': { background: 'var(--neutral-2)' },
+          }}
+          spacing={1}
+          padding={'var(--space-2) var(--space-3)'}
+          key={i}
+          onClick={() => {
+            setFilter((pre) => {
+              if (filter.includes(opt)) {
+                return pre.filter((p) => p !== opt);
+              } else {
+                return [...pre, opt];
+              }
+            });
+          }}
+        >
+          <Checkbox
+            key={`${'scheduleType'}-checkbox`}
+            isChecked={filter.includes(opt)}
+            onClickCheck={{
+              onClick: () => {},
+            }}
+          />
+          <Typography
+            key={`${opt}-label`}
+            sx={{
+              fontSize: '14px',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            {capitalizeAll(opt)}
+          </Typography>
+        </Stack>
+      );
+    });
+  };
+
   return (
     <Stack>
       <Box>
-        {templates.length > 0 && (
+        {!isEditorLoad && templates.length > 0 && (
           <EmailTemplatesStart
-            slotNewTabPill={template_tabs.map((tab) => {
-              return (
-                <NewTabPill
-                  key={tab.key}
-                  textLabel={tab.label}
-                  isPillActive={tab.key === temp_tab}
-                  onClickPill={{
-                    onClick: () => {
-                      handleChangeTemplateTab(tab.key);
-                    },
-                  }}
-                />
-              );
-            })}
             slotSearchFilter={
               <>
                 <SearchField
@@ -272,6 +305,52 @@ function SchedulerEmailTemps({ setSaving }) {
                   onBlur={() => setIsFocus(false)}
                   onFocus={() => setIsFocus(true)}
                 />
+                <ButtonFilter
+                  textLabel='Type'
+                  isActive={!anchorElFilter}
+                  isDotVisible={filter.length > 0}
+                  onClickStatus={{
+                    onClick: handleClick,
+                  }}
+                  slotRightIcon={
+                    <Stack>
+                      <GlobalIcon
+                        iconName={
+                          anchorElFilter
+                            ? 'keyboard_arrow_up'
+                            : 'keyboard_arrow_down'
+                        }
+                      />
+                    </Stack>
+                  }
+                />
+                <Popover
+                  open={open}
+                  anchorEl={anchorElFilter}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{ vertical: -10, horizontal: 0 }}
+                  sx={{
+                    '& .MuiPopover-paper': {
+                      borderRadius: 'var(--radius-4)',
+                      borderColor: 'var(--neutral-6)',
+                      minWidth: '176px',
+                    },
+                  }}
+                >
+                  <FilterDropdown
+                    isRemoveVisible={false}
+                    slotOption={<Options />}
+                    onClickReset={{
+                      onClick: () => {
+                        setFilter([]);
+                      },
+                    }}
+                  />
+                </Popover>
               </>
             }
             slotEmailTemplateCards={
@@ -292,6 +371,11 @@ function SchedulerEmailTemps({ setSaving }) {
                     }
                     return flag;
                   })
+                  .filter((email) =>
+                    filteredEnum.length > 0
+                      ? filteredEnum.includes(email.type)
+                      : true,
+                  )
                   .sort((a, b) => {
                     if (
                       emailTemplateCopy[a.type].heading >
@@ -357,7 +441,7 @@ function SchedulerEmailTemps({ setSaving }) {
                           setAnchorEl(e.currentTarget);
                         },
                       }}
-                      isPreviewVisible={router.query.template_tab === 'email'}
+                      isPreviewVisible={router.query.tab === 'emailTemplate'}
                       textTipsMessage={undefined}
                       editEmailDescription={
                         emailTemplateCopy[temp_email].description

@@ -4,11 +4,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { CompanySetting } from '@/devlink/CompanySetting';
-import { NavSublink } from '@/devlink/NavSublink';
 import { SavedChanges } from '@/devlink/SavedChanges';
 import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 import CompanyInfoComp from './CompanyInfoComp';
@@ -17,13 +15,11 @@ import {
   generateDepartments,
   generateRoles,
   generateSpecialities,
-  tabs,
 } from './utils';
 
 const CompanyDetailComp = () => {
   const router = useRouter();
   const { recruiter, setRecruiter } = useAuthDetails();
-  const { ifAllowed } = useRolesAndPermissions();
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -73,44 +69,7 @@ const CompanyDetailComp = () => {
   return (
     <Stack overflow={'hidden'}>
       <CompanySetting
-        slotNavSublink={
-          <>
-            <NavSublink
-              textLink={'Company Info'}
-              isActive={router.query?.tab === 'company-info'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace(`/company?tab=${tabs.companyInfo}`);
-                },
-              }}
-            />
-            {ifAllowed(
-              <NavSublink
-                textLink={'Users'}
-                isActive={router.query?.tab === 'team'}
-                onClickNav={{
-                  onClick: () => {
-                    router.replace('/company?tab=team');
-                  },
-                }}
-              />,
-              ['view_users'],
-            )}
-            {ifAllowed(
-              <NavSublink
-                textLink={'Roles'}
-                isActive={router.query?.tab === 'roles'}
-                onClickNav={{
-                  onClick: () => {
-                    router.replace('/company?tab=roles');
-                  },
-                }}
-              />,
-              ['view_roles'],
-            )}
-            <SettingsSubNabItem />
-          </>
-        }
+        slotNavSublink={<SettingsSubNabItem />}
         slotSavedChanges={
           <SavedChanges
             slotLoaderIcon={
