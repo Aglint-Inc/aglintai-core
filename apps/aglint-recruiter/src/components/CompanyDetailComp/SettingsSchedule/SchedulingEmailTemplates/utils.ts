@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-vars */
-import {
-  DatabaseEnums,
-  DatabaseTable,
-  DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
 import { supabase } from '@/src/utils/supabase/client';
 
 export enum TEMPLATE_TABS {
-  Email = 'email',
-  Slack = 'slack',
-  Agent = 'agent',
-  Calender = 'calender',
+  Email = 'emailTemplate',
+  Slack = 'slackTemplate',
+  Agent = 'agentTemplate',
+  Calender = 'calenderTemplate',
 }
 export const template_tabs = [
   {
@@ -128,4 +124,68 @@ export const SortCurrentTabTemps = (
     });
 
   return curr_tab_temps;
+};
+
+interface TempFilterOptions {
+  emailTemplate: {
+    candidate: DatabaseEnums['email_slack_types'][];
+    interviewer: DatabaseEnums['email_slack_types'][];
+    trainee: DatabaseEnums['email_slack_types'][];
+    organizer: DatabaseEnums['email_slack_types'][];
+    admin: DatabaseEnums['email_slack_types'][];
+  };
+  slackTemplate: {};
+}
+export const tempFilterOptions: TempFilterOptions = {
+  emailTemplate: {
+    candidate: [
+      'agent_email_candidate',
+      'confirmInterview_email_applicant',
+      'interviewCancel_email_applicant',
+      'interviewReschedule_email_applicant',
+      'interviewStart_email_applicant',
+      'selfScheduleReminder_email_applicant',
+      'sendAvailabilityRequest_email_applicant',
+      'sendAvailReqReminder_email_applicant',
+      'sendSelfScheduleRequest_email_applicant',
+      'availabilityReqResend_email_candidate',
+      'rescheduleSelfSchedule_email_applicant',
+    ],
+    interviewer: [
+      'debrief_email_interviewer',
+      'interviewStart_email_interviewers',
+      'interviewEnd_email_interviewerForFeedback',
+      'onTrainingComplete_email_approverForTraineeMeetingQualification',
+    ],
+    trainee: [
+      'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+      'interviewEnd_email_shadowTraineeForMeetingAttendence',
+      'onQualified_email_trainee',
+    ],
+    organizer: [
+      'interviewStart_email_organizer',
+      'meetingDeclined_email_organizer',
+      'meetingAccepted_email_organizer',
+      'interviewEnd_email_organizerForMeetingStatus',
+      'confInterview_email_organizer',
+      'interReschedReq_email_recruiter',
+      'InterviewCancelReq_email_recruiter',
+    ],
+    admin: ['interviewerResumed_email_admin'],
+  },
+  slackTemplate: {
+    approver: [
+      'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+    ],
+    interviewer: [
+      'interviewStart_slack_interviewers',
+      'interviewEnd_slack_interviewerForFeedback',
+    ],
+    trainee: [
+      'onQualified_slack_trainee',
+      'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+      'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+    ],
+    organizer: ['interviewEnd_slack_organizerForMeetingStatus'],
+  },
 };
