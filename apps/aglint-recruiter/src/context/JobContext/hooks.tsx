@@ -165,6 +165,8 @@ const useJobContext = () => {
         flags,
         // eslint-disable-next-line no-unused-vars
         application_match,
+        // eslint-disable-next-line no-unused-vars
+        department,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({
@@ -172,7 +174,6 @@ const useJobContext = () => {
         ...safeJob.draft,
         status: 'published',
       });
-      toast.success('Job published successfully');
       return true;
     } else {
       if (publishStatus.loading)
