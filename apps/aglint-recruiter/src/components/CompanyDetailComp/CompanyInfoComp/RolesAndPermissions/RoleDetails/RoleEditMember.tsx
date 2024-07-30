@@ -123,7 +123,7 @@ function RoleEditMember({
                     <Stack
                       alignItems={'center'}
                       width={'100%'}
-                      sx={{ translate: 'rotateY(180)' }}
+                      sx={{ transform: 'rotate(180deg)' }}
                     >
                       <GlobalIcon iconName={'arrow_warm_up'} size={5} />
                     </Stack>

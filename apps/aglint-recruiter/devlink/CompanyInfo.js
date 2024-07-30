@@ -19,10 +19,11 @@ export function CompanyInfo({
   slotDepartmentPills,
   slotTechStackPills,
   slotRolesPills,
-  isSpecialistVisible = true,
-  isAvailableRolesVisible = true,
+  isSpecialistVisible = false,
+  isAvailableRolesVisible = false,
   slotEmploymentType,
   isEditable = true,
+  slotCompanyInfoDetails,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "company-info-wrap")} tag="div">
@@ -30,7 +31,7 @@ export function CompanyInfo({
         className={_utils.cx(_styles, "slot-company-info-details")}
         tag="div"
       >
-        <CompanyInfoDetails />
+        {slotCompanyInfoDetails ?? <CompanyInfoDetails />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "cs-info-wrapper", "first")}
@@ -97,7 +98,7 @@ export function CompanyInfo({
       </_Builtin.Block>
       {isSpecialistVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -132,7 +133,7 @@ export function CompanyInfo({
       ) : null}
       {isAvailableRolesVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "cs-info-wrapper")}
+          className={_utils.cx(_styles, "cs-info-wrapper", "hide")}
           tag="div"
         >
           <_Builtin.Block

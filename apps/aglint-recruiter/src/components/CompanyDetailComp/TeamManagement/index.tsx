@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import converter from 'number-to-words';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -32,8 +32,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, recruiterUser, setMembers, handleMemberUpdate } =
-    useAuthDetails();
+  const { recruiterUser, setMembers, handleMemberUpdate } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
@@ -59,9 +58,22 @@ const TeamManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
 
-  const uniqueDepartments = recruiter.departments.map((dep) => dep.name);
-
-  const uniqueLocations = recruiter.office_locations.map((loc) => loc.city);
+  const uniqueDepartments = useMemo(() => {
+    return [
+      ...members.reduce((acc, curr) => {
+        curr.department?.name && acc.add(curr.department.name);
+        return acc;
+      }, new Set<string>()),
+    ];
+  }, []);
+  const uniqueLocations = useMemo(() => {
+    return [
+      ...members.reduce((acc, curr) => {
+        curr.office_location?.city && acc.add(curr.office_location.city);
+        return acc;
+      }, new Set<string>()),
+    ];
+  }, []);
 
   const uniqueRoles = [
     ...new Set(
@@ -83,18 +95,15 @@ const TeamManagement = () => {
     const filtered = members.filter((member) => {
       const departmentMatch =
         !selectedDepartments.length ||
-        selectedDepartments.includes(String(member.department));
+        selectedDepartments.includes(member.department?.name);
       const locationMatch =
         !selectedLocations.length ||
         selectedLocations.includes(member.office_location?.city);
       const statusMatch =
         !selectedStatus.length ||
-        selectedStatus
-          .map((item) => (item === 'active' ? 'joined' : item))
-          .includes(String(member.status).toLowerCase());
+        selectedStatus.includes(String(member.status).toLowerCase());
       const roleMatch =
-        !selectedRoles.length ||
-        selectedRoles.includes(String(member.role).toLowerCase());
+        !selectedRoles.length || selectedRoles.includes(String(member.role));
 
       return departmentMatch && locationMatch && statusMatch && roleMatch;
     });
