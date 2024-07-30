@@ -111,3 +111,21 @@ export const candidate_avail_request_schema = v.object({
   number_of_days: v.number(),
   number_of_slots: v.number(),
 });
+
+export const candidate_self_schedule_request = v.object({
+  application_id: v.string(),
+  slots_options: v.object({
+    filter_time: v.object({
+      start: v.string(),
+      end: v.string(),
+    }),
+    enable_soft_conf_slots: v.nullish(v.boolean(), false),
+    enable_ooo_conf_slots: v.nullish(v.boolean(), false),
+  }),
+  date_range: v.object({
+    start_date: v.string(),
+    end_date: v.string(),
+  }),
+  session_ids: v.array(v.string()),
+  company_id: v.string(),
+});

@@ -1218,7 +1218,9 @@ export type Database = {
           created_by: string | null
           filter_json: Json
           id: string
+          is_flow_agent: boolean
           schedule_id: string
+          schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
           viewed_on: string | null
@@ -1229,7 +1231,9 @@ export type Database = {
           created_by?: string | null
           filter_json: Json
           id?: string
+          is_flow_agent?: boolean
           schedule_id: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -1240,7 +1244,9 @@ export type Database = {
           created_by?: string | null
           filter_json?: Json
           id?: string
+          is_flow_agent?: boolean
           schedule_id?: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -5273,7 +5279,6 @@ export type Database = {
       clone_sessions: {
         Args: {
           app_id: string
-          organizer_user_id: string
         }
         Returns: Json
       }

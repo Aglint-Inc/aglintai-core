@@ -1,39 +1,46 @@
+alter table "public"."interview_filter_json" add column "is_flow_agent" boolean not null default false;
+
+alter table "public"."interview_filter_json" add column "schedule_options" jsonb;
+
 alter table "public"."interview_schedule" alter column "created_by" drop not null;
 
 alter table "public"."interview_schedule" alter column "schedule_name" drop not null;
 
 set check_function_bodies = off;
 
-CREATE OR REPLACE FUNCTION public.clone_sessions(app_id uuid, organizer_user_id uuid)
- RETURNS uuid[]
+CREATE OR REPLACE FUNCTION public.clone_sessions(app_id uuid)
+ RETURNS jsonb
  LANGUAGE plpgsql
 AS $function$
 DECLARE
     company_id uuid;
     session_rec record;
     sesn_reln_record record;
-    session_ids uuid[];
+    job_session_ids uuid[] := '{}';
+    app_session_ids uuid[] := '{}';
     appl_job_id uuid;
     new_schedule_id uuid;
     inserted_sesn_id uuid;
 BEGIN
     SELECT array_agg(interview_session.id) 
-    INTO session_ids
+    INTO app_session_ids
     FROM interview_schedule
     LEFT JOIN interview_meeting ON interview_meeting.interview_schedule_id = interview_schedule.id
     LEFT JOIN interview_session ON interview_session.meeting_id = interview_meeting.id
     WHERE interview_schedule.application_id = app_id;
 
     -- clone
-    IF session_ids IS NULL THEN 
+    IF app_session_ids IS NULL OR array_length(app_session_ids, 1) = 0 THEN 
         new_schedule_id := uuid_generate_v4();
-        SELECT recruiter_relation.recruiter_id 
+        
+        SELECT public_jobs.recruiter_id 
         INTO company_id 
-        FROM recruiter_relation 
-        WHERE recruiter_relation.user_id = organizer_user_id;
+        FROM applications
+        left join public_jobs on public_jobs.id=applications.job_id 
+        WHERE applications.id = app_id;
 
-        INSERT INTO interview_schedule(id, application_id, recruiter_id, created_by) 
-        VALUES (new_schedule_id, app_id, company_id, organizer_user_id);
+        INSERT INTO interview_schedule(id, application_id, recruiter_id) 
+        VALUES (new_schedule_id, app_id, company_id);
 
         SELECT job_id 
         INTO appl_job_id 
@@ -57,8 +64,8 @@ BEGIN
         WHERE interview_plan.job_id = appl_job_id
         LOOP
             WITH inserted_meeting AS (
-                INSERT INTO interview_meeting (interview_schedule_id, organizer_id)
-                VALUES (new_schedule_id, organizer_user_id)
+                INSERT INTO interview_meeting (interview_schedule_id)
+                VALUES (new_schedule_id)
                 RETURNING id
             ),
             inserted_session AS (
@@ -117,11 +124,12 @@ BEGIN
                 );
             END LOOP;
 
-            session_ids := session_ids || inserted_sesn_id;
+            app_session_ids := array_append(app_session_ids, inserted_sesn_id);
+            job_session_ids := array_append(job_session_ids, session_rec.id);
         END LOOP;
     END IF;
 
-    RETURN session_ids;
+    RETURN jsonb_build_object('job_session_ids', job_session_ids, 'cloned_session_ids', app_session_ids);
 END;
 $function$
 ;

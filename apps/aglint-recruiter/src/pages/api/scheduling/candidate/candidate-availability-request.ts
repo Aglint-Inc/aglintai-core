@@ -5,6 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
+import { getAppSessionIds } from '@/src/utils/scheduling/getAppSessionIds';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -24,11 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_ids,
     } = v.parse(candidate_avail_request_schema, req_body);
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
-    const app_session_ids = await getAppSessionIds(
-      application_id,
-      organizer_id,
-      session_ids,
-    );
+    const app_session_ids = await getAppSessionIds(application_id, session_ids);
     const [avail_req] = supabaseWrap(
       await supabaseAdmin
         .from('candidate_request_availability')
@@ -85,40 +82,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-type CloneSessionsType = {
-  app_session_ids: string[];
-  job_session_ids: string[];
-};
-
-const getAppSessionIds = async (
-  application_id,
-  organizer_id,
-  session_ids: string[],
-) => {
-  const cloned_data = supabaseWrap(
-    await supabaseAdmin.rpc('clone_sessions', {
-      app_id: application_id,
-      organizer_user_id: organizer_id,
-    }),
-  ) as CloneSessionsType;
-  let app_session_ids: string[] = [];
-  if (session_ids.find((s_id) => cloned_data.job_session_ids.includes(s_id))) {
-    app_session_ids = session_ids.map((s_id) => {
-      const idx = cloned_data.job_session_ids.findIndex(
-        (j_s_id) => j_s_id === s_id,
-      );
-      return cloned_data.app_session_ids[idx];
-    });
-  } else if (
-    session_ids.every((s_id) => cloned_data.app_session_ids.includes(s_id))
-  ) {
-    app_session_ids = [...session_ids];
-  } else {
-    throw new Error(
-      'one of the session id does not match application session id',
-    );
-  }
-
-  return app_session_ids;
-};
