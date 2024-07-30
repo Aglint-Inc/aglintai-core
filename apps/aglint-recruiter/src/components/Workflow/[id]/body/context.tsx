@@ -23,9 +23,7 @@ const useActionsContext = () => {
     () =>
       ACTION_TRIGGER_MAP[trigger].filter(
         ({ value }) =>
-          !(actions ?? []).find(
-            ({ company_email_template: { type } }) => type === value,
-          ),
+          !(actions ?? []).find(({ target_api }) => target_api === value),
       ),
     [ACTION_TRIGGER_MAP, trigger, actions],
   );
@@ -49,7 +47,7 @@ const useActionsContext = () => {
         order: (actions ?? []).length
           ? actions[actions.length - 1].order + 1
           : 1,
-        email_template_id: currentEmailTemplate.id,
+        target_api: currentEmailTemplate.type,
         payload: {
           body: currentEmailTemplate.body,
           subject: currentEmailTemplate.subject,
@@ -58,7 +56,7 @@ const useActionsContext = () => {
   }, [handleCreateAction, actions, currentEmailTemplate, canCreateAction]);
 
   const getCurrentOption = useCallback(
-    (type: WorkflowAction['company_email_template']['type']) =>
+    (type: WorkflowAction['target_api']) =>
       ACTION_TRIGGER_MAP[trigger].find(({ value }) => value === type),
     [ACTION_TRIGGER_MAP, trigger],
   );
