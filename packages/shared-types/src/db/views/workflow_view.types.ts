@@ -5,7 +5,7 @@ export type CustomWorkflowView = ViewType<
   "workflow_view",
   {
     jobs: Pick<
-      Database["public"]["Tables"]["public_jobs"]["Row"],
+      Database["public"]["Views"]["job_view"]["Row"],
       "id" | "job_title" | "department" | "location" | "status"
     >[];
   }
