@@ -16,7 +16,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { createTasks } from '@/src/utils/createTasks';
 import { capitalize } from '@/src/utils/text/textUtils';
 
-// import { createTasks } from '@/src/utils/createTasks';
 import CreateTask from './createTask';
 
 const MoveCandidate = () => {
@@ -112,26 +111,6 @@ const MoveCandidateNew = () => {
   );
 };
 
-//     <DcPopup
-//   popupName={title}
-//   slotBody={
-//     <Stack gap={1}>
-//       <GlobalBannerShort
-//         color={'error'}
-//         iconName={'warning'}
-//         slotButtons={<></>}
-//         textTitle={`You are about to ${description}`}
-//       />
-//       <Stack direction={'row'} alignItems={'center'} gap={1}>
-//         <Checkbox checked={checked} onClick={()=>setChecked((prev)=>!prev)}/>
-//         {capitalize(action)}
-//       </Stack>
-//     </Stack>
-//   }
-//   onClickClosePopup={{ onClick: () => resetActionPopup() }}
-//   slotButtons={buttons}
-// />
-
 const MoveCandidateScreening = () => {
   const { handleMoveApplications } = useApplications();
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
@@ -221,7 +200,7 @@ const MoveCandidateInterview = () => {
       {
         id: recruiterUser.user_id,
         name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
-        role:recruiterUser?.role
+        role: recruiterUser?.role,
       },
       (sectionApplication?.data?.pages ?? [])
         .flatMap((page) => page)

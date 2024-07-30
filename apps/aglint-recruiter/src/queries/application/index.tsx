@@ -185,7 +185,7 @@ const getApplicationMeta = async ({
     await supabase
       .from('application_view')
       .select(
-        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url, task_count, activity_count, status',
+        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url, task_count, activity_count, status, candidate_id',
       )
       .eq('id', application_id)
       .single()
