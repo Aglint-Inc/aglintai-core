@@ -1,11 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ApiError } from './APIError';
 
-export const addErrorHandlerWrap = async (call_back) => {
+export const addErrorHandlerWrap = (call_back) => {
   const handlerWrap = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await call_back(req, res);
     } catch (err: any) {
+      console.error(err);
       if (err instanceof ApiError) {
         return res.status(500).json({
           type: err.type,
@@ -13,7 +14,7 @@ export const addErrorHandlerWrap = async (call_back) => {
         });
       }
       return res.status(500).json({
-        type: 'UNKNOWN',
+        type: err.name,
         message: err.message,
       });
     }

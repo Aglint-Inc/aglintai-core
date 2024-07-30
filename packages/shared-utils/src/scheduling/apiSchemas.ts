@@ -120,12 +120,12 @@ export const candidate_self_schedule_request = v.object({
       end: v.string(),
     }),
     enable_soft_conf_slots: v.nullish(v.boolean(), false),
-    enable_ooo_conf_slots: v.nullish(v.boolean(), false),
+    enable_oow_conf_slots: v.nullish(v.boolean(), false),
   }),
   date_range: v.object({
     start_date: v.string(),
     end_date: v.string(),
   }),
   session_ids: v.array(v.string()),
-  company_id: v.string(),
+  recruiter_id: v.string(),
 });

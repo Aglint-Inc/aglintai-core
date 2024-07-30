@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
-import { getAppSessionIds } from '@/src/utils/scheduling/getAppSessionIds';
+import { getClonedSessionIds } from '@/src/utils/scheduling/getAppSessionIds';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -25,7 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_ids,
     } = v.parse(candidate_avail_request_schema, req_body);
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
-    const app_session_ids = await getAppSessionIds(application_id, session_ids);
+    const app_session_ids = await getClonedSessionIds(
+      application_id,
+      session_ids,
+    );
     const [avail_req] = supabaseWrap(
       await supabaseAdmin
         .from('candidate_request_availability')

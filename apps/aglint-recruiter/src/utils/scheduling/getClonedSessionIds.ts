@@ -7,7 +7,7 @@ type CloneSessionsType = {
   cloned_session_ids: string[];
   job_session_ids: string[];
 };
-export const getAppSessionIds = async (
+export const getClonedSessionIds = async (
   application_id,
   session_ids: string[],
 ) => {
@@ -16,6 +16,7 @@ export const getAppSessionIds = async (
       app_id: application_id,
     }),
   ) as CloneSessionsType;
+
   let app_session_ids: string[] = [];
   if (session_ids.find((s_id) => cloned_data.job_session_ids.includes(s_id))) {
     app_session_ids = session_ids.map((s_id) => {
