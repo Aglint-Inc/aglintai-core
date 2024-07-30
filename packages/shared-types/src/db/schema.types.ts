@@ -2765,7 +2765,7 @@ export type Database = {
           company: string | null
           company_details: string | null
           created_at: string
-          department: string | null
+          department_id: number | null
           description: string | null
           draft: Json | null
           end_video: Json | null
@@ -2819,7 +2819,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           description?: string | null
           draft?: Json | null
           end_video?: Json | null
@@ -2873,7 +2873,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?: string | null
+          department_id?: number | null
           description?: string | null
           draft?: Json | null
           end_video?: Json | null
@@ -2922,6 +2922,13 @@ export type Database = {
             | null
         }
         Relationships: [
+          {
+            foreignKeyName: "public_jobs_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_jobs_hiring_manager_fkey"
             columns: ["hiring_manager"]
@@ -4677,6 +4684,7 @@ export type Database = {
           company: string | null
           created_at: string | null
           department: string | null
+          department_id: number | null
           description: string | null
           draft: Json | null
           flags: Json | null
@@ -4705,6 +4713,13 @@ export type Database = {
             | null
         }
         Relationships: [
+          {
+            foreignKeyName: "public_jobs_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_jobs_hiring_manager_fkey"
             columns: ["hiring_manager"]

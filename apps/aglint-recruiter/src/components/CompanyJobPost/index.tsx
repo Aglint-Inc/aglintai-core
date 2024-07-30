@@ -61,7 +61,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 <OpenJobListingCard
                   key={ind}
                   textJobRole={job.job_title || '--'}
-                  textCompanyType={job.department || '--'}
+                  textCompanyType={job.departments?.name || '--'}
                   textLocation={job.location || '--'}
                   textWorkingType={job.job_type || '--'}
                   onClickApplyNow={{

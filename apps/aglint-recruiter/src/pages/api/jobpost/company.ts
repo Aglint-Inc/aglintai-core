@@ -48,7 +48,7 @@ const getJob = async (job_id: string) =>
     await supabase
       .from('public_jobs')
       .select(
-        '*, recruiter_data:recruiter!public_jobs_recruiter_id_fkey(id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry)',
+        '*, departments(name), recruiter_data:recruiter!public_jobs_recruiter_id_fkey(id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry)',
       )
       .eq('id', job_id)
       .single()
