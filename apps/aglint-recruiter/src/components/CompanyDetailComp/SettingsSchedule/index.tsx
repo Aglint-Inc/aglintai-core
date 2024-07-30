@@ -906,7 +906,7 @@ function SchedulingSettings({
             >
               <InterviewLoad
                 slotDailyLimit={
-                  <FormControl>
+                  <Stack spacing={1}>
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -940,10 +940,10 @@ function SchedulingSettings({
                       value={interviewLoad.daily.value}
                       max={interviewLoad.daily.max}
                     />
-                  </FormControl>
+                  </Stack>
                 }
                 slotWeeklyLimit={
-                  <FormControl>
+                  <Stack spacing={1}>
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -981,7 +981,7 @@ function SchedulingSettings({
                       value={interviewLoad.weekly.value}
                       max={interviewLoad.weekly.max}
                     />
-                  </FormControl>
+                  </Stack>
                 }
               />
               <DebriefDefaults
