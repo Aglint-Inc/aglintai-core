@@ -6,6 +6,7 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 type CloneSessionsType = {
   cloned_session_ids: string[];
   job_session_ids: string[];
+  schedule_id: string;
 };
 export const getClonedSessionIds = async (
   application_id,
@@ -17,9 +18,9 @@ export const getClonedSessionIds = async (
     }),
   ) as CloneSessionsType;
 
-  let app_session_ids: string[] = [];
+  let cloned_sessn_ids: string[] = [];
   if (session_ids.find((s_id) => cloned_data.job_session_ids.includes(s_id))) {
-    app_session_ids = session_ids.map((s_id) => {
+    cloned_sessn_ids = session_ids.map((s_id) => {
       const idx = cloned_data.job_session_ids.findIndex(
         (j_s_id) => j_s_id === s_id,
       );
@@ -28,12 +29,12 @@ export const getClonedSessionIds = async (
   } else if (
     session_ids.every((s_id) => cloned_data.cloned_session_ids.includes(s_id))
   ) {
-    app_session_ids = [...session_ids];
+    cloned_sessn_ids = [...session_ids];
   } else {
     throw new Error(
       'one of the session id does not match application session id',
     );
   }
 
-  return app_session_ids;
+  return { cloned_sessn_ids, schedule_id: cloned_data.schedule_id };
 };

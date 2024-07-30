@@ -64,8 +64,8 @@ BEGIN
         WHERE interview_plan.job_id = appl_job_id
         LOOP
             WITH inserted_meeting AS (
-                INSERT INTO interview_meeting (interview_schedule_id)
-                VALUES (new_schedule_id)
+                INSERT INTO interview_meeting (interview_schedule_id,status)
+                VALUES (new_schedule_id,'not_scheduled')
                 RETURNING id
             ),
             inserted_session AS (

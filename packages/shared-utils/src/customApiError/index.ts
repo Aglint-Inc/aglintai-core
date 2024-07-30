@@ -1,2 +1,2 @@
-export * from './APIError';
+export * from './customApiError';
 export * from './errorHandlerWrap';
