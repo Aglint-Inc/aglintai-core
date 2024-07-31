@@ -9,6 +9,13 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
 import { ReactNode } from 'react';
+import { Inter } from 'next/font/google';
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 // export const metadata = {
 //   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
@@ -20,7 +27,13 @@ import { ReactNode } from 'react';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang='en'>
+    <html lang='en' className={inter.className}>
+      <head>
+        <link
+          href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+          rel='stylesheet'
+        />
+      </head>
       <body>
         <DevlinkMainProvider>
           <Theme>
