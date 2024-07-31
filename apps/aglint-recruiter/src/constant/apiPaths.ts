@@ -1,5 +1,4 @@
 export const API_PATHS = [
-'/api',
 '/api/agent-scheduling/send-availability-request-link',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
@@ -95,6 +94,7 @@ export const API_PATHS = [
 '/api/getMembersWithRole',
 '/api/getRoleAndPermissions',
 '/api/getUserDetails',
+'/api/getUserLocation',
 '/api/get_interview_feedback_details',
 '/api/get_last_login',
 '/api/get_scheduling_reason',
@@ -200,6 +200,7 @@ export const API_PATHS = [
 '/api/supabase/getCandidate-files',
 '/api/support/email',
 '/api/support/notificationEmail',
+'/api/testx',
 '/api/updateUsers',
 '/api/webhook',
 '/api/workflow-cron',
