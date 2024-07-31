@@ -1,6 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
+import Link from 'next/link';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Text } from '@/devlink/Text';
@@ -38,6 +39,7 @@ function InterviewerUserDetail({
   userDetails: {
     profile_image: string;
     position: string;
+    user_id: string;
     first_name: string;
     last_name: string;
   };
@@ -146,7 +148,11 @@ function InterviewerUserDetail({
           '--'
         )
       }
-      textName={getFullName(userDetails.first_name, userDetails.last_name)}
+      textName={
+        <Link href={`/user/profile/${userDetails.user_id}`}>
+          {getFullName(userDetails.first_name, userDetails.last_name)}
+        </Link>
+      }
       slotImage={
         <MuiAvatar
           level={getFullName(userDetails.first_name, userDetails.last_name)}

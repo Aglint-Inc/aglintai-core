@@ -1,4 +1,5 @@
 import { Avatar, Stack } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -59,19 +60,16 @@ const LeaderBoardWidgetComponent = ({
             router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
           }}
           sx={{
-            padding: '5px 10px',
             borderRadius: '4px',
-            cursor: 'pointer',
-            ': hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
           }}
         >
           <LeaderBoardCard
             textCountNo={index + 1}
-            textName={capitalizeAll(
-              getFullName(item.first_name, item.last_name),
-            )}
+            textName={
+              <Link href={`/user/profile/${item.user_id}`}>
+                {capitalizeAll(getFullName(item.first_name, item.last_name))}
+              </Link>
+            }
             textRole={item.user_position}
             slotImage={
               <Avatar
