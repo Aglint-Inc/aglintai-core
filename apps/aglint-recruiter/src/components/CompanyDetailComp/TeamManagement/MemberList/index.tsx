@@ -4,6 +4,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
@@ -318,7 +319,11 @@ const Member = ({
           </Stack>
         }
         userEmail={member.email}
-        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
+        userName={
+          <Link
+            href={`/user/profile/${member.user_id}`}
+          >{`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}</Link>
+        }
         textDepartment={member.department?.name}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
