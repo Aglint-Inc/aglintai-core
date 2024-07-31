@@ -719,7 +719,7 @@ const useBanners = () => {
               draft: {
                 ...job.draft,
                 company: job.company,
-                department: job.department,
+                department_id: job.department_id,
                 description: job.description,
                 job_title: job.job_title,
                 job_type: job.job_type,

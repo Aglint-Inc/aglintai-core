@@ -104,8 +104,8 @@ function SlotBodyComp({
       currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
 
     router.push(
-      ROUTES['/scheduling/module/members/[module_id]']({
-        module_id: editModule.id,
+      ROUTES['/scheduling/interview-types/[type_id]']({
+        type_id: editModule.id,
       }) + `?tab=${next}`,
       undefined,
       {
@@ -229,8 +229,8 @@ function SlotBodyComp({
                         onClickPill={{
                           onClick: () => {
                             router.push(
-                              ROUTES['/scheduling/module/members/[module_id]']({
-                                module_id: editModule.id,
+                              ROUTES['/scheduling/interview-types/[type_id]']({
+                                type_id: editModule.id,
                               }) + `?tab=${tab.queryParams}`,
                               undefined,
                               {
@@ -376,7 +376,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     const { data, error } = await supabase
       .from('interview_session')
       .select(
-        'interview_plan(public_jobs(job_title,department,location,status,id))',
+        'interview_plan(public_jobs(job_title, departments(name),location,status,id))',
       )
       .eq('module_id', module_id)
       .throwOnError();
@@ -407,7 +407,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               isLinkOffVisible={false}
               role={capitalizeAll(job.job_title)}
               textLocation={job.location || '---'}
-              textRoleCategory={job.department || '---'}
+              textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (
                   <GlobalBadge

@@ -1,7 +1,6 @@
 .schedule_settings {
   display: flex;
   width: 700px;
-  margin: var(--space-4);
   padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: var(--space-5);
@@ -359,7 +358,6 @@
 
 .slot_hr_input {
   display: flex;
-  height: 36px;
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);

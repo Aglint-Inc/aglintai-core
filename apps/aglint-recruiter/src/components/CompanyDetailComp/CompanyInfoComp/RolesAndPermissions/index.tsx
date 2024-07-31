@@ -21,7 +21,6 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
-import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import {
   allPermissions,
@@ -51,7 +50,6 @@ function RolesAndPermissionsComponent() {
 
   return (
     <>
-      <Seo title='Roles & Permissions' />
       {role ? ( // roleDetailsComponent
         <RoleDetails
           role={role}
