@@ -45,7 +45,7 @@ function EmailPreview({
     setFetching(true);
     axios
       .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-        meta: { ...payload },
+        ...payload,
       })
       .then(({ data }) => {
         setEmailData(data);

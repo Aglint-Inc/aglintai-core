@@ -2,7 +2,8 @@ import dayjs from '@utils/dayjs';
 
 import timeZones from '@/src/utils/timeZone';
 
-import { TimezoneObj } from '../Settings';
+import { TimezoneObj } from '../../CompanyDetailComp/SettingsSchedule';
+
 
 export const getDurationText = (duration: number) => {
   const hours = Math.trunc(duration / 60);

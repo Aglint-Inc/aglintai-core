@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { TextWithIcon } from "./TextWithIcon";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
@@ -18,7 +19,12 @@ export function InterviewLoad({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <Text content="Interview Load" weight="medium" />
+          <TextWithIcon
+            fontWeight="medium"
+            textContent="Interview Load"
+            iconName="balance"
+            iconSize="4"
+          />
           <Text
             content="Setup maximum interviews per day and week."
             weight=""
@@ -27,14 +33,14 @@ export function InterviewLoad({
         </_Builtin.Block>
         <_Builtin.Grid className={_utils.cx(_styles, "load_grid")} tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-h", "align-center")}
+            className={_utils.cx(_styles, "interv-load")}
             tag="div"
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "interviewload-lable")}
               tag="div"
             >
-              <Text content="Daily Limit" weight="" />
+              <Text content="Daily Limit" weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_hr_input")}
@@ -48,14 +54,14 @@ export function InterviewLoad({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "flex-h", "align-center")}
+            className={_utils.cx(_styles, "interv-load")}
             tag="div"
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "interviewload-lable")}
               tag="div"
             >
-              <Text content="Weekly Limit" weight="" />
+              <Text content="Weekly Limit" weight="medium" />
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_hr_input")}

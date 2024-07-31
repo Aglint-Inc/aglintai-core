@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function dbUtil(
   req_body: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'],
@@ -57,10 +56,6 @@ export async function dbUtil(
     },
   } = filterJson;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'sendSelfScheduleRequest_email_applicant',
-  );
   const task_id = req_body.task_id;
   let scheduleLink = '';
   if (filterJson.id && req_body.filter_json_id) {
@@ -81,21 +76,15 @@ export async function dbUtil(
       OrganizerTimeZone: '',
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const react_email_placeholders: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['react_email_placeholders'] =
     {
-      emailBody: filled_comp_template.body,
       companyLogo: recruiter.logo,
-      subject: filled_comp_template.subject,
       selfScheduleLink: scheduleLink,
     };
 
   return {
-    filled_comp_template,
+    company_id: recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,
   };

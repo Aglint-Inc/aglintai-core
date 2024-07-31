@@ -20,7 +20,7 @@ export function WorkflowCard({
   onClickEdit = {},
   onClickDelete = {},
   slotCheckbox,
-  isCheckboxVisible = false,
+  isCheckboxVisible = true,
   isChecked = false,
   isEditButton = true,
   showButtons = false,

@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GeneralBanner } from '@/devlink/GeneralBanner';
-import Icon from '@/src/components/Common/Icons/Icon';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { setDateRange } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
 import {
   setRequestSessionIds,
@@ -50,16 +49,9 @@ const Action = ({
   const { push } = useRouter();
   const { application_id } = useApplication();
   return (
-    <GeneralBanner
-    color={'warning'}
-      titleColorProps={{
-        style: {
-          color: 'var(--warning-11)',
-        },
-      }}
-      textHeading={'Schedule interview'}
-      textDesc={action.name}
-      slotHeadingIcon={<Icon height={'16'} width={'20'} variant='Check' />}
+    <GlobalBannerInline
+      color={'warning'}
+      textContent={action.name}
       slotButton={
         <>
           <ButtonSolid

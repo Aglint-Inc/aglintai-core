@@ -7,6 +7,7 @@ import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 import { useModuleRelations } from '../hooks';
 import {
   setIsPauseDialogOpen,
+  setisRemoveModuleDialogOpen,
   setIsResumeDialogOpen,
   setSelRelation,
 } from '../store';
@@ -59,8 +60,15 @@ const ThreeDot = ({
         <MemberListCardOption
           isMoveToQualifierVisible={false}
           isPauseVisible={!pause_json}
-          isRemoveVisible={false}
+          isRemoveVisible={true}
           isResumeVisible={Boolean(pause_json)}
+          onClickRemoveModule={{
+            onClick: () => {
+              setSelRelation(relation);
+              setisRemoveModuleDialogOpen(true);
+              handleClose();
+            },
+          }}
           onClickPauseInterview={{
             onClick: () => {
               setSelRelation(relation);

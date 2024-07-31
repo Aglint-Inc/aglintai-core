@@ -1,20 +1,20 @@
 import {
-  DailyLimitType,
   holidayType,
+  InterviewLoadType,
   schedulingSettingType,
-  WeeklyLimitType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Alert,
   Autocomplete,
   Chip,
+  FormControlLabel,
   Popover,
+  Radio,
+  RadioGroup,
   Stack,
   Typography,
 } from '@mui/material';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
@@ -29,16 +29,14 @@ import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import UITextField from '@/src/components/Common/UITextField';
-import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
-import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
-import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
-import { hoursList } from '@/src/components/Scheduling/Settings/utils';
+import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
+import DateSelect from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { useImrQuery } from '../hooks';
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -49,17 +47,6 @@ function InterviewerLevelSettings({
 }) {
   const dateRef = useRef<HTMLInputElement>(null);
 
-  const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
-    type: 'Interviews',
-    value: 2,
-  });
-
-  const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
-    useState<DailyLimitType>({
-      type: 'Hours',
-      value: 16,
-    });
-
   const [workingHours, setWorkingHours] = useState([]);
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [freeKeyWords, setFreeKeywords] = useState([]);
@@ -69,37 +56,75 @@ function InterviewerLevelSettings({
 
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
+  const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
+    daily: {
+      type: 'Hours',
+      value: 20,
+      max: LoadMax.dailyHours,
+    },
+    weekly: {
+      type: 'Hours',
+      value: 10,
+      max: LoadMax.weeklyHours,
+    },
+  });
 
-  const handleSelectWeeklyType = (value: any) => {
-    setSelectedWeeklyLimit((pre) => {
-      pre.type = value.target.value as any;
-      return { ...pre } as WeeklyLimitType;
-    });
-  };
-  const handleSelectWeeklyValue = (value: any) => {
-    setSelectedWeeklyLimit((pre) => {
-      pre.value = value.target.value as number;
-      return { ...pre } as WeeklyLimitType;
-    });
-  };
-  const handleSelectDailyType = (value: any) => {
-    setSelectedDailyLimit((pre) => {
-      pre.type = value.target.value as any;
-      return { ...pre } as DailyLimitType;
-    });
-  };
-
-  const handleSelectDailyValue = (value: any) => {
-    setSelectedDailyLimit((pre) => {
-      pre.value = value.target.value as number;
-      return { ...pre } as DailyLimitType;
-    });
-  };
+  function loadChangeHandle(value, module, type) {
+    if (type === 'type') {
+      setInterviewLoad(
+        (prevState) =>
+          ({
+            ...prevState,
+            [module]: {
+              // eslint-disable-next-line security/detect-object-injection
+              ...prevState[module],
+              [type]: value,
+              value:
+                module === 'weekly'
+                  ? value === 'Hours'
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.weeklyHours
+                      ? LoadMax.weeklyHours
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
+                  : value === 'Interviews'
+                    ? // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value
+                    : // eslint-disable-next-line security/detect-object-injection
+                      prevState[module].value > LoadMax.dailyHours
+                      ? LoadMax.dailyHours
+                      : // eslint-disable-next-line security/detect-object-injection
+                        prevState[module].value,
+              max:
+                module === 'weekly'
+                  ? value === 'Hours'
+                    ? LoadMax.weeklyHours
+                    : LoadMax.weeklyInterviews
+                  : value === 'Interviews'
+                    ? LoadMax.dailyInterviews
+                    : LoadMax.dailyHours,
+            },
+          }) as InterviewLoadType,
+      );
+    } else {
+      setInterviewLoad((prevState) => ({
+        ...prevState,
+        [module]: {
+          // eslint-disable-next-line security/detect-object-injection
+          ...prevState[module],
+          [type]: value,
+        },
+      }));
+    }
+  }
 
   const selectStartTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:mm')}`;
+      data[Number(i)].timeRange.startTime =
+        `${dayjsLocal(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -107,7 +132,8 @@ function InterviewerLevelSettings({
   const selectEndTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:mm')}`;
+      data[Number(i)].timeRange.endTime =
+        `${dayjsLocal(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -124,7 +150,7 @@ function InterviewerLevelSettings({
   const id = open ? 'simple-popover' : undefined;
 
   function getDate(e: any) {
-    const selectedDate = dayjs(e).format('DD MMM YYYY');
+    const selectedDate = dayjsLocal(e).format('DD MMM YYYY');
     setDaysOff((pre) => [...pre, { date: selectedDate } as holidayType]);
     handleClose();
     dateRef.current.value = String(new Date(e.$d));
@@ -145,15 +171,28 @@ function InterviewerLevelSettings({
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
       // eslint-disable-next-line no-console
-      //   console.log('local timeZones', dayjs.tz.guess());
+      //   console.log('local timeZones', dayjsLocal.tz.guess());
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
-      setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit,
-      });
-      setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit,
+
+      setInterviewLoad({
+        daily: {
+          type: schedulingSettingData.interviewLoad.dailyLimit.type,
+          value: schedulingSettingData.interviewLoad.dailyLimit.value,
+          max:
+            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+              ? LoadMax.dailyHours
+              : LoadMax.dailyInterviews,
+        },
+        weekly: {
+          type: schedulingSettingData.interviewLoad.weeklyLimit.type,
+          value: schedulingSettingData.interviewLoad.weeklyLimit.value,
+          max:
+            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+              ? LoadMax.weeklyHours
+              : LoadMax.weeklyInterviews,
+        },
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
@@ -174,8 +213,14 @@ function InterviewerLevelSettings({
     if (daysOff.length && workingHours.length) {
       schedulingSettingObj = {
         interviewLoad: {
-          dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit,
+          dailyLimit: {
+            type: interviewLoad.daily.type,
+            value: interviewLoad.daily.value,
+          },
+          weeklyLimit: {
+            type: interviewLoad.weekly.type,
+            value: interviewLoad.weekly.value,
+          },
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
@@ -198,8 +243,7 @@ function InterviewerLevelSettings({
       changeValue = 'updating';
     }
   }, [
-    selectedDailyLimit,
-    selectedWeeklyLimit,
+    interviewLoad,
     daysOff,
     workingHours,
     selectedTimeZone,
@@ -220,7 +264,7 @@ function InterviewerLevelSettings({
   const router = useRouter();
   const { refetch } = useImrQuery({ user_id: router.query.id as string });
   return (
-    <Stack overflow={'hidden'}>
+    <Stack overflow={'hidden'} padding={2}>
       {isAvailability ? (
         <ScheduleSettings
           isTimeZoneToggleVisible={false}
@@ -242,7 +286,7 @@ function InterviewerLevelSettings({
                     if (e) {
                       setSelectedTimeZone(
                         timeZones.filter((item) =>
-                          item.label.includes(dayjs.tz.guess()),
+                          item.label.includes(dayjsLocal.tz.guess()),
                         )[0],
                       );
                     }
@@ -298,32 +342,76 @@ function InterviewerLevelSettings({
           slotKeywordCard={<></>}
           slotDailyLimit={
             <>
-              <MuiSelect
-                dataset={hoursList}
-                handleSelect={handleSelectDailyValue}
-                value={selectedDailyLimit.value}
-              />
-              <MuiSelect
-                width='150px'
-                dataset={['Interviews', 'Hours']}
-                handleSelect={handleSelectDailyType}
-                value={selectedDailyLimit.type}
-              />
+              <Stack spacing={1}>
+                <RadioGroup
+                  row
+                  aria-labelledby='demo-row-radio-buttons-group-label'
+                  name='row-radio-buttons-group'
+                >
+                  {['Hours', 'Interviews'].map((ele, i) => {
+                    return (
+                      <FormControlLabel
+                        checked={interviewLoad.daily.type === ele}
+                        key={i}
+                        onChange={(e: any) => {
+                          loadChangeHandle(e.target.value, 'daily', 'type');
+                        }}
+                        sx={{
+                          marginLeft: '0px',
+                          '& .MuiRadio-root': {
+                            marginRight: 'var(--space-1)',
+                          },
+                        }}
+                        value={ele}
+                        control={<Radio />}
+                        label={capitalize(ele.replaceAll('_', ' '))}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+                <MuiNumberfield
+                  handleSelect={(e) => loadChangeHandle(e, 'daily', 'value')}
+                  value={interviewLoad.daily.value}
+                  max={interviewLoad.daily.max}
+                />
+              </Stack>
             </>
           }
           slotWeeklyLimit={
             <>
-              <MuiSelect
-                dataset={hoursList}
-                handleSelect={handleSelectWeeklyValue}
-                value={selectedWeeklyLimit.value}
-              />
-              <MuiSelect
-                width='150px'
-                dataset={['Interviews', 'Hours']}
-                handleSelect={handleSelectWeeklyType}
-                value={selectedWeeklyLimit.type}
-              />
+              <Stack spacing={1}>
+                <RadioGroup
+                  row
+                  aria-labelledby='demo-row-radio-buttons-group-label'
+                  name='row-radio-buttons-group'
+                >
+                  {['Hours', 'Interviews'].map((ele, i) => {
+                    return (
+                      <FormControlLabel
+                        checked={interviewLoad.weekly.type === ele}
+                        key={i}
+                        onChange={(e: any) => {
+                          loadChangeHandle(e.target.value, 'weekly', 'type');
+                        }}
+                        sx={{
+                          marginLeft: '0px',
+                          '& .MuiRadio-root': {
+                            marginRight: 'var(--space-1)',
+                          },
+                        }}
+                        value={ele}
+                        control={<Radio />}
+                        label={capitalize(ele.replaceAll('_', ' '))}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+                <MuiNumberfield
+                  handleSelect={(e) => loadChangeHandle(e, 'weekly', 'value')}
+                  value={interviewLoad.weekly.value}
+                  max={interviewLoad.weekly.max}
+                />
+              </Stack>
             </>
           }
           slotWorkingHourDay={
@@ -354,7 +442,7 @@ function InterviewerLevelSettings({
                           <TimeRangeInput
                             slotStartTimeInput={
                               <SelectTime
-                                value={dayjs()
+                                value={dayjsLocal()
                                   .set(
                                     'hour',
                                     parseInt(
@@ -373,7 +461,7 @@ function InterviewerLevelSettings({
                             }
                             slotEndTimeInput={
                               <SelectTime
-                                value={dayjs()
+                                value={dayjsLocal()
                                   .set(
                                     'hour',
                                     parseInt(

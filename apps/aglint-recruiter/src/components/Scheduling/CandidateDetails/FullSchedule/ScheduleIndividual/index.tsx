@@ -53,6 +53,7 @@ function ScheduleIndividualCard({
 
   return (
     <GlobalScheduleCard
+      isCandidateVisible={false}
       slotStatus={
         currentSession?.interview_meeting?.status === 'confirmed' && (
           <Stack direction={'row'} spacing={'4px'} alignContent={'center'}>

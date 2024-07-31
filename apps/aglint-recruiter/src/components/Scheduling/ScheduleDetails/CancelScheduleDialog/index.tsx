@@ -2,7 +2,9 @@ import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { DeletePopup } from '@/devlink3/DeletePopup';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
 import toast from '@/src/utils/toast';
@@ -77,12 +79,42 @@ function CancelScheduleDialog({
         closeDialog();
       }}
     >
-      <DeletePopup
-        textTitle={`Cancel Schedule ${metaDetails.map((meta) => meta.session_name).join(', ')}`}
-        textDescription=''
-        isIcon={false}
-        isWidget={true}
-        slotWidget={
+      <DcPopup
+        popupName='Cancel Schedule Initial Screening'
+        onClickClosePopup={{
+          onClick: () => {
+            setIsDeclineOpen(false);
+            closeDialog();
+          },
+        }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              textButton='Cancel'
+              color={'neutral'}
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  setIsDeclineOpen(false);
+                  closeDialog();
+                },
+              }}
+            />
+            <ButtonSolid
+              textButton='Cancel Schedule'
+              color={'error'}
+              size={2}
+              onClickButton={{
+                onClick: () => {
+                  if (reason) {
+                    onClickConfirm();
+                  }
+                },
+              }}
+            />
+          </>
+        }
+        slotBody={
           <Stack spacing={2} width={'100%'}>
             <Typography variant='body1'>
               Please provide a reason for canceling and any additional notes.
@@ -126,20 +158,6 @@ function CancelScheduleDialog({
             />
           </Stack>
         }
-        onClickCancel={{
-          onClick: () => {
-            setIsDeclineOpen(false);
-            closeDialog();
-          },
-        }}
-        onClickDelete={{
-          onClick: () => {
-            if (reason) {
-              onClickConfirm();
-            }
-          },
-        }}
-        buttonText={'Cancel'}
       />
     </Dialog>
   );

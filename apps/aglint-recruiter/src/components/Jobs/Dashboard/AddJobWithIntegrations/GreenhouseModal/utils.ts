@@ -251,7 +251,7 @@ export const createJobObject = async (
           skills: [],
           title: post.title,
         },
-        department: recruiter?.departments?.[0]?.name ?? null,
+        department_id: recruiter?.departments?.[0]?.id ?? null,
       },
       location: post.location.name,
       job_title: post.title,

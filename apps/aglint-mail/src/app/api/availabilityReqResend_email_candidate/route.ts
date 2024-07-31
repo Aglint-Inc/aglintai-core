@@ -5,17 +5,24 @@ import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
-  const { meta } = await req.json();
+  const body = await req.json();
 
   try {
-    const req_body = v.parse(availabilityReqResendEmailCandidateSchema, meta);
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await dbUtil(req_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const req_body = v.parse(availabilityReqResendEmailCandidateSchema, body);
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await dbUtil(req_body);
+
+    await sendMailFun({
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+      api_target: 'availabilityReqResend_email_candidate',
+      payload: req_body.payload,
     });
 
     return NextResponse.json('success', {
@@ -33,10 +40,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   "meta": {
-//       "avail_req_id":"eb718192-9610-4d4c-988b-6e84fc914c08",
-//       "recruiter_user_id":"7f6c4cae-78b6-4eb6-86fd-9a0e0310147b"
-//   }
-// }

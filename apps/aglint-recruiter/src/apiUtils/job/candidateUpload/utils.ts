@@ -383,7 +383,11 @@ export const reProcessApplication = async (
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('applications')
-    .update({ candidate_file_id, processing_status: 'not started' })
+    .update({
+      candidate_file_id,
+      processing_status: 'not started',
+      score_json: null,
+    })
     .eq('id', application_id)
     .select()
     .abortSignal(signal)

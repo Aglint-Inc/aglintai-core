@@ -14,10 +14,10 @@ import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
+import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
 import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
-import { DateIcon } from '../Settings/Components/DateSelector';
 
 function MySchedule() {
   const { recruiterUser, recruiter } = useAuthDetails();

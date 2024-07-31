@@ -18,11 +18,12 @@ export default async function handler(
     const { record } = req.body as { record: DatabaseTable['recruiter'] };
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
-    // await seedRolesAndPermissions(recruiter_id); /// seed roles err
+    // start here
+    await seedRolesAndPermissions(recruiter_id);
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
-
+    // end here
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
@@ -34,7 +35,6 @@ export default async function handler(
 async function seedRolesAndPermissions(rec_id: string) {
   const tempRoles = await createRoles(rec_id);
   const tempPermissions = await getPermissions();
-
   const tempRolePermissions: {
     permission_id: number;
     recruiter_id: string;
@@ -163,6 +163,8 @@ const seedWorkFlow = async (
           interval: work_flow_act.workflow.interval,
           title: work_flow_act.workflow.title,
           recruiter_id,
+          is_paused: false,
+          workflow_type: work_flow_act.workflow.workflow_type,
         })
         .select(),
     );
@@ -170,7 +172,7 @@ const seedWorkFlow = async (
       await supabaseAdmin.from('workflow_action').insert(
         work_flow_act.actions.map((action) => {
           const temp = company_email_template.find(
-            (temp) => temp.type === action.template_type,
+            (temp) => temp.type === action.target_api,
           );
           if (!temp) {
             throw new Error(`${temp.type} not found`);
@@ -182,7 +184,7 @@ const seedWorkFlow = async (
             },
             order: action.order,
             workflow_id: workflow.id,
-            email_template_id: temp.id,
+            target_api: action.target_api,
           };
         }),
       ),

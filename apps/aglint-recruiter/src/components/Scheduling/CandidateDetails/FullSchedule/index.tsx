@@ -97,7 +97,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
 
   return (
     <>
-      <SideDrawerEdit />
       {selectedSession && (
         <>
           <CancelScheduleDialog
@@ -135,7 +134,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
         </>
       )}
 
-      <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={
           fetchingSchedule ? (
@@ -164,6 +162,8 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                 </AvailabilityProvider>
               )}
               <TaskPopups />
+              <SideDrawerEdit />
+              <SelfSchedulingDrawer refetch={refetch} />
               {initialSessions.map((session, ind) => {
                 return (
                   <Stack

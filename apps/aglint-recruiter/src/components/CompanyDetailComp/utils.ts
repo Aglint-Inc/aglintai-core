@@ -29,8 +29,7 @@ const departments = {
 };
 
 export const tabs = {
-  basicinfo: 'basic-info',
-  additionalinfo: 'additional-info',
+  companyInfo: 'company-info',
   about: 'about',
   assessment: 'assessment',
   jobassistant: 'job-assistant',

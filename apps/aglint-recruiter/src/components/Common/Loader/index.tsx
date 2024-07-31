@@ -10,7 +10,6 @@ const Loader = () => {
       width={'100%'}
       justifyContent={'center'}
       alignItems={'center'}
-      bgcolor={'var(--neutral-1)'}
     >
       <LoaderSvg />
     </Stack>

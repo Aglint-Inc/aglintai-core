@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await axios.post(
         process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.email_type}`,
         {
-          meta,
+          ...meta,
         },
       );
     } else if (meta.email_type.split('_').find((s) => s === 'slack')) {

@@ -83,16 +83,17 @@ export const useInvalidateJobQueries = () => {
         !query.queryKey.includes(noPollingKey),
     [jobKey, noPollingKey],
   );
-  const revalidateJobQueries = (id: Job['id']) => {
-    queryClient.refetchQueries({
-      type: 'active',
-      predicate: predicateFn(id),
-    });
-    queryClient.removeQueries({
-      type: 'inactive',
-      predicate: predicateFn(id),
-    });
-  };
+  const revalidateJobQueries = async (id: Job['id']) =>
+    await Promise.allSettled([
+      queryClient.refetchQueries({
+        type: 'active',
+        predicate: predicateFn(id),
+      }),
+      queryClient.removeQueries({
+        type: 'inactive',
+        predicate: predicateFn(id),
+      }),
+    ]);
 
   return { revalidateJobQueries };
 };

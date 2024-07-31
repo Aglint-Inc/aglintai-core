@@ -16,6 +16,7 @@
     "sendgrid",
     "sourcer",
     "supabase",
+    "tanstack",
     "tiptap",
     "webflow"
   ]

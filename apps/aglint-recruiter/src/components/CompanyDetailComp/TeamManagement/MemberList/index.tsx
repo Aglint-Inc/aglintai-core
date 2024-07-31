@@ -4,6 +4,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
+import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 import { FilterOption } from '@/devlink/FilterOption';
@@ -21,6 +22,7 @@ import {
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import {
   capitalizeAll,
@@ -52,6 +54,7 @@ const Member = ({
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
 }) => {
+  const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
   const handelRemove = (e) => {
     e.stopPropagation();
@@ -150,6 +153,7 @@ const Member = ({
         }
         close={ClosePopUp}
       />
+
       <TeamListItem
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
@@ -173,7 +177,12 @@ const Member = ({
             member.status === 'invited' ||
             recruiterUser.primary) && (
             <>
-              <Stack onClick={handleClick}>
+              <Stack
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClick(e);
+                }}
+              >
                 <IconButtonGhost
                   iconName='more_vert'
                   size={2}
@@ -288,11 +297,25 @@ const Member = ({
           member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
         }
         slotProfileImage={
-          <MuiAvatar
-            src={member.profile_image}
-            level={getFullName(member.first_name, member.last_name)}
-            variant='rounded-small'
-          />
+          <Stack
+            sx={{
+              cursor: 'pointer',
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(
+                ROUTES['/user/profile/[user_id]']({
+                  user_id: member.user_id,
+                }) + '?company=true',
+              );
+            }}
+          >
+            <MuiAvatar
+              src={member.profile_image}
+              level={getFullName(member.first_name, member.last_name)}
+              variant='rounded-small'
+            />
+          </Stack>
         }
         userEmail={member.email}
         userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}
