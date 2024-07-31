@@ -54,6 +54,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/application/[application_id]': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
+  '/requests': ['job_module'],
 
   '/integrations': ['integrations_module'],
   '/company': ['company_settings_module'],

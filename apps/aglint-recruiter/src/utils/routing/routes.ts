@@ -250,6 +250,9 @@ const workflows = {
   '/workflows': () => pageRouteBuilder([ROUTES.app(), 'workflows']),
   ...workflowsById,
 } as const;
+const requests = {
+  '/requests': () => pageRouteBuilder([ROUTES.app(), 'requests']),
+} as const;
 const ROUTES = {
   app: () => '',
   ...agent,
@@ -287,5 +290,6 @@ const ROUTES = {
   ...thanksPage,
   ...user,
   ...workflows,
+  ...requests,
 } as const;
 export default ROUTES;

@@ -45,6 +45,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/scheduling/invite/[id]',
   '/workflows',
   '/workflows/[id]',
+  '/requests',
 ];
 
 export const appKey = 'app';

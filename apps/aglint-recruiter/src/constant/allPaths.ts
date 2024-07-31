@@ -254,6 +254,7 @@ export const PATHS = [
 '/preview-assessment/[job_id]',
 '/preview-assessment/[job_id]/[assessment_id]',
 '/profile',
+'/requests',
 '/reset-password',
 '/scheduling',
 '/scheduling/application',
