@@ -173,13 +173,11 @@ const seedWorkFlow = async (
           const temp = company_email_template.find(
             (temp) => temp.type === action.target_api,
           );
-          if (!temp) {
-            throw new Error(`${temp.type} not found`);
-          }
+
           return {
             payload: {
-              body: temp.body,
-              subject: temp.subject,
+              body: temp ? temp.body : '',
+              subject: temp ? temp.subject : '',
             },
             order: action.order,
             workflow_id: workflow.id,
