@@ -1,6 +1,7 @@
 import Seo from '@components/Common/Seo';
 
 import Requests from '@/src/components/Requests/index';
+import { RequestsProvider } from '@/src/context/RequestsContext';
 
 const RequestsPage = () => {
   return (
@@ -15,7 +16,7 @@ const RequestsPage = () => {
 };
 
 RequestsPage.privateProvider = (page) => {
-  return <>{page}</>;
+  return <RequestsProvider>{page}</RequestsProvider>;
 };
 
 export default RequestsPage;

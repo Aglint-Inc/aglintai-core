@@ -1,10 +1,14 @@
 import { type PropsWithChildren, createContext, useContext } from 'react';
 
-const RequestsContext = createContext(undefined);
+import { useRequestsActions } from './hooks';
+
+const RequestsContext =
+  createContext<ReturnType<typeof useRequestsActions>>(undefined);
 
 export const RequestsProvider = (props: PropsWithChildren) => {
+  const value = useRequestsActions();
   return (
-    <RequestsContext.Provider value={null}>
+    <RequestsContext.Provider value={value}>
       {props.children}
     </RequestsContext.Provider>
   );
