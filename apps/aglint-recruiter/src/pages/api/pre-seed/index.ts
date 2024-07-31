@@ -74,29 +74,6 @@ async function getPermissions() {
   const temp_p = (
     await supabaseAdmin.from('permissions').select('id,name').throwOnError()
   ).data;
-  //   const temp_p_set = new Set(...temp_p);
-  //   const missing_permissions: { name: string; description: string }[] = [];
-  //   for (let item of defaultPermissions) {
-  //     if (!temp_p_set.has(item.name)) {
-  //       missing_permissions.push(item);
-  //     }
-  //   }
-  //   let missing: string[] = [];
-  //   if (missing_permissions.length) {
-  //     missing = (
-  //       await supabase
-  //         .from('roles')
-  //         .insert(
-  //           defaultPermissions.map((item) => ({
-  //             name: item.name,
-  //             description: item.description,
-  //           })),
-  //         )
-  //         .select('name')
-  //         .throwOnError()
-  //     ).data.map((item) => item.name);
-  //   }
-  //   return [...temp_p, ...missing];
   return temp_p.reduce(
     (acc, crr) => {
       acc[crr.name] = crr.id;
