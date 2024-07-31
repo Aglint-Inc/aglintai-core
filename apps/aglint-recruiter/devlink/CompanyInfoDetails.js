@@ -53,7 +53,7 @@ export function CompanyInfoDetails({
         className={_utils.cx(_styles, "cid-social-link-wraps")}
         tag="div"
       >
-        <Text size="1" color="neutral" content="" />
+        <Text size="1" color="neutral" content="Social Links" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-cid-social-link")}
           tag="div"
