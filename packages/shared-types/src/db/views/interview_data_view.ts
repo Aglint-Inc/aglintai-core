@@ -10,6 +10,9 @@ export type CustomInterviewDataView = ViewType<
       first_name: string;
       last_name: string;
       current_job_title: string;
+      email: string;
+      phone: string;
+      timezone: string;
     };
     schedule: DatabaseTable["interview_schedule"];
     public_jobs: {
