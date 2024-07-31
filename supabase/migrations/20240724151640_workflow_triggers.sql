@@ -241,6 +241,6 @@ CREATE TRIGGER workflow_log_on_update_interview_module_relation AFTER UPDATE OF 
 
 CREATE TRIGGER workflow_log_on_update_interview_training_progress AFTER UPDATE OF is_attended ON public.interview_training_progress FOR EACH ROW EXECUTE FUNCTION func_workflow_log_on_update_interview_training_progress();
 
-CREATE TRIGGER new_recruiters AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('https://rested-logically-lynx.ngrok-free.app//api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
+CREATE TRIGGER new_recruiters AFTER INSERT ON public.recruiter FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('http://host.docker.internal:3000/api/pre-seed', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
 
 
