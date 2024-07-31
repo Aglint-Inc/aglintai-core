@@ -48,12 +48,8 @@ function SchedulingApplication() {
     if (selectedApplication?.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: ROUTES['/scheduling']() + `?tab=dashboard`,
-        },
-        {
           name: 'Candidates',
-          route: ROUTES['/scheduling']() + `?tab=candidates`,
+          route: ROUTES['/scheduling/application'](),
         },
         {
           name: getFullName(

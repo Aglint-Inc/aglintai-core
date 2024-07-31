@@ -15,6 +15,15 @@ export const navList: {
   active: (typeof PATHS)[number][];
 }[] = [
   {
+    text: 'Tasks',
+    SubComponents: null,
+    route: ROUTES['/tasks']() + '?myTasks',
+    comingSoon: false,
+    isVisible: true,
+    permission: ['task_module'],
+    active: ['/tasks'],
+  },
+  {
     text: 'Jobs',
     SubComponents: null,
     route: ROUTES['/jobs']() + '?status=published',
@@ -35,15 +44,7 @@ export const navList: {
       '/jobs/[id]/candidate-list',
     ],
   },
-  {
-    text: 'Tasks',
-    SubComponents: null,
-    route: ROUTES['/tasks']() + '?myTasks',
-    comingSoon: false,
-    isVisible: true,
-    permission: ['task_module'],
-    active: ['/tasks'],
-  },
+
   {
     text: 'Candidates',
     SubComponents: null,
@@ -78,7 +79,7 @@ export const navList: {
     active: ['/scheduling/interviewer'],
   },
   {
-    text: 'Scheduler',
+    text: 'Dashboard',
     SubComponents: null,
     route: ROUTES['/scheduling']() + '?tab=dashboard',
     comingSoon: false,
