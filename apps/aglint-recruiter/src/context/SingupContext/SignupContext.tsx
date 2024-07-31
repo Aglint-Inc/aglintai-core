@@ -1,6 +1,5 @@
 'use client';
 import { DatabaseTable } from '@aglint/shared-types';
-import { useRouter } from 'next/router';
 import React, {
   createContext,
   Dispatch,
@@ -10,6 +9,7 @@ import React, {
 } from 'react';
 
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
@@ -53,8 +53,8 @@ const defaultProvider: ContextValue = {
 export const useSignupDetails = () => useContext(SignupContext);
 const SignupContext = createContext<ContextValue>(defaultProvider);
 const SignupProvider = ({ children }) => {
-  const router = useRouter();
-  const [step, setStep] = useState<string>(router.query.step as any);
+  const router = useRouterPro<{ step: string }>();
+  const [step, setStep] = useState<string>(router.queryParams.step);
   const [flow, setFlow] = useState<string>(companyType.COMPANY);
   const [companyName, setCompanyName] = useState(null);
   const [userDetails, setUserDetails] = useState<Session | null>(null);
@@ -66,12 +66,11 @@ const SignupProvider = ({ children }) => {
   >(null);
 
   useEffect(() => {
-    if (router.isReady) {
-      if (router.query.step) {
-        setStep(router.query.step as string);
-      }
-      fetchUserDetails();
-    }
+    // if (router.queryParams.step) {
+    //   setStep(router.queryParams.step as string);
+    // }
+
+    fetchUserDetails();
   }, [router]);
 
   const fetchUserDetails = async () => {

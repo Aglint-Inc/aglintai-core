@@ -25,7 +25,7 @@ import {
   validateString,
 } from '../util';
 
-export const UserDetail = ({id}:{id:string}) => {
+export const UserDetail = () => {
   const {
     recruiterUser,
     userDetails: userDetail,

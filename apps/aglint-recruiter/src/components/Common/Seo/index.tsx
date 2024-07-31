@@ -1,8 +1,8 @@
 'use client';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
 import Head from 'next/head';
-// import { useRouter } from 'next/router';
 import React from 'react';
+
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 const defaultMeta = {
   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',

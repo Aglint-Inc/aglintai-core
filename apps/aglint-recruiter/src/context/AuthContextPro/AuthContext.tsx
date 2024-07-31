@@ -1,6 +1,12 @@
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -15,7 +21,7 @@ const AuthContext = createContext<AuthContextInterface>({
   recruiter_id: null,
 });
 
-export default function AuthProvider() {
+export default function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState<Session['user'] | null>(null);
 
@@ -41,14 +47,18 @@ export default function AuthProvider() {
       listener.subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-  return (
+  }, [user?.id]);
+  return user?.id ? (
     <AuthContext.Provider
       value={{
         user_id: user.id,
         recruiter_id: user.user_metadata.recruiter_id,
       }}
-    ></AuthContext.Provider>
+    >
+      {children}
+    </AuthContext.Provider>
+  ) : (
+    <>Loading</>
   );
 }
 

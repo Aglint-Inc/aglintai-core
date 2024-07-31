@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-function useUserProfile({ id }: { id: string }) {
+export function useUserProfile({ id }: { id: string }) {
   return useQuery({
     queryKey: [id, 'profile'],
     queryFn: () => userDetails(id),

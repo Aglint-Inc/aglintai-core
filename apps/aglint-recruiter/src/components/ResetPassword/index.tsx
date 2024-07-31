@@ -6,7 +6,6 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {
   FieldError,
@@ -18,6 +17,7 @@ import {
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ResetPassword } from '@/devlink/ResetPassword';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -30,7 +30,7 @@ interface ResetFormInputs {
 }
 
 export default function ResetPasswordComponent() {
-  const router = useRouter();
+  const router = useRouterPro();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const {
     register,
