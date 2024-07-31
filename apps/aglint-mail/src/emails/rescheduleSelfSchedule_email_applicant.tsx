@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
@@ -8,11 +7,12 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'rescheduleSelfSchedule_email_applicant'>;
+type EmailType = ReactTempPayload<'rescheduleSelfSchedule_email_applicant'>;
 
 // export dummy
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Hi {{ candidateFirstName }},</p><p>I hope this message finds you well.</p><p>Due to unforeseen circumstances, we need to reschedule your interview for the {{ jobRole }} position at {{ companyName }}. We apologize for any inconvenience this may cause and appreciate your understanding.</p><p>To find a new time that works best for you, please use the following link to schedule your interview: {{ selfScheduleLink }}</p><p>If you have any questions or need further assistance, feel free to reach out to us.</p><p>Looking forward to connecting with you!</p><p>Best regards,</p><p>{{ companyName }} Recruitment Team</p><p></p>',
   companyLogo: companyLogoDummy,
@@ -39,13 +39,13 @@ export const CandidateRescheduleRequest = ({
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
   resheduleLink = '',
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       {meetingDetails.map((meetingDetail, i) => (
         <Session key={i} meetingDetail={meetingDetail} />
       ))}
-      <ButtonSolid href={resheduleLink} buttonText="Rescheudle" />
+      <ButtonSolid buttonText="Rescheudle" href={resheduleLink} />
     </EmailContainer>
   );
 };

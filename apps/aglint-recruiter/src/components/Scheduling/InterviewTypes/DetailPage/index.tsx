@@ -1,0 +1,62 @@
+import { Stack } from '@mui/material';
+import { useEffect } from 'react';
+
+import { PageLayout } from '@/devlink2/PageLayout';
+import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
+import ROUTES from '@/src/utils/routing/routes';
+
+import { useModuleAndUsers } from '../queries/hooks';
+import SlotBodyComp from './SlotBodyComp';
+import TopRightButtons from './TopRightButtons';
+
+function ModuleMembersComp() {
+  const {
+    data: editModule,
+    isLoading: fetchingModule,
+    isFetching,
+    refetch,
+  } = useModuleAndUsers();
+
+  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  useEffect(() => {
+    if (editModule?.id) {
+      setBreadcrum([
+        {
+          name: 'Interview Types',
+          route: ROUTES['/scheduling/interview-types'](),
+        },
+        {
+          name: `${editModule.name}`,
+          route: '',
+        },
+      ]);
+    }
+  }, [editModule?.id]);
+
+  return (
+    <>
+      <PageLayout
+        slotTopbarLeft={<>{breadcrum}</>}
+        slotTopbarRight={
+          <Stack
+            direction={'row'}
+            justifyItems={'center'}
+            gap={'var(--space-2)'}
+          >
+            <TopRightButtons editModule={editModule} refetch={refetch} />
+          </Stack>
+        }
+        slotBody={
+          <SlotBodyComp
+            editModule={editModule}
+            fetchingModule={fetchingModule}
+            isFetching={isFetching}
+            refetch={refetch}
+          />
+        }
+      />
+    </>
+  );
+}
+
+export default ModuleMembersComp;

@@ -4,6 +4,7 @@ import {
   schedulingSettingType,
   WeeklyLimitType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Alert,
   Autocomplete,
@@ -12,9 +13,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
@@ -29,16 +27,14 @@ import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
 import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import UITextField from '@/src/components/Common/UITextField';
-import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
-import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
-import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
-import { hoursList } from '@/src/components/Scheduling/Settings/utils';
+import DateSelect from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import MuiSelect from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiSelect';
+import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { hoursList } from '@/src/components/CompanyDetailComp/SettingsSchedule/utils';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { useImrQuery } from '../hooks';
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -99,7 +95,7 @@ function InterviewerLevelSettings({
   const selectStartTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:mm')}`;
+      data[Number(i)].timeRange.startTime = `${dayjsLocal(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -107,7 +103,7 @@ function InterviewerLevelSettings({
   const selectEndTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:mm')}`;
+      data[Number(i)].timeRange.endTime = `${dayjsLocal(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -124,7 +120,7 @@ function InterviewerLevelSettings({
   const id = open ? 'simple-popover' : undefined;
 
   function getDate(e: any) {
-    const selectedDate = dayjs(e).format('DD MMM YYYY');
+    const selectedDate = dayjsLocal(e).format('DD MMM YYYY');
     setDaysOff((pre) => [...pre, { date: selectedDate } as holidayType]);
     handleClose();
     dateRef.current.value = String(new Date(e.$d));
@@ -145,7 +141,7 @@ function InterviewerLevelSettings({
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
       // eslint-disable-next-line no-console
-      //   console.log('local timeZones', dayjs.tz.guess());
+      //   console.log('local timeZones', dayjsLocal.tz.guess());
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
@@ -242,7 +238,7 @@ function InterviewerLevelSettings({
                     if (e) {
                       setSelectedTimeZone(
                         timeZones.filter((item) =>
-                          item.label.includes(dayjs.tz.guess()),
+                          item.label.includes(dayjsLocal.tz.guess()),
                         )[0],
                       );
                     }
@@ -354,7 +350,7 @@ function InterviewerLevelSettings({
                           <TimeRangeInput
                             slotStartTimeInput={
                               <SelectTime
-                                value={dayjs()
+                                value={dayjsLocal()
                                   .set(
                                     'hour',
                                     parseInt(
@@ -373,7 +369,7 @@ function InterviewerLevelSettings({
                             }
                             slotEndTimeInput={
                               <SelectTime
-                                value={dayjs()
+                                value={dayjsLocal()
                                   .set(
                                     'hour',
                                     parseInt(

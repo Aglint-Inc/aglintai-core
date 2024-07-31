@@ -8,7 +8,6 @@ import { TabInterviewerDetail } from '.';
 
 function Tabs() {
   const router = useRouter();
-  const user_id = router.query.member_id as string;
   const tabs: { name: string; queryParam: string }[] = [
     {
       name: 'Overview',
@@ -42,13 +41,23 @@ function Tabs() {
     const pre =
       // eslint-disable-next-line security/detect-object-injection
       currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
-    router.push(`/scheduling/interviewer/${user_id}?tab=${pre}`);
+    const currentQuery = { ...router.query };
+    currentQuery.tab = pre;
+    router.replace({
+      pathname: router.pathname,
+      query: currentQuery,
+    });
   };
   const handleNext = () => {
     const next =
       currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
 
-    router.push(`/scheduling/interviewer/${user_id}?tab=${next}`);
+    const currentQuery = { ...router.query };
+    currentQuery.tab = next;
+    router.replace({
+      pathname: router.pathname,
+      query: currentQuery,
+    });
   };
 
   const { pressed: right } = useKeyPress('ArrowRight');
@@ -68,9 +77,12 @@ function Tabs() {
           isPillActive={tab === item.queryParam}
           onClickPill={{
             onClick: () => {
-              router.push(
-                `/scheduling/interviewer/${user_id}?tab=${item.queryParam}`,
-              );
+              const currentQuery = { ...router.query };
+              currentQuery.tab = item.queryParam;
+              router.replace({
+                pathname: router.pathname,
+                query: currentQuery,
+              });
             },
           }}
         />,

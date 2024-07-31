@@ -16,7 +16,7 @@ import TrainingInterviewerType from './TrainingInterviewerType';
 
 function TabInterviewModules() {
   const router = useRouter();
-  const user_id = router?.query?.member_id as string;
+  const user_id = router?.query?.user_id as string;
   const { data, isLoading } = useModuleRelations({
     user_id,
   });
@@ -29,7 +29,6 @@ function TabInterviewModules() {
 
   return (
     <>
-
       <PauseDialog />
       <ResumeDialog />
       <InterviewerDetailOverview

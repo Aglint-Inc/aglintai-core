@@ -29,7 +29,7 @@ type CronEntryRowType = {
   id: number;
   meta: any;
   started_at: string;
-  status: Database['public']['Enums']['application_processing_status'];
+  status: Database['public']['Enums']['workflow_cron_run_status'];
   tries: number;
   workflow_title: string;
 };
@@ -227,7 +227,7 @@ const handleExecuteAction = async (id: number) => {
       await supabase
         .from('workflow_action_logs')
         .update({
-          status: 'not started',
+          status: 'not_started',
           execute_at: dayjsLocal().toISOString(),
           tries: 0,
         })
@@ -255,7 +255,7 @@ const columns: GridColDef[] = [
       return (
         <>
           <p>
-            <Chip label={params.value.email_type.split('_')[1]} />
+            <Chip label={params.value.target_api.split('_')[1]} />
             <span style={{ marginLeft: '10px' }}>
               {emailTemplateCopy[params.value.email_type]?.heading}
             </span>

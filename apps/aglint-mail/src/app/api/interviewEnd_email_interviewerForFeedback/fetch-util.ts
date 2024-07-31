@@ -1,7 +1,6 @@
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
@@ -35,11 +34,6 @@ export async function fetchUtil(
   const candidate = candidateJob.candidates;
   const organizer = recruiter_user.interview_meeting.recruiter_user;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.public_jobs.recruiter_id,
-    'interviewEnd_email_interviewerForFeedback',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(organizer.first_name, organizer.last_name),
@@ -59,11 +53,6 @@ export async function fetchUtil(
       interviewerLastName: interviewer.last_name,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const feedLink = recruiter_user.interview_meeting.id
     ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`
     : '';
@@ -71,13 +60,12 @@ export async function fetchUtil(
   const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       interviewFeedbackLink: feedLink,
     };
 
   return {
-    filled_comp_template,
+    company_id: candidateJob.candidates.recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: interviewer.email,
   };

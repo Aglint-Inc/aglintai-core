@@ -18,7 +18,7 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
   const upcomingScheduleList =
     scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
-  const user_id = router?.query?.member_id as string;
+  const user_id = router?.query?.user_id as string;
   const { data, isLoading } = useModuleRelations({
     user_id,
   });

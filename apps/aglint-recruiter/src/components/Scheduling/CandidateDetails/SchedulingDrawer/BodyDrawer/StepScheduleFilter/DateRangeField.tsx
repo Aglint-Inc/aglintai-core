@@ -9,9 +9,9 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Checkbox } from '@/devlink/Checkbox';
 import { RolesPill } from '@/devlink/RolesPill';
 import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
+import { ClockIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import toast from '@/src/utils/toast';
 
-import { ClockIcon } from '../../../../Settings/Components/SelectTime';
 import { setFilters, useSchedulingFlowStore } from '../../store';
 
 function DateRangeField() {

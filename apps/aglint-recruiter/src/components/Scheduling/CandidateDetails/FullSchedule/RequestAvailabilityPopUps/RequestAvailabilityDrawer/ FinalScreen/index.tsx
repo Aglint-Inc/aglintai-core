@@ -48,7 +48,7 @@ function FinalScreen() {
     setFetching(true);
     axios
       .post('/api/emails/confirmInterview_email_applicant', {
-        meta: { ...payload },
+        ...payload,
       })
       .then(({ data }) => {
         setEmailData(data);

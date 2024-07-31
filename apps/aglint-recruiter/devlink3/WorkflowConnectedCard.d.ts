@@ -9,4 +9,5 @@ declare function WorkflowConnectedCard(props: {
   textLocation?: React.ReactNode;
   onClickJob?: Types.Devlink.RuntimeProps;
   onClickLinkOff?: Types.Devlink.RuntimeProps;
+  isLinkOffVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

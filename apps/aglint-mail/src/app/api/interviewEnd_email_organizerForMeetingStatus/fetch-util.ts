@@ -1,12 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['api_payload'],
@@ -20,7 +15,6 @@ export async function fetchUtil(
       .eq('session_id', req_body.session_id),
   );
 
-  const recruiter_id = data.recruiter_id;
   const organizer = data.recruiter_user;
   const candidate = data.applications.candidates;
   const company = data.applications.candidates.recruiter;
@@ -29,11 +23,6 @@ export async function fetchUtil(
   const start_time = data.start_time;
   const meeting_id = data.id;
   const meetingStatusUpdateLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details`;
-
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'interviewEnd_email_organizerForMeetingStatus',
-  );
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['comp_email_placeholders'] =
     {
@@ -52,20 +41,15 @@ export async function fetchUtil(
         .format(DAYJS_FORMATS.END_TIME_FORMAT),
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
   const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['react_email_placeholders'] =
     {
       companyLogo: company.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingStatusUpdateLink,
     };
 
   return {
-    filled_comp_template,
+    company_id: candidate.recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: organizer.email,
   };

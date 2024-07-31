@@ -13,7 +13,7 @@ export const sendMailsToOrganizer = async (
     await axios.post(
       `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confInterview_email_organizer`,
       {
-        meta: meeting,
+        ...meeting,
       },
     );
   };

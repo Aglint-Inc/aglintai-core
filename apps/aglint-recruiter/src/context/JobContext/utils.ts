@@ -17,7 +17,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
   if (!job) {
     const invalidFields: DetailsValidity['invalidFields'] = [
       'company',
-      'department',
+      'department_id',
       'description',
       'job_title',
       'job_type',
@@ -35,7 +35,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
   const draft = {
     job_title: job.job_title,
     company: job.company,
-    department: job.department,
+    department: job.department_id,
     description: job.description,
     job_type: job.job_type,
     location: job.location,
@@ -55,7 +55,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
           break;
         //TODO: HACK HERE AGAIN
         case 'company':
-        case 'department':
+        case 'department_id':
         case 'job_title':
         case 'job_type':
         case 'location':
@@ -150,8 +150,10 @@ export const validateJd = (
   );
 };
 
-export const validateString = (str: string) => {
-  return !str || typeof str !== 'string' || str.length === 0;
+export const validateString = (str: string | number) => {
+  return typeof str === 'number'
+    ? false
+    : !str || typeof str !== 'string' || str.length === 0;
 };
 
 export const validateDescription = (str: string) => {

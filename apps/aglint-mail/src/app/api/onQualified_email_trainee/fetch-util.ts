@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'onQualified_email_trainee'>['api_payload'],
@@ -10,7 +9,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_module_relation')
       .select(
-        'recruiter_user(first_name,last_name,email),interview_module(name,recruiter_id,recruiter(logo,name))',
+        'recruiter_user(first_name,last_name,email),interview_module(name,recruiter_id,recruiter(logo,name,id))',
       )
       .eq('id', req_body.interview_module_relation_id),
   );
@@ -25,11 +24,6 @@ export async function fetchUtil(
   const { interview_module, recruiter_user: trainee } = data;
   const company = data.interview_module.recruiter;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    data.interview_module.recruiter_id,
-    'onQualified_email_trainee',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'onQualified_email_trainee'>['comp_email_placeholders'] =
     {
       approverFirstName: approver.first_name,
@@ -42,19 +36,14 @@ export async function fetchUtil(
       companyName: company.name,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
   const react_email_placeholders: EmailTemplateAPi<'onQualified_email_trainee'>['react_email_placeholders'] =
     {
       companyLogo: company.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: company.id,
     react_email_placeholders,
     recipient_email: trainee.email,
   };

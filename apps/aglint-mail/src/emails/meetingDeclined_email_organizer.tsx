@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { EmailContainer } from '../components/template/Container';
@@ -7,10 +6,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'meetingDeclined_email_organizer'>;
+type EmailType = ReactTempPayload<'meetingDeclined_email_organizer'>;
 
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="organizerFirstName">{{organizerFirstName}}</span> ,</p><p></p><p>We regret to inform you that the &lt;InterviewerName&gt; has declined the interview request for the <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> position at <span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span>.</p><p></p><p>Please arrange for an alternative interviewer or reschedule as needed.</p><p>Change Interviewer <span class="temp-variable" data-type="temp-variable" data-id="meetingDetailsLink">{{meetingDetailsLink}}</span></p><p>Rescedule <span class="temp-variable" data-type="temp-variable" data-id="meetingDetailsLink">{{meetingDetailsLink}}</span> </p><p></p><p>Best regards,</p><p>Aglint Ai</p><p></p>',
   companyLogo: companyLogoDummy,
@@ -33,7 +33,7 @@ export const meetingDeclinedEmailOrganizer = ({
   emailBody = dummy.emailBody,
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Session meetingDetail={meetingDetail} />

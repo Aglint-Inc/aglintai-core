@@ -1,5 +1,3 @@
-import { TransformSchedule } from '@/src/components/Scheduling/InterviewTypes/types';
-
 import { Assessment } from '../assessment/types';
 
 export type DashboardTypes = {
@@ -29,8 +27,5 @@ export type DashboardTypes = {
     average_tenure: number;
     average_experience: number;
   };
-  schedules: Omit<
-    TransformSchedule,
-    'applications' | 'job' | 'file' | 'schedule'
-  >[];
+  schedules: any; //needs fix
 };

@@ -51,13 +51,13 @@ import toast from '@/src/utils/toast';
 import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
+import { TimezoneObj, TimezoneSelector } from '../../CompanyDetailComp/SettingsSchedule';
+import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import IconScheduleType from '../Candidates/ListCard/Icon/IconScheduleType';
 import { addScheduleActivity } from '../Candidates/queries/utils';
 import { getScheduleType } from '../Candidates/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
-import { TimezoneObj, TimezoneSelector } from '../Settings';
-import { DateIcon } from '../Settings/Components/DateSelector';
 import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';

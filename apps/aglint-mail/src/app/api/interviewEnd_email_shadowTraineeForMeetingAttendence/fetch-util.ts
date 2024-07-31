@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { numberToOrdinal } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
@@ -36,11 +35,6 @@ export async function fetchUtil(
         training_ints.map((int) => int.user_id),
       ),
     false,
-  );
-
-  const comp_email_temp = await fetchCompEmailTemp(
-    session_detail.interview_meeting.interview_schedule.recruiter_id,
-    'interviewEnd_email_shadowTraineeForMeetingAttendence',
   );
 
   const candidate =
@@ -79,20 +73,14 @@ export async function fetchUtil(
         shadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
       };
 
-    const filled_comp_template = fillCompEmailTemplate(
-      comp_email_placeholder,
-      comp_email_temp,
-    );
     const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
       {
         companyLogo: job.logo,
-        emailBody: filled_comp_template.body,
-        subject: filled_comp_template.subject,
       };
 
     return {
+      company_id: candidate.recruiter_id,
       comp_email_placeholder,
-      filled_comp_template,
       react_email_placeholders,
       recipient_email: trainee.email,
     };

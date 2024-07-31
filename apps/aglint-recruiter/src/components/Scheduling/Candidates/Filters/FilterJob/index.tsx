@@ -55,7 +55,7 @@ function FilterJob() {
         }
         isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
-          id: FilterType.relatedJobs + 'click',
+          id: FilterType.jobs + 'click',
           onClick: handleClick,
         }}
         textLabel={'Job Title'}
@@ -130,7 +130,7 @@ function FilterJob() {
             onClick: () => {
               setFilter({ job_ids: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.relatedJobs),
+                filterVisible.filter((f) => f !== FilterType.jobs),
               );
             },
           }}

@@ -1,4 +1,5 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { Skeleton } from '@/devlink2/Skeleton';
@@ -48,24 +49,41 @@ type InterviewLeaderboardProps = {
 const LeaderBoardWidgetComponent = ({
   interviewLeaderboard,
 }: InterviewLeaderboardProps) => {
+  const router = useRouter();
   return (
     <>
       {interviewLeaderboard.map((item, index) => (
-        <LeaderBoardCard
+        <Stack
           key={item.user_id}
-          textCountNo={index + 1}
-          textName={capitalizeAll(getFullName(item.first_name, item.last_name))}
-          textRole={item.user_position}
-          slotImage={
-            <Avatar
-              src={item.profile_image}
-              alt={getFullName(item.first_name, item.last_name)}
-              variant='rounded-medium'
-            />
-          }
-          noInterview={item.interviews}
-          noHours={(item.duration / 60).toFixed(1)}
-        />
+          onClick={() => {
+            router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
+          }}
+          sx={{
+            padding: '5px 10px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            ': hover': {
+              backgroundColor: 'var(--neutral-3)',
+            },
+          }}
+        >
+          <LeaderBoardCard
+            textCountNo={index + 1}
+            textName={capitalizeAll(
+              getFullName(item.first_name, item.last_name),
+            )}
+            textRole={item.user_position}
+            slotImage={
+              <Avatar
+                src={item.profile_image}
+                alt={getFullName(item.first_name, item.last_name)}
+                variant='rounded-medium'
+              />
+            }
+            noInterview={item.interviews}
+            noHours={(item.duration / 60).toFixed(1)}
+          />
+        </Stack>
       ))}
     </>
   );

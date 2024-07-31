@@ -14,12 +14,11 @@
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
 
-  border: 1px solid var(--success-a6);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-2);
 
   background-color: var(--success-a3);
 
-  color: white;
+  color: var(--success-a11);
 }
 
 .ts-item.pending {
@@ -29,9 +28,8 @@
 }
 
 .ts-item.not-schedule {
-  border-color: var(--neutral-6);
-  background-color: #f7f9fb;
-  color: #68737d;
+  background-color: var(--neutral-a3);
+  color: var(--neutral-a11);
 }
 
 .icons {

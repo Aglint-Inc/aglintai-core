@@ -1,6 +1,7 @@
 import Lottie from 'lottie-react';
+import { memo } from 'react';
 
-const ResumeWait = () => {
+const ResumeWait = memo(() => {
   const animationData = {
     v: '5.1.16',
     fr: 29.9700012207031,
@@ -532,6 +533,7 @@ const ResumeWait = () => {
     markers: [],
   };
   return <Lottie autoPlay={true} loop={true} animationData={animationData} />;
-};
+});
+ResumeWait.displayName = 'ResumeWait';
 
 export default ResumeWait;

@@ -22,6 +22,7 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['task_module'],
+
   //
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
   '/api/job/profileScore': ['job_module', 'manage_job'],
@@ -46,14 +47,18 @@ const PERMISSIONS: Permissions = {
   '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
-  '/scheduling/module/members/[module_id]': ['scheduling_module'],
+  '/scheduling/application': ['scheduling_actions'],
+  '/scheduling/interviewer': ['manage_interviewers'],
+  '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
+  '/scheduling/dashboard': ['scheduling_settings_and_reports'],
+  '/scheduling/interview-types': ['view_interview_types'],
 
   '/integrations': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
-  '/profile/[id]': ['authorized'],
+  '/user/profile/[user_id]': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'

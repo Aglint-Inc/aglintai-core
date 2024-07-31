@@ -7,8 +7,8 @@ import { HistoryPill } from '@/devlink3/HistoryPill';
 import dayjs from '@/src/utils/dayjs';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { PillsTraining } from '../../../InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers/IndividualCard';
-import CollapseTrainingProgress from '../../../InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';
+import { PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
+import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';
 import { useModuleRelations, useTrainingProgressUser } from '../hooks';
 import ThreeDot from './ThreeDot';
 
@@ -31,14 +31,19 @@ function TrainingInterviewerType({
     data?.filter(
       (rel) => rel.interview_session.module_id === relation.module_id,
     ) || [];
+
   const shadowProgress = progressDataUser.filter(
-    (prog) => prog.interview_session_relation.training_type == 'shadow',
+    (prog) =>
+      prog.interview_session_relation.training_type == 'shadow' &&
+      prog.interview_module_relation,
   );
   const mutatedShadowProgress = Array.from({
     length: relation.number_of_shadow - shadowProgress.length,
   });
   const reverseShadowProgress = progressDataUser.filter(
-    (prog) => prog.interview_session_relation.training_type == 'reverse_shadow',
+    (prog) =>
+      prog.interview_session_relation.training_type == 'reverse_shadow' &&
+      prog.interview_module_relation,
   );
   const mutatedReverseShadowProgress = Array.from({
     length: relation.number_of_reverse_shadow - reverseShadowProgress.length,

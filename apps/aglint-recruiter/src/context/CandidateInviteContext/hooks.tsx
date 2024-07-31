@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
-import { TimezoneObj } from '@/src/components/Scheduling/Settings';
+import { TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import { ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
