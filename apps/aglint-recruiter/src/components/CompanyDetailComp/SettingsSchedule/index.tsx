@@ -74,7 +74,7 @@ let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
 
-const LoadMax = {
+export const LoadMax = {
   dailyHours: 8,
   dailyInterviews: 10,
   weeklyHours: 40,

@@ -10,24 +10,33 @@ import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeeting
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
+import DeleteMemberDialog from '../Popups/DeleteDialog';
+import PauseDialog from '../Popups/PauseDialog';
+import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
-
 function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
   const router = useRouter();
   const upcomingScheduleList =
     scheduleList?.filter((item) => item.status === 'confirmed') || [];
 
   const user_id = router?.query?.user_id as string;
-  const { data, isLoading } = useModuleRelations({
+  const {
+    data,
+    isLoading,
+    refetch: deleteRefetch,
+  } = useModuleRelations({
     user_id,
   });
   const trainingModulesList = data?.filter(
-    (rel) => rel.module_training_status === 'training',
+    (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
   return (
     <>
+      <PauseDialog />
+      <ResumeDialog />
+      <DeleteMemberDialog refetch={deleteRefetch} />
       <InterviewerDetailOverview
         slotButtonSchedule={
           upcomingScheduleList?.length ? (
@@ -37,7 +46,7 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
               onClickButton={{
                 onClick: () => {
                   router.push(
-                    `/scheduling/interviewer/${user_id}?tab=allschedules`,
+                    `/user/profile/${user_id}?profile=true&tab=allschedules`,
                   );
                 },
               }}
@@ -54,7 +63,7 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
               onClickButton={{
                 onClick: () => {
                   router.push(
-                    `/scheduling/interviewer/${user_id}?tab=interviewtypes`,
+                    `/user/profile/${user_id}?profile=true&tab=interviewtypes`,
                   );
                 },
               }}
@@ -91,28 +100,30 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
                       />
                     );
                   })}
-                  <Stack direction={'row'} pt={'var(--space-2)'}>
-                    <ButtonSurface
-                      size={1}
-                      isRightIcon={false}
-                      slotIcon={<IconPlusFilter />}
-                      textButton={'Add'}
-                      onClickButton={{
-                        onClick: () => {
-                          setAddInterviewType('training');
-                          setIsAddInterviewTypeDialogOpen(true);
-                        },
-                      }}
-                    />
-                  </Stack>
                 </>
               ) : (
-                <GlobalEmptyState
-                  textDesc='No Interview type found.'
-                  size={6}
-                  iconName='school'
-                />
+                <>
+                  <GlobalEmptyState
+                    textDesc='No Interview type found.'
+                    size={6}
+                    iconName='school'
+                  />
+                </>
               )}
+              <Stack direction={'row'} pt={'var(--space-2)'}>
+                <ButtonSurface
+                  size={1}
+                  isRightIcon={false}
+                  slotIcon={<IconPlusFilter />}
+                  textButton={'Add'}
+                  onClickButton={{
+                    onClick: () => {
+                      setAddInterviewType('training');
+                      setIsAddInterviewTypeDialogOpen(true);
+                    },
+                  }}
+                />
+              </Stack>
             </>
           ) : (
             <Loader />

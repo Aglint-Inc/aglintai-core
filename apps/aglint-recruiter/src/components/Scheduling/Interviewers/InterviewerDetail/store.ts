@@ -6,6 +6,7 @@ import { useModuleRelations } from './hooks';
 type InterviewerDetailSlice = {
   isPauseDialogOpen: boolean;
   isResumeDialogOpen: boolean;
+  isRemoveModuleDialogOpen: boolean;
   isAddInterviewTypeDialogOpen: boolean;
   selRelation: ReturnType<typeof useModuleRelations>['data'][0];
   addInterviewType: DatabaseTable['interview_module_relation']['training_status'];
@@ -14,9 +15,10 @@ type InterviewerDetailSlice = {
 export const initialInterviewerDetailStore: InterviewerDetailSlice = {
   isPauseDialogOpen: false,
   isResumeDialogOpen: false,
+  isRemoveModuleDialogOpen: false,
   isAddInterviewTypeDialogOpen: false,
   selRelation: null,
-  addInterviewType: "qualified",
+  addInterviewType: 'qualified',
 };
 
 export const useInterviewerDetailStore = create<InterviewerDetailSlice>()(
@@ -40,6 +42,10 @@ export const setIsResumeDialogOpen = (isResumeDialogOpen: boolean) =>
 
 export const setIsPauseDialogOpen = (isPauseDialogOpen: boolean) =>
   useInterviewerDetailStore.setState({ isPauseDialogOpen });
+
+export const setisRemoveModuleDialogOpen = (
+  isRemoveModuleDialogOpen: boolean,
+) => useInterviewerDetailStore.setState({ isRemoveModuleDialogOpen });
 
 export const resetModulesStore = () =>
   useInterviewerDetailStore.setState(initialInterviewerDetailStore);

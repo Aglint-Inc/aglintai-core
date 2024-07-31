@@ -17,6 +17,7 @@ import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
+import Loader from '@/src/components/Common/Loader';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
@@ -287,7 +288,8 @@ function SchedulerEmailTemps({ setSaving }) {
 
   return (
     <Stack>
-      <Box>
+      <Box height={'100vh'}>
+        {isEditorLoad && <Loader />}
         {!isEditorLoad && templates.length > 0 && (
           <EmailTemplatesStart
             slotSearchFilter={
