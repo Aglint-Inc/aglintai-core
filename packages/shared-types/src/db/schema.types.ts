@@ -1218,7 +1218,9 @@ export type Database = {
           created_by: string | null
           filter_json: Json
           id: string
+          is_flow_agent: boolean
           schedule_id: string
+          schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
           viewed_on: string | null
@@ -1229,7 +1231,9 @@ export type Database = {
           created_by?: string | null
           filter_json: Json
           id?: string
+          is_flow_agent?: boolean
           schedule_id: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -1240,7 +1244,9 @@ export type Database = {
           created_by?: string | null
           filter_json?: Json
           id?: string
+          is_flow_agent?: boolean
           schedule_id?: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -6245,13 +6251,11 @@ export type Database = {
         | "interviewEnd_email_organizerForMeetingStatus"
         | "onAvailReqAgent_emailAgent_getCandidateAvailability"
         | "onAvailReqAgent_emailLink_getCandidateAvailability"
-        | "onAvailReqAgent_phoneAgent_getCandidateAvailability"
-        | "onAvailReqAgent_sms_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
         | "onReceivingAvailReq_agent_confirmSlot"
-        | "onSelfScheduleReqAgent_EmailLink_SelfSchedule"
         | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
         | "onSelfScheduleReqAgent_PhoneAgent_SelfSchedule"
+        | "onSelfScheduleReqAgent_EmailLink_SelfSchedule"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -6463,9 +6467,9 @@ export type Database = {
         | "onQualified"
         | "onTrainingComplete"
         | "onAvailReqAgent"
-        | "onSelfScheduleReqAgent"
         | "onReceivingAvailReq"
-      workflow_type: "system" | "job" | "agent"
+        | "onSelfScheduleReqAgent"
+      workflow_type: "system" | "job"
     }
     CompositeTypes: {
       location_type: {

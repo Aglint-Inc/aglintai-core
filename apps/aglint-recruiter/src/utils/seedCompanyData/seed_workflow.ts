@@ -293,23 +293,23 @@ export const seed_workflow_actions: {
       },
     ],
   },
-  {
-    workflow: {
-      auto_connect: false,
-      description: '',
-      interval: 0,
-      phase: 'after',
-      title: 'Get Availability from Candidate through Aglint Agent via SMS',
-      trigger: 'onAvailReqAgent',
-      workflow_type: 'job',
-    },
-    actions: [
-      {
-        order: 0,
-        target_api: 'onAvailReqAgent_sms_getCandidateAvailability',
-      },
-    ],
-  },
+  // {
+  //   workflow: {
+  //     auto_connect: false,
+  //     description: '',
+  //     interval: 0,
+  //     phase: 'after',
+  //     title: 'Get Availability from Candidate through Aglint Agent via SMS',
+  //     trigger: 'onAvailReqAgent',
+  //     workflow_type: 'job',
+  //   },
+  //   actions: [
+  //     {
+  //       order: 0,
+  //       target_api: 'onAvailReqAgent_sms_getCandidateAvailability',
+  //     },
+  //   ],
+  // },
   {
     workflow: {
       auto_connect: false,
