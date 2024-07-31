@@ -8,6 +8,7 @@ import Loader from '@/src/components/Common/Loader';
 
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { useModuleRelations } from '../hooks';
+import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';
 import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
@@ -17,20 +18,21 @@ import TrainingInterviewerType from './TrainingInterviewerType';
 function TabInterviewModules() {
   const router = useRouter();
   const user_id = router?.query?.user_id as string;
-  const { data, isLoading } = useModuleRelations({
+  const { data, isLoading, refetch } = useModuleRelations({
     user_id,
   });
   const qualifiedModulesList = data?.filter(
-    (rel) => rel.module_training_status === 'qualified',
+    (rel) => rel.module_training_status === 'qualified' && !rel.is_archived,
   );
   const trainingModulesList = data?.filter(
-    (rel) => rel.module_training_status === 'training',
+    (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
   return (
     <>
       <PauseDialog />
       <ResumeDialog />
+      <DeleteMemberDialog refetch={refetch} />
       <InterviewerDetailOverview
         isViewButtonVisible={false}
         textHeader1={'Qualified Interview Types'}
@@ -48,20 +50,6 @@ function TabInterviewModules() {
                       />
                     );
                   })}
-                  <Stack direction={'row'} pt={'var(--space-2)'}>
-                    <ButtonSurface
-                      size={1}
-                      isRightIcon={false}
-                      slotIcon={<IconPlusFilter />}
-                      textButton={'Add'}
-                      onClickButton={{
-                        onClick: () => {
-                          setAddInterviewType('qualified');
-                          setIsAddInterviewTypeDialogOpen(true);
-                        },
-                      }}
-                    />
-                  </Stack>
                 </>
               ) : (
                 <GlobalEmptyState
@@ -70,6 +58,20 @@ function TabInterviewModules() {
                   iconName='school'
                 />
               )}
+              <Stack direction={'row'} pt={'var(--space-2)'}>
+                <ButtonSurface
+                  size={1}
+                  isRightIcon={false}
+                  slotIcon={<IconPlusFilter />}
+                  textButton={'Add'}
+                  onClickButton={{
+                    onClick: () => {
+                      setAddInterviewType('qualified');
+                      setIsAddInterviewTypeDialogOpen(true);
+                    },
+                  }}
+                />
+              </Stack>
             </>
           ) : (
             <Loader />
@@ -88,20 +90,6 @@ function TabInterviewModules() {
                       />
                     );
                   })}
-                  <Stack direction={'row'} pt={'var(--space-2)'}>
-                    <ButtonSurface
-                      size={1}
-                      isRightIcon={false}
-                      slotIcon={<IconPlusFilter />}
-                      textButton={'Add'}
-                      onClickButton={{
-                        onClick: () => {
-                          setAddInterviewType('training');
-                          setIsAddInterviewTypeDialogOpen(true);
-                        },
-                      }}
-                    />
-                  </Stack>
                 </>
               ) : (
                 <GlobalEmptyState
@@ -110,6 +98,20 @@ function TabInterviewModules() {
                   iconName='school'
                 />
               )}
+              <Stack direction={'row'} pt={'var(--space-2)'}>
+                <ButtonSurface
+                  size={1}
+                  isRightIcon={false}
+                  slotIcon={<IconPlusFilter />}
+                  textButton={'Add'}
+                  onClickButton={{
+                    onClick: () => {
+                      setAddInterviewType('training');
+                      setIsAddInterviewTypeDialogOpen(true);
+                    },
+                  }}
+                />
+              </Stack>
             </>
           ) : (
             <Loader />

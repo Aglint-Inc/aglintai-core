@@ -2,13 +2,10 @@
 import { DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
 import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import { EmailAgentId, getFullName, PhoneAgentId } from '@aglint/shared-utils';
-import axios from 'axios';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { agentsDetails } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 export const createTask = async ({
   selectedSessions,
@@ -43,7 +40,7 @@ export const createTask = async ({
         ? PhoneAgentId
         : rec_user_id;
 
-  const { data: task, error: errorTasks } = await supabase
+  const { data: task } = await supabase
     .from('new_tasks')
     .insert({
       name: `Schedule interview for ${candidate_name} - ${selectedSessions
@@ -63,9 +60,8 @@ export const createTask = async ({
       task_owner: rec_user_id,
     })
     .select()
-    .single();
-
-  if (errorTasks) throw new Error(errorTasks.message);
+    .single()
+    .throwOnError();
 
   const insertTaskSesRels: DatabaseTableInsert['task_session_relation'][] =
     selectedSessions.map((ses) => {
@@ -75,26 +71,24 @@ export const createTask = async ({
       };
     });
 
-  const { error: errorTaskSesRel } = await supabase
+  await supabase
     .from('task_session_relation')
-    .insert(insertTaskSesRels);
+    .insert(insertTaskSesRels)
+    .throwOnError();
 
-  if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
-  const bodyParams: BodyParamsFetchUserDetails = {
-    recruiter_id: task.recruiter_id,
-    includeSupended: true,
-  };
-  const resMem = (await axios.post(
-    '/api/scheduling/fetchUserDetails',
-    bodyParams,
-  )) as { data: MemberType[] };
-  const members = resMem.data;
-  const assigner = [...members, ...agentsDetails].find(
-    (item) => item.user_id === task.assignee[0],
-  );
-  const creator = [...members, ...agentsDetails].find(
-    (item) => item.user_id === task.created_by,
-  );
+  const { data: recUser } = await supabase
+    .from('recruiter_user')
+    .select(
+      'user_id, first_name, last_name, recruiter_relation!public_recruiter_relation_user_id_fkey(roles(name))',
+    )
+    .eq('user_id', rec_user_id)
+    .single()
+    .throwOnError();
+
+  console.log(recUser);
+
+  const assigner = agentsDetails.find((agent) => agent.user_id === assignee);
+
   await createTaskProgress({
     type: 'create_task',
     data: {
@@ -108,11 +102,14 @@ export const createTask = async ({
         id: ele.interview_session.id,
         name: ele.interview_session.name,
       })) as meetingCardType[],
-      creatorDesignation: creator.role, // need to change
-      creatorName: getFullName(creator.first_name, creator.last_name),
-      assignerName: getFullName(assigner.first_name, assigner.last_name),
-      creatorId: creator.user_id,
-      assignerId: assigner.user_id,
+      creatorDesignation: recUser.recruiter_relation[0].roles.name,
+      creatorName: getFullName(recUser.first_name, recUser.last_name),
+      assignerName:
+        type === 'user'
+          ? getFullName(recUser.first_name, recUser.last_name)
+          : getFullName(assigner.first_name, assigner.last_name),
+      creatorId: recUser.user_id,
+      assignerId: type === 'user' ? recUser.user_id : assigner.user_id,
       scheduleDateRange: {
         start_date: task.schedule_date_range.start_date,
         end_date: task.schedule_date_range.end_date,
