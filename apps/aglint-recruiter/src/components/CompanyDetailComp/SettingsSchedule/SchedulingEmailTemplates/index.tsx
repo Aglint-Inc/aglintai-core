@@ -292,6 +292,8 @@ function SchedulerEmailTemps({ setSaving }) {
         {isEditorLoad && <Loader />}
         {!isEditorLoad && templates.length > 0 && (
           <EmailTemplatesStart
+            showTabs={false}
+            // currentModule={'job'}
             slotSearchFilter={
               <>
                 <SearchField
