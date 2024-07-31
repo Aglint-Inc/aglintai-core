@@ -23,14 +23,14 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
     <Dialog
       open={isResumeDialogOpen}
       onClose={() => {
-        setIsResumeDialogOpen(false);
+        if (!isSaving) setIsResumeDialogOpen(false);
       }}
     >
       <DcPopup
         popupName={'Resume Member'}
         onClickClosePopup={{
           onClick: () => {
-            setIsResumeDialogOpen(false);
+            if (!isSaving) setIsResumeDialogOpen(false);
           },
         }}
         slotBody={
@@ -64,6 +64,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
                       module_id: editModule.id,
                       user_id: selUser.user_id,
                     });
+                    setIsSaving(false);
                     setIsResumeDialogOpen(false);
                   }
                 },
