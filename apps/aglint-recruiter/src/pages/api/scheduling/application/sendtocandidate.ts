@@ -69,12 +69,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).send(resSendToCandidate);
   } catch (error) {
-    console.log(error.message);
-    const res: ApiResponseSendToCandidate = {
+    const resErr: ApiResponseSendToCandidate = {
       data: null,
       error: error.message,
     };
-    return res;
+    return res.status(500).send(resErr);
   }
 };
 
