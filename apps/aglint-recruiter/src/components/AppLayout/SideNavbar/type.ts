@@ -1,6 +1,6 @@
-import { DatabaseTable } from "@aglint/shared-types";
+import { DatabaseTable } from '@aglint/shared-types';
 
-import ROUTES from "@/src/utils/routing/routes";
+import ROUTES from '@/src/utils/routing/routes';
 
 export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
@@ -14,7 +14,7 @@ export type LinkProps =
       path: Path<'/jobs'>;
     }
   | {
-      module: 'Scheduler';
+      module: 'Dashboard';
       path: Path<'/scheduling'>;
     }
   | {

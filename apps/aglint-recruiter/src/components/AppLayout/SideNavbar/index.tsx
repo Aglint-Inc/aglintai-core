@@ -76,7 +76,7 @@ const LinkIcon = ({
           slotIcon={<JobsIcon />}
         />
       );
-    case 'Scheduler':
+    case 'Dashboard':
       return (
         <NavLink
           texttooltip={module}

@@ -5,7 +5,7 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useAllDepartments } from '@/src/queries/departments';
 
 import {
   FilterType,
@@ -14,13 +14,12 @@ import {
   useFilterCandidateStore,
 } from '../../filter-store';
 
-function FilterInterviewModule() {
-  const { allModules } = useSchedulingContext();
+function FilterDepartment() {
+  const { data: departments } = useAllDepartments();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
   const filter = useFilterCandidateStore((state) => state.filter);
-
   const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,35 +29,34 @@ function FilterInterviewModule() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
-  const id = open ? 'interview-panels' : undefined;
+  const id = open ? 'departments-filter' : undefined;
 
-  const handleFilterClick = (panel_id: string) => {
-    if (filter.module_ids.includes(panel_id)) {
+  const handleFilterClick = (dep_id: number) => {
+    if (filter.department_ids?.includes(dep_id)) {
       setFilter({
-        module_ids: filter.module_ids.filter((s) => s !== panel_id),
+        department_ids: filter.department_ids.filter((s) => s !== dep_id),
       });
     } else {
-      setFilter({ module_ids: [...filter.module_ids, panel_id] });
+      setFilter({ department_ids: [...filter.department_ids, dep_id] });
     }
   };
 
   return (
     <>
       <ButtonFilter
+        isActive={filter.job_ids.length > 0}
         slotLeftIcon={
           <Stack>
-            <GlobalIcon iconName='group' />
+            <GlobalIcon iconName='business_center' />
           </Stack>
         }
-        isDotVisible={filter.module_ids.length > 0}
-        isActive={filter.module_ids.length > 0}
+        isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
-          id: FilterType.interviewPanels + 'click',
+          id: FilterType.departments + 'click',
           onClick: handleClick,
         }}
-        textLabel={'Interview Type'}
+        textLabel={'Department'}
         slotRightIcon={
           <Stack>
             <GlobalIcon
@@ -88,11 +86,11 @@ function FilterInterviewModule() {
       >
         <FilterDropdown
           slotOption={
-            <>
-              {allModules?.map((mod) => {
+            <Stack spacing={2} maxHeight={'50vh'} overflow={'auto'}>
+              {departments?.map((dep) => {
                 return (
                   <Stack
-                    key={mod.id}
+                    key={dep.id}
                     direction={'row'}
                     sx={{
                       alignItems: 'center',
@@ -101,12 +99,13 @@ function FilterInterviewModule() {
                     }}
                     spacing={1}
                     padding={'var(--space-2) var(--space-3)'}
+                    marginTop={'0px !important'}
                   >
                     <Checkbox
-                      isChecked={filter.module_ids.includes(mod.id)}
+                      isChecked={filter.department_ids?.includes(dep.id)}
                       onClickCheck={{
                         onClick: () => {
-                          handleFilterClick(mod.id);
+                          handleFilterClick(dep.id);
                         },
                       }}
                     />
@@ -115,27 +114,27 @@ function FilterInterviewModule() {
                         fontSize: '14px',
                         cursor: 'pointer',
                       }}
-                      onClick={() => handleFilterClick(mod.id)}
+                      onClick={() => handleFilterClick(dep.id)}
                     >
-                      {mod.name}
+                      {dep.name}
                     </Typography>
                   </Stack>
                 );
               })}
-              {allModules.length === 0 && 'No Interview Types'}
-            </>
+              {departments?.length === 0 && 'No department found'}
+            </Stack>
           }
           onClickDelete={{
             onClick: () => {
-              setFilter({ module_ids: [] });
+              setFilter({ job_ids: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.interviewPanels),
+                filterVisible.filter((f) => f !== FilterType.departments),
               );
             },
           }}
           onClickReset={{
             onClick: () => {
-              setFilter({ module_ids: [] });
+              setFilter({ job_ids: [] });
             },
           }}
         />
@@ -144,4 +143,4 @@ function FilterInterviewModule() {
   );
 }
 
-export default FilterInterviewModule;
+export default FilterDepartment;
