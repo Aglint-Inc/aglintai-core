@@ -29,8 +29,8 @@ const Interview = () => {
     if ((interview.data ?? []).length === 0)
       return (
         <ActionEmptyState
-          title='No interview type found'
-          description='Set up interview types'
+          title='No interview plans set up.'
+          description='Set up interview plans to schedule interviews.'
           action={{
             title: 'Set up',
             onClick: () =>

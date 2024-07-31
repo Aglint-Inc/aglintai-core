@@ -18,10 +18,12 @@ export default async function handler(
     const { record } = req.body as { record: DatabaseTable['recruiter'] };
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
+    // start here
+    await seedRolesAndPermissions(recruiter_id);
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
-
+    // end here
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
@@ -33,7 +35,6 @@ export default async function handler(
 async function seedRolesAndPermissions(rec_id: string) {
   const tempRoles = await createRoles(rec_id);
   const tempPermissions = await getPermissions();
-
   const tempRolePermissions: {
     permission_id: number;
     recruiter_id: string;

@@ -287,7 +287,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     <OpenJobListingCard
                       key={ind}
                       textJobRole={job.job_title || '--'}
-                      textCompanyType={job.department || '--'}
+                      textCompanyType={job.departments?.name || '--'}
                       textLocation={job.location || '--'}
                       textWorkingType={job.job_type || '--'}
                       onClickApplyNow={{

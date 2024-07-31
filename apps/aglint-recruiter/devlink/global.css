@@ -2666,6 +2666,16 @@ textarea.w-select {
   --sand-1: #fdfdfc;
   --neutral-1: var(--sand-1);
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --black\<deleted\|variable-0fdbd865\>: black;
+  --white\<deleted\|variable-80449ce7\>: white;
+  --red-400\<deleted\|variable-dd53ad27\>: #e35b66;
+  --green-500\<deleted\|variable-287ff474\>: #228f67;
+  --blue-600\<deleted\|variable-aad8d97e\>: #1f73b7;
+  --blue-100\<deleted\|variable-d2a1a159\>: #edf7ff;
+  --grey-700\<deleted\|variable-7fbe857b\>: #49545c;
+  --grey-600\<deleted\|variable-d5bebe21\>: #68737d;
+  --grey-200\<deleted\|variable-9ba653f1\>: #e9ebed;
+  --gray-100\<deleted\|variable-3a86b552\>: #f8f9f9;
 }
 
 body {

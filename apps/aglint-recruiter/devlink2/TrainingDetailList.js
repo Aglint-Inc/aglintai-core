@@ -59,7 +59,12 @@ export function TrainingDetailList({
         {slotPanelBlock ?? (
           <>
             <PanelBlock />
-            <ButtonSoft size="2" textButton="Approve" />
+            <ButtonSoft
+              size="2"
+              textButton="Approve"
+              isLeftIcon={true}
+              iconName="check_circle"
+            />
           </>
         )}
       </_Builtin.Block>

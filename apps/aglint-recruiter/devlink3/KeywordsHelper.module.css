@@ -27,6 +27,10 @@
   overflow-y: auto;
 }
 
+.debrief-helper-sub-wrap.debrief {
+  padding-top: 0px;
+}
+
 .debrief-info-block {
   display: flex;
   flex-direction: column;

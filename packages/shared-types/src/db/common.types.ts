@@ -61,7 +61,7 @@ type CustomDraft = Pick<
   Database["public"]["Tables"]["public_jobs"]["Row"],
   | "job_title"
   | "description"
-  | "department"
+  | "department_id"
   | "company"
   | "workplace_type"
   | "job_type"

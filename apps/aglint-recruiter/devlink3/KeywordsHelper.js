@@ -18,7 +18,7 @@ export function KeywordsHelper({
         {...styleWidth}
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "debrief-helper-sub-wrap")}
+          className={_utils.cx(_styles, "debrief-helper-sub-wrap", "debrief")}
           tag="div"
         >
           <_Builtin.Block
