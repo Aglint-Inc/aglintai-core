@@ -20,17 +20,3 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
 }
-
-.req-right-grid-card {
-  padding: var(--space-3);
-  border-radius: var(--radius-4);
-  background-color: var(--neutral-2);
-  cursor: pointer;
-}
-
-#w-node-_9d331301-7b26-bc5d-4307-d14f8b0a536f-8b0a5366 {
-}
-#w-node-_9d331301-7b26-bc5d-4307-d14f8b0a5372-8b0a5366 {
-}
-#w-node-_9d331301-7b26-bc5d-4307-d14f8b0a5375-8b0a5366 {
-}

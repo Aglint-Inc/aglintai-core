@@ -1,0 +1,62 @@
+.req-card-detail-skeleton-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.req-card-detail-skeleton-left {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-card-skeleton-btn {
+  display: flex;
+  height: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-card-skeklton-btn-1 {
+  position: relative;
+  width: 180px;
+  height: 100%;
+}
+
+.req-card-skeleton-btn2 {
+  position: relative;
+  width: 100px;
+  height: 100%;
+}
+
+.req-card-skeleton-detail {
+  position: relative;
+  width: 300px;
+  height: 16px;
+}
+
+.req-card-skeleton-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-card-skeleton-rite-detail {
+  position: relative;
+  width: 250px;
+  height: 16px;
+}
+
+.req-card-skeleton-right-detail {
+  position: relative;
+  width: 200px;
+  height: 16px;
+}
