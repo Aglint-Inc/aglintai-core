@@ -3,7 +3,6 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -17,6 +16,7 @@ import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import Footer from '@/src/components/Common/Footer';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
@@ -32,7 +32,7 @@ import DateSlotsPoPup from './DateSlotsPopUp';
 import DaySessionCard from './DaySessionCard';
 
 function CandidateAvailability() {
-  const router = useRouter();
+  const router = useRouterPro();
   const {
     multiDaySessions,
     candidateRequestAvailability,
@@ -113,11 +113,11 @@ function CandidateAvailability() {
     const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
-        id: String(router.query?.request_id),
+        id: String(router.params?.request_id),
         data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       },
     );
- 
+
     if (task.id) {
       await insertTaskProgress({
         taskData: {
@@ -188,7 +188,7 @@ function CandidateAvailability() {
           const { data: requestData } = await axios.post(
             `/api/scheduling/request_availability/updateRequestAvailability`,
             {
-              id: String(router.query?.request_id),
+              id: String(router.params?.request_id),
               data: { visited: true },
             },
           );

@@ -17,6 +17,7 @@ import { candidateInviteKeys } from './keys';
 
 export const useInviteMeta = () => {
   const { enabled, ...params } = useInviteParams();
+
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const query = useQuery({
     queryKey,

@@ -1,4 +1,3 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -402,4 +401,12 @@ const getLastLogins = (ids: string[], recruiter_id: string) => {
       });
       return tempData;
     });
+};
+
+export const getFullName = (firstName: string, lastName: string) => {
+  return [firstName, lastName]
+    .filter(Boolean)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(' ');
 };
