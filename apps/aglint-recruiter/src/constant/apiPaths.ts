@@ -200,7 +200,6 @@ export const API_PATHS = [
 '/api/supabase/getCandidate-files',
 '/api/support/email',
 '/api/support/notificationEmail',
-'/api/testx',
 '/api/updateUsers',
 '/api/webhook',
 '/api/workflow-cron',

@@ -1,9 +1,10 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import Loader from '@/src/components/Common/Loader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -24,20 +25,24 @@ function DeleteDepartmentsDialog({
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <DcPopup
         popupName={'Delete Department'}
+        onClickClosePopup={{ onClick: handleClose }}
         slotBody={
-          !isPending &&
-          (usage.jobUsage || usage.userUsage ? (
+          isPending ? (
+            <Stack>
+              <Loader />
+            </Stack>
+          ) : usage.jobUsage || usage.userUsage ? (
             <GlobalBanner
               iconName='warning'
               color={'warning'}
               textTitle='Can Not Delete'
               isDescriptionVisible={true}
-              textDescription={`This department is used for ${usage?.userUsage} users and ${usage?.jobUsage} jobs`}
+              textDescription={`This department is used for ${usage?.userUsage} users and ${usage?.jobUsage} jobs,\n Disconnect these users and jobs first to delete this department.`}
               slotButtons={<></>}
             />
           ) : (
             `Department ${usage.name} will be deleted. Are you sure?`
-          ))
+          )
         }
         slotButtons={
           <>
@@ -102,8 +107,8 @@ async function checkDepartmentsUsage({
   const jobUsage = (
     await supabase
       .from('public_jobs')
-      .select('id', { count: 'exact' })
-      .eq('department', temp_data.name)
+      .select('departments!inner(name)', { count: 'exact' })
+      .eq('departments.name', temp_data.name)
       .throwOnError()
   ).count;
   return { name: temp_data.name, userUsage, jobUsage };
