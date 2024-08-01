@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Permissions } from '@/devlink/Permissions';
 import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
@@ -110,69 +111,90 @@ const RoleTable = ({
     : Object.entries(roles || {})
         .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
         .map(([key, details]) => {
-          const role = details;
-          const count = role.assignedTo.length;
           return (
-            <RolesRow
-              key={role.id}
-              textRole={capitalizeFirstLetter(role.name)}
-              textDescription={role.description}
-              onClickRow={{
-                onClick: () => {
-                  setRole(key);
-                },
-              }}
-              slotAvatars={
-                <>
-                  {count ? (
-                    <>
-                      {role.assignedTo.slice(0, 3).map((user_id) => {
-                        const user = members.find(
-                          (member) => member.user_id === user_id,
-                        );
-                        if (!user) return;
-                        return (
-                          <Avatar
-                            key={user_id}
-                            src={user.profile_image}
-                            variant='rounded'
-                            alt={user.first_name}
-                            sx={{ height: '24px', width: '24px' }}
-                          />
-                        );
-                      })}
-                      {count > 3 && (
-                        <GlobalBadge
-                          textBadge={`+${count - 3} more.`}
-                          color={'neutral'}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                      <Typography color={'neutral'}>
-                        {`No users with ${details.name}`}
-                      </Typography>
-                      <ButtonGhost
-                        textButton='Add'
-                        size={1}
-                        iconName='Add'
-                        isLeftIcon
-                        onClickButton={{
-                          onClick: (e) => {
-                            e.stopPropagation();
-                            // setQueryParams({ add: true, role: details.name });
-                            setRole(key, true);
-                          },
-                        }}
-                      />
-                    </Stack>
-                  )}
-                </>
-              }
+            <RoleRow
+              details={details}
+              key={key}
+              keyid={key}
+              members={members}
+              setRole={setRole}
             />
           );
         });
+};
+
+const RoleRow = ({ details, setRole, keyid, members }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const role = details;
+  const count = role.assignedTo.length;
+
+  return (
+    <Stack
+      key={role.id}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <RolesRow
+        textRole={capitalizeFirstLetter(role.name)}
+        textDescription={role.description}
+        onClickRow={{
+          onClick: () => {
+            setRole(keyid);
+          },
+        }}
+        slotAvatars={
+          <>
+            {count ? (
+              <>
+                {role.assignedTo.slice(0, 3).map((user_id) => {
+                  const user = members.find(
+                    (member) => member.user_id === user_id,
+                  );
+                  if (!user) return;
+                  return (
+                    <Avatar
+                      key={user_id}
+                      src={user.profile_image}
+                      variant='rounded'
+                      alt={user.first_name}
+                      sx={{ height: '24px', width: '24px' }}
+                    />
+                  );
+                })}
+                {count > 3 && (
+                  <GlobalBadge
+                    textBadge={`+${count - 3} more.`}
+                    color={'neutral'}
+                  />
+                )}
+              </>
+            ) : (
+              <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                <Typography color={'neutral'}>
+                  {`No users with ${details.name}`}
+                </Typography>
+                {isHovered && (
+                  <ButtonGhost
+                    textButton='Add'
+                    size={1}
+                    iconName='Add'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        // setQueryParams({ add: true, role: details.name });
+                        setRole(keyid, true);
+                      },
+                    }}
+                  />
+                )}
+              </Stack>
+            )}
+          </>
+        }
+      />
+    </Stack>
+  );
 };
 
 const useRoleAndPermissions = () => {
@@ -388,11 +410,11 @@ function RoleDetails({
     <>
       <RolesAndPermissionsDetail
         slotAddButton={ifAllowed(
-          <Stack direction={'row'}>
-            <ButtonGhost
+          <Stack direction={'row'} marginLeft={6}>
+            <ButtonSolid
               onClickButton={{ onClick: () => setEditUser(true) }}
               textButton={'Add'}
-              size={2}
+              size={1}
               isLeftIcon={true}
               iconName={'add'}
             />

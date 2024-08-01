@@ -2270,18 +2270,18 @@ textarea.w-select {
   --white-a12: rgba(255, 255, 255, 0.95);
   --white-a11: rgba(255, 255, 255, 0.9);
   --white-a10: rgba(255, 255, 255, 0.8);
-  --white-a8: rgba(255, 255, 255, 0.6);
-  --white-a3: rgba(255, 255, 255, 0.15);
-  --white-a7: rgba(255, 255, 255, 0.5);
   --white-a9: rgba(255, 255, 255, 0.7);
+  --white-a8: rgba(255, 255, 255, 0.6);
+  --white-a7: rgba(255, 255, 255, 0.5);
+  --white-a6: rgba(255, 255, 255, 0.4);
   --white-a5: rgba(255, 255, 255, 0.3);
   --white-a4: rgba(255, 255, 255, 0.2);
-  --white-a6: rgba(255, 255, 255, 0.4);
-  --tomato-a2: rgba(255, 32, 0, 0.03);
-  --error-a2: var(--tomato-a2);
+  --white-a3: rgba(255, 255, 255, 0.15);
   --black-a5: rgba(0, 0, 0, 0.3);
   --yellow-12: #473b1f;
   --warning-12: var(--yellow-12);
+  --tomato-a2: rgba(255, 32, 0, 0.03);
+  --error-a2: var(--tomato-a2);
   --black-a10: rgba(0, 0, 0, 0.8);
   --black-a11: rgba(0, 0, 0, 0.9);
   --white-a2: rgba(255, 255, 255, 0.1);
@@ -2623,7 +2623,6 @@ textarea.w-select {
   --neutral-1: var(--sand-1);
   --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --spacing\<deleted\|variable-6272ca72-0103-9b5c-18bd-925d9826d467\>: 2px;
-  --yellow-prime\<deleted\|variable-5734b54f\>: #ecff58;
 }
 
 body {

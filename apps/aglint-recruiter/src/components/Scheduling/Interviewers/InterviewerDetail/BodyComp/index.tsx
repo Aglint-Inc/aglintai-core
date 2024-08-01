@@ -83,7 +83,9 @@ function BodyComp() {
                   isAvailability={true}
                 />
               )}
-              {tab === 'interviewtypes' && <TabInterviewModules />}
+              {tab === 'qualified' && <TabInterviewModules type='qualified' />}
+              {tab === 'training' && <TabInterviewModules type='training' />}
+              {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
               {tab === 'allschedules' && (
                 <Interviews
                   allSchedules={allSchedules}

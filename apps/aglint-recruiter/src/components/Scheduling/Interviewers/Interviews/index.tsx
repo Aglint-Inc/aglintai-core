@@ -41,7 +41,7 @@ function Interviews({
     cancelledCount: 0,
   });
 
-  const member_id = router?.query?.member_id as string;
+  const member_id = router?.query?.user_id as string;
 
   useEffect(() => {
     if (member_id) {

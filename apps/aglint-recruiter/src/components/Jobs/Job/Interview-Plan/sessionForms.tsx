@@ -530,8 +530,8 @@ const Interview = ({
                     onClick: () =>
                       interview_module?.value?.id &&
                       push(
-                        ROUTES['/scheduling/module/members/[module_id]']({
-                          module_id: interview_module.value.id,
+                        ROUTES['/scheduling/interview-types/[type_id]']({
+                          type_id: interview_module.value.id,
                         }),
                       ),
                   }}

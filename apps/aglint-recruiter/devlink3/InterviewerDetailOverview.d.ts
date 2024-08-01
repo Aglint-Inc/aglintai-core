@@ -10,4 +10,6 @@ declare function InterviewerDetailOverview(props: {
   isViewButtonVisible?: Types.Visibility.VisibilityConditions;
   slotButtonSchedule?: Types.Devlink.Slot;
   slotButtonTraining?: Types.Devlink.Slot;
+  isTrainingVisible?: Types.Visibility.VisibilityConditions;
+  isUpcomingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -70,8 +70,8 @@ function CreateModuleDialog() {
           department_id: selDepartment.id,
         });
         await router.push(
-          ROUTES['/scheduling/module/members/[module_id]']({
-            module_id: res.id,
+          ROUTES['/scheduling/interview-types/[type_id]']({
+            type_id: res.id,
           }),
         );
         setIsCreateDialogOpen(null);
