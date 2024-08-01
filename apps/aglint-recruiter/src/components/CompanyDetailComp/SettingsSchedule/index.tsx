@@ -390,6 +390,7 @@ function SchedulingSettings({
                 width={'100%'}
                 overflow={'auto'}
                 height={'calc(100vh - 48px)'}
+                padding={'16px'}
               >
                 <WorkingHours
                   slotTimeZoneInput={
@@ -859,11 +860,11 @@ function SchedulingSettings({
             />
             <Dialog open={openDialog} onClose={closeDialog}>
               <DayOffHelper
-                // onClickClose={{
-                //   onClick: () => {
-                //     closeDialog();
-                //   },
-                // }}
+                onClickClose={{
+                  onClick: () => {
+                    closeDialog();
+                  },
+                }}
                 slotButton={
                   <ButtonSolid
                     textButton='Got It'
