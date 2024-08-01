@@ -1,8 +1,9 @@
+'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useRouter } from 'next/router';
 import type React from 'react';
 
+import { useRouterPro } from '../hooks/useRouterPro';
 import ROUTES from '../utils/routing/routes';
 
 export const GC_TIME = 5 * 60 * 1000;
@@ -45,19 +46,21 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/scheduling/invite/[id]',
   '/workflows',
   '/workflows/[id]',
+  '/requests',
 ];
 
 export const appKey = 'app';
 export const noPollingKey = 'no-polling';
 
-export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
+export const QueryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const router = useRouter();
+  const router = useRouterPro();
+
   const validEnv =
     process.env.NEXT_PUBLIC_HOST_NAME.startsWith('http://localhost');
   const validPath = reactQueryPageRoute.includes(
-    (router?.pathname ?? null) as any,
+    (router?.pathName ?? null) as any,
   );
   const showRQDevTools = validEnv && validPath;
   return (

@@ -55,14 +55,12 @@ export function EmailTemplatesStart({
               {slotWarning}
             </_Builtin.Block>
           ) : null}
-          {showTabs ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot_search_and_filter")}
-              tag="div"
-            >
-              {slotSearchFilter}
-            </_Builtin.Block>
-          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_search_and_filter")}
+            tag="div"
+          >
+            {slotSearchFilter}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "email-start-wrap")}
             id={_utils.cx(

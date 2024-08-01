@@ -1,4 +1,3 @@
-'use client';
 
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Autocomplete, Stack, Typography } from '@mui/material';

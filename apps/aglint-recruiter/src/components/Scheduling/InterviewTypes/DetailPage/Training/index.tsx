@@ -1,6 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -201,49 +202,52 @@ function ModuleSettingComp({
           }
         />
       )}
-      <TrainingSetting
-        isApprovalVisible={editModule?.settings?.reqruire_approval}
-        isDisable={!editModule?.settings?.require_training}
-        isEnable={editModule?.settings?.require_training}
-        textHeading={
-          editModule?.settings?.require_training
-            ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
-            : 'Training is disabled for this module'
-        }
-        textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
-        textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
-        slotButton={
-          checkPermissions(['interview_types']) ? (
-            <ButtonSoft
-              textButton='Settings'
-              iconName='settings'
-              isDisabled={!editModule?.settings?.require_training}
-              isLeftIcon
-              size={1}
-              onClickButton={{ onClick: () => setOpen(true) }}
-              color={'neutral'}
-            />
-          ) : (
-            <></>
-          )
-        }
-        slotApproval={approvers.map((user, i) => (
-          <TrainingSettingItem
-            key={i}
-            text={getFullName(user.first_name, user.last_name)}
-            slotImage={
-              <MuiAvatar
-                src={user.profile_image}
-                level={getFullName(user?.first_name, user?.last_name)}
-                variant='rounded'
-                height='20px'
-                width='20px'
-                fontSize='12px'
+      {editModule?.settings?.require_training && (
+        <TrainingSetting
+          isApprovalVisible={editModule?.settings?.reqruire_approval}
+          isDisable={!editModule?.settings?.require_training}
+          isEnable={editModule?.settings?.require_training}
+          textHeading={
+            editModule?.settings?.require_training
+              ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
+              : 'Training is disabled for this module'
+          }
+          textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
+          textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
+          slotButton={
+            checkPermissions(['interview_types']) ? (
+              <ButtonSoft
+                textButton='Settings'
+                iconName='settings'
+                isDisabled={!editModule?.settings?.require_training}
+                isLeftIcon
+                size={1}
+                onClickButton={{ onClick: () => setOpen(true) }}
+                color={'neutral'}
               />
-            }
-          />
-        ))}
-      />
+            ) : (
+              <></>
+            )
+          }
+          slotApproval={approvers.map((user, i) => (
+            <Link href={`/user/profile/${user.user_id}`} key={i}>
+              <TrainingSettingItem
+                text={getFullName(user.first_name, user.last_name)}
+                slotImage={
+                  <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    variant='rounded'
+                    height='20px'
+                    width='20px'
+                    fontSize='12px'
+                  />
+                }
+              />
+            </Link>
+          ))}
+        />
+      )}
       {editModule?.settings?.require_training && (
         <Stack spacing={'var(--space-2)'}>
           <SlotTrainingMembers editModule={editModule} refetch={refetch} />
@@ -474,8 +478,6 @@ function ModuleSettingComp({
                         <ButtonSolid
                           textButton='Disable'
                           color={'error'}
-                          isLoading={isBannerLoading}
-                          isDisabled={isBannerLoading}
                           onClickButton={{
                             onClick: () => {
                               if (

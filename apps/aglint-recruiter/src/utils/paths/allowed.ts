@@ -3,6 +3,7 @@ import { PATHS } from '@/src/constant/allPaths';
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
 export const allowedPaths = new Set<t>([
+  '/api/testx',
   '/login',
   '/signup',
   '/api/signup',

@@ -86,6 +86,7 @@ function ScheduleMeetingCard({
                           userDetails={{
                             first_name: user.first_name,
                             last_name: user.last_name,
+                            user_id: user.user_id,
                             position: user.position,
                             profile_image: user.profile_image,
                           }}

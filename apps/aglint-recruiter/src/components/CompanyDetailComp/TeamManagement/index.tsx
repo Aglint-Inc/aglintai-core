@@ -1,9 +1,8 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import converter from 'number-to-words';
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -58,22 +57,19 @@ const TeamManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
 
-  const uniqueDepartments = useMemo(() => {
-    return [
-      ...members.reduce((acc, curr) => {
-        curr.department?.name && acc.add(curr.department.name);
-        return acc;
-      }, new Set<string>()),
-    ];
-  }, []);
-  const uniqueLocations = useMemo(() => {
-    return [
-      ...members.reduce((acc, curr) => {
-        curr.office_location?.city && acc.add(curr.office_location.city);
-        return acc;
-      }, new Set<string>()),
-    ];
-  }, []);
+  const uniqueDepartments = [
+    ...members.reduce((acc, curr) => {
+      curr.department?.name && acc.add(curr.department.name);
+      return acc;
+    }, new Set<string>()),
+  ];
+
+  const uniqueLocations = [
+    ...members.reduce((acc, curr) => {
+      curr.office_location?.city && acc.add(curr.office_location.city);
+      return acc;
+    }, new Set<string>()),
+  ];
 
   const uniqueRoles = [
     ...new Set(
@@ -405,4 +401,12 @@ const getLastLogins = (ids: string[], recruiter_id: string) => {
       });
       return tempData;
     });
+};
+
+export const getFullName = (firstName: string, lastName: string) => {
+  return [firstName, lastName]
+    .filter(Boolean)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(' ');
 };

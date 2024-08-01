@@ -10,7 +10,6 @@ import {
 import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/router';
 import {
   createContext,
   Dispatch,
@@ -20,6 +19,7 @@ import {
   useState,
 } from 'react';
 
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -129,7 +129,7 @@ function RequestAvailabilityProvider({ children }) {
   >([]);
 
   const [openDaySlotPopup, setOpenDaySlotPopup] = useState<null | number>(null);
-  const router = useRouter();
+  const router = useRouterPro<{ request_id: string }>();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function getRequestAvailabilityData({ request_id }) {
@@ -184,12 +184,12 @@ function RequestAvailabilityProvider({ children }) {
     setLoading(false);
   }
   useEffect(() => {
-    if (router.query?.request_id) {
+    if (router.params?.request_id) {
       getRequestAvailabilityData({
-        request_id: router.query?.request_id,
+        request_id: router.params?.request_id,
       });
     }
-  }, [router.query?.request_id]);
+  }, [router.params?.request_id]);
 
   return (
     <RequestAvailabilityContext.Provider

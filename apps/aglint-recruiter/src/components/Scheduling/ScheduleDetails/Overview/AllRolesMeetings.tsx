@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import Link from 'next/link';
 
 import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -56,10 +57,11 @@ function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
                   fontSize='20px'
                 />
               }
-              textName={getFullName(
-                item.details.first_name,
-                item.details.last_name,
-              )}
+              textName={
+                <Link href={`/user/profile/${item.details.id}`}>
+                  {getFullName(item.details.first_name, item.details.last_name)}
+                </Link>
+              }
               textRole={item.label}
             />
           </>

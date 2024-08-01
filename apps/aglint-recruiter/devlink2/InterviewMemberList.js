@@ -15,6 +15,8 @@ export function InterviewMemberList({
   slotModuleContent,
   slotEditButton,
   slotJobsCard,
+  slotBanner,
+  isBannerVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "iml-wrappers")} tag="div">
@@ -26,6 +28,9 @@ export function InterviewMemberList({
           className={_utils.cx(_styles, "header-interview-list-wrap")}
           tag="div"
         >
+          {isBannerVisible ? (
+            <_Builtin.Block tag="div">{slotBanner}</_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "iml-details-wrapper")}
             tag="div"

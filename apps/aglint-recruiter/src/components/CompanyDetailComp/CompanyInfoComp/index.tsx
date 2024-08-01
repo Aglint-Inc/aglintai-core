@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { BasicInfo } from '@/devlink/BasicInfo';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CompanyInfo } from '@/devlink/CompanyInfo';
 import { CompanyInfoDetails } from '@/devlink/CompanyInfoDetails';
 import { CompanyLocation } from '@/devlink/CompanyLocation';
@@ -60,19 +59,20 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     recruit: typeof recruiter,
     isEmptyName?: boolean,
   ) => {
-    setIsSaving(true);
-    if (isEmptyName) {
-      debouncedSave(
-        { ...recruit, name: String(initialCompanyName.current) },
-        recruiter.id,
-      );
-    } else {
-      debouncedSave(recruit, recruiter.id);
-    }
+    // setIsSaving(true);
+
+    debouncedSave(
+      {
+        ...recruit,
+        ...(isEmptyName ? { name: String(initialCompanyName.current) } : {}),
+      },
+      recruiter.id,
+    );
+
     setRecruiter(recruit);
-    setTimeout(() => {
-      setIsSaving(false);
-    }, 1500);
+    // setTimeout(() => {
+    //   setIsSaving(false);
+    // }, 1500);
   };
 
   const handleClose = () => {
@@ -134,16 +134,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
             onClose={() => setEditDrawer(false)}
           >
             <SideDrawerLarge
-            isHeaderIconVisible={false}
+              isHeaderIconVisible={false}
               textDrawertitle={'Edit Basic Info'}
               drawerSize={'small'}
               onClickCancel={{ onClick: () => setEditDrawer(false) }}
-              slotButtons={
-                <>
-                  <ButtonSoft size={2} color={'neutral'} textButton='Close' />
-                  <ButtonSolid size={2} textButton='Save' />
-                </>
-              }
+              slotButtons={<></>}
               slotSideDrawerbody={
                 <BasicInfo
                   isWarningVisible={isError}
@@ -338,226 +333,231 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               }}
             />
           </MuiPopup>
-          <Stack width={'100%'} height={'calc(100vh - 48px)'} bgcolor={'white'} overflow={'auto'}>
-          <CompanyInfo
-            isEditable={!isFormDisabled}
-            slotCompanyInfoDetails={
-              <CompanyInfoDetails
-                slotDetails={
-                  <>
-                    <TextWithIcon
-                      iconName='warehouse'
-                      iconSize={4}
-                      fontWeight={'regular'}
-                      textContent={recruiter.industry}
-                    />
+          <Stack
+            width={'100%'}
+            height={'calc(100vh - 48px)'}
+            bgcolor={'white'}
+            overflow={'auto'}
+          >
+            <CompanyInfo
+              isEditable={!isFormDisabled}
+              slotCompanyInfoDetails={
+                <CompanyInfoDetails
+                  slotDetails={
+                    <>
+                      <TextWithIcon
+                        iconName='warehouse'
+                        iconSize={4}
+                        fontWeight={'regular'}
+                        textContent={recruiter.industry}
+                      />
 
-                    <TextWithIcon
-                      iconName='group'
-                      iconSize={4}
-                      textContent={`${recruiter.employee_size} People`}
-                      fontWeight={'regular'}
-                    />
-                  </>
-                }
-                slotEditButton={
-                  !isFormDisabled ? (
-                    <ButtonSoft
-                      textButton='Edit'
-                      size={2}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          setEditDrawer(true);
-                        },
-                      }}
-                    />
-                  ) : (
-                    <></>
-                  )
-                }
-                slotImage={
-                  <Stack
-                    justifyContent={'center'}
-                    alignItems='center'
-                    height={'50px'}
-                    width={'50px'}
-                  >
-                    <Avatar src={recruiter.logo} alt={recruiter.name} />
-                  </Stack>
-                }
-                textCompanyName={recruiter.name}
-                textCompanySites={recruiter.company_website}
-                slotSocialLink={
-                  <>
-                    {Object.entries(recruiter.socials)
-                      .filter((key) => key[0] !== 'custom')
-                      .map(([key, val]) => {
-                        return (
-                          <TextWithIcon
-                            key={key}
-                            slotIcon={
-                              <Stack
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                              >
-                                <Image
-                                  src={`/images/logo/${key}.svg`}
-                                  height={14}
-                                  width={14}
-                                  alt=''
-                                  style={{ filter: 'grayscale(100%)' }}
-                                />
-                              </Stack>
-                            }
-                            fontWeight={'regular'}
-                            textContent={
-                              <Link href={val as string} target='_blank'>
-                                {
-                                  // @ts-ignore
-                                  val.replace('https://www.', '')
-                                }
-                              </Link>
-                            }
-                          />
-                        );
-                      })}
-                  </>
-                }
-              />
-            }
-            slotLocation={
-              <>
-                {recruiter?.office_locations &&
-                  recruiter?.office_locations.map((loc) => {
-                    const location = [loc.city, loc.region, loc.country]
-                      .filter(Boolean)
-                      .join(', ');
-                    const [address] = [loc.line1];
-                    const timeZone = [loc.timezone];
-                    const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
+                      <TextWithIcon
+                        iconName='group'
+                        iconSize={4}
+                        textContent={`${recruiter.employee_size} People`}
+                        fontWeight={'regular'}
+                      />
+                    </>
+                  }
+                  slotEditButton={
+                    !isFormDisabled ? (
+                      <ButtonSoft
+                        textButton='Edit'
+                        size={2}
+                        color={'neutral'}
+                        onClickButton={{
+                          onClick: () => {
+                            setEditDrawer(true);
+                          },
+                        }}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  }
+                  slotImage={
+                    <Stack
+                      justifyContent={'center'}
+                      alignItems='center'
+                      height={'50px'}
+                      width={'50px'}
+                    >
+                      <Avatar src={recruiter.logo} alt={recruiter.name} />
+                    </Stack>
+                  }
+                  textCompanyName={recruiter.name}
+                  textCompanySites={recruiter.company_website}
+                  slotSocialLink={
+                    <>
+                      {Object.entries(recruiter.socials)
+                        .filter((key) => key[0] !== 'custom')
+                        .map(([key, val]) => {
+                          return (
+                            <TextWithIcon
+                              key={key}
+                              slotIcon={
+                                <Stack
+                                  justifyContent={'center'}
+                                  alignItems={'center'}
+                                >
+                                  <Image
+                                    src={`/images/logo/${key}.svg`}
+                                    height={14}
+                                    width={14}
+                                    alt=''
+                                    style={{ filter: 'grayscale(100%)' }}
+                                  />
+                                </Stack>
+                              }
+                              fontWeight={'regular'}
+                              textContent={
+                                <Link href={val as string} target='_blank'>
+                                  {
+                                    // @ts-ignore
+                                    val.replace('https://www.', '')
+                                  }
+                                </Link>
+                              }
+                            />
+                          );
+                        })}
+                    </>
+                  }
+                />
+              }
+              slotLocation={
+                <>
+                  {recruiter?.office_locations &&
+                    recruiter?.office_locations.map((loc) => {
+                      const location = [loc.city, loc.region, loc.country]
+                        .filter(Boolean)
+                        .join(', ');
+                      const [address] = [loc.line1];
+                      const timeZone = [loc.timezone];
+                      const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
 
-                    return (
-                      <>
-                        <Stack p={'var(--space-1)'}>
-                          <CompanyLocation
-                            isHeadQuaterVisible={isHeadQuaterVisible}
-                            isEditDeleteVisible={!isFormDisabled}
-                            onClickEdit={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  location: { open: true, edit: loc.id },
-                                });
-                              },
-                            }}
-                            textFullAddress={address || '-'}
-                            textLocationHeader={location}
-                            textTimeZone={timeZone}
-                            onClickDelete={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  deletelocation: {
-                                    open: true,
-                                    edit: loc.id,
-                                  },
-                                });
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </>
-                    );
-                  })}
-              </>
-            }
-            slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
-              return (
-                <RolesPill
-                  key={ind}
-                  textRoles={rol}
-                  isCloseIconVisible={!isFormDisabled}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      let roles = recruiter.available_roles.filter(
-                        (role) => role != rol,
+                      return (
+                        <>
+                          <Stack p={'var(--space-1)'}>
+                            <CompanyLocation
+                              isHeadQuaterVisible={isHeadQuaterVisible}
+                              isEditDeleteVisible={!isFormDisabled}
+                              onClickEdit={{
+                                onClick: () => {
+                                  setDialog({
+                                    ...dialog,
+                                    location: { open: true, edit: loc.id },
+                                  });
+                                },
+                              }}
+                              textFullAddress={address || '-'}
+                              textLocationHeader={location}
+                              textTimeZone={timeZone}
+                              onClickDelete={{
+                                onClick: () => {
+                                  setDialog({
+                                    ...dialog,
+                                    deletelocation: {
+                                      open: true,
+                                      edit: loc.id,
+                                    },
+                                  });
+                                },
+                              }}
+                            />
+                          </Stack>
+                        </>
                       );
-                      handleChange({
-                        ...recruiter,
-                        available_roles: roles,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotDepartmentPills={recruiter?.departments?.map((dep) => {
-              return (
-                <RolesPill
-                  key={dep.id}
-                  textRoles={dep.name}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      setDeleteDialog({
-                        ...deleteDialog,
-                        open: true,
-                        id: dep.id,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotTechStackPills={recruiter?.technology_score?.map(
-              (stack, ind) => {
+                    })}
+                </>
+              }
+              slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
                   <RolesPill
                     key={ind}
-                    textRoles={stack}
+                    textRoles={rol}
                     isCloseIconVisible={!isFormDisabled}
                     onClickRemoveRoles={{
                       onClick: () => {
-                        let technologies = recruiter.technology_score.filter(
-                          (tech) => tech != stack,
+                        let roles = recruiter.available_roles.filter(
+                          (role) => role != rol,
                         );
                         handleChange({
                           ...recruiter,
-                          technology_score: technologies,
+                          available_roles: roles,
                         });
                       },
                     }}
                   />
                 );
-              },
-            )}
-            onClickAddLocation={{
-              onClick: () => {
-                setDialog({ ...dialog, location: { open: true, edit: -1 } });
-              },
-            }}
-            onClickAddAvailableRoles={{
-              onClick: () => {
-                setDialog({ ...dialog, roles: true });
-              },
-            }}
-            onClickAddDepartments={{
-              onClick: () => {
-                setDialog((prev) => ({
-                  ...prev,
-                  departments: true,
-                }));
-              },
-            }}
-            onClickAddTechStacks={{
-              onClick: () => {
-                setDialog({ ...dialog, stacks: true });
-              },
-            }}
-            isAvailableRolesVisible={true}
-            isSpecialistVisible={true}
-            slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
-          />
+              })}
+              slotDepartmentPills={recruiter?.departments?.map((dep) => {
+                return (
+                  <RolesPill
+                    key={dep.id}
+                    textRoles={dep.name}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        setDeleteDialog({
+                          ...deleteDialog,
+                          open: true,
+                          id: dep.id,
+                        });
+                      },
+                    }}
+                  />
+                );
+              })}
+              slotTechStackPills={recruiter?.technology_score?.map(
+                (stack, ind) => {
+                  return (
+                    <RolesPill
+                      key={ind}
+                      textRoles={stack}
+                      isCloseIconVisible={!isFormDisabled}
+                      onClickRemoveRoles={{
+                        onClick: () => {
+                          let technologies = recruiter.technology_score.filter(
+                            (tech) => tech != stack,
+                          );
+                          handleChange({
+                            ...recruiter,
+                            technology_score: technologies,
+                          });
+                        },
+                      }}
+                    />
+                  );
+                },
+              )}
+              onClickAddLocation={{
+                onClick: () => {
+                  setDialog({ ...dialog, location: { open: true, edit: -1 } });
+                },
+              }}
+              onClickAddAvailableRoles={{
+                onClick: () => {
+                  setDialog({ ...dialog, roles: true });
+                },
+              }}
+              onClickAddDepartments={{
+                onClick: () => {
+                  setDialog((prev) => ({
+                    ...prev,
+                    departments: true,
+                  }));
+                },
+              }}
+              onClickAddTechStacks={{
+                onClick: () => {
+                  setDialog({ ...dialog, stacks: true });
+                },
+              }}
+              isAvailableRolesVisible={true}
+              isSpecialistVisible={true}
+              slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
+            />
           </Stack>
         </>
       )}
