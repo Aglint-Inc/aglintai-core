@@ -1,8 +1,8 @@
-import { Stack } from '@mui/material';
-import React from 'react';
+import { Divider, Stack } from '@mui/material';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 
+import { Text } from '@/devlink2';
 import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, FilterTypes } from './FilterComponents';
@@ -58,7 +58,7 @@ export default function FilterHeader({
       alignItems={'center'}
       width={'100%'}
     >
-      <Stack direction={'row'} gap={2}>
+      <Stack direction={'row'} spacing={2}>
         {Boolean(search) && (
           <SearchField
             value={search.value}
@@ -68,26 +68,30 @@ export default function FilterHeader({
           />
         )}
         <Stack direction={'row'} justifyContent={'space-between'} flexGrow={1}>
-          <Stack direction={'row'} gap={2}>
-            <FiltersComponent
-              filters={filters}
-              showFilters={showFiltersByDefault}
-              setShowFilters={setShowFilters}
-            />
-            {Boolean(dateRangeSelector) && (
-              <DateRangeSelector {...dateRangeSelector} />
-            )}
-            {isResetAll && isFiltersActive && (
-              <ButtonGhost
-                isDisabled={!isFiltersActive}
-                textButton='Reset All'
-                size={2}
-                iconName='refresh'
-                color={'neutral'}
-                isLeftIcon
-                onClickButton={{ onClick: handelResetAll }}
+          <Stack direction={'row'} gap={2} alignItems={'center'}>
+            <Divider orientation='vertical' />
+            <Text size={2} color={'neutral'} content={'Filters'} />
+            <Stack direction={'row'} gap={2}>
+              <FiltersComponent
+                filters={filters}
+                showFilters={showFiltersByDefault}
+                setShowFilters={setShowFilters}
               />
-            )}
+              {Boolean(dateRangeSelector) && (
+                <DateRangeSelector {...dateRangeSelector} />
+              )}
+              {isResetAll && isFiltersActive && (
+                <ButtonGhost
+                  isDisabled={!isFiltersActive}
+                  textButton='Reset All'
+                  size={2}
+                  iconName='refresh'
+                  color={'neutral'}
+                  isLeftIcon
+                  onClickButton={{ onClick: handelResetAll }}
+                />
+              )}
+            </Stack>
           </Stack>
         </Stack>
       </Stack>

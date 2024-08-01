@@ -148,6 +148,7 @@ const PERMISSIONS: Permissions = {
   '/api/supabase/deleteuser': ['manage_users'],
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
+  '/api/ai/queryToJson': ['scheduling_module'],
 };
 
 export default PERMISSIONS;
