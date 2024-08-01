@@ -1,4 +1,5 @@
 import {
+  ApiError,
   candidate_new_schedule_schema,
   getFullName,
   supabaseWrap,
@@ -55,6 +56,9 @@ export const selfScheduleAgent = async ({
         '*,interview_schedule(applications(public_jobs(*),candidates(*)))',
       ),
   );
+  if (!agent_assigned_user.phone) {
+    throw new ApiError('PHONE_AGENT', 'phone number not set', 400);
+  }
   if (agent_type === 'phone') {
     const job_details = filter_json.interview_schedule.applications.public_jobs;
     const candidate = filter_json.interview_schedule.applications.candidates;

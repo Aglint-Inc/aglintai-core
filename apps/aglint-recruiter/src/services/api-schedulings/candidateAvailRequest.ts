@@ -56,7 +56,7 @@ export const candidateAvailRequest = async (
       avail_req_id: avail_req.id,
     };
   await axios.post(
-    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/emails/sendAvailabilityRequest_email_applicant`,
+    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/sendAvailabilityRequest_email_applicant`,
     {
       ...payload,
     },

@@ -74,7 +74,7 @@ export type APIFindInterviewSlot = v.InferInput<
 >;
 
 export type APIFindSlotsDateRange = v.InferInput<
-  typeof schema_find_slots_date_range
+  typeof schema_find_availability_payload
 >;
 
 export type CandReqAvailableSlots = v.InferInput<
