@@ -5,7 +5,6 @@ import {
 } from '@aglint/shared-types';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
@@ -95,17 +95,17 @@ function UploadDB({
   const [isDisabled, setIsDisabled] = useState(false);
   // eslint-disable-next-line no-unused-vars
 
-  const router = useRouter();
+  const router = useRouterPro<{ college_name: string; branch: string }>();
 
   useEffect(() => {
-    if (router?.isReady && router?.query?.college_name) {
+    if (router.queryParams.college_name) {
       setProfile({
         ...profile,
-        college_name: router?.query?.college_name,
-        branch: router?.query?.branch,
+        college_name: router.queryParams.college_name,
+        branch: router.queryParams.branch,
       });
     }
-  }, [router]);
+  }, [router.queryParams.college_name]);
 
   const uploadFile = (file) => {
     setFile(file);
