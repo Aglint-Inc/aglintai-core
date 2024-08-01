@@ -18,6 +18,7 @@
     "@aglint/shared-utils": "*",
     "@langchain/community": "^0.0.41",
     "@langchain/core": "^0.1.63",
+    "@langchain/langgraph": "^0.0.31",
     "@langchain/openai": "^0.0.29",
     "@slack/bolt": "^3.18.0",
     "@slack/events-api": "^3.0.1",
