@@ -1,0 +1,12 @@
+.whd-day-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.working-hour-half-day-left {
+  width: 90px;
+  flex: 0 0 auto;
+}
