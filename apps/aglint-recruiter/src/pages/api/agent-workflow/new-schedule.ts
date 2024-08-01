@@ -1,7 +1,8 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import {
   addErrorHandlerWrap,
   candidate_new_schedule_schema,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
@@ -55,7 +56,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
   const plans = filtered_slot_info.combs.flatMap((c) => c.plans);
 
+  let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =
+    'self_scheduling';
+
   if (api_target === 'onSelfScheduleReqAgent_EmailLink_SelfSchedule') {
+    meeting_flow = 'self_scheduling';
     await candidateSelfSchedule(
       req.body,
       cloned_sessn_ids,
@@ -86,8 +91,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (
     api_target === 'onAvailReqAgent_emailAgent_getCandidateAvailability'
   ) {
-    //TODO:
+    //
   }
+  const session_details = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select()
+      .in('id', cloned_sessn_ids),
+  );
+
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .update({
+        meeting_flow,
+      })
+      .in(
+        'id',
+        session_details.map((s) => s.meeting_id),
+      ),
+  );
 
   return res.status(204).end();
 };

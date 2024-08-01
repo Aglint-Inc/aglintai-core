@@ -23,6 +23,16 @@ export const selfScheduleAgent = async ({
   agent_type: 'email' | 'phone';
 }) => {
   const { date_range } = v.parse(candidate_new_schedule_schema, req_body);
+  const [new_task] = supabaseWrap(
+    await supabaseAdmin
+      .from('new_tasks')
+      .insert({
+        assignee: [],
+        created_by: agent_assigned_user_id,
+        name: `REMOVE THIS IN API`,
+      })
+      .select(),
+  );
   const [agent_assigned_user] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
@@ -58,7 +68,7 @@ export const selfScheduleAgent = async ({
       from_phone_no: '+12512066348',
       to_phone_no: formatPhoneNumber(agent_assigned_user.phone),
       retell_agent_id: process.env.RETELL_AGENT_ID,
-      task_id: null,
+      task_id: new_task.id,
     };
 
     await axios.post(
@@ -68,7 +78,7 @@ export const selfScheduleAgent = async ({
   } else {
     const bodyParams: InitAgentBodyParams = {
       filter_json_id: filter_json.id,
-      task_id: null,
+      task_id: new_task.id,
       recruiter_user_id: agent_assigned_user_id,
     };
     await axios.post(

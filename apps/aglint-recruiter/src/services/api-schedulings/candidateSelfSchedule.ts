@@ -8,8 +8,6 @@ import * as v from 'valibot';
 import { mailSender } from '@/src/utils/mailSender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
-
 export const candidateSelfSchedule = async (
   req_body: any,
   cloned_sessn_ids: string[],
@@ -17,19 +15,7 @@ export const candidateSelfSchedule = async (
   schedule_id: string,
   plans: PlanCombinationRespType[],
 ) => {
-  const { date_range, api_options, recruiter_id } = v.parse(
-    candidate_self_schedule_request,
-    req_body,
-  );
-
-  const cand_schedule = new CandidatesSchedulingV2(api_options);
-  await cand_schedule.fetchDetails({
-    company_id: recruiter_id,
-    start_date_str: date_range.start_date,
-    end_date_str: date_range.end_date,
-    req_user_tz: 'Asia/Calcutta', //TODO:
-    session_ids: cloned_sessn_ids,
-  });
+  const { date_range } = v.parse(candidate_self_schedule_request, req_body);
 
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
