@@ -1,24 +1,27 @@
 import { RecruiterDB } from '@aglint/shared-types';
-import debounce from 'lodash/debounce';
 
+// import debounce from 'lodash/debounce';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
 import { MessageType } from '@/src/utils/prompts/types';
 import { requestJson } from '@/src/utils/prompts/utils';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/ToastPro';
 
-export const saveToDatabase = async (
-  recruit: RecruiterDB,
-  id: string,
-): Promise<boolean> => {
-  await supabase
+export const saveToDatabase = async (recruit: RecruiterDB, id: string) => {
+  return supabase
     .from('recruiter')
     .update({ ...recruit, departments: undefined, office_locations: undefined })
     .eq('id', id)
-    .select();
-  return true;
+    .select()
+    .throwOnError();
 };
 
-export const debouncedSave = debounce(saveToDatabase, 1000);
+const debounce = toast.debouncedPromise('saveProfile');
+export const debouncedSave = debounce(saveToDatabase, 1000, {
+  onSuccess: 'Saved',
+  onError: 'Failed to save',
+  onPending: 'Saving...',
+});
 
 const departments = {
   departments: [
