@@ -1,6 +1,6 @@
 import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
 import { ApiError } from '@aglint/shared-utils';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
   target_api,
@@ -14,6 +14,9 @@ export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
       ...payload,
     });
   } catch (err) {
-    throw new ApiError('MAIL', err.message);
+    console.error(err);
+    if (err instanceof AxiosError) {
+      throw new ApiError('MAIL', err.message);
+    }
   }
 };

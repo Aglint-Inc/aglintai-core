@@ -353,7 +353,7 @@ export const seed_workflow_actions: {
       interval: 0,
       phase: 'after',
       trigger: 'onSelfScheduleReqAgent',
-      workflow_type: 'system',
+      workflow_type: 'job',
     },
     actions: [
       {
