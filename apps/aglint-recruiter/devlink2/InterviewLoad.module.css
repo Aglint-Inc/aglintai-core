@@ -54,6 +54,8 @@
 
 .slot_hr_input {
   display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);

@@ -9,4 +9,6 @@ declare function InterviewMemberList(props: {
   slotModuleContent?: Types.Devlink.Slot;
   slotEditButton?: Types.Devlink.Slot;
   slotJobsCard?: Types.Devlink.Slot;
+  slotBanner?: Types.Devlink.Slot;
+  isBannerVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
