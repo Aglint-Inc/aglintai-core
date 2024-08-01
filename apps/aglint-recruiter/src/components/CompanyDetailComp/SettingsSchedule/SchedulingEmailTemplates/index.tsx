@@ -288,7 +288,7 @@ function SchedulerEmailTemps({ setSaving }) {
 
   return (
     <Stack>
-      <Box height={'100vh'}>
+      <Box>
         {isEditorLoad && <Loader />}
         {!isEditorLoad && templates.length > 0 && (
           <EmailTemplatesStart
