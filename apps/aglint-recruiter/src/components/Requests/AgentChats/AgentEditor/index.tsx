@@ -8,7 +8,12 @@ import { Mention, MentionsInput } from 'react-mentions';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { MentionComponentProps, MentionInputProps, MentionType } from './utils';
+import {
+  MentionComponentProps,
+  MentionInputProps,
+  MentionType,
+  ScheduleType,
+} from './utils';
 
 function AgentEditor({
   isFetchedApplications,
@@ -28,7 +33,7 @@ function AgentEditor({
   isFetchedSessions?: boolean;
   applicationsList?: { id: string; display: string }[];
   jobList?: { id: string; display: string }[];
-  scheduleTypes?: { id: string; display: string }[];
+  scheduleTypes?: { id: string; display: ScheduleType }[];
   sessionList?: { id: string; display: string }[];
   getSelectedJob?: ({ id, display }: { id: string; display: string }) => void;
   getSelectedApplication?: ({ id, display }: MentionType) => void;
@@ -39,11 +44,9 @@ function AgentEditor({
 }) {
   const [text, setText] = useState('');
   const [triggerType, setTriggerType] = useState<'@' | '#' | '$' | '%'>(null);
-  //   useEffect(() => {
-  //     if (isFetchedApplications && !isFetchedSessions) setText(text + '@');
-  //     if (isFetchedApplications && isFetchedSessions) setText(text + '%');
-  //   }, [isFetchedApplications, applicationsList, isFetchedSessions, sessionList]);
+  console.log(isFetchedSessions);
   const mentionsInputProps: MentionInputProps = {
+    a11ySuggestionsListLabel: 'Suggestions',
     placeholder: "Type '@' for candidates or '#' for jobs",
     style: {
       control: {
@@ -66,16 +69,18 @@ function AgentEditor({
         // height: '100%',
         // padding: '0px 15px',
         padding: '10px',
+        maxHeight: '400px',
+        // cursor: isFetchedSessions ? 'progress' : 'text',
       },
       suggestions: {
-        marginTop: '24px', // Adjust this value to move the suggestion list down
+        marginTop: '23px', // Adjust this value to move the suggestion list down
         border: '#E9EBED 1px solid',
         borderRadius: '10px 10px 0px 0px',
         borderTop: 'none',
         width: '484px',
         backgroundColor: '#F9F9F8',
         maxHeight: '200px',
-        overflowY: 'auto',
+        overflowY: 'hidden',
         overflowX: 'hidden',
       },
     },
@@ -115,7 +120,17 @@ function AgentEditor({
           ) : (
             <>Not fround</>
           )}
-          {children}
+          <div
+            id='listContainer'
+            style={{
+              maxHeight: '200px',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+            }}
+            // className='mentions__suggestions'
+          >
+            {children}
+          </div>
         </div>
       );
     },
@@ -184,7 +199,7 @@ function AgentEditor({
       setTimeout(() => {
         setText((pre) => pre + '@');
         setTriggerType('@');
-      }, 1000);
+      }, 10);
     },
     appendSpaceOnAdd: true,
     displayTransform: (id, display) => {
@@ -223,7 +238,7 @@ function AgentEditor({
       setTimeout(() => {
         setText((pre) => pre + '%');
         setTriggerType('%');
-      }, 1000);
+      }, 1500);
     },
     appendSpaceOnAdd: true,
     displayTransform: (id, display) => {
@@ -331,9 +346,10 @@ const Instructions = ({
 }) => {
   return (
     <Stack
-      py={2}
+      py={1}
+      pr={2}
       direction={'row'}
-      width={'100%'}
+      width={'480px'}
       justifyContent={'space-between'}
     >
       <Typography variant={'h5'}>

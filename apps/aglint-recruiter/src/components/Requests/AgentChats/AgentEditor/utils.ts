@@ -7,15 +7,15 @@ import dayjs from '@/src/utils/dayjs';
 export const scheduleType = [
   {
     id: 'schedule',
-    display: 'Schedule',
+    display: 'Schedule' as ScheduleType,
   },
   {
     id: 'request_availability',
-    display: 'Availability',
+    display: 'Availability' as ScheduleType,
   },
   {
     id: 'self_schedule',
-    display: 'Self-schedule',
+    display: 'Self-schedule' as ScheduleType,
   },
 ];
 
