@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -73,7 +74,11 @@ const TrainingProgressComponent = () => {
             />
           }
           textInterviewModule={module.name}
-          textName={capitalizeAll(getFullName(first_name, last_name))}
+          textName={
+            <Link href={`/user/profile/${user_id}`}>
+              {capitalizeAll(getFullName(first_name, last_name))}
+            </Link>
+          }
           textRole={position}
         />
       ),

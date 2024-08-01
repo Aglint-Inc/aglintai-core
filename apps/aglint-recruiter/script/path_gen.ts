@@ -3,6 +3,8 @@ import * as path from 'path';
 
 import { deleteJsFilesInDir } from './utils';
 
+const skipFiles = ['/_app', '/_document', '/api'];
+
 function processDirectory(
   rootDirs: {
     [key: string]: { basePath: string; appRouter: boolean };
@@ -43,7 +45,14 @@ function processDirectory(
           entry.name.startsWith('route') ||
           entry.name.startsWith('page')
         ) {
-          result.push(dir.replace(rootDir, base));
+          let filePath = dir.replace(rootDir, base);
+          if (appRouter) {
+            filePath = filePath
+              .split(path.sep)
+              .filter((item) => !item.startsWith('('))
+              .join(path.sep);
+          }
+          result.push(filePath);
         } else if (!appRouter) {
           const filePath = fullPath
             .replace(/\.ts$|\.js$|\.jsx$|\.tsx$/, '')
@@ -72,7 +81,10 @@ function processDirectory(
 
   // write to file
   outputFiles.forEach((item) => {
-    const tempResult = item.filter?.(item.filter(result)) || result;
+    const tempResult = (item.filter?.(item.filter(result)) || result).filter(
+      (path) => path.length && !skipFiles.includes(path),
+    );
+
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(
       item.path,
@@ -89,10 +101,15 @@ function processDirectory(
 
 // const rootDirectory = args[0].split(',') || ['.'];
 // const outputFile = args[1] || 'script/paths.ts';
+
 const rootDirectory = {
   [path.join('src', 'pages')]: {
     basePath: '',
     appRouter: false,
+  },
+  [path.join('src', 'app')]: {
+    basePath: '',
+    appRouter: true,
   },
   [path.join('../aglint-mail/src/app', 'api')]: {
     basePath: path.join('/api', 'emails'),

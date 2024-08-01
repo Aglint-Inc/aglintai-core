@@ -25,7 +25,6 @@
 .email-template-left-wrap {
   overflow: auto;
   width: 350px;
-  padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-bottom: var(--space-4);
   padding-left: var(--space-4);

@@ -176,6 +176,7 @@ function CollapseContent({
                       userDetails={{
                         first_name: item.first_name,
                         last_name: item.last_name,
+                        user_id: item.user_id,
                         position: item.position,
                         profile_image: item.profile_image,
                       }}

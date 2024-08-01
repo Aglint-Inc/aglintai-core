@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
@@ -361,7 +362,11 @@ const Roles = () => {
                   />
                 }
                 textDesignation={user?.position ?? '--'}
-                textName={name}
+                textName={
+                  <Link href={`/user/profile/${user.user_id}`} key={i}>
+                    {name}
+                  </Link>
+                }
                 textRoleHeader={capitalizeAll(key)}
               />,
             );

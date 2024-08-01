@@ -1,5 +1,6 @@
 import { RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
+import Link from 'next/link';
 import React from 'react';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -45,7 +46,11 @@ const UserCard = ({ members, user_id }) => {
   return (
     <Stack key={user_id}>
       <UserWithRole
-        textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+        textName={
+          <Link href={`/user/profile/${user.user_id}`}>
+            {`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+          </Link>
+        }
         textRole={user.position}
         slotBadge={
           <GlobalBadge
