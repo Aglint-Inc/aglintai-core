@@ -10,7 +10,10 @@ import {
 } from './valibotSchema/candidate-self-schedule';
 import {
   candidate_avail_request_schema,
+  candidate_new_schedule_schema,
   candidate_self_schedule_request,
+  email_agent_self_schedule_schema,
+  phone_agent_self_schedule_schema,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   schema_find_availability_payload,
@@ -157,4 +160,16 @@ export type APICandidateAvailableRequestType = v.InferOutput<
 
 export type APICandidateSelfScheduleRequest = v.InferOutput<
   typeof candidate_self_schedule_request
+>;
+
+export type APICandidateNewSchedule = v.InferOutput<
+  typeof candidate_new_schedule_schema
+>;
+
+export type APIPhoneAgent = v.InferOutput<
+  typeof phone_agent_self_schedule_schema
+>;
+
+export type APIEmailAgentPayload = v.InferOutput<
+  typeof email_agent_self_schedule_schema
 >;

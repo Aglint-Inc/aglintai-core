@@ -90,42 +90,48 @@ export const schema_send_avail_req_link = v.object({
   company_id: v.string(),
 });
 
-export const candidate_avail_request_schema = v.object({
+export const candidate_new_schedule_schema = v.object({
   application_id: v.string(),
   recruiter_id: v.string(),
-  availability: v.nullish(
-    v.object({
-      day_offs: v.optional(v.boolean(), false),
-      free_keywords: v.optional(v.boolean(), false),
-      outside_work_hours: v.optional(v.boolean(), false),
-      recruiting_block_keywords: v.optional(v.boolean(), false),
-    }),
-    {}
-  ),
+  api_options: scheduling_options_schema,
   date_range: v.object({
     start_date: v.string(),
     end_date: v.string(),
   }),
   session_ids: v.array(v.string()),
-  is_task_created: v.boolean(),
-  number_of_days: v.number(),
-  number_of_slots: v.number(),
+  target_api: v.any(),
 });
 
-export const candidate_self_schedule_request = v.object({
-  application_id: v.string(),
-  slots_options: v.object({
-    filter_time: v.object({
-      start: v.string(),
-      end: v.string(),
-    }),
-    enable_soft_conf_slots: v.nullish(v.boolean(), false),
-    enable_oow_conf_slots: v.nullish(v.boolean(), false),
+export const candidate_avail_request_schema = v.intersect([
+  v.object({
+    number_of_days: v.number(),
+    number_of_slots: v.number(),
   }),
-  date_range: v.object({
-    start_date: v.string(),
-    end_date: v.string(),
+  candidate_new_schedule_schema,
+]);
+
+export const candidate_self_schedule_request = v.intersect([
+  candidate_new_schedule_schema,
+]);
+
+export const phone_agent_self_schedule_schema = v.intersect([
+  v.object({
+    begin_sentence_template: v.string(),
+    interviewer_name: v.string(),
+    filter_json_id: v.string(),
+    from_phone_no: v.string(),
+    to_phone_no: v.string(),
+    retell_agent_id: v.string(),
+    cand_email: v.string(),
+    task_id: v.nullable(v.string()),
   }),
-  session_ids: v.array(v.string()),
-  recruiter_id: v.string(),
-});
+]);
+
+export const email_agent_self_schedule_schema = v.intersect([
+  candidate_new_schedule_schema,
+  v.object({
+    filter_json_id: v.string(),
+    task_id: v.nullish(v.string()),
+    recruiter_user_id: v.string(),
+  }),
+]);

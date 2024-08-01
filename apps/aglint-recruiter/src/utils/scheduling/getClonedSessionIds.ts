@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { supabaseWrap } from '@aglint/shared-utils';
+import { ApiError, supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
@@ -31,7 +31,8 @@ export const getClonedSessionIds = async (
   ) {
     cloned_sessn_ids = [...session_ids];
   } else {
-    throw new Error(
+    throw new ApiError(
+      'LOGIC',
       'one of the session id does not match application session id',
     );
   }

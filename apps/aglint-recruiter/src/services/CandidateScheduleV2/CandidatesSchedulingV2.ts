@@ -51,7 +51,7 @@ export class CandidatesSchedulingV2 {
   constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
     // scheduling_options_schema;
     const parsed_api_options = v.parse(scheduling_options_schema, {
-      ..._api_options,
+      ...(_api_options ?? {}),
       include_conflicting_slots: _api_options?.include_conflicting_slots ?? {},
     });
     this.api_options = { ...parsed_api_options };
