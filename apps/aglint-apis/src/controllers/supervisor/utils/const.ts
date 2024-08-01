@@ -1,6 +1,6 @@
 import {END} from '@langchain/langgraph';
 
-export const members = ['hello'];
+export const members = ['get_word_length'];
 export const options = [END, ...members];
 
 // Define the routing function

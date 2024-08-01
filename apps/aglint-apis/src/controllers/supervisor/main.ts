@@ -2,7 +2,7 @@ import {HumanMessage} from '@langchain/core/messages';
 import {START, StateGraph} from '@langchain/langgraph';
 import {Request, Response} from 'express';
 import {JsonOutputToolsParser} from 'langchain/output_parsers';
-import {helloNode} from './nodes/hello';
+import {getWorkLengthNode} from './nodes/hello';
 import {members, toolDef} from './utils/const';
 import {agentStateChannels, AgentStateChannels} from './utils/initiate';
 import {llm} from './utils/llm';
@@ -24,7 +24,7 @@ export async function agentSupervisor(req: Request, res: Response) {
   const workflow = new StateGraph<AgentStateChannels, unknown, string>({
     channels: agentStateChannels,
   }) // 2. Add the nodes; these will do the work
-    .addNode('hello', helloNode)
+    .addNode('get_word_length', getWorkLengthNode)
     .addNode('supervisor', supervisorChain);
   // 3. Define the edges. We will define both regular and conditional ones
   // After a worker completes, report to supervisor

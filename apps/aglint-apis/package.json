@@ -25,6 +25,7 @@
     "@slack/web-api": "^7.0.4",
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",

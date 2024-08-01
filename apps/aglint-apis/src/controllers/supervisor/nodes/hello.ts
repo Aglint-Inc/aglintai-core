@@ -4,28 +4,30 @@ import {createAgent} from '../utils/createagent';
 import {AgentStateChannels} from '../utils/initiate';
 import {llm} from '../utils/llm';
 
-import {DynamicTool} from '@langchain/core/tools';
+import {DynamicStructuredTool} from '@langchain/core/tools';
+import z from 'zod';
 
-const customTool = new DynamicTool({
+const getWordLengthTool = new DynamicStructuredTool({
   name: 'get_word_length',
   description: 'Returns the length of a word.',
-  func: async (input: string) => input.length.toString(),
+  schema: z.object({
+    word: z.string(),
+  }),
+  func: async ({word}) => word.length.toString(),
 });
 
-const tools = [customTool];
+const tools = [getWordLengthTool];
 
-export const helloNode = async (
+export const getWorkLengthNode = async (
   state: AgentStateChannels,
   config?: RunnableConfig
 ) => {
-  const wikiAgent = await createAgent(
-    llm,
-    [tools],
-    'You have to say hello to the baby.'
-  );
+  const getWorkLengthAgent = await createAgent(llm, [tools], 'Get word length');
 
-  const result = await wikiAgent.invoke(state, config);
+  const result = await getWorkLengthAgent.invoke(state, config);
   return {
-    messages: [new HumanMessage({content: result.output, name: 'Hello'})],
+    messages: [
+      new HumanMessage({content: result.output, name: 'get_word_length'}),
+    ],
   };
 };
