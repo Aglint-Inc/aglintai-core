@@ -1,0 +1,27 @@
+.interview-load-details-wrap {
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.ild-header-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.interview-load-details-card {
+  display: grid;
+  justify-content: flex-start;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}

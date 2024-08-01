@@ -1,5 +1,30 @@
-.debrief-helper-wrap {
+.working-hour-helper-wrap {
   position: relative;
+  background-color: var(--white);
+}
+
+.arrow_expand {
+  position: absolute;
+  left: -10px;
+  top: 16px;
+  right: auto;
+  bottom: auto;
+  z-index: 3;
+
+  transition: all 200ms ease;
+
+  color: var(--white);
+
+  cursor: pointer;
+}
+
+.arrow_expand:hover {
+  color: var(--neutral-2);
+}
+
+.embed_flex-3 {
+  display: flex;
+  align-items: center;
 }
 
 .dh-width-wrap {
@@ -10,7 +35,7 @@
   width: 420px;
 }
 
-.debrief-helper-sub-wrap {
+.wroking-helper-sub-wrap {
   position: relative;
   z-index: 2;
 
@@ -23,23 +48,26 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
+
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: var(--neutral-6);
+
   overflow-x: hidden;
   overflow-y: auto;
+  height: calc(100vh - 48px);
 }
 
-.debrief-helper-sub-wrap.debrief {
-  padding-top: 0px;
-}
-
-.debrief-info-block {
+.whh-info-block {
   display: flex;
+  width: 375px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
 }
 
-.debrief-info-block.is_grey {
+.whh-info-block.is_grey {
   padding: var(--space-3);
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
@@ -47,7 +75,7 @@
   background-color: var(--neutral-2);
 }
 
-.debrief-info-block.is_neutral {
+.whh-info-block.is_neutral {
   padding: var(--space-3);
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);

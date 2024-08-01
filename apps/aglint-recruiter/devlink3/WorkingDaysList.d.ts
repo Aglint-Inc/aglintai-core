@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as Types from "./types";
 
-declare function AglintAiWelcome(props: {
+declare function WorkingDaysList(props: {
   as?: React.ElementType;
-  textAiHeader?: React.ReactNode;
-  slotOption?: Types.Devlink.Slot;
+  textDay?: React.ReactNode;
+  textTime?: React.ReactNode;
 }): React.JSX.Element;

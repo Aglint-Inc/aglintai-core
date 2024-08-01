@@ -68,7 +68,10 @@ export function RequestAgent({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "slot-agent-chat")}
+        tag="div"
+      >
         {slotAglintAiChat ?? <AglintAiChat />}
       </_Builtin.Block>
     </_Component>
