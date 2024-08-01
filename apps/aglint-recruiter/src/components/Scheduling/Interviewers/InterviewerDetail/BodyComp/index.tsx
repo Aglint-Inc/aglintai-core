@@ -17,6 +17,7 @@ import Overview from '../Overview';
 import AddInterviewTypeDialog from '../Popups/AddInterviewTypeDialog';
 import { useAllSchedulesByUserId } from '../query';
 import TabInterviewModules from '../TabModules';
+import Availibility from '../TabModules/Availibility';
 import Tabs from '../Tabs';
 
 function BodyComp() {
@@ -30,8 +31,11 @@ function BodyComp() {
 
   const user_id = router.query.user_id as string;
 
-  const { data: interviewerDetails, isLoading: isLoadingInterviewer } =
-    useImrQuery({ user_id });
+  const {
+    data: interviewerDetails,
+    isLoading: isLoadingInterviewer,
+    refetch: interviewerDetailsRefetch,
+  } = useImrQuery({ user_id });
 
   const {
     data: {
@@ -49,6 +53,7 @@ function BodyComp() {
   });
 
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;
+
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
@@ -72,15 +77,19 @@ function BodyComp() {
                 />
               )}
               {tab === 'availibility' && (
-                <InterviewerLevelSettings
-                  initialData={interviewerDetails?.scheduling_settings as any}
+                <Availibility
+                  interviewerDetailsRefetch={interviewerDetailsRefetch}
+                  interviewerDetails={interviewerDetails}
+                  totalHoursThisWeek={totalHoursThisWeek}
+                  totalHoursToday={totalHoursToday}
+                  totalInterviewsThisWeek={totalInterviewsThisWeek}
+                  totalInterviewsToday={totalInterviewsToday}
                   updateSettings={(x) => {
                     return handleMemberUpdate({
                       user_id: interviewerDetails.user_id,
                       data: { scheduling_settings: x },
                     });
                   }}
-                  isAvailability={true}
                 />
               )}
               {tab === 'qualified' && <TabInterviewModules type='qualified' />}
