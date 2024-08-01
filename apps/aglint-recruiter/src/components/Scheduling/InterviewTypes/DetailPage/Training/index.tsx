@@ -1,6 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -229,20 +230,21 @@ function ModuleSettingComp({
             )
           }
           slotApproval={approvers.map((user, i) => (
-            <TrainingSettingItem
-              key={i}
-              text={getFullName(user.first_name, user.last_name)}
-              slotImage={
-                <MuiAvatar
-                  src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name)}
-                  variant='rounded'
-                  height='20px'
-                  width='20px'
-                  fontSize='12px'
-                />
-              }
-            />
+            <Link href={`/user/profile/${user.user_id}`} key={i}>
+              <TrainingSettingItem
+                text={getFullName(user.first_name, user.last_name)}
+                slotImage={
+                  <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    variant='rounded'
+                    height='20px'
+                    width='20px'
+                    fontSize='12px'
+                  />
+                }
+              />
+            </Link>
           ))}
         />
       )}

@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -99,10 +100,14 @@ function Overview({
         slotOrganizerList={
           <UserNameCard
             textRole={schedule.organizer.position}
-            textName={getFullName(
-              schedule.organizer.first_name,
-              schedule.organizer.last_name,
-            )}
+            textName={
+              <Link href={`/user/profile/${schedule.organizer.id}`}>
+                {getFullName(
+                  schedule.organizer.first_name,
+                  schedule.organizer.last_name,
+                )}
+              </Link>
+            }
             slotAvatar={
               <MuiAvatar
                 level={getFullName(
