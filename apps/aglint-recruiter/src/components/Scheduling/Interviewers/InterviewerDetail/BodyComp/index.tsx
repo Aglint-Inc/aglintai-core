@@ -136,8 +136,8 @@ function BodyComp() {
             />
           }
           textTimeZone={interviewerDetails.scheduling_settings?.timeZone.label}
-          textInterviewPerDay={''}
-          textInterviewPerWeek={''}
+          // textInterviewPerDay={''} //lint error
+          // textInterviewPerWeek={''} //lint error
         />
       )}
       <AddInterviewTypeDialog />
