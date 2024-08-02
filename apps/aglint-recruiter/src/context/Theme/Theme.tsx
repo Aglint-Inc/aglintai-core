@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+'use client';
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import * as radixColors from '@radix-ui/colors';

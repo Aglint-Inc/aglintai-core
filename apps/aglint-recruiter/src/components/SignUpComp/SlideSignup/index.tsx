@@ -3,12 +3,12 @@
 import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { errorMessages } from '@/src/utils/errorMessages';
 import ROUTES from '@/src/utils/routing/routes';
@@ -20,7 +20,7 @@ import * as types from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
 
 const SlideTwoSignUp = () => {
-  const router = useRouter();
+  const router = useRouterPro();
   const {
     setStep,
     flow,
@@ -138,8 +138,8 @@ const SlideTwoSignUp = () => {
         };
 
         if (res.status === 200) {
-          router.push(`?step=${stepObj.type}`, undefined, {
-            shallow: true,
+          router.setQueryParams({
+            step: stepObj.type,
           });
           setRecruiterUser(res.data.recruiter_user);
           setUserDetails(authdata.data.session);
@@ -199,7 +199,7 @@ const SlideTwoSignUp = () => {
   useEffect(() => {
     setRouteCheker(true);
     if (
-      router.isReady &&
+      router &&
       router.asPath == `${ROUTES['/signup']()}` &&
       recruiterUser?.role
     ) {
@@ -212,13 +212,13 @@ const SlideTwoSignUp = () => {
           return;
         }
         if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
-          router.push(`?step=${stepObj.type}`, undefined, {
-            shallow: true,
+          router.setQueryParams({
+            step: stepObj.type,
           });
           return;
         } else if (userDetails?.user && !recruiter?.industry) {
-          router.push(`?step=${stepObj.detailsOne}`, undefined, {
-            shallow: true,
+          router.setQueryParams({
+            step: stepObj.detailsOne,
           });
           return;
         }

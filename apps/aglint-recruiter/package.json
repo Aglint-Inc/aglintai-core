@@ -129,6 +129,9 @@
     "prettier": "^3.0.3",
     "typescript": "latest"
   },
+  "resolutions": {
+    "@babel/runtime": "^7.24.6"
+  },
   "trigger.dev": {
     "endpointId": "aglint-42oP"
   }

@@ -20,6 +20,7 @@ import { CustomModuleRelation } from "./interview_module_relation";
 import { CustomLogs } from "./logs";
 import { CustomTour } from "./tour.types";
 import { CustomModule } from "./interview_module";
+import { CustomRequest } from "./requests.types";
 
 type DatabaseTables = Database["public"]["Tables"];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -81,5 +82,6 @@ export type Tables = Type<
     logs: CustomLogs;
     tour: CustomTour;
     interview_module: CustomModule;
+    request: CustomRequest;
   }
 >;
