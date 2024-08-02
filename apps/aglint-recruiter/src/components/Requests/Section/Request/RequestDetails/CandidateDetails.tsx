@@ -1,6 +1,7 @@
-import { TextWithIcon } from '@/devlink2';
 import { Stack } from '@mui/material';
 import React from 'react';
+
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 
 function CandidateDetails() {
   const candidateDetails = [
@@ -28,6 +29,7 @@ function CandidateDetails() {
         .map(({ icon, text }, i) => {
           return (
             <TextWithIcon
+              key={i}
               textContent={text}
               iconSize={3}
               fontSize={1}

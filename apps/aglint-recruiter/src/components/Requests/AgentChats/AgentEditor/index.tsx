@@ -3,7 +3,7 @@ import './EditorStyle.css'; // We will define some styles here
 
 import { Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Mention, MentionsInput, MentionDataItem } from 'react-mentions';
+import { Mention, MentionDataItem, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -100,7 +100,6 @@ function AgentEditor({
       handleTextChange(newValue);
     },
     customSuggestionsContainer: (children) => {
-      console.log(children);
       return (
         <div className='mentions__control'>
           {(sessionList.length && triggerType === '%') ||
@@ -374,7 +373,6 @@ function AgentEditor({
       }, 10);
     }
     if (trigger === '#') {
-      console.log({ id: 'objects' });
       getSelectedJob({ id, display });
       setTimeout(() => {
         setText((pre) => pre + '@');

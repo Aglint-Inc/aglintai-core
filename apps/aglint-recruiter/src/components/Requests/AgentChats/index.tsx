@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
@@ -6,11 +8,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-
-import { ButtonSoft } from '@/devlink';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequests } from '@/src/context/RequestsContext';
 import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
@@ -19,10 +20,9 @@ import {
   createRequest,
   createRequestSessionRelations,
 } from '@/src/queries/requests';
-
-import { useRequests } from '@/src/context/RequestsContext';
 import dayjs from '@/src/utils/dayjs';
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { supabase } from '@/src/utils/supabase/client';
+
 import AgentEditor from './AgentEditor';
 import {
   ApplicantInfo,
@@ -266,7 +266,6 @@ async function getApplicationWithName(name: string, sessions_name: string[]) {
     console.log('No application found');
   }
   if (data.length === 1) {
-    console.log(data);
     getSessionList({
       application_id: data[0].id,
       job_id: data[0].public_jobs.id,

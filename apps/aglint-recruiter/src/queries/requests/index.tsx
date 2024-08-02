@@ -5,7 +5,6 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { appKey, GC_TIME } from '..';
 import { RequestProgressQueryParams, RequestQueryParams } from './types';
-import { DatabaseTableInsert } from '@aglint/shared-types';
 
 export const requestQueries = {
   requests: ({ assigner_id }: RequestQueryParams = {}) =>

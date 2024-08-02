@@ -1,22 +1,19 @@
-import { Text } from '@/devlink/Text';
-import { ButtonSoft } from '@/devlink2';
-import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import { useRequest } from '@/src/context/RequestContext';
 import { Stack } from '@mui/material';
-import React from 'react';
-import SessionsCardAndActions from './SessionsCardAndActions';
-import ReasonDetails from './ReasonDetails';
-import CandidateDetails from './CandidateDetails';
-import RequestProgress, { RequestProgressSkeleton } from './RequestProgress';
-import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
+
+import { Text } from '@/devlink/Text';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
-import { ReqCardDetailSkeleton } from '@/devlink2/ReqCardDetailSkeleton';
+import { useRequest } from '@/src/context/RequestContext';
+
+import CandidateDetails from './CandidateDetails';
+import ReasonDetails from './ReasonDetails';
+import RequestProgress, { RequestProgressSkeleton } from './RequestProgress';
+import SessionsCardAndActions from './SessionsCardAndActions';
 
 function RequestDetails() {
   const {
-    request_progress: { data, status },
+    request_progress: { status },
   } = useRequest();
 
   // if (status === 'error') return <>Error</>;
