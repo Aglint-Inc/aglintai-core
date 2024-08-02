@@ -823,7 +823,8 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          slots: Json | null
+          request_id: string | null
+          slots: Json[] | null
           total_slots: number | null
           user_timezone: string | null
           visited: boolean | null
@@ -839,7 +840,8 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          slots?: Json | null
+          request_id?: string | null
+          slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
           visited?: boolean | null
@@ -855,7 +857,8 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          slots?: Json | null
+          request_id?: string | null
+          slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
           visited?: boolean | null
@@ -894,6 +897,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_candidate_request_availability_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -1218,7 +1228,10 @@ export type Database = {
           created_by: string | null
           filter_json: Json
           id: string
+          is_flow_agent: boolean
+          request_id: string | null
           schedule_id: string
+          schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
           viewed_on: string | null
@@ -1229,7 +1242,10 @@ export type Database = {
           created_by?: string | null
           filter_json: Json
           id?: string
+          is_flow_agent?: boolean
+          request_id?: string | null
           schedule_id: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -1240,7 +1256,10 @@ export type Database = {
           created_by?: string | null
           filter_json?: Json
           id?: string
+          is_flow_agent?: boolean
+          request_id?: string | null
           schedule_id?: string
+          schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
@@ -1266,6 +1285,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_filter_json_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
@@ -3534,6 +3560,27 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      request_completed_event: {
+        Row: {
+          completed_at: string
+          event: Database["public"]["Enums"]["workflow_trigger"]
+          id: number
+          request_id: string | null
+        }
+        Insert: {
+          completed_at?: string
+          event: Database["public"]["Enums"]["workflow_trigger"]
+          id?: number
+          request_id?: string | null
+        }
+        Update: {
+          completed_at?: string
+          event?: Database["public"]["Enums"]["workflow_trigger"]
+          id?: number
+          request_id?: string | null
+        }
+        Relationships: []
       }
       request_integration_tool: {
         Row: {
@@ -6506,6 +6553,13 @@ export type Database = {
         | "interviewerResumed_email_admin"
         | "interviewEnd_slack_organizerForMeetingStatus"
         | "interviewEnd_email_organizerForMeetingStatus"
+        | "onAvailReqAgent_emailAgent_getCandidateAvailability"
+        | "onAvailReqAgent_emailLink_getCandidateAvailability"
+        | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
+        | "onReceivingAvailReq_agent_confirmSlot"
+        | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
+        | "onSelfScheduleReqAgent_PhoneAgent_SelfSchedule"
+        | "onSelfScheduleReqAgent_EmailLink_SelfSchedule"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -6704,6 +6758,7 @@ export type Database = {
         | "candidate_request_availability"
         | "interview_module_relation"
         | "interview_training_progress"
+        | "request"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
         | "selfScheduleReminder"
@@ -6716,6 +6771,9 @@ export type Database = {
         | "candidateBook"
         | "onQualified"
         | "onTrainingComplete"
+        | "onAvailReqAgent"
+        | "onReceivingAvailReq"
+        | "onSelfScheduleReqAgent"
       workflow_type: "system" | "job"
     }
     CompositeTypes: {

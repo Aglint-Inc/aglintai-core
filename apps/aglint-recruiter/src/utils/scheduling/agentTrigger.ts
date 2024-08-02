@@ -13,7 +13,6 @@ export const agentTrigger = async ({
   jobRole,
   candidate_email,
   rec_user_phone = '',
-
   recruiter_user_id,
 }: {
   type: 'email_agent' | 'phone_agent';
