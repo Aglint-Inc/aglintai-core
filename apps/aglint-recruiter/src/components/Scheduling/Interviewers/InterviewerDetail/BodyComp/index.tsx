@@ -58,7 +58,7 @@ function BodyComp() {
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;
 
   const [isOpen, setIsOpen] = useState(router.query.edit_enable || false);
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
 
   return (
@@ -96,7 +96,8 @@ function BodyComp() {
               interviewerDetails.user_id === recruiterUser.user_id ||
               (recruiterUser.role === 'admin' &&
                 interviewerDetails.recruiter_relation[0].roles.name !==
-                  'admin') ? (
+                  'admin') ||
+              recruiter.primary_admin === recruiterUser.user_id ? (
                 <ButtonSoft
                   textButton={'Edit'}
                   size={2}
@@ -175,9 +176,13 @@ function BodyComp() {
                 window.open(interviewerDetails.linked_in, '_blank');
               },
             }}
-            textLocation={`${interviewerDetails.office_locations.city}, ${interviewerDetails.office_locations.region}, ${interviewerDetails.office_locations.country}`}
+            textLocation={
+              interviewerDetails?.office_locations
+                ? `${interviewerDetails.office_locations.city}, ${interviewerDetails.office_locations.region}, ${interviewerDetails.office_locations.country}`
+                : '- -'
+            }
             textMail={interviewerDetails.email}
-            textRole={interviewerDetails.departments.name}
+            textRole={interviewerDetails.departments?.name ?? '- -'}
             textDepartment={interviewerDetails.position}
             textInterviewerName={
               interviewerDetails.first_name +

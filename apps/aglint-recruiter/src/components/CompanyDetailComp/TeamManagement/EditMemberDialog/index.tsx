@@ -395,80 +395,81 @@ const EditMember = ({
 
                 {(member.recruiter_relation[0].roles.name !== 'admin' ||
                   member.recruiter_relation[0].created_by ===
-                    recruiterUser.user_id) && (
-                  <Stack direction={'row'} gap={2}>
-                    <Autocomplete
-                      fullWidth
-                      value={{ name: form.role, id: form.role_id }}
-                      getOptionLabel={(option) =>
-                        capitalizeFirstLetter(option.name)
-                      }
-                      onChange={(event: any, newValue) => {
-                        setForm({
-                          ...form,
-                          role: newValue.name,
-                          role_id: newValue.id,
-                        });
-                      }}
-                      id='controllable-states-demo'
-                      options={roleOptions}
-                      renderOption={(props, op) => (
-                        <li {...props}>{capitalizeFirstLetter(op.name)}</li>
-                      )}
-                      renderInput={(params) => (
-                        <UITextField
-                          {...params}
-                          name='Role'
-                          placeholder='Choose Role'
-                          label='Role'
-                          required
-                          helperText={
-                            formError.role ? 'Role must required' : ''
-                          }
-                          error={formError.role}
-                          onFocus={() => {
-                            setFormError({ ...formError, role: false });
-                          }}
-                        />
-                      )}
-                    />
-                    {form.role !== 'admin' && (
+                    recruiterUser.user_id) &&
+                  member.user_id !== recruiterUser.user_id && (
+                    <Stack direction={'row'} gap={2}>
                       <Autocomplete
                         fullWidth
-                        value={form.manager_id}
-                        onChange={(event: any, newValue: string | null) => {
+                        value={{ name: form.role, id: form.role_id }}
+                        getOptionLabel={(option) =>
+                          capitalizeFirstLetter(option.name)
+                        }
+                        onChange={(event: any, newValue) => {
                           setForm({
                             ...form,
-                            manager_id: newValue,
+                            role: newValue.name,
+                            role_id: newValue.id,
                           });
                         }}
                         id='controllable-states-demo'
-                        options={memberList.map((member) => member.id)}
-                        getOptionLabel={(option) => {
-                          return capitalizeFirstLetter(
-                            memberListObj[String(option)],
-                          );
-                        }}
+                        options={roleOptions}
+                        renderOption={(props, op) => (
+                          <li {...props}>{capitalizeFirstLetter(op.name)}</li>
+                        )}
                         renderInput={(params) => (
                           <UITextField
                             {...params}
-                            name='manager'
-                            placeholder='Select Manager'
-                            label='Manager'
+                            name='Role'
+                            placeholder='Choose Role'
+                            label='Role'
                             required
-                            error={formError.manager}
-                            onFocus={() => {
-                              setFormError({ ...formError, manager: false });
-                            }}
                             helperText={
-                              formError.manager ? 'Manager must required' : ''
+                              formError.role ? 'Role must required' : ''
                             }
+                            error={formError.role}
+                            onFocus={() => {
+                              setFormError({ ...formError, role: false });
+                            }}
                           />
                         )}
                       />
-                    )}
-                  </Stack>
-                )}
+                      {form.role !== 'admin' && (
+                        <Autocomplete
+                          fullWidth
+                          value={form.manager_id}
+                          onChange={(event: any, newValue: string | null) => {
+                            setForm({
+                              ...form,
+                              manager_id: newValue,
+                            });
+                          }}
+                          id='controllable-states-demo'
+                          options={memberList.map((member) => member.id)}
+                          getOptionLabel={(option) => {
+                            return capitalizeFirstLetter(
+                              memberListObj[String(option)],
+                            );
+                          }}
+                          renderInput={(params) => (
+                            <UITextField
+                              {...params}
+                              name='manager'
+                              placeholder='Select Manager'
+                              label='Manager'
+                              required
+                              error={formError.manager}
+                              onFocus={() => {
+                                setFormError({ ...formError, manager: false });
+                              }}
+                              helperText={
+                                formError.manager ? 'Manager must required' : ''
+                              }
+                            />
+                          )}
+                        />
+                      )}
+                    </Stack>
+                  )}
               </Stack>
             }
             slotButtons={
