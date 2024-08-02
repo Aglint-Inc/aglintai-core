@@ -1,3 +1,4 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { type QueryFilters, queryOptions } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -62,5 +63,27 @@ export const getRequestProgress = async ({
       .from('request_progress')
       .select('*')
       .eq('request_id', request_id)
+      .throwOnError()
+  ).data;
+export const createRequest = async (
+  newRequestData: DatabaseTableInsert['request'],
+) =>
+  (
+    await supabase
+      .from('request')
+      .insert({ ...newRequestData })
+      .select('*')
+      .single()
+      .throwOnError()
+  ).data;
+
+export const createRequestSessionRelations = async (
+  newRequestData: DatabaseTableInsert['request_relation'][],
+) =>
+  (
+    await supabase
+      .from('request_relation')
+      .insert([...newRequestData])
+      .select('*')
       .throwOnError()
   ).data;

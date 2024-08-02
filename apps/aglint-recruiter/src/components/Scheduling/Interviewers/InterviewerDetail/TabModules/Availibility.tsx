@@ -167,6 +167,7 @@ function Availibility({
     try {
       setIsSaving(true);
       schedulingSettingObj = {
+        ...schedulingSettingData,
         interviewLoad: {
           dailyLimit: {
             type: interviewLoad.daily.type,
