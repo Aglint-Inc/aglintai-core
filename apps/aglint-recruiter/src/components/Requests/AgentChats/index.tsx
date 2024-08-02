@@ -327,23 +327,37 @@ export const useAllSessionsList = ({
 };
 
 async function getJobsAndApplications({ recruiter_id }) {
-  const { data: jobs, error } = await supabase
+  const { data: jobs } = await supabase
     .from('public_jobs')
-    .select('*')
+    .select(
+      '*, applications(*, candidates(first_name,last_name), public_jobs(id,job_title), request(request_relation(session_id)), interview_schedule(interview_meeting(interview_session(id,name))))',
+    )
     .eq('recruiter_id', recruiter_id)
-    .eq('status', 'published');
+    .eq('status', 'published')
+    .throwOnError();
+  const applicationsList = (jobs ?? []).flatMap(
+    ({ applications }) => applications,
+  );
+  const applications = applicationsList.map((ele) => {
+    const requestSessions =
+      ele.request
+        ?.map((req) => req.request_relation)
+        .flat()
+        .map((rel) => rel.session_id)
+        .flat() || [];
 
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  const applicationsPromises = jobs.map((job) => {
-    return getApplications({ job_id: job.id });
+    const applicantSessions = (
+      ele.interview_schedule?.interview_meeting
+        ? ele.interview_schedule.interview_meeting
+            .map((meeting) => meeting.interview_session)
+            .flat()
+        : []
+    ).filter(
+      (session) =>
+        !requestSessions.includes(session.id) && session.name !== 'Debrief',
+    );
+    return { ...ele, applicantSessions };
   });
-
-  const applicationsResults = await Promise.all(applicationsPromises);
-  const applications = applicationsResults.flat();
-  console.log(jobs, applications);
   return { jobs, applications };
 }
 
