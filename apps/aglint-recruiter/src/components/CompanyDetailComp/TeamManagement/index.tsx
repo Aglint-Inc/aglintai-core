@@ -40,7 +40,9 @@ const TeamManagement = () => {
     open: false,
     window: 'addMember',
   });
-  const [setEditMember] = useState<(typeof members)[0] | null>(null);
+  const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
+    null,
+  );
 
   // filter members
   const [searchText, setSearchText] = useState('');

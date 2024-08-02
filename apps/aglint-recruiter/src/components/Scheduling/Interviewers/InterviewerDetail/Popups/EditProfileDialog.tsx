@@ -1,9 +1,10 @@
-import {
-  ButtonSoft,
-  ButtonSolid,
-  IconButtonGhost,
-  UserDetails,
-} from '@/devlink';
+import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import { useRef, useState } from 'react';
+
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { UserDetails } from '@/devlink/UserDetails';
 import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadManual';
 import UITextField from '@/src/components/Common/UITextField';
 import { ProfileForms } from '@/src/components/Profile';
@@ -17,13 +18,9 @@ import {
   validateString,
 } from '@/src/components/Profile/util';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-
 import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
 
 const initialFormValues: FormValues = {
   value: null,
@@ -55,21 +52,6 @@ export const EditProfileDialog = ({
     recruiterUser.scheduling_settings.timeZone || null,
   );
 
-  const initialFormValues: FormValues = {
-    value: null,
-    label: null,
-    type: 'text',
-    helperText: null,
-    placeholder: null,
-    error: false,
-    blocked: false,
-    validation: 'string',
-    required: false,
-    disabled: false,
-    specialForm: false,
-    options: null,
-    modal: false,
-  };
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
@@ -158,7 +140,6 @@ export const EditProfileDialog = ({
         toast.error('No changes.');
       } else {
         const { error } = handleValidate(profile);
-        console.log(error);
         if (error) return;
         let profile_image = recruiterUser.profile_image;
         setLoading(true);

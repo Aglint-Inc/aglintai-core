@@ -14,7 +14,6 @@ import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import QualifiedInterviewTypeCard from './QualifiedInterviewType';
 import TrainingInterviewerType from './TrainingInterviewerType';
-import { UserDetail } from '@/src/components/Profile/components/UserDetails';
 
 function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const router = useRouter();
