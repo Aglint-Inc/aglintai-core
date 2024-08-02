@@ -69,6 +69,18 @@ export const TRIGGER_PAYLOAD: {
     trigger: 'onTrainingComplete',
     phase: ['after'],
   },
+  {
+    trigger: 'onAvailReqAgent',
+    phase: ['after'],
+  },
+  {
+    trigger: 'onReceivingAvailReq',
+    phase: ['after'],
+  },
+  {
+    trigger: 'onSelfScheduleReqAgent',
+    phase: ['after'],
+  },
 ] as const;
 
 export function getTriggerOption(
@@ -106,6 +118,15 @@ export function getTriggerOption(
       break;
     case 'onTrainingComplete':
       message = 'a trainee completes training';
+      break;
+    case 'onAvailReqAgent':
+      message = 'Request availability';
+      break;
+    case 'onReceivingAvailReq':
+      message = 'Recieved Candidate availability';
+      break;
+    case 'onSelfScheduleReqAgent':
+      message = 'workflow for Self Scheduling';
       break;
   }
   let preMessage = '';
@@ -236,6 +257,40 @@ export const ACTION_TRIGGER_MAP: {
     {
       value: 'onTrainingComplete_slack_approverForTraineeMeetingQualification',
       name: 'Send slack notification to approver',
+    },
+  ],
+  onAvailReqAgent: [
+    {
+      name: 'Request Availability through Agent via Email',
+      value: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+    },
+    {
+      name: 'Request Availability through link',
+      value: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+    },
+  ],
+  onReceivingAvailReq: [
+    {
+      value: 'onReceivingAvailReq_agent_confirmSlot',
+      name: 'Pick Suitable slot/s and Schedule Interviews',
+    },
+    {
+      value: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+      name: 'Pick suitable slots and dend Self schedule link',
+    },
+  ],
+  onSelfScheduleReqAgent: [
+    {
+      name: 'Self Schedule Interview with Email Agent',
+      value: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+    },
+    {
+      name: 'Self Schedule Interview with Email Link',
+      value: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+    },
+    {
+      name: 'Self Schedule Interview with Phone Agent',
+      value: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
     },
   ],
 } as const;
