@@ -14,8 +14,12 @@ function Tabs() {
       queryParam: 'overview',
     },
     {
-      name: 'Interview Types',
-      queryParam: 'interviewtypes',
+      name: 'Qualified',
+      queryParam: 'qualified',
+    },
+    {
+      name: 'Training',
+      queryParam: 'training',
     },
     {
       name: 'Schedules',

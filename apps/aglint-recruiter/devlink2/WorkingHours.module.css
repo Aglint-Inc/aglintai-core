@@ -1,13 +1,9 @@
 .schedule_settings {
   display: flex;
-  width: 700px;
   padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
-
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
 
   background-color: var(--white);
 }

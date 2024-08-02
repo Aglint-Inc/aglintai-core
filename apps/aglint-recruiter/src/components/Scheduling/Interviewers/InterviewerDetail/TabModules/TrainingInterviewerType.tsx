@@ -134,8 +134,8 @@ function TrainingInterviewerType({
         onClickCard={{
           onClick: () => {
             router.push(
-              ROUTES['/scheduling/module/members/[module_id]']({
-                module_id: relation.module_id,
+              ROUTES['/scheduling/interview-types/[type_id]']({
+                type_id: relation.module_id,
               }),
             );
           },

@@ -13,13 +13,18 @@ export function RecentRescheduleList({
   textDesc = "Medical Emergency ",
   slotIcon,
   onClickView = {},
+  onClickCandidate = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "recentrechedule_list")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "reson_rwap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "reson_rwap")}
+        tag="div"
+        {...onClickCandidate}
+      >
         <_Builtin.Block className={_utils.cx(_styles, "avatar_40")} tag="div">
           {slotImage ?? (
             <_Builtin.Image

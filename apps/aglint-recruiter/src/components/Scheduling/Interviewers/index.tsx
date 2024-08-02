@@ -90,13 +90,14 @@ const InterviewTab = () => {
                                     )[1] === member.email.split('@')[1] &&
                                     member.schedule_auth === null
                                   }
-                                  isConnectedCalenderVisible={
-                                    (recruiter.service_json !== null &&
-                                      recruiter.google_workspace_domain.split(
-                                        '//',
-                                      )[1] === member.email.split('@')[1]) ||
-                                    member.schedule_auth !== null
-                                  }
+                                  isConnectedCalenderVisible={false}
+                                  // isConnectedCalenderVisible={
+                                  //   (recruiter.service_json !== null &&
+                                  //     recruiter.google_workspace_domain.split(
+                                  //       '//',
+                                  //     )[1] === member.email.split('@')[1]) ||
+                                  //   member.schedule_auth !== null
+                                  // }
                                   slotInterviewModules={
                                     <>
                                       <ShowCode>

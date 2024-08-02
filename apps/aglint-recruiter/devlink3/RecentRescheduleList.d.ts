@@ -9,4 +9,5 @@ declare function RecentRescheduleList(props: {
   textDesc?: React.ReactNode;
   slotIcon?: Types.Devlink.Slot;
   onClickView?: Types.Devlink.RuntimeProps;
+  onClickCandidate?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

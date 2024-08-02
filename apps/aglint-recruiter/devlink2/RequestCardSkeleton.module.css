@@ -1,0 +1,6 @@
+.req-sekelton-card {
+  position: relative;
+  overflow: hidden;
+  height: 52px;
+  border-radius: var(--radius-4);
+}

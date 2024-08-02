@@ -1,0 +1,6 @@
+.req-count-skeleton {
+  position: relative;
+  width: 38px;
+  height: 28px;
+  border-radius: var(--radius-2);
+}

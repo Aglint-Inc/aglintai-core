@@ -15,7 +15,7 @@ import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import QualifiedInterviewTypeCard from './QualifiedInterviewType';
 import TrainingInterviewerType from './TrainingInterviewerType';
 
-function TabInterviewModules() {
+function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const router = useRouter();
   const user_id = router?.query?.user_id as string;
   const { data, isLoading, refetch } = useModuleRelations({
@@ -37,6 +37,8 @@ function TabInterviewModules() {
         isViewButtonVisible={false}
         textHeader1={'Qualified Interview Types'}
         textHeader2={'Training Interview Types'}
+        isTrainingVisible={type === 'training' ? true : false}
+        isUpcomingVisible={type === 'qualified' ? true : false}
         slotUpcomingSchedule={
           !isLoading ? (
             <>
