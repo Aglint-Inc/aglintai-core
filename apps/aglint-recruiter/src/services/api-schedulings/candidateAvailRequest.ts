@@ -11,10 +11,11 @@ export const candidateAvailRequest = async (
   req_body: any,
   organizer_id: string,
   cloned_sessn_ids: string[],
+  start_date_str,
+  end_date_str,
 ) => {
   const {
     application_id,
-    date_range,
     number_of_days,
     number_of_slots,
     recruiter_id,
@@ -30,7 +31,7 @@ export const candidateAvailRequest = async (
         is_task_created: false,
         number_of_days,
         number_of_slots,
-        date_range: [date_range.start_date, date_range.end_date],
+        date_range: [start_date_str, end_date_str],
         total_slots: null,
         availability: {
           day_offs: api_options.include_conflicting_slots.day_off,

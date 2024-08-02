@@ -1,6 +1,7 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import {
   addErrorHandlerWrap,
+  ApiError,
   candidate_new_schedule_schema,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -91,11 +92,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req.body,
       organizer_id,
       cloned_sessn_data.map((s) => s.id),
+      date_range.start_date_str,
+      date_range.end_date_str,
     );
-  } else if (
-    api_target === 'onAvailReqAgent_emailAgent_getCandidateAvailability'
-  ) {
-    //
+  } else {
+    throw new ApiError('SERVER', 'new-schedule not found');
   }
 
   supabaseWrap(

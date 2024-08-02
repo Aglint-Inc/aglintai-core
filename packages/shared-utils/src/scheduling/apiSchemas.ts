@@ -100,8 +100,8 @@ export const candidate_new_schedule_schema = v.object({
 
 export const candidate_avail_request_schema = v.intersect([
   v.object({
-    number_of_days: v.number(),
-    number_of_slots: v.number(),
+    number_of_days: v.optional(v.number(), 2),
+    number_of_slots: v.optional(v.number(), 2),
   }),
   candidate_new_schedule_schema,
 ]);
