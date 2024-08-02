@@ -8,7 +8,7 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 // import { SupportProvider } from '../context/SupportContext/SupportContext';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { Inter } from 'next/font/google';
 
 // If loading a variable font, you don't need to specify the font weight
@@ -38,7 +38,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <DevlinkMainProvider>
           <Theme>
             <ScreenSizeProvider>
-              <QueryProvider>{children}</QueryProvider>
+              <Suspense>
+                {/* remove the suspense boundary */}
+                <QueryProvider>{children}</QueryProvider>
+              </Suspense>
             </ScreenSizeProvider>
           </Theme>
         </DevlinkMainProvider>
