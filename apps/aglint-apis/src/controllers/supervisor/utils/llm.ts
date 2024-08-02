@@ -1,7 +1,8 @@
 import {ChatOpenAI} from '@langchain/openai';
 
 export const llm = new ChatOpenAI({
-  modelName: 'gpt-3.5-turbo-1106',
-  temperature: 0,
+  modelName: 'gpt-4o',
+  temperature: 0.5,
   apiKey: process.env.OPENAI_APIKEY,
+  maxRetries: 2,
 });

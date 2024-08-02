@@ -1,63 +1,44 @@
+/* eslint-disable no-console */
 import {HumanMessage} from '@langchain/core/messages';
-import {START, StateGraph} from '@langchain/langgraph';
 import {Request, Response} from 'express';
-import {JsonOutputToolsParser} from 'langchain/output_parsers';
-import {getWorkLengthNode} from './nodes/hello';
-import {members, toolDef} from './utils/const';
-import {agentStateChannels, AgentStateChannels} from './utils/initiate';
-import {llm} from './utils/llm';
-import {formattedPrompt} from './utils/promptsupervisor';
+import {superGraphChainFunction} from './supergraph';
+import {scheduleInterviewChainFunction} from './teams/scheduling/graph';
 
 export async function agentSupervisor(req: Request, res: Response) {
-  const {input} = req.body;
-
-  const supervisorChain = (await formattedPrompt())
-    .pipe(
-      llm.bindTools([toolDef], {
-        tool_choice: {type: 'function', function: {name: 'route'}},
-      })
-    )
-    .pipe(new JsonOutputToolsParser())
-    .pipe(x => x[0].args);
-
-  // 1. Create the graph
-  const workflow = new StateGraph<AgentStateChannels, unknown, string>({
-    channels: agentStateChannels,
-  }) // 2. Add the nodes; these will do the work
-    .addNode('get_word_length', getWorkLengthNode)
-    .addNode('supervisor', supervisorChain);
-  // 3. Define the edges. We will define both regular and conditional ones
-  // After a worker completes, report to supervisor
-  members.forEach(member => {
-    workflow.addEdge(member, 'supervisor');
-  });
-
-  workflow.addConditionalEdges('supervisor', (x: AgentStateChannels) => x.next);
-
-  workflow.addEdge(START, 'supervisor');
-
-  const graph = workflow.compile();
-
-  const streamResults = graph.stream(
+  const {msg, recruiter_id} = req.body;
+  const results = [];
+  const resultStream = (
+    await scheduleInterviewChainFunction({recruiter_id})
+  ).stream(
     {
-      messages: [
-        new HumanMessage({
-          content: input,
-        }),
-      ],
+      messages: [new HumanMessage(msg)],
     },
-    {recursionLimit: 100}
+    {recursionLimit: 5}
   );
 
-  let results = [];
-
-  for await (const output of await streamResults) {
-    if (!output?.__end__) {
-      results.push(output);
-      console.log(JSON.stringify(output, null, 2));
-      console.log('----');
+  for await (const step of await resultStream) {
+    if (!step.__end__) {
+      results.push(step);
+      console.log(JSON.stringify(step, null, 2));
+      // const key = Object.keys(step).find(key => key !== 'supervisor');
+      // if (key) {
+      //   console.log(JSON.stringify(step));
+      // }
     }
   }
+  const alterResults = results
+    .map(item => {
+      const key = Object.keys(item).find(key => key !== 'supervisor');
+      if (key) {
+        return {
+          team: key,
+          message: item[key].messages[0].content,
+          function: item[key].messages[0].name,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
 
-  return res.status(200).json({data: results});
+  return res.status(200).json(alterResults);
 }
