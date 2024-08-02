@@ -1,24 +1,38 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import React from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 
-function CandidateDetails() {
+function CandidateDetails({
+  candidateName,
+  jobTitle,
+  dateRange,
+}: {
+  candidateName?: string;
+  jobTitle?: string;
+  dateRange?: {
+    start_date: string;
+    end_date: string;
+  };
+}) {
   const candidateDetails = [
     {
       icon: 'id_card',
-      text: 'John Maya',
-      hide: false,
+      text: candidateName,
+      hide: !jobTitle,
     },
     {
       icon: 'work',
-      text: 'Software Developer',
-      hide: false,
+      text: jobTitle,
+      hide: !jobTitle,
     },
     {
       icon: 'calendar_today',
-      text: 'Aug 12 - 16',
-      hide: true,
+      text: `${dayjsLocal(dateRange.start_date).format('MMM DD')} - ${dayjsLocal(
+        dateRange.end_date,
+      ).format('MMM DD')}`,
+      hide: !dateRange,
     },
   ];
 

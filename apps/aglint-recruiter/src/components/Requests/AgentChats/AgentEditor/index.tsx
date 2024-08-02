@@ -319,7 +319,7 @@ function AgentEditor({
   };
 
   const mentionRequestList: MentionComponentProps = {
-    trigger: '',
+    trigger: 'request',
     data:
       requestList.length > 0
         ? requestList
@@ -393,6 +393,7 @@ function AgentEditor({
           <Mention {...mentionApplicationsList} />
           <Mention {...mentionSessionList} />
           <Mention {...mentionRequestList} />
+          <Mention {...mentionRequestList} trigger={'req'} />
         </MentionsInput>
       </div>
     </>
