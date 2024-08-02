@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Collapse } from '@mui/material';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
@@ -5,6 +6,7 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import { RequestProvider } from '@/src/context/RequestContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import RequestDetails from './RequestDetails';
 
@@ -26,9 +28,28 @@ export const Request = (props: PropsWithChildren<RequestType>) => {
 
   return (
     <>
-      <Collapse in={collapse} collapsedSize={55}>
+      <Collapse in={collapse} collapsedSize={60}>
         <RequestCard
           textTitle={props.title}
+          slotRightIcons={
+            <>
+              <GlobalBadge
+                size={1}
+                textBadge={capitalizeFirstLetter(props.status)}
+                color={
+                  props.status === 'to_do'
+                    ? 'purple'
+                    : props.status === 'in_progress'
+                      ? 'info'
+                      : props.status === 'blocked'
+                        ? 'error'
+                        : props.status === 'completed'
+                          ? 'success'
+                          : 'neutral'
+                }
+              />
+            </>
+          }
           slotBadgeNew={<GlobalBadge size={1} textBadge={'New'} />}
           isNewBadgeVisible={false}
           onClickCard={{
@@ -41,11 +62,17 @@ export const Request = (props: PropsWithChildren<RequestType>) => {
           }}
           isRequestDetailVisible={mount}
           slotRequestCardDetail={
-            mount && (
-              <RequestProvider request_id={props.id}>
-                <RequestDetails />
-              </RequestProvider>
-            )
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              {mount && (
+                <RequestProvider request_id={props.id}>
+                  <RequestDetails request_id={props.id} />
+                </RequestProvider>
+              )}
+            </div>
           }
         />
       </Collapse>
