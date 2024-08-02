@@ -57,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .update({ status: 'success', completed_at: dayjsLocal().toISOString() })
       .eq('id', id)
       .throwOnError();
-    return getResponse({ data: { success: true } });
+    return res.status(200).send('OK');
   } catch (error) {
     console.error('error', error);
     await supabaseAdmin
@@ -65,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .update({ status: 'failed' })
       .eq('id', id)
       .throwOnError();
-    return getResponse({ error: error.message }, 500);
+    return res.status(500).send(error.message);
   }
 };
 

@@ -78,6 +78,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       agent_type: 'phone',
       cloned_sessn_ids: session_ids,
       schedule_id: schedule_id,
+      start_date_str: date_range.start_date_str,
+      end_date_str: date_range.end_date_str,
     });
   } else if (api_target === 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule') {
     await selfScheduleAgent({
@@ -86,6 +88,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       agent_type: 'email',
       cloned_sessn_ids: session_ids,
       schedule_id: schedule_id,
+      start_date_str: date_range.start_date_str,
+      end_date_str: date_range.end_date_str,
     });
   } else if (
     api_target === 'onAvailReqAgent_emailLink_getCandidateAvailability'
@@ -106,6 +110,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .from('interview_meeting')
       .update({
         meeting_flow,
+        status: 'waiting',
+        organizer_id,
       })
       .in(
         'id',
