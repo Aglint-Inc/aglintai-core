@@ -94,6 +94,7 @@ function AgentChats() {
       );
       createRequestSessionRelations(sessionsRelations).then((res) => {
         requests.refetch();
+        setTextToObject(null);
       });
     });
   }

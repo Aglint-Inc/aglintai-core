@@ -21,7 +21,7 @@ const Requests = () => {
       slotRequestSection={
         <>
           <Section textSectionHeader='Urgent Requests' />
-          <Section textSectionHeader='Standard Requests' />
+          {/* <Section textSectionHeader='Standard Requests' /> */}
         </>
       }
       slotAglintAiChat={<AglintAiChat slotAiInput={<AgentChats />} />}
