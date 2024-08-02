@@ -29,6 +29,7 @@ function CandidateDetails() {
         .map(({ icon, text }, i) => {
           return (
             <TextWithIcon
+              key={i}
               textContent={text}
               iconSize={3}
               fontSize={1}

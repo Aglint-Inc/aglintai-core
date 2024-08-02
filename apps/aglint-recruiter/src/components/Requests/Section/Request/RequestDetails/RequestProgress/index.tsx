@@ -46,6 +46,7 @@ function RequestProgress() {
       {dummyProgressData.map(({ title, tense, isExpired }, i) => {
         return (
           <TextWithIcon
+            key={i}
             textContent={title}
             iconSize={3}
             fontSize={1}

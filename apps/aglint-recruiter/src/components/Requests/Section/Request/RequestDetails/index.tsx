@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import React from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';

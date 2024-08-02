@@ -21,9 +21,7 @@ function FilterAndSorting() {
               label: 'Software Developer',
             },
           ],
-          setValue: (val) => {
-            console.log(val);
-          },
+          setValue: () => {},
           value: [],
         },
         {
@@ -44,9 +42,7 @@ function FilterAndSorting() {
               label: 'Blocked',
             },
           ],
-          setValue: (val) => {
-            console.log(val);
-          },
+          setValue: () => {},
           value: [],
         },
       ]}
@@ -77,9 +73,7 @@ function FilterAndSorting() {
           option: 'date',
           order: 'asc',
         },
-        setOrder: (payload) => {
-          console.log(payload);
-        },
+        setOrder: () => {},
       }}
     />
   );

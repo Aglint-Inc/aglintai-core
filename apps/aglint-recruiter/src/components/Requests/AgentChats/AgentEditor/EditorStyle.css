@@ -5,11 +5,12 @@
   
   .mentions__control {
     font-size: 16px;
-    border: 1px solid #ccc;
+   
     border-radius: 4px;
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
+    border-bottom: none;
   }
   
   .mentions__highlighter {
@@ -34,11 +35,18 @@
   .mentions__suggestion {
     cursor: pointer;
     padding:  4px;
-
+    text-wrap: break-word;
+    width: 480px;
+    
   }
   
   .mentions__suggestion--focused {
     background-color: #e6f7ff;
     padding:  4px;
+    text-wrap: break-word;
+    width: 480px;
   }
   
+  #listContainer ul {
+    max-width: 200px;
+  }

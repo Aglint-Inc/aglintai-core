@@ -3,7 +3,7 @@ import './EditorStyle.css'; // We will define some styles here
 
 import { Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Mention, MentionsInput } from 'react-mentions';
+import { Mention, MentionDataItem, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -16,37 +16,49 @@ import {
 } from './utils';
 
 function AgentEditor({
-  isFetchedApplications,
-  isFetchedSessions,
   applicationsList,
   jobList,
   scheduleTypes,
   sessionList,
+  requestList,
   getSelectedScheduleType,
   getSelectedJob,
   getSelectedApplication,
+  getSelectedRequest,
   getSelectedSession,
   handleTextChange,
   handleSubmit,
 }: {
-  isFetchedApplications?: boolean;
-  isFetchedSessions?: boolean;
   applicationsList?: { id: string; display: string }[];
   jobList?: { id: string; display: string }[];
   scheduleTypes?: { id: string; display: ScheduleType }[];
   sessionList?: { id: string; display: string }[];
+  requestList?: { id: string; display: string }[];
   getSelectedJob?: ({ id, display }: { id: string; display: string }) => void;
   getSelectedApplication?: ({ id, display }: MentionType) => void;
   getSelectedScheduleType?: ({ id, display }: MentionType) => void;
+  getSelectedRequest?: ({ id, display }: MentionType) => void;
   getSelectedSession?: ({ id, display }: MentionType) => void;
   handleTextChange?: (x: string) => void;
   handleSubmit?: (x: string) => void;
 }) {
   const [text, setText] = useState('');
-  const [triggerType, setTriggerType] = useState<'@' | '#' | '$' | '%'>(null);
-  console.log(isFetchedSessions);
+  const [triggerType, setTriggerType] = useState<'@' | '#' | '$' | '%' | ''>(
+    null,
+  );
   const mentionsInputProps: MentionInputProps = {
-    a11ySuggestionsListLabel: 'Suggestions',
+    onFocus: (e) => {
+      setTriggerType('');
+      if (!text) {
+        setText(' ');
+      }
+    },
+    onBlur: () => {
+      if (!text.trim()) {
+        setText('');
+      }
+    },
+    // a11ySuggestionsListLabel: 'Suggestions',
     placeholder: "Type '@' for candidates or '#' for jobs",
     style: {
       control: {
@@ -79,9 +91,7 @@ function AgentEditor({
         borderTop: 'none',
         width: '484px',
         backgroundColor: '#F9F9F8',
-        maxHeight: '200px',
-        overflowY: 'hidden',
-        overflowX: 'hidden',
+        maxHeight: '250px',
       },
     },
     value: text,
@@ -91,19 +101,12 @@ function AgentEditor({
     },
     customSuggestionsContainer: (children) => {
       return (
-        <div
-          className='mentions__control'
-          style={{
-            width: '800px',
-            padding: '5px',
-            border: 'none',
-            borderTop: 'none',
-          }}
-        >
+        <div className='mentions__control'>
           {(sessionList.length && triggerType === '%') ||
           (applicationsList.length && triggerType === '@') ||
           (jobList.length && triggerType === '#') ||
-          (scheduleTypes.length && triggerType === '$') ? (
+          (scheduleTypes.length && triggerType === '$') ||
+          requestList.length ? (
             <Instructions
               heading={
                 triggerType === '$'
@@ -114,7 +117,9 @@ function AgentEditor({
                       ? 'candidates'
                       : triggerType === '%'
                         ? 'sessions'
-                        : null
+                        : requestList.length
+                          ? 'requests'
+                          : null
               }
             />
           ) : (
@@ -136,7 +141,7 @@ function AgentEditor({
     },
     singleLine: false,
     forceSuggestionsAboveCursor: true,
-    
+    allowSuggestionsAboveCursor: true,
 
     onKeyDown: (e) => {
       handleKeyDown(e);
@@ -155,7 +160,8 @@ function AgentEditor({
       event.key === '@' ||
       event.key === '#' ||
       event.key === '$' ||
-      event.key === '%'
+      event.key === '%' ||
+      event.key === ''
     ) {
       setTriggerType(event.key);
     }
@@ -164,16 +170,50 @@ function AgentEditor({
       setText(text + '$');
     }
     if (event.ctrlKey && event.key === '1') {
-      setText((pre) => pre + '$' + scheduleTypes[0].display);
+      setText((pre) => scheduleTypes[0].display + pre);
     }
     if (event.ctrlKey && event.key === '2') {
-      setText((pre) => pre + '$' + scheduleTypes[1].display);
+      setText((pre) => scheduleTypes[1].display + pre);
     }
     if (event.ctrlKey && event.key === '3') {
-      setText((pre) => pre + '$' + scheduleTypes[2].display);
+      setText((pre) => scheduleTypes[2].display + pre);
     }
   };
 
+  const mentionScheduleTypes: MentionComponentProps = {
+    trigger: '$',
+    data:
+      scheduleTypes.length > 0
+        ? scheduleTypes
+        : [{ id: '1', display: 'No results' }],
+    style: {
+      backgroundColor: '#8E00F112',
+      color: '#00000000',
+      borderRadius: '5px',
+    },
+    markup: 'schedule_type:[__display__]',
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
+      return (
+        <Suggestion
+          index={index}
+          entry={entry}
+          highlightedDisplay={highlightedDisplay}
+          focused={focused}
+          search={search}
+        />
+      );
+    },
+    onAdd(id, display) {
+      handleAddMention({ id, display }, '$');
+    },
+    appendSpaceOnAdd: true,
+    displayTransform: (id, display) => {
+      if (display === 'No results') {
+        return '';
+      }
+      return display + ':  ';
+    },
+  };
   const mentionJobList: MentionComponentProps = {
     trigger: '#',
     data: jobList.length > 0 ? jobList : [{ id: '1', display: 'No results' }],
@@ -183,26 +223,22 @@ function AgentEditor({
       borderRadius: '5px',
     },
     markup: 'job_title:[__display__]',
-    renderSuggestion(entry, search, highlightedDisplay, index, focused) {
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
       return (
-        <div
-          style={{ display: entry.display === 'No results' ? 'none' : 'block' }}
-          className={
-            focused ? 'mentions__suggestion--focused' : 'mentions__suggestion'
-          }
-        >
-          {entry.display}
-        </div>
+        <Suggestion
+          index={index}
+          entry={entry}
+          highlightedDisplay={highlightedDisplay}
+          focused={focused}
+          search={search}
+        />
       );
     },
     onAdd(id, display) {
-      getSelectedJob({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '@');
-        setTriggerType('@');
-      }, 10);
+      handleAddMention({ id, display }, '#');
     },
     appendSpaceOnAdd: true,
+
     displayTransform: (id, display) => {
       if (display === 'No results') {
         return '';
@@ -222,26 +258,22 @@ function AgentEditor({
       borderRadius: '5px',
     },
     markup: 'applicant_name:[__display__]',
-    renderSuggestion(entry, search, highlightedDisplay, index, focused) {
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
       return (
-        <div
-          style={{ display: entry.display === 'No results' ? 'none' : 'block' }}
-          className={
-            focused ? 'mentions__suggestion--focused' : 'mentions__suggestion'
-          }
-        >
-          {entry.display}
-        </div>
+        <Suggestion
+          index={index}
+          entry={entry}
+          highlightedDisplay={highlightedDisplay}
+          focused={focused}
+          search={search}
+        />
       );
     },
     onAdd(id, display) {
-      getSelectedApplication({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '%');
-        setTriggerType('%');
-      }, 1500);
+      handleAddMention({ id, display }, '@');
     },
     appendSpaceOnAdd: true,
+
     displayTransform: (id, display) => {
       if (display === 'No results') {
         return '';
@@ -249,45 +281,7 @@ function AgentEditor({
       return display + '  ';
     },
   };
-  const mentionScheduleTypes: MentionComponentProps = {
-    trigger: '$',
-    data:
-      scheduleTypes.length > 0
-        ? scheduleTypes
-        : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#8E00F112',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'schedule_type:[__display__]',
-    renderSuggestion(entry, search, highlightedDisplay, index, focused) {
-      return (
-        <div
-          style={{ display: entry.display === 'No results' ? 'none' : 'block' }}
-          className={
-            focused ? 'mentions__suggestion--focused' : 'mentions__suggestion'
-          }
-        >
-          {entry.id !== '1' ? entry.display : ''}
-        </div>
-      );
-    },
-    onAdd(id, display, startPos, endPos) {
-      getSelectedScheduleType({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '#');
-        setTriggerType('#');
-      }, 100);
-    },
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + ':  ';
-    },
-    appendSpaceOnAdd: true,
-  };
+
   const mentionSessionList: MentionComponentProps = {
     trigger: '%',
     data:
@@ -300,28 +294,94 @@ function AgentEditor({
       borderRadius: '5px',
     },
     markup: 'interview_name:[__display__]',
-    renderSuggestion(entry, search, highlightedDisplay, index, focused) {
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
       return (
-        <div
-          style={{ display: entry.display === 'No results' ? 'none' : 'block' }}
-          className={
-            focused ? 'mentions__suggestion--focused' : 'mentions__suggestion'
-          }
-        >
-          {entry.display}
-        </div>
+        <Suggestion
+          index={index}
+          entry={entry}
+          highlightedDisplay={highlightedDisplay}
+          focused={focused}
+          search={search}
+        />
       );
     },
     onAdd(id, display) {
-      getSelectedSession({ id, display });
+      handleAddMention({ id, display }, '%');
     },
     appendSpaceOnAdd: true,
+
     displayTransform: (id, display) => {
       if (display === 'No results') {
         return '';
       }
       return display + '  ';
     },
+  };
+
+  const mentionRequestList: MentionComponentProps = {
+    trigger: '',
+    data:
+      requestList.length > 0
+        ? requestList
+        : [{ id: '1', display: 'No results' }],
+    style: {
+      backgroundColor: '#fcf',
+      color: '#00000000',
+      borderRadius: '5px',
+    },
+    markup: 'request_name:[__display__]',
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
+      return (
+        <Suggestion
+          index={index}
+          entry={entry}
+          highlightedDisplay={highlightedDisplay}
+          focused={focused}
+          search={search}
+        />
+      );
+    },
+    onAdd(id, display) {
+      handleAddMention({ id, display }, '%');
+    },
+    appendSpaceOnAdd: true,
+
+    displayTransform: (id, display) => {
+      if (display === 'No results') {
+        return '';
+      }
+      return display + '  ';
+    },
+  };
+
+  const handleAddMention = ({ id, display }: MentionType, trigger: string) => {
+    if (trigger === '') {
+      getSelectedRequest({ id, display });
+    }
+    if (trigger === '$') {
+      getSelectedScheduleType({ id, display });
+      setTimeout(() => {
+        setText((pre) => pre + '#');
+        setTriggerType('#');
+      }, 100);
+    }
+    if (trigger === '@') {
+      getSelectedApplication({ id, display });
+      setTimeout(() => {
+        setText((pre) => pre + '%');
+        setTriggerType('%');
+      }, 10);
+    }
+    if (trigger === '#') {
+      getSelectedJob({ id, display });
+      setTimeout(() => {
+        setText((pre) => pre + '@');
+        setTriggerType('@');
+      }, 10);
+    }
+    if (trigger === '%') {
+      getSelectedSession({ id, display });
+    }
   };
 
   return (
@@ -332,6 +392,7 @@ function AgentEditor({
           <Mention {...mentionJobList} />
           <Mention {...mentionApplicationsList} />
           <Mention {...mentionSessionList} />
+          <Mention {...mentionRequestList} />
         </MentionsInput>
       </div>
     </>
@@ -340,10 +401,26 @@ function AgentEditor({
 
 export default AgentEditor;
 
+const Suggestion = ({ entry, highlightedDisplay, focused, index, search }) => {
+  if (entry.display === 'No results') {
+    return null;
+  }
+  return (
+    <div
+      key={index}
+      className={
+        focused ? 'mentions__suggestion--focused' : 'mentions__suggestion'
+      }
+    >
+      {highlightedDisplay}
+    </div>
+  );
+};
+
 const Instructions = ({
   heading,
 }: {
-  heading: 'jobs' | 'candidates' | 'schedule_type' | 'sessions';
+  heading: 'jobs' | 'candidates' | 'schedule_type' | 'sessions' | 'requests';
 }) => {
   return (
     <Stack
