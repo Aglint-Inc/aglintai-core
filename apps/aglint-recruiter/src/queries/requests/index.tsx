@@ -1,3 +1,4 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { queryOptions } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
