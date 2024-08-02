@@ -1,8 +1,5 @@
-import { Database } from "../schema.types";
+import { CustomRequestType } from "../common.types";
 
 export type CustomRequestPayload = Required<
-  Pick<
-    Database["public"]["Tables"]["request"]["Insert"],
-    "assignee_id" | "assigner_id" | "type" | "title"
-  >
+  Pick<CustomRequestType, "assignee_id" | "assigner_id" | "type" | "title">
 >;
