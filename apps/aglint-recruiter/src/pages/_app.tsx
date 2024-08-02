@@ -16,20 +16,12 @@ const MyApp = ({ Component, pageProps }) => {
     Component?.privateProvider ?? Component?.publicProvider ?? ((page) => page);
 
     useEffect(() => {
-      console.log('Checking if font is loaded');
-      // Function to check if the font is loaded
       const checkFontLoaded = () => {
-        console.log('checkFontLoaded');
         document.fonts.load('1em "Material Symbols Rounded"').then((fonts) => {
           if (fonts.length > 0) {
-            // Remove the icons-hidden class to show the icons
             document.body.classList.remove('icons-hidden');
-          } else {
-            console.error('Font loading failed or no fonts loaded.');
           }
-        }).catch((error) => {
-          console.error('Font loading failed:', error);
-        });
+        })
       };
   
       checkFontLoaded();
