@@ -1,0 +1,373 @@
+/* eslint-disable no-unused-vars */
+import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Stack, Typography } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useState } from 'react';
+
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
+
+import { ButtonSoft } from '@/devlink';
+import { Skeleton } from '@/devlink2/Skeleton';
+import {
+  ApiRequestInterviewSessionTask,
+  ApiResponseInterviewSessionTask,
+} from '@/src/pages/api/scheduling/fetch_interview_session_task';
+import {
+  createRequest,
+  createRequestSessionRelations,
+} from '@/src/queries/requests';
+
+import dayjs from '@/src/utils/dayjs';
+import AgentEditor from './AgentEditor';
+import {
+  ApplicantInfo,
+  extractDataFromText,
+  ScheduleType,
+  scheduleType,
+} from './AgentEditor/utils';
+import { DatabaseTableInsert } from '@aglint/shared-types';
+
+function AgentChats() {
+  const { recruiterUser, recruiter_id } = useAuthDetails();
+  const [textToObject, setTextToObject] = useState<ApplicantInfo | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<{
+    id: string;
+    display: string;
+  }>(null);
+  const [selectedApplication, setSelectedApplication] = useState<{
+    id: string;
+    display: string;
+  }>(null);
+  const [selectedSession, setSelectedSession] = useState<
+    {
+      id: string;
+      display: string;
+    }[]
+  >([]);
+  const [selectedScheduleType, setSelectedScheduleType] = useState<{
+    id: string;
+    display: string;
+  }>(null);
+
+  const { data: jobsAndApplications, isFetched: isJobFetched } =
+    useAllJobsAndApplications({
+      recruiter_id,
+    });
+  const applications = selectedJob?.id
+    ? jobsAndApplications?.applications.filter(
+        (application) => application.job_id === selectedJob.id,
+      )
+    : jobsAndApplications?.applications;
+  const { data: sessions, isFetched: isFetchedSessions } = useAllSessionsList({
+    application_id: selectedApplication?.id,
+    job_id: selectedJob?.id,
+  });
+
+  function handleSubmit() {
+    console.log('object');
+    createRequest({
+      application_id: selectedApplication?.id,
+      assigner_id: recruiterUser.user_id,
+      assignee_id: recruiterUser.user_id,
+      title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
+      status: 'to_do',
+      type: 'schedule_request',
+    }).then((res) => {
+      const sessionsRelations = selectedSession.map(
+        (ele) =>
+          ({
+            request_id: res.id,
+            session_id: ele.id,
+            cancel_id: null,
+          }) as DatabaseTableInsert['request_relation'],
+      );
+      createRequestSessionRelations(sessionsRelations);
+    });
+  }
+  return (
+    <Stack alignItems={'center'}>
+      <Stack>
+        {loading ? (
+          <>
+            <Stack width={'100%'} p={1} direction={'column'} spacing={1}>
+              <Stack position={'relative'} width={'480px'} height={'15px'}>
+                <Skeleton />
+              </Stack>
+              <Stack position={'relative'} width={'480px'} height={'15px'}>
+                <Skeleton />
+              </Stack>
+            </Stack>
+          </>
+        ) : (
+          textToObject && (
+            <>
+              <Stack
+                height={'100%'}
+                width={'100%'}
+                direction={'column'}
+                justifyContent={'space-between'}
+                alignItems={'flex-end'}
+                p={1}
+              >
+                <Typography
+                  width={'100%'}
+                  fontSize={18}
+                  dangerouslySetInnerHTML={{
+                    __html: `Aglint AI will ${textToObject?.assignee === 'user' ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}` : textToObject?.assignee === 'phone' ? 'make a call' : 'send an email'} to <b>${textToObject?.applicant_name}</b> to get ${textToObject?.schedule_type} for the ${Array.isArray(textToObject?.interview_names) && textToObject?.interview_names.join(',')} interview between ${dayjsLocal(textToObject?.date_range.start_date).format('MMM DD')} and ${dayjsLocal(textToObject?.date_range.end_date).format('MMM DD')}. `,
+                  }}
+                />
+                <ButtonSoft
+                  size={1}
+                  textButton='Proceed'
+                  onClickButton={{
+                    onClick: handleSubmit,
+                  }}
+                />
+              </Stack>
+            </>
+          )
+        )}
+      </Stack>
+      <AgentEditor
+        handleTextChange={(text) => {
+          if (!text) {
+            setTextToObject(null);
+            setSelectedApplication(null);
+            setSelectedJob(null);
+            setSelectedScheduleType(null);
+            setSelectedSession([]);
+          }
+        }}
+        handleSubmit={(text) => {
+          if (!selectedApplication?.id) {
+            setLoading(true);
+            extractDataFromText(text).then((data: ApplicantInfo) => {
+              setTextToObject(data);
+              setSelectedJob({
+                id: data.job_title,
+                display: data.job_title,
+              });
+
+              if (!selectedApplication?.id) {
+                getApplicationWithName(
+                  data.applicant_name,
+                  data.interview_names,
+                );
+              }
+              setLoading(false);
+            });
+          } else {
+            setTextToObject({
+              applicant_name: selectedApplication.display,
+              assignee: 'user',
+              date_range: {
+                start_date: dayjs().format('MM-DD-YYYY'),
+                end_date: dayjs().add(7, 'day').format('MM-DD-YYYY'),
+              },
+              interview_names: selectedSession.map(
+                (session) => session.display,
+              ),
+              job_title: selectedJob.display,
+              schedule_type: selectedScheduleType
+                ? (selectedScheduleType?.display as ScheduleType)
+                : 'schedule',
+            });
+          }
+        }}
+        isFetchedApplications={true}
+        isFetchedSessions={isFetchedSessions}
+        scheduleTypes={scheduleType}
+        jobList={
+          isJobFetched &&
+          jobsAndApplications.jobs.map((job) => ({
+            id: job.id,
+            display: job.job_title,
+          }))
+        }
+        applicationsList={
+          applications
+            ? applications.map((application) => ({
+                id: application.id,
+                display:
+                  application.candidates.first_name +
+                  ' ' +
+                  application.candidates.last_name,
+              }))
+            : []
+        }
+        sessionList={
+          isFetchedSessions
+            ? sessions.map((session) => ({
+                id: session.id,
+                display: session.name,
+              }))
+            : []
+        }
+        getSelectedJob={({ id, display }) => {
+          setSelectedJob({ id, display });
+        }}
+        getSelectedApplication={({ id, display }) => {
+          setSelectedApplication({ id, display });
+        }}
+        getSelectedScheduleType={({ id, display }) => {
+          setSelectedScheduleType({ id, display });
+        }}
+        getSelectedSession={({ id, display }) => {
+          setSelectedSession((pre) => [...pre, { id, display }]);
+        }}
+      />
+    </Stack>
+  );
+}
+
+export default AgentChats;
+
+async function getApplicationWithName(name: string, sessions_name: string[]) {
+  const { data, error } = await supabase
+    .from('applications')
+    .select(
+      `
+      *,
+      candidates!inner(first_name,last_name) , public_jobs(id,job_title)
+    `,
+    )
+    .eq('status', 'interview')
+    .ilike('candidates.first_name', `%${name}%`);
+  // .ilike('candidates.last_name', `%${name}%`);
+
+  if (error) {
+    throw error;
+  }
+
+  if (data.length > 1) {
+    console.log('More that one applications', data);
+  }
+  if (data.length === 0) {
+    console.log('No application found');
+  }
+  if (data.length === 1) {
+    console.log(data);
+    getSessionList({
+      application_id: data[0].id,
+      job_id: data[0].public_jobs.id,
+    }).then((data) => {
+      console.log(
+        'There are two interview Sessions',
+        data.map((ele) => ele.name),
+      );
+    });
+  }
+
+  return data;
+}
+
+export const useAllJobsAndApplications = ({
+  recruiter_id,
+}: {
+  recruiter_id: string;
+}) => {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_All_job_List', recruiter_id],
+
+    queryFn: () =>
+      getJobsAndApplications({
+        recruiter_id,
+      }),
+    gcTime: 20000,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });
+  return { ...query, refetch };
+};
+
+export const useAllSessionsList = ({
+  application_id,
+  job_id,
+}: {
+  application_id: string;
+  job_id: string;
+}) => {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_All_sessions_List', { application_id, job_id }],
+
+    queryFn: () =>
+      getSessionList({
+        application_id,
+        job_id,
+      }),
+    gcTime: 20000,
+    enabled: !!application_id,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['get_All_sessions_List'] });
+
+  return { ...query, refetch };
+};
+
+async function getJobsAndApplications({ recruiter_id }) {
+  try {
+    const { data: jobs, error } = await supabase
+      .from('public_jobs')
+      .select()
+      .eq('recruiter_id', recruiter_id)
+      .eq('status', 'published');
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const applicationsPromises = jobs.map((job) => {
+      console.log(job.id);
+      return getApplications({ job_id: job.id });
+    });
+
+    const applicationsResults = await Promise.all(applicationsPromises);
+    const applications = applicationsResults.flat();
+
+    return { jobs, applications };
+  } catch (error) {
+    console.error('Error fetching jobs and applications:', error);
+    return { jobs: [], applications: [], error: error.message };
+  }
+}
+
+async function getApplications({ job_id }: { job_id: string }) {
+  const { data, error } = await supabase
+    .from('applications')
+    .select('*, candidates(*)')
+    .eq('job_id', job_id)
+    .eq('status', 'interview');
+  if (!error) {
+    return data;
+  }
+}
+
+async function getSessionList({
+  application_id,
+  job_id,
+}: {
+  application_id: string;
+  job_id: string;
+}) {
+  const {
+    data: { data },
+  } = await axios.post('/api/scheduling/fetch_interview_session_task', {
+    application_id: application_id,
+    job_id: job_id,
+  } as ApiRequestInterviewSessionTask);
+  console.log(data);
+  const sessions = data as (ApiResponseInterviewSessionTask['data'][number] & {
+    interview_meeting: {
+      interview_schedule: {
+        application_id: string;
+      };
+    };
+  })[];
+  return sessions;
+}

@@ -4,6 +4,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { appKey, GC_TIME } from '..';
 import { RequestProgressQueryParams, RequestQueryParams } from './types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 
 export const requestQueries = {
   requests: ({ assigner_id }: RequestQueryParams = {}) =>
@@ -49,5 +50,27 @@ export const getRequestProgress = async ({
       .from('request_progress')
       .select('*')
       .eq('request_id', request_id)
+      .throwOnError()
+  ).data;
+export const createRequest = async (
+  newRequestData: DatabaseTableInsert['request'],
+) =>
+  (
+    await supabase
+      .from('request')
+      .insert({ ...newRequestData })
+      .select('*')
+      .single()
+      .throwOnError()
+  ).data;
+
+export const createRequestSessionRelations = async (
+  newRequestData: DatabaseTableInsert['request_relation'][],
+) =>
+  (
+    await supabase
+      .from('request_relation')
+      .insert([...newRequestData])
+      .select('*')
       .throwOnError()
   ).data;

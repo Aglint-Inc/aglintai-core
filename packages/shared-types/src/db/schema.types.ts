@@ -5492,6 +5492,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      clone_sessions: {
+        Args: {
+          app_id: string
+        }
+        Returns: Json
+      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string
