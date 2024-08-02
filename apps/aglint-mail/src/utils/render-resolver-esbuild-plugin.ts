@@ -22,8 +22,9 @@ export const renderResolver = (emailTemplates: string[]) => ({
         filter: new RegExp(
           emailTemplates
             .map((emailPath) => escapeStringForRegex(emailPath))
-            .join('|'),
-        ),
+            .join('|')
+          // Hardcoded the regular expression to prevent ReDoS vulnerability
+          , 'g'),
       },
       async ({ path: pathToFile }) => {
         return {
