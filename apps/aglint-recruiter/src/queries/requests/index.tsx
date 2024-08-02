@@ -1,4 +1,4 @@
-import { type QueryClient, queryOptions } from '@tanstack/react-query';
+import { type QueryFilters, queryOptions } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -20,7 +20,7 @@ export const requestQueries = {
       query.queryKey.includes(requestQueries.requests_key()) &&
       !query.queryKey.includes(
         requestQueries.request_progress_key(),
-      )) as Parameters<QueryClient['invalidateQueries']>[0]['predicate'],
+      )) as QueryFilters['predicate'],
   }),
   request_progress_key: () => 'request_progress' as const,
   request_progress_queryKey: ({ request_id }: RequestProgressQueryParams) =>

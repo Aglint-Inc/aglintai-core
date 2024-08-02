@@ -510,7 +510,7 @@ export const useMoveApplicationsToInterview = (
         await supabase.rpc('move_to_interview', args).throwOnError();
         await Promise.allSettled([
           revalidateJobQueries(payload.job_id),
-          queryClient.invalidateQueries({ predicate }),
+          queryClient.refetchQueries({ predicate }),
         ]);
       },
       onSuccess: () => toast.success('Moved successfully'),
