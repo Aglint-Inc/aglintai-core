@@ -51,11 +51,11 @@ export const getRequests = async ({ assigner_id }: RequestQueryParams) =>
     await supabase
       .from('request')
       .select(
-        '*, request_relation(*), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id, candidates(first_name, last_name))',
+        '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
       )
       .eq('assigner_id', assigner_id)
       .throwOnError()
-  ).data;
+  ).data.filter((request) => request.request_relation.length > 0);
 
 export const getRequestProgress = async ({
   request_id,

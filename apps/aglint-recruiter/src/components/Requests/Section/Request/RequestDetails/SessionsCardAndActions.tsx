@@ -3,21 +3,18 @@ import React from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 
-function SessionsCardAndActions() {
-  const sessionDetails = [
-    {
-      id: 'initial-interview',
-      name: 'Initial interview',
-    },
-    {
-      id: 'final-interview',
-      name: 'Final interview',
-    },
-  ];
+function SessionsCardAndActions({
+  sessions,
+}: {
+  sessions: {
+    id: string;
+    name: string;
+  }[];
+}) {
   return (
     <Stack direction={'row'} spacing={1} alignItems={'center'}>
       <Stack direction={'row'} spacing={1}>
-        {sessionDetails.map(({ name, id }, i) => {
+        {sessions.map(({ name, id }, i) => {
           return (
             <ButtonSoft
               key={id ?? i}

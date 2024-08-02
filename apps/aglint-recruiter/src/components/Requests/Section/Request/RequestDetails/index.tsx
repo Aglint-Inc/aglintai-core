@@ -1,36 +1,56 @@
 import { DatabaseTableUpdate } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
+import { PropsWithChildren } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
+import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CandidateDetails from './CandidateDetails';
 import ReasonDetails from './ReasonDetails';
-import RequestProgress, { RequestProgressSkeleton } from './RequestProgress';
+import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
-function RequestDetails({ request_id }: { request_id: string }) {
-  const {
-    request_progress: { status },
-  } = useRequest();
+function RequestDetails({
+  request,
+  index,
+}: {
+  request: PropsWithChildren<RequestType>;
+  index: number;
+}) {
   const {
     requests: { refetch },
   } = useRequests();
 
-  // if (status === 'error') return <>Error</>;
-  // if (status === 'pending') return <>Loading...</>;
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
         <Stack direction={'column'} gap={1}>
-          <SessionsCardAndActions />
-          <CandidateDetails />
+          <SessionsCardAndActions
+            sessions={request.request_relation.map((relation) => {
+              return {
+                id: relation.interview_session.id,
+                name: relation.interview_session.name,
+              };
+            })}
+          />
+          <CandidateDetails
+            candidateName={getFullName(
+              request.applications.candidates.first_name,
+              request.applications.candidates.last_name,
+            )}
+            jobTitle={request.applications.public_jobs.job_title}
+            dateRange={{
+              start_date: dayjsLocal().format('YYYY-MM-DD'),
+              end_date: dayjsLocal().add(7, 'day').format('YYYY-MM-DD'),
+            }}
+          />
           <ReasonDetails />
         </Stack>
       }
@@ -43,54 +63,56 @@ function RequestDetails({ request_id }: { request_id: string }) {
             alignItems={'center'}
           >
             <Text size={1} color={'neutral'} content={'From'} />
-            <Text content={'Sara '} />
+            <Text
+              content={getFullName(
+                request.assigner.first_name,
+                request.assigner.last_name,
+              )}
+            />
           </Stack>
           <Stack direction={'row'} spacing={1} alignItems={'center'}>
-            <Text size={1} color={'neutral'} content={'4 hours ago via'} />
-            <Text content={'Greenhouse'} />
+            <Text
+              size={1}
+              color={'neutral'}
+              content={dayjsLocal(request.created_at).fromNow()}
+            />
+            <Text content={'Aglint'} />
           </Stack>
         </>
       }
       isBodyVisible={true}
       slotBody={
-        <ShowCode>
-          <ShowCode.When isTrue={status === 'pending'}>
-            <RequestProgressSkeleton />
-          </ShowCode.When>
-          <ShowCode.Else>
-            <>
-              <RequestProgress />
-              <Stack
-                direction={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-              >
-                <Text
-                  color={'accent'}
-                  content={
-                    'When you click “Proceed,” Aglint AI will perform above tasks for you'
-                  }
-                  highContrast={false}
-                />
-                <ButtonSoft
-                  onClickButton={{
-                    onClick: () => {
-                      updateRequestSessionRelations({
-                        status: 'in_progress',
-                        id: request_id,
-                      }).then(() => {
-                        refetch();
-                        toast.message('Request updated successfully');
-                      });
-                    },
-                  }}
-                  size={1}
-                  textButton={'Proceed'}
-                />
-              </Stack>
-            </>
-          </ShowCode.Else>
-        </ShowCode>
+        <>
+          <RequestProgress index={index} />
+          <Stack
+            direction={'row'}
+            justifyContent={'space-between'}
+            alignItems={'center'}
+          >
+            <Text
+              color={'accent'}
+              content={
+                'When you click “Proceed,” Aglint AI will perform above tasks for you'
+              }
+              highContrast={false}
+            />
+            <ButtonSoft
+              onClickButton={{
+                onClick: () => {
+                  updateRequestSessionRelations({
+                    status: 'in_progress',
+                    id: request.id,
+                  }).then(() => {
+                    refetch();
+                    toast.message('Request updated successfully');
+                  });
+                },
+              }}
+              size={1}
+              textButton={'Proceed'}
+            />
+          </Stack>
+        </>
       }
     />
   );
