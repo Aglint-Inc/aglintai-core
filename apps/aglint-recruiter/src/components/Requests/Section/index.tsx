@@ -4,7 +4,6 @@ import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { RequestSection } from '@/devlink2/RequestSection';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { Text } from '@/devlink2/Text';
-import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 
 import { ShowCode } from '../../Common/ShowCode';
@@ -53,9 +52,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
             <ShowCode.Else>
               {(data ?? []).map((props, i) => {
                 return (
-                  <RequestProvider key={props?.id ?? i} request_id={props.id}>
-                    <Request {...{ ...props, index: i }} />
-                  </RequestProvider>
+                  <Request key={props.id ?? i} {...{ ...props, index: i }} />
                 );
               })}
             </ShowCode.Else>
