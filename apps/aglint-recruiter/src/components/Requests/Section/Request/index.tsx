@@ -5,7 +5,7 @@ import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCard } from '@/devlink2/RequestCard';
-import { useRequest } from '@/src/context/RequestContext';
+import { RequestProvider } from '@/src/context/RequestContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -17,9 +17,7 @@ export const Request = (
   const [collapse, setCollapse] = useState(false);
   const [mount, setMount] = useState(collapse);
   const initialRef = useRef(true);
-  const {
-    request_progress: { data: progress, status },
-  } = useRequest();
+
   useEffect(() => {
     if (initialRef.current) {
       initialRef.current = false;
