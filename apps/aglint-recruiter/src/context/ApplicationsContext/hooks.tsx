@@ -9,6 +9,7 @@ import {
   applicationsQueries,
   useDeleteApplication,
   useMoveApplications,
+  useMoveApplicationsToInterview,
   useReuploadResume,
   useUpdateApplication,
 } from '@/src/queries/job-applications';
@@ -276,15 +277,38 @@ export const useApplicationsActions = () => {
     [CASCADE_VISIBILITIES, job?.flags, section],
   );
 
-  const { mutateAsync: moveApplications } = useMoveApplications({
-    job_id,
-  });
+  const { mutateAsync: moveApplications, mutationQueue: moveMutationQueue } =
+    useMoveApplications({
+      job_id,
+    });
 
   const handleMoveApplications = async (
     payload: Omit<Parameters<typeof moveApplications>[0], 'applications'>,
   ) => {
     try {
       await moveApplications({ ...payload, applications: checklist });
+      resetChecklist();
+    } catch {
+      //
+    }
+  };
+
+  const { mutateAsync: moveApplicationsToInterview } =
+    useMoveApplicationsToInterview({
+      job_id,
+    });
+
+  const handleMoveApplicationToInterview = async (
+    payload: Omit<
+      Parameters<typeof moveApplicationsToInterview>[0],
+      'applications'
+    >,
+  ) => {
+    try {
+      await moveApplicationsToInterview({
+        ...payload,
+        applications: checklist,
+      });
       resetChecklist();
     } catch {
       //
@@ -300,8 +324,6 @@ export const useApplicationsActions = () => {
   } = useDeleteApplication({
     job_id,
   });
-
-  const { mutationQueue: moveMutationQueue } = useMoveApplications({ job_id });
 
   const handleReuploadResume = async (
     payload: Parameters<typeof reuploadResume>[0],
@@ -419,6 +441,7 @@ export const useApplicationsActions = () => {
     handleSelectPrevApplication,
     handleReuploadResume,
     handleDeleteApplication,
+    handleMoveApplicationToInterview,
   };
 };
 

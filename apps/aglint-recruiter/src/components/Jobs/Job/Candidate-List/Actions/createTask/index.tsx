@@ -37,12 +37,10 @@ function CreateTask({
   setTask,
   applications,
   job_id,
-  setAssigner,
 }: {
   setTask: Dispatch<SetStateAction<TaskType>>;
   applications: string[];
   job_id: string;
-  setAssigner: Dispatch<SetStateAction<assigneeType | null>>;
 }) {
   const { assignerList } = useTaskStatesContext();
   const { recruiterUser } = useAuthDetails();
@@ -102,9 +100,6 @@ function CreateTask({
           )?.user_id,
         };
       });
-      setAssigner(
-        assignerList.find((ele) => ele.user_id === recruiterUser.user_id),
-      );
     }
   }, [interview_session, assignerList]);
 
@@ -180,7 +175,6 @@ function CreateTask({
             selectedAssignee={selectedAssignee}
             setSelectedAssignee={setSelectedAssignee}
             onChange={(owner: assigneeType) => {
-              setAssigner(owner);
               setTask((pre) => {
                 const status =
                   owner.user_id === EmailAgentId ||
