@@ -61,8 +61,8 @@ export const fetchUserSchedules = async ({
       totalHoursThisWeek: 0,
     };
   }
-
-  const user = data[0]?.meeting_interviewers?.find(
+  // TODO: fix
+  const user = (data[0]?.meeting_interviewers as any)?.find(
     (interviewer) => interviewer.user_id === member_id,
   );
 

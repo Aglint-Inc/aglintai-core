@@ -14,7 +14,6 @@ import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateA
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAgent';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { getClonedSessionIds } from '@/src/utils/scheduling/getClonedSessionIds';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -34,17 +33,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
   const api_target = target_api as DatabaseEnums['email_slack_types'];
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
-  const { cloned_sessn_data, schedule_id } = await getClonedSessionIds(
-    application_id,
-    session_ids,
+  const meeting_details = supabaseWrap(
+    await supabaseAdmin
+      .from('meeting_details')
+      .select()
+      .in('session_id', session_ids),
   );
+  let schedule_id = meeting_details[0].interview_schedule_id;
+  if (meeting_details.length === 0) {
+    throw new ApiError('SERVER_ERROR', 'invalid session id');
+  }
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({
     company_id: recruiter_id,
     start_date_str: date_range.start_date_str,
     end_date_str: date_range.end_date_str,
     req_user_tz: 'Asia/Calcutta', //TODO:
-    session_ids: cloned_sessn_data.map((s) => s.id),
+    session_ids: session_ids,
   });
   const slots = cand_schedule.findAvailabilitySlotsDateRange();
   const filtered_slot_info = filterSchedulingOptionsArray({
@@ -70,7 +75,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     meeting_flow = 'self_scheduling';
     await candidateSelfSchedule(
       req.body,
-      cloned_sessn_data.map((s) => s.id),
+      session_ids,
       organizer_id,
       schedule_id,
       plans,
@@ -104,7 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await candidateAvailRequest(
       req.body,
       organizer_id,
-      cloned_sessn_data.map((s) => s.id),
+      session_ids,
       date_range.start_date_str,
       date_range.end_date_str,
       request_id,
@@ -123,7 +128,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       .in(
         'id',
-        cloned_sessn_data.map((s) => s.meeting_id),
+        meeting_details.map((m) => m.id),
       ),
   );
 
