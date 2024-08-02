@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let date_range = {
     start_date_str: dayjsLocal().format('DD/MM/YYYY'),
-    end_date_str: dayjsLocal().add(7).format('DD/MM/YYYY'),
+    end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
   };
   const api_target = target_api as DatabaseEnums['email_slack_types'];
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
