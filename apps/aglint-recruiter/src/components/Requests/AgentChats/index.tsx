@@ -211,10 +211,14 @@ function AgentChats() {
               }))
             : []
         }
-        sessionList={applicant_sessions.map((session) => ({
-          id: session.id,
-          display: session.name,
-        }))}
+        sessionList={
+          applicant_sessions
+            ? applicant_sessions.map((session) => ({
+                id: session.id,
+                display: session.name,
+              }))
+            : []
+        }
         getSelectedJob={({ id, display }) => {
           setSelectedJob({ id, display });
         }}
