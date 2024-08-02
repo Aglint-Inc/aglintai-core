@@ -1,6 +1,7 @@
-import { TextWithIcon } from '@/devlink2';
-import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { Stack } from '@mui/material';
+
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 
 function RequestProgress() {
   const dummyProgressData = [

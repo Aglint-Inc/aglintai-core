@@ -1,6 +1,7 @@
-import { TextWithIcon } from '@/devlink2';
 import { Stack } from '@mui/material';
 import React from 'react';
+
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 
 function CandidateDetails() {
   const candidateDetails = [

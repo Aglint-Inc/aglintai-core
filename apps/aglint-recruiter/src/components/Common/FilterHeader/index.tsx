@@ -1,8 +1,8 @@
 import { Divider, Stack } from '@mui/material';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { Text } from '@/devlink2/Text';
 
-import { Text } from '@/devlink2';
 import SearchField from '../SearchField/SearchField';
 import DateRangeSelector from './DateRangeSelector';
 import { FiltersComponent, FilterTypes } from './FilterComponents';

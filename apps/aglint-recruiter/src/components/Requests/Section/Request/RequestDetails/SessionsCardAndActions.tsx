@@ -1,6 +1,7 @@
-import { ButtonSoft } from '@/devlink2';
 import { Stack } from '@mui/material';
 import React from 'react';
+
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 
 function SessionsCardAndActions() {
   const sessionDetails = [

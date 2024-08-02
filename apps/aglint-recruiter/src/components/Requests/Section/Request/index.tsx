@@ -1,12 +1,12 @@
 import { Collapse } from '@mui/material';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
-import type { Request as RequestType } from '@/src/queries/requests/types';
-
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import { RequestProvider } from '@/src/context/RequestContext';
+import type { Request as RequestType } from '@/src/queries/requests/types';
+
 import RequestDetails from './RequestDetails';
-import { GlobalBadge } from '@/devlink2';
 
 export const Request = (props: PropsWithChildren<RequestType>) => {
   const [collapse, setCollapse] = useState(false);

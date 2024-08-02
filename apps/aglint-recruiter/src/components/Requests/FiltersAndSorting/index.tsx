@@ -1,4 +1,5 @@
 import React from 'react';
+
 import FilterHeader from '../../Common/FilterHeader';
 
 function FilterAndSorting() {
