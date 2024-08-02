@@ -73,5 +73,6 @@ export type CustomRequestType = Type<
   {
     type: "schedule_request";
     status: "to_do" | "in_progress" | "blocked" | "completed";
+    priority: "urgent" | "standard";
   }
 >;

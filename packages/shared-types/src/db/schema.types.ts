@@ -3470,6 +3470,8 @@ export type Database = {
           assigner_id: string
           created_at: string
           id: string
+          is_new: boolean
+          priority: string
           status: string
           title: string | null
           type: string
@@ -3480,6 +3482,8 @@ export type Database = {
           assigner_id?: string
           created_at?: string
           id?: string
+          is_new?: boolean
+          priority?: string
           status?: string
           title?: string | null
           type: string
@@ -3490,6 +3494,8 @@ export type Database = {
           assigner_id?: string
           created_at?: string
           id?: string
+          is_new?: boolean
+          priority?: string
           status?: string
           title?: string | null
           type?: string
@@ -5703,6 +5709,10 @@ export type Database = {
         Returns: Json[]
       }
       expire_new_applications: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      expire_new_requests: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
