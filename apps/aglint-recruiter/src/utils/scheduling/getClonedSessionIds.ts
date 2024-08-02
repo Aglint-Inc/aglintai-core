@@ -1,11 +1,21 @@
 /* eslint-disable security/detect-object-injection */
-import { ApiError, supabaseWrap } from '@aglint/shared-utils';
+import { DatabaseTable } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 type CloneSessionsType = {
-  cloned_session_ids: string[];
-  job_session_ids: string[];
+  old_new_session_ids: {
+    old_session_id: string;
+    new_session_id: string;
+  }[];
+  cloned_sessions: {
+    interview_meeting: Pick<DatabaseTable['interview_meeting'], 'id'>;
+    interview_session: Pick<
+      DatabaseTable['interview_session'],
+      'id' | 'meeting_id'
+    >;
+  }[];
   schedule_id: string;
 };
 export const getClonedSessionIds = async (
@@ -18,24 +28,32 @@ export const getClonedSessionIds = async (
     }),
   ) as CloneSessionsType;
 
-  let cloned_sessn_ids: string[] = [];
-  if (session_ids.find((s_id) => cloned_data.job_session_ids.includes(s_id))) {
-    cloned_sessn_ids = session_ids.map((s_id) => {
-      const idx = cloned_data.job_session_ids.findIndex(
-        (j_s_id) => j_s_id === s_id,
+  let cloned_sessn_data: Pick<
+    DatabaseTable['interview_session'],
+    'id' | 'meeting_id'
+  >[] = [];
+  cloned_sessn_data = session_ids.map((s_id) => {
+    if (cloned_data.old_new_session_ids.length > 0) {
+      let new_sess_map = cloned_data.old_new_session_ids.find(
+        (c) => c.old_session_id === s_id,
       );
-      return cloned_data.cloned_session_ids[idx];
-    });
-  } else if (
-    session_ids.every((s_id) => cloned_data.cloned_session_ids.includes(s_id))
-  ) {
-    cloned_sessn_ids = [...session_ids];
-  } else {
-    throw new ApiError(
-      'LOGIC',
-      'one of the session id does not match application session id',
-    );
-  }
+      let cloned_session_data = cloned_data.cloned_sessions.find(
+        (c) => c.interview_session.id === new_sess_map.new_session_id,
+      );
+      if (!cloned_session_data) {
+        throw new Error('session id not found in job session ids');
+      }
+      return cloned_session_data.interview_session;
+    } else {
+      let cloned_session_data = cloned_data.cloned_sessions.find(
+        (c) => c.interview_session.id === s_id,
+      );
+      if (!cloned_session_data) {
+        throw new Error('session id not found in job session ids');
+      }
+      return cloned_session_data.interview_session;
+    }
+  });
 
-  return { cloned_sessn_ids, schedule_id: cloned_data.schedule_id };
+  return { cloned_sessn_data, schedule_id: cloned_data.schedule_id };
 };

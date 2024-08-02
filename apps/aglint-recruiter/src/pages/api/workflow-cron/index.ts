@@ -20,22 +20,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         { error: 'Invalid request. Required props missing.' },
         401,
       );
-    if (meta.email_type.split('_').find((s) => s === 'email')) {
+    if (meta.target_api.split('_').find((s) => s === 'email')) {
       await axios.post(
-        process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.email_type}`,
+        process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.target_api}`,
         {
           ...meta,
         },
       );
-    } else if (meta.email_type.split('_').find((s) => s === 'slack')) {
+    } else if (meta.target_api.split('_').find((s) => s === 'slack')) {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.email_type}`,
+        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
+        {
+          ...meta,
+        },
+      );
+    } else if (
+      meta.target_api.startsWith('onAvailReqAgent') ||
+      meta.target_api.startsWith('onSelfScheduleReqAgent')
+    ) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
         {
           ...meta,
         },
       );
     }
-
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'success', completed_at: dayjsLocal().toISOString() })

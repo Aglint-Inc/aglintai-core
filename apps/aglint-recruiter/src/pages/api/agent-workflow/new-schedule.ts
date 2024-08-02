@@ -4,6 +4,7 @@ import {
   candidate_new_schedule_schema,
   supabaseWrap,
 } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
@@ -17,27 +18,26 @@ import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const {
-    api_options,
-    application_id,
-    session_ids,
-    target_api,
-    recruiter_id,
-    date_range,
-  } = v.parse(candidate_new_schedule_schema, req.body);
+  const { api_options, application_id, session_ids, target_api, recruiter_id } =
+    v.parse(candidate_new_schedule_schema, req.body);
+
+  let date_range = {
+    start_date_str: dayjsLocal().format('DD/MM/YYYY'),
+    end_date_str: dayjsLocal().add(7).format('DD/MM/YYYY'),
+  };
   const api_target = target_api as DatabaseEnums['email_slack_types'];
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
-  const { cloned_sessn_ids, schedule_id } = await getClonedSessionIds(
+  const { cloned_sessn_data, schedule_id } = await getClonedSessionIds(
     application_id,
     session_ids,
   );
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({
     company_id: recruiter_id,
-    start_date_str: date_range.start_date,
-    end_date_str: date_range.end_date,
+    start_date_str: date_range.start_date_str,
+    end_date_str: date_range.end_date_str,
     req_user_tz: 'Asia/Calcutta', //TODO:
-    session_ids: cloned_sessn_ids,
+    session_ids: cloned_sessn_data.map((s) => s.id),
   });
   const slots = cand_schedule.findAvailabilitySlotsDateRange();
   const filtered_slot_info = filterSchedulingOptionsArray({
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     meeting_flow = 'self_scheduling';
     await candidateSelfSchedule(
       req.body,
-      cloned_sessn_ids,
+      cloned_sessn_data.map((s) => s.id),
       organizer_id,
       schedule_id,
       plans,
@@ -87,18 +87,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (
     api_target === 'onAvailReqAgent_emailLink_getCandidateAvailability'
   ) {
-    await candidateAvailRequest(req.body, organizer_id, cloned_sessn_ids);
+    await candidateAvailRequest(
+      req.body,
+      organizer_id,
+      cloned_sessn_data.map((s) => s.id),
+    );
   } else if (
     api_target === 'onAvailReqAgent_emailAgent_getCandidateAvailability'
   ) {
     //
   }
-  const session_details = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_session')
-      .select()
-      .in('id', cloned_sessn_ids),
-  );
 
   supabaseWrap(
     await supabaseAdmin
@@ -108,7 +106,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       .in(
         'id',
-        session_details.map((s) => s.meeting_id),
+        cloned_sessn_data.map((s) => s.meeting_id),
       ),
   );
 
