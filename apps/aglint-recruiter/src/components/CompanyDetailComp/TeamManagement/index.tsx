@@ -40,9 +40,6 @@ const TeamManagement = () => {
     open: false,
     window: 'addMember',
   });
-  const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
-    null,
-  );
 
   // filter members
   const [searchText, setSearchText] = useState('');
@@ -258,7 +255,7 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  editMember={() => setEditMember(member)}
+                  // editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
                       toast.error(

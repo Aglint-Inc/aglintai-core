@@ -51,7 +51,6 @@ const Member = ({
     updateDB?: boolean,
   ) => Promise<boolean>;
   // eslint-disable-next-line no-unused-vars
-  editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
 }) => {
   const router = useRouter();
@@ -257,10 +256,11 @@ const Member = ({
                   }}
                   onClickEdit={{
                     onClick: () => {
-                      handleClose();
+                      // editMember(e);
                       router.push(
                         `/user/profile/${member.user_id}?edit_enable=true`,
                       );
+                      handleClose();
                     },
                   }}
                   onClickCancelInvite={{
