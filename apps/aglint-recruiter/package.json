@@ -94,6 +94,7 @@
     "react-drag-drop-files": "^2.3.10",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.2",
+    "react-mentions": "^4.4.10",
     "react-phone-input-2": "^2.15.1",
     "react-share": "^4.4.1",
     "react-speech-recognition": "^3.10.0",
