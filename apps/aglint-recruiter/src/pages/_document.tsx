@@ -4,6 +4,20 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head>
+      <style>{`
+            *[icon-color],
+            *[icon-size],
+            *[icon-weight] {
+              font-family: 'Material Symbols Rounded' !important;
+              font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 20;
+            }
+
+            .icons-hidden *[icon-color],
+            .icons-hidden *[icon-size],
+            .icons-hidden *[icon-weight] {
+              visibility: hidden;
+            }
+          `}</style>
         {/* <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link rel='preconnect' href='https://fonts.gstatic.com' />
         <link
@@ -22,7 +36,7 @@ export default function Document() {
         />
         <meta name='author' content='Aglint' />
       </Head>
-      <body>
+      <body className='icons-hidden'>
         <Main />
         <NextScript />
       </body>
