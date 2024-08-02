@@ -199,6 +199,8 @@ const MoveCandidateInterview = () => {
             assigner_id: recruiterUser?.user_id ?? null,
             title: task?.name ?? 'Request',
             type: 'schedule_request',
+            priority: 'standard',
+            status: 'to_do',
           }
         : null,
       sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
