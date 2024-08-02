@@ -19,7 +19,6 @@ import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
-import EditMember from './EditMemberDialog';
 import FilterDropDown from './FilterDropDown';
 import DepartmentIcon from './Icons/DepartmentIcon';
 import LocationIcon from './Icons/LocationIcon';
@@ -41,9 +40,6 @@ const TeamManagement = () => {
     open: false,
     window: 'addMember',
   });
-  const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
-    null,
-  );
 
   // filter members
   const [searchText, setSearchText] = useState('');
@@ -259,7 +255,7 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  editMember={() => setEditMember(member)}
+                  // editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
                       toast.error(
@@ -324,7 +320,7 @@ const TeamManagement = () => {
         )} pending invites awaiting your response.`}
       />
 
-      {editMember ? (
+      {/* {editMember ? (
         <EditMember
           open={Boolean(editMember)}
           memberList={activeMembers
@@ -338,27 +334,27 @@ const TeamManagement = () => {
             setEditMember(null);
           }}
         />
-      ) : (
-        <AddMember
-          open={openDrawer.open}
-          menu={openDrawer.window}
-          memberList={activeMembers.map((mem) => ({
-            id: mem.user_id,
-            name: getFullName(mem.first_name, mem.last_name),
-          }))}
-          pendingList={pendingList}
-          onClose={() => {
-            setOpenDrawer({ open: false, window: null });
-          }}
-        />
-      )}
+      ) : ( */}
+      <AddMember
+        open={openDrawer.open}
+        menu={openDrawer.window}
+        memberList={activeMembers.map((mem) => ({
+          id: mem.user_id,
+          name: getFullName(mem.first_name, mem.last_name),
+        }))}
+        pendingList={pendingList}
+        onClose={() => {
+          setOpenDrawer({ open: false, window: null });
+        }}
+      />
+      {/* )} */}
     </Stack>
   );
 };
 
 export default TeamManagement;
 
-const useTeamMembers = () => {
+export const useTeamMembers = () => {
   const {
     allMember: members,
     members: activeMembers,

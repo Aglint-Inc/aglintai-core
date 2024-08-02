@@ -43,6 +43,7 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
   '/jobs/[id]/workflows': ['job_module'],
   '/workflows': ['workflow_module'],
+  '/api/get_member':['authorized'],
   '/workflows/[id]': ['workflow_module'],
   '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],

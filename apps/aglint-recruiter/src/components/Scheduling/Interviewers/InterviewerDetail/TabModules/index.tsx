@@ -33,6 +33,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
       <PauseDialog />
       <ResumeDialog />
       <DeleteMemberDialog refetch={refetch} />
+
       <InterviewerDetailOverview
         isViewButtonVisible={false}
         textHeader1={'Qualified Interview Types'}
