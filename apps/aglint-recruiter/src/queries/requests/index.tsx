@@ -60,5 +60,17 @@ export const createRequest = async (
       .from('request')
       .insert({ ...newRequestData })
       .select('*')
+      .single()
+      .throwOnError()
+  ).data;
+
+export const createRequestSessionRelations = async (
+  newRequestData: DatabaseTableInsert['request_relation'][],
+) =>
+  (
+    await supabase
+      .from('request_relation')
+      .insert([...newRequestData])
+      .select('*')
       .throwOnError()
   ).data;

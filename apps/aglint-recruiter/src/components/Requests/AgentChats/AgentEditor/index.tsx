@@ -136,6 +136,7 @@ function AgentEditor({
     },
     singleLine: false,
     forceSuggestionsAboveCursor: true,
+    
 
     onKeyDown: (e) => {
       handleKeyDown(e);

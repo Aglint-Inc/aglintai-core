@@ -15,7 +15,10 @@ import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
-import { createRequest } from '@/src/queries/requests';
+import {
+  createRequest,
+  createRequestSessionRelations,
+} from '@/src/queries/requests';
 
 import dayjs from '@/src/utils/dayjs';
 import AgentEditor from './AgentEditor';
@@ -25,6 +28,7 @@ import {
   ScheduleType,
   scheduleType,
 } from './AgentEditor/utils';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 
 function AgentChats() {
   const { recruiterUser, recruiter_id } = useAuthDetails();
@@ -57,7 +61,7 @@ function AgentChats() {
     ? jobsAndApplications?.applications.filter(
         (application) => application.job_id === selectedJob.id,
       )
-    : [];
+    : jobsAndApplications?.applications;
   const { data: sessions, isFetched: isFetchedSessions } = useAllSessionsList({
     application_id: selectedApplication?.id,
     job_id: selectedJob?.id,
@@ -69,13 +73,25 @@ function AgentChats() {
       application_id: selectedApplication?.id,
       assigner_id: recruiterUser.user_id,
       assignee_id: recruiterUser.user_id,
-      title: 'Request for ' + textToObject?.schedule_type,
+      title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
+      status: 'to_do',
+      type: 'schedule_request',
+    }).then((res) => {
+      const sessionsRelations = selectedSession.map(
+        (ele) =>
+          ({
+            request_id: res.id,
+            session_id: ele.id,
+            cancel_id: null,
+          }) as DatabaseTableInsert['request_relation'],
+      );
+      createRequestSessionRelations(sessionsRelations);
     });
   }
   return (
     <Stack alignItems={'center'}>
       <Stack>
-        {loading && (
+        {loading ? (
           <>
             <Stack width={'100%'} p={1} direction={'column'} spacing={1}>
               <Stack position={'relative'} width={'480px'} height={'15px'}>
@@ -86,33 +102,34 @@ function AgentChats() {
               </Stack>
             </Stack>
           </>
-        )}
-        {textToObject && (
-          <>
-            <Stack
-              height={'100%'}
-              width={'100%'}
-              direction={'column'}
-              justifyContent={'space-between'}
-              alignItems={'flex-end'}
-              p={1}
-            >
-              <Typography
+        ) : (
+          textToObject && (
+            <>
+              <Stack
+                height={'100%'}
                 width={'100%'}
-                fontSize={18}
-                dangerouslySetInnerHTML={{
-                  __html: `Aglint AI will ${textToObject?.assignee === 'user' ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}` : textToObject?.assignee === 'phone' ? 'make a call' : 'send an email'} to <b>${textToObject?.applicant_name}</b> to get ${textToObject?.schedule_type} for the ${Array.isArray(textToObject?.interview_names) && textToObject?.interview_names.join(',')} interview between ${dayjsLocal(textToObject?.date_range.start_date).format('MMM DD')} and ${dayjsLocal(textToObject?.date_range.end_date).format('MMM DD')}. `,
-                }}
-              />
-              <ButtonSoft
-                size={1}
-                textButton='Proceed'
-                onClickButton={{
-                  onClick: handleSubmit,
-                }}
-              />
-            </Stack>
-          </>
+                direction={'column'}
+                justifyContent={'space-between'}
+                alignItems={'flex-end'}
+                p={1}
+              >
+                <Typography
+                  width={'100%'}
+                  fontSize={18}
+                  dangerouslySetInnerHTML={{
+                    __html: `Aglint AI will ${textToObject?.assignee === 'user' ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}` : textToObject?.assignee === 'phone' ? 'make a call' : 'send an email'} to <b>${textToObject?.applicant_name}</b> to get ${textToObject?.schedule_type} for the ${Array.isArray(textToObject?.interview_names) && textToObject?.interview_names.join(',')} interview between ${dayjsLocal(textToObject?.date_range.start_date).format('MMM DD')} and ${dayjsLocal(textToObject?.date_range.end_date).format('MMM DD')}. `,
+                  }}
+                />
+                <ButtonSoft
+                  size={1}
+                  textButton='Proceed'
+                  onClickButton={{
+                    onClick: handleSubmit,
+                  }}
+                />
+              </Stack>
+            </>
+          )
         )}
       </Stack>
       <AgentEditor
@@ -130,6 +147,11 @@ function AgentChats() {
             setLoading(true);
             extractDataFromText(text).then((data: ApplicantInfo) => {
               setTextToObject(data);
+              setSelectedJob({
+                id: data.job_title,
+                display: data.job_title,
+              });
+
               if (!selectedApplication?.id) {
                 getApplicationWithName(
                   data.applicant_name,
@@ -138,20 +160,23 @@ function AgentChats() {
               }
               setLoading(false);
             });
+          } else {
+            setTextToObject({
+              applicant_name: selectedApplication.display,
+              assignee: 'user',
+              date_range: {
+                start_date: dayjs().format('MM-DD-YYYY'),
+                end_date: dayjs().add(7, 'day').format('MM-DD-YYYY'),
+              },
+              interview_names: selectedSession.map(
+                (session) => session.display,
+              ),
+              job_title: selectedJob.display,
+              schedule_type: selectedScheduleType
+                ? (selectedScheduleType?.display as ScheduleType)
+                : 'schedule',
+            });
           }
-          setTextToObject({
-            applicant_name: selectedApplication.display,
-            assignee: 'user',
-            date_range: {
-              start_date: dayjs().format('MM-DD-YYYY'),
-              end_date: dayjs().add(7, 'day').format('MM-DD-YYYY'),
-            },
-            interview_names: selectedSession.map((session) => session.display),
-            job_title: selectedJob.display,
-            schedule_type: selectedScheduleType
-              ? (selectedScheduleType?.display as ScheduleType)
-              : 'schedule',
-          });
         }}
         isFetchedApplications={true}
         isFetchedSessions={isFetchedSessions}

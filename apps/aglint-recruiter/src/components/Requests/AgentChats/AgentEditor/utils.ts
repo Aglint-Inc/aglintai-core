@@ -97,7 +97,7 @@ export async function extractDataFromText(text: string) {
               "job_title":"string|null",
               "schedule_type":"schedule(default)|availability|self-schedule",
               "interview_names":"string[]|null",
-              "date_range":"{start_date:'MM-DD-YYYY',end_date:'MM-DD-YYYY'}| today date by default",
+              "date_range":"{start_date:'MM-DD-YYYY',end_date:'MM-DD-YYYY'}| from today next 7 days by default",
               "assignee":"email|phone|user(default)",
             }
           `,
