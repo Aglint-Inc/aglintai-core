@@ -97,6 +97,7 @@ export const API_PATHS = [
 '/api/getUserLocation',
 '/api/get_interview_feedback_details',
 '/api/get_last_login',
+'/api/get_member',
 '/api/get_scheduling_reason',
 '/api/google/overview',
 '/api/google/overview-handler',

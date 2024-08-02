@@ -40,7 +40,6 @@ const Member = ({
   member,
   removeMember,
   updateMember,
-  editMember,
   canSuspend,
 }: {
   member: RecruiterUserType;
@@ -257,9 +256,11 @@ const Member = ({
                     },
                   }}
                   onClickEdit={{
-                    onClick: (e) => {
-                      editMember(e);
+                    onClick: () => {
                       handleClose();
+                      router.push(
+                        `/user/profile/${member.user_id}?edit_enable=true`,
+                      );
                     },
                   }}
                   onClickCancelInvite={{
