@@ -1,11 +1,5 @@
-import {
-  ApiError,
-  candidate_new_schedule_schema,
-  getFullName,
-  supabaseWrap,
-} from '@aglint/shared-utils';
+import { ApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-import * as v from 'valibot';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
@@ -14,16 +8,18 @@ export const selfScheduleAgent = async ({
   agent_type,
   cloned_sessn_ids,
   agent_assigned_user_id,
-  req_body,
   schedule_id,
+  end_date_str,
+  start_date_str,
 }: {
   req_body: any;
   agent_assigned_user_id: string;
   cloned_sessn_ids: string[];
   schedule_id: string;
   agent_type: 'email' | 'phone';
+  start_date_str: string;
+  end_date_str: string;
 }) => {
-  const { date_range } = v.parse(candidate_new_schedule_schema, req_body);
   const [new_task] = supabaseWrap(
     await supabaseAdmin
       .from('new_tasks')
@@ -47,8 +43,8 @@ export const selfScheduleAgent = async ({
         session_ids: cloned_sessn_ids,
         schedule_id: schedule_id,
         filter_json: {
-          start_date: date_range.start_date,
-          end_date: date_range.end_date,
+          start_date: start_date_str,
+          end_date: end_date_str,
         },
         selected_options: [],
       })

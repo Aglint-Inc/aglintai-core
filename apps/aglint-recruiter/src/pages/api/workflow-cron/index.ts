@@ -44,6 +44,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ...meta,
         },
       );
+    } else if (meta.target_api.startsWith('onReceivingAvailReq')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cand-avail-recieved`,
+        {
+          ...meta,
+        },
+      );
     }
     await supabaseAdmin
       .from('workflow_action_logs')

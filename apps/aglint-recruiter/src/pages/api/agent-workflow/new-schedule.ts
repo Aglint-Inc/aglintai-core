@@ -68,6 +68,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_id,
       schedule_id,
       plans,
+      date_range.start_date_str,
+      date_range.end_date_str,
     );
   } else if (api_target === 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule') {
     await selfScheduleAgent({
