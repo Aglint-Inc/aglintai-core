@@ -69,7 +69,6 @@
       }
     },
     "updated_at": "2024-07-12 13:42:05.307982",
-    "department": "Software Development",
     "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
     "new_screening_setting": {
       "interview": {
@@ -252,7 +251,6 @@
       "job_type": "full time",
       "location": "San Francisco, California, USA",
       "job_title": "Engineering Manager, Product",
-      "department": "Software Development",
       "description": "<p><strong>Convex is transforming the way developers build applications.</strong> </p><p>Our mission is to fundamentally change how software is built on the Internet by empowering developers to create fast, reliable, and dynamic apps without the headaches of complex backend engineering or the hassles of database administration. We provide a cutting-edge, full-stack developer platform that seamlessly combines a powerful custom database with an integrated execution environment.</p><p></p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://convex.dev/about-us\"><strong><u>The Team:</u></strong></a></p><p>Convex has assembled a team of technologists who have built and designed some of the largest backends in the world, with exabytes of data, millions of transactions per second, and shipped desktop and mobile software onto billions of devices. We are a group of friendly, collaborative, and passionate individuals that love working in-person together in our offices in SF and NYC. </p><p></p><p><strong><u>The Role:</u></strong></p><p>We are looking to hire a highly technical product engineering leader to be an effective people manager and can be hands-on while our team is still small. In this role, you will initially take on both leadership and technical responsibilities. You will eventually be responsible fo rhiirng and growing the team as we expand.</p><p><strong><br />More details coming soon...</strong></p>",
       "workplace_type": "on site"
     },
@@ -348,7 +346,6 @@
       }
     },
     "updated_at": "2024-07-15 08:55:26.129608",
-    "department": "Software Development",
     "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
     "new_screening_setting": {
       "interview": {
@@ -419,7 +416,6 @@
       "job_type": "full time",
       "location": "Bengaluru, Karnataka, India",
       "job_title": "developer",
-      "department": "Software Development",
       "description": "<p>J<span>ob description must have more than 100 characters </span>Job description must have more than 100 characters Job description must have more than 100 characters Job description must have more than 100 characters </p>",
       "workplace_type": "hybrid"
     },
@@ -515,7 +511,6 @@
       }
     },
     "updated_at": "2024-07-12 12:40:00.1769",
-    "department": "it",
     "recruiter_id": "1a12a488-c3f3-462b-8b3b-ea429e4f7fdc",
     "new_screening_setting": {
       "interview": {
@@ -1260,7 +1255,6 @@
       "job_type": "full time",
       "location": "Redwood City",
       "job_title": "Software Engineer",
-      "department": "it",
       "description": "<p>Key Responsibilities :</p><p></p><p></p><p>Proficient in Embedded System design development, System Architecture Design: Collaborate with cross-functional teams, including engineers, product managers, and stakeholders to define the overall system architecture for automotive software Requirements Analysis: Analyze and understand the functional and technical requirements of automotive systems and translate them into software architecture and design specifications Proficient in Architecting end to end Embedded product Experience in Embedded Software Development using C/C/CPP; RTOS; developing Software for Electronic Control units Experience in Yocto, Embedded Linux Technical</p><p>Experience :</p><p>Free RTOS Good knowledge on connectivity protocols like BT, WiFi Experience working with Micro-controllers/processors Good experience in Requirement elicitation, deriving system requirements to software requirements Commitment to quality and high standards Knowledge of Requirements DOORS/Polarion etc and Configuration Management Tools git, SVN, etc Knowledge in Agile based development methodology. Â· Knowledge in complete V-model for ECU Development project. Â· Knowledge in Telematic Control Unit. Â· Knowledge on Touch GFX Good knowledge of the ISO26262 functional safety standards and implementation in compliance with the chosen standards.</p>",
       "workplace_type": "on site"
     },

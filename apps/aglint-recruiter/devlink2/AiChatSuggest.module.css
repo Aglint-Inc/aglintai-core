@@ -1,0 +1,24 @@
+.chat-suggest-wrap {
+  padding: var(--space-2);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  background-color: var(--white);
+}
+
+.csw-header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.csw-icon-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.csw-body-wrap {
+  margin-top: var(--space-3);
+}

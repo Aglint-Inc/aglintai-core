@@ -1,5 +1,6 @@
 export const API_PATHS = [
-'/api/agent-scheduling/send-availability-request-link',
+'/api/agent-workflow/cand-avail-recieved',
+'/api/agent-workflow/new-schedule',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
 '/api/ai/queryToJson',
@@ -148,6 +149,7 @@ export const API_PATHS = [
 '/api/scheduling/application/sendtocandidate',
 '/api/scheduling/auth/outlook',
 '/api/scheduling/auth/outlook-req-tokens',
+'/api/scheduling/candidate/schedule-email-agent',
 '/api/scheduling/cron/trigger',
 '/api/scheduling/debrief/auto-debrief.md',
 '/api/scheduling/debrief/schedule_individual',

@@ -46,6 +46,7 @@ export * from "./AssistantCandidateDetails";
 export * from "./AtsBadge";
 export * from "./AtsCard";
 export * from "./AtsJobs";
+export * from "./AtsSettings";
 export * from "./AudioAvatarCard";
 export * from "./AvailableTimeRange";
 export * from "./AvatarCard";

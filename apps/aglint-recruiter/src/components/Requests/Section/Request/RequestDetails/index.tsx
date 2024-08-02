@@ -19,7 +19,7 @@ import SessionsCardAndActions from './SessionsCardAndActions';
 
 function RequestDetails({
   request,
-  index
+  index,
 }: {
   request: PropsWithChildren<RequestType>;
   index: number;

@@ -3,7 +3,7 @@ import './EditorStyle.css'; // We will define some styles here
 
 import { Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Mention, MentionDataItem, MentionsInput } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';

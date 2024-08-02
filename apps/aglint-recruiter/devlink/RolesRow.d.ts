@@ -7,4 +7,5 @@ declare function RolesRow(props: {
   textRole?: React.ReactNode;
   textDescription?: React.ReactNode;
   slotAvatars?: Types.Devlink.Slot;
+  slotButtonAdd?: Types.Devlink.Slot;
 }): React.JSX.Element;

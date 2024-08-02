@@ -224,6 +224,7 @@ export const fetchRequestAvailibilities = async ({
         total_slots: item.total_slots,
         user_timezone: item.user_timezone,
         visited: item.visited,
+        request_id: item.request_id,
       };
     return {
       candidate_request_availability,

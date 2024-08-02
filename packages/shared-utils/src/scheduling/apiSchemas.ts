@@ -89,3 +89,46 @@ export const schema_send_avail_req_link = v.object({
   application_id: v.string(),
   company_id: v.string(),
 });
+
+export const candidate_new_schedule_schema = v.object({
+  application_id: v.string(),
+  recruiter_id: v.string(),
+  api_options: v.nullish(scheduling_options_schema, {}),
+  session_ids: v.array(v.string()),
+  target_api: v.any(),
+  request_id: v.string(),
+});
+
+export const candidate_avail_request_schema = v.intersect([
+  v.object({
+    number_of_days: v.optional(v.number(), 2),
+    number_of_slots: v.optional(v.number(), 2),
+  }),
+  candidate_new_schedule_schema,
+]);
+
+export const candidate_self_schedule_request = v.intersect([
+  candidate_new_schedule_schema,
+]);
+
+export const phone_agent_self_schedule_schema = v.intersect([
+  v.object({
+    begin_sentence_template: v.string(),
+    interviewer_name: v.string(),
+    filter_json_id: v.string(),
+    from_phone_no: v.string(),
+    to_phone_no: v.string(),
+    retell_agent_id: v.string(),
+    cand_email: v.string(),
+    task_id: v.nullable(v.string()),
+  }),
+]);
+
+export const email_agent_self_schedule_schema = v.intersect([
+  candidate_new_schedule_schema,
+  v.object({
+    filter_json_id: v.string(),
+    task_id: v.nullish(v.string()),
+    recruiter_user_id: v.string(),
+  }),
+]);

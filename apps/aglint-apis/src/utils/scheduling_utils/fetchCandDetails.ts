@@ -58,7 +58,7 @@ export const fetchCandidateDetails = async (
       const all_slots = await getallSlotsInDateRange({
         candidate_tz: 'Asia/colombo', // default time zone
         session_ids: cand_rec.session_ids,
-        start_date_str: filter_json.start_date,
+        start_date_str: filter_json.end_date,
         end_date_str: filter_json.end_date,
         recruiter_id: company_id,
       });
