@@ -1,9 +1,11 @@
 import type { Database } from "../schema.types";
 import type { CustomizableTypes, Type } from "../utils.types";
+import { CustomCreateSessionRequest } from "./create_session_request.types";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
 import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
+import { CustomMoveToInterview } from "./move_to_interview.types";
 import type { CustomUpdateDebriefSession } from "./update_debrief_session.types";
 
 type DatabaseFunctions = Database["public"]["Functions"];
@@ -50,5 +52,7 @@ export type Functions = Type<
     getsectioncounts: CustomGetSectionCounts;
     get_applicant_locations: CustomGetApplicantLocations;
     get_applicant_badges: CustomGetApplicantBadges;
+    create_session_request: CustomCreateSessionRequest;
+    move_to_interview: CustomMoveToInterview;
   }
 >;
