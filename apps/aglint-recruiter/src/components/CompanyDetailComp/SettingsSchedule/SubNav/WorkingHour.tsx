@@ -116,99 +116,18 @@ export default function WorkingHour({ updateSettings, initialData }) {
         padding={'16px'}
         spacing={2}
       >
-        <Stack
-          padding={'12px'}
-          bgcolor={'white'}
-          border={'1px solid var(--neutral-6)'}
-          borderRadius={'var(--radius-4)'}
-          width={'600px'}
-        >
-          <Typography fontWeight={500} pb={'8px'}>
-            Time zone
-          </Typography>
-          <Typography>{initialData?.timeZone.label}</Typography>
-        </Stack>
-        <Stack
-          padding={'12px'}
-          bgcolor={'white'}
-          border={'1px solid var(--neutral-6)'}
-          borderRadius={'var(--radius-4)'}
-          width={'600px'}
-        >
-          <Typography fontWeight={500} pb={'8px'}>
-            Default Break Times
-          </Typography>
-          <Stack></Stack>
-          <Typography pb={'4px'}>
-            Break Start Time
-            {dayjs()
-              .set(
-                'hour',
-                parseInt(initialData.break_hour?.start_time?.split(':')[0]),
-              )
-              .set(
-                'minute',
-                parseInt(initialData.break_hour?.start_time?.split(':')[1]),
-              )
-              .format('hh:mm A')}
-          </Typography>
-          <Typography>
-            Break End Time{' '}
-            {dayjs()
-              .set(
-                'hour',
-                parseInt(initialData.break_hour?.end_time?.split(':')[0]),
-              )
-              .set(
-                'minute',
-                parseInt(initialData.break_hour?.end_time?.split(':')[1]),
-              )
-              .format('hh:mm A')}
-          </Typography>
-        </Stack>
-        <WorkingHourDetails
-          slotEdit={
-            <Stack pl={2}>
-              <ButtonGhost
-                textButton='Edit'
-                size={1}
-                onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-              />
-            </Stack>
-          }
-          slotDays={initialData.workingHours
-            .filter((day) => day.isWorkDay)
-            .map((day, i) => (
-              <WorkingDaysList
-                key={i}
-                textDay={<Typography>{capitalize(day.day)}</Typography>}
-                textTime={
-                  <Typography>
-                    {dayjs()
-                      .set(
-                        'hour',
-                        parseInt(day?.timeRange.startTime?.split(':')[0]),
-                      )
-                      .set(
-                        'minute',
-                        parseInt(day?.timeRange.startTime?.split(':')[1]),
-                      )
-                      .format('hh:mm A')}
-                    {' - '}
-                    {dayjs()
-                      .set(
-                        'hour',
-                        parseInt(day?.timeRange.endTime?.split(':')[0]),
-                      )
-                      .set(
-                        'minute',
-                        parseInt(day?.timeRange.endTime?.split(':')[1]),
-                      )
-                      .format('hh:mm A')}
-                  </Typography>
-                }
-              />
-            ))}
+        <TimeZone
+          timeZone={initialData?.timeZone.label}
+          setIsDrawerOpen={setIsDrawerOpen}
+        />
+
+        <Debreif
+          breaktime={initialData.break_hour}
+          setIsDrawerOpen={setIsDrawerOpen}
+        />
+        <WorkingHourView
+          setIsDrawerOpen={setIsDrawerOpen}
+          workingHours={initialData.workingHours}
         />
 
         <Drawer
@@ -455,3 +374,141 @@ export default function WorkingHour({ updateSettings, initialData }) {
     </Stack>
   );
 }
+
+const WorkingHourView = ({ setIsDrawerOpen, workingHours }) => {
+  const [isEditHover, setIsEditHover] = useState(false);
+  return (
+    <Stack
+      onMouseEnter={() => setIsEditHover(true)}
+      onMouseLeave={() => setIsEditHover(false)}
+    >
+      <WorkingHourDetails
+        slotEdit={
+          <Stack pl={2} height={'20px'}>
+            {isEditHover && (
+              <ButtonGhost
+                textButton='Edit'
+                size={1}
+                onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
+              />
+            )}
+          </Stack>
+        }
+        slotDays={workingHours
+          .filter((day) => day.isWorkDay)
+          .map((day, i) => (
+            <WorkingDaysList
+              key={i}
+              textDay={<Typography>{capitalize(day.day)}</Typography>}
+              textTime={
+                <Typography>
+                  {dayjs()
+                    .set(
+                      'hour',
+                      parseInt(day?.timeRange.startTime?.split(':')[0]),
+                    )
+                    .set(
+                      'minute',
+                      parseInt(day?.timeRange.startTime?.split(':')[1]),
+                    )
+                    .format('hh:mm A')}
+                  {' - '}
+                  {dayjs()
+                    .set(
+                      'hour',
+                      parseInt(day?.timeRange.endTime?.split(':')[0]),
+                    )
+                    .set(
+                      'minute',
+                      parseInt(day?.timeRange.endTime?.split(':')[1]),
+                    )
+                    .format('hh:mm A')}
+                </Typography>
+              }
+            />
+          ))}
+      />
+    </Stack>
+  );
+};
+const TimeZone = ({ timeZone, setIsDrawerOpen }) => {
+  const [isEditHover, setIsEditHover] = useState(false);
+  return (
+    <Stack
+      padding={'12px'}
+      bgcolor={'white'}
+      border={'1px solid var(--neutral-6)'}
+      borderRadius={'var(--radius-4)'}
+      width={'600px'}
+      onMouseEnter={() => setIsEditHover(true)}
+      onMouseLeave={() => setIsEditHover(false)}
+    >
+      <Stack
+        fontWeight={500}
+        alignItems={'center'}
+        height={'10px'}
+        paddingBlock={2}
+        direction={'row'}
+      >
+        Time zone{' '}
+        {isEditHover && (
+          <Stack pl={2}>
+            <ButtonGhost
+              textButton='Edit'
+              size={1}
+              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
+            />
+          </Stack>
+        )}
+      </Stack>
+      <Typography>{timeZone}</Typography>
+    </Stack>
+  );
+};
+const Debreif = ({ breaktime, setIsDrawerOpen }) => {
+  const [isEditHover, setIsEditHover] = useState(false);
+  return (
+    <Stack
+      padding={'12px'}
+      bgcolor={'white'}
+      border={'1px solid var(--neutral-6)'}
+      borderRadius={'var(--radius-4)'}
+      width={'600px'}
+      onMouseEnter={() => setIsEditHover(true)}
+      onMouseLeave={() => setIsEditHover(false)}
+    >
+      <Stack
+        fontWeight={500}
+        alignItems={'center'}
+        height={'10px'}
+        paddingBlock={2}
+        direction={'row'}
+      >
+        Default Break Times{' '}
+        {isEditHover && (
+          <Stack pl={2}>
+            <ButtonGhost
+              textButton='Edit'
+              size={1}
+              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
+            />
+          </Stack>
+        )}
+      </Stack>
+      <Typography pb={'4px'}>
+        Break Start Time
+        {dayjs()
+          .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
+          .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
+          .format('hh:mm A')}
+      </Typography>
+      <Typography>
+        Break End Time{' '}
+        {dayjs()
+          .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
+          .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
+          .format('hh:mm A')}
+      </Typography>
+    </Stack>
+  );
+};
