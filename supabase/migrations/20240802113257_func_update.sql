@@ -1,38 +1,7 @@
-alter type "public"."workflow_cron_trigger_tables" rename to "workflow_cron_trigger_tables__old_version_to_be_dropped";
-
-create type "public"."workflow_cron_trigger_tables" as enum ('interview_meeting', 'interview_session_relation', 'interview_filter_json', 'candidate_request_availability', 'interview_module_relation', 'interview_training_progress', 'request');
-
-alter table "public"."workflow_action_logs" alter column related_table type "public"."workflow_cron_trigger_tables" using related_table::text::"public"."workflow_cron_trigger_tables";
-
-drop type "public"."workflow_cron_trigger_tables__old_version_to_be_dropped";
-
 alter table "public"."candidate_request_availability" add column "request_id" uuid;
 
 alter table "public"."interview_filter_json" add column "request_id" uuid;
 
-alter table "public"."request_completed_event" drop column "completed_at";
-
-alter table "public"."request_completed_event" add column "triggered_at" timestamp with time zone not null default now();
-
-alter table "public"."request_completed_event" alter column "event" drop not null;
-
-alter table "public"."request_completed_event" alter column "event" set data type text using "event"::text;
-
-alter table "public"."request_completed_event" alter column "id" set default gen_random_uuid();
-
-alter table "public"."request_completed_event" alter column "id" drop identity;
-
-alter table "public"."request_completed_event" alter column "id" set data type uuid using "id"::uuid;
-
-alter table "public"."request_completed_event" alter column "request_id" drop default;
-
-alter table "public"."request_completed_event" alter column "request_id" set not null;
-
-alter table "public"."request_completed_event" enable row level security;
-
-CREATE UNIQUE INDEX request_completed_event_pkey ON public.request_completed_event USING btree (id);
-
-alter table "public"."request_completed_event" add constraint "request_completed_event_pkey" PRIMARY KEY using index "request_completed_event_pkey";
 
 alter table "public"."candidate_request_availability" add constraint "public_candidate_request_availability_request_id_fkey" FOREIGN KEY (request_id) REFERENCES request(id) ON UPDATE CASCADE ON DELETE SET NULL not valid;
 
@@ -42,9 +11,7 @@ alter table "public"."interview_filter_json" add constraint "public_interview_fi
 
 alter table "public"."interview_filter_json" validate constraint "public_interview_filter_json_request_id_fkey";
 
-alter table "public"."request_completed_event" add constraint "public_request_completed_event_request_id_fkey" FOREIGN KEY (request_id) REFERENCES request(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
-alter table "public"."request_completed_event" validate constraint "public_request_completed_event_request_id_fkey";
 
 set check_function_bodies = off;
 
