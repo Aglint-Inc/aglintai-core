@@ -13,6 +13,7 @@ export const candidateAvailRequest = async (
   cloned_sessn_ids: string[],
   start_date_str,
   end_date_str,
+  request_id: string,
 ) => {
   const {
     application_id,
@@ -40,6 +41,7 @@ export const candidateAvailRequest = async (
             api_options.include_conflicting_slots.out_of_working_hrs,
           recruiting_block_keywords: api_options.use_recruiting_blocks,
         },
+        request_id: request_id,
       })
       .select(),
   );

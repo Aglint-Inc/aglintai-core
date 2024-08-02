@@ -12,6 +12,7 @@ export const candidateSelfSchedule = async (
   plans: PlanCombinationRespType[],
   start_date_str: string,
   end_date_str: string,
+  request_id: string,
 ) => {
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
@@ -24,6 +25,7 @@ export const candidateSelfSchedule = async (
           end_date: end_date_str,
         },
         selected_options: [...plans],
+        request_id: request_id,
       })
       .select(),
   );

@@ -169,18 +169,6 @@ export type Database = {
         }
         Relationships: []
       }
-      app_job_id: {
-        Row: {
-          id: string | null
-        }
-        Insert: {
-          id?: string | null
-        }
-        Update: {
-          id?: string | null
-        }
-        Relationships: []
-      }
       application_email_status: {
         Row: {
           application_id: string
@@ -835,7 +823,8 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          slots: Json | null
+          request_id: string | null
+          slots: Json[] | null
           total_slots: number | null
           user_timezone: string | null
           visited: boolean | null
@@ -851,7 +840,8 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          slots?: Json | null
+          request_id?: string | null
+          slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
           visited?: boolean | null
@@ -867,7 +857,8 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          slots?: Json | null
+          request_id?: string | null
+          slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
           visited?: boolean | null
@@ -906,6 +897,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_candidate_request_availability_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -1231,6 +1229,7 @@ export type Database = {
           filter_json: Json
           id: string
           is_flow_agent: boolean
+          request_id: string | null
           schedule_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
@@ -1244,6 +1243,7 @@ export type Database = {
           filter_json: Json
           id?: string
           is_flow_agent?: boolean
+          request_id?: string | null
           schedule_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
@@ -1257,6 +1257,7 @@ export type Database = {
           filter_json?: Json
           id?: string
           is_flow_agent?: boolean
+          request_id?: string | null
           schedule_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
@@ -1284,6 +1285,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_filter_json_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
@@ -3449,18 +3457,6 @@ export type Database = {
           },
         ]
       }
-      req_sess_ids: {
-        Row: {
-          array_agg: string[] | null
-        }
-        Insert: {
-          array_agg?: string[] | null
-        }
-        Update: {
-          array_agg?: string[] | null
-        }
-        Relationships: []
-      }
       request: {
         Row: {
           application_id: string | null
@@ -3584,15 +3580,7 @@ export type Database = {
           id?: number
           request_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_requests_events_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       request_integration_tool: {
         Row: {

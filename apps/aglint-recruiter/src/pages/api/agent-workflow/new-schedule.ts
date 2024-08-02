@@ -19,8 +19,14 @@ import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { api_options, application_id, session_ids, target_api, recruiter_id } =
-    v.parse(candidate_new_schedule_schema, req.body);
+  const {
+    api_options,
+    application_id,
+    session_ids,
+    target_api,
+    recruiter_id,
+    request_id,
+  } = v.parse(candidate_new_schedule_schema, req.body);
 
   let date_range = {
     start_date_str: dayjsLocal().format('DD/MM/YYYY'),
@@ -70,6 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       plans,
       date_range.start_date_str,
       date_range.end_date_str,
+      request_id,
     );
   } else if (api_target === 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule') {
     await selfScheduleAgent({
@@ -100,6 +107,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       cloned_sessn_data.map((s) => s.id),
       date_range.start_date_str,
       date_range.end_date_str,
+      request_id,
     );
   } else {
     throw new ApiError('SERVER', 'new-schedule not found');
