@@ -5,23 +5,21 @@ import { emailsDirectoryAbsolutePath } from '../utils/emails-directory-absolute-
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getEmailPathFromSlug = async (slug: string) => {
-  if (['.tsx', '.jsx', '.ts', '.js'].includes(path.extname(slug)))
-    return path.join(emailsDirectoryAbsolutePath, slug);
+  const normalizedSlug = path.normalize(slug); 
+  if (['.tsx', '.jsx', '.ts', '.js'].includes(path.extname(normalizedSlug)))
+    return path.join(emailsDirectoryAbsolutePath, normalizedSlug);
 
-  const pathWithoutExtension = path.join(emailsDirectoryAbsolutePath, slug);
+  const pathWithoutExtension = path.join(emailsDirectoryAbsolutePath, normalizedSlug);
 
-  if (fs.existsSync(`${pathWithoutExtension}.tsx`)) {
-    return `${pathWithoutExtension}.tsx`;
-  } else if (fs.existsSync(`${pathWithoutExtension}.jsx`)) {
-    return `${pathWithoutExtension}.jsx`;
-  } else if (fs.existsSync(`${pathWithoutExtension}.ts`)) {
-    return `${pathWithoutExtension}.ts`;
-  } else if (fs.existsSync(`${pathWithoutExtension}.js`)) {
-    return `${pathWithoutExtension}.js`;
+  const extensions = ['.tsx', '.jsx', '.ts', '.js'];
+  for (const extension of extensions) {
+    if (fs.existsSync(`${pathWithoutExtension}${extension}`)) {
+      return `${pathWithoutExtension}${extension}`;
+    }
   }
 
   throw new Error(
-    `Could not find your email file based on the slug (${slug}) by guessing the file extension. Tried .tsx, .jsx, .ts and .js.
+    `Could not find your email file based on the slug (${normalizedSlug}) by guessing the file extension. Tried .tsx, .jsx, .ts and .js.
 
     This is most likely not an issue with the preview server. It most likely is that the email doesn't exist.`,
   );
