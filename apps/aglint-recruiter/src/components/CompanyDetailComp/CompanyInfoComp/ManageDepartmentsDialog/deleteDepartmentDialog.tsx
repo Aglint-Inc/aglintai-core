@@ -20,7 +20,6 @@ function DeleteDepartmentsDialog({
   handleDelete: () => void;
 }) {
   const { data: usage, isPending } = useDepartmentsUsage(id);
-
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <DcPopup

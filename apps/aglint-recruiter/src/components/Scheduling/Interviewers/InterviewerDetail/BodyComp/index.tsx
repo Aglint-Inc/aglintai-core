@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -17,6 +16,7 @@ import Overview from '../Overview';
 import AddInterviewTypeDialog from '../Popups/AddInterviewTypeDialog';
 import { useAllSchedulesByUserId } from '../query';
 import TabInterviewModules from '../TabModules';
+import Availibility from '../TabModules/Availibility';
 import Tabs from '../Tabs';
 
 function BodyComp() {
@@ -30,8 +30,11 @@ function BodyComp() {
 
   const user_id = router.query.user_id as string;
 
-  const { data: interviewerDetails, isLoading: isLoadingInterviewer } =
-    useImrQuery({ user_id });
+  const {
+    data: interviewerDetails,
+    isLoading: isLoadingInterviewer,
+    refetch: interviewerDetailsRefetch,
+  } = useImrQuery({ user_id });
 
   const {
     data: {
@@ -49,6 +52,7 @@ function BodyComp() {
   });
 
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;
+
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
@@ -58,7 +62,16 @@ function BodyComp() {
           slotNewTabPill={<Tabs />}
           slotTabContent={
             <>
-              {tab === 'overview' && <Overview scheduleList={allSchedules} />}
+              {tab === 'overview' && (
+                <Overview
+                  scheduleList={allSchedules}
+                  interviewerDetails={interviewerDetails}
+                  totalHoursThisWeek={totalHoursThisWeek}
+                  totalHoursToday={totalHoursToday}
+                  totalInterviewsThisWeek={totalInterviewsThisWeek}
+                  totalInterviewsToday={totalInterviewsToday}
+                />
+              )}
               {tab === 'keywords' && (
                 <InterviewerLevelSettings
                   initialData={interviewerDetails?.scheduling_settings}
@@ -72,18 +85,24 @@ function BodyComp() {
                 />
               )}
               {tab === 'availibility' && (
-                <InterviewerLevelSettings
-                  initialData={interviewerDetails?.scheduling_settings as any}
+                <Availibility
+                  interviewerDetailsRefetch={interviewerDetailsRefetch}
+                  interviewerDetails={interviewerDetails}
+                  totalHoursThisWeek={totalHoursThisWeek}
+                  totalHoursToday={totalHoursToday}
+                  totalInterviewsThisWeek={totalInterviewsThisWeek}
+                  totalInterviewsToday={totalInterviewsToday}
                   updateSettings={(x) => {
                     return handleMemberUpdate({
                       user_id: interviewerDetails.user_id,
                       data: { scheduling_settings: x },
                     });
                   }}
-                  isAvailability={true}
                 />
               )}
-              {tab === 'interviewtypes' && <TabInterviewModules />}
+              {tab === 'qualified' && <TabInterviewModules type='qualified' />}
+              {tab === 'training' && <TabInterviewModules type='training' />}
+              {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
               {tab === 'allschedules' && (
                 <Interviews
                   allSchedules={allSchedules}
@@ -117,62 +136,8 @@ function BodyComp() {
             />
           }
           textTimeZone={interviewerDetails.scheduling_settings?.timeZone.label}
-          textInterviewPerDay={
-            <ShowCode>
-              <ShowCode.When
-                isTrue={
-                  interviewerDetails?.scheduling_settings?.interviewLoad
-                    ?.dailyLimit.type === 'Interviews'
-                }
-              >
-                {totalInterviewsToday +
-                  ' / ' +
-                  interviewerDetails.scheduling_settings?.interviewLoad
-                    ?.dailyLimit.value || 0}{' '}
-                Interviews
-              </ShowCode.When>
-              <ShowCode.When
-                isTrue={
-                  interviewerDetails?.scheduling_settings?.interviewLoad
-                    ?.dailyLimit.type === 'Hours'
-                }
-              >
-                {totalHoursToday +
-                  ' / ' +
-                  interviewerDetails.scheduling_settings?.interviewLoad
-                    ?.dailyLimit.value || 0}{' '}
-                Hours
-              </ShowCode.When>
-            </ShowCode>
-          }
-          textInterviewPerWeek={
-            <ShowCode>
-              <ShowCode.When
-                isTrue={
-                  interviewerDetails?.scheduling_settings?.interviewLoad
-                    ?.weeklyLimit.type === 'Interviews'
-                }
-              >
-                {totalInterviewsThisWeek +
-                  ' / ' +
-                  interviewerDetails.scheduling_settings?.interviewLoad
-                    ?.weeklyLimit.value || 0}{' '}
-                Interviews
-              </ShowCode.When>
-              <ShowCode.When
-                isTrue={
-                  interviewerDetails?.scheduling_settings?.interviewLoad
-                    ?.weeklyLimit.type === 'Hours'
-                }
-              >
-                {totalHoursThisWeek +
-                  ' / ' +
-                  interviewerDetails.scheduling_settings?.interviewLoad
-                    ?.weeklyLimit.value || 0}{' '}
-                Hours
-              </ShowCode.When>
-            </ShowCode>
-          }
+          textInterviewPerDay={''}
+          textInterviewPerWeek={''}
         />
       )}
       <AddInterviewTypeDialog />

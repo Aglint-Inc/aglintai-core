@@ -47,7 +47,7 @@ const TrainingStatusComponent = () => {
         key={id}
         onClick={() =>
           router.push(
-            `${ROUTES['/scheduling/module/members/[module_id]']({ module_id: id })}`,
+            `${ROUTES['/scheduling/interview-types/[type_id]']({ type_id: id })}`,
           )
         }
         sx={{

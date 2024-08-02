@@ -90,8 +90,8 @@ function SlotBodyComp({
       // eslint-disable-next-line security/detect-object-injection
       currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
     router.push(
-      ROUTES['/scheduling/module/members/[module_id]']({
-        module_id: editModule.id,
+      ROUTES['/scheduling/interview-types/[type_id]']({
+        type_id: editModule.id,
       }) + `?tab=${pre}`,
       undefined,
       {
