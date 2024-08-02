@@ -190,6 +190,7 @@ export * from "./NoConflicts";
 export * from "./NoData";
 export * from "./PipeLine";
 export * from "./Placehold";
+export * from "./PlanProgress";
 export * from "./PopupAgentFollowup";
 export * from "./PriorityOption";
 export * from "./PriorityPill";
