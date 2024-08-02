@@ -319,7 +319,7 @@ function AgentEditor({
   };
 
   const mentionRequestList: MentionComponentProps = {
-    trigger: '23',
+    trigger: '',
     data:
       requestList.length > 0
         ? requestList

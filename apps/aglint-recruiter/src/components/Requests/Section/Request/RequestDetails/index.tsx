@@ -1,3 +1,4 @@
+import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { Text } from '@/devlink/Text';
@@ -5,16 +6,22 @@ import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
+import { useRequests } from '@/src/context/RequestsContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import CandidateDetails from './CandidateDetails';
 import ReasonDetails from './ReasonDetails';
 import RequestProgress, { RequestProgressSkeleton } from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
-function RequestDetails() {
+function RequestDetails({ request_id }: { request_id: string }) {
   const {
     request_progress: { status },
   } = useRequest();
+  const {
+    requests: { refetch },
+  } = useRequests();
 
   // if (status === 'error') return <>Error</>;
   // if (status === 'pending') return <>Loading...</>;
@@ -65,7 +72,21 @@ function RequestDetails() {
                   }
                   highContrast={false}
                 />
-                <ButtonSoft size={1} textButton={'Proceed'} />
+                <ButtonSoft
+                  onClickButton={{
+                    onClick: () => {
+                      updateRequestSessionRelations({
+                        status: 'in_progress',
+                        id: request_id,
+                      }).then(() => {
+                        refetch();
+                        toast.message('Request updated successfully');
+                      });
+                    },
+                  }}
+                  size={1}
+                  textButton={'Proceed'}
+                />
               </Stack>
             </>
           </ShowCode.Else>
@@ -76,3 +97,16 @@ function RequestDetails() {
 }
 
 export default RequestDetails;
+
+export const updateRequestSessionRelations = async ({
+  id,
+  ...rest
+}: DatabaseTableUpdate['request']) =>
+  (
+    await supabase
+      .from('request')
+      .update({ ...rest })
+      .eq('id', id)
+      .select('*')
+      .throwOnError()
+  ).data;
