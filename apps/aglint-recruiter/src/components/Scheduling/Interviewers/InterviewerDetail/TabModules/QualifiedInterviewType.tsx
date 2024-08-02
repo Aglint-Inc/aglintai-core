@@ -30,7 +30,7 @@ function QualifiedInterviewTypeCard({
       isTrainingProgressDetailVisible={true}
       slotTrainingProgressDetail={
         <Collapse in={collapseOpen}>
-          <Stack px={'var(--space-5)'} pb={'var(--space-5)'}>
+          <Stack pb={'var(--space-5)'} pl={'var(--space-3)'}>
             <Typography variant='body1'>
               {relation.module_description}
             </Typography>
@@ -62,8 +62,8 @@ function QualifiedInterviewTypeCard({
       onClickCard={{
         onClick: () => {
           router.push(
-            ROUTES['/scheduling/module/members/[module_id]']({
-              module_id: relation.module_id,
+            ROUTES['/scheduling/interview-types/[type_id]']({
+              type_id: relation.module_id,
             }),
           );
         },

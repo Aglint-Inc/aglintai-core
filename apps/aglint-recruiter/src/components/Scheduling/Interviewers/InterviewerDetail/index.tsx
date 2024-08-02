@@ -11,7 +11,9 @@ export type TabInterviewerDetail =
   | 'interviewtypes'
   | 'allschedules'
   | 'availibility'
-  | 'keywords';
+  | 'keywords'
+  | 'qualified'
+  | 'training';
 
 function Interviewer() {
   const router = useRouter();

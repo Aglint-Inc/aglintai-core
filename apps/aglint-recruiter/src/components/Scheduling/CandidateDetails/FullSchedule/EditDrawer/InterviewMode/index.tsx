@@ -174,8 +174,8 @@ function InterviewModeComp() {
                 onClickButton={{
                   onClick: () =>
                     router.push(
-                      ROUTES['/scheduling/module/members/[module_id]']({
-                        module_id: moduleCurrent.id,
+                      ROUTES['/scheduling/interview-types/[type_id]']({
+                        type_id: moduleCurrent.id,
                       }),
                     ),
                 }}

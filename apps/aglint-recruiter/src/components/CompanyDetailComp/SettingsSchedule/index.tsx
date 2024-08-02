@@ -42,17 +42,12 @@ import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { InterviewLoad } from '@/devlink2/InterviewLoad';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
-import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { Text } from '@/devlink2/Text';
 import { TextWithBg } from '@/devlink2/TextWithBg';
-import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
-import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
-import { WorkingHours } from '@/devlink2/WorkingHours';
 import { DayOffHelper } from '@/devlink3/DayOffHelper';
 import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
 import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
-import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -61,15 +56,14 @@ import toast from '@/src/utils/toast';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
-import ToggleBtn from '../../Common/UIToggle';
 import DateSelect from './Components/DateSelector';
 import MuiNumberfield from './Components/MuiNumberfield';
-import SelectTime from './Components/SelectTime';
 import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
 import { settingsItems, settingSubNavItem } from './SubNav/utils';
+import WorkingHour from './SubNav/WorkingHour';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -108,16 +102,9 @@ function SchedulingSettings({
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
 
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
-  const [isTimeZone, setIsTimeZone] = useState(true);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [specificLocationOn, setSpecificLocationOn] =
     useState<specificLocationType>('all_locations');
-
-  const [selectedHourBreak, setSelectedHourBreak] = useState<{
-    start_time: string;
-    end_time: string;
-  } | null>({ start_time: '', end_time: '' });
 
   const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
     daily: {
@@ -133,7 +120,6 @@ function SchedulingSettings({
   });
   const [helperWidth, setHelperWidth] = useState(420);
   const [helperKeywords, setHelperKeywords] = useState(420);
-  const [helperWorking, setHelperWorking] = useState(420);
   const toggleHelperTextWidth = () => {
     // Toggle between 0px and 420px
     setHelperWidth(helperWidth === 10 ? 420 : 10);
@@ -142,10 +128,7 @@ function SchedulingSettings({
     // Toggle between 0px and 420px
     setHelperKeywords(helperKeywords === 10 ? 420 : 10);
   };
-  const toggleHelperWorking = () => {
-    // Toggle between 0px and 420px
-    setHelperWorking(helperWorking === 10 ? 420 : 10);
-  };
+
   const [isTipVisible, setIsTipVisible] = useState(true);
   const handleCloseInfo = () => {
     setIsTipVisible(false);
@@ -209,22 +192,6 @@ function SchedulingSettings({
     }
   }
 
-  const selectStartTime = (value: any, i: number) => {
-    setWorkingHours((pre) => {
-      const data = pre;
-      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:mm')}`;
-      return [...data];
-    });
-  };
-
-  const selectEndTime = (value: any, i: number) => {
-    setWorkingHours((pre) => {
-      const data = pre;
-      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:mm')}`;
-      return [...data];
-    });
-  };
-
   ///////////// DayOff Popup //////////////
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const openAddCompany = (event: MouseEvent<HTMLButtonElement>) => {
@@ -256,9 +223,6 @@ function SchedulingSettings({
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
 
-      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
-      setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
-
       setInterviewLoad({
         daily: {
           type: schedulingSettingData.interviewLoad.dailyLimit.type,
@@ -289,10 +253,7 @@ function SchedulingSettings({
       setRecruitingBlocks(
         schedulingSettingData?.schedulingKeyWords?.recruitingBlocks || [],
       );
-      setSelectedHourBreak({
-        start_time: schedulingSettingData.break_hour?.start_time,
-        end_time: schedulingSettingData.break_hour?.end_time,
-      });
+
       setDebriefDefaults(
         schedulingSettingData?.debrief_defaults ?? {
           hiring_manager: false,
@@ -318,7 +279,6 @@ function SchedulingSettings({
             value: interviewLoad.weekly.value,
           },
         },
-        timeZone: selectedTimeZone,
         workingHours: workingHours,
         totalDaysOff: daysOff,
         schedulingKeyWords: {
@@ -326,11 +286,6 @@ function SchedulingSettings({
           SoftConflicts: softConflictsKeyWords,
           outOfOffice: outOfOffice,
           recruitingBlocks: recruitingBlocks,
-        },
-        isAutomaticTimezone: isTimeZone,
-        break_hour: {
-          start_time: selectedHourBreak.start_time,
-          end_time: selectedHourBreak.end_time,
         },
         debrief_defaults: debriefDefaults,
       } as schedulingSettingType;
@@ -345,13 +300,10 @@ function SchedulingSettings({
     interviewLoad,
     daysOff,
     workingHours,
-    selectedTimeZone,
     freeKeyWords,
     softConflictsKeyWords,
     outOfOffice,
     recruitingBlocks,
-    isTimeZone,
-    selectedHourBreak,
     debriefDefaults,
   ]);
 
@@ -378,245 +330,10 @@ function SchedulingSettings({
           <ShowCode.When
             isTrue={router.query.tab == settingSubNavItem.WORKINGHOURS}
           >
-            <Stack
-              display={'flex'}
-              flexDirection={'row'}
-              width={'100%'}
-              justifyContent={'space-between'}
-              alignItems={'start'}
-              sx={{ overflowX: 'hidden' }}
-            >
-              <Stack
-                width={'100%'}
-                overflow={'auto'}
-                height={'calc(100vh - 48px)'}
-                padding={'16px'}
-              >
-                <WorkingHours
-                  slotTimeZoneInput={
-                    <TimezoneSelector
-                      disabled={isTimeZone}
-                      value={selectedTimeZone}
-                      setValue={setSelectedTimeZone}
-                    />
-                  }
-                  // slotTimeZoneToggle={}
-                  slotWorkingHourDay={
-                    <Stack direction={'column'} paddingBottom={'50px'}>
-                      {!!workingHours.length &&
-                        workingHours.map((day, i) => {
-                          return (
-                            <>
-                              <WorkingHourDay
-                                slotRcCheckbox={
-                                  <RcCheckbox
-                                    onclickCheck={{
-                                      onClick: () => {
-                                        setWorkingHours((pre) => {
-                                          const data = pre;
-                                          data[Number(i)].isWorkDay =
-                                            !data[Number(i)].isWorkDay;
-
-                                          return [...data];
-                                        });
-                                      },
-                                    }}
-                                    isChecked={day.isWorkDay}
-                                    text={capitalize(day.day)}
-                                  />
-                                }
-                                slotTimeRageInput={
-                                  <TimeRangeInput
-                                    slotStartTimeInput={
-                                      <SelectTime
-                                        disable={!day.isWorkDay}
-                                        value={dayjs()
-                                          .set(
-                                            'hour',
-                                            parseInt(
-                                              day.timeRange.startTime.split(
-                                                ':',
-                                              )[0],
-                                            ),
-                                          )
-                                          .set(
-                                            'minute',
-                                            parseInt(
-                                              day.timeRange.startTime.split(
-                                                ':',
-                                              )[1],
-                                            ),
-                                          )}
-                                        onSelect={selectStartTime}
-                                        i={i}
-                                      />
-                                    }
-                                    slotEndTimeInput={
-                                      <SelectTime
-                                        disable={!day.isWorkDay}
-                                        value={dayjs()
-                                          .set(
-                                            'hour',
-                                            parseInt(
-                                              day.timeRange.endTime.split(
-                                                ':',
-                                              )[0],
-                                            ),
-                                          )
-                                          .set(
-                                            'minute',
-                                            parseInt(
-                                              day.timeRange.endTime.split(
-                                                ':',
-                                              )[1],
-                                            ),
-                                          )}
-                                        onSelect={selectEndTime}
-                                        i={i}
-                                      />
-                                    }
-                                  />
-                                }
-                              />
-                            </>
-                          );
-                        })}
-
-                      <Stack
-                        direction={'column'}
-                        spacing={2}
-                        marginTop={'var(--space-5)'}
-                      >
-                        <Stack direction={'column'}>
-                          <Typography variant='body1medium'>
-                            Default Break Times
-                          </Typography>
-                          <Typography variant='body1'>
-                            Define standard break times for the company.
-                          </Typography>
-                        </Stack>
-                        <Stack spacing={1} direction={'column'}>
-                          <Stack
-                            direction={'row'}
-                            alignItems={'center'}
-                            spacing={1}
-                          >
-                            <Typography width={120} fontSize={'14px'}>
-                              Break Start Time
-                            </Typography>
-
-                            {selectedHourBreak?.start_time &&
-                              workingHours[1]?.timeRange?.startTime && (
-                                <SelectTime
-                                  disableIgnoringDatePartForTimeValidation={
-                                    true
-                                  }
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        selectedHourBreak?.start_time?.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        selectedHourBreak?.start_time?.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  onSelect={(e) => {
-                                    setSelectedHourBreak((pre) => {
-                                      pre.start_time = `${dayjs(e).format(
-                                        'HH:mm',
-                                      )}`;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  key={0}
-                                />
-                              )}
-                          </Stack>
-                          <Stack
-                            spacing={1}
-                            direction={'row'}
-                            alignItems={'center'}
-                          >
-                            <Typography width={120} fontSize={'14px'}>
-                              Break End Time
-                            </Typography>
-
-                            {workingHours[1]?.timeRange?.endTime &&
-                              selectedHourBreak?.end_time && (
-                                <SelectTime
-                                  disableIgnoringDatePartForTimeValidation={
-                                    true
-                                  }
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        selectedHourBreak?.end_time?.split(
-                                          ':',
-                                        )[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        selectedHourBreak?.end_time?.split(
-                                          ':',
-                                        )[1],
-                                      ),
-                                    )}
-                                  onSelect={(e) => {
-                                    setSelectedHourBreak((pre) => {
-                                      pre.end_time = `${dayjs(e).format(
-                                        'HH:mm',
-                                      )}`;
-                                      return { ...pre };
-                                    });
-                                  }}
-                                  key={0}
-                                />
-                              )}
-                          </Stack>
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  }
-                  slotTimeZoneToggle={
-                    <ToggleBtn
-                      handleChange={(e: any) => {
-                        setIsTimeZone(e);
-                        if (e) {
-                          setSelectedTimeZone(
-                            timeZones.filter((item) =>
-                              item.label.includes(dayjs.tz.guess()),
-                            )[0],
-                          );
-                        }
-                      }}
-                      isChecked={isTimeZone}
-                    />
-                  }
-                />
-              </Stack>
-              <WorkingHoursHelper
-                styleWidth={{ style: { width: helperWorking } }}
-                onClickArrow={{
-                  style: {
-                    transform: `rotate(${helperWorking === 420 ? '0deg' : '180deg'})`,
-                  },
-                  onClick: () => {
-                    toggleHelperWorking();
-                  },
-                }}
-              />
-            </Stack>
+            <WorkingHour
+              initialData={initialData}
+              updateSettings={updateSettings}
+            />
           </ShowCode.When>
           <ShowCode.When
             isTrue={router.query.tab == settingSubNavItem.HOLIDAYS}
