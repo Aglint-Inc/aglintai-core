@@ -51,7 +51,9 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
             </ShowCode.When>
             <ShowCode.Else>
               {(data ?? []).map((props, i) => {
-                return <Request key={props?.id ?? i} {...props} />;
+                return (
+                  <Request key={props.id ?? i} {...{ ...props, index: i }} />
+                );
               })}
             </ShowCode.Else>
           </ShowCode>
