@@ -33,6 +33,7 @@ import {
 
 function AgentChats() {
   const { recruiterUser, recruiter_id } = useAuthDetails();
+
   const [textToObject, setTextToObject] = useState<ApplicantInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const { requests } = useRequests();
@@ -91,7 +92,9 @@ function AgentChats() {
             cancel_id: null,
           }) as DatabaseTableInsert['request_relation'],
       );
-      createRequestSessionRelations(sessionsRelations);
+      createRequestSessionRelations(sessionsRelations).then((res) => {
+        requests.refetch();
+      });
     });
   }
   return (
