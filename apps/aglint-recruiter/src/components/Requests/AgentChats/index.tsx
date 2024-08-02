@@ -20,7 +20,9 @@ import {
   createRequestSessionRelations,
 } from '@/src/queries/requests';
 
+import { useRequests } from '@/src/context/RequestsContext';
 import dayjs from '@/src/utils/dayjs';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import AgentEditor from './AgentEditor';
 import {
   ApplicantInfo,
@@ -28,12 +30,12 @@ import {
   ScheduleType,
   scheduleType,
 } from './AgentEditor/utils';
-import { DatabaseTableInsert } from '@aglint/shared-types';
 
 function AgentChats() {
   const { recruiterUser, recruiter_id } = useAuthDetails();
   const [textToObject, setTextToObject] = useState<ApplicantInfo | null>(null);
   const [loading, setLoading] = useState(false);
+  const { requests } = useRequests();
   const [selectedJob, setSelectedJob] = useState<{
     id: string;
     display: string;
@@ -52,6 +54,10 @@ function AgentChats() {
     id: string;
     display: string;
   }>(null);
+  const [selectedRequest, setSelectedRequest] = useState<{
+    id: string;
+    display: string;
+  }>(null);
 
   const { data: jobsAndApplications, isFetched: isJobFetched } =
     useAllJobsAndApplications({
@@ -62,13 +68,13 @@ function AgentChats() {
         (application) => application.job_id === selectedJob.id,
       )
     : jobsAndApplications?.applications;
-  const { data: sessions, isFetched: isFetchedSessions } = useAllSessionsList({
-    application_id: selectedApplication?.id,
-    job_id: selectedJob?.id,
-  });
+
+  const applicant_sessions = selectedApplication?.id
+    ? applications.find((ele) => ele.id === selectedApplication?.id)
+        ?.applicantSessions
+    : [];
 
   function handleSubmit() {
-    console.log('object');
     createRequest({
       application_id: selectedApplication?.id,
       assigner_id: recruiterUser.user_id,
@@ -178,8 +184,11 @@ function AgentChats() {
             });
           }
         }}
-        isFetchedApplications={true}
-        isFetchedSessions={isFetchedSessions}
+        requestList={
+          requests.status === 'success'
+            ? requests.data.map((ele) => ({ id: ele.id, display: ele.title }))
+            : []
+        }
         scheduleTypes={scheduleType}
         jobList={
           isJobFetched &&
@@ -199,25 +208,32 @@ function AgentChats() {
               }))
             : []
         }
-        sessionList={
-          isFetchedSessions
-            ? sessions.map((session) => ({
-                id: session.id,
-                display: session.name,
-              }))
-            : []
-        }
+        sessionList={applicant_sessions.map((session) => ({
+          id: session.id,
+          display: session.name,
+        }))}
         getSelectedJob={({ id, display }) => {
           setSelectedJob({ id, display });
         }}
         getSelectedApplication={({ id, display }) => {
+          const selectedApplication = jobsAndApplications.applications.find(
+            (application) => application.id === id,
+          ) as Awaited<ReturnType<typeof getApplications>>[number];
+
           setSelectedApplication({ id, display });
+          setSelectedJob({
+            id: selectedApplication?.public_jobs.id,
+            display: selectedApplication?.public_jobs.job_title,
+          });
+        }}
+        getSelectedSession={({ id, display }) => {
+          setSelectedSession((pre) => [...pre, { id, display }]);
         }}
         getSelectedScheduleType={({ id, display }) => {
           setSelectedScheduleType({ id, display });
         }}
-        getSelectedSession={({ id, display }) => {
-          setSelectedSession((pre) => [...pre, { id, display }]);
+        getSelectedRequest={({ id, display }) => {
+          setSelectedRequest({ id, display });
         }}
       />
     </Stack>
@@ -238,7 +254,7 @@ async function getApplicationWithName(name: string, sessions_name: string[]) {
     .eq('status', 'interview')
     .ilike('candidates.first_name', `%${name}%`);
   // .ilike('candidates.last_name', `%${name}%`);
-
+  console.log(data);
   if (error) {
     throw error;
   }
@@ -279,6 +295,7 @@ export const useAllJobsAndApplications = ({
         recruiter_id,
       }),
     gcTime: 20000,
+    enabled: !!recruiter_id,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });
@@ -302,7 +319,7 @@ export const useAllSessionsList = ({
         job_id,
       }),
     gcTime: 20000,
-    enabled: !!application_id,
+    enabled: !!job_id && !!application_id,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_sessions_List'] });
@@ -311,41 +328,55 @@ export const useAllSessionsList = ({
 };
 
 async function getJobsAndApplications({ recruiter_id }) {
-  try {
-    const { data: jobs, error } = await supabase
-      .from('public_jobs')
-      .select()
-      .eq('recruiter_id', recruiter_id)
-      .eq('status', 'published');
+  const { data: jobs, error } = await supabase
+    .from('public_jobs')
+    .select('*')
+    .eq('recruiter_id', recruiter_id)
+    .eq('status', 'published');
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    const applicationsPromises = jobs.map((job) => {
-      console.log(job.id);
-      return getApplications({ job_id: job.id });
-    });
-
-    const applicationsResults = await Promise.all(applicationsPromises);
-    const applications = applicationsResults.flat();
-
-    return { jobs, applications };
-  } catch (error) {
-    console.error('Error fetching jobs and applications:', error);
-    return { jobs: [], applications: [], error: error.message };
+  if (error) {
+    throw new Error(error.message);
   }
+
+  const applicationsPromises = jobs.map((job) => {
+    return getApplications({ job_id: job.id });
+  });
+
+  const applicationsResults = await Promise.all(applicationsPromises);
+  const applications = applicationsResults.flat();
+  console.log(jobs, applications);
+  return { jobs, applications };
 }
 
 async function getApplications({ job_id }: { job_id: string }) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('applications')
-    .select('*, candidates(*)')
+    .select(
+      '*, candidates(first_name,last_name), public_jobs(id,job_title), request(request_relation(session_id)), interview_schedule(interview_meeting(interview_session(id,name)))',
+    )
     .eq('job_id', job_id)
     .eq('status', 'interview');
-  if (!error) {
-    return data;
-  }
+
+  return data.map((ele) => {
+    const requestSessions =
+      ele.request
+        ?.map((req) => req.request_relation)
+        .flat()
+        .map((rel) => rel.session_id)
+        .flat() || [];
+
+    const applicantSessions = (
+      ele.interview_schedule?.interview_meeting
+        ? ele.interview_schedule.interview_meeting
+            .map((meeting) => meeting.interview_session)
+            .flat()
+        : []
+    ).filter(
+      (session) =>
+        !requestSessions.includes(session.id) && session.name !== 'Debrief',
+    );
+    return { ...ele, applicantSessions };
+  });
 }
 
 async function getSessionList({
