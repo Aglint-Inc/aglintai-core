@@ -94,6 +94,7 @@ export const fetchSessionDetailsFromInterviewPlan = async ({
       location: item.location,
       members_meta: item.members_meta,
       module_id: item.module_id,
+      parent_session_id: null,
     };
 
     return {
@@ -149,6 +150,7 @@ export const fetchSessionDetailsFromSchedule = async ({
       location: item.location,
       members_meta: item.members_meta,
       module_id: item.module_id,
+      parent_session_id: null,
     };
 
     return {

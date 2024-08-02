@@ -1,10 +1,13 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import { addErrorHandlerWrap, supabaseWrap } from '@aglint/shared-utils';
+import {
+  addErrorHandlerWrap,
+  ApiError,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendSelfSchedulingLink';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { getClonedSessionIds } from '@/src/utils/scheduling/getClonedSessionIds';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -19,17 +22,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .eq('id', candidate_availability_request_id),
   );
 
-  const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
-  const { cloned_sessn_data, schedule_id } = await getClonedSessionIds(
-    application_id,
-    avail_record.request_session_relation.map((s) => s.session_id),
+  const meeting_details = supabaseWrap(
+    await supabaseAdmin
+      .from('meeting_details')
+      .select()
+      .in(
+        'session_id',
+        avail_record.request_session_relation.map((s) => s.session_id),
+      ),
   );
+  let session_ids = meeting_details.map((m) => m.session_id);
+  let schedule_id = meeting_details[0].interview_schedule_id;
+  if (meeting_details.length === 0) {
+    throw new ApiError('SERVER_ERROR', 'invalid session id');
+  }
 
-  let cloned_sessn_ids = cloned_sessn_data.map((s) => s.id);
+  const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
   const cand_schedule = new CandidatesSchedulingV2({});
   await cand_schedule.fetchDetails({
-    session_ids: cloned_sessn_ids,
+    session_ids: meeting_details.map((s) => s.session_id),
     start_date_str: avail_record.date_range[0],
     end_date_str: avail_record.date_range[1],
     company_id: recruiter_id,
@@ -49,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_id,
       avail_record.date_range[0],
       avail_record.date_range[1],
-      cloned_sessn_ids,
+      session_ids,
     );
   }
   return res.status(200).end();
