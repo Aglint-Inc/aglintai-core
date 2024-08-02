@@ -82,16 +82,7 @@ export const getEmailComponent = async (
         return staticNodeModulesForVM[module];
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-useless-template-literals
-      return require(`${module}`) as unknown;
-      // this stupid string templating was necessary to not have
-      // webpack warnings like:
-      //
-      // Import trace for requested module:
-      // ./src/utils/get-email-component.tsx
-      // ./src/app/page.tsx
-      //  ⚠ ./src/utils/get-email-component.tsx
-      // Critical dependency: the request of a dependency is an expression
+      return require(module) as unknown;
     },
     process,
   };
