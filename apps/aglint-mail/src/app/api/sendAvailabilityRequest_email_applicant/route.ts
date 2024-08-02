@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     const is_preview = req_body.preview_details;
     const htmlSub = await sendMailFun({
-      api_target: 'availabilityReqResend_email_candidate',
+      api_target: 'sendAvailabilityRequest_email_applicant',
       comp_email_placeholder,
       company_id,
       react_email_placeholders,

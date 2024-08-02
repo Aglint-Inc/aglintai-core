@@ -259,4 +259,141 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: 'Get Availability from Candidate through Aglint Agent via Email',
+      trigger: 'onAvailReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: 'Get Availability from Candidate through Email Link',
+      trigger: 'onAvailReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+      },
+    ],
+  },
+  // {
+  //   workflow: {
+  //     auto_connect: false,
+  //     description: '',
+  //     interval: 0,
+  //     phase: 'after',
+  //     title: 'Get Availability from Candidate through Aglint Agent via SMS',
+  //     trigger: 'onAvailReqAgent',
+  //     workflow_type: 'job',
+  //   },
+  //   actions: [
+  //     {
+  //       order: 0,
+  //       target_api: 'onAvailReqAgent_sms_getCandidateAvailability',
+  //     },
+  //   ],
+  // },
+  {
+    workflow: {
+      auto_connect: false,
+      phase: 'after',
+      title: 'Confirm Slot after getting availaibility from Candidate',
+      description: '',
+      interval: 0,
+      trigger: 'onReceivingAvailReq',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onReceivingAvailReq_agent_confirmSlot',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      phase: 'after',
+      title:
+        'Send Self Schedule Request after recieving availaibility from the Candidate',
+      description: '',
+      interval: 0,
+      trigger: 'onReceivingAvailReq',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Send Self schedulink link using Aglint Agent via Email',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Self Schedulink using Aglint Agent via Phone',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'system',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Send Self schedulink link To Candidate via Email',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'system',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+      },
+    ],
+  },
 ];

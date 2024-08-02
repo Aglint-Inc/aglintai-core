@@ -19,7 +19,7 @@ export default async function handler(
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
     // start here
-    await seedRolesAndPermissions(recruiter_id);
+    // await seedRolesAndPermissions(recruiter_id);
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
@@ -74,29 +74,6 @@ async function getPermissions() {
   const temp_p = (
     await supabaseAdmin.from('permissions').select('id,name').throwOnError()
   ).data;
-  //   const temp_p_set = new Set(...temp_p);
-  //   const missing_permissions: { name: string; description: string }[] = [];
-  //   for (let item of defaultPermissions) {
-  //     if (!temp_p_set.has(item.name)) {
-  //       missing_permissions.push(item);
-  //     }
-  //   }
-  //   let missing: string[] = [];
-  //   if (missing_permissions.length) {
-  //     missing = (
-  //       await supabase
-  //         .from('roles')
-  //         .insert(
-  //           defaultPermissions.map((item) => ({
-  //             name: item.name,
-  //             description: item.description,
-  //           })),
-  //         )
-  //         .select('name')
-  //         .throwOnError()
-  //     ).data.map((item) => item.name);
-  //   }
-  //   return [...temp_p, ...missing];
   return temp_p.reduce(
     (acc, crr) => {
       acc[crr.name] = crr.id;
@@ -174,13 +151,11 @@ const seedWorkFlow = async (
           const temp = company_email_template.find(
             (temp) => temp.type === action.target_api,
           );
-          if (!temp) {
-            throw new Error(`${temp.type} not found`);
-          }
+
           return {
             payload: {
-              body: temp.body,
-              subject: temp.subject,
+              body: temp ? temp.body : '',
+              subject: temp ? temp.subject : '',
             },
             order: action.order,
             workflow_id: workflow.id,

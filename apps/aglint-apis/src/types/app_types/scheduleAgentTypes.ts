@@ -14,7 +14,6 @@ export const schedule_req_body = z.object({
   phone_agent_type: z
     .enum(['scheduling', 'phone_screening'])
     .default('scheduling'),
-  cand_email: z.string().min(2),
   task_id: z.string().nullable(),
 });
 
