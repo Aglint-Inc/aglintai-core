@@ -3474,7 +3474,7 @@ export type Database = {
           assigner_id?: string
           created_at?: string
           id?: string
-          status: string
+          status?: string
           title?: string | null
           type: string
         }
@@ -3666,7 +3666,7 @@ export type Database = {
         Insert: {
           cancel_id?: string | null
           id?: string
-          request_id?: string
+          request_id: string
           session_id?: string | null
         }
         Update: {
@@ -5644,6 +5644,14 @@ export type Database = {
             }
             Returns: undefined
           }
+      create_session_request: {
+        Args: {
+          application?: string
+          sessions?: string[]
+          request?: Json
+        }
+        Returns: undefined
+      }
       createrecuriterrelation: {
         Args: {
           in_user_id: string
@@ -6246,6 +6254,14 @@ export type Database = {
       }
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      move_to_interview: {
+        Args: {
+          applications?: string[]
+          sessions?: string[]
+          request?: Json
+        }
         Returns: undefined
       }
       new_get_interview_schedule_by_meeting_id: {

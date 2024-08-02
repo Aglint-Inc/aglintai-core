@@ -14,6 +14,9 @@ export type DB = Type<
   }
 >;
 
+export type DatabaseFunctions = {
+  [Functions in keyof DB["public"]["Functions"]]: DB["public"]["Functions"][Functions];
+};
 export type DatabaseView = {
   [View in keyof DB["public"]["Views"]]: DB["public"]["Views"][View]["Row"];
 };

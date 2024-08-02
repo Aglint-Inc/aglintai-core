@@ -1,8 +1,10 @@
+import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
 import { AglintAiChat } from '@/devlink2/AglintAiChat';
 import { RequestAgent } from '@/devlink2/RequestAgent';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
 import AgentChats from './AgentChats';
 import FilterAndSorting from './FiltersAndSorting';
 import Section from './Section';

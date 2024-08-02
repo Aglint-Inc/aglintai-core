@@ -1,6 +1,7 @@
-import { GlobalBadge } from '@/devlink2';
-import { RequestOption } from '@/devlink2/RequestOption';
 import React from 'react';
+
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
+import { RequestOption } from '@/devlink2/RequestOption';
 
 function StatsCards() {
   const dummyStatusData = [

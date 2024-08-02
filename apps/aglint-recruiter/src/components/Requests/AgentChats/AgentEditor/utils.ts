@@ -35,6 +35,9 @@ export type MentionInputProps = {
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     clickedSuggestion: boolean,
   ) => void;
+  onFocus?: (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   allowSpaceInQuery?: boolean;
   suggestionsPortalHost?: HTMLElement;
   inputRef?: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
