@@ -31,7 +31,7 @@ export const Request = (
 
   return (
     <>
-      <Collapse in={collapse} collapsedSize={60}>
+      <Collapse in={collapse} collapsedSize={46}>
         <RequestCard
           isNewBadgeVisible={props.status === 'to_do'}
           slotBadgeNew={

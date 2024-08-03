@@ -64,7 +64,7 @@ function AgentEditor({
       control: {
         backgroundColor: '#fff',
         fontSize: 16,
-        width: '484px',
+        width: '427px',
         lineHeight: '20px',
         padding: '10px',
       },

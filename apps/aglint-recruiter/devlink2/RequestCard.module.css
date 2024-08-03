@@ -1,16 +1,15 @@
 .req-card-wrapper {
   display: flex;
-  padding: var(--space-4);
+  padding: var(--space-3);
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);
   grid-row-gap: var(--space-3);
 
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
 
-  background-color: var(--white);
+  background-color: var(--neutral-2);
 
   cursor: pointer;
 }
@@ -18,7 +17,6 @@
 .req-card-wrapper-sub-wrap {
   display: flex;
   justify-content: space-between;
-  background-color: var(--white);
 }
 
 .req-card-wrapper-left {

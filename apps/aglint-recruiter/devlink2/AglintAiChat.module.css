@@ -5,15 +5,14 @@
   flex-wrap: nowrap;
   flex: 0 0 auto;
 
-  border-left: 1px solid var(--neutral-6);
+  border-right: 1px solid var(--neutral-4);
 
-  background-color: var(--white);
+  background-color: var(--neutral-1);
 }
 
 .req-right-headers {
   height: 46px;
   padding: var(--space-3);
-  border-bottom: 1px solid var(--neutral-6);
 }
 
 .aglint-ai-wrappers {
@@ -22,6 +21,10 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
+}
+
+.ai-header {
+  width: 100%;
 }
 
 .icons {
@@ -89,6 +92,12 @@
   bottom: auto;
 
   cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
 }
 
 .req-right-body {

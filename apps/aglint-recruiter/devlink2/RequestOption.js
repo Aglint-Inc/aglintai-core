@@ -13,7 +13,7 @@ export function RequestOption({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req-tab-pill-wrap")} tag="div">
-      <Text content={textOption} size="3" weight="regular" />
+      <Text content={textOption} size="2" weight="regular" />
       <_Builtin.Block tag="div">
         {slotCountBadge ?? <GlobalBadge />}
       </_Builtin.Block>
