@@ -24,6 +24,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -46,15 +47,16 @@ export function AshbyModalComp() {
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
+  const { data: allIntegrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && recruiter.ashby_key) {
+    if (jobs.status === 'success' && allIntegrations.ashby_key) {
       fetchJobs();
     }
   }, [jobs.status]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(recruiter.ashby_key);
+    const allJobs = await fetchAllJobs(allIntegrations.ashby_key);
 
     const { data } = await supabase
       .from('public_jobs')
@@ -115,8 +117,8 @@ export function AshbyModalComp() {
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
         axios.post('/api/ashby/syncapplications', {
-          apikey: recruiter.ashby_key,
-          synctoken: recruiter.ashby_sync_token,
+          apikey: allIntegrations.ashby_key,
+          synctoken: allIntegrations.ashby_sync_token,
           recruiter_id: recruiter.id,
         });
         //closing modal once done

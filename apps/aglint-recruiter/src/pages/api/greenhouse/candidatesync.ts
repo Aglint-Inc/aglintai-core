@@ -52,9 +52,9 @@ export default async function handler(req, res) {
     previousApplications = app;
 
     const { data: rec, error: errorRec } = await supabase
-      .from('recruiter')
+      .from('integrations')
       .select('*')
-      .eq('id', referenceJob[0].recruiter_id);
+      .eq('recruiter_id', referenceJob[0].recruiter_id);
 
     if (errorApp) {
       console.log(errorRec.message);
