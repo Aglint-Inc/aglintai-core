@@ -25,6 +25,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -56,15 +57,16 @@ export function GreenhouseModal() {
   >('live');
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const apiRef = useRef(null);
+  const { data: allIntegrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && recruiter.greenhouse_key) {
+    if (jobs.status === 'success' && allIntegrations.greenhouse_key) {
       fetchJobs();
     }
   }, [jobs.status]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(recruiter.greenhouse_key);
+    const allJobs = await fetchAllJobs(allIntegrations.greenhouse_key);
     setPostings(
       allJobs.filter((post) => {
         if (
@@ -135,7 +137,7 @@ export function GreenhouseModal() {
         await supabase.from('job_reference').insert(astJobsObj).select();
         await handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
-        await createJobApplications(jobsObj, recruiter.greenhouse_key);
+        await createJobApplications(jobsObj, allIntegrations.greenhouse_key);
         await handleJobsRefresh();
         //closing modal once done
         setIntegration((prev) => ({
@@ -390,28 +392,7 @@ export function GreenhouseModal() {
                             }
                             onClickCheck={{
                               onClick: () => {
-                                if (
-                                  selectedGreenhousePostings?.some(
-                                    (p) => p.id === post.id,
-                                  )
-                                ) {
-                                  // If the object is already in the array, remove it
-                                  setSelectedGreenhousePostings((prev) =>
-                                    prev.filter((p) => p.id !== post.id),
-                                  );
-                                } else {
-                                  if (selectedGreenhousePostings.length < 1) {
-                                    // If the object is not in the array, add it
-                                    setSelectedGreenhousePostings((prev) => [
-                                      ...prev,
-                                      post,
-                                    ]);
-                                  } else {
-                                    toast.warning(
-                                      'You can import one job at a time.',
-                                    );
-                                  }
-                                }
+                                setSelectedGreenhousePostings([post]);
                               },
                             }}
                             propsTextColor={{

@@ -1,6 +1,7 @@
-import { RecruiterType } from '@aglint/shared-types';
+import { DatabaseTableUpdate, RecruiterType } from '@aglint/shared-types';
 
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 export async function updateRecruiter(id: string, obj: RecruiterType) {
   const { data, error } = await supabase
@@ -13,6 +14,21 @@ export async function updateRecruiter(id: string, obj: RecruiterType) {
     return data;
   }
 }
+
+export const updateIntegrations = async (
+  int: DatabaseTableUpdate['integrations'],
+  rec_id: string,
+) => {
+  try {
+    await supabase
+      .from('integrations')
+      .update({ ...int })
+      .eq('recruiter_id', rec_id)
+      .throwOnError();
+  } catch {
+    toast.error('Failed to update integrations');
+  }
+};
 
 export function GreenHouseLogo() {
   return (

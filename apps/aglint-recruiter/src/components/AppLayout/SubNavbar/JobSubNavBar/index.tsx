@@ -7,15 +7,12 @@ import { CreateJob } from '@/devlink/CreateJob';
 import { NavJobSubLink } from '@/devlink/NavJobSubLink';
 import { AshbyModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby';
 import { GreenhouseModal } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal';
-import { LeverModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
+import LeverModalComp from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import {
-  STATE_ASHBY_DIALOG,
-  STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
-} from '@/src/context/IntegrationProvider/utils';
+import { STATE_ASHBY_DIALOG, STATE_GREENHOUSE_DIALOG, STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import ROUTES from '@/src/utils/routing/routes';
 
 function JobSubNavbar() {
@@ -68,9 +65,8 @@ export default JobSubNavbar;
 
 function AddJob() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
-
+  const { data: int, isLoading } = useAllIntegrations();
   const [anchorEl, setAnchorEl] = useState(null);
 
   //popover Add Job
@@ -103,85 +99,81 @@ function AddJob() {
           },
         }}
       >
-        <CreateJob
-          isAshbyVisible={!!recruiter.ashby_key}
-          isGreenhouseVisible={!!recruiter.greenhouse_key}
-          isLeverVisible={!!recruiter.lever_key}
-          isEmpty={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            )
-          }
-          onClickLinktoIntegration={{
-            onClick: () => {
-              router.push(ROUTES['/integrations']());
-            },
-          }}
-          onClickAshby={{
-            onClick: () => {
-              if (!recruiter.ashby_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.API,
-                  },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.LISTJOBS,
-                  },
-                }));
-              }
-            },
-          }}
-          onClickGreenhouse={{
-            onClick: () => {
-              if (!recruiter.greenhouse_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.API,
-                  },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-                  },
-                }));
-              }
-            },
-          }}
-          onClickCreateNewJob={{
-            onClick: () => {
-              router.push(ROUTES['/jobs/create']());
-            },
-          }}
-          onClickLeverImport={{
-            onClick: () => {
-              if (!recruiter.lever_key) {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
-                }));
-              } else {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
-                }));
-              }
-            },
-          }}
-        />
+        {!isLoading && (
+          <CreateJob
+            isAshbyVisible={!!int.ashby_key}
+            isGreenhouseVisible={!!int.greenhouse_key}
+            isLeverVisible={!!int.lever_key}
+            isEmpty={!(int.ashby_key || int.greenhouse_key || int.lever_key)}
+            onClickLinktoIntegration={{
+              onClick: () => {
+                router.push(ROUTES['/integrations']());
+              },
+            }}
+            onClickAshby={{
+              onClick: () => {
+                if (!int.ashby_key) {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    ashby: {
+                      open: true,
+                      step: STATE_ASHBY_DIALOG.API,
+                    },
+                  }));
+                } else {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    ashby: {
+                      open: true,
+                      step: STATE_ASHBY_DIALOG.LISTJOBS,
+                    },
+                  }));
+                }
+              },
+            }}
+            onClickGreenhouse={{
+              onClick: () => {
+                if (!int.greenhouse_key) {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    greenhouse: {
+                      open: true,
+                      step: STATE_GREENHOUSE_DIALOG.API,
+                    },
+                  }));
+                } else {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    greenhouse: {
+                      open: true,
+                      step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+                    },
+                  }));
+                }
+              },
+            }}
+            onClickCreateNewJob={{
+              onClick: () => {
+                router.push(ROUTES['/jobs/create']());
+              },
+            }}
+            onClickLeverImport={{
+              onClick: () => {
+                if (!int.lever_key) {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    lever: { open: true, step: STATE_LEVER_DIALOG.API },
+                  }));
+                } else {
+                  setIntegration((prev) => ({
+                    ...prev,
+                    lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                  }));
+                }
+              },
+            }}
+          />
+        )}
       </Popover>
 
       <Dialog

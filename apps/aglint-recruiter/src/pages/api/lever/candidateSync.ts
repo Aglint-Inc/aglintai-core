@@ -41,9 +41,10 @@ export default async function handler(req, res) {
       previousApplications = app;
 
       const { data: rec, error: errorRec } = await supabaseAdmin
-        .from('recruiter')
+        .from('integrations')
         .select('*')
-        .eq('id', referenceJob[0].recruiter_id);
+        .eq('recruiter_id', referenceJob[0].recruiter_id);
+
       if (!errorRec) {
         apiKey = decrypt(rec[0].lever_key, process.env.ENCRYPTION_KEY);
         const leverApplications = await fetchAllOpporunities(

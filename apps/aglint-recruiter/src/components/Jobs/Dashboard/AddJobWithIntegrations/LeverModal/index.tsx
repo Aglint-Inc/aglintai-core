@@ -22,6 +22,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -36,7 +37,7 @@ import {
   getLeverStatusColor,
 } from './utils';
 
-export function LeverModalComp() {
+export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
@@ -48,15 +49,16 @@ export function LeverModalComp() {
   const [initialFetch, setInitialFetch] = useState(true);
   const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
+  const { data: integrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && recruiter.lever_key) {
+    if (jobs.status === 'success' && integrations.lever_key) {
       fetchJobs();
     }
   }, [jobs.status]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(recruiter.lever_key);
+    const allJobs = await fetchAllJobs(integrations.lever_key);
     setLeverPostings(
       allJobs.filter((post) => {
         if (
@@ -113,7 +115,7 @@ export function LeverModalComp() {
             recruiter_id: recruiter.id,
           };
         });
-        await createJobApplications(jobsObj, recruiter.lever_key);
+        await createJobApplications(jobsObj, integrations.lever_key);
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
         setIntegration((prev) => ({
