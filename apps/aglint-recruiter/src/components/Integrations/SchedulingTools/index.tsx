@@ -1,5 +1,4 @@
 import { RecruiterType } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -12,7 +11,7 @@ import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
@@ -20,7 +19,12 @@ import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
-import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
+import {
+  GooglLogo,
+  updateIntegrations,
+  updateRecruiter,
+  ZoomLogo,
+} from '../utils';
 
 function Scheduling() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -40,6 +44,8 @@ function Scheduling() {
   const clientIdRef = useRef<HTMLInputElement>(null);
   const clientSecretRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
+  const { data: allIntegrations } = useAllIntegrations();
+
   async function action() {
     const google_workspace_domain = domainRef.current?.value;
     if (
@@ -62,6 +68,7 @@ function Scheduling() {
       }
     }
     if (reason === 'disconnect_google_workSpace') {
+      await updateIntegrations({ service_json: null }, recruiter.id);
       await updateRecruiter(recruiter.id, {
         service_json: null,
       } as RecruiterType).then((data) => {
@@ -70,11 +77,7 @@ function Scheduling() {
     }
 
     if (reason === 'disconnect_zoom') {
-      await updateRecruiter(recruiter.id, {
-        zoom_auth: null,
-      } as RecruiterType).then((data) => {
-        setRecruiter(data);
-      });
+      await updateIntegrations({ zoom_auth: null }, recruiter.id);
     }
     if (reason === 'connect_zoom') {
       const client_id = clientIdRef.current.value;
@@ -119,7 +122,7 @@ function Scheduling() {
       setReason('update_zoom');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.zoom_auth,
+          encryptData: allIntegrations.zoom_auth,
         })
         .then(({ data }) => {
           if (data) {
@@ -186,19 +189,21 @@ function Scheduling() {
       name: String('zoom') as schedulingToolsType,
       url: 'zoom.com',
       logo: <ZoomLogo />,
-      isConnected: recruiter?.zoom_auth,
+      isConnected: allIntegrations?.zoom_auth,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.zoom_auth ? 'Re-Connect' : 'Connect'}
-          secondaryText={recruiter?.zoom_auth ? 'Disconnect' : 'Learn How'}
+          primaryText={allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect'}
+          secondaryText={
+            allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How'
+          }
           secondaryAction={() => {
             setLoading(false);
-            if (recruiter.zoom_auth) disConnectApi('zoom');
+            if (allIntegrations.zoom_auth) disConnectApi('zoom');
             else readDocs('zoom');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (recruiter.zoom_auth) updateApi('zoom');
+            if (allIntegrations.zoom_auth) updateApi('zoom');
             else connectApi('zoom');
           }}
         />
@@ -247,18 +252,7 @@ function Scheduling() {
     const { data: encrypted_cred } = await axios.post(`/api/encryptData`, {
       planData: auth_str,
     });
-
-    const data = supabaseWrap(
-      await supabase
-        .from('recruiter')
-        .update({
-          zoom_auth: encrypted_cred,
-        })
-        .eq('id', recruiter.id)
-        .select('*, office_locations(*), departments(id,name)')
-        .single(),
-    );
-    setRecruiter(data);
+    await updateIntegrations({ zoom_auth: encrypted_cred }, recruiter.id);
   };
 
   return (
