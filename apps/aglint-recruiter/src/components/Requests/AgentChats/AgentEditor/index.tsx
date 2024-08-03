@@ -64,9 +64,9 @@ function AgentEditor({
       control: {
         backgroundColor: '#fff',
         fontSize: 16,
-        width: '484px',
+        width: '387px',
         lineHeight: '20px',
-        padding: '10px',
+        padding: '10px 10px 48px',
       },
       highlighter: {
         overflow: 'hidden',
@@ -75,7 +75,7 @@ function AgentEditor({
 
       input: {
         margin: 0,
-        border: '1px solid #E9EBED',
+        border: '1px solid var(--neutral-6)',
         borderRadius: '10px',
         outline: 'none',
         // height: '100%',

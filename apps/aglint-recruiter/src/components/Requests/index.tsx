@@ -2,6 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { AglintAiChat } from '@/devlink2/AglintAiChat';
+import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import { RequestAgent } from '@/devlink2/RequestAgent';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
@@ -24,7 +25,7 @@ const Requests = () => {
           {/* <Section textSectionHeader='Standard Requests' /> */}
         </>
       }
-      slotAglintAiChat={<AglintAiChat slotAiInput={<AgentChats />} />}
+      slotAglintAiChat={<AglintAiChat slotAiInput={<AgentChats />} slotAiBody={<AglintAiWelcome textAiHeader={`Good morning, `+ getFullName(recruiterUser.first_name, '')} />} />}
     />
   );
 };

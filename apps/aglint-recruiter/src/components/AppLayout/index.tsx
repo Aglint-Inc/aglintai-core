@@ -39,9 +39,9 @@ export default function AppLayout({ children }) {
         <Stack
           paddingTop={'12px !important'}
           borderRight={'1px solid'}
-          borderColor='var(--neutral-6)'
+          borderColor='var(--neutral-3)'
           position={'relative'}
-          width={'68px'}
+          width={'58px'}
           p={'12px 10px'}
         >
           <Stack
