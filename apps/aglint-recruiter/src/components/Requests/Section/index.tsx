@@ -11,7 +11,8 @@ import { Request } from './Request';
 
 function Section({ textSectionHeader }: { textSectionHeader: string }) {
   const {
-    requests: { data, status },
+    requests: { status },
+    filteredRequest
   } = useRequests();
 
   return (
@@ -36,7 +37,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
                 </Stack>
               </ShowCode.When>
               <ShowCode.Else>
-                <Text color={'neutral'} size={1} content={`${data?.length}`} />
+                <Text color={'neutral'} size={1} content={`${filteredRequest?.length}`} />
               </ShowCode.Else>
             </ShowCode>
           </Stack>
@@ -50,7 +51,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
               <RequestCardSkeletons />
             </ShowCode.When>
             <ShowCode.Else>
-              {(data ?? []).map((props, i) => {
+              {(filteredRequest ?? []).map((props, i) => {
                 return (
                   <Request key={props.id ?? i} {...{ ...props, index: i }} />
                 );
