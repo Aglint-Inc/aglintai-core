@@ -47,12 +47,12 @@ function AgentEditor({
     null,
   );
   const mentionsInputProps: MentionInputProps = {
-    onFocus: (e) => {
-      setTriggerType('');
-      if (!text) {
-        setText(' ');
-      }
-    },
+    // onFocus: (e) => {
+    //   setTriggerType('');
+    //   if (!text) {
+    //     setText(' ');
+    //   }
+    // },
     onBlur: () => {
       if (!text.trim()) {
         setText('');
