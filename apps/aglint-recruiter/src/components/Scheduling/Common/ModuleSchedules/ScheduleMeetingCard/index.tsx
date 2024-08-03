@@ -28,7 +28,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  let interviewers = meetingDetails.meeting_interviewers || [];
+  let interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
 
   return (
     <>

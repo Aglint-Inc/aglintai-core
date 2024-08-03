@@ -1,6 +1,11 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import axios from '@/src/client/axios';
+import {
+  ApiBodyGetMember,
+  ApiResponseGetMember,
+} from '@/src/pages/api/get_member';
 import { supabase } from '@/src/utils/supabase/client';
 
 export const useImrQuery = ({ user_id }) => {
@@ -91,13 +96,11 @@ const fetchProgress = async (user_id: string) => {
 };
 
 const getInterviewerDetails = async (user_id: string) => {
-  return (
-    await supabase
-      .from('recruiter_user')
-      .select('*')
-      .eq('user_id', user_id)
-      .single()
-  ).data;
+  const bodyParams: ApiBodyGetMember = {
+    user_id,
+  };
+  const { data } = await axios.post(`/api/get_member`, bodyParams);
+  return data as ApiResponseGetMember;
 };
 
 const getModuleRelations = async (user_id: string) => {

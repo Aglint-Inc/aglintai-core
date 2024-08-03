@@ -489,6 +489,7 @@ export const useMoveApplications = (
         await revalidateJobQueries(payload.job_id);
       },
       onSuccess: () => toast.success('Moved successfully'),
+      onError: () => toast.error('Unable to move applications'),
     }),
     mutationQueue,
   };
@@ -514,7 +515,10 @@ export const useMoveApplicationsToInterview = (
         ]);
       },
       onSuccess: () => toast.success('Moved successfully'),
-      onError: () => toast.error('Unable to move applications'),
+      onError: () =>
+        toast.error(
+          'Unable to move applications. Please verify for a valid interview plan.',
+        ),
     }),
   };
 };
