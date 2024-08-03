@@ -42,7 +42,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
               isRightIcon={false}
               isLeftIcon={true}
               slotIcon={<GlobalIcon iconName='person_add' size={5} />}
-              textButton={'Add Qualified Member'}
+              textButton={'Add Interviewer'}
               onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
@@ -104,7 +104,7 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
             isRightIcon={false}
             isLeftIcon={true}
             slotIcon={<GlobalIcon iconName='person_add' size={5} />}
-            textButton={'Add Qualified Member'}
+            textButton={'Add Interviewer'}
             onClickButton={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);

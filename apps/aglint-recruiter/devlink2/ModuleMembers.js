@@ -21,7 +21,7 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <Text content="Qualified Members" />
+          <Text content="Qualified Interviewers" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "mm-slot-list-card")}

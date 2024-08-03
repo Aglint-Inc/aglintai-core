@@ -516,7 +516,7 @@ const Interview = ({
           {(currentQualifiedModuleMembers ?? []).length === 0 && (
             <GlobalBannerShort
               iconName={'warning'}
-              textTitle={'Interview type has no qualified members'}
+              textTitle={'Interview type has no interviewers'}
               textDescription={
                 'Please add members to the selected interview type'
               }

@@ -36,8 +36,8 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
 
       <InterviewerDetailOverview
         isViewButtonVisible={false}
-        textHeader1={'Qualified Interview Types'}
-        textHeader2={'Training Interview Types'}
+        textHeader1={'Interview Types'}
+        textHeader2={'Interview Types'}
         isTrainingVisible={type === 'training' ? true : false}
         isUpcomingVisible={type === 'qualified' ? true : false}
         slotUpcomingSchedule={
