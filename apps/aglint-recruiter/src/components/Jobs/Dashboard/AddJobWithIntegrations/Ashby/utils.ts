@@ -1,7 +1,6 @@
-import { GreenhouseRefDbType, GreenhouseType } from '@aglint/shared-types';
+import { DatabaseTableInsert, GreenhouseRefDbType, GreenhouseType } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -64,47 +63,37 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobAshby[],
-  recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
-): Promise<JobInsert[]> => {
-  const dbJobs = selectedPostings.map((post) => {
-    return {
-      draft: {
-        jd_json: {
-          educations: [],
-          level: 'Mid-level',
-          rolesResponsibilities: [],
-          skills: [],
-          title: post.title,
+  recruiter_id: string,
+) => {
+  const dbJobs: DatabaseTableInsert['public_jobs'][] = selectedPostings.map(
+    (post) => {
+      return {
+        draft: {
+          location: post.location,
+          job_title: post.title,
+          description: post.description,
+          job_type:
+            post.employmentType == 'Contract' ? 'contract' : 'full time',
+          workplace_type: 'on site',
         },
         location: post.location,
         job_title: post.title,
+        recruiter_id: recruiter_id,
+        posted_by: POSTED_BY.ASHBY,
+        status: 'draft',
+        id: post.public_job_id,
         description: post.description,
-        department_id: recruiter?.departments?.[0]?.id ?? null,
         job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
         workplace_type: 'on site',
-        company: recruiter.name,
-      },
-      location: post.location,
-      job_title: post.title,
-      recruiter_id: recruiter.id,
-      posted_by: POSTED_BY.ASHBY,
-      status: 'draft',
-      id: post.public_job_id,
-      description: post.description,
-      department: recruiter?.departments?.[0]?.name ?? null,
-      job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
-      workplace_type: 'on site',
-      company: recruiter.name,
-      scoring_criteria_loading: true,
-      skills: [],
-      parameter_weights: {
-        skills: 0,
-        education: 0,
-        experience: 0,
-      },
-      video_assessment: false,
-    } as JobInsert;
-  });
+        scoring_criteria_loading: true,
+        parameter_weights: {
+          skills: 0,
+          education: 0,
+          experience: 0,
+        },
+      } as JobInsert;
+    },
+  );
   return dbJobs;
 };
 
