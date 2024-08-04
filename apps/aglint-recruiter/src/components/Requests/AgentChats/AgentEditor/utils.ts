@@ -10,12 +10,12 @@ export const scheduleType = [
     display: 'Schedule' as ScheduleType,
   },
   {
-    id: 'request_availability',
-    display: 'Availability' as ScheduleType,
+    id: 're_schedule',
+    display: 'Reschedule' as ScheduleType,
   },
   {
-    id: 'self_schedule',
-    display: 'Self-schedule' as ScheduleType,
+    id: 'cancel',
+    display: 'Cancel' as ScheduleType,
   },
 ];
 
