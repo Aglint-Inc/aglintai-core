@@ -2,10 +2,13 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
+import { Kbd } from '@/devlink3/Kbd';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import {
@@ -43,23 +46,30 @@ function AgentEditor({
   handleSubmit?: (x: string) => void;
 }) {
   const [text, setText] = useState('');
-  const [triggerType, setTriggerType] = useState<'@' | '#' | '$' | '%' | ''>(
-    null,
-  );
+  const [triggerType, setTriggerType] = useState<
+    '@' | '#' | '$' | '!' | 'request'
+  >(null);
+  const inputRef = useRef(null);
   const mentionsInputProps: MentionInputProps = {
-    // onFocus: (e) => {
-    //   setTriggerType('');
-    //   if (!text) {
-    //     setText(' ');
-    //   }
-    // },
+    inputRef,
+    onFocus: (e) => {
+      if (!text) {
+        setTriggerType('request');
+        setText('request');
+        setTimeout(() => {
+          inputRef.current?.setSelectionRange(7, 7);
+          inputRef.current.focus();
+        }, 10);
+      }
+    },
     onBlur: () => {
       if (!text.trim()) {
         setText('');
       }
     },
     // a11ySuggestionsListLabel: 'Suggestions',
-    placeholder: "Type '@' for candidates or '#' for jobs",
+    placeholder:
+      "Type '#' for jobs or '@' for candidates or 'request' for requests",
     style: {
       control: {
         backgroundColor: '#fff',
@@ -85,9 +95,9 @@ function AgentEditor({
         // cursor: isFetchedSessions ? 'progress' : 'text',
       },
       suggestions: {
-        marginTop: '23px', // Adjust this value to move the suggestion list down
-        border: '#E9EBED 1px solid',
-        borderRadius: '10px 10px 0px 0px',
+        marginTop: '10px', // Adjust this value to move the suggestion list down
+        // border: '#E9EBED 1px solid',
+        // borderRadius: '10px 10px 0px 0px',
         borderTop: 'none',
         width: '484px',
         backgroundColor: '#F9F9F8',
@@ -101,41 +111,48 @@ function AgentEditor({
     },
     customSuggestionsContainer: (children) => {
       return (
-        <div className='mentions__control'>
-          {(sessionList.length && triggerType === '%') ||
-          (applicationsList.length && triggerType === '@') ||
-          (jobList.length && triggerType === '#') ||
-          (scheduleTypes.length && triggerType === '$') ||
-          requestList.length ? (
-            <Instructions
-              heading={
-                triggerType === '$'
-                  ? 'schedule_type'
-                  : triggerType === '#'
-                    ? 'jobs'
-                    : triggerType === '@'
-                      ? 'candidates'
-                      : triggerType === '%'
-                        ? 'sessions'
-                        : requestList.length
-                          ? 'requests'
-                          : null
-              }
-            />
-          ) : (
-            <>Not fround</>
-          )}
-          <div
-            id='listContainer'
-            style={{
-              maxHeight: '200px',
-              overflowY: 'auto',
-              overflowX: 'hidden',
-            }}
-            // className='mentions__suggestions'
-          >
-            {children}
-          </div>
+        <div>
+          <AiChatSuggest
+            textHeader={'Type or choose jobs from the list'}
+            slotKbd={
+              <>
+                <Kbd
+                  textShortcut={
+                    <GlobalIcon size={5} iconName={'arrow_upward'} />
+                  }
+                />
+                <Kbd
+                  textShortcut={
+                    <GlobalIcon size={5} iconName={'arrow_downward'} />
+                  }
+                />
+              </>
+            }
+            slotList={
+              <div
+                id='listContainer'
+                style={{
+                  maxHeight: '200px',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                }}
+                // className='mentions__suggestions'
+              >
+                <ShowCode>
+                  <ShowCode.When
+                    isTrue={
+                      (triggerType === '@' && applicationsList.length === 0) ||
+                      (triggerType === '#' && jobList.length === 0) ||
+                      (triggerType === '$' && sessionList.length === 0)
+                    }
+                  >
+                    <>No results</>
+                  </ShowCode.When>
+                </ShowCode>
+                {children}
+              </div>
+            }
+          />
         </div>
       );
     },
@@ -160,14 +177,13 @@ function AgentEditor({
       event.key === '@' ||
       event.key === '#' ||
       event.key === '$' ||
-      event.key === '%' ||
-      event.key === ''
+      event.key === '!'
     ) {
       setTriggerType(event.key);
     }
     // shortcut to add scheduleType
-    if (event.ctrlKey && event.key === ' ') {
-      setText(text + '$');
+    if (event.ctrlKey && event.key === '!') {
+      setText(text + '!');
     }
     if (event.ctrlKey && event.key === '1') {
       setText((pre) => scheduleTypes[0].display + pre);
@@ -181,7 +197,7 @@ function AgentEditor({
   };
 
   const mentionScheduleTypes: MentionComponentProps = {
-    trigger: '$',
+    trigger: '!',
     data:
       scheduleTypes.length > 0
         ? scheduleTypes
@@ -283,7 +299,7 @@ function AgentEditor({
   };
 
   const mentionSessionList: MentionComponentProps = {
-    trigger: '%',
+    trigger: '$',
     data:
       sessionList.length > 0
         ? sessionList
@@ -306,7 +322,7 @@ function AgentEditor({
       );
     },
     onAdd(id, display) {
-      handleAddMention({ id, display }, '%');
+      handleAddMention({ id, display }, '$');
     },
     appendSpaceOnAdd: true,
 
@@ -342,7 +358,7 @@ function AgentEditor({
       );
     },
     onAdd(id, display) {
-      handleAddMention({ id, display }, '%');
+      handleAddMention({ id, display }, 'request');
     },
     appendSpaceOnAdd: true,
 
@@ -355,22 +371,15 @@ function AgentEditor({
   };
 
   const handleAddMention = ({ id, display }: MentionType, trigger: string) => {
-    if (trigger === '') {
+    if (trigger === 'request') {
       getSelectedRequest({ id, display });
     }
-    if (trigger === '$') {
+    if (trigger === '!') {
       getSelectedScheduleType({ id, display });
       setTimeout(() => {
         setText((pre) => pre + '#');
         setTriggerType('#');
       }, 100);
-    }
-    if (trigger === '@') {
-      getSelectedApplication({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '%');
-        setTriggerType('%');
-      }, 10);
     }
     if (trigger === '#') {
       getSelectedJob({ id, display });
@@ -379,7 +388,15 @@ function AgentEditor({
         setTriggerType('@');
       }, 10);
     }
-    if (trigger === '%') {
+
+    if (trigger === '@') {
+      getSelectedApplication({ id, display });
+      setTimeout(() => {
+        setText((pre) => pre + '$');
+        setTriggerType('$');
+      }, 10);
+    }
+    if (trigger === '$') {
       getSelectedSession({ id, display });
     }
   };
@@ -393,7 +410,6 @@ function AgentEditor({
           <Mention {...mentionApplicationsList} />
           <Mention {...mentionSessionList} />
           <Mention {...mentionRequestList} />
-          <Mention {...mentionRequestList} trigger={'req'} />
         </MentionsInput>
       </div>
     </>
@@ -415,29 +431,5 @@ const Suggestion = ({ entry, highlightedDisplay, focused, index, search }) => {
     >
       {highlightedDisplay}
     </div>
-  );
-};
-
-const Instructions = ({
-  heading,
-}: {
-  heading: 'jobs' | 'candidates' | 'schedule_type' | 'sessions' | 'requests';
-}) => {
-  return (
-    <Stack
-      py={1}
-      pr={2}
-      direction={'row'}
-      width={'480px'}
-      justifyContent={'space-between'}
-    >
-      <Typography variant={'h5'}>
-        Select {capitalizeFirstLetter(heading)}
-      </Typography>
-      <Stack direction={'row'}>
-        Use arrow key <GlobalIcon size={5} iconName={'keyboard_arrow_up'} />{' '}
-        <GlobalIcon size={5} iconName={'keyboard_arrow_down'} />
-      </Stack>
-    </Stack>
   );
 };
