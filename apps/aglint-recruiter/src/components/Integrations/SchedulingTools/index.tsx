@@ -111,7 +111,7 @@ function Scheduling() {
       setReason('update_zoom');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: allIntegrations.zoom_auth,
+          encryptData: allIntegrations?.zoom_auth,
         })
         .then(({ data }) => {
           if (data) {
@@ -165,12 +165,12 @@ function Scheduling() {
           }
           secondaryAction={() => {
             setLoading(false);
-            if (allIntegrations.service_json) disConnectApi('google_workspace');
+            if (allIntegrations?.service_json) disConnectApi('google_workspace');
             else readDocs('google_workspace');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (allIntegrations.service_json) updateApi('google_workspace');
+            if (allIntegrations?.service_json) updateApi('google_workspace');
             else connectApi('google_workspace');
           }}
         />
@@ -189,12 +189,12 @@ function Scheduling() {
           }
           secondaryAction={() => {
             setLoading(false);
-            if (allIntegrations.zoom_auth) disConnectApi('zoom');
+            if (allIntegrations?.zoom_auth) disConnectApi('zoom');
             else readDocs('zoom');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (allIntegrations.zoom_auth) updateApi('zoom');
+            if (allIntegrations?.zoom_auth) updateApi('zoom');
             else connectApi('zoom');
           }}
         />

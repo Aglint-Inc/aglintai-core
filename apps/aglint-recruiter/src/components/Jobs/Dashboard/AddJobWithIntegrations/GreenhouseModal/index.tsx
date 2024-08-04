@@ -49,7 +49,7 @@ export function GreenhouseModal() {
   }, [jobs.status, allIntegrations?.greenhouse_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(allIntegrations.greenhouse_key);
+    const allJobs = await fetchAllJobs(allIntegrations?.greenhouse_key);
     setPostings(
       allJobs.filter((post) => {
         if (
@@ -121,7 +121,7 @@ export function GreenhouseModal() {
         await supabase.from('job_reference').insert(astJobsObj).select();
         handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
-        await createJobApplications(jobsObj, allIntegrations.greenhouse_key);
+        await createJobApplications(jobsObj, allIntegrations?.greenhouse_key);
         await handleJobsRefresh();
         //closing modal once done
         setIntegration((prev) => ({

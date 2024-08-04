@@ -56,7 +56,7 @@ export function AshbyModalComp() {
   }, [jobs.status, allIntegrations?.ashby_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(allIntegrations.ashby_key);
+    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key);
 
     const { data } = await supabase
       .from('public_jobs')
@@ -117,8 +117,8 @@ export function AshbyModalComp() {
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
         axios.post('/api/ashby/syncapplications', {
-          apikey: allIntegrations.ashby_key,
-          synctoken: allIntegrations.ashby_sync_token,
+          apikey: allIntegrations?.ashby_key,
+          synctoken: allIntegrations?.ashby_sync_token,
           recruiter_id: recruiter.id,
         });
         //closing modal once done
