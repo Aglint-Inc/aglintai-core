@@ -191,7 +191,7 @@ export default function Heatmap({ loadSetting }) {
   }
   return (
     <Stack height={'140px'} bgcolor={'var(--neutral-2)'} p={1}>
-      Loading
+      Loading {isLoading ? '...' : ''}
     </Stack>
   );
 }
