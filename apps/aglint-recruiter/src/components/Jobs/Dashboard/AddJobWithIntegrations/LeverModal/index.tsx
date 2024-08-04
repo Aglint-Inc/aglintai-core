@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -52,10 +52,10 @@ export default function LeverModalComp() {
   const { data: integrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && integrations.lever_key) {
+    if (jobs.status === 'success' && integrations?.lever_key) {
       fetchJobs();
     }
-  }, [jobs.status]);
+  }, [jobs.status, integrations?.lever_key]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(integrations.lever_key);
@@ -189,211 +189,197 @@ export default function LeverModalComp() {
   };
 
   return (
-    <IntegrationModal
-      slotLogo={
-        <>
-          <Image src={'/images/ats/lever.png'} width={120} height={34} alt='' />
-        </>
-      }
-      slotApiKey={
-        integration.lever.step === STATE_LEVER_DIALOG.API ||
-        integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
-          <LeverApiKey
-            slotPrimaryButton={
-              <ButtonSolid
-                textButton='Submit'
-                isDisabled={loading}
-                isLoading={loading}
-                onClickButton={{
-                  onClick: submitApiKey,
-                }}
-                size={2}
-              />
-            }
-            onClickSupport={{
-              onClick: () => {
-                window.open(
-                  'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
-                  '_blank',
-                );
-              },
-            }}
-            isApiWrong={integration.lever.step === STATE_LEVER_DIALOG.ERROR}
-            slotSearch={
-              <UITextField
-                ref={apiRef}
-                labelSize='small'
-                error={error}
-                helperText='Please enter a API key'
-                fullWidth
-                height={32}
-                placeholder='API key'
-                type='password'
-              />
-            }
-          />
-        ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
-          <IntegrationFetching
-            slotIntegrationLogo={
-              <Image
-                src={'/images/ats/leverbig.svg'}
-                width={50}
-                height={50}
-                alt=''
-              />
-            }
-            textCompany={'Lever'}
-            slotLottie={
-              <Stack
-                height={'100px'}
-                style={{ transform: 'rotate(270deg)' }}
-                width={'100px'}
-              >
-                <FetchingJobsLever />
-              </Stack>
-            }
-          />
-        ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-          <Stack
-            justifyContent={'flex-start'}
-            height={'100%'}
-            overflow={'hidden'}
-          >
-            <AtsJobs
-              textNumberofJobs={
-                <Typography variant='body1'>
-                  {selectedLeverPostings.length == 0
-                    ? `Showing ${leverPostings.length} Jobs from lever`
-                    : `${selectedLeverPostings.length} Jobs selected`}
-                </Typography>
+    <Dialog open={integration.lever.open} onClose={handleClose} maxWidth={'lg'}>
+      <IntegrationModal
+        slotLogo={
+          <>
+            <Image
+              src={'/images/ats/lever.png'}
+              width={120}
+              height={34}
+              alt=''
+            />
+          </>
+        }
+        slotApiKey={
+          integration.lever.step === STATE_LEVER_DIALOG.API ||
+          integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
+            <LeverApiKey
+              slotPrimaryButton={
+                <ButtonSolid
+                  textButton='Submit'
+                  isDisabled={loading}
+                  isLoading={loading}
+                  onClickButton={{
+                    onClick: submitApiKey,
+                  }}
+                  size={2}
+                />
               }
-              onClickImport={{
+              onClickSupport={{
                 onClick: () => {
-                  importLever();
-                  posthog.capture('Lever Jobs successfully imported');
+                  window.open(
+                    'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
+                    '_blank',
+                  );
                 },
               }}
-              isImportDisable={selectedLeverPostings.length === 0}
-              isAllActive={leverFilter == 'all'}
-              isClosedActive={leverFilter == 'closed'}
-              isInternalActive={leverFilter == 'internal'}
-              isPublishedActive={leverFilter == 'published'}
-              onClickClosed={{
-                onClick: () => {
-                  setLeverFilter('closed');
-                },
-              }}
-              onClickPublished={{
-                onClick: () => {
-                  setLeverFilter('published');
-                },
-              }}
-              onClickInternal={{
-                onClick: () => {
-                  setLeverFilter('internal');
-                },
-              }}
-              onClickAll={{
-                onClick: () => {
-                  setLeverFilter('all');
-                },
-              }}
-              slotAtsCard={
-                !initialFetch ? (
-                  leverPostings.filter((job) => {
-                    if (leverFilter !== 'all') {
-                      return job.state === leverFilter;
-                    } else {
-                      return true;
-                    }
-                  }).length > 0 ? (
-                    leverPostings
-                      .filter((job) => {
-                        if (leverFilter !== 'all') {
-                          return job.state === leverFilter;
-                        } else {
-                          return true;
-                        }
-                      })
-                      .map((post, ind) => {
-                        return (
-                          <ScrollList uniqueKey={ind} key={ind}>
-                            <AtsCard
-                              isChecked={
-                                selectedLeverPostings?.filter(
-                                  (p) => p.id === post.id,
-                                )?.length > 0
-                              }
-                              onClickCheck={{
-                                onClick: () => {
-                                  if (
-                                    selectedLeverPostings?.some(
-                                      (p) => p.id === post.id,
-                                    )
-                                  ) {
-                                    // If the object is already in the array, remove it
-                                    setSelectedLeverPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id),
-                                    );
-                                  } else {
-                                    if (selectedLeverPostings.length < 1) {
-                                      // If the object is not in the array, add it
-                                      setSelectedLeverPostings((prev) => [
-                                        ...prev,
-                                        post,
-                                      ]);
-                                    } else {
-                                      toast.warning(
-                                        'You can import one job at a time.',
-                                      );
-                                    }
-                                  }
-                                },
-                              }}
-                              propsTextColor={{
-                                style: {
-                                  color: getLeverStatusColor(post.state),
-                                },
-                              }}
-                              textRole={post.text}
-                              textStatus={post.state}
-                              textWorktypeLocation={post.categories.location}
-                            />
-                          </ScrollList>
-                        );
-                      })
-                  ) : (
-                    <NoResultAts />
-                  )
-                ) : (
-                  <>
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                  </>
-                )
+              isApiWrong={integration.lever.step === STATE_LEVER_DIALOG.ERROR}
+              slotSearch={
+                <UITextField
+                  ref={apiRef}
+                  labelSize='small'
+                  error={error}
+                  helperText='Please enter a API key'
+                  fullWidth
+                  height={32}
+                  placeholder='API key'
+                  type='password'
+                />
               }
             />
-          </Stack>
-        ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-          <LoadingJobsAts
-            textAtsCompany={'Lever'}
-            textJobCount={
-              selectedLeverPostings.length < 1
-                ? `${selectedLeverPostings.length} Job`
-                : `${selectedLeverPostings.length} Jobs`
-            }
-            slotLottie={<LoaderLever />}
-          />
-        ) : (
-          <LeverApiKey />
-        )
-      }
-      onClickClose={{
-        onClick: () => {
-          handleClose();
-        },
-      }}
-    />
+          ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
+            <IntegrationFetching
+              slotIntegrationLogo={
+                <Image
+                  src={'/images/ats/leverbig.svg'}
+                  width={50}
+                  height={50}
+                  alt=''
+                />
+              }
+              textCompany={'Lever'}
+              slotLottie={
+                <Stack
+                  height={'100px'}
+                  style={{ transform: 'rotate(270deg)' }}
+                  width={'100px'}
+                >
+                  <FetchingJobsLever />
+                </Stack>
+              }
+            />
+          ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+            <Stack
+              justifyContent={'flex-start'}
+              height={'100%'}
+              overflow={'hidden'}
+            >
+              <AtsJobs
+                textNumberofJobs={
+                  <Typography variant='body1'>
+                    {selectedLeverPostings.length == 0
+                      ? `Showing ${leverPostings.length} Jobs from lever`
+                      : `${selectedLeverPostings.length} Jobs selected`}
+                  </Typography>
+                }
+                onClickImport={{
+                  onClick: () => {
+                    importLever();
+                    posthog.capture('Lever Jobs successfully imported');
+                  },
+                }}
+                isImportDisable={selectedLeverPostings.length === 0}
+                isAllActive={leverFilter == 'all'}
+                isClosedActive={leverFilter == 'closed'}
+                isInternalActive={leverFilter == 'internal'}
+                isPublishedActive={leverFilter == 'published'}
+                onClickClosed={{
+                  onClick: () => {
+                    setLeverFilter('closed');
+                  },
+                }}
+                onClickPublished={{
+                  onClick: () => {
+                    setLeverFilter('published');
+                  },
+                }}
+                onClickInternal={{
+                  onClick: () => {
+                    setLeverFilter('internal');
+                  },
+                }}
+                onClickAll={{
+                  onClick: () => {
+                    setLeverFilter('all');
+                  },
+                }}
+                slotAtsCard={
+                  !initialFetch ? (
+                    leverPostings.filter((job) => {
+                      if (leverFilter !== 'all') {
+                        return job.state === leverFilter;
+                      } else {
+                        return true;
+                      }
+                    }).length > 0 ? (
+                      leverPostings
+                        .filter((job) => {
+                          if (leverFilter !== 'all') {
+                            return job.state === leverFilter;
+                          } else {
+                            return true;
+                          }
+                        })
+                        .map((post, ind) => {
+                          return (
+                            <ScrollList uniqueKey={ind} key={ind}>
+                              <AtsCard
+                                isChecked={
+                                  selectedLeverPostings?.filter(
+                                    (p) => p.id === post.id,
+                                  )?.length > 0
+                                }
+                                onClickCheck={{
+                                  onClick: () => {
+                                    setSelectedLeverPostings([post]);
+                                  },
+                                }}
+                                propsTextColor={{
+                                  style: {
+                                    color: getLeverStatusColor(post.state),
+                                  },
+                                }}
+                                textRole={post.text}
+                                textStatus={post.state}
+                                textWorktypeLocation={post.categories.location}
+                              />
+                            </ScrollList>
+                          );
+                        })
+                    ) : (
+                      <NoResultAts />
+                    )
+                  ) : (
+                    <>
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                    </>
+                  )
+                }
+              />
+            </Stack>
+          ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
+            <LoadingJobsAts
+              textAtsCompany={'Lever'}
+              textJobCount={
+                selectedLeverPostings.length < 1
+                  ? `${selectedLeverPostings.length} Job`
+                  : `${selectedLeverPostings.length} Jobs`
+              }
+              slotLottie={<LoaderLever />}
+            />
+          ) : (
+            <LeverApiKey />
+          )
+        }
+        onClickClose={{
+          onClick: () => {
+            handleClose();
+          },
+        }}
+      />
+    </Dialog>
   );
 }

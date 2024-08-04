@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-page-custom-font */
+/* eslint-disable @next/next/no-head-element */
 'use client';
 // eslint-disable-next-line simple-import-sort/imports
 import { DevlinkMainProvider } from '@context/DevlinkContext';

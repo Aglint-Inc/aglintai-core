@@ -1,5 +1,6 @@
 import axios from 'axios';
-const crypto = require('crypto');
+
+import { decrypt } from '../decryptApiKey';
 
 export default function handler(req, res) {
   try {
@@ -71,14 +72,6 @@ export default function handler(req, res) {
   } catch (error) {
     res.status(400).send(error);
   }
-}
-
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
 }
 
 const fetchLocations = async (key) => {

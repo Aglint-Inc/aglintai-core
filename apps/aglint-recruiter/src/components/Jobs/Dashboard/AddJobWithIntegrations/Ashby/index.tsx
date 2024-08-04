@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -50,13 +50,13 @@ export function AshbyModalComp() {
   const { data: allIntegrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && allIntegrations.ashby_key) {
+    if (jobs.status === 'success' && allIntegrations?.ashby_key) {
       fetchJobs();
     }
-  }, [jobs.status]);
+  }, [jobs.status, allIntegrations?.ashby_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(allIntegrations.ashby_key);
+    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key);
 
     const { data } = await supabase
       .from('public_jobs')
@@ -98,7 +98,7 @@ export function AshbyModalComp() {
           ats_json: post,
         };
       });
-      const dbJobs = await createJobObject(refJobsObj, recruiter);
+      const dbJobs = await createJobObject(refJobsObj, recruiter.id);
       const { data: newJobs, error } = await supabase
         .from('public_jobs')
         .insert(dbJobs)
@@ -117,8 +117,8 @@ export function AshbyModalComp() {
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
         axios.post('/api/ashby/syncapplications', {
-          apikey: allIntegrations.ashby_key,
-          synctoken: allIntegrations.ashby_sync_token,
+          apikey: allIntegrations?.ashby_key,
+          synctoken: allIntegrations?.ashby_sync_token,
           recruiter_id: recruiter.id,
         });
         //closing modal once done
@@ -192,166 +192,173 @@ export function AshbyModalComp() {
   };
 
   return (
-    <IntegrationModal
-      slotLogo={
-        <>
-          <Image src={'/images/ats/ashby.svg'} width={80} height={26} alt='' />
-        </>
-      }
-      slotApiKey={
-        integration.ashby.step === STATE_ASHBY_DIALOG.API ||
-        integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
-          <AshbyApiKey
-            slotPrimaryButton={
-              <ButtonSolid
-                textButton='Submit'
-                isDisabled={loading}
-                isLoading={loading}
-                onClickButton={{
-                  onClick: submitApiKey,
-                }}
-                size={2}
-              />
-            }
-            slotInput={
-              <UITextField
-                ref={apiRef}
-                onFocus={() => setError(false)}
-                error={error}
-                helperText='Please enter a API key'
-                labelSize='small'
-                height={32}
-                fullWidth
-                placeholder='API key'
-                type='password'
-              />
-            }
-            isApiWrong={integration.ashby.step === STATE_ASHBY_DIALOG.ERROR}
-          />
-        ) : integration.ashby.step === STATE_ASHBY_DIALOG.FETCHING ? (
-          <IntegrationFetching
-            textCompany={'Ashby'}
-            slotIntegrationLogo={
-              <Image
-                src={'/images/ats/ashby.svg'}
-                width={50}
-                height={50}
-                alt=''
-              />
-            }
-            slotLottie={
-              <Stack
-                height={'100px'}
-                style={{ transform: 'rotate(270deg)' }}
-                width={'100px'}
-              >
-                <FetchingJobsLever />
-              </Stack>
-            }
-          />
-        ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
-          <Stack
-            justifyContent={'flex-start'}
-            height={'100%'}
-            overflow={'hidden'}
-          >
-            <AshbyAtsJob
-              textNumberOfJobs={
-                <Typography variant='body1'>
-                  {selectedAshbyPostings.length == 0
-                    ? `Showing ${postings.length} Jobs from ashby`
-                    : `${selectedAshbyPostings.length} Jobs selected`}
-                </Typography>
+    <Dialog open={integration.ashby.open} onClose={handleClose} maxWidth={'lg'}>
+      <IntegrationModal
+        slotLogo={
+          <>
+            <Image
+              src={'/images/ats/ashby.svg'}
+              width={80}
+              height={26}
+              alt=''
+            />
+          </>
+        }
+        slotApiKey={
+          integration.ashby.step === STATE_ASHBY_DIALOG.API ||
+          integration.ashby.step === STATE_ASHBY_DIALOG.ERROR ? (
+            <AshbyApiKey
+              slotPrimaryButton={
+                <ButtonSolid
+                  textButton='Submit'
+                  isDisabled={loading}
+                  isLoading={loading}
+                  onClickButton={{
+                    onClick: submitApiKey,
+                  }}
+                  size={2}
+                />
               }
-              onClickImport={{
-                onClick: () => {
-                  importAshby();
-                  posthog.capture('Asbhy Jobs successfully imported');
-                },
-              }}
-              isImportDisable={selectedAshbyPostings.length === 0}
-              slotAtsCard={
-                !initialFetch ? (
-                  postings.length > 0 ? (
-                    postings.map((post, ind) => {
-                      return (
-                        <ScrollList uniqueKey={ind} key={ind}>
-                          <AtsCard
-                            isChecked={
-                              selectedAshbyPostings?.filter(
-                                (p) => p.id === post.id,
-                              )?.length > 0
-                            }
-                            onClickCheck={{
-                              onClick: () => {
-                                if (
-                                  selectedAshbyPostings?.some(
-                                    (p) => p.id === post.id,
-                                  )
-                                ) {
-                                  // If the object is already in the array, remove it
-                                  setSelectedAshbyPostings((prev) =>
-                                    prev.filter((p) => p.id !== post.id),
-                                  );
-                                } else {
-                                  if (selectedAshbyPostings.length < 1) {
-                                    // If the object is not in the array, add it
-                                    setSelectedAshbyPostings((prev) => [
-                                      ...prev,
-                                      post,
-                                    ]);
-                                  } else {
-                                    toast.warning(
-                                      'You can import 1 job at a time',
-                                    );
-                                  }
-                                }
-                              },
-                            }}
-                            propsTextColor={{
-                              style: {
-                                color: '',
-                              },
-                            }}
-                            textRole={post.title}
-                            textStatus={'Live'}
-                            textWorktypeLocation={post.location}
-                          />
-                        </ScrollList>
-                      );
-                    })
-                  ) : (
-                    <NoResultAts />
-                  )
-                ) : (
-                  <>
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                  </>
-                )
+              slotInput={
+                <UITextField
+                  ref={apiRef}
+                  onFocus={() => setError(false)}
+                  error={error}
+                  helperText='Please enter a API key'
+                  labelSize='small'
+                  height={32}
+                  fullWidth
+                  placeholder='API key'
+                  type='password'
+                />
+              }
+              isApiWrong={integration.ashby.step === STATE_ASHBY_DIALOG.ERROR}
+            />
+          ) : integration.ashby.step === STATE_ASHBY_DIALOG.FETCHING ? (
+            <IntegrationFetching
+              textCompany={'Ashby'}
+              slotIntegrationLogo={
+                <Image
+                  src={'/images/ats/ashby.svg'}
+                  width={50}
+                  height={50}
+                  alt=''
+                />
+              }
+              slotLottie={
+                <Stack
+                  height={'100px'}
+                  style={{ transform: 'rotate(270deg)' }}
+                  width={'100px'}
+                >
+                  <FetchingJobsLever />
+                </Stack>
               }
             />
-          </Stack>
-        ) : integration.ashby.step === STATE_ASHBY_DIALOG.IMPORTING ? (
-          <LoadingJobsAts
-            textAtsCompany={'Ashby'}
-            textJobCount={
-              selectedAshbyPostings.length < 1
-                ? `${selectedAshbyPostings.length} Job`
-                : `${selectedAshbyPostings.length} Jobs`
-            }
-            slotLottie={<LoaderLever />}
-          />
-        ) : (
-          <LeverApiKey />
-        )
-      }
-      onClickClose={{
-        onClick: () => {
-          handleClose();
-        },
-      }}
-    />
+          ) : integration.ashby.step === STATE_ASHBY_DIALOG.LISTJOBS ? (
+            <Stack
+              justifyContent={'flex-start'}
+              height={'100%'}
+              overflow={'hidden'}
+            >
+              <AshbyAtsJob
+                textNumberOfJobs={
+                  <Typography variant='body1'>
+                    {selectedAshbyPostings.length == 0
+                      ? `Showing ${postings.length} Jobs from ashby`
+                      : `${selectedAshbyPostings.length} Jobs selected`}
+                  </Typography>
+                }
+                onClickImport={{
+                  onClick: () => {
+                    importAshby();
+                    posthog.capture('Asbhy Jobs successfully imported');
+                  },
+                }}
+                isImportDisable={selectedAshbyPostings.length === 0}
+                slotAtsCard={
+                  !initialFetch ? (
+                    postings.length > 0 ? (
+                      postings.map((post, ind) => {
+                        return (
+                          <ScrollList uniqueKey={ind} key={ind}>
+                            <AtsCard
+                              isChecked={
+                                selectedAshbyPostings?.filter(
+                                  (p) => p.id === post.id,
+                                )?.length > 0
+                              }
+                              onClickCheck={{
+                                onClick: () => {
+                                  if (
+                                    selectedAshbyPostings?.some(
+                                      (p) => p.id === post.id,
+                                    )
+                                  ) {
+                                    // If the object is already in the array, remove it
+                                    setSelectedAshbyPostings((prev) =>
+                                      prev.filter((p) => p.id !== post.id),
+                                    );
+                                  } else {
+                                    if (selectedAshbyPostings.length < 1) {
+                                      // If the object is not in the array, add it
+                                      setSelectedAshbyPostings((prev) => [
+                                        ...prev,
+                                        post,
+                                      ]);
+                                    } else {
+                                      toast.warning(
+                                        'You can import 1 job at a time',
+                                      );
+                                    }
+                                  }
+                                },
+                              }}
+                              propsTextColor={{
+                                style: {
+                                  color: '',
+                                },
+                              }}
+                              textRole={post.title}
+                              textStatus={'Live'}
+                              textWorktypeLocation={post.location}
+                            />
+                          </ScrollList>
+                        );
+                      })
+                    ) : (
+                      <NoResultAts />
+                    )
+                  ) : (
+                    <>
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                      <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                    </>
+                  )
+                }
+              />
+            </Stack>
+          ) : integration.ashby.step === STATE_ASHBY_DIALOG.IMPORTING ? (
+            <LoadingJobsAts
+              textAtsCompany={'Ashby'}
+              textJobCount={
+                selectedAshbyPostings.length < 1
+                  ? `${selectedAshbyPostings.length} Job`
+                  : `${selectedAshbyPostings.length} Jobs`
+              }
+              slotLottie={<LoaderLever />}
+            />
+          ) : (
+            <LeverApiKey />
+          )
+        }
+        onClickClose={{
+          onClick: () => {
+            handleClose();
+          },
+        }}
+      />
+    </Dialog>
   );
 }

@@ -152,7 +152,7 @@ function Overview({
             })
           ) : (
             <GlobalEmptyState
-              textDesc='No upcoming schedules found.'
+              textDesc='No upcoming interviews found.'
               size={6}
               iconName='event'
             />
