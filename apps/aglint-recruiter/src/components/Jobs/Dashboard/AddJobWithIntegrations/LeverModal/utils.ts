@@ -2,7 +2,6 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -207,24 +206,51 @@ export const fetchAllJobs = async (apiKey) => {
   return allJobs;
 };
 
-export const createJobObject = async (
-  selectedLeverPostings,
-  recruiter,
-): Promise<JobInsert[]> => {
-  const dbJobs = selectedLeverPostings.map((post) => {
-    const id = uuidv4();
-    return {
-      draft: {
+export const createJobObject = async (selectedLeverPostings, recruiter) => {
+  const dbJobs: DatabaseTableInsert['public_jobs'][] =
+    selectedLeverPostings.map((post) => {
+      const id = uuidv4();
+      return {
+        draft: {
+          location: post.categories.location,
+          job_title: post.text,
+          description: post.content.descriptionHtml,
+          department_id: recruiter?.departments?.[0]?.id ?? null,
+          job_type:
+            post.categories.commitment === 'Part Time'
+              ? 'part time'
+              : post.categories.commitment === 'Internship'
+                ? 'internship'
+                : 'full time',
+          workplace_type:
+            post.workplaceType === 'hybrid'
+              ? 'hybrid'
+              : post.workplaceType === 'onsite'
+                ? 'on site'
+                : 'off site',
+          company: recruiter.name,
+          jd_json: {
+            educations: [],
+            level: 'Mid-level',
+            rolesResponsibilities: [],
+            skills: [],
+            title: post.text,
+          },
+        },
         location: post.categories.location,
         job_title: post.text,
+        status: 'draft',
+        scoring_criteria_loading: true,
+        posted_by: POSTED_BY.LEVER,
+        recruiter_id: recruiter.id,
+        id: id,
         description: post.content.descriptionHtml,
-        department_id: recruiter?.departments?.[0]?.id ?? null,
         job_type:
           post.categories.commitment === 'Part Time'
             ? 'part time'
             : post.categories.commitment === 'Internship'
-              ? 'internship'
-              : 'full time',
+              ? ''
+              : 'part time',
         workplace_type:
           post.workplaceType === 'hybrid'
             ? 'hybrid'
@@ -232,46 +258,13 @@ export const createJobObject = async (
               ? 'on site'
               : 'off site',
         company: recruiter.name,
-        jd_json: {
-          educations: [],
-          level: 'Mid-level',
-          rolesResponsibilities: [],
-          skills: [],
-          title: post.text,
+        parameter_weights: {
+          skills: 0,
+          education: 0,
+          experience: 0,
         },
-      },
-      location: post.categories.location,
-      job_title: post.text,
-      status: 'draft',
-      scoring_criteria_loading: true,
-      posted_by: POSTED_BY.LEVER,
-      recruiter_id: recruiter.id,
-      id: id,
-      description: post.content.descriptionHtml,
-      email_template: recruiter.email_template,
-      department: recruiter?.departments?.[0] ?? null,
-      job_type:
-        post.categories.commitment === 'Part Time'
-          ? 'parttime'
-          : post.categories.commitment === 'Internship'
-            ? 'internship'
-            : 'fulltime',
-      workplace_type:
-        post.workplaceType === 'hybrid'
-          ? 'hybrid'
-          : post.workplaceType === 'onsite'
-            ? 'onsite'
-            : 'offsite',
-      company: recruiter.name,
-      skills: [],
-      parameter_weights: {
-        skills: 0,
-        education: 0,
-        experience: 0,
-      },
-      video_assessment: false,
-    } as JobInsert;
-  });
+      } as DatabaseTableInsert['public_jobs'];
+    });
   return dbJobs;
 };
 

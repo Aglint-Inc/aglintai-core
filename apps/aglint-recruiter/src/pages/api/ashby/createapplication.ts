@@ -1,13 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
-const crypto = require('crypto');
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import { splitFullName } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
+
+import { decrypt } from '../decryptApiKey';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
@@ -169,14 +170,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
-}
 
 const getCandidate = async (id: string, key: string): Promise<any> => {
   const options = {

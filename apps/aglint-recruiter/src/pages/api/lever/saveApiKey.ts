@@ -1,14 +1,7 @@
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { encrypt } from '../encryptData';
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
 
 export default async function handler(req, res) {
   let apiKey = req.body.apiKey;
@@ -21,16 +14,9 @@ export default async function handler(req, res) {
 
   const encryptedApiKey = encrypt(apiKey, process.env.ENCRYPTION_KEY);
 
-  axios.post(process.env.ASHBY_SYNC_URL, {
-    recruiter_id: recruiterId,
-    ashby_key: encryptedApiKey,
-  });
-
-  console.log(encryptedApiKey);
-
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('integrations')
-    .update({ ashby_key: encryptedApiKey })
+    .update({ lever_key: encryptedApiKey })
     .eq('recruiter_id', recruiterId)
     .select();
 

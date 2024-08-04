@@ -6,9 +6,17 @@ export default async function handler(req, res) {
   res.status(200).json(data);
 }
 
-function encrypt(data: any, encryptionKey: string) {
-  const cipher = crypto.createCipher('aes256', encryptionKey);
+export function encrypt(data, encryptionKey) {
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv(
+    'aes-256-cbc',
+    Buffer.from(encryptionKey, 'hex'),
+    iv,
+  );
   let encryptedData = cipher.update(data, 'utf8', 'hex');
   encryptedData += cipher.final('hex');
-  return encryptedData;
+  const ivHex = iv.toString('hex');
+  const encryptedDataWithIv = ivHex + encryptedData;
+
+  return encryptedDataWithIv;
 }

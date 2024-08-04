@@ -63,7 +63,6 @@ function ATSTools() {
               responseRec.status === 200 &&
               responseRec.data[0]?.greenhouse_key
             ) {
-              refetch();
               posthog.capture('Green House Data Fetched');
             }
           } else {
@@ -96,7 +95,6 @@ function ATSTools() {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-              refetch();
               posthog.capture('Ashby Data Fetched');
             }
           } else {
@@ -129,7 +127,6 @@ function ATSTools() {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-              refetch();
               posthog.capture('Lever Data Fetched');
             }
           } else {
@@ -146,6 +143,7 @@ function ATSTools() {
         return;
       }
     }
+    refetch();
     close();
   }
 

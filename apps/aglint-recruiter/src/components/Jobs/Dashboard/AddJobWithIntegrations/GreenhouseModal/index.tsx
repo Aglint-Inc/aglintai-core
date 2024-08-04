@@ -1,32 +1,21 @@
-import { Stack, Typography } from '@mui/material';
-import axios from 'axios';
-import Image from 'next/image';
+import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AtsCard } from '@/devlink/AtsCard';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GreenhouseApiKey } from '@/devlink/GreenhouseApiKey';
-import { GreenhouseAts } from '@/devlink/GreenhouseAts';
-import { IntegrationFetching } from '@/devlink/IntegrationFetching';
-import { IntegrationModal } from '@/devlink/IntegrationModal';
-import { LeverApiKey } from '@/devlink/LeverApiKey';
-import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
-import { DarkPill } from '@/devlink3/DarkPill';
-import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
-import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
-import UITextField from '@/src/components/Common/UITextField';
+import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { useAllIntegrations } from '@/src/queries/intergrations';
-import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -37,33 +26,27 @@ import {
   createJobApplications,
   createJobObject,
   fetchAllJobs,
-  filterJobs,
   getGreenhouseStatusColor,
 } from './utils';
 
 export function GreenhouseModal() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
   const { jobs, handleJobsRefresh } = useJobs();
-  const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
-  const [error, setError] = useState<boolean>(false);
+  const [saving, setSaving] = useState(false);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
     JobGreenhouse[]
   >([]);
-  const [greenhouseFilter, setGreenhouseFilter] = useState<
-    'live' | 'active' | 'closed' | 'all'
-  >('live');
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
-  const apiRef = useRef(null);
   const { data: allIntegrations } = useAllIntegrations();
 
   useEffect(() => {
-    if (jobs.status === 'success' && allIntegrations.greenhouse_key) {
+    if (jobs.status === 'success' && allIntegrations?.greenhouse_key) {
       fetchJobs();
     }
-  }, [jobs.status]);
+  }, [jobs.status, allIntegrations?.greenhouse_key]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(allIntegrations.greenhouse_key);
@@ -88,6 +71,7 @@ export function GreenhouseModal() {
 
   const importGreenhouse = async () => {
     try {
+      setSaving(true);
       setIntegration((prev) => ({
         ...prev,
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
@@ -135,7 +119,7 @@ export function GreenhouseModal() {
         });
 
         await supabase.from('job_reference').insert(astJobsObj).select();
-        await handleGenerateJd(newJobs[0].id);
+        handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
         await createJobApplications(jobsObj, allIntegrations.greenhouse_key);
         await handleJobsRefresh();
@@ -157,295 +141,98 @@ export function GreenhouseModal() {
         'Import failed. Please try again later or contact support for assistance.',
       );
       handleClose();
-    }
-  };
-
-  const submitApiKey = async () => {
-    if (!apiRef.current.value) {
-      setError(true);
-      return;
-    }
-    try {
-      setLoading(true);
-      const response = await axios.post('/api/greenhouse/getPostings', {
-        page: 1,
-        apiKey: apiRef.current.value,
-        isInitial: true,
-      });
-
-      if (response.status === 200 && response.data.length > 0) {
-        setIntegration((prev) => ({
-          ...prev,
-          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.FETCHING },
-        }));
-        const responseRec = await axios.post('/api/greenhouse/saveApiKey', {
-          recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
-        });
-
-        if (responseRec.status === 200 && responseRec.data[0]?.greenhouse_key) {
-          setRecruiter(responseRec.data[0]);
-          setPostings(response.data);
-          setInitialFetch(false);
-          posthog.capture('Green House Data Fetched');
-          setTimeout(() => {
-            setIntegration((prev) => ({
-              ...prev,
-              greenhouse: {
-                open: true,
-                step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-              },
-            }));
-          }, 1000);
-        }
-      } else {
-        setLoading(false);
-        setIntegration((prev) => ({
-          ...prev,
-          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
-        }));
-      }
-    } catch (error) {
-      setLoading(false);
-      setIntegration((prev) => ({
-        ...prev,
-        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
-      }));
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
-    <IntegrationModal
-      slotLogo={
-        <>
-          <Image
-            src={'/images/ats/greenhouse.svg'}
-            width={120}
-            height={34}
-            alt=''
-          />
-        </>
-      }
-      slotApiKey={
-        integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.API ||
-        integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR ? (
-          <GreenhouseApiKey
-            slotPrimaryButton={
-              <ButtonSolid
-                textButton='Submit'
-                isDisabled={loading}
-                isLoading={loading}
-                onClickButton={{
-                  onClick: submitApiKey,
-                }}
-                size={2}
-              />
-            }
-            slotInput={
-              <UITextField
-                ref={apiRef}
-                height={32}
-                error={error}
-                helperText='Please enter a API key'
-                onFocus={() => setError(false)}
-                labelSize='small'
-                fullWidth
-                placeholder='API key'
-                type='password'
-              />
-            }
-            isApiWrong={
-              integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.ERROR
-            }
-          />
-        ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.FETCHING ? (
-          <IntegrationFetching
-            textCompany={'Greenhouse'}
-            slotIntegrationLogo={
-              <Image
-                src={'/images/ats/greenhousebig.svg'}
-                width={50}
-                height={50}
-                alt=''
-              />
-            }
-            slotLottie={
-              <Stack
-                height={'100px'}
-                style={{ transform: 'rotate(270deg)' }}
-                width={'100px'}
-              >
-                <FetchingJobsLever />
-              </Stack>
-            }
-          />
-        ) : integration.greenhouse.step === STATE_GREENHOUSE_DIALOG.LISTJOBS ? (
-          <Stack
-            justifyContent={'flex-start'}
-            height={'100%'}
-            overflow={'hidden'}
-          >
-            <GreenhouseAts
-              slotNewTab={
-                <>
-                  <Stack display={'flex'} flexDirection={'row'} gap={'8px'}>
-                    <DarkPill
-                      textPill='All'
-                      isActive={greenhouseFilter == 'all'}
-                      onClickPill={{
-                        onClick: () => {
-                          setGreenhouseFilter('all');
-                        },
-                      }}
-                    />
-                    <DarkPill
-                      textPill='Active'
-                      isActive={greenhouseFilter == 'active'}
-                      onClickPill={{
-                        onClick: () => {
-                          setGreenhouseFilter('active');
-                        },
-                      }}
-                    />
-                    <DarkPill
-                      textPill='Live'
-                      isActive={greenhouseFilter == 'live'}
-                      onClickPill={{
-                        onClick: () => {
-                          setGreenhouseFilter('live');
-                        },
-                      }}
-                    />
-                    <DarkPill
-                      textPill='Closed'
-                      isActive={greenhouseFilter == 'closed'}
-                      onClickPill={{
-                        onClick: () => {
-                          setGreenhouseFilter('closed');
-                        },
-                      }}
-                    />
-                  </Stack>
-                </>
-              }
-              textNumberofJobs={
-                <Typography variant='body1'>
-                  {selectedGreenhousePostings.length == 0
-                    ? `Showing ${
-                        postings.filter((job) => {
-                          if (greenhouseFilter == 'live') {
-                            return job.live;
-                          } else if (greenhouseFilter == 'closed') {
-                            return !job.active;
-                          } else if (greenhouseFilter == 'active') {
-                            return job.active;
-                          } else {
-                            return true;
-                          }
-                        }).length
-                      } Jobs from greenhouse`
-                    : `${selectedGreenhousePostings.length} Jobs selected`}
-                </Typography>
-              }
-              onClickImport={{
-                onClick: () => {
-                  importGreenhouse();
-                  posthog.capture('GreenHouse Jobs successfully imported');
-                },
-              }}
-              isImportDisable={selectedGreenhousePostings.length === 0}
-              isAllActive={greenhouseFilter == 'all'}
-              isClosedActive={greenhouseFilter == 'closed'}
-              isActiveActive={greenhouseFilter == 'active'}
-              isLiveActive={greenhouseFilter == 'live'}
-              onClickClosed={{
-                onClick: () => {
-                  setGreenhouseFilter('closed');
-                },
-              }}
-              onClickActive={{
-                onClick: () => {
-                  setGreenhouseFilter('active');
-                },
-              }}
-              onClickLive={{
-                onClick: () => {
-                  setGreenhouseFilter('live');
-                },
-              }}
-              onClickAll={{
-                onClick: () => {
-                  setGreenhouseFilter('all');
-                },
-              }}
-              slotAtsCard={
-                !initialFetch ? (
-                  filterJobs(postings, greenhouseFilter).length > 0 ? (
-                    filterJobs(postings, greenhouseFilter).map((post, ind) => {
-                      return (
-                        <ScrollList uniqueKey={ind} key={ind}>
-                          <AtsCard
-                            isChecked={
-                              selectedGreenhousePostings?.filter(
-                                (p) => p.id === post.id,
-                              )?.length > 0
-                            }
-                            onClickCheck={{
-                              onClick: () => {
-                                setSelectedGreenhousePostings([post]);
-                              },
-                            }}
-                            propsTextColor={{
-                              style: {
-                                color: getGreenhouseStatusColor(post),
-                              },
-                            }}
-                            textRole={post.title}
-                            textStatus={
-                              post.live
-                                ? 'Live'
-                                : post.active
-                                  ? 'Active'
-                                  : 'Closed'
-                            }
-                            textWorktypeLocation={post.location.name}
-                          />
-                        </ScrollList>
-                      );
-                    })
-                  ) : (
-                    <NoResultAts />
-                  )
-                ) : (
-                  <>
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                    <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
-                  </>
-                )
-              }
-            />
-          </Stack>
-        ) : integration.greenhouse.step ===
-          STATE_GREENHOUSE_DIALOG.IMPORTING ? (
-          <LoadingJobsAts
-            textAtsCompany={'Greenhouse'}
-            textJobCount={
-              selectedGreenhousePostings.length < 1
-                ? `${selectedGreenhousePostings.length} Job`
-                : `${selectedGreenhousePostings.length} Jobs`
-            }
-            slotLottie={<LoaderLever />}
-          />
-        ) : (
-          <LeverApiKey />
-        )
-      }
-      onClickClose={{
-        onClick: () => {
-          handleClose();
-        },
+    <Drawer
+      anchor={'right'}
+      open={integration.greenhouse.open}
+      onClose={() => {
+        if (saving) return;
+        handleClose();
       }}
-    />
+    >
+      <SideDrawerLarge
+        drawerSize={'small'}
+        slotButtons={
+          <>
+            <ButtonSoft
+              size={2}
+              color={'neutral'}
+              textButton={'Close'}
+              onClickButton={{
+                onClick: () => {
+                  if (saving) return;
+                  handleClose();
+                },
+              }}
+            />
+            <ButtonSolid
+              size={2}
+              color={'accent'}
+              textButton={'Import'}
+              isLoading={saving}
+              isDisabled={selectedGreenhousePostings.length === 0}
+              onClickButton={{
+                onClick: () => {
+                  if (saving) return;
+                  importGreenhouse();
+                },
+              }}
+            />
+          </>
+        }
+        slotSideDrawerbody={
+          <Stack
+            spacing={'var(--space-2)'}
+            padding={'var(--space-2)'}
+            height={'calc(100vh - 96px)'}
+          >
+            {!initialFetch ? (
+              postings.length > 0 ? (
+                postings.map((post, ind) => {
+                  return (
+                    <AtsCard
+                      key={ind}
+                      isChecked={
+                        selectedGreenhousePostings?.filter(
+                          (p) => p.id === post.id,
+                        )?.length > 0
+                      }
+                      onClickCheck={{
+                        onClick: () => {
+                          setSelectedGreenhousePostings([post]);
+                        },
+                      }}
+                      propsTextColor={{
+                        style: {
+                          color: getGreenhouseStatusColor(post),
+                        },
+                      }}
+                      textRole={post.title}
+                      textStatus={
+                        post.live ? 'Live' : post.active ? 'Active' : 'Closed'
+                      }
+                      textWorktypeLocation={post.location.name}
+                    />
+                  );
+                })
+              ) : (
+                <NoResultAts />
+              )
+            ) : (
+              <>
+                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+                <SkeletonLoaderAtsCard /> <SkeletonLoaderAtsCard />
+              </>
+            )}
+          </Stack>
+        }
+      />
+    </Drawer>
   );
 }
