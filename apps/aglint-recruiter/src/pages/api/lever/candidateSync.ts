@@ -10,7 +10,7 @@ import {
 } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-const crypto = require('crypto');
+import { decrypt } from '../decryptApiKey';
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
@@ -171,14 +171,6 @@ export default async function handler(req, res) {
       }
     }
   }
-}
-
-// Decrypt data using AES-256
-export function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
 }
 
 const fetchAllOpporunities = async (apiKey, postingId) => {

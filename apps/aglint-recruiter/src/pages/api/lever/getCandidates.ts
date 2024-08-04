@@ -1,5 +1,6 @@
 import axios from 'axios';
-const crypto = require('crypto');
+
+import { decrypt } from '../decryptApiKey';
 
 export default function handler(req, res) {
   const apiKey = req.body.apiKey;
@@ -28,12 +29,4 @@ export default function handler(req, res) {
   } else {
     res.status(400).send('No posting_id provided');
   }
-}
-
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
 }
