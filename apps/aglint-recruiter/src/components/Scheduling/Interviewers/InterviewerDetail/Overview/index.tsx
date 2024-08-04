@@ -5,6 +5,7 @@ import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 import { InterviewLoadCard } from '@/devlink3/InterviewLoadCard';
+import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/src/components/Common/Loader';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
@@ -17,7 +18,6 @@ import PauseDialog from '../Popups/PauseDialog';
 import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
-import Heatmap from './Heatmap';
 
 function Overview({
   scheduleList,
