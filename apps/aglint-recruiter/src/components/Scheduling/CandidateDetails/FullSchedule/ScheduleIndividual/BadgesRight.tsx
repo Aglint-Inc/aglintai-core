@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 
 import { SchedulingApplication } from '../../store';
 import { ScheduleIndividualCardType } from './types';
@@ -23,8 +23,7 @@ function BadgesRight({
   cancelReasons: ScheduleIndividualCardType['cancelReasons'];
   users: SchedulingApplication['initialSessions'][0]['users'];
 }) {
-  const { recruiter } = useAuthDetails();
-
+  const { data: allIntegrations } = useAllIntegrations();
   let allUsers = users;
 
   if (
@@ -59,8 +58,8 @@ function BadgesRight({
   const calenderNotConnectedUser = users.filter(
     (user) =>
       !(
-        (!!recruiter.service_json &&
-          recruiter.email.split('@')[1] ===
+        (!!allIntegrations?.service_json &&
+          allIntegrations?.google_workspace_domain?.split('//')[1] ===
             user.user_details.email.split('@')[1]) ||
         !!(user.user_details.schedule_auth as any)?.access_token
       ),

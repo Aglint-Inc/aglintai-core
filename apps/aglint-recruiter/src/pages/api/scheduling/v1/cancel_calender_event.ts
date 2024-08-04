@@ -39,7 +39,9 @@ const getRecruiterCredentials = async ({ email }) => {
   const [rec] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_relation')
-      .select('recruiter(service_json),recruiter_user(schedule_auth)')
+      .select(
+        'recruiter(integrations(service_json)),recruiter_user(schedule_auth)',
+      )
       .eq('user_id', user_id),
   );
 
@@ -48,5 +50,5 @@ const getRecruiterCredentials = async ({ email }) => {
     schedule_auth: rec.recruiter_user.schedule_auth as any,
     user_id,
   };
-  return { comp_cred: rec.recruiter.service_json, recruiter: r };
+  return { comp_cred: rec.recruiter.integrations.service_json, recruiter: r };
 };

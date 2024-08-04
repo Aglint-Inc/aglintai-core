@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -19,15 +18,10 @@ import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
-import {
-  GooglLogo,
-  updateIntegrations,
-  updateRecruiter,
-  ZoomLogo,
-} from '../utils';
+import { GooglLogo, updateIntegrations, ZoomLogo } from '../utils';
 
 function Scheduling() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
   const [hideApiKey, setHideApiKey] = useState(true);
 
@@ -53,27 +47,22 @@ function Scheduling() {
       reason === 'update_google_workspace'
     ) {
       if (fileData) {
-        await updateRecruiter(recruiter.id, {
-          service_json: fileData,
-          google_workspace_domain,
-        } as RecruiterType).then((data) => {
-          setRecruiter(data);
-        });
+        await updateIntegrations(
+          {
+            service_json: fileData,
+            google_workspace_domain,
+          },
+          recruiter.id,
+        );
       } else {
-        await updateRecruiter(recruiter.id, {
-          google_workspace_domain,
-        } as RecruiterType).then((data) => {
-          setRecruiter(data);
-        });
+        await updateIntegrations(
+          { google_workspace_domain: null },
+          recruiter.id,
+        );
       }
     }
     if (reason === 'disconnect_google_workSpace') {
       await updateIntegrations({ service_json: null }, recruiter.id);
-      await updateRecruiter(recruiter.id, {
-        service_json: null,
-      } as RecruiterType).then((data) => {
-        setRecruiter(data);
-      });
     }
 
     if (reason === 'disconnect_zoom') {
@@ -166,20 +155,22 @@ function Scheduling() {
         .split('_')
         .join(' ') as schedulingToolsType,
       url: 'workspace.google.com',
-      isConnected: recruiter?.service_json,
+      isConnected: allIntegrations?.service_json,
       logo: <GooglLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.service_json ? 'Re-Upload' : 'Connect'}
-          secondaryText={recruiter?.service_json ? 'Disconnect' : 'Learn How'}
+          primaryText={allIntegrations?.service_json ? 'Re-Upload' : 'Connect'}
+          secondaryText={
+            allIntegrations?.service_json ? 'Disconnect' : 'Learn How'
+          }
           secondaryAction={() => {
             setLoading(false);
-            if (recruiter.service_json) disConnectApi('google_workspace');
+            if (allIntegrations.service_json) disConnectApi('google_workspace');
             else readDocs('google_workspace');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (recruiter.service_json) updateApi('google_workspace');
+            if (allIntegrations.service_json) updateApi('google_workspace');
             else connectApi('google_workspace');
           }}
         />
@@ -294,11 +285,8 @@ function Scheduling() {
                 </Typography>
 
                 <TextField
-                  defaultValue={
-                    recruiter.google_workspace_domain ||
-                    recruiter.company_website
-                  }
-                  placeholder='Enter domain name'
+                  defaultValue={allIntegrations.google_workspace_domain}
+                  placeholder='Ex : https://aglinthq.com'
                   fullWidth
                   inputRef={domainRef}
                 />

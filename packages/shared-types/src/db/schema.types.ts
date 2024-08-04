@@ -3154,12 +3154,12 @@ export type Database = {
           company_values: string | null
           company_website: string | null
           created_at: string
-          domain_admin_email: string | null
+          // domain_admin_email: string | null
           e_o_statement: string | null
           email: string | null
           employee_size: string | null
           employment_type: Json
-          google_workspace_domain: string | null
+          // google_workspace_domain: string | null
           hr_contact: Json | null
           id: string
           industry: string | null
@@ -3173,7 +3173,7 @@ export type Database = {
           recruiter_type: string | null
           scheduling_reason: Json | null
           scheduling_settings: Json | null
-          service_json: string | null
+          // service_json: string | null
           socials: Json | null
           technology_score: string[]
           use_of_purpose: Json | null

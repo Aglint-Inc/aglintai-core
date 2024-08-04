@@ -133,7 +133,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
     await supabaseAdmin
       .from('recruiter_relation')
       .select(
-        'recruiter(service_json,id),recruiter_user!public_recruiter_relation_user_id_fkey(user_id, email,schedule_auth)',
+        'recruiter(id,integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(user_id, email,schedule_auth)',
       )
       .in(
         'user_id',
@@ -146,7 +146,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
       schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
       user_id: int.recruiter_user.user_id,
     }));
-  const hashed_comp_cred = session_ints_auth_details[0].recruiter.service_json;
+  const hashed_comp_cred = session_ints_auth_details[0].recruiter.integrations.service_json;
 
   return {
     company_cred_hash_str: hashed_comp_cred,
