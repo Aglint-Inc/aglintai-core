@@ -6,6 +6,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 import { InterviewLoadCard } from '@/devlink3/InterviewLoadCard';
 import Loader from '@/src/components/Common/Loader';
+import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
@@ -16,6 +17,7 @@ import PauseDialog from '../Popups/PauseDialog';
 import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
+import Heatmap from './Heatmap';
 
 function Overview({
   scheduleList,
@@ -26,7 +28,7 @@ function Overview({
   totalInterviewsToday,
 }: {
   scheduleList: SchedulesSupabase;
-  interviewerDetails;
+  interviewerDetails: ApiResponseGetMember;
   totalHoursThisWeek: number;
   totalHoursToday: number;
   totalInterviewsThisWeek: number;
@@ -53,7 +55,10 @@ function Overview({
       <PauseDialog />
       <ResumeDialog />
       <DeleteMemberDialog refetch={deleteRefetch} />
-      <Stack m={2}>
+      <Heatmap
+        loadSetting={interviewerDetails.scheduling_settings.interviewLoad}
+      />
+      <Stack ml={2} mb={2}>
         <Typography fontWeight={500} pb={1}>
           Interview Load
         </Typography>
