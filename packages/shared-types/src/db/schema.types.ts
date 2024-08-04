@@ -1160,31 +1160,52 @@ export type Database = {
       }
       integrations: {
         Row: {
+          ashby_key: string | null
+          ashby_last_synced: string | null
+          ashby_sync_token: string | null
           created_at: string
           domain_admin_email: string | null
+          google_workspace_domain: string | null
+          greenhouse_key: string | null
           id: string
+          lever_key: string | null
           recruiter_id: string
           schedule_agent_email: string | null
           service_json: string | null
           twilio_phone_number: string | null
+          zoom_auth: string | null
         }
         Insert: {
+          ashby_key?: string | null
+          ashby_last_synced?: string | null
+          ashby_sync_token?: string | null
           created_at?: string
           domain_admin_email?: string | null
+          google_workspace_domain?: string | null
+          greenhouse_key?: string | null
           id?: string
-          recruiter_id?: string
+          lever_key?: string | null
+          recruiter_id: string
           schedule_agent_email?: string | null
           service_json?: string | null
           twilio_phone_number?: string | null
+          zoom_auth?: string | null
         }
         Update: {
+          ashby_key?: string | null
+          ashby_last_synced?: string | null
+          ashby_sync_token?: string | null
           created_at?: string
           domain_admin_email?: string | null
+          google_workspace_domain?: string | null
+          greenhouse_key?: string | null
           id?: string
+          lever_key?: string | null
           recruiter_id?: string
           schedule_agent_email?: string | null
           service_json?: string | null
           twilio_phone_number?: string | null
+          zoom_auth?: string | null
         }
         Relationships: [
           {
@@ -3125,10 +3146,6 @@ export type Database = {
         Row: {
           ai_avatar: Json | null
           application_process: string | null
-          ashby_key: string | null
-          ashby_last_synced: string | null
-          ashby_sync_token: string | null
-          assistant_id: string | null
           ats_familiar: string | null
           audio_avatar_id: number
           available_roles: string[]
@@ -3143,11 +3160,9 @@ export type Database = {
           employee_size: string | null
           employment_type: Json
           google_workspace_domain: string | null
-          greenhouse_key: string | null
           hr_contact: Json | null
           id: string
           industry: string | null
-          lever_key: string | null
           logo: string | null
           m_v_statement: string | null
           name: string | null
@@ -3164,15 +3179,10 @@ export type Database = {
           use_of_purpose: Json | null
           video_assessment: boolean | null
           workplace_type: Json
-          zoom_auth: string | null
         }
         Insert: {
           ai_avatar?: Json | null
           application_process?: string | null
-          ashby_key?: string | null
-          ashby_last_synced?: string | null
-          ashby_sync_token?: string | null
-          assistant_id?: string | null
           ats_familiar?: string | null
           audio_avatar_id?: number
           available_roles?: string[]
@@ -3187,11 +3197,9 @@ export type Database = {
           employee_size?: string | null
           employment_type?: Json
           google_workspace_domain?: string | null
-          greenhouse_key?: string | null
           hr_contact?: Json | null
           id?: string
           industry?: string | null
-          lever_key?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
@@ -3208,15 +3216,10 @@ export type Database = {
           use_of_purpose?: Json | null
           video_assessment?: boolean | null
           workplace_type?: Json
-          zoom_auth?: string | null
         }
         Update: {
           ai_avatar?: Json | null
           application_process?: string | null
-          ashby_key?: string | null
-          ashby_last_synced?: string | null
-          ashby_sync_token?: string | null
-          assistant_id?: string | null
           ats_familiar?: string | null
           audio_avatar_id?: number
           available_roles?: string[]
@@ -3231,11 +3234,9 @@ export type Database = {
           employee_size?: string | null
           employment_type?: Json
           google_workspace_domain?: string | null
-          greenhouse_key?: string | null
           hr_contact?: Json | null
           id?: string
           industry?: string | null
-          lever_key?: string | null
           logo?: string | null
           m_v_statement?: string | null
           name?: string | null
@@ -3252,7 +3253,6 @@ export type Database = {
           use_of_purpose?: Json | null
           video_assessment?: boolean | null
           workplace_type?: Json
-          zoom_auth?: string | null
         }
         Relationships: [
           {

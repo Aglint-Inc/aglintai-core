@@ -118,7 +118,7 @@ function FilterAndSorting() {
           handleSearchChange(value);
         },
         value: searchQuery,
-        placeholder: 'Search',
+        placeholder: 'Search Requests',
       }}
       filters={[
         {

@@ -28,9 +28,9 @@ export default async function handler(req, res) {
   console.log(encryptedApiKey);
 
   const { data, error } = await supabase
-    .from('recruiter')
+    .from('integrations')
     .update({ ashby_key: encryptedApiKey })
-    .eq('id', recruiterId)
+    .eq('recruiter_id', recruiterId)
     .select();
 
   if (!error) {

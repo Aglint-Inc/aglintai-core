@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { AglintAiChat } from "./AglintAiChat";
 import { Text } from "./Text";
 import { RequestOption } from "./RequestOption";
 import { RequestSection } from "./RequestSection";
-import { AglintAiChat } from "./AglintAiChat";
 import * as _utils from "./utils";
 import _styles from "./RequestAgent.module.css";
 
@@ -22,6 +22,12 @@ export function RequestAgent({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-wrap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "slot-agent-chat")}
+        tag="div"
+      >
+        {slotAglintAiChat ?? <AglintAiChat />}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "request-left-wrap")}
         tag="div"
@@ -67,12 +73,6 @@ export function RequestAgent({
             {slotRequestSection ?? <RequestSection />}
           </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-agent-chat")}
-        tag="div"
-      >
-        {slotAglintAiChat ?? <AglintAiChat />}
       </_Builtin.Block>
     </_Component>
   );

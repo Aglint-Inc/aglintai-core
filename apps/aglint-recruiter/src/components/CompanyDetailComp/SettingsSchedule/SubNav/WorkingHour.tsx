@@ -120,16 +120,14 @@ export default function WorkingHour({ updateSettings, initialData }) {
           timeZone={initialData?.timeZone.label}
           setIsDrawerOpen={setIsDrawerOpen}
         />
-
-        <Debreif
-          breaktime={initialData.break_hour}
-          setIsDrawerOpen={setIsDrawerOpen}
-        />
         <WorkingHourView
           setIsDrawerOpen={setIsDrawerOpen}
           workingHours={initialData.workingHours}
         />
-
+        <Debreif
+          breaktime={initialData.break_hour}
+          setIsDrawerOpen={setIsDrawerOpen}
+        />
         <Drawer
           anchor={'right'}
           open={isDrawerOpen}

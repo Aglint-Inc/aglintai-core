@@ -44,8 +44,8 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
       }}
     >
       <DcPopup
-        popupName={'Move to Qualified Members'}
-        slotBody={`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified members?`}
+        popupName={'Move to Qualified'}
+        slotBody={`Are you sure you want to move ${members.find((user) => user.user_id == selUser.user_id)?.first_name} to qualified?`}
         onClickClosePopup={{
           onClick: () => {
             setIsMovedToQualifiedDialogOpen(false);
