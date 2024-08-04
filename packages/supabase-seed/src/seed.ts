@@ -9,6 +9,7 @@ const main = async () => {
   await supabaseAdmin.auth.signOut();
   const tables_in_order: (keyof DatabaseTable)[] = [
     'recruiter',
+    'integrations',
     'roles',
     'permissions',
     'recruiter_user',
