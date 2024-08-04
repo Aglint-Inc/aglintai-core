@@ -2,7 +2,7 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { Stack, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -18,47 +18,125 @@ import {
   ScheduleType,
 } from './utils';
 
-function AgentEditor({
-  applicationsList,
-  jobList,
-  scheduleTypes,
-  sessionList,
-  requestList,
-  getSelectedScheduleType,
-  getSelectedJob,
-  getSelectedApplication,
-  getSelectedRequest,
-  getSelectedSession,
-  handleTextChange,
-  handleSubmit,
-}: {
+interface AgentEditorProps {
   applicationsList?: { id: string; display: string }[];
   jobList?: { id: string; display: string }[];
   scheduleTypes?: { id: string; display: ScheduleType }[];
   sessionList?: { id: string; display: string }[];
   requestList?: { id: string; display: string }[];
-  getSelectedJob?: ({ id, display }: { id: string; display: string }) => void;
-  getSelectedApplication?: ({ id, display }: MentionType) => void;
   getSelectedScheduleType?: ({ id, display }: MentionType) => void;
+  getSelectedJob?: ({ id, display }: MentionType) => void;
+  getSelectedApplication?: ({ id, display }: MentionType) => void;
   getSelectedRequest?: ({ id, display }: MentionType) => void;
   getSelectedSession?: ({ id, display }: MentionType) => void;
-  handleTextChange?: (x: string) => void;
-  handleSubmit?: (x: string) => void;
-}) {
+  handleTextChange?: (text: string) => void;
+  handleSubmit?: (text: string) => void;
+}
+
+const AgentEditor: React.FC<AgentEditorProps> = ({
+  applicationsList = [],
+  jobList = [],
+  scheduleTypes = [],
+  sessionList = [],
+  requestList = [],
+  getSelectedJob,
+  getSelectedApplication,
+  getSelectedScheduleType,
+  getSelectedRequest,
+  getSelectedSession,
+  handleTextChange,
+  handleSubmit,
+}) => {
   const [text, setText] = useState('');
   const [triggerType, setTriggerType] = useState<
-    '@' | '#' | '$' | '!' | 'request'
+    '@' | '#' | '$' | '%' | '!' | null
   >(null);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if (event.ctrlKey && event.key === 'Enter') {
+      handleSubmit && handleSubmit(text);
+    }
+
+    if (
+      event.key === '@' ||
+      event.key === '#' ||
+      event.key === '$' ||
+      event.key === '%'
+    ) {
+      setTriggerType(event.key);
+    }
+
+    if (event.ctrlKey) {
+      let taskType = '';
+      switch (event.key) {
+        case '1':
+          taskType = `schedule_type:[${scheduleTypes[0]?.display}]`;
+          break;
+        case '2':
+          taskType = `schedule_type:[${scheduleTypes[1]?.display}]`;
+          break;
+        case '3':
+          taskType = `schedule_type:[${scheduleTypes[2]?.display}]`;
+          break;
+        default:
+          break;
+      }
+      if (taskType) {
+        const regex = /schedule_type:\[[^\]]*\] ?/;
+        if (regex.test(text)) {
+          setText(text.replace(regex, taskType));
+        } else {
+          setText(`${taskType}${text}`);
+        }
+      }
+    }
+  };
+
+  const handleAddMention = ({ id, display }: MentionType, trigger: string) => {
+    switch (trigger) {
+      case '!':
+        getSelectedRequest && getSelectedRequest({ id, display });
+        break;
+      case '%':
+        getSelectedScheduleType && getSelectedScheduleType({ id, display });
+        setTimeout(() => {
+          setText((prev) => prev + '#');
+          setTriggerType('#');
+        }, 100);
+        break;
+      case '#':
+        getSelectedJob && getSelectedJob({ id, display });
+        setTimeout(() => {
+          setText((prev) => prev + '@');
+          setTriggerType('@');
+        }, 10);
+        break;
+      case '@':
+        getSelectedApplication && getSelectedApplication({ id, display });
+        setTimeout(() => {
+          setText((prev) => prev + '$');
+          setTriggerType('$');
+        }, 10);
+        break;
+      case '$':
+        getSelectedSession && getSelectedSession({ id, display });
+        break;
+      default:
+        break;
+    }
+  };
+
   const mentionsInputProps: MentionInputProps = {
     inputRef,
-    onFocus: (e) => {
+    onFocus: () => {
       if (!text) {
-        setTriggerType('request');
-        setText('request');
+        setTriggerType('!');
+        setText('!');
         setTimeout(() => {
           inputRef.current?.setSelectionRange(7, 7);
-          inputRef.current.focus();
+          inputRef.current?.focus();
         }, 10);
       }
     },
@@ -67,7 +145,6 @@ function AgentEditor({
         setText('');
       }
     },
-    // a11ySuggestionsListLabel: 'Suggestions',
     placeholder:
       "Type '#' for jobs or '@' for candidates or 'request' for requests",
     style: {
@@ -82,339 +159,142 @@ function AgentEditor({
         overflow: 'hidden',
         margin: '0px 0px 0px -5px',
       },
-
       input: {
         margin: 0,
         border: '1px solid var(--neutral-6)',
         borderRadius: '10px',
         outline: 'none',
-        // height: '100%',
-        // padding: '0px 15px',
         padding: '10px',
         maxHeight: '400px',
-        // cursor: isFetchedSessions ? 'progress' : 'text',
       },
       suggestions: {
-        marginTop: '10px', // Adjust this value to move the suggestion list down
-        // border: '#E9EBED 1px solid',
-        // borderRadius: '10px 10px 0px 0px',
+        marginTop: '10px',
         borderTop: 'none',
         width: '387px',
         backgroundColor: '#F9F9F8',
-        // maxHeight: '250px',
       },
     },
     value: text,
     onChange: (e, newValue) => {
       setText(newValue);
-      handleTextChange(newValue);
+      handleTextChange && handleTextChange(newValue);
     },
-    customSuggestionsContainer: (children) => {
-      return (
-        <div>
-          <AiChatSuggest
-            textHeader={'Type or choose jobs from the list'}
-            slotKbd={
-              <>
-                <Kbd
-                  textShortcut={
-                    <GlobalIcon size={2} iconName={'arrow_upward'} />
+    customSuggestionsContainer: (children) => (
+      <div>
+        <AiChatSuggest
+          textHeader='Type or choose jobs from the list'
+          slotKbd={
+            <>
+              <Kbd
+                textShortcut={<GlobalIcon size={2} iconName='arrow_upward' />}
+              />
+              <Kbd
+                textShortcut={<GlobalIcon size={2} iconName='arrow_downward' />}
+              />
+            </>
+          }
+          slotList={
+            <div
+              id='listContainer'
+              style={{
+                maxHeight: '200px',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={
+                    (triggerType === '@' && applicationsList.length === 0) ||
+                    (triggerType === '#' && jobList.length === 0) ||
+                    (triggerType === '$' && sessionList.length === 0)
                   }
-                />
-                <Kbd
-                  textShortcut={
-                    <GlobalIcon size={2} iconName={'arrow_downward'} />
-                  }
-                />
-              </>
-            }
-            slotList={
-              <div
-                id='listContainer'
-                style={{
-                  maxHeight: '200px',
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
-                }}
-                // className='mentions__suggestions'
-              >
-                <ShowCode>
-                  <ShowCode.When
-                    isTrue={
-                      (triggerType === '@' && applicationsList.length === 0) ||
-                      (triggerType === '#' && jobList.length === 0) ||
-                      (triggerType === '$' && sessionList.length === 0)
-                    }
-                  >
-                    <>No results</>
-                  </ShowCode.When>
-                </ShowCode>
-                {children}
-              </div>
-            }
-          />
-        </div>
-      );
-    },
+                >
+                  <>No results</>
+                </ShowCode.When>
+              </ShowCode>
+              {children}
+            </div>
+          }
+        />
+      </div>
+    ),
     singleLine: false,
     forceSuggestionsAboveCursor: true,
     allowSuggestionsAboveCursor: true,
-
-    onKeyDown: (e) => {
-      handleKeyDown(e);
-    },
+    onKeyDown: handleKeyDown,
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    // on submit
-    if (event.ctrlKey && event.key === 'Enter') {
-      handleSubmit(text);
-    }
-    // to show what key was pressed for mention list
-    if (
-      event.key === '@' ||
-      event.key === '#' ||
-      event.key === '$' ||
-      event.key === '!'
-    ) {
-      setTriggerType(event.key);
-    }
-    // shortcut to add scheduleType
-    if (event.ctrlKey && event.key === '!') {
-      setText(text + '!');
-    }
-    if (event.ctrlKey && event.key === '1') {
-      setText((pre) => scheduleTypes[0].display + pre);
-    }
-    if (event.ctrlKey && event.key === '2') {
-      setText((pre) => scheduleTypes[1].display + pre);
-    }
-    if (event.ctrlKey && event.key === '3') {
-      setText((pre) => scheduleTypes[2].display + pre);
-    }
-  };
-
-  const mentionScheduleTypes: MentionComponentProps = {
-    trigger: '!',
-    data:
-      scheduleTypes.length > 0
-        ? scheduleTypes
-        : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#8E00F112',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'schedule_type:[__display__]',
-    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
-      return (
-        <Suggestion
-          index={index}
-          entry={entry}
-          highlightedDisplay={highlightedDisplay}
-          focused={focused}
-          search={search}
-        />
-      );
-    },
-    onAdd(id, display) {
-      handleAddMention({ id, display }, '$');
-    },
+  const createMentionComponent = (
+    trigger: string,
+    data: { id: string; display: string }[],
+    backgroundColor: string,
+    markup: string,
+  ): MentionComponentProps => ({
+    trigger,
+    data: data.length > 0 ? data : [{ id: '1', display: 'No results' }],
+    style: { backgroundColor, color: '#00000000', borderRadius: '5px' },
+    markup,
+    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => (
+      <Suggestion
+        key={index}
+        index={index}
+        entry={entry}
+        highlightedDisplay={highlightedDisplay}
+        focused={focused}
+        search={search}
+      />
+    ),
+    onAdd: (id, display) => handleAddMention({ id, display }, trigger),
     appendSpaceOnAdd: true,
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + ':  ';
-    },
-  };
-  const mentionJobList: MentionComponentProps = {
-    trigger: '#',
-    data: jobList.length > 0 ? jobList : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#fcf4a3',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'job_title:[__display__]',
-    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
-      return (
-        <Suggestion
-          index={index}
-          entry={entry}
-          highlightedDisplay={highlightedDisplay}
-          focused={focused}
-          search={search}
-        />
-      );
-    },
-    onAdd(id, display) {
-      handleAddMention({ id, display }, '#');
-    },
-    appendSpaceOnAdd: true,
+    displayTransform: (id, display) =>
+      display === 'No results' ? '' : display + '  ',
+  });
 
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + '  ';
-    },
-  };
-  const mentionApplicationsList: MentionComponentProps = {
-    trigger: '@',
-    data:
-      applicationsList.length > 0
-        ? applicationsList
-        : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#daf4fa',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'applicant_name:[__display__]',
-    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
-      return (
-        <Suggestion
-          index={index}
-          entry={entry}
-          highlightedDisplay={highlightedDisplay}
-          focused={focused}
-          search={search}
-        />
-      );
-    },
-    onAdd(id, display) {
-      handleAddMention({ id, display }, '@');
-    },
-    appendSpaceOnAdd: true,
+  const mentionScheduleTypes = createMentionComponent(
+    '%',
+    scheduleTypes,
+    '#8E00F112',
+    'schedule_type:[__display__]',
+  );
 
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + '  ';
-    },
-  };
-
-  const mentionSessionList: MentionComponentProps = {
-    trigger: '$',
-    data:
-      sessionList.length > 0
-        ? sessionList
-        : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#fcf4a3',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'interview_name:[__display__]',
-    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
-      return (
-        <Suggestion
-          index={index}
-          entry={entry}
-          highlightedDisplay={highlightedDisplay}
-          focused={focused}
-          search={search}
-        />
-      );
-    },
-    onAdd(id, display) {
-      handleAddMention({ id, display }, '$');
-    },
-    appendSpaceOnAdd: true,
-
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + '  ';
-    },
-  };
-
-  const mentionRequestList: MentionComponentProps = {
-    trigger: 'request',
-    data:
-      requestList.length > 0
-        ? requestList
-        : [{ id: '1', display: 'No results' }],
-    style: {
-      backgroundColor: '#fcf',
-      color: '#00000000',
-      borderRadius: '5px',
-    },
-    markup: 'request_name:[__display__]',
-    renderSuggestion: (entry, search, highlightedDisplay, index, focused) => {
-      return (
-        <Suggestion
-          index={index}
-          entry={entry}
-          highlightedDisplay={highlightedDisplay}
-          focused={focused}
-          search={search}
-        />
-      );
-    },
-    onAdd(id, display) {
-      handleAddMention({ id, display }, 'request');
-    },
-    appendSpaceOnAdd: true,
-
-    displayTransform: (id, display) => {
-      if (display === 'No results') {
-        return '';
-      }
-      return display + '  ';
-    },
-  };
-
-  const handleAddMention = ({ id, display }: MentionType, trigger: string) => {
-    if (trigger === 'request') {
-      getSelectedRequest({ id, display });
-    }
-    if (trigger === '!') {
-      getSelectedScheduleType({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '#');
-        setTriggerType('#');
-      }, 100);
-    }
-    if (trigger === '#') {
-      getSelectedJob({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '@');
-        setTriggerType('@');
-      }, 10);
-    }
-
-    if (trigger === '@') {
-      getSelectedApplication({ id, display });
-      setTimeout(() => {
-        setText((pre) => pre + '$');
-        setTriggerType('$');
-      }, 10);
-    }
-    if (trigger === '$') {
-      getSelectedSession({ id, display });
-    }
-  };
+  const mentionJobList = createMentionComponent(
+    '#',
+    jobList,
+    '#fcf4a3',
+    'job_title:[__display__]',
+  );
+  const mentionApplicationsList = createMentionComponent(
+    '@',
+    applicationsList,
+    '#daf4fa',
+    'applicant_name:[__display__]',
+  );
+  const mentionSessionList = createMentionComponent(
+    '$',
+    sessionList,
+    '#fcf4a3',
+    'interview_name:[__display__]',
+  );
+  const mentionRequestList = createMentionComponent(
+    '!',
+    requestList,
+    '#fcf',
+    'request_name:[__display__]',
+  );
 
   return (
-    <>
-      <div className='mention-component'>
-        <MentionsInput {...mentionsInputProps}>
-          <Mention {...mentionScheduleTypes} />
-          <Mention {...mentionJobList} />
-          <Mention {...mentionApplicationsList} />
-          <Mention {...mentionSessionList} />
-          <Mention {...mentionRequestList} />
-        </MentionsInput>
-      </div>
-    </>
+    <div className='mention-component'>
+      <MentionsInput {...mentionsInputProps}>
+        <Mention {...mentionScheduleTypes} />
+        <Mention {...mentionJobList} />
+        <Mention {...mentionApplicationsList} />
+        <Mention {...mentionSessionList} />
+        <Mention {...mentionRequestList} />
+      </MentionsInput>
+    </div>
   );
-}
+};
 
 export default AgentEditor;
 
