@@ -3,7 +3,14 @@
   padding-top: var(--space-9);
   flex-direction: column;
   justify-content: center;
+  justify-content: center;
   flex-wrap: nowrap;
+  align-items: center;
+}
+
+.illustration {
+  width: 244px;
+  padding-bottom: var(--space-2);
   align-items: center;
 }
 
@@ -16,6 +23,10 @@
   padding-top: var(--space-1);
   padding-right: var(--space-6);
   padding-left: var(--space-6);
+
+  padding-top: var(--space-1);
+  padding-right: var(--space-8);
+  padding-left: var(--space-8);
 
   background-image: linear-gradient(45deg, #ff6224, #f79a3e);
 
