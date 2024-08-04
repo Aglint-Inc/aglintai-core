@@ -136,9 +136,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               const pause_json = user.interview_module_relation?.pause_json;
               const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
               const isCalendarConnected =
-                (!!recruiter.service_json &&
-                  recruiter.google_workspace_domain.split('//')[1] ===
-                    user.user_details.email.split('@')[1]) ||
+                (!!recruiter.integrations.service_json &&
+                  recruiter.integrations.google_workspace_domain.split(
+                    '//',
+                  )[1] === user.user_details.email.split('@')[1]) ||
                 !!(user.user_details.schedule_auth as any)?.access_token;
               if (!isCalendarConnected) {
                 banners.push({

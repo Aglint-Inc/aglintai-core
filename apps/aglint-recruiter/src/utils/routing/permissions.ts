@@ -77,7 +77,7 @@ const PERMISSIONS: Permissions = {
   '/api/ashby/saveApiKey': ['manage_company'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
-  '/api/scheduling/fetch_activities': ['scheduling_module'],
+  '/api/scheduling/fetch_activities': ['authorized'],
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
