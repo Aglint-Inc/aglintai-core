@@ -99,9 +99,9 @@ function AgentEditor({
         // border: '#E9EBED 1px solid',
         // borderRadius: '10px 10px 0px 0px',
         borderTop: 'none',
-        width: '484px',
+        width: '387px',
         backgroundColor: '#F9F9F8',
-        maxHeight: '250px',
+        // maxHeight: '250px',
       },
     },
     value: text,
@@ -118,12 +118,12 @@ function AgentEditor({
               <>
                 <Kbd
                   textShortcut={
-                    <GlobalIcon size={5} iconName={'arrow_upward'} />
+                    <GlobalIcon size={2} iconName={'arrow_upward'} />
                   }
                 />
                 <Kbd
                   textShortcut={
-                    <GlobalIcon size={5} iconName={'arrow_downward'} />
+                    <GlobalIcon size={2} iconName={'arrow_downward'} />
                   }
                 />
               </>
