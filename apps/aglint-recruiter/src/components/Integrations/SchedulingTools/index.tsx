@@ -285,7 +285,7 @@ function Scheduling() {
                 </Typography>
 
                 <TextField
-                  defaultValue={allIntegrations.google_workspace_domain}
+                  defaultValue={allIntegrations?.google_workspace_domain}
                   placeholder='Ex : https://aglinthq.com'
                   fullWidth
                   inputRef={domainRef}
