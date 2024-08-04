@@ -66,7 +66,7 @@ const LinkIcon = ({
   active: boolean;
 }) => {
   switch (module) {
-    case 'Agent':
+    case 'Aglint AI':
       return <AssistantLogo />;
     case 'Jobs':
       return (
