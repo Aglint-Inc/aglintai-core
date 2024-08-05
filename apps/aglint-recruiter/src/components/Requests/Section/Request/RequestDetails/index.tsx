@@ -33,6 +33,8 @@ function RequestDetails({
       slotTextWithIconDetail={
         <Stack direction={'column'} gap={1}>
           <SessionsCardAndActions
+            requestTitle={request.title}
+            requestId={request.id}
             sessions={request.request_relation.map((relation) => {
               return {
                 id: relation.interview_session.id,
