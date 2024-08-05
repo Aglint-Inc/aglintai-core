@@ -178,43 +178,6 @@ export default function Heatmap({ loadSetting }) {
             };
           }}
         />
-        {/* <HeatmapCom
-          xLabels={datesArrayLable}
-          yLabels={yLabels}
-          yLabelWidth={0}
-          xLabelWidth={0}
-          xLabelsLocation={'bottom'}
-          xLabelsVisibility={xLabelsVisibility}
-          data={rest}
-          squares
-          height={15}
-          onClick={(x, y) => {
-            // eslint-disable-next-line security/detect-object-injection
-            if (rest[y][x].meeting_id)
-              router.push(
-                // eslint-disable-next-line security/detect-object-injection
-                `/scheduling/view?meeting_id=${rest[y][x].meeting_id}&tab=candidate_details`,
-              );
-          }}
-          cellStyle={(background, value, min, max, data, x, y) => {
-            return {
-              background:
-                value?.status === 'completed'
-                  ? `var(--success-${8 - y})`
-                  : value?.status === 'confirmed'
-                    ? `var(--info-${8 - y})`
-                    : value?.status === 'cancelled'
-                      ? `var(--error-${8 - y})`
-                      : `var(--neutral-3)`,
-              fontSize: '4px',
-              borderRadius: '3px',
-              width: '29px',
-              height: '29px',
-              color: 'white',
-            };
-          }}
-          // cellRender={(value) => value && <div>{value}</div>}
-        /> */}
       </Stack>
     );
   }
