@@ -186,7 +186,7 @@ const WorkflowBrowser = () => {
         <WorkflowCard
           key={id}
           isCheckboxVisible={true}
-          isChecked={checked}
+          // isChecked={checked}
           slotCheckbox={
             <RcCheckbox
               isChecked={checked}
