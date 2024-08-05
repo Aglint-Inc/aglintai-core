@@ -36,7 +36,7 @@ function CommandShortCuts() {
     },
   ];
 
-  const { text, setText } = useAgentIEditor();
+  const { setText } = useAgentIEditor();
   const handleClick = (commandText: string) => {
     if (commandText) {
       let taskType = '';
@@ -60,16 +60,7 @@ function CommandShortCuts() {
           break;
       }
       if (taskType) {
-        const regex = /schedule_type:\[[^\]]*\]/;
-        if (regex.test(text)) {
-          // Replace the existing taskType with the new one
-          setText(text.replace(regex, taskType));
-        } else {
-          // Append the new taskType if it does not exist already
-          if (!text.includes(taskType)) {
-            setText(`${taskType}${text}`);
-          }
-        }
+        setText(taskType);
       }
     }
   };
