@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
-import React, { useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -29,6 +35,8 @@ interface AgentEditorProps {
   getSelectedSession?: ({ id, display }: MentionType) => void;
   handleTextChange?: (text: string) => void;
   handleSubmit?: (text: string) => void;
+  text: string;
+  setText: Dispatch<SetStateAction<string>>;
 }
 
 const AgentEditor: React.FC<AgentEditorProps> = ({
@@ -44,8 +52,9 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   getSelectedSession,
   handleTextChange,
   handleSubmit,
+  text = '',
+  setText,
 }) => {
-  const [text, setText] = useState('');
   const [triggerType, setTriggerType] = useState<
     '@' | '#' | '$' | '%' | '!' | null
   >(null);
@@ -126,7 +135,11 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         break;
     }
   };
-
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 10);
+  }, [text]);
   const mentionsInputProps: MentionInputProps = {
     inputRef,
     onFocus: () => {
@@ -233,7 +246,12 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   ): MentionComponentProps => ({
     trigger,
     data: data.length > 0 ? data : [{ id: '1', display: 'No results' }],
-    style: { backgroundColor, color: '#00000000', borderRadius: '5px', border:'1px solid #F1F0EF' },
+    style: {
+      backgroundColor,
+      color: '#00000000',
+      borderRadius: '5px',
+      border: '1px solid #F1F0EF',
+    },
     markup,
     renderSuggestion: (entry, search, highlightedDisplay, index, focused) => (
       <Suggestion
