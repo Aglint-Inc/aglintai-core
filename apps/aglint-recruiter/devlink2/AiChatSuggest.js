@@ -26,19 +26,12 @@ export function AiChatSuggest({
           className={_utils.cx(_styles, "csw-icon-wrap")}
           tag="div"
         >
-          <Text size="1" weight="regular" color="neutral" content="Use" />
           <_Builtin.Block
             className={_utils.cx(_styles, "csw-icon-wrap")}
             tag="div"
           >
             {slotKbd}
           </_Builtin.Block>
-          <Text
-            size="1"
-            weight="regular"
-            color="neutral"
-            content="keys to navigate"
-          />
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "csw-body-wrap")} tag="div">

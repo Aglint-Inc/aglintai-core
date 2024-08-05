@@ -17,7 +17,7 @@ const CompanyJdComp = ({ setIsSaving, disabled = false }) => {
   const handleChange = async (
     recruit: ReturnType<typeof useAuthDetails>['recruiter'],
   ) => {
-    setIsSaving(true);
+    setIsSaving('saving');
     debouncedSave(recruit, recruiter.id);
     setRecruiter({
       ...recruiter,
@@ -25,7 +25,7 @@ const CompanyJdComp = ({ setIsSaving, disabled = false }) => {
       office_locations: undefined,
     });
     setTimeout(() => {
-      setIsSaving(false);
+      setIsSaving('saved');
     }, 1500);
   };
 

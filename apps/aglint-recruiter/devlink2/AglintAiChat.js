@@ -11,6 +11,8 @@ export function AglintAiChat({
   as: _Component = _Builtin.Block,
   slotAiBody,
   slotAiInput,
+  onClickMemory = {},
+  onClickClear = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-right-wrap")} tag="div">
@@ -33,8 +35,18 @@ export function AglintAiChat({
             className={_utils.cx(_styles, "button-group")}
             tag="div"
           >
-            <ButtonSoft size="1" textButton="Clear" color="neutral" />
-            <ButtonSoft size="1" textButton="Memory" color="neutral" />
+            <ButtonSoft
+              onClickButton={onClickClear}
+              size="1"
+              textButton="Clear"
+              color="neutral"
+            />
+            <ButtonSoft
+              onClickButton={onClickMemory}
+              size="1"
+              textButton="Memory"
+              color="neutral"
+            />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

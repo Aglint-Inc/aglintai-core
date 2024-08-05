@@ -89,7 +89,7 @@ function Instructions({
           padding={isPadding && 'var(--space-4)'}
           border={isBorder && '1px solid var(--neutral-6)'}
           borderRadius={'var(--radius-4)'}
-          width={'800px'}
+          width={'820px'}
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>

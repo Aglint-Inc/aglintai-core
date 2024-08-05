@@ -1,5 +1,14 @@
 /* eslint-disable security/detect-object-injection */
-import { Box, Dialog, Stack, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from '@mui/material';
+import {
+  Box,
+  Dialog,
+  Stack,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import { Dispatch, SetStateAction, useState } from 'react';
 
@@ -16,8 +25,12 @@ import {
 
 import { debouncedSave } from '../../utils';
 
-const SocialComp = ({ setIsSaving, disabled = false }) => {
-  const { recruiter, setRecruiter } = useAuthDetails();
+const SocialComp = ({
+  disabled = false,
+  handleChange: localHandleChange,
+  recruiterLocal,
+}) => {
+  const { recruiter } = useAuthDetails();
 
   const socials = Object.keys(recruiter.socials)
     .filter((key) => key !== 'custom')
@@ -87,16 +100,9 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
         (custom &&
           validateCustomUrl(recruiter.socials.custom[socialName], socialName))
       ) {
-        setIsSaving(true);
-        debouncedSave(recruit, recruiter.id);
-        setTimeout(() => {
-          setIsSaving(false);
-        }, 1500);
+        localHandleChange(recruit);
       }
     }
-    setRecruiter({
-      ...recruit,
-    });
   };
 
   function validateFacebookUrl(url) {
@@ -295,12 +301,12 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                   labelSize='small'
                   fullWidth
                   disabled={disabled}
-                  value={recruiter?.socials[socialName] as string}
+                  value={recruiterLocal?.socials[socialName] as string}
                   placeholder={socialPlaceholder[socialName]}
                   onBlur={() => {
                     handleChange(
                       {
-                        ...recruiter,
+                        ...recruiterLocal,
                       },
                       socialName,
                     );
@@ -308,9 +314,9 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                   onChange={(e) => {
                     handleChange(
                       {
-                        ...recruiter,
+                        ...recruiterLocal,
                         socials: {
-                          ...recruiter.socials,
+                          ...recruiterLocal.socials,
                           [socialName]: e.target.value,
                         },
                       },
@@ -335,9 +341,9 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                     const newCustomSocials = recruiter.socials.custom;
                     delete newCustomSocials[socialName];
                     handleChange({
-                      ...recruiter,
+                      ...recruiterLocal,
                       socials: {
-                        ...recruiter.socials,
+                        ...recruiterLocal.socials,
                         custom: newCustomSocials,
                       },
                     });
@@ -388,7 +394,7 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                   onBlur={() => {
                     handleChange(
                       {
-                        ...recruiter,
+                        ...recruiterLocal,
                       },
                       socialName,
                       true,
@@ -397,11 +403,11 @@ const SocialComp = ({ setIsSaving, disabled = false }) => {
                   onChange={(e) => {
                     handleChange(
                       {
-                        ...recruiter,
+                        ...recruiterLocal,
                         socials: {
-                          ...recruiter.socials,
+                          ...recruiterLocal.socials,
                           custom: {
-                            ...(recruiter.socials.custom as any),
+                            ...(recruiterLocal.socials.custom as any),
                             [socialName]: e.target.value,
                           } as any,
                         },

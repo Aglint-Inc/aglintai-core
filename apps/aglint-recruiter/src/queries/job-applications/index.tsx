@@ -500,7 +500,8 @@ export const useMoveApplicationsToInterview = (
 ) => {
   const queryClient = useQueryClient();
   const { revalidateJobQueries } = useInvalidateJobQueries();
-  const { predicate } = requestQueries.requests_predicate();
+  const { refetchQueries, removeQueries } =
+    requestQueries.requests_invalidate();
   const { mutationKey } = applicationMutationKeys.move();
   return {
     ...useMutation({
@@ -511,7 +512,8 @@ export const useMoveApplicationsToInterview = (
         await supabase.rpc('move_to_interview', args).throwOnError();
         await Promise.allSettled([
           revalidateJobQueries(payload.job_id),
-          queryClient.refetchQueries({ predicate }),
+          queryClient.refetchQueries(refetchQueries()),
+          queryClient.removeQueries(removeQueries()),
         ]);
       },
       onSuccess: () => toast.success('Moved successfully'),

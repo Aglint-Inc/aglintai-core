@@ -14,8 +14,10 @@ import ThreeDot from './ThreeDot';
 
 function TrainingInterviewerType({
   relation,
+  refetch: relationRefetch,
 }: {
   relation: ReturnType<typeof useModuleRelations>['data'][0];
+  refetch: () => void;
 }) {
   const router = useRouter();
   const user_id = router?.query?.member_id as string;
@@ -40,6 +42,7 @@ function TrainingInterviewerType({
   const mutatedShadowProgress = Array.from({
     length: relation.number_of_shadow - shadowProgress.length,
   });
+
   const reverseShadowProgress = progressDataUser.filter(
     (prog) =>
       prog.interview_session_relation.training_type == 'reverse_shadow' &&
@@ -98,6 +101,7 @@ function TrainingInterviewerType({
           <CollapseTrainingProgress
             refetch={refetch}
             refetchTrainingProgress={refetchTrainingProgress}
+            relationRefetch={relationRefetch}
             reverse_shadow_to_complete={relation.number_of_reverse_shadow}
             shadow_to_complete={relation.number_of_shadow}
             module_realtion_id={relation.id}

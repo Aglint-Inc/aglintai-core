@@ -30,6 +30,8 @@ import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/
 import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import timeZones from '@/src/utils/timeZone';
 
+import InterviewerLevelSettings from '../InterviewerLevelSettings';
+
 let schedulingSettingObj = {};
 function Availibility({
   updateSettings,
@@ -39,6 +41,7 @@ function Availibility({
   totalInterviewsThisWeek,
   interviewerDetailsRefetch,
   totalInterviewsToday,
+  handleMemberUpdate,
 }) {
   const [workingHours, setWorkingHours] = useState([]);
 
@@ -200,6 +203,23 @@ function Availibility({
 
   return (
     <Stack overflow={'hidden'} padding={2} spacing={2}>
+      <Stack
+        bgcolor={'white'}
+        width={'600px'}
+        p={1}
+        borderRadius={'8px'}
+        border={'1px solid var(--neutral-6)'}
+      >
+        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+          <Typography fontWeight={500}>Time Zone </Typography>
+          <ButtonGhost
+            textButton='Edit'
+            size={1}
+            onClickButton={{ onClick: () => setEditDrawer(true) }}
+          />
+        </Stack>
+        <Typography>{selectedTimeZone?.label}</Typography>
+      </Stack>
       <InterviewLoadDetails
         slotEdit={
           <ButtonGhost
@@ -296,6 +316,16 @@ function Availibility({
             onClickButton={{ onClick: () => setEditDrawer(true) }}
           />
         }
+      />
+      <InterviewerLevelSettings
+        initialData={interviewerDetails?.scheduling_settings}
+        updateSettings={(x) => {
+          return handleMemberUpdate({
+            user_id: interviewerDetails.user_id,
+            data: { scheduling_settings: x },
+          });
+        }}
+        isAvailability={false}
       />
       <Drawer
         open={editDrawer}

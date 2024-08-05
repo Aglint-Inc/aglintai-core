@@ -8,6 +8,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { Text } from '@/devlink/Text';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
@@ -15,6 +16,7 @@ import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -203,50 +205,56 @@ function ModuleSettingComp({
         />
       )}
       {editModule?.settings?.require_training && (
-        <TrainingSetting
-          isApprovalVisible={editModule?.settings?.reqruire_approval}
-          isDisable={!editModule?.settings?.require_training}
-          isEnable={editModule?.settings?.require_training}
-          textHeading={
-            editModule?.settings?.require_training
-              ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
-              : 'Training is disabled for this module'
-          }
-          textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
-          textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
-          slotButton={
-            checkPermissions(['interview_types']) ? (
-              <ButtonSoft
-                textButton='Settings'
-                iconName='settings'
-                isDisabled={!editModule?.settings?.require_training}
-                isLeftIcon
-                size={1}
-                onClickButton={{ onClick: () => setOpen(true) }}
-                color={'neutral'}
-              />
-            ) : (
-              <></>
-            )
-          }
-          slotApproval={approvers.map((user, i) => (
-            <Link href={`/user/profile/${user.user_id}`} key={i}>
-              <TrainingSettingItem
-                text={getFullName(user.first_name, user.last_name)}
-                slotImage={
-                  <MuiAvatar
-                    src={user.profile_image}
-                    level={getFullName(user?.first_name, user?.last_name)}
-                    variant='rounded'
-                    height='20px'
-                    width='20px'
-                    fontSize='12px'
-                  />
-                }
-              />
-            </Link>
-          ))}
-        />
+        <Stack>
+          <Stack marginBottom={'16px'}>
+            <Text content='Trainee' weight={'medium'} />
+          </Stack>
+
+          <TrainingSetting
+            isApprovalVisible={editModule?.settings?.reqruire_approval}
+            isDisable={!editModule?.settings?.require_training}
+            isEnable={editModule?.settings?.require_training}
+            textHeading={
+              editModule?.settings?.require_training
+                ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
+                : 'Training is disabled for this module'
+            }
+            textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
+            textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
+            slotButton={
+              checkPermissions(['interview_types']) ? (
+                <ButtonSoft
+                  textButton='Settings'
+                  iconName='settings'
+                  isDisabled={!editModule?.settings?.require_training}
+                  isLeftIcon
+                  size={1}
+                  onClickButton={{ onClick: () => setOpen(true) }}
+                  color={'neutral'}
+                />
+              ) : (
+                <></>
+              )
+            }
+            slotApproval={approvers.map((user, i) => (
+              <Link href={`/user/profile/${user.user_id}`} key={i}>
+                <TrainingSettingItem
+                  text={getFullName(user.first_name, user.last_name)}
+                  slotImage={
+                    <MuiAvatar
+                      src={user.profile_image}
+                      level={getFullName(user?.first_name, user?.last_name)}
+                      variant='rounded'
+                      height='20px'
+                      width='20px'
+                      fontSize='12px'
+                    />
+                  }
+                />
+              </Link>
+            ))}
+          />
+        </Stack>
       )}
       {editModule?.settings?.require_training && (
         <Stack spacing={'var(--space-2)'}>
@@ -355,18 +363,8 @@ function ModuleSettingComp({
                   slotButtonPrimary={<></>}
                   slotApprovalDoneInput={
                     <>
-                      {selectedUsers.length === 0 && (
-                        <Typography
-                          color={'var(--error-9)'}
-                          mb={'var(--space-2)'}
-                        >
-                          Please select users to approve or uncheck require
-                          approval
-                        </Typography>
-                      )}
                       <MembersAutoComplete
                         error={errorApproval || selectedUsers.length === 0}
-                        // helperText='Please select users to approve or uncheck require approval'
                         disabled={false}
                         renderUsers={dropDownMembers}
                         setSelectedUsers={setSelectedUsers}
@@ -375,6 +373,16 @@ function ModuleSettingComp({
                         maxWidth='430px'
                         setError={setErrorApproval}
                       />
+                      {selectedUsers.length === 0 && (
+                        <Typography
+                          color={'var(--error-9)'}
+                          mb={'var(--space-2)'}
+                          pt={'2px'}
+                        >
+                          Please select users to approve or uncheck require
+                          approval
+                        </Typography>
+                      )}
                     </>
                   }
                   slotInputNoOfReverse={
@@ -398,9 +406,23 @@ function ModuleSettingComp({
                           },
                         }}
                       />
-                      <Typography paddingInline={'2px'}>
-                        {localModule.settings.noReverseShadow}
-                      </Typography>
+                      <MuiNumberfield
+                        width='80px'
+                        height='26px'
+                        value={localModule.settings.noReverseShadow}
+                        handleSelect={(value) =>
+                          setEditLocalModule((prev) => ({
+                            ...prev,
+                            settings: {
+                              ...prev.settings,
+                              noReverseShadow:
+                                value === 0
+                                  ? editModule.settings.noReverseShadow
+                                  : value,
+                            },
+                          }))
+                        }
+                      />
                       <IconButtonSoft
                         iconName='Add'
                         size={1}
@@ -442,9 +464,23 @@ function ModuleSettingComp({
                           },
                         }}
                       />
-                      <Typography paddingInline={'2px'}>
-                        {localModule.settings.noShadow}
-                      </Typography>
+                      <MuiNumberfield
+                        width='80px'
+                        height='26px'
+                        value={localModule.settings.noShadow}
+                        handleSelect={(value) =>
+                          setEditLocalModule((prev) => ({
+                            ...prev,
+                            settings: {
+                              ...prev.settings,
+                              noShadow:
+                                value === 0
+                                  ? editModule.settings.noShadow
+                                  : value,
+                            },
+                          }))
+                        }
+                      />
                       <IconButtonSoft
                         iconName='Add'
                         size={1}
