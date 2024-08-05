@@ -24,6 +24,12 @@ export class WorkflowGraph {
     this.nodes.set(node.event_type, node);
     this.adjacencyList.set(node.event_type, new Set());
   }
+  public updateNode(node: EventNode) {
+    if (!this.nodes.has(node.event_type)) {
+      throw new Error('Node does not exists');
+    }
+    this.nodes.set(node.event_type, node);
+  }
 
   public addEdge(
     node1_type: EventNode['event_type'],

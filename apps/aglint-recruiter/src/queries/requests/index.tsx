@@ -33,7 +33,8 @@ export const requestQueries = {
   request_progress: ({ request_id }: RequestProgressQueryParams) =>
     queryOptions({
       enabled: !!request_id,
-      gcTime: request_id ? GC_TIME : 0,
+      // gcTime: request_id ? GC_TIME : 0,
+      refetchInterval: 2000,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (

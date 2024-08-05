@@ -3627,6 +3627,7 @@ export type Database = {
           event_type: string
           id: string
           log: string
+          log_type: string
           meta: Json | null
           request_id: string
           status: string
@@ -3636,6 +3637,7 @@ export type Database = {
           event_type: string
           id?: string
           log?: string
+          log_type?: string
           meta?: Json | null
           request_id: string
           status: string
@@ -3645,6 +3647,7 @@ export type Database = {
           event_type?: string
           id?: string
           log?: string
+          log_type?: string
           meta?: Json | null
           request_id?: string
           status?: string

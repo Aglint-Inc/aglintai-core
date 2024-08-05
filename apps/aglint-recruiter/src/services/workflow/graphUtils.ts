@@ -1,5 +1,8 @@
+import { DatabaseTable } from '@aglint/shared-types';
+
 import { WorkflowGraph } from './graph';
 import { EventNode } from './node';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 export const createReqAvailWorkflowGraph = () => {
   const req_avail_graph = new WorkflowGraph();
@@ -73,4 +76,43 @@ export const createReqAvailWorkflowGraph = () => {
   req_avail_graph.addEdge('SELF_SCHEDULE_SEC_FOLLOWUP', 'CAND_CONFIRM_SLOT');
   req_avail_graph.addEdge('SELF_SCHEDULE_SEC_FOLLOWUP', 'SELF_SCHEDULE_CANCEL');
   return req_avail_graph;
+};
+
+export const updateEventProgress = (
+  graph: WorkflowGraph,
+  progress_entries: DatabaseTable['request_progress'][],
+) => {
+  const sorted_progress = progress_entries.sort(
+    (r1, r2) =>
+      dayjsLocal(r1.created_at).unix() - dayjsLocal(r2.created_at).unix(),
+  );
+  const entryMap: Partial<{
+    [key in EventNode['event_type']]: {
+      progress: EventNode['progress'];
+    };
+  }> = {};
+
+  sorted_progress.forEach((entry) => {
+    if (!entryMap[entry.event_type]) {
+      entryMap[entry.event_type] = {
+        progress: [],
+      };
+    }
+    entryMap[entry.event_type].progress.push({
+      log: entry.log,
+      type: entry.log_type,
+      created_at: entry.created_at,
+    });
+  });
+
+  for (let [key, val] of Object.entries(entryMap)) {
+    const node = graph.getNode(key as EventNode['event_type']);
+    if (val.progress.length > 0) {
+      node.updated_at = val.progress[val.progress.length - 1].created_at;
+      node.progress = [...val.progress];
+    }
+    graph.updateNode(node);
+  }
+
+  return graph;
 };

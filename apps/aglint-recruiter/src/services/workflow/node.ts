@@ -8,6 +8,11 @@ export class EventNode {
   public updated_at: string | null;
   public is_event_expected: boolean;
   public node_order: number;
+  public progress: {
+    log: string;
+    type: SchedulingEventLogs['log_type'];
+    created_at: string;
+  }[];
   constructor(
     status: SchedulingEventLogs['status'],
     type: SchedulingEventLogs['event_type'],
@@ -20,5 +25,6 @@ export class EventNode {
     this.node_order = node_order;
     this.is_event_expected = is_event_expected;
     this.updated_at = updated_at ?? null;
+    this.progress = [];
   }
 }

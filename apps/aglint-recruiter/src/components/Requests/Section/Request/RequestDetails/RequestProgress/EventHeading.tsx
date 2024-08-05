@@ -3,7 +3,7 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { workflowCopy } from '@/src/services/workflow/copy';
 import { EventNode } from '@/src/services/workflow/node';
 type TenseType = 'past' | 'present' | 'future' | 'error';
-export const EventTitle = ({ event }: { event: EventNode }) => {
+export const EventHeading = ({ event }: { event: EventNode }) => {
   let tense: TenseType;
   if (event.status === 'not_started') {
     tense = 'future';
