@@ -173,6 +173,7 @@ function Overview({
                       <TrainingInterviewerType
                         relation={relation}
                         key={relation.id}
+                        refetch={deleteRefetch}
                       />
                     );
                   })}

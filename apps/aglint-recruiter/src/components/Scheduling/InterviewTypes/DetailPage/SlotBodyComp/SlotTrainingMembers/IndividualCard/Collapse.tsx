@@ -8,6 +8,7 @@ import { Text } from '@/devlink/Text';
 import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
 import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
 import { TrainingStatus } from '@/devlink2/TrainingStatus';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -23,6 +24,7 @@ function CollapseTrainingProgress({
   shadow_to_complete,
   reverse_shadow_to_complete,
   module_realtion_id,
+  relationRefetch,
   refetch, //module relations
   mutatedShadowProgress,
   shadowProgress,
@@ -32,6 +34,7 @@ function CollapseTrainingProgress({
   isCollapseOpen: boolean;
   setIsCollapseOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetchTrainingProgress: () => void;
+  relationRefetch: () => void;
   shadow_to_complete: number;
   reverse_shadow_to_complete: number;
   module_realtion_id: string;
@@ -87,7 +90,8 @@ function CollapseTrainingProgress({
           })
           .eq('id', module_relation_id);
       }
-      refetch();
+      await refetch();
+      await relationRefetch();
     } catch (e) {
       console.error(e);
     } finally {
@@ -270,7 +274,7 @@ function CollapseTrainingProgress({
           pb={'var(--space-4)'}
           gap={3}
         >
-          <Stack direction={'row'} gap={1}>
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
             Shadow
             <IconButtonSoft
               isDisabled={
@@ -291,9 +295,18 @@ function CollapseTrainingProgress({
                 },
               }}
             />
-            <Typography paddingInline={'2px'}>
-              {mutatedShadowProgress.length + shadowProgress.length}
-            </Typography>
+            <MuiNumberfield
+              width='80px'
+              height='26px'
+              value={mutatedShadowProgress.length + shadowProgress.length}
+              handleSelect={(value) =>
+                alterCount({
+                  type: 'shadow',
+                  count: Number(value),
+                  module_relation_id: module_realtion_id,
+                })
+              }
+            />
             <IconButtonSoft
               iconName='Add'
               size={1}
@@ -310,7 +323,7 @@ function CollapseTrainingProgress({
               }}
             />
           </Stack>
-          <Stack direction={'row'} gap={1}>
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
             Reverse Shadow
             <IconButtonSoft
               iconName='remove'
@@ -331,10 +344,21 @@ function CollapseTrainingProgress({
                 },
               }}
             />
-            <Typography paddingInline={'2px'}>
-              {mutatedReverseShadowProgress.length +
-                reverseShadowProgress.length}
-            </Typography>
+            <MuiNumberfield
+              width='80px'
+              height='26px'
+              value={
+                mutatedReverseShadowProgress.length +
+                reverseShadowProgress.length
+              }
+              handleSelect={(value) =>
+                alterCount({
+                  type: 'reverse_shadow',
+                  count: value,
+                  module_relation_id: module_realtion_id,
+                })
+              }
+            />
             <IconButtonSoft
               iconName='Add'
               size={1}
