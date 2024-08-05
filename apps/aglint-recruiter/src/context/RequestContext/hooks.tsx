@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { requestQueries } from '@/src/queries/requests';
 
@@ -8,6 +8,8 @@ import { useRequests } from '../RequestsContext';
 type RequestParams = Parameters<(typeof requestQueries)['request_progress']>[0];
 
 export const useRequestActions = ({ request_id }: RequestParams) => {
+  const [collapse, setCollapse] = useState(false);
+
   const {
     handleUpdateRequest: updateRequest,
     handleAsyncUpdateRequest: asyncUpdateRequest,
@@ -17,7 +19,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   } = useRequests();
 
   const request_progress = useQuery(
-    requestQueries.request_progress({ request_id }),
+    requestQueries.request_progress({ request_id, enabled: collapse }),
   );
 
   const handleUpdateRequest = useCallback(
@@ -63,5 +65,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     handleUpdateRequest,
     handleAsyncUpdateRequest,
     isMutating,
+    collapse,
+    setCollapse,
   };
 };

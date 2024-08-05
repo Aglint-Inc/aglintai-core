@@ -70,9 +70,12 @@ export const requestQueries = {
       requestQueries.request_progress_key(),
       { request_id },
     ] as const,
-  request_progress: ({ request_id }: GetRequestProgress) =>
+  request_progress: ({
+    request_id,
+    enabled = true,
+  }: GetRequestProgress & { enabled?: boolean }) =>
     queryOptions({
-      enabled: !!request_id,
+      enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
