@@ -21,7 +21,7 @@ import { CustomLogs } from './logs';
 import { CustomTour } from './tour.types';
 import { CustomModule } from './interview_module';
 import { CustomRequest } from './requests.types';
-import { CustomSchedulingEventLogs } from './scheduling_event_logs.types';
+import { CustomRequestProgress } from './request_progress';
 
 type DatabaseTables = Database['public']['Tables'];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -84,6 +84,6 @@ export type Tables = Type<
     tour: CustomTour;
     interview_module: CustomModule;
     request: CustomRequest;
-    scheduling_event_logs: CustomSchedulingEventLogs;
+    request_progress: CustomRequestProgress;
   }
 >;

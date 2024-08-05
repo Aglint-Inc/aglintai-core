@@ -1,8 +1,8 @@
 import { EventNodeType, EventStatusType } from '../../workflow';
 import type { TableType } from './index.types';
 
-export type CustomSchedulingEventLogs = TableType<
-  'scheduling_event_logs',
+export type CustomRequestProgress = TableType<
+  'request_progress',
   {
     status: EventStatusType;
     event_type: EventNodeType;

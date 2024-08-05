@@ -72,4 +72,5 @@ export const createReqAvailWorkflowGraph = () => {
   );
   req_avail_graph.addEdge('SELF_SCHEDULE_SEC_FOLLOWUP', 'CAND_CONFIRM_SLOT');
   req_avail_graph.addEdge('SELF_SCHEDULE_SEC_FOLLOWUP', 'SELF_SCHEDULE_CANCEL');
+  return req_avail_graph;
 };

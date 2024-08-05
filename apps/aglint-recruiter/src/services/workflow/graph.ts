@@ -3,7 +3,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { EventNode } from './node';
 
-type SchedulingEventLogs = DatabaseTable['scheduling_event_logs'];
+type SchedulingEventLogs = DatabaseTable['request_progress'];
 
 export class WorkflowGraph {
   private nodes: Map<SchedulingEventLogs['event_type'], EventNode>;

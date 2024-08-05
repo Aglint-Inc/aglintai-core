@@ -12,7 +12,7 @@ import { Request } from './Request';
 function Section({ textSectionHeader }: { textSectionHeader: string }) {
   const {
     requests: { status },
-    filteredRequest
+    filteredRequest,
   } = useRequests();
 
   return (
@@ -37,7 +37,11 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
                 </Stack>
               </ShowCode.When>
               <ShowCode.Else>
-                <Text color={'neutral'} size={1} content={`${filteredRequest?.length}`} />
+                <Text
+                  color={'neutral'}
+                  size={1}
+                  content={`${filteredRequest?.length}`}
+                />
               </ShowCode.Else>
             </ShowCode>
           </Stack>

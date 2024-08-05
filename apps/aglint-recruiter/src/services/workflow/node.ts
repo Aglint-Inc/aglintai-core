@@ -1,6 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 
-type SchedulingEventLogs = DatabaseTable['scheduling_event_logs'];
+type SchedulingEventLogs = DatabaseTable['request_progress'];
 
 export class EventNode {
   public status: SchedulingEventLogs['status'];

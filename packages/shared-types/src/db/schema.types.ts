@@ -3624,36 +3624,32 @@ export type Database = {
       request_progress: {
         Row: {
           created_at: string
+          event_type: string
           id: string
-          logger_type: string
-          parent_request_id: string | null
+          log: string
+          meta: Json | null
           request_id: string
-          title: string | null
+          status: string
         }
         Insert: {
           created_at?: string
+          event_type: string
           id?: string
-          logger_type: string
-          parent_request_id?: string | null
-          request_id?: string
-          title?: string | null
+          log?: string
+          meta?: Json | null
+          request_id: string
+          status: string
         }
         Update: {
           created_at?: string
+          event_type?: string
           id?: string
-          logger_type?: string
-          parent_request_id?: string | null
+          log?: string
+          meta?: Json | null
           request_id?: string
-          title?: string | null
+          status?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "request_progress_parent_request_id_fkey"
-            columns: ["parent_request_id"]
-            isOneToOne: false
-            referencedRelation: "request_progress"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "request_progress_request_id_fkey"
             columns: ["request_id"]
@@ -4019,36 +4015,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      scheduling_event_logs: {
-        Row: {
-          created_at: string
-          event_type: string
-          id: string
-          log: string | null
-          meta: Json | null
-          request_id: string
-          status: string
-        }
-        Insert: {
-          created_at?: string
-          event_type: string
-          id?: string
-          log?: string | null
-          meta?: Json | null
-          request_id: string
-          status: string
-        }
-        Update: {
-          created_at?: string
-          event_type?: string
-          id?: string
-          log?: string | null
-          meta?: Json | null
-          request_id?: string
-          status?: string
-        }
-        Relationships: []
       }
       screening_answers: {
         Row: {

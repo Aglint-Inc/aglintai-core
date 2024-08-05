@@ -2,7 +2,7 @@ import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
@@ -19,7 +19,6 @@ import SessionsCardAndActions from './SessionsCardAndActions';
 
 function RequestDetails({
   request,
-  index,
 }: {
   request: PropsWithChildren<RequestType>;
   index: number;
@@ -83,7 +82,7 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress index={index} />
+          <RequestProgress />
           <Stack
             direction={'row'}
             justifyContent={'space-between'}
