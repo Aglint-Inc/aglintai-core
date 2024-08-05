@@ -1,14 +1,8 @@
-// import './headmap.css';
-
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
-import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
-const HeatmapComponent = dynamic(() => import('react-heatmap-grid'), {
-  ssr: false,
-});
-
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { HeatMapGrid } from 'react-grid-heatmap';
 
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { supabase } from '@/src/utils/supabase/client';
@@ -88,12 +82,6 @@ export default function Heatmap({ loadSetting }) {
 
   const rest = transposeArray(filled2d);
 
-  // const interviewMaxLimit: number = loadSetting.dailyLimit.value;
-  const xLabelsVisibility = datesArray.map(() => false);
-  // const xLabelsVisibility = datesArray.map((_, i) =>
-  //   i % 6 == 0 ? true : false,
-  // );
-
   const yLabels: string[] = new Array(maxCount).fill('');
 
   const startDateUI = dayjsLocal(
@@ -106,7 +94,7 @@ export default function Heatmap({ loadSetting }) {
 
   if (rest.length) {
     return (
-      <Stack ml={2} mt={2}>
+      <Stack m={2}>
         <Stack
           direction={'row'}
           justifyContent={'space-between'}
@@ -149,33 +137,38 @@ export default function Heatmap({ loadSetting }) {
             />
           </Stack>
         </Stack>
-        <HeatmapComponent
+        <HeatMapGrid
+          data={rest}
           xLabels={datesArrayLable}
           yLabels={yLabels}
-          yLabelWidth={0}
-          xLabelWidth={0}
-          xLabelsLocation={'bottom'}
-          xLabelsVisibility={xLabelsVisibility}
-          data={rest}
-          squares
-          height={15}
+          square
+          cellHeight='30px'
+          xLabelsPos='bottom'
           onClick={(x, y) => {
             // eslint-disable-next-line security/detect-object-injection
-            if (rest[y][x].meeting_id)
+            if (rest[x][y].meeting_id)
               router.push(
                 // eslint-disable-next-line security/detect-object-injection
-                `/scheduling/view?meeting_id=${rest[y][x].meeting_id}&tab=candidate_details`,
+                `/scheduling/view?meeting_id=${rest[x][y].meeting_id}&tab=candidate_details`,
               );
           }}
-          cellStyle={(background, value, min, max, data, x, y) => {
+          yLabelsPos='right'
+          xLabelsStyle={(index) => ({
+            color: index % 6 === 0 ? '#777' : 'transparent',
+            fontSize: '10px',
+          })}
+          cellStyle={(_x, _y) => {
+            // eslint-disable-next-line security/detect-object-injection
+            const value = rest[_x][_y];
+
             return {
               background:
                 value?.status === 'completed'
-                  ? `var(--success-${8 - y})`
+                  ? `var(--success-${8 - _x})`
                   : value?.status === 'confirmed'
-                    ? `var(--info-${8 - y})`
+                    ? `var(--info-${8 - _x})`
                     : value?.status === 'cancelled'
-                      ? `var(--error-${8 - y})`
+                      ? `var(--error-${8 - _x})`
                       : `var(--neutral-3)`,
               fontSize: '4px',
               borderRadius: '3px',
@@ -184,7 +177,6 @@ export default function Heatmap({ loadSetting }) {
               color: 'white',
             };
           }}
-          // cellRender={(value) => value && <div>{value}</div>}
         />
       </Stack>
     );
