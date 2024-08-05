@@ -24,17 +24,14 @@ function RequestDetails({
   request: PropsWithChildren<RequestType>;
   index: number;
 }) {
-  const {
-    requests: { refetch },
-  } = useRequests();
+  const { handleAsyncUpdateRequest } = useRequests();
 
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
         <Stack direction={'column'} gap={1}>
           <SessionsCardAndActions
-            requestTitle={request.title}
-            requestId={request.id}
+            request={request}
             sessions={request.request_relation.map((relation) => {
               return {
                 id: relation.interview_session.id,
@@ -100,14 +97,12 @@ function RequestDetails({
             />
             <ButtonSoft
               onClickButton={{
-                onClick: () => {
-                  updateRequestSessionRelations({
-                    status: 'in_progress',
+                onClick: async () => {
+                  await handleAsyncUpdateRequest({
                     id: request.id,
-                  }).then(() => {
-                    refetch();
-                    toast.message('Request updated successfully');
+                    payload: { status: 'in_progress' },
                   });
+                  toast.message('Request updated successfully');
                 },
               }}
               size={1}
