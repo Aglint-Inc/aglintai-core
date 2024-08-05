@@ -117,7 +117,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
         spacing={2}
       >
         <TimeZone
-          timeZone={initialData?.timeZone.label}
+          timeZone={initialData?.timeZone?.label}
           setIsDrawerOpen={setIsDrawerOpen}
         />
         <WorkingHourView
