@@ -9,8 +9,11 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { AglintAiChat } from '@/devlink2/AglintAiChat';
+import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import {
   ApiRequestInterviewSessionTask,
@@ -30,9 +33,12 @@ import {
   ScheduleType,
   scheduleType,
 } from './AgentEditor/utils';
+import { AgentIEditorProvider, useAgentIEditor } from './AgentEditorContext';
+import CommandShortCuts from './CommandShortCuts';
 
 function AgentChats() {
   const { recruiterUser, recruiter_id } = useAuthDetails();
+  const { handleCreateRequests, handleAsyncCreateRequests } = useRequests();
 
   const [textToObject, setTextToObject] = useState<ApplicantInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -75,176 +81,201 @@ function AgentChats() {
         ?.applicantSessions
     : [];
 
-  function handleSubmit() {
-    createRequest({
-      application_id: selectedApplication?.id,
-      assigner_id: recruiterUser.user_id,
-      assignee_id: recruiterUser.user_id,
-      title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
-      status: 'to_do',
-      type: 'schedule_request',
-    }).then((res) => {
-      const sessionsRelations = selectedSession.map(
-        (ele) =>
-          ({
-            request_id: res.id,
-            session_id: ele.id,
-            cancel_id: null,
-          }) as DatabaseTableInsert['request_relation'],
-      );
-      createRequestSessionRelations(sessionsRelations).then((res) => {
-        requests.refetch();
-        setTextToObject(null);
-      });
+  async function handleSubmit() {
+    await handleAsyncCreateRequests({
+      request: {
+        priority: 'urgent',
+        assigner_id: recruiterUser.user_id,
+        assignee_id: recruiterUser.user_id,
+        title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
+        status: 'to_do',
+        type: 'schedule_request',
+      },
+      applications: [selectedApplication.id],
+      sessions: selectedSession.map((ele) => ele.id),
     });
+    setTextToObject(null);
   }
+  const { text, setText, inputRef } = useAgentIEditor();
   return (
-    <Stack alignItems={'center'}>
-      <Stack>
-        {loading ? (
-          <>
-            <Stack width={'100%'} p={1} direction={'column'} spacing={1}>
-              <Stack position={'relative'} width={'480px'} height={'15px'}>
-                <Skeleton />
-              </Stack>
-              <Stack position={'relative'} width={'480px'} height={'15px'}>
-                <Skeleton />
-              </Stack>
+    <>
+      <AglintAiChat
+        slotAiInput={
+          <Stack alignItems={'center'}>
+            <Stack>
+              {loading ? (
+                <>
+                  <Stack width={'100%'} p={1} direction={'column'} spacing={1}>
+                    <Stack
+                      position={'relative'}
+                      width={'480px'}
+                      height={'15px'}
+                    >
+                      <Skeleton />
+                    </Stack>
+                    <Stack
+                      position={'relative'}
+                      width={'480px'}
+                      height={'15px'}
+                    >
+                      <Skeleton />
+                    </Stack>
+                  </Stack>
+                </>
+              ) : (
+                textToObject && (
+                  <>
+                    <Stack
+                      height={'100%'}
+                      width={'100%'}
+                      direction={'column'}
+                      justifyContent={'space-between'}
+                      alignItems={'flex-end'}
+                      p={1}
+                    >
+                      <Typography
+                        width={'100%'}
+                        fontSize={14}
+                        dangerouslySetInnerHTML={{
+                          __html: `Aglint AI will ${textToObject?.assignee === 'user' ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}` : textToObject?.assignee === 'phone' ? 'make a call' : 'send an email'} to <b>${textToObject?.applicant_name}</b> to get ${textToObject?.schedule_type} for the ${Array.isArray(textToObject?.interview_names) && textToObject?.interview_names.join(',')} interview between ${dayjsLocal(textToObject?.date_range.start_date).format('MMM DD')} and ${dayjsLocal(textToObject?.date_range.end_date).format('MMM DD')}. `,
+                        }}
+                      />
+                      <ButtonSoft
+                        iconName={'send'}
+                        isRightIcon={true}
+                        size={1}
+                        textButton='Proceed'
+                        onClickButton={{
+                          onClick: handleSubmit,
+                        }}
+                      />
+                    </Stack>
+                  </>
+                )
+              )}
             </Stack>
-          </>
-        ) : (
-          textToObject && (
-            <>
-              <Stack
-                height={'100%'}
-                width={'100%'}
-                direction={'column'}
-                justifyContent={'space-between'}
-                alignItems={'flex-end'}
-                p={1}
-              >
-                <Typography
-                  width={'100%'}
-                  fontSize={18}
-                  dangerouslySetInnerHTML={{
-                    __html: `Aglint AI will ${textToObject?.assignee === 'user' ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}` : textToObject?.assignee === 'phone' ? 'make a call' : 'send an email'} to <b>${textToObject?.applicant_name}</b> to get ${textToObject?.schedule_type} for the ${Array.isArray(textToObject?.interview_names) && textToObject?.interview_names.join(',')} interview between ${dayjsLocal(textToObject?.date_range.start_date).format('MMM DD')} and ${dayjsLocal(textToObject?.date_range.end_date).format('MMM DD')}. `,
-                  }}
-                />
-                <ButtonSoft
-                  size={1}
-                  textButton='Proceed'
-                  onClickButton={{
-                    onClick: handleSubmit,
-                  }}
-                />
-              </Stack>
-            </>
-          )
-        )}
-      </Stack>
-      <AgentEditor
-        handleTextChange={(text) => {
-          if (!text) {
-            setTextToObject(null);
-            setSelectedApplication(null);
-            setSelectedJob(null);
-            setSelectedScheduleType(null);
-            setSelectedSession([]);
-          }
-        }}
-        handleSubmit={(text) => {
-          if (!selectedApplication?.id) {
-            setLoading(true);
-            extractDataFromText(text).then((data: ApplicantInfo) => {
-              setTextToObject(data);
-              setSelectedJob({
-                id: data.job_title,
-                display: data.job_title,
-              });
+            <AgentEditor
+              inputRef={inputRef}
+              text={text}
+              setText={setText}
+              handleTextChange={(text) => {
+                console.log(text);
+                if (!text) {
+                  setTextToObject(null);
+                  setSelectedApplication(null);
+                  setSelectedJob(null);
+                  setSelectedScheduleType(null);
+                  setSelectedSession([]);
+                }
+              }}
+              handleSubmit={(text) => {
+                if (!selectedApplication?.id) {
+                  setLoading(true);
+                  extractDataFromText(text).then((data: ApplicantInfo) => {
+                    setTextToObject(data);
+                    setSelectedJob({
+                      id: data.job_title,
+                      display: data.job_title,
+                    });
 
-              if (!selectedApplication?.id) {
-                getApplicationWithName(
-                  data.applicant_name,
-                  data.interview_names,
-                );
+                    if (!selectedApplication?.id) {
+                      getApplicationWithName(
+                        data.applicant_name,
+                        data.interview_names,
+                      );
+                    }
+                    setLoading(false);
+                  });
+                } else {
+                  setTextToObject({
+                    applicant_name: selectedApplication.display,
+                    assignee: 'user',
+                    date_range: {
+                      start_date: dayjs().format('MM-DD-YYYY'),
+                      end_date: dayjs().add(7, 'day').format('MM-DD-YYYY'),
+                    },
+                    interview_names: selectedSession.map(
+                      (session) => session.display,
+                    ),
+                    job_title: selectedJob.display,
+                    schedule_type: selectedScheduleType
+                      ? (selectedScheduleType?.display as ScheduleType)
+                      : 'schedule',
+                  });
+                }
+              }}
+              requestList={
+                requests.status === 'success'
+                  ? requests.data.map((ele) => ({
+                      id: ele.id,
+                      display: ele.title,
+                    }))
+                  : []
               }
-              setLoading(false);
-            });
-          } else {
-            setTextToObject({
-              applicant_name: selectedApplication.display,
-              assignee: 'user',
-              date_range: {
-                start_date: dayjs().format('MM-DD-YYYY'),
-                end_date: dayjs().add(7, 'day').format('MM-DD-YYYY'),
-              },
-              interview_names: selectedSession.map(
-                (session) => session.display,
-              ),
-              job_title: selectedJob.display,
-              schedule_type: selectedScheduleType
-                ? (selectedScheduleType?.display as ScheduleType)
-                : 'schedule',
-            });
-          }
-        }}
-        requestList={
-          requests.status === 'success'
-            ? requests.data.map((ele) => ({ id: ele.id, display: ele.title }))
-            : []
-        }
-        scheduleTypes={scheduleType}
-        jobList={
-          isJobFetched &&
-          jobsAndApplications.jobs.map((job) => ({
-            id: job.id,
-            display: job.job_title,
-          }))
-        }
-        applicationsList={
-          applications
-            ? applications.map((application) => ({
-                id: application.id,
-                display:
-                  application.candidates.first_name +
-                  ' ' +
-                  application.candidates.last_name,
-              }))
-            : []
-        }
-        sessionList={
-          applicant_sessions
-            ? applicant_sessions.map((session) => ({
-                id: session.id,
-                display: session.name,
-              }))
-            : []
-        }
-        getSelectedJob={({ id, display }) => {
-          setSelectedJob({ id, display });
-        }}
-        getSelectedApplication={({ id, display }) => {
-          const selectedApplication = jobsAndApplications.applications.find(
-            (application) => application.id === id,
-          ) as Awaited<ReturnType<typeof getApplications>>[number];
+              scheduleTypes={scheduleType}
+              jobList={
+                isJobFetched &&
+                jobsAndApplications.jobs.map((job) => ({
+                  id: job.id,
+                  display: job.job_title,
+                }))
+              }
+              applicationsList={
+                applications
+                  ? applications.map((application) => ({
+                      id: application.id,
+                      display:
+                        application.candidates.first_name +
+                        ' ' +
+                        application.candidates.last_name,
+                    }))
+                  : []
+              }
+              sessionList={
+                applicant_sessions
+                  ? applicant_sessions.map((session) => ({
+                      id: session.id,
+                      display: session.name,
+                    }))
+                  : []
+              }
+              getSelectedJob={({ id, display }) => {
+                setSelectedJob({ id, display });
+              }}
+              getSelectedApplication={({ id, display }) => {
+                const selectedApplication =
+                  jobsAndApplications.applications.find(
+                    (application) => application.id === id,
+                  ) as Awaited<ReturnType<typeof getApplications>>[number];
 
-          setSelectedApplication({ id, display });
-          setSelectedJob({
-            id: selectedApplication?.public_jobs.id,
-            display: selectedApplication?.public_jobs.job_title,
-          });
-        }}
-        getSelectedSession={({ id, display }) => {
-          setSelectedSession((pre) => [...pre, { id, display }]);
-        }}
-        getSelectedScheduleType={({ id, display }) => {
-          setSelectedScheduleType({ id, display });
-        }}
-        getSelectedRequest={({ id, display }) => {
-          setSelectedRequest({ id, display });
-        }}
+                setSelectedApplication({ id, display });
+                setSelectedJob({
+                  id: selectedApplication?.public_jobs.id,
+                  display: selectedApplication?.public_jobs.job_title,
+                });
+              }}
+              getSelectedSession={({ id, display }) => {
+                setSelectedSession((pre) => [...pre, { id, display }]);
+              }}
+              getSelectedScheduleType={({ id, display }) => {
+                setSelectedScheduleType({ id, display });
+              }}
+              getSelectedRequest={({ id, display }) => {
+                setSelectedRequest({ id, display });
+              }}
+            />
+          </Stack>
+        }
+        slotAiBody={
+          <AglintAiWelcome
+            slotStartOption={<CommandShortCuts />}
+            textAiHeader={
+              `Good morning, ` + getFullName(recruiterUser.first_name, '')
+            }
+          />
+        }
       />
-    </Stack>
+    </>
   );
 }
 

@@ -55,7 +55,7 @@ function SchedulingViewComp() {
             : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
-          name: `${data.schedule_data.schedule.schedule_name}`.trim(),
+          name: `${data.schedule_data.schedule.schedule_name || 'Schedule'}`.trim(),
         },
       ]);
     }

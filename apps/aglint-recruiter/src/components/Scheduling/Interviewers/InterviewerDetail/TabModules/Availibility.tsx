@@ -200,6 +200,23 @@ function Availibility({
 
   return (
     <Stack overflow={'hidden'} padding={2} spacing={2}>
+      <Stack
+        bgcolor={'white'}
+        width={'600px'}
+        p={1}
+        borderRadius={'8px'}
+        border={'1px solid var(--neutral-6)'}
+      >
+        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+          <Typography fontWeight={500}>Time Zone </Typography>
+          <ButtonGhost
+            textButton='Edit'
+            size={1}
+            onClickButton={{ onClick: () => setEditDrawer(true) }}
+          />
+        </Stack>
+        <Typography>{selectedTimeZone?.label}</Typography>
+      </Stack>
       <InterviewLoadDetails
         slotEdit={
           <ButtonGhost
