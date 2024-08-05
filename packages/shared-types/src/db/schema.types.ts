@@ -3626,7 +3626,7 @@ export type Database = {
           created_at: string
           event_type: string
           id: string
-          log: string
+          log: string | null
           log_type: string
           meta: Json | null
           request_id: string
@@ -3636,7 +3636,7 @@ export type Database = {
           created_at?: string
           event_type: string
           id?: string
-          log?: string
+          log?: string | null
           log_type?: string
           meta?: Json | null
           request_id: string
@@ -3646,7 +3646,7 @@ export type Database = {
           created_at?: string
           event_type?: string
           id?: string
-          log?: string
+          log?: string | null
           log_type?: string
           meta?: Json | null
           request_id?: string

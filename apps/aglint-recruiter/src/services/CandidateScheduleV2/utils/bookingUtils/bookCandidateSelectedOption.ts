@@ -20,6 +20,7 @@ import { FetchDBScheduleDetails, ScheduleDBDetails } from './types';
 import { updateConfirmTime } from './updateConfirmTime';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 export const bookCandidateSelectedOption = async (
   parsed_body: CandidateDirectBookingType,

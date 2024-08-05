@@ -6,6 +6,7 @@ import axios from 'axios';
 import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { ProgressLoggerType } from './utils';
 
 export const candidateAvailRequest = async (
   req_body: any,
@@ -14,6 +15,7 @@ export const candidateAvailRequest = async (
   start_date_str,
   end_date_str,
   request_id: string,
+  progress_logger: ProgressLoggerType,
 ) => {
   const {
     application_id,
@@ -64,4 +66,9 @@ export const candidateAvailRequest = async (
       ...payload,
     },
   );
+  await progress_logger({
+    event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+    status: 'completed',
+    log_type: 'heading',
+  });
 };

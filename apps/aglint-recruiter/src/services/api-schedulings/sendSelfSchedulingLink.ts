@@ -14,6 +14,7 @@ export const sendSelfSchedulingLinkFunc = async (
   start_date_str: string,
   end_date_str: string,
   session_ids,
+  request_id,
 ) => {
   let no_conf_slots: PlanCombinationRespType[] = [];
   cand_picked_slots.forEach((curr_round) => {
@@ -36,6 +37,7 @@ export const sendSelfSchedulingLinkFunc = async (
         selected_options: [...no_conf_slots],
         session_ids: session_ids,
         is_flow_agent: true,
+        request_id,
       })
       .select(),
   );

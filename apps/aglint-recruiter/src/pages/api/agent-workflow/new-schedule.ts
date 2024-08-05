@@ -16,6 +16,7 @@ import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAg
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { createRequestProgressLogger } from '@/src/services/api-schedulings/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -26,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     recruiter_id,
     request_id,
   } = v.parse(candidate_new_schedule_schema, req.body);
-
+  const req_progress_logger = createRequestProgressLogger(request_id);
   let date_range = {
     start_date_str: dayjsLocal().format('DD/MM/YYYY'),
     end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
@@ -70,7 +71,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =
     'self_scheduling';
-
+  await req_progress_logger({
+    event_type: 'FIND_CURR_AVAIL_SLOTS',
+    log: `Found ${plans.length} slots`,
+    log_type: 'heading',
+    status: 'completed',
+    meta: null,
+  });
   if (api_target === 'onSelfScheduleReqAgent_EmailLink_SelfSchedule') {
     meeting_flow = 'self_scheduling';
     await candidateSelfSchedule(
@@ -113,6 +120,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       date_range.start_date_str,
       date_range.end_date_str,
       request_id,
+      req_progress_logger,
     );
   } else {
     throw new ApiError('SERVER', 'new-schedule not found');

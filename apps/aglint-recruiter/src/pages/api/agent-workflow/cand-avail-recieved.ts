@@ -10,11 +10,18 @@ import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendS
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { createRequestProgressLogger } from '@/src/services/api-schedulings/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
-  const { candidate_availability_request_id, recruiter_id, application_id } =
-    req.body;
+  const {
+    candidate_availability_request_id,
+    recruiter_id,
+    application_id,
+    request_id,
+  } = req.body;
+  const req_progress_logger = createRequestProgressLogger(request_id);
+
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -55,6 +62,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(
       avail_record.slots,
     );
+    await req_progress_logger({
+      event_type: 'FIND_SUITABLE_SLOTS',
+      status: 'completed',
+      log_type: 'heading',
+    });
     await sendSelfSchedulingLinkFunc(
       cand_picked_slots,
       schedule_id,
@@ -62,7 +74,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       avail_record.date_range[0],
       avail_record.date_range[1],
       session_ids,
+      request_id,
     );
+    await req_progress_logger({
+      event_type: 'SELF_SCHEDULE_LINK',
+      status: 'completed',
+      log_type: 'heading',
+    });
   }
   return res.status(200).end();
 };
