@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { StartOption } from "./StartOption";
 import * as _utils from "./utils";
 import _styles from "./AglintAiWelcome.module.css";
 
@@ -9,6 +10,7 @@ export function AglintAiWelcome({
   as: _Component = _Builtin.Block,
   textAiHeader = "Hey Sara, I am Aglint AI your Scheduling co-pilot.",
   slotOption,
+  slotStartOption,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req-right-initial")} tag="div">
@@ -28,24 +30,41 @@ export function AglintAiWelcome({
           weight="regular"
           align="center"
         />
-        <_Builtin.Block
-          className={_utils.cx(_styles, "actions-padding")}
-          tag="div"
-        >
-          <_Builtin.Image
-            loading="lazy"
-            width="auto"
-            height="auto"
-            alt=""
-            src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/66ae6a4a990f41aa1fa5c5af_Action%20cards.png"
-          />
-        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "req-right-initail-grid")}
+        className={_utils.cx(_styles, "get-started-wrap")}
         tag="div"
       >
-        {slotOption}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "get-started-sub-wrap")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "get-started-line")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "get-started-text-wrap")}
+            tag="div"
+          >
+            <Text
+              size="1"
+              color="neutral"
+              weight="regular"
+              content="Getting started? Try these:"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "get-started-line")}
+            tag="div"
+          />
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "get-started-all-options")}
+          tag="div"
+        >
+          {slotStartOption ?? <StartOption />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
