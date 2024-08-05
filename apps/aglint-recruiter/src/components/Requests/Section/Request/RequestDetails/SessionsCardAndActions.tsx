@@ -1,52 +1,23 @@
 import { Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
-import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
-import MuiPopup from '@/src/components/Common/MuiPopup';
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
+import type { Request as RequestType } from '@/src/queries/requests/types';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function SessionsCardAndActions({
-  requestTitle,
-  requestId,
+  request,
   sessions,
 }: {
-  requestTitle: string;
-  requestId: string;
+  request: PropsWithChildren<RequestType>;
   sessions: {
     id: string;
     name: string;
   }[];
 }) {
-  const [openCancelRequest, setOpenCancelRequest] = useState(false);
   return (
     <>
-      <MuiPopup
-        props={{
-          open: openCancelRequest,
-          onClose: () => setOpenCancelRequest(false),
-        }}
-      >
-        <>
-          <ConfirmationPopup
-            onClickCancel={{ onClick: () => setOpenCancelRequest(false) }}
-            isIcon={false}
-            textPopupTitle={'Cancel Request'}
-            textPopupDescription={
-              'Are you sure you want to cancel this the request?'
-            }
-            isWidget={true}
-            slotWidget={'Request: ' + requestTitle}
-            textPopupButton={'Yes, Cancel'}
-            onClickAction={{
-              onClick: async () => {
-                // eslint-disable-next-line no-console
-                console.log(requestId);
-                setOpenCancelRequest(false);
-              },
-            }}
-          />
-        </>
-      </MuiPopup>
       <Stack direction={'row'} spacing={1} alignItems={'center'}>
         <Stack direction={'row'} spacing={1}>
           {sessions.map(({ name, id }, i) => {
@@ -62,13 +33,10 @@ function SessionsCardAndActions({
             );
           })}
         </Stack>
-        <ButtonSoft
-          onClickButton={{
-            onClick: () => setOpenCancelRequest(true),
-          }}
-          size={1}
-          color={`error`}
-          textButton={'Cancel Request'}
+        <GlobalBadge
+          color={'accent'}
+          variant={'soft'}
+          textBadge={capitalizeFirstLetter(request.type)}
         />
       </Stack>
     </>
