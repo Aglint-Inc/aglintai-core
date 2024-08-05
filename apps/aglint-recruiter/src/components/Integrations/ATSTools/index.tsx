@@ -1,4 +1,3 @@
-import { RecruiterType } from '@aglint/shared-types';
 import { IconButton, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -10,6 +9,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';
@@ -18,41 +18,30 @@ import {
   AshbyLogo,
   GreenHouseLogo,
   LeverLogo,
-  updateRecruiter,
+  updateIntegrations,
 } from '../utils';
 
 function ATSTools() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
   const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
+  const { data: integrations, refetch } = useAllIntegrations();
 
   async function action() {
     const apiKey = inputRef.current && inputRef.current.value;
     setLoading(true);
     if (reason === 'disconnect_greenhouse') {
-      await updateRecruiter(recruiter.id, {
-        greenhouse_key: null,
-      } as RecruiterType).then((data) => {
-        setRecruiter(data);
-      });
+      await updateIntegrations({ greenhouse_key: null }, recruiter.id);
     }
     if (reason === 'disconnect_ashby') {
-      await updateRecruiter(recruiter.id, {
-        ashby_key: null,
-      } as RecruiterType).then((data) => {
-        setRecruiter(data);
-      });
+      await updateIntegrations({ ashby_key: null }, recruiter.id);
     }
     if (reason === 'disconnect_lever') {
-      await updateRecruiter(recruiter.id, {
-        lever_key: null,
-      } as RecruiterType).then((data) => {
-        setRecruiter(data);
-      });
+      await updateIntegrations({ lever_key: null }, recruiter.id);
     }
 
     if (reason === 'connect_greenhouse' || reason === 'update_greenhouse') {
@@ -74,7 +63,6 @@ function ATSTools() {
               responseRec.status === 200 &&
               responseRec.data[0]?.greenhouse_key
             ) {
-              setRecruiter(responseRec.data[0]);
               posthog.capture('Green House Data Fetched');
             }
           } else {
@@ -107,7 +95,6 @@ function ATSTools() {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-              setRecruiter(responseRec.data[0]);
               posthog.capture('Ashby Data Fetched');
             }
           } else {
@@ -140,7 +127,6 @@ function ATSTools() {
               apiKey: apiKey,
             });
             if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-              setRecruiter(responseRec.data[0]);
               posthog.capture('Lever Data Fetched');
             }
           } else {
@@ -157,6 +143,7 @@ function ATSTools() {
         return;
       }
     }
+    refetch();
     close();
   }
 
@@ -199,7 +186,7 @@ function ATSTools() {
       try {
         await axios
           .post(`/api/decryptApiKey`, {
-            encryptData: recruiter.greenhouse_key,
+            encryptData: integrations.greenhouse_key,
           })
           .then(({ data }) => {
             if (data) {
@@ -219,7 +206,7 @@ function ATSTools() {
       setReason('update_ashby');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.ashby_key,
+          encryptData: integrations.ashby_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -236,7 +223,7 @@ function ATSTools() {
       setReason('update_lever');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: recruiter.lever_key,
+          encryptData: integrations.lever_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -266,20 +253,24 @@ function ATSTools() {
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isConnected: recruiter?.greenhouse_key,
+      isConnected: integrations?.greenhouse_key,
       logo: <GreenHouseLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.greenhouse_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.greenhouse_key ? 'Disconnect' : 'Learn How'}
+          primaryText={
+            integrations?.greenhouse_key ? 'Edit API Key' : 'Connect'
+          }
+          secondaryText={
+            integrations?.greenhouse_key ? 'Disconnect' : 'Learn How'
+          }
           secondaryAction={() => {
             setLoading(false);
-            if (recruiter.greenhouse_key) disConnectApi('greenhouse');
+            if (integrations.greenhouse_key) disConnectApi('greenhouse');
             else readDocs('greenhouse');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (recruiter.greenhouse_key) updateApi('greenhouse');
+            if (integrations.greenhouse_key) updateApi('greenhouse');
             else connectApi('greenhouse');
           }}
         />
@@ -288,20 +279,20 @@ function ATSTools() {
     {
       name: 'lever' as ATSType,
       url: 'lever.co',
-      isConnected: recruiter?.lever_key,
+      isConnected: integrations?.lever_key,
       logo: <LeverLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.lever_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.lever_key ? 'Disconnect' : 'Learn How'}
+          primaryText={integrations?.lever_key ? 'Edit API Key' : 'Connect'}
+          secondaryText={integrations?.lever_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
-            if (recruiter.lever_key) disConnectApi('lever');
+            if (integrations.lever_key) disConnectApi('lever');
             else readDocs('lever');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (recruiter.lever_key) updateApi('lever');
+            if (integrations.lever_key) updateApi('lever');
             else connectApi('lever');
           }}
         />
@@ -310,20 +301,20 @@ function ATSTools() {
     {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
-      isConnected: recruiter?.ashby_key,
+      isConnected: integrations?.ashby_key,
       logo: <AshbyLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.ashby_key ? 'Edit API Key' : 'Connect'}
-          secondaryText={recruiter?.ashby_key ? 'Disconnect' : 'Learn How'}
+          primaryText={integrations?.ashby_key ? 'Edit API Key' : 'Connect'}
+          secondaryText={integrations?.ashby_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
-            if (recruiter.ashby_key) disConnectApi('ashby');
+            if (integrations.ashby_key) disConnectApi('ashby');
             else readDocs('ashby');
           }}
           primaryAction={() => {
             setLoading(false);
-            if (recruiter.ashby_key) updateApi('ashby');
+            if (integrations.ashby_key) updateApi('ashby');
             else connectApi('ashby');
           }}
         />

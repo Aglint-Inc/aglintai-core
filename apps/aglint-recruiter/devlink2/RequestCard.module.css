@@ -1,0 +1,36 @@
+.req-card-wrapper {
+  display: flex;
+  padding: var(--space-3);
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-2);
+
+  cursor: pointer;
+}
+
+.req-card-wrapper-sub-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.req-card-wrapper-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.slot-card-right-icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}

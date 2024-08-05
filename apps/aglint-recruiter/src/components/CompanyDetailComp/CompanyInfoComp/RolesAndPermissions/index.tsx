@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Permissions } from '@/devlink/Permissions';
 import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
@@ -149,26 +150,28 @@ const RoleTable = ({
                       )}
                     </>
                   ) : (
-                    <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                      <Typography color={'neutral'}>
-                        {`No users with ${details.name}`}
-                      </Typography>
-                      <ButtonGhost
-                        textButton='Add'
-                        size={1}
-                        iconName='Add'
-                        isLeftIcon
-                        onClickButton={{
-                          onClick: (e) => {
-                            e.stopPropagation();
-                            // setQueryParams({ add: true, role: details.name });
-                            setRole(key, true);
-                          },
-                        }}
-                      />
-                    </Stack>
+                    <Typography color={'neutral'}>
+                      {`No users with ${details.name}`}
+                    </Typography>
                   )}
                 </>
+              }
+              slotButtonAdd={
+                !count && (
+                  <ButtonSoft
+                    textButton='Add'
+                    size={1}
+                    iconName='Add'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        // setQueryParams({ add: true, role: details.name });
+                        setRole(key, true);
+                      },
+                    }}
+                  />
+                )
               }
             />
           );
@@ -389,10 +392,10 @@ function RoleDetails({
       <RolesAndPermissionsDetail
         slotAddButton={ifAllowed(
           <Stack direction={'row'}>
-            <ButtonGhost
+            <ButtonSoft
               onClickButton={{ onClick: () => setEditUser(true) }}
               textButton={'Add'}
-              size={2}
+              size={1}
               isLeftIcon={true}
               iconName={'add'}
             />

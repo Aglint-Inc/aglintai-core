@@ -19,7 +19,7 @@ export const settingsItems: {
   value: string;
   permission?: permissionsEnum | 'authorized';
 }[] = [
-  { label: 'Company Info', value: settingSubNavItem['COMPANYINFO'] },
+  { label: 'Company Details', value: settingSubNavItem['COMPANYINFO'] },
   { label: 'Working Hours', value: settingSubNavItem['WORKINGHOURS'] },
   { label: 'Holidays', value: settingSubNavItem['HOLIDAYS'] },
   {
@@ -32,7 +32,7 @@ export const settingsItems: {
     value: settingSubNavItem['ROLES'],
     permission: 'view_roles',
   },
-  { label: 'Email Templates', value: settingSubNavItem['EMAILTEMPLATE'] },
+  { label: 'Templates', value: settingSubNavItem['EMAILTEMPLATE'] },
   { label: 'Scheduling', value: settingSubNavItem['SCHEDULING'] },
 ];
 

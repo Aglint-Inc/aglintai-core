@@ -1,0 +1,20 @@
+.ild-card-wrap {
+  display: flex;
+  height: 60px;
+  padding: var(--space-3);
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+
+  border-radius: var(--radius-2);
+
+  background-color: var(--neutral-3);
+}
+
+.ild-number-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}

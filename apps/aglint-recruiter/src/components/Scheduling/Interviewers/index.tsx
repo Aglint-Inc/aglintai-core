@@ -11,6 +11,7 @@ import { EmptyState } from '@/devlink2/EmptyState';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { TextWithBg } from '@/devlink2/TextWithBg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -22,9 +23,9 @@ import Filters from './Filters';
 
 const InterviewTab = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
   const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
+  const { data: allIntegrations } = useAllIntegrations();
 
   return (
     <PageLayout
@@ -84,19 +85,20 @@ const InterviewTab = () => {
                                     />
                                   }
                                   isCalenderNotConnected={
-                                    recruiter.service_json === null &&
-                                    recruiter.google_workspace_domain.split(
+                                    allIntegrations?.service_json === null &&
+                                    allIntegrations?.google_workspace_domain?.split(
                                       '//',
                                     )[1] === member.email.split('@')[1] &&
                                     member.schedule_auth === null
                                   }
-                                  isConnectedCalenderVisible={
-                                    (recruiter.service_json !== null &&
-                                      recruiter.google_workspace_domain.split(
-                                        '//',
-                                      )[1] === member.email.split('@')[1]) ||
-                                    member.schedule_auth !== null
-                                  }
+                                  isConnectedCalenderVisible={false}
+                                  // isConnectedCalenderVisible={
+                                  //   (recruiter.service_json !== null &&
+                                  //     recruiter.google_workspace_domain.split(
+                                  //       '//',
+                                  //     )[1] === member.email.split('@')[1]) ||
+                                  //   member.schedule_auth !== null
+                                  // }
                                   slotInterviewModules={
                                     <>
                                       <ShowCode>

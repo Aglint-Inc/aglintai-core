@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Database } from '@aglint/shared-types/src/db/schema.types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -206,9 +206,9 @@ const RealTimeCrons: React.FC = () => {
 
 export default RealTimeCrons;
 
-const getStatusBadge = (status: string) => {
+const getStatusBadge = (status: DatabaseEnums['workflow_cron_run_status']) => {
   switch (status) {
-    case 'not started':
+    case 'not_started':
       return <Chip label='Not Started' color='default' />;
     case 'failed':
       return <Chip label='Failed' color='error' />;
@@ -216,6 +216,8 @@ const getStatusBadge = (status: string) => {
       return <Chip label='Processing' color='warning' />;
     case 'success':
       return <Chip label='Success' color='success' />;
+    case 'stopped':
+      return <Chip label='Stopped' color='info' />;
     default:
       return <Chip label='Unknown' color='default' />;
   }

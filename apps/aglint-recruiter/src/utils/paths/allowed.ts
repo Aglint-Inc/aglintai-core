@@ -3,6 +3,7 @@ import { PATHS } from '@/src/constant/allPaths';
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
 export const allowedPaths = new Set<t>([
+  '/api/testx',
   '/login',
   '/signup',
   '/api/signup',
@@ -94,7 +95,11 @@ export const allowedPaths = new Set<t>([
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/scheduling/application/openselfscheduling',
   '/api/scheduling/v1/booking/schedule-debreif',
+  '/api/scheduling/candidate/candidate-self-scheduling',
+  '/api/scheduling/candidate/candidate-availability-request',
   '/api/agent-scheduling/send-availability-request-link',
+  '/api/agent-workflow/new-schedule',
+  '/api/agent-workflow/cand-avail-recieved',
   'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
   ...cronPaths,
 ] as t[]);

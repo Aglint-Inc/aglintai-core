@@ -1,10 +1,13 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
+import { InterviewLoadCard } from '@/devlink3/InterviewLoadCard';
+import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/src/components/Common/Loader';
+import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
@@ -15,7 +18,22 @@ import PauseDialog from '../Popups/PauseDialog';
 import ResumeDialog from '../Popups/ResumeDialog';
 import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
-function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
+
+function Overview({
+  scheduleList,
+  interviewerDetails,
+  totalHoursThisWeek,
+  totalHoursToday,
+  totalInterviewsThisWeek,
+  totalInterviewsToday,
+}: {
+  scheduleList: SchedulesSupabase;
+  interviewerDetails: ApiResponseGetMember;
+  totalHoursThisWeek: number;
+  totalHoursToday: number;
+  totalInterviewsThisWeek: number;
+  totalInterviewsToday: number;
+}) {
   const router = useRouter();
   const upcomingScheduleList =
     scheduleList?.filter((item) => item.status === 'confirmed') || [];
@@ -37,6 +55,64 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
       <PauseDialog />
       <ResumeDialog />
       <DeleteMemberDialog refetch={deleteRefetch} />
+      <Heatmap
+        loadSetting={interviewerDetails.scheduling_settings.interviewLoad}
+      />
+      <Stack ml={2} mb={2}>
+        <Typography fontWeight={500} pb={1}>
+          Interview Load
+        </Typography>
+        <Stack direction={'row'} spacing={2} width={'400px'}>
+          <Stack width={'200px'}>
+            <InterviewLoadCard
+              textHeading='Today'
+              textLabel={
+                interviewerDetails?.scheduling_settings?.interviewLoad
+                  ?.dailyLimit.type === 'Interviews'
+                  ? 'Interview'
+                  : 'Hour'
+              }
+              textInterviewCounts={
+                interviewerDetails?.scheduling_settings?.interviewLoad
+                  ?.dailyLimit.type === 'Interviews'
+                  ? totalInterviewsToday +
+                      ' / ' +
+                      interviewerDetails.scheduling_settings?.interviewLoad
+                        ?.dailyLimit.value || 0
+                  : totalHoursToday +
+                      ' / ' +
+                      interviewerDetails.scheduling_settings?.interviewLoad
+                        ?.dailyLimit.value || 0
+              }
+            />
+          </Stack>
+          <Stack width={'200px'}>
+            <InterviewLoadCard
+              textHeading='This Week'
+              textLabel={
+                interviewerDetails?.scheduling_settings?.interviewLoad
+                  ?.weeklyLimit.type === 'Interviews'
+                  ? 'Interview'
+                  : 'Hour'
+              }
+              textInterviewCounts={
+                interviewerDetails?.scheduling_settings?.interviewLoad
+                  ?.weeklyLimit.type === 'Interviews'
+                  ? totalInterviewsThisWeek +
+                      ' / ' +
+                      interviewerDetails.scheduling_settings?.interviewLoad
+                        ?.weeklyLimit.value || 0
+                  : totalHoursThisWeek +
+                      ' / ' +
+                      interviewerDetails.scheduling_settings?.interviewLoad
+                        ?.weeklyLimit.value || 0
+              }
+            />
+          </Stack>
+          {/* <InterviewLoadCard textHeading='This Month' />
+          <InterviewLoadCard textHeading='All month' /> */}
+        </Stack>
+      </Stack>
       <InterviewerDetailOverview
         slotButtonSchedule={
           upcomingScheduleList?.length ? (
@@ -81,7 +157,7 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
             })
           ) : (
             <GlobalEmptyState
-              textDesc='No upcoming schedules found.'
+              textDesc='No upcoming interviews found.'
               size={6}
               iconName='event'
             />
@@ -97,6 +173,7 @@ function Overview({ scheduleList }: { scheduleList: SchedulesSupabase }) {
                       <TrainingInterviewerType
                         relation={relation}
                         key={relation.id}
+                        refetch={deleteRefetch}
                       />
                     );
                   })}

@@ -50,6 +50,7 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ['@aglint/shared-utils'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

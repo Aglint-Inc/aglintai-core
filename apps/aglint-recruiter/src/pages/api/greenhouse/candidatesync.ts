@@ -12,7 +12,7 @@ import {
   processEmailsInBatches,
 } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
 
-const crypto = require('crypto');
+import { decrypt } from '../decryptApiKey';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -52,9 +52,9 @@ export default async function handler(req, res) {
     previousApplications = app;
 
     const { data: rec, error: errorRec } = await supabase
-      .from('recruiter')
+      .from('integrations')
       .select('*')
-      .eq('id', referenceJob[0].recruiter_id);
+      .eq('recruiter_id', referenceJob[0].recruiter_id);
 
     if (errorApp) {
       console.log(errorRec.message);
@@ -224,14 +224,6 @@ export default async function handler(req, res) {
       res.status(400).send('Unable to fetch recruiter');
     }
   }
-}
-
-// Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
 }
 
 const fetchAllCandidates = async (

@@ -65,8 +65,8 @@
   padding: var(--space-2) var(--space-3);
   justify-content: flex-start;
   align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
 }
 
 .user_table_row_wrapper {

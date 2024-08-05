@@ -67,3 +67,12 @@ type CustomDraft = Pick<
   | "job_type"
   | "location"
 > & { jd_json: CustomJdJson };
+
+export type CustomRequestType = Type<
+  Database["public"]["Tables"]["request"]["Row"],
+  {
+    type: "schedule_request";
+    status: "to_do" | "in_progress" | "blocked" | "completed";
+    priority: "urgent" | "standard";
+  }
+>;

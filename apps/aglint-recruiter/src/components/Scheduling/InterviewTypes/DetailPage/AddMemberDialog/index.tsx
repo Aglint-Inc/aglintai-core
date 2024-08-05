@@ -84,7 +84,7 @@ function AddMemberDialog({
       <DcPopup
         popupName={
           trainingStatus === 'qualified'
-            ? 'Add Qualified Members'
+            ? 'Add Interviewers'
             : 'Add Trainee.'
         }
         onClickClosePopup={{

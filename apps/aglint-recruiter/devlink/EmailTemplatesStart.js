@@ -30,14 +30,6 @@ export function EmailTemplatesStart({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "et_wrapper")} tag="div">
-      {showTabs ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot_newtabpill-copy")}
-          tag="div"
-        >
-          {slotNewTabPill}
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "email-template-wrap")}
         tag="div"
@@ -55,14 +47,12 @@ export function EmailTemplatesStart({
               {slotWarning}
             </_Builtin.Block>
           ) : null}
-          {showTabs ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot_search_and_filter")}
-              tag="div"
-            >
-              {slotSearchFilter}
-            </_Builtin.Block>
-          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot_search_and_filter")}
+            tag="div"
+          >
+            {slotSearchFilter}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "email-start-wrap")}
             id={_utils.cx(

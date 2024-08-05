@@ -132,6 +132,7 @@ function IndividualCard({
         }}
         slotTrainingProgressDetail={
           <CollapseTrainingProgress
+            relationRefetch={refetch}
             refetch={refetch}
             refetchTrainingProgress={refetchTrainingProgress}
             reverse_shadow_to_complete={user.number_of_reverse_shadow}

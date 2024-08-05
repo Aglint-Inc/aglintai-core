@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-const crypto = require('crypto');
+
+import { encrypt } from '../encryptData';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -22,9 +23,9 @@ export default async function handler(req, res) {
   console.log(encryptedApiKey);
 
   const { data, error } = await supabase
-    .from('recruiter')
+    .from('integrations')
     .update({ greenhouse_key: encryptedApiKey })
-    .eq('id', recruiterId)
+    .eq('recruiter_id', recruiterId)
     .select();
 
   if (!error) {
@@ -32,12 +33,4 @@ export default async function handler(req, res) {
   } else {
     res.status(400).send(error);
   }
-}
-
-// Encrypt data using AES-256
-function encrypt(data, encryptionKey) {
-  const cipher = crypto.createCipher('aes256', encryptionKey);
-  let encryptedData = cipher.update(data, 'utf8', 'hex');
-  encryptedData += cipher.final('hex');
-  return encryptedData;
 }

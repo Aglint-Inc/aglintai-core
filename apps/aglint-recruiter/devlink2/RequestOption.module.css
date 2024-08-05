@@ -1,0 +1,13 @@
+.req-tab-pill-wrap {
+  display: flex;
+  padding: var(--space-2);
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--white);
+
+  cursor: pointer;
+}

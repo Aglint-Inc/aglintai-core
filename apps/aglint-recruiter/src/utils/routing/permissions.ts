@@ -44,6 +44,7 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
   '/jobs/[id]/workflows': ['job_module'],
   '/workflows': ['workflow_module'],
+  '/api/get_member': ['authorized'],
   '/workflows/[id]': ['workflow_module'],
   '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
@@ -71,11 +72,13 @@ const PERMISSIONS: Permissions = {
   '/api/greenhouse/saveApiKey': ['manage_company'],
   '/api/lever/getPostings': ['job_module'],
   '/api/lever/saveApiKey': ['manage_company'],
+  '/api/lever/getCandidates': ['job_module'],
+  '/api/lever/createQueue': ['job_module'],
   '/api/ashby/getPostings': ['job_module'],
   '/api/ashby/saveApiKey': ['manage_company'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
-  '/api/scheduling/fetch_activities': ['scheduling_module'],
+  '/api/scheduling/fetch_activities': ['authorized'],
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
@@ -149,6 +152,7 @@ const PERMISSIONS: Permissions = {
   '/api/supabase/deleteuser': ['manage_users'],
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
+  '/api/ai/queryToJson': ['scheduling_module'],
 };
 
 export default PERMISSIONS;

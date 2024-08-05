@@ -15,7 +15,7 @@ import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import QualifiedInterviewTypeCard from './QualifiedInterviewType';
 import TrainingInterviewerType from './TrainingInterviewerType';
 
-function TabInterviewModules() {
+function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const router = useRouter();
   const user_id = router?.query?.user_id as string;
   const { data, isLoading, refetch } = useModuleRelations({
@@ -33,10 +33,13 @@ function TabInterviewModules() {
       <PauseDialog />
       <ResumeDialog />
       <DeleteMemberDialog refetch={refetch} />
+
       <InterviewerDetailOverview
         isViewButtonVisible={false}
-        textHeader1={'Qualified Interview Types'}
-        textHeader2={'Training Interview Types'}
+        textHeader1={'Interview Types'}
+        textHeader2={'Interview Types'}
+        isTrainingVisible={type === 'training' ? true : false}
+        isUpcomingVisible={type === 'qualified' ? true : false}
         slotUpcomingSchedule={
           !isLoading ? (
             <>
@@ -87,6 +90,7 @@ function TabInterviewModules() {
                       <TrainingInterviewerType
                         relation={relation}
                         key={relation.id}
+                        refetch={refetch}
                       />
                     );
                   })}

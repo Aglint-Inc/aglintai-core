@@ -1,9 +1,8 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import converter from 'number-to-words';
-import { useEffect, useMemo, useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -20,7 +19,6 @@ import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
-import EditMember from './EditMemberDialog';
 import FilterDropDown from './FilterDropDown';
 import DepartmentIcon from './Icons/DepartmentIcon';
 import LocationIcon from './Icons/LocationIcon';
@@ -42,9 +40,6 @@ const TeamManagement = () => {
     open: false,
     window: 'addMember',
   });
-  const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
-    null,
-  );
 
   // filter members
   const [searchText, setSearchText] = useState('');
@@ -58,22 +53,19 @@ const TeamManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
 
-  const uniqueDepartments = useMemo(() => {
-    return [
-      ...members.reduce((acc, curr) => {
-        curr.department?.name && acc.add(curr.department.name);
-        return acc;
-      }, new Set<string>()),
-    ];
-  }, []);
-  const uniqueLocations = useMemo(() => {
-    return [
-      ...members.reduce((acc, curr) => {
-        curr.office_location?.city && acc.add(curr.office_location.city);
-        return acc;
-      }, new Set<string>()),
-    ];
-  }, []);
+  const uniqueDepartments = [
+    ...members.reduce((acc, curr) => {
+      curr.department?.name && acc.add(curr.department.name);
+      return acc;
+    }, new Set<string>()),
+  ];
+
+  const uniqueLocations = [
+    ...members.reduce((acc, curr) => {
+      curr.office_location?.city && acc.add(curr.office_location.city);
+      return acc;
+    }, new Set<string>()),
+  ];
 
   const uniqueRoles = [
     ...new Set(
@@ -263,7 +255,7 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  editMember={() => setEditMember(member)}
+                  // editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
                       toast.error(
@@ -328,7 +320,7 @@ const TeamManagement = () => {
         )} pending invites awaiting your response.`}
       />
 
-      {editMember ? (
+      {/* {editMember ? (
         <EditMember
           open={Boolean(editMember)}
           memberList={activeMembers
@@ -342,27 +334,27 @@ const TeamManagement = () => {
             setEditMember(null);
           }}
         />
-      ) : (
-        <AddMember
-          open={openDrawer.open}
-          menu={openDrawer.window}
-          memberList={activeMembers.map((mem) => ({
-            id: mem.user_id,
-            name: getFullName(mem.first_name, mem.last_name),
-          }))}
-          pendingList={pendingList}
-          onClose={() => {
-            setOpenDrawer({ open: false, window: null });
-          }}
-        />
-      )}
+      ) : ( */}
+      <AddMember
+        open={openDrawer.open}
+        menu={openDrawer.window}
+        memberList={activeMembers.map((mem) => ({
+          id: mem.user_id,
+          name: getFullName(mem.first_name, mem.last_name),
+        }))}
+        pendingList={pendingList}
+        onClose={() => {
+          setOpenDrawer({ open: false, window: null });
+        }}
+      />
+      {/* )} */}
     </Stack>
   );
 };
 
 export default TeamManagement;
 
-const useTeamMembers = () => {
+export const useTeamMembers = () => {
   const {
     allMember: members,
     members: activeMembers,
@@ -405,4 +397,12 @@ const getLastLogins = (ids: string[], recruiter_id: string) => {
       });
       return tempData;
     });
+};
+
+export const getFullName = (firstName: string, lastName: string) => {
+  return [firstName, lastName]
+    .filter(Boolean)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(' ');
 };

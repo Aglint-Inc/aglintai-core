@@ -8,7 +8,7 @@ import { StatusBadge } from '@/devlink2/StatusBadge';
 import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
 import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
@@ -37,15 +37,15 @@ function ScheduleIndividualCard({
   isCollapseButtonsVisible = false,
   currentSession, // this is there only in candidate schedule page
 }: ScheduleIndividualCardType) {
-  const { recruiter } = useAuthDetails();
   const [collapsed, setCollapsed] = useState(false);
+  const { data: allIntegrations } = useAllIntegrations();
 
   const usersWithErrors = users.filter(
     (user) =>
       !!user?.interview_module_relation?.pause_json ||
       !(
-        (!!recruiter.service_json &&
-          recruiter.email.split('@')[1] ===
+        (!!allIntegrations?.service_json &&
+          allIntegrations?.google_workspace_domain?.split('//')[1] ===
             user.user_details.email.split('@')[1]) ||
         !!(user.user_details.schedule_auth as any)?.access_token
       ),

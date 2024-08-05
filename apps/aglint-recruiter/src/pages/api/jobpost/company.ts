@@ -26,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .status(405)
       .json({ error: 'invalid request method', success: false });
   }
+  console.log(req.body);
 
   if (!req.body.job_id) {
     return res.status(400).send('No job_id provided');
@@ -38,19 +39,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const getResponse = async (req: NextApiRequest) => {
-  const { recruiter_data: recruiter, ...job } = await getJob(req.body.job_id);
-  return { recruiter, jobs: [job] };
+const getResponse = async (rec_id: string) => {
+  const { jobs, ...recruiter } = await getJob(rec_id);
+  return { recruiter, jobs };
 };
 
-const getJob = async (job_id: string) =>
+const getJob = async (rec_id: string) =>
   (
     await supabase
-      .from('public_jobs')
+      .from('recruiter')
       .select(
-        '*, departments(name), recruiter_data:recruiter!public_jobs_recruiter_id_fkey(id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry)',
+        'id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry, jobs:public_jobs(*,departments(*))',
       )
-      .eq('id', job_id)
+      .eq('id', rec_id)
       .single()
       .throwOnError()
   ).data;

@@ -5,9 +5,13 @@ import { useCallback, useEffect, useState } from 'react';
 function MuiNumberfield({
   value,
   handleSelect,
+  width = '160px',
+  height = '36px',
   max = 100,
 }: {
   value: number | string;
+  width?: string;
+  height?: string;
   handleSelect: any;
   max?: number;
 }) {
@@ -36,7 +40,10 @@ function MuiNumberfield({
     <FormControl>
       <TextField
         sx={{
-          width: '160px',
+          width: width,
+          '& .MuiInputBase-root': {
+            height: height, // Customize the height here
+          },
         }}
         value={Number(tempValue).toString()}
         onChange={handlerMinMax}

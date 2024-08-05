@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import {
+import type {
   DatabaseEnums,
+  DatabaseFunctions,
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
@@ -24,6 +25,7 @@ import toast from '@/src/utils/toast';
 
 import { GC_TIME } from '..';
 import { jobQueries, useInvalidateJobQueries } from '../job';
+import { requestQueries } from '../requests';
 import { applicationMutationKeys } from './keys';
 
 const ROWS = 30;
@@ -487,8 +489,37 @@ export const useMoveApplications = (
         await revalidateJobQueries(payload.job_id);
       },
       onSuccess: () => toast.success('Moved successfully'),
+      onError: () => toast.error('Unable to move applications'),
     }),
     mutationQueue,
+  };
+};
+
+export const useMoveApplicationsToInterview = (
+  payload: ApplicationsAllQueryPrerequistes,
+) => {
+  const queryClient = useQueryClient();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
+  const { predicate } = requestQueries.requests_predicate();
+  const { mutationKey } = applicationMutationKeys.move();
+  return {
+    ...useMutation({
+      mutationKey,
+      mutationFn: async (
+        args: DatabaseFunctions['move_to_interview']['Args'],
+      ) => {
+        await supabase.rpc('move_to_interview', args).throwOnError();
+        await Promise.allSettled([
+          revalidateJobQueries(payload.job_id),
+          queryClient.refetchQueries({ predicate }),
+        ]);
+      },
+      onSuccess: () => toast.success('Moved successfully'),
+      onError: () =>
+        toast.error(
+          'Unable to move applications. Please verify for a valid interview plan.',
+        ),
+    }),
   };
 };
 type MoveApplications = ApplicationsAllQueryPrerequistes & {

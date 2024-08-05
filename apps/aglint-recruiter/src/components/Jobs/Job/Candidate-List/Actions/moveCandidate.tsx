@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
 import { Checkbox, Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -13,7 +12,6 @@ import { TaskStatesProvider } from '@/src/components/Tasks/TaskStatesContext';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { createTasks } from '@/src/utils/createTasks';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import CreateTask from './createTask';
@@ -181,8 +179,8 @@ type TaskType = {
 };
 
 const MoveCandidateInterview = () => {
-  const { recruiter_id, recruiterUser } = useAuthDetails();
-  const { handleMoveApplications, job, sectionApplication } = useApplications();
+  const { recruiterUser } = useAuthDetails();
+  const { handleMoveApplicationToInterview, job } = useApplications();
   const { resetActionPopup, checklist } = useApplicationsStore(
     ({ resetActionPopup, checklist }) => ({
       checklist,
@@ -192,29 +190,20 @@ const MoveCandidateInterview = () => {
 
   const [taskCheck, setTaskCheck] = useState(true);
   const [task, setTask] = useState<TaskType>(null);
-  const [assigner, setAssigner] = useState(null);
-  const createTask = async () =>
-    taskCheck &&
-    (await createTasks(
-      recruiter_id,
-      {
-        id: recruiterUser.user_id,
-        name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
-        role: recruiterUser?.role,
-      },
-      (sectionApplication?.data?.pages ?? [])
-        .flatMap((page) => page)
-        .filter(({ id }) => checklist.includes(id))
-        .map(({ id, name }) => ({ id, name })),
-      task,
-      assigner,
-    ));
 
   const { buttons, title, description } = useMeta(() => {
-    handleMoveApplications({
-      status: 'interview',
-      email: null,
-      callBacks: [createTask()],
+    handleMoveApplicationToInterview({
+      request: taskCheck
+        ? {
+            assignee_id: (task?.assignee ?? []).find(Boolean),
+            assigner_id: recruiterUser?.user_id ?? null,
+            title: task?.name ?? 'Request',
+            type: 'schedule_request',
+            priority: 'standard',
+            status: 'to_do',
+          }
+        : null,
+      sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
     });
     resetActionPopup();
   });
@@ -231,13 +220,12 @@ const MoveCandidateInterview = () => {
                 checked={taskCheck}
                 onClick={() => setTaskCheck((prev) => !prev)}
               />
-              {'Create scheduling task'}
+              {'Create scheduling request'}
             </Stack>
             <Collapse in={taskCheck}>
               <CreateTask
                 applications={checklist}
                 setTask={setTask}
-                setAssigner={setAssigner}
                 job_id={job?.id}
               />
             </Collapse>

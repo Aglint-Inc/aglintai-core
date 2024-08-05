@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { data, error } = await supabase
       .from('recruiter')
-      .select('ashby_key, ashby_sync_token, name, id')
+      .select('*,integrations(*)')
       .not('ashby_key', 'is', null);
     if (error) {
       throw new Error(error.message);
@@ -24,10 +24,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (data?.length > 0) {
         await Promise.all(
           data.map(async (rec) => {
+            const integrations = rec.integrations;
             try {
               axios.post(`${url1}`, {
-                synctoken: rec.ashby_sync_token,
-                apikey: rec.ashby_key,
+                synctoken: integrations.ashby_sync_token,
+                apikey: integrations.ashby_key,
                 recruiter_id: rec.id,
               });
               console.log('Request successful for application:', rec.name);
