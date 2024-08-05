@@ -19,7 +19,6 @@ import SessionsCardAndActions from './SessionsCardAndActions';
 
 function RequestDetails({
   request,
-  index,
 }: {
   request: PropsWithChildren<RequestType>;
   index: number;
@@ -82,7 +81,7 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress index={index} />
+          <RequestProgress />
           <Stack
             direction={'row'}
             justifyContent={'space-between'}

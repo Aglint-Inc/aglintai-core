@@ -6,15 +6,25 @@ import {
 } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
 import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendSelfSchedulingLink';
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import {
+  createRequestProgressLogger,
+  executeWorkflowAction,
+} from '@/src/services/api-schedulings/utils';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
-  const { candidate_availability_request_id, recruiter_id, application_id } =
-    req.body;
+  const {
+    candidate_availability_request_id,
+    recruiter_id,
+    application_id,
+    request_id,
+  } = req.body;
+  const reqProgressLogger = createRequestProgressLogger(request_id);
+
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -39,29 +49,44 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
-  const cand_schedule = new CandidatesSchedulingV2({});
-  await cand_schedule.fetchDetails({
-    session_ids: meeting_details.map((s) => s.session_id),
-    start_date_str: avail_record.date_range[0],
-    end_date_str: avail_record.date_range[1],
-    company_id: recruiter_id,
-    req_user_tz: 'Asia/Colombo',
-  });
+  const cand_picked_slots = await executeWorkflowAction(
+    findCandSelectedSlots,
+    {
+      api_options: {},
+      cand_avail: avail_record.slots,
+      company_id: recruiter_id,
+      start_date_str: avail_record.date_range[0],
+      end_date_str: avail_record.date_range[1],
+      req_user_tz: 'Asia/Colombo',
+      session_ids,
+    },
+    reqProgressLogger,
+    {
+      event_type: 'FIND_SUITABLE_SLOTS',
+    },
+  );
+
   if (target_api === 'onReceivingAvailReq_agent_confirmSlot') {
     //
   } else if (
     target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
   ) {
-    const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(
-      avail_record.slots,
-    );
-    await sendSelfSchedulingLinkFunc(
-      cand_picked_slots,
-      schedule_id,
-      organizer_id,
-      avail_record.date_range[0],
-      avail_record.date_range[1],
-      session_ids,
+    await executeWorkflowAction(
+      sendSelfSchedulingLinkFunc,
+      {
+        cand_picked_slots,
+        start_date_str: avail_record.date_range[0],
+        end_date_str: avail_record.date_range[1],
+        organizer_id,
+        request_id,
+        schedule_id,
+        session_ids,
+      },
+      reqProgressLogger,
+      {
+        event_type: 'SELF_SCHEDULE_LINK',
+        log_type: 'heading',
+      },
     );
   }
   return res.status(200).end();
