@@ -3,12 +3,12 @@ import { Collapse } from '@mui/material';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCard } from '@/devlink2/RequestCard';
 import { RequestProvider } from '@/src/context/RequestContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 
 export const Request = (
@@ -60,13 +60,7 @@ export const Request = (
                           : 'neutral'
                 }
               />
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <GlobalIcon iconName={'more_vert'} size={4} />
-              </div>
+              <MoreOptions request_id={props.id} />
             </>
           }
           onClickCard={{
