@@ -17,11 +17,11 @@ import {
 import MenuBtns from './MenuBtns';
 
 export type TipTapAIEditorParams = {
-  placeholder: string;
-  initialValue: string | undefined;
+  placeholder?: string;
+  initialValue?: string | undefined;
   enablAI?: boolean;
   // eslint-disable-next-line no-unused-vars
-  handleChange: (s: string) => void;
+  handleChange?: (s: string) => void;
   showWarnOnEdit?: () => void;
   toolbar?: boolean;
   defaultJson?: any;

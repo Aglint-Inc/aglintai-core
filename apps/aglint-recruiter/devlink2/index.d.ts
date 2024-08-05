@@ -268,6 +268,7 @@ export * from "./SkeletonScheduleCard";
 export * from "./Slot";
 export * from "./SlotComp";
 export * from "./SlotPicker";
+export * from "./StartOption";
 export * from "./StatusBadge";
 export * from "./Stepper";
 export * from "./SublinkTab";
