@@ -6,7 +6,6 @@ import axios from 'axios';
 import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import { ProgressLoggerType } from './utils';
 
 export const candidateAvailRequest = async ({
   cloned_sessn_ids,

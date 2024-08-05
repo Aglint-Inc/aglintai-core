@@ -1,6 +1,7 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import { ApiError, supabaseWrap } from '@aglint/shared-utils';
+
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type ProgressLoggerType = ReturnType<typeof createRequestProgressLogger>;
 
@@ -23,6 +24,7 @@ export const createRequestProgressLogger = (request_id: string) => {
 
 // Define a generic type for the async callback function
 type AsyncCallbackFunction<T extends any, U extends unknown> = (
+  // eslint-disable-next-line no-unused-vars
   args: T,
 ) => Promise<U>;
 

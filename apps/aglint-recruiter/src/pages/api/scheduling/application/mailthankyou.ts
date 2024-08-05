@@ -4,6 +4,7 @@ import {
   EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -15,7 +16,6 @@ import { getCandidateLogger } from '@/src/utils/scheduling_v2/getCandidateLogger
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ApiDebriefAddUsers } from './debrief-add-users';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

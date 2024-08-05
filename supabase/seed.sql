@@ -2141,17 +2141,6 @@ INSERT INTO "public"."workflow_job_relation" ("id", "created_at", "job_id", "wor
 -- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
-INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
-	('resume-job-post', 'resume-job-post', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('ai_videos', 'ai_videos', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('company-logo', 'company-logo', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('recruiter-user', 'recruiter-user', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('avatar_voice', 'avatar_voice', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('avatar_video', 'avatar_video', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('candidate-files', 'candidate-files', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL),
-	('interview_setting_videos', 'interview_setting_videos', NULL, '2024-08-04 19:43:49.608674+00', '2024-08-04 19:43:49.608674+00', true, false, NULL, NULL, NULL);
-
-
 --
 -- Data for Name: objects; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --

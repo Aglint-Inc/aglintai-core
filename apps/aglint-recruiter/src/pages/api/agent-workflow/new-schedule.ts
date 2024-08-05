@@ -10,15 +10,15 @@ import * as v from 'valibot';
 
 import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
+import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
 import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAgent';
-import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
   ProgressLoggerType,
 } from '@/src/services/api-schedulings/utils';
-import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
+import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(

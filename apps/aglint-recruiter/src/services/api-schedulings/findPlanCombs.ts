@@ -1,6 +1,8 @@
-import { APICandidateNewSchedule, APIOptions } from '@aglint/shared-types';
-import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import { APIOptions } from '@aglint/shared-types';
+
 import { filterSchedulingOptionsArray } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/StepScheduleFilter/utils';
+
+import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 import { ProgressLoggerType } from './utils';
 
 export const findPlanCombs = async ({

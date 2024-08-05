@@ -15,12 +15,9 @@ import { Request } from './Request';
 function Section({ priority }: Pick<RequestType, 'priority'>) {
   const {
     requests: { status },
-    filteredRequest,
   } = useRequests();
 
-  const requests = (data ?? []).filter(
-    (payload) => payload.priority === priority,
-  );
+  const requests = [].filter((payload) => payload.priority === priority);
   return (
     <>
       <RequestSection
@@ -46,7 +43,7 @@ function Section({ priority }: Pick<RequestType, 'priority'>) {
                 <Text
                   color={'neutral'}
                   size={1}
-                  content={`${filteredRequest?.length}`}
+                  // content={`${filteredRequest?.length}`}
                 />
               </ShowCode.Else>
             </ShowCode>

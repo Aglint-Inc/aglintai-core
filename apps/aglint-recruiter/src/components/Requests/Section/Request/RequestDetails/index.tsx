@@ -2,7 +2,7 @@ import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
