@@ -6,15 +6,20 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import { Text } from '@/devlink2/Text';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
+import { Request as RequestType } from '@/src/queries/requests/types';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../../Common/ShowCode';
 import { Request } from './Request';
 
-function Section({ textSectionHeader }: { textSectionHeader: string }) {
+function Section({ priority }: Pick<RequestType, 'priority'>) {
   const {
     requests: { data, status },
   } = useRequests();
 
+  const requests = (data ?? []).filter(
+    (payload) => payload.priority === priority,
+  );
   return (
     <>
       <RequestSection
@@ -23,7 +28,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
             <Text
               color={'neutral'}
               size={1}
-              content={`${textSectionHeader}:`}
+              content={`${capitalizeAll(priority)} Requests:`}
             />
             <ShowCode>
               <ShowCode.When isTrue={status === 'pending'}>
@@ -40,7 +45,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
                 <Text
                   color={'neutral'}
                   size={1}
-                  content={`${(data ?? []).length}`}
+                  content={`${requests.length}`}
                 />
               </ShowCode.Else>
             </ShowCode>
@@ -55,7 +60,7 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
               <RequestCardSkeletons />
             </ShowCode.When>
             <ShowCode.Else>
-              {(data ?? []).map((props, i) => {
+              {requests.map((props, i) => {
                 return (
                   <RequestProvider key={props.id ?? i} request_id={props.id}>
                     <Request {...{ ...props, index: i }} />
