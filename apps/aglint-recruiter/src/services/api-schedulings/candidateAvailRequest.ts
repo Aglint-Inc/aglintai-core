@@ -8,15 +8,21 @@ import * as v from 'valibot';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { ProgressLoggerType } from './utils';
 
-export const candidateAvailRequest = async (
-  req_body: any,
-  organizer_id: string,
-  cloned_sessn_ids: string[],
-  start_date_str,
+export const candidateAvailRequest = async ({
+  cloned_sessn_ids,
   end_date_str,
-  request_id: string,
-  progress_logger: ProgressLoggerType,
-) => {
+  organizer_id,
+  req_body,
+  request_id,
+  start_date_str,
+}: {
+  req_body: any;
+  organizer_id: string;
+  cloned_sessn_ids: string[];
+  start_date_str;
+  end_date_str;
+  request_id: string;
+}) => {
   const {
     application_id,
     number_of_days,
@@ -66,9 +72,4 @@ export const candidateAvailRequest = async (
       ...payload,
     },
   );
-  await progress_logger({
-    event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-    status: 'completed',
-    log_type: 'heading',
-  });
 };
