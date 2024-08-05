@@ -38,6 +38,7 @@ export function MemberListCard({
   textPause = "Paused from assigning to new interviews with this interviewer",
   isInterviewsVisible = true,
   slotThreeDot,
+  slotBadge,
 }) {
   return (
     <_Component
@@ -78,7 +79,13 @@ export function MemberListCard({
               className={_utils.cx(_styles, "mlc-name")}
               tag="div"
             >
-              <Text content={textName} weight="medium" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "mic-text-badge-wrap")}
+                tag="div"
+              >
+                <Text content={textName} weight="medium" />
+                <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
+              </_Builtin.Block>
               <Text content={textRole} color="neutral" weight="" size="1" />
               {isTextObjectiveVisible ? (
                 <_Builtin.Block
