@@ -39,6 +39,7 @@ function SchedulingViewComp() {
 
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
 
+  console.log(data);
   useEffect(() => {
     if (data?.schedule_data?.candidates.id) {
       setBreadcrum([
@@ -55,7 +56,7 @@ function SchedulingViewComp() {
             : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
-          name: `${data.schedule_data.schedule.schedule_name}`.trim(),
+          name: `${data.schedule_data.schedule.schedule_name || 'Schedule'}`.trim(),
         },
       ]);
     }
