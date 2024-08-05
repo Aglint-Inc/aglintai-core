@@ -21,7 +21,7 @@ export const Request = (
     <OptimisticWrapper loading={isMutating}>
       <Collapse in={collapse} collapsedSize={46}>
         <RequestCard
-          isNewBadgeVisible={props.status === 'to_do'}
+          isNewBadgeVisible={props.is_new}
           slotBadgeNew={
             <GlobalBadge
               size={1}
