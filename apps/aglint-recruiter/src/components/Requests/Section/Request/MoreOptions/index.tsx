@@ -6,9 +6,9 @@ import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useRequests } from '@/src/context/RequestsContext';
-import toast from '@/src/utils/toast';
+import { Request } from '@/src/queries/requests/types';
 
-type actionType = 'in_progress' | 'completed' | 'blocked';
+type actionType = Request['status'];
 
 function MoreOptions({ request_id }: { request_id: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
@@ -44,7 +44,6 @@ function MoreOptions({ request_id }: { request_id: string }) {
       id: request_id,
       payload: { status: action },
     });
-    toast.message('Request updated successfully');
   }
 
   return (
