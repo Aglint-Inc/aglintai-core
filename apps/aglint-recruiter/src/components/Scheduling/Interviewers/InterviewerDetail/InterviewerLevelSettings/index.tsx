@@ -524,6 +524,7 @@ function InterviewerLevelSettings({
         />
       ) : (
         <Keywords
+          size={'small'}
           slotKeywordsCard={
             <>
               <KeywordCard

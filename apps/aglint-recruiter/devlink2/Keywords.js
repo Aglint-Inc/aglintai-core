@@ -10,9 +10,14 @@ import _styles from "./Keywords.module.css";
 export function Keywords({
   as: _Component = _Builtin.Block,
   slotKeywordsCard,
+  size,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1481")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1481")}
+      tag="div"
+      width-size={size}
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1228")}
         tag="div"
@@ -42,6 +47,7 @@ export function Keywords({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bwidth-size%3D'small'%5D%7B%0Awidth%3A600px%3B%0A%7D%0A%5Bwidth-size%3D'large'%5D%7B%0Awidth%3A700px%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

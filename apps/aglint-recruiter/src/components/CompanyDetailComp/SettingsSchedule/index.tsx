@@ -727,6 +727,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
+                size={'large'}
                 slotKeywordsCard={
                   <>
                     <KeywordCard
