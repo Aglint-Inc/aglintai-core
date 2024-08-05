@@ -37,7 +37,11 @@ function Section({ textSectionHeader }: { textSectionHeader: string }) {
                 </Stack>
               </ShowCode.When>
               <ShowCode.Else>
-                <Text color={'neutral'} size={1} content={`${data?.length}`} />
+                <Text
+                  color={'neutral'}
+                  size={1}
+                  content={`${(data ?? []).length}`}
+                />
               </ShowCode.Else>
             </ShowCode>
           </Stack>
