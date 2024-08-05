@@ -118,12 +118,22 @@ function BodyComp() {
           {allIntegrations?.service_json === null &&
             allIntegrations?.google_workspace_domain?.split('//')[1] ===
               interviewerDetails.email.split('@')[1] &&
-            interviewerDetails.schedule_auth === null && (
+            interviewerDetails.schedule_auth === null &&
+            (interviewerDetails.user_id === recruiterUser.user_id ||
+              recruiterUser.role === 'admin') && (
               <>
                 <Stack maxWidth={'870px'} ml={2} mt={2}>
                   <GlobalBannerInline
                     color={'error'}
-                    textContent='Your calendar is not connected yet. Please connect it to schedule interviews.'
+                    textContent={
+                      interviewerDetails.user_id === recruiterUser.user_id
+                        ? 'Your calendar is not connected yet. Please connect it to schedule interviews.'
+                        : `
+                        ${getFullName(
+                          interviewerDetails.first_name,
+                          interviewerDetails.last_name,
+                        )} calendar is not connected yet. Click 'Connect Calender' button to send reminder `
+                    }
                     slotButton={
                       <ButtonSolid
                         textButton='Connect Calender'
@@ -229,6 +239,9 @@ function BodyComp() {
                               recruiterUser.last_name,
                             )}
                           </span>
+                        </Typography>
+                        <Typography mt={2} fontWeight={500}>
+                          {dialogOpen === 'email' ? 'Email' : 'Slack'} Body
                         </Typography>
                         <Stack
                           sx={{
