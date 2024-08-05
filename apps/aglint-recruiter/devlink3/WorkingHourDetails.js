@@ -23,7 +23,11 @@ export function WorkingHourDetails({
         <Text content="Working Hours" />
         <_Builtin.Block tag="div">{slotEdit}</_Builtin.Block>
       </_Builtin.Block>
-      <Text weight="regular" color="neutral" />
+      <Text
+        weight="regular"
+        color="neutral"
+        content="Set your company's working hours to define the availability for interviews."
+      />
       <_Builtin.Block
         className={_utils.cx(_styles, "working-hour-day-wrap")}
         tag="div"

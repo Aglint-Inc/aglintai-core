@@ -1,7 +1,3 @@
-.iml-wrappers {
-  display: flex;
-}
-
 .interview-member-list-wrap {
   display: flex;
   overflow: auto;
@@ -80,8 +76,14 @@
   height: 36px;
 }
 
+.iml-new-body-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
 .im-slot-tab-content {
   overflow: auto;
+  width: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;
@@ -89,7 +91,7 @@
 
   background-color: var(--neutral-2);
 
-  height: calc(100vh - 129px);
+  height: calc(100vh - 165px);
 }
 
 .iml-right-wrappers {
@@ -107,5 +109,5 @@
   border-left-width: 1px;
   border-left-color: var(--neutral-6);
 
-  height: calc(100vh - 48px);
+  height: calc(100vh - 165px);
 }
