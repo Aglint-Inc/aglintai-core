@@ -29,6 +29,9 @@ import AddDepartmentsDialog from './ManageDepartmentsDialog/addDepartmentsDialog
 import DeleteDepartmentsDialog from './ManageDepartmentsDialog/deleteDepartmentDialog';
 import RolesAndPermissions from './RolesAndPermissions';
 import SocialComp from './SocialComp';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
@@ -39,9 +42,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     handleOfficeLocationsUpdate,
     handleDepartmentsUpdate,
   } = useAuthDetails();
-  const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
-  const [nameError, setNameError] = useState(false);
+
   const [deleteDialog, setDeleteDialog] = useState<{
     type: 'departments';
     open: boolean;
@@ -52,15 +54,12 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     id: null,
   });
   const [editDrawer, setEditDrawer] = useState(false);
-  const [isError, setError] = useState(false);
   const initialCompanyName = useRef(recruiter?.name);
 
   const handleChange = async (
     recruit: typeof recruiter,
     isEmptyName?: boolean,
   ) => {
-    // setIsSaving(true);
-
     debouncedSave(
       {
         ...recruit,
@@ -68,11 +67,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       },
       recruiter.id,
     );
-
     setRecruiter(recruit);
-    // setTimeout(() => {
-    //   setIsSaving(false);
-    // }, 1500);
   };
 
   const handleClose = () => {
@@ -82,10 +77,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const handleDeleteLocation = (id: number) => {
     handleOfficeLocationsUpdate({ type: 'delete', data: id });
   };
-
-  useEffect(() => {
-    setLogo(recruiter?.logo);
-  }, [recruiter]);
 
   const isFormDisabled = !checkPermissions(['manage_company']);
 
@@ -128,175 +119,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       )}
       {router.query?.tab === 'company-info' && (
         <>
-          <Drawer
-            open={editDrawer}
-            anchor='right'
-            onClose={() => setEditDrawer(false)}
-          >
-            <SideDrawerLarge
-              isHeaderIconVisible={false}
-              textDrawertitle={'Edit Basic Info'}
-              drawerSize={'small'}
-              onClickCancel={{ onClick: () => setEditDrawer(false) }}
-              slotButtons={<></>}
-              slotSideDrawerbody={
-                <BasicInfo
-                  isWarningVisible={isError}
-                  slotWarning={
-                    <Typography variant='caption' color='error'>
-                      The file you uploaded exceeds the maximum allowed size.
-                      Please ensure that the file size is less than 5 MB
-                    </Typography>
-                  }
-                  isChangeLogoVisible={!isFormDisabled}
-                  slotCompanyLogo={
-                    <>
-                      <ImageUpload
-                        image={logo}
-                        disabled={isFormDisabled}
-                        setImage={(newLogo) => {
-                          setLogo(newLogo);
-                          if (recruiter) {
-                            handleChange({
-                              ...recruiter,
-                              logo: newLogo,
-                            });
-                          }
-                        }}
-                        size={48}
-                        table='company-logo'
-                        error={(e) => {
-                          if (e) {
-                            setError(true);
-                          } else {
-                            setError(false);
-                          }
-                        }}
-                      />
-                    </>
-                  }
-                  onClickChangeLogo={{
-                    onClick: () => {
-                      document.getElementById('image-upload').click();
-                    },
-                  }}
-                  slotBasicForm={
-                    <Stack
-                      spacing={2}
-                      p={'var(--space-1)'}
-                      sx={{ width: '380px' }}
-                    >
-                      <UITextField
-                        labelBold='default'
-                        labelSize='small'
-                        fullWidth
-                        label='Company Name'
-                        disabled={isFormDisabled}
-                        required
-                        error={nameError}
-                        onFocus={() => setNameError(false)}
-                        helperText={`Company name can't be empty`}
-                        placeholder='Ex. Acme Inc.'
-                        value={recruiter?.name}
-                        onChange={(e) => {
-                          e.target.value
-                            ? (() => {
-                                handleChange({
-                                  ...recruiter,
-                                  name: e.target.value,
-                                });
-                                setNameError(false);
-                              })()
-                            : (() => {
-                                handleChange(
-                                  {
-                                    ...recruiter,
-                                    name: e.target.value,
-                                  },
-                                  true,
-                                );
-                                setNameError(true);
-                              })();
-                        }}
-                      />
-                      <UITextField
-                        labelBold='default'
-                        labelSize='small'
-                        fullWidth
-                        label='Industry'
-                        disabled={isFormDisabled}
-                        placeholder='Ex. Healthcare'
-                        value={recruiter?.industry}
-                        onChange={(e) => {
-                          handleChange({
-                            ...recruiter,
-                            industry: e.target.value,
-                          });
-                        }}
-                      />
-                      <Autocomplete
-                        disableClearable
-                        freeSolo
-                        fullWidth
-                        disabled={isFormDisabled}
-                        options={sizes}
-                        onChange={(event, value) => {
-                          if (value) {
-                            handleChange({
-                              ...recruiter,
-                              employee_size: value,
-                            });
-                          }
-                        }}
-                        value={recruiter.employee_size}
-                        getOptionLabel={(option) => option}
-                        renderInput={(params) => (
-                          <UITextField
-                            labelBold='default'
-                            rest={{ ...params }}
-                            fullWidth
-                            InputProps={{
-                              ...params.InputProps,
-                            }}
-                            label='Employee Size'
-                            labelSize='small'
-                            onChange={(event) => {
-                              handleChange({
-                                ...recruiter,
-                                employee_size: event.target.value,
-                              });
-                            }}
-                          />
-                        )}
-                      />
-
-                      <UITextField
-                        labelBold='default'
-                        labelSize='small'
-                        fullWidth
-                        label='Company Website'
-                        disabled={isFormDisabled}
-                        placeholder='https://companydomain.com'
-                        value={recruiter?.company_website}
-                        onChange={(e) => {
-                          handleChange({
-                            ...recruiter,
-                            company_website: e.target.value,
-                          });
-                        }}
-                      />
-
-                      <SocialComp
-                        setIsSaving={setIsSaving}
-                        disabled={isFormDisabled}
-                      />
-                    </Stack>
-                  }
-                  textLogoUpdate={'Update Logo'}
-                />
-              }
-            />
-          </Drawer>
+          <EditBasicInfoSlider
+            editDrawer={editDrawer}
+            setIsSaving={setIsSaving}
+            setEditDrawer={setEditDrawer}
+          />
           <MuiPopup
             props={{
               open: dialog.deletelocation.open,
@@ -587,3 +414,240 @@ export const sizes = [
   '1000 - 5000',
   '5000+',
 ];
+
+const EditBasicInfoSlider = ({ editDrawer, setEditDrawer, setIsSaving }) => {
+  const [logo, setLogo] = useState<string>();
+  const { recruiter, setRecruiter } = useAuthDetails();
+  const [isError, setError] = useState(false);
+  const [IsLoading, setIsLoading] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const { checkPermissions } = useRolesAndPermissions();
+  const isFormDisabled = !checkPermissions(['manage_company']);
+
+  const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
+    recruiter,
+  );
+
+  useEffect(() => {
+    setLogo(recruiter?.logo);
+  }, [recruiter]);
+
+  const handleChange = async (recruit: typeof recruiter) => {
+    setRecruiterLocal(recruit);
+  };
+
+  const handleClose = () => {
+    setEditDrawer(false);
+    //reset a form
+    setTimeout(() => {
+      setLogo(recruiter?.logo);
+      setRecruiterLocal(() => recruiter);
+    }, 800);
+  };
+  const handleUpdate = async () => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase
+        .from('recruiter')
+        .update({
+          ...recruiterLocal,
+          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+          departments: undefined,
+          office_locations: undefined,
+        })
+        .eq('id', recruiter.id)
+        .select()
+        .throwOnError();
+
+      if (!error) {
+        setRecruiter({
+          ...recruiterLocal,
+          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+        });
+        setEditDrawer(false);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Drawer open={editDrawer} anchor='right' onClose={handleClose}>
+      <SideDrawerLarge
+        isHeaderIconVisible={false}
+        textDrawertitle={'Edit Basic Info'}
+        drawerSize={'small'}
+        onClickCancel={{ onClick: handleClose }}
+        slotButtons={
+          <>
+            <ButtonSoft
+              size={2}
+              color={'neutral'}
+              textButton='Back'
+              onClickButton={{ onClick: handleClose }}
+            />
+            <ButtonSolid
+              size={2}
+              textButton='Update'
+              isLoading={IsLoading}
+              onClickButton={{ onClick: handleUpdate }}
+            />
+          </>
+        }
+        slotSideDrawerbody={
+          <BasicInfo
+            isWarningVisible={isError}
+            slotWarning={
+              <Typography variant='caption' color='error'>
+                The file you uploaded exceeds the maximum allowed size. Please
+                ensure that the file size is less than 5 MB
+              </Typography>
+            }
+            isChangeLogoVisible={!isFormDisabled}
+            slotCompanyLogo={
+              <>
+                <ImageUpload
+                  image={logo}
+                  disabled={isFormDisabled}
+                  setImage={(newLogo) => {
+                    setLogo(newLogo);
+                    if (recruiterLocal) {
+                      handleChange({
+                        ...recruiterLocal,
+                        logo: newLogo,
+                      });
+                    }
+                  }}
+                  size={48}
+                  table='company-logo'
+                  error={(e) => {
+                    if (e) {
+                      setError(true);
+                    } else {
+                      setError(false);
+                    }
+                  }}
+                />
+              </>
+            }
+            onClickChangeLogo={{
+              onClick: () => {
+                document.getElementById('image-upload').click();
+              },
+            }}
+            slotBasicForm={
+              <Stack spacing={2} p={'var(--space-1)'} sx={{ width: '380px' }}>
+                <UITextField
+                  labelBold='default'
+                  labelSize='small'
+                  fullWidth
+                  label='Company Name'
+                  disabled={isFormDisabled}
+                  required
+                  error={nameError}
+                  onFocus={() => setNameError(false)}
+                  helperText={`Company name can't be empty`}
+                  placeholder='Ex. Acme Inc.'
+                  value={recruiterLocal?.name}
+                  onChange={(e) => {
+                    e.target.value
+                      ? (() => {
+                          handleChange({
+                            ...recruiterLocal,
+                            name: e.target.value,
+                          });
+                          setNameError(false);
+                        })()
+                      : (() => {
+                          handleChange({
+                            ...recruiterLocal,
+                            name: e.target.value,
+                          });
+                          setNameError(true);
+                        })();
+                  }}
+                />
+                <UITextField
+                  labelBold='default'
+                  labelSize='small'
+                  fullWidth
+                  label='Industry'
+                  disabled={isFormDisabled}
+                  placeholder='Ex. Healthcare'
+                  value={recruiterLocal?.industry}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      industry: e.target.value,
+                    });
+                  }}
+                />
+                <Autocomplete
+                  disableClearable
+                  freeSolo
+                  fullWidth
+                  disabled={isFormDisabled}
+                  options={sizes}
+                  onChange={(event, value) => {
+                    if (value) {
+                      handleChange({
+                        ...recruiterLocal,
+                        employee_size: value,
+                      });
+                    }
+                  }}
+                  value={recruiterLocal.employee_size}
+                  getOptionLabel={(option) => option}
+                  renderInput={(params) => (
+                    <UITextField
+                      labelBold='default'
+                      rest={{ ...params }}
+                      fullWidth
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                      label='Employee Size'
+                      labelSize='small'
+                      onChange={(event) => {
+                        handleChange({
+                          ...recruiterLocal,
+                          employee_size: event.target.value,
+                        });
+                      }}
+                    />
+                  )}
+                />
+
+                <UITextField
+                  labelBold='default'
+                  labelSize='small'
+                  fullWidth
+                  label='Company Website'
+                  disabled={isFormDisabled}
+                  placeholder='https://companydomain.com'
+                  value={recruiterLocal?.company_website}
+                  onChange={(e) => {
+                    handleChange({
+                      ...recruiterLocal,
+                      company_website: e.target.value,
+                    });
+                  }}
+                />
+
+                <SocialComp
+                  disabled={isFormDisabled}
+                  setRecruiterLocal={setRecruiterLocal}
+                  handleChange={handleChange}
+                  recruiterLocal={recruiterLocal}
+                />
+              </Stack>
+            }
+            textLogoUpdate={'Update Logo'}
+          />
+        }
+      />
+    </Drawer>
+  );
+};
