@@ -1,10 +1,9 @@
 import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { DcPopup } from '@/devlink/DcPopup';
 import { RolesPill } from '@/devlink/RolesPill';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -65,119 +64,20 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
-      <AddDepartmentPop
-        slotDepartmentsPills={departmentState.map((role, ind) => {
-          return (
-            <RolesPill
-              key={ind}
-              textRoles={role}
-              onClickRemoveRoles={{
-                onClick: () => {
-                  setDepartmentState(
-                    departmentState.filter((rol) => role != rol),
-                  );
-                },
-              }}
-            />
-          );
-        })}
-        slotInput={
-          <Autocomplete
-            sx={{ mt: departmentState.length > 0 ? 'var(--space-2)' : '0px' }}
-            fullWidth
-            freeSolo
-            id='free-solo-2-demo'
-            options={options.filter((dep) => !currentDeps.includes(dep))}
-            inputValue={inputValue}
-            onInputChange={handleInputChange}
-            getOptionLabel={(option) => option}
-            renderOption={(props, option) => {
-              if (option === inputValue) {
-                return (
-                  <li
-                    {...props}
-                    style={{ background: '#d8dcde50', margin: '1px' }}
-                  >
-                    <Stack
-                      direction={'row'}
-                      width={'100%'}
-                      onClick={() => {
-                        setDepartmentState([
-                          ...new Set([...departmentState, option]),
-                        ]);
-                        setTimeout(() => {
-                          setInputValue('');
-                          setOptions(initialDepartments);
-                        }, 10);
-                      }}
-                      alignItems={'center'}
-                      spacing={'var(--space-1)'}
-                    >
-                      <Typography variant='body1'>{option}</Typography>
-                      <Typography variant='caption'>
-                        - Add Department
-                      </Typography>
-                    </Stack>
-                  </li>
-                );
-              }
-              return (
-                <li {...props}>
-                  <Stack
-                    width={'100%'}
-                    onClick={() => {
-                      if (!departmentState.includes(option)) {
-                        setDepartmentState([
-                          ...new Set([...departmentState, option]),
-                        ]);
-                        setTimeout(() => {
-                          setInputValue('');
-                        }, 50);
-                        setOptions(initialDepartments);
-                      }
-                    }}
-                  >
-                    <Typography variant='body1'>{option}</Typography>
-                  </Stack>
-                </li>
-              );
-            }}
-            renderInput={(params) => (
-              <UITextField
-                {...params}
-                placeholder='Type or Choose from the list and press enter'
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-                onFocus={() => setInputError(false)}
-                error={inputError}
-                helperText='Make any changes then add the Department'
-                onKeyDown={handleKeyDown}
-              />
-            )}
-          />
-        }
-        slotClose={
-          <IconButtonGhost
-            iconName='close'
-            size={2}
-            color={'neutral'}
-            onClickButton={{
-              onClick: () => {
-                setDepartmentState([]);
-                setInputValue('');
-                setOptions(initialDepartments);
-                handleClose();
-              },
-            }}
-          />
-        }
-        slotButton={
+      <DcPopup
+        onClickClosePopup={{
+          onClick: () => {
+            setDepartmentState([]);
+            setInputValue('');
+            setOptions(initialDepartments);
+            handleClose();
+          },
+        }}
+        slotButtons={
           <>
             <ButtonSoft
-              textButton='Cancel'
               size={2}
+              textButton='Cancel'
               color={'neutral'}
               onClickButton={{
                 onClick: () => {
@@ -189,8 +89,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               }}
             />
             <ButtonSolid
-              textButton='Add'
               size={2}
+              textButton='Add'
               onClickButton={{
                 onClick: () => {
                   const exitingDep = currentDeps.filter((item) =>
@@ -223,6 +123,115 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               }}
             />
           </>
+        }
+        popupName='Add Departments'
+        slotBody={
+          <Stack>
+            <Typography>
+              Choose from the list or type your own and press enter
+            </Typography>
+            <Stack
+              sx={{
+                display: 'flex !important',
+                marginTop: 'var(--space-4) !important',
+                columnGap: 'var(--space-2) !important',
+                rowGap: 'var(--space-2) !important',
+                flexWrap: 'wrap !important',
+                flexDirection: 'unset',
+              }}
+            >
+              {departmentState.map((role, ind) => {
+                return (
+                  <RolesPill
+                    key={ind}
+                    textRoles={role}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        setDepartmentState(
+                          departmentState.filter((rol) => role != rol),
+                        );
+                      },
+                    }}
+                  />
+                );
+              })}
+            </Stack>
+            <Autocomplete
+              sx={{ mt: departmentState.length > 0 ? 'var(--space-2)' : '0px' }}
+              fullWidth
+              freeSolo
+              id='free-solo-2-demo'
+              options={options.filter((dep) => !currentDeps.includes(dep))}
+              inputValue={inputValue}
+              onInputChange={handleInputChange}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option) => {
+                if (option === inputValue) {
+                  return (
+                    <li
+                      {...props}
+                      style={{ background: '#d8dcde50', margin: '1px' }}
+                    >
+                      <Stack
+                        direction={'row'}
+                        width={'100%'}
+                        onClick={() => {
+                          setDepartmentState([
+                            ...new Set([...departmentState, option]),
+                          ]);
+                          setTimeout(() => {
+                            setInputValue('');
+                            setOptions(initialDepartments);
+                          }, 10);
+                        }}
+                        alignItems={'center'}
+                        spacing={'var(--space-1)'}
+                      >
+                        <Typography variant='body1'>{option}</Typography>
+                        <Typography variant='caption'>
+                          - Add Department
+                        </Typography>
+                      </Stack>
+                    </li>
+                  );
+                }
+                return (
+                  <li {...props}>
+                    <Stack
+                      width={'100%'}
+                      onClick={() => {
+                        if (!departmentState.includes(option)) {
+                          setDepartmentState([
+                            ...new Set([...departmentState, option]),
+                          ]);
+                          setTimeout(() => {
+                            setInputValue('');
+                          }, 50);
+                          setOptions(initialDepartments);
+                        }
+                      }}
+                    >
+                      <Typography variant='body1'>{option}</Typography>
+                    </Stack>
+                  </li>
+                );
+              }}
+              renderInput={(params) => (
+                <UITextField
+                  {...params}
+                  placeholder='Type or Choose from the list and press enter'
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  onFocus={() => setInputError(false)}
+                  error={inputError}
+                  helperText='Make any changes then add the Department'
+                  onKeyDown={handleKeyDown}
+                />
+              )}
+            />
+          </Stack>
         }
       />
     </Dialog>

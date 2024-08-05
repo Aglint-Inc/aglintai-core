@@ -264,7 +264,7 @@ function InterviewerLevelSettings({
   const router = useRouter();
   const { refetch } = useImrQuery({ user_id: router.query.id as string });
   return (
-    <Stack overflow={'hidden'} padding={2}>
+    <Stack overflow={'hidden'}>
       {isAvailability ? (
         <ScheduleSettings
           isTimeZoneToggleVisible={false}
