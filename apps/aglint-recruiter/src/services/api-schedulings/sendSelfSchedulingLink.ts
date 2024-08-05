@@ -7,15 +7,23 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { mailSender } from '@/src/utils/mailSender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const sendSelfSchedulingLinkFunc = async (
-  cand_picked_slots: CandReqSlotsType[],
-  schedule_id: string,
-  organizer_id: string,
-  start_date_str: string,
-  end_date_str: string,
-  session_ids,
+export const sendSelfSchedulingLinkFunc = async ({
+  cand_picked_slots,
+  end_date_str,
+  organizer_id,
   request_id,
-) => {
+  schedule_id,
+  session_ids,
+  start_date_str,
+}: {
+  cand_picked_slots: CandReqSlotsType[];
+  schedule_id: string;
+  organizer_id: string;
+  start_date_str: string;
+  end_date_str: string;
+  session_ids;
+  request_id;
+}) => {
   let no_conf_slots: PlanCombinationRespType[] = [];
   cand_picked_slots.forEach((curr_round) => {
     curr_round.selected_dates.forEach((curr_date) => {
