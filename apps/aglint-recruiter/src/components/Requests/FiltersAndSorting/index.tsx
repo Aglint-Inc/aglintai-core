@@ -66,6 +66,7 @@ function FilterAndSorting() {
       setFilteredRequest(filtered);
     }
   }, [
+    // requests,
     selectedJobs,
     selectedStatus,
     searchText,
