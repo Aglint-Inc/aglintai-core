@@ -13,10 +13,7 @@
     border-bottom: none;
   }
   
-  .mentions__highlighter {
-    padding: 8px;
-    overflow: hidden;
-  }
+ 
   
   /* .mentions__input {
     padding: 8px;
@@ -34,17 +31,21 @@
   
   .mentions__suggestion {
     cursor: pointer;
-    padding:  4px;
+    padding:  6px 8px 6px 8px;
     text-wrap: break-word;
-    width: 387px;
+    width: 360px;
+    border-radius: 3px;
     
   }
   
   .mentions__suggestion--focused {
-    background-color: #e6f7ff;
-    padding:  4px;
+    background-color: #F1F0EF;
+    cursor: pointer;
+    padding:  6px 8px 6px 8px;
     text-wrap: break-word;
-    width: 387px;
+    width: 360px;
+    border-radius: 3px;
+
   }
   
   #listContainer ul {
