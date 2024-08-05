@@ -1,13 +1,20 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
+import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import DynamicLoader from '../../DynamicLoader';
@@ -22,6 +29,7 @@ import { useAllSchedulesByUserId } from '../query';
 import TabInterviewModules from '../TabModules';
 import Availibility from '../TabModules/Availibility';
 import Tabs from '../Tabs';
+import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
 function BodyComp() {
   const router = useRouter();
@@ -60,6 +68,24 @@ function BodyComp() {
   const [isOpen, setIsOpen] = useState(router.query.edit_enable || false);
   const { recruiterUser, recruiter } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
+  const { data: allIntegrations } = useAllIntegrations();
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+
+  const open = Boolean(anchorEl);
+
+  const [dialogOpen, setDialogOpen] = React.useState<'email' | 'slack' | null>(
+    null,
+  );
+
+  const handleClickOpen = (type: 'email' | 'slack') => {
+    setDialogOpen(type);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(null);
+  };
 
   return (
     <>
@@ -89,7 +115,161 @@ function BodyComp() {
               interviewerDetailsRefetch={interviewerDetailsRefetch}
             />
           )}
-
+          {allIntegrations?.service_json === null &&
+            allIntegrations?.google_workspace_domain?.split('//')[1] ===
+              interviewerDetails.email.split('@')[1] &&
+            interviewerDetails.schedule_auth === null && (
+              <>
+                <Stack maxWidth={'870px'} ml={2} mt={2}>
+                  <GlobalBannerInline
+                    color={'error'}
+                    textContent='Your calendar is not connected yet. Please connect it to schedule interviews.'
+                    slotButton={
+                      <ButtonSolid
+                        textButton='Connect Calender'
+                        color={'error'}
+                        onClickButton={{
+                          onClick: (event) => setAnchorEl(event.currentTarget),
+                        }}
+                      />
+                    }
+                  />
+                  <Popover
+                    open={open}
+                    onClose={() => setAnchorEl(null)}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                  >
+                    <FilterDropdown
+                      slotOption={
+                        <>
+                          <Stack
+                            direction={'row'}
+                            sx={{
+                              width: '100px',
+                              alignItems: 'center',
+                              ':hover': { bgcolor: 'var(--neutral-2)' },
+                              borderRadius: 'var(--radius-2)',
+                            }}
+                            spacing={1}
+                            padding={'var(--space-1) var(--space-2)'}
+                            marginTop={'0px !important'}
+                            onClick={() => {
+                              handleClickOpen('email');
+                              setAnchorEl(null);
+                            }}
+                          >
+                            <GlobalIcon iconName='email' />
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Via Email
+                            </Typography>
+                          </Stack>
+                          <Stack
+                            direction={'row'}
+                            sx={{
+                              width: '100px',
+                              alignItems: 'center',
+                              ':hover': { bgcolor: 'var(--neutral-2)' },
+                              borderRadius: 'var(--radius-2)',
+                            }}
+                            spacing={1}
+                            padding={'var(--space-1) var(--space-2)'}
+                            marginTop={'0px !important'}
+                            onClick={() => {
+                              handleClickOpen('slack');
+                              setAnchorEl(null);
+                            }}
+                          >
+                            <GlobalIcon iconName='sms' />
+                            <Typography
+                              sx={{
+                                fontSize: '14px',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Via Slack
+                            </Typography>
+                          </Stack>
+                        </>
+                      }
+                      isRemoveVisible={false}
+                      isResetVisible={false}
+                    />
+                  </Popover>
+                </Stack>
+                <Dialog open={!!dialogOpen} onClose={handleClose}>
+                  <DcPopup
+                    onClickClosePopup={{
+                      onClick: handleClose,
+                    }}
+                    popupName={
+                      dialogOpen === 'email'
+                        ? 'Send Email Reminder'
+                        : 'Send Slack Reminder'
+                    }
+                    slotBody={
+                      <Stack>
+                        <Typography>
+                          Sending calendar connect reminder to{' '}
+                          <span style={{ fontWeight: '500' }}>
+                            {getFullName(
+                              recruiterUser.first_name,
+                              recruiterUser.last_name,
+                            )}
+                          </span>
+                        </Typography>
+                        <Stack
+                          sx={{
+                            mt: '8px',
+                            border: '1px solid',
+                            borderColor: 'var(--neutral-6)',
+                            borderRadius: 'var(--radius-2)',
+                          }}
+                        >
+                          <TipTapAIEditor
+                            enablAI={false}
+                            disabled
+                            toolbar={false}
+                            placeholder={''}
+                            height='360px'
+                            minHeight='360px'
+                            editor_type='email'
+                            // onfocus={onFocus}
+                            // onblur={onBlur}
+                            // template_type={selectedTemplate.type}
+                            // handleChange={emailBodyChange}
+                            // initialValue={selectedTemplate.body}
+                          />
+                        </Stack>
+                      </Stack>
+                    }
+                    slotButtons={
+                      <>
+                        <ButtonSoft
+                          size={2}
+                          color={'neutral'}
+                          onClickButton={{ onClick: handleClose }}
+                          textButton='Cancel'
+                        />
+                        <ButtonSolid size={2} textButton='Send' />
+                      </>
+                    }
+                  />
+                </Dialog>
+              </>
+            )}
           <InterviewerDetail
             slotNewTabPill={<Tabs />}
             slotEditButton={
