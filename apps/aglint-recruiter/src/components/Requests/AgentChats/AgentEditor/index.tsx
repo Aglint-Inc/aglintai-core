@@ -1,15 +1,13 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
-import { Stack, Typography } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
 import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import {
   MentionComponentProps,
@@ -63,7 +61,8 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       event.key === '@' ||
       event.key === '#' ||
       event.key === '$' ||
-      event.key === '%'
+      event.key === '%' ||
+      event.key === '!'
     ) {
       setTriggerType(event.key);
     }
@@ -72,13 +71,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       let taskType = '';
       switch (event.key) {
         case '1':
-          taskType = `schedule_type:[${scheduleTypes[0]?.display}]`;
+          taskType = `schedule_type:[${scheduleTypes[0]?.display}] @`;
           break;
         case '2':
-          taskType = `schedule_type:[${scheduleTypes[1]?.display}]`;
+          taskType = `schedule_type:[${scheduleTypes[1]?.display}] !`;
           break;
         case '3':
-          taskType = `schedule_type:[${scheduleTypes[2]?.display}]`;
+          taskType = `schedule_type:[${scheduleTypes[2]?.display}] !`;
           break;
         default:
           break;
@@ -145,19 +144,19 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         setText('');
       }
     },
-    placeholder:
-      "Type '#' for jobs or '@' for candidates or 'request' for requests",
+    placeholder: "Type '#' for jobs or '@' for candidates or '!' for requests",
     style: {
       control: {
         backgroundColor: '#fff',
         fontSize: 16,
-        width: '387px',
+        width: '384px',
         lineHeight: '20px',
         padding: '10px 10px 48px',
       },
       highlighter: {
         overflow: 'hidden',
         margin: '0px 0px 0px -5px',
+        padding: '1px',
       },
       input: {
         margin: 0,
@@ -170,7 +169,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       suggestions: {
         marginTop: '10px',
         borderTop: 'none',
-        width: '387px',
+        width: '384px',
         backgroundColor: '#F9F9F8',
       },
     },
@@ -207,7 +206,8 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                   isTrue={
                     (triggerType === '@' && applicationsList.length === 0) ||
                     (triggerType === '#' && jobList.length === 0) ||
-                    (triggerType === '$' && sessionList.length === 0)
+                    (triggerType === '$' && sessionList.length === 0) ||
+                    (triggerType === '!' && requestList.length === 0)
                   }
                 >
                   <>No results</>
@@ -233,7 +233,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   ): MentionComponentProps => ({
     trigger,
     data: data.length > 0 ? data : [{ id: '1', display: 'No results' }],
-    style: { backgroundColor, color: '#00000000', borderRadius: '5px' },
+    style: { backgroundColor, color: '#00000000', borderRadius: '5px', border:'1px solid #F1F0EF' },
     markup,
     renderSuggestion: (entry, search, highlightedDisplay, index, focused) => (
       <Suggestion
@@ -273,7 +273,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   const mentionSessionList = createMentionComponent(
     '$',
     sessionList,
-    '#fcf4a3',
+    '#F1F0EF',
     'interview_name:[__display__]',
   );
   const mentionRequestList = createMentionComponent(
