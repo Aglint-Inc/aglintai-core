@@ -283,6 +283,7 @@ export const PATHS = [
 '/screening/[id]',
 '/signup',
 '/signup-X',
+'/supervisor',
 '/support',
 '/support/[id]',
 '/support/create',

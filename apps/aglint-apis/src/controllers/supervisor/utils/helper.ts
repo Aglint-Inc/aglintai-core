@@ -1,23 +1,19 @@
 /* eslint-disable prefer-template */
-import {AgentExecutor, createOpenAIToolsAgent} from 'langchain/agents';
 import {HumanMessage} from '@langchain/core/messages';
 import {ChatPromptTemplate, MessagesPlaceholder} from '@langchain/core/prompts';
-import {JsonOutputToolsParser} from 'langchain/output_parsers';
-import {ChatOpenAI} from '@langchain/openai';
-import {Runnable, RunnableConfig} from '@langchain/core/runnables';
+import {Runnable} from '@langchain/core/runnables';
 import {StructuredTool} from '@langchain/core/tools';
+import {ChatOpenAI} from '@langchain/openai';
+import {AgentExecutor, createOpenAIToolsAgent} from 'langchain/agents';
+import {JsonOutputToolsParser} from 'langchain/output_parsers';
+import {TeamState} from './state';
 
 export async function createAgent(
   llm: ChatOpenAI,
   tools: StructuredTool[],
   systemPrompt: string
-): Promise<Runnable> {
-  const combinedPrompt =
-    systemPrompt +
-    '\nWork autonomously according to your specialty, using the tools available to you.' +
-    ' Do not ask for clarification.' +
-    ' Your other team members (and other teams) will collaborate with you with their own specialties.' +
-    ' You are chosen for a reason! You are one of the following team members: {team_members}.';
+) {
+  const combinedPrompt = systemPrompt;
   const toolNames = tools.map(t => t.name).join(', ');
   const prompt = await ChatPromptTemplate.fromMessages([
     ['system', combinedPrompt],
@@ -32,20 +28,30 @@ export async function createAgent(
       ].join('\n'),
     ],
   ]);
-  const agent = await createOpenAIToolsAgent({llm, tools, prompt});
-  return new AgentExecutor({agent, tools});
+  const agent = await createOpenAIToolsAgent({
+    llm,
+    tools,
+    prompt,
+  });
+  return new AgentExecutor({agent, tools, returnIntermediateSteps: true});
 }
 
 export async function runAgentNode(params: {
-  state: any;
+  state: TeamState;
   agent: Runnable;
   name: string;
-  config?: RunnableConfig;
 }) {
-  const {state, agent, name, config} = params;
-  const result = await agent.invoke(state, config);
+  const {state, agent, name} = params;
+  const result = await agent.invoke(state);
+
   return {
-    messages: [new HumanMessage({content: result.output, name})],
+    messages: [
+      new HumanMessage({
+        content: result.output,
+        name,
+        tool: result?.intermediateSteps[0]?.action?.tool,
+      }),
+    ],
   };
 }
 
@@ -62,22 +68,12 @@ export async function createTeamSupervisor(
       title: 'routeSchema',
       type: 'object',
       properties: {
-        reasoning: {
-          title: 'Reasoning',
-          type: 'string',
-        },
         next: {
           title: 'Next',
           anyOf: [{enum: options}],
         },
-        instructions: {
-          title: 'Instructions',
-          type: 'string',
-          description:
-            'The specific instructions of the sub-task the next role should accomplish.',
-        },
       },
-      required: ['reasoning', 'next', 'instructions'],
+      required: ['next'],
     },
   };
   const toolDef = {
@@ -92,6 +88,7 @@ export async function createTeamSupervisor(
       'Given the conversation above, who should act next? Or should we FINISH? Select one of: {options}',
     ],
   ]);
+
   prompt = await prompt.partial({
     options: options.join(', '),
     team_members: members.join(', '),

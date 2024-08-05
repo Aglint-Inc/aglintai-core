@@ -1,4 +1,3 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -35,23 +34,25 @@ const ChatApp = () => {
         {
           msg: newMessage.value,
           recruiter_id: recruiter.id,
+          aihistory: newMessages,
         },
       );
 
       const resp = data as {
-        team: string;
-        message: any;
-        function: any;
-      }[];
+        display: {
+          team: string;
+          message: string;
+          function: string;
+        }[];
+      };
 
-      const updMes: Message[] = resp.flatMap((item) => {
-        return {
-          value: `${item.message}`,
+      setMessages(() => [
+        ...newMessages,
+        {
+          value: `${resp.display[resp.display.length - 1].message}`,
           type: 'assistant',
-        };
-      });
-
-      setMessages(() => [...newMessages, ...updMes]);
+        },
+      ]);
     } catch (err) {
       console.error(err);
     }

@@ -3,15 +3,15 @@ import {
   runAgentNode,
 } from 'src/controllers/supervisor/utils/helper';
 import {llm} from 'src/controllers/supervisor/utils/llm';
-import {ResearchTeamState} from '../state';
-import {fetchInterviewTypes} from '../tools/fetchInterviewTypes';
-import {fetchInterviewTypesRelations} from '../tools/fetchRelations';
+import {fetchInterviewTypesRelations} from './tools/fetchRelations';
+import {fetchInterviewTypes} from './tools/fetchInterviewTypes';
+import {TeamState} from 'src/controllers/supervisor/utils/state';
 
 export const fetchInterviewTypesNode = async ({
   state,
   recruiter_id,
 }: {
-  state: ResearchTeamState;
+  state: TeamState;
   recruiter_id: string;
 }) => {
   const tools = [
@@ -22,7 +22,10 @@ export const fetchInterviewTypesNode = async ({
   const fetchInterviewTypesAgent = await createAgent(
     llm,
     tools,
-    'You are an assistant who can fetch all interview types or fetch all users inside an interview type. Dont call the same tool twice in a row.'
+    'You are an assistant.' +
+      'call fetch_interview_types tool if user ask to get interview types' +
+      'call fetch_interview_types_users tool if user wants to list users or interviewers in it, given name of the interview type' +
+      'Dont call the same tool twice in a row.'
   );
   return runAgentNode({
     state,
