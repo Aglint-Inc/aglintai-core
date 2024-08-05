@@ -8,11 +8,7 @@ export class EventNode {
   public updated_at: string | null;
   public is_event_expected: boolean;
   public node_order: number;
-  public progress: {
-    log: string;
-    type: SchedulingEventLogs['log_type'];
-    created_at: string;
-  }[];
+  public progress: DatabaseTable['request_progress'][];
   constructor(
     status: SchedulingEventLogs['status'],
     type: SchedulingEventLogs['event_type'],

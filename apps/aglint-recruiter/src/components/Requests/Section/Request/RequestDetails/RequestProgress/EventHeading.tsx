@@ -17,7 +17,7 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   return (
     <>
       <TextWithIcon
-        textContent={workflowCopy[event.event_type][tense]}
+        textContent={<>{workflowCopy[event.event_type][tense]}</>}
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}

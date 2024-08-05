@@ -99,17 +99,18 @@ export const updateEventProgress = (
       };
     }
     entryMap[entry.event_type].progress.push({
-      log: entry.log,
-      type: entry.log_type,
-      created_at: entry.created_at,
+      ...entry,
     });
   });
 
   for (let [key, val] of Object.entries(entryMap)) {
     const node = graph.getNode(key as EventNode['event_type']);
     if (val.progress.length > 0) {
-      node.updated_at = val.progress[val.progress.length - 1].created_at;
+      const last_event = val.progress[val.progress.length - 1];
+      node.updated_at = last_event.created_at;
+
       node.progress = [...val.progress];
+      node.status = last_event.status;
     }
     graph.updateNode(node);
   }

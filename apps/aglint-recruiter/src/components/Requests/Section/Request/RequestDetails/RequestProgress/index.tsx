@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -15,10 +15,12 @@ function RequestProgress() {
   const { request_progress } = useRequest();
   const graphRef = useRef(createReqAvailWorkflowGraph());
   const orderedEvents = useMemo(() => {
-    graphRef.current = updateEventProgress(
-      graphRef.current,
-      request_progress.data,
-    );
+    if (request_progress.data) {
+      graphRef.current = updateEventProgress(
+        graphRef.current,
+        request_progress.data,
+      );
+    }
     let events = graphRef.current.traverseGraph('FIND_CURR_AVAIL_SLOTS');
     events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
     return events;
