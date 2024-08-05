@@ -1,5 +1,3 @@
-// import './headmap.css';
-
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
