@@ -117,17 +117,22 @@ export function InterviewMemberList({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "im-slot-tab-content")}
+          className={_utils.cx(_styles, "iml-new-body-wrap")}
           tag="div"
         >
-          {slotModuleContent ?? <ModuleMembers />}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "im-slot-tab-content")}
+            tag="div"
+          >
+            {slotModuleContent ?? <ModuleMembers />}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "iml-right-wrappers")}
+            tag="div"
+          >
+            {slotJobsCard}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "iml-right-wrappers")}
-        tag="div"
-      >
-        {slotJobsCard}
       </_Builtin.Block>
     </_Component>
   );

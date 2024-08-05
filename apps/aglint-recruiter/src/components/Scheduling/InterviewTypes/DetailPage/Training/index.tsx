@@ -8,6 +8,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { Text } from '@/devlink/Text';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ModuleSetting } from '@/devlink2/ModuleSetting';
@@ -203,50 +204,56 @@ function ModuleSettingComp({
         />
       )}
       {editModule?.settings?.require_training && (
-        <TrainingSetting
-          isApprovalVisible={editModule?.settings?.reqruire_approval}
-          isDisable={!editModule?.settings?.require_training}
-          isEnable={editModule?.settings?.require_training}
-          textHeading={
-            editModule?.settings?.require_training
-              ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
-              : 'Training is disabled for this module'
-          }
-          textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
-          textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
-          slotButton={
-            checkPermissions(['interview_types']) ? (
-              <ButtonSoft
-                textButton='Settings'
-                iconName='settings'
-                isDisabled={!editModule?.settings?.require_training}
-                isLeftIcon
-                size={1}
-                onClickButton={{ onClick: () => setOpen(true) }}
-                color={'neutral'}
-              />
-            ) : (
-              <></>
-            )
-          }
-          slotApproval={approvers.map((user, i) => (
-            <Link href={`/user/profile/${user.user_id}`} key={i}>
-              <TrainingSettingItem
-                text={getFullName(user.first_name, user.last_name)}
-                slotImage={
-                  <MuiAvatar
-                    src={user.profile_image}
-                    level={getFullName(user?.first_name, user?.last_name)}
-                    variant='rounded'
-                    height='20px'
-                    width='20px'
-                    fontSize='12px'
-                  />
-                }
-              />
-            </Link>
-          ))}
-        />
+        <Stack>
+          <Stack marginBottom={'16px'}>
+            <Text content='Trainee' weight={'medium'} />
+          </Stack>
+
+          <TrainingSetting
+            isApprovalVisible={editModule?.settings?.reqruire_approval}
+            isDisable={!editModule?.settings?.require_training}
+            isEnable={editModule?.settings?.require_training}
+            textHeading={
+              editModule?.settings?.require_training
+                ? 'Click on settings to adjust the default training settings, such as the number of shadow and reverse shadow interviews required.'
+                : 'Training is disabled for this module'
+            }
+            textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
+            textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
+            slotButton={
+              checkPermissions(['interview_types']) ? (
+                <ButtonSoft
+                  textButton='Settings'
+                  iconName='settings'
+                  isDisabled={!editModule?.settings?.require_training}
+                  isLeftIcon
+                  size={1}
+                  onClickButton={{ onClick: () => setOpen(true) }}
+                  color={'neutral'}
+                />
+              ) : (
+                <></>
+              )
+            }
+            slotApproval={approvers.map((user, i) => (
+              <Link href={`/user/profile/${user.user_id}`} key={i}>
+                <TrainingSettingItem
+                  text={getFullName(user.first_name, user.last_name)}
+                  slotImage={
+                    <MuiAvatar
+                      src={user.profile_image}
+                      level={getFullName(user?.first_name, user?.last_name)}
+                      variant='rounded'
+                      height='20px'
+                      width='20px'
+                      fontSize='12px'
+                    />
+                  }
+                />
+              </Link>
+            ))}
+          />
+        </Stack>
       )}
       {editModule?.settings?.require_training && (
         <Stack spacing={'var(--space-2)'}>

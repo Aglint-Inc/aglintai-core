@@ -90,6 +90,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                       <TrainingInterviewerType
                         relation={relation}
                         key={relation.id}
+                        refetch={refetch}
                       />
                     );
                   })}

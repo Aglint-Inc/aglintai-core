@@ -15,9 +15,17 @@ export const navList: {
   active: (typeof PATHS)[number][];
 }[] = [
   {
+    text: 'Aglint AI',
+    SubComponents: null,
+    route: ROUTES['/requests'](),
+    comingSoon: false,
+    isVisible: true,
+    permission: ['task_module'],
+    active: ['/requests'],
+  },{
     text: 'Tasks',
     SubComponents: null,
-    route: ROUTES['/tasks']() + '?myTasks',
+    route: ROUTES['/tasks']()+'?myTasks',
     comingSoon: false,
     isVisible: false,
     permission: ['task_module'],

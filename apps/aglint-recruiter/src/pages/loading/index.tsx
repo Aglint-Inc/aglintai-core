@@ -143,7 +143,7 @@ export default function Loading() {
             localStorage.removeItem('redirectURL');
           } else {
             router.push(
-              localStorage.getItem('redirectURL') || ROUTES['/jobs'](),
+              localStorage.getItem('redirectURL') || ROUTES['/requests'](),
             );
             localStorage.removeItem('redirectURL');
           }
