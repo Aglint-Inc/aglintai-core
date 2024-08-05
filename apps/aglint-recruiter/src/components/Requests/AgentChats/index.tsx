@@ -102,7 +102,7 @@ function AgentChats() {
       });
     });
   }
-  const { text, setText } = useAgentIEditor();
+  const { text, setText,inputRef } = useAgentIEditor();
   return (
     <>
       <AglintAiChat
@@ -161,6 +161,7 @@ function AgentChats() {
               )}
             </Stack>
             <AgentEditor
+            inputRef={inputRef}
               text={text}
               setText={setText}
               handleTextChange={(text) => {

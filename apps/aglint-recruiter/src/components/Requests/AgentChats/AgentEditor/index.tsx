@@ -37,6 +37,7 @@ interface AgentEditorProps {
   handleSubmit?: (text: string) => void;
   text: string;
   setText: Dispatch<SetStateAction<string>>;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 const AgentEditor: React.FC<AgentEditorProps> = ({
@@ -54,11 +55,11 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   handleSubmit,
   text = '',
   setText,
+  inputRef
 }) => {
   const [triggerType, setTriggerType] = useState<
     '@' | '#' | '$' | '%' | '!' | null
   >(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -135,11 +136,6 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         break;
     }
   };
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 10);
-  }, [text]);
   const mentionsInputProps: MentionInputProps = {
     inputRef,
     onFocus: () => {

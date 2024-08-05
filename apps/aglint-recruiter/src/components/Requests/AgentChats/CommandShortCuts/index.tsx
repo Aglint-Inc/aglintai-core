@@ -36,7 +36,7 @@ function CommandShortCuts() {
     },
   ];
 
-  const { setText } = useAgentIEditor();
+  const { setText, inputRef } = useAgentIEditor();
   const handleClick = (commandText: string) => {
     if (commandText) {
       let taskType = '';
@@ -61,6 +61,9 @@ function CommandShortCuts() {
       }
       if (taskType) {
         setText(taskType);
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 10);
       }
     }
   };
