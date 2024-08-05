@@ -13,6 +13,7 @@ import { AglintAiChat } from '@/devlink2/AglintAiChat';
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import {
   ApiRequestInterviewSessionTask,
@@ -37,6 +38,7 @@ import CommandShortCuts from './CommandShortCuts';
 
 function AgentChats() {
   const { recruiterUser, recruiter_id } = useAuthDetails();
+  const { handleCreateRequests, handleAsyncCreateRequests } = useRequests();
 
   const [textToObject, setTextToObject] = useState<ApplicantInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -79,30 +81,22 @@ function AgentChats() {
         ?.applicantSessions
     : [];
 
-  function handleSubmit() {
-    createRequest({
-      application_id: selectedApplication?.id,
-      assigner_id: recruiterUser.user_id,
-      assignee_id: recruiterUser.user_id,
-      title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
-      status: 'to_do',
-      type: 'schedule_request',
-    }).then((res) => {
-      const sessionsRelations = selectedSession.map(
-        (ele) =>
-          ({
-            request_id: res.id,
-            session_id: ele.id,
-            cancel_id: null,
-          }) as DatabaseTableInsert['request_relation'],
-      );
-      createRequestSessionRelations(sessionsRelations).then((res) => {
-        requests.refetch();
-        setTextToObject(null);
-      });
+  async function handleSubmit() {
+    await handleAsyncCreateRequests({
+      request: {
+        priority: 'urgent',
+        assigner_id: recruiterUser.user_id,
+        assignee_id: recruiterUser.user_id,
+        title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.display).join(' ,')} for ${selectedApplication.display}.`,
+        status: 'to_do',
+        type: 'schedule_request',
+      },
+      applications: [selectedApplication.id],
+      sessions: selectedSession.map((ele) => ele.id),
     });
+    setTextToObject(null);
   }
-  const { text, setText,inputRef } = useAgentIEditor();
+  const { text, setText, inputRef } = useAgentIEditor();
   return (
     <>
       <AglintAiChat
@@ -161,7 +155,7 @@ function AgentChats() {
               )}
             </Stack>
             <AgentEditor
-            inputRef={inputRef}
+              inputRef={inputRef}
               text={text}
               setText={setText}
               handleTextChange={(text) => {
