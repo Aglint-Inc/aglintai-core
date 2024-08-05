@@ -20,7 +20,7 @@ import {
 const CompanyDetailComp = () => {
   const router = useRouter();
   const { recruiter, setRecruiter } = useAuthDetails();
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState<'saving' | 'saved'>('saved');
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const CompanyDetailComp = () => {
   }, [isSaving]);
 
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
-    setIsSaving(true);
+    setIsSaving('saving');
     const { data: updatedRecruiter, error } = await supabase
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
@@ -63,27 +63,41 @@ const CompanyDetailComp = () => {
         }!,
       );
     }
-    setIsSaving(false);
+    setIsSaving('saved');
   }
+
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (isSaving === 'saving') {
+      setShow(true);
+    } else if (isSaving === 'saved') {
+      setTimeout(() => {
+        setShow(false);
+      }, 5000);
+    }
+  }, [isSaving]);
 
   return (
     <Stack overflow={'hidden'}>
       <CompanySetting
         slotNavSublink={<SettingsSubNabItem />}
         slotSavedChanges={
-          <SavedChanges
-            slotLoaderIcon={
-              <>
-                <CircularProgress
-                  color='inherit'
-                  size={'16px'}
-                  sx={{ color: 'var(--neutral-6)' }}
-                />
-              </>
-            }
-            isSaved={!isSaving}
-            isSaving={isSaving}
-          />
+          show && (
+            <SavedChanges
+              slotLoaderIcon={
+                <>
+                  <CircularProgress
+                    color='inherit'
+                    size={'16px'}
+                    sx={{ color: 'var(--neutral-6)' }}
+                  />
+                </>
+              }
+              isSaved={isSaving === 'saved'}
+              isSaving={isSaving === 'saving'}
+            />
+          )
         }
         slotSavingLottie={<LoaderGrey />}
         isSaved={isSaved}

@@ -4,11 +4,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { MoreMenu } from '@/devlink3/MoreMenu';
@@ -122,14 +120,6 @@ function SlotBodyComp({
     else if (right) handleNext();
   }, [left, right]);
 
-  const unArcheive = async () => {
-    const isUnArchived = await unArchiveModuleById(editModule.id);
-    if (isUnArchived) {
-      refetch();
-      toast.success('Interview type unarchived successfully.');
-    }
-  };
-
   const { data } = useAllDepartments();
 
   const department =
@@ -157,28 +147,7 @@ function SlotBodyComp({
       <DeleteMemberDialog refetch={refetch} />
       <PauseDialog />
       <ResumeMemberDialog editModule={editModule} />
-      {editModule?.is_archived && (
-        <Stack maxWidth={'866px'} margin={'16px 0 0 16px'}>
-          <GlobalBanner
-            color={'warning'}
-            slotButtons={
-              <>
-                <ButtonSolid
-                  textButton='Unarchive'
-                  size={1}
-                  onClickButton={{
-                    onClick: unArcheive,
-                  }}
-                />
-              </>
-            }
-            isDescriptionVisible={false}
-            textTitle={
-              'This interview type is archived. Click "Unarchive" to reactivate.'
-            }
-          />
-        </Stack>
-      )}
+
       {fetchingModule || loading || (!editModule && isFetching) ? (
         <Stack height={'100%'} width={'100%'}>
           <Loader />
