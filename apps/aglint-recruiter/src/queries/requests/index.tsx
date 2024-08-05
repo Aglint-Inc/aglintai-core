@@ -1,6 +1,7 @@
 import type {
   DatabaseFunctions,
   DatabaseTable,
+  DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import {
@@ -96,9 +97,14 @@ export const useRequestsCreate = () => {
     mutationKey: requestQueries.requests_mutationKey('create'),
     mutationFn: async (payload: CreateRequests) => {
       await createRequests(payload);
-      await queryClient.refetchQueries(
-        requestQueries.requests_invalidate().refetchQueries(),
-      );
+      await Promise.allSettled([
+        queryClient.refetchQueries(
+          requestQueries.requests_invalidate().refetchQueries(),
+        ),
+        queryClient.removeQueries(
+          requestQueries.requests_invalidate().removeQueries(),
+        ),
+      ]);
     },
     onError: () => toast.error('Unable to create requests'),
     onSuccess: () => toast.success('Requests created successfully'),
@@ -118,7 +124,14 @@ export const useRequestsUpdate = () => {
     mutationKey: requestQueries.requests_mutationKey('update'),
     mutationFn: async (payload: UpdateRequest) => {
       await updateRequest(payload);
-      await queryClient.refetchQueries(requestQueries.requests_invalidate());
+      await Promise.allSettled([
+        queryClient.refetchQueries(
+          requestQueries.requests_invalidate().refetchQueries(),
+        ),
+        queryClient.removeQueries(
+          requestQueries.requests_invalidate().removeQueries(),
+        ),
+      ]);
     },
     onError: () => toast.error('Unable to update request'),
     onSuccess: () => toast.success('Request updated successfully'),
@@ -138,7 +151,14 @@ export const useRequestsDelete = () => {
     mutationKey: requestQueries.requests_mutationKey('delete'),
     mutationFn: async (payload: DeleteRequest) => {
       await deleteRequest(payload);
-      await queryClient.refetchQueries(requestQueries.requests_invalidate());
+      await Promise.allSettled([
+        queryClient.refetchQueries(
+          requestQueries.requests_invalidate().refetchQueries(),
+        ),
+        queryClient.removeQueries(
+          requestQueries.requests_invalidate().removeQueries(),
+        ),
+      ]);
     },
     onError: () => toast.error('Unable to delete request'),
     onSuccess: () => toast.success('Request deleted successfully'),
@@ -187,4 +207,27 @@ export const updateRequest = async ({ id, payload }: UpdateRequest) =>
 
 type DeleteRequest = Pick<DatabaseTable['request'], 'id'>;
 export const deleteRequest = async (payload: DeleteRequest) =>
-  await supabase.from('request').delete().eq('id', payload).throwOnError();
+  await supabase.from('request').delete().eq('id', payload.id).throwOnError();
+
+export const createRequest = async (
+  newRequestData: DatabaseTableInsert['request'],
+) =>
+  (
+    await supabase
+      .from('request')
+      .insert({ ...newRequestData })
+      .select('*')
+      .single()
+      .throwOnError()
+  ).data;
+
+export const createRequestSessionRelations = async (
+  newRequestData: DatabaseTableInsert['request_relation'][],
+) =>
+  (
+    await supabase
+      .from('request_relation')
+      .insert([...newRequestData])
+      .select('*')
+      .throwOnError()
+  ).data;

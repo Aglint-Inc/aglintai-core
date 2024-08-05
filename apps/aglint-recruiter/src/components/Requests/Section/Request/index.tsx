@@ -5,6 +5,7 @@ import type { PropsWithChildren } from 'react';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCard } from '@/devlink2/RequestCard';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -14,10 +15,10 @@ import RequestDetails from './RequestDetails';
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
 ) => {
-  const { collapse, setCollapse } = useRequest();
+  const { collapse, setCollapse, isMutating } = useRequest();
 
   return (
-    <>
+    <OptimisticWrapper loading={isMutating}>
       <Collapse in={collapse} collapsedSize={46}>
         <RequestCard
           isNewBadgeVisible={props.status === 'to_do'}
@@ -71,6 +72,6 @@ export const Request = (
           }
         />
       </Collapse>
-    </>
+    </OptimisticWrapper>
   );
 };
