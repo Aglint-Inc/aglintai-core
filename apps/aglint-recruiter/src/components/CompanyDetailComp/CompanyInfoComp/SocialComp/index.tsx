@@ -27,11 +27,10 @@ import { debouncedSave } from '../../utils';
 
 const SocialComp = ({
   disabled = false,
-  setRecruiterLocal,
   handleChange: localHandleChange,
   recruiterLocal,
 }) => {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
 
   const socials = Object.keys(recruiter.socials)
     .filter((key) => key !== 'custom')

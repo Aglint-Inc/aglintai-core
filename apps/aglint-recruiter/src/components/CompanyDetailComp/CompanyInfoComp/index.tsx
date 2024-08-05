@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { BasicInfo } from '@/devlink/BasicInfo';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CompanyInfo } from '@/devlink/CompanyInfo';
 import { CompanyInfoDetails } from '@/devlink/CompanyInfoDetails';
 import { CompanyLocation } from '@/devlink/CompanyLocation';
@@ -15,6 +16,8 @@ import { DeletePopup } from '@/devlink3/DeletePopup';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
@@ -29,9 +32,6 @@ import AddDepartmentsDialog from './ManageDepartmentsDialog/addDepartmentsDialog
 import DeleteDepartmentsDialog from './ManageDepartmentsDialog/deleteDepartmentDialog';
 import RolesAndPermissions from './RolesAndPermissions';
 import SocialComp from './SocialComp';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
@@ -121,7 +121,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         <>
           <EditBasicInfoSlider
             editDrawer={editDrawer}
-            setIsSaving={setIsSaving}
             setEditDrawer={setEditDrawer}
           />
           <MuiPopup
@@ -415,7 +414,7 @@ export const sizes = [
   '5000+',
 ];
 
-const EditBasicInfoSlider = ({ editDrawer, setEditDrawer, setIsSaving }) => {
+const EditBasicInfoSlider = ({ editDrawer, setEditDrawer }) => {
   const [logo, setLogo] = useState<string>();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isError, setError] = useState(false);
@@ -638,7 +637,6 @@ const EditBasicInfoSlider = ({ editDrawer, setEditDrawer, setIsSaving }) => {
 
                 <SocialComp
                   disabled={isFormDisabled}
-                  setRecruiterLocal={setRecruiterLocal}
                   handleChange={handleChange}
                   recruiterLocal={recruiterLocal}
                 />

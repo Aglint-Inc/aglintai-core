@@ -11,6 +11,7 @@ import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -29,7 +30,6 @@ import { useAllSchedulesByUserId } from '../query';
 import TabInterviewModules from '../TabModules';
 import Availibility from '../TabModules/Availibility';
 import Tabs from '../Tabs';
-import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
 function BodyComp() {
   const router = useRouter();

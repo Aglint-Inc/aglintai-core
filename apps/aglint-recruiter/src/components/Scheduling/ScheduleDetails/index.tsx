@@ -39,7 +39,6 @@ function SchedulingViewComp() {
 
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
 
-  console.log(data);
   useEffect(() => {
     if (data?.schedule_data?.candidates.id) {
       setBreadcrum([
