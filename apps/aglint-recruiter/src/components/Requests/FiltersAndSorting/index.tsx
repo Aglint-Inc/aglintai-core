@@ -1,174 +1,103 @@
-import { debounce } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+/* eslint-disable security/detect-object-injection */
+import React, { useMemo } from 'react';
 
 import { useRequests } from '@/src/context/RequestsContext';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { GetRequestParams } from '@/src/queries/requests';
 
 import FilterHeader from '../../Common/FilterHeader';
 
+const options: Partial<GetRequestParams['filters']> = {
+  status: ['blocked', 'completed', 'in_progress', 'to_do'],
+  type: ['schedule_request'],
+};
+
+const sortOptions: GetRequestParams['sort']['type'][] = ['created_at', 'title'];
+
 function FilterAndSorting() {
-  const { requests, setFilteredRequest, filteredRequest } = useRequests();
-  const [selectedStatus, setSelectedStatus] = useState([]);
-  const [selectedJobs, setSelectedJobs] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchText, setSearchText] = useState('');
+  const {
+    filters: { is_new, title, ...filters },
+    sort: { order, type },
+    setFilters,
+    setSort,
+  } = useRequests();
 
-  const [selectedSort, setSelectedSort] = useState({
-    option: 'created_at',
-    order: 'desc',
-  });
-
-  const jobs =
-    requests.status === 'success' &&
-    requests.data.length &&
-    requests.data
-      .map((request) => ({
-        id: request.applications.public_jobs.id,
-        label: request.applications.public_jobs.job_title,
-      }))
-      .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
-
-  const status =
-    requests.status === 'success' &&
-    requests.data.length &&
-    requests.data
-      .map((request) => ({
-        id: request.status,
-        label: capitalizeFirstLetter(request.status),
-      }))
-      .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
-
-  const handleSearchChange = useCallback(
-    debounce((query) => {
-      setSearchText(query);
-    }, 500),
-    [],
+  const safeOptions = useMemo(
+    () =>
+      Object.keys(filters).reduce(
+        (acc, curr) => {
+          const safeKey = curr as keyof typeof filters;
+          let value;
+          switch (safeKey) {
+            case 'status':
+              value = options.status;
+              break;
+            case 'type':
+              value = options.type;
+              break;
+          }
+          acc[safeKey] = value;
+          return acc;
+        },
+        {} as typeof filters,
+      ),
+    [options, filters],
   );
 
-  useEffect(() => {
-    if (requests.status === 'success') {
-      const filtered = requests.data.filter((request) => {
-        const jobMatch =
-          selectedJobs.length === 0 ||
-          selectedJobs.includes(request.applications.public_jobs.id);
-        const statusMatch =
-          selectedStatus.length === 0 ||
-          selectedStatus.includes(request.status);
-        const searchMatch =
-          searchText === '' ||
-          request.title.toLowerCase().includes(searchText.toLowerCase()) ||
-          request.applications.public_jobs.job_title
-            .toLowerCase()
-            .includes(searchText.toLowerCase());
-        return jobMatch && statusMatch && searchMatch;
-      });
+  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
+    Object.entries(filters).map(
+      ([key, value]) =>
+        ({
+          active: value.length,
+          name: key,
+          value: value ?? [],
+          type: 'filter',
+          iconname: '',
+          icon: <></>,
+          setValue: (newValue: typeof value) =>
+            setFilters((prev) => ({ ...prev, [key]: newValue })),
+          options: safeOptions[key] ?? [],
+        }) as (typeof safeFilters)[number],
+    );
 
-      setFilteredRequest(filtered);
-    }
-  }, [
-    // requests,
-    selectedJobs,
-    selectedStatus,
-    searchText,
-    requests.data,
-    setFilteredRequest,
-  ]);
+  const isNewButton: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+    type: 'button',
+    isActive: is_new,
+    isVisible: true,
+    name: 'New Requests',
+    onClick: () => setFilters((prev) => ({ ...prev, is_new: !is_new })),
+  };
 
-  // function handleSort(value) {
-  //   const { option, order } = value;
-  //   console.log(option, order);
-  //   const sortedRequests = [...requests.data].sort((a, b) => {
-  //     if (order === 'asc') {
-  //       if (a[option] < b[option]) return -1;
-  //       if (a[option] > b[option]) return 1;
-  //       return 0;
-  //     } else {
-  //       if (a[option] > b[option]) return -1;
-  //       if (a[option] < b[option]) return 1;
-  //       return 0;
-  //     }
-  //   });
+  const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = {
+    sortOptions: {
+      options: sortOptions,
+      order: [
+        {
+          id: 'asc',
+          label: 'Ascending',
+        },
+        {
+          id: 'desc',
+          label: 'Descending',
+        },
+      ],
+    },
+    selected: {
+      option: type,
+      order: order,
+    },
+    setOrder: (payload) =>
+      setSort((prev) => ({ ...prev, ...(payload as typeof prev) })),
+  } as typeof safeSort;
 
-  //   setFilteredRequest(sortedRequests);
-  // }
-
-  const sortedRequest = useMemo(() => {
-    return [...filteredRequest].sort((a, b) => {
-      const valueA = a[selectedSort.option] || '';
-      const valueB = b[selectedSort.option] || '';
-
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        if (selectedSort.order === 'asc') return valueA.localeCompare(valueB);
-        else return valueB.localeCompare(valueA);
-      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
-        if (selectedSort.order === 'asc') return valueA - valueB;
-        else return valueB - valueA;
-      } else {
-        return valueA.toString().localeCompare(valueB.toString());
-      }
-    });
-  }, [selectedSort.option, selectedSort.order, requests.data]);
-  useEffect(() => {
-    if (sortedRequest.length) setFilteredRequest(sortedRequest);
-  }, [sortedRequest]);
   return (
     <FilterHeader
+      filters={[...safeFilters, isNewButton]}
+      sort={safeSort}
       search={{
-        setValue: (value) => {
-          setSearchQuery(value);
-          handleSearchChange(value);
-        },
-        value: searchQuery,
+        value: title,
+        setValue: (newValue: typeof title) =>
+          setFilters((prev) => ({ ...prev, title: newValue })),
         placeholder: 'Search Requests',
-      }}
-      filters={[
-        {
-          type: 'filter',
-          name: 'Job',
-          iconname: 'work',
-          options: jobs,
-          setValue: (value) => {
-            setSelectedJobs(value);
-          },
-          value: [...selectedJobs],
-        },
-        {
-          type: 'filter',
-          name: 'Status',
-          iconname: 'filter_tilt_shift',
-          options: status,
-          setValue: (value) => {
-            setSelectedStatus(value);
-          },
-          value: [...selectedStatus],
-        },
-      ]}
-      sort={{
-        sortOptions: {
-          options: [
-            { id: 'created_at', label: 'created at' },
-            // { id: 'due_date', label: 'due date' },
-          ],
-
-          order: [
-            {
-              id: 'asc',
-              label: 'Ascending',
-            },
-            {
-              id: 'desc',
-              label: 'Descending',
-            },
-          ],
-        },
-        selected: selectedSort,
-        setOrder: (payload) => {
-          const temp = {
-            option: payload.type || selectedSort.option,
-            order: payload.order || selectedSort.order,
-          };
-          setSelectedSort({ ...temp });
-        },
       }}
     />
   );

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo, useState } from 'react';
 
 import {
+  GetRequestParams,
   requestQueries,
   useRequestsCreate,
   useRequestsDelete,
@@ -13,8 +14,24 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 export const useRequestsActions = () => {
   const { recruiterUser } = useAuthDetails();
 
+  const [filters, setFilters] = useState<GetRequestParams['filters']>({
+    is_new: false,
+    status: [],
+    title: '',
+    type: [],
+  });
+
+  const [sort, setSort] = useState<GetRequestParams['sort']>({
+    order: 'desc',
+    type: 'created_at',
+  });
+
   const requests = useQuery(
-    requestQueries.requests({ assigner_id: recruiterUser?.user_id }),
+    requestQueries.requests({
+      payload: { assigner_id: recruiterUser?.user_id },
+      filters,
+      sort,
+    }),
   );
 
   const { mutate: handleCreateRequests, mutateAsync: asyncCreateRequests } =
@@ -62,10 +79,6 @@ export const useRequestsActions = () => {
     [],
   );
 
-  const [filteredRequest, setFilteredRequest] = useState<
-    Awaited<typeof requests>['data']
-  >([]);
-
   const mutationQueue = useMemo(
     () => [
       ...updateMutationState.map(({ id }) => id),
@@ -76,8 +89,6 @@ export const useRequestsActions = () => {
 
   return {
     requests,
-    filteredRequest,
-    setFilteredRequest,
     handleCreateRequests,
     handleAsyncCreateRequests,
     handleUpdateRequest,
@@ -85,5 +96,9 @@ export const useRequestsActions = () => {
     handleDeleteRequest,
     handleAsyncDeleteRequest,
     mutationQueue,
+    filters,
+    setFilters,
+    sort,
+    setSort,
   };
 };

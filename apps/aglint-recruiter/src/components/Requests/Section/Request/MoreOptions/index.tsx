@@ -6,16 +6,12 @@ import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useRequests } from '@/src/context/RequestsContext';
-import toast from '@/src/utils/toast';
+import { Request } from '@/src/queries/requests/types';
 
-import { updateRequestSessionRelations } from '../RequestDetails';
-
-type actionType = 'in_progress' | 'completed' | 'blocked';
+type actionType = Request['status'];
 
 function MoreOptions({ request_id }: { request_id: string }) {
-  const {
-    requests: { refetch },
-  } = useRequests();
+  const { handleAsyncUpdateRequest } = useRequests();
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const items = [
@@ -44,12 +40,10 @@ function MoreOptions({ request_id }: { request_id: string }) {
 
   async function handleClick(action: actionType) {
     setTooltipOpen(false);
-    await updateRequestSessionRelations({
-      status: action,
+    await handleAsyncUpdateRequest({
       id: request_id,
+      payload: { status: action },
     });
-    refetch();
-    toast.message('Request updated successfully');
   }
 
   return (

@@ -20,8 +20,8 @@ const Requests = () => {
       slotRequestOption={<StatsCards />}
       slotRequestSection={
         <>
-          <Section textSectionHeader='Urgent Requests' />
-          <Section textSectionHeader='Standard Requests' />
+          <Section priority='urgent' />
+          <Section priority='standard' />
         </>
       }
       slotAglintAiChat={
