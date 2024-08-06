@@ -8,4 +8,5 @@ declare function TrainingProgressList(props: {
   textRole?: React.ReactNode;
   textInterviewModule?: React.ReactNode;
   slotHistoryPill?: Types.Devlink.Slot;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

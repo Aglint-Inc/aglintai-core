@@ -138,8 +138,8 @@ export function InterviewerDetail({
                     className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
-                    <GlobalIcon iconName="smartphone" />
-                    <Text content={textPhone} weight="" />
+                    <GlobalIcon iconName="public" />
+                    <Text content={textTimeZone} weight="" />
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -150,8 +150,8 @@ export function InterviewerDetail({
                     className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
                   >
-                    <GlobalIcon iconName="public" />
-                    <Text content={textTimeZone} weight="" />
+                    <GlobalIcon iconName="smartphone" />
+                    <Text content={textPhone} weight="" />
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>

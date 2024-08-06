@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { TrainingProgressList } from "./TrainingProgressList";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgress.module.css";
@@ -79,6 +80,7 @@ export function TrainingProgress({
         >
           {slotTrainingProgressList ?? (
             <>
+              <TrainingProgressList />
               <SlotComp componentNeme="TrainingProgressList" />
               <SlotComp componentNeme="TrainingProgressLoader" />
             </>
