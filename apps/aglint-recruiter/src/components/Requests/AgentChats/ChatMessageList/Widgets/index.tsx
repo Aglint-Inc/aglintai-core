@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useUserChat } from '@/src/queries/userchat';
 
-import FetchScheduledInterviews from './fetchScheduledInterviews';
+import FetchScheduledInterviews from './FetchScheduledInterviews';
 
 function Widgets({
   chat,

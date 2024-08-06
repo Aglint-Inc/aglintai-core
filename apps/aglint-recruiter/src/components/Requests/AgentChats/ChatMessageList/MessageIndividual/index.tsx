@@ -18,8 +18,8 @@ function MessageIndividual({
   const { recruiterUser } = useAuthDetails();
 
   return (
-    <Stack>
-      <Stack direction={'row'} spacing={'var(--space-2)'}>
+    <Stack width={'100%'}>
+      <Stack direction={'row'} spacing={'var(--space-2)'} width={'100%'}>
         {chat.type === 'user' ? (
           <MuiAvatar
             src={recruiterUser.profile_image}
@@ -32,7 +32,7 @@ function MessageIndividual({
           <AgentIcon />
         )}
 
-        <Stack spacing={'var(--space-1)'}>
+        <Stack spacing={'var(--space-1)'} width={'100%'}>
           <Stack direction={'row'} spacing={'var(--space-2)'}>
             <Text
               size={1}

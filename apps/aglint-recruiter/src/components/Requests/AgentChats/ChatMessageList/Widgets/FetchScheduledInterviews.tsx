@@ -1,49 +1,59 @@
 import { MetadataForFunction } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { Text } from '@/devlink/Text';
-import InterviewerUserDetail from '@/src/components/Scheduling/Common/InterviewerUserDetail';
+import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
+import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 import { useUserChat } from '@/src/queries/userchat';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { getFullName } from '@aglint/shared-utils';
+import ROUTES from '@/src/utils/routing/routes';
 
 function FetchScheduledInterviews({
   chat,
 }: {
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
+  const router = useRouter();
   const sessions =
     chat.metadata as MetadataForFunction<'fetch_scheduled_interviews'>;
 
   return (
-    <Stack>
+    <Stack spacing={'var(--space-2)'} width={'100%'}>
       {sessions?.map((ses) => {
         return (
-          <Stack key={ses.id} padding={'var(--padding-2)'}>
-            <Stack direction={'column'} spacing={'var(--space-2)'}>
-              <Text content={ses.session_name} size={3} weight={'medium'} />
-              {ses.meeting_interviewers.map((user) => {
-                return (
-                  <>
-                    <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
-                          level={getFullName(
-                            ses.applications.candidates.first_name,
-                            ses.applications.candidates.first_name,
-                          )}
-                          variant='rounded'
-                          width='16px'
-                          height='16px'
-                        />
-                      }
-                      textName={getFullName(user.first_name, user.last_name)}
-                      textRole={user.position}
-                    />
-                  </>
-                );
-              })}
+          <Stack
+            key={ses.id}
+            padding={'var(--space-2)'}
+            border={'1px solid'}
+            borderRadius={'4px'}
+            borderColor={'var(--neutral-7)'}
+            width={'100%'}
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              router.push(
+                ROUTES['/scheduling/view']() +
+                  `?meeting_id=${ses.id}&tab=candidate_details`,
+              );
+            }}
+          >
+            <Stack
+              direction={'column'}
+              spacing={'var(--space-1)'}
+              width={'100%'}
+            >
+              <Text content={ses.session_name} />
+              <Text
+                size={1}
+                content={getScheduleType(ses.schedule_type)}
+                color={'neutral'}
+              />
+              <Text
+                size={1}
+                content={formatTimeWithTimeZone({
+                  start_time: ses.start_time,
+                  end_time: ses.end_time,
+                })}
+              />
             </Stack>
           </Stack>
         );

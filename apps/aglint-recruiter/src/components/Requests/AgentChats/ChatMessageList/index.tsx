@@ -21,7 +21,7 @@ function ChatMessageList() {
       {isLoading ? (
         <Loader />
       ) : data && data.length > 0 ? (
-        <Stack spacing={'var(--space-4)'}>
+        <Stack spacing={'var(--space-4)'} width={'100%'}>
           {data.map((chat) => (
             <MessageIndividual chat={chat} key={chat.id} />
           ))}

@@ -10,6 +10,8 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { Skeleton } from '@/devlink2/Skeleton';
 import Loader from '../../Common/Loader';
 import { useAllActivities } from '../CandidateDetails/queries/hooks';
 import RightPanel from '../CandidateDetails/RightPanel';
@@ -114,19 +116,39 @@ function SchedulingViewComp() {
   return (
     <>
       <PageLayout
-        slotTopbarLeft={<>{breadcrum}</>}
+        slotTopbarLeft={
+          isLoading ? (
+            <Stack width={'150px'} height={'20px'}>
+              <Skeleton />
+            </Stack>
+          ) : (
+            <>{breadcrum}</>
+          )
+        }
         slotBody={
           <Stack height={'calc(100vh - 48px)'} overflow={'hidden'}>
             {!isLoading ? (
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack height={'100vh'} overflow={'auto'} width={'100%'}>
-                  <DetailsOverview
-                    data={data}
-                    refetch={refetch}
-                    isCancelOpen={isCancelOpen}
-                    setIsCancelOpen={setIsCancelOpen}
-                    viewScheduleTabs={viewScheduleTabs}
-                  />
+                  {data?.schedule_data ? (
+                    <DetailsOverview
+                      data={data}
+                      refetch={refetch}
+                      isCancelOpen={isCancelOpen}
+                      setIsCancelOpen={setIsCancelOpen}
+                      viewScheduleTabs={viewScheduleTabs}
+                    />
+                  ) : (
+                    <Stack padding={2}>
+                      <GlobalBanner
+                        textTitle={'Meeting Not Found'}
+                        iconName={'schedule'}
+                        isDescriptionVisible={false}
+                        isAdditionalNotes={false}
+                        slotButtons={<></>}
+                      />
+                    </Stack>
+                  )}
                 </Stack>
 
                 <Stack
