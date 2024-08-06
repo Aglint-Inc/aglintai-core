@@ -1,5 +1,5 @@
+import { FunctionNames } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -21,24 +21,14 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
 
   const submitUserChat = async (text: string) => {
     try {
-      // const res = await insertUserChat(
-      //   { function: null, text, type: 'user' },
-      //   user_id,
-      // );
+      const res = await insertUserChat(
+        { function: null, text, type: 'user' },
+        user_id,
+      );
       queryClient.setQueryData(
         [`user_chat`],
         (prevData: Awaited<ReturnType<typeof fetchUserChat>>) => {
-          return [
-            ...prevData,
-            {
-              id: uuidv4(),
-              type: 'user',
-              user_id,
-              title: text,
-              function: null,
-              created_at: new Date().toISOString(),
-            },
-          ];
+          return [...prevData, res];
         },
       );
     } catch (err) {
@@ -52,25 +42,23 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
     payload,
   }: {
     message: string;
-    function_name: string;
+    function_name: FunctionNames;
     payload: any;
   }) => {
     try {
+      const res = await insertUserChat(
+        {
+          function: function_name,
+          text: message,
+          type: 'agent',
+          metadata: payload,
+        },
+        user_id,
+      );
       queryClient.setQueryData(
         [`user_chat`],
         (prevData: Awaited<ReturnType<typeof fetchUserChat>>) => {
-          return [
-            ...prevData,
-            {
-              id: uuidv4(),
-              type: 'agent',
-              user_id,
-              title: message,
-              function: function_name,
-              metadata: payload,
-              created_at: new Date().toISOString(),
-            } as Awaited<ReturnType<typeof fetchUserChat>>[0],
-          ];
+          return [...prevData, res];
         },
       );
     } catch (err) {
@@ -78,7 +66,13 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
     }
   };
 
-  return { ...query, refetch, submitUserChat, insertAIChat };
+  const clearChat = () => {
+    queryClient.setQueryData([`user_chat`], () => {
+      return [];
+    });
+  };
+
+  return { ...query, refetch, submitUserChat, insertAIChat, clearChat };
 };
 
 const fetchUserChat = async (user_id: string) => {
@@ -90,11 +84,13 @@ const fetchUserChat = async (user_id: string) => {
   return data;
 };
 
+// eslint-disable-next-line no-unused-vars
 const insertUserChat = async (
   payload: {
-    function: string;
+    function: FunctionNames;
     text: string;
     type: 'user' | 'agent';
+    metadata?: any;
   },
   user_id: string,
 ) => {
@@ -105,6 +101,7 @@ const insertUserChat = async (
       title: payload.text,
       function: payload.function,
       user_id: user_id,
+      metadata: payload.metadata,
     })
     .select()
     .throwOnError();

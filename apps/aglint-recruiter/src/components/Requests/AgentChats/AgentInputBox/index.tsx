@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { FunctionNames } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
@@ -83,34 +84,56 @@ function AgentInputBox() {
     }
   }
 
-  const { submitUserChat } = useUserChat({ user_id: recruiterUser.user_id });
+  const {
+    submitUserChat,
+    insertAIChat,
+    data: allChat,
+  } = useUserChat({
+    user_id: recruiterUser.user_id,
+  });
 
   const handleSubmit = async ({ planText }: { planText: string }) => {
     // eslint-disable-next-line no-console
     console.log(selectedItems, planText);
-
-    submitUserChat(planText);
-
+    const newMessage = {
+      value: planText,
+      type: 'user',
+    };
+    const oldMessages = allChat.slice(-6).map((ele) => ({
+      value: ele.title,
+      type: ele.type === 'user' ? 'user' : 'assistant',
+    }));
+    submitUserChat(planText); // save to db
+    setText('');
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
       {
-        msg: planText,
         recruiter_id: recruiter.id,
-        aihistory: [],
+        history: [...oldMessages, newMessage],
       },
     );
-
     const resp = data as {
       display: {
         node: string;
         message: string;
-        function: string;
+        function: FunctionNames;
         payload: any;
       }[];
     };
-
     if (resp.display.length === 0) {
-      return;
+      insertAIChat({
+        function_name: null,
+        message:
+          'Sorry unable to process your request. Please try again later.',
+        payload: null,
+      });
+    } else {
+      const lastMessage = resp.display[resp.display.length - 1];
+      insertAIChat({
+        function_name: lastMessage.function,
+        message: lastMessage.message,
+        payload: lastMessage.payload,
+      });
     }
   };
 

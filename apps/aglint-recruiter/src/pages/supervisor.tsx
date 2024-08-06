@@ -29,12 +29,12 @@ const ChatApp = () => {
 
       setMessages([...messages, newMessage]);
       setInput('');
+
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
         {
-          msg: newMessage.value,
           recruiter_id: recruiter.id,
-          aihistory: newMessages,
+          history: newMessages,
         },
       );
 

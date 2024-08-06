@@ -22,7 +22,7 @@ export const agentChain = async ({
     },
     team_members: {
       value: (x: string[], y: string[]) => x.concat(y),
-      default: () => ['interviewTypesRead'],
+      default: () => [],
     },
     next: {
       value: (x: string, y?: string) => y ?? x,

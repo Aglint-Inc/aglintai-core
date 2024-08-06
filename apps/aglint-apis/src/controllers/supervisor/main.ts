@@ -5,8 +5,18 @@ import {agentChain} from './graph';
 import {HumanMessage} from '@langchain/core/messages';
 import {CallBackPayload} from './types';
 
+type Message = {
+  value: string;
+  type: 'user' | 'assistant';
+};
+
+export type ApiBodyAgentSupervisor = {
+  recruiter_id: 'string';
+  history: Message[];
+};
+
 export async function agentSupervisor(req: Request, res: Response) {
-  const {msg, recruiter_id, aihistory} = req.body;
+  const {recruiter_id, history} = req.body;
   const results = [];
 
   let payloadCallback: CallBackPayload = null;
@@ -17,7 +27,7 @@ export async function agentSupervisor(req: Request, res: Response) {
 
   const resultStream = (await agentChain({recruiter_id, callback})).stream(
     {
-      messages: aihistory.map(
+      messages: history.map(
         (item: {type: 'user' | 'assistant'; value: string}) =>
           item.type === 'user'
             ? new HumanMessage(item.value)
