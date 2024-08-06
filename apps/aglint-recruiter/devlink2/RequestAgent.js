@@ -4,7 +4,9 @@ import * as _Builtin from "./_Builtin";
 import { AglintAiChat } from "./AglintAiChat";
 import { Text } from "./Text";
 import { RequestOption } from "./RequestOption";
-import { RequestSection } from "./RequestSection";
+import { RequestAgentTab } from "./RequestAgentTab";
+import { ReqAgentStats } from "./ReqAgentStats";
+import { GlobalBadge } from "./GlobalBadge";
 import * as _utils from "./utils";
 import _styles from "./RequestAgent.module.css";
 
@@ -19,6 +21,7 @@ export function RequestAgent({
   textAiHeader = "Hey Sara, I am Aglint AI your Scheduling co-pilot.",
   slotFilter,
   slotAglintAiChat,
+  slotTabs,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-wrap")} tag="div">
@@ -65,12 +68,66 @@ export function RequestAgent({
           className={_utils.cx(_styles, "req-body-left-wrapper")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{slotFilter}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-header-ra")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ra-tab-pill-wrapper")}
+              tag="div"
+            >
+              {slotTabs ?? <RequestAgentTab />}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ra-slot-filter")}
+              tag="div"
+            >
+              {slotFilter}
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "req-left-body-wrap")}
             tag="div"
           >
-            {slotRequestSection ?? <RequestSection />}
+            {slotRequestSection ?? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "req-agent-dashboard")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "req-agent-header")}
+                  tag="div"
+                >
+                  <ReqAgentStats />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "req-agentmatrix")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "req-agent-ready-schedule")}
+                    id={_utils.cx(
+                      _styles,
+                      "w-node-_1b5a158a-211d-2d3b-e518-56be976ff45d-21f7f1ff"
+                    )}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "req-agent-ready-header")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-1736")}
+                        tag="div"
+                      >
+                        <GlobalBadge />
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block tag="div" />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

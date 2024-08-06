@@ -1,0 +1,24 @@
+.ra-tab-pill {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-1);
+  cursor: pointer;
+}
+
+.ra-tab-active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--accent-a3);
+
+  color: var(--accent-11);
+}

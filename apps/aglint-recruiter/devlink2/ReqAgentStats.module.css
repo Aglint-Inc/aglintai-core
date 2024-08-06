@@ -1,0 +1,92 @@
+.schedule-count-wrap-menu {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.scheduling-menu {
+  display: flex;
+  width: 25%;
+  padding: 16px 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: white;
+}
+
+.scheduling-menu.cancelled {
+  background-color: #fff8f7;
+}
+
+.scheduling-menu.not-scheduled {
+  background-color: #f9f9f8;
+}
+
+.scheduling-menu.confirmed {
+  background-color: #f1fafd;
+}
+
+.scheduling-menu.success {
+  background-color: #f4fbf7;
+}
+
+.scheduling-menu.waiting {
+  background-color: #fefce9;
+}
+
+.count_info {
+  display: flex;
+  padding-right: 8px;
+  padding-left: 8px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.menu-scheduling-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event_available {
+  color: #29a383;
+}
+
+.icon_general-3 {
+  user-select: none;
+}
+
+.schedule-count-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.hourglass_empty {
+  color: #8d8d86;
+}
+
+.calendar_clock {
+  color: #9e6c00;
+}
+
+.event_upcoming {
+  color: #0090ff;
+}
+
+.event_busy {
+  color: #e54d2e;
+}
