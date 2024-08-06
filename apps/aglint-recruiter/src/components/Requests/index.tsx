@@ -9,6 +9,7 @@ import { RequestAgentTab } from '@/devlink2/RequestAgentTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
@@ -21,8 +22,8 @@ const Requests = () => {
   const { recruiterUser } = useAuthDetails();
   const { setQueryParams, queryParams } = useRouterPro();
   const [tabs, setTabs] = useState([
-    { title: 'Dashboard', isTabActive: false, pathName: 'dashboard' },
-    { title: 'Requests', isTabActive: false, pathName: 'requests' },
+    { title: 'dashboard', isTabActive: false },
+    { title: 'requests', isTabActive: false },
   ]);
 
   const {
@@ -48,10 +49,18 @@ const Requests = () => {
       setTabs((prev) =>
         prev.map((item) => ({
           ...item,
-          isTabActive: item.title === 'Dashboard',
+          isTabActive: item.title === 'dashboard',
         })),
       );
       setQueryParams({ tab: 'dashboard' });
+    } else {
+      setQueryParams({ tab: queryParams?.tab });
+      setTabs((prev) =>
+        prev.map((item) => ({
+          ...item,
+          isTabActive: item.title === queryParams?.tab,
+        })),
+      );
     }
   }, [queryParams?.tab]);
   return (
@@ -61,7 +70,7 @@ const Requests = () => {
       slotTabs={
         <>
           {(!showEmptyPage || !isNotApplied) &&
-            tabs.map(({ title, isTabActive, pathName }, i) => {
+            tabs.map(({ title, isTabActive }, i) => {
               return (
                 <RequestAgentTab
                   onClickTab={{
@@ -72,11 +81,11 @@ const Requests = () => {
                           isTabActive: item.title === title,
                         })),
                       );
-                      setQueryParams({ tab: pathName });
+                      setQueryParams({ tab: title });
                     },
                   }}
                   key={i}
-                  textTab={title}
+                  textTab={capitalizeFirstLetter(title)}
                   isTabActive={isTabActive}
                 />
               );
