@@ -2629,9 +2629,24 @@ textarea.w-select {
   --neutral-2: var(--sand-2);
   --sand-1: #fdfdfc;
   --neutral-1: var(--sand-1);
-  --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  --text: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --green-200\<deleted\|variable-251cde79-960d-7461-7113-60c4436f8538\>: hsla(156.52173913043478, 33.33%, 86.47%, 1.00);
+  --gray-400\<deleted\|variable-d09dda5a-1cff-8aa4-d166-1ff89c9f1684\>: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+  --gray-500\<deleted\|variable-6a03db6f-fc4b-caa8-8e71-0b1e2d847ef1\>: hsla(210.00000000000006, 10.09%, 57.25%, 1.00);
+  --primary--light\<deleted\|variable-d5f738ae-15a7-cce1-b324-b88b85b84568\>: hsla(210, 33.33%, 97.65%, 1.00);
+  --blue-600\<deleted\|variable-52e70a4f-6629-4974-4598-e3ba75f3461c\>: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
+  --gray-600\<deleted\|variable-bc0522c0-ba29-bf7e-db06-efd7784b9330\>: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+  --kale-600\<deleted\|variable-fc9c3cf7-09bb-7364-ed8d-95d89e6d8422\>: hsla(184.44444444444443, 54.00%, 19.61%, 1.00);
+  --kale-800\<deleted\|variable-f2fd7071-1c51-e4c0-2aa9-ed4d60cbbee9\>: hsla(186.38297872340425, 95.92%, 9.61%, 1.00);
+  --kale-100\<deleted\|variable-99f5293a-bb30-349d-1f24-8721aab050fb\>: hsla(180, 53.85%, 97.45%, 1.00);
+  --blue-500\<deleted\|variable-cab353d2-4d55-4b93-dad7-ea0048da2b04\>: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+  --gray-200\<deleted\|variable-3840583c-89f0-f2aa-8e30-4c0dcd4dc1fb\>: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
+  --white\<deleted\|variable-c31c6fe9\>: white;
+  --red-100\<deleted\|variable-da60b1de\>: #fff0f1;
+  --green-100\<deleted\|variable-002b4df1\>: #edf8f4;
+  --blue-100\<deleted\|variable-331f343b\>: #edf7ff;
+  --gray-700\<deleted\|variable-2a684da2\>: #49545c;
+  --gray-100\<deleted\|variable-ce28dc20\>: #f8f9f9;
 }
 
 body {

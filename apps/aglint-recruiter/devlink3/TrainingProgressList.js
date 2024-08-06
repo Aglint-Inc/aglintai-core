@@ -13,11 +13,13 @@ export function TrainingProgressList({
   textRole = "Interior Designer",
   textInterviewModule = "C++ coding",
   slotHistoryPill,
+  onClickCard = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "module_row", "progress")}
       tag="div"
+      {...onClickCard}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "sd_table_header_cell", "progress")}
