@@ -58,20 +58,27 @@ function AgentInputBox() {
       )?.applicantSessions
     : [];
 
+  const [loading, setLoading] = useState(false);
   async function createNewRequest() {
     const selectedSession = selectedItems?.interview_name;
-    await handleAsyncCreateRequests({
-      request: {
-        priority: 'urgent',
-        assigner_id: recruiterUser.user_id,
-        assignee_id: recruiterUser.user_id,
-        title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
-        status: 'to_do',
-        type: 'schedule_request',
-      },
-      applications: [selectedItems.applicant_name[0].id],
-      sessions: selectedItems.interview_name.map((ele) => ele.id),
-    });
+    if (selectedSession.length && selectedItems.applicant_name.length) {
+      setLoading(true);
+      await handleAsyncCreateRequests({
+        request: {
+          priority: 'urgent',
+          assigner_id: recruiterUser.user_id,
+          assignee_id: recruiterUser.user_id,
+          title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
+          status: 'to_do',
+          type: 'schedule_request',
+        },
+        applications: [selectedItems.applicant_name[0].id],
+        sessions: selectedItems.interview_name.map((ele) => ele.id),
+      });
+      setLoading(false);
+      setSelectedItems(null);
+      setText('');
+    }
   }
 
   const handleSubmit = async ({ planText }: { planText: string }) => {
@@ -160,6 +167,11 @@ function AgentInputBox() {
                 }}
               />
               <ButtonSoft
+                isLoading={loading}
+                isDisabled={
+                  Boolean(!selectedItems.interview_name.length) ||
+                  Boolean(!selectedItems.applicant_name.length)
+                }
                 iconName={'send'}
                 isRightIcon={true}
                 size={1}
