@@ -1,0 +1,63 @@
+.req-dashbaord-wrap {
+  display: flex;
+  height: 100%;
+  padding-top: var(--space-8);
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.req-dashbaord-sub-wrap {
+  display: flex;
+  width: 510px;
+  max-width: 510px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-7);
+  grid-row-gap: var(--space-7);
+}
+
+.req-dash-top-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-5);
+  grid-row-gap: var(--space-5);
+}
+
+.req-dash-graph {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.req-dash-top-bottom {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.req-dash-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-dash-list-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+@media screen and (min-width: 1440px) {
+
+}

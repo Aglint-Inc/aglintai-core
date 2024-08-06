@@ -26,9 +26,6 @@ export function RecentReschedule({
         tag="div"
       >
         <Text content="Recent Reschedules" weight="medium" />
-        <_Builtin.Block tag="div">
-          {slotDropdown ?? <SlotComp componentNeme="dropdown" />}
-        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "slot_recent")} tag="div">
         {slotRecentRescheduleList ?? (
