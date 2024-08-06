@@ -122,15 +122,12 @@ const replacePlaceholders = (template_body: string, compName: string) => {
   };
 
   for (const key of Object.keys(values)) {
-    console.log(values);
-    //ing
     updated_temp_body = replaceAll(
       updated_temp_body,
       `{{${key}}}`,
       values[String(key)],
     );
   }
-  console.log(updated_temp_body);
   return updated_temp_body;
 };
 
