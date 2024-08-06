@@ -100,6 +100,7 @@ export const API_PATHS = [
 '/api/get_last_login',
 '/api/get_member',
 '/api/get_scheduling_reason',
+'/api/get_users_by_ids',
 '/api/google/overview',
 '/api/google/overview-handler',
 '/api/greenhouse/batchsave',
