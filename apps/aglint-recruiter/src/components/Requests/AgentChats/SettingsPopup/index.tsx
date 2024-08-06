@@ -1,4 +1,7 @@
-import { Checkbox, Stack, TextField } from '@mui/material';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Checkbox, MenuItem, Stack } from '@mui/material';
+import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 
 import { RequestSetting } from '@/devlink2/RequestSetting';
@@ -6,6 +9,8 @@ import { Text } from '@/devlink2/Text';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import ToggleBtn from '@/src/components/Common/UIToggle';
+import { ClockIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import SelectionComp from '@/src/components/NewAssessment/Common/components/selection';
 
 function SettingsPopup({
   open,
@@ -42,6 +47,10 @@ function SettingsPopup({
   const [instructions, setInstructions] = useState(defaultValue);
   const [autoPilot, setAutoPilot] = useState(false);
   const [tools, setTools] = useState(defaultTools);
+  const [interval, setInterval] = useState({
+    intervalTime: 2,
+    trigger_time: dayjsLocal().hour(9).minute(0).second(0),
+  });
 
   function handleChange({ tool }: { tool: toolsEnumType }) {
     setTools((pre) => {
@@ -114,13 +123,50 @@ function SettingsPopup({
           slotAiFrequency={
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <Text content={'Once every'} />
-              <Stack position={'relative'} width={'40px'}>
-                <TextField value={'2'} />
+              <Stack position={'relative'} width={'70px'}>
+                <SelectionComp
+                  height={30}
+                  onChange={(event) => {
+                    const { value } = event.target;
+                    setInterval((prev) => ({
+                      ...prev,
+                      intervalTime: value,
+                    }));
+                  }}
+                  value={interval?.intervalTime}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </SelectionComp>
               </Stack>
               <Text content={'hours.'} />
               <Text content={'Starting'} />
-              <Stack position={'relative'} width={'90px'}>
-                <TextField value={'9:30 AM'} />
+              <Stack position={'relative'} width={'130px'}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopTimePicker
+                    value={interval?.trigger_time}
+                    onAccept={(value) => {
+                      setInterval((prev) => ({
+                        ...prev,
+                        trigger_time: value,
+                      }));
+                    }}
+                    format='hh:mm A'
+                    slots={{
+                      openPickerIcon: ClockIcon,
+                    }}
+                    sx={{
+                      width: '100%',
+                      '& input': {
+                        height: '17px',
+                        fontSize: '14px',
+                      },
+                    }}
+                  />
+                </LocalizationProvider>{' '}
               </Stack>
               <Text content={'every day.'} />
             </Stack>
