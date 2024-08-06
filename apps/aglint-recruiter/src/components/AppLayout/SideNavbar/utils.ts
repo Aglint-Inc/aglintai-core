@@ -23,6 +23,15 @@ export const navList: {
     permission: ['task_module'],
     active: ['/requests'],
   },
+  // {
+  //   text: 'Requests',
+  //   SubComponents: null,
+  //   route: ROUTES['/requests'](),
+  //   comingSoon: false,
+  //   isVisible: true,
+  //   permission: ['job_module'],
+  //   active: ['/requests'],
+  // },
   {
     text: 'Tasks',
     SubComponents: null,
@@ -112,15 +121,6 @@ export const navList: {
     isVisible: true,
     permission: ['integrations_module'],
     active: ['/integrations'],
-  },
-  {
-    text: 'Requests',
-    SubComponents: null,
-    route: ROUTES['/requests'](),
-    comingSoon: false,
-    isVisible: true,
-    permission: ['job_module'],
-    active: ['/requests'],
   },
   {
     text: 'Workflows',
