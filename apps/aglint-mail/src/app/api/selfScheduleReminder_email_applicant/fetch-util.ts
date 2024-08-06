@@ -9,11 +9,13 @@ export async function dbUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,session_ids,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
       )
       .eq('id', req_body.filter_id),
   );
-
+  if (filterJson.request_id) {
+    await updateReminderInRequest(filterJson.request_id);
+  }
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -70,3 +72,14 @@ export async function dbUtil(
     recipient_email: cand_email,
   };
 }
+
+const updateReminderInRequest = async (request_id: string) => {
+  supabaseWrap(
+    await supabaseAdmin.from('request_progress').insert({
+      request_id,
+      event_type: 'SELF_SCHEDULE_FIRST_FOLLOWUP',
+      is_progress_step: false,
+      status: 'completed',
+    }),
+  );
+};

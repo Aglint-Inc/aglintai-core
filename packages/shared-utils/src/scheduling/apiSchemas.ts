@@ -97,6 +97,7 @@ export const candidate_new_schedule_schema = v.object({
   session_ids: v.array(v.string()),
   target_api: v.any(),
   request_id: v.string(),
+  event_run_id: v.number(),
 });
 
 export const candidate_avail_request_schema = v.intersect([

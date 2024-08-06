@@ -18,6 +18,7 @@ export const findPlanCombs = async ({
   api_options: APIOptions;
   reqProgressLogger: ProgressLoggerType;
 }) => {
+  api_options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({
     company_id: recruiter_id,
@@ -45,9 +46,8 @@ export const findPlanCombs = async ({
   await reqProgressLogger({
     event_type: 'FIND_CURR_AVAIL_SLOTS',
     log: `Found ${plans.length} slots`,
-    log_type: 'heading',
     status: 'completed',
-    meta: null,
+    is_progress_step: true,
   });
   return plans;
 };

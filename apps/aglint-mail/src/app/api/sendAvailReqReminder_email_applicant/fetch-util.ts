@@ -9,10 +9,14 @@ export async function dbUtil(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'id,request_session_relation( interview_session(interview_meeting(recruiter_user(*),status)) ),applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
+        '*,request_session_relation( interview_session(interview_meeting(recruiter_user(*),status)) ),applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
       )
       .eq('id', req_body.avail_req_id),
   );
+
+  if (avail_req_data.request_id) {
+    await updateReminderInRequest(avail_req_data.request_id);
+  }
   if (
     avail_req_data.request_session_relation[0].interview_session
       .interview_meeting.status !== 'waiting'
@@ -72,3 +76,14 @@ export async function dbUtil(
     recipient_email: cand_email,
   };
 }
+
+const updateReminderInRequest = async (request_id: string) => {
+  supabaseWrap(
+    await supabaseAdmin.from('request_progress').insert({
+      request_id,
+      event_type: 'REQ_AVAIL_FIRST_FOLLOWUP',
+      is_progress_step: false,
+      status: 'completed',
+    }),
+  );
+};

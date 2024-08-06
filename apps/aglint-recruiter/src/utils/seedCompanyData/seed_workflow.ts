@@ -11,7 +11,10 @@ export const seed_workflow_actions: {
     | 'trigger'
     | 'workflow_type'
   >;
-  actions: Pick<DatabaseTable['workflow_action'], 'order' | 'target_api'>[];
+  actions: Pick<
+    DatabaseTable['workflow_action'],
+    'order' | 'target_api' | 'action_type'
+  >[];
 }[] = [
   {
     workflow: {
@@ -28,13 +31,16 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'interviewStart_email_applicant',
+        action_type: 'email',
       },
       {
         order: 1,
+        action_type: 'email',
         target_api: 'interviewStart_email_interviewers',
       },
       {
         order: 2,
+        action_type: 'email',
         target_api: 'interviewStart_email_organizer',
       },
     ],
@@ -53,6 +59,7 @@ export const seed_workflow_actions: {
       {
         order: 1,
         target_api: 'interviewStart_slack_interviewers',
+        action_type: 'slack',
       },
     ],
   },
@@ -70,6 +77,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'candidateBook_slack_interviewerForConfirmation',
+        action_type: 'slack',
       },
     ],
   },
@@ -88,6 +96,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'sendAvailReqReminder_email_applicant',
+        action_type: 'email',
       },
     ],
   },
@@ -106,6 +115,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'selfScheduleReminder_email_applicant',
+        action_type: 'email',
       },
     ],
   },
@@ -121,8 +131,16 @@ export const seed_workflow_actions: {
       workflow_type: 'job',
     },
     actions: [
-      { order: 0, target_api: 'interviewEnd_email_interviewerForFeedback' },
-      { order: 0, target_api: 'interviewEnd_slack_interviewerForFeedback' },
+      {
+        order: 0,
+        target_api: 'interviewEnd_email_interviewerForFeedback',
+        action_type: 'email',
+      },
+      {
+        order: 0,
+        target_api: 'interviewEnd_slack_interviewerForFeedback',
+        action_type: 'slack',
+      },
     ],
   },
   {
@@ -140,6 +158,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'meetingDeclined_email_organizer',
+        action_type: 'email',
       },
     ],
   },
@@ -158,6 +177,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'meetingAccepted_email_organizer',
+        action_type: 'email',
       },
     ],
   },
@@ -176,10 +196,12 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'interviewEnd_slack_organizerForMeetingStatus',
+        action_type: 'slack',
       },
       {
         order: 0,
         target_api: 'interviewEnd_email_organizerForMeetingStatus',
+        action_type: 'email',
       },
     ],
   },
@@ -198,18 +220,22 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        action_type: 'email',
       },
       {
         order: 1,
         target_api: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        action_type: 'slack',
       },
       {
         order: 2,
         target_api: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        action_type: 'email',
       },
       {
         order: 3,
         target_api: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        action_type: 'slack',
       },
     ],
   },
@@ -229,11 +255,13 @@ export const seed_workflow_actions: {
         order: 0,
         target_api:
           'onTrainingComplete_email_approverForTraineeMeetingQualification',
+        action_type: 'email',
       },
       {
         order: 0,
         target_api:
           'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+        action_type: 'slack',
       },
     ],
   },
@@ -252,10 +280,12 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onQualified_email_trainee',
+        action_type: 'email',
       },
       {
         order: 1,
         target_api: 'onQualified_slack_trainee',
+        action_type: 'slack',
       },
     ],
   },
@@ -273,6 +303,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+        action_type: 'end_point',
       },
     ],
   },
@@ -290,6 +321,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+        action_type: 'end_point',
       },
     ],
   },
@@ -324,6 +356,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onReceivingAvailReq_agent_confirmSlot',
+        action_type: 'end_point',
       },
     ],
   },
@@ -342,6 +375,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+        action_type: 'end_point',
       },
     ],
   },
@@ -359,6 +393,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+        action_type: 'end_point',
       },
     ],
   },
@@ -376,6 +411,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
+        action_type: 'end_point',
       },
     ],
   },
@@ -393,6 +429,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+        action_type: 'end_point',
       },
     ],
   },

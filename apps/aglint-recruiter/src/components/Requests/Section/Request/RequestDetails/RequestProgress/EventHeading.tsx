@@ -1,7 +1,12 @@
 /* eslint-disable security/detect-object-injection */
+import { Box } from '@mui/material';
+import axios from 'axios';
+
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { workflowCopy } from '@/src/services/workflow/copy';
 import { EventNode } from '@/src/services/workflow/node';
+import toast from '@/src/utils/toast';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 export const EventHeading = ({ event }: { event: EventNode }) => {
   let tense: TenseType;
@@ -14,6 +19,14 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   } else if (event.status === 'failed') {
     tense = 'error';
   }
+
+  const handleRetry = async (id: number) => {
+    try {
+      await axios.post('/api/workflow-cron/execute', { action_id: id });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       <TextWithIcon
@@ -31,6 +44,32 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
           )
         }
       />
+      <Box pl={2.5}>
+        {event.progress.map((prog) => {
+          return (
+            <p key={prog.id} style={{ display: 'flex', alignItems: 'center' }}>
+              <p
+                style={{
+                  color: 'grey',
+                  fontSize: '13px',
+                }}
+              >
+                {prog.log}
+              </p>
+              {event.status === 'failed' && (
+                <ButtonSoft
+                  size={1}
+                  color={'primary'}
+                  textButton='Click to retry'
+                  onClickButton={{
+                    onClick: () => handleRetry(prog.meta.event_run_id),
+                  }}
+                />
+              )}
+            </p>
+          );
+        })}
+      </Box>
     </>
   );
 };

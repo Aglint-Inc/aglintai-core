@@ -226,17 +226,9 @@ const getStatusBadge = (status: DatabaseEnums['workflow_cron_run_status']) => {
 
 const handleExecuteAction = async (id: number) => {
   try {
-    supabaseWrap(
-      await supabase
-        .from('workflow_action_logs')
-        .update({
-          status: 'not_started',
-          execute_at: dayjsLocal().toISOString(),
-          tries: 0,
-        })
-        .eq('id', id),
-    );
-    await axios.post('/api/workflow-cron/execute');
+    await axios.post('/api/workflow-cron/execute', {
+      action_id: id,
+    });
   } catch (err) {
     toast.error(err.message);
     console.error(err);

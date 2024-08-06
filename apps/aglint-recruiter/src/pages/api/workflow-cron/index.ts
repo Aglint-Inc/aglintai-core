@@ -15,11 +15,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST')
     return getResponse({ error: 'Method not allowed' }, 405);
   try {
-    if (!workflow_id || !workflow_action_id || !meta || !execution_time)
+    if (!workflow_id || !workflow_action_id || !meta || !execution_time) {
       return getResponse(
         { error: 'Invalid request. Required props missing.' },
         401,
       );
+    }
     if (meta.target_api.split('_').find((s) => s === 'email')) {
       await axios.post(
         process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.target_api}`,
@@ -42,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
         {
           ...meta,
+          event_run_id: id,
         },
       );
     } else if (meta.target_api.startsWith('onReceivingAvailReq')) {
