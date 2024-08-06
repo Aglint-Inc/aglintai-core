@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createElement } from 'react';
 import { render } from '@react-email/render';
 import { z } from 'zod';
-import { replaceAll, type allTempvariables } from '@aglint/shared-utils';
+import { type allTempvariables } from '@aglint/shared-utils';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { fetchUtil } from './fetch-utils';
@@ -122,11 +122,19 @@ const replacePlaceholders = (template_body: string, compName: string) => {
   };
 
   for (const key of Object.keys(values)) {
+    console.log(values);
+    //ing
     updated_temp_body = replaceAll(
       updated_temp_body,
       `{{${key}}}`,
       values[String(key)],
     );
   }
+  console.log(updated_temp_body);
   return updated_temp_body;
 };
+
+function replaceAll(str: string, find: string, replace: string) {
+  // Split the string by the find substring and join the parts with the replace substring
+  return str.split(find).join(replace);
+}
