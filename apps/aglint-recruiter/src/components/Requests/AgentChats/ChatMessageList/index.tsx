@@ -28,6 +28,7 @@ function ChatMessageList() {
         </Stack>
       ) : (
         <AglintAiWelcome
+         
           slotStartOption={<CommandShortCuts />}
           textAiHeader={
             `Good morning, ` + getFullName(recruiterUser.first_name, '')
