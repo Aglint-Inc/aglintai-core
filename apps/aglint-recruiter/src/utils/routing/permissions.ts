@@ -83,7 +83,6 @@ const PERMISSIONS: Permissions = {
   // scheduling application apis
   '/api/scheduling/application/sendtocandidate': ['scheduling_module'],
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
-  '/api/scheduling/application/candidatesessioncache': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduling_module',
   ],
