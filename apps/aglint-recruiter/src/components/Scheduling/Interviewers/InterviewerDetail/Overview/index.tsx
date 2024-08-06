@@ -10,6 +10,7 @@ import Loader from '@/src/components/Common/Loader';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
+import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
@@ -44,10 +45,21 @@ function Overview({
   } = useModuleRelations({
     user_id,
   });
+
+  const { data: allModules } = useAllInterviewModules();
+
   const trainingModulesList = data?.filter(
     (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
+  const trainingModulesListWithGlobalArc = trainingModulesList.map(
+    (trainee) => ({
+      ...trainee,
+      is_global_archived: allModules.find(
+        (module) => module.id === trainee.module_id,
+      ).is_archived,
+    }),
+  );
   return (
     <>
       <PauseDialog />
@@ -107,8 +119,6 @@ function Overview({
               }
             />
           </Stack>
-          {/* <InterviewLoadCard textHeading='This Month' />
-          <InterviewLoadCard textHeading='All month' /> */}
         </Stack>
       </Stack>
       <InterviewerDetailOverview
@@ -164,9 +174,9 @@ function Overview({
         slotTrainingModules={
           !isLoading ? (
             <>
-              {trainingModulesList.length ? (
+              {trainingModulesListWithGlobalArc.length ? (
                 <>
-                  {trainingModulesList.map((relation) => {
+                  {trainingModulesListWithGlobalArc.map((relation) => {
                     return (
                       <TrainingInterviewerType
                         relation={relation}

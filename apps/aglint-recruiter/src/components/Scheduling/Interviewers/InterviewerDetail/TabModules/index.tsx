@@ -6,6 +6,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 import Loader from '@/src/components/Common/Loader';
 
+import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
@@ -21,6 +22,8 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const { data, isLoading, refetch } = useModuleRelations({
     user_id,
   });
+  const { data: allModules } = useAllInterviewModules();
+
   const qualifiedModulesList = data?.filter(
     (rel) => rel.module_training_status === 'qualified' && !rel.is_archived,
   );
@@ -28,12 +31,28 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
     (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
+  const qualifiedModulesListWithGlobalArc = qualifiedModulesList?.map(
+    (qualif) => ({
+      ...qualif,
+      is_global_archived: allModules.find(
+        (module) => module.id === qualif.module_id,
+      ).is_archived,
+    }),
+  );
+  const trainingModulesListWithGlobalArc = trainingModulesList?.map(
+    (trainee) => ({
+      ...trainee,
+      is_global_archived: allModules.find(
+        (module) => module.id === trainee.module_id,
+      ).is_archived,
+    }),
+  );
+
   return (
     <>
       <PauseDialog />
       <ResumeDialog />
       <DeleteMemberDialog refetch={refetch} />
-
       <InterviewerDetailOverview
         isViewButtonVisible={false}
         textHeader1={'Interview Types'}
@@ -43,9 +62,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
         slotUpcomingSchedule={
           !isLoading ? (
             <>
-              {qualifiedModulesList.length ? (
+              {qualifiedModulesListWithGlobalArc?.length ? (
                 <>
-                  {qualifiedModulesList.map((relation) => {
+                  {qualifiedModulesListWithGlobalArc?.map((relation) => {
                     return (
                       <QualifiedInterviewTypeCard
                         relation={relation}
@@ -83,9 +102,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
         slotTrainingModules={
           !isLoading ? (
             <>
-              {trainingModulesList.length ? (
+              {trainingModulesListWithGlobalArc.length ? (
                 <>
-                  {trainingModulesList.map((relation) => {
+                  {trainingModulesListWithGlobalArc.map((relation) => {
                     return (
                       <TrainingInterviewerType
                         relation={relation}

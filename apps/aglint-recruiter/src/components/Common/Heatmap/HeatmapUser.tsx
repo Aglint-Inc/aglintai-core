@@ -82,7 +82,7 @@ export default function Heatmap({ loadSetting }) {
 
   const rest = transposeArray(filled2d);
 
-  const yLabels: string[] = new Array(maxCount).fill('');
+  const yLabels: string[] = new Array(Math.ceil(maxCount)).fill('');
 
   const startDateUI = dayjsLocal(
     new Date().setDate(new Date().getDate() + dayCount.start),
