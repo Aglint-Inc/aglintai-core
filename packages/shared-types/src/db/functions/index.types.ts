@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { CustomizableTypes, Type } from "../utils.types";
+import type { CustomizableTypes, Custom } from "../utils.types";
 import { CustomCreateSessionRequest } from "./create_session_request.types";
 import { CustomCreateSessionRequests } from "./create_session_requests.types";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
@@ -26,26 +26,21 @@ export type FunctionType<
     ? { [id in keyof Partial<DatabaseFunctionReturns<T>[number]>]: any }
     : DatabaseFunctionReturns<T> extends CustomizableTypes<"Object">
       ? { [id in keyof Partial<DatabaseFunctionReturns<T>>]: any }
-      : any,
-> = Type<
+      : any = never,
+> = Custom<
   DatabaseFunctions[T],
-  //@ts-ignore
+  //@ts-expect-error
   {
-    Args: Type<
-      DatabaseFunctionArgs<T>,
-      //@ts-ignore
-      Partial<U>
-    >;
-    Returns: Type<
-      //@ts-ignore
-      DatabaseFunctionReturns<T>,
-      //@ts-ignore
-      Partial<V>
-    >;
+    Args: Custom<DatabaseFunctionArgs<T>, U>;
+    Returns: V extends never
+      ? DatabaseFunctionReturns<T>
+      : DatabaseFunctionReturns<T> extends CustomizableTypes<"Array">
+        ? V[]
+        : V;
   }
 >;
 
-export type Functions = Type<
+export type Functions = Custom<
   DatabaseFunctions,
   {
     insert_debrief_session: CustomInsertDebriefSession;
