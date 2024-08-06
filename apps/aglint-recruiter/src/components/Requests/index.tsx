@@ -21,9 +21,8 @@ const Requests = () => {
   const { recruiterUser } = useAuthDetails();
   const { setQueryParams, queryParams } = useRouterPro();
   const [tabs, setTabs] = useState([
-    { title: 'Requests', isTabActive: true, pathName: 'requests' },
     { title: 'Dashboard', isTabActive: false, pathName: 'dashboard' },
-    { title: 'Metrics', isTabActive: false, pathName: 'metrics' },
+    { title: 'Requests', isTabActive: false, pathName: 'requests' },
   ]);
 
   const {
@@ -46,7 +45,13 @@ const Requests = () => {
 
   useEffect(() => {
     if (!queryParams?.tab) {
-      setQueryParams({ tab: 'Requests' });
+      setTabs((prev) =>
+        prev.map((item) => ({
+          ...item,
+          isTabActive: item.title === 'Dashboard',
+        })),
+      );
+      setQueryParams({ tab: 'dashboard' });
     }
   }, [queryParams?.tab]);
   return (
