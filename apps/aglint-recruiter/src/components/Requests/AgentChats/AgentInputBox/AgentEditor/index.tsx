@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
+import { Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
+import { Text } from '@/devlink2/Text';
 import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
@@ -180,7 +182,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         fontSize: 16,
         width: '384px',
         lineHeight: '20px',
-        padding: '10px 10px 48px',
+        padding: '10px 10px 40px',
       },
       highlighter: {
         overflow: 'hidden',
@@ -190,6 +192,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       input: {
         margin: 0,
         border: '1px solid var(--neutral-6)',
+        borderBottom: 'none',
         borderRadius: '10px',
         outline: 'none',
         padding: '10px',
@@ -337,6 +340,28 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         <Mention {...mentionSessionList} />
         <Mention {...mentionRequestList} />
       </MentionsInput>
+      <Stack
+        position={'relative'}
+        top={'-10px'}
+        sx={{
+          border: '1px solid var(--neutral-6)',
+          borderTop: 'none',
+          borderRadius: '0 0 10px 10px',
+        }}
+        height={'28px'}
+        bgcolor={'#F9F9F8'}
+        width={'100%'}
+        direction={'row'}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Text
+          align={'center'}
+          color={'neutral'}
+          size={1}
+          content={'Powered by Aglint. Simplifying your scheduling with AI.'}
+        />
+      </Stack>
     </div>
   );
 };
