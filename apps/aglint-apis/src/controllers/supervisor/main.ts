@@ -3,11 +3,7 @@ import {Request, Response} from 'express';
 import {agentChain} from './graph';
 
 import {HumanMessage} from '@langchain/core/messages';
-
-export type CallBackPayload = {
-  function_name: string;
-  payload: any;
-};
+import {CallBackPayload} from './types';
 
 export async function agentSupervisor(req: Request, res: Response) {
   const {msg, recruiter_id, aihistory} = req.body;

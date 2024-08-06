@@ -6,9 +6,9 @@ import {llm} from 'src/controllers/supervisor/utils/llm';
 import {fetchInterviewTypesRelations} from './tools/fetchRelations';
 import {fetchInterviewTypes} from './tools/fetchInterviewTypes';
 import {TeamState} from 'src/controllers/supervisor/utils/state';
-import {CallBackPayload} from 'src/controllers/supervisor/main';
+import {CallBackPayload} from '../../types';
 
-export const InterviewTypesReadNode = async ({
+export const interviewTypesReadNode = async ({
   state,
   recruiter_id,
   callback,

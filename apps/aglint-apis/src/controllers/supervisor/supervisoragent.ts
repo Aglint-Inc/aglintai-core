@@ -9,7 +9,7 @@ export const createSchedulingSupervisorAgent = async () => {
       'respond with the worker to act next. Each worker will perform a' +
       'task and respond with their results.\n\n' +
       'Dont go into loop calling same workers again and again',
-    ['interviewTypesRead', 'greetingAgent'] //all nodes
+    ['interviewTypesRead', 'greetingAgent', 'fetchScheduledInterviewsRead'] //all nodes
   );
 
   return supervisorAgent;

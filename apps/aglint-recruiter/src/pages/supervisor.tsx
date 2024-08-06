@@ -40,9 +40,10 @@ const ChatApp = () => {
 
       const resp = data as {
         display: {
-          team: string;
+          node: string;
           message: string;
           function: string;
+          payload: any;
         }[];
       };
 

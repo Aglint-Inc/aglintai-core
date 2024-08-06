@@ -13,11 +13,13 @@ import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
+import { useUserChat } from '@/src/queries/userchat';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import AgentEditor from './AgentEditor';
 import { scheduleTypes } from './utils';
+
 type selectedItemsType = {
   schedule_type: { id: string; name: string }[];
   job_title: { id: string; name: string }[];
@@ -26,7 +28,7 @@ type selectedItemsType = {
   request_name: { id: string; name: string }[];
 };
 function AgentInputBox() {
-  const { recruiterUser, recruiter_id } = useAuthDetails();
+  const { recruiterUser, recruiter_id, recruiter } = useAuthDetails();
   const { handleAsyncCreateRequests } = useRequests();
   const { text, setText, inputRef } = useAgentIEditor();
 
@@ -74,9 +76,35 @@ function AgentInputBox() {
     });
   }
 
+  const { submitUserChat } = useUserChat({ user_id: recruiterUser.user_id });
+
   const handleSubmit = async ({ planText }: { planText: string }) => {
     // eslint-disable-next-line no-console
     console.log(selectedItems, planText);
+
+    submitUserChat(planText);
+
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
+      {
+        msg: planText,
+        recruiter_id: recruiter.id,
+        aihistory: [],
+      },
+    );
+
+    const resp = data as {
+      display: {
+        node: string;
+        message: string;
+        function: string;
+        payload: any;
+      }[];
+    };
+
+    if (resp.display.length === 0) {
+      return;
+    }
   };
 
   function handleTextChange({

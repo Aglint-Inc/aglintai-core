@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {END, START, StateGraph, StateGraphArgs} from '@langchain/langgraph';
-import {createSchedulingSupervisorAgent} from './supervisoragent';
 import {BaseMessage} from 'langchain/schema';
-import {TeamState} from './utils/state';
-import {CallBackPayload} from './main';
 import {greetingsNode} from './nodes/greetings/node';
-import {InterviewTypesReadNode} from './nodes/interviewTypeRead/node';
+import {interviewTypesReadNode} from './nodes/interviewTypeRead/node';
+import {fetchScheduledInterviewsNode} from './nodes/scheduledInterviewsRead/node';
+import {createSchedulingSupervisorAgent} from './supervisoragent';
+import {TeamState} from './utils/state';
+import {CallBackPayload} from './types';
 
 export const agentChain = async ({
   recruiter_id,
@@ -33,32 +34,35 @@ export const agentChain = async ({
     },
   };
 
-  const candidateAvailabilityRequestAgent = new StateGraph({
+  const agent = new StateGraph({
     channels: teamState,
   })
     .addNode('greetingAgent', async state => await greetingsNode({state}))
     .addNode(
       'interviewTypesRead',
       async state =>
-        await InterviewTypesReadNode({state, recruiter_id, callback})
+        await interviewTypesReadNode({state, recruiter_id, callback})
+    )
+    .addNode(
+      'fetchScheduledInterviewsRead',
+      async state =>
+        await fetchScheduledInterviewsNode({state, recruiter_id, callback})
     )
     // @ts-ignore
     .addNode('supervisor', await createSchedulingSupervisorAgent());
 
   // Define the control flow
-  candidateAvailabilityRequestAgent.addEdge('greetingAgent', 'supervisor');
-  candidateAvailabilityRequestAgent.addEdge('interviewTypesRead', 'supervisor');
-  candidateAvailabilityRequestAgent.addConditionalEdges(
-    'supervisor',
-    x => x.next,
-    {
-      greetingAgent: 'greetingAgent',
-      interviewTypesRead: 'interviewTypesRead',
-      FINISH: END,
-    }
-  );
-  candidateAvailabilityRequestAgent.addEdge(START, 'supervisor');
-  const candidateAvailabilityRequestAgentChain =
-    candidateAvailabilityRequestAgent.compile();
-  return candidateAvailabilityRequestAgentChain;
+  agent.addEdge('greetingAgent', 'supervisor');
+  agent.addEdge('interviewTypesRead', 'supervisor');
+  agent.addEdge('fetchScheduledInterviewsRead', 'supervisor');
+  agent.addConditionalEdges('supervisor', x => x.next, {
+    greetingAgent: 'greetingAgent',
+    interviewTypesRead: 'interviewTypesRead',
+    fetchScheduledInterviewsRead: 'fetchScheduledInterviewsRead',
+    FINISH: END,
+  });
+  agent.addEdge(START, 'supervisor');
+  const agentChain = agent.compile();
+
+  return agentChain;
 };
