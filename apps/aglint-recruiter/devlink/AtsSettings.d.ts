@@ -8,4 +8,6 @@ declare function AtsSettings(props: {
   slotButton?: Types.Devlink.Slot;
   slotSyncItems?: Types.Devlink.Slot;
   slotFrequencySync?: Types.Devlink.Slot;
+  textSyncItems?: React.ReactNode;
+  textAtsConnected?: React.ReactNode;
 }): React.JSX.Element;
