@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { CustomizableTypes, Type } from "../utils.types";
+import type { Custom, CustomizableTypes, Type } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import { CustomCandidateFiles } from "./candidate_files";
@@ -36,32 +36,25 @@ export type TableType<
   T extends keyof DatabaseTables,
   U extends DatabaseTableRow<T> extends CustomizableTypes<"Array">
     ? { [id in keyof Partial<DatabaseTableRow<T>[number]>]: any }
-    : DatabaseTableRow<T> extends CustomizableTypes<"Object">
-      ? { [id in keyof Partial<DatabaseTableRow<T>>]: any }
-      : never,
-> = Type<
-  DatabaseTables[T],
-  //@ts-ignore
-  {
-    Insert: Type<
-      DatabaseTableInsert<T>,
-      //@ts-ignore
-      Partial<U>
-    >;
-    Row: Type<
-      DatabaseTableRow<T>,
-      //@ts-ignore
-      U
-    >;
-    Update: Type<
-      DatabaseTableUpdate<T>,
-      //@ts-ignore
-      Partial<U>
-    >;
-  }
+    : { [id in keyof Partial<DatabaseTableRow<T>>]: any },
+> = Required<
+  Custom<
+    DatabaseTables[T],
+    //@ts-expect-error
+    {
+      //@ts-expect-error
+      Row: Custom<DatabaseTableRow<T>, U>;
+      //@ts-expect-error
+      Insert: Custom<DatabaseTableInsert<T>, Partial<U>>;
+      //@ts-expect-error
+      Update: Custom<DatabaseTableUpdate<T>, Partial<U>>;
+    }
+  >
 >;
 
-export type Tables = Type<
+// TODO: REMOVE PARTIALS AND TS_EXPECT_ERROR AFTER STRICT NULL CHECK IS TURNED ON
+
+export type Tables = Custom<
   DatabaseTables,
   {
     new_tasks: CustomNewTasks;
