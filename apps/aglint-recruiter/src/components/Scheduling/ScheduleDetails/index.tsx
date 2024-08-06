@@ -3,15 +3,15 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
-import { Skeleton } from '@/devlink2/Skeleton';
 import Loader from '../../Common/Loader';
 import { useAllActivities } from '../CandidateDetails/queries/hooks';
 import RightPanel from '../CandidateDetails/RightPanel';
