@@ -55,6 +55,7 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
     fet();
   }, []);
 
+  //dates
   const startDate = dayjsLocal(
     new Date().setDate(new Date().getDate() + dayCount.start),
   ).format('YYYY-MM-DD');
@@ -63,8 +64,15 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
     new Date().setDate(new Date().getDate() + dayCount.end),
   ).format('YYYY-MM-DD');
 
+  const startDateUI = dayjsLocal(
+    new Date().setDate(new Date().getDate() + dayCount.start),
+  ).format('MMM DD YYYY');
+
+  const endDateUI = dayjsLocal(
+    new Date().setDate(new Date().getDate() + dayCount.end),
+  ).format('MMM DD YYYY');
+
   const datesArray = getDatesArray(startDate, endDate, 'YYYY-MM-DD');
-  const datesArrayLable: string[] = getDatesArray(startDate, endDate, 'D');
 
   Object.keys(gridData).forEach((date) => {
     if (datesArray.includes(date)) {
@@ -79,18 +87,10 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
   );
 
   const filled2d = filling2dArray(newDataFill1Array, maxCount);
-
   const rest = transposeArray(filled2d);
 
-  const yLabels: string[] = new Array(Math.ceil(maxCount)).fill('');
-
-  const startDateUI = dayjsLocal(
-    new Date().setDate(new Date().getDate() + dayCount.start),
-  ).format('MMM DD YYYY');
-
-  const endDateUI = dayjsLocal(
-    new Date().setDate(new Date().getDate() + dayCount.end),
-  ).format('MMM DD YYYY');
+  const yLabel: string[] = new Array(Math.ceil(maxCount)).fill('');
+  const xLabel: string[] = getDatesArray(startDate, endDate, 'D');
 
   if (rest.length) {
     return (
@@ -140,8 +140,8 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
         </Stack>
         <HeatMapGrid
           data={rest}
-          xLabels={datesArrayLable}
-          yLabels={yLabels}
+          xLabels={xLabel}
+          yLabels={yLabel}
           square
           cellHeight='30px'
           xLabelsPos='bottom'
@@ -153,9 +153,13 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
                 `/scheduling/view?meeting_id=${rest[x][y].meeting_id}&tab=candidate_details`,
               );
           }}
-          yLabelsPos='right'
+          yLabelsPos='left'
           xLabelsStyle={(index) => ({
             color: index % 6 === 0 ? '#777' : 'transparent',
+            fontSize: '10px',
+          })}
+          yLabelsStyle={(index) => ({
+            color: index % 1 === 0 ? '#777' : 'transparent',
             fontSize: '10px',
           })}
           cellStyle={(_x, _y) => {

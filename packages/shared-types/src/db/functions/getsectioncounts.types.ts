@@ -4,7 +4,7 @@ import type { FunctionType } from "./index.types";
 export type CustomGetSectionCounts = FunctionType<
   "getsectioncounts",
   {},
-  Required<{
-    [id in Database["public"]["Enums"]["application_status"]]: number;
-  }>
+  {
+    [id in Database["public"]["Enums"]["application_status"]]-?: number;
+  }
 >;

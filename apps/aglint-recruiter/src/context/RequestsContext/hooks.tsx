@@ -81,8 +81,12 @@ export const useRequestsActions = () => {
 
   const mutationQueue = useMemo(
     () => [
-      ...updateMutationState.map(({ id }) => id),
-      ...deleteMutationState.map(({ id }) => id),
+      ...updateMutationState
+        .filter((payload) => payload?.loading !== false)
+        .map(({ payload: { requestId } }) => requestId),
+      ...deleteMutationState
+        .filter((payload) => payload?.loading !== false)
+        .map(({ payload: { requestId } }) => requestId),
     ],
     [updateMutationState, deleteMutationState],
   );

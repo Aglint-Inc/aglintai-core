@@ -10,14 +10,32 @@
   border-bottom: 1px solid #eaf1f3;
 
   background-color: white;
+
+  transition: background-color 200ms ease;
+
+  cursor: pointer;
+}
+
+.module_row:hover {
+  background-color: var(--neutral-2);
 }
 
 .module_row.progress {
   position: sticky;
   top: 0px;
   z-index: 2;
+
   grid-template-columns: 25% 25% 50%;
+
   background-color: var(--white);
+
+  transition: background-color 200ms ease;
+
+  cursor: pointer;
+}
+
+.module_row.progress:hover {
+  background-color: var(--neutral-2);
 }
 
 .module_row.height-56 {
