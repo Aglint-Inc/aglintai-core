@@ -5,8 +5,5 @@ export default defineConfig((options: Options) => ({
   clean: true,
   dts: true,
   format: ['esm', 'cjs'],
-  banner: {
-    js: "'use client'",
-  },
   ...options,
 }));

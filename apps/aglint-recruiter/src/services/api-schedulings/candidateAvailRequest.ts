@@ -30,10 +30,16 @@ export const candidateAvailRequest = async ({
     api_options,
   } = v.parse(candidate_avail_request_schema, req_body);
 
+  supabaseWrap(
+    await supabaseAdmin
+      .from('candidate_request_availability')
+      .delete()
+      .eq('request_id', request_id),
+  );
   const [avail_req] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
-      .insert({
+      .upsert({
         application_id,
         recruiter_id,
         is_task_created: false,
@@ -53,7 +59,7 @@ export const candidateAvailRequest = async ({
       .select(),
   );
   supabaseWrap(
-    await supabaseAdmin.from('request_session_relation').insert(
+    await supabaseAdmin.from('request_session_relation').upsert(
       cloned_sessn_ids.map((s_id) => ({
         session_id: s_id,
         request_availability_id: avail_req.id,
