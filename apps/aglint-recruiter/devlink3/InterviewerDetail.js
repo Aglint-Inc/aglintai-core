@@ -23,6 +23,7 @@ export function InterviewerDetail({
   onClickLinkedIn = {},
   isLinkedInVisible = true,
   textPhone = "Asia, Kolkata, Chennai (GMT+5:30)",
+  textInterviewer = "dileep@aglinthq.com",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewerdetail")} tag="div">
@@ -105,54 +106,55 @@ export function InterviewerDetail({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "id-details-left")}
+                  className={_utils.cx(_styles, "id-detail--item")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "id-detail--item")}
-                    tag="div"
-                  >
-                    <GlobalIcon iconName="corporate_fare " />
-                    <Text content={textRole} weight="" />
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "id-detail--item")}
-                    tag="div"
-                  >
-                    <GlobalIcon iconName="mail" />
-                    <Text content={textMail} weight="" />
-                  </_Builtin.Block>
+                  <GlobalIcon iconName="corporate_fare " />
+                  <Text content={textRole} weight="" />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "id-details-left")}
+                  className={_utils.cx(_styles, "id-detail--item")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "id-detail--item")}
-                    tag="div"
-                  >
-                    <GlobalIcon iconName="location_on" />
-                    <Text content={textLocation} weight="" />
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "id-detail--item")}
-                    tag="div"
-                  >
-                    <GlobalIcon iconName="public" />
-                    <Text content={textTimeZone} weight="" />
-                  </_Builtin.Block>
+                  <GlobalIcon iconName="location_on" />
+                  <Text content={textLocation} weight="" />
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "id-details-left")}
+                  className={_utils.cx(_styles, "id-detail--item")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "id-detail--item")}
-                    tag="div"
-                  >
-                    <GlobalIcon iconName="smartphone" />
-                    <Text content={textPhone} weight="" />
-                  </_Builtin.Block>
+                  <GlobalIcon iconName="public" />
+                  <Text content={textTimeZone} weight="" />
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "id-details-wrap",
+                  "bottom-details"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "id-detail--item")}
+                  tag="div"
+                >
+                  <GlobalIcon iconName="person" />
+                  <Text content={textInterviewer} weight="" />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "id-detail--item")}
+                  tag="div"
+                >
+                  <GlobalIcon iconName="mail" />
+                  <Text content={textMail} weight="" />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "id-detail--item")}
+                  tag="div"
+                >
+                  <GlobalIcon iconName="smartphone" />
+                  <Text content={textPhone} weight="" />
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
