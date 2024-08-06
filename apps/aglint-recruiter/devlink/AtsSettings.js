@@ -13,6 +13,8 @@ export function AtsSettings({
   slotButton,
   slotSyncItems,
   slotFrequencySync,
+  textSyncItems = "Sync Items from Greenhouse",
+  textAtsConnected = "Greenhouse is connected",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "ats-settings-wrap")} tag="div">
@@ -25,7 +27,7 @@ export function AtsSettings({
           tag="div"
         >
           <_Builtin.Block tag="div">{slotAtsIcon}</_Builtin.Block>
-          <Text content="Greenhouse is connected" weight="medium" />
+          <Text content={textAtsConnected} weight="medium" />
           <_Builtin.Block tag="div">{slotConnectIcon}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -45,7 +47,7 @@ export function AtsSettings({
             tag="div"
           >
             <GlobalIcon iconName="sync" />
-            <Text content="Sync Items from Greenhouse" weight="medium" />
+            <Text content={textSyncItems} weight="medium" />
           </_Builtin.Block>
           <Text color="neutral" />
         </_Builtin.Block>

@@ -1,7 +1,8 @@
-import { MenuItem, Popover, Select, Stack, Typography } from '@mui/material';
+import { MenuItem, Popover, Select, Stack } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { Text } from '@/devlink2/Text';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 export type sortComponentType = {
@@ -42,7 +43,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
   };
   return (
     <Stack direction={'row'} alignItems={'center'} gap={1}>
-      <Typography fontSize={'14px'}>Sort by</Typography>
+      <Text color={'neutral'} size={1} content={'Sort by'} />
       <ButtonFilter
         isActive={true}
         isDotVisible={false}
@@ -60,7 +61,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
@@ -73,7 +74,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
           },
         }}
       >
-        <Stack p={2} minWidth={'max-content'} gap={1}>
+        <Stack p={1} minWidth={'max-content'} gap={1}>
           <SortOptionsDropDown
             icon={''}
             itemList={sortOptionList}

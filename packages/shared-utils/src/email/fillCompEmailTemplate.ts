@@ -5,7 +5,7 @@ import type {
   EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { replaceAll } from '../replaceAll';
-const { convert } = require('html-to-text');
+import { convert } from 'html-to-text';
 
 export const fillCompEmailTemplate = <
   T extends DatabaseEnums['email_slack_types'],

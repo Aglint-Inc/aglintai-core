@@ -28,7 +28,7 @@ export default function SearchField({
 }) {
   return (
     <UITextField
-      height={32}
+      height={26}
       width={isFullWidth ? undefined : '250px'}
       fullWidth={isFullWidth}
       onFocus={onFocus}
