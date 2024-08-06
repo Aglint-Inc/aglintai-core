@@ -83,12 +83,12 @@ function Availibility({
                       prevState[module].value
                   : value === 'Interviews'
                     ? // eslint-disable-next-line security/detect-object-injection
-                      prevState[module].value
+                      Math.floor(prevState[module].value)
                     : // eslint-disable-next-line security/detect-object-injection
                       prevState[module].value > LoadMax.dailyHours
                       ? LoadMax.dailyHours
                       : // eslint-disable-next-line security/detect-object-injection
-                        prevState[module].value,
+                        Math.floor(prevState[module].value),
               max:
                 module === 'weekly'
                   ? value === 'Hours'

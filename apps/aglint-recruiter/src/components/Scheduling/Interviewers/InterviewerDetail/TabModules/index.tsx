@@ -34,7 +34,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const qualifiedModulesListWithGlobalArc = qualifiedModulesList?.map(
     (qualif) => ({
       ...qualif,
-      is_global_archived: allModules.find(
+      is_global_archived: allModules?.find(
         (module) => module.id === qualif.module_id,
       ).is_archived,
     }),
@@ -42,7 +42,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
   const trainingModulesListWithGlobalArc = trainingModulesList?.map(
     (trainee) => ({
       ...trainee,
-      is_global_archived: allModules.find(
+      is_global_archived: allModules?.find(
         (module) => module.id === trainee.module_id,
       ).is_archived,
     }),

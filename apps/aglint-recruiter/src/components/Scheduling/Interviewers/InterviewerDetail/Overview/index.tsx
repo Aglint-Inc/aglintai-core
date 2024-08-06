@@ -53,7 +53,7 @@ function Overview({
   const trainingModulesListWithGlobalArc = trainingModulesList?.map(
     (trainee) => ({
       ...trainee,
-      is_global_archived: allModules.find(
+      is_global_archived: allModules?.find(
         (module) => module.id === trainee.module_id,
       ).is_archived,
     }),
