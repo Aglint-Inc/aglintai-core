@@ -60,61 +60,6 @@ export const fetchApplicationDetails = async ({
 const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;
 const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
 
-export const fetchSessionDetailsFromInterviewPlan = async ({
-  job_id,
-  supabaseCaller,
-}: {
-  job_id: string;
-  supabaseCaller: SupabaseType;
-}) => {
-  const { data } = await supabaseCaller
-    .from('interview_plan')
-    .select(
-      `*,interview_session(*,interview_module(*),interview_meeting(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),${userDetails}))`,
-    )
-    .eq('job_id', job_id)
-    .single()
-    .throwOnError();
-
-  if (!data) return [];
-
-  const typedRes: SessionsType[] = data.interview_session.map((item) => {
-    const interview_session: DatabaseTable['interview_session'] = {
-      id: item.id,
-      name: item.name,
-      session_order: item.session_order,
-      session_duration: item.session_duration,
-      schedule_type: item.schedule_type,
-      session_type: item.session_type,
-      created_at: item.created_at,
-      meeting_id: item.meeting_id,
-      break_duration: item.break_duration,
-      interview_plan_id: item.interview_plan_id,
-      interviewer_cnt: item.interviewer_cnt,
-      location: item.location,
-      members_meta: item.members_meta,
-      module_id: item.module_id,
-      parent_session_id: null,
-    };
-
-    return {
-      interview_session,
-      interview_meeting: item.interview_meeting,
-      cancel_reasons: [],
-      interview_module: item.interview_module,
-      users: item.interview_session_relation.map((sesitem) => ({
-        interview_session_relation: sesitem,
-        interview_module_relation: sesitem.interview_module_relation,
-        user_details: sesitem.interview_module_relation_id
-          ? sesitem.interview_module_relation.recruiter_user
-          : sesitem.recruiter_user,
-      })),
-    };
-  });
-
-  return typedRes;
-};
-
 export const fetchSessionDetailsFromSchedule = async ({
   application_id,
   supabaseCaller,
