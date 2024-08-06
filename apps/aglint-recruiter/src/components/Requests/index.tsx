@@ -2,6 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useEffect, useState } from 'react';
 
+import { NoPendingReq } from '@/devlink2/NoPendingReq';
 import { RequestAgent } from '@/devlink2/RequestAgent';
 import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
 import { RequestAgentTab } from '@/devlink2/RequestAgentTab';
@@ -18,30 +19,44 @@ import StatsCards from './StatsCards';
 
 const Requests = () => {
   const { recruiterUser } = useAuthDetails();
+  const { setQueryParams, queryParams } = useRouterPro();
   const [tabs, setTabs] = useState([
-    { title: 'Requests', isTabActive: true, pathName: '/requests' },
-    { title: 'Dashboard', isTabActive: false, pathName: '/dashboard' },
-    { title: 'Metrics', isTabActive: false, pathName: '/metrics' },
+    { title: 'Requests', isTabActive: true, pathName: 'requests' },
+    { title: 'Dashboard', isTabActive: false, pathName: 'dashboard' },
+    { title: 'Metrics', isTabActive: false, pathName: 'metrics' },
   ]);
 
   const {
     requests: { status, data: requestList },
+    filters,
   } = useRequests();
-  const { setQueryParams, queryParams } = useRouterPro();
+  const isNotApplied =
+    !filters.is_new &&
+    filters.status.length === 0 &&
+    filters.type.length === 0 &&
+    !filters.title;
+  const showEmptyPage = status === 'success' && !requestList.length;
+
+  const urgentRequests = (requestList ?? []).filter(
+    (payload) => payload.priority === 'urgent',
+  );
+  const standardRequests = (requestList ?? []).filter(
+    (payload) => payload.priority === 'standard',
+  );
+
   useEffect(() => {
     if (!queryParams?.tab) {
       setQueryParams({ tab: 'Requests' });
     }
   }, [queryParams?.tab]);
-  const showEmptyPage = status === 'success' && !requestList.length;
   return (
     <RequestAgent
       textName={getFullName(recruiterUser.first_name, '')}
       textTopStatus={`Your top priorities as of ${dayjsLocal().add(-1, 'day').format('MMM D, YYYY')}`}
       slotTabs={
         <>
-          {!showEmptyPage &&
-            tabs.map(({ title, isTabActive }, i) => {
+          {(!showEmptyPage || !isNotApplied) &&
+            tabs.map(({ title, isTabActive, pathName }, i) => {
               return (
                 <RequestAgentTab
                   onClickTab={{
@@ -52,7 +67,7 @@ const Requests = () => {
                           isTabActive: item.title === title,
                         })),
                       );
-                      setQueryParams({ tab: title });
+                      setQueryParams({ tab: pathName });
                     },
                   }}
                   key={i}
@@ -63,25 +78,35 @@ const Requests = () => {
             })}
         </>
       }
-      slotFilter={!showEmptyPage && <FilterAndSorting />}
+      slotFilter={(!showEmptyPage || !isNotApplied) && <FilterAndSorting />}
       slotRequestOption={<StatsCards />}
       slotRequestSection={
         <ShowCode>
-          <ShowCode.When isTrue={showEmptyPage}>
-            <>
-              <RequestAgentEmpty />
-            </>
+          <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
+            <RequestAgentEmpty />
           </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'Requests'}>
-            <>
-              <Section priority='urgent' />
-              <Section priority='standard' />
-            </>
+          <ShowCode.When isTrue={queryParams.tab === 'requests'}>
+            <ShowCode>
+              <ShowCode.When
+                isTrue={
+                  status === 'success' &&
+                  urgentRequests.length === 0 &&
+                  standardRequests.length === 0
+                }
+              >
+                <NoPendingReq />
+              </ShowCode.When>
+
+              <>
+                <Section requests={urgentRequests} priority='urgent' />
+                <Section requests={standardRequests} priority='standard' />
+              </>
+            </ShowCode>
           </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'Dashboard'}>
+          <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
             <>Dashboard</>
           </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'Metrics'}>
+          <ShowCode.When isTrue={queryParams.tab === 'metrics'}>
             <>Metrics</>
           </ShowCode.When>
         </ShowCode>

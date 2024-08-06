@@ -12,66 +12,66 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import { ShowCode } from '../../Common/ShowCode';
 import { Request } from './Request';
 
-function Section({ priority }: Pick<RequestType, 'priority'>) {
+function Section({
+  requests,
+  priority,
+}: {
+  requests: RequestType[];
+  priority: RequestType['priority'];
+}) {
   const {
-    requests: { status, data: requestsRecs },
+    requests: { status },
   } = useRequests();
 
-  const requests = (requestsRecs ?? []).filter(
-    (payload) => payload.priority === priority,
-  );
   return (
-    <>
-      <RequestSection
-        textSectionHeader={
-          <Stack direction={'row'} spacing={1}>
-            <Text
-              color={'neutral'}
-              size={1}
-              content={`${capitalizeAll(priority)} Requests:`}
-            />
-            <ShowCode>
-              <ShowCode.When isTrue={status === 'pending'}>
-                <Stack
-                  borderRadius={'3px'}
-                  position={'relative'}
-                  width={'20px'}
-                  height={`20px`}
-                >
-                  <Skeleton />
-                </Stack>
-              </ShowCode.When>
-              <ShowCode.Else>
-                <Text
-                  color={'neutral'}
-                  size={1}
-                  content={`${requests.length}`}
-                />
-              </ShowCode.Else>
-            </ShowCode>
-          </Stack>
-        }
-        slotRequestCard={
-          <ShowCode>
-            <ShowCode.When isTrue={status === 'error'}>
-              <>Error</>
-            </ShowCode.When>
-            <ShowCode.When isTrue={status === 'pending'}>
-              <RequestCardSkeletons />
-            </ShowCode.When>
-            <ShowCode.Else>
-              {requests.map((props, i) => {
-                return (
-                  <RequestProvider key={props.id ?? i} request_id={props.id}>
-                    <Request {...{ ...props, index: i }} />
-                  </RequestProvider>
-                );
-              })}
-            </ShowCode.Else>
-          </ShowCode>
-        }
-      />
-    </>
+    <ShowCode>
+      <ShowCode.When isTrue={Boolean(status === 'success' && requests.length)}>
+        <RequestSection
+          textSectionHeader={
+            <Stack direction={'row'} spacing={1}>
+              <Text
+                color={'neutral'}
+                size={1}
+                content={`${capitalizeAll(priority)} Requests:`}
+              />
+
+              <Text color={'neutral'} size={1} content={`${requests.length}`} />
+            </Stack>
+          }
+          slotRequestCard={requests.map((props, i) => {
+            return (
+              <RequestProvider key={props.id ?? i} request_id={props.id}>
+                <Request {...{ ...props, index: i }} />
+              </RequestProvider>
+            );
+          })}
+        />
+      </ShowCode.When>
+      <ShowCode.When isTrue={Boolean(status === 'pending')}>
+        <RequestSection
+          textSectionHeader={
+            <Stack direction={'row'} spacing={1}>
+              <Text
+                color={'neutral'}
+                size={1}
+                content={`${capitalizeAll(priority)} Requests:`}
+              />
+
+              <Stack
+                borderRadius={'3px'}
+                position={'relative'}
+                width={'20px'}
+                height={`20px`}
+              >
+                <Skeleton />
+              </Stack>
+            </Stack>
+          }
+          slotRequestCard={<RequestCardSkeletons />}
+        />
+      </ShowCode.When>
+      <ShowCode.When isTrue={Boolean(status === 'error')}>Error</ShowCode.When>
+    </ShowCode>
   );
 }
 
