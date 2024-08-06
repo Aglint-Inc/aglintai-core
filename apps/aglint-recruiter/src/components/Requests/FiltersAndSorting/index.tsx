@@ -91,8 +91,9 @@ function FilterAndSorting() {
 
   return (
     <FilterHeader
-      filters={[...safeFilters, isNewButton]}
-      sort={safeSort}
+      layoutMode='left-align'
+      filters={[isNewButton, ...safeFilters]}
+      // sort={safeSort}
       search={{
         value: title,
         setValue: (newValue: typeof title) =>
