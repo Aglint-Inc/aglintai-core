@@ -1,6 +1,5 @@
 {
   "name": "aglint-apis",
-  "type": "commonjs",
   "version": "1.0.0",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
