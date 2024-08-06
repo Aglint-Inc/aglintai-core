@@ -3,6 +3,7 @@
   "description": "A live preview of your emails right in your browser.",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
+    "build": "next build",
     "start": "next start  --port 3100",
     "dev": "npm run dev:build && next dev --port 3100",
     "clean": "rm -rf dist",
