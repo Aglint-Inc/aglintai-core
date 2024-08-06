@@ -33,4 +33,5 @@ declare function MemberListCard(props: {
   textPause?: React.ReactNode;
   isInterviewsVisible?: Types.Visibility.VisibilityConditions;
   slotThreeDot?: Types.Devlink.Slot;
+  slotBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

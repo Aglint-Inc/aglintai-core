@@ -145,7 +145,6 @@ export const PATHS = [
 '/api/roleAndPermission',
 '/api/save_interview_feedback',
 '/api/scheduling/application/cancelschedule',
-'/api/scheduling/application/candidatesessioncache',
 '/api/scheduling/application/debrief-add-users',
 '/api/scheduling/application/fetchcandidatedetails',
 '/api/scheduling/application/fetchfeedbackdetails',

@@ -7,14 +7,21 @@ import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const candidateAvailRequest = async (
-  req_body: any,
-  organizer_id: string,
-  cloned_sessn_ids: string[],
-  start_date_str,
+export const candidateAvailRequest = async ({
+  cloned_sessn_ids,
   end_date_str,
-  request_id: string,
-) => {
+  organizer_id,
+  req_body,
+  request_id,
+  start_date_str,
+}: {
+  req_body: any;
+  organizer_id: string;
+  cloned_sessn_ids: string[];
+  start_date_str;
+  end_date_str;
+  request_id: string;
+}) => {
   const {
     application_id,
     number_of_days,

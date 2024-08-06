@@ -22,7 +22,6 @@ import DynamicLoader from '../../DynamicLoader';
 import Interviews from '../../Interviews';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
-import InterviewerLevelSettings from '../InterviewerLevelSettings';
 import Overview from '../Overview';
 import AddInterviewTypeDialog from '../Popups/AddInterviewTypeDialog';
 import { EditProfileDialog } from '../Popups/EditProfileDialog';
@@ -317,18 +316,9 @@ function BodyComp() {
                     totalInterviewsToday={totalInterviewsToday}
                   />
                 )}
-                {tab === 'keywords' && (
-                  <InterviewerLevelSettings
-                    initialData={interviewerDetails?.scheduling_settings}
-                    updateSettings={(x) => {
-                      return handleMemberUpdate({
-                        user_id: interviewerDetails.user_id,
-                        data: { scheduling_settings: x },
-                      });
-                    }}
-                    isAvailability={false}
-                  />
-                )}
+                {/* {tab === 'keywords' && (
+                 
+                )} */}
                 {tab === 'availibility' && (
                   <Availibility
                     interviewerDetailsRefetch={interviewerDetailsRefetch}
@@ -337,6 +327,7 @@ function BodyComp() {
                     totalHoursToday={totalHoursToday}
                     totalInterviewsThisWeek={totalInterviewsThisWeek}
                     totalInterviewsToday={totalInterviewsToday}
+                    handleMemberUpdate={handleMemberUpdate}
                     updateSettings={(x) => {
                       return handleMemberUpdate({
                         user_id: interviewerDetails.user_id,

@@ -30,6 +30,8 @@ import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/
 import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import timeZones from '@/src/utils/timeZone';
 
+import InterviewerLevelSettings from '../InterviewerLevelSettings';
+
 let schedulingSettingObj = {};
 function Availibility({
   updateSettings,
@@ -39,6 +41,7 @@ function Availibility({
   totalInterviewsThisWeek,
   interviewerDetailsRefetch,
   totalInterviewsToday,
+  handleMemberUpdate,
 }) {
   const [workingHours, setWorkingHours] = useState([]);
 
@@ -313,6 +316,16 @@ function Availibility({
             onClickButton={{ onClick: () => setEditDrawer(true) }}
           />
         }
+      />
+      <InterviewerLevelSettings
+        initialData={interviewerDetails?.scheduling_settings}
+        updateSettings={(x) => {
+          return handleMemberUpdate({
+            user_id: interviewerDetails.user_id,
+            data: { scheduling_settings: x },
+          });
+        }}
+        isAvailability={false}
       />
       <Drawer
         open={editDrawer}

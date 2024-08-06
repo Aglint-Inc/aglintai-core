@@ -16,6 +16,7 @@ import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -362,18 +363,8 @@ function ModuleSettingComp({
                   slotButtonPrimary={<></>}
                   slotApprovalDoneInput={
                     <>
-                      {selectedUsers.length === 0 && (
-                        <Typography
-                          color={'var(--error-9)'}
-                          mb={'var(--space-2)'}
-                        >
-                          Please select users to approve or uncheck require
-                          approval
-                        </Typography>
-                      )}
                       <MembersAutoComplete
                         error={errorApproval || selectedUsers.length === 0}
-                        // helperText='Please select users to approve or uncheck require approval'
                         disabled={false}
                         renderUsers={dropDownMembers}
                         setSelectedUsers={setSelectedUsers}
@@ -382,6 +373,16 @@ function ModuleSettingComp({
                         maxWidth='430px'
                         setError={setErrorApproval}
                       />
+                      {selectedUsers.length === 0 && (
+                        <Typography
+                          color={'var(--error-9)'}
+                          mb={'var(--space-2)'}
+                          pt={'2px'}
+                        >
+                          Please select users to approve or uncheck require
+                          approval
+                        </Typography>
+                      )}
                     </>
                   }
                   slotInputNoOfReverse={
@@ -405,9 +406,23 @@ function ModuleSettingComp({
                           },
                         }}
                       />
-                      <Typography paddingInline={'2px'}>
-                        {localModule.settings.noReverseShadow}
-                      </Typography>
+                      <MuiNumberfield
+                        width='80px'
+                        height='26px'
+                        value={localModule.settings.noReverseShadow}
+                        handleSelect={(value) =>
+                          setEditLocalModule((prev) => ({
+                            ...prev,
+                            settings: {
+                              ...prev.settings,
+                              noReverseShadow:
+                                value === 0
+                                  ? editModule.settings.noReverseShadow
+                                  : value,
+                            },
+                          }))
+                        }
+                      />
                       <IconButtonSoft
                         iconName='Add'
                         size={1}
@@ -449,9 +464,23 @@ function ModuleSettingComp({
                           },
                         }}
                       />
-                      <Typography paddingInline={'2px'}>
-                        {localModule.settings.noShadow}
-                      </Typography>
+                      <MuiNumberfield
+                        width='80px'
+                        height='26px'
+                        value={localModule.settings.noShadow}
+                        handleSelect={(value) =>
+                          setEditLocalModule((prev) => ({
+                            ...prev,
+                            settings: {
+                              ...prev.settings,
+                              noShadow:
+                                value === 0
+                                  ? editModule.settings.noShadow
+                                  : value,
+                            },
+                          }))
+                        }
+                      />
                       <IconButtonSoft
                         iconName='Add'
                         size={1}

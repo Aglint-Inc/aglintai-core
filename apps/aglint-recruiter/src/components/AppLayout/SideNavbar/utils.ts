@@ -22,15 +22,26 @@ export const navList: {
     isVisible: true,
     permission: ['task_module'],
     active: ['/requests'],
-  },{
+  },
+  // {
+  //   text: 'Requests',
+  //   SubComponents: null,
+  //   route: ROUTES['/requests'](),
+  //   comingSoon: false,
+  //   isVisible: true,
+  //   permission: ['job_module'],
+  //   active: ['/requests'],
+  // },
+  {
     text: 'Tasks',
     SubComponents: null,
-    route: ROUTES['/tasks']()+'?myTasks',
+    route: ROUTES['/tasks']() + '?myTasks',
     comingSoon: false,
     isVisible: false,
     permission: ['task_module'],
     active: ['/tasks'],
-  },{
+  },
+  {
     text: 'Dashboard',
     SubComponents: null,
     route: ROUTES['/scheduling']() + '?tab=dashboard',
@@ -38,7 +49,8 @@ export const navList: {
     isVisible: true,
     permission: ['scheduling_module'],
     active: ['/scheduling'],
-  },{
+  },
+  {
     text: 'Candidates',
     SubComponents: null,
     route: ROUTES['/scheduling/application'](),
@@ -49,7 +61,8 @@ export const navList: {
       '/scheduling/application',
       '/scheduling/application/[application_id]',
     ],
-  },{
+  },
+  {
     text: 'Interview Types',
     SubComponents: null,
     route: ROUTES['/scheduling/interview-types'](),
@@ -60,7 +73,8 @@ export const navList: {
       '/scheduling/interview-types',
       '/scheduling/interview-types/[type_id]',
     ],
-  },{
+  },
+  {
     text: 'Interviewers',
     SubComponents: null,
     route: ROUTES['/scheduling/interviewer'](),
@@ -68,7 +82,8 @@ export const navList: {
     isVisible: true,
     permission: ['manage_interviewers'],
     active: ['/scheduling/interviewer'],
-  },{
+  },
+  {
     text: 'Jobs',
     SubComponents: null,
     route: ROUTES['/jobs']() + '?status=published',
@@ -88,7 +103,8 @@ export const navList: {
       '/jobs/[id]/workflows',
       '/jobs/[id]/candidate-list',
     ],
-  },{
+  },
+  {
     text: 'Sourcing Hub',
     SubComponents: null,
     route: ROUTES['/candidates/history']() + '?currentTab=discover%20talent',
@@ -96,7 +112,8 @@ export const navList: {
     isVisible: false,
     // permission: '',
     active: [],
-  },{
+  },
+  {
     text: 'Integrations',
     SubComponents: null,
     route: ROUTES['/integrations'](),
@@ -104,7 +121,8 @@ export const navList: {
     isVisible: true,
     permission: ['integrations_module'],
     active: ['/integrations'],
-},{
+  },
+  {
     text: 'Workflows',
     SubComponents: null,
     route: ROUTES['/workflows'](),
@@ -112,7 +130,8 @@ export const navList: {
     isVisible: true,
     permission: ['workflow_module'],
     active: ['/workflows', '/workflows/[id]'],
-  },{
+  },
+  {
     text: 'Company Settings',
     SubComponents: null,
     route: ROUTES['/company'](),

@@ -148,6 +148,14 @@ const LinkIcon = ({
           slotIcon={<TaskIcon />}
         />
       );
+    case 'Requests':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<TaskIcon />}
+        />
+      );
   }
 };
 
