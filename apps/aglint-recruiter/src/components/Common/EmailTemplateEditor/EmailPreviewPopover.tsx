@@ -68,7 +68,6 @@ export default function EmailPreviewPopover({
               <Stack>
                 <iframe
                   width={'100%'}
-                  height={'740px'}
                   color='white'
                   srcDoc={isHtml}
                   title='Previw Email'
