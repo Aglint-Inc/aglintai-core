@@ -16,6 +16,7 @@ import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
 import {redisClient} from './services/cache/redis-cache';
 import aglintAgentRouter from './routes/testAgent';
+import agentSupervisorRouter from './routes/supervisor';
 
 const PORT = envConfig.PORT;
 
@@ -39,6 +40,7 @@ app.get('/health', (req, res) => {
   res.status(200).send('server running v 1.0.1');
 });
 app.use('/api/schedule-agent', phoneAgentRoutes);
+app.use('/api/supervisor', agentSupervisorRouter);
 app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);

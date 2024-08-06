@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { FunctionNames } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
@@ -13,11 +14,13 @@ import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
+import { useUserChat } from '@/src/queries/userchat';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import AgentEditor from './AgentEditor';
 import { scheduleTypes } from './utils';
+
 type selectedItemsType = {
   schedule_type: { id: string; name: string }[];
   job_title: { id: string; name: string }[];
@@ -26,7 +29,7 @@ type selectedItemsType = {
   request_name: { id: string; name: string }[];
 };
 function AgentInputBox() {
-  const { recruiterUser, recruiter_id } = useAuthDetails();
+  const { recruiterUser, recruiter_id, recruiter } = useAuthDetails();
   const { handleAsyncCreateRequests } = useRequests();
   const { text, setText, inputRef } = useAgentIEditor();
 
@@ -83,9 +86,57 @@ function AgentInputBox() {
     }
   }
 
+  const {
+    submitUserChat,
+    insertAIChat,
+    data: allChat,
+  } = useUserChat({
+    user_id: recruiterUser.user_id,
+  });
+
   const handleSubmit = async ({ planText }: { planText: string }) => {
     // eslint-disable-next-line no-console
     console.log(selectedItems, planText);
+    const newMessage = {
+      value: planText,
+      type: 'user',
+    };
+    const oldMessages = allChat.slice(-6).map((ele) => ({
+      value: ele.title,
+      type: ele.type === 'user' ? 'user' : 'assistant',
+    }));
+    submitUserChat(planText); // save to db
+    setText('');
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
+      {
+        recruiter_id: recruiter.id,
+        history: [...oldMessages, newMessage],
+      },
+    );
+    const resp = data as {
+      display: {
+        node: string;
+        message: string;
+        function: FunctionNames;
+        payload: any;
+      }[];
+    };
+    if (resp.display.length === 0) {
+      insertAIChat({
+        function_name: null,
+        message:
+          'Sorry unable to process your request. Please try again later.',
+        payload: null,
+      });
+    } else {
+      const lastMessage = resp.display[resp.display.length - 1];
+      insertAIChat({
+        function_name: lastMessage.function,
+        message: lastMessage.message,
+        payload: lastMessage.payload,
+      });
+    }
   };
 
   function handleTextChange({
