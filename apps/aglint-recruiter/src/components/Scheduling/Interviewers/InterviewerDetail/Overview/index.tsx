@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
-import { InterviewLoadCard } from '@/devlink3/InterviewLoadCard';
 import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/src/components/Common/Loader';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
@@ -21,10 +20,10 @@ import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
 function Overview({
   scheduleList,
   interviewerDetails,
-  totalHoursThisWeek,
-  totalHoursToday,
-  totalInterviewsThisWeek,
-  totalInterviewsToday,
+  // totalHoursThisWeek,
+  // totalHoursToday,
+  // totalInterviewsThisWeek,
+  // totalInterviewsToday,
 }: {
   scheduleList: SchedulesSupabase;
   interviewerDetails: ApiResponseGetMember;
@@ -60,6 +59,42 @@ function Overview({
       ).is_archived,
     }),
   );
+
+  const todayTypeText =
+    interviewerDetails?.scheduling_settings?.interviewLoad?.dailyLimit.type ===
+    'Interviews'
+      ? 'Interview'
+      : 'Hour';
+
+  const weeklyTypeText =
+    interviewerDetails?.scheduling_settings?.interviewLoad?.weeklyLimit.type ===
+    'Interviews'
+      ? 'Interview'
+      : 'Hour';
+  // const today =
+  //   interviewerDetails?.scheduling_settings?.interviewLoad?.dailyLimit.type ===
+  //   'Interviews'
+  //     ? totalInterviewsToday +
+  //         ' / ' +
+  //         interviewerDetails.scheduling_settings?.interviewLoad?.dailyLimit
+  //           .value || 0
+  //     : totalHoursToday +
+  //         ' / ' +
+  //         interviewerDetails.scheduling_settings?.interviewLoad?.dailyLimit
+  //           .value || 0;
+
+  // const weeklyCount =
+  //   interviewerDetails?.scheduling_settings?.interviewLoad?.weeklyLimit.type ===
+  //   'Interviews'
+  //     ? totalInterviewsThisWeek +
+  //         ' / ' +
+  //         interviewerDetails.scheduling_settings?.interviewLoad?.weeklyLimit
+  //           .value || 0
+  //     : totalHoursThisWeek +
+  //         ' / ' +
+  //         interviewerDetails.scheduling_settings?.interviewLoad?.weeklyLimit
+  //           .value || 0;
+
   return (
     <>
       <PauseDialog />
@@ -67,8 +102,30 @@ function Overview({
       <DeleteMemberDialog refetch={deleteRefetch} />
       <Heatmap
         loadSetting={interviewerDetails.scheduling_settings.interviewLoad}
+        interviewLoad={
+          <Stack direction={'row'} spacing={1}>
+            <Typography fontWeight={500}>
+              <span style={{ color: 'var(--error-9)' }}>Load </span> Daily :
+            </Typography>
+            <Typography>
+              {
+                interviewerDetails?.scheduling_settings?.interviewLoad
+                  ?.dailyLimit.value
+              }
+            </Typography>
+            <Typography>{todayTypeText}</Typography>
+            <Typography fontWeight={500}> | Weekly : </Typography>
+            <Typography>
+              {
+                interviewerDetails.scheduling_settings?.interviewLoad
+                  ?.weeklyLimit.value
+              }
+            </Typography>
+            <Typography>{weeklyTypeText}</Typography>
+          </Stack>
+        }
       />
-      <Stack ml={2} mb={2}>
+      {/* <Stack ml={2} mb={2}>
         <Typography fontWeight={500} pb={1}>
           Interview Load
         </Typography>
@@ -76,51 +133,19 @@ function Overview({
           <Stack width={'200px'}>
             <InterviewLoadCard
               textHeading='Today'
-              textLabel={
-                interviewerDetails?.scheduling_settings?.interviewLoad
-                  ?.dailyLimit.type === 'Interviews'
-                  ? 'Interview'
-                  : 'Hour'
-              }
-              textInterviewCounts={
-                interviewerDetails?.scheduling_settings?.interviewLoad
-                  ?.dailyLimit.type === 'Interviews'
-                  ? totalInterviewsToday +
-                      ' / ' +
-                      interviewerDetails.scheduling_settings?.interviewLoad
-                        ?.dailyLimit.value || 0
-                  : totalHoursToday +
-                      ' / ' +
-                      interviewerDetails.scheduling_settings?.interviewLoad
-                        ?.dailyLimit.value || 0
-              }
+              textLabel={todayTypeText}
+              textInterviewCounts={today}
             />
           </Stack>
           <Stack width={'200px'}>
             <InterviewLoadCard
               textHeading='This Week'
-              textLabel={
-                interviewerDetails?.scheduling_settings?.interviewLoad
-                  ?.weeklyLimit.type === 'Interviews'
-                  ? 'Interview'
-                  : 'Hour'
-              }
-              textInterviewCounts={
-                interviewerDetails?.scheduling_settings?.interviewLoad
-                  ?.weeklyLimit.type === 'Interviews'
-                  ? totalInterviewsThisWeek +
-                      ' / ' +
-                      interviewerDetails.scheduling_settings?.interviewLoad
-                        ?.weeklyLimit.value || 0
-                  : totalHoursThisWeek +
-                      ' / ' +
-                      interviewerDetails.scheduling_settings?.interviewLoad
-                        ?.weeklyLimit.value || 0
-              }
+              textLabel={weeklyTypeText}
+              textInterviewCounts={weeklyCount}
             />
           </Stack>
         </Stack>
-      </Stack>
+      </Stack> */}
       <InterviewerDetailOverview
         slotButtonSchedule={
           upcomingScheduleList?.length ? (
