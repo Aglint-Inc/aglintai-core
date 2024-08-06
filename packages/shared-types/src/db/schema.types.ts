@@ -4530,7 +4530,6 @@ export type Database = {
       }
       workflow_action: {
         Row: {
-          action_type: string
           created_at: string
           id: string
           order: number
@@ -4539,7 +4538,6 @@ export type Database = {
           workflow_id: string
         }
         Insert: {
-          action_type: string
           created_at?: string
           id?: string
           order: number
@@ -4548,7 +4546,6 @@ export type Database = {
           workflow_id?: string
         }
         Update: {
-          action_type?: string
           created_at?: string
           id?: string
           order?: number
@@ -6378,6 +6375,12 @@ export type Database = {
       retrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
         Returns: Json[]
+      }
+      run_workflow_action: {
+        Args: {
+          action_id: number
+        }
+        Returns: boolean
       }
       schedulercron: {
         Args: Record<PropertyKey, never>

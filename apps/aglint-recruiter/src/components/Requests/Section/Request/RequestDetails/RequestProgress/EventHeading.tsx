@@ -1,7 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import axios from 'axios';
+
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { workflowCopy } from '@/src/services/workflow/copy';
 import { EventNode } from '@/src/services/workflow/node';
+import toast from '@/src/utils/toast';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 export const EventHeading = ({ event }: { event: EventNode }) => {
   let tense: TenseType;
@@ -14,10 +18,42 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   } else if (event.status === 'failed') {
     tense = 'error';
   }
+
+  const handleRetry = async (id: number) => {
+    try {
+      await axios.post('/api/workflow-cron/execute', { action_id: id });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       <TextWithIcon
-        textContent={<>{workflowCopy[event.event_type][tense]}</>}
+        textContent={
+          <>
+            {workflowCopy[event.event_type][tense]}
+            {event.progress.map((prog) => {
+              return (
+                <div
+                  key={prog.id}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  {prog.log}
+                  {event.status === 'failed' && (
+                    <ButtonSoft
+                      size={1}
+                      color={'primary'}
+                      textButton='Click to retry'
+                      onClickButton={{
+                        onClick: () => handleRetry(prog.meta.event_run_id),
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </>
+        }
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}
