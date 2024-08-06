@@ -89,8 +89,9 @@ const RealTimeCrons: React.FC = () => {
     `;
 
     document.head.insertAdjacentHTML('beforeend', `<style>${styles}</style>`);
-
-    fetchEntries();
+    if (allWorkflows.length === 0) {
+      fetchEntries();
+    }
     const channelA = supabase
       .channel('schema-db-changes')
       .on(
@@ -158,7 +159,7 @@ const RealTimeCrons: React.FC = () => {
     return () => {
       supabase.removeChannel(channelA);
     };
-  }, []);
+  }, [allWorkflows]);
 
   const handleStatusFilterChange = (event: SelectChangeEvent<string>) => {
     setStatusFilter(

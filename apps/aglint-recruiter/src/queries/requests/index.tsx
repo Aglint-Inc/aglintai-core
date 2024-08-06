@@ -24,12 +24,12 @@ export const requestQueries = {
   requests_queryKey: () => [appKey, requestQueries.requests_key()] as const,
   requests_mutationKey: (method: 'create' | 'update' | 'delete') =>
     [appKey, requestQueries.requests_key(), method] as const,
-  requests: ({ assigner_id }: GetRequests) =>
+  requests: ({ filters, sort, payload }: GetRequestParams) =>
     queryOptions({
-      enabled: !!assigner_id,
-      gcTime: assigner_id ? GC_TIME : 0,
-      queryKey: requestQueries.requests_queryKey(),
-      queryFn: async () => await getRequests({ assigner_id }),
+      enabled: !!payload.assigner_id,
+      gcTime: payload.assigner_id ? GC_TIME : 0,
+      queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
+      queryFn: async () => await getRequests({ payload, sort, filters }),
     }),
   requests_mutationOptions: <
     T extends 'create' | 'update' | 'delete',
@@ -77,8 +77,9 @@ export const requestQueries = {
   }: GetRequestProgress & { enabled?: boolean }) =>
     queryOptions({
       enabled: !!request_id && enabled,
-      gcTime: request_id ? GC_TIME : 0,
+      // gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
+      refetchInterval: 2000,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (
@@ -173,16 +174,67 @@ export const useRequestsDelete = () => {
 };
 
 type GetRequests = Pick<DatabaseTable['request'], 'assigner_id'>;
-export const getRequests = async ({ assigner_id }: GetRequests) =>
-  (
-    await supabase
-      .from('request')
-      .select(
-        '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
-      )
-      .eq('assigner_id', assigner_id)
-      .throwOnError()
-  ).data.filter((request) => request.request_relation.length > 0);
+type RequestsFilterKeys = Pick<
+  DatabaseTable['request'],
+  'is_new' | 'status' | 'title' | 'type' //| 'assignee_id'
+>;
+type RequestFilterValues = {
+  is_new: DatabaseTable['request']['is_new'];
+  status: DatabaseTable['request']['status'][];
+  title: DatabaseTable['request']['title'];
+  type: DatabaseTable['request']['type'][];
+  // assignee_id: DatabaseTable['request']['assignee_id'][];
+};
+type RequestsFilter = {
+  [id in keyof RequestsFilterKeys]: RequestFilterValues[id];
+};
+
+type RequestsSort = {
+  order: 'asc' | 'desc';
+  type: keyof Pick<DatabaseTable['request'], 'title' | 'created_at'>;
+};
+
+export type GetRequestParams = {
+  payload: GetRequests;
+  filters: RequestsFilter;
+  sort: RequestsSort;
+};
+export const getRequests = async ({
+  payload: { assigner_id },
+  filters: { /*assignee_id,*/ is_new, status, title, type: filterType },
+  sort: { order, type },
+}: GetRequestParams) => {
+  const query = supabase
+    .from('request')
+    .select(
+      '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
+    )
+    .eq('assigner_id', assigner_id);
+
+  if (is_new) query.eq('is_new', true);
+
+  // if (assignee_id?.length)
+  //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
+
+  if (status?.length) query.or(`status.in.(${status.join(',')})`);
+
+  if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
+
+  if (title?.length) {
+    query.ilike('title', `%${title}%`);
+  }
+
+  if (type || order) {
+    query.order(type, {
+      ascending: order === 'asc',
+      nullsFirst: false,
+    });
+  }
+
+  query.order('id');
+
+  return (await query).data;
+};
 
 type GetRequestProgress = Pick<DatabaseTable['request_progress'], 'request_id'>;
 export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>

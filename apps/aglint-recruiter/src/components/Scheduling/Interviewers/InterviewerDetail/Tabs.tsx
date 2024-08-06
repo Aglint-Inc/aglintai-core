@@ -29,10 +29,6 @@ function Tabs() {
       name: 'Availability',
       queryParam: 'availibility',
     },
-    {
-      name: 'Keywords',
-      queryParam: 'keywords',
-    },
   ];
 
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;

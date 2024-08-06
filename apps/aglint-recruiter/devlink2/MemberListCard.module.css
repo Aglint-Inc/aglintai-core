@@ -57,6 +57,14 @@
   grid-row-gap: var(--space-1);
 }
 
+.mic-text-badge-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
 .schedule-wrap {
   display: flex;
   align-items: center;

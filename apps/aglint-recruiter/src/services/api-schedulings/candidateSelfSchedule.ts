@@ -4,16 +4,23 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { mailSender } from '@/src/utils/mailSender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const candidateSelfSchedule = async (
-  req_body: any,
-  cloned_sessn_ids: string[],
-  organizer_id: string,
-  schedule_id: string,
-  plans: PlanCombinationRespType[],
-  start_date_str: string,
-  end_date_str: string,
-  request_id: string,
-) => {
+export const candidateSelfSchedule = async ({
+  cloned_sessn_ids,
+  end_date_str,
+  organizer_id,
+  plans,
+  request_id,
+  schedule_id,
+  start_date_str,
+}: {
+  cloned_sessn_ids: string[];
+  organizer_id: string;
+  schedule_id: string;
+  plans: PlanCombinationRespType[];
+  start_date_str: string;
+  end_date_str: string;
+  request_id: string;
+}) => {
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

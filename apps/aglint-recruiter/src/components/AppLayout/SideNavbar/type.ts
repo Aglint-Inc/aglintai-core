@@ -5,7 +5,7 @@ import ROUTES from '@/src/utils/routing/routes';
 export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
 export type LinkProps =
-| {
+  | {
       module: 'Aglint AI';
       path: Path<'/requests'>;
     }
@@ -64,6 +64,10 @@ export type LinkProps =
   | {
       module: 'Interviewers';
       path: Path<'/scheduling/interviewer'>;
+    }
+  | {
+      module: 'Requests';
+      path: Path<'/requests'>;
     };
 
 export type SubTabs = {

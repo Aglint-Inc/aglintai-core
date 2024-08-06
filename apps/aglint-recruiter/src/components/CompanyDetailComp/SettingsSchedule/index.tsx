@@ -269,6 +269,7 @@ function SchedulingSettings({
   useEffect(() => {
     if (daysOff.length && workingHours.length) {
       schedulingSettingObj = {
+        ...initialData,
         interviewLoad: {
           dailyLimit: {
             type: interviewLoad.daily.type,
@@ -669,6 +670,7 @@ function SchedulingSettings({
                         );
                       })}
                     </RadioGroup>
+
                     <MuiNumberfield
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'daily', 'value')
@@ -725,6 +727,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
+                size={'large'}
                 slotKeywordsCard={
                   <>
                     <KeywordCard
