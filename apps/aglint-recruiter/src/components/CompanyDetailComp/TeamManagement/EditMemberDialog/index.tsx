@@ -1,6 +1,6 @@
 import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
-import { Autocomplete, Drawer, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Autocomplete, Drawer, Stack, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -8,6 +8,7 @@ import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import axios from '@/src/client/axios';
 import Icon from '@/src/components/Common/Icons/Icon';
+import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadManual';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -15,6 +16,7 @@ import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
+import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -54,6 +56,7 @@ const EditMember = ({
     role_id: string;
     manager_id: string;
     phone: string;
+    profile_image: string;
   } | null>(null);
 
   const [inviteData, setInviteData] = useState<
@@ -96,6 +99,7 @@ const EditMember = ({
         linked_in: member.linked_in,
         location: member.office_locations,
         employment: member.employment,
+        profile_image: member.profile_image,
         department: member.departments,
         position: member.position,
         role: member?.recruiter_relation[0].roles.name,
@@ -173,15 +177,36 @@ const EditMember = ({
     return acc;
   }, {});
 
+  const imageFile = useRef(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+
   const updateHandle = async () => {
     try {
       setIsUpdating(true);
+
+      let profile_image = member.profile_image;
+      if (isImageChanged) {
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${member.user_id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (data?.path && imageFile?.current?.size) {
+          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+        } else {
+          profile_image = null;
+        }
+        setIsImageChanged(false);
+      }
 
       const data = {
         first_name: form.first_name,
         last_name: form.last_name,
         linked_in: form.linked_in,
         employment: form.employment,
+        profile_image: profile_image,
         position: form.position,
         role_id: form.role_id,
         phone: form.phone,
@@ -231,6 +256,34 @@ const EditMember = ({
             })}
             slotForm={
               <Stack spacing={2}>
+                <Stack
+                  direction={'row'}
+                  justifyContent={'flex-start'}
+                  alignItems={'center'}
+                  spacing={2}
+                >
+                  <ImageUploadManual
+                    image={form.profile_image}
+                    size={64}
+                    imageFile={imageFile}
+                    setChanges={() => {
+                      setIsImageChanged(true);
+                    }}
+                  />
+                  <Stack>
+                    <Typography
+                      fontSize={'15px'}
+                      fontWeight={400}
+                      color={'error'}
+                    >
+                      Change profile photo
+                    </Typography>
+                    <Typography fontSize={'14px'}>
+                      Upload a square profile image (PNG or JPEG). Maximum size:
+                      5 MB.
+                    </Typography>
+                  </Stack>
+                </Stack>
                 <Stack flexDirection={'row'} gap={2} width={'100%'}>
                   <UITextField
                     // sx={{ width: '50% !important' }}
@@ -550,6 +603,7 @@ const EditMember = ({
                             linked_in: null,
                             location: null,
                             position: null,
+                            profile_image: null,
                             phone: null,
                             role: null,
                             role_id: null,
@@ -587,6 +641,7 @@ const EditMember = ({
                     department: null,
                     employment: null,
                     linked_in: null,
+                    profile_image: null,
                     location: null,
                     phone: null,
                     position: null,
