@@ -289,7 +289,11 @@ function SchedulerEmailTemps({ setSaving }) {
   return (
     <Stack>
       <Box>
-        {isEditorLoad && <Loader />}
+        {isEditorLoad && (
+          <Stack height={'calc(100vh - 48px)'}>
+            <Loader />
+          </Stack>
+        )}
         {!isEditorLoad && templates.length > 0 && (
           <EmailTemplatesStart
             showTabs={false}

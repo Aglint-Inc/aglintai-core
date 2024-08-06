@@ -298,6 +298,7 @@ function CollapseTrainingProgress({
             <MuiNumberfield
               width='80px'
               height='26px'
+              isDisable={isSaving}
               value={mutatedShadowProgress.length + shadowProgress.length}
               handleSelect={(value) =>
                 alterCount({
@@ -347,6 +348,7 @@ function CollapseTrainingProgress({
             <MuiNumberfield
               width='80px'
               height='26px'
+              isDisable={isSaving}
               value={
                 mutatedReverseShadowProgress.length +
                 reverseShadowProgress.length
