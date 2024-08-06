@@ -10,13 +10,11 @@ import Loader from '@/src/components/Common/Loader';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
-import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';
 import ResumeDialog from '../Popups/ResumeDialog';
-import { setAddInterviewType, setIsAddInterviewTypeDialogOpen } from '../store';
 import TrainingInterviewerType from '../TabModules/TrainingInterviewerType';
 
 function Overview({
@@ -187,20 +185,6 @@ function Overview({
                   />
                 </>
               )}
-              <Stack direction={'row'} pt={'var(--space-2)'}>
-                <ButtonSurface
-                  size={1}
-                  isRightIcon={false}
-                  slotIcon={<IconPlusFilter />}
-                  textButton={'Add'}
-                  onClickButton={{
-                    onClick: () => {
-                      setAddInterviewType('training');
-                      setIsAddInterviewTypeDialogOpen(true);
-                    },
-                  }}
-                />
-              </Stack>
             </>
           ) : (
             <Loader />
