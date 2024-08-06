@@ -24,6 +24,7 @@ const PERMISSIONS: Permissions = {
   '/tasks': ['task_module'],
 
   //
+  '/supervisor': ['authorized'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
   '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
