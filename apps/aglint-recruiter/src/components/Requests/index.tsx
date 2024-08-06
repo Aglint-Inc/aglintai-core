@@ -20,7 +20,7 @@ const Requests = () => {
       slotRequestOption={<StatsCards />}
       slotRequestSection={
         <>
-          <Section priority='urgent' />
+          <Section priority='urgent'  />
           <Section priority='standard' />
         </>
       }

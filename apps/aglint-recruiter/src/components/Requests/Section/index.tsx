@@ -45,7 +45,7 @@ function Section({ priority }: Pick<RequestType, 'priority'>) {
                 <Text
                   color={'neutral'}
                   size={1}
-                  // content={`${filteredRequest?.length}`}
+                  content={`${requests.length}`}
                 />
               </ShowCode.Else>
             </ShowCode>
