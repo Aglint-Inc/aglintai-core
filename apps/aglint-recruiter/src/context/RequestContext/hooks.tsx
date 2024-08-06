@@ -23,32 +23,38 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   );
 
   const handleUpdateRequest = useCallback(
-    (payload: Parameters<typeof updateRequest>[0]['payload']) =>
+    (
+      requestPayload: Parameters<
+        typeof updateRequest
+      >[0]['payload']['requestPayload'],
+    ) =>
       updateRequest({
-        id: request_id,
-        payload,
+        payload: { requestId: request_id, requestPayload },
       }),
     [request_id, updateRequest],
   );
   const handleAsyncUpdateRequest = useCallback(
-    async (payload: Parameters<typeof asyncUpdateRequest>[0]['payload']) =>
+    async (
+      requestPayload: Parameters<
+        typeof asyncUpdateRequest
+      >[0]['payload']['requestPayload'],
+    ) =>
       await asyncUpdateRequest({
-        id: request_id,
-        payload,
+        payload: { requestId: request_id, requestPayload },
       }),
     [request_id, asyncUpdateRequest],
   );
   const handleDeleteRequest = useCallback(
     () =>
       deleteRequest({
-        id: request_id,
+        payload: { requestId: request_id },
       }),
     [request_id, deleteRequest],
   );
   const handleAsyncDeleteRequest = useCallback(
     async () =>
       await asyncDeleteRequest({
-        id: request_id,
+        payload: { requestId: request_id },
       }),
     [request_id, asyncUpdateRequest],
   );
