@@ -8,7 +8,6 @@ import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/src/components/Common/Loader';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
 
-import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
@@ -51,7 +50,7 @@ function Overview({
     (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
-  const trainingModulesListWithGlobalArc = trainingModulesList.map(
+  const trainingModulesListWithGlobalArc = trainingModulesList?.map(
     (trainee) => ({
       ...trainee,
       is_global_archived: allModules.find(
@@ -71,6 +70,7 @@ function Overview({
     'Interviews'
       ? 'Interview'
       : 'Hour';
+
   // const today =
   //   interviewerDetails?.scheduling_settings?.interviewLoad?.dailyLimit.type ===
   //   'Interviews'
@@ -125,6 +125,7 @@ function Overview({
           </Stack>
         }
       />
+      {/* interview load  */}
       {/* <Stack ml={2} mb={2}>
         <Typography fontWeight={500} pb={1}>
           Interview Load
@@ -181,21 +182,22 @@ function Overview({
             <></>
           )
         }
-        slotUpcomingSchedule={
-          upcomingScheduleList.length > 0 ? (
-            upcomingScheduleList.map((meetingDetails, i) => {
-              return (
-                <ScheduleMeetingCard key={i} meetingDetails={meetingDetails} />
-              );
-            })
-          ) : (
-            <GlobalEmptyState
-              textDesc='No upcoming interviews found.'
-              size={6}
-              iconName='event'
-            />
-          )
-        }
+        slotUpcomingSchedule={<></>}
+        // slotUpcomingSchedule={
+        //   upcomingScheduleList.length > 0 ? (
+        //     upcomingScheduleList.map((meetingDetails, i) => {
+        //       return (
+        //         <ScheduleMeetingCard key={i} meetingDetails={meetingDetails} />
+        //       );
+        //     })
+        //   ) : (
+        //     <GlobalEmptyState
+        //       textDesc='No upcoming interviews found.'
+        //       size={6}
+        //       iconName='event'
+        //     />
+        //   )
+        // }
         slotTrainingModules={
           !isLoading ? (
             <>

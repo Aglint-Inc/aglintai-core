@@ -8,6 +8,7 @@ import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import axios from '@/src/client/axios';
 import Icon from '@/src/components/Common/Icons/Icon';
+import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiResponseGetMember } from '@/src/pages/api/get_member';
@@ -52,6 +53,7 @@ const EditMember = ({
     role: string;
     role_id: string;
     manager_id: string;
+    phone: string;
   } | null>(null);
 
   const [inviteData, setInviteData] = useState<
@@ -70,6 +72,7 @@ const EditMember = ({
     location: boolean;
     employment: boolean;
     position: boolean;
+    phone: boolean;
     role: boolean;
     manager: boolean;
   }>({
@@ -78,6 +81,7 @@ const EditMember = ({
     linked_in: false,
     location: false,
     employment: false,
+    phone: false,
     position: false,
     role: false,
     manager: false,
@@ -88,6 +92,7 @@ const EditMember = ({
       setForm({
         first_name: member.first_name,
         last_name: member.last_name,
+        phone: member.phone,
         linked_in: member.linked_in,
         location: member.office_locations,
         employment: member.employment,
@@ -179,6 +184,7 @@ const EditMember = ({
         employment: form.employment,
         position: form.position,
         role_id: form.role_id,
+        phone: form.phone,
         manager_id: form.manager_id,
         department_id: form.department.id,
         office_location_id: form.location.id,
@@ -197,6 +203,7 @@ const EditMember = ({
       setIsUpdating(false);
     }
   };
+
   return (
     <Drawer
       open={open}
@@ -434,40 +441,87 @@ const EditMember = ({
                         )}
                       />
                       {form.role !== 'admin' && (
-                        <Autocomplete
-                          fullWidth
-                          value={form.manager_id}
-                          onChange={(event: any, newValue: string | null) => {
-                            setForm({
-                              ...form,
-                              manager_id: newValue,
-                            });
-                          }}
-                          id='controllable-states-demo'
-                          options={memberList.map((member) => member.id)}
-                          getOptionLabel={(option) => {
-                            return capitalizeFirstLetter(
-                              memberListObj[String(option)],
-                            );
-                          }}
-                          renderInput={(params) => (
-                            <UITextField
-                              {...params}
-                              name='manager'
-                              placeholder='Select Manager'
-                              label='Manager'
-                              required
-                              error={formError.manager}
-                              onFocus={() => {
-                                setFormError({ ...formError, manager: false });
-                              }}
-                              helperText={
-                                formError.manager ? 'Manager must required' : ''
-                              }
-                            />
-                          )}
-                        />
+                        <>
+                          <Autocomplete
+                            fullWidth
+                            value={form.manager_id}
+                            onChange={(event: any, newValue: string | null) => {
+                              setForm({
+                                ...form,
+                                manager_id: newValue,
+                              });
+                            }}
+                            id='controllable-states-demo'
+                            options={memberList.map((member) => member.id)}
+                            getOptionLabel={(option) => {
+                              return capitalizeFirstLetter(
+                                memberListObj[String(option)],
+                              );
+                            }}
+                            renderInput={(params) => (
+                              <UITextField
+                                {...params}
+                                name='manager'
+                                placeholder='Select Manager'
+                                label='Manager'
+                                required
+                                error={formError.manager}
+                                onFocus={() => {
+                                  setFormError({
+                                    ...formError,
+                                    manager: false,
+                                  });
+                                }}
+                                helperText={
+                                  formError.manager
+                                    ? 'Manager must required'
+                                    : ''
+                                }
+                              />
+                            )}
+                          />
+                        </>
                       )}
+                    </Stack>
+                  )}
+                {/* <UIPhoneInput
+                  labelSize='small'
+                  defaultCountry={'india'}
+                  label={'Phone'}
+                  placeholder={'Enter a phone number'}
+                  value={form.phone}
+                  required={true}
+                  error={formError.phone}
+                  onChange={(value, data, event, formattedValue) => {
+                    // onChange(
+                    //   { target: { value: formattedValue } },
+                    //   id,
+                    //   data.format,
+                    // );
+                    console.log(value, data, event, formattedValue);
+                  }}
+                /> */}
+
+                {(member.recruiter_relation[0].roles.name !== 'admin' ||
+                  member.recruiter_relation[0].created_by ===
+                    recruiterUser.user_id) &&
+                  member.user_id !== recruiterUser.user_id && (
+                    <Stack width={'278px'}>
+                      <UIPhoneInput
+                        labelSize='small'
+                        defaultCountry={'india'}
+                        label={'Phone'}
+                        placeholder={'Enter a phone number'}
+                        value={form.phone}
+                        required={true}
+                        error={formError.phone}
+                        onChange={(value, data, event, formattedValue) => {
+                          setForm({
+                            ...form,
+                            phone: formattedValue,
+                          });
+                        }}
+                      />
                     </Stack>
                   )}
               </Stack>
@@ -496,6 +550,7 @@ const EditMember = ({
                             linked_in: null,
                             location: null,
                             position: null,
+                            phone: null,
                             role: null,
                             role_id: null,
                             manager_id: null,
@@ -533,6 +588,7 @@ const EditMember = ({
                     employment: null,
                     linked_in: null,
                     location: null,
+                    phone: null,
                     position: null,
                     role: null,
                     role_id: null,

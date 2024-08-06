@@ -2,7 +2,7 @@
 import 'react-phone-input-2/lib/style.css';
 
 import Icon from '@components/Common/Icons/Icon';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 // import countries from '@utils/CountryUtils';
 import React from 'react';
 import PhoneInput, { CountryData } from 'react-phone-input-2';
@@ -15,7 +15,7 @@ type Props = {
     value: string,
     data: CountryData | {},
     event: React.ChangeEvent<HTMLInputElement>,
-    formattedValue: string
+    formattedValue: string,
   ): void;
   error?: boolean;
   label?: string;
@@ -28,7 +28,7 @@ type Props = {
   onFocus?: () => void;
   onBlur?: (
     event: React.FocusEvent<HTMLInputElement>,
-    data: CountryData | {}
+    data: CountryData | {},
   ) => void;
   defaultCountry?: string;
   setDefaultCountry?: () => void;
@@ -49,7 +49,7 @@ const UIPhoneInput = ({
   onFocus = () => {},
   onBlur = () => {},
   defaultCountry,
-  setDefaultCountry = () => {}
+  setDefaultCountry = () => {},
 }: Props) => {
   let labelColor = 'var(--neutral-12)';
   if (disabled) {
@@ -57,12 +57,25 @@ const UIPhoneInput = ({
   }
 
   return (
-    <Stack direction={'column'} gap={'var(--space-1)'} sx={customPhoneStyle} p={'0px'}>
+    <Stack
+      direction={'column'}
+      gap={'var(--space-1)'}
+      sx={customPhoneStyle}
+      p={'0px'}
+    >
       {label && (
-        <UITypography type={labelSize} color={labelColor} fontBold={labelBold}>
-          {label}
-          {required && <sup>*</sup>}
-        </UITypography>
+        <Stack direction={'row'}>
+          <UITypography
+            type={labelSize}
+            color={labelColor}
+            fontBold={labelBold}
+          >
+            {label}
+          </UITypography>
+          {required && (
+            <Typography sx={{ color: 'var(--error-9)' }}>&nbsp;*</Typography>
+          )}
+        </Stack>
       )}
       <PhoneInput
         autoFormat={true}
@@ -84,7 +97,7 @@ const UIPhoneInput = ({
               data,
               event,
               // @ts-ignore
-              formattedValue.substring(0, data.format.length)
+              formattedValue.substring(0, data.format.length),
             );
           }
         }}
@@ -101,10 +114,10 @@ const UIPhoneInput = ({
           sx: {
             width: '100%',
             '& .form-control': {
-              width: '100%'
-            }
+              width: '100%',
+            },
           },
-          value: value
+          value: value,
         }}
       />
       {error && (
@@ -134,24 +147,24 @@ export const customPhoneStyle = {
   },
   '& .country-list': {
     width: 'fit-content !important',
-    minWidth: '200px'
+    minWidth: '200px',
     // position: 'fixed !important',
   },
   '& .react-tel-input .form-control.invalid-number , & .react-tel-input .flag-dropdown.invalid-number':
     {
       backgroundColor: 'var(--white)',
-      borderColor: 'var(--neutral-6)'
+      borderColor: 'var(--neutral-6)',
     },
   '& .react-tel-input .form-control.invalid-number:focus': {
     backgroundColor: 'var(--white)',
     borderColor: 'var(--neutral-6)',
     outline: '3px solid',
-    outlineColor: 'var(--accent-a9)'
+    outlineColor: 'var(--accent-a9)',
   },
   '& .react-tel-input .form-control:focus , & .react-tel-input .flag-dropdown:focus':
     {
       outline: '3px solid',
-      outlineColor: 'var(--accent-a9)'
+      outlineColor: 'var(--accent-a9)',
     },
   '& .react-tel-input .form-control': {
     width: '100%',
@@ -162,7 +175,7 @@ export const customPhoneStyle = {
   },
   '& input': {
     padding: 'var(--space-2) var(--space-3)',
-  }
+  },
 };
 
 export default UIPhoneInput;
