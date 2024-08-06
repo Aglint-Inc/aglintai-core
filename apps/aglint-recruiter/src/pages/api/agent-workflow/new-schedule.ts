@@ -23,6 +23,7 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
     req.body.request_id,
+    req.body.event_run_id,
   );
 
   try {
@@ -139,7 +140,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     } else {
-      throw new ApiError('SERVER', 'new-schedule not found');
+      throw new ApiError('SERVER_ERROR', 'new-schedule not found');
     }
 
     supabaseWrap(

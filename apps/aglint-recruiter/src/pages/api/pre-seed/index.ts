@@ -160,6 +160,7 @@ const seedWorkFlow = async (
             order: action.order,
             workflow_id: workflow.id,
             target_api: action.target_api,
+            action_type: action.action_type,
           };
         }),
       ),

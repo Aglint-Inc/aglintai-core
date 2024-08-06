@@ -18,6 +18,7 @@ export const findPlanCombs = async ({
   api_options: APIOptions;
   reqProgressLogger: ProgressLoggerType;
 }) => {
+  api_options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({
     company_id: recruiter_id,
