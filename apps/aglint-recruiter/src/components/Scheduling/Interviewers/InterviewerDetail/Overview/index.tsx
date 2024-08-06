@@ -182,6 +182,7 @@ function Overview({
             <></>
           )
         }
+        isUpcomingVisible={false}
         slotUpcomingSchedule={<></>}
         // slotUpcomingSchedule={
         //   upcomingScheduleList.length > 0 ? (
