@@ -128,6 +128,7 @@ const JobEmailTemplates = ({ setSaving }) => {
   return (
     <EmailTemplatesStart
       showTabs={false}
+      isSearchFilterVisible={false}
       isWarningVisible={true}
       slotEmailTemplateCards={
         <>

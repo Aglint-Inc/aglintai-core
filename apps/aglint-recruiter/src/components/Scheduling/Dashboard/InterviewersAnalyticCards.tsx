@@ -1,12 +1,18 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { InterviewersCardList } from '@/devlink3/InterviewersCardList';
 import { InterviewersDash } from '@/devlink3/InterviewersDash';
 import { NoData } from '@/devlink3/NoData';
+import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  ApiBodyGetUsersByIds,
+  ApiResponseGetUsersByIds,
+} from '@/src/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/src/queries/scheduling-dashboard/keys';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -27,6 +33,7 @@ const InterviewersAnalyticCards = () => {
       getUsersByIds({ rec_id: recruiter.id, interviewer_type: type }),
     enabled: Boolean(recruiter.id),
   });
+  const router = useRouter();
   return (
     <InterviewersDash
       onClickQualified={{
@@ -47,28 +54,47 @@ const InterviewersAnalyticCards = () => {
             <InterviewersCardList
               key={index}
               textName={
-                <Skeleton variant='text' width={'100px'} height={'var(--space-6)'} />
+                <Skeleton
+                  variant='text'
+                  width={'100px'}
+                  height={'var(--space-6)'}
+                />
               }
               textCompleted={
-                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
+                <Skeleton
+                  variant='text'
+                  width={'var(--space-5)'}
+                  height={'var(--space-6)'}
+                />
               }
               textUpcoming={
-                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
+                <Skeleton
+                  variant='text'
+                  width={'var(--space-5)'}
+                  height={'var(--space-6)'}
+                />
               }
               textDeclined={
-                <Skeleton variant='text' width={'var(--space-5)'} height={'var(--space-6)'} />
+                <Skeleton
+                  variant='text'
+                  width={'var(--space-5)'}
+                  height={'var(--space-6)'}
+                />
               }
             />
           ))
         ) : interviewersData.length ? (
           interviewersData?.map((item) => (
-            <InterviewersCardList
-              key={item.id}
-              textName={item.name}
-              textCompleted={item.status['completed'] || 0}
-              textUpcoming={item.status['confirmed'] || 0}
-              textDeclined={item.status['cancelled'] || 0}
-            />
+            // eslint-disable-next-line react/jsx-key
+            <Stack onClick={() => router.push(`/user/profile/${item.id}`)}>
+              <InterviewersCardList
+                key={item.id}
+                textName={item.name}
+                textCompleted={item.status['completed'] || 0}
+                textUpcoming={item.status['confirmed'] || 0}
+                textDeclined={item.status['cancelled'] || 0}
+              />
+            </Stack>
           ))
         ) : (
           <NoData />
@@ -100,6 +126,9 @@ const getInterviewerData = async ({
       'completed',
       'cancelled',
     ])
+    .then((data) => {
+      return data;
+    })
     .then(async ({ data }) => {
       return data.reduce(
         (acc, curr) => {
@@ -128,44 +157,43 @@ const getUsersByIds = async ({
   rec_id: string;
   interviewer_type: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) => {
-  return supabase
-    .from('recruiter_relation')
-    .select(
-      'recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, profile_image)',
-    )
-    .eq('recruiter_id', rec_id)
-    .then(async ({ data }) => {
-      const ids = data?.map((item) => item.recruiter_user.user_id);
+  const bodyParams: ApiBodyGetUsersByIds = {
+    rec_id,
+  };
+  const { data: users } = await axios.post(`/api/get_users_by_ids`, bodyParams);
 
-      if (ids?.length) {
-        const tempData = await getInterviewerData({ ids, interviewer_type });
+  const data: ApiResponseGetUsersByIds = users;
 
-        return data?.reduce(
-          (acc, curr) => {
-            const status = tempData[curr.recruiter_user.user_id];
-            if (!status) return acc;
-            const temp = {
-              id: curr.recruiter_user.user_id,
-              name: `${curr.recruiter_user.first_name} ${curr.recruiter_user.last_name}`.trim(),
-              profile_image: curr.recruiter_user.profile_image,
-              status,
-            };
+  const ids = data?.map((item) => item.recruiter_user.user_id);
 
-            return [...acc, temp];
-          },
-          [] as {
-            id: string;
-            name: string;
-            image: string;
-            status: { [key: string]: number };
-          }[],
-        );
-      }
-      return [] as {
+  if (ids?.length) {
+    const tempData = await getInterviewerData({ ids, interviewer_type });
+
+    return data?.reduce(
+      (acc, curr) => {
+        const status = tempData[curr.recruiter_user.user_id];
+        if (!status) return acc;
+        const temp = {
+          id: curr.recruiter_user.user_id,
+          name: `${curr.recruiter_user.first_name} ${curr.recruiter_user.last_name}`.trim(),
+          profile_image: curr.recruiter_user.profile_image,
+          status,
+        };
+
+        return [...acc, temp];
+      },
+      [] as {
         id: string;
         name: string;
         image: string;
         status: { [key: string]: number };
-      }[];
-    });
+      }[],
+    );
+  }
+  return [] as {
+    id: string;
+    name: string;
+    image: string;
+    status: { [key: string]: number };
+  }[];
 };

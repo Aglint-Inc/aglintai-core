@@ -272,13 +272,13 @@ const EditMember = ({
                   />
                   <Stack>
                     <Typography
-                      fontSize={'15px'}
+                      fontSize={'13px'}
                       fontWeight={400}
                       color={'error'}
                     >
                       Change profile photo
                     </Typography>
-                    <Typography fontSize={'14px'}>
+                    <Typography fontSize={'12px'}>
                       Upload a square profile image (PNG or JPEG). Maximum size:
                       5 MB.
                     </Typography>

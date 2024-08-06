@@ -16,4 +16,5 @@ declare function InterviewerDetail(props: {
   onClickLinkedIn?: Types.Devlink.RuntimeProps;
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   textPhone?: React.ReactNode;
+  textInterviewer?: React.ReactNode;
 }): React.JSX.Element;

@@ -17,6 +17,7 @@ import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMe
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { getFullName } from '@/src/utils/jsonResume';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import DynamicLoader from '../../DynamicLoader';
 import Interviews from '../../Interviews';
@@ -366,6 +367,9 @@ function BodyComp() {
                 : '- -'
             }
             textMail={interviewerDetails.email}
+            textInterviewer={capitalizeAll(
+              interviewerDetails?.recruiter_relation[0]?.roles?.name,
+            )}
             textRole={interviewerDetails.departments?.name ?? '- -'}
             textDepartment={interviewerDetails.position}
             textInterviewerName={
