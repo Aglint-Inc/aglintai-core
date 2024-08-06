@@ -135,7 +135,7 @@ function SettingsPopup({
                   }}
                   value={interval?.intervalTime}
                 >
-                  {Array.from({ length: 20 }, (_, i) => i + 1).map((item) => (
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map((item) => (
                     <MenuItem key={item} value={item}>
                       {item}
                     </MenuItem>
