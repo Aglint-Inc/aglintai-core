@@ -26,6 +26,10 @@
   background-color: var(--neutral-2);
 }
 
+.hide {
+  display: none;
+}
+
 .slot_recent {
   overflow: auto;
   height: 410px;

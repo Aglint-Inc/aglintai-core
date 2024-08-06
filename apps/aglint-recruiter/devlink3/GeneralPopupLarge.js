@@ -24,25 +24,36 @@ export function GeneralPopupLarge({
       className={_utils.cx(_styles, "assessment_duplicate_popup", "width-100")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          {isIcon ? (
-            <_Builtin.Block tag="div">
-              <GlobalIcon iconName="notifications_active" weight="medium" />
-            </_Builtin.Block>
-          ) : null}
-          <Text content={textPopupTitle} color="neutral-11" weight="medium" />
-        </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "gpl-header-wrapp")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "popup_close")}
+          className={_utils.cx(_styles, "popup_header")}
           tag="div"
-          {...onClickClose}
         >
-          <GlobalIcon iconName="close" weight="thin" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "popup_title")}
+            tag="div"
+          >
+            {isIcon ? (
+              <_Builtin.Block tag="div">
+                <GlobalIcon iconName="notifications_active" weight="medium" />
+              </_Builtin.Block>
+            ) : null}
+            <Text content={textPopupTitle} color="neutral-11" weight="medium" />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "popup_close")}
+            tag="div"
+            {...onClickClose}
+          >
+            <GlobalIcon iconName="close" weight="thin" />
+          </_Builtin.Block>
         </_Builtin.Block>
+        <Text content={textDescription} color="neutral-11" weight="" />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
-        <Text content={textDescription} color="neutral-11" weight="" />
         <_Builtin.Block className={_utils.cx(_styles, "slot_widget")} tag="div">
           {slotPopup}
         </_Builtin.Block>

@@ -5,7 +5,7 @@ import { AglintAiChat } from "./AglintAiChat";
 import { Text } from "./Text";
 import { RequestOption } from "./RequestOption";
 import { RequestAgentTab } from "./RequestAgentTab";
-import { RequestAgentEmpty } from "./RequestAgentEmpty";
+import { RequestDashboard } from "./RequestDashboard";
 import * as _utils from "./utils";
 import _styles from "./RequestAgent.module.css";
 
@@ -88,7 +88,7 @@ export function RequestAgent({
             className={_utils.cx(_styles, "req-left-body-wrap")}
             tag="div"
           >
-            {slotRequestSection ?? <RequestAgentEmpty />}
+            {slotRequestSection ?? <RequestDashboard />}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
