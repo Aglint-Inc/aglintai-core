@@ -4,6 +4,7 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestOption } from '@/devlink2/RequestOption';
 
 function StatsCards() {
+  
   const dummyStatusData = [
     { text: 'Urgent Requests:', number: 10 },
     { text: 'Pending Requests:', number: 20 },

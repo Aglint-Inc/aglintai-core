@@ -152,6 +152,12 @@ const TeamManagement = () => {
     Boolean(selectedLocations.length);
 
   const canManage = checkPermissions(['manage_users']);
+  const [isInitalLoading, setIsInitalLoading] = useState(
+    filteredMembers.length ? false : true,
+  );
+  useEffect(() => {
+    if (filteredMembers.length) setIsInitalLoading(false);
+  }, [filteredMembers.length]);
   return (
     <Stack bgcolor={'white'}>
       <TeamUsersList
@@ -236,7 +242,11 @@ const TeamManagement = () => {
         slotTeamList={
           <>
             <ShowCode>
-              <ShowCode.When isTrue={!filteredMembers.length && isFetching}>
+              <ShowCode.When
+                isTrue={
+                  (!filteredMembers.length && isFetching) || isInitalLoading
+                }
+              >
                 <Stack
                   width={'100%'}
                   height={'100%'}

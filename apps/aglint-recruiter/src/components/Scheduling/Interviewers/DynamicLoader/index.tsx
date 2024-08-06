@@ -11,8 +11,8 @@ function DynamicLoader({ height = '100%' }: { height?: string }) {
       justifyContent={'center'}
       alignItems={'center'}
       position={'absolute'}
+      bgcolor={'white'}
       zIndex={100}
-      style={{ backdropFilter: 'blur(5px)' }}
     >
       <Loader />
     </Stack>

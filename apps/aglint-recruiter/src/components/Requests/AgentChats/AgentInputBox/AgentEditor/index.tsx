@@ -1,15 +1,13 @@
 /* eslint-disable no-unused-vars */
 import './EditorStyle.css'; // We will define some styles here
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useState
-} from 'react';
+import { Stack } from '@mui/material';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
+import { Text } from '@/devlink2/Text';
 import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
@@ -61,15 +59,24 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   const [triggerType, setTriggerType] = useState<
     '@' | '#' | '$' | '%' | '!' | null
   >(null);
+
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (event.ctrlKey && event.key === 'Enter') {
-      handleSubmit &&
-        handleSubmit({
-          planText: inputText.planText,
-          markupText: text,
-        });
+    if (event.key === 'Enter') {
+      if (event.ctrlKey) {
+        // Ctrl + Enter adds a new line
+        event.preventDefault();
+        setText(text + '\n');
+      } else {
+        // Enter key submits the form
+        event.preventDefault();
+        handleSubmit &&
+          handleSubmit({
+            planText: inputText?.planText || '',
+            markupText: text,
+          });
+      }
     }
 
     if (
@@ -112,13 +119,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         if (regex.test(text)) {
           setText(text.replace(regex, taskType));
           handleTextChange({
-            newPlainTextValue: `${newTaskDisplay} ${inputText.planText}`,
+            newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
             newValue: text.replace(regex, taskType),
           });
         } else {
           setText(`${taskType}${text}`);
           handleTextChange({
-            newPlainTextValue: `${newTaskDisplay} ${inputText.planText}`,
+            newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
             newValue: `${taskType}${text}`,
           });
         }
@@ -175,7 +182,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         fontSize: 16,
         width: '384px',
         lineHeight: '20px',
-        padding: '10px 10px 48px',
+        padding: '10px 10px 40px',
       },
       highlighter: {
         overflow: 'hidden',
@@ -185,6 +192,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       input: {
         margin: 0,
         border: '1px solid var(--neutral-6)',
+        borderBottom: 'none',
         borderRadius: '10px',
         outline: 'none',
         padding: '10px',
@@ -199,7 +207,6 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     },
     value: text,
     onChange: (e, newValue, newPlainTextValue, mentions) => {
-      // console.log(newValue, newPlainTextValue, mentions);
       setInputText({
         planText: newPlainTextValue,
         mentions: mentions.map((mention) => ({
@@ -333,6 +340,28 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         <Mention {...mentionSessionList} />
         <Mention {...mentionRequestList} />
       </MentionsInput>
+      <Stack
+        position={'relative'}
+        top={'-10px'}
+        sx={{
+          border: '1px solid var(--neutral-6)',
+          borderTop: 'none',
+          borderRadius: '0 0 10px 10px',
+        }}
+        height={'28px'}
+        bgcolor={'#F9F9F8'}
+        width={'100%'}
+        direction={'row'}
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Text
+          align={'center'}
+          color={'neutral'}
+          size={1}
+          content={'Powered by Aglint. Simplifying your scheduling with AI.'}
+        />
+      </Stack>
     </div>
   );
 };

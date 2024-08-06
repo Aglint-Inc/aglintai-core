@@ -7,11 +7,15 @@ function MuiNumberfield({
   handleSelect,
   width = '160px',
   height = '36px',
+  isDebounceEnable = true,
+  isDisable = false,
   max = 100,
 }: {
   value: number | string;
   width?: string;
+  isDebounceEnable?: boolean;
   height?: string;
+  isDisable?: boolean;
   handleSelect: any;
   max?: number;
 }) {
@@ -26,7 +30,11 @@ function MuiNumberfield({
     if (newValue > max) newValue = max;
     setTempValue(newValue);
     if (tempValue == newValue) return;
-    debouncedChange(newValue);
+    if (isDebounceEnable) {
+      debouncedChange(newValue);
+    } else {
+      handleSelect(newValue);
+    }
   }
 
   const debouncedChange = useCallback(
@@ -39,6 +47,7 @@ function MuiNumberfield({
   return (
     <FormControl>
       <TextField
+        disabled={isDisable}
         sx={{
           width: width,
           '& .MuiInputBase-root': {
