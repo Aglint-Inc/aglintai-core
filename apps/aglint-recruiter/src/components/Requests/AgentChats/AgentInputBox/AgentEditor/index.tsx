@@ -61,15 +61,24 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   const [triggerType, setTriggerType] = useState<
     '@' | '#' | '$' | '%' | '!' | null
   >(null);
+
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (event.ctrlKey && event.key === 'Enter') {
-      handleSubmit &&
-        handleSubmit({
-          planText: inputText.planText,
-          markupText: text,
-        });
+    if (event.key === 'Enter') {
+      if (event.ctrlKey) {
+        // Ctrl + Enter adds a new line
+        event.preventDefault();
+        setText(text + '\n');
+      } else {
+        // Enter key submits the form
+        event.preventDefault();
+        handleSubmit &&
+          handleSubmit({
+            planText: inputText?.planText || '',
+            markupText: text,
+          });
+      }
     }
 
     if (
@@ -112,13 +121,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         if (regex.test(text)) {
           setText(text.replace(regex, taskType));
           handleTextChange({
-            newPlainTextValue: `${newTaskDisplay} ${inputText.planText}`,
+            newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
             newValue: text.replace(regex, taskType),
           });
         } else {
           setText(`${taskType}${text}`);
           handleTextChange({
-            newPlainTextValue: `${newTaskDisplay} ${inputText.planText}`,
+            newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
             newValue: `${taskType}${text}`,
           });
         }
@@ -199,7 +208,6 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     },
     value: text,
     onChange: (e, newValue, newPlainTextValue, mentions) => {
-      // console.log(newValue, newPlainTextValue, mentions);
       setInputText({
         planText: newPlainTextValue,
         mentions: mentions.map((mention) => ({
