@@ -12,4 +12,5 @@ declare function RequestAgent(props: {
   textAiHeader?: React.ReactNode;
   slotFilter?: Types.Devlink.Slot;
   slotAglintAiChat?: Types.Devlink.Slot;
+  slotTabs?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -19,6 +19,7 @@ export function RequestAgent({
   textAiHeader = "Hey Sara, I am Aglint AI your Scheduling co-pilot.",
   slotFilter,
   slotAglintAiChat,
+  slotTabs,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-wrap")} tag="div">
@@ -65,7 +66,27 @@ export function RequestAgent({
           className={_utils.cx(_styles, "req-body-left-wrapper")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{slotFilter}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-header-ra")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">
+              {slotTabs ?? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "ra-tab-pill")}
+                  tag="div"
+                >
+                  <Text />
+                </_Builtin.Block>
+              )}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "ra-slot-filter")}
+              tag="div"
+            >
+              {slotFilter}
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "req-left-body-wrap")}
             tag="div"

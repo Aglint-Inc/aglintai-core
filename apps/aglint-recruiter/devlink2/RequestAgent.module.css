@@ -12,8 +12,6 @@
   display: flex;
   width: 100%;
   padding-top: var(--space-3);
-  padding-right: var(--space-5);
-  padding-left: var(--space-5);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
@@ -62,10 +60,20 @@
   grid-row-gap: var(--space-3);
 }
 
+.slot-header-ra {
+  display: flex;
+  padding-right: var(--space-5);
+  padding-left: var(--space-5);
+  justify-content: space-between;
+  align-items: center;
+}
+
 .req-left-body-wrap {
   display: flex;
   overflow: auto;
+  padding-right: var(--space-5);
   padding-bottom: var(--space-5);
+  padding-left: var(--space-5);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-6);

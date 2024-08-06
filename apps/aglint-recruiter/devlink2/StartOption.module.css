@@ -31,8 +31,7 @@
   padding: var(--space-1);
   flex: 0 0 auto;
   border-radius: var(--radius-2);
-  background-color: var(--accent-3);
-  color: var(--accent-11);
+  color: var(--neutral-11);
 }
 
 .send-started-wrap {
