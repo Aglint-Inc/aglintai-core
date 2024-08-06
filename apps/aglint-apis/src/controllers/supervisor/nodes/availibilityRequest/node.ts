@@ -12,12 +12,17 @@ import {findCandidateInSystem} from './tools/findCandidateInSystem';
 export const requestAvailibilityNode = async ({
   state,
   recruiter_id,
+  callback,
 }: {
   state: TeamState;
   recruiter_id: string;
+  callback: () => void;
 }) => {
   const tools = [
-    findCandidateInterviewSessions(),
+    findCandidateInterviewSessions({
+      recruiter_id,
+      callback,
+    }),
     sendAvailReqLink({
       recruiter_id,
     }),

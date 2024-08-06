@@ -49,6 +49,7 @@ export async function runAgentNode(params: {
       new HumanMessage({
         content: result.output,
         name,
+        // @ts-ignore
         tool: result?.intermediateSteps[0]?.action?.tool,
       }),
     ],

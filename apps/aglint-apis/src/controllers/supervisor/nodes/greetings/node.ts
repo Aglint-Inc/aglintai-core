@@ -22,7 +22,7 @@ export const greetingsNode = async ({state}: {state: TeamState}) => {
       description: 'capability of assistant',
       schema: z.object({}),
       func: async () => {
-        return 'I can help you sending candidate request avalibility link to candidate.';
+        return 'I can help you read interview types.';
       },
     }),
   ];

@@ -2,14 +2,17 @@
 import {END, START, StateGraph, StateGraphArgs} from '@langchain/langgraph';
 import {createSchedulingSupervisorAgent} from './supervisoragent';
 import {BaseMessage} from 'langchain/schema';
-import {TeamState} from '../../utils/state';
+import {TeamState} from './utils/state';
+import {CallBackPayload} from './main';
 import {greetingsNode} from './nodes/greetings/node';
-import {requestAvailibilityNode} from './nodes/availibilityRequest/node';
+import {InterviewTypesReadNode} from './nodes/interviewTypeRead/node';
 
-export const candidateAvailabilityRequestAgentChain = async ({
+export const agentChain = async ({
   recruiter_id,
+  callback,
 }: {
   recruiter_id: string;
+  callback: (x: CallBackPayload) => void;
 }) => {
   const teamState: StateGraphArgs<TeamState>['channels'] = {
     messages: {
@@ -18,7 +21,7 @@ export const candidateAvailabilityRequestAgentChain = async ({
     },
     team_members: {
       value: (x: string[], y: string[]) => x.concat(y),
-      default: () => ['candidateAvailabilityRequestAgent'],
+      default: () => ['interviewTypesRead'],
     },
     next: {
       value: (x: string, y?: string) => y ?? x,
@@ -35,24 +38,22 @@ export const candidateAvailabilityRequestAgentChain = async ({
   })
     .addNode('greetingAgent', async state => await greetingsNode({state}))
     .addNode(
-      'candidateAvailabilityRequestAgent',
-      async state => await requestAvailibilityNode({state, recruiter_id})
+      'interviewTypesRead',
+      async state =>
+        await InterviewTypesReadNode({state, recruiter_id, callback})
     )
     // @ts-ignore
     .addNode('supervisor', await createSchedulingSupervisorAgent());
 
   // Define the control flow
   candidateAvailabilityRequestAgent.addEdge('greetingAgent', 'supervisor');
-  candidateAvailabilityRequestAgent.addEdge(
-    'candidateAvailabilityRequestAgent',
-    'supervisor'
-  );
+  candidateAvailabilityRequestAgent.addEdge('interviewTypesRead', 'supervisor');
   candidateAvailabilityRequestAgent.addConditionalEdges(
     'supervisor',
     x => x.next,
     {
       greetingAgent: 'greetingAgent',
-      candidateAvailabilityRequestAgent: 'candidateAvailabilityRequestAgent',
+      interviewTypesRead: 'interviewTypesRead',
       FINISH: END,
     }
   );

@@ -46,6 +46,10 @@ const ChatApp = () => {
         }[];
       };
 
+      if (resp.display.length === 0) {
+        return;
+      }
+
       setMessages(() => [
         ...newMessages,
         {

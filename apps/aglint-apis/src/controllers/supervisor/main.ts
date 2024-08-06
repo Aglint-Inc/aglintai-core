@@ -1,23 +1,31 @@
 /* eslint-disable no-console */
 import {Request, Response} from 'express';
-import {candidateAvailabilityRequestAgentChain} from './teams/scheduling/graph';
+import {agentChain} from './graph';
 
 import {HumanMessage} from '@langchain/core/messages';
-import {AIMessage} from 'langchain/schema';
+
+export type CallBackPayload = {
+  function_name: string;
+  payload: any;
+};
 
 export async function agentSupervisor(req: Request, res: Response) {
   const {msg, recruiter_id, aihistory} = req.body;
   const results = [];
 
-  const resultStream = (
-    await candidateAvailabilityRequestAgentChain({recruiter_id})
-  ).stream(
+  let payloadCallback: CallBackPayload = null;
+
+  const callback = (x: CallBackPayload) => {
+    payloadCallback = x;
+  };
+
+  const resultStream = (await agentChain({recruiter_id, callback})).stream(
     {
       messages: aihistory.map(
         (item: {type: 'user' | 'assistant'; value: string}) =>
           item.type === 'user'
             ? new HumanMessage(item.value)
-            : new AIMessage(item.value)
+            : new HumanMessage(item.value)
       ),
     },
     {recursionLimit: 10}
@@ -26,20 +34,28 @@ export async function agentSupervisor(req: Request, res: Response) {
   for await (const step of await resultStream) {
     if (!step.__end__) {
       results.push(step);
-      console.log(JSON.stringify(step, null, 2));
+      // console.log(JSON.stringify(step, null, 2));
     }
   }
 
-  let aiMessages;
   const alterResults = results
     .map(item => {
       const key = Object.keys(item).find(key => key !== 'supervisor');
+
       if (key) {
-        aiMessages = item[key].messages[0];
+        const tool_name = item[key]?.messages[0]?.lc_kwargs?.tool;
+        let payload = null;
+
+        if (tool_name) {
+          if (payloadCallback?.function_name === tool_name) {
+            payload = payloadCallback.payload;
+          }
+        }
         return {
           team: key,
-          message: item[key].messages[0].content,
-          function: item[key].messages[0].name,
+          message: item[key].messages[0]?.content,
+          function: tool_name || null,
+          payload,
         };
       }
       return null;
@@ -47,7 +63,6 @@ export async function agentSupervisor(req: Request, res: Response) {
     .filter(Boolean);
 
   return res.status(200).json({
-    aihistory: [new HumanMessage(msg), aiMessages],
     display: alterResults,
   });
 }

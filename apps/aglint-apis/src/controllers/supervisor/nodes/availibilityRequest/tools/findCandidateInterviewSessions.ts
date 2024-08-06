@@ -1,10 +1,17 @@
 import {InterviewSession} from '@aglint/shared-types';
 import {supabaseWrap} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
+import {CallBackPayload} from 'src/controllers/supervisor/main';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
-export const findCandidateInterviewSessions = () => {
+export const findCandidateInterviewSessions = ({
+  recruiter_id,
+  callback,
+}: {
+  recruiter_id: string;
+  callback: (x: CallBackPayload) => void;
+}) => {
   return new DynamicStructuredTool({
     name: 'find-candidate-interview-sessions',
     description: 'returns array of sessions ',
@@ -65,7 +72,10 @@ export const findCandidateInterviewSessions = () => {
               session_order: s.session_order,
             }));
         }
-
+        callback({
+          payload: cand_sessions,
+          function_name: 'find-candidate-interview-sessions',
+        });
         return JSON.stringify(cand_sessions);
       } catch (error) {
         return 'Failed';

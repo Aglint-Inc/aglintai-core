@@ -1,5 +1,5 @@
-import {createTeamSupervisor} from '../../utils/helper';
-import {llm} from '../../utils/llm';
+import {createTeamSupervisor} from './utils/helper';
+import {llm} from './utils/llm';
 
 export const createSchedulingSupervisorAgent = async () => {
   const supervisorAgent = await createTeamSupervisor(
@@ -9,7 +9,7 @@ export const createSchedulingSupervisorAgent = async () => {
       'respond with the worker to act next. Each worker will perform a' +
       'task and respond with their results.\n\n' +
       'Dont go into loop calling same workers again and again',
-    ['candidateAvailabilityRequestAgent', 'greetingAgent'] //all nodes
+    ['interviewTypesRead', 'greetingAgent'] //all nodes
   );
 
   return supervisorAgent;
