@@ -1,9 +1,10 @@
-import { AvatarGroup, Box, Stack } from '@mui/material';
+import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
@@ -148,7 +149,7 @@ export function InterviewTypes() {
                           return (
                             <InterviewModuleCard
                               textDepartment={mod.department_name}
-                              isArchivedIconVisible={mod.is_archived}
+                              // isArchivedIconVisible={mod.is_archived}
                               key={mod.id}
                               isObjectiveVisible={Boolean(mod.description)}
                               onClickCard={{
@@ -161,7 +162,17 @@ export function InterviewTypes() {
                                 },
                               }}
                               textObjective={mod.description}
-                              textModuleName={mod.name}
+                              textModuleName={
+                                <Stack direction={'row'} spacing={2}>
+                                  <Typography>{mod.name}</Typography>
+                                  {mod.is_archived && (
+                                    <GlobalBadge
+                                      textBadge='Archived'
+                                      color={'warning'}
+                                    />
+                                  )}
+                                </Stack>
+                              }
                               slotMemberPic={
                                 <>
                                   {/* interview types */}
