@@ -1,11 +1,10 @@
 import { Stack } from '@mui/material';
-import React from 'react';
 
 import { StartOption } from '@/devlink2/StartOption';
 import { Text } from '@/devlink2/Text';
 
-import { scheduleType } from '../AgentEditor/utils';
 import { useAgentIEditor } from '../AgentEditorContext';
+import { scheduleTypes } from '../AgentInputBox/utils';
 
 function CommandShortCuts() {
   const commandOptions = [
@@ -48,13 +47,13 @@ function CommandShortCuts() {
           taskType = `#`;
           break;
         case 'ctrl + 1':
-          taskType = `schedule_type:[${scheduleType[0]?.display}] @`;
+          taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
           break;
         case 'ctrl + 2':
-          taskType = `schedule_type:[${scheduleType[1]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] !`;
           break;
         case 'ctrl + 3':
-          taskType = `schedule_type:[${scheduleType[2]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] !`;
           break;
         default:
           break;
