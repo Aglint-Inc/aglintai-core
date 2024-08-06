@@ -14,10 +14,12 @@ import { Request } from './Request';
 
 function Section({ priority }: Pick<RequestType, 'priority'>) {
   const {
-    requests: { status },
+    requests: { status, data: requestsRecs },
   } = useRequests();
 
-  const requests = [].filter((payload) => payload.priority === priority);
+  const requests = (requestsRecs ?? []).filter(
+    (payload) => payload.priority === priority,
+  );
   return (
     <>
       <RequestSection
