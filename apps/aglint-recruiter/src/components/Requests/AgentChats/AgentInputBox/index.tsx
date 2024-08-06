@@ -175,7 +175,7 @@ function AgentInputBox() {
                 iconName={'send'}
                 isRightIcon={true}
                 size={1}
-                textButton='Proceed'
+                textButton='Schedule'
                 onClickButton={{
                   onClick: createNewRequest,
                 }}
