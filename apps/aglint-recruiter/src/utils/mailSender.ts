@@ -16,7 +16,7 @@ export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({
   } catch (err) {
     console.error(err);
     if (err instanceof AxiosError) {
-      throw new ApiError('MAIL', err.message);
+      throw new ApiError('SERVER_ERROR', err.message);
     }
   }
 };
