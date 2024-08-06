@@ -1,11 +1,7 @@
-import {
-  APISendAvailabilityRequestLink,
-  EmailTemplateAPi,
-} from '@aglint/shared-types';
+import {EmailTemplateAPi} from '@aglint/shared-types';
 import {supabaseWrap} from '@aglint/shared-utils';
 import axios from 'axios';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {envConfig} from 'src/config';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import z from 'zod';
@@ -101,7 +97,7 @@ export const sendAvailReqLink = ({recruiter_id}: {recruiter_id: string}) => {
         const res = await candidateAvailRequest(payload);
 
         return res;
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
         return 'Failed to perform the action';
       }

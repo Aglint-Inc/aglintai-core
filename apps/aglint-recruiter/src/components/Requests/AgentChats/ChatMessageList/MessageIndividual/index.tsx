@@ -52,7 +52,7 @@ function MessageIndividual({
               color={'neutral'}
             />
           </Stack>
-          {chat.metadata ? (
+          {chat.function === 'fetch_scheduled_interviews' ? (
             <Widgets chat={chat} />
           ) : (
             <Text size={2} content={chat.title} />
