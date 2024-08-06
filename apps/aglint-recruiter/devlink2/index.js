@@ -218,6 +218,7 @@ export * from "./RequestCountSkeleton";
 export * from "./RequestOption";
 export * from "./RequestReschedule";
 export * from "./RequestSection";
+export * from "./RequestSetting";
 export * from "./ResAbsentError";
 export * from "./RescheduleOption";
 export * from "./RescheduleOptions";
