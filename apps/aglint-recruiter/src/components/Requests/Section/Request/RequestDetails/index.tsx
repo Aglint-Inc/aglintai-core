@@ -98,8 +98,10 @@ function RequestDetails({
               onClickButton={{
                 onClick: async () => {
                   await handleAsyncUpdateRequest({
-                    id: request.id,
-                    payload: { status: 'in_progress' },
+                    payload: {
+                      requestId: request.id,
+                      requestPayload: { status: 'in_progress' },
+                    },
                   });
                   toast.message('Request updated successfully');
                 },

@@ -41,8 +41,10 @@ function MoreOptions({ request_id }: { request_id: string }) {
   async function handleClick(action: actionType) {
     setTooltipOpen(false);
     await handleAsyncUpdateRequest({
-      id: request_id,
-      payload: { status: action },
+      payload: {
+        requestId: request_id,
+        requestPayload: { status: action },
+      },
     });
   }
 
