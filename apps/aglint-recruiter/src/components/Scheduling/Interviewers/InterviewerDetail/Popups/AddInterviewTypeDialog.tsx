@@ -41,7 +41,7 @@ function AddInterviewTypeDialog() {
   const { data: allModules } = useAllInterviewModules();
 
   const filteredModules = allModules?.filter(
-    (module) => !module_ids.includes(module.id),
+    (module) => !module_ids.includes(module.id) && !module.is_archived,
   );
 
   async function addModule() {

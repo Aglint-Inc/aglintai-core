@@ -18,7 +18,7 @@ type Meetings = {
   [date: string]: Meeting[];
 };
 
-export default function Heatmap({ loadSetting }) {
+export default function Heatmap({ loadSetting, interviewLoad }) {
   const [gridData, setGridData] = useState<Meetings | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
@@ -82,7 +82,7 @@ export default function Heatmap({ loadSetting }) {
 
   const rest = transposeArray(filled2d);
 
-  const yLabels: string[] = new Array(maxCount).fill('');
+  const yLabels: string[] = new Array(Math.ceil(maxCount)).fill('');
 
   const startDateUI = dayjsLocal(
     new Date().setDate(new Date().getDate() + dayCount.start),
@@ -109,6 +109,7 @@ export default function Heatmap({ loadSetting }) {
             </span>
           </Typography>
           <Stack direction={'row'} spacing={1}>
+            {interviewLoad}
             <IconButtonSoft
               iconName='arrow_back_ios'
               color={'neutral'}

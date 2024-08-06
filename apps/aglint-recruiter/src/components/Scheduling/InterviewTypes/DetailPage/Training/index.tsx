@@ -15,6 +15,7 @@ import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
+import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -182,6 +183,14 @@ function ModuleSettingComp({
       setOpen(false);
       setDisableOpen(false);
     }
+  };
+
+  const [isDisableError, setDisableError] = useState(false);
+  const disableError = () => {
+    setDisableError(true);
+    setTimeout(() => {
+      setDisableError(false);
+    }, 5000);
   };
 
   return (
@@ -379,6 +388,11 @@ function ModuleSettingComp({
                           mb={'var(--space-2)'}
                           pt={'2px'}
                         >
+                          <Icon
+                            height='12px'
+                            color={'var(--error-9)'}
+                            variant='AlertIcon'
+                          />
                           Please select users to approve or uncheck require
                           approval
                         </Typography>
@@ -410,6 +424,7 @@ function ModuleSettingComp({
                         width='80px'
                         height='26px'
                         value={localModule.settings.noReverseShadow}
+                        isDebounceEnable={false}
                         handleSelect={(value) =>
                           setEditLocalModule((prev) => ({
                             ...prev,
@@ -468,6 +483,7 @@ function ModuleSettingComp({
                         width='80px'
                         height='26px'
                         value={localModule.settings.noShadow}
+                        isDebounceEnable={false}
                         handleSelect={(value) =>
                           setEditLocalModule((prev) => ({
                             ...prev,
@@ -523,9 +539,10 @@ function ModuleSettingComp({
                                     !relation.is_archived,
                                 ).length > 0
                               ) {
-                                toast.warning(
-                                  'Cannot disable training while members are still in training.',
-                                );
+                                // toast.warning(
+                                //   'Cannot disable training while members are still in training.',
+                                // );
+                                disableError();
                               } else {
                                 setDisableOpen(true);
                               }
@@ -535,6 +552,18 @@ function ModuleSettingComp({
                       </>
                     }
                   />
+
+                  {isDisableError && (
+                    <Typography mt={1} color={'error'}>
+                      <Icon
+                        height='12px'
+                        color={'var(--error-9)'}
+                        variant='AlertIcon'
+                      />
+                      Cannot disable training while members are still in
+                      training.
+                    </Typography>
+                  )}
                 </Stack>
               )}
             </>
