@@ -6,6 +6,7 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
+import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -16,7 +17,7 @@ export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
 ) => {
   const { collapse, setCollapse, isMutating } = useRequest();
-
+  const { handleAsyncUpdateRequest } = useRequests();
   return (
     <OptimisticWrapper loading={isMutating}>
       <Collapse in={collapse} collapsedSize={46}>
@@ -52,7 +53,19 @@ export const Request = (
             </>
           }
           onClickCard={{
-            onClick: () => setCollapse((prev) => !prev),
+            onClick: () => {
+              setCollapse((prev) => !prev);
+              if (props.is_new) {
+                handleAsyncUpdateRequest({
+                  payload: {
+                    requestId: props.id,
+                    requestPayload: { is_new: false },
+                  },
+                  loading: false,
+                  toast: false,
+                });
+              }
+            },
           }}
           isRequestDetailVisible={true}
           slotRequestCardDetail={
