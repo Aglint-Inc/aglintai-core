@@ -6,7 +6,6 @@ export type CustomRequestProgress = TableType<
   {
     status: EventStatusType;
     event_type: EventNodeType;
-    log_type: 'heading' | 'ordered_list';
     meta: {
       event_run_id: number;
       [key: string]: any;

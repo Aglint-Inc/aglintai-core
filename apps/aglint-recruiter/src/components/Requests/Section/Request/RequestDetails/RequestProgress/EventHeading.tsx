@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Box } from '@mui/material';
 import axios from 'axios';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -29,31 +30,7 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   return (
     <>
       <TextWithIcon
-        textContent={
-          <>
-            {workflowCopy[event.event_type][tense]}
-            {event.progress.map((prog) => {
-              return (
-                <div
-                  key={prog.id}
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  {prog.log}
-                  {event.status === 'failed' && (
-                    <ButtonSoft
-                      size={1}
-                      color={'primary'}
-                      textButton='Click to retry'
-                      onClickButton={{
-                        onClick: () => handleRetry(prog.meta.event_run_id),
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </>
-        }
+        textContent={<>{workflowCopy[event.event_type][tense]}</>}
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}
@@ -67,6 +44,32 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
           )
         }
       />
+      <Box pl={2.5}>
+        {event.progress.map((prog) => {
+          return (
+            <p key={prog.id} style={{ display: 'flex', alignItems: 'center' }}>
+              <p
+                style={{
+                  color: 'grey',
+                  fontSize: '13px',
+                }}
+              >
+                {prog.log}
+              </p>
+              {event.status === 'failed' && (
+                <ButtonSoft
+                  size={1}
+                  color={'primary'}
+                  textButton='Click to retry'
+                  onClickButton={{
+                    onClick: () => handleRetry(prog.meta.event_run_id),
+                  }}
+                />
+              )}
+            </p>
+          );
+        })}
+      </Box>
     </>
   );
 };

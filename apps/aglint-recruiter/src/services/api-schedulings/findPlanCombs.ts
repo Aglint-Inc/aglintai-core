@@ -46,9 +46,8 @@ export const findPlanCombs = async ({
   await reqProgressLogger({
     event_type: 'FIND_CURR_AVAIL_SLOTS',
     log: `Found ${plans.length} slots`,
-    log_type: 'heading',
     status: 'completed',
-    meta: null,
+    is_progress_step: true,
   });
   return plans;
 };

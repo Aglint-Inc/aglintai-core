@@ -3626,8 +3626,8 @@ export type Database = {
           created_at: string
           event_type: string
           id: string
+          is_progress_step: boolean
           log: string | null
-          log_type: string
           meta: Json | null
           request_id: string
           status: string
@@ -3636,8 +3636,8 @@ export type Database = {
           created_at?: string
           event_type: string
           id?: string
+          is_progress_step?: boolean
           log?: string | null
-          log_type?: string
           meta?: Json | null
           request_id: string
           status: string
@@ -3646,8 +3646,8 @@ export type Database = {
           created_at?: string
           event_type?: string
           id?: string
+          is_progress_step?: boolean
           log?: string | null
-          log_type?: string
           meta?: Json | null
           request_id?: string
           status?: string

@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { ApiError, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,12 +9,12 @@ export type ProgressLoggerType = ReturnType<typeof createRequestProgressLogger>;
 
 export const createRequestProgressLogger = (
   request_id: string,
-  event_run_id: string,
+  event_run_id: number,
 ) => {
   const logger = async (
     payload: Pick<
       DatabaseTableInsert['request_progress'],
-      'log' | 'log_type' | 'event_type' | 'status' | 'meta' | 'id'
+      'log' | 'event_type' | 'status' | 'id' | 'is_progress_step'
     >,
   ) => {
     if (!payload.id) {
@@ -35,6 +35,17 @@ export const createRequestProgressLogger = (
     );
     return rec;
   };
+  logger.resetEventProgress = async (
+    type: DatabaseTable['request_progress']['event_type'],
+  ) => {
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request_progress')
+        .delete()
+        .eq('event_type', type)
+        .eq('request_id', request_id),
+    );
+  };
   return logger;
 };
 
@@ -50,14 +61,25 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   logger: ProgressLoggerType,
   logger_args: Pick<
     DatabaseTableInsert['request_progress'],
-    'log' | 'log_type' | 'event_type' | 'status' | 'meta'
+    'log' | 'event_type' | 'status' | 'meta'
   >,
 ): Promise<U> {
   let progress_id = uuidv4();
   try {
-    await logger({ ...logger_args, status: 'in_progress', id: progress_id });
+    await logger.resetEventProgress(logger_args.event_type);
+    await logger({
+      ...logger_args,
+      status: 'in_progress',
+      is_progress_step: false,
+      id: progress_id,
+    });
     const res = await callback1(args);
-    await logger({ ...logger_args, status: 'completed', id: progress_id });
+    await logger({
+      ...logger_args,
+      status: 'completed',
+      id: progress_id,
+      is_progress_step: false,
+    });
     return res;
   } catch (err) {
     let err_log = 'Something wrong happenned';
@@ -69,6 +91,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       status: 'failed',
       id: progress_id,
       log: err_log,
+      is_progress_step: false,
     });
     throw new ApiError('WORKFLOW_ACTION', err.message, 500);
   }

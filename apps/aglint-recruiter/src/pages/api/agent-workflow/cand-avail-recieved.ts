@@ -22,8 +22,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     recruiter_id,
     application_id,
     request_id,
+    event_run_id,
   } = req.body;
-  const reqProgressLogger = createRequestProgressLogger(request_id);
+  const reqProgressLogger = createRequestProgressLogger(
+    request_id,
+    event_run_id,
+  );
 
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
@@ -85,7 +89,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       reqProgressLogger,
       {
         event_type: 'SELF_SCHEDULE_LINK',
-        log_type: 'heading',
       },
     );
   }
