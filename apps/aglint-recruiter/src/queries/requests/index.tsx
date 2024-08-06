@@ -15,7 +15,7 @@ import {
 } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
+import aglintToast from '@/src/utils/toast';
 
 import { appKey, GC_TIME } from '..';
 
@@ -34,10 +34,10 @@ export const requestQueries = {
   requests_mutationOptions: <
     T extends 'create' | 'update' | 'delete',
     U extends T extends 'create'
-      ? CreateRequests
+      ? UseCreateRequest
       : T extends 'update'
-        ? UpdateRequest
-        : DeleteRequest,
+        ? UseUpdateRequest
+        : UseDeleteRequest,
   >(
     method: T,
   ) => ({
@@ -92,11 +92,18 @@ export const requestQueries = {
     }),
 } as const;
 
+type Options = {
+  loading?: boolean;
+  toast?: boolean;
+};
+
+type UseCreateRequest = { payload: CreateRequests } & Options;
+
 export const useRequestsCreate = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: requestQueries.requests_mutationKey('create'),
-    mutationFn: async (payload: CreateRequests) => {
+    mutationFn: async ({ payload }: UseCreateRequest) => {
       await createRequests(payload);
       await Promise.allSettled([
         queryClient.refetchQueries(
@@ -107,8 +114,9 @@ export const useRequestsCreate = () => {
         ),
       ]);
     },
-    onError: () => toast.error('Unable to create requests'),
-    onSuccess: () => toast.success('Requests created successfully'),
+    onError: () => aglintToast.error('Unable to create requests'),
+    onSuccess: (_, { toast = true }) =>
+      toast && aglintToast.success('Requests created successfully'),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('create'),
@@ -119,11 +127,12 @@ export const useRequestsCreate = () => {
   };
 };
 
+type UseUpdateRequest = { payload: UpdateRequest } & Options;
 export const useRequestsUpdate = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: requestQueries.requests_mutationKey('update'),
-    mutationFn: async (payload: UpdateRequest) => {
+    mutationFn: async ({ payload }: UseUpdateRequest) => {
       await updateRequest(payload);
       await Promise.allSettled([
         queryClient.refetchQueries(
@@ -134,8 +143,9 @@ export const useRequestsUpdate = () => {
         ),
       ]);
     },
-    onError: () => toast.error('Unable to update request'),
-    onSuccess: () => toast.success('Request updated successfully'),
+    onError: () => aglintToast.error('Unable to update request'),
+    onSuccess: (_, { toast = true }) =>
+      toast && aglintToast.success('Request updated successfully'),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('update'),
@@ -146,11 +156,12 @@ export const useRequestsUpdate = () => {
   };
 };
 
+type UseDeleteRequest = { payload: DeleteRequest } & Options;
 export const useRequestsDelete = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: requestQueries.requests_mutationKey('delete'),
-    mutationFn: async (payload: DeleteRequest) => {
+    mutationFn: async ({ payload }: UseDeleteRequest) => {
       await deleteRequest(payload);
       await Promise.allSettled([
         queryClient.refetchQueries(
@@ -161,8 +172,9 @@ export const useRequestsDelete = () => {
         ),
       ]);
     },
-    onError: () => toast.error('Unable to delete request'),
-    onSuccess: () => toast.success('Request deleted successfully'),
+    onError: () => aglintToast.error('Unable to delete request'),
+    onSuccess: (_, { toast = true }) =>
+      toast && aglintToast.success('Request deleted successfully'),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('delete'),
@@ -247,19 +259,28 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
   ).data;
 
 type CreateRequests = DatabaseFunctions['create_session_requests']['Args'];
-export const createRequests = async (payload: CreateRequests) =>
-  await supabase.rpc('create_session_requests', payload).throwOnError();
+export const createRequests = async (requestPayload: CreateRequests) =>
+  await supabase.rpc('create_session_requests', requestPayload).throwOnError();
 
 type UpdateRequest = {
-  id: DatabaseTable['request']['id'];
-  payload: Omit<DatabaseTableUpdate['request'], 'id'>;
+  requestId: DatabaseTable['request']['id'];
+  requestPayload: Omit<DatabaseTableUpdate['request'], 'id'>;
 };
-export const updateRequest = async ({ id, payload }: UpdateRequest) =>
-  await supabase.from('request').update(payload).eq('id', id).throwOnError();
+export const updateRequest = async ({
+  requestId,
+  requestPayload,
+}: UpdateRequest) =>
+  await supabase
+    .from('request')
+    .update(requestPayload)
+    .eq('id', requestId)
+    .throwOnError();
 
-type DeleteRequest = Pick<DatabaseTable['request'], 'id'>;
-export const deleteRequest = async (payload: DeleteRequest) =>
-  await supabase.from('request').delete().eq('id', payload.id).throwOnError();
+type DeleteRequest = {
+  requestId: DatabaseTable['request']['id'];
+};
+export const deleteRequest = async ({ requestId }: DeleteRequest) =>
+  await supabase.from('request').delete().eq('id', requestId).throwOnError();
 
 export const createRequest = async (
   newRequestData: DatabaseTableInsert['request'],
