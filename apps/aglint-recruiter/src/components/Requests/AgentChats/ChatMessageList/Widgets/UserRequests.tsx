@@ -3,14 +3,18 @@ import { MetadataForFunction } from '@aglint/shared-types';
 import { useUserChat } from '@/src/queries/userchat';
 
 import RequestList, { RequestListProps } from '../../Components/RequestList';
+import { CallBackAll } from '@aglint/shared-utils';
 
 function UserRequests({
   chat,
 }: {
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
-  const requests = chat.metadata as MetadataForFunction<'fetch_user_requests'>;
-  const uiRequests: RequestListProps[] = requests.map((request) => {
+  const meta = chat.metadata as CallBackAll[];
+  const requests = meta.findLast(
+    (m) => m.function_name === 'fetch_user_requests',
+  )?.payload;
+  const uiRequests: RequestListProps[] = requests?.map((request) => {
     return {
       type: request.type,
       title: request.title,
@@ -30,9 +34,9 @@ function UserRequests({
   });
 
   return (
-    <div>
+    <>
       <RequestList requests={uiRequests} />
-    </div>
+    </>
   );
 }
 
