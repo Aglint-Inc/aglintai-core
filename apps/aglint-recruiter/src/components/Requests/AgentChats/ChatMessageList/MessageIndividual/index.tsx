@@ -59,7 +59,7 @@ function MessageIndividual({
             <Typography
               component={'div'}
               fontSize={14}
-              dangerouslySetInnerHTML={{ __html: marked(chat.title) }}
+              dangerouslySetInnerHTML={{ __html: marked(chat?.title ?? '') }}
             ></Typography>
           )}
         </Stack>
