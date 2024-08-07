@@ -83,11 +83,7 @@ export class WorkflowGraph {
       throw new Error(`${starting_node} does not exist in graph`);
     }
 
-    let unvisited_nodes = Array.from(this.getNeighbors(starting_node)).filter(
-      (node_event) => {
-        return !visited_nodes.has(node_event);
-      },
-    );
+    let unvisited_nodes = Array.from(this.getNeighbors(starting_node));
     let past_present_events: EventNode[] = unvisited_nodes
       .filter((node_edge) => {
         let node = this.getNode(node_edge);
@@ -112,10 +108,14 @@ export class WorkflowGraph {
       curr_node_sorted_events = [...curr_node_sorted_events, ...future_events];
     }
 
-    ordered_nodes = [...curr_node_sorted_events];
+    curr_node_sorted_events.forEach((node) => {
+      if (!visited_nodes.has(node.event_type)) {
+        ordered_nodes.push(node);
+        visited_nodes.add(node.event_type);
+      }
+    });
 
     for (let node of curr_node_sorted_events) {
-      visited_nodes.add(node.event_type);
       let curr_node_events = this.traverseGraph(node.event_type, visited_nodes);
       ordered_nodes = [...ordered_nodes, ...curr_node_events];
     }
