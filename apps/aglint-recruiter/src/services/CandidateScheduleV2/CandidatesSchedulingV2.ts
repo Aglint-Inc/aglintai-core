@@ -4,6 +4,7 @@ import {
   CalConflictType,
   CandReqSlotsType,
   ConflictReason,
+  CurrRoundCandidateAvailReq,
   DatabaseTable,
   DateRangePlansType,
   InterviewSessionApiRespType,
@@ -19,6 +20,7 @@ import {
   scheduling_options_schema,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -218,6 +220,82 @@ export class CandidatesSchedulingV2 {
     this.db_details.all_inters = this.db_details.all_inters.filter(
       (i) => i.user_id !== inter_id,
     );
+  }
+
+  // generate all day slots with availability
+  public candavailabilityWithSuggestion() {
+    const session_rounds = this.getSessionRounds();
+    const first_round_sessions = session_rounds[0];
+    let ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
+    const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
+    const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
+
+    const getCurrDaySlots = (
+      curr_day: Dayjs,
+      curr_round_duration: number,
+    ): CurrRoundCandidateAvailReq['slots'] => {
+      const curr_day_sugg_slots: CurrRoundCandidateAvailReq['slots'] = [];
+      // const curr_day_sugg_slots = this.findFixedBreakSessionCombs(
+      //   ints_combs_for_each_round[curr_round_idx],
+      //   curr_day,
+      // );
+      const curr_time = ScheduleUtils.getNearestCurrTime(
+        this.db_details.req_user_tz,
+      );
+      let cand_start_time = curr_day.set(
+        'hours',
+        this.api_options.cand_start_time,
+      );
+      const cand_end_time = curr_day.set(
+        'hours',
+        this.api_options.cand_end_time,
+      );
+      if (curr_time.isSame(cand_start_time, 'day')) {
+        if (curr_time.isSameOrAfter(cand_end_time, 'hours')) return [];
+        cand_start_time = curr_time;
+      }
+
+      let curr_start_time = cand_start_time;
+
+      while (curr_start_time.isBefore(cand_end_time, 'hour')) {
+        curr_day_sugg_slots.push({
+          start_time: curr_start_time.format(),
+          end_time: curr_start_time
+            .add(curr_round_duration, 'minutes')
+            .format(),
+          is_slot_available: false,
+        });
+        curr_start_time = curr_start_time.add(curr_round_duration, 'minutes');
+      }
+      return curr_day_sugg_slots;
+    };
+    let curr_round_sugg_slots: CurrRoundCandidateAvailReq[] = [];
+    const curr_round_options: CurrRoundCandidateAvailReq[] = [];
+
+    let curr_round_duration = 0;
+    first_round_sessions.forEach((sesn, idx) => {
+      if (first_round_sessions.length - 1 !== idx) {
+        curr_round_duration += sesn.break_duration;
+      }
+      curr_round_duration += sesn.duration;
+    });
+    let curr_day = dayjs_start_date;
+    while (curr_day.isSameOrBefore(dayjs_end_date, 'day')) {
+      const curr_day_sugg_slots = getCurrDaySlots(
+        curr_day,
+        curr_round_duration,
+      );
+      curr_day = curr_day.add(1, 'day');
+      curr_round_options.push({
+        curr_interview_day: curr_day.format(),
+        slots: curr_day_sugg_slots,
+      });
+    }
+    curr_round_sugg_slots = [...curr_round_sugg_slots, ...curr_round_options];
+    return curr_round_sugg_slots;
   }
 
   //NOTE: private funcs

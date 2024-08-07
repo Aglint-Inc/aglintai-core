@@ -40,13 +40,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_id: parsed_body.recruiter_id,
       req_user_tz: parsed_body.candidate_tz,
     });
-    const all_day_plans = cand_schedule.findAvailabilitySlotsDateRange();
-    const curr_round_options = convertToOptionsReqSlot(
-      fetched_details,
-      parsed_body,
-      all_day_plans,
-    );
-    return res.status(200).send(curr_round_options);
+
+    const d = cand_schedule.candavailabilityWithSuggestion();
+    // const all_day_plans = cand_schedule.findAvailabilitySlotsDateRange();
+    // const curr_round_options = convertToOptionsReqSlot(
+    //   fetched_details,
+    //   parsed_body,
+    //   all_day_plans,
+    // );
+    return res.status(200).send([]);
   } catch (error) {
     console.error(error);
     return res
@@ -94,107 +96,4 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
     session_rounds,
     curr_round_duration,
   };
-};
-
-// Suggest times over free keywords ==> highlight
-// Suggest times over recruiting block keywords ==> highlight
-// Suggest times over outside work hours ==> show
-// show dayoffs times over day offs ==> show
-
-type DayOffOOO = 'ooo' | 'day_off';
-const convertToOptionsReqSlot = (
-  fetched_details: Awaited<ReturnType<typeof fetchDetails>>,
-  payload: CandReqAvailableSlots,
-  all_day_plans: DateRangePlansType[],
-) => {
-  const curr_round_options: CurrRoundCandidateAvailReq[] = [];
-
-  const convertCurrDaySlotsToOptions = (
-    slots: PlanCombinationRespType[],
-  ): CurrRoundCandidateAvailReq => {
-    const api_options = fetched_details.updated_api_options;
-    const curr_day = dayjsLocal(slots[0].sessions[0].start_time)
-      .tz(payload.candidate_tz)
-      .startOf('date');
-    let curr_time = curr_day.set('hour', api_options.cand_start_time);
-    let curr_day_end_time = curr_day.set('hour', api_options.cand_end_time);
-    const curr_day_options: CurrRoundCandidateAvailReq = {
-      curr_interview_day: curr_day.format(),
-      slots: [],
-    };
-    let no_conf_slots_start_time = new Set<string>();
-    let conf_slots_start_time = new Map<string, DayOffOOO[]>();
-    for (let slot of slots) {
-      const day_off_arr: DayOffOOO[] = [];
-
-      const is_conflict_free = slot.sessions.every((s) => !s.is_conflict);
-      const is_ooo = slot.sessions.some((s) =>
-        s.conflict_types.includes('out_of_working_hours'),
-      );
-      const is_day_off = slot.sessions.some((s) =>
-        s.conflict_types.includes('day_off'),
-      );
-      if (is_conflict_free) {
-        no_conf_slots_start_time.add(slot.sessions[0].start_time);
-      }
-
-      if (is_day_off) {
-        day_off_arr.push('day_off');
-      }
-      if (is_ooo) {
-        day_off_arr.push('ooo');
-      }
-      if (day_off_arr.length > 0) {
-        conf_slots_start_time.set(slot.sessions[0].start_time, [
-          ...day_off_arr,
-        ]);
-      }
-    }
-    while (
-      curr_time
-        .add(fetched_details.curr_round_duration, 'minutes')
-        .isSameOrBefore(curr_day_end_time, 'minutes')
-    ) {
-      const ooo_day_off_option =
-        conf_slots_start_time.get(curr_time.format()) ?? [];
-      // Dont show options in these cases
-      if (
-        (!fetched_details.avail_req_details.availability.day_offs &&
-          ooo_day_off_option.includes('day_off')) ||
-        (!fetched_details.avail_req_details.availability.outside_work_hours &&
-          ooo_day_off_option.includes('ooo'))
-      ) {
-        curr_time = curr_time.add(
-          fetched_details.curr_round_duration,
-          'minutes',
-        );
-        continue;
-      }
-      let is_slot_no_conflict = false;
-      if (no_conf_slots_start_time.has(curr_time.format())) {
-        is_slot_no_conflict = true;
-      }
-
-      curr_day_options.slots.push({
-        start_time: curr_time.format(),
-        end_time: curr_time
-          .add(fetched_details.curr_round_duration, 'minutes')
-          .format(),
-        is_slot_available: is_slot_no_conflict,
-      });
-
-      curr_time = curr_time.add(fetched_details.curr_round_duration, 'minutes');
-    }
-    return curr_day_options;
-  };
-
-  for (let curr_interview_day of all_day_plans) {
-    const [curr_round_slots] = curr_interview_day.interview_rounds;
-    if (curr_round_slots) {
-      const req_options = convertCurrDaySlotsToOptions(curr_round_slots.plans);
-      curr_round_options.push(req_options);
-    }
-  }
-
-  return curr_round_options;
 };
