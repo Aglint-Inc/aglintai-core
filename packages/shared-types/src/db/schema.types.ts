@@ -3488,6 +3488,8 @@ export type Database = {
           id: string
           is_new: boolean
           priority: string
+          schedule_end_date: string | null
+          schedule_start_date: string | null
           status: string
           title: string | null
           type: string
@@ -3500,6 +3502,8 @@ export type Database = {
           id?: string
           is_new?: boolean
           priority?: string
+          schedule_end_date?: string | null
+          schedule_start_date?: string | null
           status?: string
           title?: string | null
           type: string
@@ -3512,6 +3516,8 @@ export type Database = {
           id?: string
           is_new?: boolean
           priority?: string
+          schedule_end_date?: string | null
+          schedule_start_date?: string | null
           status?: string
           title?: string | null
           type?: string
