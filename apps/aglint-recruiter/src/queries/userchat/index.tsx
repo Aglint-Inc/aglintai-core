@@ -36,29 +36,14 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
     }
   };
 
-  const insertAIChat = async ({
-    message,
-    function_name,
-    payload,
-  }: {
-    message: string;
-    function_name: FunctionNames;
-    payload: any;
-  }) => {
+  const insertAIChat = async (
+    aiMessage: Awaited<ReturnType<typeof fetchUserChat>>[0],
+  ) => {
     try {
-      const res = await insertUserChat(
-        {
-          function: function_name,
-          text: message,
-          type: 'agent',
-          metadata: payload,
-        },
-        user_id,
-      );
       queryClient.setQueryData(
         [`user_chat`],
         (prevData: Awaited<ReturnType<typeof fetchUserChat>>) => {
-          return [...prevData, res];
+          return [...prevData, aiMessage];
         },
       );
     } catch (err) {
@@ -98,7 +83,7 @@ const insertUserChat = async (
     .from('user_chat')
     .insert({
       type: payload.type,
-      title: payload.text,
+      content: payload.text,
       function: payload.function,
       user_id: user_id,
       metadata: payload.metadata,
