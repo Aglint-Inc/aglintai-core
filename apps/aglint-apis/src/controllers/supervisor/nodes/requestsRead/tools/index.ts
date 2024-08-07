@@ -1,6 +1,5 @@
-import {fetchRequestsUser} from '@aglint/shared-utils';
+import {CallBack, fetchRequestsUser} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
@@ -9,7 +8,7 @@ export const fetchUserRequestsTool = ({
   callback,
 }: {
   user_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBack<'fetch_user_requests'>) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_user_requests',
@@ -29,6 +28,7 @@ export const fetchUserRequestsTool = ({
       callback({
         function_name: 'fetch_user_requests',
         payload: reqs,
+        called_at: new Date().toISOString(),
       });
       const resp = reqs.map(s => {
         return {

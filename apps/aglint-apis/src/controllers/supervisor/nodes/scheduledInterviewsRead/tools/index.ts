@@ -1,6 +1,5 @@
-import {fetchScheduledInterviews} from '@aglint/shared-utils';
+import {CallBack, fetchScheduledInterviews} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
@@ -9,7 +8,7 @@ export const fetchScheduledInterviewsTool = ({
   callback,
 }: {
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBack<'fetch_scheduled_interviews'>) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_scheduled_interviews',
@@ -33,6 +32,7 @@ export const fetchScheduledInterviewsTool = ({
       callback({
         function_name: 'fetch_scheduled_interviews',
         payload: sch,
+        called_at: new Date().toISOString(),
       });
 
       const resp = sch.map(s => {

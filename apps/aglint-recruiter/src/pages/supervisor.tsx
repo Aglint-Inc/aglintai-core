@@ -1,8 +1,9 @@
+import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-utils';
 import axios from 'axios';
 import { useState } from 'react';
+
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
 import { useUserChat } from '../queries/userchat';
-import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-utils';
 
 const ChatApp = () => {
   const { recruiter, recruiterUser } = useAuthDetails();
