@@ -27,7 +27,7 @@ export const fetchUserRequestsTool = ({
         return `No requests found for user ${user_id}`;
       }
       callback({
-        function_name: 'fetch_user_request',
+        function_name: 'fetch_user_requests',
         payload: reqs,
       });
       const resp = reqs.map(s => {
