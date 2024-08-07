@@ -10,4 +10,5 @@ declare function Text(props: {
   color?: Types.Builtin.Text;
   highContrast?: Types.Builtin.Text;
   text?: React.ReactNode;
+  styleProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
