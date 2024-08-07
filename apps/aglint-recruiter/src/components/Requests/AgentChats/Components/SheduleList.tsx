@@ -35,14 +35,14 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
         >
           <Stack
             direction='row'
-            alignItems='center'
+            alignItems='top'
             spacing={3}
             position='relative'
           >
-            <Box sx={{ width: '136px' }}>
-              <Text size={2} content={schedule.time} weight={'medium'}></Text>
+            <Box sx={{ width: '148px' }}>
               <Stack color={'var(--neutral-11)'}>
-                <Text size={2} content={schedule.date}></Text>
+              <Text size={2} content={schedule.time} weight={'medium'}></Text>
+                <Text size={1} content={schedule.date}></Text>
               </Stack>
             </Box>
             <Box flex={1}>
