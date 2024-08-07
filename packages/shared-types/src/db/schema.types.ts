@@ -4408,7 +4408,6 @@ export type Database = {
         Row: {
           content: string
           created_at: string
-          description: string | null
           function: string | null
           id: string
           metadata: Json | null
@@ -4418,7 +4417,6 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
-          description?: string | null
           function?: string | null
           id?: string
           metadata?: Json | null
@@ -4428,7 +4426,6 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
-          description?: string | null
           function?: string | null
           id?: string
           metadata?: Json | null
