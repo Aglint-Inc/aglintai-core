@@ -46,9 +46,11 @@ export const fetchUserSchedules = async ({
     query.ilike('session_name', `%${textSearch}%`);
   }
 
-  if (filter) {
-    query.eq('status', filter);
-  }
+  // console.log(filter);
+
+  // if (filter) {
+  //   query.eq('status', filter);
+  // }
 
   const { data } = await query.throwOnError();
 

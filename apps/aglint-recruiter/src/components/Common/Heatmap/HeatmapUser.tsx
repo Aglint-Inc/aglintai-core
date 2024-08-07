@@ -102,14 +102,13 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
           mb={1}
           maxWidth={'870px'}
         >
-          <Typography>
-            Activity on{' '}
-            <span style={{ fontWeight: 500 }}>
-              {startDateUI} - {endDateUI}
-            </span>
-          </Typography>
-          <Stack direction={'row'} spacing={1}>
-            {interviewLoad}
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <Typography>
+              Activity on{' '}
+              <span style={{ fontWeight: 500 }}>
+                {startDateUI} - {endDateUI}
+              </span>
+            </Typography>
             <IconButtonSoft
               iconName='arrow_back_ios'
               color={'neutral'}
@@ -136,6 +135,10 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
                   })),
               }}
             />
+          </Stack>
+
+          <Stack direction={'row'} spacing={1}>
+            {interviewLoad}
           </Stack>
         </Stack>
         <HeatMapGrid

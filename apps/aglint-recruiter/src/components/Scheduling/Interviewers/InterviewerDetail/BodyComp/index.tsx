@@ -342,7 +342,7 @@ function BodyComp() {
                 )}
                 {tab === 'training' && <TabInterviewModules type='training' />}
                 {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
-                {tab === 'allschedules' && (
+                {tab === 'calendar' && (
                   <FullCalendar
                     allSchedules={allSchedules}
                     isLoading={isLoading}
