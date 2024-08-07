@@ -73,15 +73,22 @@ export class WorkflowGraph {
       neighbors.delete(eventType);
     });
   }
-  public traverseGraph(starting_node: SchedulingEventLogs['event_type']) {
+  public traverseGraph(
+    starting_node: SchedulingEventLogs['event_type'],
+    visited_nodes: Set<SchedulingEventLogs['event_type']>,
+  ) {
     let ordered_nodes: EventNode[] = [];
 
     if (!this.nodes.has(starting_node)) {
       throw new Error(`${starting_node} does not exist in graph`);
     }
 
-    let node_edges = Array.from(this.getNeighbors(starting_node));
-    let past_present_events: EventNode[] = node_edges
+    let unvisited_nodes = Array.from(this.getNeighbors(starting_node)).filter(
+      (node_event) => {
+        return !visited_nodes.has(node_event);
+      },
+    );
+    let past_present_events: EventNode[] = unvisited_nodes
       .filter((node_edge) => {
         let node = this.getNode(node_edge);
         return node.updated_at !== null;
@@ -92,7 +99,7 @@ export class WorkflowGraph {
           dayjsLocal(node1.updated_at).unix() -
           dayjsLocal(node2.updated_at).unix(),
       );
-    const future_events: EventNode[] = node_edges
+    const future_events: EventNode[] = unvisited_nodes
       .filter((node_edge) => {
         let node = this.getNode(node_edge);
         return node.updated_at === null && node.is_event_expected;
@@ -100,14 +107,16 @@ export class WorkflowGraph {
       .map((node_edge) => this.getNode(node_edge))
       .sort((node1, node2) => node1.node_order - node2.node_order);
 
-    let curr_node_sorted_events: EventNode[] = [
-      ...past_present_events,
-      ...future_events,
-    ];
+    let curr_node_sorted_events: EventNode[] = [...past_present_events];
+    if (past_present_events.length === 0) {
+      curr_node_sorted_events = [...curr_node_sorted_events, ...future_events];
+    }
+
     ordered_nodes = [...curr_node_sorted_events];
 
     for (let node of curr_node_sorted_events) {
-      let curr_node_events = this.traverseGraph(node.event_type);
+      visited_nodes.add(node.event_type);
+      let curr_node_events = this.traverseGraph(node.event_type, visited_nodes);
       ordered_nodes = [...ordered_nodes, ...curr_node_events];
     }
 
