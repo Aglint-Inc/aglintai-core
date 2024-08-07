@@ -1,24 +1,24 @@
+import {CallBack, fetchInterviewTypes} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
-export const fetchInterviewTypes = ({
+export const fetchInterviewTypesTool = ({
   recruiter_id,
   callback,
 }: {
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBack<'fetch_interview_types'>) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_interview_types',
     description: 'Fetch all interview types.',
     schema: z.object({}),
     func: async () => {
-      const {data: mods} = await supabaseAdmin
-        .from('interview_module')
-        .select('id,name')
-        .eq('recruiter_id', recruiter_id);
+      const mods = await fetchInterviewTypes({
+        supabase: supabaseAdmin,
+        recruiter_id,
+      });
 
       if (mods.length === 0) {
         return 'No interview types found';
@@ -27,6 +27,7 @@ export const fetchInterviewTypes = ({
       callback({
         function_name: 'fetch_interview_types',
         payload: mods,
+        called_at: new Date().toISOString(),
       });
 
       const resp = mods.map(s => {

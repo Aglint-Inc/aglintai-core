@@ -1,14 +1,14 @@
+import {CallBack, fetchInterviewTypeUsers} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
-export const fetchInterviewTypesRelations = ({
+export const fetchInterviewTypesRelationsTool = ({
   recruiter_id,
   callback,
 }: {
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBack<'fetch_interview_types_users'>) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_interview_types_users',
@@ -18,11 +18,15 @@ export const fetchInterviewTypesRelations = ({
       name: z.string(),
     }),
     func: async ({name}) => {
-      const {data: rel} = await supabaseAdmin
-        .from('module_relations_view')
-        .select('*,interview_module(recruiter_id)')
-        .eq('interview_module.recruiter_id', recruiter_id)
-        .ilike('module_name', `%${name}%`);
+      if (!name) {
+        return 'Please provide a name';
+      }
+
+      const rel = await fetchInterviewTypeUsers({
+        supabase: supabaseAdmin,
+        name,
+        recruiter_id,
+      });
 
       if (rel.length === 0) {
         return 'No relations found';
@@ -31,6 +35,7 @@ export const fetchInterviewTypesRelations = ({
       callback({
         function_name: 'fetch_interview_types_users',
         payload: rel,
+        called_at: new Date().toISOString(),
       });
 
       const relations = rel.map(s => {
