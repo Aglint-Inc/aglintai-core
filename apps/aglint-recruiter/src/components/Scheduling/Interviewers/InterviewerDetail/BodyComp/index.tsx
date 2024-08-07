@@ -20,7 +20,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import DynamicLoader from '../../DynamicLoader';
-import Interviews from '../../Interviews';
+import FullCalendar from '../../Interviews/FullCalendar';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
@@ -343,7 +343,7 @@ function BodyComp() {
                 {tab === 'training' && <TabInterviewModules type='training' />}
                 {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
                 {tab === 'allschedules' && (
-                  <Interviews
+                  <FullCalendar
                     allSchedules={allSchedules}
                     isLoading={isLoading}
                     filter={filter}
