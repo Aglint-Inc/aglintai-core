@@ -4,34 +4,25 @@ import {agentChain} from './graph';
 
 import {HumanMessage} from '@langchain/core/messages';
 import {CallBackPayload} from './types';
-
-type Message = {
-  value: string;
-  type: 'user' | 'assistant';
-};
-
-export type ApiBodyAgentSupervisor = {
-  recruiter_id: 'string';
-  history: Message[];
-};
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
+import {ApiBodyAgentSupervisor} from '@aglint/shared-utils';
+import {FunctionNames} from '@aglint/shared-types';
 
 export async function agentSupervisor(req: Request, res: Response) {
-  const {recruiter_id, history} = req.body;
+  const {recruiter_id, history, user_id} = req.body as ApiBodyAgentSupervisor;
   const results = [];
 
   let payloadCallback: CallBackPayload = null;
-
   const callback = (x: CallBackPayload) => {
     payloadCallback = x;
   };
-
   const resultStream = (await agentChain({recruiter_id, callback})).stream(
     {
       messages: history.map(
-        (item: {type: 'user' | 'assistant'; value: string}) =>
+        (item: {type: 'user' | 'assistant'; content: string}) =>
           item.type === 'user'
-            ? new HumanMessage(item.value)
-            : new HumanMessage(item.value)
+            ? new HumanMessage(item.content)
+            : new HumanMessage(item.content)
       ),
     },
     {recursionLimit: 10}
@@ -68,7 +59,49 @@ export async function agentSupervisor(req: Request, res: Response) {
     })
     .filter(Boolean);
 
-  return res.status(200).json({
-    display: alterResults,
-  });
+  if (alterResults.length === 0) {
+    const resSave = await saveToDB({
+      content: 'Sorry unable to process your request. Please try again later.',
+      user_id,
+      function_name: null,
+      metadata: null,
+    });
+
+    return res.status(200).json(resSave);
+  } else {
+    const lastMessage = alterResults[alterResults.length - 1];
+    const resSave = await saveToDB({
+      content: lastMessage.message,
+      user_id,
+      function_name: lastMessage.function,
+      metadata: lastMessage.payload,
+    });
+    return res.status(200).json(resSave);
+  }
 }
+
+const saveToDB = async ({
+  content,
+  user_id,
+  function_name,
+  metadata,
+}: {
+  content: string;
+  user_id: string;
+  function_name: FunctionNames;
+  metadata: string;
+}) => {
+  return (
+    await supabaseAdmin
+      .from('user_chat')
+      .insert({
+        type: 'agent',
+        content,
+        user_id,
+        function: function_name,
+        metadata,
+      })
+      .select()
+      .throwOnError()
+  ).data[0];
+};
