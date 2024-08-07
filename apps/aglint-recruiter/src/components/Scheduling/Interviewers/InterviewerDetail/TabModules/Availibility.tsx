@@ -12,9 +12,9 @@ import {
 import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { Text } from '@/devlink/Text';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
 import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
@@ -202,17 +202,21 @@ function Availibility({
   }, []);
 
   return (
-    <Stack overflow={'hidden'} padding={2} spacing={2}>
-      <Stack
-        bgcolor={'white'}
-        width={'600px'}
-        p={1}
-        borderRadius={'8px'}
-        border={'1px solid var(--neutral-6)'}
-      >
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <Typography fontWeight={500}>Time Zone </Typography>
-          <ButtonGhost
+    <Stack
+      overflow={'hidden'}
+      padding={2}
+      spacing={2}
+      borderRadius={'8px'}
+      border={'1px solid var(--neutral-6)'}
+      bgcolor={'white'}
+      width={'860px'}
+      margin={2}
+      gap={1}
+    >
+      <Stack bgcolor={'white'} >
+        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={1}>
+          <Text weight={'medium'} content='Time Zone'/>
+          <ButtonSoft
             textButton='Edit'
             size={1}
             onClickButton={{ onClick: () => setEditDrawer(true) }}
@@ -221,13 +225,13 @@ function Availibility({
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>
       <InterviewLoadDetails
-        slotEdit={
-          <ButtonGhost
-            textButton='Edit'
-            size={1}
-            onClickButton={{ onClick: () => setEditDrawer(true) }}
-          />
-        }
+        // slotEdit={
+        //   <ButtonGhost
+        //     textButton='Edit'
+        //     size={1}
+        //     onClickButton={{ onClick: () => setEditDrawer(true) }}
+        //   />
+        // }
         slotInterviewLoadCard={
           <>
             <InterviewLoadCard
@@ -309,13 +313,13 @@ function Availibility({
               }
             />
           ))}
-        slotEdit={
-          <ButtonGhost
-            textButton='Edit'
-            size={1}
-            onClickButton={{ onClick: () => setEditDrawer(true) }}
-          />
-        }
+        // slotEdit={
+        //   <ButtonGhost
+        //     textButton='Edit'
+        //     size={1}
+        //     onClickButton={{ onClick: () => setEditDrawer(true) }}
+        //   />
+        // }
       />
       <InterviewerLevelSettings
         initialData={interviewerDetails?.scheduling_settings}
@@ -333,6 +337,7 @@ function Availibility({
         onClose={() => setEditDrawer(false)}
       >
         <SideDrawerLarge
+        isHeaderIconVisible={false}
           drawerSize={'medium'}
           textDrawertitle={'Edit Availability'}
           slotButtons={

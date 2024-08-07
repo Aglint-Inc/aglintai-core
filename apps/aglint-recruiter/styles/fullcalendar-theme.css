@@ -1,0 +1,154 @@
+/* FullCalendar Theming */
+:root {
+  /* --fc-border-color: var(--neutral-6);
+  --fc-bg-color: var(--neutral-2);
+  --fc-text-color: var(--neutral-12);
+  --fc-accent-color: var(--accent-9);
+  --fc-button-bg-color: var(--accent-9);
+  --fc-button-border-color: var(--neutral-6);
+  --fc-button-text-color: var(--neutral-12);
+  --fc-button-hover-bg-color: var(--accent-1);
+  --fc-button-hover-border-color: var(--neutral-6);
+  --fc-button-hover-text-color: var(--neutral-12);
+  --fc-button-active-bg-color: var(--accent-9);
+  --fc-button-active-border-color: var(--neutral-6);
+  --fc-button-active-text-color: var(--neutral-12);
+  --fc-button-disabled-bg-color: var(--neutral-2);
+  --fc-button-disabled-border-color: var(--neutral-6);
+  --fc-button-disabled-text-color: var(--neutral-11);
+  --fc-today-bg-color: var(--accent-9);
+  --fc-today-border-color: var(--accent-9);
+  --fc-day-bg-color: var(--neutral-2);
+  --fc-day-border-color: var(--neutral-6);
+  --fc-day-text-color: var(--neutral-12);
+  --fc-other-month-bg-color: var(--neutral-1);
+  --fc-other-month-border-color: var(--neutral-6);
+  --fc-other-month-text-color: var(--neutral-11);
+  --fc-event-bg-color: var(--accent-9);
+  --fc-event-border-color: var(--neutral-6);
+  --fc-event-text-color: var(--neutral-12);
+  --fc-event-selected-bg-color: var(--accent-1);
+  --fc-event-selected-border-color: var(--neutral-6);
+  --fc-event-selected-text-color: var(--neutral-12);
+  --fc-event-hover-bg-color: var(--accent-1);
+  --fc-event-hover-border-color: var(--neutral-6);
+  --fc-event-hover-text-color: var(--neutral-12);
+  --fc-list-border-color: var(--neutral-6);
+  --fc-list-bg-color: var(--neutral-2);
+  --fc-list-text-color: var(--neutral-12);
+  --fc-list-header-bg-color: var(--neutral-2);
+  --fc-list-header-border-color: var(--neutral-6);
+  --fc-list-header-text-color: var(--neutral-12);
+  --fc-list-day-bg-color: var(--neutral-1);
+  --fc-list-day-border-color: var(--neutral-6);
+  --fc-list-day-text-color: var(--neutral-12);
+  --fc-list-event-bg-color: var(--accent-9);
+  --fc-list-event-border-color: var(--neutral-6);
+  --fc-list-event-text-color: var(--neutral-12);
+  --fc-list-event-hover-bg-color: var(--accent-1);
+  --fc-list-event-hover-border-color: var(--neutral-6);
+  --fc-list-event-hover-text-color: var(--neutral-12);
+  --fc-timegrid-bg-color: var(--neutral-2);
+  --fc-timegrid-border-color: var(--neutral-6);
+  --fc-timegrid-text-color: var(--neutral-12);
+  --fc-timegrid-event-bg-color: var(--accent-9);
+  --fc-timegrid-event-border-color: var(--neutral-6);
+  --fc-timegrid-event-text-color: var(--neutral-12);
+  --fc-timegrid-event-selected-bg-color: var(--accent-1);
+  --fc-timegrid-event-selected-border-color: var(--neutral-6);
+  --fc-timegrid-event-selected-text-color: var(--neutral-12);
+  --fc-timegrid-slot-minor-time-color: var(--neutral-11);
+  --fc-timegrid-slot-major-time-color: var(--neutral-12);
+  --fc-timegrid-now-indicator-color: var(--accent-9);
+  --fc-popover-bg-color: var(--neutral-2);
+  --fc-popover-border-color: var(--neutral-6);
+  --fc-popover-text-color: var(--neutral-12);
+  --fc-popover-header-bg-color: var(--neutral-2);
+  --fc-popover-header-border-color: var(--neutral-6);
+  --fc-popover-header-text-color: var(--neutral-12);
+  --fc-popover-content-bg-color: var(--neutral-2);
+  --fc-popover-content-border-color: var(--neutral-6);
+  --fc-popover-content-text-color: var(--neutral-12);
+  --fc-scrollgrid-bg-color: var(--neutral-2);
+  --fc-scrollgrid-border-color: var(--neutral-6);
+  --fc-scrollgrid-text-color: var(--neutral-12);
+  --fc-scrollgrid-section-header-bg-color: var(--neutral-2);
+  --fc-scrollgrid-section-header-border-color: var(--neutral-6);
+  --fc-scrollgrid-section-header-text-color: var(--neutral-12);
+  --fc-scrollgrid-cell-bg-color: var(--neutral-2);
+  --fc-scrollgrid-cell-border-color: var(--neutral-6);
+  --fc-scrollgrid-cell-text-color: var(--neutral-12);
+  --fc-neutral-bg-color: var(--neutral-3); */
+    --fc-small-font-size: 12px;
+  --fc-page-bg-color: var(--neutral-2);
+  --fc-neutral-bg-color: var(--neutral-3);
+  --fc-neutral-text-color: var(--neutral-11);
+  --fc-border-color: var(--neutral-6);
+  --fc-button-text-color: var(--neutral-12);
+  --fc-button-bg-color: var(--accent-9);
+  --fc-button-border-color: var(--accent-9);
+  --fc-button-hover-bg-color: var(--accent-1);
+  --fc-button-hover-border-color: var(--accent-1);
+  --fc-button-active-bg-color: var(--accent-1);
+  --fc-button-active-border-color: var(--accent-1);
+  --fc-event-bg-color: var(--accent-9);
+  --fc-event-border-color: var(--accent-9);
+  --fc-event-text-color: var(--neutral-12);
+  --fc-event-selected-overlay-color: rgba(0,0,0,.25);
+  --fc-more-link-bg-color: var(--neutral-6);
+  --fc-more-link-text-color: inherit;
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+  --fc-non-business-color: var(--neutral-9);
+  --fc-bg-event-color: var(--neutral-8);
+  --fc-bg-event-opacity: 0.3;
+  --fc-highlight-color: rgba(188,232,241,.3);
+  --fc-today-bg-color: var(--accent-9);
+  --fc-now-indicator-color: var(--error-9);
+}
+
+
+/* Additional Styling for Better Integration */
+.fc-toolbar {
+  background-color: var(--neutral-2);
+  border-bottom: 1px solid var(--neutral-6);
+}
+
+.fc-button {
+  background-color: var(--accent-9);
+  color: var(--neutral-12);
+  border: 1px solid var(--neutral-6);
+}
+
+.fc-button:hover {
+  background-color: var(--accent-1);
+}
+
+.fc-button-primary {
+  background-color: var(--accent-9);
+  color: var(--neutral-12);
+}
+
+.fc-button-primary:hover {
+  background-color: var(--accent-1);
+}
+
+.fc-daygrid-day {
+  background-color: var(--neutral-2);
+  border: 1px solid var(--neutral-6);
+  color: var(--neutral-12);
+}
+
+.fc-daygrid-day.fc-day-today {
+  background-color: var(--accent-9);
+}
+
+.fc-daygrid-day.fc-day-past {
+  background-color: var(--neutral-1);
+  border-color: var(--neutral-6);
+}
+
+.fc-daygrid-day.fc-day-future {
+  background-color: var(--neutral-2);
+}

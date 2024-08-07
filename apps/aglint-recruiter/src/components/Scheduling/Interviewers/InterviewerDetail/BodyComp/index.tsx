@@ -1,3 +1,5 @@
+import '@styles/fullcalendar-theme.css';
+
 import { DatabaseTable } from '@aglint/shared-types';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';

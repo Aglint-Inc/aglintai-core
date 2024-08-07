@@ -110,12 +110,19 @@ export default function WorkingHour({ updateSettings, initialData }) {
       sx={{ overflowX: 'hidden' }}
     >
       <Stack
-        width={'100%'}
+        width={'700px'}
         overflow={'auto'}
-        height={'calc(100vh - 48px)'}
         padding={'16px'}
         spacing={2}
+        borderRadius={'8px'}
+        border={'1px solid var(--neutral-6)'}
+        bgcolor={'white'}
+        margin={2}
+        position={'relative'}
       >
+        <Stack position={'absolute'} top={'16px'} right={'16px'}>
+          <ButtonSoft textButton='Edit' size={1} onClickButton={{ onClick: () => setIsDrawerOpen(true) }}/>
+        </Stack>
         <TimeZone
           timeZone={initialData?.timeZone?.label}
           setIsDrawerOpen={setIsDrawerOpen}
@@ -134,6 +141,12 @@ export default function WorkingHour({ updateSettings, initialData }) {
           onClose={() => setIsDrawerOpen(false)}
         >
           <SideDrawerLarge
+            onClickCancel={{
+              onClick: () => {
+                setIsDrawerOpen(false);
+              },
+            }}
+            isHeaderIconVisible={false}
             textDrawertitle='Company Working Hour Update'
             drawerSize={'medium'}
             slotButtons={
@@ -383,13 +396,13 @@ const WorkingHourView = ({ setIsDrawerOpen, workingHours }) => {
       <WorkingHourDetails
         slotEdit={
           <Stack pl={2} height={'20px'}>
-            {isEditHover && (
+            {/* {isEditHover && (
               <ButtonGhost
                 textButton='Edit'
                 size={1}
                 onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
               />
-            )}
+            )} */}
           </Stack>
         }
         slotDays={workingHours
@@ -433,13 +446,11 @@ const TimeZone = ({ timeZone, setIsDrawerOpen }) => {
   const [isEditHover, setIsEditHover] = useState(false);
   return (
     <Stack
-      padding={'12px'}
       bgcolor={'white'}
-      border={'1px solid var(--neutral-6)'}
-      borderRadius={'var(--radius-4)'}
       width={'600px'}
       onMouseEnter={() => setIsEditHover(true)}
       onMouseLeave={() => setIsEditHover(false)}
+      marginTop={'0px !important'}
     >
       <Stack
         fontWeight={500}
@@ -448,16 +459,16 @@ const TimeZone = ({ timeZone, setIsDrawerOpen }) => {
         paddingBlock={2}
         direction={'row'}
       >
-        Time zone{' '}
-        {isEditHover && (
-          <Stack pl={2}>
-            <ButtonGhost
-              textButton='Edit'
-              size={1}
-              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-            />
-          </Stack>
-        )}
+        Time Zone
+        {/* {isEditHover && (
+          // <Stack pl={2}>
+          //   <ButtonGhost
+          //     textButton='Edit'
+          //     size={1}
+          //     onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
+          //   />
+          // </Stack>
+        )} */}
       </Stack>
       <Typography>{timeZone}</Typography>
     </Stack>
@@ -467,10 +478,7 @@ const Debreif = ({ breaktime, setIsDrawerOpen }) => {
   const [isEditHover, setIsEditHover] = useState(false);
   return (
     <Stack
-      padding={'12px'}
       bgcolor={'white'}
-      border={'1px solid var(--neutral-6)'}
-      borderRadius={'var(--radius-4)'}
       width={'600px'}
       onMouseEnter={() => setIsEditHover(true)}
       onMouseLeave={() => setIsEditHover(false)}
@@ -483,7 +491,7 @@ const Debreif = ({ breaktime, setIsDrawerOpen }) => {
         direction={'row'}
       >
         Default Break Times{' '}
-        {isEditHover && (
+        {/* {isEditHover && (
           <Stack pl={2}>
             <ButtonGhost
               textButton='Edit'
@@ -491,7 +499,7 @@ const Debreif = ({ breaktime, setIsDrawerOpen }) => {
               onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
             />
           </Stack>
-        )}
+        )} */}
       </Stack>
       <Typography pb={'4px'}>
         Break Start Time
