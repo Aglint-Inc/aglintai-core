@@ -40,7 +40,7 @@ function BodyComp() {
 
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
-  >([]);
+  >(['completed', 'confirmed', 'cancelled']);
   const [changeText, setChangeText] = useState('');
 
   const user_id = router.query.user_id as string;

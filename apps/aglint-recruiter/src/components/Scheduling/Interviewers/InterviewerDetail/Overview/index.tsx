@@ -104,9 +104,7 @@ function Overview({
         loadSetting={interviewerDetails.scheduling_settings.interviewLoad}
         interviewLoad={
           <Stack direction={'row'} spacing={1}>
-            <Typography fontWeight={500}>
-              <span style={{ color: 'var(--error-9)' }}>Load </span> Daily :
-            </Typography>
+            <Typography fontWeight={500}>Daily :</Typography>
             <Typography>
               {
                 interviewerDetails?.scheduling_settings?.interviewLoad

@@ -53,7 +53,7 @@ export const fetchUserSchedules = async ({
     query.ilike('session_name', `%${textSearch}%`);
   }
 
-  if (typeof filter === 'string' || (filter.length && _.isArray(filter))) {
+  if (typeof filter === 'string' || _.isArray(filter)) {
     if (typeof filter === 'string') query.eq('status', filter);
     else if (_.isArray(filter)) query.in('status', filter);
   }
