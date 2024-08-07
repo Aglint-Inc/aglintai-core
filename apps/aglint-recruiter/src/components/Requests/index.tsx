@@ -14,6 +14,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
+import Dashboard from './Dashboard';
 import FilterAndSorting from './FiltersAndSorting';
 import Section from './Section';
 import StatsCards from './StatsCards';
@@ -118,10 +119,7 @@ const Requests = () => {
             </ShowCode>
           </ShowCode.When>
           <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
-            <>Dashboard</>
-          </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'metrics'}>
-            <>Metrics</>
+            <Dashboard />
           </ShowCode.When>
         </ShowCode>
       }

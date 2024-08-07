@@ -1,12 +1,15 @@
-import { Dialog, Stack } from '@mui/material';
+import { getFullName } from '@aglint/shared-utils';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import Loader from '@/src/components/Common/Loader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({
   handleClose,
@@ -20,6 +23,11 @@ function DeleteDepartmentsDialog({
   handleDelete: () => void;
 }) {
   const { data: usage, isPending } = useDepartmentsUsage(id);
+
+  const isJobEmpty = usage?.jobUsage.length === 0;
+  const isUserEmpty = usage?.userUsage.length === 0;
+  const isBothEmpty = isJobEmpty && isUserEmpty;
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
       <DcPopup
@@ -30,17 +38,54 @@ function DeleteDepartmentsDialog({
             <Stack>
               <Loader />
             </Stack>
-          ) : usage.jobUsage || usage.userUsage ? (
-            <GlobalBanner
-              iconName='warning'
+          ) : isBothEmpty ? (
+            <GlobalBannerInline
+              textContent={
+                <Typography>
+                  Are you sure you want to delete the &quot;{usage.name}&quot;
+                  department?
+                </Typography>
+              }
+              slotButton={<></>}
               color={'warning'}
-              textTitle='Can Not Delete'
-              isDescriptionVisible={true}
-              textDescription={`This department is used for ${usage?.userUsage} users and ${usage?.jobUsage} jobs,\n Disconnect these users and jobs first to delete this department.`}
-              slotButtons={<></>}
             />
           ) : (
-            `Department ${usage.name} will be deleted. Are you sure?`
+            <GlobalBannerInline
+              textContent={
+                <Stack>
+                  {`Cannot delete this department. Disconnect the following ${!isUserEmpty ? (usage?.userUsage?.length > 1 ? 'users ' : 'user ') : ''} ${!isUserEmpty && !isJobEmpty ? 'and ' : ''} ${!isJobEmpty ? (usage?.jobUsage?.length > 1 ? 'jobs ' : 'job') : ''}
+                first`}
+                  <ul>
+                    {!isUserEmpty && (
+                      <li>
+                        <span style={{ fontWeight: '500' }}>
+                          {`${usage?.userUsage?.length > 1 ? 'Users ' : 'User '} : `}
+                        </span>
+                        {usage.userUsage
+                          .map((user) =>
+                            getFullName(user.first_name, user.last_name),
+                          )
+                          .join(', ')}
+                      </li>
+                    )}
+                    {!isJobEmpty && (
+                      <li>
+                        <span style={{ fontWeight: '500' }}>
+                          {' '}
+                          {`${usage?.jobUsage?.length > 1 ? 'Jobs ' : 'Job '} : `}{' '}
+                        </span>
+
+                        {usage.jobUsage
+                          .map((job) => capitalizeAll(job))
+                          .join(', ')}
+                      </li>
+                    )}
+                  </ul>
+                </Stack>
+              }
+              slotButton={<></>}
+              color={'warning'}
+            />
           )
         }
         slotButtons={
@@ -55,13 +100,11 @@ function DeleteDepartmentsDialog({
                 },
               }}
             />
-            <ButtonSoft
+            <ButtonSolid
               textButton='Delete'
               size={2}
               color={'error'}
-              isDisabled={
-                isPending || Boolean(usage.jobUsage || usage.userUsage)
-              }
+              isDisabled={isPending || !isJobEmpty || !isUserEmpty}
               onClickButton={{
                 onClick: () => {
                   handleDelete();
@@ -93,22 +136,26 @@ async function checkDepartmentsUsage({
   id: number;
   recruiter_id: string;
 }) {
-  const temp_data = (
+  const temp_user = (
     await supabase
       .from('departments')
-      .select('name, recruiter_user(first_name)')
+      .select('name, recruiter_user(first_name,last_name)')
       .eq('id', id)
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
   ).data;
-  const userUsage = temp_data.recruiter_user?.length || 0;
-  const jobUsage = (
+
+  const jobs = (
     await supabase
       .from('public_jobs')
-      .select('departments!inner(name)', { count: 'exact' })
-      .eq('departments.name', temp_data.name)
+      .select('job_title,departments!inner(name)')
+      .eq('departments.name', temp_user.name)
       .throwOnError()
-  ).count;
-  return { name: temp_data.name, userUsage, jobUsage };
+  ).data;
+
+  const jobUsage = jobs.map((job) => job.job_title);
+  const userUsage = temp_user.recruiter_user;
+
+  return { name: temp_user.name, jobUsage, userUsage };
 }

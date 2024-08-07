@@ -1,4 +1,4 @@
-import { MetadataForFunction } from '@aglint/shared-types';
+import { CallBackAll } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 
@@ -9,7 +9,6 @@ import { useUserChat } from '@/src/queries/userchat';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
-import { CallBack, CallBackAll } from '@aglint/shared-utils';
 
 function FetchScheduledInterviews({
   chat,
