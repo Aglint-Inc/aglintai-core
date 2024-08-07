@@ -98,7 +98,7 @@ const ScheduleList = () => {
                   size={1}
                   textButton={'View Schedule'}
                   isRightIcon={true}
-                  iconName='open_in_new'
+                  iconName='arrow_outward'
                 />
               </Box>
             )}

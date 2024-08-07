@@ -126,7 +126,7 @@ const RequestList = () => {
                   </Box>
                   {hovered === request.link && (
                     <Box position="absolute" right={0} top={0} bottom={0} display="flex" alignItems="center">
-                      <ButtonSolid  color='neutral' size={1} textButton={'View Request'} isRightIcon={true} iconName='open_in_new'/>
+                      <ButtonSolid  color='neutral' size={1} textButton={'View Request'} isRightIcon={true} iconName='arrow_outward'/>
                     </Box>
                   )}
                 </Stack>
