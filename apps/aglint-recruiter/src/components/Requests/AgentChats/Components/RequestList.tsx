@@ -105,7 +105,16 @@ const RequestList = () => {
                   position="relative"
                 >
                   <Box flex={1}>
-                    <Text size={2} content={request.title}></Text>
+                    <Text size={2} content={request.title}
+                    styleProps={{
+                    style: {
+                      display: '-webkit-box',
+                      WebkitLineClamp: 1,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }
+                  }}></Text>
                   </Box>
                   <Box ml={3}>
                     <GlobalBadge
