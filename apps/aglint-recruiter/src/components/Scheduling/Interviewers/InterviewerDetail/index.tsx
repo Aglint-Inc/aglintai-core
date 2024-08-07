@@ -9,7 +9,7 @@ import { useImrQuery } from './hooks';
 export type TabInterviewerDetail =
   | 'overview'
   | 'interviewtypes'
-  | 'allschedules'
+  | 'calendar'
   | 'availibility'
   | 'keywords'
   | 'qualified'
