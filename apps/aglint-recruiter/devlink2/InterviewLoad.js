@@ -11,9 +11,14 @@ export function InterviewLoad({
   as: _Component = _Builtin.Block,
   slotDailyLimit,
   slotWeeklyLimit,
+  borderStyle,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "schedule_settings")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "schedule_settings")}
+      tag="div"
+      border-style={borderStyle}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "setting_title")}
@@ -72,6 +77,10 @@ export function InterviewLoad({
           </_Builtin.Block>
         </_Builtin.Grid>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%5Bborder-style%3D%22true%22%5D%7B%0Aborder%3A%201px%20solid%20var(--neutral-6)%3B%0Aborder-radius%3A%20var(--radius-4)%3B%0Abackground-color%3A%20var(--white)%3B%0A%7D%0A%0A%5Bborder-style%3D%22false%22%5D%7B%0Aborder%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

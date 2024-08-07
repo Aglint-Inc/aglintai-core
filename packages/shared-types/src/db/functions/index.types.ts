@@ -4,6 +4,7 @@ import { CustomCreateSessionRequest } from "./create_session_request.types";
 import { CustomCreateSessionRequests } from "./create_session_requests.types";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
+import { CustomGetRequestCountStats } from "./get_request_count_stats.types";
 import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
 import { CustomMoveToInterview } from "./move_to_interview.types";
@@ -51,5 +52,6 @@ export type Functions = Custom<
     create_session_request: CustomCreateSessionRequest;
     move_to_interview: CustomMoveToInterview;
     create_session_requests: CustomCreateSessionRequests;
+    get_request_count_stats: CustomGetRequestCountStats;
   }
 >;

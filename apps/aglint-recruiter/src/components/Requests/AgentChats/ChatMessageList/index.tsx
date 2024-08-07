@@ -1,5 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
+import { useEffect, useRef } from 'react';
 
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import Loader from '@/src/components/Common/Loader';
@@ -16,8 +17,11 @@ function ChatMessageList() {
   const { data, isLoading } = useUserChat({
     user_id: recruiterUser.user_id,
   });
-
   const { isResponding } = useAgentIEditor();
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [data]);
 
   return (
     <>
@@ -29,6 +33,7 @@ function ChatMessageList() {
             <MessageIndividual chat={chat} key={chat.id} />
           ))}
           {isResponding && <SkeletonMessage />}
+          <div ref={bottomRef} />
         </Stack>
       ) : (
         <AglintAiWelcome

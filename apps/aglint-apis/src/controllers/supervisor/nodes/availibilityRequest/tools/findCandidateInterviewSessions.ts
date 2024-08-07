@@ -1,7 +1,6 @@
 import {InterviewSession} from '@aglint/shared-types';
 import {supabaseWrap} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
@@ -10,7 +9,7 @@ export const findCandidateInterviewSessions = ({
   callback,
 }: {
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: any) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'find-candidate-interview-sessions',

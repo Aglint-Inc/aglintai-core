@@ -3,10 +3,10 @@ import {
   runAgentNode,
 } from 'src/controllers/supervisor/utils/helper';
 import {llm} from 'src/controllers/supervisor/utils/llm';
-import {fetchInterviewTypesRelations} from './tools/fetchRelations';
-import {fetchInterviewTypes} from './tools/fetchInterviewTypes';
 import {TeamState} from 'src/controllers/supervisor/utils/state';
-import {CallBackPayload} from '../../types';
+import {fetchInterviewTypesTool} from './tools/fetchInterviewTypes';
+import {fetchInterviewTypesRelationsTool} from './tools/fetchRelations';
+import { CallBackAll } from '@aglint/shared-utils';
 
 export const interviewTypesReadNode = async ({
   state,
@@ -15,11 +15,11 @@ export const interviewTypesReadNode = async ({
 }: {
   state: TeamState;
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBackAll) => void;
 }) => {
   const tools = [
-    fetchInterviewTypes({recruiter_id, callback}),
-    fetchInterviewTypesRelations({recruiter_id, callback}),
+    fetchInterviewTypesTool({recruiter_id, callback}),
+    fetchInterviewTypesRelationsTool({recruiter_id, callback}),
   ];
 
   const fetchInterviewTypesAgent = await createAgent(

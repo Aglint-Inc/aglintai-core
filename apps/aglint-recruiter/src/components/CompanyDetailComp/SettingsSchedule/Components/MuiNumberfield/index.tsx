@@ -45,7 +45,7 @@ function MuiNumberfield({
   );
 
   return (
-    <FormControl>
+    <FormControl sx={{marginTop:'12px !important'}}>
       <TextField
         disabled={isDisable}
         sx={{

@@ -54,7 +54,7 @@
 
 
     --sand-1: #fdfdfc;
-    --sand-2: #f9f9f8;
+    --sand-2: #F9F9F8;
     --sand-3: #f1f0ef;
     --sand-4: #e9e8e6;
     --sand-5: #e2e1de;
@@ -646,3 +646,41 @@
     font-size: 18px;
     line-height: 22px;
   }
+
+  /* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--text);
+  background-color: var(--neutral-2);
+  color: var(--neutral-12);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--neutral-6);
+  font-size: var(--font-size-medium);
+  font-weight: 400;
+}
+
+th {
+  background-color: var(--neutral-3);
+  color: var(--neutral-11);
+  font-weight: 500;
+}
+
+tr:hover {
+  background-color: var(--neutral-9);
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--neutral-1);
+}
+
+caption {
+  font-size: var(--font-size-large);
+  font-weight: 700;
+  color: var(--neutral-11);
+  margin-bottom: 8px;
+}
