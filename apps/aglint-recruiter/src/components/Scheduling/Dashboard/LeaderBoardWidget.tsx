@@ -63,7 +63,8 @@ const LeaderBoardWidgetComponent = ({
             borderRadius: '4px',
           }}
         >
-          <LeaderBoardCard
+           <Link href={`/user/profile/${item.user_id}`}>
+           <LeaderBoardCard
             textCountNo={index + 1}
             textName={
               <Link href={`/user/profile/${item.user_id}`}>
@@ -81,6 +82,8 @@ const LeaderBoardWidgetComponent = ({
             noInterview={item.interviews}
             noHours={(item.duration / 60).toFixed(1)}
           />
+           </Link>
+         
         </Stack>
       ))}
     </>

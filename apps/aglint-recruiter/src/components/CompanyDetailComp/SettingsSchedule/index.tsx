@@ -642,6 +642,7 @@ function SchedulingSettings({
               spacing={2}
             >
               <InterviewLoad
+              borderStyle={'true'}
                 slotDailyLimit={
                   <Stack spacing={1}>
                     <RadioGroup
@@ -727,6 +728,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
+              borderStyle={'true'}
                 size={'large'}
                 slotKeywordsCard={
                   <>
