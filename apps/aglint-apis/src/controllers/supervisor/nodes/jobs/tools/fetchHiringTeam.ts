@@ -1,6 +1,5 @@
-import {fetchJobHiringTeam, getFullName} from '@aglint/shared-utils';
+import {CallBack, fetchJobHiringTeam, getFullName} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
-import {CallBackPayload} from 'src/controllers/supervisor/types';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
 
@@ -11,7 +10,7 @@ export const fetchHiringTeamTool = ({
 }: {
   job_id: string;
   recruiter_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBack<'fetch_hiring_team'>) => void;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_hiring_team',
@@ -37,6 +36,7 @@ export const fetchHiringTeamTool = ({
       callback({
         function_name: 'fetch_hiring_team',
         payload: hrteam,
+        called_at: new Date().toISOString(),
       });
 
       const team = {

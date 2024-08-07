@@ -1,4 +1,6 @@
 import {
+  fetchInterviewTypes,
+  fetchInterviewTypeUsers,
   fetchJobHiringTeam,
   fetchJobsUser,
   fetchRequestsUser,
@@ -21,8 +23,10 @@ type FunctionReturnType = {
   fetch_user_requests: Awaited<ReturnType<typeof fetchRequestsUser>>;
   fetch_jobs_user: Awaited<ReturnType<typeof fetchJobsUser>>;
   fetch_hiring_team: Awaited<ReturnType<typeof fetchJobHiringTeam>>;
-  fetch_interview_types: string[];
-  fetch_interview_types_users: string[];
+  fetch_interview_types: Awaited<ReturnType<typeof fetchInterviewTypes>>;
+  fetch_interview_types_users: Awaited<
+    ReturnType<typeof fetchInterviewTypeUsers>
+  >;
 };
 
 export type MetadataForFunction<F extends FunctionNames> =

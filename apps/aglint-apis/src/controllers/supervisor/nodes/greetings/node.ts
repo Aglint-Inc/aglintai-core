@@ -11,7 +11,7 @@ export const greetingsNode = async ({state}: {state: TeamState}) => {
   const tools = [
     new DynamicStructuredTool({
       name: 'greetings',
-      description: 'Greet the user.',
+      description: 'Greet the user with a message.',
       schema: z.object({}),
       func: async () => {
         return 'Hello! How can I help you today?';
@@ -23,8 +23,11 @@ export const greetingsNode = async ({state}: {state: TeamState}) => {
       schema: z.object({}),
       func: async () => {
         return (
-          'I can help you list interview types.' +
-          'I can also help you list upcoming or unconfirmed scheduled interviews.'
+          'I can help you list interview types. \n\n' +
+          'I can also help you list upcoming or unconfirmed scheduled interviews.\n\n' +
+          'I can also help you list all jobs for a user.\n\n' +
+          'I can also help you list all users or interviewers inside an interview type.\n\n' +
+          'I can also help you get hiring team of a given job.\n\n'
         );
       },
     }),
@@ -33,7 +36,9 @@ export const greetingsNode = async ({state}: {state: TeamState}) => {
   const greetingAgent = await createAgent(
     llm,
     tools,
-    'You are an greeting assistant. call greetings tool to greet the user . call capability tool if user wants to know the capability of assistant.'
+    'You are an greeting assistant. ' +
+      'Call greetings tool when user sya hi or hello . \n\n' +
+      ' Call capability tool if user wants to know the capability of assistant. \n\n'
   );
   return runAgentNode({
     state,

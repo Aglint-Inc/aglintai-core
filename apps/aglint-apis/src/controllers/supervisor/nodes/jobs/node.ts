@@ -4,9 +4,9 @@ import {
 } from 'src/controllers/supervisor/utils/helper';
 import {llm} from 'src/controllers/supervisor/utils/llm';
 import {TeamState} from 'src/controllers/supervisor/utils/state';
-import {CallBackPayload} from '../../types';
 import {fetchHiringTeamTool} from './tools/fetchHiringTeam';
 import {fetchUserJobs} from './tools/fetchUserJobs';
+import {CallBackAll} from '@aglint/shared-utils';
 
 export const fetchJobRelatedNode = async ({
   state,
@@ -19,7 +19,7 @@ export const fetchJobRelatedNode = async ({
   job_id: string;
   recruiter_id: string;
   user_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBackAll) => void;
 }) => {
   const tools = [
     fetchUserJobs({
