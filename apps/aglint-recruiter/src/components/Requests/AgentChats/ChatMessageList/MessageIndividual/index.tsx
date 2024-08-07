@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import { marked } from 'marked';
 
 import { Text } from '@/devlink/Text';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -55,7 +56,11 @@ function MessageIndividual({
           {chat.function === 'fetch_scheduled_interviews' ? (
             <Widgets chat={chat} />
           ) : (
-            <Text size={2} content={chat.title} />
+            <Typography
+              component={'div'}
+              fontSize={14}
+              dangerouslySetInnerHTML={{ __html: marked(chat.title) }}
+            ></Typography>
           )}
         </Stack>
       </Stack>
