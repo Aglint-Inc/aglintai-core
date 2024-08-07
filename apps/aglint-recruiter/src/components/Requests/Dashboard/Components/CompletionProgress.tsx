@@ -13,7 +13,7 @@ function CompletionProgress({
         color: color,
       }}
       variant='determinate'
-      value={50}
+      value={value}
     />
   );
 }

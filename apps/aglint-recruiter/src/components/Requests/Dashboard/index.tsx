@@ -74,9 +74,11 @@ function Dashboard() {
         textGraphTitle={`${totalRequestCount} Requests on ${dayjsLocal().format('DD MMMM YYYY, dddd')}`}
         textProgressTitle={
           progressData &&
-          `${progressData?.open_request} Open Requests (${progressData.completed_percentage}% complete)`
+          `${progressData?.open_request} Open Requests (${progressData?.completed_percentage}% complete)`
         }
-        slotProgressBar={<CompletionProgress />}
+        slotProgressBar={
+          <CompletionProgress value={progressData?.completed_percentage} />
+        }
         slotGraph={chartData && <BarChart skills={chartData} />}
         slotRequestList={
           requestCardData &&
