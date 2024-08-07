@@ -11,9 +11,10 @@
 }
 
 .fc .fc-day-today {
-  background-color: var(--accent-3) !important;
+  background-color: var(--accent-2) !important;
 }
 
-.fc-license-message {
+.fc-license-message,
+.fc-header-toolbar {
   display: none !important;
 }

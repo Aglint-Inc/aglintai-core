@@ -1,10 +1,10 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
+import _ from 'lodash';
 
 import { supabase } from '@/src/utils/supabase/client';
 
 import { schedulesSupabase } from '../../schedules-query';
-import _ from 'lodash';
 
 export const useAllSchedulesByUserId = ({
   filter,

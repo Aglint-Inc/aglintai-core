@@ -349,8 +349,8 @@ function BodyComp() {
                     isLoading={isLoading}
                     filter={filter}
                     setFilter={setFilter}
-                    // changeText={changeText}
-                    // setChangeText={setChangeText}
+                    changeText={changeText}
+                    setChangeText={setChangeText}
                   />
                 )}
               </>
