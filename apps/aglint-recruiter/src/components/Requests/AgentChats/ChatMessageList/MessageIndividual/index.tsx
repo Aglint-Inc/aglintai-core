@@ -1,3 +1,4 @@
+import { FunctionNames } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
 import { marked } from 'marked';
@@ -17,6 +18,11 @@ function MessageIndividual({
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
   const { recruiterUser } = useAuthDetails();
+
+  const definedUi: FunctionNames[] = [
+    'fetch_scheduled_interviews',
+    'fetch_user_requests',
+  ];
 
   return (
     <Stack width={'100%'}>
@@ -53,7 +59,7 @@ function MessageIndividual({
               color={'neutral'}
             />
           </Stack>
-          {chat.function === 'fetch_scheduled_interviews' ? (
+          {definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />
           ) : (
             <Typography
