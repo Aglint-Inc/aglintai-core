@@ -21,7 +21,7 @@ export const supabaseWrap = <T extends unknown, U extends unknown>(
   if (error) throw error;
   if (handle_empty_records) {
     const recs = data as any;
-    if (recs.length === 0) throw new Error('No records found');
+    if (recs && recs.length === 0) throw new Error('No records found');
   }
   return data;
 };
