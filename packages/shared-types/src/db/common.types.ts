@@ -1,5 +1,5 @@
 import { Database, Tables } from "./schema.types";
-import { Type } from "./utils.types";
+import { Custom } from "./utils.types";
 
 export type CustomMembersMeta = {
   [id in
@@ -20,7 +20,7 @@ export type CustomApplicationBadges = {
   jobHopping: number;
 };
 
-export type CustomJobParamters = Type<
+export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
     "parameter_weights" | "jd_json" | "draft"
@@ -68,10 +68,14 @@ type CustomDraft = Pick<
   | "location"
 > & { jd_json: CustomJdJson };
 
-export type CustomRequestType = Type<
+export type CustomRequestType = Custom<
   Database["public"]["Tables"]["request"]["Row"],
   {
-    type: "schedule_request";
+    type:
+      | "schedule_request"
+      | "cancel_schedule_request"
+      | "reschedule_request"
+      | "decline_request";
     status: "to_do" | "in_progress" | "blocked" | "completed";
     priority: "urgent" | "standard";
   }
