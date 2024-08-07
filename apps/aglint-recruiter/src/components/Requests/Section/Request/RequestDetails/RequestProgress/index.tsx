@@ -21,7 +21,10 @@ function RequestProgress() {
         request_progress.data,
       );
     }
-    let events = graphRef.current.traverseGraph('FIND_CURR_AVAIL_SLOTS');
+    let events = graphRef.current.traverseGraph(
+      'FIND_CURR_AVAIL_SLOTS',
+      new Set(),
+    );
     events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
     return events;
   }, [request_progress.data]);

@@ -63,6 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       end_date_str: avail_record.date_range[1],
       req_user_tz: 'Asia/Colombo',
       session_ids,
+      reqProgressLogger,
     },
     reqProgressLogger,
     {
