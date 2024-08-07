@@ -77,8 +77,10 @@
 }
 
 .iml-new-body-wrap {
+  position: relative;
   display: flex;
   justify-content: space-between;
+  background-color: var(--neutral-2);
 }
 
 .im-slot-tab-content {
@@ -95,6 +97,13 @@
 }
 
 .iml-right-wrappers {
+  position: absolute;
+  left: auto;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+
   overflow: auto;
   width: 400px;
   padding-top: var(--space-4);
@@ -105,9 +114,12 @@
   flex-shrink: 0;
   flex-basis: auto;
 
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-left-color: var(--neutral-6);
+  border-top-left-radius: var(--radius-4);
+  border-top-right-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
+  border-bottom-right-radius: var(--radius-4);
 
-  height: calc(100vh - 165px);
+  background-color: var(--white);
+
+  height: calc(100vh - 197px);
 }

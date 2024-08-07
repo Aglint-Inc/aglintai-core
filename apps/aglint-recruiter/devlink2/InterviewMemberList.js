@@ -5,6 +5,7 @@ import { GlobalIcon } from "./GlobalIcon";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
 import { ModuleMembers } from "./ModuleMembers";
+import { InterviewMemberSide } from "./InterviewMemberSide";
 import * as _utils from "./utils";
 import _styles from "./InterviewMemberList.module.css";
 
@@ -124,7 +125,13 @@ export function InterviewMemberList({
             className={_utils.cx(_styles, "im-slot-tab-content")}
             tag="div"
           >
-            {slotModuleContent ?? <ModuleMembers />}
+            {slotModuleContent ?? (
+              <>
+                <ModuleMembers />
+                <InterviewMemberSide />
+                <InterviewMemberSide />
+              </>
+            )}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "iml-right-wrappers")}

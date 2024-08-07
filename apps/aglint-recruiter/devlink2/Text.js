@@ -10,6 +10,7 @@ export function Text({
   color = "neutral-12",
   highContrast = "false",
   content = "This is a global text component",
+  styleProps = {},
 }) {
   return (
     <_Component
@@ -19,6 +20,7 @@ export function Text({
       fontWeight={weight}
       font-color={color}
       high-contrast={highContrast}
+      {...styleProps}
     >
       {content}
     </_Component>

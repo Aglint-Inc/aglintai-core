@@ -79,9 +79,9 @@
   --fc-scrollgrid-cell-border-color: var(--neutral-6);
   --fc-scrollgrid-cell-text-color: var(--neutral-12);
   --fc-neutral-bg-color: var(--neutral-3); */
-    --fc-small-font-size: 12px;
+  --fc-small-font-size: 12px;
   --fc-page-bg-color: var(--neutral-2);
-  --fc-neutral-bg-color: var(--neutral-3);
+  --fc-neutral-bg-color: var(--neutral-2);
   --fc-neutral-text-color: var(--neutral-11);
   --fc-border-color: var(--neutral-6);
   --fc-button-text-color: var(--neutral-12);
