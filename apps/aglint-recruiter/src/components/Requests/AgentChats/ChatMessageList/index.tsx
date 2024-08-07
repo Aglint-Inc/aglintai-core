@@ -1,6 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import React from 'react';
 
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import Loader from '@/src/components/Common/Loader';

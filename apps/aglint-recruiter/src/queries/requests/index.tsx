@@ -1,8 +1,7 @@
 import type {
   DatabaseFunctions,
   DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
+  DatabaseTableUpdate
 } from '@aglint/shared-types';
 import {
   type MutationFilters,
@@ -79,7 +78,7 @@ export const requestQueries = {
       enabled: !!request_id && enabled,
       // gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
-      refetchInterval: 2000,
+      // refetchInterval: 2000,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (
@@ -281,26 +280,3 @@ type DeleteRequest = {
 };
 export const deleteRequest = async ({ requestId }: DeleteRequest) =>
   await supabase.from('request').delete().eq('id', requestId).throwOnError();
-
-export const createRequest = async (
-  newRequestData: DatabaseTableInsert['request'],
-) =>
-  (
-    await supabase
-      .from('request')
-      .insert({ ...newRequestData })
-      .select('*')
-      .single()
-      .throwOnError()
-  ).data;
-
-export const createRequestSessionRelations = async (
-  newRequestData: DatabaseTableInsert['request_relation'][],
-) =>
-  (
-    await supabase
-      .from('request_relation')
-      .insert([...newRequestData])
-      .select('*')
-      .throwOnError()
-  ).data;

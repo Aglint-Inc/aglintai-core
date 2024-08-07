@@ -321,7 +321,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
-        action_type: 'end_point',
+        action_type: 'agent_instruction',
       },
     ],
   },

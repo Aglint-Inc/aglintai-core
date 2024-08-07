@@ -93,13 +93,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       let taskType = '';
       switch (event.key) {
         case '1':
-          taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
+          taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] `;
           break;
         case '2':
-          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] `;
           break;
         case '3':
-          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] `;
           break;
         default:
           break;
