@@ -1,31 +1,5 @@
-/* Remove borders from day cells */
-.fc-daygrid-day-frame,
-.fc-timegrid-col-frame,
-.fc-col-header-cell,
-.fc-daygrid-day,
-.fc-timegrid-slot {
-  /* border: none !important; */
-}
-
-/* Remove borders from the entire calendar */
 .fc {
   border: none !important;
-}
-
-/* Change the background color of day cells */
-.fc-daygrid-day,
-.fc-timegrid-col {
-  /* background-color: #f0f0f0; */
-}
-
-.fc-toolbar {
-  /* background-color: #ffebcd; */
-}
-
-/* Weekends */
-.fc-day-sat,
-.fc-day-sun {
-  background-color: #f3f3f3;
 }
 
 .fc .fc-timegrid-slot-minor {
@@ -38,4 +12,8 @@
 
 .fc .fc-day-today {
   background-color: var(--accent-3) !important;
+}
+
+.fc-license-message {
+  display: none !important;
 }

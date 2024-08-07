@@ -6,7 +6,7 @@ import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Stack, Tooltip, Typography } from '@mui/material';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
@@ -19,45 +19,61 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import { getFullName } from '@aglint/shared-utils';
 import { useRouter } from 'next/router';
 import './customFullCalendar.css';
+import { Checkbox } from '@/devlink/Checkbox';
+import Loading from '@/src/pages/loading';
 
 type Modes = 'list' | 'calendar';
 type Types = 'day' | 'week' | 'month';
-
+type colorType = { bg: string; pri: string } | null;
+type event = {
+  title: string;
+  start: string;
+  end: string;
+  backgroundColor: string;
+  borderColor: string;
+  extendedProps: {
+    data: SchedulesSupabase[number];
+    color: colorType;
+  };
+};
 function FullCalendarComp({
   allSchedules,
-  // isLoading,
-  // filter,
-  // setFilter,
+  isLoading,
+  filter,
+  setFilter,
   // changeText,
   // setChangeText,
 }: {
   allSchedules: SchedulesSupabase;
   isLoading: boolean;
-  filter: DatabaseTable['interview_meeting']['status'];
+  filter: DatabaseTable['interview_meeting']['status'][];
   setFilter: Dispatch<
-    SetStateAction<DatabaseTable['interview_meeting']['status']>
+    SetStateAction<DatabaseTable['interview_meeting']['status'][]>
   >;
-  changeText: string;
-  setChangeText: Dispatch<SetStateAction<string>>;
+  // changeText: string;
+  // setChangeText: Dispatch<SetStateAction<string>>;
 }) {
   const [currentDate, setCurrentDate] = useState(null);
   const [mode, setMode] = useState<Modes>('list');
   const [type, setType] = useState<Types>('day');
+  const [events, setEvents] = useState<event[]>([]);
 
   const calendarRef = useRef(null);
 
-  let events = allSchedules.map((sch) => ({
-    title: sch.session_name,
-    start: sch.start_time,
-    end: sch.end_time,
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
-    // borderColor: colorPick(sch.status).pri,
-    extendedProps: {
-      data: sch,
-      color: colorPick(sch.status),
-    },
-  }));
+  useEffect(() => {
+    let event: event[] = allSchedules.map((sch) => ({
+      title: sch.session_name,
+      start: sch.start_time,
+      end: sch.end_time,
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      extendedProps: {
+        data: sch,
+        color: colorPick(sch.status),
+      },
+    }));
+    setEvents(event);
+  }, [allSchedules]);
 
   const calendarApi = calendarRef.current?.getApi();
   const currentViewType = calendarApi?.view?.type;
@@ -111,132 +127,215 @@ function FullCalendarComp({
   return (
     <>
       <Stack p={2} width={'900px'} height={'400px'}>
-        <Stack
-          direction={'row'}
-          spacing={2}
-          alignItems={'center'}
-          justifyContent={'space-between'}
-        >
-          <Stack direction={'row'} spacing={1}>
-            <ButtonSoft
-              textButton='List'
-              color={mode === 'list' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{
-                onClick: () => {
-                  handleMode('list');
-                },
-              }}
-            />
-            <ButtonSoft
-              textButton='Calendar'
-              color={mode === 'calendar' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{
-                onClick: () => {
-                  handleMode('calendar');
-                },
-              }}
-            />
-          </Stack>
+        {isLoading ? (
           <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            spacing={2}
+            width={'900px'}
+            height={'400px'}
+            display={'flex'}
             alignItems={'center'}
-            minWidth={'200px'}
           >
-            <IconButtonSoft
-              size={1}
-              iconSize={2}
-              color={'neutral'}
-              iconName='arrow_back_ios'
-              onClickButton={{ onClick: () => calendarApi.prev() }}
-            />
-            <Typography fontWeight={500}>
-              {/* {currentViewType === 'listWeek' ||
-              currentViewType === 'dayGridWeek' */}
-              {currentViewType === 'listWeek' ||
-              currentViewType === 'timeGridWeek'
-                ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
-                : dayjsLocal(currentDate?.startStr).format(
-                    // eslint-disable-next-line security/detect-object-injection
-                    dateFormat[currentViewType],
-                  )}
-            </Typography>
-            <IconButtonSoft
-              size={1}
-              iconSize={2}
-              color={'neutral'}
-              iconName='arrow_forward_ios'
-              onClickButton={{
-                onClick: () => {
-                  calendarApi.next();
-                },
-              }}
-            />
+            <Loading />
           </Stack>
-          <Stack
-            minWidth={'250px'}
-            direction={'row'}
-            justifyContent={'flex-end'}
-            spacing={1}
-          >
-            {!dayjsLocal(currentDate?.startStr).isToday() &&
-              !isThisWeekrMonth && (
-                <ButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  textButton='Today'
-                  onClickButton={{ onClick: () => calendarApi?.today() }}
+        ) : (
+          <>
+            <Stack direction={'row'} gap={2} mb={2}>
+              <Typography
+                display={'flex'}
+                flexDirection={'row'}
+                alignItems={'center'}
+                gap={1}
+              >
+                <Checkbox
+                  isChecked={!!filter?.find((fil) => fil === 'confirmed')}
+                  onClickCheck={{
+                    onClick: () => {
+                      if (!!filter?.find((fil) => fil === 'confirmed')) {
+                        setFilter((pre) =>
+                          pre.filter((p) => p !== 'confirmed'),
+                        );
+                      } else {
+                        setFilter((pre) => [...pre, 'confirmed']);
+                      }
+                    },
+                  }}
                 />
-              )}
-            <ButtonSoft
-              textButton='Day'
-              size={1}
-              color={type === 'day' ? 'accent' : 'neutral'}
-              onClickButton={{ onClick: () => handleType('day') }}
-            />
-            <ButtonSoft
-              textButton='Week'
-              color={type === 'week' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{ onClick: () => handleType('week') }}
-            />
-            <ButtonSoft
-              textButton='Month'
-              color={type === 'month' ? 'accent' : 'neutral'}
-              size={1}
-              onClickButton={{ onClick: () => handleType('month') }}
-            />
-          </Stack>
-        </Stack>
+                Confirmed
+              </Typography>
+              <Typography
+                display={'flex'}
+                flexDirection={'row'}
+                alignItems={'center'}
+                gap={1}
+              >
+                <Checkbox
+                  isChecked={!!filter?.find((fil) => fil === 'completed')}
+                  onClickCheck={{
+                    onClick: () => {
+                      if (!!filter?.find((fil) => fil === 'completed')) {
+                        setFilter((pre) =>
+                          pre.filter((p) => p !== 'completed'),
+                        );
+                      } else {
+                        setFilter((pre) => [...pre, 'completed']);
+                      }
+                    },
+                  }}
+                />
+                Completed
+              </Typography>
+              <Typography
+                display={'flex'}
+                flexDirection={'row'}
+                alignItems={'center'}
+                gap={1}
+              >
+                <Checkbox
+                  isChecked={!!filter?.find((fil) => fil === 'cancelled')}
+                  onClickCheck={{
+                    onClick: () => {
+                      if (!!filter?.find((fil) => fil === 'cancelled')) {
+                        setFilter((pre) =>
+                          pre.filter((p) => p !== 'cancelled'),
+                        );
+                      } else {
+                        setFilter((pre) => [...pre, 'cancelled']);
+                      }
+                    },
+                  }}
+                />
+                Cancelled
+              </Typography>
+            </Stack>
+            <Stack
+              direction={'row'}
+              spacing={2}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Stack direction={'row'} spacing={1}>
+                <ButtonSoft
+                  textButton='List'
+                  color={mode === 'list' ? 'accent' : 'neutral'}
+                  size={1}
+                  onClickButton={{
+                    onClick: () => {
+                      if (mode !== 'list') handleMode('list');
+                    },
+                  }}
+                />
+                <ButtonSoft
+                  textButton='Calendar'
+                  color={mode === 'calendar' ? 'accent' : 'neutral'}
+                  size={1}
+                  onClickButton={{
+                    onClick: () => {
+                      if (mode !== 'calendar') handleMode('calendar');
+                    },
+                  }}
+                />
+              </Stack>
+              <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                spacing={2}
+                alignItems={'center'}
+                minWidth={'200px'}
+              >
+                <IconButtonSoft
+                  size={1}
+                  iconSize={2}
+                  color={'neutral'}
+                  iconName='arrow_back_ios'
+                  onClickButton={{ onClick: () => calendarApi.prev() }}
+                />
+                <Typography fontWeight={500}>
+                  {/* {currentViewType === 'listWeek' ||
+              currentViewType === 'dayGridWeek' */}
+                  {currentViewType === 'listWeek' ||
+                  currentViewType === 'timeGridWeek'
+                    ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
+                    : dayjsLocal(currentDate?.startStr).format(
+                        // eslint-disable-next-line security/detect-object-injection
+                        dateFormat[currentViewType],
+                      )}
+                </Typography>
+                <IconButtonSoft
+                  size={1}
+                  iconSize={2}
+                  color={'neutral'}
+                  iconName='arrow_forward_ios'
+                  onClickButton={{
+                    onClick: () => {
+                      calendarApi.next();
+                    },
+                  }}
+                />
+              </Stack>
+              <Stack
+                minWidth={'250px'}
+                direction={'row'}
+                justifyContent={'flex-end'}
+                spacing={1}
+              >
+                {!dayjsLocal(currentDate?.startStr).isToday() &&
+                  !isThisWeekrMonth && (
+                    <ButtonSoft
+                      size={1}
+                      color={'neutral'}
+                      textButton='Today'
+                      onClickButton={{ onClick: () => calendarApi?.today() }}
+                    />
+                  )}
+                <ButtonSoft
+                  textButton='Day'
+                  size={1}
+                  color={type === 'day' ? 'accent' : 'neutral'}
+                  onClickButton={{ onClick: () => handleType('day') }}
+                />
+                <ButtonSoft
+                  textButton='Week'
+                  color={type === 'week' ? 'accent' : 'neutral'}
+                  size={1}
+                  onClickButton={{ onClick: () => handleType('week') }}
+                />
+                <ButtonSoft
+                  textButton='Month'
+                  color={type === 'month' ? 'accent' : 'neutral'}
+                  size={1}
+                  onClickButton={{ onClick: () => handleType('month') }}
+                />
+              </Stack>
+            </Stack>
 
-        <FullCalendar
-          ref={calendarRef}
-          plugins={[
-            resourceTimelinePlugin,
-            dayGridPlugin,
-            listPlugin,
-            timeGridPlugin,
-          ]}
-          headerToolbar={{
-            // left: 'prev,next today',
-            left: '',
-            center: '',
-            right: '',
-          }}
-          initialView='listMonth'
-          initialEvents={events}
-          eventContent={renderEventContent}
-          nowIndicator={true}
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          allDaySlot={false}
-          resources={events}
-          datesSet={handleDatesSet}
-        />
+            <FullCalendar
+              key={events?.length}
+              ref={calendarRef}
+              plugins={[
+                resourceTimelinePlugin,
+                dayGridPlugin,
+                listPlugin,
+                timeGridPlugin,
+              ]}
+              headerToolbar={{
+                // left: 'prev,next today',
+                left: '',
+                center: '',
+                right: '',
+              }}
+              initialView={view[mode][type]}
+              // initialView='listMonth'
+              initialEvents={events}
+              eventContent={renderEventContent}
+              nowIndicator={true}
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              allDaySlot={false}
+              resources={events}
+              datesSet={handleDatesSet}
+            />
+          </>
+        )}
       </Stack>
     </>
   );
@@ -244,14 +343,9 @@ function FullCalendarComp({
 
 export default FullCalendarComp;
 
-// "waiting" | "confirmed" | "completed" | "cancelled" | "reschedule" | "not_scheduled"
-
-type colorType = { bg: string; pri: string } | null;
-
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
 
-  console.log(data);
   return (
     <CustomTooltip title={<TooltipComp data={data} />}>
       <Stack

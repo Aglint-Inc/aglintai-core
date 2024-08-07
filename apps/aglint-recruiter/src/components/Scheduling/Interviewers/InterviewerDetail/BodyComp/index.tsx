@@ -36,8 +36,9 @@ function BodyComp() {
 
   const { handleMemberUpdate } = useAuthDetails();
 
-  const [filter, setFilter] =
-    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+  const [filter, setFilter] = useState<
+    DatabaseTable['interview_meeting']['status'][]
+  >([]);
   const [changeText, setChangeText] = useState('');
 
   const user_id = router.query.user_id as string;
@@ -348,8 +349,8 @@ function BodyComp() {
                     isLoading={isLoading}
                     filter={filter}
                     setFilter={setFilter}
-                    changeText={changeText}
-                    setChangeText={setChangeText}
+                    // changeText={changeText}
+                    // setChangeText={setChangeText}
                   />
                 )}
               </>
