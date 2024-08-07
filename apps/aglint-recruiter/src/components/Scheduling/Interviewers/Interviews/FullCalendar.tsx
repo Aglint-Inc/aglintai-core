@@ -309,7 +309,7 @@ function FullCalendarComp({
                 </Stack>
               </Stack>
             </Stack>
-            <Stack borderTop={'1px solid var(--neutral-5)'}>
+            <Stack>
               <FullCalendar
                 key={events?.length}
                 ref={calendarRef}
