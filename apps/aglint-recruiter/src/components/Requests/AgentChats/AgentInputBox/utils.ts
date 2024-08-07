@@ -67,3 +67,12 @@ export async function extractDataFromText(text: string) {
   });
   return JSON.parse(data);
 }
+
+
+export type selectedItemsType = {
+  schedule_type: { id: string; name: string }[];
+  job_title: { id: string; name: string }[];
+  applicant_name: { id: string; name: string }[];
+  interview_name: { id: string; name: string }[];
+  request_name: { id: string; name: string }[];
+};

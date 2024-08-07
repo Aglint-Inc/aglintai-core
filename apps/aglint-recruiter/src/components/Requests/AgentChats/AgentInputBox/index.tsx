@@ -5,12 +5,11 @@ import {
   Message,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import {
@@ -23,20 +22,20 @@ import toast from '@/src/utils/toast';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import AgentEditor from './AgentEditor';
-import { scheduleTypes } from './utils';
+import CreateSchedulePopUp from './CreateSchedulePopUp';
+import { scheduleTypes, selectedItemsType } from './utils';
 
-type selectedItemsType = {
-  schedule_type: { id: string; name: string }[];
-  job_title: { id: string; name: string }[];
-  applicant_name: { id: string; name: string }[];
-  interview_name: { id: string; name: string }[];
-  request_name: { id: string; name: string }[];
-};
 function AgentInputBox() {
   const { recruiterUser, recruiter_id, recruiter } = useAuthDetails();
   const { handleAsyncCreateRequests } = useRequests();
-  const { text, setText, inputRef, isResponding, setIsResponding } =
-    useAgentIEditor();
+  const {
+    text,
+    setText,
+    inputRef,
+    isResponding,
+    setIsResponding,
+    setPlanText,
+  } = useAgentIEditor();
 
   const [selectedItems, setSelectedItems] = useState<selectedItemsType>(null);
   // eslint-disable-next-line no-unused-vars
@@ -65,31 +64,6 @@ function AgentInputBox() {
         (ele) => ele.id === selectedItems?.applicant_name[0]?.id,
       )?.applicantSessions
     : [];
-
-  const [loading, setLoading] = useState(false);
-  async function createNewRequest() {
-    const selectedSession = selectedItems?.interview_name;
-    if (selectedSession.length && selectedItems.applicant_name.length) {
-      setLoading(true);
-      await handleAsyncCreateRequests({
-        payload: {
-          request: {
-            priority: 'urgent',
-            assigner_id: recruiterUser.user_id,
-            assignee_id: recruiterUser.user_id,
-            title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
-            status: 'to_do',
-            type: 'schedule_request',
-          },
-          applications: [selectedItems.applicant_name[0].id],
-          sessions: selectedItems.interview_name.map((ele) => ele.id),
-        },
-      });
-      setLoading(false);
-      setSelectedItems(null);
-      setText('');
-    }
-  }
 
   const {
     submitUserChat,
@@ -136,10 +110,12 @@ function AgentInputBox() {
 
   function handleTextChange({
     newValue,
+    newPlainTextValue,
   }: {
     newValue: string;
     newPlainTextValue: string;
   }) {
+    setPlanText(newPlainTextValue);
     function extractIdsAndNames(input: string) {
       const regex = /(\w+)\[([^[\]]+)\]:\[([^[\]]+)\]/g;
       let match;
@@ -176,60 +152,15 @@ function AgentInputBox() {
     setSelectedItems(items);
   }
 
-  const assigner = 'user';
-  const assignerText =
-    assigner === 'user'
-      ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}`
-      : assigner === 'email'
-        ? 'send an email'
-        : assigner === 'phone'
-          ? 'make a phone call'
-          : '';
-  const candidate = selectedItems?.applicant_name.length
-    ? selectedItems?.applicant_name[0]?.name
-    : `{{candidate}}`;
-  const scheduleType = selectedItems?.schedule_type.length
-    ? selectedItems?.schedule_type[0]?.name
-    : '{{schedule_type}}';
-  const interviewName = selectedItems?.interview_name.length
-    ? selectedItems?.interview_name.map((ele) => ele.name).join(',')
-    : '{{interviews}}';
   return (
     <>
       <Stack alignItems={'center'}>
         <>
-          {selectedItems?.schedule_type[0]?.id === 'schedule' && (
-            <Stack
-              height={'100%'}
-              width={'100%'}
-              direction={'column'}
-              justifyContent={'space-between'}
-              alignItems={'flex-end'}
-              p={1}
-            >
-              <Typography
-                width={'100%'}
-                fontSize={14}
-                dangerouslySetInnerHTML={{
-                  __html: `Aglint AI will ${assignerText} to <b>${candidate}</b> to get ${scheduleType} for the ${interviewName} interview between ${dayjsLocal(selectedDateRange?.start_date).format('MMM DD')} and ${dayjsLocal(selectedDateRange?.end_date).format('MMM DD')}. `,
-                }}
-              />
-              <ButtonSoft
-                isLoading={loading}
-                isDisabled={
-                  Boolean(!selectedItems.interview_name.length) ||
-                  Boolean(!selectedItems.applicant_name.length)
-                }
-                iconName={'send'}
-                isRightIcon={true}
-                size={1}
-                textButton='Schedule'
-                onClickButton={{
-                  onClick: createNewRequest,
-                }}
-              />
-            </Stack>
-          )}
+          <CreateSchedulePopUp
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+            setText={setText}
+          />
         </>
         <AgentEditor
           inputRef={inputRef}
