@@ -4508,6 +4508,7 @@ export type Database = {
       }
       workflow_action: {
         Row: {
+          action_type: string
           created_at: string
           id: string
           order: number
@@ -4516,6 +4517,7 @@ export type Database = {
           workflow_id: string
         }
         Insert: {
+          action_type: string
           created_at?: string
           id?: string
           order: number
@@ -4524,6 +4526,7 @@ export type Database = {
           workflow_id?: string
         }
         Update: {
+          action_type?: string
           created_at?: string
           id?: string
           order?: number
@@ -6046,6 +6049,15 @@ export type Database = {
           status_emails_sent: number
           screening_title: string
           job_title: string
+        }[]
+      }
+      get_request_count_stats: {
+        Args: {
+          assigner_id: string
+        }
+        Returns: {
+          date: string
+          counts: Json
         }[]
       }
       get_screening_candidates: {
