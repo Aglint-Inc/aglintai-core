@@ -173,7 +173,7 @@ function Overview({
               onClickButton={{
                 onClick: () => {
                   router.push(
-                    `/user/profile/${user_id}?profile=true&tab=interviewtypes`,
+                    `/user/profile/${user_id}?profile=true&tab=qualified`,
                   );
                 },
               }}
