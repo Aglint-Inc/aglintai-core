@@ -1,17 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  CandReqAvailableSlots,
-  CurrRoundCandidateAvailReq,
-  DateRangePlansType,
-  PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { CandReqAvailableSlots } from '@aglint/shared-types';
 import {
   ScheduleUtils,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
@@ -41,14 +35,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_user_tz: parsed_body.candidate_tz,
     });
 
-    const d = cand_schedule.candavailabilityWithSuggestion();
-    // const all_day_plans = cand_schedule.findAvailabilitySlotsDateRange();
-    // const curr_round_options = convertToOptionsReqSlot(
-    //   fetched_details,
-    //   parsed_body,
-    //   all_day_plans,
-    // );
-    return res.status(200).send([]);
+    const curr_round_sugg_slots =
+      cand_schedule.candavailabilityWithSuggestion();
+
+    return res.status(200).json(curr_round_sugg_slots);
   } catch (error) {
     console.error(error);
     return res
@@ -75,8 +65,8 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
   });
   updated_api_options.include_free_time =
     avail_req_details.availability.free_keywords;
-  updated_api_options.include_conflicting_slots.day_off = true;
-  updated_api_options.include_conflicting_slots.out_of_working_hrs = true;
+  updated_api_options.include_conflicting_slots.day_off = false;
+  updated_api_options.include_conflicting_slots.out_of_working_hrs = false;
   updated_api_options.use_recruiting_blocks =
     avail_req_details.availability.recruiting_block_keywords;
   const session_rounds = ScheduleUtils.getSessionRounds(

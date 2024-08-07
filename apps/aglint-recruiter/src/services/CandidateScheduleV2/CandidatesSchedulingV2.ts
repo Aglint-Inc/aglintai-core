@@ -20,7 +20,6 @@ import {
   scheduling_options_schema,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
@@ -222,7 +221,7 @@ export class CandidatesSchedulingV2 {
     );
   }
 
-  // generate all day slots with availability
+  // single round slots with suggesting slots
   public candavailabilityWithSuggestion() {
     const session_rounds = this.getSessionRounds();
     const first_round_sessions = session_rounds[0];
@@ -238,10 +237,15 @@ export class CandidatesSchedulingV2 {
       curr_round_duration: number,
     ): CurrRoundCandidateAvailReq['slots'] => {
       const curr_day_sugg_slots: CurrRoundCandidateAvailReq['slots'] = [];
-      // const curr_day_sugg_slots = this.findFixedBreakSessionCombs(
-      //   ints_combs_for_each_round[curr_round_idx],
-      //   curr_day,
-      // );
+      const plans_start_times = new Set<string>();
+      const curr_day_plans = this.findFixedBreakSessionCombs(
+        ints_combs_for_each_round[0],
+        curr_day,
+      );
+      curr_day_plans.forEach((plan) => {
+        plans_start_times.add(plan.sessions[0].start_time);
+      });
+
       const curr_time = ScheduleUtils.getNearestCurrTime(
         this.db_details.req_user_tz,
       );
@@ -266,7 +270,7 @@ export class CandidatesSchedulingV2 {
           end_time: curr_start_time
             .add(curr_round_duration, 'minutes')
             .format(),
-          is_slot_available: false,
+          is_slot_available: plans_start_times.has(curr_start_time.format()),
         });
         curr_start_time = curr_start_time.add(curr_round_duration, 'minutes');
       }
@@ -288,11 +292,11 @@ export class CandidatesSchedulingV2 {
         curr_day,
         curr_round_duration,
       );
-      curr_day = curr_day.add(1, 'day');
       curr_round_options.push({
         curr_interview_day: curr_day.format(),
-        slots: curr_day_sugg_slots,
+        slots: [...curr_day_sugg_slots],
       });
+      curr_day = curr_day.add(1, 'day');
     }
     curr_round_sugg_slots = [...curr_round_sugg_slots, ...curr_round_options];
     return curr_round_sugg_slots;
