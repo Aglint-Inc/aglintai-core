@@ -1,10 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  ApiBodyAgentSupervisor,
-  getFullName,
-  Message,
-} from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -12,10 +7,6 @@ import { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import {
-  ApiRequestInterviewSessionTask,
-  ApiResponseInterviewSessionTask,
-} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import { useUserChat } from '@/src/queries/userchat';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -27,7 +18,6 @@ import { scheduleTypes, selectedItemsType } from './utils';
 
 function AgentInputBox() {
   const { recruiterUser, recruiter_id, recruiter } = useAuthDetails();
-  const { handleAsyncCreateRequests } = useRequests();
   const {
     text,
     setText,
@@ -39,13 +29,6 @@ function AgentInputBox() {
 
   const [selectedItems, setSelectedItems] = useState<selectedItemsType>(null);
   // eslint-disable-next-line no-unused-vars
-  const [selectedDateRange, setSelectedDateRange] = useState<{
-    start_date: string;
-    end_date: string;
-  }>({
-    end_date: dayjsLocal().format('MM-DD-YYYY'),
-    start_date: dayjsLocal().add(7, 'day').format('MM-DD-YYYY'),
-  });
 
   const { requests } = useRequests();
 
@@ -74,37 +57,39 @@ function AgentInputBox() {
   });
 
   const handleSubmit = async ({ planText }: { planText: string }) => {
-    try {
-      setIsResponding(true);
-      if (!planText) return;
-      const newMessage: Message = {
-        content: planText,
-        type: 'user',
-      };
-      const oldMessages: Message[] = allChat.slice(-6).map((ele) => ({
-        content: ele.content,
-        type: ele.type === 'user' ? 'user' : 'assistant',
-      }));
-      submitUserChat(planText); // save to db
-      setText('');
-      const bodyParams: ApiBodyAgentSupervisor = {
-        recruiter_id: recruiter.id,
-        history: [...oldMessages, newMessage],
-        user_id: recruiterUser.user_id,
-        applications: selectedItems?.applicant_name,
-        jobs: selectedItems?.job_title,
-        sessions: selectedItems?.interview_name,
-      };
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
-        bodyParams,
-      );
-      const aiMessage = data as ReturnType<typeof useUserChat>['data'][0];
-      insertAIChat(aiMessage);
-    } catch (err) {
-      toast.error('Failed to process request. Please contact support.');
-    } finally {
-      setIsResponding(false);
+    if (!isResponding) {
+      try {
+        setIsResponding(true);
+        if (!planText) return;
+        const newMessage: Message = {
+          content: planText,
+          type: 'user',
+        };
+        const oldMessages: Message[] = allChat.slice(-6).map((ele) => ({
+          content: ele.content,
+          type: ele.type === 'user' ? 'user' : 'assistant',
+        }));
+        submitUserChat(planText); // save to db
+        setText('');
+        const bodyParams: ApiBodyAgentSupervisor = {
+          recruiter_id: recruiter.id,
+          history: [...oldMessages, newMessage],
+          user_id: recruiterUser.user_id,
+          applications: selectedItems?.applicant_name,
+          jobs: selectedItems?.job_title,
+          sessions: selectedItems?.interview_name,
+        };
+        const { data } = await axios.post(
+          `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
+          bodyParams,
+        );
+        const aiMessage = data as ReturnType<typeof useUserChat>['data'][0];
+        insertAIChat(aiMessage);
+      } catch (err) {
+        toast.error('Failed to process request. Please contact support.');
+      } finally {
+        setIsResponding(false);
+      }
     }
   };
 
@@ -167,10 +152,7 @@ function AgentInputBox() {
           text={text}
           setText={setText}
           handleTextChange={handleTextChange}
-          handleSubmit={(e) => {
-            if (isResponding) return;
-            handleSubmit(e);
-          }}
+          handleSubmit={handleSubmit}
           requestList={
             requests.status === 'success'
               ? requests.data.map((ele) => ({
@@ -235,31 +217,6 @@ export const useAllJobsAndApplications = ({
   return { ...query, refetch };
 };
 
-export const useAllSessionsList = ({
-  application_id,
-  job_id,
-}: {
-  application_id: string;
-  job_id: string;
-}) => {
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['get_All_sessions_List', { application_id, job_id }],
-
-    queryFn: () =>
-      getSessionList({
-        application_id,
-        job_id,
-      }),
-    gcTime: 20000,
-    enabled: !!job_id && !!application_id,
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['get_All_sessions_List'] });
-
-  return { ...query, refetch };
-};
-
 async function getJobsAndApplications({ recruiter_id }) {
   const { data: jobs } = await supabase
     .from('public_jobs')
@@ -296,25 +253,27 @@ async function getJobsAndApplications({ recruiter_id }) {
   return { jobs, applications };
 }
 
-async function getSessionList({
-  application_id,
-  job_id,
-}: {
-  application_id: string;
-  job_id: string;
-}) {
-  const {
-    data: { data },
-  } = await axios.post('/api/scheduling/fetch_interview_session_task', {
-    application_id: application_id,
-    job_id: job_id,
-  } as ApiRequestInterviewSessionTask);
-  const sessions = data as (ApiResponseInterviewSessionTask['data'][number] & {
-    interview_meeting: {
-      interview_schedule: {
-        application_id: string;
-      };
-    };
-  })[];
-  return sessions;
-}
+// async function getApplicationWithName(name: string, sessions_name: string[]) {
+//   const { data, error } = await supabase
+//     .from('applications')
+//     .select(`*, candidates(first_name,last_name), public_jobs(id,job_title), request(request_relation(session_id)), interview_schedule(interview_meeting(interview_session(id,name)))`)
+//     .eq('status', 'interview')
+//     .ilike('candidates.first_name', `%${name}%`);
+//   // .ilike('candidates.last_name', `%${name}%`);
+
+//   if (error) {
+//     throw error;
+//   }
+
+//   if (data.length > 1) {
+//     console.log('More that one applications', data);
+//   }
+//   if (data.length === 0) {
+//     console.log('No application found');
+//   }
+//   if (data.length === 1) {
+//     console.log('One application found', data);
+//   }
+
+//   return data;
+// }
