@@ -6,9 +6,9 @@ import {interviewTypesReadNode} from './nodes/interviewTypeRead/node';
 import {fetchScheduledInterviewsNode} from './nodes/scheduledInterviewsRead/node';
 import {createSchedulingSupervisorAgent} from './supervisoragent';
 import {TeamState} from './utils/state';
-import {CallBackPayload} from './types';
 import {fetchRequestsNode} from './nodes/requestsRead/node';
 import {fetchJobRelatedNode} from './nodes/jobs/node';
+import {CallBackAll} from '@aglint/shared-utils';
 
 export const agentChain = async ({
   recruiter_id,
@@ -18,7 +18,7 @@ export const agentChain = async ({
 }: {
   recruiter_id: string;
   user_id: string;
-  callback: (x: CallBackPayload) => void;
+  callback: (x: CallBackAll) => void;
   job_id?: string;
 }) => {
   const teamState: StateGraphArgs<TeamState>['channels'] = {

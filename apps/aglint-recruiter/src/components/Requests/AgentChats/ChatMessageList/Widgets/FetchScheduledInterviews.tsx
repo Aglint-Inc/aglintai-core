@@ -9,15 +9,19 @@ import { useUserChat } from '@/src/queries/userchat';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
+import { CallBack, CallBackAll } from '@aglint/shared-utils';
 
 function FetchScheduledInterviews({
   chat,
 }: {
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
-  const sessions =
-    chat.metadata as MetadataForFunction<'fetch_scheduled_interviews'>;
-  const uiSchedules: ScheduleListProps[] = sessions.map((session) => {
+  const meta = chat.metadata as CallBackAll[];
+  const selPayload = meta?.findLast(
+    (ele) => ele.function_name === 'fetch_scheduled_interviews',
+  ).payload;
+
+  const uiSchedules: ScheduleListProps[] = selPayload?.map((session) => {
     return {
       title: session.session_name,
       type: getScheduleType(session.schedule_type),
@@ -34,7 +38,7 @@ function FetchScheduledInterviews({
 
   return (
     <Stack spacing={'var(--space-2)'} width={'100%'}>
-      {sessions?.length > 0 ? (
+      {selPayload?.length > 0 ? (
         <ScheduleList schedules={uiSchedules} />
       ) : (
         <Text content={'No scheduled interviews'} />
