@@ -90,7 +90,7 @@ const RequestList = ({ requests }) => {
       {Object.keys(groupedRequests).map((type) => (
         <Stack key={type} spacing={1} pb={2}>
           <Text size={2} content={type} weight={'medium'}></Text>
-          {groupedRequests[type].map((request, index) => (
+          {groupedRequests[type].map((request) => (
             <Link href={request.link} passHref key={request.link} onMouseEnter={() => setHovered(request.link)}
                 onMouseLeave={() => setHovered(null)}
                 style={{ textDecoration: 'none', color: 'inherit' }}>

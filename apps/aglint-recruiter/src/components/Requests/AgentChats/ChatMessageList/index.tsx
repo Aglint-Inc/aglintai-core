@@ -4,6 +4,7 @@ import React from 'react';
 
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import Loader from '@/src/components/Common/Loader';
+import RequestList from '@/src/components/Requests/AgentChats/Components/RequestList';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useUserChat } from '@/src/queries/userchat';
 
