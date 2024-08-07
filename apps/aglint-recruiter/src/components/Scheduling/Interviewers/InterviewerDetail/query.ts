@@ -1,5 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
+import _ from 'lodash';
 
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -10,7 +11,10 @@ export const useAllSchedulesByUserId = ({
   member_id,
   textSearch,
 }: {
-  filter: DatabaseTable['interview_meeting']['status'];
+  filter:
+    | DatabaseTable['interview_meeting']['status']
+    | DatabaseTable['interview_meeting']['status'][]
+    | null;
   member_id: string;
   textSearch: string;
 }) => {
@@ -34,7 +38,10 @@ export const fetchUserSchedules = async ({
   member_id,
   textSearch,
 }: {
-  filter: DatabaseTable['interview_meeting']['status'];
+  filter:
+    | DatabaseTable['interview_meeting']['status']
+    | null
+    | DatabaseTable['interview_meeting']['status'][];
   member_id: string;
   textSearch: string;
 }) => {
@@ -46,12 +53,12 @@ export const fetchUserSchedules = async ({
     query.ilike('session_name', `%${textSearch}%`);
   }
 
-  if (filter) {
-    query.eq('status', filter);
+  if (typeof filter === 'string' || (filter.length && _.isArray(filter))) {
+    if (typeof filter === 'string') query.eq('status', filter);
+    else if (_.isArray(filter)) query.in('status', filter);
   }
 
   const { data } = await query.throwOnError();
-
   if (data.length === 0) {
     return {
       schedules: [],

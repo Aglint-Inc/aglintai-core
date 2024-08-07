@@ -22,8 +22,8 @@ function Tabs() {
       queryParam: 'training',
     },
     {
-      name: 'Schedules',
-      queryParam: 'allschedules',
+      name: 'Calendar',
+      queryParam: 'calendar',
     },
     {
       name: 'Availability',
