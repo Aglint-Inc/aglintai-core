@@ -9,14 +9,17 @@ import {ApiBodyAgentSupervisor} from '@aglint/shared-utils';
 import {FunctionNames} from '@aglint/shared-types';
 
 export async function agentSupervisor(req: Request, res: Response) {
-  const {recruiter_id, history, user_id} = req.body as ApiBodyAgentSupervisor;
+  const {recruiter_id, history, user_id, jobs} =
+    req.body as ApiBodyAgentSupervisor;
   const results = [];
 
   let payloadCallback: CallBackPayload = null;
   const callback = (x: CallBackPayload) => {
     payloadCallback = x;
   };
-  const resultStream = (await agentChain({recruiter_id, callback})).stream(
+  const resultStream = (
+    await agentChain({recruiter_id, callback, user_id, job_id: jobs[0]?.id})
+  ).stream(
     {
       messages: history.map(
         (item: {type: 'user' | 'assistant'; content: string}) =>

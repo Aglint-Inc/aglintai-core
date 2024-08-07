@@ -5,36 +5,14 @@ import React, { useState } from 'react';
 import { Text } from '@/devlink//Text';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 
-// Mock data
-const schedules = [
-  {
-    time: '09:00 - 09:30 AM',
-    date: 'Friday, May 12',
-    title: 'Personality and cultural fit really long name',
-    link: '/schedule/1',
-  },
-  {
-    time: '09:00 - 09:30 AM',
-    date: 'Friday, May 12',
-    title:
-      'Personality and cultural fit really really really really really long name and more',
-    link: '/schedule/2',
-  },
-  {
-    time: '09:00 - 09:30 AM',
-    date: 'Friday, May 12',
-    title: 'Personality and cultural fit really long name',
-    link: '/schedule/3',
-  },
-  {
-    time: '09:00 - 09:30 AM',
-    date: 'Friday, May 12',
-    title: 'Personality and cultural fit really long name',
-    link: '/schedule/4',
-  },
-];
+export type ScheduleListProps = {
+  time: string;
+  date: string;
+  title: string;
+  link: string;
+};
 
-const ScheduleList = () => {
+const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
   const [hovered, setHovered] = useState(null);
 
   return (
@@ -47,6 +25,7 @@ const ScheduleList = () => {
       </Stack>
       {schedules.map((schedule) => (
         <Link
+          target='_blank'
           href={schedule.link}
           passHref
           key={schedule.link}
@@ -60,8 +39,8 @@ const ScheduleList = () => {
             spacing={3}
             position='relative'
           >
-            <Box sx={{ width: '128px' }}>
-              <Text size={2} content={schedule.time} weight={'bold'}></Text>
+            <Box sx={{ width: '136px' }}>
+              <Text size={2} content={schedule.time} weight={'medium'}></Text>
               <Stack color={'var(--neutral-11)'}>
                 <Text size={2} content={schedule.date}></Text>
               </Stack>
@@ -78,7 +57,7 @@ const ScheduleList = () => {
                       WebkitBoxOrient: 'vertical',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                    }
+                    },
                   }}
                 ></Text>
               </Stack>
