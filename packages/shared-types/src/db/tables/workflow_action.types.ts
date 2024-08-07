@@ -5,7 +5,7 @@ export type CustomWorkflowAction = TableType<
   'workflow_action',
   {
     payload: CustomPayload;
-    action_type: 'slack' | 'email' | 'end_point';
+    action_type: 'slack' | 'email' | 'end_point' | 'agent_instruction';
   }
 >;
 
