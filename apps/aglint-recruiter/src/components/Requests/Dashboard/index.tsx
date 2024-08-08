@@ -68,6 +68,31 @@ function Dashboard() {
     }
   }, [status]);
 
+  function formatRequestCountText(urgentCount, standardCount, dateString) {
+    const urgentText =
+      urgentCount > 0
+        ? `${urgentCount} urgent request${urgentCount > 1 ? 's' : ''}`
+        : '';
+    const standardText =
+      standardCount > 0
+        ? `${standardCount} standard request${standardCount > 1 ? 's' : ''}`
+        : '';
+
+    let finalText = '';
+
+    if (urgentText && standardText) {
+      finalText = `${urgentText} and ${standardText} ${dateString}.`;
+    } else if (urgentText) {
+      finalText = `${urgentText} ${dateString}.`;
+    } else if (standardText) {
+      finalText = `${standardText} ${dateString}.`;
+    } else {
+      finalText = `No requests ${dateString}.`;
+    }
+
+    return 'You have ' + finalText;
+  }
+
   return (
     <>
       <RequestDashboard
@@ -89,7 +114,11 @@ function Dashboard() {
               ></Text>
               <Text
                 size={3}
-                content={`You have ${getAllUrgentRequestCount(selectedDateRequest?.counts)} urgent requests and ${getAllStandardRequestCount(selectedDateRequest?.counts)} standard requests ${dateStringFormat(selectedDateRequest.date)}.`}
+                content={formatRequestCountText(
+                  getAllUrgentRequestCount(selectedDateRequest?.counts),
+                  getAllStandardRequestCount(selectedDateRequest?.counts),
+                  `on ${dateStringFormat(selectedDateRequest.date)}`,
+                )}
                 styleProps={{
                   style: {
                     display: '-webkit-box',
