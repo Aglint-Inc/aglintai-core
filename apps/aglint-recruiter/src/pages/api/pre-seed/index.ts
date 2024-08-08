@@ -19,10 +19,10 @@ export default async function handler(
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
     // start here
-    // await seedRolesAndPermissions(recruiter_id);
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
+    // await seedRolesAndPermissions(recruiter_id);
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -156,6 +156,7 @@ const seedWorkFlow = async (
             payload: {
               body: temp ? temp.body : '',
               subject: temp ? temp.subject : '',
+              ai_response: action.payload ?? undefined,
             },
             order: action.order,
             workflow_id: workflow.id,
