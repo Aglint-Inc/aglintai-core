@@ -75,8 +75,8 @@ function Dashboard() {
           selectedDateRequest?.date && (
             <>
               <Text
-                size={1}
-                content={`Hello, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
+                size={3}
+                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`} 
                 styleProps={{
                   style: {
                     display: '-webkit-box',
@@ -84,11 +84,13 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    marginBottom:'4px',
+                    color: 'var(--neutral-11)'
                   },
                 }}
               ></Text>
               <Text
-                size={3}
+                size={2}
                 content={`You have ${getAllUrgentRequestCount(selectedDateRequest?.counts)} urgent requests and ${getAllStandardRequestCount(selectedDateRequest?.counts)} standard requests ${dateStringFormat(selectedDateRequest.date)}.`}
                 styleProps={{
                   style: {
@@ -97,6 +99,8 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
+                    marginLeft:'20px',
+                    marginBottom:'16px',
                   },
                 }}
               ></Text>
