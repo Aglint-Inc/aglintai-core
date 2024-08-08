@@ -90,7 +90,7 @@ function AllList() {
       ref={parentRef}
       style={{
         height: 'calc(100vh - 134px)',
-        width: 'calc(100vw - 64px)',
+        width: 'calc(100vw - 58px)',
         overflowY: 'auto',
       }}
     >

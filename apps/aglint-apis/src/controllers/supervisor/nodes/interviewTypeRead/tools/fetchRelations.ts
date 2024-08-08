@@ -1,4 +1,5 @@
-import {CallBack, fetchInterviewTypeUsers} from '@aglint/shared-utils';
+import {CallBack} from '@aglint/shared-types';
+import {fetchInterviewTypeUsers} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -36,6 +37,12 @@ export const fetchInterviewTypesRelationsTool = ({
         function_name: 'fetch_interview_types_users',
         payload: rel,
         called_at: new Date().toISOString(),
+        links: [
+          {
+            replace: rel[0].module_name,
+            with: `${process.env.CLIENT_APP_URL}/scheduling/interview-types/${rel[0].module_id}`,
+          },
+        ],
       });
 
       const relations = rel.map(s => {
@@ -43,7 +50,10 @@ export const fetchInterviewTypesRelationsTool = ({
           name: s.first_name,
         };
       });
-      return JSON.stringify(relations);
+      return JSON.stringify({
+        interview_type: rel[0].module_name,
+        relations,
+      });
     },
   });
 };

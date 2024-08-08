@@ -1,7 +1,6 @@
-import { FunctionNames } from '@aglint/shared-types';
+import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack, Typography } from '@mui/material';
-import { marked } from 'marked';
+import { Stack } from '@mui/material';
 
 import { Text } from '@/devlink/Text';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -11,6 +10,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import Widgets from '../Widgets';
 import AgentIcon from './AgentIcon';
+import CustomTypographyLink from './CustomTypographyLink';
 
 function MessageIndividual({
   chat,
@@ -23,6 +23,11 @@ function MessageIndividual({
     'fetch_scheduled_interviews',
     'fetch_user_requests',
   ];
+
+  const replaceLinks =
+    chat?.metadata
+      ?.flatMap((ele) => ele?.links?.map((link) => link))
+      .filter(Boolean) || [];
 
   return (
     <Stack width={'100%'}>
@@ -62,11 +67,7 @@ function MessageIndividual({
           {definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />
           ) : (
-            <Typography
-              component={'div'}
-              fontSize={14}
-              dangerouslySetInnerHTML={{ __html: marked(chat.content) }}
-            ></Typography>
+            <CustomTypographyLink text={chat.content} links={replaceLinks} />
           )}
         </Stack>
       </Stack>

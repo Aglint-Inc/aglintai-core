@@ -5,61 +5,48 @@ body.component-grid > div:not(.w-embed) {
 }
 
 [class^="AglintAiChat"] {
-    strong {
+  strong {
       font-weight: 500;
-    }
-    ul, ol {
-        margin-top: 8px;
-        padding-left: 0;
-    }
-    ul {
-        list-style-type: none;
-        padding-left: 20px;
-    }
-    ul li {
-        position: relative;
-    }
-    ul li::before {
-        content: '○';
-        font-size: 10px;
-        position: absolute;
-        left: -16px;
-        top: 0;
-        color: var(--neutral-12);
-        font-weight: 100;
-    }
-    ol {
-        list-style: none;
-        counter-reset: item;
-        font-family: 'Noto Sans', sans-serif;
-    }
-    ol li {
-        position: relative;
-        margin-bottom: 8px;
-        padding-left: 20px;
-        font-weight: 400;
-        color: var(--neutral-12);
-    }
-    ol li::before {
-        content: counter(item) ".";
-        counter-increment: item;
-        position: absolute;
-        left: 0;
-        font-size: 14px;
-        font-family: 'Noto Sans', sans-serif;
-        font-weight: 300;
-        color: var(--neutral-11);
-    }
-    /* ol li:nth-child(1)::before { content: "①"; }
-    ol li:nth-child(2)::before { content: "②"; }
-    ol li:nth-child(3)::before { content: "③"; }
-    ol li:nth-child(4)::before { content: "④"; }
-    ol li:nth-child(5)::before { content: "⑤"; }
-    ol li:nth-child(6)::before { content: "⑥"; }
-    ol li:nth-child(7)::before { content: "⑦"; }
-    ol li:nth-child(8)::before { content: "⑧"; }
-    ol li:nth-child(9)::before { content: "⑨"; }
-    ol li:nth-child(10)::before { content: "⑩"; } */
+  }
+  ul, ol {
+      margin-top: 8px;
+      padding-left: 0;
+  }
+  ul {
+      list-style-type: none;
+      padding-left: 20px;
+  }
+  ul li {
+      position: relative;
+  }
+  ul li::before {
+      content: '○';
+      font-size: 10px;
+      position: absolute;
+      left: -16px;
+      top: 0;
+      color: var(--neutral-12);
+      font-weight: 100;
+  }
+  ol {
+      list-style: none;
+      padding-left: 20px;
+  }
+  ol li {
+      position: relative;
+      margin-bottom: 8px;
+      font-weight: 400;
+      color: var(--neutral-12);
+  }
+  ol li::before {
+      content: '○';
+      font-size: 10px;
+      position: absolute;
+      left: -16px;
+      top: 0;
+      color: var(--neutral-12);
+      font-weight: 100;
+  }
 }
 
 

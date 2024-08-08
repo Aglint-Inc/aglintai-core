@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { useUserChat } from '@/src/queries/userchat';
 

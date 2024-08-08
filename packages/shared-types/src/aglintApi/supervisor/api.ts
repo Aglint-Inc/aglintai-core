@@ -1,4 +1,4 @@
-import { FunctionNames, MetadataForFunction } from "@aglint/shared-types";
+import { FunctionNames, MetadataForFunction } from "./functions";
 
 export type Message = {
   content: string;
@@ -29,6 +29,7 @@ export type CallBackAll = {
     function_name: T;
     payload: MetadataForFunction<T>;
     called_at: string;
+    links?: Link[];
   };
 }[FunctionNames];
 
@@ -36,4 +37,10 @@ export type CallBack<T extends FunctionNames> = {
   function_name: T;
   payload: MetadataForFunction<T>;
   called_at: string;
+  links?: Link[];
+};
+
+type Link = {
+  replace: string;
+  with: string;
 };

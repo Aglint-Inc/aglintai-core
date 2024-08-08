@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-
 import { useState } from 'react';
 
 import { AglintAiChat } from '@/devlink2/AglintAiChat';
