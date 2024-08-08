@@ -11,6 +11,7 @@ import { useRequests } from '@/src/context/RequestsContext';
 
 import { selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
+import dayjs from '@/src/utils/dayjs';
 
 function CreateSchedulePopUp({
   selectedItems,
@@ -25,8 +26,8 @@ function CreateSchedulePopUp({
   const { recruiterUser } = useAuthDetails();
   const [loading, setLoading] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState({
-    start_date: dayjsLocal().format('MM-DD-YYYY'),
-    end_date: dayjsLocal().add(7, 'day').format('MM-DD-YYYY'),
+    start_date: dayjs().toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
   const assigner = 'user';
   const assignerText =
@@ -59,8 +60,8 @@ function CreateSchedulePopUp({
             title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
             status: 'to_do',
             type: 'schedule_request',
-            schedule_start_date: null,
-            schedule_end_date: null,
+            schedule_start_date: selectedDateRange.start_date,
+            schedule_end_date: selectedDateRange.end_date,
           },
           applications: [selectedItems.applicant_name[0].id],
           sessions: selectedItems.interview_name.map((ele) => ele.id),
