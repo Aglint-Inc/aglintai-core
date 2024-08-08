@@ -32,7 +32,7 @@ function CandidateDetails({
       text: `${dayjsLocal(dateRange.start_date).format('MMM DD')} - ${dayjsLocal(
         dateRange.end_date,
       ).format('MMM DD')}`,
-      hide: !dateRange,
+      hide: !dateRange.start_date || !dateRange.end_date,
     },
   ];
 
