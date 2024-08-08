@@ -230,8 +230,9 @@ export const getRequests = async ({
     .from('request')
     .select(
       '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
-    )
-    .eq('assigner_id', assigner_id);
+    );
+
+  query.or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`);
 
   if (is_new) query.eq('is_new', true);
 
