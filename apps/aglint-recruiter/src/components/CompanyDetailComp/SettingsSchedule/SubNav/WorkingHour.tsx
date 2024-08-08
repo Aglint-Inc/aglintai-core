@@ -122,7 +122,8 @@ export default function WorkingHour({ updateSettings, initialData }) {
         <Stack position={'absolute'} top={'16px'} right={'16px'}>
           <ButtonSoft
             textButton='Edit'
-            size={1}
+            color={'neutral'}
+            size={2}
             onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
           />
         </Stack>

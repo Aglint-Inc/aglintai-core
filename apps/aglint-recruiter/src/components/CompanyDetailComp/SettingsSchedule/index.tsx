@@ -32,6 +32,7 @@ import {
 import { ArrowDropDownIcon } from '@mui/x-date-pickers';
 import { useRouter } from 'next/router';
 
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
@@ -342,20 +343,15 @@ function SchedulingSettings({
             <CompanyDayOff
               slotLearnButton={
                 <>
-                  <Stack onClick={() => openCompany()}>
-                    <Typography
-                      fontSize={'var(--font-size-1)'}
-                      sx={{
-                        cursor: 'pointer',
-                        color: 'var(--error-9)',
-                        ': hover': {
-                          color: 'var(--error-11)',
-                        },
-                      }}
-                    >
-                      Learn How
-                    </Typography>
-                  </Stack>
+                  <ButtonGhost
+                    size={1}
+                    textButton='Learn How'
+                    onClickButton={{
+                      onClick: () => {
+                        openCompany();
+                      },
+                    }}
+                  />
                 </>
               }
               slotAddButton={

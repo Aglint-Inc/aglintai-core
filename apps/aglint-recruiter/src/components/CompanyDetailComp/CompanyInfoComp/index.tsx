@@ -209,7 +209,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       height={'50px'}
                       width={'50px'}
                     >
-                      <Avatar src={recruiter.logo} alt={recruiter.name} />
+                      <Avatar src={recruiter.logo} alt={recruiter.name} variant='rounded' />
                     </Stack>
                   }
                   textCompanyName={recruiter.name}
