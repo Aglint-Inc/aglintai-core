@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
+import { Text } from '@/devlink/Text';
 import { StartOption } from '@/devlink2/StartOption';
-import { Text } from '@/devlink2/Text';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import { scheduleTypes } from '../AgentInputBox/utils';

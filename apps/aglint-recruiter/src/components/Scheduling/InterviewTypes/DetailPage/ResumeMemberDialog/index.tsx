@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
-import { Text } from '@/devlink2/Text';
+import { Text } from '@/devlink/Text';
 
 import { usePauseHandler } from '../../queries/hooks';
 import { setIsResumeDialogOpen, useModulesStore } from '../../store';

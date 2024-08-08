@@ -42,15 +42,6 @@ export const navList: {
     active: ['/tasks'],
   },
   {
-    text: 'Dashboard',
-    SubComponents: null,
-    route: ROUTES['/scheduling']() + '?tab=dashboard',
-    comingSoon: false,
-    isVisible: true,
-    permission: ['scheduling_module'],
-    active: ['/scheduling'],
-  },
-  {
     text: 'Candidates',
     SubComponents: null,
     route: ROUTES['/scheduling/application'](),
@@ -61,6 +52,15 @@ export const navList: {
       '/scheduling/application',
       '/scheduling/application/[application_id]',
     ],
+  },
+  {
+    text: 'Dashboard',
+    SubComponents: null,
+    route: ROUTES['/scheduling']() + '?tab=dashboard',
+    comingSoon: false,
+    isVisible: true,
+    permission: ['scheduling_module'],
+    active: ['/scheduling'],
   },
   {
     text: 'Interview Types',
