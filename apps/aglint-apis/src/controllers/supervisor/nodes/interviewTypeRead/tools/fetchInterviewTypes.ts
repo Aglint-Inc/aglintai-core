@@ -31,7 +31,7 @@ export const fetchInterviewTypesTool = ({
         called_at: new Date().toISOString(),
         links: mods.map(mod => ({
           replace: mod.name,
-          with: `${process.env.CLIENT_APP_URL}/scheduling/interview-types/${mod.id}`,
+          with: `/scheduling/interview-types/${mod.id}`,
         })),
       });
 

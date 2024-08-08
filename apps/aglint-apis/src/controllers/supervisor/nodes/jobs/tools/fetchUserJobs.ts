@@ -32,7 +32,7 @@ export const fetchUserJobs = ({
         called_at: new Date().toISOString(),
         links: jobs.map(job => ({
           replace: job.job_title,
-          with: `${process.env.CLIENT_APP_URL}/jobs/${job.id}`,
+          with: `/jobs/${job.id}`,
         })),
       });
       const resp = jobs.map(job => {

@@ -42,7 +42,7 @@ export const fetchHiringTeamTool = ({
         links: [
           {
             replace: hrteam.job_title,
-            with: `${process.env.CLIENT_APP_URL}/jobs/${hrteam.id}`,
+            with: `/jobs/${hrteam.id}`,
           },
         ],
       });
