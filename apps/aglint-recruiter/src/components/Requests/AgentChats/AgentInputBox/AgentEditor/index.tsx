@@ -179,7 +179,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     style: {
       control: {
         backgroundColor: '#fff',
-        fontSize: 16,
+        fontSize: 14,
         width: '384px',
         lineHeight: '20px',
         padding: '10px 10px 40px',
