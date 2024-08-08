@@ -1,7 +1,4 @@
-import {
-  CandReqSlotsType,
-  PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { mailSender } from '@/src/utils/mailSender';

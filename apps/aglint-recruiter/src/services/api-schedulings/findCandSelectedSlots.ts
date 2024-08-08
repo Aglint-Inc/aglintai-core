@@ -1,5 +1,6 @@
 import {
   APIOptions,
+  CustomAgentInstructionPayload,
   DatabaseTable,
   PlanCombinationRespType,
   TimeDurationDayjsType,
@@ -9,18 +10,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 import { ProgressLoggerType } from './utils';
-
-type AiResponseType = {
-  scheduleWithinNumDays: number;
-  schedulewithMaxNumDays: number;
-  maxOptionsToCandidates: number;
-  balanceWorkloadAmongInterviewers: boolean;
-  scheduleOutsideOfficeHoursForTimezoneDifferences: boolean;
-  preferredInterviewer: string[];
-  excludeInterviewTimes: { startTime: string; endTime: string }[];
-  prefferredInterviewTimes: { startTime: string; endTime: string }[];
-  bookOnSoftConflicts: boolean;
-};
 
 const TIME_ZONE = 'Asia/Colombo';
 export const findCandSelectedSlots = async ({
@@ -42,7 +31,7 @@ export const findCandSelectedSlots = async ({
   req_user_tz: string;
   cand_avail: DatabaseTable['candidate_request_availability']['slots'];
   reqProgressLogger: ProgressLoggerType;
-  ai_response: AiResponseType;
+  ai_response: CustomAgentInstructionPayload['ai_response'];
 }) => {
   const cand_schedule = new CandidatesSchedulingV2(api_options);
   await cand_schedule.fetchDetails({

@@ -154,16 +154,16 @@ const seedWorkFlow = async (
 
           return {
             payload: {
-              body: temp ? temp.body : '',
-              subject: temp ? temp.subject : '',
-              ai_response: action.payload ?? undefined,
+              body: temp ? temp.body : undefined,
+              subject: temp ? temp.subject : undefined,
+              ...(action?.payload ?? {}),
             },
             order: action.order,
             workflow_id: workflow.id,
             target_api: action.target_api,
             action_type: action.action_type,
           };
-        }),
+        }) as any, // TODO: fix
       ),
     );
     //
