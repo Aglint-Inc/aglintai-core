@@ -271,12 +271,21 @@ const EditMember = ({
                     }}
                   />
                   <Stack>
-                    <Typography
-                      fontSize={'13px'}
-                      fontWeight={400}
-                      color={'error'}
-                    >
-                      Change profile photo
+                    <Typography fontSize={'13px'}>
+                      <Typography>
+                        <span style={{ color: 'var(--error-9)' }}>
+                          Change profile photo
+                        </span>
+                        <span
+                          style={{
+                            color: 'var(--neutral-9)',
+                            fontSize: 'var(--font-size-1)',
+                          }}
+                        >
+                          {' '}
+                          ( optional )
+                        </span>
+                      </Typography>
                     </Typography>
                     <Typography fontSize={'12px'}>
                       Upload a square profile image (PNG or JPEG). Maximum size:

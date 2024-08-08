@@ -186,8 +186,42 @@ type GreenhouseSyncOptions = {
 const GreenhouseSync: GreenhouseSyncOptions = {
   description: 'Sync Greenhouse Job Plans',
   options: {
+    jobs: {
+      name: 'Jobs',
+      isEnabled: true,
+      subOption: undefined,
+      // subOption: {
+      //   description: 'Sync Greenhouse Interview Stages',
+      //   options: {
+      //     job_status: {
+      //       name: 'Active jobs',
+      //       isEnabled: true,
+      //     },
+      //     job_hiring_team: {
+      //       name: 'Hiring team',
+      //       isEnabled: true,
+      //     },
+      //     job_interview_plan: { name: 'Interview plan', isEnabled: true },
+      //   },
+      // },
+    },
+    interview_stages: {
+      name: 'Interview Plan',
+      isEnabled: true,
+      subOption: undefined,
+    },
+    candidates: {
+      name: 'Candidates',
+      isEnabled: true,
+      subOption: undefined,
+    },
+    applications: {
+      name: 'Applications',
+      isEnabled: true,
+      subOption: undefined,
+    },
     user: {
-      name: 'User',
+      name: 'Users',
       isEnabled: true,
       onCheck: undefined,
       subOption: undefined,
@@ -202,44 +236,6 @@ const GreenhouseSync: GreenhouseSyncOptions = {
       name: 'Department',
       isEnabled: true,
       onCheck: undefined,
-      subOption: undefined,
-    },
-    jobs: {
-      name: 'Jobs',
-      isEnabled: true,
-      subOption: {
-        description: 'Sync Greenhouse Interview Stages',
-        options: {
-          job_status: {
-            name: 'Status of job (open, closed, draft)',
-            isEnabled: true,
-          },
-          job_hiring_team: {
-            name: 'Hiring team',
-            isEnabled: true,
-          },
-          job_interview_plan: { name: 'Interview plan', isEnabled: true },
-        },
-      },
-    },
-    interview_stages: {
-      name: 'Interview Stages',
-      isEnabled: true,
-      subOption: undefined,
-    },
-    candidates: {
-      name: 'Candidates',
-      isEnabled: true,
-      subOption: undefined,
-    },
-    applications: {
-      name: 'Applications',
-      isEnabled: true,
-      subOption: undefined,
-    },
-    interview_types_modules: {
-      name: 'Interview types/modules',
-      isEnabled: true,
       subOption: undefined,
     },
   },

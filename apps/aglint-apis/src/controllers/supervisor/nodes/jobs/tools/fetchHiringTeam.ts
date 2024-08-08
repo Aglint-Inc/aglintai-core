@@ -1,4 +1,5 @@
-import {CallBack, fetchJobHiringTeam, getFullName} from '@aglint/shared-utils';
+import {CallBack} from '@aglint/shared-types';
+import {fetchJobHiringTeam, getFullName} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -20,7 +21,7 @@ export const fetchHiringTeamTool = ({
     }),
     func: async ({title}) => {
       if (!title && !job_id) {
-        return `No job title or job id provided`;
+        return 'No job title or job id provided';
       }
 
       const hrteam = await fetchJobHiringTeam({
@@ -33,36 +34,48 @@ export const fetchHiringTeamTool = ({
       if (!hrteam) {
         return `Unable to fetch hiring team for job ${title}`;
       }
+
       callback({
         function_name: 'fetch_hiring_team',
         payload: hrteam,
         called_at: new Date().toISOString(),
+        links: [
+          {
+            replace: hrteam.job_title,
+            with: `/jobs/${hrteam.id}`,
+          },
+        ],
       });
 
-      const team = {
-        recruiter: {
+      const team = [
+        {
+          role: 'Recruiter',
           name: getFullName(hrteam.rec?.first_name, hrteam.rec?.last_name),
-          position: hrteam.rec?.position,
         },
-        hiring_manager: {
+        {
+          role: 'Hiring Manager',
           name: getFullName(
             hrteam.hir_man?.first_name,
             hrteam.hir_man?.last_name
           ),
-          position: hrteam.hir_man?.position,
         },
-        ...(hrteam.recruiting_coordinator && {
-          recruiting_coordinator: {
-            name: getFullName(
-              hrteam.recruiting_coordinator?.first_name,
-              hrteam.recruiting_coordinator?.last_name
-            ),
-            position: hrteam.recruiting_coordinator?.position,
-          },
-        }),
-      };
+        ...(hrteam.recruiting_coordinator
+          ? [
+              {
+                role: 'Recruiting Coordinator',
+                name: getFullName(
+                  hrteam.recruiting_coordinator?.first_name,
+                  hrteam.recruiting_coordinator?.last_name
+                ),
+              },
+            ]
+          : []),
+      ];
 
-      return JSON.stringify(team);
+      return JSON.stringify({
+        job_title: hrteam.job_title,
+        hiring_team: team,
+      });
     },
   });
 };

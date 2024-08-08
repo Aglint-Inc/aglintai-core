@@ -1,4 +1,4 @@
-import { FunctionNames } from '@aglint/shared-types';
+import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';

@@ -1,6 +1,6 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useEffect, useState } from 'react';
 
+import { Text } from '@/devlink/Text';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
@@ -14,7 +14,6 @@ import CompletionProgress from './Components/CompletionProgress';
 import { RequestsBarChart } from './Components/RequestsBarChart';
 import {
   getRequestsList,
-  getSelectedDateRequestCount,
   transFormCardData,
   transformForChartData,
   transformProgressData,
@@ -48,9 +47,6 @@ function Dashboard() {
     selectedDateRequest?.date && transformProgressData([selectedDateRequest]);
   const requestCardData =
     selectedDateRequest?.date && transFormCardData([selectedDateRequest]);
-  const totalRequestCount =
-    selectedDateRequest?.date &&
-    getSelectedDateRequestCount(selectedDateRequest.counts);
 
   useEffect(() => {
     if (status === 'success') {
@@ -61,7 +57,37 @@ function Dashboard() {
   return (
     <>
       <RequestDashboard
-        textGraphTitle={`${totalRequestCount} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
+        slotHeaderText={
+          <>
+            <Text
+              size={1}
+              content={`Hello, ${'John Doe'}!`}
+              styleProps={{
+                style: {
+                  display: '-webkit-box',
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+            ></Text>
+            <Text
+              size={3}
+              content={`You have 32 urgent requests and 34 standard requests today.`}
+              styleProps={{
+                style: {
+                  display: '-webkit-box',
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+            ></Text>
+          </>
+        }
+        // ${totalRequestCount} Requests on ${formattedDate}
         textProgressTitle={
           progressData &&
           `${progressData?.open_request} Open Requests (${progressData?.completed_percentage}% complete)`
@@ -91,7 +117,7 @@ function Dashboard() {
                     <GlobalBadge
                       size={1}
                       variant={'outline'}
-                      textBadge={`${urgent} Urgent Requests`}
+                      textBadge={`${urgent} Urgent`}
                     />
                   )
                 }

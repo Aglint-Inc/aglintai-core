@@ -49,7 +49,10 @@ export function AtsSettings({
             <GlobalIcon iconName="sync" />
             <Text content={textSyncItems} weight="medium" />
           </_Builtin.Block>
-          <Text color="neutral" />
+          <Text
+            color="neutral"
+            content="Select the entities you want to sync—jobs, interview plans, candidates, applications, users, office locations, departments."
+          />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotSyncItems}</_Builtin.Block>
       </_Builtin.Block>
@@ -65,7 +68,7 @@ export function AtsSettings({
             <GlobalIcon iconName="rule_settings" />
             <Text content="Frequency of sync" weight="medium" />
           </_Builtin.Block>
-          <Text color="neutral" />
+          <Text color="neutral" content="" />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotFrequencySync}</_Builtin.Block>
       </_Builtin.Block>

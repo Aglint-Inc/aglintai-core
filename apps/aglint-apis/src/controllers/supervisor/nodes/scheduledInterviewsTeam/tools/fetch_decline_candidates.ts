@@ -1,4 +1,5 @@
-import {CallBack, fetchScheduledInterviews} from '@aglint/shared-utils';
+import {CallBack} from '@aglint/shared-types';
+import {fetchScheduledInterviews} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -6,15 +7,18 @@ import z from 'zod';
 export const fetchScheduledInterviewsTool = ({
   recruiter_id,
   callback,
+  user_id,
 }: {
   recruiter_id: string;
   callback: (x: CallBack<'fetch_scheduled_interviews'>) => void;
+  user_id: string;
 }) => {
   return new DynamicStructuredTool({
     name: 'fetch_scheduled_interviews',
-    description: 'Fetch scheduled interviews.',
+    description:
+      'Fetch scheduled interviews or upcoming interviews or unconfirmed interviews',
     schema: z.object({
-      time: z.enum(['today', 'week']).default('today'),
+      time: z.enum(['today', 'week']).default('week'),
       type: z.enum(['upcoming', 'unconfirmed']).default('upcoming'),
     }),
     func: async ({time, type}) => {
@@ -23,6 +27,7 @@ export const fetchScheduledInterviewsTool = ({
         supabase: supabaseAdmin,
         time,
         type,
+        user_id,
       });
 
       if (sch.length === 0) {
@@ -40,10 +45,14 @@ export const fetchScheduledInterviewsTool = ({
           name: s.session_name,
           start_time: s.start_time,
           end_time: s.end_time,
+          schedule_type: s.schedule_type,
         };
       });
 
-      return JSON.stringify(resp);
+      return JSON.stringify({
+        message: `Here are scheduled interview ${time === 'week' ? 'for this week' : 'today'}`,
+        schedules: resp,
+      });
     },
   });
 };

@@ -1,5 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  Popover,
+  Stack,
+  Typography,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,11 +15,11 @@ import { AssistStatus } from '@/devlink/AssistStatus';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { BannerLoading } from '@/devlink3/BannerLoading';
@@ -133,7 +139,14 @@ const Dashboard = () => {
   const { getParams } = useApplicationsParams();
 
   const score_matches = getMatches(job.application_match, total);
-  const [popover, setPopover] = useState(false);
+  // const [popover, setPopover] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null,
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
@@ -306,14 +319,12 @@ const Dashboard = () => {
                     iconSize={6}
                     iconName='more_vert'
                     onClickButton={{
-                      onClick: () => {
-                        setPopover(true);
-                      },
+                      onClick: handleClick,
                     }}
                   />
                   <JobClose
-                    popover={popover}
-                    onClose={() => setPopover(false)}
+                    popover={anchorEl}
+                    onClose={() => setAnchorEl(null)}
                     onSubmit={() => handleSubmit()}
                   />
                 </>
@@ -743,7 +754,7 @@ const JobClose = ({
   onClose,
   onSubmit,
 }: {
-  popover: boolean;
+  popover: HTMLButtonElement | null;
   onClose: () => void;
   onSubmit: () => void;
 }) => {
@@ -765,12 +776,22 @@ const JobClose = ({
     onSubmit();
   };
   const isDelete = status !== 'published';
+  const open = Boolean(popover);
   return (
     <>
       <Popover
-        open={popover}
+        open={open}
+        anchorEl={popover}
         onClose={() => onClose()}
+        // anchorOrigin={{
+        //   vertical: 'top',
+        //   horizontal: 'right',
+        // }}
         anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
         }}
@@ -780,11 +801,11 @@ const JobClose = ({
             background: 'transparent',
             overflow: 'visible !important',
             boxShadow: 'none',
-            top: '62px !important',
+            // top: '62px !important',
           },
         }}
       >
-        <CloseDeleteJob
+        {/* <CloseDeleteJob
           isCloseJobVisible={!isDelete}
           isDeleteJobVisible={isDelete}
           slotButton={
@@ -795,7 +816,47 @@ const JobClose = ({
               onClickButton={{ onClick: () => openModal() }}
             />
           }
-        />
+        /> */}
+        <Stack border={'1px solid var(--neutral-6)'} borderRadius={'8px'}>
+          <FilterDropdown
+            isRemoveVisible={false}
+            isResetVisible={false}
+            slotOption={
+              <Stack spacing={2} maxHeight={'50vh'} overflow={'auto'}>
+                <Stack
+                  direction={'row'}
+                  sx={{
+                    alignItems: 'center',
+                    ':hover': { bgcolor: 'var(--neutral-2)' },
+                    borderRadius: 'var(--radius-2)',
+                  }}
+                  spacing={1}
+                  // padding={'var(--space-2) var(--space-3)'}
+                  marginTop={'0px !important'}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      padding: '5px 10px ',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      color: 'var(--error-11)',
+                    }}
+                    onClick={() => openModal()}
+                  >
+                    <GlobalIcon
+                      iconName={isDelete ? 'delete' : 'close'}
+                      size={4}
+                    />
+                    {`${isDelete ? 'Delete' : 'Close'} Job`}
+                  </Typography>
+                </Stack>
+              </Stack>
+            }
+          />
+        </Stack>
       </Popover>
       <Dialog open={modal} onClose={() => handleClose()}>
         <CloseJobModal

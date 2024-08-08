@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable prefer-template */
 import {HumanMessage} from '@langchain/core/messages';
 import {ChatPromptTemplate, MessagesPlaceholder} from '@langchain/core/prompts';
@@ -43,7 +44,6 @@ export async function runAgentNode(params: {
 }) {
   const {state, agent, name} = params;
   const result = await agent.invoke(state);
-  console.log(result);
 
   return {
     messages: [

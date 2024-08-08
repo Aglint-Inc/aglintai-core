@@ -2,9 +2,9 @@
 import {Request, Response} from 'express';
 import {agentChain} from './graph';
 
-import {ApiBodyAgentSupervisor, CallBackAll} from '@aglint/shared-utils';
 import {AIMessage, HumanMessage} from '@langchain/core/messages';
 import {handleResults} from './utils/savetodb';
+import {ApiBodyAgentSupervisor, CallBackAll} from '@aglint/shared-types';
 
 export async function agentSupervisor(req: Request, res: Response) {
   try {
@@ -31,9 +31,7 @@ export async function agentSupervisor(req: Request, res: Response) {
             item.type === 'user'
               ? new HumanMessage(item.content)
               : new AIMessage(item.content, {
-                  additional_kwargs: {
-                    tool_calls: [],
-                  } as AIMessage['additional_kwargs'],
+                  additional_kwargs: {} as AIMessage['additional_kwargs'],
                 })
         ),
       },

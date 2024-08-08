@@ -45,13 +45,13 @@ function FilterDepartment() {
   return (
     <>
       <ButtonFilter
-        isActive={filter.job_ids.length > 0}
+        isActive={filter.department_ids.length > 0}
         slotLeftIcon={
           <Stack>
             <GlobalIcon iconName='business_center' />
           </Stack>
         }
-        isDotVisible={filter.job_ids.length > 0}
+        isDotVisible={filter.department_ids.length > 0}
         onClickStatus={{
           id: FilterType.departments + 'click',
           onClick: handleClick,
