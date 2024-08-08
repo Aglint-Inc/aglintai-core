@@ -60,6 +60,7 @@ const PERMISSIONS: Permissions = {
   '/requests': ['job_module'],
 
   '/integrations': ['integrations_module'],
+  '/integrations/[platform]': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
