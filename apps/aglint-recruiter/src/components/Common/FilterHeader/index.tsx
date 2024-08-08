@@ -171,6 +171,7 @@ export type FilterHeaderType = {
     values: string[];
     // eslint-disable-next-line no-unused-vars
     setValue: (x: any) => void;
+    disablePast?: boolean;
   };
   layoutMode?: 'left-align' | 'right-align';
 };

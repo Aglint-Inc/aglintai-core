@@ -30,7 +30,9 @@ const Requests = () => {
     !filters.is_new &&
     filters.status.length === 0 &&
     filters.type.length === 0 &&
-    !filters.title;
+    !filters.title &&
+    !filters.created_at;
+
   const showEmptyPage = status === 'success' && !requestList.length;
 
   const urgentRequests = (requestList ?? []).filter(
@@ -60,7 +62,7 @@ const Requests = () => {
             iconName={'arrow_back'}
             textButton='Dashboard'
             onClickButton={{
-              onClick: () => setQueryParams({ tab: 'dashboard' }),
+              onClick: () => setQueryParams({ tab: 'dashboard', query: '' }),
             }}
           />
         ) : (

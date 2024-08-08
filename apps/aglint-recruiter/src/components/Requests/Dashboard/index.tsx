@@ -30,7 +30,7 @@ import {
 import { barChartDataType } from './utils';
 
 function Dashboard() {
-  const { requests } = useRequests();
+  const { requests, setFilters } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
 
@@ -147,10 +147,15 @@ function Dashboard() {
                   }
                   onClickCard={{
                     onClick: () => {
-                      setQueryParams({
-                        tab: 'requests',
-                        query: selectedDateRequest.date,
+                      setFilters((pre) => {
+                        return {
+                          ...pre,
+                          created_at: dayjs(
+                            selectedDateRequest.date,
+                          ).toString(),
+                        };
                       });
+                      setQueryParams({ tab: 'requests' });
                     },
                   }}
                 />
