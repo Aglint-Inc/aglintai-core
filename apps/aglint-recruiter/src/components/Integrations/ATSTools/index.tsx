@@ -1,6 +1,7 @@
 import { IconButton, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
+import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
@@ -20,7 +21,6 @@ import {
   LeverLogo,
   updateIntegrations,
 } from '../utils';
-import { useRouter } from 'next/router';
 
 function ATSTools() {
   const router = useRouter();

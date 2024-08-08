@@ -1,10 +1,10 @@
 import { capitalize } from 'lodash';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 
 import { MessagingToolsType } from '../types';
 import { SlackLogo } from '../utils';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 
 function MessagingTools() {
   const messagingTools = [

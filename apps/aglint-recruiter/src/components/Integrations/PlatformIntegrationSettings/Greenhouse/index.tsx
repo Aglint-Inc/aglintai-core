@@ -1,17 +1,17 @@
+/* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
-import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
+import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 
 function GreenhouseSettings() {
   const { data, isPending } = useGreenhouseDetails();
-  console.log(data);
   return (
     <Stack p={2} maxWidth={'900px'}>
       {isPending ? (
