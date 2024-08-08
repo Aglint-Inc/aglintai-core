@@ -21,6 +21,7 @@ type Meetings = {
 export default function Heatmap({ loadSetting, interviewLoad }) {
   const [gridData, setGridData] = useState<Meetings | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [arrayDates, setArrayDates] = useState([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
     end: 21,
@@ -74,6 +75,10 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
 
   const datesArray = getDatesArray(startDate, endDate, 'YYYY-MM-DD');
 
+  useEffect(() => {
+    setArrayDates(getDatesArray(startDate, endDate, 'YYYY-MM-DD'));
+  }, [dayCount]);
+
   Object.keys(gridData).forEach((date) => {
     if (datesArray.includes(date)) {
       const index = datesArray.indexOf(date);
@@ -90,7 +95,8 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
   const rest = transposeArray(filled2d);
 
   const yLabel: string[] = new Array(Math.ceil(maxCount)).fill('');
-  const xLabel: string[] = getDatesArray(startDate, endDate, 'D');
+  const xLabel: string[] = datesArray.map(() => 'd');
+  // const xLabel: string[] = getDatesArray(startDate, endDate, 'D');
 
   if (rest.length) {
     return (
@@ -157,10 +163,18 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
               );
           }}
           yLabelsPos='left'
-          xLabelsStyle={(index) => ({
-            color: index % 6 === 0 ? '#777' : 'transparent',
-            fontSize: '10px',
-          })}
+          xLabelsStyle={(index) => {
+            const isToday = dayjsLocal(arrayDates[index]).isToday();
+            return {
+              visibility: isToday ? 'visible' : 'hidden',
+              backgroundColor: isToday ? 'var(--error-8)' : 'transparent',
+              borderRadius: '20px',
+              height: '2px ',
+              padding: 0,
+              marginTop: '2px',
+              width: isToday ? '25px' : '30px',
+            };
+          }}
           yLabelsStyle={(index) => ({
             color: index % 1 === 0 ? '#777' : 'transparent',
             fontSize: '10px',

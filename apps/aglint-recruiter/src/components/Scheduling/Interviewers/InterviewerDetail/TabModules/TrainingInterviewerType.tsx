@@ -1,8 +1,7 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import dayjs from '@/src/utils/dayjs';
@@ -17,9 +16,7 @@ function TrainingInterviewerType({
   relation,
   refetch: relationRefetch,
 }: {
-  relation: ReturnType<typeof useModuleRelations>['data'][0] & {
-    is_global_archived: boolean;
-  };
+  relation: ReturnType<typeof useModuleRelations>['data'][0];
   refetch: () => void;
 }) {
   const router = useRouter();
@@ -117,14 +114,7 @@ function TrainingInterviewerType({
           />
         }
         key={relation.module_id}
-        textName={
-          <Stack direction={'row'} spacing={2}>
-            <Typography> {relation.module_name}</Typography>
-            {relation.is_global_archived && (
-              <GlobalBadge textBadge='Archived' color={'warning'} />
-            )}
-          </Stack>
-        }
+        textName={relation.module_name}
         // textName={relation.module_name}
         isTextObjectiveVisible={false}
         isPauseResumeVisible={Boolean(relation.pause_json)}

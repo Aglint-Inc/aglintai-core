@@ -118,6 +118,7 @@ const ResumePreviewer = ({
               alignItems={'center'}
               justifyContent={'center'}
               zIndex={0}
+              bgcolor={'var(--neutral-11)'}
             >
               <Loader />
             </Stack>
