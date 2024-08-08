@@ -9,6 +9,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import UITextField from '@/src/components/Common/UITextField';
 
 function GreenhouseSettings() {
   const { data, isPending } = useGreenhouseDetails();
@@ -93,6 +94,14 @@ function GreenhouseSettings() {
                 '30 Days',
                 'Never',
               ]}
+            />
+          }
+          slotAiInstructionsTextArea={
+            <UITextField
+              multiline
+              minRows={2}
+              maxRows={5}
+              defaultValue='When you mention `@aglintai` in a comment, Aglint AI can create a scheduling request and assign it to the appropriate coordinator or user.'
             />
           }
         />

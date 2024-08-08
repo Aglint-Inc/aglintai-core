@@ -10,4 +10,5 @@ declare function AtsSettings(props: {
   slotFrequencySync?: Types.Devlink.Slot;
   textSyncItems?: React.ReactNode;
   textAtsConnected?: React.ReactNode;
+  slotAiInstructionsTextArea?: Types.Devlink.Slot;
 }): React.JSX.Element;

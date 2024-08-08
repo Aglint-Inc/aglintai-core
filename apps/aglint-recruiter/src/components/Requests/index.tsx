@@ -51,6 +51,7 @@ const Requests = () => {
   }, [queryParams?.tab]);
   return (
     <RequestAgent
+      isFilterVisible={queryParams.tab === 'requests'}
       textName={getFullName(recruiterUser.first_name, '')}
       textTopStatus={`Your top priorities as of ${dayjsLocal().add(-1, 'day').format('MMM D, YYYY')}`}
       slotTabs={
