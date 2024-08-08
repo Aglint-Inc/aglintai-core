@@ -31,7 +31,7 @@ import {
 import { barChartDataType } from './utils';
 
 function Dashboard() {
-  const { requests, setFilters } = useRequests();
+  const { requests, setFilters, initialFilter } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
 
@@ -69,6 +69,11 @@ function Dashboard() {
     }
   }, [status]);
 
+  const time = {
+    created_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
+    end_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
+  };
+
   return (
     <>
       <RequestDashboard
@@ -77,7 +82,7 @@ function Dashboard() {
             <>
               <Text
                 size={3}
-                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`} 
+                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
                 styleProps={{
                   style: {
                     display: '-webkit-box',
@@ -85,8 +90,8 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    marginBottom:'4px',
-                    color: 'var(--neutral-11)'
+                    marginBottom: '4px',
+                    color: 'var(--neutral-11)',
                   },
                 }}
               ></Text>
@@ -100,8 +105,8 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    marginLeft:'20px',
-                    marginBottom:'16px',
+                    marginLeft: '20px',
+                    marginBottom: '16px',
                   },
                 }}
               ></Text>
@@ -152,17 +157,10 @@ function Dashboard() {
                   }
                   onClickCard={{
                     onClick: () => {
-                      setFilters((pre) => {
-                        return {
-                          ...pre,
-                          type: [...new Set([...pre.type, title])],
-                          created_at: dayjsLocal(
-                            selectedDateRequest.date,
-                          ).format('YYYY-MM-DD'),
-                          end_at: dayjsLocal(selectedDateRequest.date).format(
-                            'YYYY-MM-DD',
-                          ),
-                        };
+                      setFilters({
+                        ...structuredClone(initialFilter),
+                        ...time,
+                        type: [title],
                       });
                       setQueryParams({ tab: 'requests' });
                     },
@@ -173,7 +171,21 @@ function Dashboard() {
           )
         }
         slotReqCompleted={
-          <CompletedRequestsBox completedRequest={completedRequest} />
+          <Stack
+            onClick={() => {
+              setFilters({
+                ...structuredClone(initialFilter),
+                ...time,
+                status: ['completed'],
+              });
+              setQueryParams({ tab: 'requests' });
+            }}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <CompletedRequestsBox completedRequest={completedRequest} />
+          </Stack>
         }
       />
     </>
