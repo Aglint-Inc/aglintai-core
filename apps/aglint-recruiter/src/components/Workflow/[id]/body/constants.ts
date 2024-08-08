@@ -353,7 +353,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
         action_type: 'agent_instruction',
       },
-      name: 'Pick suitable slots and dend Self schedule link',
+      name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
     },
   ],
   onSelfScheduleReqAgent: [
