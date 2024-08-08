@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { Text } from '@/devlink2/Text';
+import { Text } from '@/devlink/Text';
 import { TaskDate } from '@/devlink3/TaskDate';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 

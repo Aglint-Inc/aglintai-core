@@ -4,8 +4,8 @@ import { Collapse, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { Text } from '@/devlink/Text';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
-import { Text } from '@/devlink2/Text';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 
