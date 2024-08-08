@@ -1,4 +1,4 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -18,8 +18,10 @@ import CompletedRequestsBox from './Components/CompletedRequestsBox';
 import CompletionProgress from './Components/CompletionProgress';
 import { RequestsBarChart } from './Components/RequestsBarChart';
 import {
+  dateStringFormat,
+  getAllStandardRequestCount,
+  getAllUrgentRequestCount,
   getRequestsList,
-  getSelectedDateRequestCount,
   transFormCardData,
   transformForChartData,
   transformProgressData,
@@ -55,9 +57,9 @@ function Dashboard() {
     selectedDateRequest?.date && transformProgressData([selectedDateRequest]);
   const requestCardData =
     selectedDateRequest?.date && transFormCardData([selectedDateRequest]);
-  const totalRequestCount =
-    selectedDateRequest?.date &&
-    getSelectedDateRequestCount(selectedDateRequest.counts);
+  // const totalRequestCount =
+  //   selectedDateRequest?.date &&
+  //   getSelectedDateRequestCount(selectedDateRequest.counts);
 
   useEffect(() => {
     if (status === 'success') {
@@ -65,19 +67,41 @@ function Dashboard() {
       setChartData(transformForChartData(requestList.data));
     }
   }, [status]);
+
   return (
     <>
       <RequestDashboard
         slotHeaderText={
-          <>
-            <Text
-              color={'neutral'}
-              content={`Hello, ${capitalizeFirstLetter(recruiterUser.first_name)} 👋🏻.`}
-            />
-            <Text
-              content={`${totalRequestCount || ''} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
-            />
-          </>
+          selectedDateRequest?.date && (
+            <>
+              <Text
+                size={1}
+                content={`Hello, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
+                styleProps={{
+                  style: {
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  },
+                }}
+              ></Text>
+              <Text
+                size={3}
+                content={`You have ${getAllUrgentRequestCount(selectedDateRequest?.counts)} urgent requests and ${getAllStandardRequestCount(selectedDateRequest?.counts)} standard requests ${dateStringFormat(selectedDateRequest.date)}.`}
+                styleProps={{
+                  style: {
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  },
+                }}
+              ></Text>
+            </>
+          )
         }
         textProgressTitle={
           progressData &&
@@ -123,7 +147,10 @@ function Dashboard() {
                   }
                   onClickCard={{
                     onClick: () => {
-                      setQueryParams({ tab: 'requests' });
+                      setQueryParams({
+                        tab: 'requests',
+                        query: selectedDateRequest.date,
+                      });
                     },
                   }}
                 />

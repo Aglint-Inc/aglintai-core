@@ -2,6 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { requestTypes } from './utils';
@@ -176,4 +177,33 @@ export function getSelectedDateRequestCount(data) {
       )
     );
   }, 0);
+}
+export function getAllUrgentRequestCount(data) {
+  return Object.values(data).reduce((total, category) => {
+    return (
+      total +
+      Object.values(category).reduce((sum, { urgent }) => sum + urgent, 0)
+    );
+  }, 0);
+}
+export function getAllStandardRequestCount(data) {
+  return Object.values(data).reduce((total, category) => {
+    return (
+      total +
+      Object.values(category).reduce((sum, { standard }) => sum + standard, 0)
+    );
+  }, 0);
+}
+
+export function dateStringFormat(date) {
+  const today = dayjs();
+  const inputDate = dayjs(date);
+
+  if (inputDate.isSame(today, 'day')) {
+    return 'today';
+  } else if (inputDate.isSame(today.subtract(1, 'day'), 'day')) {
+    return 'yesterday';
+  } else {
+    return inputDate.format('MMM D');
+  }
 }
