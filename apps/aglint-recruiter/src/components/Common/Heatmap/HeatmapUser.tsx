@@ -164,6 +164,7 @@ export default function Heatmap({ loadSetting, interviewLoad }) {
           }}
           yLabelsPos='left'
           xLabelsStyle={(index) => {
+            // eslint-disable-next-line security/detect-object-injection
             const isToday = dayjsLocal(arrayDates[index]).isToday();
             return {
               visibility: isToday ? 'visible' : 'hidden',
