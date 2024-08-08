@@ -1,4 +1,3 @@
-
 export type barChartDataType = {
   name: string;
   count: number;

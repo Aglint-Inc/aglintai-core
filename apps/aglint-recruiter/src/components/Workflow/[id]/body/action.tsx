@@ -1,7 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseTable } from '@aglint/shared-types';
+import type {
+  CustomAgentInstructionPayload,
+  DatabaseTable,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
@@ -254,7 +257,7 @@ const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
 const AgentInstructionTemplate = ({ action }: ActionProps) => {
   if (action.action_type !== 'agent_instruction') return <></>;
 
-  const email_body = <EmailBody name='body' value={action} />;
+  const email_body = <AgentInstructionBody {...action} />;
 
   const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
   return forms;
@@ -262,11 +265,31 @@ const AgentInstructionTemplate = ({ action }: ActionProps) => {
 
 const AgentInstructionBody: React.FC<
   ActionProps['action'] & { disabled?: boolean }
-> = memo(({ action_type, payload, disabled = true }) => {
+> = memo(({ id, action_type, payload, disabled = false }) => {
+  const { handleUpdateAction } = useWorkflow();
+  const safePayload = payload as CustomAgentInstructionPayload;
+  const [instruction, setInstruction] = useState(
+    safePayload?.instruction ?? '',
+  );
+  const initialRef = useRef(true);
+  useEffect(() => {
+    if (initialRef.current) {
+      initialRef.current = false;
+      return;
+    }
+    if (instruction !== safePayload?.instruction) {
+      const timeout = setTimeout(
+        () =>
+          handleUpdateAction({ id, payload: { ...safePayload, instruction } }),
+        400,
+      );
+      return () => clearTimeout(timeout);
+    }
+  }, [instruction]);
   if (action_type !== 'agent_instruction') return <></>;
   return (
     <Stack>
-      <UITypography type='small'>Agent Instruction</UITypography>
+      <UITypography type='small'>Aglint AI Instruction</UITypography>
       <Stack
         sx={{
           mt: '8px',
@@ -280,8 +303,8 @@ const AgentInstructionBody: React.FC<
           disabled={disabled}
           editor_type='regular'
           initialValue={payload.instruction}
-          handleChange={null}
-          placeholder=''
+          handleChange={(newInstruction) => setInstruction(newInstruction)}
+          placeholder='Provide the instructions to guide the agent through this action.'
         />
       </Stack>
     </Stack>

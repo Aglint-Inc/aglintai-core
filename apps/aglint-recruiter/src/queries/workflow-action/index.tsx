@@ -16,6 +16,10 @@ import toast from '@/src/utils/toast';
 import { GC_TIME } from '..';
 import { workflowActionMutationKeys, workflowActionQueryKeys } from './keys';
 
+type ContextAction = 'update' | 'create' | 'delete';
+
+type Context = { action: ContextAction };
+
 export const useWorkflowActions = (args: WorkflowActionKeys) => {
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
   return useQuery({
@@ -41,7 +45,14 @@ const getWorkflowActions = async ({ workflow_id }: WorkflowActionKeys) => {
 export const useWorkflowActionMutations = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   return useMutationState({
-    filters: { mutationKey, status: 'pending' },
+    filters: {
+      mutationKey,
+      status: 'pending',
+      predicate: (query) => {
+        const context = query.state.context as Context;
+        return context?.action === 'delete';
+      },
+    },
     select: (mutation) => mutation.state.variables as Mutations,
   });
 };
@@ -57,6 +68,9 @@ export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
   return useMutation({
     mutationKey,
     mutationFn: deleteWorkflowAction,
+    onMutate: () => {
+      return { action: 'delete' } as Context;
+    },
     onSuccess: (_data, variables) => {
       const prevWorkflowActions =
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
@@ -107,6 +121,7 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         return acc;
       }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
+      return { action: 'update' } as Context;
     },
     onError: (_error, variables) => {
       const previousWorkflowActions =
@@ -146,6 +161,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
       const newWorkflowActions = structuredClone(previousWorkflowActions);
       newWorkflowActions.push(payload as WorkflowAction);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
+      return { action: 'create' } as Context;
     },
     onError: (_error, variables) => {
       toast.error('Unable to create action');

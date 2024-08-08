@@ -53,7 +53,7 @@ function CreateSchedulePopUp({
       await handleAsyncCreateRequests({
         payload: {
           request: {
-            priority: 'urgent',
+            priority: 'standard',
             assigner_id: recruiterUser.user_id,
             assignee_id: recruiterUser.user_id,
             title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
