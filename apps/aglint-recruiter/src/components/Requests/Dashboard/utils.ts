@@ -1,3 +1,28 @@
+
+export type barChartDataType = {
+  name: string;
+  count: number;
+  color: string;
+};
+export type requestCardDataType = {
+  title: string;
+  count: number;
+  iconName: string;
+};
+export type progressDataType = {
+  completed_request: number;
+  open_request: number;
+  completed_percentage: number;
+  all_request: number;
+};
+
+export const requestTypes = [
+  { title: 'schedule_request', iconName: 'calendar_add_on' },
+  { title: 'reschedule_request', iconName: 'event_repeat' },
+  { title: 'cancel_schedule_request', iconName: 'event_busy' },
+  { title: 'decline_request', iconName: 'free_cancellation' },
+];
+
 export const dummyRequestData = [
   {
     date: '2024-08-07',
@@ -233,9 +258,8 @@ export const dummyRequestData = [
   },
 ];
 
-export const requestTypes = [
-  { title: 'schedule_request', iconName: 'calendar_add_on' },
-  { title: 'reschedule_request', iconName: 'event_repeat' },
-  { title: 'cancel_schedule_request', iconName: 'event_busy' },
-  { title: 'decline_request', iconName: 'free_cancellation' },
-];
+// const last30Days = [];
+// for (let i = 0; i < 30; i++) {
+//   last30Days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
+// }
+// console.log(last30Days);

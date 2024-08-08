@@ -1,5 +1,4 @@
 import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Collapse, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -8,10 +7,10 @@ import { Text } from '@/devlink/Text';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
+import dayjs from '@/src/utils/dayjs';
 
 import { selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
-import dayjs from '@/src/utils/dayjs';
 
 function CreateSchedulePopUp({
   selectedItems,
