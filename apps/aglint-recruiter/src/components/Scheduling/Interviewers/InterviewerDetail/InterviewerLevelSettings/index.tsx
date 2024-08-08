@@ -44,6 +44,7 @@ function InterviewerLevelSettings({
   updateSettings,
   initialData,
   isAvailability,
+  companyKeywords,
 }) {
   const dateRef = useRef<HTMLInputElement>(null);
 
@@ -556,23 +557,29 @@ function InterviewerLevelSettings({
                     </Alert>
                   ) : (
                     <>
-                      {freeKeyWords.map((item) => (
-                        <Chip
-                          key={item} // Add a unique key prop for each item
-                          clickable
-                          onDelete={() => {
-                            setFreeKeywords((prev) =>
-                              prev.filter((ele) => ele !== item),
-                            );
-                          }}
-                          deleteIcon={
-                            <Stack>
-                              <GlobalIcon iconName='close' size='4' />
-                            </Stack>
-                          }
-                          label={item}
-                        />
-                      ))}
+                      {freeKeyWords.map((item) => {
+                        if (companyKeywords.free.includes(item)) {
+                          return <Chip key={item} clickable label={item} />;
+                        } else {
+                          return (
+                            <Chip
+                              key={item}
+                              clickable
+                              onDelete={() => {
+                                setFreeKeywords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
+                              }}
+                              deleteIcon={
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
+                              }
+                              label={item}
+                            />
+                          );
+                        }
+                      })}
                     </>
                   )
                 }
@@ -606,23 +613,29 @@ function InterviewerLevelSettings({
                     </Alert>
                   ) : (
                     <>
-                      {softConflictsKeyWords.map((item) => (
-                        <Chip
-                          key={item} // Add a unique key prop for each item
-                          clickable
-                          onDelete={() => {
-                            setSoftConflictsKeyWords((prev) =>
-                              prev.filter((ele) => ele !== item),
-                            );
-                          }}
-                          deleteIcon={
-                            <Stack>
-                              <GlobalIcon iconName='close' size='4' />{' '}
-                            </Stack>
-                          }
-                          label={item}
-                        />
-                      ))}
+                      {softConflictsKeyWords.map((item) => {
+                        if (companyKeywords.SoftConflicts.includes(item)) {
+                          return <Chip key={item} clickable label={item} />;
+                        } else {
+                          return (
+                            <Chip
+                              key={item}
+                              clickable
+                              onDelete={() => {
+                                setSoftConflictsKeyWords((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
+                              }}
+                              deleteIcon={
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
+                              }
+                              label={item}
+                            />
+                          );
+                        }
+                      })}
                     </>
                   )
                 }
@@ -659,23 +672,29 @@ function InterviewerLevelSettings({
                     </Alert>
                   ) : (
                     <>
-                      {outOfOffice.map((item) => (
-                        <Chip
-                          key={item} // Add a unique key prop for each item
-                          clickable
-                          onDelete={() => {
-                            setOutOfOffice((prev) =>
-                              prev.filter((ele) => ele !== item),
-                            );
-                          }}
-                          deleteIcon={
-                            <Stack>
-                              <GlobalIcon iconName='close' size='4' />
-                            </Stack>
-                          }
-                          label={item}
-                        />
-                      ))}
+                      {outOfOffice.map((item) => {
+                        if (companyKeywords.outOfOffice.includes(item)) {
+                          return <Chip key={item} clickable label={item} />;
+                        } else {
+                          return (
+                            <Chip
+                              key={item}
+                              clickable
+                              onDelete={() => {
+                                setOutOfOffice((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
+                              }}
+                              deleteIcon={
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
+                              }
+                              label={item}
+                            />
+                          );
+                        }
+                      })}
                     </>
                   )
                 }
@@ -712,7 +731,31 @@ function InterviewerLevelSettings({
                     </Alert>
                   ) : (
                     <>
-                      {recruitingBlocks.map((item) => (
+                      {recruitingBlocks.map((item) => {
+                        if (companyKeywords.recruitingBlocks.includes(item)) {
+                          return <Chip key={item} clickable label={item} />;
+                        } else {
+                          return (
+                            <Chip
+                              key={item}
+                              clickable
+                              onDelete={() => {
+                                setRecruitingBlocks((prev) =>
+                                  prev.filter((ele) => ele !== item),
+                                );
+                              }}
+                              deleteIcon={
+                                <Stack>
+                                  <GlobalIcon iconName='close' size='4' />
+                                </Stack>
+                              }
+                              label={item}
+                            />
+                          );
+                        }
+                      })}
+
+                      {/* {recruitingBlocks.map((item) => (
                         <Chip
                           key={item} // Add a unique key prop for each item
                           clickable
@@ -728,7 +771,7 @@ function InterviewerLevelSettings({
                           }
                           label={item}
                         />
-                      ))}
+                      ))} */}
                     </>
                   )
                 }

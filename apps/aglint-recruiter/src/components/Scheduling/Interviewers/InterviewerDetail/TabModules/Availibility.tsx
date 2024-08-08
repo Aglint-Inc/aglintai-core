@@ -28,6 +28,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZones from '@/src/utils/timeZone';
 
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
@@ -48,6 +49,7 @@ function Availibility({
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const { recruiter } = useAuthDetails();
   const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
     daily: {
       type: 'Hours',
@@ -213,11 +215,17 @@ function Availibility({
       margin={2}
       gap={1}
     >
-      <Stack bgcolor={'white'} >
-        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={1}>
-          <Text weight={'medium'} content='Time Zone'/>
+      <Stack bgcolor={'white'}>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          spacing={1}
+        >
+          <Text weight={'medium'} content='Time Zone' />
           <ButtonSoft
             textButton='Edit'
+            color={'neutral'}
             size={1}
             onClickButton={{ onClick: () => setEditDrawer(true) }}
           />
@@ -323,6 +331,7 @@ function Availibility({
       />
       <InterviewerLevelSettings
         initialData={interviewerDetails?.scheduling_settings}
+        companyKeywords={recruiter.scheduling_settings.schedulingKeyWords}
         updateSettings={(x) => {
           return handleMemberUpdate({
             user_id: interviewerDetails.user_id,
@@ -337,7 +346,7 @@ function Availibility({
         onClose={() => setEditDrawer(false)}
       >
         <SideDrawerLarge
-        isHeaderIconVisible={false}
+          isHeaderIconVisible={false}
           drawerSize={'medium'}
           textDrawertitle={'Edit Availability'}
           slotButtons={
@@ -422,7 +431,7 @@ function Availibility({
               slotKeywordCard={<></>}
               slotDailyLimit={
                 <>
-                  <Stack spacing={1}>
+                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -438,6 +447,7 @@ function Availibility({
                             }}
                             sx={{
                               marginLeft: '0px',
+
                               '& .MuiRadio-root': {
                                 marginRight: 'var(--space-1)',
                               },
@@ -450,6 +460,7 @@ function Availibility({
                       })}
                     </RadioGroup>
                     <MuiNumberfield
+                      isMarginTop={false}
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'daily', 'value')
                       }
@@ -461,7 +472,7 @@ function Availibility({
               }
               slotWeeklyLimit={
                 <>
-                  <Stack spacing={1}>
+                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -496,6 +507,7 @@ function Availibility({
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'weekly', 'value')
                       }
+                      isMarginTop={false}
                       value={interviewLoad.weekly.value}
                       max={interviewLoad.weekly.max}
                     />

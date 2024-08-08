@@ -9,12 +9,14 @@ function MuiNumberfield({
   height = '36px',
   isDebounceEnable = true,
   isDisable = false,
+  isMarginTop = true,
   max = 100,
 }: {
   value: number | string;
   width?: string;
   isDebounceEnable?: boolean;
   height?: string;
+  isMarginTop?: boolean;
   isDisable?: boolean;
   handleSelect: any;
   max?: number;
@@ -45,7 +47,7 @@ function MuiNumberfield({
   );
 
   return (
-    <FormControl sx={{marginTop:'12px !important'}}>
+    <FormControl sx={{ marginTop: isMarginTop ? '12px !important' : '' }}>
       <TextField
         disabled={isDisable}
         sx={{
