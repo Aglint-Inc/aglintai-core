@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -154,9 +155,13 @@ function Dashboard() {
                       setFilters((pre) => {
                         return {
                           ...pre,
-                          created_at: dayjs(
+                          type: [...new Set([...pre.type, title])],
+                          created_at: dayjsLocal(
                             selectedDateRequest.date,
-                          ).toString(),
+                          ).format('YYYY-MM-DD'),
+                          end_at: dayjsLocal(selectedDateRequest.date).format(
+                            'YYYY-MM-DD',
+                          ),
                         };
                       });
                       setQueryParams({ tab: 'requests' });

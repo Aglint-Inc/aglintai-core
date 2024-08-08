@@ -20,6 +20,7 @@ export const useRequestsActions = () => {
     title: '',
     type: [],
     created_at: '',
+    end_at: '',
   });
 
   const [sort, setSort] = useState<GetRequestParams['sort']>({
