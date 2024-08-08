@@ -82,6 +82,9 @@ export default function FilterHeader({
                   showFilters={showFiltersByDefault}
                   setShowFilters={setShowFilters}
                 />
+                {Boolean(dateRangeSelector) && (
+                  <DateRangeSelector {...dateRangeSelector} />
+                )}
               </Stack>
             </Stack>
             {Boolean(search) && (

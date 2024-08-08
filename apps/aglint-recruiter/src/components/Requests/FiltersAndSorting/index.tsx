@@ -15,7 +15,15 @@ const sortOptions: GetRequestParams['sort']['type'][] = ['created_at', 'title'];
 
 function FilterAndSorting() {
   const {
-    filters: { is_new, title, ...filters },
+    filters: {
+      is_new,
+      title,
+      // eslint-disable-next-line no-unused-vars
+      schedule_start_date,
+      // eslint-disable-next-line no-unused-vars
+      schedule_end_date,
+      ...filters
+    },
     sort: { order, type },
     setFilters,
     setSort,
@@ -93,6 +101,16 @@ function FilterAndSorting() {
     <FilterHeader
       layoutMode='left-align'
       filters={[isNewButton, ...safeFilters]}
+      // dateRangeSelector={{
+      //   name: 'Request duration',
+      //   values: [schedule_start_date, schedule_end_date],
+      //   setValue: (value) =>
+      //     setFilters((prev) => ({
+      //       ...prev,
+      //       schedule_start_date: value?.[0] ?? '',
+      //       schedule_end_date: value?.[1] ?? '',
+      //     })),
+      // }}
       // sort={safeSort}
       search={{
         value: title,

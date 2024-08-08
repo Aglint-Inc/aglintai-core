@@ -40,7 +40,7 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
             setAnchorEl(e.target);
           },
         }}
-        textLabel={'Interview Date'}
+        textLabel={name}
         isDotVisible={values ? Boolean(values.length) : false}
         isActive={selectedDate.length > 0}
         slotRightIcon={
