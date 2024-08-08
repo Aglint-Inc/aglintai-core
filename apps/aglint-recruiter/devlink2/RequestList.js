@@ -29,7 +29,7 @@ export function RequestList({
         <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        <Text content={textCount} size="4" />
+        <Text content={textCount} size="3" />
       </_Builtin.Block>
     </_Component>
   );

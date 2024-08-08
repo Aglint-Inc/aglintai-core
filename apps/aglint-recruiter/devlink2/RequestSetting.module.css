@@ -1,11 +1,11 @@
 .req-setting-wrap {
   display: flex;
   max-width: 700px;
-  padding: var(--space-5);
+  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: var(--space-5);
-  grid-row-gap: var(--space-5);
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 
   border-radius: var(--radius-4);
 

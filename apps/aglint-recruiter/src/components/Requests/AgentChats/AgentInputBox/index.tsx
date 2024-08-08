@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -157,7 +158,13 @@ function AgentInputBox() {
             requests.status === 'success'
               ? requests.data.map((ele) => ({
                   id: ele.id,
-                  display: ele.title,
+                  display: ele.title.replace(
+                    '{{candidateName}}',
+                    getFullName(
+                      ele.applications.candidates.first_name,
+                      ele.applications.candidates.last_name,
+                    ),
+                  ),
                 }))
               : []
           }

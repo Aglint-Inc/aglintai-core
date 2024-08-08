@@ -20,19 +20,19 @@ function CommandShortCuts() {
     },
     {
       prefix: 'Schedule with',
-      command: 'ctrl + 1',
+      command: 'Ctrl + 1',
       suffix: '@Candidate',
     },
-    {
-      prefix: 'Reschedule with',
-      command: 'ctrl + 2',
-      suffix: '! request',
-    },
-    {
-      prefix: 'Cancel with',
-      command: 'ctrl + 3',
-      suffix: '! request',
-    },
+    // {
+    //   prefix: 'Reschedule with',
+    //   command: 'ctrl + 2',
+    //   suffix: '! request',
+    // },
+    // {
+    //   prefix: 'Cancel with',
+    //   command: 'ctrl + 3',
+    //   suffix: '! request',
+    // },
   ];
 
   const { setText, inputRef } = useAgentIEditor();

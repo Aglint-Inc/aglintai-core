@@ -16,7 +16,9 @@
 }
 
 .icon_text_grid.width_300 {
-  width: 140px;
+  display: flex;
+  width: 250px;
+  flex: 0 0 auto;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
 }

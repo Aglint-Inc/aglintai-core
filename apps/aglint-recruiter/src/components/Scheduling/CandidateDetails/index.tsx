@@ -106,7 +106,7 @@ function SchedulingApplication() {
                       <FullSchedule refetch={allActivities.refetch} />
                     </RequestAvailabilityProvider>
                   ) : tab === 'feedback' ? (
-                    <Stack p={'var(--space-4)'}>
+                    <Stack>
                       <FeedbackWindow
                         interview_sessions={initialSessions.map((item) => ({
                           id: item.interview_session.id,
