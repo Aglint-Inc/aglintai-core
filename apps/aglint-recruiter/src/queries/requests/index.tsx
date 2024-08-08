@@ -28,6 +28,8 @@ export const requestQueries = {
     queryOptions({
       enabled: !!payload.assigner_id,
       gcTime: payload.assigner_id ? GC_TIME : 0,
+      refetchInterval: 5000,
+      refetchOnMount: true,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
       queryFn: async () => await getRequests({ payload, sort, filters }),
     }),
@@ -78,8 +80,8 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchOnMount: true,
       refetchInterval: 5000,
+      refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (

@@ -93,8 +93,10 @@ const Requests = () => {
               >
                 <NoPendingReq />
               </ShowCode.When>
-              <Section requests={urgentRequests} priority='urgent' />
-              <Section requests={standardRequests} priority='standard' />
+              <>
+                <Section requests={urgentRequests} priority='urgent' />
+                <Section requests={standardRequests} priority='standard' />
+              </>
             </ShowCode>
           </ShowCode.When>
           <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
