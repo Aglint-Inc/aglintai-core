@@ -379,7 +379,7 @@ const TooltipComp = ({ data }) => {
         textDuration={`${data?.session_duration} minutes`}
         textMeetingType={capitalizeAll(data?.schedule_type)}
         isScheduleDate={true}
-        textScheduleDate={`${dayjsLocal(data.start_time).format('MMM DD YYYY hh:mm A')} - ${dayjsLocal(data.end_time).format('MMM DD YYYY hh:mm A')}`}
+        textScheduleDate={`${dayjsLocal(data.start_time).format('ddd, MMM DD, YYYY hh:mm A')} - ${dayjsLocal(data.end_time).format(' hh:mm A')}`}
         slotScheduleStatus={
           <GlobalBadge
             textBadge={capitalizeAll(data?.status)}

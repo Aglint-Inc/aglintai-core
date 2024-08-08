@@ -15,7 +15,7 @@ export const fetchJobHiringTeam = async ({
   const query = supabase
     .from("public_jobs")
     .select(
-      `hir_man:recruiter_user!public_jobs_hiring_manager_fkey(${userQuery}),rec:recruiter_user!public_jobs_recruiter_fkey(${userQuery}),recruiting_coordinator:recruiter_user!public_jobs_recruiting_coordinator_fkey(${userQuery}),sourcer:recruiter_user!public_jobs_sourcer_fkey(${userQuery})`
+      `id,job_title,hir_man:recruiter_user!public_jobs_hiring_manager_fkey(${userQuery}),rec:recruiter_user!public_jobs_recruiter_fkey(${userQuery}),recruiting_coordinator:recruiter_user!public_jobs_recruiting_coordinator_fkey(${userQuery}),sourcer:recruiter_user!public_jobs_sourcer_fkey(${userQuery})`
     )
     .eq("recruiter_id", recruiter_id);
 

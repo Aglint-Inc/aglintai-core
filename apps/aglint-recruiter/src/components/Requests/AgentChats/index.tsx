@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-
 import { useState } from 'react';
 
 import { AglintAiChat } from '@/devlink2/AglintAiChat';
@@ -9,7 +6,6 @@ import { useUserChat } from '@/src/queries/userchat';
 
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
-import ScrollingText from './Components/ScrollingText';
 import SettingsPopup from './SettingsPopup';
 
 function AgentChats() {

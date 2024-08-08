@@ -44,7 +44,24 @@ export function GlobalUserDetail({
           className={_utils.cx(_styles, "user_name_us")}
           tag="div"
         >
-          <Text content={textName} weight="medium" size="2" />
+          <_Builtin.Block tag="div">
+            <Text content={textName} weight="medium" size="2" />
+            {isRoleVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "us_detail-company")}
+                tag="div"
+              >
+                {slotRole ?? (
+                  <TextWithIcon
+                    fontWeight="regular"
+                    iconSize="4"
+                    fontSize="1"
+                    color="neutral"
+                  />
+                )}
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "gud-candidate-stat")}
             id={_utils.cx(
@@ -60,21 +77,6 @@ export function GlobalUserDetail({
           className={_utils.cx(_styles, "us_detail-wrap")}
           tag="div"
         >
-          {isRoleVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "us_detail-company")}
-              tag="div"
-            >
-              {slotRole ?? (
-                <TextWithIcon
-                  fontWeight="regular"
-                  iconSize="4"
-                  fontSize="1"
-                  color="neutral"
-                />
-              )}
-            </_Builtin.Block>
-          ) : null}
           <TextWithIcon
             textContent={textTimeZone}
             iconName="language"

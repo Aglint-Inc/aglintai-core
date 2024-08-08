@@ -6,7 +6,7 @@ import {llm} from 'src/controllers/supervisor/utils/llm';
 import {TeamState} from 'src/controllers/supervisor/utils/state';
 import {fetchHiringTeamTool} from './tools/fetchHiringTeam';
 import {fetchUserJobs} from './tools/fetchUserJobs';
-import {CallBackAll} from '@aglint/shared-utils';
+import {CallBackAll} from '@aglint/shared-types';
 
 export const fetchJobRelatedNode = async ({
   state,
@@ -37,10 +37,10 @@ export const fetchJobRelatedNode = async ({
   const fetchUserRequestsAgent = await createAgent(
     llm,
     tools,
-    'You are a helfful assistant.' +
-      'Call fetch_jobs_user tool if user ask to get his jobs.' +
-      'Call fetch_hiring_team tool if user wants to get hiring team for a job' +
-      'Dont call the same tool twice in a row.' +
+    'You are a helpful assistant.\n\n' +
+      'Call fetch_jobs_user tool if user ask to get his jobs.\n\n' +
+      'Call fetch_hiring_team tool if user wants to get hiring team for a job.\n\n' +
+      'Dont call the same tool twice in a row.\n\n' +
       'If you get stuck take help from user'
   );
 

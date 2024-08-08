@@ -342,15 +342,20 @@ function SchedulingSettings({
             <CompanyDayOff
               slotLearnButton={
                 <>
-                  <ButtonSoft
-                    size={1}
-                    textButton='Learn How'
-                    onClickButton={{
-                      onClick: () => {
-                        openCompany();
-                      },
-                    }}
-                  />
+                  <Stack onClick={() => openCompany()}>
+                    <Typography
+                      fontSize={'var(--font-size-1)'}
+                      sx={{
+                        cursor: 'pointer',
+                        color: 'var(--error-9)',
+                        ': hover': {
+                          color: 'var(--error-11)',
+                        },
+                      }}
+                    >
+                      Learn How
+                    </Typography>
+                  </Stack>
                 </>
               }
               slotAddButton={
@@ -642,7 +647,7 @@ function SchedulingSettings({
               spacing={2}
             >
               <InterviewLoad
-              borderStyle={'true'}
+                borderStyle={'true'}
                 slotDailyLimit={
                   <Stack spacing={1}>
                     <RadioGroup
@@ -728,7 +733,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
-              borderStyle={'true'}
+                borderStyle={'true'}
                 size={'large'}
                 slotKeywordsCard={
                   <>

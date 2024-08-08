@@ -5,4 +5,5 @@ export const llm = new ChatOpenAI({
   temperature: 0.5,
   apiKey: process.env.OPENAI_APIKEY,
   maxRetries: 2,
+  timeout: 10000,
 });

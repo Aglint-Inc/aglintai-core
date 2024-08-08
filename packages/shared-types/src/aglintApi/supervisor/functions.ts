@@ -14,7 +14,7 @@ export type FunctionNames =
   | "fetch_user_requests"
   | "fetch_jobs_user"
   | "fetch_hiring_team"
-  | null;
+  | "fetch_candidate_declined_interviews";
 
 type FunctionReturnType = {
   fetch_scheduled_interviews: Awaited<

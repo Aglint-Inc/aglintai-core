@@ -5,7 +5,7 @@ import {
 import {llm} from 'src/controllers/supervisor/utils/llm';
 import {TeamState} from 'src/controllers/supervisor/utils/state';
 import {fetchUserRequestsTool} from './tools';
-import {CallBackAll} from '@aglint/shared-utils';
+import {CallBackAll} from '@aglint/shared-types';
 
 export const fetchRequestsNode = async ({
   state,
@@ -26,7 +26,9 @@ export const fetchRequestsNode = async ({
   const fetchUserRequestsAgent = await createAgent(
     llm,
     tools,
-    'You are a helfful assistant. Call fetch_user_requests tool if user ask to get requests. Dont call the same tool twice in a row.' +
+    'You are a helpful assistant.\n\n' +
+      'Call fetch_user_requests tool if user ask to get requests.\n\n' +
+      'Dont call the same tool twice in a row.\n\n' +
       'If you get stuck take help from user'
   );
 
