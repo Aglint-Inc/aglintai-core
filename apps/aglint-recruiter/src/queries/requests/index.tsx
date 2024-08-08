@@ -1,7 +1,7 @@
 import type {
   DatabaseFunctions,
   DatabaseTable,
-  DatabaseTableUpdate
+  DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import {
   type MutationFilters,
@@ -76,9 +76,9 @@ export const requestQueries = {
   }: GetRequestProgress & { enabled?: boolean }) =>
     queryOptions({
       enabled: !!request_id && enabled,
-      // gcTime: request_id ? GC_TIME : 0,
+      gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
-      // refetchInterval: 2000,
+      refetchInterval: 5000,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (

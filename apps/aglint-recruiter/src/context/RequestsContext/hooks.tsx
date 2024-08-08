@@ -1,7 +1,5 @@
-import { DatabaseTable } from '@aglint/shared-types';
-import { RealtimeChannel } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import {
   GetRequestParams,
@@ -10,7 +8,6 @@ import {
   useRequestsDelete,
   useRequestsUpdate,
 } from '@/src/queries/requests';
-import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
@@ -93,38 +90,6 @@ export const useRequestsActions = () => {
     ],
     [updateMutationState, deleteMutationState],
   );
-
-  // realtime for all requests progress
-  useEffect(() => {
-    let channel: RealtimeChannel;
-    if (requests.status === 'success') {
-      channel = supabase
-        .channel('db-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'request_progress',
-            // filter: `request_id=eq.${request_id}`,
-          },
-          (payload) => {
-            const rowData =
-              payload.new as unknown as DatabaseTable['request_progress'];
-            if (rowData) {
-              // eslint-disable-next-line no-console
-              console.log(rowData);
-            }
-          },
-        )
-        .subscribe();
-    }
-
-    if (channel)
-      return () => {
-        channel.unsubscribe();
-      };
-  }, [requests.status]);
 
   return {
     requests,
