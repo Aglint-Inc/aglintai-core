@@ -22,7 +22,6 @@ function RequestDetails({
   index: number;
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
-
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
@@ -35,6 +34,7 @@ function RequestDetails({
                 name: relation.interview_session.name,
               };
             })}
+            application_id={request.applications.id}
           />
           <CandidateDetails
             candidateName={getFullName(
@@ -43,8 +43,8 @@ function RequestDetails({
             )}
             jobTitle={request.applications.public_jobs.job_title}
             dateRange={{
-              start_date: dayjsLocal().format('YYYY-MM-DD'),
-              end_date: dayjsLocal().add(7, 'day').format('YYYY-MM-DD'),
+              start_date: request.schedule_start_date,
+              end_date: request.schedule_end_date,
             }}
           />
           {/* <ReasonDetails />// reason */}
@@ -66,13 +66,18 @@ function RequestDetails({
               )}
             />
           </Stack>
-          <Stack direction={'row'} spacing={1} alignItems={'center'}>
+          <Stack
+            direction={'row'}
+            spacing={1}
+            alignItems={'center'}
+            justifyContent={'end'}
+          >
             <Text
               size={1}
               color={'neutral'}
               content={dayjsLocal(request.created_at).fromNow()}
             />
-            <Text content={'Aglint'} />
+            {/* <Text content={'Aglint'} /> */}
           </Stack>
         </>
       }

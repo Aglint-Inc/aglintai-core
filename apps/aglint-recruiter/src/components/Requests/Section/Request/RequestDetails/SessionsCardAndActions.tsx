@@ -9,12 +9,14 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 function SessionsCardAndActions({
   request,
   sessions,
+  application_id,
 }: {
   request: PropsWithChildren<RequestType>;
   sessions: {
     id: string;
     name: string;
   }[];
+  application_id: string;
 }) {
   return (
     <>
@@ -29,6 +31,11 @@ function SessionsCardAndActions({
                 textButton={name}
                 isRightIcon={true}
                 iconName={'north_east'}
+                onClickButton={{
+                  onClick: () => {
+                    window.open(`/scheduling/application/${application_id}`);
+                  },
+                }}
               />
             );
           })}
