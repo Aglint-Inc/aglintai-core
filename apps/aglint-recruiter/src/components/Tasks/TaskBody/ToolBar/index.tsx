@@ -259,8 +259,11 @@ function ToolBar() {
                     <>
                       <TaskOwners
                         hiringTeamIds={[]}
-                        selectedAssignee={selectedAssignee}
-                        setSelectedAssignee={setSelectedAssignee}
+                        selectedAssignee={selectedAssignee as any}
+                        setSelectedAssignee={
+                          setSelectedAssignee as unknown as any
+                        }
+                        assignerList={[]}
                         onChange={(assigner: assigneeType) => {
                           if (
                             assigner.user_id === EmailAgentId ||

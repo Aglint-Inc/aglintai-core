@@ -586,8 +586,9 @@ function AddNewTask() {
                               selectedType === 'availability' ||
                               selectedType === 'self_schedule'
                             }
-                            selectedAssignee={selectedAssignee}
-                            setSelectedAssignee={setSelectedAssignee}
+                            selectedAssignee={selectedAssignee as any}
+                            setSelectedAssignee={setSelectedAssignee as any}
+                            assignerList={[]}
                             onChange={(assigner: any) => {
                               if (
                                 assigner.user_id === EmailAgentId ||
