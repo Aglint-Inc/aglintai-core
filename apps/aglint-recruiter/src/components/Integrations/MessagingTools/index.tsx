@@ -4,6 +4,7 @@ import { IntegrationCard } from '@/devlink2/IntegrationCard';
 
 import { MessagingToolsType } from '../types';
 import { SlackLogo } from '../utils';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 
 function MessagingTools() {
   const messagingTools = [
@@ -32,9 +33,16 @@ function MessagingTools() {
                 );
               },
             }}
-            isComingSoon={true}
-            isConnectedVisible={false}
+            isComingSoon={false}
+            isConnectedVisible={true}
             key={i}
+            slotButton={
+              <ButtonSoft
+                textButton={'Disconnect'}
+                size={2}
+                color={'neutral'}
+              />
+            }
             textName={capitalize(item.name)}
             textLink={item.url}
             slotLogo={<>{item.logo}</>}

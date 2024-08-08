@@ -20,8 +20,10 @@ import {
   LeverLogo,
   updateIntegrations,
 } from '../utils';
+import { useRouter } from 'next/router';
 
 function ATSTools() {
+  const router = useRouter();
   const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -257,9 +259,7 @@ function ATSTools() {
       logo: <GreenHouseLogo />,
       buttons: (
         <CardButtons
-          primaryText={
-            integrations?.greenhouse_key ? 'Edit API Key' : 'Connect'
-          }
+          primaryText={integrations?.greenhouse_key ? 'Manage' : 'Connect'}
           secondaryText={
             integrations?.greenhouse_key ? 'Disconnect' : 'Learn How'
           }
@@ -270,7 +270,8 @@ function ATSTools() {
           }}
           primaryAction={() => {
             setLoading(false);
-            if (integrations.greenhouse_key) updateApi('greenhouse');
+            if (integrations.greenhouse_key)
+              router.push('/integrations/greenhouse');
             else connectApi('greenhouse');
           }}
         />
@@ -283,7 +284,7 @@ function ATSTools() {
       logo: <LeverLogo />,
       buttons: (
         <CardButtons
-          primaryText={integrations?.lever_key ? 'Edit API Key' : 'Connect'}
+          primaryText={integrations?.lever_key ? 'Manage' : 'Connect'}
           secondaryText={integrations?.lever_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -305,7 +306,7 @@ function ATSTools() {
       logo: <AshbyLogo />,
       buttons: (
         <CardButtons
-          primaryText={integrations?.ashby_key ? 'Edit API Key' : 'Connect'}
+          primaryText={integrations?.ashby_key ? 'Manage' : 'Connect'}
           secondaryText={integrations?.ashby_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -402,7 +403,7 @@ function CardButtons({
         }}
         textButton={secondaryText}
       />
-      {primaryText === 'Edit API Key' ? (
+      {primaryText !== 'Connect' ? (
         <ButtonSoft
           size='2'
           isLeftIcon={false}
