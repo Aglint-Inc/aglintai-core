@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ReqCompleted } from '@/devlink2/ReqCompleted';
+import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 
 function CompletedRequestsBox({
@@ -17,11 +18,19 @@ function CompletedRequestsBox({
         onClick: () => setOpenCompleted(!openCompleted),
       }}
       textTitle={
-        completedRequest.length
-          ? `${completedRequest?.length} Requests completed 🎉`
-          : 'Looks like there is no completed requests 😴'
+        <Text
+          color={completedRequest.length ? 'success' : 'neutral'}
+          content={
+            completedRequest.length
+              ? `${completedRequest?.length} Requests completed 🎉`
+              : 'Looks like there is no completed requests 😴'
+          }
+        />
       }
-      textDesc={`View detailed list of completed requests`}
+      textDesc={
+        Boolean(completedRequest.length) &&
+        `View detailed list of completed requests`
+      }
       slotTextwithIcon={completedRequest.map((ele, i) => {
         return (
           <TextWithIcon
