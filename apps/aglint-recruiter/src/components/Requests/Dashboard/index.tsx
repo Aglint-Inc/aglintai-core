@@ -171,21 +171,7 @@ function Dashboard() {
           )
         }
         slotReqCompleted={
-          <Stack
-            onClick={() => {
-              setFilters({
-                ...structuredClone(initialFilter),
-                ...time,
-                status: ['completed'],
-              });
-              setQueryParams({ tab: 'requests' });
-            }}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            <CompletedRequestsBox completedRequest={completedRequest} />
-          </Stack>
+          <CompletedRequestsBox completedRequest={completedRequest} />
         }
       />
     </>

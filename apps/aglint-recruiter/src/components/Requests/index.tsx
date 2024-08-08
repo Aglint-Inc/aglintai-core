@@ -25,6 +25,8 @@ const Requests = () => {
   const {
     requests: { status, data: requestList },
     filters,
+    setFilters,
+    initialFilter,
   } = useRequests();
   const isNotApplied =
     !filters.is_new &&
@@ -45,8 +47,8 @@ const Requests = () => {
   useEffect(() => {
     if (!queryParams?.tab) {
       setQueryParams({ tab: 'dashboard' });
-    } else {
-      setQueryParams({ tab: queryParams?.tab });
+    } else if (queryParams.tab !== 'requests') {
+      setFilters(structuredClone(initialFilter));
     }
   }, [queryParams?.tab]);
   return (
@@ -91,11 +93,8 @@ const Requests = () => {
               >
                 <NoPendingReq />
               </ShowCode.When>
-
-              <>
-                <Section requests={urgentRequests} priority='urgent' />
-                <Section requests={standardRequests} priority='standard' />
-              </>
+              <Section requests={urgentRequests} priority='urgent' />
+              <Section requests={standardRequests} priority='standard' />
             </ShowCode>
           </ShowCode.When>
           <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>

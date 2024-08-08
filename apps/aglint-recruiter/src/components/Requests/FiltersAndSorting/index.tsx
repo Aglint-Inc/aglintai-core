@@ -8,7 +8,12 @@ import FilterHeader from '../../Common/FilterHeader';
 
 const options: Partial<GetRequestParams['filters']> = {
   status: ['blocked', 'completed', 'in_progress', 'to_do'],
-  type: ['schedule_request'],
+  type: [
+    'schedule_request',
+    'cancel_schedule_request',
+    'decline_request',
+    'reschedule_request',
+  ],
 };
 
 const sortOptions: GetRequestParams['sort']['type'][] = ['created_at', 'title'];
