@@ -8,4 +8,5 @@ declare function ReqCompleted(props: {
   onClickArrow?: Types.Devlink.RuntimeProps;
   slotTextwithIcon?: Types.Devlink.Slot;
   isDetailListVisible?: Types.Visibility.VisibilityConditions;
+  isDropIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -17,13 +17,13 @@ export function RequestAgentTab({
       tag="div"
       {...onClickTab}
     >
-      <Text content={textTab} weight="" size="1" />
+      <Text content={textTab} weight="regular" size="1" />
       {isTabActive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "ra-tab-active")}
           tag="div"
         >
-          <Text content={textTab} weight="medium" size="1" />
+          <Text content={textTab} weight="regular" size="1" />
         </_Builtin.Block>
       ) : null}
     </_Component>

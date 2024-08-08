@@ -183,24 +183,6 @@ export function ReqAvailability({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "button_grid")} tag="div">
-        {slotButton ?? (
-          <>
-            <SlotComp
-              id={_utils.cx(
-                _styles,
-                "w-node-_93562b0d-55a8-fbd1-9ddf-ab7a8cde7002-1a879a45"
-              )}
-            />
-            <SlotComp
-              id={_utils.cx(
-                _styles,
-                "w-node-_4ba1d6dd-8287-5d05-e38b-2e8e95cfa38d-1a879a45"
-              )}
-            />
-          </>
-        )}
-      </_Builtin.Block>
     </_Component>
   );
 }

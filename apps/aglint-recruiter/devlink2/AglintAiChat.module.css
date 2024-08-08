@@ -11,6 +11,7 @@
 }
 
 .req-right-headers {
+  position: relative;
   padding: var(--space-3);
 }
 
@@ -170,14 +171,50 @@
   height: 16px;
 }
 
+.aac-top-grad {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: -49%;
+  z-index: 2;
+
+  height: 30px;
+
+  background-image: linear-gradient(180deg, var(--white) 17%, hsla(0, 0.00%, 100.00%, 0.00));
+}
+
 .req-right-body {
   overflow: auto;
   height: 100%;
   padding-right: var(--space-4);
+  padding-bottom: var(--space-7);
   padding-left: var(--space-4);
 }
 
+.aac-grad-support {
+  position: relative;
+}
+
 .req-right-footer {
+  position: relative;
+  z-index: 2;
+
   max-height: 400px;
-  padding: var(--space-3) var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-3);
+  padding-left: var(--space-4);
+}
+
+.aac-grad-wrap {
+  position: absolute;
+  left: 0%;
+  top: -26px;
+  right: 0%;
+  bottom: auto;
+  z-index: 1;
+
+  height: 30px;
+
+  background-image: linear-gradient(0deg, hsla(0, 0.00%, 100.00%, 1.00) 16%, hsla(0, 0.00%, 100.00%, 0.00));
 }

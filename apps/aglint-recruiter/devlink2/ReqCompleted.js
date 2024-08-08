@@ -13,6 +13,7 @@ export function ReqCompleted({
   onClickArrow = {},
   slotTextwithIcon,
   isDetailListVisible = false,
+  isDropIconVisible = true,
 }) {
   return (
     <_Component
@@ -27,9 +28,14 @@ export function ReqCompleted({
           <Text content={textTitle} size="3" color="success" />
           <Text content={textDesc} color="neutral" weight="regular" />
         </_Builtin.Block>
-        <_Builtin.Block tag="div" {...onClickArrow}>
-          <IconButtonSoft iconName="keyboard_double_arrow_down" color="" />
-        </_Builtin.Block>
+        {isDropIconVisible ? (
+          <_Builtin.Block tag="div" {...onClickArrow}>
+            <IconButtonSoft
+              iconName="keyboard_double_arrow_down"
+              color="neutral"
+            />
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       {isDetailListVisible ? (
         <_Builtin.Block

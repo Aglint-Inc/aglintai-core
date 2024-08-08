@@ -8,6 +8,8 @@
   grid-row-gap: var(--space-5);
 
   border-radius: var(--radius-4);
+
+  background-color: var(--white);
 }
 
 .req-setting-header {

@@ -59,18 +59,37 @@ export function AglintAiChat({
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "aac-top-grad")}
+          tag="div"
+        />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "req-right-body")}
         tag="div"
       >
-        {slotAiBody ?? <AglintAiWelcome textAiHeader="Good morning, Sara!" />}
+        {slotAiBody ?? (
+          <>
+            <AglintAiWelcome textAiHeader="Good morning, Sara!" />
+            <AglintAiWelcome textAiHeader="Good morning, Sara!" />
+            <AglintAiWelcome textAiHeader="Good morning, Sara!" />
+          </>
+        )}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "req-right-footer")}
+        className={_utils.cx(_styles, "aac-grad-support")}
         tag="div"
       >
-        {slotAiInput}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "req-right-footer")}
+          tag="div"
+        >
+          {slotAiInput}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "aac-grad-wrap")}
+          tag="div"
+        />
       </_Builtin.Block>
     </_Component>
   );

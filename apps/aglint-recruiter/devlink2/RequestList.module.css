@@ -8,7 +8,13 @@
 
   background-color: var(--neutral-2);
 
+  transition: background-color 200ms ease;
+
   cursor: pointer;
+}
+
+.req-dash-list-card:hover {
+  background-color: var(--neutral-3);
 }
 
 .req-dash-list-card-left {

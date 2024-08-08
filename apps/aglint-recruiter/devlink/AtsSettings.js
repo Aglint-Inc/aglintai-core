@@ -72,6 +72,43 @@ export function AtsSettings({
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotFrequencySync}</_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "ats-sync-item-wrap")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "asi-header")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "asi-header-wrap")}
+            tag="div"
+          >
+            <GlobalIcon iconName="rule_settings" />
+            <Text content="Aglint AI Instructions" weight="medium" />
+          </_Builtin.Block>
+          <Text color="neutral" content="" />
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "aglint_ai")} tag="div">
+          <_Builtin.FormWrapper>
+            <_Builtin.FormForm
+              className={_utils.cx(_styles, "form-6")}
+              name="email-form"
+              data-name="Email Form"
+              method="get"
+              id="email-form"
+            >
+              <_Builtin.FormTextarea
+                className={_utils.cx(_styles, "textarea")}
+                required={false}
+                autoFocus={false}
+                placeholder="Example Text"
+                maxLength={5000}
+                name="field-2"
+                data-name="Field 2"
+                id="field-2"
+              />
+            </_Builtin.FormForm>
+          </_Builtin.FormWrapper>
+        </_Builtin.Block>
+      </_Builtin.Block>
     </_Component>
   );
 }
