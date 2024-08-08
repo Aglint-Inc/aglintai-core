@@ -57,7 +57,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     mentions: MentionType[];
   }>(null);
   const [triggerType, setTriggerType] = useState<
-    '@' | '#' | '$' | '%' | '!' | null
+    '@' | '#' | '$' | '%' | '/' | null
   >(null);
 
   const handleKeyDown = (
@@ -84,7 +84,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       event.key === '#' ||
       event.key === '$' ||
       event.key === '%' ||
-      event.key === '!'
+      event.key === '/'
     ) {
       setTriggerType(event.key);
     }
@@ -165,15 +165,15 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   };
   const mentionsInputProps: MentionInputProps = {
     inputRef,
-    onFocus: () => {
-      if (!text) {
-        setTriggerType('!');
-        setText('!');
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 10);
-      }
-    },
+    // onFocus: () => {
+    //   if (!text) {
+    //     setTriggerType('/');
+    //     setText('/');
+    //     setTimeout(() => {
+    //       inputRef.current?.focus();
+    //     }, 10);
+    //   }
+    // },
 
     placeholder: "Type '#' for jobs or '@' for candidates or '/' for requests",
     style: {
@@ -250,7 +250,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                     (triggerType === '@' && applicationsList.length === 0) ||
                     (triggerType === '#' && jobList.length === 0) ||
                     (triggerType === '$' && sessionList.length === 0) ||
-                    (triggerType === '!' && requestList.length === 0)
+                    (triggerType === '/' && requestList.length === 0)
                   }
                 >
                   <>No results</>
@@ -325,7 +325,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     'interview_name[__id__]:[__display__]',
   );
   const mentionRequestList = createMentionComponent(
-    '!',
+    '/',
     requestList,
     '#fcf',
     'request_name[__id__]:[__display__]',

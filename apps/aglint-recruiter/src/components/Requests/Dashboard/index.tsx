@@ -68,6 +68,31 @@ function Dashboard() {
     }
   }, [status]);
 
+  function formatRequestCountText(urgentCount, standardCount, dateString) {
+    const urgentText =
+      urgentCount > 0
+        ? `${urgentCount} urgent request${urgentCount > 1 ? 's' : ''}`
+        : '';
+    const standardText =
+      standardCount > 0
+        ? `${standardCount} standard request${standardCount > 1 ? 's' : ''}`
+        : '';
+
+    let finalText = '';
+
+    if (urgentText && standardText) {
+      finalText = `${urgentText} and ${standardText} ${dateString}.`;
+    } else if (urgentText) {
+      finalText = `${urgentText} ${dateString}.`;
+    } else if (standardText) {
+      finalText = `${standardText} ${dateString}.`;
+    } else {
+      finalText = `No requests ${dateString}.`;
+    }
+
+    return 'You have ' + finalText;
+  }
+
   return (
     <>
       <RequestDashboard
@@ -76,7 +101,7 @@ function Dashboard() {
             <>
               <Text
                 size={3}
-                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`} 
+                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
                 styleProps={{
                   style: {
                     display: '-webkit-box',
@@ -84,14 +109,18 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    marginBottom:'4px',
-                    color: 'var(--neutral-11)'
+                    marginBottom: '4px',
+                    color: 'var(--neutral-11)',
                   },
                 }}
               ></Text>
               <Text
-                size={2}
-                content={`You have ${getAllUrgentRequestCount(selectedDateRequest?.counts)} urgent requests and ${getAllStandardRequestCount(selectedDateRequest?.counts)} standard requests ${dateStringFormat(selectedDateRequest.date)}.`}
+                size={3}
+                content={formatRequestCountText(
+                  getAllUrgentRequestCount(selectedDateRequest?.counts),
+                  getAllStandardRequestCount(selectedDateRequest?.counts),
+                  `on ${dateStringFormat(selectedDateRequest.date)}`,
+                )}
                 styleProps={{
                   style: {
                     display: '-webkit-box',
@@ -99,8 +128,8 @@ function Dashboard() {
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    marginLeft:'20px',
-                    marginBottom:'16px',
+                    marginLeft: '20px',
+                    marginBottom: '16px',
                   },
                 }}
               ></Text>
