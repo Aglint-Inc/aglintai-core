@@ -295,28 +295,31 @@ function Availibility({
               key={i}
               textDay={capitalize(day.day)}
               textTime={
-                <Typography fontWeight={500}>
-                  {dayjsLocal()
-                    .set(
-                      'hour',
-                      parseInt(day.timeRange.startTime.split(':')[0]),
-                    )
-                    .set(
-                      'minute',
-                      parseInt(day.timeRange.startTime.split(':')[1]),
-                    )
-                    .format('hh:mm A') +
-                    ' to ' +
-                    dayjsLocal()
+                <Typography>
+                  {schedulingSettingData.timeZone.label}{' '}
+                  <span style={{ fontWeight: '500' }}>
+                    {dayjsLocal()
                       .set(
                         'hour',
-                        parseInt(day.timeRange.endTime.split(':')[0]),
+                        parseInt(day.timeRange.startTime.split(':')[0]),
                       )
                       .set(
                         'minute',
-                        parseInt(day.timeRange.endTime.split(':')[1]),
+                        parseInt(day.timeRange.startTime.split(':')[1]),
                       )
-                      .format('hh:mm A')}
+                      .format('hh:mm A') +
+                      ' to ' +
+                      dayjsLocal()
+                        .set(
+                          'hour',
+                          parseInt(day.timeRange.endTime.split(':')[0]),
+                        )
+                        .set(
+                          'minute',
+                          parseInt(day.timeRange.endTime.split(':')[1]),
+                        )
+                        .format('hh:mm A')}
+                  </span>
                 </Typography>
               }
             />
