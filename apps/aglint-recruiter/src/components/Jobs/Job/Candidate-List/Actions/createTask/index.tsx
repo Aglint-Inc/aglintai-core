@@ -88,10 +88,11 @@ function CreateTask({
           .slice(0, 2)
           .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
       );
-      if (hiring_manager || recruiting_coordinator || sourcer || recruiter) {
-        setSelectedAssignee(
-          assignerList.find((ele) => ele.user_id === recruiting_coordinator),
-        );
+      if (hiring_manager || recruiting_coordinator) {
+        const id = recruiting_coordinator
+          ? recruiting_coordinator
+          : hiring_manager;
+        setSelectedAssignee(assignerList.find((ele) => ele.user_id === id));
       }
       setTask((pre) => {
         const preTask = { ...pre };

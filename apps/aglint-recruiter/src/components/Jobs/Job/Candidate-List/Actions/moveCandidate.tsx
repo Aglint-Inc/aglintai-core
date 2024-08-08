@@ -205,8 +205,8 @@ const MoveCandidateInterview = () => {
             type: 'schedule_request',
             priority: priority,
             status: 'to_do',
-            schedule_end_date: null,
-            schedule_start_date: null,
+            schedule_end_date: task.schedule_date_range.end_date,
+            schedule_start_date: task.schedule_date_range.start_date,
           }
         : null,
       sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
