@@ -344,14 +344,14 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       value: {
         target_api: 'onReceivingAvailReq_agent_confirmSlot',
-        action_type: 'end_point',
+        action_type: 'agent_instruction',
       },
       name: 'Pick Suitable slot/s and Schedule Interviews',
     },
     {
       value: {
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
-        action_type: 'end_point',
+        action_type: 'agent_instruction',
       },
       name: 'Pick suitable slots and dend Self schedule link',
     },

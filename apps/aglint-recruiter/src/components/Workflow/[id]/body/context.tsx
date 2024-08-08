@@ -21,35 +21,21 @@ const useActionsContext = () => {
     handleCreateAction,
   } = useWorkflow();
 
-  const { emailActions } = useMemo(
-    () =>
-      (actions ?? []).reduce(
-        (acc, curr) => {
-          if (curr.action_type === 'email') acc.emailActions.push(curr);
-          else acc.allActions.push(curr);
-          return acc;
-        },
-        {
-          emailActions: [] as typeof actions,
-          allActions: [] as typeof actions,
-        },
-      ),
-    [actions],
-  );
-
   const globalOptions = useMemo(
     () =>
       ACTION_TRIGGER_MAP[trigger].filter(
         ({ value }) =>
-          !value.target_api.includes('_email_') ||
-          !(emailActions ?? []).find(
+          !(actions ?? []).find(
             ({ target_api }) => target_api === value.target_api,
           ),
       ),
-    [ACTION_TRIGGER_MAP, trigger, emailActions],
+    [ACTION_TRIGGER_MAP, trigger, actions],
   );
 
-  const canCreateAction = useMemo(() => globalOptions.length, [globalOptions]);
+  const canCreateAction = useMemo(
+    () => !!globalOptions.length,
+    [globalOptions],
+  );
 
   const handleCreateUpdate = useCallback(
     (

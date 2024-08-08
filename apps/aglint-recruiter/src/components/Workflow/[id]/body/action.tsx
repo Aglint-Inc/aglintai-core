@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import _ from 'lodash';
 import React, { memo, useMemo } from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
@@ -105,20 +106,31 @@ const TargetAPIBody = (props: ActionProps) => {
 const ActionForm = ({ action }: ActionProps) => {
   const { manageWorkflow } = useWorkflow();
   const { globalOptions, getCurrentOption, updateAction } = useActions();
+  const currentOption = useMemo(() => {
+    const { name, value } = getCurrentOption(action.target_api);
+    return { name, value: _.toString(value) };
+  }, [action.target_api]);
   const options = useMemo(
-    () => [...globalOptions, getCurrentOption(action.target_api)],
-    [globalOptions, action.target_api],
+    () => [
+      ...globalOptions.map(({ name, value }) => ({
+        name,
+        value: _.toString(value),
+      })),
+      currentOption,
+    ],
+    [globalOptions, currentOption],
   );
-  console.log(action, '🔥');
+
   return (
     <UISelect
       label='Do this'
-      value={action.target_api}
+      value={currentOption}
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        console.log(e.target.value, '🔥');
-        const safeEntry = e.target.value as (typeof options)[number];
+        const safeEntry = _(
+          e.target.value,
+        ).toJSON() as unknown as (typeof options)[number];
         updateAction({ ...action, ...safeEntry });
       }}
     />
@@ -228,7 +240,7 @@ const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
 
   return (
     <GlobalBannerInline
-      textContent={'Aglint system will handle this this action'}
+      textContent={'Aglint system will handle this action'}
       slotButton={<></>}
     />
   );

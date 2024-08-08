@@ -101,9 +101,7 @@ export type ValidWorkflowActionEntries<
         Database["public"]["Enums"]["email_slack_types"],
         `${T}_${
           | "end_point"
-          | "agent"
           | "EmailLink"
-          | "agent"
           | "EmailAgent"
           | "emailAgent"
           | "PhoneAgent"}_${string}`
@@ -114,7 +112,7 @@ export type ValidWorkflowActionEntries<
       payload?: CustomAgentInstructionPayload;
       target_api: Extract<
         Database["public"]["Enums"]["email_slack_types"],
-        `${T}_${"agent_instruction" | "emailLink"}_${string}`
+        `${T}_${"agent_instruction" | "emailLink" | "agent"}_${string}`
       >;
     } extends infer S
   ? S extends { target_api: never }
