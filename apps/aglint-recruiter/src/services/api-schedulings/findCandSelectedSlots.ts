@@ -2,6 +2,7 @@ import {
   APIOptions,
   CustomAgentInstructionPayload,
   DatabaseTable,
+  PlanCombinationRespType,
   TimeDurationDayjsType,
 } from '@aglint/shared-types';
 import { ApiError } from '@aglint/shared-utils';
@@ -59,7 +60,7 @@ export const findCandSelectedSlots = async ({
   //   .tz(TIME_ZONE)
   //   .startOf('day')
   //   .add(ai_response.schedulewithMaxNumDays, 'day');
-  // let filtered_plans: PlanCombinationRespType[] = flatted_plans;
+  let filtered_plans: PlanCombinationRespType[] = flatted_plans;
 
   // flatted_plans.filter(
   //   (plan) => {
