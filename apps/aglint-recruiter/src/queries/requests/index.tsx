@@ -3,6 +3,7 @@ import type {
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   type MutationFilters,
   type QueryFilters,
@@ -27,6 +28,8 @@ export const requestQueries = {
     queryOptions({
       enabled: !!payload.assigner_id,
       gcTime: payload.assigner_id ? GC_TIME : 0,
+      refetchInterval: 5000,
+      refetchOnMount: true,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
       queryFn: async () => await getRequests({ payload, sort, filters }),
     }),
@@ -77,8 +80,8 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchOnMount: true,
       refetchInterval: 5000,
+      refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (
@@ -185,24 +188,27 @@ export const useRequestsDelete = () => {
 };
 
 type GetRequests = Pick<DatabaseTable['request'], 'assigner_id'>;
-type RequestsFilterKeys = Pick<
-  DatabaseTable['request'],
-  | 'is_new'
-  | 'status'
-  | 'title'
-  | 'type' //assignee_id'
-  | 'created_at'
->;
+type RequestsFilterKeys =
+  | keyof Pick<
+      DatabaseTable['request'],
+      | 'is_new'
+      | 'status'
+      | 'title'
+      | 'type' //assignee_id'
+      | 'created_at'
+    >
+  | 'end_at';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
   title: DatabaseTable['request']['title'];
   type: DatabaseTable['request']['type'][];
   created_at: DatabaseTable['request']['created_at'];
+  end_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];
 };
 type RequestsFilter = {
-  [id in keyof RequestsFilterKeys]: RequestFilterValues[id];
+  [id in RequestsFilterKeys]: RequestFilterValues[id];
 };
 
 type RequestsSort = {
@@ -223,6 +229,7 @@ export const getRequests = async ({
     title,
     type: filterType,
     created_at,
+    end_at,
   },
   sort: { order, type },
 }: GetRequestParams) => {
@@ -236,7 +243,13 @@ export const getRequests = async ({
 
   if (is_new) query.eq('is_new', true);
 
-  if (created_at) query.gte('created_at', created_at);
+  if (created_at && end_at) {
+    query.gte('created_at', dayjsLocal(created_at).format('YYYY-MM-DD'));
+    query.lt(
+      'created_at',
+      dayjsLocal(end_at).add(1, 'day').format('YYYY-MM-DD'),
+    );
+  }
 
   // if (assignee_id?.length)
   //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);

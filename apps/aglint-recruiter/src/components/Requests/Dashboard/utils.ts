@@ -1,3 +1,5 @@
+import { DatabaseTable } from '@aglint/shared-types';
+
 export type barChartDataType = {
   name: string;
   count: number;
@@ -15,7 +17,10 @@ export type progressDataType = {
   all_request: number;
 };
 
-export const requestTypes = [
+export const requestTypes: {
+  title: DatabaseTable['request']['type'];
+  iconName: string;
+}[] = [
   { title: 'schedule_request', iconName: 'calendar_add_on' },
   { title: 'reschedule_request', iconName: 'event_repeat' },
   { title: 'cancel_schedule_request', iconName: 'event_busy' },

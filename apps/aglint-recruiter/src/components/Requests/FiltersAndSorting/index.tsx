@@ -8,14 +8,19 @@ import FilterHeader from '../../Common/FilterHeader';
 
 const options: Partial<GetRequestParams['filters']> = {
   status: ['blocked', 'completed', 'in_progress', 'to_do'],
-  type: ['schedule_request'],
+  type: [
+    'schedule_request',
+    'cancel_schedule_request',
+    'decline_request',
+    'reschedule_request',
+  ],
 };
 
 const sortOptions: GetRequestParams['sort']['type'][] = ['created_at', 'title'];
 
 function FilterAndSorting() {
   const {
-    filters: { is_new, title, created_at, ...filters },
+    filters: { is_new, title, created_at, end_at, ...filters },
     sort: { order, type },
     setFilters,
     setSort,
@@ -96,14 +101,15 @@ function FilterAndSorting() {
       dateRangeSelector={{
         disablePast: false,
         name: 'Created At',
-        values: [created_at],
+        values: [created_at, end_at].filter(Boolean),
         setValue: (value) =>
           setFilters((prev) => ({
             ...prev,
             created_at: value?.[0] ?? '',
+            end_at: value?.[1] ?? value?.[0] ?? '',
           })),
       }}
-      sort={safeSort}
+      // sort={safeSort}
       search={{
         value: title,
         setValue: (newValue: typeof title) =>

@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -30,7 +31,7 @@ import {
 import { barChartDataType } from './utils';
 
 function Dashboard() {
-  const { requests, setFilters } = useRequests();
+  const { requests, setFilters, initialFilter } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
 
@@ -67,6 +68,11 @@ function Dashboard() {
       setChartData(transformForChartData(requestList.data));
     }
   }, [status]);
+
+  const time = {
+    created_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
+    end_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
+  };
 
   function formatRequestCountText(urgentCount, standardCount, dateString) {
     const urgentText =
@@ -180,13 +186,10 @@ function Dashboard() {
                   }
                   onClickCard={{
                     onClick: () => {
-                      setFilters((pre) => {
-                        return {
-                          ...pre,
-                          created_at: dayjs(
-                            selectedDateRequest.date,
-                          ).toString(),
-                        };
+                      setFilters({
+                        ...structuredClone(initialFilter),
+                        ...time,
+                        type: [title],
                       });
                       setQueryParams({ tab: 'requests' });
                     },

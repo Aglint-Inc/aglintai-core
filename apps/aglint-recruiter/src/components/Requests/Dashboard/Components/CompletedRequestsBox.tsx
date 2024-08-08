@@ -1,6 +1,6 @@
-
 import { ReqCompleted } from '@/devlink2/ReqCompleted';
 import { Text } from '@/devlink2/Text';
+import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function CompletedRequestsBox({
@@ -8,13 +8,18 @@ function CompletedRequestsBox({
 }: {
   completedRequest: any[];
 }) {
+  const { setFilters, initialFilter } = useRequests();
   const { setQueryParams } = useRouterPro();
   return (
     <ReqCompleted
       isDetailListVisible={false}
       onClickArrow={{
         onClick: () => {
-          setQueryParams({ tab: 'requests', query: 'completed' });
+          setFilters({
+            ...structuredClone(initialFilter),
+            status: ['completed'],
+          });
+          setQueryParams({ tab: 'requests' });
         },
       }}
       textTitle={

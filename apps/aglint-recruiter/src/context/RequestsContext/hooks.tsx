@@ -11,16 +11,21 @@ import {
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
+const initialFilter = {
+  is_new: false,
+  status: [],
+  title: '',
+  type: [],
+  created_at: '',
+  end_at: '',
+};
+
 export const useRequestsActions = () => {
   const { recruiterUser } = useAuthDetails();
 
-  const [filters, setFilters] = useState<GetRequestParams['filters']>({
-    is_new: false,
-    status: [],
-    title: '',
-    type: [],
-    created_at: '',
-  });
+  const [filters, setFilters] = useState<GetRequestParams['filters']>(
+    structuredClone(initialFilter),
+  );
 
   const [sort, setSort] = useState<GetRequestParams['sort']>({
     order: 'desc',
@@ -105,5 +110,6 @@ export const useRequestsActions = () => {
     setFilters,
     sort,
     setSort,
+    initialFilter: structuredClone(initialFilter),
   };
 };

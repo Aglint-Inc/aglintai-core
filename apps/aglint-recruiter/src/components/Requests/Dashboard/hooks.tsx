@@ -14,7 +14,8 @@ export const useAllScheduleList = () => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_All_request'],
-
+    refetchInterval: 5000,
+    refetchOnMount: true,
     queryFn: () => getRequestsList({ assigner_id: user_id }),
     gcTime: 20000,
   });
