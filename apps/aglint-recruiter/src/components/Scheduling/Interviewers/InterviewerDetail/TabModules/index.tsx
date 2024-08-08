@@ -31,21 +31,16 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
     (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
-  const qualifiedModulesListWithGlobalArc = qualifiedModulesList?.map(
-    (qualif) => ({
-      ...qualif,
-      is_global_archived: allModules?.find(
-        (module) => module.id === qualif.module_id,
-      ).is_archived,
-    }),
+  const filteredQualifiedModulesList = qualifiedModulesList.filter(
+    (qualified) =>
+      !allModules?.find((module) => module.id === qualified.module_id)
+        .is_archived,
   );
-  const trainingModulesListWithGlobalArc = trainingModulesList?.map(
-    (trainee) => ({
-      ...trainee,
-      is_global_archived: allModules?.find(
-        (module) => module.id === trainee.module_id,
-      ).is_archived,
-    }),
+
+  const filteredtrainingModulesList = trainingModulesList.filter(
+    (qualified) =>
+      !allModules?.find((module) => module.id === qualified.module_id)
+        .is_archived,
   );
 
   return (
@@ -62,9 +57,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
         slotUpcomingSchedule={
           !isLoading ? (
             <>
-              {qualifiedModulesListWithGlobalArc?.length ? (
+              {filteredQualifiedModulesList?.length ? (
                 <>
-                  {qualifiedModulesListWithGlobalArc?.map((relation) => {
+                  {filteredQualifiedModulesList?.map((relation) => {
                     return (
                       <QualifiedInterviewTypeCard
                         relation={relation}
@@ -102,9 +97,9 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
         slotTrainingModules={
           !isLoading ? (
             <>
-              {trainingModulesListWithGlobalArc.length ? (
+              {filteredtrainingModulesList.length ? (
                 <>
-                  {trainingModulesListWithGlobalArc.map((relation) => {
+                  {filteredtrainingModulesList.map((relation) => {
                     return (
                       <TrainingInterviewerType
                         relation={relation}
