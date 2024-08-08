@@ -9,4 +9,5 @@ declare function RequestDashboard(props: {
   slotProgressBar?: Types.Devlink.Slot;
   slotRequestList?: Types.Devlink.Slot;
   slotReqCompleted?: Types.Devlink.Slot;
+  slotHeaderText?: Types.Devlink.Slot;
 }): React.JSX.Element;

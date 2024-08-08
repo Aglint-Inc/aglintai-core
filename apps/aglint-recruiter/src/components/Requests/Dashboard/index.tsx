@@ -21,8 +21,10 @@ import {
   useAllScheduleList,
 } from './hooks';
 import { barChartDataType } from './utils';
+import { Text } from '@/devlink/Text';
 
 function Dashboard() {
+  
   const { requests } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
@@ -51,6 +53,7 @@ function Dashboard() {
   const totalRequestCount =
     selectedDateRequest?.date &&
     getSelectedDateRequestCount(selectedDateRequest.counts);
+  const formattedDate = dayjs(selectedDateRequest?.date).format('DD MMMM, dddd');
 
   useEffect(() => {
     if (status === 'success') {
@@ -61,7 +64,36 @@ function Dashboard() {
   return (
     <>
       <RequestDashboard
-        textGraphTitle={`${totalRequestCount} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
+        slotHeaderText={
+          <>
+          <Text
+            size={1}
+            content={`Hello, ${'John Doe'}!`}
+            styleProps={{
+              style: {
+                display: '-webkit-box',
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            }}
+          ></Text><Text
+            size={3}
+            content={`You have 32 urgent requests and 34 standard requests today.`}
+            styleProps={{
+              style: {
+                display: '-webkit-box',
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              },
+            }}
+          ></Text>
+          </>
+        }
+        // ${totalRequestCount} Requests on ${formattedDate}
         textProgressTitle={
           progressData &&
           `${progressData?.open_request} Open Requests (${progressData?.completed_percentage}% complete)`
@@ -91,7 +123,7 @@ function Dashboard() {
                     <GlobalBadge
                       size={1}
                       variant={'outline'}
-                      textBadge={`${urgent} Urgent Requests`}
+                      textBadge={`${urgent} Urgent`}
                     />
                   )
                 }

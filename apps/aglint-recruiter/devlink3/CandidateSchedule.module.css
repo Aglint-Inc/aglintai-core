@@ -1,6 +1,7 @@
 .new-candidate-schedule-grid {
   display: flex;
   width: 100%;
+  justify-content: space-between;
   grid-auto-columns: 1fr;
   grid-template-columns: 100% 454px;
   grid-template-rows: auto;
@@ -8,7 +9,7 @@
 
 .candidate-schedule-left-wrap {
   position: relative;
-  width: calc(100vw - 470px);
+  width: 100%;
 }
 
 .cd-schedule-header {

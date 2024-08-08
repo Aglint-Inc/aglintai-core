@@ -45,69 +45,74 @@ export function EditEmail({
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "eemail-body-wrap")}
+          className={_utils.cx(_styles, "ee-body-wrapp")}
           tag="div"
           data-edit-email-module-name={currentModule}
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "company-email-header")}
+            className={_utils.cx(_styles, "eemail-body-wrap")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "company-email-left-wrap")}
+              className={_utils.cx(_styles, "company-email-header")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "edit-email-head")}
+                className={_utils.cx(_styles, "company-email-left-wrap")}
                 tag="div"
               >
-                <Text content={textEmailName} weight="medium" />
-                {isPreviewVisible ? (
-                  <_Builtin.Block tag="div">
-                    <ButtonGhost
-                      onClickButton={onClickPreview}
-                      size="1"
-                      isLeftIcon={false}
-                      iconSize="3"
-                      iconName=""
-                      textButton="Preview"
-                    />
-                  </_Builtin.Block>
-                ) : null}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "edit-email-head")}
+                  tag="div"
+                >
+                  <Text content={textEmailName} weight="medium" />
+                  {isPreviewVisible ? (
+                    <_Builtin.Block tag="div">
+                      <ButtonGhost
+                        onClickButton={onClickPreview}
+                        size="1"
+                        isLeftIcon={false}
+                        iconSize="3"
+                        iconName=""
+                        textButton="Preview"
+                      />
+                    </_Builtin.Block>
+                  ) : null}
+                </_Builtin.Block>
+                <Text content={editEmailDescription} color="neutral" />
               </_Builtin.Block>
-              <Text content={editEmailDescription} color="neutral" />
+              <_Builtin.Block tag="div">{slotSaveButton}</_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotSaveButton}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-company-email-form")}
-            tag="div"
-          >
-            {slotForm}
-          </_Builtin.Block>
-          {isSaveChangesButtonVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "edit-email-btn-wrap")}
+              className={_utils.cx(_styles, "slot-company-email-form")}
               tag="div"
             >
-              <_Builtin.Block tag="div">
-                {slotButton ?? <SlotComp componentName="ButtonSolid" />}
+              {slotForm}
+            </_Builtin.Block>
+            {isSaveChangesButtonVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "edit-email-btn-wrap")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">
+                  {slotButton ?? <SlotComp componentName="ButtonSolid" />}
+                </_Builtin.Block>
               </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          {isRequestTestMailVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot-edit-email-bottom")}
-              tag="div"
-            >
-              {slotBottom}
-            </_Builtin.Block>
-          ) : null}
+            ) : null}
+            {isRequestTestMailVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-edit-email-bottom")}
+                tag="div"
+              >
+                {slotBottom}
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}
-        value="%3Cstyle%3E%0A%5Bdata-edit-email-module-name%3D%22scheduler%22%5D%7B%0A%09height%3Acalc(100vh%20-%20140px)%3B%0A%20%20overflow%3A%20auto%3B%0A%7D%0A%5Bdata-edit-email-module-name%3D%22jobs%22%5D%7B%0A%09%09height%3A%20calc(100vh%20-%20140px)%3B%0A%20%20%20%20overflow%3A%20auto%3B%0A%7D%0A%20%20%20%20%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Bdata-edit-email-module-name%3D%22scheduler%22%5D%7B%0A%09height%3Acalc(100vh%20-%20120px)%3B%0A%20%20overflow%3A%20auto%3B%0A%7D%0A%5Bdata-edit-email-module-name%3D%22jobs%22%5D%7B%0A%09%09height%3A%20calc(100vh%20-%20120px)%3B%0A%20%20%20%20overflow%3A%20auto%3B%0A%7D%0A%20%20%20%20%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

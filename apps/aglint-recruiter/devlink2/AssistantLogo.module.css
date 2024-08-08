@@ -1,5 +1,8 @@
 .asstant-logo-wrap {
+  position: relative;
+
   display: flex;
+  overflow: hidden;
   width: 40px;
   height: 40px;
   flex-direction: column;
@@ -76,4 +79,14 @@
   bottom: auto;
 
   cursor: pointer;
+}
+
+.active-assistant {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: var(--accent-4);
 }
