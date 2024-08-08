@@ -1,14 +1,7 @@
 .basic-info-wrap {
-  overflow: auto;
   max-width: 600px;
-  padding-top: var(--space-4);
-  padding-right: var(--space-4);
-  padding-bottom: var(--space-4);
-  padding-left: var(--space-4);
-
+  padding: var(--space-4);
   background-color: var(--white);
-
-  height: calc(100vh - 96px);
 }
 
 .spacing-2 {

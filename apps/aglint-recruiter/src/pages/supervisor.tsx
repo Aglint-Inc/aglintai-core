@@ -1,18 +1,16 @@
+import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-utils';
 import axios from 'axios';
 import { useState } from 'react';
 
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
+import { useUserChat } from '../queries/userchat';
 
-interface Message {
-  value: string;
-  type: 'user' | 'assistant';
-}
 const ChatApp = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'assistant',
-      value: 'hello how can i help you',
+      content: 'hello how can i help you',
     },
   ]);
   const [input, setInput] = useState<string>('');
@@ -22,7 +20,7 @@ const ChatApp = () => {
 
     try {
       const newMessage: Message = {
-        value: input,
+        content: input,
         type: 'user',
       };
       const newMessages = [...messages, newMessage];
@@ -30,31 +28,30 @@ const ChatApp = () => {
       setMessages([...messages, newMessage]);
       setInput('');
 
+      const bodyParams: ApiBodyAgentSupervisor = {
+        recruiter_id: recruiter.id,
+        history: newMessages,
+        user_id: recruiterUser.user_id,
+        applications: [],
+        jobs: [],
+        sessions: [],
+        is_test: true,
+      };
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
-        {
-          recruiter_id: recruiter.id,
-          history: newMessages,
-        },
+        bodyParams,
       );
 
-      const resp = data as {
-        display: {
-          node: string;
-          message: string;
-          function: string;
-          payload: any;
-        }[];
-      };
+      const resp = data as ReturnType<typeof useUserChat>['data'][0];
 
-      if (resp.display.length === 0) {
+      if (!resp) {
         return;
       }
 
       setMessages(() => [
         ...newMessages,
         {
-          value: `${resp.display[resp.display.length - 1].message}`,
+          content: `${resp.content}`,
           type: 'assistant',
         },
       ]);
@@ -103,7 +100,7 @@ const ChatApp = () => {
                 maxWidth: '75%', // Limit the width of messages
               }}
             >
-              {message.value}
+              {message.content}
             </div>
           ))}
         </div>

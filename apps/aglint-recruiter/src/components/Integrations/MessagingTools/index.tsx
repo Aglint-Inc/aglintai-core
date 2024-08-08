@@ -1,5 +1,6 @@
 import { capitalize } from 'lodash';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 
 import { MessagingToolsType } from '../types';
@@ -32,9 +33,16 @@ function MessagingTools() {
                 );
               },
             }}
-            isComingSoon={true}
-            isConnectedVisible={false}
+            isComingSoon={false}
+            isConnectedVisible={true}
             key={i}
+            slotButton={
+              <ButtonSoft
+                textButton={'Disconnect'}
+                size={2}
+                color={'neutral'}
+              />
+            }
             textName={capitalize(item.name)}
             textLink={item.url}
             slotLogo={<>{item.logo}</>}

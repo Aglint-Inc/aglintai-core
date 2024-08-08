@@ -1,3 +1,5 @@
+import '@styles/fullcalendar-theme.css';
+
 import { DatabaseTable } from '@aglint/shared-types';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -20,7 +22,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import DynamicLoader from '../../DynamicLoader';
-import Interviews from '../../Interviews';
+import FullCalendar from '../../Interviews/FullCalendar';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
@@ -36,8 +38,9 @@ function BodyComp() {
 
   const { handleMemberUpdate } = useAuthDetails();
 
-  const [filter, setFilter] =
-    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+  const [filter, setFilter] = useState<
+    DatabaseTable['interview_meeting']['status'][]
+  >(['completed', 'confirmed', 'cancelled']);
   const [changeText, setChangeText] = useState('');
 
   const user_id = router.query.user_id as string;
@@ -342,8 +345,8 @@ function BodyComp() {
                 )}
                 {tab === 'training' && <TabInterviewModules type='training' />}
                 {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
-                {tab === 'allschedules' && (
-                  <Interviews
+                {tab === 'calendar' && (
+                  <FullCalendar
                     allSchedules={allSchedules}
                     isLoading={isLoading}
                     filter={filter}

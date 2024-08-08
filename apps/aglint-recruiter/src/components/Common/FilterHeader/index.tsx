@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { Text } from '@/devlink2/Text';
+import { Text } from '@/devlink/Text';
 
 import SearchField from '../SearchField/SearchField';
 import { ShowCode } from '../ShowCode';

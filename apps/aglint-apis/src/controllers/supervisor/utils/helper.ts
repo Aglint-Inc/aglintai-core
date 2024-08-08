@@ -43,6 +43,7 @@ export async function runAgentNode(params: {
 }) {
   const {state, agent, name} = params;
   const result = await agent.invoke(state);
+  console.log(result);
 
   return {
     messages: [

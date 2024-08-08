@@ -85,6 +85,7 @@
   display: flex;
   overflow: auto;
   height: 100%;
+  max-width: 900px;
   padding: var(--space-4);
   flex-direction: column;
   grid-column-gap: 10px;

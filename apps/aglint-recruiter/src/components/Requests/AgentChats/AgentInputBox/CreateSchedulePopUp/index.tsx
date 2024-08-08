@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Collapse, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { Text } from '@/devlink/Text';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
-import { Text } from '@/devlink2/Text';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
+import dayjs from '@/src/utils/dayjs';
 
 import { selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
@@ -25,8 +25,8 @@ function CreateSchedulePopUp({
   const { recruiterUser } = useAuthDetails();
   const [loading, setLoading] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState({
-    start_date: dayjsLocal().format('MM-DD-YYYY'),
-    end_date: dayjsLocal().add(7, 'day').format('MM-DD-YYYY'),
+    start_date: dayjs().toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
   const assigner = 'user';
   const assignerText =
@@ -59,6 +59,8 @@ function CreateSchedulePopUp({
             title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
             status: 'to_do',
             type: 'schedule_request',
+            schedule_start_date: selectedDateRange.start_date,
+            schedule_end_date: selectedDateRange.end_date,
           },
           applications: [selectedItems.applicant_name[0].id],
           sessions: selectedItems.interview_name.map((ele) => ele.id),
