@@ -187,9 +187,7 @@
 .req-right-body {
   overflow: auto;
   height: 100%;
-  padding-right: var(--space-4);
-  padding-bottom: var(--space-7);
-  padding-left: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-7);
 }
 
 .aac-grad-support {
