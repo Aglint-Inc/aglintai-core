@@ -19,6 +19,8 @@ export const useRequestsActions = () => {
     status: [],
     title: '',
     type: [],
+    schedule_start_date: '',
+    schedule_end_date: '',
   });
 
   const [sort, setSort] = useState<GetRequestParams['sort']>({

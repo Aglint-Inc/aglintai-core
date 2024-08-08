@@ -187,13 +187,20 @@ export const useRequestsDelete = () => {
 type GetRequests = Pick<DatabaseTable['request'], 'assigner_id'>;
 type RequestsFilterKeys = Pick<
   DatabaseTable['request'],
-  'is_new' | 'status' | 'title' | 'type' //| 'assignee_id'
+  | 'is_new'
+  | 'status'
+  | 'title'
+  | 'type'
+  | 'schedule_start_date'
+  | 'schedule_end_date' //assignee_id'
 >;
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
   title: DatabaseTable['request']['title'];
   type: DatabaseTable['request']['type'][];
+  schedule_start_date: DatabaseTable['request']['schedule_start_date'];
+  schedule_end_date: DatabaseTable['request']['schedule_end_date'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];
 };
 type RequestsFilter = {
@@ -212,7 +219,14 @@ export type GetRequestParams = {
 };
 export const getRequests = async ({
   payload: { assigner_id },
-  filters: { /*assignee_id,*/ is_new, status, title, type: filterType },
+  filters: {
+    /*assignee_id,*/ is_new,
+    status,
+    title,
+    type: filterType,
+    schedule_end_date,
+    schedule_start_date,
+  },
   sort: { order, type },
 }: GetRequestParams) => {
   const query = supabase
@@ -223,6 +237,11 @@ export const getRequests = async ({
     .eq('assigner_id', assigner_id);
 
   if (is_new) query.eq('is_new', true);
+
+  if (schedule_start_date)
+    query.gte('schedule_start_date', schedule_start_date);
+
+  if (schedule_end_date) query.lte('schedule_end_date', schedule_end_date);
 
   // if (assignee_id?.length)
   //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
