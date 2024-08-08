@@ -1,8 +1,8 @@
 import { MenuItem, Popover, Select, Stack } from '@mui/material';
 import React, { ReactNode } from 'react';
 
+import { Text } from '@/devlink/Text';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
-import { Text } from '@/devlink2/Text';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 export type sortComponentType = {

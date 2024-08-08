@@ -2,7 +2,6 @@ import { Collapse, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import dayjs from '@/src/utils/dayjs';
 import ROUTES from '@/src/utils/routing/routes';
@@ -13,9 +12,7 @@ import ThreeDot from './ThreeDot';
 function QualifiedInterviewTypeCard({
   relation,
 }: {
-  relation: ReturnType<typeof useModuleRelations>['data'][0] & {
-    is_global_archived: boolean;
-  };
+  relation: ReturnType<typeof useModuleRelations>['data'][0];
 }) {
   const router = useRouter();
   const [collapseOpen, setCollapseOpen] = React.useState(false);
@@ -41,14 +38,7 @@ function QualifiedInterviewTypeCard({
         </Collapse>
       }
       key={relation.module_id}
-      textName={
-        <Stack direction={'row'} spacing={2}>
-          <Typography> {relation.module_name}</Typography>
-          {relation.is_global_archived && (
-            <GlobalBadge textBadge='Archived' color={'warning'} />
-          )}
-        </Stack>
-      }
+      textName={relation.module_name}
       isTextObjectiveVisible={false}
       isPauseResumeVisible={relation.pause_json ? true : false}
       isScheduleCountVisible={true}

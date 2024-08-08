@@ -1,5 +1,6 @@
 .ats-settings-wrap {
   display: flex;
+  max-width: 580px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-4);

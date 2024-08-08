@@ -11,7 +11,9 @@ export type CustomGetRequestCountStats = FunctionType<
     {
       counts: {
         [id in CustomRequestType["status"]]: {
-          [id in CustomRequestType["type"]]: number;
+          [id in CustomRequestType["type"]]: {
+            [id in CustomRequestType["priority"]]: number;
+          };
         };
       };
     }

@@ -36,6 +36,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Text } from '@/devlink/Text';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
@@ -43,7 +44,6 @@ import { InterviewLoad } from '@/devlink2/InterviewLoad';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
 import { SublinkTab } from '@/devlink2/SublinkTab';
-import { Text } from '@/devlink2/Text';
 import { TextWithBg } from '@/devlink2/TextWithBg';
 import { DayOffHelper } from '@/devlink3/DayOffHelper';
 import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
@@ -342,15 +342,20 @@ function SchedulingSettings({
             <CompanyDayOff
               slotLearnButton={
                 <>
-                  <ButtonSoft
-                    size={1}
-                    textButton='Learn How'
-                    onClickButton={{
-                      onClick: () => {
-                        openCompany();
-                      },
-                    }}
-                  />
+                  <Stack onClick={() => openCompany()}>
+                    <Typography
+                      fontSize={'var(--font-size-1)'}
+                      sx={{
+                        cursor: 'pointer',
+                        color: 'var(--error-9)',
+                        ': hover': {
+                          color: 'var(--error-11)',
+                        },
+                      }}
+                    >
+                      Learn How
+                    </Typography>
+                  </Stack>
                 </>
               }
               slotAddButton={
@@ -642,7 +647,7 @@ function SchedulingSettings({
               spacing={2}
             >
               <InterviewLoad
-              borderStyle={'true'}
+                borderStyle={'true'}
                 slotDailyLimit={
                   <Stack spacing={1}>
                     <RadioGroup
@@ -728,7 +733,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
-              borderStyle={'true'}
+                borderStyle={'true'}
                 size={'large'}
                 slotKeywordsCard={
                   <>

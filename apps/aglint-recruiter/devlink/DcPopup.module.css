@@ -3,6 +3,7 @@
   width: 460px;
   padding: 0px;
   border-radius: var(--radius-4);
+  background-color: var(--white);
 }
 
 .dc_modal_header {

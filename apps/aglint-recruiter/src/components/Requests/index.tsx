@@ -1,15 +1,14 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { NoPendingReq } from '@/devlink2/NoPendingReq';
 import { RequestAgent } from '@/devlink2/RequestAgent';
 import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
-import { RequestAgentTab } from '@/devlink2/RequestAgentTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
@@ -22,10 +21,6 @@ import StatsCards from './StatsCards';
 const Requests = () => {
   const { recruiterUser } = useAuthDetails();
   const { setQueryParams, queryParams } = useRouterPro();
-  const [tabs, setTabs] = useState([
-    { title: 'dashboard', isTabActive: false },
-    { title: 'requests', isTabActive: false },
-  ]);
 
   const {
     requests: { status, data: requestList },
@@ -47,21 +42,9 @@ const Requests = () => {
 
   useEffect(() => {
     if (!queryParams?.tab) {
-      setTabs((prev) =>
-        prev.map((item) => ({
-          ...item,
-          isTabActive: item.title === 'dashboard',
-        })),
-      );
       setQueryParams({ tab: 'dashboard' });
     } else {
       setQueryParams({ tab: queryParams?.tab });
-      setTabs((prev) =>
-        prev.map((item) => ({
-          ...item,
-          isTabActive: item.title === queryParams?.tab,
-        })),
-      );
     }
   }, [queryParams?.tab]);
   return (
@@ -69,31 +52,25 @@ const Requests = () => {
       textName={getFullName(recruiterUser.first_name, '')}
       textTopStatus={`Your top priorities as of ${dayjsLocal().add(-1, 'day').format('MMM D, YYYY')}`}
       slotTabs={
-        <>
-          {(!showEmptyPage || !isNotApplied) &&
-            tabs.map(({ title, isTabActive }, i) => {
-              return (
-                <RequestAgentTab
-                  onClickTab={{
-                    onClick: () => {
-                      setTabs((prev) =>
-                        prev.map((item) => ({
-                          ...item,
-                          isTabActive: item.title === title,
-                        })),
-                      );
-                      setQueryParams({ tab: title });
-                    },
-                  }}
-                  key={i}
-                  textTab={capitalizeFirstLetter(title)}
-                  isTabActive={isTabActive}
-                />
-              );
-            })}
-        </>
+        queryParams.tab === 'requests' ? (
+          <ButtonSoft
+            size={1}
+            color={'neutral'}
+            isLeftIcon={true}
+            iconName={'arrow_back'}
+            textButton='Dashboard'
+            onClickButton={{
+              onClick: () => setQueryParams({ tab: 'dashboard' }),
+            }}
+          />
+        ) : (
+          <></>
+        )
       }
-      slotFilter={(!showEmptyPage || !isNotApplied) && <FilterAndSorting />}
+      slotFilter={
+        queryParams.tab === 'requests' &&
+        (!showEmptyPage || !isNotApplied) && <FilterAndSorting />
+      }
       slotRequestOption={<StatsCards />}
       slotRequestSection={
         <ShowCode>

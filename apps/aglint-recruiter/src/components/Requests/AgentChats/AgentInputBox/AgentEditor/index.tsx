@@ -7,10 +7,10 @@ import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
-import { Text } from '@/devlink2/Text';
 import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
+import ScrollingText from '../../Components/ScrollingText';
 import { ScheduleType } from '../utils';
 import { MentionComponentProps, MentionInputProps, MentionType } from './utils';
 
@@ -355,12 +355,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         justifyContent={'center'}
         alignItems={'center'}
       >
-        <Text
-          align={'center'}
-          color={'neutral'}
-          size={1}
-          content={'Powered by Aglint. Simplifying your scheduling with AI.'}
-        />
+        <ScrollingText />
       </Stack>
     </div>
   );

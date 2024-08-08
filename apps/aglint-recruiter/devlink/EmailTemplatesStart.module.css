@@ -57,7 +57,7 @@
   grid-row-gap: var(--space-2);
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 110px);
 }
 
 .email-template-right-wrap {

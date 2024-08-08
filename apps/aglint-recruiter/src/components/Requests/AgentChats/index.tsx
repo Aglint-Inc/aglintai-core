@@ -6,6 +6,7 @@ import { useUserChat } from '@/src/queries/userchat';
 
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
+import ScrollingText from './Components/ScrollingText';
 import SettingsPopup from './SettingsPopup';
 
 function AgentChats() {

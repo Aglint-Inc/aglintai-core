@@ -15,6 +15,7 @@ export function RequestDashboard({
   slotProgressBar,
   slotRequestList,
   slotReqCompleted,
+  slotHeaderText,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req-dashbaord-wrap")} tag="div">
@@ -30,7 +31,7 @@ export function RequestDashboard({
             className={_utils.cx(_styles, "req-dash-graph")}
             tag="div"
           >
-            <Text content={textGraphTitle} weight="regular" color="neutral" />
+            <_Builtin.Block tag="div">{slotHeaderText}</_Builtin.Block>
             <_Builtin.Block tag="div">{slotGraph}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
