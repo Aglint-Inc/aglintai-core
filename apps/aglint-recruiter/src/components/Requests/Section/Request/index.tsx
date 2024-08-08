@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { getFullName } from '@aglint/shared-utils';
 import { Collapse } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
@@ -31,7 +32,13 @@ export const Request = (
               variant={'solid'}
             />
           }
-          textTitle={props.title}
+          textTitle={props.title.replace(
+            '{{candidateName}}',
+            getFullName(
+              props.applications.candidates.first_name,
+              props.applications.candidates.last_name,
+            ),
+          )}
           slotRightIcons={
             <>
               <GlobalBadge

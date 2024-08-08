@@ -6,6 +6,8 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { Text } from '@/devlink2/Text';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import dayjs from '@/src/utils/dayjs';
@@ -29,6 +31,8 @@ function Dashboard() {
   const { requests } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
+
+  const { recruiterUser } = useAuthDetails();
 
   const [chartData, setChartData] = useState<barChartDataType[]>(null);
 
@@ -64,7 +68,17 @@ function Dashboard() {
   return (
     <>
       <RequestDashboard
-        textGraphTitle={`${totalRequestCount || ''} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
+        slotHeaderText={
+          <>
+            <Text
+              color={'neutral'}
+              content={`Hello, ${capitalizeFirstLetter(recruiterUser.first_name)} 👋🏻.`}
+            />
+            <Text
+              content={`${totalRequestCount || ''} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
+            />
+          </>
+        }
         textProgressTitle={
           progressData &&
           `${progressData?.open_request} Open Requests (${progressData?.completed_percentage}% complete)`

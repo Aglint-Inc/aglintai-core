@@ -14,6 +14,7 @@ import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
+import { formatSessions } from '../utils';
 import CreateTask from './createTask';
 
 const MoveCandidate = () => {
@@ -190,16 +191,19 @@ const MoveCandidateInterview = () => {
 
   const [taskCheck, setTaskCheck] = useState(true);
   const [task, setTask] = useState<TaskType>(null);
-
+  const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
+  const buttonText = taskCheck ? 'Request and Move' : null;
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
       request: taskCheck
         ? {
             assignee_id: (task?.assignee ?? []).find(Boolean),
             assigner_id: recruiterUser?.user_id ?? null,
-            title: task?.name ?? 'Request',
+            title:
+              task?.name ??
+              `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for {{candidateName}} `,
             type: 'schedule_request',
-            priority: 'standard',
+            priority: priority,
             status: 'to_do',
             schedule_end_date: null,
             schedule_start_date: null,
@@ -208,7 +212,7 @@ const MoveCandidateInterview = () => {
       sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
     });
     resetActionPopup();
-  });
+  }, buttonText);
 
   return (
     <TaskStatesProvider>
@@ -229,6 +233,8 @@ const MoveCandidateInterview = () => {
                 applications={checklist}
                 setTask={setTask}
                 job_id={job?.id}
+                setPriority={setPriority}
+                priority={priority}
               />
             </Collapse>
           </Stack>
@@ -311,7 +317,7 @@ const MoveCandidateDisqualified = () => {
   );
 };
 
-function useMeta(onSubmit: () => void) {
+function useMeta(onSubmit: () => void, buttonText: string = null) {
   const { resetActionPopup, actionPopup, checklist } = useApplicationsStore(
     ({ resetActionPopup, actionPopup, checklist }) => ({
       resetActionPopup,
@@ -329,7 +335,7 @@ function useMeta(onSubmit: () => void) {
       />
 
       <ButtonSolid
-        textButton={`Move to ${actionPopup}`}
+        textButton={buttonText ?? `Move to ${actionPopup}`}
         size={2}
         onClickButton={{
           onClick: () => onSubmit(),

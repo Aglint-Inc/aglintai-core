@@ -58,7 +58,7 @@ const Requests = () => {
             color={'neutral'}
             isLeftIcon={true}
             iconName={'arrow_back'}
-            textButton='Back to Dashboard'
+            textButton='Dashboard'
             onClickButton={{
               onClick: () => setQueryParams({ tab: 'dashboard' }),
             }}
