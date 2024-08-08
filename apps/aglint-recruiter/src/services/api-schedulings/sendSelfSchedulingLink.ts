@@ -1,7 +1,4 @@
-import {
-  CandReqSlotsType,
-  PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { mailSender } from '@/src/utils/mailSender';
@@ -16,7 +13,7 @@ export const sendSelfSchedulingLinkFunc = async ({
   session_ids,
   start_date_str,
 }: {
-  cand_picked_slots: CandReqSlotsType[];
+  cand_picked_slots: PlanCombinationRespType[];
   schedule_id: string;
   organizer_id: string;
   start_date_str: string;
@@ -24,15 +21,6 @@ export const sendSelfSchedulingLinkFunc = async ({
   session_ids;
   request_id;
 }) => {
-  let no_conf_slots: PlanCombinationRespType[] = [];
-  cand_picked_slots.forEach((curr_round) => {
-    curr_round.selected_dates.forEach((curr_date) => {
-      const filtered_plans = curr_date.plans.filter((plan) =>
-        plan.sessions.every((s) => s.ints_conflicts.length === 0),
-      );
-      no_conf_slots = [...no_conf_slots, ...filtered_plans];
-    });
-  });
   const [filter_rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -42,7 +30,7 @@ export const sendSelfSchedulingLinkFunc = async ({
           start_date: start_date_str,
           end_date: end_date_str,
         },
-        selected_options: [...no_conf_slots],
+        selected_options: [...cand_picked_slots],
         session_ids: session_ids,
         is_flow_agent: true,
         request_id,

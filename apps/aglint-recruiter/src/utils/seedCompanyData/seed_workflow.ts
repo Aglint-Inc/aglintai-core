@@ -11,10 +11,12 @@ export const seed_workflow_actions: {
     | 'trigger'
     | 'workflow_type'
   >;
-  actions: Pick<
+  actions: (Pick<
     DatabaseTable['workflow_action'],
     'order' | 'target_api' | 'action_type'
-  >[];
+  > & {
+    payload?: any;
+  })[];
 }[] = [
   {
     workflow: {
@@ -321,7 +323,7 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
-        action_type: 'agent_instruction',
+        action_type: 'end_point',
       },
     ],
   },
@@ -356,7 +358,26 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onReceivingAvailReq_agent_confirmSlot',
-        action_type: 'end_point',
+        action_type: 'agent_instruction',
+        payload: {
+          ai_response: {
+            preferredInterviewer: [],
+            excludeInterviewTimes: [],
+            scheduleWithinNumDays: 3,
+            maxOptionsToCandidates: 10,
+            schedulewithMaxNumDays: 5,
+            prefferredInterviewTimes: [
+              {
+                endTime: '18:00',
+                startTime: '10:00',
+              },
+            ],
+            balanceWorkloadAmongInterviewers: true,
+            scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+          },
+          instruction: null,
+          ai_response_status: 'success',
+        },
       },
     ],
   },
@@ -375,7 +396,26 @@ export const seed_workflow_actions: {
       {
         order: 0,
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
-        action_type: 'end_point',
+        action_type: 'agent_instruction',
+        payload: {
+          ai_response: {
+            preferredInterviewer: [],
+            excludeInterviewTimes: [],
+            scheduleWithinNumDays: 3,
+            maxOptionsToCandidates: 10,
+            schedulewithMaxNumDays: 5,
+            prefferredInterviewTimes: [
+              {
+                endTime: '18:00',
+                startTime: '10:00',
+              },
+            ],
+            balanceWorkloadAmongInterviewers: true,
+            scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+          },
+          instruction: null,
+          ai_response_status: 'success',
+        },
       },
     ],
   },

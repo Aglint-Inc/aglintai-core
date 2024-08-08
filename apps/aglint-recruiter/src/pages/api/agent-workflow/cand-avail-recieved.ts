@@ -1,9 +1,5 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import {
-  addErrorHandlerWrap,
-  ApiError,
-  supabaseWrap,
-} from '@aglint/shared-utils';
+import { addErrorHandlerWrap, supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
@@ -23,12 +19,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     application_id,
     request_id,
     event_run_id,
+    payload,
   } = req.body;
   const reqProgressLogger = createRequestProgressLogger(
     request_id,
     event_run_id,
   );
 
+  const ai_response = payload.ai_response.ai_response;
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -47,16 +45,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
   let session_ids = meeting_details.map((m) => m.session_id);
   let schedule_id = meeting_details[0].interview_schedule_id;
-  if (meeting_details.length === 0) {
-    throw new ApiError('SERVER_ERROR', 'invalid session id');
-  }
-
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
   const cand_picked_slots = await executeWorkflowAction(
     findCandSelectedSlots,
     {
-      api_options: {},
+      api_options: {
+        include_conflicting_slots: {
+          show_soft_conflicts: true,
+          out_of_working_hrs: true,
+        },
+        return_empty_slots_err: true,
+      },
       cand_avail: avail_record.slots,
       company_id: recruiter_id,
       start_date_str: avail_record.date_range[0],
@@ -64,6 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_user_tz: 'Asia/Colombo',
       session_ids,
       reqProgressLogger,
+      ai_response,
     },
     reqProgressLogger,
     {
