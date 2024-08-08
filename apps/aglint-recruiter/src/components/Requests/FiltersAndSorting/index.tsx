@@ -104,7 +104,7 @@ function FilterAndSorting() {
             end_at: value?.[1] ?? value?.[0] ?? '',
           })),
       }}
-      sort={safeSort}
+      // sort={safeSort}
       search={{
         value: title,
         setValue: (newValue: typeof title) =>
