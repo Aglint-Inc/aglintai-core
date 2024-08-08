@@ -10,7 +10,6 @@ import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
 import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
@@ -81,34 +80,36 @@ function RequestDetails({
       slotBody={
         <>
           <RequestProgress />
-          <Stack
-            direction={'row'}
-            justifyContent={'space-between'}
-            alignItems={'center'}
-          >
-            <Text
-              color={'accent'}
-              content={
-                'When you click “Proceed,” Aglint AI will perform above tasks for you'
-              }
-              highContrast={false}
-            />
-            <ButtonSoft
-              onClickButton={{
-                onClick: async () => {
-                  await handleAsyncUpdateRequest({
-                    payload: {
-                      requestId: request.id,
-                      requestPayload: { status: 'in_progress' },
-                    },
-                  });
-                  toast.message('Request updated successfully');
-                },
-              }}
-              size={1}
-              textButton={'Proceed'}
-            />
-          </Stack>
+
+          {Boolean(request.status === 'to_do') && (
+            <Stack
+              direction={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Text
+                color={'accent'}
+                content={
+                  'When you click “Proceed,” Aglint AI will perform above tasks for you'
+                }
+                highContrast={false}
+              />
+              <ButtonSoft
+                onClickButton={{
+                  onClick: async () => {
+                    await handleAsyncUpdateRequest({
+                      payload: {
+                        requestId: request.id,
+                        requestPayload: { status: 'in_progress' },
+                      },
+                    });
+                  },
+                }}
+                size={1}
+                textButton={'Proceed'}
+              />
+            </Stack>
+          )}
         </>
       }
     />
