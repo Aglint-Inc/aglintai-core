@@ -20,7 +20,9 @@ const Actions = () => {
   const count = checklist.length;
   return (
     <>
+    
       <SelectActionBar
+
         onclickSelectAll={null}
         onClickDelete={{ style: { display: 'none' } }}
         isAssessmentVisible={
