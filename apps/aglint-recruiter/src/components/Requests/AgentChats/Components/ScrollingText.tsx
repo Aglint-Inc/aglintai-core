@@ -1,14 +1,15 @@
+/* eslint-disable security/detect-object-injection */
 import { Box } from '@mui/material';
-import React, { useEffect, useRef,useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Text } from '@/devlink//Text';
 
 const ScrollingText = () => {
   const textArray = [
-    "Nothing will change until you explicitly confirm it",
+    'Nothing will change until you explicitly confirm it',
     "Use '@' to mention people",
     "Use '#' to mention events",
-    "Start a prompt with '/' to see commands"
+    "Start a prompt with '/' to see commands",
   ];
 
   const [isPlaying, setIsPlaying] = useState(true);
@@ -47,19 +48,19 @@ const ScrollingText = () => {
 
   return (
     <Box onClick={handleClick}>
-        <Text
-            size={1}
-            content={textArray[currentIndex]}
-            styleProps={{
-                style: {
-                display: '-webkit-box',
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                },
-            }}
-            ></Text>
+      <Text
+        size={1}
+        content={textArray[currentIndex]}
+        styleProps={{
+          style: {
+            display: '-webkit-box',
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          },
+        }}
+      ></Text>
     </Box>
   );
 };
