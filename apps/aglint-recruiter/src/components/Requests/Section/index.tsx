@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
 
+import { Text } from '@/devlink/Text';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { RequestSection } from '@/devlink2/RequestSection';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { Text } from '@/devlink2/Text';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { Request as RequestType } from '@/src/queries/requests/types';

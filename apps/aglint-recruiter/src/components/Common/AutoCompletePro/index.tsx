@@ -11,7 +11,7 @@ function AutoCompletePro<T>({
   placeholder,
   onChange,
   getSelectLabel = (x) => x as string,
-  getOptionLabel = (x) => x as string,
+  getOptionLabel = (props, option) => <li {...props}>{String(option)}</li>,
   error,
   onFocus = () => {},
 }: {
@@ -56,7 +56,7 @@ function AutoCompletePro<T>({
           <UITextField
             {...params}
             error={Boolean(error)}
-            helperText={error.length ? error : null}
+            helperText={error?.length ? error : null}
             onFocus={onFocus}
             required
             name={label}

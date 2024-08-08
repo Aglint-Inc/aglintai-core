@@ -234,6 +234,7 @@ export const PATHS = [
 '/forgot-password',
 '/forgot-password-X',
 '/integrations',
+'/integrations/[platform]',
 '/interview/feedback',
 '/job-post-X/[id]',
 '/job-post-assistant/[company_id]',

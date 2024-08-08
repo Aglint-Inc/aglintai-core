@@ -112,7 +112,7 @@ function Overview({
               }
             </Typography>
             <Typography>{todayTypeText}</Typography>
-            <Typography fontWeight={500}> | Weekly : </Typography>
+            <Typography fontWeight={500}>  Weekly : </Typography>
             <Typography>
               {
                 interviewerDetails.scheduling_settings?.interviewLoad
