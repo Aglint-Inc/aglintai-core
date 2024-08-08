@@ -2,7 +2,6 @@ import {
   APIOptions,
   CustomAgentInstructionPayload,
   DatabaseTable,
-  PlanCombinationRespType,
   TimeDurationDayjsType,
 } from '@aglint/shared-types';
 import { ApiError } from '@aglint/shared-utils';
@@ -56,23 +55,25 @@ export const findCandSelectedSlots = async ({
     );
   }
 
-  let max_specified_day = dayjsLocal()
-    .tz(TIME_ZONE)
-    .startOf('day')
-    .add(ai_response.schedulewithMaxNumDays, 'day');
-  let filtered_plans: PlanCombinationRespType[] = flatted_plans.filter(
-    (plan) => {
-      if (plan.sessions.length === 0) return false;
-      let plan_date = dayjsLocal(plan.sessions[0].start_time).tz(TIME_ZONE);
-      return plan_date.isSameOrBefore(max_specified_day, 'date');
-    },
-  );
-  if (filtered_plans.length === 0) {
-    throw new ApiError(
-      'CLIENT',
-      `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
-    );
-  }
+  // let max_specified_day = dayjsLocal()
+  //   .tz(TIME_ZONE)
+  //   .startOf('day')
+  //   .add(ai_response.schedulewithMaxNumDays, 'day');
+  // let filtered_plans: PlanCombinationRespType[] = flatted_plans;
+
+  // flatted_plans.filter(
+  //   (plan) => {
+  //     if (plan.sessions.length === 0) return false;
+  //     let plan_date = dayjsLocal(plan.sessions[0].start_time).tz(TIME_ZONE);
+  //     return plan_date.isSameOrBefore(max_specified_day, 'date');
+  //   },
+  // );
+  // if (filtered_plans.length === 0) {
+  //   throw new ApiError(
+  //     'CLIENT',
+  //     `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
+  //   );
+  // }
 
   const preferred_times: TimeDurationDayjsType[] =
     ai_response.prefferredInterviewTimes.map((t) => {
