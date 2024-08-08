@@ -4,8 +4,8 @@ import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 
+import { Text } from '@/devlink/Text';
 import { RequestSetting } from '@/devlink2/RequestSetting';
-import { Text } from '@/devlink2/Text';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import ToggleBtn from '@/src/components/Common/UIToggle';

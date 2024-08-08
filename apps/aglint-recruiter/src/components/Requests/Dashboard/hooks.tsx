@@ -14,7 +14,7 @@ export const useAllScheduleList = () => {
   const query = useQuery({
     queryKey: ['get_All_request'],
 
-    queryFn: () => getRequests({ assigner_id: user_id }),
+    queryFn: () => getRequestsList({ assigner_id: user_id }),
     gcTime: 20000,
   });
   const refetch = () =>
@@ -22,7 +22,11 @@ export const useAllScheduleList = () => {
   return { ...query, refetch };
 };
 
-async function getRequests({ assigner_id }: { assigner_id: string }) {
+export async function getRequestsList({
+  assigner_id,
+}: {
+  assigner_id: string;
+}) {
   const data = await supabase
     .rpc('get_request_count_stats', {
       assigner_id: assigner_id,
@@ -33,10 +37,23 @@ async function getRequests({ assigner_id }: { assigner_id: string }) {
   return data;
 }
 
-export const transformForChartData = (data) => {
+export const transformForChartData = (
+  data: Awaited<ReturnType<typeof getRequestsList>>['data'],
+) => {
   return data.map((entry) => {
-    const totalCount = Object.values(entry.counts).reduce((acc, counts) => {
-      return acc + Object.values(counts).reduce((sum, count) => sum + count, 0);
+    const totalCount = Object.values(entry.counts).reduce((acc, category) => {
+      return (
+        acc +
+        Object.values(category).reduce((sum, countType) => {
+          return (
+            sum +
+            Object.values(countType).reduce(
+              (typeSum, count) => typeSum + count,
+              0,
+            )
+          );
+        }, 0)
+      );
     }, 0);
 
     const date = new Date(entry.date);
@@ -48,53 +65,115 @@ export const transformForChartData = (data) => {
     return {
       name: formattedDate,
       count: totalCount,
-      color: '#F76B15',
+      color: totalCount === 0 ? '#63635E' : '#F76B15',
     };
   });
 };
 
-export const transFormCardData = (data) => {
+export const transFormCardData = (
+  data: Awaited<ReturnType<typeof getRequestsList>>['data'],
+) => {
   return requestTypes.map(({ title, iconName }) => {
+    const counts = data.reduce(
+      (acc, day) => {
+        Object.values(day.counts).forEach((category) => {
+          if (category[title]) {
+            acc.total +=
+              (category[title].standard || 0) + (category[title].urgent || 0);
+            acc.urgent += category[title].urgent || 0;
+          }
+        });
+        return acc;
+      },
+      { total: 0, urgent: 0 },
+    );
+
     return {
       title,
-      count: data.reduce((total, day) => {
-        return (
-          total +
-          Object.values(day.counts).reduce((subTotal, category) => {
-            return subTotal + (category[title] || 0);
-          }, 0)
-        );
-      }, 0),
+      total: counts.total,
+      urgent: counts.urgent,
       iconName,
     };
   });
 };
 
-export const transformProgressData = (data) => {
+export const transformProgressData = (
+  data: Awaited<ReturnType<typeof getRequestsList>>['data'],
+) => {
   const result = data.reduce(
     (acc, day) => {
       // Summing up open requests from 'to_do'
       for (let key in day.counts.to_do) {
-        acc.open_request += day.counts.to_do[key];
+        const counts = day.counts.to_do[key];
+        if (typeof counts === 'object') {
+          acc.open_request += (counts.standard || 0) + (counts.urgent || 0);
+          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
+        } else {
+          acc.open_request += counts;
+          acc.all_request += counts;
+        }
       }
 
       // Summing up completed requests from 'completed'
       for (let key in day.counts.completed) {
-        acc.completed_request += day.counts.completed[key];
+        const counts = day.counts.completed[key];
+        if (typeof counts === 'object') {
+          acc.completed_request +=
+            (counts.standard || 0) + (counts.urgent || 0);
+          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
+        } else {
+          acc.completed_request += counts;
+          acc.all_request += counts;
+        }
+      }
+
+      // Summing up requests from 'in_progress'
+      for (let key in day.counts.in_progress) {
+        const counts = day.counts.in_progress[key];
+        if (typeof counts === 'object') {
+          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
+        } else {
+          acc.all_request += counts;
+        }
+      }
+
+      // Summing up requests from 'blocked'
+      for (let key in day.counts.blocked) {
+        const counts = day.counts.blocked[key];
+        if (typeof counts === 'object') {
+          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
+        } else {
+          acc.all_request += counts;
+        }
       }
 
       return acc;
     },
-    { open_request: 0, completed_request: 0 },
+    { open_request: 0, completed_request: 0, all_request: 0 },
   );
-  const total_requests = result.open_request + result.completed_request;
 
   const completed_percentage = Math.round(
-    total_requests > 0 ? (result.completed_request / total_requests) * 100 : 0,
+    result.all_request > 0
+      ? (result.completed_request / result.all_request) * 100
+      : 0,
   );
 
   return {
-    ...result,
+    open_request: result.open_request,
+    completed_request: result.completed_request,
+    all_request: result.all_request,
     completed_percentage,
   };
 };
+
+export function getSelectedDateRequestCount(data) {
+  return Object.values(data).reduce((total, category) => {
+    return (
+      total +
+      Object.values(category).reduce(
+        (sum, { standard, urgent }) => sum + standard + urgent,
+        0,
+      )
+    );
+  }, 0);
+}

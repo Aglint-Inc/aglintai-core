@@ -1,77 +1,67 @@
-import { useMediaQuery } from '@mui/material';
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJs,
-  LinearScale,
-  Tooltip,
-} from 'chart.js/auto';
-import { capitalize } from 'lodash';
-import { FC, useEffect, useState } from 'react';
-import { Bar } from 'react-chartjs-2';
-ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
-
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { useEffect, useState } from 'react';
 
-import { ReqCompleted } from '@/devlink2/ReqCompleted';
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { useRequests } from '@/src/context/RequestsContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
+import dayjs from '@/src/utils/dayjs';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
+import CompletedRequestsBox from './Components/CompletedRequestsBox';
 import CompletionProgress from './Components/CompletionProgress';
+import { RequestsBarChart } from './Components/RequestsBarChart';
 import {
+  getRequestsList,
+  getSelectedDateRequestCount,
   transFormCardData,
   transformForChartData,
   transformProgressData,
   useAllScheduleList,
 } from './hooks';
-import { dummyRequestData } from './utils';
-type barChartDataType = {
-  name: string;
-  count: number;
-  color: string;
-};
-type requestCardDataType = {
-  title: string;
-  count: number;
-  iconName: string;
-};
-type progressDataType = {
-  completed_request: number;
-  open_request: number;
-  completed_percentage: number;
-};
+import { barChartDataType } from './utils';
+
 function Dashboard() {
   const { requests } = useRequests();
-  const { status } = useAllScheduleList();
+  const { status, data: requestList } = useAllScheduleList();
+  const { setQueryParams } = useRouterPro();
+
   const [chartData, setChartData] = useState<barChartDataType[]>(null);
-  const [requestCardData, setRequestCardData] =
-    useState<requestCardDataType[]>(null);
-  const [progressData, setProgressData] = useState<progressDataType>();
-  const [openCompleted, setOpenCompleted] = useState(false);
-  useEffect(() => {
-    if (status === 'success') {
-      setChartData(transformForChartData(dummyRequestData));
-      setRequestCardData(transFormCardData(dummyRequestData));
-      setProgressData(transformProgressData(dummyRequestData));
-    }
-  }, [status]);
+
+  const [selectedDateRequest, setSelectedDateRequest] =
+    useState<Awaited<ReturnType<typeof getRequestsList>>['data'][number]>(null);
 
   const completedRequest =
     requests.status === 'success'
       ? requests.data.filter((ele) => ele.status === 'completed')
       : [];
 
+  const getSelectedBar = ({ label }) => {
+    const selectedRequest = requestList.data.find(
+      (ele) => dayjs(ele.date).format('MMM DD') === label,
+    );
+    setSelectedDateRequest(selectedRequest);
+  };
+
+  const progressData =
+    selectedDateRequest?.date && transformProgressData([selectedDateRequest]);
+  const requestCardData =
+    selectedDateRequest?.date && transFormCardData([selectedDateRequest]);
   const totalRequestCount =
-    chartData &&
-    chartData.map((ele) => ele.count).reduce((acc, val) => acc + val, 0);
+    selectedDateRequest?.date &&
+    getSelectedDateRequestCount(selectedDateRequest.counts);
+
+  useEffect(() => {
+    if (status === 'success') {
+      // requestList.data = dummyRequestData;
+      setChartData(transformForChartData(requestList.data));
+    }
+  }, [status]);
   return (
     <>
       <RequestDashboard
-        textGraphTitle={`${totalRequestCount} Requests on ${dayjsLocal().format('DD MMMM YYYY, dddd')}`}
+        textGraphTitle={`${totalRequestCount} Requests on ${dayjsLocal(selectedDateRequest?.date).format('DD MMMM, dddd')}`}
         textProgressTitle={
           progressData &&
           `${progressData?.open_request} Open Requests (${progressData?.completed_percentage}% complete)`
@@ -79,44 +69,43 @@ function Dashboard() {
         slotProgressBar={
           <CompletionProgress value={progressData?.completed_percentage} />
         }
-        slotGraph={chartData && <BarChart skills={chartData} />}
+        slotGraph={
+          chartData && (
+            <RequestsBarChart
+              getSelectedBar={getSelectedBar}
+              data={chartData}
+            />
+          )
+        }
         slotRequestList={
           requestCardData &&
-          requestCardData.map(({ title, count, iconName }) => {
+          requestCardData.map(({ title, iconName, total, urgent }) => {
             return (
               <RequestList
                 iconName={iconName}
                 textTitle={capitalizeFirstLetter(title)}
                 key={title}
-                textCount={count}
+                textCount={total}
+                slotBadge={
+                  Boolean(urgent) && (
+                    <GlobalBadge
+                      size={1}
+                      variant={'outline'}
+                      textBadge={`${urgent} Urgent Requests`}
+                    />
+                  )
+                }
+                onClickCard={{
+                  onClick: () => {
+                    setQueryParams({ tab: 'requests' });
+                  },
+                }}
               />
             );
           })
         }
         slotReqCompleted={
-          completedRequest.length ? (
-            <ReqCompleted
-              isDetailListVisible={openCompleted}
-              onClickArrow={{
-                onClick: () => setOpenCompleted(!openCompleted),
-              }}
-              textTitle={`${progressData?.completed_request} Requests completed`}
-              textDesc={`View detailed list of completed requests`}
-              slotTextwithIcon={completedRequest.map((ele, i) => {
-                return (
-                  <TextWithIcon
-                    key={i}
-                    textContent={ele.title}
-                    color={'neutral'}
-                    iconSize={4}
-                    iconName={'event_available'}
-                  />
-                );
-              })}
-            />
-          ) : (
-            <></>
-          )
+          <CompletedRequestsBox completedRequest={completedRequest} />
         }
       />
     </>
@@ -124,87 +113,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-const BarChart: FC<{
-  skills: ReturnType<typeof getOrderedGraphValues>;
-}> = ({ skills }) => {
-  const matches = useMediaQuery('(min-width:1920px)');
-  const { labels, tooltips, counts, colors } = skills.reduce(
-    (acc, { color, name, count }) => {
-      const safeName = capitalize((name ?? '').trim());
-      acc.labels.push(
-        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
-      );
-      acc.tooltips.push(safeName);
-      acc.counts.push(count);
-      acc.colors.push(color);
-      return acc;
-    },
-    { labels: [], tooltips: [], counts: [], colors: [] },
-  );
-  const dataBar = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'requests',
-        data: counts,
-        backgroundColor: colors,
-        borderRadius: 0,
-        borderSkipped: false,
-        grouped: true,
-        barThickness: 20,
-      },
-    ],
-  };
-
-  return (
-    <Bar
-      options={{
-        responsive: true,
-        maintainAspectRatio: false,
-        aspectRatio: matches ? 4 : 3,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              title: (values) => tooltips[values[0].dataIndex],
-            },
-          },
-          legend: {
-            display: false,
-          },
-        },
-        scales: {
-          x: {
-            title: {
-              display: false,
-              font: { weight: 'bold' },
-              text: 'Dates',
-            },
-            border: {
-              color: 'transparent',
-            },
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            title: {
-              display: false,
-              font: { weight: 'bold' },
-              text: 'Request',
-            },
-            border: {
-              color: 'transparent',
-            },
-            grid: {
-              display: false,
-              color: 'rgba(0, 0, 0, 0.05)',
-            },
-            display: false,
-          },
-        },
-      }}
-      data={dataBar}
-    />
-  );
-};
