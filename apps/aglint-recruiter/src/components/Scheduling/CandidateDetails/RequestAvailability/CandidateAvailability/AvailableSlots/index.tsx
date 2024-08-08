@@ -276,6 +276,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
             <ButtonSolid
+              size={2}
               onClickButton={{
                 onClick: handleSubmit,
               }}
