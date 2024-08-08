@@ -189,6 +189,7 @@ const GreenhouseSync: GreenhouseSyncOptions = {
     jobs: {
       name: 'Jobs',
       isEnabled: true,
+      subOption: undefined,
       // subOption: {
       //   description: 'Sync Greenhouse Interview Stages',
       //   options: {
