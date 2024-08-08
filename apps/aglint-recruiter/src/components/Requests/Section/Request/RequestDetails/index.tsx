@@ -13,7 +13,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CandidateDetails from './CandidateDetails';
-import ReasonDetails from './ReasonDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
@@ -49,7 +48,7 @@ function RequestDetails({
               end_date: dayjsLocal().add(7, 'day').format('YYYY-MM-DD'),
             }}
           />
-          <ReasonDetails />
+          {/* <ReasonDetails />// reason */}
         </Stack>
       }
       slotRightText={

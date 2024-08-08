@@ -77,7 +77,7 @@ function Section({
 
 export default Section;
 
-function RequestCardSkeletons() {
+export function RequestCardSkeletons() {
   return (
     <>
       <RequestCardSkeleton />
