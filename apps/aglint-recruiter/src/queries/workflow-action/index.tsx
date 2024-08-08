@@ -1,4 +1,7 @@
-import { DatabaseTableInsert, DatabaseTableUpdate } from '@aglint/shared-types';
+import type {
+  DatabaseTableInsert,
+  DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import {
   useMutation,
   useMutationState,
@@ -93,10 +96,10 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         previousWorkflowActions,
       ).reduce((acc, curr) => {
         if (curr.id === variables.id) {
-          const newPayload: WorkflowAction = structuredClone({
+          const newPayload = structuredClone({
             ...curr,
-            ...variables.payload,
-          });
+            ...variables,
+          }) as WorkflowAction;
           acc.push(newPayload);
         } else acc.push(curr);
         return acc;
@@ -116,15 +119,12 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
     },
   });
 };
-type UpdateWorkflowAction = {
-  id: string;
-  payload: DatabaseTableUpdate['workflow_action'];
-};
-const updateWorkflowAction = async ({ id, payload }: UpdateWorkflowAction) => {
+type UpdateWorkflowAction = DatabaseTableUpdate['workflow_action'];
+const updateWorkflowAction = async (payload: UpdateWorkflowAction) => {
   const { data, error } = await supabase
     .from('workflow_action')
     .update(payload)
-    .eq('id', id)
+    .eq('id', payload.id)
     .select('*');
   if (error) throw new Error(error.message);
   return data;
@@ -137,15 +137,11 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
   return useMutation({
     mutationFn: createWorkflowAction,
     mutationKey,
-    onMutate: ({ id, payload, workflow_id }) => {
+    onMutate: (payload) => {
       const previousWorkflowActions =
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
       const newWorkflowActions = structuredClone(previousWorkflowActions);
-      newWorkflowActions.push({
-        ...(payload as WorkflowAction),
-        id,
-        workflow_id,
-      });
+      newWorkflowActions.push(payload as WorkflowAction);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
     onError: (_error, variables) => {
@@ -174,19 +170,11 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
     },
   });
 };
-type InsertWorkflowAction = {
-  id: string;
-  workflow_id: string;
-  payload: Omit<DatabaseTableInsert['workflow_action'], 'id' | 'workflow_id'>;
-};
-const createWorkflowAction = async ({
-  workflow_id,
-  id,
-  payload,
-}: InsertWorkflowAction) => {
+type InsertWorkflowAction = DatabaseTableInsert['workflow_action'];
+const createWorkflowAction = async (payload: InsertWorkflowAction) => {
   const { data, error } = await supabase
     .from('workflow_action')
-    .insert({ ...payload, id, workflow_id })
+    .insert(payload)
     .select('*')
     .single();
   if (error) throw new Error(error.message);

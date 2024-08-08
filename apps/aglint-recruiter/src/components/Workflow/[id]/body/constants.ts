@@ -1,6 +1,9 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type {
+  CustomAgentInstructionPayload,
+  Trigger_API_Action_Mapper,
+} from '@aglint/shared-types';
 
-import { Workflow } from '@/src/types/workflow.types';
+import type { Workflow } from '@/src/types/workflow.types';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
@@ -144,153 +147,248 @@ export function getTriggerOption(
   return `${preMessage} ${message}`;
 }
 
-export const ACTION_TRIGGER_MAP: {
-  // eslint-disable-next-line no-unused-vars
-  [trigger in Workflow['trigger']]: {
-    name: string;
-    value: DatabaseTable['company_email_template']['type'];
-  }[];
-} = {
+export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   sendAvailReqReminder: [
     {
-      value: 'sendAvailReqReminder_email_applicant',
+      value: {
+        target_api: 'sendAvailReqReminder_email_applicant',
+        action_type: 'email',
+      },
       name: 'Send email to applicant',
     },
   ],
   selfScheduleReminder: [
     {
-      value: 'selfScheduleReminder_email_applicant',
+      value: {
+        target_api: 'selfScheduleReminder_email_applicant',
+        action_type: 'email',
+      },
       name: 'Send email to applicant',
     },
   ],
   interviewStart: [
     {
-      value: 'interviewStart_email_applicant',
+      value: {
+        target_api: 'interviewStart_email_applicant',
+        action_type: 'email',
+      },
       name: 'Send email to applicant',
     },
     {
-      value: 'interviewStart_email_interviewers',
+      value: {
+        target_api: 'interviewStart_email_interviewers',
+        action_type: 'email',
+      },
       name: 'Send emails to interviewers',
     },
     {
-      value: 'interviewStart_email_organizer',
+      value: {
+        target_api: 'interviewStart_email_organizer',
+        action_type: 'email',
+      },
       name: 'Send emails to organizer',
     },
     {
-      value: 'interviewStart_slack_interviewers',
+      value: {
+        target_api: 'interviewStart_slack_interviewers',
+        action_type: 'slack',
+      },
       name: 'Send slack messages to interviewers',
     },
   ],
   interviewerConfirmation: [
     {
-      value: 'interviewerConfirmation_slack_interviewers',
+      value: {
+        target_api: 'interviewerConfirmation_slack_interviewers',
+        action_type: 'slack',
+      },
       name: 'Send slack messages to interviewers',
     },
   ],
   interviewEnd: [
     {
-      value: 'interviewEnd_email_interviewerForFeedback',
+      value: {
+        target_api: 'interviewEnd_email_interviewerForFeedback',
+        action_type: 'email',
+      },
       name: 'Send feedback emails to interviewers',
     },
     {
-      value: 'interviewEnd_slack_interviewerForFeedback',
+      value: {
+        target_api: 'interviewEnd_slack_interviewerForFeedback',
+        action_type: 'slack',
+      },
       name: 'Send feedback messages to interviewers on slack',
     },
     {
-      value: 'interviewEnd_email_organizerForMeetingStatus',
+      value: {
+        target_api: 'interviewEnd_email_organizerForMeetingStatus',
+        action_type: 'email',
+      },
       name: 'Send a meeting completion confirmation form to the organizer, through email',
     },
     {
-      value: 'interviewEnd_slack_organizerForMeetingStatus',
+      value: {
+        target_api: 'interviewEnd_slack_organizerForMeetingStatus',
+        action_type: 'slack',
+      },
       name: 'Send a meeting completion confirmation form to the organizer, through slack',
     },
     {
-      value: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+      value: {
+        target_api: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        action_type: 'email',
+      },
       name: 'Send an attendance confirmation form to shadowing trainees, through email',
     },
     {
-      value: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      value: {
+        target_api: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        action_type: 'slack',
+      },
       name: 'Send an attendance confirmation form to shadowing trainees, through slack',
     },
     {
-      value: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+      value: {
+        target_api: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        action_type: 'email',
+      },
       name: 'Send an attendance confirmation form to reverse shadowing trainees, through email',
     },
     {
-      value: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+      value: {
+        target_api: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        action_type: 'slack',
+      },
       name: 'Send an attendance confirmation form to reverse shadowing trainees, through slack',
     },
   ],
   meetingDeclined: [
     {
-      value: 'meetingDeclined_email_organizer',
+      value: {
+        target_api: 'meetingDeclined_email_organizer',
+        action_type: 'email',
+      },
       name: 'Send email to organizer',
     },
   ],
   meetingAccepted: [
     {
-      value: 'meetingAccepted_email_organizer',
+      value: {
+        target_api: 'meetingAccepted_email_organizer',
+        action_type: 'email',
+      },
       name: 'Send email to organizer',
     },
   ],
   candidateBook: [
     {
-      value: 'candidateBook_slack_interviewerForConfirmation',
+      value: {
+        target_api: 'candidateBook_slack_interviewerForConfirmation',
+        action_type: 'slack',
+      },
       name: 'Send confirmation messages to interviewers on slack',
     },
   ],
   onQualified: [
     {
-      value: 'onQualified_email_trainee',
+      value: {
+        target_api: 'onQualified_email_trainee',
+        action_type: 'email',
+      },
       name: 'Send email to trainee',
     },
     {
-      value: 'onQualified_slack_trainee',
+      value: {
+        target_api: 'onQualified_slack_trainee',
+        action_type: 'slack',
+      },
       name: 'Send slack notification to trainee',
     },
   ],
   onTrainingComplete: [
     {
-      value: 'onTrainingComplete_email_approverForTraineeMeetingQualification',
+      value: {
+        target_api:
+          'onTrainingComplete_email_approverForTraineeMeetingQualification',
+        action_type: 'email',
+      },
       name: 'Send email to approver',
     },
     {
-      value: 'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+      value: {
+        target_api:
+          'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+        action_type: 'slack',
+      },
       name: 'Send slack notification to approver',
     },
   ],
   onAvailReqAgent: [
     {
       name: 'Request Availability through Agent via Email',
-      value: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+      value: {
+        target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+        action_type: 'end_point',
+      },
     },
     {
       name: 'Request Availability through link',
-      value: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+      value: {
+        target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+        action_type: 'agent_instruction',
+      },
     },
   ],
   onReceivingAvailReq: [
     {
-      value: 'onReceivingAvailReq_agent_confirmSlot',
+      value: {
+        target_api: 'onReceivingAvailReq_agent_confirmSlot',
+        action_type: 'end_point',
+      },
       name: 'Pick Suitable slot/s and Schedule Interviews',
     },
     {
-      value: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+      value: {
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+        action_type: 'end_point',
+      },
       name: 'Pick suitable slots and dend Self schedule link',
     },
   ],
   onSelfScheduleReqAgent: [
     {
       name: 'Self Schedule Interview with Email Agent',
-      value: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+      value: {
+        target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+        action_type: 'end_point',
+      },
     },
     {
       name: 'Self Schedule Interview with Email Link',
-      value: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+      value: {
+        target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+        action_type: 'end_point',
+      },
     },
     {
       name: 'Self Schedule Interview with Phone Agent',
-      value: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
+      value: {
+        target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
+        action_type: 'end_point',
+      },
     },
   ],
 } as const;
+
+export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =
+  {
+    scheduleWithinNumDays: 3,
+    schedulewithMaxNumDays: 5,
+    prefferredInterviewTimes: [{ startTime: '10:00', endTime: '18:00' }],
+    excludeInterviewTimes: [],
+    maxOptionsToCandidates: 10,
+    balanceWorkloadAmongInterviewers: true,
+    scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+    preferredInterviewer: [],
+  } as const;

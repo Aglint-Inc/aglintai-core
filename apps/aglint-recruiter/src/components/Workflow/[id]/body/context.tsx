@@ -4,9 +4,10 @@ import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { WorkflowAction } from '@/src/types/workflow.types';
+import type { WorkflowAction } from '@/src/types/workflow.types';
+import toast from '@/src/utils/toast';
 
-import { ACTION_TRIGGER_MAP } from './constants';
+import { ACTION_TRIGGER_MAP, AI_RESPONSE_PLACEHOLDER } from './constants';
 
 const useActionsContext = () => {
   const {
@@ -16,52 +17,141 @@ const useActionsContext = () => {
   const {
     workflow: { trigger },
     actions: { data: actions },
+    handleUpdateAction,
     handleCreateAction,
   } = useWorkflow();
+
+  const { emailActions } = useMemo(
+    () =>
+      (actions ?? []).reduce(
+        (acc, curr) => {
+          if (curr.action_type === 'email') acc.emailActions.push(curr);
+          else acc.allActions.push(curr);
+          return acc;
+        },
+        {
+          emailActions: [] as typeof actions,
+          allActions: [] as typeof actions,
+        },
+      ),
+    [actions],
+  );
 
   const globalOptions = useMemo(
     () =>
       ACTION_TRIGGER_MAP[trigger].filter(
         ({ value }) =>
-          !(actions ?? []).find(({ target_api }) => target_api === value),
+          !value.target_api.includes('_email_') ||
+          !(emailActions ?? []).find(
+            ({ target_api }) => target_api === value.target_api,
+          ),
       ),
-    [ACTION_TRIGGER_MAP, trigger, actions],
+    [ACTION_TRIGGER_MAP, trigger, emailActions],
   );
 
-  const currentEmailTemplate = useMemo(
-    () =>
-      (all_company_email_template ?? []).find(
-        ({ type }) => type === globalOptions[0]?.value,
-      ),
-    [all_company_email_template, globalOptions],
-  );
+  const canCreateAction = useMemo(() => globalOptions.length, [globalOptions]);
 
-  const canCreateAction = useMemo(
-    () => currentEmailTemplate && !!globalOptions.length,
-    [globalOptions, currentEmailTemplate],
+  const handleCreateUpdate = useCallback(
+    (
+      fn: typeof handleCreateAction | typeof handleUpdateAction,
+      { action_type, target_api, order }: Partial<WorkflowAction>,
+    ) => {
+      switch (action_type) {
+        case 'email':
+          {
+            const emailTemplate = (all_company_email_template ?? []).find(
+              ({ type }) => type === target_api,
+            );
+            if (emailTemplate)
+              fn({
+                action_type,
+                target_api,
+                order,
+                payload: {
+                  body: emailTemplate.body,
+                  subject: emailTemplate.subject,
+                },
+              });
+            else toast.error('Email template for this action is not available');
+          }
+          break;
+        case 'slack':
+          {
+            fn({
+              action_type,
+              target_api,
+              order,
+              payload: null,
+            });
+          }
+          break;
+        case 'end_point':
+          {
+            fn({
+              action_type,
+              target_api,
+              order,
+              payload: null,
+            });
+          }
+          break;
+        case 'agent_instruction':
+          {
+            fn({
+              action_type,
+              target_api,
+              order,
+              payload: {
+                instruction: '',
+                ai_response_status: 'not_started',
+                ai_response: AI_RESPONSE_PLACEHOLDER,
+              },
+            });
+          }
+          break;
+      }
+    },
+    [all_company_email_template],
   );
 
   const createAction = useCallback(() => {
-    if (canCreateAction)
-      handleCreateAction({
-        order: (actions ?? []).length
-          ? actions[actions.length - 1].order + 1
-          : 1,
-        target_api: currentEmailTemplate.type,
-        payload: {
-          body: currentEmailTemplate.body,
-          subject: currentEmailTemplate.subject,
-        },
-      });
-  }, [handleCreateAction, actions, currentEmailTemplate, canCreateAction]);
+    if (canCreateAction) {
+      const {
+        value: { action_type, target_api },
+      } = globalOptions[0];
+      const order = (actions ?? []).length
+        ? actions[actions.length - 1].order + 1
+        : 1;
+      handleCreateUpdate(handleCreateAction, {
+        action_type,
+        target_api,
+        order,
+      } as WorkflowAction);
+    } else toast.error('No other action available');
+  }, [
+    handleCreateUpdate,
+    handleCreateAction,
+    globalOptions,
+    actions,
+    canCreateAction,
+    AI_RESPONSE_PLACEHOLDER,
+  ]);
+
+  const updateAction = useCallback(
+    (action: WorkflowAction) => handleCreateUpdate(handleUpdateAction, action),
+    [handleCreateUpdate],
+  );
 
   const getCurrentOption = useCallback(
     (type: WorkflowAction['target_api']) =>
-      ACTION_TRIGGER_MAP[trigger].find(({ value }) => value === type),
+      ACTION_TRIGGER_MAP[trigger].find(
+        ({ value: { target_api } }) => target_api === type,
+      ),
     [ACTION_TRIGGER_MAP, trigger],
   );
   return {
     createAction,
+    updateAction,
     getCurrentOption,
     canCreateAction,
     globalOptions,

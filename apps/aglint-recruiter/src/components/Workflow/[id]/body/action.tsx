@@ -12,10 +12,8 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
-import toast from '@/src/utils/toast';
 
 import { useActions } from './context';
 
@@ -84,57 +82,52 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      {props.action.target_api.split('_slack_').length === 2 ? (
-        <GlobalBannerInline
-          textContent={'A slack notification will be sent for this action.'}
-          slotButton={<></>}
-        />
-      ) : (
-        <Template key={props.action.target_api} {...props} />
-      )}
+      <TargetAPIBody {...props} />
     </>
   );
 };
 
-const ActionForm = ({ action: { id, target_api } }: ActionProps) => {
-  const {
-    emailTemplates: { data: all_company_email_template },
-  } = useAuthDetails();
-  const { handleUpdateAction, manageWorkflow } = useWorkflow();
-  const { globalOptions, getCurrentOption } = useActions();
+const TargetAPIBody = (props: ActionProps) => {
+  switch (props.action.action_type) {
+    case 'email':
+      return <EmailTemplate key={props.action.target_api} {...props} />;
+    case 'slack':
+      return <SlackTemplate key={props.action.target_api} {...props} />;
+    case 'end_point':
+      return <EndPointTemplate key={props.action.target_api} {...props} />;
+    case 'agent_instruction':
+      return (
+        <AgentInstructionTemplate key={props.action.target_api} {...props} />
+      );
+  }
+};
+
+const ActionForm = ({ action }: ActionProps) => {
+  const { manageWorkflow } = useWorkflow();
+  const { globalOptions, getCurrentOption, updateAction } = useActions();
   const options = useMemo(
-    () => [...globalOptions, getCurrentOption(target_api)],
-    [globalOptions, target_api],
+    () => [...globalOptions, getCurrentOption(action.target_api)],
+    [globalOptions, action.target_api],
   );
+  console.log(action, '🔥');
   return (
     <UISelect
       label='Do this'
-      value={target_api}
+      value={action.target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        const emailTemplate = all_company_email_template.find(
-          ({ type }) => type === e.target.value,
-        );
-        if (emailTemplate) {
-          const { body, type, subject } = emailTemplate;
-          handleUpdateAction({
-            id,
-            payload: {
-              target_api: type,
-              payload: {
-                subject,
-                body,
-              },
-            },
-          });
-        } else toast.error('Template for this action is missing');
+        console.log(e.target.value, '🔥');
+        const safeEntry = e.target.value as (typeof options)[number];
+        updateAction({ ...action, ...safeEntry });
       }}
     />
   );
 };
 
-const Template = ({ action: { payload } }: ActionProps) => {
+const EmailTemplate = ({ action: { payload, action_type } }: ActionProps) => {
+  if (action_type !== 'email') return <></>;
+
   const email_subject = <EmailSubject name='subject' value={payload} />;
 
   const email_body = <EmailBody name='body' value={payload} />;
@@ -145,17 +138,16 @@ const Template = ({ action: { payload } }: ActionProps) => {
       {email_body}
     </Stack>
   );
-
   return forms;
 };
 
-type EmailTemplate = Pick<
+type EmailTemplateType = Pick<
   DatabaseTable['company_email_template'],
   'body' | 'subject'
 >;
 
 type FormsType = {
-  name: keyof EmailTemplate;
+  name: keyof EmailTemplateType;
   value: {
     [key in keyof WorkflowAction['payload']]: WorkflowAction['payload'][key];
   };
@@ -219,6 +211,66 @@ const EmailBody: React.FC<FormsType> = memo(
   },
 );
 EmailBody.displayName = 'EmailBody';
+
+const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
+  if (action_type !== 'slack') return <></>;
+
+  return (
+    <GlobalBannerInline
+      textContent={'A slack notification will be sent for this action.'}
+      slotButton={<></>}
+    />
+  );
+};
+
+const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
+  if (action_type !== 'end_point') return <></>;
+
+  return (
+    <GlobalBannerInline
+      textContent={'Aglint system will handle this this action'}
+      slotButton={<></>}
+    />
+  );
+};
+
+const AgentInstructionTemplate = ({ action }: ActionProps) => {
+  if (action.action_type !== 'agent_instruction') return <></>;
+
+  const email_body = <EmailBody name='body' value={action} />;
+
+  const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
+  return forms;
+};
+
+const AgentInstructionBody: React.FC<
+  ActionProps['action'] & { disabled?: boolean }
+> = memo(({ action_type, payload, disabled = true }) => {
+  if (action_type !== 'agent_instruction') return <></>;
+  return (
+    <Stack>
+      <UITypography type='small'>Agent Instruction</UITypography>
+      <Stack
+        sx={{
+          mt: '8px',
+          border: '1px solid',
+          borderColor: 'var(--neutral-6)',
+          borderRadius: 'var(--radius-2)',
+        }}
+      >
+        <TipTapAIEditor
+          toolbar={false}
+          disabled={disabled}
+          editor_type='regular'
+          initialValue={payload.instruction}
+          handleChange={null}
+          placeholder=''
+        />
+      </Stack>
+    </Stack>
+  );
+});
+AgentInstructionBody.displayName = 'AgentInstructionBody';
 
 const ActionIcon = memo(() => {
   return (
