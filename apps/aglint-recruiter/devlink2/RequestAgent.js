@@ -22,6 +22,7 @@ export function RequestAgent({
   slotFilter,
   slotAglintAiChat,
   slotTabs,
+  isFilterVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-wrap")} tag="div">
@@ -68,23 +69,25 @@ export function RequestAgent({
           className={_utils.cx(_styles, "req-body-left-wrapper")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-header-ra")}
-            tag="div"
-          >
+          {isFilterVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "ra-tab-pill-wrapper")}
+              className={_utils.cx(_styles, "slot-header-ra")}
               tag="div"
             >
-              {slotTabs ?? <RequestAgentTab />}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ra-tab-pill-wrapper")}
+                tag="div"
+              >
+                {slotTabs ?? <RequestAgentTab />}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "ra-slot-filter")}
+                tag="div"
+              >
+                {slotFilter}
+              </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "ra-slot-filter")}
-              tag="div"
-            >
-              {slotFilter}
-            </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "req-left-body-wrap")}
             tag="div"
