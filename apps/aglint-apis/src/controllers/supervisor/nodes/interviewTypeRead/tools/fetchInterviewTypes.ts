@@ -1,4 +1,5 @@
-import {CallBack, fetchInterviewTypes} from '@aglint/shared-utils';
+import {CallBack} from '@aglint/shared-types';
+import {fetchInterviewTypes} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -28,6 +29,10 @@ export const fetchInterviewTypesTool = ({
         function_name: 'fetch_interview_types',
         payload: mods,
         called_at: new Date().toISOString(),
+        links: mods.map(mod => ({
+          replace: mod.name,
+          with: `/scheduling/interview-types/${mod.id}`,
+        })),
       });
 
       const resp = mods.map(s => {

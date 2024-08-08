@@ -67,7 +67,13 @@ const LinkIcon = ({
 }) => {
   switch (module) {
     case 'Aglint AI':
-      return <AssistantLogo />;
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<AssistantLogo />}
+        />
+      );
     case 'Jobs':
       return (
         <NavLink

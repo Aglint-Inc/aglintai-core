@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-utils';
+import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';

@@ -1,4 +1,3 @@
-import { CallBackAll } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 
@@ -15,7 +14,7 @@ function FetchScheduledInterviews({
 }: {
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
-  const meta = chat.metadata as CallBackAll[];
+  const meta = chat.metadata;
   const selPayload = meta?.findLast(
     (ele) => ele.function_name === 'fetch_scheduled_interviews',
   ).payload;

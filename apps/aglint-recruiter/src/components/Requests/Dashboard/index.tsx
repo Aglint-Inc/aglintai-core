@@ -1,6 +1,6 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useEffect, useState } from 'react';
 
+import { Text } from '@/devlink/Text';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
@@ -14,17 +14,14 @@ import CompletionProgress from './Components/CompletionProgress';
 import { RequestsBarChart } from './Components/RequestsBarChart';
 import {
   getRequestsList,
-  getSelectedDateRequestCount,
   transFormCardData,
   transformForChartData,
   transformProgressData,
   useAllScheduleList,
 } from './hooks';
 import { barChartDataType } from './utils';
-import { Text } from '@/devlink/Text';
 
 function Dashboard() {
-  
   const { requests } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
@@ -50,10 +47,6 @@ function Dashboard() {
     selectedDateRequest?.date && transformProgressData([selectedDateRequest]);
   const requestCardData =
     selectedDateRequest?.date && transFormCardData([selectedDateRequest]);
-  const totalRequestCount =
-    selectedDateRequest?.date &&
-    getSelectedDateRequestCount(selectedDateRequest.counts);
-  const formattedDate = dayjs(selectedDateRequest?.date).format('DD MMMM, dddd');
 
   useEffect(() => {
     if (status === 'success') {
@@ -66,31 +59,32 @@ function Dashboard() {
       <RequestDashboard
         slotHeaderText={
           <>
-          <Text
-            size={1}
-            content={`Hello, ${'John Doe'}!`}
-            styleProps={{
-              style: {
-                display: '-webkit-box',
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            }}
-          ></Text><Text
-            size={3}
-            content={`You have 32 urgent requests and 34 standard requests today.`}
-            styleProps={{
-              style: {
-                display: '-webkit-box',
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              },
-            }}
-          ></Text>
+            <Text
+              size={1}
+              content={`Hello, ${'John Doe'}!`}
+              styleProps={{
+                style: {
+                  display: '-webkit-box',
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+            ></Text>
+            <Text
+              size={3}
+              content={`You have 32 urgent requests and 34 standard requests today.`}
+              styleProps={{
+                style: {
+                  display: '-webkit-box',
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+            ></Text>
           </>
         }
         // ${totalRequestCount} Requests on ${formattedDate}

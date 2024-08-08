@@ -1,4 +1,5 @@
-import {CallBack, fetchJobsUser} from '@aglint/shared-utils';
+import {CallBack} from '@aglint/shared-types';
+import {fetchJobsUser, getFullName} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -29,11 +30,14 @@ export const fetchUserJobs = ({
         function_name: 'fetch_jobs_user',
         payload: jobs,
         called_at: new Date().toISOString(),
+        links: jobs.map(job => ({
+          replace: job.job_title,
+          with: `/jobs/${job.id}`,
+        })),
       });
       const resp = jobs.map(job => {
         return {
           job_title: job.job_title,
-          status: job.status,
         };
       });
       return JSON.stringify(resp);

@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {END, START, StateGraph, StateGraphArgs} from '@langchain/langgraph';
-import {BaseMessage} from 'langchain/schema';
+import {CallBackAll} from '@aglint/shared-types';
+import {END, START, StateGraph} from '@langchain/langgraph';
 import {greetingsNode} from './nodes/greetings/node';
 import {interviewTypesReadNode} from './nodes/interviewTypeRead/node';
-import {fetchScheduledInterviewsNode} from './nodes/scheduledInterviewsRead/node';
-import {createSchedulingSupervisorAgent} from './supervisoragent';
-import {TeamState} from './utils/state';
-import {fetchRequestsNode} from './nodes/requestsRead/node';
 import {fetchJobRelatedNode} from './nodes/jobs/node';
-import {CallBackAll} from '@aglint/shared-utils';
+import {fetchRequestsNode} from './nodes/requestsRead/node';
+import {teamScheduledInterviewsNode} from './nodes/scheduledInterviewsTeam/node';
+import {teamState} from './state';
+import {createSchedulingSupervisorAgent} from './supervisoragent';
 
 export const agentChain = async ({
   recruiter_id,
@@ -21,25 +20,6 @@ export const agentChain = async ({
   callback: (x: CallBackAll) => void;
   job_id?: string;
 }) => {
-  const teamState: StateGraphArgs<TeamState>['channels'] = {
-    messages: {
-      value: (x: BaseMessage[], y: BaseMessage[]) => x.concat(y),
-      default: () => [],
-    },
-    team_members: {
-      value: (x: string[], y: string[]) => x.concat(y),
-      default: () => [],
-    },
-    next: {
-      value: (x: string, y?: string) => y ?? x,
-      default: () => 'supervisor',
-    },
-    instructions: {
-      value: (x: string, y?: string) => y ?? x,
-      default: () => "Resolve the user's request.",
-    },
-  };
-
   const agent = new StateGraph({
     channels: teamState,
   })
@@ -65,9 +45,14 @@ export const agentChain = async ({
       async state => await fetchRequestsNode({state, user_id, callback})
     )
     .addNode(
-      'fetchScheduledInterviewsRead',
+      'scheduledInterviewsTeam',
       async state =>
-        await fetchScheduledInterviewsNode({state, recruiter_id, callback})
+        await teamScheduledInterviewsNode({
+          state,
+          recruiter_id,
+          callback,
+          user_id,
+        })
     )
     // @ts-ignore
     .addNode('supervisor', await createSchedulingSupervisorAgent());
@@ -77,13 +62,13 @@ export const agentChain = async ({
   agent.addEdge('interviewTypesRead', 'supervisor');
   agent.addEdge('requestsRead', 'supervisor');
   agent.addEdge('jobsRelatedRead', 'supervisor');
-  agent.addEdge('fetchScheduledInterviewsRead', 'supervisor');
+  agent.addEdge('scheduledInterviewsTeam', 'supervisor');
   agent.addConditionalEdges('supervisor', x => x.next, {
     greetingAgent: 'greetingAgent',
     interviewTypesRead: 'interviewTypesRead',
     requestsRead: 'requestsRead',
     jobsRelatedRead: 'jobsRelatedRead',
-    fetchScheduledInterviewsRead: 'fetchScheduledInterviewsRead',
+    scheduledInterviewsTeam: 'scheduledInterviewsTeam',
     FINISH: END,
   });
   agent.addEdge(START, 'supervisor');

@@ -1,5 +1,5 @@
-import {FunctionNames} from '@aglint/shared-types';
-import {CallBackAll} from '@aglint/shared-utils';
+import {CallBackAll} from '@aglint/shared-types';
+import {FunctionNames} from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 const saveToDB = async ({
