@@ -66,12 +66,12 @@ const useWorkflowContext = () => {
   });
 
   const handleCreateAction = useCallback(
-    (payload: Parameters<typeof createActionMutation>[0]['payload']) => {
+    (payload: Parameters<typeof createActionMutation>[0]) => {
       const id = uuidv4();
       createActionMutation({
-        id,
-        payload,
         workflow_id: workflow?.id,
+        ...payload,
+        id,
       });
     },
     [workflow],
