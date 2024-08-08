@@ -12,6 +12,7 @@ export const useAllDepartments = () => {
     queryFn: () => fetchDepartments(recruiter_id),
     enabled: !!recruiter_id,
     refetchInterval: 1000 * 60 * 10,
+    placeholderData: [],
   });
 
   const refetch = () => {

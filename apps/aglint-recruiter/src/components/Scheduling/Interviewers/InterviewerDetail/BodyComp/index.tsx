@@ -109,6 +109,14 @@ function BodyComp() {
               refetch={interviewerDetailsRefetch}
               onClose={() => {
                 setIsOpen(null);
+                //remove query param
+                const { pathname, query } = router;
+                const updatedQuery = { ...query };
+                delete updatedQuery['edit_enable'];
+                router.push({
+                  pathname,
+                  query: updatedQuery,
+                });
               }}
             />
           ) : (

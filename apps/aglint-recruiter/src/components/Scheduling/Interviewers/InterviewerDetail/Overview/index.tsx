@@ -50,13 +50,10 @@ function Overview({
     (rel) => rel.module_training_status === 'training' && !rel.is_archived,
   );
 
-  const trainingModulesListWithGlobalArc = trainingModulesList?.map(
-    (trainee) => ({
-      ...trainee,
-      is_global_archived: allModules?.find(
-        (module) => module.id === trainee.module_id,
-      ).is_archived,
-    }),
+  const filteredtrainingModulesList = trainingModulesList?.filter(
+    (qualified) =>
+      !allModules?.find((module) => module.id === qualified.module_id)
+        .is_archived,
   );
 
   const todayTypeText =
@@ -112,7 +109,7 @@ function Overview({
               }
             </Typography>
             <Typography>{todayTypeText}</Typography>
-            <Typography fontWeight={500}>  Weekly : </Typography>
+            <Typography fontWeight={500}> Weekly : </Typography>
             <Typography>
               {
                 interviewerDetails.scheduling_settings?.interviewLoad
@@ -200,9 +197,9 @@ function Overview({
         slotTrainingModules={
           !isLoading ? (
             <>
-              {trainingModulesListWithGlobalArc.length ? (
+              {filteredtrainingModulesList?.length ? (
                 <>
-                  {trainingModulesListWithGlobalArc.map((relation) => {
+                  {filteredtrainingModulesList?.map((relation) => {
                     return (
                       <TrainingInterviewerType
                         relation={relation}
