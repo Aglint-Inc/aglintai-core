@@ -51,6 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cand-avail-recieved`,
         {
           ...meta,
+          event_run_id: id,
         },
       );
     }

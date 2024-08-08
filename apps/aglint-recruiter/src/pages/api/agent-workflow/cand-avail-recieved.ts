@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     event_run_id,
   );
 
-  const ai_response = payload.ai_response.ai_response;
+  const ai_response = payload.ai_response;
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
