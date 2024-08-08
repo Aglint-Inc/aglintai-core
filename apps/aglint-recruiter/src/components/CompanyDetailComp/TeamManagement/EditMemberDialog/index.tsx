@@ -271,21 +271,12 @@ const EditMember = ({
                     }}
                   />
                   <Stack>
-                    <Typography fontSize={'13px'}>
-                      <Typography>
-                        <span style={{ color: 'var(--error-9)' }}>
-                          Change profile photo
-                        </span>
-                        <span
-                          style={{
-                            color: 'var(--neutral-9)',
-                            fontSize: 'var(--font-size-1)',
-                          }}
-                        >
-                          {' '}
-                          ( optional )
-                        </span>
-                      </Typography>
+                    <Typography
+                      fontSize={'13px'}
+                      fontWeight={400}
+                      color={'error'}
+                    >
+                      Change profile photo
                     </Typography>
                     <Typography fontSize={'12px'}>
                       Upload a square profile image (PNG or JPEG). Maximum size:
@@ -546,23 +537,6 @@ const EditMember = ({
                       )}
                     </Stack>
                   )}
-                {/* <UIPhoneInput
-                  labelSize='small'
-                  defaultCountry={'india'}
-                  label={'Phone'}
-                  placeholder={'Enter a phone number'}
-                  value={form.phone}
-                  required={true}
-                  error={formError.phone}
-                  onChange={(value, data, event, formattedValue) => {
-                    // onChange(
-                    //   { target: { value: formattedValue } },
-                    //   id,
-                    //   data.format,
-                    // );
-                    console.log(value, data, event, formattedValue);
-                  }}
-                /> */}
 
                 {(member.recruiter_relation[0].roles.name !== 'admin' ||
                   member.recruiter_relation[0].created_by ===
