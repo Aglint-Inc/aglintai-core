@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import type { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import _ from 'lodash';
 import React, { memo, useMemo } from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
@@ -105,16 +104,17 @@ const TargetAPIBody = (props: ActionProps) => {
 
 const ActionForm = ({ action }: ActionProps) => {
   const { manageWorkflow } = useWorkflow();
-  const { globalOptions, getCurrentOption, updateAction } = useActions();
+  const { globalOptions, getCurrentOption, selectAction } = useActions();
   const currentOption = useMemo(() => {
     const { name, value } = getCurrentOption(action.target_api);
-    return { name, value: _.toString(value) };
+    return { name, value: value.target_api, ...value };
   }, [action.target_api]);
   const options = useMemo(
     () => [
       ...globalOptions.map(({ name, value }) => ({
         name,
-        value: _.toString(value),
+        value: value.target_api,
+        ...value,
       })),
       currentOption,
     ],
@@ -124,14 +124,19 @@ const ActionForm = ({ action }: ActionProps) => {
   return (
     <UISelect
       label='Do this'
-      value={currentOption}
+      value={currentOption.target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        const safeEntry = _(
-          e.target.value,
-        ).toJSON() as unknown as (typeof options)[number];
-        updateAction({ ...action, ...safeEntry });
+        const { action_type, target_api, payload } = options.find(
+          ({ target_api }) => e.target.value === target_api,
+        );
+        selectAction({
+          ...action,
+          action_type,
+          target_api,
+          payload,
+        } as WorkflowAction);
       }}
     />
   );

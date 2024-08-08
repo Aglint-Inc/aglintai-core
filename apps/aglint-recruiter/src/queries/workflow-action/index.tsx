@@ -69,6 +69,7 @@ export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
       );
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
+    onError: () => toast.error('Unable to delete workflow'),
   });
 };
 type DeleteWorkflowAction = {
@@ -87,7 +88,8 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: updateWorkflowAction,
+    mutationFn: (payload: UpdateWorkflowAction) =>
+      updateWorkflowAction(payload),
     mutationKey,
     onMutate: (variables) => {
       const previousWorkflowActions =
@@ -116,6 +118,7 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         return acc;
       }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
+      toast.error('Unable to update workflow');
     },
   });
 };
@@ -155,6 +158,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         return acc;
       }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
+      toast.error('Unable to create workflow');
     },
     onSuccess: (data, variables) => {
       const previousWorkflowActions =

@@ -37,10 +37,10 @@ const useActionsContext = () => {
     [globalOptions],
   );
 
-  const handleCreateUpdate = useCallback(
+  const handleCreateSelectAction = useCallback(
     (
       fn: typeof handleCreateAction | typeof handleUpdateAction,
-      { action_type, target_api, order }: Partial<WorkflowAction>,
+      { action_type, target_api, order, id }: Partial<WorkflowAction>,
     ) => {
       switch (action_type) {
         case 'email':
@@ -50,6 +50,7 @@ const useActionsContext = () => {
             );
             if (emailTemplate)
               fn({
+                id,
                 action_type,
                 target_api,
                 order,
@@ -64,6 +65,7 @@ const useActionsContext = () => {
         case 'slack':
           {
             fn({
+              id,
               action_type,
               target_api,
               order,
@@ -74,6 +76,7 @@ const useActionsContext = () => {
         case 'end_point':
           {
             fn({
+              id,
               action_type,
               target_api,
               order,
@@ -84,6 +87,7 @@ const useActionsContext = () => {
         case 'agent_instruction':
           {
             fn({
+              id,
               action_type,
               target_api,
               order,
@@ -108,14 +112,14 @@ const useActionsContext = () => {
       const order = (actions ?? []).length
         ? actions[actions.length - 1].order + 1
         : 1;
-      handleCreateUpdate(handleCreateAction, {
+      handleCreateSelectAction(handleCreateAction, {
         action_type,
         target_api,
         order,
       } as WorkflowAction);
     } else toast.error('No other action available');
   }, [
-    handleCreateUpdate,
+    handleCreateSelectAction,
     handleCreateAction,
     globalOptions,
     actions,
@@ -123,9 +127,10 @@ const useActionsContext = () => {
     AI_RESPONSE_PLACEHOLDER,
   ]);
 
-  const updateAction = useCallback(
-    (action: WorkflowAction) => handleCreateUpdate(handleUpdateAction, action),
-    [handleCreateUpdate],
+  const selectAction = useCallback(
+    (action: WorkflowAction) =>
+      handleCreateSelectAction(handleUpdateAction, action),
+    [handleCreateSelectAction, handleUpdateAction],
   );
 
   const getCurrentOption = useCallback(
@@ -137,7 +142,7 @@ const useActionsContext = () => {
   );
   return {
     createAction,
-    updateAction,
+    selectAction,
     getCurrentOption,
     canCreateAction,
     globalOptions,
