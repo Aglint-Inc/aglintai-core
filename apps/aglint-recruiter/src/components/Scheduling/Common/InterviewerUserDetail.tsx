@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Text } from '@/devlink/Text';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
@@ -136,13 +135,11 @@ function InterviewerUserDetail({
       isRoleVisible={true}
       slotRole={
         userDetails?.position ? (
-          <TextWithIcon
-            fontWeight={'regular'}
-            textContent={userDetails.position}
-            iconName={'work'}
-            iconSize={4}
-            color='neutral'
-            fontSize={1}
+          <Text
+            content={userDetails.position}
+            size={1}
+            color={'neutral'}
+            weight={'regular'}
           />
         ) : (
           '--'

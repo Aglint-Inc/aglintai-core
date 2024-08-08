@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
+import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/src/utils/routing/routes';
@@ -48,7 +48,14 @@ function ModuleMembersComp() {
   return (
     <>
       <PageLayout
-        slotTopbarLeft={<>{breadcrum}</>}
+        slotTopbarLeft={
+          <>
+            {breadcrum}
+            {editModule?.is_archived && (
+              <GlobalBadge textBadge='Archieved' color={'warning'} />
+            )}
+          </>
+        }
         slotTopbarRight={
           <Stack
             direction={'row'}
@@ -56,27 +63,35 @@ function ModuleMembersComp() {
             gap={'var(--space-2)'}
           >
             {editModule?.is_archived && (
-              <Stack maxWidth={'866px'}>
-                <GlobalBannerInline
-                  color={'warning'}
-                  slotButton={
-                    <>
-                      <ButtonSolid
-                        textButton='Unarchive'
-                        size={1}
-                        onClickButton={{
-                          onClick: unArcheive,
-                        }}
-                      />
-                    </>
-                  }
-                  // isDescriptionVisible={false}
+              // <Stack maxWidth={'866px'}>
+              //   <GlobalBannerInline
+              //     color={'warning'}
+              //     slotButton={
+              //       <>
+              //         <ButtonSolid
+              //           textButton='Unarchive'
+              //           size={1}
+              //           onClickButton={{
+              //             onClick: unArcheive,
+              //           }}
+              //         />
+              //       </>
+              //     }
+              //     // isDescriptionVisible={false}
 
-                  textContent={
-                    'This interview type is archived. Click "Unarchive" to reactivate.'
-                  }
-                />
-              </Stack>
+              //     textContent={
+              //       'This interview type is archived. Click "Unarchive" to reactivate.'
+              //     }
+              //   />
+              // </Stack>
+              <ButtonSoft
+                textButton='Unarchive'
+                color={'neutral'}
+                onClickButton={{
+                  onClick: unArcheive,
+                }}
+                size={1}
+              />
             )}
             <TopRightButtons editModule={editModule} refetch={refetch} />
           </Stack>
