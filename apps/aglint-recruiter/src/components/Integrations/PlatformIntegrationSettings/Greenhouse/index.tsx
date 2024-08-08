@@ -8,8 +8,8 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import UITextField from '@/src/components/Common/UITextField';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 
 function GreenhouseSettings() {
   const { data, isPending } = useGreenhouseDetails();

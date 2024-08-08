@@ -33,7 +33,7 @@ function SettingsPopup({
       isEnable: true,
     },
     {
-      title: 'Re Schedule Interviews',
+      title: 'Reschedule Interviews',
       tool: 're_schedule_interviews' as toolsEnumType,
       isEnable: true,
     },
@@ -45,7 +45,7 @@ function SettingsPopup({
   ];
 
   const [instructions, setInstructions] = useState(defaultValue);
-  const [autoPilot, setAutoPilot] = useState(false);
+  const [autoPilot, setAutoPilot] = useState(true);
   const [tools, setTools] = useState(defaultTools);
   const [interval, setInterval] = useState({
     intervalTime: 2,

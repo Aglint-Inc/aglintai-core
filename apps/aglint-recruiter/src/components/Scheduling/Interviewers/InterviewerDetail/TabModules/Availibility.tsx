@@ -226,7 +226,7 @@ function Availibility({
           <ButtonSoft
             textButton='Edit'
             color={'neutral'}
-            size={1}
+            size={2}
             onClickButton={{ onClick: () => setEditDrawer(true) }}
           />
         </Stack>
