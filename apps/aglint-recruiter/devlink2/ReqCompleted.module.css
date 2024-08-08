@@ -2,6 +2,7 @@
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
+  cursor: pointer;
 }
 
 .div-block-1737 {

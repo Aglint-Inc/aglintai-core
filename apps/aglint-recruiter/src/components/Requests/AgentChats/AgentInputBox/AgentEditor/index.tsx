@@ -175,7 +175,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       }
     },
 
-    placeholder: "Type '#' for jobs or '@' for candidates or '!' for requests",
+    placeholder: "Type '#' for jobs or '@' for candidates or '/' for requests",
     style: {
       control: {
         backgroundColor: '#fff',

@@ -5,7 +5,11 @@ import { Text } from "./Text";
 import * as _utils from "./utils";
 import _styles from "./NoPendingReq.module.css";
 
-export function NoPendingReq({ as: _Component = _Builtin.Block }) {
+export function NoPendingReq({
+  as: _Component = _Builtin.Block,
+  textHeader = "Request-Free Breeze",
+  textDesc = "All caught up with no pending requests. Breathe easy!",
+}) {
   return (
     <_Component className={_utils.cx(_styles, "schedule-req-wrap")} tag="div">
       <_Builtin.Block
@@ -13,12 +17,8 @@ export function NoPendingReq({ as: _Component = _Builtin.Block }) {
         tag="div"
       >
         <Text content="😴" size="8" />
-        <Text size="4" content="Request-Free Breeze" />
-        <Text
-          content="All caught up with no pending requests. Breathe easy!"
-          weight="regular"
-          color="neutral"
-        />
+        <Text content={textHeader} size="4" />
+        <Text content={textDesc} weight="regular" color="neutral" />
       </_Builtin.Block>
     </_Component>
   );
