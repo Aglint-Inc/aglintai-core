@@ -30,7 +30,7 @@ export function RequestSetting({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          <Text content="Aglint AI Capabilities" size="3" />
+          <Text content="Aglint AI Capabilities" size="2" />
           <Text
             content="Choose which tools you want to enable for the agent"
             weight="regular"
