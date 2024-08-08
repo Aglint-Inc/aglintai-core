@@ -190,17 +190,15 @@ type RequestsFilterKeys = Pick<
   | 'is_new'
   | 'status'
   | 'title'
-  | 'type'
-  | 'schedule_start_date'
-  | 'schedule_end_date' //assignee_id'
+  | 'type' //assignee_id'
+  | 'created_at'
 >;
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
   title: DatabaseTable['request']['title'];
   type: DatabaseTable['request']['type'][];
-  schedule_start_date: DatabaseTable['request']['schedule_start_date'];
-  schedule_end_date: DatabaseTable['request']['schedule_end_date'];
+  created_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];
 };
 type RequestsFilter = {
@@ -224,8 +222,7 @@ export const getRequests = async ({
     status,
     title,
     type: filterType,
-    schedule_end_date,
-    schedule_start_date,
+    created_at,
   },
   sort: { order, type },
 }: GetRequestParams) => {
@@ -238,10 +235,7 @@ export const getRequests = async ({
 
   if (is_new) query.eq('is_new', true);
 
-  if (schedule_start_date)
-    query.gte('schedule_start_date', schedule_start_date);
-
-  if (schedule_end_date) query.lte('schedule_end_date', schedule_end_date);
+  if (created_at) query.gte('created_at', created_at);
 
   // if (assignee_id?.length)
   //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
