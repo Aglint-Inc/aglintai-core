@@ -16,7 +16,6 @@ type DetailsValidity = {
 export const getDetailsValidity = (job: Job): DetailsValidity => {
   if (!job) {
     const invalidFields: DetailsValidity['invalidFields'] = [
-      'company',
       'department_id',
       'description',
       'job_title',
@@ -34,7 +33,6 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
   //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {
     job_title: job.job_title,
-    company: job.company,
     department: job.department_id,
     description: job.description,
     job_type: job.job_type,
@@ -54,7 +52,6 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
           }
           break;
         //TODO: HACK HERE AGAIN
-        case 'company':
         case 'department_id':
         case 'job_title':
         case 'job_type':
