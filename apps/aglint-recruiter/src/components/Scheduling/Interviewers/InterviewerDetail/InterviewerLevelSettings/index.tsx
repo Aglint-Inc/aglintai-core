@@ -19,7 +19,6 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { DayOff } from '@/devlink2/DayOff';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
