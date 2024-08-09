@@ -29,7 +29,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -41,9 +41,9 @@ export async function fetchUtil(
       recruiter_id,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   const meeting_details: MeetingDetailCardType[] = int_sessions.map(
@@ -73,7 +73,7 @@ export async function fetchUtil(
     {
       candidateFirstName: first_name,
       jobRole: job_title,
-      companyName: company,
+      companyName: companyName,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

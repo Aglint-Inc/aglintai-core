@@ -28,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -77,7 +77,7 @@ export async function fetchUtil(
         meeting_organizer.last_name,
       ),
       jobRole: candidateJob.public_jobs.job_title,
-      companyName: candidateJob.public_jobs.company,
+      companyName: candidateJob.candidates.recruiter.name,
       startDate: dayjsLocal(req_start_date)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
