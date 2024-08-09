@@ -21,8 +21,8 @@ function FetchScheduledInterviews({
 
   const uiSchedules: ScheduleListProps[] = selPayload?.map((session) => {
     return {
-      title: session.session_name,
-      type: getScheduleType(session.schedule_type),
+      title: session.interview_session[0].name,
+      type: getScheduleType(session.interview_session[0].schedule_type),
       date: dayjsLocal(session.start_time).format('DD MMM YYYY'),
       link:
         ROUTES['/scheduling/view']() +

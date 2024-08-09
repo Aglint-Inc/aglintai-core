@@ -223,6 +223,7 @@ export const useSchedulingDrawer = ({ refetch }: { refetch: () => void }) => {
         selectedApplicationLog,
         selectedSlots,
         task_id: selectedTaskId,
+        schedule_id: selectedApplication.interview_schedule.id,
       };
       const res = await axios.post(
         '/api/scheduling/application/sendtocandidate',

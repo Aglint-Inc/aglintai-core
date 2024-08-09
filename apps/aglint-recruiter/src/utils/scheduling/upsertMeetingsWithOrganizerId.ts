@@ -42,36 +42,41 @@ export const handleMeetingsOrganizerResetRelations = async ({
       meeting_flow,
     }));
 
-  const { data } = await supabase
+  // Upsert meetings
+  const upsertMeetingsPromise = supabase
     .from('interview_meeting')
     .upsert(upsertMeetings)
     .select()
     .throwOnError();
 
-  // needed in reschedule flow
-  await resetSessionRelations({
+  const resetSessionRelationsPromise = resetSessionRelations({
     session_ids: selectedSessionIds,
     supabase,
   });
 
-  if (meeting_flow !== 'candidate_request') {
-    await removeSessionsFromFilterJson({
-      session_ids: selectedSessionIds,
-      supabase,
-    });
-  } else {
-    await removeSessionsFromRequestAvailability({
-      session_ids: selectedSessionIds,
-      supabase,
-    });
-  }
+  const removeSessionsPromise =
+    meeting_flow !== 'candidate_request'
+      ? removeSessionsFromFilterJson({
+          session_ids: selectedSessionIds,
+          supabase,
+        })
+      : removeSessionsFromRequestAvailability({
+          session_ids: selectedSessionIds,
+          supabase,
+        });
 
-  await supabase
+  const deleteSessionsPromise = supabase
     .from('interview_session_cancel')
     .delete()
     .in('session_id', selectedSessionIds)
     .throwOnError();
-  // needed in reschedule flow
 
-  return { meetings: data, organizer_id };
+  const [upsertMeetingsData] = await Promise.all([
+    upsertMeetingsPromise,
+    resetSessionRelationsPromise,
+    removeSessionsPromise,
+    deleteSessionsPromise,
+  ]);
+
+  return { meetings: upsertMeetingsData.data, organizer_id };
 };

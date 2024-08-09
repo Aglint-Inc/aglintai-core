@@ -14,11 +14,12 @@ export const createSchedulingSupervisorAgent = async () => {
       'If you dont understand which worker to call for a user request, ask user for help.\n\n' +
       'Dont put placeholder data if tool response is empty',
     [
-      'interviewTypesRead',
+      'getInterviewTypesOrUsers',
       'greetingAgent',
-      'scheduledInterviewsTeam',
+      'getScheduledInterviews',
       'requestsRead',
-      'jobsRelatedRead',
+      'getJobsgetHiringTeam',
+      'getDeclinedInterviews',
     ] //all nodes
   );
 

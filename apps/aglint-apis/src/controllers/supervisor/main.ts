@@ -39,7 +39,7 @@ export async function agentSupervisor(req: Request, res: Response) {
     );
 
     for await (const step of await resultStream) {
-      console.log(JSON.stringify(step, null, 2));
+      // console.log(JSON.stringify(step, null, 2));
       if (!step.__end__) {
         results.push(step);
       }

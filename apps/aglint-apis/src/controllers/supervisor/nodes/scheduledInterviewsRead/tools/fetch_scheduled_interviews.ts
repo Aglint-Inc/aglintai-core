@@ -1,5 +1,6 @@
 import {CallBack} from '@aglint/shared-types';
 import {fetchScheduledInterviews} from '@aglint/shared-utils';
+import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -42,10 +43,10 @@ export const fetchScheduledInterviewsTool = ({
 
       const resp = sch.map(s => {
         return {
-          name: s.session_name,
-          start_time: s.start_time,
-          end_time: s.end_time,
-          schedule_type: s.schedule_type,
+          name: s.interview_session[0].name,
+          start_time: dayjs(s.start_time).format('YYYY-MM-DD HH:mm'),
+          end_time: dayjs(s.end_time).format('YYYY-MM-DD HH:mm'),
+          schedule_type: s.interview_session[0].schedule_type,
         };
       });
 

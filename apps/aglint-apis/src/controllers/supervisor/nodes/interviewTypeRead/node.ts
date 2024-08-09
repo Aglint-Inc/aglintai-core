@@ -33,6 +33,6 @@ export const interviewTypesReadNode = async ({
   return runAgentNode({
     state,
     agent: fetchInterviewTypesAgent,
-    name: 'interviewTypesRead',
+    name: 'getInterviewTypesOrUsers',
   });
 };
