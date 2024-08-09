@@ -36,6 +36,7 @@ export interface ApiBodyParamsSendToCandidate {
   user_tz: string;
   selectedApplicationLog: DatabaseTable['application_logs'];
   task_id: string | null;
+  schedule_id: string;
 }
 
 export interface ApiResponseSendToCandidate {
@@ -61,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       selectedApplicationLog: bodyParams.selectedApplicationLog,
       selectedSlots: bodyParams.selectedSlots,
       task_id: bodyParams.task_id,
+      schedule_id: bodyParams.schedule_id,
     });
 
     console.log('resSendToCandidate', resSendToCandidate);
@@ -91,6 +93,7 @@ const sendToCandidate = async ({
   user_tz,
   selectedApplicationLog,
   task_id,
+  schedule_id,
 }: {
   is_debrief?: boolean;
   selectedApplication: SchedulingApplication['selectedApplication'];
@@ -113,21 +116,11 @@ const sendToCandidate = async ({
   user_tz: string;
   selectedApplicationLog?: DatabaseTable['application_logs'];
   task_id: string | null;
+  schedule_id: string;
 }) => {
   let update_task_id = task_id;
   let filter_id;
-  let schedule_id;
 
-  const { data: checkSch, error: errorCheckSch } = await supabase
-    .from('interview_schedule')
-    .select('id')
-    .eq('application_id', selectedApplication.id);
-
-  if (errorCheckSch) throw new Error(errorCheckSch.message);
-
-  // check if schedule is already created (if yes then sessions are cached on candidate level)
-
-  schedule_id = checkSch[0].id;
   console.log('schedule already exists');
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
@@ -302,7 +295,7 @@ const sendToCandidate = async ({
       ),
       filter_id: filterJson[0].id,
       recruiter_id,
-      schedule_id: checkSch[0].id,
+      schedule_id,
       user_tz,
       application_id: selectedApplication.id,
       initialSessions,
