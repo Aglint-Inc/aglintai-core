@@ -97,6 +97,7 @@ export function InterviewTypes() {
                     direction={'row'}
                     width={'100%'}
                     justifyContent={'space-between'}
+                    alignItems={'center'}
                   >
                     <Stack direction={'row'} gap={2}>
                       <SearchField
