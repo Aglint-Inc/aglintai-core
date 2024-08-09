@@ -1425,7 +1425,7 @@ const saveCancelReschedule = async ({
     session_ids: details.map((d) => d.session_id),
     new_dates: {
       start_date: details[0].other_details.dateRange.start,
-      end_date: details[0].other_details.dateRange.start,
+      end_date: details[0].other_details.dateRange.end,
     },
     candidate_name: candidate_name,
     organizer_id,
