@@ -7,6 +7,7 @@ import toast from '@/src/utils/toast';
 
 import { processEmailsInBatches } from '../GreenhouseModal/utils';
 import { extractLinkedInURL, POSTED_BY, splitFullName } from '../utils';
+import { LeverJob } from './types';
 
 export const createJobApplications = async (selectedLeverPostings, apiKey) => {
   const applications = await Promise.all(
@@ -203,7 +204,7 @@ export const fetchAllJobs = async (apiKey) => {
       hasMore = false; // Exit the loop in case of an error
     }
   }
-  return allJobs;
+  return allJobs as LeverJob[];
 };
 
 export const createJobObject = async (selectedLeverPostings, recruiter) => {
