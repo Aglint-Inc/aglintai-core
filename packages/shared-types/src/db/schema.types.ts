@@ -2722,7 +2722,7 @@ export type Database = {
           recruiter_id: string
           region: string
           timezone: string
-          zipcode: string
+          zipcode: string | null
         }
         Insert: {
           city: string
@@ -2734,7 +2734,7 @@ export type Database = {
           recruiter_id: string
           region: string
           timezone: string
-          zipcode: string
+          zipcode?: string | null
         }
         Update: {
           city?: string
@@ -2746,7 +2746,7 @@ export type Database = {
           recruiter_id?: string
           region?: string
           timezone?: string
-          zipcode?: string
+          zipcode?: string | null
         }
         Relationships: [
           {
@@ -2850,35 +2850,23 @@ export type Database = {
         Row: {
           active_status: Json
           assessment: boolean | null
-          company: string | null
-          company_details: string | null
           created_at: string
           department_id: number | null
           description: string | null
           draft: Json | null
-          end_video: Json | null
-          experience_in_months: number | null
           hiring_manager: string | null
           id: string
           interview_coordinator: string | null
-          interview_instructions: string | null
-          interview_plan: Json | null
           interview_plan_warning_ignore: boolean
           interview_session_warning_ignore: boolean
-          interview_success: string | null
-          intro_videos: Json | null
           is_ats_sync: boolean
           jd_changed: boolean | null
           jd_json: Json | null
           job_criteria: Json | null
-          job_details_embedding: string | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
           location: string | null
-          location_json: Json | null
-          logo: string | null
           new_screening_setting: Json
-          overview: string | null
           parameter_weights: Json
           phone_screen_enabled: boolean | null
           phone_screening: Json | null
@@ -2890,13 +2878,10 @@ export type Database = {
           screening_questions: Json[] | null
           screening_setting: Json | null
           screening_template: string | null
-          skills: string[] | null
           slug: string
           sourcer: string | null
-          start_video: Json | null
           status: Database["public"]["Enums"]["public_job_status"]
           updated_at: string | null
-          video_assessment: boolean
           workplace_type:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -2904,35 +2889,23 @@ export type Database = {
         Insert: {
           active_status?: Json
           assessment?: boolean | null
-          company?: string | null
-          company_details?: string | null
           created_at?: string
           department_id?: number | null
           description?: string | null
           draft?: Json | null
-          end_video?: Json | null
-          experience_in_months?: number | null
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_instructions?: string | null
-          interview_plan?: Json | null
           interview_plan_warning_ignore?: boolean
           interview_session_warning_ignore?: boolean
-          interview_success?: string | null
-          intro_videos?: Json | null
           is_ats_sync?: boolean
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_details_embedding?: string | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location?: string | null
-          location_json?: Json | null
-          logo?: string | null
           new_screening_setting?: Json
-          overview?: string | null
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
           phone_screening?: Json | null
@@ -2944,13 +2917,10 @@ export type Database = {
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
-          skills?: string[] | null
           slug?: string
           sourcer?: string | null
-          start_video?: Json | null
           status?: Database["public"]["Enums"]["public_job_status"]
           updated_at?: string | null
-          video_assessment?: boolean
           workplace_type?:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -2958,35 +2928,23 @@ export type Database = {
         Update: {
           active_status?: Json
           assessment?: boolean | null
-          company?: string | null
-          company_details?: string | null
           created_at?: string
           department_id?: number | null
           description?: string | null
           draft?: Json | null
-          end_video?: Json | null
-          experience_in_months?: number | null
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_instructions?: string | null
-          interview_plan?: Json | null
           interview_plan_warning_ignore?: boolean
           interview_session_warning_ignore?: boolean
-          interview_success?: string | null
-          intro_videos?: Json | null
           is_ats_sync?: boolean
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_details_embedding?: string | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location?: string | null
-          location_json?: Json | null
-          logo?: string | null
           new_screening_setting?: Json
-          overview?: string | null
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
           phone_screening?: Json | null
@@ -2998,13 +2956,10 @@ export type Database = {
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
-          skills?: string[] | null
           slug?: string
           sourcer?: string | null
-          start_video?: Json | null
           status?: Database["public"]["Enums"]["public_job_status"]
           updated_at?: string | null
-          video_assessment?: boolean
           workplace_type?:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -5036,7 +4991,6 @@ export type Database = {
         Row: {
           application_match: Json | null
           assessment: boolean | null
-          company: string | null
           created_at: string | null
           department: string | null
           department_id: number | null
@@ -6668,6 +6622,7 @@ export type Database = {
         | "debrief"
         | "mail_agent"
         | "phone_agent"
+        | "hybrid"
       modules: "standard" | "scheduler" | "assessment" | "jobs"
       permissions_type:
         | "jobs_create"

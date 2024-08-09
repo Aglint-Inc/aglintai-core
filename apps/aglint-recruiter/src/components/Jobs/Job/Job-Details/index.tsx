@@ -47,7 +47,6 @@ const JobEdit = () => {
   //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
   const {
     job_title,
-    company,
     department_id,
     description,
     job_type,
@@ -55,7 +54,6 @@ const JobEdit = () => {
     workplace_type,
   } = {
     job_title: job.job_title,
-    company: job.company,
     department_id: job.department_id,
     description: job.description,
     job_type: job.job_type,
@@ -70,14 +68,6 @@ const JobEdit = () => {
       error: {
         value: validateString(job_title),
         helper: `Job title can't be empty`,
-      },
-    },
-    company: {
-      value: company,
-      required: true,
-      error: {
-        value: validateString(company),
-        helper: `Company name can't be empty`,
       },
     },
     department_id: {
@@ -257,7 +247,6 @@ const JobEditForm = ({
 
 const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   const {
-    company,
     department_id,
     description,
     job_title,
@@ -268,7 +257,6 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   const forms = (
     <>
-      {company}
       {job_title}
       {job_type}
       {workplace_type}

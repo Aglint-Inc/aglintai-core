@@ -42,11 +42,6 @@ export const useJobForms = (
     (acc, [key, value]) => {
       const safeKey = key as keyof Form;
       switch (safeKey) {
-        case 'company':
-          acc[safeKey] = (
-            <JobCompany name={safeKey} value={value} onChange={handleChange} />
-          );
-          break;
         case 'department_id':
           acc[safeKey] = (
             <JobDepartment

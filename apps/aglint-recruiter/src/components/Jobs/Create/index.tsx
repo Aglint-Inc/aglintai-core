@@ -55,11 +55,6 @@ const JobCreate = () => {
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
     },
-    company: {
-      value: initialCompany,
-      required: true,
-      error: { value: false, helper: `Company name can't be empty` },
-    },
     department_id: {
       value: null,
       required: false,
@@ -233,7 +228,6 @@ const JobForms = ({
   handleCancel,
 }: JobMetaFormProps) => {
   const {
-    company,
     department_id,
     description,
     job_title,
@@ -248,7 +242,6 @@ const JobForms = ({
 
   const forms = (
     <>
-      {company}
       {job_title}
       {job_type}
       {workplace_type}

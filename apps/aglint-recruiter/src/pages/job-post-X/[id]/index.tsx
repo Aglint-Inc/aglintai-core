@@ -69,7 +69,7 @@ function JobPost() {
     employmentType: 'Full-time',
     experienceRequirements: {
       '@type': 'OccupationalExperienceRequirements',
-      monthsOfExperience: post?.experience_in_months || 0,
+      // monthsOfExperience: post?.experience_in_months || 0,
     },
     incentiveCompensation:
       'Performance-based annual bonus plan, project-completion bonuses',
@@ -79,18 +79,18 @@ function JobPost() {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: (post?.location_json as any)?.state || '',
-        addressCountry: (post?.location_json as any)?.country || '',
+        // addressLocality: (post?.location_json as any)?.state || '',
+        // addressCountry: (post?.location_json as any)?.country || '',
       },
     },
     hiringOrganization: {
       '@type': 'Organization',
-      name: post?.company || '',
+      name: recruiter?.name || '',
       logo: recruiter?.logo,
     },
     occupationalCategory: '15-1132.00 Software Developers, Application',
     salaryCurrency: post?.location?.split(', ')[2] == 'India' ? 'INR' : 'USD',
-    skills: post?.skills?.join(','),
+    // skills: post?.skills?.join(','),
     title: post?.job_title,
     workHours: '40 hours per week',
   };
@@ -99,11 +99,7 @@ function JobPost() {
     <Stack minHeight={'100vh'}>
       <Seo
         jsonLd={jsonLd}
-        title={
-          post?.job_title
-            ? `${post?.job_title} | ${post?.company}`
-            : 'Job posting'
-        }
+        title={post?.job_title ? `${post?.job_title}` : 'Job posting'}
         url={`${process.env.NEXT_PUBLIC_WEBSITE}${router.asPath}`}
         description='AI for People Products'
       />
