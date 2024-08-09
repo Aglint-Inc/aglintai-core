@@ -46,7 +46,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           ?.interview_meeting?.status === 'confirmed',
     );
     const checkDate = dayjsLocal(
-      act.metadata.other_details.dateRange.end,
+      act.metadata.other_details.dateRange?.end,
     ).isBefore(dayjsLocal().add(-1, 'day'));
     return (
       <Stack spacing={2} width={'100%'}>
@@ -57,9 +57,9 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
           slotDateReason={
             <>
               {`${dayjsLocal(
-                rescheduleDetails.other_details.dateRange.start,
+                rescheduleDetails.other_details.dateRange?.start,
               ).format('DD MMMM, YYYY')} - ${dayjsLocal(
-                rescheduleDetails.other_details.dateRange.end,
+                rescheduleDetails.other_details.dateRange?.end,
               ).format('DD MMMM, YYYY')}`}
             </>
           }
@@ -88,7 +88,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                       setIsScheduleNowOpen(true);
                       setDateRange({
                         start_date:
-                          rescheduleDetails.other_details.dateRange.start,
+                          rescheduleDetails.other_details.dateRange?.start,
                         end_date: rescheduleDetails.other_details.dateRange.end,
                       });
                     },
