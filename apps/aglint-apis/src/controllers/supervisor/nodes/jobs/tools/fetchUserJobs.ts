@@ -1,5 +1,5 @@
 import {CallBack} from '@aglint/shared-types';
-import {fetchJobsUser, getFullName} from '@aglint/shared-utils';
+import {fetchJobsUser} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -23,6 +23,7 @@ export const fetchUserJobs = ({
         supabase: supabaseAdmin,
         recruiter_id,
       });
+
       if (jobs.length === 0) {
         return `No jobs found for user ${user_id}`;
       }

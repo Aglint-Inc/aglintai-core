@@ -1,4 +1,5 @@
 import {
+  fetchCandidateDeclinedInterviews,
   fetchInterviewTypes,
   fetchInterviewTypeUsers,
   fetchJobHiringTeam,
@@ -26,6 +27,9 @@ type FunctionReturnType = {
   fetch_interview_types: Awaited<ReturnType<typeof fetchInterviewTypes>>;
   fetch_interview_types_users: Awaited<
     ReturnType<typeof fetchInterviewTypeUsers>
+  >;
+  fetch_candidate_declined_interviews: Awaited<
+    ReturnType<typeof fetchCandidateDeclinedInterviews>
   >;
 };
 
