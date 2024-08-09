@@ -5,7 +5,7 @@ export default async function rejection(application_id: string) {
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', application_id),
   );
@@ -19,9 +19,9 @@ export default async function rejection(application_id: string) {
       email,
       recruiter_id,
       first_name,
-      recruiter: { logo },
+      recruiter: { logo, name: comapanyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   const body = {
@@ -32,7 +32,7 @@ export default async function rejection(application_id: string) {
     payload: {
       '[firstName]': first_name,
       '[jobTitle]': job_title,
-      '[companyName]': company,
+      '[companyName]': comapanyName,
     },
   };
 

@@ -33,7 +33,7 @@ const fetchFunction = async ({ user_id }) => {
     const { data } = await supabase
       .from('meeting_details')
       .select(
-        'status,start_time,end_time,id,applications(candidates(first_name,last_name)), public_jobs(id,company,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
+        'status,start_time,end_time,id,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
       )
       .contains('confirmed_user_ids', [user_id])
       .eq('meeting_interviewers.is_confirmed', true);

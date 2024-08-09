@@ -17,7 +17,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name),timezone),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -44,9 +44,9 @@ export async function fetchUtil(
       recruiter_id,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   const meeting_details = int_sessions.map((int_session, idx) => {
@@ -82,7 +82,7 @@ export async function fetchUtil(
       meeting_end_time =
         req_body.preview_details.meeting_timings[idx].meeting_end_time;
     }
-    const cand_cal_event_name = `Interview Invite: ${job_title} at ${company}`;
+    const cand_cal_event_name = `Interview Invite: ${job_title} at ${companyName}`;
     const meeting_info =
       `<h3>${s.name}</h3>` +
       `<p> Duration ${s.session_duration} </p>` +
@@ -105,7 +105,7 @@ export async function fetchUtil(
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,

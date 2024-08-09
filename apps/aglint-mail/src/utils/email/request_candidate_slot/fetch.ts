@@ -8,7 +8,7 @@ export default async function requestCandidateSlot(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', application_id),
   );
@@ -21,9 +21,9 @@ export default async function requestCandidateSlot(
       email,
       recruiter_id,
       first_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   const body = {
@@ -34,7 +34,7 @@ export default async function requestCandidateSlot(
     payload: {
       '[firstName]': first_name,
       '[jobTitle]': job_title,
-      '[companyName]': company,
+      '[companyName]': companyName,
       '[availabilityLink]': `${process.env.BASE_URL}/scheduling/request-availability/${request_id}`,
     },
   };

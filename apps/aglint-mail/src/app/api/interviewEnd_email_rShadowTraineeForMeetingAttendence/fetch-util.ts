@@ -22,7 +22,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*),candidates(*))))',
+        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*,recruiter_table:recruiter(name,logo)),candidates(*))))',
       )
       .eq('id', req_body.session_id),
   );
@@ -69,7 +69,7 @@ export async function fetchUtil(
         OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
         sessionName: session_detail.name,
         interviewType: session_detail.interview_module.name,
-        companyName: job.company,
+        companyName: job.recruiter_table.name,
         jobRole: job.job_title,
         reverseShadowCount: numberToOrdinal(reverseShadowCount),
         reverseShadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
@@ -77,7 +77,7 @@ export async function fetchUtil(
 
     const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
       {
-        companyLogo: job.logo,
+        companyLogo: job.recruiter_table.logo,
       };
 
     return {

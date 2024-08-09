@@ -19,7 +19,7 @@ export async function dbFetch(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo),timezone),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name),timezone),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -44,9 +44,9 @@ export async function dbFetch(
       recruiter_id,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   // const cand_tz = 'America/Los_angeles';
@@ -57,7 +57,7 @@ export async function dbFetch(
       candidateFirstName: first_name,
       candidateLastName: last_name,
       jobRole: job_title,
-      candidateName: company,
+      candidateName: getFullName(first_name, last_name),
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,
@@ -71,7 +71,7 @@ export async function dbFetch(
       endDate: dayjsLocal(meeting_details.end_time)
         .tz(rec_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      companyName: company,
+      companyName: companyName,
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,

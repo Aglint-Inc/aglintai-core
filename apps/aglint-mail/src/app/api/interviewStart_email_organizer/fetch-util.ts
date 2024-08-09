@@ -16,7 +16,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo)),public_jobs(job_title,company,recruiter,recruiter_id)',
+        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(job_title,recruiter_id)',
       )
       .eq('id', req_body.application_id),
   );
@@ -64,7 +64,7 @@ export async function fetchUtil(
       OrganizerTimeZone: int_tz,
       candidateName: getFullName(candidate.first_name, candidate.last_name),
       jobRole: public_jobs.job_title,
-      companyName: public_jobs.company,
+      companyName: candidate.recruiter.name,
       candidateFirstName: candidate.first_name,
       candidateLastName: candidate.last_name,
     };
