@@ -73,6 +73,7 @@ export const createJobApplications = async (
       const checkCandidates = await processEmailsInBatches(
         emails,
         post.recruiter_id,
+        supabase,
       );
 
       //new candidates insert flow
@@ -336,7 +337,7 @@ const processBatch = async (
 export const processEmailsInBatches = async (
   emails: string[],
   recruiter_id: string,
-  supabaseCaller = supabase,
+  supabaseCaller,
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
