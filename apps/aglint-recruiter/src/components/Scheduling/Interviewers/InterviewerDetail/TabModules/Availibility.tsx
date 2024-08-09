@@ -429,7 +429,15 @@ function Availibility({
               slotKeywordCard={<></>}
               slotDailyLimit={
                 <>
-                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    <MuiNumberfield
+                      isMarginTop={false}
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'daily', 'value')
+                      }
+                      value={interviewLoad.daily.value}
+                      max={interviewLoad.daily.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -457,20 +465,21 @@ function Availibility({
                         );
                       })}
                     </RadioGroup>
-                    <MuiNumberfield
-                      isMarginTop={false}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'daily', 'value')
-                      }
-                      value={interviewLoad.daily.value}
-                      max={interviewLoad.daily.max}
-                    />
                   </Stack>
                 </>
               }
               slotWeeklyLimit={
                 <>
-                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    {' '}
+                    <MuiNumberfield
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'weekly', 'value')
+                      }
+                      isMarginTop={false}
+                      value={interviewLoad.weekly.value}
+                      max={interviewLoad.weekly.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -501,14 +510,6 @@ function Availibility({
                         );
                       })}
                     </RadioGroup>
-                    <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'weekly', 'value')
-                      }
-                      isMarginTop={false}
-                      value={interviewLoad.weekly.value}
-                      max={interviewLoad.weekly.max}
-                    />
                   </Stack>
                 </>
               }

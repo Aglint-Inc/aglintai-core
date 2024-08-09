@@ -277,29 +277,6 @@ function InterviewerLevelSettings({
               flexDirection={'column-reverse'}
               gap={'var(--space-2)'}
             >
-              {/* <Stack
-                alignItems={'center'}
-                direction={'row'}
-                marginLeft={'-10px !important'}
-              >
-                <ToggleBtn
-                  handleCheck={(e) => {
-                    setIsTimeZone(e);
-                    if (e) {
-                      setSelectedTimeZone(
-                        timeZones.filter((item) =>
-                          item.label.includes(dayjsLocal.tz.guess()),
-                        )[0],
-                      );
-                    }
-                  }}
-                  isActive={isTimeZone}
-                />
-                <Typography fontSize={'14px'} variant='caption'>
-                  Get timezone automatically
-                </Typography>
-              </Stack> */}
-
               <Autocomplete
                 disabled={isTimeZone}
                 disableClearable
@@ -344,7 +321,12 @@ function InterviewerLevelSettings({
           slotKeywordCard={<></>}
           slotDailyLimit={
             <>
-              <Stack spacing={1}>
+              <Stack spacing={3}>
+                <MuiNumberfield
+                  handleSelect={(e) => loadChangeHandle(e, 'daily', 'value')}
+                  value={interviewLoad.daily.value}
+                  max={interviewLoad.daily.max}
+                />
                 <RadioGroup
                   row
                   aria-labelledby='demo-row-radio-buttons-group-label'
@@ -371,17 +353,17 @@ function InterviewerLevelSettings({
                     );
                   })}
                 </RadioGroup>
-                <MuiNumberfield
-                  handleSelect={(e) => loadChangeHandle(e, 'daily', 'value')}
-                  value={interviewLoad.daily.value}
-                  max={interviewLoad.daily.max}
-                />
               </Stack>
             </>
           }
           slotWeeklyLimit={
             <>
-              <Stack spacing={1}>
+              <Stack spacing={3}>
+                <MuiNumberfield
+                  handleSelect={(e) => loadChangeHandle(e, 'weekly', 'value')}
+                  value={interviewLoad.weekly.value}
+                  max={interviewLoad.weekly.max}
+                />
                 <RadioGroup
                   row
                   aria-labelledby='demo-row-radio-buttons-group-label'
@@ -408,11 +390,6 @@ function InterviewerLevelSettings({
                     );
                   })}
                 </RadioGroup>
-                <MuiNumberfield
-                  handleSelect={(e) => loadChangeHandle(e, 'weekly', 'value')}
-                  value={interviewLoad.weekly.value}
-                  max={interviewLoad.weekly.max}
-                />
               </Stack>
             </>
           }
