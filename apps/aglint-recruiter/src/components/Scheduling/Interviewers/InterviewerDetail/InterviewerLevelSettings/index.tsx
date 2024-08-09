@@ -37,6 +37,7 @@ import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { useImrQuery } from '../hooks';
+import { RolesPill } from '@/devlink/RolesPill';
 
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -559,23 +560,25 @@ function InterviewerLevelSettings({
                     <>
                       {freeKeyWords.map((item) => {
                         if (companyKeywords.free.includes(item)) {
-                          return <Chip key={item} clickable label={item} />;
-                        } else {
                           return (
                             <Chip
                               key={item}
-                              clickable
-                              onDelete={() => {
-                                setFreeKeywords((prev) =>
-                                  prev.filter((ele) => ele !== item),
-                                );
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
+                              sx={{ opacity: 0.7 }}
                               label={item}
+                            />
+                          );
+                        } else {
+                          return (
+                            <RolesPill
+                              key={item}
+                              textRoles={item}
+                              onClickRemoveRoles={{
+                                onClick: () => {
+                                  setFreeKeywords((prev) =>
+                                    prev.filter((ele) => ele !== item),
+                                  );
+                                },
+                              }}
                             />
                           );
                         }
@@ -615,23 +618,25 @@ function InterviewerLevelSettings({
                     <>
                       {softConflictsKeyWords.map((item) => {
                         if (companyKeywords.SoftConflicts.includes(item)) {
-                          return <Chip key={item} clickable label={item} />;
-                        } else {
                           return (
                             <Chip
                               key={item}
-                              clickable
-                              onDelete={() => {
-                                setSoftConflictsKeyWords((prev) =>
-                                  prev.filter((ele) => ele !== item),
-                                );
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
                               label={item}
+                              sx={{ opacity: 0.7 }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <RolesPill
+                              key={item}
+                              textRoles={item}
+                              onClickRemoveRoles={{
+                                onClick: () => {
+                                  setSoftConflictsKeyWords((prev) =>
+                                    prev.filter((ele) => ele !== item),
+                                  );
+                                },
+                              }}
                             />
                           );
                         }
@@ -674,23 +679,25 @@ function InterviewerLevelSettings({
                     <>
                       {outOfOffice.map((item) => {
                         if (companyKeywords.outOfOffice.includes(item)) {
-                          return <Chip key={item} clickable label={item} />;
-                        } else {
                           return (
                             <Chip
                               key={item}
-                              clickable
-                              onDelete={() => {
-                                setOutOfOffice((prev) =>
-                                  prev.filter((ele) => ele !== item),
-                                );
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
                               label={item}
+                              sx={{ opacity: 0.7 }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <RolesPill
+                              key={item}
+                              textRoles={item}
+                              onClickRemoveRoles={{
+                                onClick: () => {
+                                  setOutOfOffice((prev) =>
+                                    prev.filter((ele) => ele !== item),
+                                  );
+                                },
+                              }}
                             />
                           );
                         }
@@ -733,23 +740,25 @@ function InterviewerLevelSettings({
                     <>
                       {recruitingBlocks.map((item) => {
                         if (companyKeywords.recruitingBlocks.includes(item)) {
-                          return <Chip key={item} clickable label={item} />;
-                        } else {
                           return (
                             <Chip
                               key={item}
-                              clickable
-                              onDelete={() => {
-                                setRecruitingBlocks((prev) =>
-                                  prev.filter((ele) => ele !== item),
-                                );
-                              }}
-                              deleteIcon={
-                                <Stack>
-                                  <GlobalIcon iconName='close' size='4' />
-                                </Stack>
-                              }
                               label={item}
+                              sx={{ opacity: 0.7 }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <RolesPill
+                              key={item}
+                              textRoles={item}
+                              onClickRemoveRoles={{
+                                onClick: () => {
+                                  setRecruitingBlocks((prev) =>
+                                    prev.filter((ele) => ele !== item),
+                                  );
+                                },
+                              }}
                             />
                           );
                         }
