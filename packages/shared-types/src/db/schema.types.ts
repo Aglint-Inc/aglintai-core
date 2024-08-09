@@ -2855,6 +2855,7 @@ export type Database = {
           recruiter: string | null
           recruiter_id: string
           recruiting_coordinator: string | null
+          remote_id: string | null
           scoring_criteria_loading: boolean
           screening_questions: Json[] | null
           screening_setting: Json | null
@@ -2894,6 +2895,7 @@ export type Database = {
           recruiter?: string | null
           recruiter_id: string
           recruiting_coordinator?: string | null
+          remote_id?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -2933,6 +2935,7 @@ export type Database = {
           recruiter?: string | null
           recruiter_id?: string
           recruiting_coordinator?: string | null
+          remote_id?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null

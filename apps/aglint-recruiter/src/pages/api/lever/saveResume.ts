@@ -4,27 +4,62 @@ import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-const apiKey = 'wjISASRrEo75ixrodaAS5eT8iV4Bv2T2RhNZ3iIUziYsIAC8';
+import { decrypt } from '../decryptApiKey';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+type Payload = {
+  application_id: string;
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
 
-  let payload = req.body;
+  let payload = req.body as Payload;
 
-  if (payload.opportunity_id && payload.application_id) {
+  if (payload.application_id) {
     // Supabase credentials
 
-    let url = `https://api.lever.co/v1/opportunities/${payload.opportunity_id}/resumes`;
+    const { data: application } = await supabase
+      .from('applications')
+      .select(
+        '*,public_jobs(recruiter!public_jobs_recruiter_id_fkey(integrations(*)))',
+      )
+      .eq('id', payload.application_id);
+
+    const ats_app_id = application[0].remote_id;
+
+    if (!ats_app_id) {
+      console.log('No ats application id found');
+      return res.status(400).json('No ats application id found');
+    }
+
+    const apiKey = decrypt(
+      application[0].public_jobs.recruiter.integrations.lever_key,
+      process.env.ENCRYPTION_KEY,
+    );
+
+    if (!apiKey) {
+      console.log('API Key is missing');
+      return res.status(400).json('API Key is missing');
+    }
+
+    let url = `https://api.lever.co/v1/opportunities/${ats_app_id}/resumes`;
     let fileUrl;
     let bucketName = 'resume-job-post';
     let fileId = uuidv4();
+
+    await supabase
+      .from('applications')
+      .update({
+        is_resume_fetching: false,
+      })
+      .eq('id', payload.application_id);
 
     try {
       axios
@@ -54,20 +89,6 @@ export default async function handler(req, res) {
 
             let extension = responseUrl.headers['content-type'];
             // Upload the file to Supabase Storage
-            const { data: application, error: errorApp } = await supabase
-              .from('applications')
-              .select()
-              .eq('id', payload.application_id);
-            if (errorApp) {
-              console.log('no application found');
-              res.status(400).send('no application found');
-              return;
-            }
-
-            if (application.length === 0) {
-              console.log('no application found');
-              return res.status(400).json({ error: 'no application found' });
-            }
 
             const { data, error: uploadError } = await supabase.storage
               .from(bucketName)
@@ -84,7 +105,7 @@ export default async function handler(req, res) {
             if (uploadError) {
               throw uploadError;
             }
-            const fileLink = `${process.env.NEXT_PUBLIC_HOST_NAME}/storage/v1/object/public/${bucketName}/${data.path}`;
+            const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
               const { error: errorResume } = await supabase
@@ -106,7 +127,6 @@ export default async function handler(req, res) {
                 .from('applications')
                 .update({
                   candidate_file_id: fileId,
-                  is_resume_fetching: false,
                 })
                 .eq('id', payload.application_id);
 
@@ -129,7 +149,7 @@ export default async function handler(req, res) {
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.message);
           res.status(400).send(error);
         });
       // Fetch the file from the URL
