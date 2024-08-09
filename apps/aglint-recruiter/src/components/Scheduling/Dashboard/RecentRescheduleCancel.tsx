@@ -229,6 +229,14 @@ const RecentRescheduleListItem = ({
           variant='rounded-medium'
         />
       }
+      onClickCandidate={{
+        onClick: () => {
+          if (detail?.meet_id)
+            router.push(
+              `/scheduling/view?meeting_id=${detail?.meet_id}&tab=candidate_details`,
+            );
+        },
+      }}
       textName={detail.name}
       textTime={dayjs(detail.time).fromNow()}
       textDesc={detail.desc}
