@@ -22,7 +22,7 @@ BEGIN
             JOIN public_jobs ON public_jobs.id = applications.job_id 
             WHERE public_jobs.posted_by = 'Lever' 
             AND applications.is_resume_fetching = TRUE 
-            AND applications.processing_status <> 'failed' LIMIT 60
+            AND applications.processing_status <> 'failed' LIMIT 10
         LOOP
            SELECT value INTO function_url FROM env WHERE name = 'lever-batchsave';
             request_results := net.http_post(
