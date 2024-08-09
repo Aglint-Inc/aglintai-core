@@ -26,5 +26,7 @@ export const getInterviewModulesAPI = async (recruiter_id: string) => {
     await axios.get(
       `/api/scheduling/get_interview_modules?recruiter_id=${recruiter_id}`,
     )
-  ).data as ReturnType<getInterviewModulesType>;
+  ).data.sort(
+    (a, b) => b.order - a.order,
+  ) as ReturnType<getInterviewModulesType>;
 };

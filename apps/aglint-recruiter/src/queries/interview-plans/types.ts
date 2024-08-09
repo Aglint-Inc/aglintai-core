@@ -5,9 +5,9 @@ import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_
 export type InterviewPlansType = GetInterviewPlansType['respone'];
 
 export type InterviewSessionType =
-  InterviewPlansType['interview_session'][number];
+  InterviewPlansType[number]['interview_session'][number];
 export type InterviewSessionRelationType =
-  InterviewPlansType['interview_session'][number]['interview_session_relation'];
+  InterviewPlansType[number]['interview_session'][number]['interview_session_relation'];
 
 export type AddCompanyMember = {
   plan_id: string;

@@ -57,8 +57,11 @@ export default async function handler(
   );
 }
 
-async function registerMember(
-  user: InviteUserAPIType['request']['users'][number],
+export async function registerMember(
+  user: Omit<InviteUserAPIType['request']['users'][number], 'manager_id'> & {
+    manager_id?: string;
+    remote_id?: string;
+  },
   recruiter_id: string,
   create_id: string,
 ) {
@@ -90,12 +93,13 @@ async function registerMember(
       employment: user.employment,
       status: 'invited',
       scheduling_settings: user.scheduling_settings,
+      remote_id: user.remote_id,
     })
-    .throwOnError()
     .select(
       '*,  office_location:office_locations(*), department:departments(id,name)',
     )
-    .single();
+    .single()
+    .throwOnError();
 
   const { data: relation, error: relationError } = await supabase
     .from('recruiter_relation')

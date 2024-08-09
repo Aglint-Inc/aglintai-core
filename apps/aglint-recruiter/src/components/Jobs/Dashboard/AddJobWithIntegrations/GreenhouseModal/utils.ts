@@ -200,17 +200,20 @@ export const fetchAllJobs = async (
   apiKey: string,
 ): Promise<JobGreenhouse[]> => {
   //pagination need to done
-  let allJobs = [];
+  let allJobs: JobGreenhouse[] = [];
   let hasMore = true;
   let page = 1;
 
   while (hasMore) {
     try {
-      const response = await axios.post('/api/greenhouse/getPostings', {
-        apiKey: apiKey,
-        isInitial: false,
-        page: page,
-      });
+      const response = await axios.post<JobGreenhouse[]>(
+        '/api/greenhouse/getPostings',
+        {
+          apiKey: apiKey,
+          isInitial: false,
+          page: page,
+        },
+      );
 
       if (response.status == 200 && response.data) {
         allJobs = allJobs.concat(response.data);
