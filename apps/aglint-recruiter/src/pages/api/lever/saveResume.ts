@@ -44,7 +44,7 @@ export default async function handler(req, res) {
             retry: 2,
             is_resume_fetching: false,
           })
-          .eq('application_id', payload.application_id);
+          .eq('id', payload.application_id);
         return res.status(400).json('No ats application id found');
       }
 
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
               await supabase
                 .from('applications')
                 .update({ processing_status: 'failed', retry: 2 })
-                .eq('application_id', payload.application_id);
+                .eq('id', payload.application_id);
               console.log('no resume url from lever');
               return res.status(400).json('Resume URL is missing');
             }
