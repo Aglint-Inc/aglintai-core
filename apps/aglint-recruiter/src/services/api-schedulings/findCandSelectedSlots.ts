@@ -56,25 +56,23 @@ export const findCandSelectedSlots = async ({
     );
   }
 
-  // let max_specified_day = dayjsLocal()
-  //   .tz(TIME_ZONE)
-  //   .startOf('day')
-  //   .add(ai_response.schedulewithMaxNumDays, 'day');
+  let max_specified_day = dayjsLocal()
+    .tz(TIME_ZONE)
+    .startOf('day')
+    .add(ai_response.schedulewithMaxNumDays, 'day');
   let filtered_plans: PlanCombinationRespType[] = flatted_plans;
 
-  // flatted_plans.filter(
-  //   (plan) => {
-  //     if (plan.sessions.length === 0) return false;
-  //     let plan_date = dayjsLocal(plan.sessions[0].start_time).tz(TIME_ZONE);
-  //     return plan_date.isSameOrBefore(max_specified_day, 'date');
-  //   },
-  // );
-  // if (filtered_plans.length === 0) {
-  //   throw new ApiError(
-  //     'CLIENT',
-  //     `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
-  //   );
-  // }
+  flatted_plans.filter((plan) => {
+    if (plan.sessions.length === 0) return false;
+    let plan_date = dayjsLocal(plan.sessions[0].start_time).tz(TIME_ZONE);
+    return plan_date.isSameOrBefore(max_specified_day, 'date');
+  });
+  if (filtered_plans.length === 0) {
+    throw new ApiError(
+      'CLIENT',
+      `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
+    );
+  }
 
   const preferred_times: TimeDurationDayjsType[] =
     ai_response.prefferredInterviewTimes.map((t) => {
@@ -88,6 +86,7 @@ export const findCandSelectedSlots = async ({
           .set('minutes', Number(t.endTime.split(':')[1])),
       };
     });
+
   // given specified prefferred times
   filtered_plans = filtered_plans.filter((plan) => {
     let plan_start_time = dayjsLocal(plan.sessions[0].start_time).tz(TIME_ZONE);
@@ -95,8 +94,8 @@ export const findCandSelectedSlots = async ({
       plan.sessions[plan.sessions.length - 1].end_time,
     ).tz(TIME_ZONE);
     const is_plan_matches_preff_time = preferred_times.some((pref) => {
-      pref.startTime = pref.startTime.set('day', plan_start_time.get('day'));
-      pref.endTime = pref.endTime.set('day', plan_start_time.get('day'));
+      pref.startTime = pref.startTime.set('date', plan_start_time.get('date'));
+      pref.endTime = pref.endTime.set('date', plan_end_time.get('date'));
       return (
         plan_start_time.isSameOrAfter(pref.startTime, 'minutes') &&
         plan_end_time.isSameOrBefore(pref.endTime, 'minutes')

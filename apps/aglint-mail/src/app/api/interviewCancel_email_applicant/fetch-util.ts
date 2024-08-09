@@ -28,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -65,7 +65,7 @@ export async function fetchUtil(
   const comp_email_placeholder: EmailTemplateAPi<'interviewCancel_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: candidates.first_name,
-      companyName: public_jobs.company,
+      companyName: candidates.recruiter.name,
       jobRole: public_jobs.job_title,
       organizerName: getFullName(
         meeting_organizer.first_name,

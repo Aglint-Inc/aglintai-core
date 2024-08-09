@@ -27,7 +27,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -43,7 +43,7 @@ export async function fetchUtil(
 
   const org_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
-  const { candidates, public_jobs } = candidateJob;
+  const { candidates } = candidateJob;
 
   const meeting_details: MeetingDetailCardType[] = int_sessions.map(
     (session) => {
@@ -80,7 +80,7 @@ export async function fetchUtil(
       candidateFirstName: candidates.first_name,
       candidateLastName: candidates.last_name,
       candidateName: getFullName(candidates.first_name, candidates.last_name),
-      companyName: public_jobs.company,
+      companyName: candidates.recruiter.name,
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,

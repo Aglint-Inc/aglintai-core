@@ -27,8 +27,13 @@ function RoleEditMember({
     (typeof members)[number] | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const filteredMember = members
-    .filter((member) => member.role_id !== role.id)
+    .filter(
+      (member) =>
+        member.role_id !== role.id && member.user_id !== member.created_by,
+    )
+
     .filter(
       (member) =>
         `${member.first_name || ''} ${member.last_name || ''}`

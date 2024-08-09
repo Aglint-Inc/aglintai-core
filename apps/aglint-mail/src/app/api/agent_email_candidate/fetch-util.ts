@@ -15,7 +15,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title,company),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,id))))',
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name,id))))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -32,8 +32,14 @@ export async function fetchUtil(
   const {
     interview_schedule: {
       applications: {
-        candidates: { email: cand_email, recruiter_id, first_name, last_name },
-        public_jobs: { company, job_title },
+        candidates: {
+          email: cand_email,
+          recruiter_id,
+          first_name,
+          last_name,
+          recruiter: { name: companyName },
+        },
+        public_jobs: { job_title },
       },
     },
   } = filterJson;
@@ -48,7 +54,7 @@ export async function fetchUtil(
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
       OrganizerTimeZone: recruiter_tz,
       organizerName: getFullName(recr.first_name, recr.last_name),

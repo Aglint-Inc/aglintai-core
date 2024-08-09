@@ -81,7 +81,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['manage_interviewers'],
-    active: ['/scheduling/interviewer'],
+    active: ['/scheduling/interviewer', '/user/profile/[user_id]'],
   },
   {
     text: 'Jobs',
@@ -120,7 +120,7 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['integrations_module'],
-    active: ['/integrations'],
+    active: ['/integrations', '/integrations/[platform]'],
   },
   {
     text: 'Workflows',
@@ -138,6 +138,6 @@ export const navList: {
     comingSoon: false,
     isVisible: true,
     permission: ['company_settings_module'],
-    active: ['/company', '/user/profile/[user_id]'],
+    active: ['/company'],
   },
 ];

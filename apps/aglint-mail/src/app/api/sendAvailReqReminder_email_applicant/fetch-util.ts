@@ -9,7 +9,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        '*,request_session_relation( interview_session(interview_meeting(recruiter_user(*),status)) ),applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(job_title, company))',
+        '*,request_session_relation( interview_session(interview_meeting(recruiter_user(*),status)) ),applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs(job_title))',
       )
       .eq('id', req_body.avail_req_id),
   );
@@ -38,9 +38,9 @@ export async function dbUtil(
       recruiter_id,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = avail_req_data.applications;
 
   const candidate_link = req_body.avail_req_id
@@ -50,7 +50,7 @@ export async function dbUtil(
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
       organizerName: getFullName(
         meeting_organizer.first_name,

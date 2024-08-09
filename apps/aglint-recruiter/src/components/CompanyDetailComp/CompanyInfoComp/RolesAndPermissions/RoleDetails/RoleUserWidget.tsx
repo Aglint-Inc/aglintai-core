@@ -41,7 +41,10 @@ export const RoleUserWidget = ({
 };
 
 const UserCard = ({ members, user_id }) => {
-  const user = members.find((member) => member.user_id === user_id);
+  const user = members.find(
+    (member) =>
+      member.user_id === user_id && member.user_id !== member.created_by,
+  );
   if (!user) return;
   return (
     <Stack key={user_id}>

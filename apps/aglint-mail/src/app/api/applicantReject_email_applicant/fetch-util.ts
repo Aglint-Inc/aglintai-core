@@ -9,7 +9,7 @@ export const fetchUtil = async (
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs(id,job_title,company,recruiter,recruiter_id)',
+        'candidates(first_name,last_name,email,recruiter_id,recruiter(logo,id,name)),public_jobs(id,job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -19,9 +19,9 @@ export const fetchUtil = async (
       email: cand_email,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName, id: recruiter_id },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = candidateJob;
 
   const comp_email_placeholder: EmailTemplateAPi<'applicantReject_email_applicant'>['comp_email_placeholders'] =
@@ -29,7 +29,7 @@ export const fetchUtil = async (
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
     };
 
@@ -39,7 +39,7 @@ export const fetchUtil = async (
     };
 
   return {
-    company_id: candidateJob.public_jobs.recruiter_id,
+    company_id: recruiter_id,
     job_id: candidateJob.public_jobs.id,
     comp_email_placeholder,
     react_email_placeholders,

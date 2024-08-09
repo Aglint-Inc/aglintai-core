@@ -129,7 +129,9 @@ const RoleTable = ({
                     <>
                       {role.assignedTo.slice(0, 3).map((user_id) => {
                         const user = members.find(
-                          (member) => member.user_id === user_id,
+                          (member) =>
+                            member.user_id === user_id &&
+                            member.user_id !== member.created_by,
                         );
                         if (!user) return;
                         return (
@@ -387,6 +389,14 @@ function RoleDetails({
     }
   }, [queryParams?.add]);
   const { ifAllowed } = useRolesAndPermissionsContext();
+
+  const userLength = role.assignedTo.filter((user_id) =>
+    members.find(
+      (member) =>
+        member.user_id === user_id && member.user_id !== member.created_by,
+    ),
+  ).length;
+
   return (
     <>
       <RolesAndPermissionsDetail
@@ -480,7 +490,7 @@ function RoleDetails({
             )}
           </>
         }
-        textUserCount={`Users (${role.assignedTo.length || 0})`}
+        textUserCount={`Users (${userLength || 0})`}
         slotUserWithRole={<RoleUserWidget role={role} members={members} />}
       />
       {editUser && (
