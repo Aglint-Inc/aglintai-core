@@ -47,6 +47,6 @@ export const fetchJobRelatedNode = async ({
   return runAgentNode({
     state,
     agent: fetchUserRequestsAgent,
-    name: 'jobsRelatedRead',
+    name: 'getJobsgetHiringTeam',
   });
 };

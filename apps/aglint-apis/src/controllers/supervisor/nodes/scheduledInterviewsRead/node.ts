@@ -7,7 +7,7 @@ import {TeamState} from 'src/controllers/supervisor/utils/state';
 import {fetchScheduledInterviewsTool} from './tools/fetch_scheduled_interviews';
 import {CallBackAll} from '@aglint/shared-types';
 
-export const teamScheduledInterviewsNode = async ({
+export const getScheduledInterviewsNode = async ({
   state,
   recruiter_id,
   callback,
@@ -37,6 +37,6 @@ export const teamScheduledInterviewsNode = async ({
   return runAgentNode({
     state,
     agent: fetchScheduledInterviewsAgent,
-    name: 'scheduledInterviewsTeam',
+    name: 'getScheduledInterviews',
   });
 };

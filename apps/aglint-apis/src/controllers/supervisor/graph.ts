@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {CallBackAll} from '@aglint/shared-types';
 import {END, START, StateGraph} from '@langchain/langgraph';
+import {getDeclinedInterviewsNode} from './nodes/declinedInterviewRead/node';
 import {greetingsNode} from './nodes/greetings/node';
 import {interviewTypesReadNode} from './nodes/interviewTypeRead/node';
 import {fetchJobRelatedNode} from './nodes/jobs/node';
 import {fetchRequestsNode} from './nodes/requestsRead/node';
-import {teamScheduledInterviewsNode} from './nodes/scheduledInterviewsTeam/node';
+import {getScheduledInterviewsNode} from './nodes/scheduledInterviewsRead/node';
 import {teamState} from './state';
 import {createSchedulingSupervisorAgent} from './supervisoragent';
 
@@ -25,12 +26,12 @@ export const agentChain = async ({
   })
     .addNode('greetingAgent', async state => await greetingsNode({state}))
     .addNode(
-      'interviewTypesRead',
+      'getInterviewTypesOrUsers',
       async state =>
         await interviewTypesReadNode({state, recruiter_id, callback})
     )
     .addNode(
-      'jobsRelatedRead',
+      'getJobsgetHiringTeam',
       async state =>
         await fetchJobRelatedNode({
           state,
@@ -45,9 +46,19 @@ export const agentChain = async ({
       async state => await fetchRequestsNode({state, user_id, callback})
     )
     .addNode(
-      'scheduledInterviewsTeam',
+      'getDeclinedInterviews',
       async state =>
-        await teamScheduledInterviewsNode({
+        await getDeclinedInterviewsNode({
+          state,
+          recruiter_id,
+          callback,
+          user_id,
+        })
+    )
+    .addNode(
+      'getScheduledInterviews',
+      async state =>
+        await getScheduledInterviewsNode({
           state,
           recruiter_id,
           callback,
@@ -59,16 +70,18 @@ export const agentChain = async ({
 
   // Define the control flow
   agent.addEdge('greetingAgent', 'supervisor');
-  agent.addEdge('interviewTypesRead', 'supervisor');
+  agent.addEdge('getInterviewTypesOrUsers', 'supervisor');
   agent.addEdge('requestsRead', 'supervisor');
-  agent.addEdge('jobsRelatedRead', 'supervisor');
-  agent.addEdge('scheduledInterviewsTeam', 'supervisor');
+  agent.addEdge('getJobsgetHiringTeam', 'supervisor');
+  agent.addEdge('getScheduledInterviews', 'supervisor');
+  agent.addEdge('getDeclinedInterviews', 'supervisor');
   agent.addConditionalEdges('supervisor', x => x.next, {
     greetingAgent: 'greetingAgent',
-    interviewTypesRead: 'interviewTypesRead',
+    getInterviewTypesOrUsers: 'getInterviewTypesOrUsers',
     requestsRead: 'requestsRead',
-    jobsRelatedRead: 'jobsRelatedRead',
-    scheduledInterviewsTeam: 'scheduledInterviewsTeam',
+    getJobsgetHiringTeam: 'getJobsgetHiringTeam',
+    getScheduledInterviews: 'getScheduledInterviews',
+    getDeclinedInterviews: 'getDeclinedInterviews',
     FINISH: END,
   });
   agent.addEdge(START, 'supervisor');

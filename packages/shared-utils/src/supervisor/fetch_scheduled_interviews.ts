@@ -14,11 +14,10 @@ export const fetchScheduledInterviews = async ({
   user_id: string;
 }) => {
   const query = supabase
-    .from("meeting_details")
+    .from("interview_meeting")
     .select(
-      "id,session_name,session_id,start_time,end_time,schedule_type,meeting_interviewers!public_interview_session_meeting_id_fkey(session_relation_id,training_type,is_confirmed,first_name,last_name,email,profile_image,user_id,position,tz_code)"
+      "id,organizer_id,start_time,end_time,status,interview_session(id,name,schedule_type)"
     )
-    .eq("recruiter_id", recruiter_id)
     .eq("organizer_id", user_id);
 
   if (type === "upcoming") {
