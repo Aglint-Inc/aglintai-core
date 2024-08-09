@@ -322,10 +322,6 @@ function BodyComp() {
                   <Overview
                     scheduleList={allSchedules}
                     interviewerDetails={interviewerDetails}
-                    totalHoursThisWeek={totalHoursThisWeek}
-                    totalHoursToday={totalHoursToday}
-                    totalInterviewsThisWeek={totalInterviewsThisWeek}
-                    totalInterviewsToday={totalInterviewsToday}
                   />
                 )}
                 {/* {tab === 'keywords' && (

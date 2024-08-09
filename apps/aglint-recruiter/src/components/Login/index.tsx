@@ -100,8 +100,8 @@ function Login() {
     pattern: {
       value:
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      message:
-        'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
+      message: 'Invalid login credentials',
+      // 'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
     },
   });
 
