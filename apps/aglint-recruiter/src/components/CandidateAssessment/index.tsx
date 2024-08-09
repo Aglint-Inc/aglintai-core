@@ -35,7 +35,7 @@ function CandidateAssessment() {
   const [submittedAssessment, setSubmittedAssessment] = useState([]);
   const router = useRouter();
   const { fetching, assessmentDetails } = useCandidateAssessment();
-  const about_company = assessmentDetails?.public_jobs.company_details;
+  const about_company = '';
   type AssessmentListType =
     AssessmentDetailsType['public_jobs']['assessment_job_relation'];
   const assessmentsList = assessmentDetails?.public_jobs
@@ -123,7 +123,7 @@ function CandidateAssessment() {
                 },
               }}
               variant='rounded'
-              src={assessmentDetails?.public_jobs?.logo}
+              src={''}
             />
           </>
         }
@@ -147,12 +147,12 @@ function CandidateAssessment() {
           <>
             <div
               dangerouslySetInnerHTML={{
-                __html: assessmentDetails?.public_jobs?.interview_instructions,
+                __html: '',
               }}
             ></div>
           </>
         }
-        isAboutCompnay={about_company && about_company.length > 0}
+        isAboutCompnay={false}
         textAboutCompany={
           <div
             dangerouslySetInnerHTML={{
@@ -165,7 +165,7 @@ function CandidateAssessment() {
             window.open(`/job-post/${assessmentDetails?.public_jobs?.id}`);
           },
         }}
-        textCompanyName={assessmentDetails?.public_jobs.company}
+        // textCompanyName={assessmentDetails?.public_jobs.company}
         textTitle={assessmentDetails?.public_jobs.job_title}
         slotCandidateAssesmentCard={
           assessmentsList &&

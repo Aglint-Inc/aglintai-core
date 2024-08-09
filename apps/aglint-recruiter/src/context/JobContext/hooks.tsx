@@ -82,7 +82,6 @@ const useJobContext = () => {
         !job.scoring_criteria_loading &&
         !isEqual(
           {
-            company: job.draft.company,
             department_id: job.draft.department_id,
             description: job.draft.description,
             job_title: job.draft.job_title,
@@ -91,7 +90,6 @@ const useJobContext = () => {
             workplace_type: job.draft.workplace_type,
           } as Omit<Job['draft'], 'jd_json'>,
           {
-            company: job.company,
             department_id: job.department_id,
             description: job.description,
             job_title: job.job_title,
