@@ -37,6 +37,14 @@ export default async function handler(req, res) {
 
       if (!ats_app_id) {
         console.log('No ats application id found');
+        await supabase
+          .from('applications')
+          .update({
+            processing_status: 'failed',
+            retry: 2,
+            is_resume_fetching: false,
+          })
+          .eq('application_id', payload.application_id);
         return res.status(400).json('No ats application id found');
       }
 
