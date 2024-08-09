@@ -32,6 +32,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZones from '@/src/utils/timeZone';
 
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
+import { getShortTimeZone } from '../../../utils';
 
 let schedulingSettingObj = {};
 function Availibility({
@@ -203,6 +204,7 @@ function Availibility({
     initialLoad();
   }, []);
 
+  console.log(schedulingSettingData);
   return (
     <Stack
       overflow={'hidden'}
@@ -233,13 +235,6 @@ function Availibility({
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>
       <InterviewLoadDetails
-        // slotEdit={
-        //   <ButtonGhost
-        //     textButton='Edit'
-        //     size={1}
-        //     onClickButton={{ onClick: () => setEditDrawer(true) }}
-        //   />
-        // }
         slotInterviewLoadCard={
           <>
             <InterviewLoadCard
@@ -296,7 +291,6 @@ function Availibility({
               textDay={capitalize(day.day)}
               textTime={
                 <Typography>
-                  {schedulingSettingData.timeZone.label}{' '}
                   <span style={{ fontWeight: '500' }}>
                     {dayjsLocal()
                       .set(
@@ -319,7 +313,8 @@ function Availibility({
                           parseInt(day.timeRange.endTime.split(':')[1]),
                         )
                         .format('hh:mm A')}
-                  </span>
+                  </span>{' '}
+                  {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
                 </Typography>
               }
             />
