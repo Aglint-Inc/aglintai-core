@@ -31,8 +31,8 @@ import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Comp
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZones from '@/src/utils/timeZone';
 
-import InterviewerLevelSettings from '../InterviewerLevelSettings';
 import { getShortTimeZone } from '../../../utils';
+import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 let schedulingSettingObj = {};
 function Availibility({
@@ -204,7 +204,6 @@ function Availibility({
     initialLoad();
   }, []);
 
-  console.log(schedulingSettingData);
   return (
     <Stack
       overflow={'hidden'}

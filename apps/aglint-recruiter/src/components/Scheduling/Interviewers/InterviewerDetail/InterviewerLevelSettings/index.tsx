@@ -19,6 +19,7 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
+import { RolesPill } from '@/devlink/RolesPill';
 import { DayOff } from '@/devlink2/DayOff';
 import { KeywordCard } from '@/devlink2/KeywordCard';
 import { Keywords } from '@/devlink2/Keywords';
@@ -36,7 +37,6 @@ import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 import { useImrQuery } from '../hooks';
-import { RolesPill } from '@/devlink/RolesPill';
 
 let schedulingSettingObj = {};
 let changeValue = null;
