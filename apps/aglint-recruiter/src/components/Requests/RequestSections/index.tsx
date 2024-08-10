@@ -18,7 +18,7 @@ function RequestSections() {
     sectionDefaultsData(queryParams.section),
   );
   useEffect(() => {
-    if (requestList.length) {
+    if (requestList?.length) {
       const updatedSections = sectionDefaultsData(queryParams.section).map(
         (section) => {
           if (status === 'success' && requestList.length > 0) {

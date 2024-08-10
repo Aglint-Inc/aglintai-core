@@ -45,7 +45,7 @@ function Section({
         <TextWithIcon
           color={color}
           iconName={sectionIconName}
-          textContent={`${capitalizeFirstLetter(sectionName)} (${requests.length})`}
+          textContent={`${capitalizeFirstLetter(sectionName).replace('Request', '')} requests (${requests.length})`}
         />
         <GlobalIcon
           size={4}
@@ -79,7 +79,10 @@ function Section({
               !isLoadingRequests && status === 'success' && !requests.length,
             )}
           >
-            <NoPendingReq />
+            <NoPendingReq
+              textHeader={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
+              textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} requests at the moment please check back later.`}
+            />
           </ShowCode.When>
           <ShowCode.Else>
             <RequestCardSkeletons />
