@@ -3433,6 +3433,7 @@ export type Database = {
           application_id: string | null
           assignee_id: string | null
           assigner_id: string
+          completed_at: string | null
           created_at: string
           id: string
           is_new: boolean
@@ -3447,6 +3448,7 @@ export type Database = {
           application_id?: string | null
           assignee_id?: string | null
           assigner_id?: string
+          completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
@@ -3461,6 +3463,7 @@ export type Database = {
           application_id?: string | null
           assignee_id?: string | null
           assigner_id?: string
+          completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
@@ -6033,6 +6036,15 @@ export type Database = {
           counts: Json
         }[]
       }
+      get_request_count_stats_new: {
+        Args: {
+          assigner_id: string
+        }
+        Returns: {
+          date: string
+          counts: Json
+        }[]
+      }
       get_screening_candidates: {
         Args: {
           p_recruiter_id: string
@@ -6265,6 +6277,10 @@ export type Database = {
         Returns: undefined
       }
       interviewing_state_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      lever_resume_save: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
