@@ -29,14 +29,13 @@ export type candidateRequestAvailabilityType =
   DatabaseTable['candidate_request_availability'] & {
     applications: DatabaseTable['applications'] & {
       candidates: DatabaseTable['candidates'];
-      public_jobs: DatabaseTable['public_jobs'] & {
-        recruiter: {
-          id: string;
-          name: string;
-          logo: string;
-        };
-      };
     };
+    recruiter: {
+      id: string;
+      name: string;
+      logo: string;
+    };
+
     request_session_relation: DatabaseTable['request_session_relation'] &
       {
         interview_session: DatabaseTable['interview_session'];
