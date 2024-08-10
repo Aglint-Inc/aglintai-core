@@ -89,7 +89,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
                       setIsScheduleNowOpen(true);
                       setDateRange({
                         start_date:
-                          rescheduleDetails.other_details.dateRange.start,
+                          rescheduleDetails.other_details.dateRange?.start,
                         end_date: rescheduleDetails.other_details.dateRange.end,
                       });
                     },

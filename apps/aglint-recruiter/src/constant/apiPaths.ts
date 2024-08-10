@@ -126,6 +126,7 @@ export const API_PATHS = [
 '/api/jobpost/write',
 '/api/lever/candidateSync',
 '/api/lever/createQueue',
+'/api/lever/createjob',
 '/api/lever/getCandidates',
 '/api/lever/getPostings',
 '/api/lever/saveApiKey',

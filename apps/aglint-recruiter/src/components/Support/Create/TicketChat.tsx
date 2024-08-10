@@ -2,14 +2,13 @@ import { PublicJobsType, SupportTicketType } from '@aglint/shared-types';
 import { Avatar, IconButton, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CandidateChat } from '@/devlink/CandidateChat';
 import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
-import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 
@@ -115,18 +114,18 @@ function TicketChat({
             //   })}
             // </Stack>
           }
-          textCompany={ticket.jobDetails?.company}
+          // textCompany={ticket.jobDetails?.company}
           textRole={<Stack>{ticket.jobDetails?.job_title}</Stack>}
           textTicketId={ticket.id}
           textStatus={capitalize(ticket.state)}
-          slotCompanyLogo={
-            <Avatar
-              variant='rounded'
-              src={getCompanyIcon(ticket.jobDetails?.company)}
-              alt={ticket.jobDetails?.job_title}
-              sx={{ width: '100%', height: '100%' }}
-            />
-          }
+          // slotCompanyLogo={
+          //   <Avatar
+          //     variant='rounded'
+          //     src={getCompanyIcon(ticket.jobDetails?.company)}
+          //     alt={ticket.jobDetails?.job_title}
+          //     sx={{ width: '100%', height: '100%' }}
+          //   />
+          // }
           //   bgColorPropsStatus={mapStatus}
           slotTypeMessage={<AddNewMessage sendMessage={sendMessage} />}
         />

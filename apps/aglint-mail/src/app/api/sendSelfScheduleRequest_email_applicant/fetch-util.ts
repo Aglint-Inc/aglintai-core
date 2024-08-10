@@ -10,7 +10,7 @@ export async function dbUtil(
       await supabaseAdmin
         .from('interview_filter_json')
         .select(
-          'interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company),candidates(first_name,last_name,email,recruiter(logo))))',
+          'interview_schedule(id,applications(public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name))))',
         )
         .eq('id', req_body.filter_json_id),
     );
@@ -21,7 +21,7 @@ export async function dbUtil(
       await supabaseAdmin
         .from('applications')
         .select(
-          'public_jobs(job_title,recruiter_id,company),candidates(first_name,last_name,email,recruiter(logo))',
+          'public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name))',
         )
         .eq('id', req_body.application_id),
     );
@@ -52,7 +52,7 @@ export async function dbUtil(
   const {
     applications: {
       candidates: { email: cand_email, first_name, recruiter, last_name },
-      public_jobs: { company, recruiter_id, job_title },
+      public_jobs: { recruiter_id, job_title },
     },
   } = filterJson;
 
@@ -66,7 +66,7 @@ export async function dbUtil(
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: company,
+      companyName: recruiter.name,
       jobRole: job_title,
       organizerName: getFullName(organizer.first_name, organizer.last_name),
       candidateLastName: last_name,

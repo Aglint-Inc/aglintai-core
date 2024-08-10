@@ -6,7 +6,7 @@ export const schedulesSupabase = () =>
   supabase
     .from('meeting_details')
     .select(
-      '*,applications(candidates(first_name,last_name)), public_jobs(id,company,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
+      '*,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
     );
 
 export type SchedulesSupabase = QueryData<ReturnType<typeof schedulesSupabase>>;

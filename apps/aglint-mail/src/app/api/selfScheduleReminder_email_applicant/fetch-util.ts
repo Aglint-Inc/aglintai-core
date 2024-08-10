@@ -9,7 +9,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter_id,company,recruiter),candidates(first_name,last_name,email,recruiter(logo))))',
+        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter(id,name,logo)),candidates(first_name,last_name,email)))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -30,8 +30,11 @@ export async function dbUtil(
   const {
     interview_schedule: {
       applications: {
-        candidates: { email: cand_email, first_name, last_name, recruiter },
-        public_jobs: { company, recruiter_id, job_title },
+        candidates: { email: cand_email, first_name, last_name },
+        public_jobs: {
+          job_title,
+          recruiter: { name: companyName, id: recruiter_id, logo },
+        },
       },
     },
   } = filterJson;
@@ -46,7 +49,7 @@ export async function dbUtil(
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: company,
+      companyName: companyName,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
       jobRole: job_title,
@@ -61,7 +64,7 @@ export async function dbUtil(
 
   const react_email_placeholders: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['react_email_placeholders'] =
     {
-      companyLogo: recruiter.logo,
+      companyLogo: logo,
       selfScheduleLink: scheduleLink,
     };
 

@@ -67,7 +67,7 @@ const LinkIcon = ({
 }) => {
   switch (module) {
     case 'Aglint AI':
-      return <AssistantLogo isActive={active}/>;
+      return <AssistantLogo isActive={active} />;
     case 'Jobs':
       return (
         <NavLink
@@ -169,17 +169,9 @@ const LinkComp = ({
   active: string[];
 }) => {
   const router = useRouter();
-
   return (
     <Link href={path}>
-      <LinkIcon
-        module={module}
-        active={
-          router.pathname === '/user/profile/[user_id]'
-            ? router.query.company && active.includes(router.pathname)
-            : active.includes(router.pathname)
-        }
-      />
+      <LinkIcon module={module} active={active.includes(router.pathname)} />
     </Link>
   );
 };

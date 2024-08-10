@@ -19,7 +19,7 @@ import {
 } from '@/src/services/api-schedulings/utils';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-
+const TIME_ZONE = 'Asia/Colombo';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
     req.body.request_id,
@@ -35,10 +35,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       request_id,
     } = v.parse(candidate_new_schedule_schema, req.body);
+    const [request_rec] = supabaseWrap(
+      await supabaseAdmin.from('request').select().eq('id', request_id),
+    );
     let date_range = {
       start_date_str: dayjsLocal().format('DD/MM/YYYY'),
       end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
     };
+    if (request_rec.schedule_start_date && request_rec.schedule_end_date) {
+      date_range.start_date_str = dayjsLocal(request_rec.schedule_start_date)
+        .tz(TIME_ZONE)
+        .format('DD/MM/YYYY');
+      date_range.end_date_str = dayjsLocal(request_rec.schedule_end_date)
+        .tz(TIME_ZONE)
+        .format('DD/MM/YYYY');
+    }
     const api_target = target_api as DatabaseEnums['email_slack_types'];
     const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
     const meeting_details = supabaseWrap(

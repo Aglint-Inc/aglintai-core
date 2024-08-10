@@ -86,7 +86,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       slotLogo={
                         <Avatar
                           variant='square'
-                          src='/images/ats/lever-job-badge.png'
+                          src='/images/ats/lever-job-badge.svg'
                           sx={{ width: '100%', height: '20px' }}
                         />
                       }

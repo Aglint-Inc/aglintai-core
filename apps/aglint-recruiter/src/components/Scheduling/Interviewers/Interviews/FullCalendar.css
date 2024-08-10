@@ -1,8 +1,4 @@
-.fc {
-  border: none !important;
-}
-
-.fc .fc-timegrid-slot-minor {
+/* .fc {
   border: none !important;
 }
 
@@ -12,9 +8,8 @@
 
 .fc .fc-day-today {
   background-color: var(--accent-2) !important;
-}
+} */
 
-.fc-license-message,
-.fc-header-toolbar {
-  display: none !important;
-}
+/* .fc .fc-timegrid-slot-minor {
+  border: none !important;
+} */

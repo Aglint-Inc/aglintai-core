@@ -1,5 +1,4 @@
-import { Dialog, Stack, Typography } from '@mui/material';
-import axios from 'axios';
+import { Dialog, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -16,26 +15,22 @@ import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
 import LoaderLever from '@/public/lottie/AddJobWithIntegrations';
 import FetchingJobsLever from '@/public/lottie/FetchingJobsLever';
+import axios from '@/src/client/axios';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { ApiLeverCreateJob } from '@/src/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
-import {
-  createJobApplications,
-  createJobObject,
-  createLeverJobReference,
-  fetchAllJobs,
-  getLeverStatusColor,
-} from './utils';
+import { LeverJob } from './types/job';
+import { fetchAllJobs, getLeverStatusColor } from './utils';
 
 export default function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -43,8 +38,9 @@ export default function LeverModalComp() {
   const router = useRouter();
   const { jobs, handleJobsRefresh } = useJobs();
   const [loading, setLoading] = useState(false);
-  const [leverPostings, setLeverPostings] = useState([]);
-  const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
+  const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
+  const [selectedLeverPostings, setSelectedLeverPostings] =
+    useState<LeverJob>(null);
   const [leverFilter, setLeverFilter] = useState('published');
   const [initialFetch, setInitialFetch] = useState(true);
   const [error, setError] = useState<boolean>(false);
@@ -85,51 +81,25 @@ export default function LeverModalComp() {
         lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
       }));
 
-      const dbJobs = await createJobObject(selectedLeverPostings, recruiter);
-      const { data: newJobs, error } = await supabase
-        .from('public_jobs')
-        .insert(dbJobs)
-        .select();
+      const response = await axios.call<ApiLeverCreateJob>(
+        'POST',
+        '/api/lever/createjob',
+        {
+          recruiter_id: recruiter.id,
+          leverPost: selectedLeverPostings,
+        },
+      );
 
-      if (!error) {
-        selectedLeverPostings.map(async (post) => {
-          await createLeverJobReference({
-            posting_id: post.id,
-            recruiter_id: recruiter.id,
-            job_id: newJobs.filter(
-              (job) =>
-                job.job_title == post.text &&
-                job.location == post.categories.location,
-            )[0].id,
-          });
-        });
-
-        const jobsObj = selectedLeverPostings.map((post) => {
-          return {
-            ...post,
-            job_id: newJobs.filter(
-              (job) =>
-                job.job_title == post.text &&
-                job.location == post.categories.location,
-            )[0].id,
-            recruiter_id: recruiter.id,
-          };
-        });
-        await createJobApplications(jobsObj, integrations.lever_key);
-        await handleGenerateJd(newJobs[0].id);
-        await handleJobsRefresh();
-        setIntegration((prev) => ({
-          ...prev,
-          lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
-        }));
-        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
-      } else {
-        toast.error(
-          'Import failed. Please try again later or contact support for assistance.',
-        );
-        posthog.capture('Error Importing Lever Jobs');
-        handleClose();
+      if (!response.success) {
+        throw new Error('Failed to import job');
       }
+      await handleGenerateJd(response.public_job_id);
+      await handleJobsRefresh();
+      setIntegration((prev) => ({
+        ...prev,
+        lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
+      }));
+      router.push(ROUTES['/jobs/[id]']({ id: response.public_job_id }));
     } catch (error) {
       toast.error(
         'Import failed. Please try again later or contact support for assistance.',
@@ -266,20 +236,14 @@ export default function LeverModalComp() {
               overflow={'hidden'}
             >
               <AtsJobs
-                textNumberofJobs={
-                  <Typography variant='body1'>
-                    {selectedLeverPostings.length == 0
-                      ? `Showing ${leverPostings.length} Jobs from lever`
-                      : `${selectedLeverPostings.length} Jobs selected`}
-                  </Typography>
-                }
+                textNumberofJobs={<></>}
                 onClickImport={{
                   onClick: () => {
                     importLever();
                     posthog.capture('Lever Jobs successfully imported');
                   },
                 }}
-                isImportDisable={selectedLeverPostings.length === 0}
+                isImportDisable={!selectedLeverPostings}
                 isAllActive={leverFilter == 'all'}
                 isClosedActive={leverFilter == 'closed'}
                 isInternalActive={leverFilter == 'internal'}
@@ -326,13 +290,11 @@ export default function LeverModalComp() {
                             <ScrollList uniqueKey={ind} key={ind}>
                               <AtsCard
                                 isChecked={
-                                  selectedLeverPostings?.filter(
-                                    (p) => p.id === post.id,
-                                  )?.length > 0
+                                  selectedLeverPostings?.id === post.id
                                 }
                                 onClickCheck={{
                                   onClick: () => {
-                                    setSelectedLeverPostings([post]);
+                                    setSelectedLeverPostings(post);
                                   },
                                 }}
                                 propsTextColor={{
@@ -363,11 +325,7 @@ export default function LeverModalComp() {
           ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
             <LoadingJobsAts
               textAtsCompany={'Lever'}
-              textJobCount={
-                selectedLeverPostings.length < 1
-                  ? `${selectedLeverPostings.length} Job`
-                  : `${selectedLeverPostings.length} Jobs`
-              }
+              textJobCount={selectedLeverPostings ? 1 : 0}
               slotLottie={<LoaderLever />}
             />
           ) : (

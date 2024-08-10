@@ -49,7 +49,7 @@ export const selfScheduleAgent = async ({
         selected_options: [],
       })
       .select(
-        '*,interview_schedule(applications(public_jobs(*),candidates(*)))',
+        '*,interview_schedule(applications(public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(id,name)),candidates(*)))',
       ),
   );
   if (!agent_assigned_user.phone) {
@@ -59,7 +59,7 @@ export const selfScheduleAgent = async ({
     const job_details = filter_json.interview_schedule.applications.public_jobs;
     const candidate = filter_json.interview_schedule.applications.candidates;
     const bodyParams = {
-      begin_sentence_template: `Hi ${candidate.first_name}, this is ${getFullName(agent_assigned_user.first_name, agent_assigned_user.last_name)} calling from ${job_details.company}. We wanted to schedule an interview for the position of ${job_details.job_title}, Is this the right time to talk?`,
+      begin_sentence_template: `Hi ${candidate.first_name}, this is ${getFullName(agent_assigned_user.first_name, agent_assigned_user.last_name)} calling from ${job_details.recruiter.name}. We wanted to schedule an interview for the position of ${job_details.job_title}, Is this the right time to talk?`,
       interviewer_name: getFullName(
         agent_assigned_user.first_name,
         agent_assigned_user.last_name,
