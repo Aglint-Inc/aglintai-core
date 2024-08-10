@@ -16,32 +16,72 @@ import { getOrderedGraphValues } from '@/src/components/Jobs/Job/Dashboard/utils
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 export const RequestsBarChart: FC<{
-  data: ReturnType<typeof getOrderedGraphValues>;
-  getSelectedBar: ({ label, value }: { label: string; value: number }) => void;
-}> = ({ data, getSelectedBar }) => {
+  createdRequestData: ReturnType<typeof getOrderedGraphValues>;
+  completedRequestData: ReturnType<typeof getOrderedGraphValues>;
+}> = ({ createdRequestData, completedRequestData }) => {
   const matches = useMediaQuery('(min-width:1920px)');
-  const { labels, tooltips, counts, colors } = data
-    .slice(data.length - 10, data.length)
+  const { createdLabels, createdTooltips, createdCounts, createdColors } =
+    createdRequestData
+      .slice(createdRequestData.length - 10, createdRequestData.length)
+      .reduce(
+        (acc, { color, name, count }) => {
+          const safeName = capitalize((name ?? '').trim());
+          acc.createdLabels.push(
+            safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
+          );
+          acc.createdTooltips.push(safeName);
+          acc.createdCounts.push(count);
+          acc.createdColors.push(color);
+          return acc;
+        },
+        {
+          createdLabels: [],
+          createdTooltips: [],
+          createdCounts: [],
+          createdColors: [],
+        },
+      );
+  const {
+    completedLabels,
+    completedTooltips,
+    completedCounts,
+    completedColors,
+  } = completedRequestData
+    .slice(completedRequestData.length - 10, completedRequestData.length)
     .reduce(
       (acc, { color, name, count }) => {
         const safeName = capitalize((name ?? '').trim());
-        acc.labels.push(
+        acc.completedLabels.push(
           safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
         );
-        acc.tooltips.push(safeName);
-        acc.counts.push(count);
-        acc.colors.push(color);
+        acc.completedLabels.push(safeName);
+        acc.completedCounts.push(count);
+        acc.completedColors.push(color);
         return acc;
       },
-      { labels: [], tooltips: [], counts: [], colors: [] },
+      {
+        completedLabels: [],
+        completedTooltips: [],
+        completedCounts: [],
+        completedColors: [],
+      },
     );
   const dataBar = {
-    labels: labels,
+    labels: createdLabels,
     datasets: [
       {
-        label: 'requests',
-        data: counts,
-        backgroundColor: colors,
+        label: 'Completed',
+        data: completedCounts,
+        backgroundColor: ['#208368'],
+        borderRadius: 4,
+        // borderSkipped: false,
+        grouped: true,
+        barThickness: 30,
+      },
+      {
+        label: 'Created',
+        data: createdCounts,
+        backgroundColor: ['#63635E30'],
         borderRadius: 4,
         // borderSkipped: false,
         grouped: true,
@@ -52,49 +92,47 @@ export const RequestsBarChart: FC<{
 
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const handleClick = (
-    _,
-    elements: { datasetIndex: number; index: number }[],
-  ) => {
-    if (elements.length > 0) {
-      const { datasetIndex, index } = elements[0];
-      const label = dataBar.labels[index];
-      const value = dataBar.datasets[datasetIndex].data[index];
-      //   console.log(label, value);
-      getSelectedBar({ label, value });
-      setActiveIndex(index);
-    }
-  };
+  // const handleClick = (
+  //   _,
+  //   elements: { datasetIndex: number; index: number }[],
+  // ) => {
+  //   if (elements.length > 0) {
+  //     const { datasetIndex, index } = elements[0];
+  //     const label = dataBar.labels[index];
+  //     const value = dataBar.datasets[datasetIndex].data[index];
+  //     //   console.log(label, value);
+  //     getSelectedBar({ label, value });
+  //     setActiveIndex(index);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (data.length) {
-      handleClick(null, [
-        {
-          datasetIndex: 0,
-          index: data.slice(data.length - 10, data.length).length - 1,
-        },
-      ]);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data.length) {
+  //     handleClick(null, [
+  //       {
+  //         datasetIndex: 0,
+  //         index: data.slice(data.length - 10, data.length).length - 1,
+  //       },
+  //     ]);
+  //   }
+  // }, [data]);
 
-  const getDataset = () => {
-    return dataBar.datasets.map((dataset, datasetIndex) => {
-      return {
-        ...dataset,
-        backgroundColor: dataset.data.map((dataPoint, index) =>
-          index === activeIndex ? '#F76B15' : 'rgba(99, 99, 94, 0.2)',
-        ),
+  // const getDataset = () => {
+  //   return dataBar.datasets.map((dataset, datasetIndex) => {
+  //     return {
+  //       ...dataset,
+  //       backgroundColor: 'rgba(99, 99, 94, 0.2)',
 
-        // borderSkipped: true,
-        borderRadius: 4,
-      };
-    });
-  };
+  //       // borderSkipped: true,
+  //       borderRadius: 4,
+  //     };
+  //   });
+  // };
 
-  const updatedData = {
-    ...dataBar,
-    datasets: getDataset(),
-  };
+  // const updatedData = {
+  //   ...dataBar,
+  //   datasets: getDataset(),
+  // };
 
   return (
     <Bar
@@ -105,7 +143,7 @@ export const RequestsBarChart: FC<{
         plugins: {
           tooltip: {
             callbacks: {
-              title: (values) => tooltips[values[0].dataIndex],
+              title: (values) => createdTooltips[values[0].dataIndex],
             },
           },
           legend: {
@@ -114,6 +152,8 @@ export const RequestsBarChart: FC<{
         },
         scales: {
           x: {
+            stacked: true,
+
             title: {
               display: false,
               font: { weight: 'bold' },
@@ -132,6 +172,7 @@ export const RequestsBarChart: FC<{
             },
           },
           y: {
+            stacked: true,
             title: {
               display: false,
               font: { weight: 'bold' },
@@ -147,9 +188,9 @@ export const RequestsBarChart: FC<{
             display: false,
           },
         },
-        onClick: handleClick,
+        // onClick: handleClick,
       }}
-      data={updatedData}
+      data={dataBar}
     />
   );
 };
