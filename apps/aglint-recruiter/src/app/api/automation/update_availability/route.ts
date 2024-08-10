@@ -8,11 +8,13 @@ import { updateCandidateAvailabilitySlots } from '../utils/updateAvailabilitySlo
 export async function POST(req) {
   const { application_ids } = await req.json();
   try {
-    const promises = application_ids.map(async (application_id) => {
-      const availabilityData: Awaited<
-        ReturnType<typeof fetchLatestCandidateAvailability>
-      > = await fetchLatestCandidateAvailability(application_id);
+    const availabilityDatas: Awaited<
+      ReturnType<typeof fetchLatestCandidateAvailability>
+    > = await fetchLatestCandidateAvailability(application_ids);
 
+    const request_ids = availabilityDatas.map((ava) => ava.request_id);
+
+    const promises = availabilityDatas.map(async (availabilityData) => {
       if (availabilityData) {
         const { number_of_days, number_of_slots } = availabilityData;
 
@@ -23,7 +25,10 @@ export async function POST(req) {
           number_of_days,
           number_of_slots,
         );
-        await updateCandidateAvailabilitySlots(application_id, filteredSlots);
+        await updateCandidateAvailabilitySlots(
+          availabilityData.application_id,
+          filteredSlots,
+        );
       }
     });
 
@@ -32,7 +37,7 @@ export async function POST(req) {
     });
 
     return NextResponse.json(
-      { message: 'availability updated' },
+      { message: 'availability updated', request_ids },
       { status: 200 },
     );
   } catch (e) {

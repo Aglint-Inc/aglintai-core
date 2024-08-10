@@ -1,10 +1,10 @@
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export async function fetchLatestCandidateAvailability(applicationId) {
+export async function fetchLatestCandidateAvailability(applicationIds) {
   const { data, error } = await supabaseAdmin
     .from('candidate_request_availability')
-    .select('id, number_of_days, number_of_slots')
-    .eq('application_id', applicationId)
+    .select('id, number_of_days, number_of_slots,request_id,application_id')
+    .in('application_id', applicationIds)
     .order('created_at', { ascending: false })
     .limit(1);
 
@@ -15,5 +15,5 @@ export async function fetchLatestCandidateAvailability(applicationId) {
     );
   }
 
-  return data[0];
+  return data;
 }

@@ -8,12 +8,12 @@ import {
 } from '../utils/getSelfScheduleSlots';
 
 export async function POST(req) {
-  const { request_id } = await req.json();
+  const { request_ids } = await req.json();
 
   const { error, data: filter_jsons } = await supabaseAdmin
     .from('interview_filter_json')
     .select('id')
-    .in('request_id', request_id);
+    .in('request_id', request_ids);
 
   if (error) {
     throw new Error('Failed to fetch filter_id');
