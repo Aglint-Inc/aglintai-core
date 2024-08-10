@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
-import { recruiterId, timezone } from '../utils/constants';
-import { fetchLatestCandidateAvailability } from '../utils/fetchAvailability';
-import { fetchAndFilterAvailabilitySlots } from '../utils/filterSlots';
-import { updateCandidateAvailabilitySlots } from '../utils/updateAvailabilitySlots';
+import { recruiterId, timezone } from './utils/constants';
+import { fetchLatestCandidateAvailability } from './utils/fetchAvailability';
+import { fetchAndFilterAvailabilitySlots } from './utils/filterSlots';
+import { updateCandidateAvailabilitySlots } from './utils/updateAvailabilitySlots';
 
 export async function POST(req) {
   const { application_ids } = await req.json();

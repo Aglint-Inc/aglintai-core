@@ -32,7 +32,6 @@ export const API_PATHS = [
 '/api/assistant/listThreads',
 '/api/assistant/submitRun',
 '/api/assistant/updateAssistant',
-'/api/automation',
 '/api/candidate-assessment/assessment-answers',
 '/api/candidate-assessment/assessment-details',
 '/api/candidate-assessment/assessment-result-create',

@@ -33,6 +33,8 @@ export async function GET() {
   }
 }
 
+//return array or applications ids
+
 // old code -------------------------------------------------
 // const { settings, timezone, recruiterId} = require('./constants');
 // const { fetchTodoRequests } = require('./fetchRequests');
