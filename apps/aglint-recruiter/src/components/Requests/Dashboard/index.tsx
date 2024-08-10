@@ -1,20 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestDashboard } from '@/devlink2/RequestDashboard';
 import { RequestList } from '@/devlink2/RequestList';
+import { ReqUrgent } from '@/devlink2/ReqUrgent';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { Text } from '@/devlink2/Text';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import dayjs from '@/src/utils/dayjs';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { RequestCardSkeletons } from '../Section';
+import { RequestCardSkeletons } from '../RequestSections/Section';
 import CompletedRequestsBox from './Components/CompletedRequestsBox';
 import CompletionProgress from './Components/CompletionProgress';
 import { RequestsBarChart } from './Components/RequestsBarChart';
@@ -31,7 +29,7 @@ import {
 import { barChartDataType } from './utils';
 
 function Dashboard() {
-  const { requests, setFilters, initialFilter } = useRequests();
+  const { requests } = useRequests();
   const { status, data: requestList } = useAllScheduleList();
   const { setQueryParams } = useRouterPro();
 
@@ -69,11 +67,6 @@ function Dashboard() {
     }
   }, [status]);
 
-  const time = {
-    created_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
-    end_at: dayjsLocal(selectedDateRequest?.date).format('YYYY-MM-DD'),
-  };
-
   function formatRequestCountText(urgentCount, standardCount, dateString) {
     const urgentText =
       urgentCount > 0
@@ -102,44 +95,13 @@ function Dashboard() {
   return (
     <>
       <RequestDashboard
-        slotHeaderText={
-          selectedDateRequest?.date && (
-            <>
-              <Text
-                size={3}
-                content={` 👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
-                styleProps={{
-                  style: {
-                    display: '-webkit-box',
-                    WebkitLineClamp: 1,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    marginBottom: '4px',
-                    color: 'var(--neutral-11)',
-                  },
-                }}
-              ></Text>
-              <Text
-                size={3}
-                content={formatRequestCountText(
-                  getAllUrgentRequestCount(selectedDateRequest?.counts),
-                  getAllStandardRequestCount(selectedDateRequest?.counts),
-                  `on ${dateStringFormat(selectedDateRequest.date)}`,
-                )}
-                styleProps={{
-                  style: {
-                    display: '-webkit-box',
-                    WebkitLineClamp: 1,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    marginLeft: '20px',
-                    marginBottom: '16px',
-                  },
-                }}
-              ></Text>
-            </>
+        textGreetingTitle={`👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
+        textGreetingDescription={
+          selectedDateRequest?.date &&
+          formatRequestCountText(
+            getAllUrgentRequestCount(selectedDateRequest?.counts),
+            getAllStandardRequestCount(selectedDateRequest?.counts),
+            `on ${dateStringFormat(selectedDateRequest.date)}`,
           )
         }
         textProgressTitle={
@@ -151,7 +113,12 @@ function Dashboard() {
         }
         slotGraph={
           status === 'pending' ? (
-            <Stack position={'relative'} width={510} height={150}>
+            <Stack
+              borderRadius={'10px'}
+              position={'relative'}
+              width={485}
+              height={150}
+            >
               <Skeleton />
             </Stack>
           ) : (
@@ -167,40 +134,34 @@ function Dashboard() {
           status === 'pending' ? (
             <RequestCardSkeletons />
           ) : (
-            requestCardData &&
-            requestCardData.map(({ title, iconName, total, urgent }) => {
-              return (
-                <RequestList
-                  iconName={iconName}
-                  textTitle={capitalizeFirstLetter(title)}
-                  key={title}
-                  textCount={total}
-                  slotBadge={
-                    Boolean(urgent) && (
-                      <GlobalBadge
-                        size={1}
-                        variant={'outline'}
-                        textBadge={`${urgent} Urgent Requests`}
-                      />
-                    )
-                  }
-                  onClickCard={{
-                    onClick: () => {
-                      setFilters({
-                        ...structuredClone(initialFilter),
-                        ...time,
-                        type: [title],
-                      });
-                      setQueryParams({ tab: 'requests' });
-                    },
-                  }}
-                />
-              );
-            })
+            <>
+              <ReqUrgent
+                textRequests={`${0} Urgent Requests`}
+                onClickUrgentRequest={{
+                  onClick: () => {
+                    setQueryParams({ tab: 'requests', section: 'urgent' });
+                  },
+                }}
+              />
+              {requestCardData &&
+                requestCardData.map(({ title, iconName, total }) => {
+                  return (
+                    <RequestList
+                      iconName={iconName}
+                      textTitle={capitalizeFirstLetter(title)}
+                      key={title}
+                      textCount={total}
+                      onClickCard={{
+                        onClick: () => {
+                          setQueryParams({ tab: 'requests', section: title });
+                        },
+                      }}
+                    />
+                  );
+                })}
+              <CompletedRequestsBox completedRequest={completedRequest} />
+            </>
           )
-        }
-        slotReqCompleted={
-          <CompletedRequestsBox completedRequest={completedRequest} />
         }
       />
     </>
