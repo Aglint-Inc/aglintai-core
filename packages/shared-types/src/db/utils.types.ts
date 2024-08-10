@@ -130,55 +130,55 @@ export type Trigger_API_Action_Mapper<
   }[];
 };
 
-// export type OLD_Trigger_API_Action_Mapper<
-//   T extends
-//     DatabaseTable["workflow"]["trigger"] = DatabaseTable["workflow"]["trigger"],
-// > = {
-//   [Trigger in T]: Trigger extends `${DatabaseTable["workflow_action"]["target_api"] extends `${infer R}_${string}` ? R : never}`
-//     ? {
-//         name: string;
-//         value: Extract<
-//           DatabaseTable["workflow_action"]["target_api"],
-//           `${Trigger}_${string}`
-//         > extends `${Trigger}_${infer S}_${string}`
-//           ? S extends DatabaseTable["workflow_action"]["action_type"]
-//             ? {
-//                 target_api: Extract<
-//                   DatabaseTable["workflow_action"]["target_api"],
-//                   `${Trigger}_${S}_${string}`
-//                 >;
-//                 action_type: S;
-//               }
-//             : S extends
-//                   | "agent"
-//                   | "EmailLink"
-//                   | "agent"
-//                   | "EmailAgent"
-//                   | "emailAgent"
-//                   | "PhoneAgent"
-//               ? {
-//                   target_api: Extract<
-//                     DatabaseTable["workflow_action"]["target_api"],
-//                     `${Trigger}_${S}_${string}`
-//                   >;
-//                   action_type: Extract<
-//                     DatabaseTable["workflow_action"]["action_type"],
-//                     "end_point"
-//                   >;
-//                 }
-//               : S extends "emailLink"
-//                 ? {
-//                     target_api: Extract<
-//                       DatabaseTable["workflow_action"]["target_api"],
-//                       `${Trigger}_${S}_${string}`
-//                     >;
-//                     action_type: Extract<
-//                       DatabaseTable["workflow_action"]["action_type"],
-//                       "agent_instruction"
-//                     >;
-//                   }
-//                 : never
-//           : never;
-//       }[]
-//     : never;
-// };
+export type OLD_Trigger_API_Action_Mapper<
+  T extends
+    DatabaseTable["workflow"]["trigger"] = DatabaseTable["workflow"]["trigger"],
+> = {
+  [Trigger in T]: Trigger extends `${DatabaseTable["workflow_action"]["target_api"] extends `${infer R}_${string}` ? R : never}`
+    ? {
+        name: string;
+        value: Extract<
+          DatabaseTable["workflow_action"]["target_api"],
+          `${Trigger}_${string}`
+        > extends `${Trigger}_${infer S}_${string}`
+          ? S extends DatabaseTable["workflow_action"]["action_type"]
+            ? {
+                target_api: Extract<
+                  DatabaseTable["workflow_action"]["target_api"],
+                  `${Trigger}_${S}_${string}`
+                >;
+                action_type: S;
+              }
+            : S extends
+                  | "agent"
+                  | "EmailLink"
+                  | "agent"
+                  | "EmailAgent"
+                  | "emailAgent"
+                  | "PhoneAgent"
+              ? {
+                  target_api: Extract<
+                    DatabaseTable["workflow_action"]["target_api"],
+                    `${Trigger}_${S}_${string}`
+                  >;
+                  action_type: Extract<
+                    DatabaseTable["workflow_action"]["action_type"],
+                    "end_point"
+                  >;
+                }
+              : S extends "emailLink"
+                ? {
+                    target_api: Extract<
+                      DatabaseTable["workflow_action"]["target_api"],
+                      `${Trigger}_${S}_${string}`
+                    >;
+                    action_type: Extract<
+                      DatabaseTable["workflow_action"]["action_type"],
+                      "agent_instruction"
+                    >;
+                  }
+                : never
+          : never;
+      }[]
+    : never;
+};

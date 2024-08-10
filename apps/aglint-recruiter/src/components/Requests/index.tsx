@@ -35,7 +35,7 @@ const Requests = () => {
     !filters.title &&
     !filters.created_at;
 
-  const showEmptyPage = status === 'success' && !requestList.length;
+  const showEmptyPage = status === 'success' && !requestList?.length;
 
   const urgentRequests = (requestList ?? []).filter(
     (payload) => payload.priority === 'urgent',

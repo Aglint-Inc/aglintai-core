@@ -49,6 +49,8 @@ function AgentInputBox() {
       )?.applicantSessions
     : [];
 
+  return <></>;
+
   const {
     submitUserChat,
     insertAIChat,
@@ -156,7 +158,7 @@ function AgentInputBox() {
           handleSubmit={handleSubmit}
           requestList={
             requests.status === 'success'
-              ? requests.data.map((ele) => ({
+              ? (requests.data ?? []).map((ele) => ({
                   id: ele.id,
                   display: ele.title.replace(
                     '{{candidateName}}',
