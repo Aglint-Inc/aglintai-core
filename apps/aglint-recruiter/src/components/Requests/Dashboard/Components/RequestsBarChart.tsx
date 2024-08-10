@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { getOrderedGraphValues } from '@/src/components/Jobs/Job/Dashboard/utils';
@@ -20,19 +20,21 @@ export const RequestsBarChart: FC<{
   getSelectedBar: ({ label, value }: { label: string; value: number }) => void;
 }> = ({ data, getSelectedBar }) => {
   const matches = useMediaQuery('(min-width:1920px)');
-  const { labels, tooltips, counts, colors } = data.reduce(
-    (acc, { color, name, count }) => {
-      const safeName = capitalize((name ?? '').trim());
-      acc.labels.push(
-        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
-      );
-      acc.tooltips.push(safeName);
-      acc.counts.push(count);
-      acc.colors.push(color);
-      return acc;
-    },
-    { labels: [], tooltips: [], counts: [], colors: [] },
-  );
+  const { labels, tooltips, counts, colors } = data
+    .slice(data.length - 10, data.length)
+    .reduce(
+      (acc, { color, name, count }) => {
+        const safeName = capitalize((name ?? '').trim());
+        acc.labels.push(
+          safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
+        );
+        acc.tooltips.push(safeName);
+        acc.counts.push(count);
+        acc.colors.push(color);
+        return acc;
+      },
+      { labels: [], tooltips: [], counts: [], colors: [] },
+    );
   const dataBar = {
     labels: labels,
     datasets: [
@@ -40,10 +42,10 @@ export const RequestsBarChart: FC<{
         label: 'requests',
         data: counts,
         backgroundColor: colors,
-        borderRadius: 0,
-        borderSkipped: false,
+        borderRadius: 4,
+        // borderSkipped: false,
         grouped: true,
-        barThickness: 20,
+        barThickness: 30,
       },
     ],
   };
@@ -69,7 +71,7 @@ export const RequestsBarChart: FC<{
       handleClick(null, [
         {
           datasetIndex: 0,
-          index: data.length - 1,
+          index: data.slice(data.length - 10, data.length).length - 1,
         },
       ]);
     }
@@ -83,7 +85,8 @@ export const RequestsBarChart: FC<{
           index === activeIndex ? '#F76B15' : 'rgba(99, 99, 94, 0.2)',
         ),
 
-        borderSkipped: true,
+        // borderSkipped: true,
+        borderRadius: 4,
       };
     });
   };
@@ -121,6 +124,11 @@ export const RequestsBarChart: FC<{
             },
             grid: {
               display: false,
+            },
+            ticks: {
+              font: {
+                size: 10,
+              },
             },
           },
           y: {

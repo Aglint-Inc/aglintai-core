@@ -7,7 +7,5 @@ declare function RequestCard(props: {
   isNewBadgeVisible?: Types.Visibility.VisibilityConditions;
   textTitle?: React.ReactNode;
   slotRightIcons?: Types.Devlink.Slot;
-  slotRequestCardDetail?: Types.Devlink.Slot;
-  isRequestDetailVisible?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
