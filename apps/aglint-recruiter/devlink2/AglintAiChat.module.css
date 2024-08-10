@@ -1,5 +1,6 @@
 .request-right-wrap {
   display: flex;
+  width: 450px;
   height: 100vh;
   flex-direction: column;
   flex-wrap: nowrap;
