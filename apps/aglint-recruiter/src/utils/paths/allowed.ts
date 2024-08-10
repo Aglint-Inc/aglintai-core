@@ -90,6 +90,8 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/request_availability/updateRequestAvailability',
   '/api/scheduling/request_availability/insertScheduleActivities',
   '/api/getUserLocation',
+  '/api/automation',
+  '/api/automation/update_availability',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
