@@ -44,8 +44,6 @@ export const getSelfSchudleSlots = async (filter_id) => {
   }
 };
 
-// ------------------------
-
 export const bookSelfScheudle = async ({ filter_id, selectedSlots }) => {
   const candSelectedSlots = selectedSlots.sessions;
 
@@ -59,8 +57,8 @@ export const bookSelfScheudle = async ({ filter_id, selectedSlots }) => {
       },
     ],
   };
+
   try {
-    // console.log(bodyParams);
     await confirmSlots(bodyParams);
   } catch {
     throw new Error('confirm a slot failed');

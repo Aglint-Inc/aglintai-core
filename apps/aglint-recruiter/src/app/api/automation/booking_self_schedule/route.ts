@@ -35,8 +35,7 @@ export async function POST(req) {
 
     return NextResponse.json(
       {
-        message: 'availability updated',
-        data: randomSelectedSlot,
+        message: 'self schedule submitted',
       },
       { status: 200 },
     );
