@@ -19,7 +19,10 @@ export async function GET() {
       });
 
     return NextResponse.json(
-      { message: 'success', data: requests },
+      {
+        message: 'success',
+        data: requests.map((request) => request.application_id),
+      },
       { status: 200 },
     );
   } catch (e) {

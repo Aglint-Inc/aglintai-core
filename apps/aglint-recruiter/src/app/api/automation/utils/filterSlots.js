@@ -1,7 +1,9 @@
 function getRandomSlots(slots, count) {
-  const availableSlots = slots.filter((slot) => slot.is_slot_available);
-  const shuffledSlots = availableSlots.sort(() => 0.5 - Math.random());
-  return shuffledSlots.slice(0, count);
+  const AvalaibleSlots = slots.filter(
+    (slot) => slot.is_slot_available === true,
+  );
+  const shuffledSlots = AvalaibleSlots.sort(() => 0.5 - Math.random());
+  return shuffledSlots.slice(0, count ? count : 4);
 }
 
 export async function fetchAndFilterAvailabilitySlots(
@@ -33,9 +35,11 @@ export async function fetchAndFilterAvailabilitySlots(
     }
 
     const slotsResponse = await response.json();
-    return slotsResponse.slice(0, numberOfDays * 2).map((day) => {
+
+    const slots = slotsResponse.slice(0, numberOfDays * 2).map((day) => {
       return { ...day, slots: getRandomSlots(day.slots, numberOfSlots * 2) };
     });
+    return slots;
   } catch (e) {
     throw new Error(e.message);
   }
