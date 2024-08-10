@@ -5,7 +5,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 
-
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_KEY!,
@@ -28,14 +27,20 @@ export default async function handler(
     if (req.method === 'POST') {
       const { request_id } = req.body;
       if (request_id) {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('candidate_request_availability')
           .select(
-            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
+            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ) ),recruiter(logo,name)',
           )
           .eq('id', request_id)
           .single();
-        return res.send(data);
+        if (error) {
+          return res.send({
+            data: null,
+            error: 'missing required fields',
+          } as ApiResponseActivities);
+        }
+        if (data) return res.send(data);
       } else {
         return res.send({
           data: null,
