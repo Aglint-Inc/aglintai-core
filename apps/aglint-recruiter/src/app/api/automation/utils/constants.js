@@ -1,8 +1,8 @@
-const timezone = 'Asia/Calcutta';
-const recruiterId = '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc';
+export const timezone = 'Asia/Calcutta';
+export const recruiterId = '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc';
 
 // Predefined settings array
-const settings = [
+export const settings = [
   {
     submitAvailability: true,
     triggerAvailabilityReminders: 1,
@@ -26,9 +26,3 @@ const settings = [
   // { "submitAvailability": true, "triggerAvailabilityReminders": 1, "triggerSelfSchedulingReminders": 0, "requestReschedule": true, "cancelInterview": false, "selfSchedule": true },
   // { "submitAvailability": true, "triggerAvailabilityReminders": 2, "triggerSelfSchedulingReminders": 1, "requestReschedule": false, "cancelInterview": true, "selfSchedule": true }
 ];
-
-module.exports = {
-  settings,
-  timezone,
-  recruiterId,
-};
