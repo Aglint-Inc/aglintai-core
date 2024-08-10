@@ -6,9 +6,15 @@ const { fetchAndFilterAvailabilitySlots } = require('./filterSlots');
 const { updateCandidateAvailabilitySlots } = require('./updateAvailabilitySlots');
 
 function executeConditionalLogic(setting, request) {
+    // Hard
     if (setting.submitAvailability) {
         console.log(`Request ${request.id}: Submit availability.`);
         // Call functions related to submit availability here
+    }
+    
+    if (setting.selfSchedule) {
+        console.log(`Request ${request.id}: Enable self-schedule.`);
+        // Add logic here
     }
 
     if (setting.triggerAvailabilityReminders > 0) {
@@ -31,13 +37,10 @@ function executeConditionalLogic(setting, request) {
         // Add logic here
     }
 
-    if (setting.selfSchedule) {
-        console.log(`Request ${request.id}: Enable self-schedule.`);
-        // Add logic here
-    }
 }
 
 async function mapRequestsToSettings() {
+    // Get top 15 requests.
     const requests = await fetchTodoRequests();
 
     if (!requests.length) return;
@@ -48,6 +51,7 @@ async function mapRequestsToSettings() {
         const request = requests[i];
         const setting = settings[i];
 
+        //  Update request status to in progress
         await updateRequestStatus(request.id);
 
         requestSettingsMap.set(request.id, setting[i]);
