@@ -21,7 +21,7 @@ export const Request = (
   const { handleAsyncUpdateRequest } = useRequests();
   return (
     <OptimisticWrapper loading={isMutating}>
-      <Collapse in={collapse} collapsedSize={46}>
+      <Collapse in={collapse} collapsedSize={50}>
         <RequestCard
           isNewBadgeVisible={props.is_new}
           slotBadgeNew={

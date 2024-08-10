@@ -10,4 +10,6 @@ declare function RequestDashboard(props: {
   slotRequestList?: Types.Devlink.Slot;
   slotReqCompleted?: Types.Devlink.Slot;
   slotHeaderText?: Types.Devlink.Slot;
+  textGreetingTitle?: React.ReactNode;
+  textGreetingDescription?: React.ReactNode;
 }): React.JSX.Element;
