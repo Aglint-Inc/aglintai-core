@@ -415,7 +415,7 @@ function RoleDetails({
         textRoleName={
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
-        // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
+        // textRoleDescription={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
@@ -491,6 +491,7 @@ function RoleDetails({
           </>
         }
         textUserCount={`Users (${userLength || 0})`}
+        // textRoleName={role.name}
         slotUserWithRole={<RoleUserWidget role={role} members={members} />}
       />
       {editUser && (
