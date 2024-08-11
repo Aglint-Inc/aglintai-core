@@ -1,11 +1,14 @@
-import Seo from '@/src/components/Common/Seo';
+import { SeoPro } from '@/src/components/Common/SeoPro';
 import SignUpComp from '@/src/components/SignUpComp';
 import { SignupProvider } from '@/src/context/SingupContext/SignupContext';
 
 const SignUpPage = () => {
   return (
     <>
-      <Seo title='Sign Up | Aglint AI' description='AI for People Products' />
+      <SeoPro
+        title='Sign Up | Aglint AI'
+        description='AI for People Products'
+      />
       <SignupProvider>
         <SignUpComp />
       </SignupProvider>
