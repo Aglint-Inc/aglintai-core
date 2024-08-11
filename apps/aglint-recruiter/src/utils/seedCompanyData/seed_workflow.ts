@@ -479,7 +479,7 @@ export const seed_workflow_actions: {
       description: '',
       interval: 0,
       phase: 'after',
-      title: '',
+      title: 'When candidate requests for rescheduling, get new availability',
       trigger: 'onRequestReschedule',
       workflow_type: 'job',
     },
@@ -497,7 +497,8 @@ export const seed_workflow_actions: {
       description: '',
       interval: 0,
       phase: 'after',
-      title: '',
+      title:
+        'When candidate requests for cancelling inform interviewers and organizers',
       trigger: 'onRequestCancel',
       workflow_type: 'job',
     },

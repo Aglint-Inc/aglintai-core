@@ -37,7 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     } else if (
       meta.target_api.startsWith('onAvailReqAgent') ||
-      meta.target_api.startsWith('onSelfScheduleReqAgent')
+      meta.target_api.startsWith('onSelfScheduleReqAgent') ||
+      meta.target_api.startsWith('onRequestReschedule')
     ) {
       await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,

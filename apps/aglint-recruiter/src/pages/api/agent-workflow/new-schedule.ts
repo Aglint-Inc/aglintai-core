@@ -143,12 +143,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_date_str: date_range.end_date_str,
           organizer_id: organizer_id,
           request_id: request_id,
+          is_avail_req_resend: false,
         },
         reqProgressLogger,
         {
           event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         },
       );
+    } else if (
+      api_target === 'onRequestReschedule_emailLink_resendAvailRequest'
+    ) {
+      await executeWorkflowAction(
+        candidateAvailRequest,
+        {
+          req_body: req.body,
+          cloned_sessn_ids: session_ids,
+          start_date_str: date_range.start_date_str,
+          end_date_str: date_range.end_date_str,
+          organizer_id: organizer_id,
+          request_id: request_id,
+          is_avail_req_resend: true,
+        },
+        reqProgressLogger,
+        {
+          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        },
+      );
+      meeting_flow = 'candidate_request';
     } else {
       throw new ApiError('SERVER_ERROR', 'new-schedule not found');
     }

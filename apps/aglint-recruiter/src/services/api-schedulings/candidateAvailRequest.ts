@@ -14,6 +14,7 @@ export const candidateAvailRequest = async ({
   req_body,
   request_id,
   start_date_str,
+  is_avail_req_resend = true,
 }: {
   req_body: any;
   organizer_id: string;
@@ -21,6 +22,7 @@ export const candidateAvailRequest = async ({
   start_date_str;
   end_date_str;
   request_id: string;
+  is_avail_req_resend: boolean;
 }) => {
   const {
     application_id,
@@ -66,15 +68,31 @@ export const candidateAvailRequest = async ({
       })),
     ),
   );
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
-    {
-      organizer_user_id: organizer_id,
-      avail_req_id: avail_req.id,
-    };
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/sendAvailabilityRequest_email_applicant`,
-    {
-      ...payload,
-    },
-  );
+
+  if (is_avail_req_resend) {
+    console.log('fnkewjnkefjn');
+    const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+      {
+        recruiter_user_id: organizer_id,
+        avail_req_id: avail_req.id,
+      };
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/availabilityReqResend_email_candidate`,
+      {
+        ...payload,
+      },
+    );
+  } else {
+    const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+      {
+        organizer_user_id: organizer_id,
+        avail_req_id: avail_req.id,
+      };
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/sendAvailabilityRequest_email_applicant`,
+      {
+        ...payload,
+      },
+    );
+  }
 };
