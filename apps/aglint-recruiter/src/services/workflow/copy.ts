@@ -85,4 +85,11 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The self-scheduling will be cancelled.',
     error: 'There was an error cancelling the self-scheduling.',
   },
+  RESEND_CAND_AVAIL_EMAIL_LINK: {
+    past: 'The candidate availability email link was resent.',
+    present: 'Resending the candidate availability email link.',
+    future: 'The candidate availability email link will be resent.',
+    error:
+      'There was an error resending the candidate availability email link.',
+  },
 };

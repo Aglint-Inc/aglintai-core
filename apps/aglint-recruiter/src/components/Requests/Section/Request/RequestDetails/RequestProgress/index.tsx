@@ -7,6 +7,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 import {
   createReqAvailWorkflowGraph,
+  createRescheduleWorkflowGraph,
   updateEventProgress,
 } from '@/src/services/workflow/graphUtils';
 
@@ -78,10 +79,10 @@ export function RequestProgressSkeleton() {
 const createWorkflowGraph = (
   request_type: DatabaseTable['request']['type'],
 ) => {
-  if (
-    request_type === 'schedule_request' ||
-    request_type === 'reschedule_request'
-  ) {
+  if (request_type === 'reschedule_request') {
+    return createRescheduleWorkflowGraph();
+  }
+  if (request_type === 'schedule_request') {
     return createReqAvailWorkflowGraph();
   }
 };
