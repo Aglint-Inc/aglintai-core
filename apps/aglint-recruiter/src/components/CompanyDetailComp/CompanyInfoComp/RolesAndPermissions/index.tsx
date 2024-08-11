@@ -29,7 +29,6 @@ import {
 } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
@@ -373,7 +372,7 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
-  const { checkPermissions } = useRolesAndPermissions();
+  const { checkPermissions } = useRolesAndPermissionsContext();
   const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
