@@ -45,10 +45,14 @@ function Dashboard() {
 
     return 'You have ' + finalText;
   }
-  const open_request =
-    requestCount?.card.urgentRequest + requestCount?.card.standardRequest || 0;
+  const total_requests =
+    requestCount?.card.urgentRequest +
+    requestCount?.card.standardRequest +
+    requestCount?.card.completedRequests;
+  const open_request = total_requests - requestCount?.card.completedRequests;
+
   const completed_percentage =
-    Math.floor((requestCount?.card.completedRequests / open_request) * 100) ||
+    Math.floor((requestCount?.card.completedRequests / total_requests) * 100) ||
     0;
   return (
     <>
