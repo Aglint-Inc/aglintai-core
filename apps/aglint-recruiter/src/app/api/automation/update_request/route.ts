@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json(
       {
         message: 'success',
-        data: requests.map((request) => request.application_id),
+        data: requests,
       },
       { status: 200 },
     );
