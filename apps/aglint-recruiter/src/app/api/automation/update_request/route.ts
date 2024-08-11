@@ -8,20 +8,30 @@ export async function GET() {
   try {
     const requests: Awaited<ReturnType<typeof fetchTodoRequests>> =
       await fetchTodoRequests();
-    if (!requests.length) throw new Error('to_do statu request not found');
+
+    if (!requests.length) {
+      return NextResponse.json(
+        {
+          message: 'success',
+          data: [],
+        },
+        { status: 200 },
+      );
+    }
 
     const promises = requests.map((request) => updateRequestStatus(request.id));
 
-    Promise.all(promises)
-      .then(() => {})
-      .catch((error) => {
-        throw new Error(error.message);
-      });
+    Promise.all(promises).catch((error) => {
+      throw new Error(error.message);
+    });
 
     return NextResponse.json(
       {
         message: 'success',
-        data: requests,
+        data: requests.map((req) => ({
+          request_id: req.id,
+          application_id: req.id,
+        })),
       },
       { status: 200 },
     );
