@@ -473,4 +473,45 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '',
+      trigger: 'onRequestReschedule',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'email',
+        order: 0,
+        target_api: 'onRequestReschedule_emailLink_resendAvailRequest',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '',
+      trigger: 'onRequestCancel',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_agent_cancelEvents',
+      },
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_slack_interviewersOrganizer',
+      },
+    ],
+  },
 ];
