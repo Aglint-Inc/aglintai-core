@@ -31,6 +31,7 @@ import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Comp
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZones from '@/src/utils/timeZone';
 
+import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
 
 let schedulingSettingObj = {};
@@ -233,13 +234,6 @@ function Availibility({
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>
       <InterviewLoadDetails
-        // slotEdit={
-        //   <ButtonGhost
-        //     textButton='Edit'
-        //     size={1}
-        //     onClickButton={{ onClick: () => setEditDrawer(true) }}
-        //   />
-        // }
         slotInterviewLoadCard={
           <>
             <InterviewLoadCard
@@ -296,7 +290,6 @@ function Availibility({
               textDay={capitalize(day.day)}
               textTime={
                 <Typography>
-                  {schedulingSettingData.timeZone.label}{' '}
                   <span style={{ fontWeight: '500' }}>
                     {dayjsLocal()
                       .set(
@@ -319,7 +312,8 @@ function Availibility({
                           parseInt(day.timeRange.endTime.split(':')[1]),
                         )
                         .format('hh:mm A')}
-                  </span>
+                  </span>{' '}
+                  {getShortTimeZone(schedulingSettingData.timeZone.tzCode)}
                 </Typography>
               }
             />
@@ -434,7 +428,15 @@ function Availibility({
               slotKeywordCard={<></>}
               slotDailyLimit={
                 <>
-                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    <MuiNumberfield
+                      isMarginTop={false}
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'daily', 'value')
+                      }
+                      value={interviewLoad.daily.value}
+                      max={interviewLoad.daily.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -462,20 +464,21 @@ function Availibility({
                         );
                       })}
                     </RadioGroup>
-                    <MuiNumberfield
-                      isMarginTop={false}
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'daily', 'value')
-                      }
-                      value={interviewLoad.daily.value}
-                      max={interviewLoad.daily.max}
-                    />
                   </Stack>
                 </>
               }
               slotWeeklyLimit={
                 <>
-                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                  <Stack spacing={3} direction={'row'} alignItems={'center'}>
+                    {' '}
+                    <MuiNumberfield
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'weekly', 'value')
+                      }
+                      isMarginTop={false}
+                      value={interviewLoad.weekly.value}
+                      max={interviewLoad.weekly.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -506,14 +509,6 @@ function Availibility({
                         );
                       })}
                     </RadioGroup>
-                    <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'weekly', 'value')
-                      }
-                      isMarginTop={false}
-                      value={interviewLoad.weekly.value}
-                      max={interviewLoad.weekly.max}
-                    />
                   </Stack>
                 </>
               }
