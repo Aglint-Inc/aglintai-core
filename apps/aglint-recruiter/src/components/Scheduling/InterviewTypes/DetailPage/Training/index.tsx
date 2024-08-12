@@ -313,7 +313,7 @@ function ModuleSettingComp({
             <>
               <ButtonSoft
                 color={'neutral'}
-                textButton='Back'
+                textButton='Close'
                 size={2}
                 onClickButton={{ onClick: () => setOpen(false) }}
               />
@@ -400,7 +400,7 @@ function ModuleSettingComp({
                     </>
                   }
                   slotInputNoOfReverse={
-                    <Stack direction={'row'} gap={1}>
+                    <Stack direction={'row'} gap={1} alignItems={'center'}>
                       <IconButtonSoft
                         isDisabled={localModule.settings.noReverseShadow === 1}
                         color={'neutral'}
@@ -423,6 +423,7 @@ function ModuleSettingComp({
                       <MuiNumberfield
                         width='80px'
                         height='26px'
+                        isMarginTop={false}
                         value={localModule.settings.noReverseShadow}
                         isDebounceEnable={false}
                         handleSelect={(value) =>
@@ -459,7 +460,7 @@ function ModuleSettingComp({
                     </Stack>
                   }
                   slotInputNoOfShadow={
-                    <Stack direction={'row'} gap={1}>
+                    <Stack direction={'row'} gap={1} alignItems={'center'}>
                       <IconButtonSoft
                         isDisabled={localModule.settings.noShadow === 1}
                         color={'neutral'}
@@ -482,6 +483,7 @@ function ModuleSettingComp({
                       <MuiNumberfield
                         width='80px'
                         height='26px'
+                        isMarginTop={false}
                         value={localModule.settings.noShadow}
                         isDebounceEnable={false}
                         handleSelect={(value) =>

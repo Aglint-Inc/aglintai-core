@@ -5,6 +5,7 @@ import type {
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import {
   type MutationFilters,
   type QueryFilters,
@@ -14,12 +15,13 @@ import {
   useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useCallback } from 'react';
 
 import { supabase } from '@/src/utils/supabase/client';
 import aglintToast from '@/src/utils/toast';
 
 import { appKey, GC_TIME } from '..';
-import { Request } from './types';
+import { Request, RequestProgress, RequestResponse } from './types';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -30,10 +32,10 @@ export const requestQueries = {
     queryOptions({
       enabled: !!payload.assigner_id,
       gcTime: payload.assigner_id ? GC_TIME : 0,
-      refetchInterval: 5000,
       refetchOnMount: true,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
-      queryFn: async () => await getRequests({ payload, sort, filters }),
+      queryFn: async () =>
+        getRequests(await getUnfilteredRequests({ payload, sort, filters })),
       placeholderData: {
         cancel_schedule_request: [],
         completed_request: [],
@@ -83,6 +85,15 @@ export const requestQueries = {
       requestQueries.request_progress_key(),
       { request_id },
     ] as const,
+  all_request_progress_predicate: () => (query) =>
+    query.queryKey.includes(requestQueries.request_progress_key()) &&
+    query.state.data !== undefined,
+  request_progress_predicate:
+    ({ request_id }: GetRequestProgress) =>
+    (query) =>
+      query.queryKey.includes(requestQueries.request_progress_key()) &&
+      query.state.data !== undefined &&
+      !!query.queryKey.find((key) => key?.request_id === request_id),
   request_progress: ({
     request_id,
     enabled = true,
@@ -90,7 +101,7 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchInterval: 5000,
+      refetchInterval: !!request_id && enabled ? 5000 : 0,
       refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
@@ -197,6 +208,137 @@ export const useRequestsDelete = () => {
   };
 };
 
+type RealtimeRequest = RealtimePostgresInsertPayload<DatabaseTable['request']>;
+type RealtimeRequestProgress = RealtimePostgresInsertPayload<
+  DatabaseTable['request_progress']
+>;
+
+export const useRequestRealtime = () => {
+  const queryClient = useQueryClient();
+  const updateRequest = useCallback(
+    (payload: RealtimeRequest) => {
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      );
+      queryClient
+        .getQueriesData<RequestResponse>({
+          predicate: requestQueries.requests_invalidate().predicate,
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestResponse>(
+            queryKey,
+            getRequests(
+              Object.values(queryData)
+                .flatMap((entry) => entry)
+                .reduce((acc, curr) => {
+                  if (curr.id === payload.new.id)
+                    acc.push({
+                      ...curr,
+                      ...payload.new,
+                    });
+                  else acc.push(curr);
+                  return acc;
+                }, [] as Request[]),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const deleteRequest = useCallback(
+    (payload: RealtimeRequest) => {
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      );
+      queryClient
+        .getQueriesData<RequestResponse>({
+          predicate: requestQueries.requests_invalidate().predicate,
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestResponse>(
+            queryKey,
+            getRequests(
+              Object.values(queryData)
+                .flatMap((entry) => entry)
+                .reduce((acc, curr) => {
+                  if (curr.id !== (payload.old as any).id) acc.push(curr);
+                  return acc;
+                }, [] as Request[]),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const insertRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.request_progress_predicate({
+            request_id: payload.new.request_id,
+          }),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            [...queryData, payload.new].toSorted(
+              (a, z) =>
+                dayjsLocal(a.created_at).date() -
+                dayjsLocal(z.created_at).date(),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const updateRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.request_progress_predicate({
+            request_id: payload.new.request_id,
+          }),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            queryData.reduce((acc, curr) => {
+              if (curr.id === payload.new.id) acc.push(payload.new);
+              else acc.push(curr);
+              return acc;
+            }, [] as RequestProgress[]),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const deleteRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.all_request_progress_predicate(),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            queryData.reduce((acc, curr) => {
+              if (curr.id !== (payload.old as any).id) acc.push(curr);
+              return acc;
+            }, [] as RequestProgress[]),
+          );
+        });
+    },
+    [queryClient],
+  );
+  return {
+    updateRequest,
+    deleteRequest,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
+  };
+};
+
 type GetRequests = Pick<DatabaseTable['request'], 'assigner_id'>;
 type RequestsFilterKeys =
   | keyof Pick<
@@ -290,8 +432,7 @@ type Sections =
   | `${Extract<Request['status'], 'completed'>}_request`
   | `${Extract<Request['priority'], 'urgent'>}_request`;
 
-export const getRequests = async (params: GetRequestParams) => {
-  const response = await getUnfilteredRequests(params);
+export const getRequests = (response: Request[]) => {
   return (
     Object.entries(
       response.reduce(
@@ -365,6 +506,7 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .from('request_progress')
       .select('*')
       .eq('request_id', request_id)
+      .order('created_at', { ascending: true })
       .throwOnError()
   ).data;
 

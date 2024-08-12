@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { Collapse } from '@mui/material';
 
 import { useRequests } from '@/src/context/RequestsContext';
 import { Request, RequestResponse } from '@/src/queries/requests/types';
@@ -10,10 +9,7 @@ import Section from './Section';
 function RequestSections() {
   const {
     requests: { status, data },
-    sections,
-    setSections,
   } = useRequests();
-
   const defaults = sectionDefaultsData.map(
     // eslint-disable-next-line no-unused-vars
     ({ requests, sectionName, ...rest }) => ({
@@ -27,42 +23,27 @@ function RequestSections() {
     <>
       {defaults.map(({ color, requests, sectionIconName, sectionName }) => {
         return (
-          <div
-            key={sectionName}
-            style={{
-              padding: '12px',
-              backgroundColor: 'var(--neutral-2)',
-              borderRadius: '8px',
-            }}
-          >
-            <Collapse
-              onClick={() => {
-                setSections((prev) => ({
-                  ...prev,
-                  [sectionName]: !prev[sectionName],
-                }));
-              }}
-              collapsedSize={20}
-              in={sections[sectionName]}
-            >
-              <Section
-                requests={requests}
-                sectionName={sectionName}
-                sectionIconName={sectionIconName}
-                color={color}
-                isLoadingRequests={status === 'pending'}
-              />
-            </Collapse>
-          </div>
+          <section data-req-section={sectionName} key={sectionName}>
+            <Section
+              requests={requests}
+              sectionName={sectionName}
+              sectionIconName={sectionIconName}
+              color={color}
+              isLoadingRequests={status === 'pending'}
+            />
+          </section>
         );
       })}
+      {/* <section data-req-section="back_to_top">
+
+      </section> */}
     </>
   );
 }
 
 export default RequestSections;
 
-const sectionDefaultsData = [
+export const sectionDefaultsData = [
   {
     requests: [],
     sectionName: 'urgent_request',

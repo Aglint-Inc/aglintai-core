@@ -642,7 +642,7 @@ function InterviewerLevelSettings({
                         }
                       });
                     }}
-                    path='outOfOfficekeywords'
+                    path='outOfOfficeKeywords'
                     type='string'
                   />
                 }

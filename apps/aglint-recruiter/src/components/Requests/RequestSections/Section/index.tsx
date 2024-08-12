@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { NoPendingReq } from '@/devlink2/NoPendingReq';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { RequestProvider } from '@/src/context/RequestContext';
@@ -47,16 +46,9 @@ function Section({
           iconName={sectionIconName}
           textContent={`${capitalizeFirstLetter(sectionName)} (${requests.length})`}
         />
-        <GlobalIcon
-          size={4}
-          iconName={'keyboard_double_arrow_down'}
-          color={'neutral'}
-        />
       </Stack>
       <Stack
         gap={1}
-        maxHeight={'400px'}
-        overflow={'auto'}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -79,9 +71,16 @@ function Section({
               !isLoadingRequests && status === 'success' && !requests.length,
             )}
           >
-            <NoPendingReq
-              textHeader={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
-              textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} requests at the moment please check back later.`}
+            <GlobalEmptyState
+              iconName={sectionIconName}
+              styleEmpty={{
+                style: {
+                  background: 'var(--neutral-2)',
+                },
+              }}
+              
+              textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
+              // textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} requests at the moment please check back later.`}
             />
           </ShowCode.When>
           <ShowCode.Else>
