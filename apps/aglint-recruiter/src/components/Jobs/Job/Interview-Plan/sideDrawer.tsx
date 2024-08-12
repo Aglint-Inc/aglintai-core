@@ -271,7 +271,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton='Save'
+            textButton='Update'
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
@@ -416,7 +416,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton='Save'
+            textButton='Update'
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
@@ -470,7 +470,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton={break_duration === 0 ? 'Add' : 'Save'}
+            textButton={break_duration === 0 ? 'Add' : 'Update'}
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleUpdate() }}

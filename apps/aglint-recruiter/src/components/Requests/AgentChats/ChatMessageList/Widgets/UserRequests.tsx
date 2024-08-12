@@ -8,9 +8,9 @@ function UserRequests({
   chat: ReturnType<typeof useUserChat>['data'][0];
 }) {
   const meta = chat.metadata;
-  const requests = meta.findLast(
-    (m) => m.function_name === 'fetch_user_requests',
-  )?.payload;
+  const requests =
+    meta?.findLast((m) => m.function_name === 'fetch_user_requests')?.payload ||
+    [];
   const uiRequests: RequestListProps[] = requests?.map((request) => {
     return {
       type: request.type,

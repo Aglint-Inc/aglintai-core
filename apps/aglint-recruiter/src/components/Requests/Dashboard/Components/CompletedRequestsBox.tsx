@@ -1,42 +1,32 @@
 import { ReqCompleted } from '@/devlink2/ReqCompleted';
 import { Text } from '@/devlink2/Text';
-import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function CompletedRequestsBox({
   completedRequest,
+  status,
 }: {
-  completedRequest: any[];
+  completedRequest: number;
+  status: 'pending' | 'success' | 'error';
 }) {
-  const { setFilters, initialFilter } = useRequests();
   const { setQueryParams } = useRouterPro();
   return (
     <ReqCompleted
-      isDetailListVisible={false}
-      onClickArrow={{
+      onClickCompleted={{
         onClick: () => {
-          setFilters({
-            ...structuredClone(initialFilter),
-            status: ['completed'],
-          });
-          setQueryParams({ tab: 'requests' });
+          setQueryParams({ tab: 'requests', section: 'completed' });
         },
       }}
       textTitle={
         <Text
-          color={completedRequest.length ? 'success' : 'neutral'}
+          color={completedRequest ? 'success' : 'neutral'}
           content={
-            completedRequest.length
-              ? `${completedRequest?.length} Requests completed 🎉`
-              : 'Looks like there is no completed requests 😴'
+            status === 'success' && !completedRequest
+              ? `Looks like there is no completed requests 😴`
+              : `${completedRequest} Requests completed 🎉`
           }
         />
       }
-      textDesc={
-        Boolean(completedRequest.length) &&
-        `View detailed list of completed requests`
-      }
-      slotTextwithIcon={<></>}
     />
   );
 }

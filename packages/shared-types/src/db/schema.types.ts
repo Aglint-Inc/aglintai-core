@@ -3164,14 +3164,7 @@ export type Database = {
       }
       recruiter: {
         Row: {
-          ai_avatar: Json | null
-          application_process: string | null
-          ats_familiar: string | null
-          audio_avatar_id: number
-          available_roles: string[]
-          benefits: string | null
           company_overview: string | null
-          company_values: string | null
           company_website: string | null
           created_at: string
           e_o_statement: string | null
@@ -3187,25 +3180,14 @@ export type Database = {
           phone_number: string | null
           primary_admin: string | null
           primary_contact: Json | null
-          recruiter_active: boolean | null
           recruiter_type: string | null
           scheduling_reason: Json | null
           scheduling_settings: Json | null
           socials: Json | null
-          technology_score: string[]
-          use_of_purpose: Json | null
-          video_assessment: boolean | null
           workplace_type: Json
         }
         Insert: {
-          ai_avatar?: Json | null
-          application_process?: string | null
-          ats_familiar?: string | null
-          audio_avatar_id?: number
-          available_roles?: string[]
-          benefits?: string | null
           company_overview?: string | null
-          company_values?: string | null
           company_website?: string | null
           created_at?: string
           e_o_statement?: string | null
@@ -3221,25 +3203,14 @@ export type Database = {
           phone_number?: string | null
           primary_admin?: string | null
           primary_contact?: Json | null
-          recruiter_active?: boolean | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
           scheduling_settings?: Json | null
           socials?: Json | null
-          technology_score?: string[]
-          use_of_purpose?: Json | null
-          video_assessment?: boolean | null
           workplace_type?: Json
         }
         Update: {
-          ai_avatar?: Json | null
-          application_process?: string | null
-          ats_familiar?: string | null
-          audio_avatar_id?: number
-          available_roles?: string[]
-          benefits?: string | null
           company_overview?: string | null
-          company_values?: string | null
           company_website?: string | null
           created_at?: string
           e_o_statement?: string | null
@@ -3255,14 +3226,10 @@ export type Database = {
           phone_number?: string | null
           primary_admin?: string | null
           primary_contact?: Json | null
-          recruiter_active?: boolean | null
           recruiter_type?: string | null
           scheduling_reason?: Json | null
           scheduling_settings?: Json | null
           socials?: Json | null
-          technology_score?: string[]
-          use_of_purpose?: Json | null
-          video_assessment?: boolean | null
           workplace_type?: Json
         }
         Relationships: [
@@ -3286,6 +3253,29 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      recruiter_preferences: {
+        Row: {
+          recruiter_id: string
+          scoring: boolean
+        }
+        Insert: {
+          recruiter_id: string
+          scoring?: boolean
+        }
+        Update: {
+          recruiter_id?: string
+          scoring?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recuriter_preferences_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: true
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -3482,6 +3472,7 @@ export type Database = {
           application_id: string | null
           assignee_id: string | null
           assigner_id: string
+          completed_at: string | null
           created_at: string
           id: string
           is_new: boolean
@@ -3496,6 +3487,7 @@ export type Database = {
           application_id?: string | null
           assignee_id?: string | null
           assigner_id?: string
+          completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
@@ -3510,6 +3502,7 @@ export type Database = {
           application_id?: string | null
           assignee_id?: string | null
           assigner_id?: string
+          completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
@@ -5683,6 +5676,15 @@ export type Database = {
           total_records: number
         }[]
       }
+      count_requests: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          date: string
+          created_at_count: number
+          completed_at_count: number
+          on_progress_count: number
+        }[]
+      }
       create_auth_user: {
         Args: {
           email: string
@@ -6082,6 +6084,27 @@ export type Database = {
           counts: Json
         }[]
       }
+      get_request_count_stats_new: {
+        Args: {
+          assigner_id: string
+        }
+        Returns: {
+          date: string
+          counts: Json
+        }[]
+      }
+      get_request_stats: {
+        Args: {
+          assigner_id: string
+          curr_date?: string
+        }
+        Returns: {
+          date: string
+          created: number
+          completed: number
+          on_going: number
+        }[]
+      }
       get_screening_candidates: {
         Args: {
           p_recruiter_id: string
@@ -6314,6 +6337,10 @@ export type Database = {
         Returns: undefined
       }
       interviewing_state_active: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      lever_resume_save: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }

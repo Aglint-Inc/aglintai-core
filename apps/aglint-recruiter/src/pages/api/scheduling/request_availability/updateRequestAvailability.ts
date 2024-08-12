@@ -36,7 +36,7 @@ export default async function handler(
           })
           .eq('id', id)
           .select(
-            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ), public_jobs ( logo,company ) )',
+            '*,request_session_relation( interview_session(*) ), applications ( candidate_id, candidates ( * ) ),recruiter(logo,name)',
           )
           .single();
         await supabaseAdmin

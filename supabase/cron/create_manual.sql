@@ -179,3 +179,13 @@ select
       select fail_processing_applications();
     $$
 );
+
+
+select
+  cron.schedule(
+    'lever-resume-save',
+    '*/1 * * * *', 
+    $$
+    select lever_resume_save();
+    $$
+);
