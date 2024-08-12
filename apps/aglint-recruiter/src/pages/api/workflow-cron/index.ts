@@ -56,7 +56,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     } else if (meta.target_api.startsWith('onRequestCancel')) {
-      // console.log('cancel', req.body);
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cancel-schedule`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
     }
     await supabaseAdmin
       .from('workflow_action_logs')

@@ -156,6 +156,26 @@ export const createRescheduleWorkflowGraph = () => {
   return req_avail_graph;
 };
 
+export const createCancelWorkflowGraph = () => {
+  const req_cancel_graph = new WorkflowGraph();
+  req_cancel_graph.addNode(
+    new EventNode('not_started', 'CANCEL_INTERVIEW_MEETINGS', true, 0),
+  );
+  req_cancel_graph.addNode(
+    new EventNode(
+      'not_started',
+      'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+      true,
+      0,
+    ),
+  );
+  req_cancel_graph.addEdge(
+    'CANCEL_INTERVIEW_MEETINGS',
+    'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+  );
+  return req_cancel_graph;
+};
+
 export const updateEventProgress = (
   graph: WorkflowGraph,
   progress_entries: DatabaseTable['request_progress'][],

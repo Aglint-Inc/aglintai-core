@@ -6,6 +6,7 @@ import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 import {
+  createCancelWorkflowGraph,
   createReqAvailWorkflowGraph,
   createRescheduleWorkflowGraph,
   updateEventProgress,
@@ -37,6 +38,18 @@ function RequestProgress({
           new Set(),
         );
         events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
+
+        return events;
+      }
+      if (request_type === 'cancel_schedule_request') {
+        let events = graphRef.current.traverseGraph(
+          'CANCEL_INTERVIEW_MEETINGS',
+          new Set(),
+        );
+        events = [
+          graphRef.current.getNode('CANCEL_INTERVIEW_MEETINGS'),
+          ...events,
+        ];
 
         return events;
       }
@@ -86,4 +99,7 @@ const createWorkflowGraph = (
   if (request_type === 'schedule_request') {
     return createReqAvailWorkflowGraph();
   }
+
+  // cancel
+  return createCancelWorkflowGraph();
 };

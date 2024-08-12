@@ -25,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
+    console.error(error.message);
     res.status(500).send(error.message);
   }
 };

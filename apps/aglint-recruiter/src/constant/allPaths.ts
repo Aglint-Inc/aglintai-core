@@ -6,6 +6,7 @@ export const PATHS = [
 '/agent/jobs/[id]',
 '/agent/scheduler',
 '/agent/sourcing',
+'/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
 '/api/agent-workflow/new-schedule',
 '/api/ai/create-embeddings',
