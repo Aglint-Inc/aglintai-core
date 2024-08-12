@@ -49,7 +49,7 @@ const getJob = async (rec_id: string) =>
     await supabase
       .from('recruiter')
       .select(
-        'id, logo, name, office_locations(*),company_overview, company_values, employee_size, socials, company_website, industry, jobs:public_jobs(*,departments(*))',
+        'id, logo, name, office_locations(*),company_overview, employee_size, socials, company_website, industry, jobs:public_jobs(*,departments(*))',
       )
       .eq('id', rec_id)
       .single()

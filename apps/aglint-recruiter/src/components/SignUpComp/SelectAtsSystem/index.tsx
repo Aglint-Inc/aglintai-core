@@ -1,7 +1,6 @@
-import { SocialsType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -12,14 +11,13 @@ import { RcGoalsBlock } from '@/devlink2/RcGoalsBlock';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { supabase } from '@/src/utils/supabase/client';
 
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { stepObj } from '../SlideSignup/utils';
 
 function SelectAtsSystem() {
-  const { setStep, recruiter, setRecruiter } = useSignupDetails();
+  const { setStep } = useSignupDetails();
 
   const router = useRouter();
 
@@ -28,7 +26,7 @@ function SelectAtsSystem() {
   const [textCheck, setTextCheck] = useState(false);
   const inputRef = useRef(null);
 
-  async function handleContinue(ang) {
+  async function handleContinue() {
     if (selectedObject === 'Other' && inputRef.current.value === '') {
       setTextCheck(true);
     }
@@ -39,33 +37,12 @@ function SelectAtsSystem() {
     ) {
       setTextCheck(false);
 
-      const { data, error } = await supabase
-        .from('recruiter')
-        .update({
-          ats_familiar:
-            selectedObject === 'Other'
-              ? inputRef.current.value
-              : selectedObject,
-          use_of_purpose: ang === 'skip' ? [] : selectedOptions,
-        })
-        .eq('id', recruiter.id)
-        .select();
-      if (!error) {
-        setRecruiter({ ...data[0], socials: data[0]?.socials as SocialsType });
-        router.push(`?step=${stepObj.allSet}`, undefined, {
-          shallow: true,
-        });
-        setStep(stepObj.allSet);
-      }
+      router.push(`?step=${stepObj.allSet}`, undefined, {
+        shallow: true,
+      });
+      setStep(stepObj.allSet);
     }
   }
-
-  useEffect(() => {
-    if (recruiter?.use_of_purpose) {
-      setSelectedObject(recruiter.ats_familiar as any);
-      setSelectedOptions(recruiter.use_of_purpose as any);
-    }
-  }, [recruiter]);
 
   return (
     <Stack>
@@ -221,7 +198,7 @@ function SelectAtsSystem() {
                   size={2}
                   isDisabled={selectedObject === null}
                   onClickButton={{
-                    onClick: () => handleContinue('continue'),
+                    onClick: () => handleContinue(),
                   }}
                 />
               </Stack>
