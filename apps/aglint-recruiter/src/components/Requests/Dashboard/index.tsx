@@ -78,9 +78,7 @@ function Dashboard() {
           'today',
         )}
         textProgressTitle={`${open_request} Open Requests (${completed_percentage}% complete)`}
-        slotProgressBar={
-          <CompletionProgress value={requestCount?.card.completedRequests} />
-        }
+        slotProgressBar={<CompletionProgress value={completed_percentage} />}
         slotGraph={
           status === 'pending' ? (
             <Stack
