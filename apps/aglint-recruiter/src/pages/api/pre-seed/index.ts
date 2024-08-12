@@ -26,7 +26,7 @@ export default async function handler(
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
     return res.status(500).send(err.message);
   }
 }
