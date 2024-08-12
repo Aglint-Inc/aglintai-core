@@ -17,7 +17,6 @@ export const getAvaRequestId = async (request_id) => {
 };
 
 export const sendReminder = async (req_ava_id, target_api) => {
-  console.log('req_ava_id, target_api ', req_ava_id, target_api);
   const workFlow_data_id = (
     await supabaseAdmin
       .from('workflow_action_logs')

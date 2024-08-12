@@ -41,6 +41,8 @@ export const PATHS = [
 '/api/assistant/submitRun',
 '/api/assistant/updateAssistant',
 '/api/automation/booking_self_schedule',
+'/api/automation/send_availability_reminder',
+'/api/automation/send_selfSchedule_reminder',
 '/api/automation/update_availability',
 '/api/automation/update_request',
 '/api/candidate-assessment/assessment-answers',
