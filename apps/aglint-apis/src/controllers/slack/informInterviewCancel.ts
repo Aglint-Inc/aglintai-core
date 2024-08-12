@@ -11,7 +11,31 @@ import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import {getUserIdByEmail} from 'src/utils/slack';
 export const informInterviewCancel = async (req: Request, res: Response) => {
-  const {session_ids} = req.body;
+  const {session_ids, request_id, event_run_id} = req.body;
+  if (!session_ids || !request_id) {
+    return res.status(400).send('missing either session_ids or request_id');
+  }
+  supabaseWrap(
+    await supabaseAdmin
+      .from('request_progress')
+      .delete()
+      .eq('event_type', 'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER')
+      .eq('request_id', request_id)
+  );
+  const [curr_prog] = supabaseWrap(
+    await supabaseAdmin
+      .from('request_progress')
+      .insert({
+        event_type: 'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+        request_id,
+        is_progress_step: false,
+        status: 'in_progress',
+        meta: {
+          event_run_id,
+        },
+      })
+      .select()
+  );
   try {
     const meeting_details = supabaseWrap(
       await supabaseAdmin
@@ -98,10 +122,54 @@ export const informInterviewCancel = async (req: Request, res: Response) => {
     });
 
     await Promise.all(promises);
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request_progress')
+        .update({
+          event_type: 'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+          request_id,
+          is_progress_step: false,
+          status: 'completed',
+          meta: {
+            event_run_id,
+          },
+        })
+        .eq('id', curr_prog.id)
+        .select()
+    );
     res.status(200).json({message: 'message sucessfully sended'});
   } catch (err: any) {
     console.error('some thing went wrong:', err);
-
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request_progress')
+        .insert({
+          event_type: 'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+          request_id,
+          log: 'Something went wrong',
+          is_progress_step: true,
+          status: 'failed',
+          meta: {
+            event_run_id,
+          },
+        })
+        .select()
+    );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request_progress')
+        .update({
+          id: curr_prog.id,
+          event_type: 'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+          request_id,
+          is_progress_step: false,
+          status: 'failed',
+          meta: {
+            event_run_id,
+          },
+        })
+        .select()
+    );
     res.status(500).json(err.message);
   }
 };
