@@ -84,7 +84,7 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress />
+          <RequestProgress request_type={request.type} />
 
           {Boolean(request.status === 'to_do') && (
             <Stack

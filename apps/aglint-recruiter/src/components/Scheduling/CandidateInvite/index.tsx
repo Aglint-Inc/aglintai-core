@@ -52,7 +52,10 @@ import toast from '@/src/utils/toast';
 import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
-import { TimezoneObj, TimezoneSelector } from '../../CompanyDetailComp/SettingsSchedule';
+import {
+  TimezoneObj,
+  TimezoneSelector,
+} from '../../CompanyDetailComp/SettingsSchedule';
 import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
 import IconScheduleType from '../Candidates/ListCard/Icon/IconScheduleType';
@@ -62,7 +65,12 @@ import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp
 import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
-import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
+import {
+  createRescheduleRequest,
+  dayJS,
+  getCalenderEventUrl,
+  getDurationText,
+} from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -310,7 +318,22 @@ export const ConfirmedInvitePage = (
         session_id: session.interview_session.id,
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
-    return saveCancelReschedule({ details }).then(() => {
+
+    if (details[0]?.other_details?.dateRange?.start) {
+      createRescheduleRequest({
+        application_id: schedule.application_id,
+        session_ids: details.map((d) => d.session_id),
+        new_dates: {
+          start_date: details[0].other_details.dateRange.start,
+          end_date: details[0].other_details.dateRange.end,
+        },
+        candidate_name: getFullName(candidate.first_name, candidate.last_name),
+        organizer_id: props.meetings[0].interview_meeting.organizer_id,
+      });
+    }
+    return saveCancelReschedule({
+      details,
+    }).then(() => {
       setCancelReschedulingDetails({
         all: true,
         type: detail.type,
@@ -1400,10 +1423,11 @@ const saveCancelReschedule = async ({
 }: {
   details: DatabaseTableInsert['interview_session_cancel'][];
 }) => {
+  //NOTE: code for creating the request for newSchedule
   return supabase
     .from('interview_session_cancel')
     .insert(details)
-    .then(({ error }) => {
+    .then(async ({ error }) => {
       if (error) {
         throw new Error(error.message);
       }

@@ -266,8 +266,8 @@ function CandidateAvailability() {
         schedule={meetingsAndRounds.schedule}
         recruiter={{
           id: candidateRequestAvailability.recruiter_id,
-          name: candidateRequestAvailability.applications.public_jobs.company,
-          logo: candidateRequestAvailability.applications.public_jobs.logo,
+          name: '', // typescript is not correct fix it
+          logo: '', //it was connected to job logo which is wrong it should connect to recruiter
         }}
         timezone={initialTimezone}
       />
@@ -347,15 +347,13 @@ function CandidateAvailability() {
             },
           }}
           slotCompanyIcon={
-            candidateRequestAvailability?.applications.public_jobs.logo && (
+            candidateRequestAvailability?.recruiter.logo && (
               <MuiAvatar
                 variant='square-large'
                 height='100px'
                 width='100px'
                 level=''
-                src={
-                  candidateRequestAvailability?.applications.public_jobs.logo
-                }
+                src={candidateRequestAvailability?.recruiter.logo}
               />
             )
           }

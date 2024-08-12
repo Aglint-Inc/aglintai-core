@@ -35,39 +35,52 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
 
   return (
     <Stack spacing={1}>
-      <Stack color={'var(--neutral-11)'}>
-        <Text
-          size={2}
-          content='Here are the list of urgent requests for today:'
-        ></Text>
-      </Stack>
-      {Object.keys(groupedRequests)?.map((type: RequestListProps['type']) => {
-        const allRequests = groupedRequests[String(type)];
-        return (
-          <Stack key={type} spacing={1} pb={2}>
+      {requests.length === 0 ? (
+        <Stack color={'var(--neutral-11)'} spacing={1}>
+          <Text size={2} content='No urgent requests.'></Text>
+        </Stack>
+      ) : (
+        <>
+          {' '}
+          <Stack color={'var(--neutral-11)'}>
             <Text
               size={2}
-              content={transformString(type)}
-              weight={'medium'}
+              content='Here are the list of urgent requests for today:'
             ></Text>
-            {(viewMore ? allRequests.slice(0, 5) : allRequests)?.map(
-              (request, ind) => <CardIndividual request={request} key={ind} />,
-            )}
-            {allRequests?.length > 5 && (
-              <Stack direction={'row'}>
-                <ButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  textButton={viewMore ? 'View more' : 'View less'}
-                  onClickButton={{
-                    onClick: () => setViewMore((prev) => !prev),
-                  }}
-                />
-              </Stack>
-            )}
           </Stack>
-        );
-      })}
+          {Object.keys(groupedRequests)?.map(
+            (type: RequestListProps['type']) => {
+              const allRequests = groupedRequests[String(type)];
+              return (
+                <Stack key={type} spacing={1} pb={2}>
+                  <Text
+                    size={2}
+                    content={transformString(type)}
+                    weight={'medium'}
+                  ></Text>
+                  {(viewMore ? allRequests.slice(0, 5) : allRequests)?.map(
+                    (request, ind) => (
+                      <CardIndividual request={request} key={ind} />
+                    ),
+                  )}
+                  {allRequests?.length > 5 && (
+                    <Stack direction={'row'}>
+                      <ButtonSoft
+                        size={1}
+                        color={'neutral'}
+                        textButton={viewMore ? 'View more' : 'View less'}
+                        onClickButton={{
+                          onClick: () => setViewMore((prev) => !prev),
+                        }}
+                      />
+                    </Stack>
+                  )}
+                </Stack>
+              );
+            },
+          )}
+        </>
+      )}
     </Stack>
   );
 };

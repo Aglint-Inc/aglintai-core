@@ -184,7 +184,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             <Avatar
               id='topAvatar'
               variant='rounded'
-              src={post?.logo || recruiter?.logo}
+              src={recruiter?.logo}
               sx={{
                 p: 'var(--space-1)',
                 color: 'common.black',
@@ -212,7 +212,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             },
           }}
           textRole={post?.job_title}
-          textCompanyName={post?.company}
+          textCompanyName={recruiter?.name}
           textCompanyType={recruiter?.industry}
           textAboutJob={'Ask your queries about this job to the recruiter. '}
           textCompanyDescription={recruiter?.company_overview}

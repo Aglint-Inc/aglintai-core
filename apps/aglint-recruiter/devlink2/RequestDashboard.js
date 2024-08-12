@@ -2,8 +2,10 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { ReqUrgent } from "./ReqUrgent";
 import { RequestList } from "./RequestList";
 import { ReqCompleted } from "./ReqCompleted";
+import { NoPendingReq } from "./NoPendingReq";
 import * as _utils from "./utils";
 import _styles from "./RequestDashboard.module.css";
 
@@ -16,6 +18,13 @@ export function RequestDashboard({
   slotRequestList,
   slotReqCompleted,
   slotHeaderText,
+  textGreetingTitle = "👋 Hey There!",
+  textGreetingDescription = (
+    <>
+      {"You have No requests on today."}
+      <br />
+    </>
+  ),
 }) {
   return (
     <_Component className={_utils.cx(_styles, "req-dashbaord-wrap")} tag="div">
@@ -31,8 +40,25 @@ export function RequestDashboard({
             className={_utils.cx(_styles, "req-dash-graph")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{slotHeaderText}</_Builtin.Block>
-            <_Builtin.Block tag="div">{slotGraph}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              <Text content={textGreetingTitle} weight="medium" size="4" />
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "grapsh_wrapper")}
+              tag="div"
+            >
+              <Text
+                content={textGreetingDescription}
+                color="neutral"
+                size="1"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot_graph")}
+                tag="div"
+              >
+                {slotGraph}
+              </_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "req-dash-top-bottom")}
@@ -42,19 +68,31 @@ export function RequestDashboard({
               className={_utils.cx(_styles, "req-dash-progress-wrap")}
               tag="div"
             >
-              <Text content={textProgressTitle} size="4" />
-              <_Builtin.Block tag="div">{slotProgressBar}</_Builtin.Block>
+              <Text content={textProgressTitle} size="4" weight="regular" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "req_progress")}
+                tag="div"
+              >
+                {slotProgressBar}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "req-dash-list-wrap")}
               tag="div"
             >
-              {slotRequestList ?? <RequestList />}
+              {slotRequestList ?? (
+                <>
+                  <ReqUrgent />
+                  <RequestList />
+                  <RequestList />
+                  <RequestList />
+                  <RequestList />
+                  <ReqCompleted />
+                  <NoPendingReq />
+                </>
+              )}
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {slotReqCompleted ?? <ReqCompleted />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

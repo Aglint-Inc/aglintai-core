@@ -645,7 +645,14 @@ function SchedulingSettings({
               <InterviewLoad
                 borderStyle={'true'}
                 slotDailyLimit={
-                  <Stack spacing={1}>
+                  <Stack spacing={3}>
+                    <MuiNumberfield
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'daily', 'value')
+                      }
+                      value={interviewLoad.daily.value}
+                      max={interviewLoad.daily.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -672,18 +679,17 @@ function SchedulingSettings({
                         );
                       })}
                     </RadioGroup>
-
-                    <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'daily', 'value')
-                      }
-                      value={interviewLoad.daily.value}
-                      max={interviewLoad.daily.max}
-                    />
                   </Stack>
                 }
                 slotWeeklyLimit={
-                  <Stack spacing={1}>
+                  <Stack spacing={3}>
+                    <MuiNumberfield
+                      handleSelect={(e) =>
+                        loadChangeHandle(e, 'weekly', 'value')
+                      }
+                      value={interviewLoad.weekly.value}
+                      max={interviewLoad.weekly.max}
+                    />
                     <RadioGroup
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
@@ -714,13 +720,6 @@ function SchedulingSettings({
                         );
                       })}
                     </RadioGroup>
-                    <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'weekly', 'value')
-                      }
-                      value={interviewLoad.weekly.value}
-                      max={interviewLoad.weekly.max}
-                    />
                   </Stack>
                 }
               />

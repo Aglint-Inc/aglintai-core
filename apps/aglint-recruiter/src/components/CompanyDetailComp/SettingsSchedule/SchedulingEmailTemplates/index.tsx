@@ -299,7 +299,7 @@ function SchedulerEmailTemps({ setSaving }) {
             showTabs={false}
             // currentModule={'job'}
             slotSearchFilter={
-              <>
+              <Stack direction={'row'} width={'312px'} spacing={1}>
                 <SearchField
                   placeholder={'Search Templates.'}
                   onChange={(e) => {
@@ -359,7 +359,7 @@ function SchedulerEmailTemps({ setSaving }) {
                     }}
                   />
                 </Popover>
-              </>
+              </Stack>
             }
             slotEmailTemplateCards={
               <>

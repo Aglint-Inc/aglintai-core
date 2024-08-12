@@ -44,7 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .insert({
         email: email,
         recruiter_type: flow,
-        recruiter_active: true,
         id: rec_id,
         primary_admin: user_id,
       })

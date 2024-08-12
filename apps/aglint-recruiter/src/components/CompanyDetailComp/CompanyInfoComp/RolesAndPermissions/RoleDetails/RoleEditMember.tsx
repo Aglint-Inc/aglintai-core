@@ -27,8 +27,13 @@ function RoleEditMember({
     (typeof members)[number] | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const filteredMember = members
-    .filter((member) => member.role_id !== role.id)
+    .filter(
+      (member) =>
+        member.role_id !== role.id && member.user_id !== member.created_by,
+    )
+
     .filter(
       (member) =>
         `${member.first_name || ''} ${member.last_name || ''}`
@@ -99,9 +104,7 @@ function RoleEditMember({
                   <>
                     <GlobalBannerInline
                       color={'error'}
-                      textContent={
-                        'You are about to change a role of the selected user'
-                      }
+                      textContent={`You are about to update ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}'s role.`}
                       iconName={'warning'}
                       slotButton={<></>}
                     />

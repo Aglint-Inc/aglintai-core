@@ -175,7 +175,7 @@ export const useCancelRescheduleReasonsUsers = () => {
   );
 
   return {
-    parentFetching: loading1 && loading2,
+    parentFetching: loading1 || loading2,
     disabled: !(users?.candidate.size || users?.interviewer.size),
     ...useQuery({
       queryKey,
@@ -187,7 +187,7 @@ export const useCancelRescheduleReasonsUsers = () => {
         return { candidate, interviewer };
       },
       enabled:
-        (loading1 && loading2 && Boolean(users?.candidate.size)) ||
+        (!loading1 && !loading2 && Boolean(users?.candidate.size)) ||
         Boolean(users?.interviewer.size),
     }),
   };

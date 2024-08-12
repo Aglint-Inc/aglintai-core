@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { RequestCardDetail } from "./RequestCardDetail";
 import * as _utils from "./utils";
 import _styles from "./RequestCard.module.css";
 
@@ -12,8 +11,6 @@ export function RequestCard({
   isNewBadgeVisible = true,
   textTitle = "This is a global text component",
   slotRightIcons,
-  slotRequestCardDetail,
-  isRequestDetailVisible = false,
   onClickCard = {},
 }) {
   return (
@@ -42,14 +39,6 @@ export function RequestCard({
           {slotRightIcons}
         </_Builtin.Block>
       </_Builtin.Block>
-      {isRequestDetailVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot-req-card-details")}
-          tag="div"
-        >
-          {slotRequestCardDetail ?? <RequestCardDetail />}
-        </_Builtin.Block>
-      ) : null}
     </_Component>
   );
 }

@@ -8,7 +8,7 @@ import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
@@ -17,6 +17,7 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
+import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import Loading from '@/src/pages/loading';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -101,8 +102,6 @@ function FullCalendarComp({
     calendar: {
       day: 'timeGridDay',
       week: 'timeGridWeek',
-      // day: 'dayGridDay',
-      // week: 'dayGridWeek',
       month: 'dayGridMonth',
     },
   };
@@ -127,7 +126,7 @@ function FullCalendarComp({
 
   return (
     <>
-      <Stack p={2} width={'900px'} height={'624px'} spacing={2}>
+      <Stack p={2} width={'1200px'} height={'624px'} spacing={2}>
         {isLoading ? (
           <Stack
             width={'900px'}
@@ -208,106 +207,109 @@ function FullCalendarComp({
                   Cancelled
                 </Typography>
               </Stack>
-              <Stack
-                direction={'row'}
+              <Grid
+                container
                 spacing={2}
-                alignItems={'center'}
-                justifyContent={'space-between'}
+                alignItems='center'
+                justifyContent='space-between'
               >
-                <Stack direction={'row'} spacing={1}>
-                  <ButtonSoft
-                    textButton='List'
-                    color={mode === 'list' ? 'accent' : 'neutral'}
-                    size={1}
-                    onClickButton={{
+                <Grid item xs={4}>
+                  <TaskSwitchButton
+                    isIconVisible={false}
+                    isJobCandActive={mode === 'list'}
+                    isListActive={mode === 'calendar'}
+                    onClickJobCand={{
                       onClick: () => {
                         if (mode !== 'list') handleMode('list');
                       },
                     }}
-                  />
-                  <ButtonSoft
-                    textButton='Calendar'
-                    color={mode === 'calendar' ? 'accent' : 'neutral'}
-                    size={1}
-                    onClickButton={{
+                    onClickList={{
                       onClick: () => {
                         if (mode !== 'calendar') handleMode('calendar');
                       },
                     }}
+                    textFirst={'List'}
+                    textSecond={'Calendar'}
                   />
-                </Stack>
-                <Stack
-                  direction={'row'}
-                  justifyContent={'space-between'}
-                  spacing={2}
-                  alignItems={'center'}
-                  minWidth={'200px'}
-                >
-                  <IconButtonSoft
-                    size={1}
-                    iconSize={2}
-                    color={'neutral'}
-                    iconName='arrow_back_ios'
-                    onClickButton={{ onClick: () => calendarApi.prev() }}
-                  />
-                  <Typography fontWeight={500}>
-                    {/* {currentViewType === 'listWeek' ||
+                </Grid>
+                <Grid item xs={4} container justifyContent='center'>
+                  <Stack
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    spacing={2}
+                    alignItems={'center'}
+                    minWidth={'200px'}
+                  >
+                    <IconButtonSoft
+                      size={1}
+                      iconSize={2}
+                      color={'neutral'}
+                      iconName='arrow_back_ios'
+                      onClickButton={{ onClick: () => calendarApi.prev() }}
+                    />
+                    <Typography fontWeight={500}>
+                      {/* {currentViewType === 'listWeek' ||
               currentViewType === 'dayGridWeek' */}
-                    {currentViewType === 'listWeek' ||
-                    currentViewType === 'timeGridWeek'
-                      ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
-                      : dayjsLocal(currentDate?.startStr).format(
-                          // eslint-disable-next-line security/detect-object-injection
-                          dateFormat[currentViewType],
-                        )}
-                  </Typography>
-                  <IconButtonSoft
-                    size={1}
-                    iconSize={2}
-                    color={'neutral'}
-                    iconName='arrow_forward_ios'
-                    onClickButton={{
-                      onClick: () => {
-                        calendarApi.next();
-                      },
-                    }}
-                  />
-                </Stack>
-                <Stack
-                  minWidth={'250px'}
-                  direction={'row'}
-                  justifyContent={'flex-end'}
-                  spacing={1}
-                >
-                  {!dayjsLocal(currentDate?.startStr).isToday() &&
-                    !isThisWeekrMonth && (
-                      <ButtonSoft
-                        size={1}
-                        color={'neutral'}
-                        textButton='Today'
-                        onClickButton={{ onClick: () => calendarApi?.today() }}
-                      />
-                    )}
-                  <ButtonSoft
-                    textButton='Day'
-                    size={1}
-                    color={type === 'day' ? 'accent' : 'neutral'}
-                    onClickButton={{ onClick: () => handleType('day') }}
-                  />
-                  <ButtonSoft
-                    textButton='Week'
-                    color={type === 'week' ? 'accent' : 'neutral'}
-                    size={1}
-                    onClickButton={{ onClick: () => handleType('week') }}
-                  />
-                  <ButtonSoft
-                    textButton='Month'
-                    color={type === 'month' ? 'accent' : 'neutral'}
-                    size={1}
-                    onClickButton={{ onClick: () => handleType('month') }}
-                  />
-                </Stack>
-              </Stack>
+                      {currentViewType === 'listWeek' ||
+                      currentViewType === 'timeGridWeek'
+                        ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
+                        : dayjsLocal(currentDate?.startStr).format(
+                            // eslint-disable-next-line security/detect-object-injection
+                            dateFormat[currentViewType],
+                          )}
+                    </Typography>
+                    <IconButtonSoft
+                      size={1}
+                      iconSize={2}
+                      color={'neutral'}
+                      iconName='arrow_forward_ios'
+                      onClickButton={{
+                        onClick: () => {
+                          calendarApi.next();
+                        },
+                      }}
+                    />
+                  </Stack>
+                </Grid>
+                <Grid item xs={4} container justifyContent={'end'}>
+                  <Stack
+                    minWidth={'250px'}
+                    direction={'row'}
+                    justifyContent={'flex-end'}
+                    spacing={1}
+                  >
+                    {!dayjsLocal(currentDate?.startStr).isToday() &&
+                      !isThisWeekrMonth && (
+                        <ButtonSoft
+                          size={1}
+                          color={'neutral'}
+                          textButton='Today'
+                          onClickButton={{
+                            onClick: () => calendarApi?.today(),
+                          }}
+                        />
+                      )}
+                    <ButtonSoft
+                      textButton='Day'
+                      size={1}
+                      color={type === 'day' ? 'accent' : 'neutral'}
+                      onClickButton={{ onClick: () => handleType('day') }}
+                    />
+                    <ButtonSoft
+                      textButton='Week'
+                      color={type === 'week' ? 'accent' : 'neutral'}
+                      size={1}
+                      onClickButton={{ onClick: () => handleType('week') }}
+                    />
+                    <ButtonSoft
+                      textButton='Month'
+                      color={type === 'month' ? 'accent' : 'neutral'}
+                      size={1}
+                      onClickButton={{ onClick: () => handleType('month') }}
+                    />
+                  </Stack>
+                </Grid>
+              </Grid>
             </Stack>
             <Stack>
               <FullCalendar
@@ -325,11 +327,17 @@ function FullCalendarComp({
                 eventContent={renderEventContent}
                 nowIndicator={true}
                 editable={true}
-                selectable={true}
+                selectable={false}
                 selectMirror={true}
                 allDaySlot={false}
                 resources={events}
                 datesSet={handleDatesSet}
+                height='auto'
+                views={{
+                  dayGridMonth: {
+                    dayMaxEventRows: 2,
+                  },
+                }}
               />
             </Stack>
           </>
@@ -343,7 +351,6 @@ export default FullCalendarComp;
 
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
-
   return (
     <CustomTooltip title={<TooltipComp data={data} />}>
       <Stack
@@ -352,9 +359,14 @@ function renderEventContent(eventInfo) {
         sx={{
           padding: '5px 10px',
           borderLeft: `3px solid ${color.pri}`,
+          width: '100%',
         }}
       >
         <Typography fontWeight={500}>{eventInfo.event.title}</Typography>
+        <Typography fontSize={'10px'}>
+          {dayjsLocal(data.start_time).format('hh:mm A -')}
+          {dayjsLocal(data.end_time).format('hh:mm A')}
+        </Typography>
       </Stack>
     </CustomTooltip>
   );

@@ -62,7 +62,6 @@ type CustomDraft = Pick<
   | "job_title"
   | "description"
   | "department_id"
-  | "company"
   | "workplace_type"
   | "job_type"
   | "location"

@@ -29,7 +29,6 @@ import {
 } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
@@ -129,7 +128,9 @@ const RoleTable = ({
                     <>
                       {role.assignedTo.slice(0, 3).map((user_id) => {
                         const user = members.find(
-                          (member) => member.user_id === user_id,
+                          (member) =>
+                            member.user_id === user_id &&
+                            member.user_id !== member.created_by,
                         );
                         if (!user) return;
                         return (
@@ -371,7 +372,7 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
-  const { checkPermissions } = useRolesAndPermissions();
+  const { checkPermissions } = useRolesAndPermissionsContext();
   const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
@@ -387,6 +388,14 @@ function RoleDetails({
     }
   }, [queryParams?.add]);
   const { ifAllowed } = useRolesAndPermissionsContext();
+
+  const userLength = role.assignedTo.filter((user_id) =>
+    members.find(
+      (member) =>
+        member.user_id === user_id && member.user_id !== member.created_by,
+    ),
+  ).length;
+
   return (
     <>
       <RolesAndPermissionsDetail
@@ -405,7 +414,7 @@ function RoleDetails({
         textRoleName={
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
-        // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
+        slotText={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
@@ -480,7 +489,8 @@ function RoleDetails({
             )}
           </>
         }
-        textUserCount={`Users (${role.assignedTo.length || 0})`}
+        textUserCount={`Users (${userLength || 0})`}
+        // textRoleName={role.name}
         slotUserWithRole={<RoleUserWidget role={role} members={members} />}
       />
       {editUser && (
