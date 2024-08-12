@@ -1,27 +1,32 @@
 import { ReqCompleted } from '@/devlink2/ReqCompleted';
 import { Text } from '@/devlink2/Text';
+import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function CompletedRequestsBox({
   completedRequest,
+  status,
 }: {
-  completedRequest: any[];
+  completedRequest: number;
+  status: 'pending' | 'success' | 'error';
 }) {
+  const { setSections, initialSections } = useRequests();
   const { setQueryParams } = useRouterPro();
   return (
     <ReqCompleted
       onClickCompleted={{
         onClick: () => {
-          setQueryParams({ tab: 'requests', section: 'completed' });
+          setSections({ ...initialSections, completed_request: true });
+          setQueryParams({ tab: 'requests' });
         },
       }}
       textTitle={
         <Text
-          color={completedRequest.length ? 'success' : 'neutral'}
+          color={completedRequest ? 'success' : 'neutral'}
           content={
-            completedRequest.length
-              ? `${completedRequest?.length} Requests completed 🎉`
-              : 'Looks like there is no completed requests 😴'
+            status === 'success' && !completedRequest
+              ? `Looks like there is no completed requests 😴`
+              : `${completedRequest} Requests completed 🎉`
           }
         />
       }

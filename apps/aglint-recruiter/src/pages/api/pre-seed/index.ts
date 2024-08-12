@@ -19,14 +19,18 @@ export default async function handler(
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
     // start here
+    // eslint-disable-next-line no-unused-vars
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
-    // await seedRolesAndPermissions(recruiter_id);
+    await Promise.all([
+      seedRolesAndPermissions(recruiter_id),
+      seedPreferencesAndIntegrations(recruiter_id),
+    ]);
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
     return res.status(500).send(err.message);
   }
 }
@@ -171,3 +175,15 @@ const seedWorkFlow = async (
 
   await Promise.all(promies);
 };
+
+async function seedPreferencesAndIntegrations(rec_id: string) {
+  await supabaseAdmin
+    .from('recruiter_preferences')
+    .insert([{ recruiter_id: rec_id, scoring: false }])
+    .throwOnError();
+
+  await supabaseAdmin
+    .from('integrations')
+    .insert([{ recruiter_id: rec_id }])
+    .throwOnError();
+}

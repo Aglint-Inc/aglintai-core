@@ -6,6 +6,7 @@ import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
 import { RequestsWrapper } from '@/devlink2/RequestsWrapper';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { SafeObject } from '@/src/utils/safeObject';
 
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
@@ -21,6 +22,8 @@ const Requests = () => {
     requests: { status, data: requestList },
     filters,
     setFilters,
+    setSections,
+    initialSections,
     initialFilter,
   } = useRequests();
   const isNotApplied =
@@ -30,13 +33,17 @@ const Requests = () => {
     !filters.title &&
     !filters.created_at;
 
-  const showEmptyPage = status === 'success' && !requestList.length;
+  const showEmptyPage =
+    status === 'success' &&
+    !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
+      .length;
 
   useEffect(() => {
     if (!queryParams?.tab) {
       setQueryParams({ tab: 'dashboard' });
     } else if (queryParams.tab !== 'requests') {
       setFilters(structuredClone(initialFilter));
+      setSections(structuredClone(initialSections));
     }
   }, [queryParams?.tab]);
 

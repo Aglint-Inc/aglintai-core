@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { ChatType, useUserChat } from '@/src/queries/userchat';
+import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -157,16 +158,18 @@ function AgentInputBox() {
           handleSubmit={handleSubmit}
           requestList={
             requests.status === 'success'
-              ? requests.data.map((ele) => ({
-                  id: ele.id,
-                  display: ele.title.replace(
-                    '{{candidateName}}',
-                    getFullName(
-                      ele.applications.candidates.first_name,
-                      ele.applications.candidates.last_name,
+              ? (SafeObject.values(requests?.data) ?? [])
+                  .flatMap((ele) => ele)
+                  .map((ele) => ({
+                    id: ele.id,
+                    display: ele.title.replace(
+                      '{{candidateName}}',
+                      getFullName(
+                        ele.applications.candidates.first_name,
+                        ele.applications.candidates.last_name,
+                      ),
                     ),
-                  ),
-                }))
+                  }))
               : []
           }
           scheduleTypes={scheduleTypes}
