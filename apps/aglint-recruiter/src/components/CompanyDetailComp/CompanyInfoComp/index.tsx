@@ -26,8 +26,6 @@ import CompanyJdComp from '../CompanyJdComp';
 import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
 import AddLocationDialog from './AddLocationDialog';
-import AddRolesDialog from './AddRolesDialog';
-import AddSpecialityDialog from './AddSpecialityDialog';
 import AddDepartmentsDialog from './ManageDepartmentsDialog/addDepartmentsDialog';
 import DeleteDepartmentsDialog from './ManageDepartmentsDialog/deleteDepartmentDialog';
 import RolesAndPermissions from './RolesAndPermissions';
@@ -82,21 +80,21 @@ const CompanyInfoComp = ({ setIsSaving }) => {
 
   return (
     <Stack width={'100%'}>
-      <AddSpecialityDialog
+      {/* <AddSpecialityDialog
         handleClose={handleClose}
         open={dialog.stacks}
         handleChange={handleChange}
-      />
+      /> */}
       <AddDepartmentsDialog
         handleClose={handleClose}
         open={dialog.departments}
         handleChange={handleChange}
       />
-      <AddRolesDialog
+      {/* <AddRolesDialog
         handleClose={handleClose}
         open={dialog.roles}
         handleChange={handleChange}
-      />
+      /> */}
       <AddLocationDialog
         key={Math.random()}
         handleClose={handleClose}
@@ -209,7 +207,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       height={'50px'}
                       width={'50px'}
                     >
-                      <Avatar src={recruiter.logo} alt={recruiter.name} variant='rounded' />
+                      <Avatar
+                        src={recruiter.logo}
+                        alt={recruiter.name}
+                        variant='rounded'
+                      />
                     </Stack>
                   }
                   textCompanyName={recruiter.name}
@@ -298,26 +300,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     })}
                 </>
               }
-              slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
-                return (
-                  <RolesPill
-                    key={ind}
-                    textRoles={rol}
-                    isCloseIconVisible={!isFormDisabled}
-                    onClickRemoveRoles={{
-                      onClick: () => {
-                        let roles = recruiter.available_roles.filter(
-                          (role) => role != rol,
-                        );
-                        handleChange({
-                          ...recruiter,
-                          available_roles: roles,
-                        });
-                      },
-                    }}
-                  />
-                );
-              })}
+              slotRolesPills={<></>}
               slotDepartmentPills={recruiter?.departments?.map((dep) => {
                 return (
                   <RolesPill
@@ -335,28 +318,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   />
                 );
               })}
-              slotTechStackPills={recruiter?.technology_score?.map(
-                (stack, ind) => {
-                  return (
-                    <RolesPill
-                      key={ind}
-                      textRoles={stack}
-                      isCloseIconVisible={!isFormDisabled}
-                      onClickRemoveRoles={{
-                        onClick: () => {
-                          let technologies = recruiter.technology_score.filter(
-                            (tech) => tech != stack,
-                          );
-                          handleChange({
-                            ...recruiter,
-                            technology_score: technologies,
-                          });
-                        },
-                      }}
-                    />
-                  );
-                },
-              )}
+              slotTechStackPills={<></>}
               onClickAddLocation={{
                 onClick: () => {
                   setDialog({ ...dialog, location: { open: true, edit: -1 } });

@@ -104,9 +104,7 @@ function RoleEditMember({
                   <>
                     <GlobalBannerInline
                       color={'error'}
-                      textContent={
-                        'You are about to change a role of the selected user'
-                      }
+                      textContent={`You are about to update ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}'s role.`}
                       iconName={'warning'}
                       slotButton={<></>}
                     />

@@ -215,4 +215,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   onSelfScheduleReqAgent_EmailAgent_SelfSchedule: null,
   onSelfScheduleReqAgent_PhoneAgent_SelfSchedule: null,
   onSelfScheduleReqAgent_EmailLink_SelfSchedule: null,
+  onRequestReschedule_emailLink_resendAvailRequest: null,
+  onRequestCancel_agent_cancelEvents: null,
+  onRequestCancel_slack_interviewersOrganizer: null,
 };

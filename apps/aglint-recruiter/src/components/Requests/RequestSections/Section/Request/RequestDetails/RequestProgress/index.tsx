@@ -6,7 +6,9 @@ import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 import {
+  createCancelWorkflowGraph,
   createReqAvailWorkflowGraph,
+  createRescheduleWorkflowGraph,
   updateEventProgress,
 } from '@/src/services/workflow/graphUtils';
 
@@ -20,7 +22,7 @@ function RequestProgress({
   const { request_progress } = useRequest();
   const graphRef = useRef(createWorkflowGraph(request_type));
   const orderedEvents = useMemo(() => {
-    if (request_progress.data && graphRef.current) {
+    if (request_progress.data) {
       graphRef.current = updateEventProgress(
         graphRef.current,
         request_progress.data,
@@ -36,6 +38,19 @@ function RequestProgress({
           new Set(),
         );
         events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
+
+        return events;
+      }
+      if (request_type === 'cancel_schedule_request') {
+        let events = graphRef.current.traverseGraph(
+          'CANCEL_INTERVIEW_MEETINGS',
+          new Set(),
+        );
+        events = [
+          graphRef.current.getNode('CANCEL_INTERVIEW_MEETINGS'),
+          ...events,
+        ];
+
         return events;
       }
       return [];
@@ -78,10 +93,13 @@ export function RequestProgressSkeleton() {
 const createWorkflowGraph = (
   request_type: DatabaseTable['request']['type'],
 ) => {
-  if (
-    request_type === 'schedule_request' ||
-    request_type === 'reschedule_request'
-  ) {
+  if (request_type === 'reschedule_request') {
+    return createRescheduleWorkflowGraph();
+  }
+  if (request_type === 'schedule_request') {
     return createReqAvailWorkflowGraph();
   }
+
+  // cancel
+  return createCancelWorkflowGraph();
 };
