@@ -67,12 +67,12 @@ export const useScrollListenerAgentChat = () => {
     }
   }, []);
 
-  const scrollToElementById = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return { topRef, chatContainerRef };
+};
+
+export const scrollToElementById = (id) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
 };

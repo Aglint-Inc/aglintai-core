@@ -1,6 +1,7 @@
 import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
+import { scrollToElementById } from '@/src/components/Requests/AgentChats/ChatMessageList/hooks';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -50,13 +51,6 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
       scrollToElementById('bottomRef');
     } catch (err) {
       toast.error('Failed to submit chat. Please try again later.');
-    }
-  };
-
-  const scrollToElementById = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
