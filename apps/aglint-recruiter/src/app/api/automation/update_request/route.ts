@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
 
-// import { settings } from './utils/constants';
-import { fetchTodoRequests } from '../utils/fetchRequests';
-import { updateRequestStatus } from '../utils/updateRequestStatus';
+import {
+  fetchTodoRequests,
+  updateRequestStatus,
+} from '../utils/update_request_functions';
 
-export async function GET() {
+export async function POST(req) {
+  const { count } = await req.json();
   try {
     const requests: Awaited<ReturnType<typeof fetchTodoRequests>> =
-      await fetchTodoRequests();
+      await fetchTodoRequests(count);
 
     if (!requests.length) {
       return NextResponse.json(

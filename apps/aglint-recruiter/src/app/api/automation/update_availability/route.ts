@@ -1,33 +1,30 @@
 import { NextResponse } from 'next/server';
 
 import { recruiterId, timezone } from '../utils/constants';
-import { fetchLatestCandidateAvailability } from '../utils/fetchAvailability';
-import { fetchAndFilterAvailabilitySlots } from '../utils/filterSlots';
-import { updateCandidateAvailabilitySlots } from '../utils/updateAvailabilitySlots';
+import {
+  fetchAndFilterAvailabilitySlots,
+  fetchLatestCandidateAvailability,
+  updateCandidateAvailabilitySlots,
+} from '../utils/submit_availability_functions';
 
 export async function POST(req) {
-  const { application_id } = await req.json();
-
+  const { request_id } = await req.json();
   try {
     const availabilityData: Awaited<
       ReturnType<typeof fetchLatestCandidateAvailability>
-    > = await fetchLatestCandidateAvailability(application_id);
-
-    if (!availabilityData?.request_id)
-      throw new Error('Availability not found');
-
-    const request_id = availabilityData?.request_id;
+    > = await fetchLatestCandidateAvailability(request_id);
 
     if (availabilityData) {
       const { number_of_days, number_of_slots } = availabilityData;
 
-      const filteredSlots = await fetchAndFilterAvailabilitySlots(
+      const filteredSlots = await fetchAndFilterAvailabilitySlots({
         recruiterId,
-        timezone,
-        availabilityData.id,
-        number_of_days,
-        number_of_slots,
-      );
+        candidateTz: timezone,
+        availReqId: availabilityData.id,
+        numberOfDays: number_of_days,
+        numberOfSlots: number_of_slots,
+        currRound: 1,
+      });
       await updateCandidateAvailabilitySlots(
         availabilityData.application_id,
         filteredSlots,
@@ -39,9 +36,6 @@ export async function POST(req) {
       { status: 200 },
     );
   } catch (e) {
-    return NextResponse.json(
-      { message: 'error :' + e.message },
-      { status: 400 },
-    );
+    return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
