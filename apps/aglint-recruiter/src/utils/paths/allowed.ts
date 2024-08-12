@@ -94,7 +94,7 @@ export const allowedPaths = new Set<t>([
   '/api/automation/update_request',
   '/api/automation/update_availability',
   '/api/automation/send_availability_reminder',
-  '/api/automation/send_selfSchedule_reminder',
+  '/api/automation/send_self_schedule_reminder',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',

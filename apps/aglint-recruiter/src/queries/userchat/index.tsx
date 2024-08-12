@@ -35,7 +35,7 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
         { function: null, text, type: 'user' },
         user_id,
       );
-      queryClient.setQueryData(
+      await queryClient.setQueryData(
         [`user_chat`],
         (prevData: {
           pages: Awaited<ReturnType<typeof fetchUserChat>>[];
@@ -58,7 +58,7 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
     aiMessage: Awaited<ReturnType<typeof fetchUserChat>>['list'][0],
   ) => {
     try {
-      queryClient.setQueryData(
+      await queryClient.setQueryData(
         [`user_chat`],
         (prevData: {
           pages: Awaited<ReturnType<typeof fetchUserChat>>[];
