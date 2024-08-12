@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     if (target_api === 'onRequestCancel_agent_cancelEvents') {
-      await await executeWorkflowAction(
+      await executeWorkflowAction(
         cancelInterviews,
         { session_ids },
         reqProgressLogger,
