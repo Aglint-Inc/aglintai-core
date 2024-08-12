@@ -55,6 +55,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           event_run_id: id,
         },
       );
+    } else if (meta.target_api.startsWith('onRequestCancel')) {
+      // console.log('cancel', req.body);
     }
     await supabaseAdmin
       .from('workflow_action_logs')

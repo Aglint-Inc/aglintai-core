@@ -497,8 +497,7 @@ export const seed_workflow_actions: {
       description: '',
       interval: 0,
       phase: 'after',
-      title:
-        'When candidate requests for cancelling inform interviewers and organizers',
+      title: 'Candidate requests for cancelling interviews',
       trigger: 'onRequestCancel',
       workflow_type: 'job',
     },
