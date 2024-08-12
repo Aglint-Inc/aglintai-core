@@ -76,7 +76,6 @@ const PERMISSIONS: Permissions = {
   '/api/lever/getPostings': ['manage_job'],
   '/api/lever/saveApiKey': ['manage_job'],
   '/api/lever/getCandidates': ['manage_job'],
-  '/api/lever/createQueue': ['manage_job'],
   '/api/ashby/getPostings': ['manage_job'],
   '/api/ashby/saveApiKey': ['manage_company'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],

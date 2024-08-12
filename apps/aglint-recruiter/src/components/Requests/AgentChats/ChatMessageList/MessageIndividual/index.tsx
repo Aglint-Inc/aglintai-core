@@ -22,6 +22,7 @@ function MessageIndividual({
   const definedUi: FunctionNames[] = [
     'fetch_scheduled_interviews',
     'fetch_user_requests',
+    'fetch_candidate_declined_interviews',
   ];
 
   const replaceLinks =

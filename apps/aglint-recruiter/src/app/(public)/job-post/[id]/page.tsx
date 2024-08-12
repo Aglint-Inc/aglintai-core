@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { InvalidJob } from '@/devlink/InvalidJob';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import InvalidJobPostLottie from '@/public/lottie/InvalidJobPostLottie';
-import Seo from '@/src/components/Common/Seo';
+import { SeoPro } from '@/src/components/Common/SeoPro';
 import JobPostPublic from '@/src/components/JobPost';
 import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
 
@@ -99,7 +99,7 @@ function JobPost({
 
   return (
     <Stack minHeight={'100vh'}>
-      <Seo
+      <SeoPro
         jsonLd={jsonLd}
         title={
           post?.job_title

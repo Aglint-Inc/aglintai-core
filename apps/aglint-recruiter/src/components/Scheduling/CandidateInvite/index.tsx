@@ -318,11 +318,21 @@ export const ConfirmedInvitePage = (
         session_id: session.interview_session.id,
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
+
+    if (details[0]?.other_details?.dateRange?.start) {
+      createRescheduleRequest({
+        application_id: schedule.application_id,
+        session_ids: details.map((d) => d.session_id),
+        new_dates: {
+          start_date: details[0].other_details.dateRange.start,
+          end_date: details[0].other_details.dateRange.end,
+        },
+        candidate_name: getFullName(candidate.first_name, candidate.last_name),
+        organizer_id: props.meetings[0].interview_meeting.organizer_id,
+      });
+    }
     return saveCancelReschedule({
       details,
-      application_id: schedule.application_id,
-      organizer_id: props.meetings[0].interview_meeting.organizer_id,
-      candidate_name: getFullName(candidate.first_name, candidate.last_name),
     }).then(() => {
       setCancelReschedulingDetails({
         all: true,
@@ -1410,30 +1420,14 @@ const get_scheduling_reason = async (id: string) => {
 
 const saveCancelReschedule = async ({
   details,
-  application_id,
-  candidate_name,
-  organizer_id,
 }: {
   details: DatabaseTableInsert['interview_session_cancel'][];
-  application_id: string;
-  candidate_name: string;
-  organizer_id: string;
 }) => {
   //NOTE: code for creating the request for newSchedule
-  await createRescheduleRequest({
-    application_id: application_id,
-    session_ids: details.map((d) => d.session_id),
-    new_dates: {
-      start_date: details[0].other_details.dateRange.start,
-      end_date: details[0].other_details.dateRange.end,
-    },
-    candidate_name: candidate_name,
-    organizer_id,
-  });
   return supabase
     .from('interview_session_cancel')
     .insert(details)
-    .then(({ error }) => {
+    .then(async ({ error }) => {
       if (error) {
         throw new Error(error.message);
       }
