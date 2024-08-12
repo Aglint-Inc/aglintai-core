@@ -5637,6 +5637,15 @@ export type Database = {
           total_records: number
         }[]
       }
+      count_requests: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          date: string
+          created_at_count: number
+          completed_at_count: number
+          on_progress_count: number
+        }[]
+      }
       create_auth_user: {
         Args: {
           email: string
@@ -6043,6 +6052,17 @@ export type Database = {
         Returns: {
           date: string
           counts: Json
+        }[]
+      }
+      get_request_stats: {
+        Args: {
+          assigner_id: string
+        }
+        Returns: {
+          date: string
+          created: number
+          completed: number
+          on_going: number
         }[]
       }
       get_screening_candidates: {
