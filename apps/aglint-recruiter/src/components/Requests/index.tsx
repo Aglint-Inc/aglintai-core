@@ -19,7 +19,7 @@ const Requests = () => {
   const { setQueryParams, queryParams } = useRouterPro();
 
   const {
-    requests: { status, data: requestList },
+    requests: { isRefetching, data: requestList },
     filters,
     setFilters,
     setSections,
@@ -34,9 +34,11 @@ const Requests = () => {
     !filters.created_at;
 
   const showEmptyPage =
-    status === 'success' &&
-    !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
-      .length;
+    !isRefetching &&
+    Boolean(
+      !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
+        .length,
+    );
 
   useEffect(() => {
     if (!queryParams?.tab) {
