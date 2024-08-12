@@ -52,7 +52,9 @@ BEGIN
       END
     )::bigint as on_going
   FROM
-    final_count_cte;
+    final_count_cte
+  ORDER BY 
+    final_count_cte.date ASC;
 END;
 $$
 LANGUAGE PLPGSQL;
