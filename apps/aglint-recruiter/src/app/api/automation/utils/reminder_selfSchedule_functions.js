@@ -17,17 +17,17 @@ export const getFilterId = async (request_id) => {
 };
 
 export const sendSelfScheduleReminder = async (filter_id, target_api) => {
-  const { data: workFlow_data, error: workflow_error } = await supabaseAdmin
-    .from('workflow_action_logs')
-    .select('id')
-    .eq('meta->>target_api', target_api)
-    .eq('meta->>filter_id', filter_id);
+  const workFlow_data_id = (
+    await supabaseAdmin
+      .from('workflow_action_logs')
+      .select('id')
+      .eq('meta ->> target_api', target_api)
+      .eq('meta ->> filter_id', filter_id)
+      .single()
+      .throwOnError()
+  ).data.id;
 
-  if (workflow_error || !workFlow_data[0].id)
-    throw new Error('getting workflow_action_id error');
-
-  const workflow_action_id = workFlow_data[0].id;
   await supabaseAdmin.rpc('run_workflow_action', {
-    action_id: workflow_action_id,
+    action_id: workFlow_data_id,
   });
 };

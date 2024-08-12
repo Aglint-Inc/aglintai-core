@@ -9,7 +9,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter(id,name,logo)),candidates(first_name,last_name,email)))',
+        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter!public_jobs_recruiter_id_fkey(id,name,logo)),candidates(first_name,last_name,email)))',
       )
       .eq('id', req_body.filter_id),
   );

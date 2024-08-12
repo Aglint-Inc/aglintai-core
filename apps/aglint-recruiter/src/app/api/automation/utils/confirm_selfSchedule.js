@@ -34,7 +34,7 @@ export const getSelfSchudleSlots = async (filter_id) => {
     };
 
     const response = await fetch(
-      'https://dev.aglinthq.com/api/scheduling/v1/verify-recruiter-selected-slots',
+      `${process.env.NEXT_PUBLIC_REQUEST_DOMIN}/api/scheduling/v1/verify-recruiter-selected-slots`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,7 +83,7 @@ export const bookSelfScheudle = async ({ filter_id, selectedSlots }) => {
 
   try {
     const response = await fetch(
-      'https://dev.aglinthq.com/api/scheduling/v1/booking/candidate-self-schedule',
+      `${process.env.NEXT_PUBLIC_REQUEST_DOMIN}/api/scheduling/v1/booking/candidate-self-schedule`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
