@@ -99,6 +99,7 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/candidate/candidate-availability-request',
   '/api/sendAvailabilityRequest_email_applicant',
   '/api/agent-workflow/new-schedule',
+  '/api/agent-workflow/cancel-schedule',
   '/api/agent-workflow/cand-avail-recieved',
   'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
   ...cronPaths,

@@ -33,8 +33,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         )
         .select(),
     );
-    if (meetings.length === 0) return res.status(200).send('no meetings found');
 
+    if (meetings.length === 0) return res.status(200).send('no meetings found');
     const promises = meetings.map(async (meeting) => {
       await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cancel_calender_event`,
@@ -45,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
+    console.error(error.message);
     return res.status(500).send(error.message);
   }
 };

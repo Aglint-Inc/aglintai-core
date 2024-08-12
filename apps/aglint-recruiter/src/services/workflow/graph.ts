@@ -1,4 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
+import { ApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { EventNode } from './node';
@@ -60,7 +61,11 @@ export class WorkflowGraph {
   public getNode(
     eventType: SchedulingEventLogs['event_type'],
   ): EventNode | undefined {
-    return this.nodes.get(eventType);
+    const node = this.nodes.get(eventType);
+    if (!node) {
+      throw new ApiError('CLIENT', `${eventType} does not exist in the graph`);
+    }
+    return node;
   }
 
   public removeNode(eventType: SchedulingEventLogs['event_type']) {

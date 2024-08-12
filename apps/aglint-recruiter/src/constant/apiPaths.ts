@@ -1,4 +1,5 @@
 export const API_PATHS = [
+'/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
 '/api/agent-workflow/new-schedule',
 '/api/ai/create-embeddings',

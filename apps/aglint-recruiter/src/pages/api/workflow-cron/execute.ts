@@ -6,7 +6,7 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.body.action_id) {
-    return res.status(400).send('');
+    return res.status(400).send('invalid action_id');
   }
   try {
     supabaseWrap(
@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     return res.status(200).send('OK');
   } catch (error) {
-    console.error('error', error);
+    console.error('error', error.message);
 
     return res.status(500).send(error.message);
   }

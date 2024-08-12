@@ -84,6 +84,14 @@ export const TRIGGER_PAYLOAD: {
     trigger: 'onSelfScheduleReqAgent',
     phase: ['after'],
   },
+  {
+    phase: ['after'],
+    trigger: 'onRequestCancel',
+  },
+  {
+    phase: ['after'],
+    trigger: 'onRequestReschedule',
+  },
 ] as const;
 
 export function getTriggerOption(
@@ -376,6 +384,31 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       value: {
         target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
         action_type: 'end_point',
+      },
+    },
+  ],
+  onRequestCancel: [
+    {
+      name: 'Cancel Calender Invites',
+      value: {
+        action_type: 'end_point',
+        target_api: 'onRequestCancel_agent_cancelEvents',
+      },
+    },
+    {
+      name: 'Inform interviewers and slack regarding interview cancellation through slack',
+      value: {
+        action_type: 'end_point',
+        target_api: 'onRequestCancel_slack_interviewersOrganizer',
+      },
+    },
+  ],
+  onRequestReschedule: [
+    {
+      name: 'Ask Candidate for providing new availability',
+      value: {
+        action_type: 'agent_instruction',
+        target_api: 'onRequestReschedule_emailLink_resendAvailRequest',
       },
     },
   ],
