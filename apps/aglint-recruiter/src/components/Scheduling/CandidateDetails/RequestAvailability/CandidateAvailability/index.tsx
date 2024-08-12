@@ -259,6 +259,7 @@ function CandidateAvailability() {
   ) {
     return (
       <ConfirmedInvitePage
+        avail_request_id={candidateRequestAvailability.id}
         candidate={candidateRequestAvailability.applications.candidates}
         filter_json={null}
         meetings={meetingsAndRounds.meetings}

@@ -6,12 +6,12 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Text } from '@/devlink/Text';
 import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 
 function HiringTeam({
   chat,
 }: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
+  chat: ChatType;
 }) {
   const meta = chat.metadata;
   const job = meta.findLast(

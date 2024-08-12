@@ -2,7 +2,7 @@ import {CallBackAll} from '@aglint/shared-types';
 import {FunctionNames} from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
-const saveToDB = async ({
+export const saveToDB = async ({
   content,
   user_id,
   function_name,

@@ -1,25 +1,27 @@
 import { useEffect } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { NavigationPill } from '@/devlink2/NavigationPill';
 import { RequestAgent } from '@/devlink2/RequestAgent';
 import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
 import { RequestsWrapper } from '@/devlink2/RequestsWrapper';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
 import Dashboard from './Dashboard';
 import FilterAndSorting from './FiltersAndSorting';
-import RequestSections from './RequestSections';
+import RequestSections, { sectionDefaultsData } from './RequestSections';
 
 const Requests = () => {
   const { setQueryParams, queryParams } = useRouterPro();
 
   const {
-    requests: { status, data: requestList },
+    requests: { isRefetching, data: requestList },
     filters,
     setFilters,
     setSections,
@@ -34,9 +36,11 @@ const Requests = () => {
     !filters.created_at;
 
   const showEmptyPage =
-    status === 'success' &&
-    !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
-      .length;
+    !isRefetching &&
+    Boolean(
+      !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
+        .length,
+    );
 
   useEffect(() => {
     if (!queryParams?.tab) {
@@ -47,6 +51,77 @@ const Requests = () => {
     }
   }, [queryParams?.tab]);
 
+  useEffect(() => {
+    function getHiddenDivs() {
+      const container = document.querySelector('#outer-div');
+      const divs =
+        container && container.querySelectorAll('[data-req-section]');
+      const hiddenDivs = [];
+      divs &&
+        divs.forEach((div) => {
+          const rect = div.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          if (rect.top >= containerRect.bottom - 200) {
+            hiddenDivs.push(div.getAttribute('data-req-section'));
+          }
+        });
+
+      return hiddenDivs;
+    }
+    document.querySelector('#outer-div') &&
+      document.querySelector('#outer-div').addEventListener('scroll', () => {
+        showMatchingDivs(getHiddenDivs());
+      });
+
+    function showMatchingDivs(hiddenDivs) {
+      const buttons = document.querySelectorAll('[data-req-button]');
+      if (hiddenDivs.length === 0) {
+        buttons.forEach((button: any) => {
+          const buttonSection = button.getAttribute('data-req-button');
+
+          if (buttonSection === 'back') {
+            button.style.display = 'flex';
+          } else {
+            button.style.display = 'none';
+          }
+        });
+      } else {
+        buttons.forEach((button: any) => {
+          const buttonSection = button.getAttribute('data-req-button');
+          if (hiddenDivs.includes(buttonSection)) {
+            button.style.display = 'flex';
+          } else {
+            button.style.display = 'none';
+          }
+        });
+      }
+    }
+    if (!isRefetching) {
+      const hiddenDivs = getHiddenDivs();
+      showMatchingDivs(hiddenDivs);
+    }
+  }, [isRefetching]);
+
+  function gotoSection() {
+    document.querySelectorAll('[data-req-button]').forEach((button) => {
+      button.addEventListener('click', function () {
+        const sectionValue = this.getAttribute('data-req-button');
+        if (sectionValue === 'back') {
+          const firstSection = document.getElementById('first');
+          if (firstSection) {
+            firstSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        } else {
+          const targetSection = document.querySelector(
+            `[data-req-section=${sectionValue}]`,
+          );
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  }
   return (
     <RequestAgent
       slotRequest={
@@ -74,6 +149,47 @@ const Requests = () => {
                   </>
                 }
                 slotRequestSection={<RequestSections />}
+                slotNavigationPills={
+                  <>
+                    {Object.entries(requestList ?? {})
+                      .reverse()
+                      .map(({ '0': item, '1': value }, i) => (
+                        <NavigationPill
+                          attributeValue={item}
+                          textCount={value.length}
+                          key={item}
+                          iconName={
+                            sectionDefaultsData[Number(i)].sectionIconName
+                          }
+                          onClickPill={{
+                            onClick: () => {
+                              gotoSection();
+                            },
+                          }}
+                          textPill={capitalizeFirstLetter(item)}
+                        />
+                      ))}
+                    <NavigationPill
+                      showNumberCount={false}
+                      attributeValue={'back'}
+                      textCount={''}
+                      iconName={'arrow_warm_up'}
+                      onClickPill={{
+                        onClick: () => {
+                          const targetSection = document.querySelector(
+                            `[data-req-section=${'urgent_request'}]`,
+                          );
+                          if (targetSection) {
+                            targetSection.scrollIntoView({
+                              behavior: 'smooth',
+                            });
+                          }
+                        },
+                      }}
+                      textPill={capitalizeFirstLetter('back_to_top')}
+                    />
+                  </>
+                }
               />
             </ShowCode>
           </ShowCode.When>

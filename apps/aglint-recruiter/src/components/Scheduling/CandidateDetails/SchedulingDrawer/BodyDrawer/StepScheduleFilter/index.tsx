@@ -62,7 +62,7 @@ function StepScheduleFilter() {
     {
       heading: 'No Conflicts',
       title: 'Show only no conflicts slots',
-      number: totalNumberHardConflicts,
+      number: totalNumberNoConflicts,
       color: 'success',
       iconName: 'check_circle',
       disableColor: 'neutral',
@@ -73,7 +73,7 @@ function StepScheduleFilter() {
     {
       heading: 'Soft Conflicts',
       title: 'Show soft conflict slots',
-      number: totalNumberNoConflicts,
+      number: totalNumberSoftConflicts,
       color: 'warning',
       iconName: 'info',
       disableColor: 'neutral',
@@ -85,7 +85,7 @@ function StepScheduleFilter() {
     {
       heading: 'Hard Conflicts',
       title: 'Show hard conflicts slots',
-      number: totalNumberSoftConflicts,
+      number: totalNumberHardConflicts,
       color: 'error',
       iconName: 'warning',
       disableColor: 'neutral',

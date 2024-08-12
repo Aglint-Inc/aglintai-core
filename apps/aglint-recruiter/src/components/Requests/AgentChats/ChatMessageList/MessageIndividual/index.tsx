@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { Text } from '@/devlink/Text';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import Widgets from '../Widgets';
@@ -15,7 +15,7 @@ import CustomTypographyLink from './CustomTypographyLink';
 function MessageIndividual({
   chat,
 }: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
+  chat: ChatType;
 }) {
   const { recruiterUser } = useAuthDetails();
 
