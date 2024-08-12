@@ -67,6 +67,7 @@ function CandidateAvailability() {
         session_ids,
       },
     );
+
     const { rounds } = meetings.reduce(
       (acc, curr) => {
         const count = acc.rounds.length;
