@@ -1,12 +1,13 @@
 'use client';
-import Seo from '@components/Common/Seo';
 import ForgotPasswordComponent from '@components/ForgotPassword';
 import React from 'react';
+
+import { SeoPro } from '@/src/components/Common/SeoPro';
 
 export default function ForgotPasswordPage() {
   return (
     <div>
-      <Seo
+      <SeoPro
         title='Forgot Password | Aglint AI'
         description='AI for People Products'
       />

@@ -102,21 +102,7 @@ const SessionProgressPipeline = ({
     <ScheduleProgress sessions={sessions} />
   ) : (
     <Stack display={'flex'} flexDirection={'row'} gap={'4px'}>
-      <EmptyInterviewProgress />
-      {isHover && (
-        <ButtonGhost
-          iconName='add'
-          textButton='Create'
-          size={1}
-          isLeftIcon={true}
-          onClickButton={{
-            onClick: (e) => {
-              e.stopPropagation();
-              router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
-            },
-          }}
-        />
-      )}
+      Intview plan not found
     </Stack>
   );
 };

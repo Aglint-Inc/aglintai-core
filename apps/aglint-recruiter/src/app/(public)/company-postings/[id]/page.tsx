@@ -1,10 +1,10 @@
 'use client';
-import Seo from '@components/Common/Seo';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import Loader from '@/src/components/Common/Loader';
+import { SeoPro } from '@/src/components/Common/SeoPro';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
 import JobNotFound from '@/src/components/Jobs/Job/Common/JobNotFound';
 import { CompanyPostAPI } from '@/src/pages/api/jobpost/company';
@@ -36,7 +36,7 @@ function JobPost({ params: { id } }: { params: { id: string } }) {
 
   return (
     <Stack height={'100vh'}>
-      <Seo
+      <SeoPro
         title={recruiter?.name || 'Company | Aglint AI'}
         description='AI for People Products'
       />
