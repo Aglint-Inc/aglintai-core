@@ -52,6 +52,7 @@ export const createRequest = async ({
   candidate_name,
   organizer_id,
   type,
+  avail_req_id,
 }: {
   session_ids: string[];
   application_id: string;
@@ -59,9 +60,10 @@ export const createRequest = async ({
   candidate_name: string;
   organizer_id: string;
   type: DatabaseTable['interview_session_cancel']['type'];
+  avail_req_id: string;
 }) => {
-  let details: DatabaseFunctions['create_session_requests']['Args'] = {
-    applications: [application_id],
+  let details: DatabaseFunctions['create_session_request']['Args'] = {
+    application: application_id,
     request: {
       assignee_id: organizer_id,
       assigner_id: organizer_id,
@@ -78,28 +80,16 @@ export const createRequest = async ({
     details.request.title = `${candidate_name} Requested for Cancelling Interview`;
     details.request.type = 'cancel_schedule_request';
   }
-  supabaseWrap(await supabase.rpc('create_session_requests', details));
+
+  const request_id = supabaseWrap(
+    await supabase.rpc('create_session_request', details),
+  );
+  supabaseWrap(
+    await supabase
+      .from('candidate_request_availability')
+      .update({
+        request_id: request_id,
+      })
+      .eq('id', avail_req_id),
+  );
 };
-//
-// export const createCancelRequest = async (session_ids: string) => {
-//   let details: DatabaseFunctions['create_session_requests']['Args'] = {
-//     applications: [],
-//     request: {
-//       assignee_id: '',
-//       assigner_id: '',
-//       priority: 'urgent',
-//       schedule_end_date: '',
-//       schedule_start_date: '',
-//       status: 'to_do',
-//       title: '',
-//       type: '',
-//     },
-//     sessions: [],
-//   };
-//   const [request_rec] = supabaseWrap(
-//     await supabase.rpc('create_session_requests', {
-//       sessions: session_ids,
-//       applications,
-//     }),
-//   );
-// };

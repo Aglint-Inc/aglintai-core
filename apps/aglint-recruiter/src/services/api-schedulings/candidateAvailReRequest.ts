@@ -7,8 +7,7 @@ import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const candidateAvailRequest = async ({
-  cloned_sessn_ids,
+export const candidateAvailReRequest = async ({
   end_date_str,
   organizer_id,
   req_body,
@@ -30,16 +29,10 @@ export const candidateAvailRequest = async ({
     api_options,
   } = v.parse(candidate_avail_request_schema, req_body);
 
-  supabaseWrap(
-    await supabaseAdmin
-      .from('candidate_request_availability')
-      .delete()
-      .eq('request_id', request_id),
-  );
   const [avail_req] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
-      .insert({
+      .update({
         application_id,
         recruiter_id,
         is_task_created: false,
@@ -54,26 +47,19 @@ export const candidateAvailRequest = async ({
             api_options.include_conflicting_slots.out_of_working_hrs,
           recruiting_block_keywords: api_options.use_recruiting_blocks,
         },
-        request_id: request_id,
+        slots: [],
       })
+      .eq('request_id', request_id)
       .select(),
   );
-  supabaseWrap(
-    await supabaseAdmin.from('request_session_relation').insert(
-      cloned_sessn_ids.map((s_id) => ({
-        session_id: s_id,
-        request_availability_id: avail_req.id,
-      })),
-    ),
-  );
 
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
     {
-      organizer_user_id: organizer_id,
+      recruiter_user_id: organizer_id,
       avail_req_id: avail_req.id,
     };
   await axios.post(
-    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/sendAvailabilityRequest_email_applicant`,
+    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/availabilityReqResend_email_candidate`,
     {
       ...payload,
     },
