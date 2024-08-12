@@ -5681,7 +5681,7 @@ export type Database = {
           sessions?: string[]
           request?: Json
         }
-        Returns: undefined
+        Returns: string
       }
       create_session_requests: {
         Args: {

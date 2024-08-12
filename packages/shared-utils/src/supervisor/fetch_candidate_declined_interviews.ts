@@ -2,11 +2,9 @@ import { SupabaseType } from "@aglint/shared-types";
 
 export const fetchCandidateDeclinedInterviews = async ({
   supabase,
-  recruiter_id,
   user_id,
 }: {
   supabase: SupabaseType;
-  recruiter_id: string;
   user_id: string;
 }) => {
   const query = supabase

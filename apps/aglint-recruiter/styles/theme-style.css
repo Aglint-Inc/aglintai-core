@@ -20,8 +20,8 @@ body.component-grid > div:not(.w-embed) {
       position: relative;
   }
   ul li::before {
-      content: '○';
-      font-size: 10px;
+      content: '\00BB';
+      font-size: 20px;
       position: absolute;
       left: -16px;
       top: 0;
@@ -39,8 +39,8 @@ body.component-grid > div:not(.w-embed) {
       color: var(--neutral-12);
   }
   ol li::before {
-      content: '○';
-      font-size: 10px;
+      content: '\00BB';
+      font-size: 20px;
       position: absolute;
       left: -16px;
       top: 0;

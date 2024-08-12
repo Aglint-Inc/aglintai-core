@@ -2,14 +2,12 @@ import { SupabaseType } from "@aglint/shared-types";
 
 export const fetchScheduledInterviews = async ({
   supabase,
-  recruiter_id,
   time,
   type,
   user_id,
 }: {
   supabase: SupabaseType;
-  recruiter_id: string;
-  time: "today" | "week";
+  time: "today" | "week" | "month" | "next_week" | "next_month";
   type: "upcoming" | "unconfirmed";
   user_id: string;
 }) => {
@@ -30,7 +28,7 @@ export const fetchScheduledInterviews = async ({
 
       query.gte("start_time", startOfDay.toISOString());
       query.lte("start_time", endOfDay.toISOString());
-    } else {
+    } else if (time === "week") {
       const dayOfWeek = today.getDay();
       const startOfWeek = new Date(today);
       const endOfWeek = new Date(today);
@@ -44,6 +42,41 @@ export const fetchScheduledInterviews = async ({
       endOfWeek.setDate(startOfWeek.getDate() + 6);
       query.gte("start_time", startOfWeek.toISOString());
       query.lte("start_time", endOfWeek.toISOString());
+    } else if (time === "month") {
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      query.gte("start_time", startOfMonth.toISOString());
+      query.lte("start_time", endOfMonth.toISOString());
+    } else if (time === "next_month") {
+      const startOfNextMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 1,
+        1
+      );
+      const endOfNextMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 2,
+        0
+      );
+
+      query.gte("start_time", startOfNextMonth.toISOString());
+      query.lte("start_time", endOfNextMonth.toISOString());
+    } else if (time === "next_week") {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const startOfNextWeek = new Date(today);
+      const endOfNextWeek = new Date(today);
+
+      // Adjust startOfNextWeek to the next Monday
+      startOfNextWeek.setDate(
+        today.getDate() + (dayOfWeek === 0 ? 1 : 8 - dayOfWeek)
+      );
+
+      // Adjust endOfNextWeek to the Sunday following the next Monday
+      endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
+
+      query.gte("start_time", startOfNextWeek.toISOString());
+      query.lte("start_time", endOfNextWeek.toISOString());
     }
   } else {
     query.eq("status", "waiting");
