@@ -32,6 +32,7 @@ export async function SeoPro(params: Props) {
   };
   // optionally access and extend (rather than replace) parent metadata
   return (
+    // eslint-disable-next-line @next/next/no-head-element
     <head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />

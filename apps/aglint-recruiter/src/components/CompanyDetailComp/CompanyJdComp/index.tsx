@@ -54,7 +54,7 @@ const CompanyJdComp = ({ setIsSaving, disabled = false }) => {
           minRows={6}
           maxRows={6}
         />
-        <UITextField
+        {/* <UITextField
           labelSize='small'
           fullWidth
           label='Benefits'
@@ -70,7 +70,7 @@ const CompanyJdComp = ({ setIsSaving, disabled = false }) => {
           multiline
           minRows={6}
           maxRows={6}
-        />
+        /> */}
         <UITextField
           labelSize='small'
           fullWidth

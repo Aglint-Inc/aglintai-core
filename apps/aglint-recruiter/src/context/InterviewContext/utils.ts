@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabase/client';
 export async function updateFeedbackOnJobApplications(
   application_id: any,
   jobDetails: any,
@@ -62,16 +61,5 @@ export async function getRecruiter(id: any) {
     return data;
   } catch (error) {
     return error;
-  }
-}
-
-export async function updateRecruiter(id: string, value: boolean) {
-  const { data, error } = await supabase
-    .from('recruiter')
-    .update({ video_assessment: value })
-    .eq('id', id)
-    .select();
-  if (!error) {
-    return data[0];
   }
 }
