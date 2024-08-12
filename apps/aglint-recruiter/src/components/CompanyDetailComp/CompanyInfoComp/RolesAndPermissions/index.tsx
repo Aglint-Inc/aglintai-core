@@ -414,7 +414,7 @@ function RoleDetails({
         textRoleName={
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
-        // textRoleDescription={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
+        slotText={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
