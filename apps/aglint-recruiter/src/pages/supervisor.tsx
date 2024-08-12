@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
-import { useUserChat } from '../queries/userchat';
+import { ChatType } from '../queries/userchat';
 
 const ChatApp = () => {
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -42,7 +42,7 @@ const ChatApp = () => {
         bodyParams,
       );
 
-      const resp = data as ReturnType<typeof useUserChat>['data'][0];
+      const resp = data as ChatType;
 
       if (!resp) {
         return;

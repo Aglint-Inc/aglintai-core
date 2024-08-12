@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import { useUserChat } from '@/src/queries/userchat';
+import { ChatType, useUserChat } from '@/src/queries/userchat';
 import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -67,7 +67,8 @@ function AgentInputBox() {
           content: planText,
           type: 'user',
         };
-        const oldMessages: Message[] = allChat.slice(-6).map((ele) => ({
+        const lastPage = allChat.pages[allChat.pages.length - 1].list;
+        const oldMessages: Message[] = lastPage.map((ele) => ({
           content: ele.content,
           type: ele.type === 'user' ? 'user' : 'assistant',
         }));
@@ -85,7 +86,7 @@ function AgentInputBox() {
           `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
           bodyParams,
         );
-        const aiMessage = data as ReturnType<typeof useUserChat>['data'][0];
+        const aiMessage = data as ChatType;
         insertAIChat(aiMessage);
       } catch (err) {
         toast.error('Failed to process request. Please contact support.');
