@@ -98,5 +98,3 @@ BEGIN
 END;
 $$
 LANGUAGE PLPGSQL;
-
-select * from get_request_stats('5fb53f5f-5b21-42b7-89e8-93718b104cdc')
