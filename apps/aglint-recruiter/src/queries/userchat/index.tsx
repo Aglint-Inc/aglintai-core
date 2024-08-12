@@ -1,16 +1,25 @@
 import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+import { useEffect, useState } from 'react';
+
+export type ChatType = ReturnType<
+  typeof useUserChat
+>['data']['pages'][0]['list'][0];
 
 export const useUserChat = ({ user_id }: { user_id: string }) => {
   const queryClient = useQueryClient();
-  const query = useQuery({
+  const query = useInfiniteQuery({
     queryKey: ['user_chat'],
-    queryFn: () => fetchUserChat(user_id),
-    enabled: !!user_id,
-    refetchInterval: 1000 * 60 * 10,
+    queryFn: async ({ pageParam }) => {
+      const res = await fetchUserChat(user_id, pageParam);
+      if (pageParam === 0) scrollToElementById('bottomRef');
+      return res;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
   });
 
   const refetch = () => {
@@ -27,25 +36,48 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
       );
       queryClient.setQueryData(
         [`user_chat`],
-        (prevData: Awaited<ReturnType<typeof fetchUserChat>>) => {
-          return [...prevData, res];
+        (prevData: {
+          pages: Awaited<ReturnType<typeof fetchUserChat>>[];
+          pageParams: number[];
+        }) => {
+          prevData.pages[0].list = [res, ...prevData.pages[0].list];
+          return {
+            pages: [...prevData.pages],
+            pageParams: prevData.pageParams,
+          };
         },
       );
+      scrollToElementById('bottomRef');
     } catch (err) {
       toast.error('Failed to submit chat. Please try again later.');
     }
   };
 
+  const scrollToElementById = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const insertAIChat = async (
-    aiMessage: Awaited<ReturnType<typeof fetchUserChat>>[0],
+    aiMessage: Awaited<ReturnType<typeof fetchUserChat>>['list'][0],
   ) => {
     try {
       queryClient.setQueryData(
         [`user_chat`],
-        (prevData: Awaited<ReturnType<typeof fetchUserChat>>) => {
-          return [...prevData, aiMessage];
+        (prevData: {
+          pages: Awaited<ReturnType<typeof fetchUserChat>>[];
+          pageParams: number[];
+        }) => {
+          prevData.pages[0].list = [aiMessage, ...prevData.pages[0].list];
+          return {
+            pages: [...prevData.pages],
+            pageParams: prevData.pageParams,
+          };
         },
       );
+      scrollToElementById('bottomRef');
     } catch (err) {
       toast.error('Failed to submit chat. Please try again later.');
     }
@@ -57,16 +89,32 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
     });
   };
 
-  return { ...query, refetch, submitUserChat, insertAIChat, clearChat };
+  return {
+    ...query,
+    refetch,
+    submitUserChat,
+    insertAIChat,
+    clearChat,
+  };
 };
 
-const fetchUserChat = async (user_id: string) => {
-  const { data } = await supabase
+const fetchUserChat = async (user_id: string, page: number) => {
+  const { data, error } = await supabase
     .from('user_chat')
     .select('*')
     .eq('user_id', user_id)
+    .order('created_at', { ascending: false })
+    .range(page * 10, (page + 1) * 10 - 1)
     .throwOnError();
-  return data;
+
+  if (error) {
+    throw new Error(`Error fetching chat: ${error.message}`);
+  }
+
+  return {
+    list: data,
+    nextCursor: data.length === 10 ? page + 1 : null,
+  };
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -9,11 +9,9 @@ import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
 import z from 'zod';
 
 export const fetchDeclinedCandidateInterviewsTool = ({
-  recruiter_id,
   callback,
   user_id,
 }: {
-  recruiter_id: string;
   callback: (x: CallBack<'fetch_candidate_declined_interviews'>) => void;
   user_id: string;
 }) => {
@@ -23,7 +21,6 @@ export const fetchDeclinedCandidateInterviewsTool = ({
     schema: z.object({}),
     func: async () => {
       const sch = await fetchCandidateDeclinedInterviews({
-        recruiter_id,
         supabase: supabaseAdmin,
         user_id,
       });

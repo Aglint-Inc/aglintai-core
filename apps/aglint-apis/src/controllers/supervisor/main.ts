@@ -3,20 +3,19 @@ import {Request, Response} from 'express';
 import {agentChain} from './graph';
 
 import {AIMessage, HumanMessage} from '@langchain/core/messages';
-import {handleResults} from './utils/savetodb';
+import {handleResults, saveToDB} from './utils/savetodb';
 import {ApiBodyAgentSupervisor, CallBackAll} from '@aglint/shared-types';
 
 export async function agentSupervisor(req: Request, res: Response) {
+  const {
+    recruiter_id,
+    history,
+    user_id,
+    jobs,
+    is_test = false,
+  } = req.body as ApiBodyAgentSupervisor;
+  const results = [];
   try {
-    const {
-      recruiter_id,
-      history,
-      user_id,
-      jobs,
-      is_test = false,
-    } = req.body as ApiBodyAgentSupervisor;
-    const results = [];
-
     let payloadCallback: CallBackAll[] = [];
     const callback = (x: CallBackAll) => {
       payloadCallback = [...payloadCallback, x];
@@ -39,8 +38,8 @@ export async function agentSupervisor(req: Request, res: Response) {
     );
 
     for await (const step of await resultStream) {
-      // console.log(JSON.stringify(step, null, 2));
       if (!step.__end__) {
+        // console.log(JSON.stringify(step, null, 2));
         results.push(step);
       }
     }
@@ -72,6 +71,20 @@ export async function agentSupervisor(req: Request, res: Response) {
     return res.status(200).json(resSave);
   } catch (e) {
     console.error(e);
-    return res.status(500).json('Failed to perform the action');
+    await saveToDB({
+      content: 'Unable to process the request',
+      user_id,
+      function_name: null,
+      metadata: null,
+    });
+    return res.status(200).json({
+      user_id,
+      content: 'Unable to process the request',
+      created_at: new Date().toISOString(),
+      id: crypto.randomUUID(),
+      type: 'agent',
+      function: null,
+      metadata: null,
+    });
   }
 }

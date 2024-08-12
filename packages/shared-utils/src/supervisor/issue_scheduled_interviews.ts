@@ -1,6 +1,6 @@
 import { SupabaseType } from "@aglint/shared-types";
 
-export const fetchCandidateDeclinedInterviews = async ({
+export const fetchIssueScheduledInterviews = async ({
   supabase,
   user_id,
 }: {
@@ -12,7 +12,7 @@ export const fetchCandidateDeclinedInterviews = async ({
     .select(
       "*,interview_session(id,name,schedule_type,interview_meeting(id,start_time,end_time,organizer_id,status)),interview_schedule(applications(candidates(first_name,last_name)))"
     )
-    .not("schedule_id", "is", null)
+    .eq("is_resolved", false)
     .eq("interview_session.interview_meeting.organizer_id", user_id)
     .eq("interview_session.interview_meeting.status", "confirmed")
     .not("interview_session.interview_meeting", "is", null)
