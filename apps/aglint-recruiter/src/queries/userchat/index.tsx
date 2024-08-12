@@ -19,7 +19,7 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
       return res;
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor,
     refetchOnWindowFocus: true,
   });
 
@@ -79,7 +79,10 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
 
   const clearChat = () => {
     queryClient.setQueryData([`user_chat`], () => {
-      return [];
+      return {
+        pages: [],
+        pageParams: [],
+      };
     });
   };
 
