@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import {
   GetRequestParams,
@@ -8,11 +8,11 @@ import {
   useRequestsDelete,
   useRequestsUpdate,
 } from '@/src/queries/requests';
-import { supabase } from '@/src/utils/supabase/client';
+import { RequestResponse } from '@/src/queries/requests/types';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
-const initialFilter = {
+const defaultFilter = {
   is_new: false,
   status: [],
   title: '',
@@ -21,19 +21,31 @@ const initialFilter = {
   end_at: '',
 };
 
+// eslint-disable-next-line no-unused-vars
+const defaultSections: { [id in keyof RequestResponse]?: boolean } = {
+  urgent_request: false,
+  schedule_request: false,
+  reschedule_request: false,
+  decline_request: false,
+  cancel_schedule_request: false,
+  completed_request: false,
+};
+
 export const useRequestsActions = () => {
   const { recruiterUser } = useAuthDetails();
 
   const assigner_id = recruiterUser?.user_id;
 
   const [filters, setFilters] = useState<GetRequestParams['filters']>(
-    structuredClone(initialFilter),
+    structuredClone(defaultFilter),
   );
 
   const [sort, setSort] = useState<GetRequestParams['sort']>({
     order: 'desc',
     type: 'created_at',
   });
+
+  const [sections, setSections] = useState(defaultSections);
 
   const requests = useQuery(
     requestQueries.requests({
@@ -100,45 +112,8 @@ export const useRequestsActions = () => {
     [updateMutationState, deleteMutationState],
   );
 
-  useEffect(() => {
-    const connection = supabase
-      .channel('db-changes')
-      .on<Request>(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'request_progress' },
-        (pauload) => console.log(pauload, '🔥'),
-      )
-      .on<Request>(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'request' },
-        (pauload) => console.log(pauload, '🔥👍'),
-      )
-      .on<Request>(
-        'postgres_changes',
-        { event: 'DELETE', schema: 'public', table: 'request' },
-        (pauload) => console.log(pauload, '🔥👍'),
-      )
-      .on<Request>(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'request_progress' },
-        (pauload) => console.log(pauload, '🔥👍'),
-      )
-      .on<Request>(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'request_progress' },
-        (pauload) => console.log(pauload, '🔥👍'),
-      )
-      .on<Request>(
-        'postgres_changes',
-        { event: 'DELETE', schema: 'public', table: 'request_progress' },
-        (pauload) => console.log(pauload, '🔥👍'),
-      )
-      .subscribe();
-    return () => {
-      console.log(assigner_id, '🔥', 'unsub');
-      connection.unsubscribe();
-    };
-  }, [assigner_id]);
+  const initialFilter = useMemo(() => defaultFilter, []);
+  const initialSections = useMemo(() => defaultSections, []);
 
   return {
     requests,
@@ -153,6 +128,94 @@ export const useRequestsActions = () => {
     setFilters,
     sort,
     setSort,
-    initialFilter: structuredClone(initialFilter),
+    initialFilter,
+    initialSections,
+    sections,
+    setSections,
   };
 };
+
+// useEffect(() => {
+//   const connection = supabase
+//     .channel('db-changes')
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'INSERT',
+//         schema: 'public',
+//         table: 'request_progress',
+//         filter: `assigner_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'UPDATE',
+//         schema: 'public',
+//         table: 'request',
+//         filter: `assigner_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'DELETE',
+//         schema: 'public',
+//         table: 'request',
+//         filter: `assigner_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'INSERT',
+//         schema: 'public',
+//         table: 'request_progress',
+//         filter: `assignee_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'UPDATE',
+//         schema: 'public',
+//         table: 'request',
+//         filter: `assignee_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       {
+//         event: 'DELETE',
+//         schema: 'public',
+//         table: 'request',
+//         filter: `assignee_id.eq.${assigner_id}`,
+//       },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       { event: 'INSERT', schema: 'public', table: 'request_progress' },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       { event: 'UPDATE', schema: 'public', table: 'request_progress' },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .on<Request>(
+//       'postgres_changes',
+//       { event: 'DELETE', schema: 'public', table: 'request_progress' },
+//       (payload) => console.log(payload, '🔥👍'),
+//     )
+//     .subscribe();
+//   return () => {
+//     console.log(assigner_id, '🔥', 'unsub');
+//     connection.unsubscribe();
+//   };
+// }, [assigner_id]);

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import type {
   DatabaseFunctions,
   DatabaseTable,
@@ -18,6 +19,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import aglintToast from '@/src/utils/toast';
 
 import { appKey, GC_TIME } from '..';
+import { Request } from './types';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -32,6 +34,14 @@ export const requestQueries = {
       refetchOnMount: true,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
       queryFn: async () => await getRequests({ payload, sort, filters }),
+      placeholderData: {
+        cancel_schedule_request: [],
+        completed_request: [],
+        decline_request: [],
+        reschedule_request: [],
+        schedule_request: [],
+        urgent_request: [],
+      },
     }),
   requests_mutationOptions: <
     T extends 'create' | 'update' | 'delete',
@@ -221,7 +231,8 @@ export type GetRequestParams = {
   filters: RequestsFilter;
   sort: RequestsSort;
 };
-export const getRequests = async ({
+
+export const getUnfilteredRequests = async ({
   payload: { assigner_id },
   filters: {
     /*assignee_id,*/ is_new,
@@ -272,6 +283,79 @@ export const getRequests = async ({
   query.order('id');
 
   return (await query).data;
+};
+
+type Sections =
+  | Request['type']
+  | `${Extract<Request['status'], 'completed'>}_request`
+  | `${Extract<Request['priority'], 'urgent'>}_request`;
+
+export const getRequests = async (params: GetRequestParams) => {
+  const response = await getUnfilteredRequests(params);
+  return (
+    Object.entries(
+      response.reduce(
+        (acc, curr) => {
+          if (curr.status === 'completed') acc.completed_request.push(curr);
+          else if (curr.priority === 'urgent') acc.urgent_request.push(curr);
+          else acc[curr.type].push(curr);
+          return acc;
+        },
+        {
+          cancel_schedule_request: [],
+          completed_request: [],
+          decline_request: [],
+          reschedule_request: [],
+          schedule_request: [],
+          urgent_request: [],
+          // eslint-disable-next-line no-unused-vars
+        } as { [id in Sections]: typeof response },
+      ),
+    ) as [Sections, typeof response][]
+  ).reduce(
+    (acc, [key, values]) => {
+      switch (key) {
+        case 'completed_request':
+          acc[key] = values.toSorted(
+            (a, z) =>
+              dayjsLocal(z.completed_at).date() -
+              dayjsLocal(a.completed_at).date(),
+          );
+          break;
+        default:
+          acc[key] = requestSort(values);
+      }
+      return acc;
+    },
+    // eslint-disable-next-line no-unused-vars
+    {} as { [id in Sections]: typeof response },
+  );
+};
+
+type SortRequest = Extract<Request['status'], 'to_do' | 'in_progress'> | 'rest';
+
+const requestSort = (request: Request[]) => {
+  return Object.values(
+    request.reduce(
+      (acc, curr) => {
+        if (curr.status === 'to_do') acc.to_do.push(curr);
+        else if (curr.status === 'in_progress') acc.in_progress.push(curr);
+        else acc.rest.push(curr);
+        return acc;
+      },
+      { to_do: [], in_progress: [], rest: [] } as {
+        // eslint-disable-next-line no-unused-vars
+        [id in SortRequest]: typeof request;
+      },
+    ),
+  )
+    .map((values) =>
+      values.toSorted(
+        (a, z) =>
+          dayjsLocal(z.created_at).date() - dayjsLocal(a.created_at).date(),
+      ),
+    )
+    .flatMap((values) => values);
 };
 
 type GetRequestProgress = Pick<DatabaseTable['request_progress'], 'request_id'>;
