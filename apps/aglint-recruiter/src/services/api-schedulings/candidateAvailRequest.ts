@@ -70,7 +70,6 @@ export const candidateAvailRequest = async ({
   );
 
   if (is_avail_req_resend) {
-    console.log('fnkewjnkefjn');
     const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
       {
         recruiter_user_id: organizer_id,

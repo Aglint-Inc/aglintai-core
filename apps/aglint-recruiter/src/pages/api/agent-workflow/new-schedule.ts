@@ -166,7 +166,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         reqProgressLogger,
         {
-          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+          event_type: 'RESEND_CAND_AVAIL_EMAIL_LINK',
         },
       );
       meeting_flow = 'candidate_request';
@@ -191,13 +191,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err: any) {
+    console.error(err.message);
+
     if (err instanceof ApiError) {
       return res.status(500).json({
         type: err.type,
         message: err.message,
       });
-    } else {
-      console.error(err);
     }
     return res.status(500).json({
       type: err.name,
