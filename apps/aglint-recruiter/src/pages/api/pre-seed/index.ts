@@ -7,7 +7,6 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { seed_email_templates } from '@/src/utils/seedCompanyData/seed_email_templates';
-import { seed_workflow_actions } from '@/src/utils/seedCompanyData/seed_workflow';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export default async function handler(
@@ -19,10 +18,14 @@ export default async function handler(
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
     // start here
-    await removeAllTemps(recruiter_id);
+    // eslint-disable-next-line no-unused-vars
     const comp_templates = await seedCompTemplate(recruiter_id);
-    await seedWorkFlow(recruiter_id, comp_templates);
-    // await seedRolesAndPermissions(recruiter_id);
+    await Promise.all([
+      seedRolesAndPermissions(recruiter_id),
+      removeAllTemps(recruiter_id),
+      // seedWorkFlow(recruiter_id, comp_templates),// fix this
+      seedPreferencesAndIntegrations(recruiter_id),
+    ]);
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -124,50 +127,62 @@ const seedCompTemplate = async (recruiter_id) => {
   return all_templates;
 };
 
-const seedWorkFlow = async (
-  recruiter_id: string,
-  company_email_template: DatabaseTable['company_email_template'][],
-) => {
-  const promies = seed_workflow_actions.map(async (work_flow_act) => {
-    const [workflow] = supabaseWrap(
-      await supabaseAdmin
-        .from('workflow')
-        .insert({
-          phase: work_flow_act.workflow.phase,
-          trigger: work_flow_act.workflow.trigger,
-          auto_connect: work_flow_act.workflow.auto_connect,
-          description: work_flow_act.workflow.description,
-          interval: work_flow_act.workflow.interval,
-          title: work_flow_act.workflow.title,
-          recruiter_id,
-          is_paused: false,
-          workflow_type: work_flow_act.workflow.workflow_type,
-        })
-        .select(),
-    );
-    supabaseWrap(
-      await supabaseAdmin.from('workflow_action').insert(
-        //@ts-ignore  Fix this
-        work_flow_act.actions.map((action) => {
-          const temp = company_email_template.find(
-            (temp) => temp.type === action.target_api,
-          );
-          return {
-            payload: {
-              body: temp ? temp.body : undefined,
-              subject: temp ? temp.subject : undefined,
-              ...(action?.payload ?? {}),
-            },
-            order: action.order,
-            workflow_id: workflow.id,
-            target_api: action.target_api,
-            action_type: action.action_type,
-          };
-        }) as any, // TODO: fix
-      ),
-    );
-    //
-  });
+// const seedWorkFlow = async (
+//   recruiter_id: string,
+//   company_email_template: DatabaseTable['company_email_template'][],
+// ) => {
+//   const promies = seed_workflow_actions.map(async (work_flow_act) => {
+//     const [workflow] = supabaseWrap(
+//       await supabaseAdmin
+//         .from('workflow')
+//         .insert({
+//           phase: work_flow_act.workflow.phase,
+//           trigger: work_flow_act.workflow.trigger,
+//           auto_connect: work_flow_act.workflow.auto_connect,
+//           description: work_flow_act.workflow.description,
+//           interval: work_flow_act.workflow.interval,
+//           title: work_flow_act.workflow.title,
+//           recruiter_id,
+//           is_paused: false,
+//           workflow_type: work_flow_act.workflow.workflow_type,
+//         })
+//         .select(),
+//     );
+//     supabaseWrap(
+//       await supabaseAdmin.from('workflow_action').insert(
+//         //@ts-ignore  Fix this
+//         work_flow_act.actions.map((action) => {
+//           const temp = company_email_template.find(
+//             (temp) => temp.type === action.target_api,
+//           );
+//           return {
+//             payload: {
+//               body: temp ? temp.body : undefined,
+//               subject: temp ? temp.subject : undefined,
+//               ...(action?.payload ?? {}),
+//             },
+//             order: action.order,
+//             workflow_id: workflow.id,
+//             target_api: action.target_api,
+//             action_type: action.action_type,
+//           };
+//         }) as any, // TODO: fix
+//       ),
+//     );
+//     //
+//   });
 
-  await Promise.all(promies);
-};
+//   await Promise.all(promies);
+// };
+
+async function seedPreferencesAndIntegrations(rec_id: string) {
+  await supabaseAdmin
+    .from('recruiter_preferences')
+    .insert([{ recruiter_id: rec_id, scoring: false }])
+    .throwOnError();
+
+  await supabaseAdmin
+    .from('integrations')
+    .insert([{ recruiter_id: rec_id }])
+    .throwOnError();
+}
