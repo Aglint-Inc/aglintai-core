@@ -70,7 +70,7 @@ export const seed_workflow_actions: {
       trigger: 'candidateBook',
       phase: 'after',
       interval: 0,
-      title: 'Slack Interviewer for Confirmation After Candidate Scheduling',
+      title: '5. Slack: RSVP Interviewers',
       auto_connect: true,
       description: '',
       workflow_type: 'job',
@@ -88,7 +88,7 @@ export const seed_workflow_actions: {
       trigger: 'sendAvailReqReminder',
       phase: 'after',
       interval: 24 * 60,
-      title: 'Send Availability Request Reminder Email for Candidate',
+      title: '2. Candidate Availability reminder',
       auto_connect: true,
       description:
         'Send a reminder to the candidate if they do not respond to the Avalibility request link within 24 hours',
@@ -107,8 +107,7 @@ export const seed_workflow_actions: {
       trigger: 'selfScheduleReminder',
       phase: 'after',
       interval: 24 * 60,
-      title:
-        'Send a reminder to the candidate if they do not respond to the self-scheduling link within 24 hours.',
+      title: '4. Candidate Confirmation Reminder',
       auto_connect: true,
       description: '',
       workflow_type: 'job',
@@ -315,7 +314,7 @@ export const seed_workflow_actions: {
       description: '',
       interval: 0,
       phase: 'after',
-      title: 'Get Availability from Candidate through Email Link',
+      title: '1. Get Candidate Availability',
       trigger: 'onAvailReqAgent',
       workflow_type: 'job',
     },
@@ -385,8 +384,7 @@ export const seed_workflow_actions: {
     workflow: {
       auto_connect: false,
       phase: 'after',
-      title:
-        'Send Self Schedule Request after recieving availaibility from the Candidate',
+      title: '3. Send Self-Schedule Request',
       description: '',
       interval: 0,
       trigger: 'onReceivingAvailReq',
@@ -470,6 +468,48 @@ export const seed_workflow_actions: {
         order: 0,
         target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
         action_type: 'end_point',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        '6. When candidate requests for rescheduling, get new availability',
+      trigger: 'onRequestReschedule',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'email',
+        order: 0,
+        target_api: 'onRequestReschedule_emailLink_resendAvailRequest',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '7. Candidate requests for cancelling interviews',
+      trigger: 'onRequestCancel',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_agent_cancelEvents',
+      },
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_slack_interviewersOrganizer',
       },
     ],
   },

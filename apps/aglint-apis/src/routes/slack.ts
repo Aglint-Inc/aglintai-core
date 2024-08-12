@@ -1,6 +1,7 @@
 import express from 'express';
 import {feedback} from 'src/controllers/slack/feedBack';
 import {getMeetingStatusOrganizer} from 'src/controllers/slack/getMeetingStatusOrganizer';
+import {informInterviewCancel} from 'src/controllers/slack/informInterviewCancel';
 import {interviewReminder} from 'src/controllers/slack/interviewReminder';
 import {listForInteractions} from 'src/controllers/slack/listForInteractions';
 import {notifyInterviewConfirmation} from 'src/controllers/slack/notifyInterviewConfirmation';
@@ -45,6 +46,11 @@ slackRoutes.post(
 slackRoutes.post(
   `/${slackEndPoints.interviewEnd_slack_organizerForMeetingStatus}`,
   getMeetingStatusOrganizer
+);
+
+slackRoutes.post(
+  `/${slackEndPoints.onRequestCancel_slack_interviewersOrganizer}`,
+  informInterviewCancel
 );
 
 // slackRoutes.post(

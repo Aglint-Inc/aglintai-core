@@ -1,6 +1,6 @@
-
 import { useUserChat } from '@/src/queries/userchat';
 
+import FetchDeclinedInterviews from './FetchDeclinedInterviews';
 import FetchScheduledInterviews from './FetchScheduledInterviews';
 import UserRequests from './UserRequests';
 
@@ -15,6 +15,8 @@ function Widgets({
         <FetchScheduledInterviews chat={chat} />
       ) : chat?.function === 'fetch_user_requests' ? (
         <UserRequests chat={chat} />
+      ) : chat?.function === 'fetch_candidate_declined_interviews' ? (
+        <FetchDeclinedInterviews chat={chat} />
       ) : (
         <></>
       )}

@@ -49,7 +49,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         textCompanyType={recruiter.industry || '--'}
         textEmployeeCount={recruiter.employee_size || '--'}
         // isHeaderDescriptionVisible={Boolean(recruiter.company_values)}
-        textHeaderDiscription={recruiter.company_values}
+        textHeaderDiscription={''}
         textOpenJobCount={filteredJobs.length}
         slotOpenJobListing={
           <>

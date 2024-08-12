@@ -1,12 +1,13 @@
 'use client';
-import Seo from '@components/Common/Seo';
 import ResetPasswordComponent from '@components/ResetPassword';
 import React from 'react';
 
-export default function ResetPasswordPage() {
+import { SeoPro } from '@/src/components/Common/SeoPro';
+
+function ResetPasswordPage() {
   return (
     <div>
-      <Seo
+      <SeoPro
         title='Reset Password | Aglint AI'
         description='AI for People Products'
       />
@@ -14,3 +15,5 @@ export default function ResetPasswordPage() {
     </div>
   );
 }
+
+export default ResetPasswordPage;
