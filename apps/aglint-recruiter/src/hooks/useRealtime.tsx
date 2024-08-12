@@ -1,5 +1,8 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
+import {
+  RealtimeChannel,
+  RealtimePostgresInsertPayload,
+} from '@supabase/supabase-js';
 
 type Event = 'INSERT' | 'UPDATE' | 'DELETE';
 type Tables = keyof DatabaseTable;
@@ -12,8 +15,8 @@ type Filter<
 > = keyof DatabaseTable[T] extends infer K
   ? K extends string
     ? U extends 'in'
-      ? `${K}.${U}.[${string}]`
-      : `${K}.${U}.${string}`
+      ? `${K}=${U}.(${string})`
+      : `${K}=${U}.${string}`
     : never
   : never;
 
@@ -37,3 +40,18 @@ export type Entry<T = Tables, U = Event> = T extends Tables
         ) => void;
       }
   : never;
+
+export const subscriptions = <T extends Entry>(
+  connection: RealtimeChannel,
+  subscriptions: T[],
+) => {
+  subscriptions.forEach(({ callback, ...rest }) =>
+    connection.on<Parameters<T['callback']>['0']>(
+      //@ts-expect-error
+      'postgres_changes',
+      { schema: 'public', ...rest },
+      callback,
+    ),
+  );
+  return connection;
+};
