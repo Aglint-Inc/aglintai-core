@@ -6,7 +6,10 @@ import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import { Request as RequestType } from '@/src/queries/requests/types';
+import {
+  Request as RequestType,
+  RequestResponse,
+} from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../../../Common/ShowCode';
@@ -20,10 +23,7 @@ function Section({
   isLoadingRequests,
 }: {
   requests: RequestType[];
-  sectionName:
-    | RequestType['type']
-    | RequestType['status']
-    | RequestType['priority'];
+  sectionName: keyof RequestResponse;
   sectionIconName: string;
   color: string;
   isLoadingRequests: boolean;
@@ -45,7 +45,7 @@ function Section({
         <TextWithIcon
           color={color}
           iconName={sectionIconName}
-          textContent={`${capitalizeFirstLetter(sectionName).replace('Request', '')} requests (${requests.length})`}
+          textContent={`${capitalizeFirstLetter(sectionName)} (${requests.length})`}
         />
         <GlobalIcon
           size={4}

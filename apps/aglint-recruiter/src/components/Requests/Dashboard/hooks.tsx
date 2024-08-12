@@ -3,6 +3,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RequestResponse } from '@/src/queries/requests/types';
 import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -16,15 +17,12 @@ type responseCreatedCompletedType = {
     }[];
   };
 };
-type allRequestType = {
-  value: {
-    data: {
-      type: string;
-      status: string;
-      priority: string;
-    }[];
-  };
+
+type SectionRequests = {
+  // eslint-disable-next-line no-unused-vars
+  [id in keyof RequestResponse | 'standard_request']: number;
 };
+
 export const useAllScheduleList = () => {
   const {
     recruiterUser: { user_id },
@@ -80,13 +78,13 @@ export async function getRequestsCount({
 }: {
   assigner_id: string;
 }) {
-  const { '0': createdCompletedRequestCount, '1': allRequestCount } =
+  const [createdCompletedRequestCount, allRequestCount] =
     await Promise.allSettled([
-      await supabase.rpc('get_request_stats', {
+      supabase.rpc('get_request_stats', {
         assigner_id: assigner_id,
         curr_date: dayjsLocal().format('YYYY-MM-DD'),
       }),
-      await supabase
+      supabase
         .from('request')
         .select('type,status,priority')
         .or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`)
@@ -121,34 +119,28 @@ export async function getRequestsCount({
     };
   });
 
-  const urgentRequest = (allRequestCount as allRequestType).value.data.filter(
-    (ele) => ele.priority === 'urgent' && ele.status !== 'completed',
-  ).length;
-  const standardRequest = (allRequestCount as allRequestType).value.data.filter(
-    (ele) => ele.priority === 'standard' && ele.status !== 'completed',
-  ).length;
-  const schedule_request = (
-    allRequestCount as allRequestType
-  ).value.data.filter(
-    (ele) => ele.type === 'schedule_request' && ele.status !== 'completed',
-  ).length;
-  const reschedule_request = (
-    allRequestCount as allRequestType
-  ).value.data.filter(
-    (ele) => ele.type === 'reschedule_request' && ele.status !== 'completed',
-  ).length;
-  const cancel_schedule_request = (
-    allRequestCount as allRequestType
-  ).value.data.filter(
-    (ele) =>
-      ele.type === 'cancel_schedule_request' && ele.status !== 'completed',
-  ).length;
-  const decline_request = (allRequestCount as allRequestType).value.data.filter(
-    (ele) => ele.type === 'decline_request' && ele.status !== 'completed',
-  ).length;
-  const completedRequests = (
-    allRequestCount as allRequestType
-  ).value.data.filter((ele) => ele.status === 'completed').length;
+  const card = (
+    allRequestCount.status === 'fulfilled' && allRequestCount.value.data
+  ).reduce(
+    (acc, curr) => {
+      if (curr.status === 'completed') acc.completed_request += 1;
+      else if (curr.priority === 'urgent') acc.urgent_request += 1;
+      else {
+        acc[curr.type] += 1;
+        acc.standard_request += 1;
+      }
+      return acc;
+    },
+    {
+      cancel_schedule_request: 0,
+      completed_request: 0,
+      decline_request: 0,
+      reschedule_request: 0,
+      schedule_request: 0,
+      urgent_request: 0,
+      standard_request: 0,
+    } as SectionRequests,
+  );
 
   return {
     chat: {
@@ -156,15 +148,7 @@ export async function getRequestsCount({
       completedRequest,
       onGoingRequest,
     },
-    card: {
-      urgentRequest,
-      standardRequest,
-      schedule_request,
-      reschedule_request,
-      cancel_schedule_request,
-      decline_request,
-      completedRequests,
-    },
+    card,
   };
 }
 
