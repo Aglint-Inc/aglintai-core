@@ -1,4 +1,4 @@
-import { DatabaseFunctions } from '@aglint/shared-types';
+import { DatabaseFunctions, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import dayjs from '@utils/dayjs';
 
@@ -45,18 +45,20 @@ export const getCalenderEventUrl = ({
   return `https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&dates=${encodeURIComponent(new Date(start_time).toISOString().replaceAll(/-|:|.ddd/g, ''))}%2F${encodeURIComponent(new Date(end_time).toISOString().replaceAll(/-|:|.ddd/g, ''))}&ctz=${tz}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(String(location))}&text=${encodeURIComponent(title)}`;
 };
 
-export const createRescheduleRequest = async ({
+export const createRequest = async ({
   application_id,
   new_dates,
   session_ids,
   candidate_name,
   organizer_id,
+  type,
 }: {
   session_ids: string[];
   application_id: string;
   new_dates: { start_date: string; end_date: string };
   candidate_name: string;
   organizer_id: string;
+  type: DatabaseTable['interview_session_cancel']['type'];
 }) => {
   let details: DatabaseFunctions['create_session_requests']['Args'] = {
     applications: [application_id],
@@ -72,6 +74,10 @@ export const createRescheduleRequest = async ({
     },
     sessions: session_ids,
   };
+  if (type === 'declined') {
+    details.request.title = `${candidate_name} Requested for Cancelling Interview`;
+    details.request.type = 'cancel_schedule_request';
+  }
   supabaseWrap(await supabase.rpc('create_session_requests', details));
 };
 //

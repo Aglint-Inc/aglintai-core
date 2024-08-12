@@ -85,4 +85,26 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The self-scheduling will be cancelled.',
     error: 'There was an error cancelling the self-scheduling.',
   },
+  RESEND_CAND_AVAIL_EMAIL_LINK: {
+    past: 'The candidate availability email link was resent.',
+    present: 'Resending the candidate availability email link.',
+    future: 'The candidate availability email link will be resent.',
+    error:
+      'There was an error resending the candidate availability email link.',
+  },
+  CANCEL_INTERVIEW_MEETINGS: {
+    past: 'The interview meetings were cancelled.',
+    present: 'Cancelling the interview meetings.',
+    future: 'The interview meetings will be cancelled.',
+    error: 'There was an error cancelling the interview meetings.',
+  },
+  MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER: {
+    past: 'The interviewer and organizer were informed about the meeting cancellation.',
+    present:
+      'Informing the interviewer and organizer about the meeting cancellation.',
+    future:
+      'The interviewer and organizer will be informed about the meeting cancellation.',
+    error:
+      'There was an error informing the interviewer and organizer about the meeting cancellation.',
+  },
 };

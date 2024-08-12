@@ -101,6 +101,8 @@ export type ValidWorkflowActionEntries<
         Database["public"]["Enums"]["email_slack_types"],
         `${T}_${
           | "end_point"
+          | "slack"
+          | "agent"
           | "EmailLink"
           | "EmailAgent"
           | "emailAgent"
