@@ -17,9 +17,9 @@ export function RolesAndPermissionsDetail({
   slotBackButton,
   textUserCount = "Users (5)",
   textRoleName = "Role Name",
-  textUserDescription = "These are the users with this role.",
   slotBanner,
   slotAddButton,
+  slotText,
 }) {
   return (
     <_Component
@@ -118,7 +118,7 @@ export function RolesAndPermissionsDetail({
                   className={_utils.cx(_styles, "rpd-wrapper")}
                   tag="div"
                 >
-                  <Text content={textUserDescription} color="neutral" />
+                  {slotText}
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
