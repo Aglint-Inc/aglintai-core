@@ -11,6 +11,8 @@ import {
   useRequestsUpdate,
 } from '@/src/queries/requests';
 import { RequestResponse } from '@/src/queries/requests/types';
+import { SafeObject } from '@/src/utils/safeObject';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
