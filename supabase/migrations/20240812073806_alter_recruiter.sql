@@ -19,5 +19,3 @@ alter table "public"."recruiter" drop column "technology_score";
 alter table "public"."recruiter" drop column "use_of_purpose";
 
 alter table "public"."recruiter" drop column "video_assessment";
-
-
