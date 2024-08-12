@@ -175,6 +175,7 @@ export * from "./MultiDaySelect";
 export * from "./MultidayCard";
 export * from "./MutedShadowSession";
 export * from "./NavProfileBlock";
+export * from "./NavigationPill";
 export * from "./NewInterviewModule";
 export * from "./NewInterviewModuleCard";
 export * from "./NoPendingReq";
