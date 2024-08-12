@@ -3420,6 +3420,29 @@ export type Database = {
           },
         ]
       }
+      recuriter_preferences: {
+        Row: {
+          recruiter_id: string
+          scoring: boolean
+        }
+        Insert: {
+          recruiter_id: string
+          scoring?: boolean
+        }
+        Update: {
+          recruiter_id?: string
+          scoring?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recuriter_preferences_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: true
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       request: {
         Row: {
           application_id: string | null
@@ -5629,15 +5652,6 @@ export type Database = {
           total_records: number
         }[]
       }
-      count_requests: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          date: string
-          created_at_count: number
-          completed_at_count: number
-          on_progress_count: number
-        }[]
-      }
       create_auth_user: {
         Args: {
           email: string
@@ -6044,17 +6058,6 @@ export type Database = {
         Returns: {
           date: string
           counts: Json
-        }[]
-      }
-      get_request_stats: {
-        Args: {
-          assigner_id: string
-        }
-        Returns: {
-          date: string
-          created: number
-          completed: number
-          on_going: number
         }[]
       }
       get_screening_candidates: {
