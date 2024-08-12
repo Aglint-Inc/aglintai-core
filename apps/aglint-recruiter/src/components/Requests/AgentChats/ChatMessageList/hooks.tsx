@@ -1,6 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useUserChat } from '@/src/queries/userchat';
-import { useEffect, useRef, useState } from 'react';
 
 export const useScrollListenerAgentChat = () => {
   const topRef = useRef(null);

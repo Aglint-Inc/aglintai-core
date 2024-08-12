@@ -1,4 +1,4 @@
-import { ChatType, useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 
 import RequestList, { RequestListProps } from '../../Components/RequestList';
 

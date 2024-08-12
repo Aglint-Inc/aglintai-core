@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { Text } from '@/devlink/Text';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ChatType, useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import Widgets from '../Widgets';

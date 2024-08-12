@@ -6,7 +6,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { Text } from '@/devlink/Text';
 import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ChatType, useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 
 function HiringTeam({
   chat,

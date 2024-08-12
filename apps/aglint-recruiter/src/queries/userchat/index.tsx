@@ -3,7 +3,6 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-import { useEffect, useState } from 'react';
 
 export type ChatType = ReturnType<
   typeof useUserChat
@@ -19,7 +18,8 @@ export const useUserChat = ({ user_id }: { user_id: string }) => {
       return res;
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    refetchOnWindowFocus: true,
   });
 
   const refetch = () => {

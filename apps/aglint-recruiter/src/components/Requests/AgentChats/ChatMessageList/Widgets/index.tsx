@@ -1,4 +1,4 @@
-import { ChatType, useUserChat } from '@/src/queries/userchat';
+import { ChatType } from '@/src/queries/userchat';
 
 import FetchDeclinedInterviews from './FetchDeclinedInterviews';
 import FetchScheduledInterviews from './FetchScheduledInterviews';

@@ -1,17 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import { useEffect, useRef } from 'react';
 
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
-import Loader from '@/src/components/Common/Loader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useUserChat } from '@/src/queries/userchat';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import CommandShortCuts from '../CommandShortCuts';
+import { useScrollListenerAgentChat } from './hooks';
 import MessageIndividual from './MessageIndividual';
 import SkeletonMessage from './MessageIndividual/Skeleton';
-import { useScrollListenerAgentChat } from './hooks';
 
 function ChatMessageList() {
   const { recruiterUser } = useAuthDetails();
