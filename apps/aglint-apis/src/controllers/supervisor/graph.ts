@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {CallBackAll} from '@aglint/shared-types';
 import {END, START, StateGraph} from '@langchain/langgraph';
-import {getDeclinedInterviewsNode} from './nodes/declinedInterviewRead/node';
 import {greetingsNode} from './nodes/greetings/node';
 import {interviewTypesReadNode} from './nodes/interviewTypeRead/node';
 import {fetchJobRelatedNode} from './nodes/jobs/node';
@@ -46,16 +45,6 @@ export const agentChain = async ({
       async state => await fetchRequestsNode({state, user_id, callback})
     )
     .addNode(
-      'getDeclinedInterviews',
-      async state =>
-        await getDeclinedInterviewsNode({
-          state,
-          recruiter_id,
-          callback,
-          user_id,
-        })
-    )
-    .addNode(
       'getScheduledInterviews',
       async state =>
         await getScheduledInterviewsNode({
@@ -74,14 +63,12 @@ export const agentChain = async ({
   agent.addEdge('requestsRead', 'supervisor');
   agent.addEdge('getJobsgetHiringTeam', 'supervisor');
   agent.addEdge('getScheduledInterviews', 'supervisor');
-  agent.addEdge('getDeclinedInterviews', 'supervisor');
   agent.addConditionalEdges('supervisor', x => x.next, {
     greetingAgent: 'greetingAgent',
     getInterviewTypesOrUsers: 'getInterviewTypesOrUsers',
     requestsRead: 'requestsRead',
     getJobsgetHiringTeam: 'getJobsgetHiringTeam',
     getScheduledInterviews: 'getScheduledInterviews',
-    getDeclinedInterviews: 'getDeclinedInterviews',
     FINISH: END,
   });
   agent.addEdge(START, 'supervisor');

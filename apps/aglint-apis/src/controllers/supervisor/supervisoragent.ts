@@ -12,14 +12,18 @@ export const createSchedulingSupervisorAgent = async () => {
       'You can call only one worker for a user request.\n\n' +
       'Dont go into loop calling same workers again and again\n\n' +
       'If you dont understand which worker to call for a user request, ask user for help.\n\n' +
-      'Dont put placeholder data if tool response is empty',
+      'Dont put placeholder data if tool response is empty.\n\n' +
+      'Call getScheduledInterviews to get either scheduled interviews (schedules) or candidate declined interviews or scheduled interviews which has issues. \n\n' +
+      'Call getJobsgetHiringTeam to get the jobs or a hiring team for a job\n\n' +
+      'Call requestsRead to get requests or schedule requests or reschedule requests or cancel requests assigned to user\n\n' +
+      'Call getInterviewTypesOrUsers to get interview types or users inside an interview type.\n\n' +
+      'Call greetingAgent to greet the user if user say hi or hello\n\n',
     [
       'getInterviewTypesOrUsers',
       'greetingAgent',
       'getScheduledInterviews',
       'requestsRead',
       'getJobsgetHiringTeam',
-      'getDeclinedInterviews',
     ] //all nodes
   );
 

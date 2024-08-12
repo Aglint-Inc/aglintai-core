@@ -19,12 +19,13 @@ export const fetchScheduledInterviewsTool = ({
     description:
       'Fetch scheduled interviews or upcoming interviews or unconfirmed interviews',
     schema: z.object({
-      time: z.enum(['today', 'week']).default('week'),
+      time: z
+        .enum(['today', 'week', 'month', 'next_week', 'next_month'])
+        .default('week'),
       type: z.enum(['upcoming', 'unconfirmed']).default('upcoming'),
     }),
     func: async ({time, type}) => {
       const sch = await fetchScheduledInterviews({
-        recruiter_id,
         supabase: supabaseAdmin,
         time,
         type,
@@ -32,7 +33,7 @@ export const fetchScheduledInterviewsTool = ({
       });
 
       if (sch.length === 0) {
-        return `No scheduled interviews found ${time === 'today' ? 'today' : 'this week'}`;
+        return 'No scheduled interviews found';
       }
 
       callback({

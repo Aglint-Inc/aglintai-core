@@ -574,8 +574,8 @@ const CancelRescheduleDialog = ({
     type,
     reason: options[0],
     dateRange: {
-      start: dayjs().toISOString(),
-      end: dayjs().add(7, 'day').toISOString(),
+      start: dayjs().add(1, 'day').toISOString(),
+      end: dayjs().add(8, 'day').toISOString(),
     },
     additionalNote: null,
   });
