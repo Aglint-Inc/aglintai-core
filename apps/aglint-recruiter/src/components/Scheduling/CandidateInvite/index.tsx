@@ -66,7 +66,7 @@ import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
 import {
-  createRescheduleRequest,
+  createRequest,
   dayJS,
   getCalenderEventUrl,
   getDurationText,
@@ -319,16 +319,17 @@ export const ConfirmedInvitePage = (
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
 
-    if (details[0]?.other_details?.dateRange?.start) {
-      createRescheduleRequest({
+    if (details[0]?.other_details) {
+      createRequest({
         application_id: schedule.application_id,
         session_ids: details.map((d) => d.session_id),
         new_dates: {
-          start_date: details[0].other_details.dateRange.start,
-          end_date: details[0].other_details.dateRange.end,
+          start_date: details[0].other_details?.dateRange?.start ?? null,
+          end_date: details[0].other_details?.dateRange?.end ?? null,
         },
         candidate_name: getFullName(candidate.first_name, candidate.last_name),
         organizer_id: props.meetings[0].interview_meeting.organizer_id,
+        type: details[0].type,
       });
     }
     return saveCancelReschedule({
