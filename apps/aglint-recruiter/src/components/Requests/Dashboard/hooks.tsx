@@ -6,49 +6,13 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { requestTypes } from './utils';
 type responseCreatedCompletedType = {
   value: {
     data: {
       date: string;
-      counts: {
-        completed: {
-          cancel_schedule_request: {
-            standard: number;
-            urgent: number;
-          };
-          decline_request: {
-            standard: number;
-            urgent: number;
-          };
-          reschedule_request: {
-            standard: number;
-            urgent: number;
-          };
-          schedule_request: {
-            standard: number;
-            urgent: number;
-          };
-        };
-        created: {
-          cancel_schedule_request: {
-            standard: number;
-            urgent: number;
-          };
-          decline_request: {
-            standard: number;
-            urgent: number;
-          };
-          reschedule_request: {
-            standard: number;
-            urgent: number;
-          };
-          schedule_request: {
-            standard: number;
-            urgent: number;
-          };
-        };
-      };
+      created: number;
+      completed: number;
+      on_going: number;
     }[];
   };
 };
@@ -118,7 +82,10 @@ export async function getRequestsCount({
 }) {
   const { '0': createdCompletedRequestCount, '1': allRequestCount } =
     await Promise.allSettled([
-      await supabase.rpc('get_request_count_stats_new', { assigner_id }), // For the graph
+      await supabase.rpc('get_request_stats', {
+        assigner_id: assigner_id,
+        curr_date: dayjsLocal().format('YYYY-MM-DD'),
+      }),
       await supabase
         .from('request')
         .select('type,status,priority')
@@ -132,8 +99,8 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      date: ele.date,
-      counts: ele.counts.created,
+      name: dayjs(ele.date).format('MMM DD'),
+      count: ele.created,
     };
   });
 
@@ -141,8 +108,16 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      date: ele.date,
-      counts: ele.counts.completed,
+      name: dayjs(ele.date).format('MMM DD'),
+      count: ele.completed,
+    };
+  });
+  const onGoingRequest = (
+    createdCompletedRequestCount as responseCreatedCompletedType
+  ).value.data.map((ele) => {
+    return {
+      name: dayjs(ele.date).format('MMM DD'),
+      count: ele.on_going,
     };
   });
 
@@ -175,11 +150,11 @@ export async function getRequestsCount({
     allRequestCount as allRequestType
   ).value.data.filter((ele) => ele.status === 'completed').length;
 
-  // console.log('allRequestCount',allRequestCount)
   return {
     chat: {
-      createdRequest: transformForChartData(createdRequest),
-      completedRequest: transformForChartData(completedRequest),
+      createdRequest,
+      completedRequest,
+      onGoingRequest,
     },
     card: {
       urgentRequest,
@@ -191,173 +166,6 @@ export async function getRequestsCount({
       completedRequests,
     },
   };
-}
-
-export const transformForChartData = (
-  data: {
-    date: string;
-    counts: {
-      cancel_schedule_request: {
-        standard: number;
-        urgent: number;
-      };
-      decline_request: {
-        standard: number;
-        urgent: number;
-      };
-      reschedule_request: {
-        standard: number;
-        urgent: number;
-      };
-      schedule_request: {
-        standard: number;
-        urgent: number;
-      };
-    };
-  }[],
-) => {
-  return data.reduce((acc, curr) => {
-    const { date, counts } = curr;
-
-    const total = Object.values(counts).reduce((sum, request) => {
-      return sum + request.standard + request.urgent;
-    }, 0);
-
-    acc.push({
-      name: new Date(date).toLocaleString('en-US', {
-        month: 'short',
-        day: '2-digit',
-      }),
-      count: total,
-      color: '#63635E',
-    });
-
-    return acc;
-  }, []) as { name: string; count: number; color: string }[];
-};
-
-export const transFormCardData = (
-  data: Awaited<ReturnType<typeof getRequestsList>>['data'],
-) => {
-  return requestTypes.map(({ title, iconName }) => {
-    const counts = data.reduce(
-      (acc, day) => {
-        Object.values(day.counts).forEach((category) => {
-          if (category[title]) {
-            acc.total +=
-              (category[title].standard || 0) + (category[title].urgent || 0);
-            acc.urgent += category[title].urgent || 0;
-          }
-        });
-        return acc;
-      },
-      { total: 0, urgent: 0 },
-    );
-
-    return {
-      title,
-      total: counts.total,
-      urgent: counts.urgent,
-      iconName,
-    };
-  });
-};
-
-export const transformProgressData = (
-  data: Awaited<ReturnType<typeof getRequestsList>>['data'],
-) => {
-  const result = data.reduce(
-    (acc, day) => {
-      // Summing up open requests from 'to_do'
-      for (let key in day.counts.to_do) {
-        const counts = day.counts.to_do[key];
-        if (typeof counts === 'object') {
-          acc.open_request += (counts.standard || 0) + (counts.urgent || 0);
-          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
-        } else {
-          acc.open_request += counts;
-          acc.all_request += counts;
-        }
-      }
-
-      // Summing up completed requests from 'completed'
-      for (let key in day.counts.completed) {
-        const counts = day.counts.completed[key];
-        if (typeof counts === 'object') {
-          acc.completed_request +=
-            (counts.standard || 0) + (counts.urgent || 0);
-          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
-        } else {
-          acc.completed_request += counts;
-          acc.all_request += counts;
-        }
-      }
-
-      // Summing up requests from 'in_progress'
-      for (let key in day.counts.in_progress) {
-        const counts = day.counts.in_progress[key];
-        if (typeof counts === 'object') {
-          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
-        } else {
-          acc.all_request += counts;
-        }
-      }
-
-      // Summing up requests from 'blocked'
-      for (let key in day.counts.blocked) {
-        const counts = day.counts.blocked[key];
-        if (typeof counts === 'object') {
-          acc.all_request += (counts.standard || 0) + (counts.urgent || 0);
-        } else {
-          acc.all_request += counts;
-        }
-      }
-
-      return acc;
-    },
-    { open_request: 0, completed_request: 0, all_request: 0 },
-  );
-
-  const completed_percentage = Math.round(
-    result.all_request > 0
-      ? (result.completed_request / result.all_request) * 100
-      : 0,
-  );
-
-  return {
-    open_request: result.open_request,
-    completed_request: result.completed_request,
-    all_request: result.all_request,
-    completed_percentage,
-  };
-};
-
-export function getSelectedDateRequestCount(data) {
-  return Object.values(data).reduce((total, category) => {
-    return (
-      total +
-      Object.values(category).reduce(
-        (sum, { standard, urgent }) => sum + standard + urgent,
-        0,
-      )
-    );
-  }, 0);
-}
-export function getAllUrgentRequestCount(data) {
-  return Object.values(data).reduce((total, category) => {
-    return (
-      total +
-      Object.values(category).reduce((sum, { urgent }) => sum + urgent, 0)
-    );
-  }, 0);
-}
-export function getAllStandardRequestCount(data) {
-  return Object.values(data).reduce((total, category) => {
-    return (
-      total +
-      Object.values(category).reduce((sum, { standard }) => sum + standard, 0)
-    );
-  }, 0);
 }
 
 export function dateStringFormat(date) {

@@ -16,59 +16,75 @@ import { getOrderedGraphValues } from '@/src/components/Jobs/Job/Dashboard/utils
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 export const RequestsBarChart: FC<{
-  createdRequestData: ReturnType<typeof getOrderedGraphValues>;
-  completedRequestData: ReturnType<typeof getOrderedGraphValues>;
-}> = ({ createdRequestData, completedRequestData }) => {
+  createdRequestData: { name: string; count: number }[];
+  completedRequestData: { name: string; count: number }[];
+  onGoingRequestData: { name: string; count: number }[];
+}> = ({ createdRequestData, completedRequestData, onGoingRequestData }) => {
   const matches = useMediaQuery('(min-width:1920px)');
   const { createdLabels, createdTooltips, createdCounts, createdColors } =
-    createdRequestData
-      .slice(createdRequestData.length - 10, createdRequestData.length)
-      .reduce(
-        (acc, { color, name, count }) => {
-          const safeName = capitalize((name ?? '').trim());
-          acc.createdLabels.push(
-            safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
-          );
-          acc.createdTooltips.push(safeName);
-          acc.createdCounts.push(count);
-          acc.createdColors.push(color);
-          return acc;
-        },
-        {
-          createdLabels: [],
-          createdTooltips: [],
-          createdCounts: [],
-          createdColors: [],
-        },
-      );
-  const {
-    completedLabels,
-    completedTooltips,
-    completedCounts,
-    completedColors,
-  } = completedRequestData
-    .slice(completedRequestData.length - 10, completedRequestData.length)
-    .reduce(
-      (acc, { color, name, count }) => {
+    createdRequestData.reduce(
+      (acc, { name, count }) => {
         const safeName = capitalize((name ?? '').trim());
-        acc.completedLabels.push(
+        acc.createdLabels.push(
           safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
         );
-        acc.completedLabels.push(safeName);
-        acc.completedCounts.push(count);
-        acc.completedColors.push(color);
+        acc.createdTooltips.push(safeName);
+        acc.createdCounts.push(count);
         return acc;
       },
       {
-        completedLabels: [],
-        completedTooltips: [],
-        completedCounts: [],
-        completedColors: [],
+        createdLabels: [],
+        createdTooltips: [],
+        createdCounts: [],
+        createdColors: [],
       },
     );
+  const { completedCounts } = completedRequestData.reduce(
+    (acc, { name, count }) => {
+      const safeName = capitalize((name ?? '').trim());
+      acc.completedLabels.push(
+        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
+      );
+      acc.completedLabels.push(safeName);
+      acc.completedCounts.push(count);
+      return acc;
+    },
+    {
+      completedLabels: [],
+      completedTooltips: [],
+      completedCounts: [],
+      completedColors: [],
+    },
+  );
+  const { onGoingCounts } = onGoingRequestData.reduce(
+    (acc, { name, count }) => {
+      const safeName = capitalize((name ?? '').trim());
+      acc.onGoingLabels.push(
+        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
+      );
+      acc.onGoingLabels.push(safeName);
+      acc.onGoingCounts.push(count);
+      return acc;
+    },
+    {
+      onGoingLabels: [],
+      onGoingTooltips: [],
+      onGoingCounts: [],
+      onGoingColors: [],
+    },
+  );
   const dataBar = {
     labels: createdLabels,
     datasets: [
+      {
+        label: 'In progress',
+        data: onGoingCounts,
+        backgroundColor: ['#63aaf0'],
+        borderRadius: 4,
+        // borderSkipped: false,
+        grouped: true,
+        barThickness: 30,
+      },
       {
         label: 'Completed',
         data: completedCounts,

@@ -45,15 +45,29 @@ function Dashboard() {
 
     return 'You have ' + finalText;
   }
+  const lastCreatedRequestCount =
+    requestCount?.chat.createdRequest[
+      requestCount.chat.createdRequest.length - 1
+    ]?.count || 0;
+  const lastCompletedRequestCount =
+    requestCount?.chat.completedRequest[
+      requestCount.chat.completedRequest.length - 1
+    ]?.count || 0;
+  const lastOngoingRequestCount =
+    requestCount?.chat.onGoingRequest[
+      requestCount.chat.onGoingRequest.length - 1
+    ]?.count || 0;
+
   const total_requests =
-    requestCount?.card.urgentRequest +
-    requestCount?.card.standardRequest +
-    requestCount?.card.completedRequests;
-  const open_request = total_requests - requestCount?.card.completedRequests;
+    lastCreatedRequestCount +
+    lastCompletedRequestCount +
+    lastOngoingRequestCount;
+
+  const open_request = total_requests - lastCompletedRequestCount || 0;
 
   const completed_percentage =
-    Math.floor((requestCount?.card.completedRequests / total_requests) * 100) ||
-    0;
+    Math.floor((lastCompletedRequestCount / total_requests) * 100) || 0;
+
   return (
     <>
       <RequestDashboard
@@ -82,6 +96,7 @@ function Dashboard() {
               <RequestsBarChart
                 createdRequestData={requestCount?.chat.createdRequest}
                 completedRequestData={requestCount?.chat.completedRequest}
+                onGoingRequestData={requestCount?.chat.onGoingRequest}
               />
             )
           )
