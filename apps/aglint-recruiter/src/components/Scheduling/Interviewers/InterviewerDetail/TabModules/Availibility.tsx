@@ -212,7 +212,7 @@ function Availibility({
       borderRadius={'8px'}
       border={'1px solid var(--neutral-6)'}
       bgcolor={'white'}
-      width={'860px'}
+      width={'870px'}
       margin={2}
       gap={1}
     >
