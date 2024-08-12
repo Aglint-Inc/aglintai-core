@@ -4,8 +4,10 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function CompletedRequestsBox({
   completedRequest,
+  status,
 }: {
-  completedRequest: any[];
+  completedRequest: number;
+  status: 'pending' | 'success' | 'error';
 }) {
   const { setQueryParams } = useRouterPro();
   return (
@@ -17,11 +19,11 @@ function CompletedRequestsBox({
       }}
       textTitle={
         <Text
-          color={completedRequest.length ? 'success' : 'neutral'}
+          color={completedRequest ? 'success' : 'neutral'}
           content={
-            completedRequest.length
-              ? `${completedRequest?.length} Requests completed 🎉`
-              : 'Looks like there is no completed requests 😴'
+            status === 'success' && !completedRequest
+              ? `Looks like there is no completed requests 😴`
+              : `${completedRequest} Requests completed 🎉`
           }
         />
       }
