@@ -32,7 +32,7 @@ export async function fetchAndFilterAvailabilitySlots({
   numberOfSlots,
 }) {
   try {
-    const availabilityUrl = `${process.env.NEXT_PUBLIC_REQUEST_DOMIN}/api/scheduling/v1/cand_req_available_slots`;
+    const availabilityUrl = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cand_req_available_slots`;
     const slotsResponse = await fetch(availabilityUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
