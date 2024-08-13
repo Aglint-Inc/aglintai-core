@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   getFilterId,
   sendSelfScheduleReminder,
-} from '../../../../utils/automation/utils/reminder_selfSchedule_functions';
+} from '@/src/utils/automation/utils/reminder_selfSchedule_functions';
 
 export async function POST(req) {
   const { request_id, target_api } = await req.json();
