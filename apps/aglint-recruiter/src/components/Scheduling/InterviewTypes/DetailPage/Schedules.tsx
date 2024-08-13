@@ -52,6 +52,7 @@ function SchedulesModules() {
           padding: 0,
         },
       }}
+      isMenuTabVisible={false}
       slotInterview={
         <Stack>
           <SearchField
