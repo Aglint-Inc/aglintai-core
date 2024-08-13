@@ -34,10 +34,10 @@ function SchedulesModules() {
   });
 
   useEffect(() => {
-    if (router.query.module_id) {
+    if (router.query.type_id) {
       (async () => {
         const res = await fetchSchedulesCountByModule(
-          router.query.module_id as string,
+          router.query.type_id as string,
         );
         setCounts(res);
       })();
