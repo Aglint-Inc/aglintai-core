@@ -10,6 +10,7 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import Loader from '../Common/Loader';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
@@ -22,7 +23,7 @@ const Requests = () => {
   const { tab, section } = queryParams;
 
   const {
-    requests: { isRefetching, data: requestList },
+    requests: { isRefetching, data: requestList, isPlaceholderData },
     filters,
   } = useRequests();
   const isNotApplied =
@@ -33,12 +34,11 @@ const Requests = () => {
     !filters.created_at;
 
   const showEmptyPage =
-    !isRefetching &&
+    !isPlaceholderData &&
     Boolean(
       !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
         .length,
     );
-
   useEffect(() => {
     if (!tab) {
       setQueryParams({ tab: 'dashboard' });
@@ -64,7 +64,6 @@ const Requests = () => {
           behavior: 'smooth',
         });
       }
-      // setQueryParams({ section: '' });
     }
   }, [section]);
 
@@ -137,7 +136,10 @@ const Requests = () => {
     <RequestAgent
       slotRequest={
         <ShowCode>
-          <ShowCode.When isTrue={showEmptyPage}>
+          <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
+            <Loader />
+          </ShowCode.When>
+          <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
             <RequestAgentEmpty />
           </ShowCode.When>
           <ShowCode.When isTrue={queryParams.tab === 'requests'}>
@@ -156,7 +158,7 @@ const Requests = () => {
                           setQueryParams({ tab: 'dashboard', section: '' }),
                       }}
                     />
-                    {(!showEmptyPage || !isNotApplied) && <FilterAndSorting />}
+                    {<FilterAndSorting />}
                   </>
                 }
                 slotRequestSection={<RequestSections />}
