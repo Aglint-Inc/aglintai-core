@@ -43,6 +43,7 @@ export default async function handler(
       },
       sessions: parsed.session_ids,
     };
+    //
     if (parsed.type === 'declined') {
       details.request.title = `${candidate_name} Requested for Cancelling Interview`;
       details.request.type = 'cancel_schedule_request';
