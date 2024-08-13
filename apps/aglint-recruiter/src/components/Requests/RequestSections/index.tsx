@@ -8,7 +8,7 @@ import Section from './Section';
 
 function RequestSections() {
   const {
-    requests: { data, isRefetching },
+    requests: { data, status },
   } = useRequests();
   const defaults = sectionDefaultsData.map(
     // eslint-disable-next-line no-unused-vars
@@ -35,7 +35,7 @@ function RequestSections() {
               sectionName={sectionName}
               sectionIconName={sectionIconName}
               color={color}
-              isLoadingRequests={isRefetching}
+              isLoadingRequests={status === 'pending'}
             />
           </section>
         );

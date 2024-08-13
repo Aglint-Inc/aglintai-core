@@ -19,6 +19,7 @@ import RequestSections, { sectionDefaultsData } from './RequestSections';
 
 const Requests = () => {
   const { setQueryParams, queryParams } = useRouterPro();
+  const { tab, section } = queryParams;
 
   const {
     requests: { isRefetching, data: requestList },
@@ -39,10 +40,10 @@ const Requests = () => {
     );
 
   useEffect(() => {
-    if (!queryParams?.tab) {
+    if (!tab) {
       setQueryParams({ tab: 'dashboard' });
     }
-  }, [queryParams?.tab]);
+  }, [tab]);
 
   useEffect(() => {
     document.querySelector('#outer-div') &&
@@ -56,15 +57,16 @@ const Requests = () => {
 
       gotoSection();
       const targetSection = document.querySelector(
-        `[data-req-section=${queryParams.section}]`,
+        `[data-req-section=${section}]`,
       );
       if (targetSection) {
         targetSection.scrollIntoView({
           behavior: 'smooth',
         });
       }
+      // setQueryParams({ section: '' });
     }
-  }, [isRefetching, queryParams]);
+  }, [section]);
 
   function showMatchingDivs(hiddenDivs) {
     const buttons = document.querySelectorAll('[data-req-button]');
