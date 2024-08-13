@@ -3433,6 +3433,7 @@ export type Database = {
           status: string
           title: string | null
           type: string
+          updated_at: string
         }
         Insert: {
           application_id?: string | null
@@ -3448,6 +3449,7 @@ export type Database = {
           status?: string
           title?: string | null
           type: string
+          updated_at?: string
         }
         Update: {
           application_id?: string | null
@@ -3463,6 +3465,7 @@ export type Database = {
           status?: string
           title?: string | null
           type?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -3701,28 +3704,28 @@ export type Database = {
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "interview_session"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "meeting_details"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["session_id"]
           },

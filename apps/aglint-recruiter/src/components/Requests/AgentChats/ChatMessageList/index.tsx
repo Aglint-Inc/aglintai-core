@@ -1,31 +1,43 @@
 import { getFullName } from '@aglint/shared-utils';
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useUserChat } from '@/src/queries/userchat';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import CommandShortCuts from '../CommandShortCuts';
-import { useScrollListenerAgentChat } from './hooks';
+import { useUserChat } from './hooks/fetch';
+import {
+  useScrollListenerAgentChat
+} from './hooks/scroll';
 import MessageIndividual from './MessageIndividual';
 import SkeletonMessage from './MessageIndividual/Skeleton';
+import {
+  setCursor,
+  setViewHistory,
+  setViewList,
+  useAgentChatStore
+} from './store';
 
 function ChatMessageList() {
   const { recruiterUser } = useAuthDetails();
-  const { data, isLoading, isFetchingNextPage } = useUserChat({
-    user_id: recruiterUser.user_id,
-  });
+
+  const { isFetchingNextPage, chatList, viewHistory, tempLoading, viewList } =
+    useAgentChatStore((state) => ({
+      isFetchingNextPage: state.isFetchingNextPage,
+      chatList: state.chatList,
+      viewHistory: state.viewHistory,
+      tempLoading: state.tempLoading,
+      viewList: state.viewList,
+    }));
+
+  const { fetchNextPage, fetchChat } = useUserChat();
   const { isResponding } = useAgentIEditor();
 
-  // Reversing the list to show newest messages at the bottom
-  const list =
-    data?.pages
-      ?.flatMap((d) => d)
-      ?.flatMap((m) => m.list)
-      .reverse() || [];
-
-  const { topRef, chatContainerRef } = useScrollListenerAgentChat();
+  const { topRef, chatContainerRef } = useScrollListenerAgentChat({
+    fetchNextPage,
+  });
 
   return (
     <Stack
@@ -37,36 +49,82 @@ function ChatMessageList() {
         px: 'var(--space-4)',
       }}
     >
-      {isLoading ? (
-        <>
-          {Array.from({ length: 10 }).map((_, index) => (
-            <SkeletonMessage key={index} />
-          ))}
-        </>
-      ) : list && list.length > 0 ? (
-        <>
-          <div ref={topRef} style={{ height: '1px' }} />
-          {isFetchingNextPage && (
-            <>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <SkeletonMessage key={index} />
-              ))}
-            </>
-          )}
-          {list.map((chat) => {
-            return <MessageIndividual chat={chat} key={chat.id} />;
-          })}
-          {isResponding && <SkeletonMessage />}
-          <div id={'bottomRef'} />
-        </>
-      ) : (
-        <AglintAiWelcome
-          slotStartOption={<CommandShortCuts />}
-          textAiHeader={
-            `Good morning, ` + getFullName(recruiterUser.first_name, '')
-          }
-        />
-      )}
+      <>
+        {!viewHistory ? (
+          <>
+            <AglintAiWelcome
+              slotStartOption={
+                <>
+                  <CommandShortCuts />
+                  <Stack direction={'row'} justifyContent={'center'}>
+                    <ButtonSoft
+                      textButton={'View History'}
+                      size={1}
+                      onClickButton={{
+                        onClick: async () => {
+                          setViewList(true);
+                          setViewHistory(true);
+                          setCursor(0);
+                          await fetchChat(0);
+                        },
+                      }}
+                    />
+                  </Stack>
+                </>
+              }
+              textAiHeader={
+                `Good morning, ` + getFullName(recruiterUser.first_name, '')
+              }
+            />
+          </>
+        ) : (
+          <>
+            {!viewList ? (
+              <Stack
+                direction={'row'}
+                justifyContent={'center'}
+                spacing={'var(--space-2)'}
+                alignItems={'center'}
+                pt={'var(--space-4)'}
+              >
+                <Divider sx={{ width: '150px' }} />
+                <Stack>
+                  <ButtonSoft
+                    color={'neutral'}
+                    textButton={'View History'}
+                    size={1}
+                    onClickButton={{
+                      onClick: async () => {
+                        if (isFetchingNextPage || tempLoading) {
+                          return;
+                        }
+                        setViewList(true);
+                        await fetchChat(chatList.length);
+                      },
+                    }}
+                  />
+                </Stack>
+
+                <Divider sx={{ width: '150px' }} />
+              </Stack>
+            ) : (
+              <div ref={topRef} style={{ height: '1px' }} />
+            )}
+            {isFetchingNextPage && (
+              <>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <SkeletonMessage key={index} />
+                ))}
+              </>
+            )}
+            {chatList.map((chat, ind) => {
+              return <MessageIndividual chat={chat} key={ind} />;
+            })}
+            {isResponding && <SkeletonMessage />}
+            <div id={'bottomRef'} />
+          </>
+        )}
+      </>
     </Stack>
   );
 }

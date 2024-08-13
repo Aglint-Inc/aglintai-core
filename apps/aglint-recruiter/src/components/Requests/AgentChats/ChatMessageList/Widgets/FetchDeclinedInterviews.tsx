@@ -4,10 +4,10 @@ import { Stack } from '@mui/material';
 import { Text } from '@/devlink/Text';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { ChatType } from '@/src/queries/userchat';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
+import { ChatType } from '../hooks/fetch';
 
 function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 
 import { AglintAiChat } from '@/devlink2/AglintAiChat';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useUserChat } from '@/src/queries/userchat';
 
 import AgentInputBox from './AgentInputBox';
 import ChatMessageList from './ChatMessageList';
+import {
+  setChatList,
+  setViewHistory,
+  setViewList,
+} from './ChatMessageList/store';
 import SettingsPopup from './SettingsPopup';
 
 function AgentChats() {
-  const { recruiterUser } = useAuthDetails();
-  const { clearChat } = useUserChat({
-    user_id: recruiterUser.user_id,
-  });
   const [openSetting, setOpenSettings] = useState(false);
+
   return (
     <>
       <SettingsPopup open={openSetting} setOpen={setOpenSettings} />
@@ -24,7 +24,11 @@ function AgentChats() {
           },
         }}
         onClickClear={{
-          onClick: () => clearChat(),
+          onClick: () => {
+            setChatList([]);
+            setViewList(false);
+            setViewHistory(false);
+          },
         }}
         slotAiInput={<AgentInputBox />}
         slotAiBody={<ChatMessageList />}

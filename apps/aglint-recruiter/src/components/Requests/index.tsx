@@ -10,6 +10,7 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import Loader from '../Common/Loader';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
@@ -19,14 +20,11 @@ import RequestSections, { sectionDefaultsData } from './RequestSections';
 
 const Requests = () => {
   const { setQueryParams, queryParams } = useRouterPro();
+  const { tab, section } = queryParams;
 
   const {
-    requests: { isRefetching, data: requestList },
+    requests: { isRefetching, data: requestList, isPlaceholderData },
     filters,
-    setFilters,
-    setSections,
-    initialSections,
-    initialFilter,
   } = useRequests();
   const isNotApplied =
     !filters.is_new &&
@@ -36,80 +34,93 @@ const Requests = () => {
     !filters.created_at;
 
   const showEmptyPage =
-    !isRefetching &&
+    !isPlaceholderData &&
     Boolean(
       !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
         .length,
     );
-
   useEffect(() => {
-    if (!queryParams?.tab) {
+    if (!tab) {
       setQueryParams({ tab: 'dashboard' });
-    } else if (queryParams.tab !== 'requests') {
-      setFilters(structuredClone(initialFilter));
-      setSections(structuredClone(initialSections));
     }
-  }, [queryParams?.tab]);
+  }, [tab]);
 
   useEffect(() => {
-    function getHiddenDivs() {
-      const container = document.querySelector('#outer-div');
-      const divs =
-        container && container.querySelectorAll('[data-req-section]');
-      const hiddenDivs = [];
-      divs &&
-        divs.forEach((div) => {
-          const rect = div.getBoundingClientRect();
-          const containerRect = container.getBoundingClientRect();
-          if (rect.top >= containerRect.bottom - 200) {
-            hiddenDivs.push(div.getAttribute('data-req-section'));
-          }
-        });
-
-      return hiddenDivs;
-    }
     document.querySelector('#outer-div') &&
       document.querySelector('#outer-div').addEventListener('scroll', () => {
         showMatchingDivs(getHiddenDivs());
       });
 
-    function showMatchingDivs(hiddenDivs) {
-      const buttons = document.querySelectorAll('[data-req-button]');
-      if (hiddenDivs.length === 0) {
-        buttons.forEach((button: any) => {
-          const buttonSection = button.getAttribute('data-req-button');
-
-          if (buttonSection === 'back') {
-            button.style.display = 'flex';
-          } else {
-            button.style.display = 'none';
-          }
-        });
-      } else {
-        buttons.forEach((button: any) => {
-          const buttonSection = button.getAttribute('data-req-button');
-          if (hiddenDivs.includes(buttonSection)) {
-            button.style.display = 'flex';
-          } else {
-            button.style.display = 'none';
-          }
-        });
-      }
-    }
     if (!isRefetching) {
       const hiddenDivs = getHiddenDivs();
       showMatchingDivs(hiddenDivs);
-    }
-  }, [isRefetching]);
 
+      gotoSection();
+      const targetSection = document.querySelector(
+        `[data-req-section=${section}]`,
+      );
+      if (targetSection) {
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+      // setQueryParams({ section: '' });
+    }
+  }, [section]);
+
+  function showMatchingDivs(hiddenDivs) {
+    const buttons = document.querySelectorAll('[data-req-button]');
+    if (hiddenDivs.length === 0) {
+      buttons.forEach((button: any) => {
+        const buttonSection = button.getAttribute('data-req-button');
+
+        if (buttonSection === 'back') {
+          button.style.display = 'flex';
+        } else {
+          button.style.display = 'none';
+        }
+      });
+    } else {
+      buttons.forEach((button: any) => {
+        const buttonSection = button.getAttribute('data-req-button');
+        if (hiddenDivs.includes(buttonSection)) {
+          button.style.display = 'flex';
+        } else {
+          button.style.display = 'none';
+        }
+        if (buttonSection === 'back') {
+          button.style.display = 'none';
+        }
+      });
+    }
+  }
+  function getHiddenDivs() {
+    const container = document.querySelector('#outer-div');
+    const divs = container && container.querySelectorAll('[data-req-section]');
+    const hiddenDivs = [];
+    divs &&
+      divs.forEach((div) => {
+        const rect = div.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        if (rect.top >= containerRect.bottom - 200) {
+          hiddenDivs.push(div.getAttribute('data-req-section'));
+        }
+      });
+
+    return hiddenDivs;
+  }
   function gotoSection() {
     document.querySelectorAll('[data-req-button]').forEach((button) => {
       button.addEventListener('click', function () {
         const sectionValue = this.getAttribute('data-req-button');
         if (sectionValue === 'back') {
-          const firstSection = document.getElementById('first');
-          if (firstSection) {
-            firstSection.scrollIntoView({ behavior: 'smooth' });
+          const targetSection = document.querySelector(
+            `[data-req-section=${'urgent_request'}]`,
+          );
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+            });
           }
         } else {
           const targetSection = document.querySelector(
@@ -126,6 +137,9 @@ const Requests = () => {
     <RequestAgent
       slotRequest={
         <ShowCode>
+          <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
+            <Loader />
+          </ShowCode.When>
           <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
             <RequestAgentEmpty />
           </ShowCode.When>
@@ -145,15 +159,14 @@ const Requests = () => {
                           setQueryParams({ tab: 'dashboard', section: '' }),
                       }}
                     />
-                    {(!showEmptyPage || !isNotApplied) && <FilterAndSorting />}
+                    {<FilterAndSorting />}
                   </>
                 }
                 slotRequestSection={<RequestSections />}
                 slotNavigationPills={
                   <>
-                    {Object.entries(requestList ?? {})
-                      .reverse()
-                      .map(({ '0': item, '1': value }, i) => (
+                    {Object.entries(requestList ?? {}).map(
+                      ({ '0': item, '1': value }, i) => (
                         <NavigationPill
                           attributeValue={item}
                           textCount={value.length}
@@ -168,23 +181,15 @@ const Requests = () => {
                           }}
                           textPill={capitalizeFirstLetter(item)}
                         />
-                      ))}
+                      ),
+                    )}
                     <NavigationPill
                       showNumberCount={false}
                       attributeValue={'back'}
                       textCount={''}
                       iconName={'arrow_warm_up'}
                       onClickPill={{
-                        onClick: () => {
-                          const targetSection = document.querySelector(
-                            `[data-req-section=${'urgent_request'}]`,
-                          );
-                          if (targetSection) {
-                            targetSection.scrollIntoView({
-                              behavior: 'smooth',
-                            });
-                          }
-                        },
+                        onClick: gotoSection,
                       }}
                       textPill={capitalizeFirstLetter('back_to_top')}
                     />

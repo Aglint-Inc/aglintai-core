@@ -1,0 +1,11 @@
+node_modules
+__MACOSX
+# Ignore everything in the dist directory
+/dist/*
+
+# But do not ignore bundle.js
+!/dist/bundle.js
+
+.DS_Store
+
+.env

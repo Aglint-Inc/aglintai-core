@@ -137,6 +137,15 @@ export const informInterviewCancel = async (req: Request, res: Response) => {
         .eq('id', curr_prog.id)
         .select()
     );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'completed',
+        })
+        .eq('id', request_id)
+        .select()
+    );
     res.status(200).json({message: 'message sucessfully sended'});
   } catch (err: any) {
     console.error('some thing went wrong:', err);
