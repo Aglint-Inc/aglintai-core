@@ -45,3 +45,21 @@ export function getRequestsWithSettings() {
 export function clearRequestsWithSettings() {
   localStorage.removeItem("requestsWithSettings");
 }
+
+export async function removeRequestFromLocal(application_id, request_id) {
+  const storedData = await localStorage.getItem("requestsWithSettings");
+  let requestsWithSettings = storedData ? JSON.parse(storedData) : [];
+
+  requestsWithSettings = requestsWithSettings.filter((item) => {
+    if (
+      item.application_id !== application_id &&
+      item.request_id !== request_id
+    ) {
+      return item;
+    }
+  });
+  await localStorage.setItem(
+    "requestsWithSettings",
+    JSON.stringify(requestsWithSettings)
+  );
+}

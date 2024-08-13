@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import axios from "axios";
-import { AppContext } from "./AppContext"; // Import the context
 import "./DrawerComponent.css"; // Assuming your styles are in a separate CSS file
 import {
   clearRequestsWithSettings,
   getRequestsWithSettings,
-  storeRequestsWithSettings,
-  updateField,
 } from "./utils/functions";
+// import InfoDisplay from "@components/InfoDisplay";
+import {
+  bookSelfSchedule,
+  sendAvailabilityReminder,
+  sendReminderSelfSchedule,
+  shuffleAndSplitAsTwo,
+  submitAvailability,
+  updateRequest,
+} from "./utils/util_functions";
+import InfoDisplay from "./components/InfoDisplay";
 
 const DrawerComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,44 +23,29 @@ const DrawerComponent = () => {
     btn2: false,
     btn3: false,
   });
-
+  console.clear();
+  console.log(loading);
   const drawerRef = useRef(null);
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
-    // setIsOpen(true);
   };
 
-  const handleApiRequest = async (url) => {
-    try {
-      switch (url) {
-        case "/api/automation/update_request":
+  const handleApiRequest = async (url, count = 8) => {
+    switch (url) {
+      case "update_request":
+        try {
           setLoading((pre) => ({ ...pre, btn1: true }));
-          await fetch(url)
-            .then((res) => {
-              if (res.status === 200) return res.json();
-              throw new Error();
-            })
-            .then((data) => data.data)
-            .then((data) => {
-              if (data?.length) {
-                alert(`${data.length} Request successfully Process.`);
-                storeRequestsWithSettings(data);
-              } else {
-                alert(`No new request found`);
-              }
-            })
-            .catch((e) => {
-              console.log(e.message);
-              alert(`Something went wrong`);
-            })
-            .finally(() => {
-              setLoading((pre) => ({ ...pre, btn1: false }));
-            });
+          await updateRequest(count);
+        } catch (e) {
+          //
+        } finally {
+          setLoading((pre) => ({ ...pre, btn1: false }));
+        }
+        break;
 
-          break;
-
-        case "/api/automation/update_availability":
+      case "update_availability":
+        try {
           setLoading((pre) => ({ ...pre, btn2: true }));
           const settings = await getRequestsWithSettings();
 
@@ -63,92 +54,60 @@ const DrawerComponent = () => {
             break;
           }
 
-          settings.map(async (setting, i) => {
-            const payload = {
-              application_id: setting["application_id"],
-            };
+          const [settingsForSubmitAva, settingsForSendRemainder] =
+            shuffleAndSplitAsTwo(settings, count);
 
-            await fetch(url, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...payload }),
-            })
-              .then((res) => {
-                if (res.status === 200) return res.json();
-                throw new Error();
-              })
-              .then(() => {
-                updateField(
-                  setting.application_id,
-                  setting.request_id,
-                  "isSubmitAvailability",
-                  true
-                );
-                alert(`${i + 1} - request succesfully submitted`);
-              })
+          if (
+            !confirm(
+              `${settingsForSubmitAva.length} for Submit availability | ${settingsForSendRemainder.length} for send reminder`
+            )
+          )
+            return;
 
-              .catch((e) => {
-                alert(`${i + 1} - request Something went wrong`);
-              })
-              .finally(() => {
-                if (settings.length - 1 === i)
-                  setLoading((pre) => ({ ...pre, btn2: false }));
-              });
-          });
+          await submitAvailability(settingsForSubmitAva);
+          if (settingsForSendRemainder?.length > 0) {
+            await sendAvailabilityReminder(settingsForSendRemainder);
+          }
+        } catch (e) {
+          //
+        } finally {
+          setLoading((pre) => ({ ...pre, btn2: false }));
+        }
+        break;
 
-          break;
-
-        case "/api/automation/booking_self_schedule":
-          // Loop through each providedRequestId and make the API call
+      case "booking_self_schedule":
+        try {
           setLoading((pre) => ({ ...pre, btn3: true }));
           const localSettings = await getRequestsWithSettings();
 
           if (!(localSettings?.length > 0)) {
             alert("No request found");
-            break;
+            return;
           }
 
-          localSettings.map(async (setting, i) => {
-            const payload = {
-              request_id: setting["request_id"],
-            };
+          const [settingsForBookSchedule, settingsForSendScheduleReminder] =
+            shuffleAndSplitAsTwo(localSettings, count);
 
-            await fetch(url, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...payload }),
-            })
-              .then((res) => {
-                if (res.status === 200) return res.json();
-                throw new Error();
-              })
-              .then(() => {
-                updateField(
-                  setting.application_id,
-                  setting.request_id,
-                  "isSelfSchedule",
-                  true
-                );
-                alert(`${i + 1} - self schudle succesfully submitted`);
-              })
+          if (
+            !confirm(
+              `${settingsForBookSchedule.length} for booking self schedule | ${settingsForSendScheduleReminder.length} for send reminder`
+            )
+          )
+            return;
 
-              .catch((e) => {
-                alert(`${i + 1} - self schudle Something went wrong`);
-              })
-              .finally(() => {
-                if (localSettings?.length - 1 === i)
-                  setLoading((pre) => ({ ...pre, btn3: false }));
-              });
-          });
+          await bookSelfSchedule(settingsForBookSchedule);
+          if (settingsForSendScheduleReminder?.length > 0) {
+            await sendReminderSelfSchedule(settingsForSendScheduleReminder);
+          }
+        } catch (e) {
+        } finally {
+          setLoading((pre) => ({ ...pre, btn3: false }));
+        }
+        break;
 
-          break;
-
-        default:
-          console.error("Unknown API request:", url);
-          alert("Unknown API request.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
+      default:
+        console.error("Unknown API request:", url);
+        alert("Unknown API request.");
     }
   };
 
@@ -175,7 +134,7 @@ const DrawerComponent = () => {
           <div className="flex-h">
             <span className="drawer-warning">
               <strong>⚠️ Warning:</strong> This is a utility for speeding up
-              demos, not a product feature.
+              demos, not a product feature. <InfoDisplay />
             </span>
             <span>
               <span
@@ -207,117 +166,65 @@ const DrawerComponent = () => {
         {activeDiv === "demo" && (
           <div id="demo" className="drawer-body grid3X2">
             <Button
-              caseNo={"Case 1:"}
-              isloading={loading.btn1}
-              title={"Process the top 15 requests."}
-              onClick={() => handleApiRequest("/api/automation/update_request")}
-            />
-            <Button
-              caseNo={"Case 2:"}
-              isloading={loading.btn2}
-              title={"Few candidates submit availability on time."}
-              onClick={() =>
-                handleApiRequest("/api/automation/update_availability")
+              caseNo={"1:"}
+              isLoading={loading.btn1}
+              title={"Aglint AI works on."}
+              showInput={true}
+              defaultCount={8}
+              handleSubmit={(count) =>
+                handleApiRequest("update_request", count)
               }
             />
             <Button
-              caseNo={"Case 3:"}
-              isloading={loading.btn3}
-              title={"Self-schedule slot booking."}
+              caseNo={"2:"}
+              isLoading={loading.btn2}
+              title={"Submits Availability."}
+              defaultCount={4}
+              showInput={true}
+              handleSubmit={(count) =>
+                handleApiRequest("update_availability", count)
+              }
+            />
+            <Button
+              caseNo={"3:"}
+              isLoading={loading.btn3}
+              title={"Coinfirms Interview."}
+              defaultCount={2}
+              showInput={true}
+              handleSubmit={(count) =>
+                handleApiRequest("booking_self_schedule", count)
+              }
+            />
+            <Button
+              caseNo={"4:"}
+              isLoading={loading.btn3}
+              title={"Requests for Rescedule."}
+              defaultCount={2}
+              showInput={true}
               onClick={() =>
                 handleApiRequest("/api/automation/booking_self_schedule")
               }
             />
-
-            {/* <div className="flex-h">
-              <span>
-                <strong>Case 1:</strong> Process the top 15 requests.
-              </span>
-              <button
-                className="radix-button"
-                onClick={() =>
-                  handleApiRequest("/api/automation/update_request")
-                }
-              >
-                Run
-              </button>
-            </div>
-            <div className="flex-h">
-              <span>
-                <strong>Case 2:</strong> Few candidates submit availability on
-                time.
-              </span>
-              <button
-                className="radix-button"
-                onClick={() =>
-                  handleApiRequest("/api/automation/update_availability")
-                }
-              >
-                Run
-              </button>
-            </div>
-            <div className="flex-h">
-              <span>
-                <strong>Case 3:</strong> Self-schedule slot booking.
-              </span>
-              <button
-                className="radix-button"
-                onClick={() =>
-                  handleApiRequest("/api/automation/booking_self_schedule")
-                }
-              >
-                Run
-              </button>
-            </div> */}
-          </div>
-        )}
-
-        {activeDiv === "seed" && (
-          <div id="seed" className="drawer-body grid3X2">
-            <label className="flex-h">
-              <div className="drawer-seed-options-child">
-                Select a job to seed
-                <select>
-                  <option>Job 1</option>
-                  <option>Job 2</option>
-                  <option>Job 3</option>
-                </select>
-              </div>
-              <button className="radix-button" onClick={() => {}}>
-                Seed
-              </button>
-            </label>
-            <label className="flex-h">
-              <div className="drawer-seed-options-child">
-                Select a Workflow for a job
-                <select>
-                  <option>Job 1</option>
-                  <option>Job 2</option>
-                  <option>Job 3</option>
-                </select>
-                <select>
-                  <option>Workflow 1</option>
-                  <option>Workflow 2</option>
-                  <option>Workflow 3</option>
-                </select>
-              </div>
-              <button className="radix-button" onClick={() => {}}>
-                Seed
-              </button>
-            </label>
-            <label className="flex-h">
-              <div className="drawer-seed-options-child">
-                Reset selected job
-                <select>
-                  <option>Job 1</option>
-                  <option>Job 2</option>
-                  <option>Job 3</option>
-                </select>
-              </div>
-              <button className="radix-button" onClick={() => {}}>
-                Reset
-              </button>
-            </label>
+            <Button
+              caseNo={"5:"}
+              isLoading={loading.btn3}
+              defaultCount={2}
+              title={"Cancels Interview."}
+              showInput={true}
+              onClick={() =>
+                handleApiRequest("/api/automation/booking_self_schedule")
+              }
+            />
+            <Button
+              caseNo={"6:"}
+              isLoading={loading.btn3}
+              defaultCount={2}
+              title={"Declines Interview"}
+              showInput={true}
+              onClick={() =>
+                handleApiRequest("/api/automation/booking_self_schedule")
+              }
+            />
           </div>
         )}
       </div>
@@ -330,16 +237,39 @@ const DrawerComponent = () => {
 
 export default DrawerComponent;
 
-const Button = ({ caseNo, title, isloading, onClick }) => {
+const Button = ({
+  caseNo,
+  title,
+  isLoading,
+  handleSubmit,
+  showInput = false,
+  defaultCount,
+}) => {
+  console.log(isLoading);
+  const [count, setCount] = useState(defaultCount ? defaultCount : 0);
   return (
-    <div className="flex-h">
-      <span>
-        <strong>{caseNo}</strong>
-        {title}
+    <div className="button-container">
+      <span className="title">
+        <strong>{caseNo}</strong> {title}
       </span>
-      <button className="radix-button" disabled={isloading} onClick={onClick}>
-        {isloading ? "Running" : "Run"}
-      </button>
+      <div className="input-button-wrapper">
+        {showInput && (
+          <input
+            min={1}
+            type="number"
+            className="input-field"
+            value={count}
+            onChange={(e) => setCount(e.target.value)}
+          />
+        )}
+        <button
+          className={isLoading ? `radix-button visible` : "radix-button"}
+          disabled={isLoading}
+          onClick={() => handleSubmit(count)}
+        >
+          {isLoading ? "Running" : "Run"}
+        </button>
+      </div>
     </div>
   );
 };

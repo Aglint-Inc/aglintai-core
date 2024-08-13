@@ -58,9 +58,9 @@
 
 .grid3X2 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   row-gap: 20px;
-  column-gap: 80px;
+  column-gap: 20px;
 }
 
 .flex-h {
@@ -80,4 +80,59 @@
 
 .radix-button:hover {
   background-color: var(--accent-10);
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  flex-grow: 1;
+}
+
+.input-button-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.radix-button {
+  visibility: hidden;
+}
+
+.input-button-wrapper:hover .radix-button {
+  visibility: visible;
+}
+
+.radix-button.visible {
+  visibility: visible !important;
+}
+
+.input-field {
+  margin-right: 8px; /* Adjust the margin as needed */
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.group-hover\:visible:hover {
+  visibility: visible;
+}
+
+.input-field {
+  width: 40px;
+}
+.input-field.mr-2 {
+  margin-right: 10px;
+}
+.drawer-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust spacing between the warning text and the info icon */
 }

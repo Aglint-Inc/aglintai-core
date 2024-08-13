@@ -1,4 +1,4 @@
-const path = require("path"); // Add this line
+const path = require("path");
 
 module.exports = {
   entry: "./src/index.js",
@@ -10,7 +10,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -21,7 +21,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: [
+          "style-loader",
+          "css-loader",
+          "postcss-loader", // Add postcss-loader here
+        ],
       },
     ],
   },
@@ -35,5 +39,12 @@ module.exports = {
     devMiddleware: {
       writeToDisk: true,
     },
+  },
+  resolve: {
+    alias: {
+      "@components": path.resolve(__dirname, "src/components/"),
+      "@src": path.resolve(__dirname, "src/"),
+    },
+    extensions: [".js", ".jsx"],
   },
 };
