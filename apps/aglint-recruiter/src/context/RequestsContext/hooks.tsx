@@ -130,15 +130,28 @@ export const useRequestsActions = () => {
   );
 
   const {
+    insertRequest,
     updateRequest,
     deleteRequest,
-    // insertRequestProgress,
-    // updateRequestProgress,
-    // deleteRequestProgress,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
   } = useRequestRealtime();
 
   useEffect(() => {
     const connection = subscriptions(supabase.channel('db-changes'), [
+      {
+        event: 'INSERT',
+        table: 'request',
+        filter: `assigner_id=eq.${assigner_id}`,
+        callback: insertRequest,
+      },
+      {
+        event: 'INSERT',
+        table: 'request',
+        filter: `assignee_id=eq.${assigner_id}`,
+        callback: insertRequest,
+      },
       {
         event: 'UPDATE',
         table: 'request',
@@ -156,23 +169,23 @@ export const useRequestsActions = () => {
         table: 'request',
         callback: deleteRequest,
       },
-      // {
-      //   event: 'INSERT',
-      //   table: 'request_progress',
-      //   filter: `request_id=in.(${requestIds})`,
-      //   callback: insertRequestProgress,
-      // },
-      // {
-      //   event: 'UPDATE',
-      //   table: 'request_progress',
-      //   filter: `request_id=in.(${requestIds})`,
-      //   callback: updateRequestProgress,
-      // },
-      // {
-      //   event: 'DELETE',
-      //   table: 'request_progress',
-      //   callback: deleteRequestProgress,
-      // },
+      {
+        event: 'INSERT',
+        table: 'request_progress',
+        filter: `request_id=in.(${requestIds})`,
+        callback: insertRequestProgress,
+      },
+      {
+        event: 'UPDATE',
+        table: 'request_progress',
+        filter: `request_id=in.(${requestIds})`,
+        callback: updateRequestProgress,
+      },
+      {
+        event: 'DELETE',
+        table: 'request_progress',
+        callback: deleteRequestProgress,
+      },
     ]).subscribe();
     return () => {
       connection.unsubscribe();
@@ -180,11 +193,12 @@ export const useRequestsActions = () => {
   }, [
     assigner_id,
     requestIds,
+    insertRequest,
     updateRequest,
     deleteRequest,
-    // insertRequestProgress,
-    // updateRequestProgress,
-    // deleteRequestProgress,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
   ]);
 
   return {
