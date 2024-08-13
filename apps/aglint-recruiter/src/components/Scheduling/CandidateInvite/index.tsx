@@ -326,11 +326,9 @@ export const ConfirmedInvitePage = (
         application_id: schedule.application_id,
         session_ids: details.map((d) => d.session_id),
         new_dates: {
-          start_date: details[0].other_details?.dateRange?.end ?? null,
-          end_date: details[0].other_details?.dateRange?.start ?? null,
+          start_date: details[0].other_details?.dateRange?.start ?? null,
+          end_date: details[0].other_details?.dateRange?.end ?? null,
         },
-        candidate_name: getFullName(candidate.first_name, candidate.last_name),
-        organizer_id: props.meetings[0].interview_meeting.organizer_id,
         type: details[0].type,
       });
     }

@@ -21,9 +21,11 @@ export default async function handler(
       parsed.application_id,
       supabaseAdmin,
     );
+
     const [cand_application] = supabaseWrap(
       await supabaseAdmin.from('applications').select('*,candidates(*)'),
     );
+
     const candidate_name = getFullName(
       cand_application.candidates.first_name,
       cand_application.candidates.last_name,
@@ -43,7 +45,7 @@ export default async function handler(
       },
       sessions: parsed.session_ids,
     };
-    //
+
     if (parsed.type === 'declined') {
       details.request.title = `${candidate_name} Requested for Cancelling Interview`;
       details.request.type = 'cancel_schedule_request';
