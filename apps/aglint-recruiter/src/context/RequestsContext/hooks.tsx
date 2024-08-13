@@ -130,6 +130,7 @@ export const useRequestsActions = () => {
   );
 
   const {
+    insertRequest,
     updateRequest,
     deleteRequest,
     insertRequestProgress,
@@ -139,6 +140,18 @@ export const useRequestsActions = () => {
 
   useEffect(() => {
     const connection = subscriptions(supabase.channel('db-changes'), [
+      {
+        event: 'INSERT',
+        table: 'request',
+        filter: `assigner_id=eq.${assigner_id}`,
+        callback: insertRequest,
+      },
+      {
+        event: 'INSERT',
+        table: 'request',
+        filter: `assignee_id=eq.${assigner_id}`,
+        callback: insertRequest,
+      },
       {
         event: 'UPDATE',
         table: 'request',
@@ -180,6 +193,7 @@ export const useRequestsActions = () => {
   }, [
     assigner_id,
     requestIds,
+    insertRequest,
     updateRequest,
     deleteRequest,
     insertRequestProgress,

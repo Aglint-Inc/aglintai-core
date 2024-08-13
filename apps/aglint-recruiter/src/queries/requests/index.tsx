@@ -214,6 +214,16 @@ type RealtimeRequestProgress = RealtimePostgresInsertPayload<
 
 export const useRequestRealtime = () => {
   const queryClient = useQueryClient();
+  const insertRequest = useCallback(() => {
+    Promise.allSettled([
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      ),
+      queryClient.refetchQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      ),
+    ]);
+  }, [queryClient]);
   const updateRequest = useCallback(
     (payload: RealtimeRequest) => {
       queryClient.removeQueries(
@@ -330,6 +340,7 @@ export const useRequestRealtime = () => {
     [queryClient],
   );
   return {
+    insertRequest,
     updateRequest,
     deleteRequest,
     insertRequestProgress,
@@ -373,6 +384,9 @@ export type GetRequestParams = {
   sort: RequestsSort;
 };
 
+const REQUEST_SELECT =
+  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))';
+
 export const getUnfilteredRequests = async ({
   payload: { assigner_id },
   filters: {
@@ -385,11 +399,7 @@ export const getUnfilteredRequests = async ({
   },
   sort: { order, type },
 }: GetRequestParams) => {
-  const query = supabase
-    .from('request')
-    .select(
-      '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
-    );
+  const query = supabase.from('request').select(REQUEST_SELECT);
 
   query.or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`);
 
