@@ -3433,6 +3433,7 @@ export type Database = {
           status: string
           title: string | null
           type: string
+          updated_at: string
         }
         Insert: {
           application_id?: string | null
@@ -3448,6 +3449,7 @@ export type Database = {
           status?: string
           title?: string | null
           type: string
+          updated_at?: string
         }
         Update: {
           application_id?: string | null
@@ -3463,6 +3465,7 @@ export type Database = {
           status?: string
           title?: string | null
           type?: string
+          updated_at?: string
         }
         Relationships: [
           {

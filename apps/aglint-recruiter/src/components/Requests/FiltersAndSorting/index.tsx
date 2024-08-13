@@ -15,7 +15,11 @@ import FilterHeader from '../../Common/FilterHeader';
 //   ],
 // };
 
-const sortOptions: GetRequestParams['sort']['type'][] = ['created_at', 'title'];
+const sortOptions: GetRequestParams['sort']['type'][] = [
+  'created_at',
+  'title',
+  'updated_at',
+];
 
 function FilterAndSorting() {
   const {
