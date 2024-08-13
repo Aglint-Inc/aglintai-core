@@ -90,7 +90,7 @@ export default function FilterHeader({
             {Boolean(search) && (
               <SearchField
                 value={search.value}
-                onChange={(e) => search.setValue(e.target.value)}
+                onChange={(value) => search.setValue(value)}
                 onClear={() => search.setValue('')}
                 placeholder={search.placeholder}
               />
@@ -109,7 +109,7 @@ export default function FilterHeader({
             {Boolean(search) && (
               <SearchField
                 value={search.value}
-                onChange={(e) => search.setValue(e.target.value)}
+                onChange={(value) => search.setValue(value)}
                 onClear={() => search.setValue('')}
                 placeholder={search.placeholder}
               />
