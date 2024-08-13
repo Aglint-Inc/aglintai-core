@@ -4,8 +4,7 @@
   "description": "",
   "main": "./build/server.js",
   "scripts": {
-    "start": "node build/src/server.js --port 8008", 
-    "build": "tsup",
+    "start": "node build/src/server.js --port 8008",
     "mocha": "mocha build/test/**/*.js",
     "test": "npm run build && mocha 'build/test/**/*.js'",
     "path-gen": "npx tsc scripts/RouteGen.ts --skipLibCheck && node scripts/RouteGen.js"

@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
+import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
@@ -32,20 +32,20 @@ function Section({
   } = useRequests();
   return (
     <Stack gap={2}>
-      <Stack
-        width={'100%'}
-        direction={'row'}
-        justifyContent={'space-between'}
-        alignContent={'center'}
-        sx={{
-          cursor: 'pointer',
-        }}
-      >
+      <Stack width={'100%'} direction={'row'} spacing={2} alignItems={'center'}>
         <TextWithIcon
           color={color}
           iconName={sectionIconName}
+          iconSize={4}
           textContent={`${capitalizeFirstLetter(sectionName)} (${requests.length})`}
         />
+        {!requests.length && (
+          <Text
+            size={1}
+            color={'neutral'}
+            content={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
+          />
+        )}
       </Stack>
       <Stack
         gap={1}
@@ -66,26 +66,9 @@ function Section({
             })}
           </ShowCode.When>
 
-          <ShowCode.When
-            isTrue={Boolean(
-              !isLoadingRequests && status === 'success' && !requests.length,
-            )}
-          >
-            <GlobalEmptyState
-              iconName={sectionIconName}
-              styleEmpty={{
-                style: {
-                  background: 'var(--neutral-2)',
-                },
-              }}
-              
-              textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
-              // textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} requests at the moment please check back later.`}
-            />
-          </ShowCode.When>
-          <ShowCode.Else>
+          <ShowCode.When isTrue={isLoadingRequests}>
             <RequestCardSkeletons />
-          </ShowCode.Else>
+          </ShowCode.When>
         </ShowCode>
       </Stack>
     </Stack>

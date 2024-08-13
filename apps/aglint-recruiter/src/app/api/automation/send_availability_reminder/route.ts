@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   getAvaRequestId,
   sendReminder,
-} from '../utils/reminder _availability__functions';
+} from '@/src/utils/automation/utils/reminder _availability__functions';
 
 export async function POST(req) {
   const { request_id, target_api } = await req.json();

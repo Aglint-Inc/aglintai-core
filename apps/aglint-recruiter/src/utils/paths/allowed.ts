@@ -94,7 +94,7 @@ export const allowedPaths = new Set<t>([
   '/api/automation/update_request',
   '/api/automation/update_availability',
   '/api/automation/send_availability_reminder',
-  '/api/automation/send_self_schedule_reminder',
+  '/api/automation/send_selfSchedule_reminder',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
@@ -106,6 +106,6 @@ export const allowedPaths = new Set<t>([
   '/api/agent-workflow/new-schedule',
   '/api/agent-workflow/cancel-schedule',
   '/api/agent-workflow/cand-avail-recieved',
-  'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+  '/api/request/create',
   ...cronPaths,
 ] as t[]);
