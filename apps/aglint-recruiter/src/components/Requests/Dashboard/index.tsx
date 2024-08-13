@@ -56,20 +56,21 @@ function Dashboard() {
     requestCount?.chat.completedRequest[
       requestCount.chat.completedRequest.length - 1
     ]?.count || 0;
-  const lastOngoingRequestCount =
-    requestCount?.chat.onGoingRequest[
-      requestCount.chat.onGoingRequest.length - 1
-    ]?.count || 0;
+  // const lastOngoingRequestCount =
+  //   requestCount?.chat.onGoingRequest[
+  //     requestCount.chat.onGoingRequest.length - 1
+  //   ]?.count || 0;
 
-  const total_requests =
-    lastCreatedRequestCount +
-    lastCompletedRequestCount +
-    lastOngoingRequestCount;
+  // const total_requests =
+  //   lastCreatedRequestCount +
+  //   lastCompletedRequestCount +
+  //   lastOngoingRequestCount;
 
-  const open_request = total_requests - lastCompletedRequestCount || 0;
+  const open_request = lastCreatedRequestCount - lastCompletedRequestCount || 0;
 
   const completed_percentage =
-    Math.floor((lastCompletedRequestCount / total_requests) * 100) || 0;
+    Math.floor((lastCompletedRequestCount / lastCreatedRequestCount) * 100) ||
+    0;
 
   return (
     <>
@@ -109,7 +110,10 @@ function Dashboard() {
               onClickUrgentRequest={{
                 onClick: () => {
                   setSections({ ...initialSections, urgent_request: true });
-                  setQueryParams({ tab: 'requests',section:'urgent_request' });
+                  setQueryParams({
+                    tab: 'requests',
+                    section: 'urgent_request',
+                  });
                 },
               }}
             />

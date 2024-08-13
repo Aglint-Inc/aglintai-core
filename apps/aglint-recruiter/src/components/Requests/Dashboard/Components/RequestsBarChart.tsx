@@ -77,14 +77,15 @@ export const RequestsBarChart: FC<{
     labels: createdLabels,
     datasets: [
       {
-        label: 'In progress',
-        data: onGoingCounts,
-        backgroundColor: ['#63aaf0'],
+        label: 'Created',
+        data: createdCounts,
+        backgroundColor: ['#63635E30'],
         borderRadius: 4,
         // borderSkipped: false,
         grouped: true,
-        barThickness: 30,
+        barThickness: 15,
       },
+
       {
         label: 'Completed',
         data: completedCounts,
@@ -92,16 +93,16 @@ export const RequestsBarChart: FC<{
         borderRadius: 4,
         // borderSkipped: false,
         grouped: true,
-        barThickness: 30,
+        barThickness: 15,
       },
       {
-        label: 'Created',
-        data: createdCounts,
-        backgroundColor: ['#63635E30'],
+        label: 'In progress',
+        data: onGoingCounts,
+        backgroundColor: ['#63aaf0'],
         borderRadius: 4,
         // borderSkipped: false,
         grouped: true,
-        barThickness: 30,
+        barThickness: 15,
       },
     ],
   };
@@ -168,7 +169,7 @@ export const RequestsBarChart: FC<{
         },
         scales: {
           x: {
-            stacked: true,
+            // stacked: true,
 
             title: {
               display: false,
@@ -188,7 +189,7 @@ export const RequestsBarChart: FC<{
             },
           },
           y: {
-            stacked: true,
+            // stacked: true,
             title: {
               display: false,
               font: { weight: 'bold' },
