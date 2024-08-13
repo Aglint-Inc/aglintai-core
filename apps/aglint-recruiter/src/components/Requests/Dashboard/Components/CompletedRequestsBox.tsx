@@ -17,7 +17,7 @@ function CompletedRequestsBox({
       onClickCompleted={{
         onClick: () => {
           setSections({ ...initialSections, completed_request: true });
-          setQueryParams({ tab: 'requests' });
+          setQueryParams({ tab: 'requests', section: 'completed_request' });
         },
       }}
       textTitle={

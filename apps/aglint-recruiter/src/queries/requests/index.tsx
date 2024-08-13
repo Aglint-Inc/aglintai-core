@@ -37,12 +37,12 @@ export const requestQueries = {
       queryFn: async () =>
         getRequests(await getUnfilteredRequests({ payload, sort, filters })),
       placeholderData: {
-        cancel_schedule_request: [],
-        completed_request: [],
-        decline_request: [],
-        reschedule_request: [],
-        schedule_request: [],
         urgent_request: [],
+        schedule_request: [],
+        reschedule_request: [],
+        cancel_schedule_request: [],
+        decline_request: [],
+        completed_request: [],
       },
     }),
   requests_mutationOptions: <
@@ -464,12 +464,12 @@ export const getRequests = (response: Request[]) => {
           return acc;
         },
         {
-          cancel_schedule_request: [],
-          completed_request: [],
-          decline_request: [],
-          reschedule_request: [],
-          schedule_request: [],
           urgent_request: [],
+          schedule_request: [],
+          reschedule_request: [],
+          cancel_schedule_request: [],
+          decline_request: [],
+          completed_request: [],
           // eslint-disable-next-line no-unused-vars
         } as { [id in Sections]: typeof response },
       ),

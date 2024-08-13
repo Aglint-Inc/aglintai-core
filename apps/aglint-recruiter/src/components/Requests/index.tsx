@@ -23,10 +23,6 @@ const Requests = () => {
   const {
     requests: { isRefetching, data: requestList },
     filters,
-    setFilters,
-    setSections,
-    initialSections,
-    initialFilter,
   } = useRequests();
   const isNotApplied =
     !filters.is_new &&
@@ -45,71 +41,84 @@ const Requests = () => {
   useEffect(() => {
     if (!queryParams?.tab) {
       setQueryParams({ tab: 'dashboard' });
-    } else if (queryParams.tab !== 'requests') {
-      setFilters(structuredClone(initialFilter));
-      setSections(structuredClone(initialSections));
     }
   }, [queryParams?.tab]);
 
   useEffect(() => {
-    function getHiddenDivs() {
-      const container = document.querySelector('#outer-div');
-      const divs =
-        container && container.querySelectorAll('[data-req-section]');
-      const hiddenDivs = [];
-      divs &&
-        divs.forEach((div) => {
-          const rect = div.getBoundingClientRect();
-          const containerRect = container.getBoundingClientRect();
-          if (rect.top >= containerRect.bottom - 200) {
-            hiddenDivs.push(div.getAttribute('data-req-section'));
-          }
-        });
-
-      return hiddenDivs;
-    }
     document.querySelector('#outer-div') &&
       document.querySelector('#outer-div').addEventListener('scroll', () => {
         showMatchingDivs(getHiddenDivs());
       });
 
-    function showMatchingDivs(hiddenDivs) {
-      const buttons = document.querySelectorAll('[data-req-button]');
-      if (hiddenDivs.length === 0) {
-        buttons.forEach((button: any) => {
-          const buttonSection = button.getAttribute('data-req-button');
-
-          if (buttonSection === 'back') {
-            button.style.display = 'flex';
-          } else {
-            button.style.display = 'none';
-          }
-        });
-      } else {
-        buttons.forEach((button: any) => {
-          const buttonSection = button.getAttribute('data-req-button');
-          if (hiddenDivs.includes(buttonSection)) {
-            button.style.display = 'flex';
-          } else {
-            button.style.display = 'none';
-          }
-        });
-      }
-    }
     if (!isRefetching) {
       const hiddenDivs = getHiddenDivs();
       showMatchingDivs(hiddenDivs);
-    }
-  }, [isRefetching]);
 
+      gotoSection();
+      const targetSection = document.querySelector(
+        `[data-req-section=${queryParams.section}]`,
+      );
+      if (targetSection) {
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [isRefetching, queryParams]);
+
+  function showMatchingDivs(hiddenDivs) {
+    const buttons = document.querySelectorAll('[data-req-button]');
+    if (hiddenDivs.length === 0) {
+      buttons.forEach((button: any) => {
+        const buttonSection = button.getAttribute('data-req-button');
+
+        if (buttonSection === 'back') {
+          button.style.display = 'flex';
+        } else {
+          button.style.display = 'none';
+        }
+      });
+    } else {
+      buttons.forEach((button: any) => {
+        const buttonSection = button.getAttribute('data-req-button');
+        if (hiddenDivs.includes(buttonSection)) {
+          button.style.display = 'flex';
+        } else {
+          button.style.display = 'none';
+        }
+        if (buttonSection === 'back') {
+          button.style.display = 'none';
+        }
+      });
+    }
+  }
+  function getHiddenDivs() {
+    const container = document.querySelector('#outer-div');
+    const divs = container && container.querySelectorAll('[data-req-section]');
+    const hiddenDivs = [];
+    divs &&
+      divs.forEach((div) => {
+        const rect = div.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        if (rect.top >= containerRect.bottom - 200) {
+          hiddenDivs.push(div.getAttribute('data-req-section'));
+        }
+      });
+
+    return hiddenDivs;
+  }
   function gotoSection() {
     document.querySelectorAll('[data-req-button]').forEach((button) => {
       button.addEventListener('click', function () {
         const sectionValue = this.getAttribute('data-req-button');
         if (sectionValue === 'back') {
-          const firstSection = document.getElementById('first');
-          if (firstSection) {
-            firstSection.scrollIntoView({ behavior: 'smooth' });
+          const targetSection = document.querySelector(
+            `[data-req-section=${'urgent_request'}]`,
+          );
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+            });
           }
         } else {
           const targetSection = document.querySelector(
@@ -126,7 +135,7 @@ const Requests = () => {
     <RequestAgent
       slotRequest={
         <ShowCode>
-          <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
+          <ShowCode.When isTrue={showEmptyPage}>
             <RequestAgentEmpty />
           </ShowCode.When>
           <ShowCode.When isTrue={queryParams.tab === 'requests'}>
@@ -151,9 +160,8 @@ const Requests = () => {
                 slotRequestSection={<RequestSections />}
                 slotNavigationPills={
                   <>
-                    {Object.entries(requestList ?? {})
-                      .reverse()
-                      .map(({ '0': item, '1': value }, i) => (
+                    {Object.entries(requestList ?? {}).map(
+                      ({ '0': item, '1': value }, i) => (
                         <NavigationPill
                           attributeValue={item}
                           textCount={value.length}
@@ -168,23 +176,15 @@ const Requests = () => {
                           }}
                           textPill={capitalizeFirstLetter(item)}
                         />
-                      ))}
+                      ),
+                    )}
                     <NavigationPill
                       showNumberCount={false}
                       attributeValue={'back'}
                       textCount={''}
                       iconName={'arrow_warm_up'}
                       onClickPill={{
-                        onClick: () => {
-                          const targetSection = document.querySelector(
-                            `[data-req-section=${'urgent_request'}]`,
-                          );
-                          if (targetSection) {
-                            targetSection.scrollIntoView({
-                              behavior: 'smooth',
-                            });
-                          }
-                        },
+                        onClick: gotoSection,
                       }}
                       textPill={capitalizeFirstLetter('back_to_top')}
                     />

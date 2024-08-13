@@ -8,7 +8,7 @@ import Section from './Section';
 
 function RequestSections() {
   const {
-    requests: { status, data },
+    requests: { data, isRefetching },
   } = useRequests();
   const defaults = sectionDefaultsData.map(
     // eslint-disable-next-line no-unused-vars
@@ -23,20 +23,27 @@ function RequestSections() {
     <>
       {defaults.map(({ color, requests, sectionIconName, sectionName }) => {
         return (
-          <section data-req-section={sectionName} key={sectionName}>
+          <section
+            style={{
+              paddingTop: '20px',
+            }}
+            data-req-section={sectionName}
+            key={sectionName}
+          >
             <Section
-              requests={requests}
+              requests={[...requests]}
               sectionName={sectionName}
               sectionIconName={sectionIconName}
               color={color}
-              isLoadingRequests={status === 'pending'}
+              isLoadingRequests={isRefetching}
             />
           </section>
         );
       })}
-      {/* <section data-req-section="back_to_top">
-
-      </section> */}
+      <section
+        data-req-section='back'
+        style={{ minHeight: '10px', padding: '20px' }}
+      ></section>
     </>
   );
 }
