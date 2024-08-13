@@ -12,6 +12,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
+import CalendarComp from '@/src/components/Common/Calendar/Calendar';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
@@ -22,7 +23,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import DynamicLoader from '../../DynamicLoader';
-import FullCalendar from '../../Interviews/FullCalendar';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
@@ -41,8 +41,6 @@ function BodyComp() {
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
   >(['completed', 'confirmed', 'cancelled']);
-  const [changeText, setChangeText] = useState('');
-
   const user_id = router.query.user_id as string;
 
   const {
@@ -63,7 +61,6 @@ function BodyComp() {
   } = useAllSchedulesByUserId({
     filter,
     member_id: user_id,
-    textSearch: changeText,
   });
 
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;
@@ -350,13 +347,11 @@ function BodyComp() {
                 {tab === 'training' && <TabInterviewModules type='training' />}
                 {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
                 {tab === 'calendar' && (
-                  <FullCalendar
+                  <CalendarComp
                     allSchedules={allSchedules}
                     isLoading={isLoading}
                     filter={filter}
                     setFilter={setFilter}
-                    changeText={changeText}
-                    setChangeText={setChangeText}
                   />
                 )}
               </>
