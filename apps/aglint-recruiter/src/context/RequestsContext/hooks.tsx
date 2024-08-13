@@ -132,9 +132,9 @@ export const useRequestsActions = () => {
   const {
     updateRequest,
     deleteRequest,
-    // insertRequestProgress,
-    // updateRequestProgress,
-    // deleteRequestProgress,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
   } = useRequestRealtime();
 
   useEffect(() => {
@@ -156,23 +156,23 @@ export const useRequestsActions = () => {
         table: 'request',
         callback: deleteRequest,
       },
-      // {
-      //   event: 'INSERT',
-      //   table: 'request_progress',
-      //   filter: `request_id=in.(${requestIds})`,
-      //   callback: insertRequestProgress,
-      // },
-      // {
-      //   event: 'UPDATE',
-      //   table: 'request_progress',
-      //   filter: `request_id=in.(${requestIds})`,
-      //   callback: updateRequestProgress,
-      // },
-      // {
-      //   event: 'DELETE',
-      //   table: 'request_progress',
-      //   callback: deleteRequestProgress,
-      // },
+      {
+        event: 'INSERT',
+        table: 'request_progress',
+        filter: `request_id=in.(${requestIds})`,
+        callback: insertRequestProgress,
+      },
+      {
+        event: 'UPDATE',
+        table: 'request_progress',
+        filter: `request_id=in.(${requestIds})`,
+        callback: updateRequestProgress,
+      },
+      {
+        event: 'DELETE',
+        table: 'request_progress',
+        callback: deleteRequestProgress,
+      },
     ]).subscribe();
     return () => {
       connection.unsubscribe();
@@ -182,9 +182,9 @@ export const useRequestsActions = () => {
     requestIds,
     updateRequest,
     deleteRequest,
-    // insertRequestProgress,
-    // updateRequestProgress,
-    // deleteRequestProgress,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
   ]);
 
   return {
