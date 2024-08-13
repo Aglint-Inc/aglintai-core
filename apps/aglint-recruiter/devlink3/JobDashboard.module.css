@@ -2,8 +2,8 @@
   display: grid;
   width: 100%;
   grid-auto-columns: 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
   grid-template-columns: 1fr 0.3fr;
   grid-template-rows: auto;
 }
@@ -12,7 +12,7 @@
   display: flex;
   overflow: auto;
   padding-top: 20px;
-  padding-right: 0px;
+  padding-right: var(--space-4);
   padding-bottom: 20px;
   padding-left: 20px;
   flex-direction: column;

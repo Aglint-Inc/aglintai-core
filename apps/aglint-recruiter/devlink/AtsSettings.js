@@ -1,10 +1,15 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./AtsSettings.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-1592":{"id":"e-1592","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-625","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1593"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"b725c18e-b0cf-fde3-ab58-f81e5d5cad51"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1723544461732},"e-1593":{"id":"e-1593","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-626","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1592"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"b725c18e-b0cf-fde3-ab58-f81e5d5cad51"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1723544461736}},"actionLists":{"a-625":{"id":"a-625","title":"Ats Setting Mouse Hover in","actionItemGroups":[{"actionItems":[{"id":"a-625-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]}}},{"id":"a-625-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-625-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]},"value":1,"unit":""}},{"id":"a-625-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]}}}]}],"createdOn":1723544467148,"useFirstGroupAsInitialState":true},"a-626":{"id":"a-626","title":"Ats Setting Mouse Hover out","actionItemGroups":[{"actionItems":[{"id":"a-626-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]},"value":0,"unit":""}},{"id":"a-626-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".more-edit-three-dot","selectorGuids":["22490c9f-1202-2325-8477-4a7f5eb1a9ac"]}}}]}],"createdOn":1723544467148,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function AtsSettings({
   as: _Component = _Builtin.Block,
@@ -16,7 +21,11 @@ export function AtsSettings({
   textSyncItems = "Sync Items from Greenhouse",
   textAtsConnected = "Greenhouse is connected",
   slotAiInstructionsTextArea,
+  onClickEditApi = {},
+  onClickDisconnect = {},
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component className={_utils.cx(_styles, "ats-settings-wrap")} tag="div">
       <_Builtin.Block
@@ -32,10 +41,48 @@ export function AtsSettings({
           <_Builtin.Block tag="div">{slotConnectIcon}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "ats-connect-right-btn")}
+          className={_utils.cx(_styles, "freq-menu-wrapper")}
           tag="div"
         >
-          {slotButton}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ats-connect-freq")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "asi-header-wrap")}
+              tag="div"
+            >
+              <GlobalIcon iconName="rule_settings" />
+              <Text content="Frequency of sync" weight="medium" />
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{slotFrequencySync}</_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "more-menu-ats-setting")}
+            data-w-id="b725c18e-b0cf-fde3-ab58-f81e5d5cad51"
+            tag="div"
+          >
+            <GlobalIcon iconName="more_vert" size="5" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "more-edit-three-dot")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "more-edit-list-ats-setting")}
+                tag="div"
+                {...onClickEditApi}
+              >
+                <Text content="Edit API Key" />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "more-edit-list-ats-disconect")}
+                tag="div"
+                {...onClickDisconnect}
+              >
+                <Text content="Disconnect" />
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -56,22 +103,6 @@ export function AtsSettings({
           />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotSyncItems}</_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "ats-sync-item-wrap")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "asi-header")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "asi-header-wrap")}
-            tag="div"
-          >
-            <GlobalIcon iconName="rule_settings" />
-            <Text content="Frequency of sync" weight="medium" />
-          </_Builtin.Block>
-          <Text color="neutral" content="" />
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotFrequencySync}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "ats-sync-item-wrap-copy")}

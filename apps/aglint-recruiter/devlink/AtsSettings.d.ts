@@ -11,4 +11,6 @@ declare function AtsSettings(props: {
   textSyncItems?: React.ReactNode;
   textAtsConnected?: React.ReactNode;
   slotAiInstructionsTextArea?: Types.Devlink.Slot;
+  onClickEditApi?: Types.Devlink.RuntimeProps;
+  onClickDisconnect?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
