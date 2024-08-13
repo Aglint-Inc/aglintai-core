@@ -362,6 +362,7 @@ export * from "./UploadedResume";
 export * from "./UploadedResumeList";
 export * from "./UserChangeEmail";
 export * from "./UserDetails";
+export * from "./UserInfoTeam";
 export * from "./UserNameRoleCard";
 export * from "./UserPasswordChange";
 export * from "./UserProfile";
