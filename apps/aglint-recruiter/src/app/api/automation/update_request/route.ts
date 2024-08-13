@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import {
   fetchTodoRequests,
   updateRequestStatus,
-} from '../../../../utils/automation/utils/update_request_functions';
+} from '@/src/utils/automation/utils/update_request_functions';
 
 export async function POST(req) {
   const { count } = await req.json();

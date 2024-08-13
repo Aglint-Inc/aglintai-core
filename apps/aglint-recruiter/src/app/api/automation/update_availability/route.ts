@@ -1,14 +1,11 @@
 import { NextResponse } from 'next/server';
 
-import {
-  recruiterId,
-  timezone,
-} from '../../../../utils/automation/utils/constants';
+import { recruiterId, timezone } from '@/src/utils/automation/utils/constants';
 import {
   fetchAndFilterAvailabilitySlots,
   fetchLatestCandidateAvailability,
   updateCandidateAvailabilitySlots,
-} from '../../../../utils/automation/utils/submit_availability_functions';
+} from '@/src/utils/automation/utils/submit_availability_functions';
 
 export async function POST(req) {
   const { request_id } = await req.json();

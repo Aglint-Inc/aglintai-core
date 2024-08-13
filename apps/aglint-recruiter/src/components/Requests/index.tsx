@@ -64,6 +64,7 @@ const Requests = () => {
           behavior: 'smooth',
         });
       }
+      // setQueryParams({ section: '' });
     }
   }, [section]);
 
