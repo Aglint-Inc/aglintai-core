@@ -146,6 +146,7 @@ export const PATHS = [
 '/api/phone-screening/get-application-info',
 '/api/phone-screening/submit',
 '/api/pre-seed',
+'/api/request/create',
 '/api/request_feedback',
 '/api/reset_password',
 '/api/resumecron/batchscore',

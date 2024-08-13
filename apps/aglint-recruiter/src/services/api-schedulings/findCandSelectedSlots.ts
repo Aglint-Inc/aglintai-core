@@ -52,7 +52,7 @@ export const findCandSelectedSlots = async ({
       .flat();
     throw new ApiError(
       'CLIENT',
-      `Unable to these conflicts,  ${all_conflict_reasons.join(',')}`,
+      `resolve these conflicts,  ${all_conflict_reasons.join(',')}`,
     );
   }
 
