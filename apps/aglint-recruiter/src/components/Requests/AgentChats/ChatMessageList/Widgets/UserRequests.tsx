@@ -1,6 +1,6 @@
-import { ChatType } from '@/src/queries/userchat';
 
 import RequestList, { RequestListProps } from '../../Components/RequestList';
+import { ChatType } from '../hooks/fetch';
 
 function UserRequests({
   chat,

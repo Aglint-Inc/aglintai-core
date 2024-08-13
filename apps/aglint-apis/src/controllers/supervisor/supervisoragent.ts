@@ -14,7 +14,7 @@ export const createSchedulingSupervisorAgent = async () => {
       'If you dont understand which worker to call for a user request, ask user for help.\n\n' +
       'Dont put placeholder data if tool response is empty.\n\n' +
       'Call getScheduledInterviews to get either scheduled interviews (schedules) or candidate declined interviews or scheduled interviews which has issues. \n\n' +
-      'Call getJobsgetHiringTeam to get the jobs or a hiring team for a job\n\n' +
+      'Call getJobsgetHiringTeam to list all jobs or a hiring team for a job\n\n' +
       'Call requestsRead to get requests or schedule requests or reschedule requests or cancel requests assigned to user\n\n' +
       'Call getInterviewTypesOrUsers to get interview types or users inside an interview type.\n\n' +
       'Call greetingAgent to greet the user if user say hi or hello\n\n',

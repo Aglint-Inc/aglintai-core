@@ -1,25 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import { ChatType, useUserChat } from '@/src/queries/userchat';
 import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useAgentIEditor } from '../AgentEditorContext';
+import { useUserChat } from '../ChatMessageList/hooks/fetch';
 import AgentEditor from './AgentEditor';
 import CreateSchedulePopUp from './CreateSchedulePopUp';
 import { scheduleTypes, selectedItemsType } from './utils';
 
 function AgentInputBox() {
-  const { recruiterUser, recruiter_id, recruiter } = useAuthDetails();
+  const { recruiter_id } = useAuthDetails();
   const {
     text,
     setText,
@@ -50,44 +48,16 @@ function AgentInputBox() {
       )?.applicantSessions
     : [];
 
-  const {
-    submitUserChat,
-    insertAIChat,
-    data: allChat,
-  } = useUserChat({
-    user_id: recruiterUser.user_id,
-  });
+  const { handleAgentSubmit } = useUserChat();
 
   const handleSubmit = async ({ planText }: { planText: string }) => {
     if (!isResponding) {
       try {
         setIsResponding(true);
         if (!planText) return;
-        const newMessage: Message = {
-          content: planText,
-          type: 'user',
-        };
-        const lastPage = allChat.pages[allChat.pages.length - 1].list;
-        const oldMessages: Message[] = lastPage.map((ele) => ({
-          content: ele.content,
-          type: ele.type === 'user' ? 'user' : 'assistant',
-        }));
-        submitUserChat(planText); // save to db
+
         setText('');
-        const bodyParams: ApiBodyAgentSupervisor = {
-          recruiter_id: recruiter.id,
-          history: [...oldMessages, newMessage],
-          user_id: recruiterUser.user_id,
-          applications: selectedItems?.applicant_name,
-          jobs: selectedItems?.job_title,
-          sessions: selectedItems?.interview_name,
-        };
-        const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_AGENT_API}/api/supervisor/agent`,
-          bodyParams,
-        );
-        const aiMessage = data as ChatType;
-        insertAIChat(aiMessage);
+        await handleAgentSubmit({ planText, selectedItems });
       } catch (err) {
         toast.error('Failed to process request. Please contact support.');
       } finally {

@@ -2,8 +2,8 @@ import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-types';
 import axios from 'axios';
 import { useState } from 'react';
 
+import { ChatType } from '../components/Requests/AgentChats/ChatMessageList/hooks/fetch';
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
-import { ChatType } from '../queries/userchat';
 
 const ChatApp = () => {
   const { recruiter, recruiterUser } = useAuthDetails();
