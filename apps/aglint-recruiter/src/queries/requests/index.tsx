@@ -127,6 +127,9 @@ export const useRequestsCreate = () => {
     mutationKey: requestQueries.requests_mutationKey('create'),
     mutationFn: async ({ payload }: UseCreateRequest) => {
       await createRequests(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -156,6 +159,9 @@ export const useRequestsUpdate = () => {
     mutationKey: requestQueries.requests_mutationKey('update'),
     mutationFn: async ({ payload }: UseUpdateRequest) => {
       await updateRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -185,6 +191,9 @@ export const useRequestsDelete = () => {
     mutationKey: requestQueries.requests_mutationKey('delete'),
     mutationFn: async ({ payload }: UseDeleteRequest) => {
       await deleteRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -215,6 +224,9 @@ type RealtimeRequestProgress = RealtimePostgresInsertPayload<
 export const useRequestRealtime = () => {
   const queryClient = useQueryClient();
   const insertRequest = useCallback(() => {
+    queryClient.cancelQueries(
+      requestQueries.requests_invalidate().refetchQueries(),
+    );
     Promise.allSettled([
       queryClient.removeQueries(
         requestQueries.requests_invalidate().removeQueries(),
