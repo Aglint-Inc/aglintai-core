@@ -4,7 +4,7 @@ import {
   bookSelfScheudle,
   getFilterJson,
   getSelfSchudleSlots,
-} from '../utils/confirm_selfSchedule';
+} from '../../../../utils/automation/utils/confirm_selfSchedule';
 
 export async function POST(req) {
   try {
