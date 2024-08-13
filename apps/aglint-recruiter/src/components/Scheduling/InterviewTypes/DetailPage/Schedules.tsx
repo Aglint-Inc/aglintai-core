@@ -46,6 +46,12 @@ function SchedulesModules() {
 
   return (
     <InterviewMemberSide
+      propsGrids={{
+        style: {
+          maxWidth: 'none',
+          padding: 0,
+        },
+      }}
       slotInterview={
         <Stack>
           <SearchField
@@ -58,21 +64,10 @@ function SchedulesModules() {
           />
         </Stack>
       }
-      // isUpcomingActive={filter === 'confirmed'}
-      // isCancelActive={filter === 'cancelled'}
-      // isCompletedActive={filter === 'completed'}
+      isUpcomingActive={false}
       textUpcomingCount={counts.upcomingCount}
       textCancelledCount={counts.cancelledCount}
       textPastCount={counts.completedCount}
-      // onClickUpcoming={{
-      //   onClick: () => setFilter('confirmed'),
-      // }}
-      // onClickCancelled={{
-      //   onClick: () => setFilter('cancelled'),
-      // }}
-      // onClickCompleted={{
-      //   onClick: () => setFilter('completed'),
-      // }}
       slotInterviewCard={
         <>
           {isLoading && allSchedules.length === 0 ? (
@@ -84,46 +79,9 @@ function SchedulesModules() {
               <CalendarComp
                 allSchedules={allSchedules}
                 isLoading={isLoading}
-                // filter={filter}
                 setFilter={setFilter}
-                // changeText={changeText}
-                // setChangeText={setChangeText}
                 filter={filter}
               />
-              {/* {transformDataSchedules(allSchedules).map((sch, ind) => {
-                const date = Object.keys(sch)[0];
-                const schedules = sch[String(date)];
-                return (
-                  <NewMyScheduleCard
-                    key={ind}
-                    textDate={
-                      date != 'undefined' ? dayjsLocal(date).format('DD') : null
-                    }
-                    textDay={
-                      date != 'undefined'
-                        ? dayjsLocal(date).format('ddd')
-                        : null
-                    }
-                    textMonth={
-                      date != 'undefined' ? (
-                        dayjsLocal(date).format('MMM')
-                      ) : (
-                        <DateIcon />
-                      )
-                    }
-                    slotMyScheduleSubCard={schedules.map(
-                      (meetingDetails, i) => {
-                        return (
-                          <ScheduleMeetingCard
-                            key={i}
-                            meetingDetails={meetingDetails}
-                          />
-                        );
-                      },
-                    )}
-                  />
-                );
-              })} */}
             </>
           )}
         </>
