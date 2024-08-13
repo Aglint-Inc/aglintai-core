@@ -15,4 +15,9 @@ export const resetSessionRelations = async ({
     })
     .in('session_id', session_ids)
     .throwOnError();
+  await supabase
+    .from('interview_session_cancel')
+    .delete()
+    .in('session_id', session_ids)
+    .throwOnError();
 };

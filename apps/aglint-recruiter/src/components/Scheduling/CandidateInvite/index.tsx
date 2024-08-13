@@ -323,7 +323,6 @@ export const ConfirmedInvitePage = (
 
     if (details[0]?.other_details) {
       createRequest({
-        old_request_id: filter_json.request_id,
         application_id: schedule.application_id,
         session_ids: details.map((d) => d.session_id),
         new_dates: {

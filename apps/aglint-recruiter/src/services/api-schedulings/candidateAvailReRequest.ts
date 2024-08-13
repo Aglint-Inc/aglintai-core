@@ -13,6 +13,7 @@ export const candidateAvailReRequest = async ({
   req_body,
   request_id,
   start_date_str,
+  cloned_sessn_ids,
 }: {
   req_body: any;
   organizer_id: string;
@@ -29,17 +30,18 @@ export const candidateAvailReRequest = async ({
     api_options,
   } = v.parse(candidate_avail_request_schema, req_body);
 
-  const [avail_req] = supabaseWrap(
+  const [cand_avail] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
-      .update({
+      .insert({
         application_id,
         recruiter_id,
-        is_task_created: false,
         number_of_days,
         number_of_slots,
         date_range: [start_date_str, end_date_str],
-        total_slots: null,
+        request_id: request_id,
+        visited: false,
+        slots: null,
         availability: {
           day_offs: api_options.include_conflicting_slots.day_off,
           free_keywords: api_options.include_free_time,
@@ -47,16 +49,22 @@ export const candidateAvailReRequest = async ({
             api_options.include_conflicting_slots.out_of_working_hrs,
           recruiting_block_keywords: api_options.use_recruiting_blocks,
         },
-        slots: [],
       })
-      .eq('request_id', request_id)
       .select(),
+  );
+  supabaseWrap(
+    await supabaseAdmin.from('request_session_relation').insert(
+      cloned_sessn_ids.map((s) => ({
+        session_id: s,
+        request_availability_id: cand_avail.id,
+      })),
+    ),
   );
 
   const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
     {
       recruiter_user_id: organizer_id,
-      avail_req_id: avail_req.id,
+      avail_req_id: cand_avail.id,
     };
   await axios.post(
     `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/availabilityReqResend_email_candidate`,
