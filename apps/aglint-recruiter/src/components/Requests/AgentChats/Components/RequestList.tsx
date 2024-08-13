@@ -42,10 +42,7 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
       ) : (
         <>
           <Stack color={'var(--neutral-11)'}>
-            <Text
-              size={2}
-              content='Here are the list of urgent requests for today:'
-            ></Text>
+            <Text size={2} content='Here are the list of requests :'></Text>
           </Stack>
           {Object.keys(groupedRequests)?.map(
             (type: RequestListProps['type']) => {
