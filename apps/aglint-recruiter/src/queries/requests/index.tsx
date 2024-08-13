@@ -101,7 +101,6 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchInterval: !!request_id && enabled ? 5000 : 0,
       refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
@@ -128,6 +127,9 @@ export const useRequestsCreate = () => {
     mutationKey: requestQueries.requests_mutationKey('create'),
     mutationFn: async ({ payload }: UseCreateRequest) => {
       await createRequests(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -157,6 +159,9 @@ export const useRequestsUpdate = () => {
     mutationKey: requestQueries.requests_mutationKey('update'),
     mutationFn: async ({ payload }: UseUpdateRequest) => {
       await updateRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -186,6 +191,9 @@ export const useRequestsDelete = () => {
     mutationKey: requestQueries.requests_mutationKey('delete'),
     mutationFn: async ({ payload }: UseDeleteRequest) => {
       await deleteRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -215,6 +223,19 @@ type RealtimeRequestProgress = RealtimePostgresInsertPayload<
 
 export const useRequestRealtime = () => {
   const queryClient = useQueryClient();
+  const insertRequest = useCallback(() => {
+    queryClient.cancelQueries(
+      requestQueries.requests_invalidate().refetchQueries(),
+    );
+    Promise.allSettled([
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      ),
+      queryClient.refetchQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      ),
+    ]);
+  }, [queryClient]);
   const updateRequest = useCallback(
     (payload: RealtimeRequest) => {
       queryClient.removeQueries(
@@ -331,6 +352,7 @@ export const useRequestRealtime = () => {
     [queryClient],
   );
   return {
+    insertRequest,
     updateRequest,
     deleteRequest,
     insertRequestProgress,
@@ -374,6 +396,9 @@ export type GetRequestParams = {
   sort: RequestsSort;
 };
 
+const REQUEST_SELECT =
+  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))';
+
 export const getUnfilteredRequests = async ({
   payload: { assigner_id },
   filters: {
@@ -386,11 +411,7 @@ export const getUnfilteredRequests = async ({
   },
   sort: { order, type },
 }: GetRequestParams) => {
-  const query = supabase
-    .from('request')
-    .select(
-      '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
-    );
+  const query = supabase.from('request').select(REQUEST_SELECT);
 
   query.or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`);
 
