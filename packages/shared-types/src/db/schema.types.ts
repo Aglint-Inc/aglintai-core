@@ -3701,28 +3701,28 @@ export type Database = {
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "interview_session"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "meeting_details"
             referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "request_availability_relation_session_id_fkey"
             columns: ["session_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["session_id"]
           },

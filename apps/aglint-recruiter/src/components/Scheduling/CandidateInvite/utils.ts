@@ -1,8 +1,7 @@
-import { DatabaseFunctions, DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { APICreateRequest, DatabaseTable } from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
+import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabase/client';
 import timeZones from '@/src/utils/timeZone';
 
 import { TimezoneObj } from '../../CompanyDetailComp/SettingsSchedule';
@@ -49,55 +48,21 @@ export const createRequest = async ({
   application_id,
   new_dates,
   session_ids,
-  candidate_name,
-  organizer_id,
   type,
-  old_request_id,
 }: {
   session_ids: string[];
   application_id: string;
   new_dates: { start_date: string; end_date: string };
-  candidate_name: string;
-  organizer_id: string;
   type: DatabaseTable['interview_session_cancel']['type'];
-  old_request_id: string;
 }) => {
-  let details: DatabaseFunctions['create_session_request']['Args'] = {
-    application: application_id,
-    request: {
-      assignee_id: organizer_id,
-      assigner_id: organizer_id,
-      priority: 'urgent',
-      schedule_end_date: new_dates.start_date,
-      schedule_start_date: new_dates.end_date,
-      status: 'to_do',
-      title: `${candidate_name} Requested for rescheduling Interview`,
-      type: 'reschedule_request',
+  const creatReqPayload: APICreateRequest = {
+    application_id,
+    session_ids,
+    type,
+    dates: {
+      start: new_dates.start_date,
+      end: new_dates.end_date,
     },
-    sessions: session_ids,
   };
-  if (type === 'declined') {
-    details.request.title = `${candidate_name} Requested for Cancelling Interview`;
-    details.request.type = 'cancel_schedule_request';
-  }
-
-  const [old_cand_avail] = supabaseWrap(
-    await supabase
-      .from('candidate_request_availability')
-      .select()
-      .eq('request_id', old_request_id),
-  );
-  const request_id = supabaseWrap(
-    await supabase.rpc('create_session_request', details),
-  ) as any;
-  supabaseWrap(
-    await supabase
-      .from('candidate_request_availability')
-      .update({
-        request_id: request_id,
-        visited: false,
-        slots: null,
-      })
-      .eq('id', old_cand_avail.id),
-  );
+  await axios.post('/api/request/create', creatReqPayload);
 };
