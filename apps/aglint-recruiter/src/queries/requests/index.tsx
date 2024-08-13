@@ -387,7 +387,10 @@ type RequestsFilter = {
 
 type RequestsSort = {
   order: 'asc' | 'desc';
-  type: keyof Pick<DatabaseTable['request'], 'title' | 'created_at'>;
+  type: keyof Pick<
+    DatabaseTable['request'],
+    'title' | 'created_at' | 'updated_at'
+  >;
 };
 
 export type GetRequestParams = {
@@ -514,7 +517,7 @@ const requestSort = (request: Request[]) => {
     .map((values) =>
       values.toSorted(
         (a, z) =>
-          dayjsLocal(z.created_at).date() - dayjsLocal(a.created_at).date(),
+          dayjsLocal(z.updated_at).date() - dayjsLocal(a.updated_at).date(),
       ),
     )
     .flatMap((values) => values);
