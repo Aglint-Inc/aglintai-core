@@ -109,7 +109,7 @@ function Dashboard() {
               onClickUrgentRequest={{
                 onClick: () => {
                   setSections({ ...initialSections, urgent_request: true });
-                  setQueryParams({ tab: 'requests' });
+                  setQueryParams({ tab: 'requests',section:'urgent_request' });
                 },
               }}
             />
@@ -123,7 +123,7 @@ function Dashboard() {
                   onClickCard={{
                     onClick: () => {
                       setSections({ ...initialSections, [title]: true });
-                      setQueryParams({ tab: 'requests' });
+                      setQueryParams({ tab: 'requests', section: title });
                     },
                   }}
                 />
