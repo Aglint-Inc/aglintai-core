@@ -23,7 +23,10 @@ export default async function handler(
     );
 
     const [cand_application] = supabaseWrap(
-      await supabaseAdmin.from('applications').select('*,candidates(*)'),
+      await supabaseAdmin
+        .from('applications')
+        .select('*,candidates(*)')
+        .eq('id', parsed.application_id),
     );
 
     const candidate_name = getFullName(
