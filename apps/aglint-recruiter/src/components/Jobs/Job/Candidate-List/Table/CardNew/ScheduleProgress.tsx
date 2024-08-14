@@ -26,7 +26,7 @@ export const ScheduleProgress = ({
     () =>
       sessions.length
         ? []
-        : (data?.interview_session ?? [])
+        : (data?.flatMap((item) => item.interview_session) ?? [])
             .sort((a, z) => a.session_order - z.session_order)
             .map(
               ({

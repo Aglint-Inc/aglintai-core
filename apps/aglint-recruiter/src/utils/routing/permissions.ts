@@ -33,7 +33,6 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
-  '/jobs/[id]/agent': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -154,6 +153,12 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
+  '/api/integrations/greenhouse': ['authorized'],
+  '/api/integrations/greenhouse/sync/interview_plans': ['manage_job'],
+  '/api/integrations/greenhouse/sync/job': ['manage_job'],
+  '/api/integrations/greenhouse/sync/user': ['integrations_module'],
+  '/api/integrations/greenhouse/sync/departments': ['integrations_module'],
+  '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
 };
 

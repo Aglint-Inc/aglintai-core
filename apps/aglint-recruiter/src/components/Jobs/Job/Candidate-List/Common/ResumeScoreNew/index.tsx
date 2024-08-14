@@ -49,6 +49,8 @@ const ResumeScore = ({
       );
     case 'processed':
       return <ScoreTag score={resume_score} />;
+    case 'unscorable':
+      return <>---</>;
   }
 };
 

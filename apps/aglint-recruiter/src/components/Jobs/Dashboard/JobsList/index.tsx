@@ -10,6 +10,7 @@ import { JobsListingCard } from '@/devlink/JobsListingCard';
 import { useApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
+import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
@@ -45,16 +46,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
     const params = getParams({ section });
     push(`/jobs/${id}/candidate-list${params ? `?${params}` : ''}`);
   };
+
   return (
     <>
       {jobs?.map((job, ind) => {
-        let jobDetails;
-        if (job.status == 'draft') {
-          jobDetails = job.draft;
-        } else {
-          jobDetails = job;
-        }
-
         return (
           <>
             <ScrollList key={ind} uniqueKey={job.id}>
@@ -116,8 +111,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   )
                 }
                 key={ind}
-                textJobRole={capitalizeSentence(jobDetails?.job_title ?? '---')}
-                textCompanyLocation={`${jobDetails?.location}`}
+                textJobRole={capitalizeSentence(job?.job_title ?? '---')}
+                textCompanyLocation={formatOfficeLocation(job?.location)}
                 newCount={job?.section_count?.new}
                 qualifiedCount={job?.section_count?.qualified}
                 assessmentCount={job?.section_count?.assessment}

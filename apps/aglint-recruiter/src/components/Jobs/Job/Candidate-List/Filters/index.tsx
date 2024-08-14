@@ -9,6 +9,7 @@ import {
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
@@ -24,12 +25,16 @@ const Filters = () => {
       order,
       // eslint-disable-next-line no-unused-vars
       section,
-      ...filters
+      badges,
+      resume_match,
+      schedule_status,
     },
     setFilters,
   } = useApplications();
 
-  const badges = useMemo(
+  const { isScoringEnabled, isSchedulingEnabled } = useAuthDetails();
+
+  const badgesOptions = useMemo(
     () =>
       badgesTypes.map((id) => ({
         id,
@@ -38,7 +43,7 @@ const Filters = () => {
     [badgesTypes, badgeLabel, badgesCount.data],
   );
 
-  const resume_match = useMemo(
+  const resume_matchOptions = useMemo(
     () =>
       resumeScoreTypes.map((id) => ({
         id,
@@ -47,26 +52,48 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  const schedule_status = useMemo(
+  const schedule_statusOptions = useMemo(
     () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
     [scheduleStatus, capitalize],
   );
 
-  const filterOptions = { badges, resume_match, schedule_status };
-  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
-    Object.entries(filters).map(
-      ([key, value]) =>
-        ({
-          active: value.length,
-          name: key,
-          value: value ?? [],
-          type: 'filter',
-          iconname: '',
-          icon: <></>,
-          setValue: (newValue: typeof value) => setFilters({ [key]: newValue }),
-          options: filterOptions[key] ?? [],
-        }) as (typeof safeFilters)[number],
-    );
+  const resumeMatchFilter: Parameters<
+    typeof FilterHeader
+  >[0]['filters'][number] = isScoringEnabled && {
+    name: 'Resume match',
+    value: resume_match,
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue: typeof resume_match) =>
+      setFilters({ ['resume_match']: newValue }),
+    options: resume_matchOptions,
+  };
+
+  const scheduleStatusFilter: Parameters<
+    typeof FilterHeader
+  >[0]['filters'][number] = isSchedulingEnabled && {
+    name: 'Schedule Status',
+    value: schedule_status,
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue: typeof schedule_status) =>
+      setFilters({ ['schedule_status']: newValue }),
+    options: schedule_statusOptions,
+  };
+
+  const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
+    isScoringEnabled && {
+      name: 'Schedule Status',
+      value: badges,
+      type: 'filter',
+      iconname: '',
+      icon: <></>,
+      setValue: (newValue: typeof badges) =>
+        setFilters({ ['badges']: newValue }),
+      options: badgesOptions,
+    };
 
   const bookmarkedButton: Parameters<
     typeof FilterHeader
@@ -119,7 +146,13 @@ const Filters = () => {
 
   return (
     <FilterHeader
-      filters={[bookmarkedButton, ...safeFilters, Locations]}
+      filters={[
+        bookmarkedButton,
+        badgesFilter,
+        resumeMatchFilter,
+        scheduleStatusFilter,
+        Locations,
+      ].filter(Boolean)}
       sort={safeSort}
       isResetAll={true}
       search={{

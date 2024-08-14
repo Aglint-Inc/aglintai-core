@@ -80,12 +80,24 @@ const InterviewSideDrawer = ({
     DrawerType['create'][keyof DrawerType['create']],
   ];
   if (createKey && createValue) {
-    const { order } = createValue;
+    const { order, plan_id } = createValue;
     switch (createKey) {
       case 'session':
-        return <CreateSession handleClose={handleClose} order={order} />;
+        return (
+          <CreateSession
+            handleClose={handleClose}
+            interview_plan_id={plan_id}
+            order={order}
+          />
+        );
       case 'debrief':
-        return <CreateDebrief handleClose={handleClose} order={order} />;
+        return (
+          <CreateDebrief
+            handleClose={handleClose}
+            interview_plan_id={plan_id}
+            order={order}
+          />
+        );
     }
   }
   const [editKey, editValue] = (Object.entries(drawers.edit).find(
@@ -110,16 +122,17 @@ const InterviewSideDrawer = ({
 type DrawerProps = {
   handleClose: InterviewDrawersProps['handleClose'];
   order: number;
+  interview_plan_id?: string;
   id?: string;
 };
-const CreateSession = ({ handleClose, order }: DrawerProps) => {
-  const {
-    interviewPlans: { data },
-    handleCreateSession,
-  } = useJobInterviewPlan();
+const CreateSession = ({
+  handleClose,
+  interview_plan_id,
+  order,
+}: DrawerProps) => {
+  const { handleCreateSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(getSessionFields(initialSessionFields));
   const [sessionCreation, setSessionCreation] = useState(false);
-  const interview_plan_id = data.id;
   const handleAdd = async () => {
     if (!sessionCreation) {
       setSessionCreation(true);
@@ -179,7 +192,10 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     interview_module,
     interview_session_relation,
     interviewer_cnt,
-  } = data.interview_session.find((session) => id === session.id);
+    interview_plan_id,
+  } = data
+    .flatMap((item) => item.interview_session)
+    .find((session) => id === session.id);
   const { interviewers, trainees } = interview_session_relation.reduce(
     (acc, curr) => {
       if (curr.interviewer_type === 'qualified')
@@ -218,7 +234,6 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   };
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getSessionFields(initialFields));
-  const interview_plan_id = data.id;
   const handleEdit = () => {
     if (!isLoading) {
       const { error, newFields } = validateSessionFields(fields);
@@ -267,19 +282,19 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
   );
 };
 
-const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
+const CreateDebrief = ({
+  handleClose,
+  interview_plan_id,
+  order,
+}: DrawerProps) => {
   const { recruiter } = useAuthDetails();
-  const {
-    interviewPlans: { data },
-    handleCreateDebriefSession,
-  } = useJobInterviewPlan();
+  const { handleCreateDebriefSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(
     getDebriefFields(initialDebriefFields, {
       members_meta: recruiter?.scheduling_settings?.debrief_defaults,
     }),
   );
   const [debriefCreation, setDebriefCreation] = useState(false);
-  const interview_plan_id = data.id;
   const handleAdd = async () => {
     if (!debriefCreation) {
       setDebriefCreation(true);
@@ -341,7 +356,10 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     location,
     interview_session_relation,
     members_meta,
-  } = data.interview_session.find((session) => id === session.id);
+    interview_plan_id,
+  } = data
+    .flatMap((item) => item.interview_session)
+    .find((session) => id === session.id);
   const { members } = interview_session_relation.reduce(
     (acc, curr) => {
       if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
@@ -361,7 +379,6 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
   };
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getDebriefFields(initialFields));
-  const interview_plan_id = data.id;
   const handleEdit = () => {
     if (!isLoading) {
       const { error, newFields } = validateDebriefSessionFields(fields);
@@ -416,9 +433,9 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     interviewPlans: { data },
     getLoadingState,
   } = useJobInterviewPlan();
-  const { break_duration } = data.interview_session.find(
-    (session) => id === session.id,
-  );
+  const { break_duration } = data
+    .flatMap((item) => item.interview_session)
+    .find((session) => id === session.id);
   const initialFields = {
     break_duration:
       break_duration === 0 ? initialBreakFields.break_duration : break_duration,
@@ -435,7 +452,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Interview under update. Please wait.');
+      toast.warning('Interview under updation. Please wait.');
     }
   };
   return (

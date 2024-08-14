@@ -87,7 +87,10 @@ const ApplicationCard = memo(
     );
 
     const checkEnabled = useMemo(
-      () => application?.resume_processing_state === 'processed' && manageJob,
+      () =>
+        (application?.resume_processing_state === 'processed' ||
+          application?.resume_processing_state === 'unscorable') &&
+        manageJob,
       [application?.resume_processing_state, manageJob],
     );
 
