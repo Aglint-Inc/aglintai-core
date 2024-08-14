@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { ReactElement } from 'react';
 
 const cardVariants: Variants = {
   offscreen: {
@@ -16,7 +17,15 @@ const cardVariants: Variants = {
   },
 };
 
-export function YTransform({ children, uniqueKey, height }) {
+export function YTransform({
+  children,
+  uniqueKey,
+  height,
+}: {
+  children: ReactElement;
+  uniqueKey: any;
+  height?: string;
+}) {
   return (
     <AnimatePresence mode='wait'>
       <motion.div
