@@ -14,6 +14,17 @@ drop view if exists "public"."application_status_view";
 
 alter table "public"."public_jobs" drop column "location";
 
+UPDATE public_jobs
+SET draft = new_draft.updated_draft
+FROM (
+    SELECT 
+        id, 
+        ((draft::jsonb - 'company')::jsonb - 'location') || '{"location_id": null}'::jsonb AS updated_draft
+    FROM 
+        public_jobs
+) AS new_draft
+WHERE public_jobs.id = new_draft.id;
+
 alter table "public"."public_jobs" add column "location_id" integer;
 
 alter table "public"."public_jobs" add constraint "public_jobs_location_id_fkey" FOREIGN KEY (location_id) REFERENCES office_locations(id) ON UPDATE CASCADE ON DELETE RESTRICT not valid;
