@@ -154,6 +154,8 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
+  '/api/scheduling/v1/find-alternative-time-slots': ['authorized'],
+  '/api/scheduling/v1/update_meeting_interviewers': ['authorized'],
 };
 
 export default PERMISSIONS;
