@@ -1,7 +1,5 @@
 alter table "public"."interview_meeting" add column "application_id" uuid;
 
-alter table "public"."interview_plan" add column "plan_order" numeric not null default '0'::numeric;
-
 alter table "public"."interview_plan" alter column "job_id" drop not null;
 
 UPDATE "public"."interview_meeting" 
@@ -15,9 +13,6 @@ alter table "public"."interview_meeting" validate constraint "interview_meeting_
 
 ALTER TABLE "public"."interview_meeting" 
 ALTER COLUMN "application_id" SET NOT NULL;
-
-ALTER TABLE "public"."interview_plan"
-DROP COLUMN "order";
 
 set check_function_bodies = off;
 
