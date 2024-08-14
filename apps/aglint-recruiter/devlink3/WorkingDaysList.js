@@ -16,7 +16,7 @@ export function WorkingDaysList({
         className={_utils.cx(_styles, "working-hour-half-day-left")}
         tag="div"
       >
-        <Text content={textDay} weight="regular" color="neutral" />
+        <Text content={textDay} weight="medium" color="neutral" />
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "working-hour-day-right")}

@@ -647,6 +647,7 @@ function SchedulingSettings({
                 slotDailyLimit={
                   <Stack spacing={3}>
                     <MuiNumberfield
+                    isMarginTop={false}
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'daily', 'value')
                       }
@@ -654,6 +655,7 @@ function SchedulingSettings({
                       max={interviewLoad.daily.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -684,6 +686,7 @@ function SchedulingSettings({
                 slotWeeklyLimit={
                   <Stack spacing={3}>
                     <MuiNumberfield
+                    isMarginTop={false}
                       handleSelect={(e) =>
                         loadChangeHandle(e, 'weekly', 'value')
                       }
@@ -691,6 +694,7 @@ function SchedulingSettings({
                       max={interviewLoad.weekly.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'

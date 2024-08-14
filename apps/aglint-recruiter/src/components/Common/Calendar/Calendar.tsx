@@ -91,7 +91,7 @@ function CalendarComp({
 
   return (
     <>
-      <Stack p={2} width={'1200px'} height={'624px'} spacing={2}>
+      <Stack p={2} width={'900px'} height={'624px'} spacing={2}>
         {isLoading ? (
           <Stack
             width={'900px'}
