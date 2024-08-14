@@ -7,8 +7,10 @@ import {
 // import InfoDisplay from "@components/InfoDisplay";
 import {
   bookSelfSchedule,
+  requestForReschedule,
   sendAvailabilityReminder,
   sendReminderSelfSchedule,
+  shuffleAndSplit,
   shuffleAndSplitAsTwo,
   submitAvailability,
   updateRequest,
@@ -22,9 +24,8 @@ const DrawerComponent = () => {
     btn1: false,
     btn2: false,
     btn3: false,
+    btn4: false,
   });
-  console.clear();
-  console.log(loading);
   const drawerRef = useRef(null);
 
   const toggleDrawer = () => {
@@ -102,6 +103,37 @@ const DrawerComponent = () => {
         } catch (e) {
         } finally {
           setLoading((pre) => ({ ...pre, btn3: false }));
+        }
+        break;
+
+      case "reSchedule_request":
+        try {
+          setLoading((pre) => ({ ...pre, btn4: true }));
+          const localSettings1 = await getRequestsWithSettings();
+
+          if (!(localSettings1?.length > 0)) {
+            alert("No request found");
+            return;
+          }
+
+          const settingsForreSchedule = shuffleAndSplit(localSettings1, count);
+
+          if (
+            !confirm(
+              `${settingsForreSchedule.length} requests from re-schedule `
+            )
+          )
+            return;
+
+          await requestForReschedule(settingsForreSchedule);
+
+          // await bookSelfSchedule(settingsForBookSchedule);
+          // if (settingsForSendScheduleReminder?.length > 0) {
+          //   await sendReminderSelfSchedule(settingsForSendScheduleReminder);
+          // }
+        } catch (e) {
+        } finally {
+          setLoading((pre) => ({ ...pre, btn4: false }));
         }
         break;
 
@@ -198,11 +230,11 @@ const DrawerComponent = () => {
             <Button
               caseNo={"4:"}
               isLoading={loading.btn3}
-              title={"Requests for Rescedule."}
-              defaultCount={2}
+              title={"Requests for Rescedule"}
+              defaultCount={1}
               showInput={true}
-              onClick={() =>
-                handleApiRequest("/api/automation/booking_self_schedule")
+              handleSubmit={(count) =>
+                handleApiRequest("reSchedule_request", count)
               }
             />
             <Button
@@ -211,7 +243,7 @@ const DrawerComponent = () => {
               defaultCount={2}
               title={"Cancels Interview."}
               showInput={true}
-              onClick={() =>
+              handleSubmit={() =>
                 handleApiRequest("/api/automation/booking_self_schedule")
               }
             />
@@ -221,7 +253,7 @@ const DrawerComponent = () => {
               defaultCount={2}
               title={"Declines Interview"}
               showInput={true}
-              onClick={() =>
+              handleSubmit={() =>
                 handleApiRequest("/api/automation/booking_self_schedule")
               }
             />
@@ -245,7 +277,6 @@ const Button = ({
   showInput = false,
   defaultCount,
 }) => {
-  console.log(isLoading);
   const [count, setCount] = useState(defaultCount ? defaultCount : 0);
   return (
     <div className="button-container">

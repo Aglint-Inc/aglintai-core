@@ -63,3 +63,5 @@ export async function removeRequestFromLocal(application_id, request_id) {
     JSON.stringify(requestsWithSettings)
   );
 }
+
+const getSessionId = async (settings) => {};
