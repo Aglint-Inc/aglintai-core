@@ -4,16 +4,12 @@ import { Stack } from '@mui/material';
 import { Text } from '@/devlink/Text';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { useUserChat } from '@/src/queries/userchat';
 import ROUTES from '@/src/utils/routing/routes';
 
 import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
+import { ChatType } from '../hooks/fetch';
 
-function FetchDeclinedInterviews({
-  chat,
-}: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
-}) {
+function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
   const selPayload =
     meta?.findLast(

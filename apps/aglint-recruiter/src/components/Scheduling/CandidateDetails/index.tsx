@@ -91,7 +91,7 @@ function SchedulingApplication() {
               slotFullScheduleCard={
                 <>
                   {tab === 'candidate_detail' ? (
-                    <Stack p={`var(--radius-4)`}>
+                    <Stack>
                       <Stack
                         sx={{
                           borderRadius: 'var(--radius-4)',

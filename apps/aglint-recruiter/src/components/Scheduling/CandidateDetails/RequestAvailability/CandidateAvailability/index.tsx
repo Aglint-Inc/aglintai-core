@@ -67,6 +67,7 @@ function CandidateAvailability() {
         session_ids,
       },
     );
+
     const { rounds } = meetings.reduce(
       (acc, curr) => {
         const count = acc.rounds.length;
@@ -259,6 +260,7 @@ function CandidateAvailability() {
   ) {
     return (
       <ConfirmedInvitePage
+        avail_request_id={candidateRequestAvailability.id}
         candidate={candidateRequestAvailability.applications.candidates}
         filter_json={null}
         meetings={meetingsAndRounds.meetings}

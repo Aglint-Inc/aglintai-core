@@ -1,5 +1,5 @@
-import { useUserChat } from '@/src/queries/userchat';
 
+import { ChatType } from '../hooks/fetch';
 import FetchDeclinedInterviews from './FetchDeclinedInterviews';
 import FetchScheduledInterviews from './FetchScheduledInterviews';
 import UserRequests from './UserRequests';
@@ -7,7 +7,7 @@ import UserRequests from './UserRequests';
 function Widgets({
   chat,
 }: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
+  chat: ChatType;
 }) {
   return (
     <>

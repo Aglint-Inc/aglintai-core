@@ -63,7 +63,6 @@ function MySchedule() {
   } = useAllSchedulesByUserId({
     filter,
     member_id: recruiterUser.user_id,
-    textSearch: changeText,
   });
 
   const { data: allIntegrations } = useAllIntegrations();
@@ -158,7 +157,9 @@ function MySchedule() {
           />
         </ShowCode.When>
         <ShowCode.When
-          isTrue={!allIntegrations?.service_json || !recruiterUser.schedule_auth}
+          isTrue={
+            !allIntegrations?.service_json || !recruiterUser.schedule_auth
+          }
         >
           <MyScheduleLanding
             onClickConnectCalender={{

@@ -6700,6 +6700,7 @@ export type Database = {
         | "onRequestReschedule_emailLink_resendAvailRequest"
         | "onRequestCancel_agent_cancelEvents"
         | "onRequestCancel_slack_interviewersOrganizer"
+        | "onInterviewerDecline_agent_changeInterviewer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -6918,6 +6919,7 @@ export type Database = {
         | "onSelfScheduleReqAgent"
         | "onRequestCancel"
         | "onRequestReschedule"
+        | "onInterviewerDecline"
       workflow_type: "system" | "job"
     }
     CompositeTypes: {

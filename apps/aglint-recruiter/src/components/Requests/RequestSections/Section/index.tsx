@@ -1,12 +1,14 @@
 import { Stack } from '@mui/material';
 
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
-import { NoPendingReq } from '@/devlink2/NoPendingReq';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
+import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import { Request as RequestType } from '@/src/queries/requests/types';
+import {
+  Request as RequestType,
+  RequestResponse,
+} from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../../../Common/ShowCode';
@@ -20,10 +22,7 @@ function Section({
   isLoadingRequests,
 }: {
   requests: RequestType[];
-  sectionName:
-    | RequestType['type']
-    | RequestType['status']
-    | RequestType['priority'];
+  sectionName: keyof RequestResponse;
   sectionIconName: string;
   color: string;
   isLoadingRequests: boolean;
@@ -33,30 +32,23 @@ function Section({
   } = useRequests();
   return (
     <Stack gap={2}>
-      <Stack
-        width={'100%'}
-        direction={'row'}
-        justifyContent={'space-between'}
-        alignContent={'center'}
-        sx={{
-          cursor: 'pointer',
-        }}
-      >
+      <Stack width={'100%'} direction={'row'} spacing={2} alignItems={'center'}>
         <TextWithIcon
           color={color}
           iconName={sectionIconName}
-          textContent={`${capitalizeFirstLetter(sectionName).replace('Request', '')} requests (${requests.length})`}
+          iconSize={4}
+          textContent={`${capitalizeFirstLetter(sectionName)} (${requests.length})`}
         />
-        <GlobalIcon
-          size={4}
-          iconName={'keyboard_double_arrow_down'}
-          color={'neutral'}
-        />
+        {!requests.length && (
+          <Text
+            size={1}
+            color={'neutral'}
+            content={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
+          />
+        )}
       </Stack>
       <Stack
         gap={1}
-        maxHeight={'400px'}
-        overflow={'auto'}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -74,19 +66,9 @@ function Section({
             })}
           </ShowCode.When>
 
-          <ShowCode.When
-            isTrue={Boolean(
-              !isLoadingRequests && status === 'success' && !requests.length,
-            )}
-          >
-            <NoPendingReq
-              textHeader={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} Requests.`}
-              textDesc={`No ${capitalizeFirstLetter(sectionName).replace('Request', '')} requests at the moment please check back later.`}
-            />
-          </ShowCode.When>
-          <ShowCode.Else>
+          <ShowCode.When isTrue={isLoadingRequests}>
             <RequestCardSkeletons />
-          </ShowCode.Else>
+          </ShowCode.When>
         </ShowCode>
       </Stack>
     </Stack>

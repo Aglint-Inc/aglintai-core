@@ -9,6 +9,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';
+import { candidateAvailReRequest } from '@/src/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
 import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAgent';
@@ -143,7 +144,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_date_str: date_range.end_date_str,
           organizer_id: organizer_id,
           request_id: request_id,
-          is_avail_req_resend: false,
         },
         reqProgressLogger,
         {
@@ -154,7 +154,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       api_target === 'onRequestReschedule_emailLink_resendAvailRequest'
     ) {
       await executeWorkflowAction(
-        candidateAvailRequest,
+        candidateAvailReRequest,
         {
           req_body: req.body,
           cloned_sessn_ids: session_ids,
@@ -162,7 +162,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_date_str: date_range.end_date_str,
           organizer_id: organizer_id,
           request_id: request_id,
-          is_avail_req_resend: true,
         },
         reqProgressLogger,
         {
@@ -199,6 +198,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         message: err.message,
       });
     }
+
+    console.error(err.message);
+
     return res.status(500).json({
       type: err.name,
       message: err.message,

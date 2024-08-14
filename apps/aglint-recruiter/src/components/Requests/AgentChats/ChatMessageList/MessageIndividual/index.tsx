@@ -5,18 +5,14 @@ import { Stack } from '@mui/material';
 import { Text } from '@/devlink/Text';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useUserChat } from '@/src/queries/userchat';
 import { getFullName } from '@/src/utils/jsonResume';
 
+import { ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';
 import AgentIcon from './AgentIcon';
 import CustomTypographyLink from './CustomTypographyLink';
 
-function MessageIndividual({
-  chat,
-}: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
-}) {
+function MessageIndividual({ chat }: { chat: ChatType }) {
   const { recruiterUser } = useAuthDetails();
 
   const definedUi: FunctionNames[] = [
@@ -31,7 +27,7 @@ function MessageIndividual({
       .filter(Boolean) || [];
 
   return (
-    <Stack width={'100%'}>
+    <Stack width={'100%'} id={chat.id}>
       <Stack direction={'row'} spacing={'var(--space-2)'} width={'100%'}>
         {chat.type === 'user' ? (
           <MuiAvatar

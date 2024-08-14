@@ -1,11 +1,11 @@
-import { useUserChat } from '@/src/queries/userchat';
 
 import RequestList, { RequestListProps } from '../../Components/RequestList';
+import { ChatType } from '../hooks/fetch';
 
 function UserRequests({
   chat,
 }: {
-  chat: ReturnType<typeof useUserChat>['data'][0];
+  chat: ChatType;
 }) {
   const meta = chat.metadata;
   const requests =

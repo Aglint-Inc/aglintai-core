@@ -28,6 +28,7 @@ export const findPlanCombs = async ({
     session_ids: session_ids,
   });
   const slots = cand_schedule.findAvailabilitySlotsDateRange();
+
   const filtered_slot_info = filterSchedulingOptionsArray({
     schedulingOptions: slots,
     filters: {

@@ -1,25 +1,23 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
-import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
+import CalendarComp from '@/src/components/Common/Calendar/Calendar';
 import Loader from '@/src/components/Common/Loader';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
-import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
-import { transformDataSchedules } from '../../schedules-query';
 import { useAllSchedulesByModuleId } from '../queries/hooks';
 import { fetchSchedulesCountByModule } from '../queries/utils';
 
 function SchedulesModules() {
   const router = useRouter();
-  const [filter, setFilter] =
-    useState<DatabaseTable['interview_meeting']['status']>('confirmed');
+
+  const [filter, setFilter] = useState<
+    DatabaseTable['interview_meeting']['status'][]
+  >(['completed', 'confirmed', 'cancelled']);
 
   const [changeText, setChangeText] = useState('');
 
@@ -36,10 +34,10 @@ function SchedulesModules() {
   });
 
   useEffect(() => {
-    if (router.query.module_id) {
+    if (router.query.type_id) {
       (async () => {
         const res = await fetchSchedulesCountByModule(
-          router.query.module_id as string,
+          router.query.type_id as string,
         );
         setCounts(res);
       })();
@@ -48,6 +46,13 @@ function SchedulesModules() {
 
   return (
     <InterviewMemberSide
+      propsGrids={{
+        style: {
+          maxWidth: 'none',
+          padding: 0,
+        },
+      }}
+      isMenuTabVisible={false}
       slotInterview={
         <Stack>
           <SearchField
@@ -60,63 +65,27 @@ function SchedulesModules() {
           />
         </Stack>
       }
-      isUpcomingActive={filter === 'confirmed'}
-      isCancelActive={filter === 'cancelled'}
-      isCompletedActive={filter === 'completed'}
+      isUpcomingActive={false}
       textUpcomingCount={counts.upcomingCount}
       textCancelledCount={counts.cancelledCount}
       textPastCount={counts.completedCount}
-      onClickUpcoming={{
-        onClick: () => setFilter('confirmed'),
-      }}
-      onClickCancelled={{
-        onClick: () => setFilter('cancelled'),
-      }}
-      onClickCompleted={{
-        onClick: () => setFilter('completed'),
-      }}
       slotInterviewCard={
         <>
           {isLoading && allSchedules.length === 0 ? (
             <Loader />
           ) : allSchedules.length === 0 ? (
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <Stack width={'820px'}>
+              <AllInterviewEmpty textDynamic='No schedule found' />
+            </Stack>
+            
           ) : (
             <>
-              {transformDataSchedules(allSchedules).map((sch, ind) => {
-                const date = Object.keys(sch)[0];
-                const schedules = sch[String(date)];
-                return (
-                  <NewMyScheduleCard
-                    key={ind}
-                    textDate={
-                      date != 'undefined' ? dayjsLocal(date).format('DD') : null
-                    }
-                    textDay={
-                      date != 'undefined'
-                        ? dayjsLocal(date).format('ddd')
-                        : null
-                    }
-                    textMonth={
-                      date != 'undefined' ? (
-                        dayjsLocal(date).format('MMM')
-                      ) : (
-                        <DateIcon />
-                      )
-                    }
-                    slotMyScheduleSubCard={schedules.map(
-                      (meetingDetails, i) => {
-                        return (
-                          <ScheduleMeetingCard
-                            key={i}
-                            meetingDetails={meetingDetails}
-                          />
-                        );
-                      },
-                    )}
-                  />
-                );
-              })}
+              <CalendarComp
+                allSchedules={allSchedules}
+                isLoading={isLoading}
+                setFilter={setFilter}
+                filter={filter}
+              />
             </>
           )}
         </>

@@ -16,7 +16,6 @@ import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { sizes } from '@/src/components/CompanyDetailComp/CompanyInfoComp';
-import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -401,7 +400,7 @@ function CompanyDetails({
   const [phone, setPhone] = useState(null);
   const [phonePattern, setPhonePattern] = useState<string>('');
   const defaultCountry = details.phone_number ? null : userCountry;
-  const [error, setError] = useState<Error1>({
+  const [error, setError] = useState({
     phone: {
       error: false,
       msg: '',

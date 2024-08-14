@@ -26,6 +26,14 @@
   grid-row-gap: var(--space-2);
 }
 
+.ges-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .slot_for_button {
   display: flex;
   width: 100%;

@@ -18,10 +18,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
   return (
     <Stack spacing={1}>
       <Stack color={'var(--neutral-11)'}>
-        <Text
-          size={2}
-          content='Here are the list of urgent requests for today:'
-        ></Text>
+        <Text size={2} content='Schedules'></Text>
       </Stack>
       {schedules.map((schedule) => (
         <Link
@@ -41,7 +38,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
           >
             <Box sx={{ width: '148px' }}>
               <Stack color={'var(--neutral-11)'}>
-              <Text size={2} content={schedule.time} weight={'medium'}></Text>
+                <Text size={2} content={schedule.time} weight={'medium'}></Text>
                 <Text size={1} content={schedule.date}></Text>
               </Stack>
             </Box>

@@ -131,13 +131,19 @@ export function getTriggerOption(
       message = 'a trainee completes training';
       break;
     case 'onAvailReqAgent':
-      message = 'Request availability';
+      message = 'raising a request';
       break;
     case 'onReceivingAvailReq':
-      message = 'Recieved Candidate availability';
+      message = 'receiving a candidate availability';
       break;
     case 'onSelfScheduleReqAgent':
-      message = 'workflow for Self Scheduling';
+      message = 'candidate submits a self-schedule';
+      break;
+    case 'onRequestCancel':
+      message = 'candidate cancels a request';
+      break;
+    case 'onRequestReschedule':
+      message = 'candiate requests a reschedule';
       break;
   }
   let preMessage = '';
@@ -412,6 +418,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       },
     },
   ],
+  onInterviewerDecline: null, //fix needed causing lint
 } as const;
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =

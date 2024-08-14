@@ -1,9 +1,11 @@
+/* eslint-disable security/detect-object-injection */
 import type {
   DatabaseFunctions,
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import {
   type MutationFilters,
   type QueryFilters,
@@ -13,11 +15,13 @@ import {
   useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useCallback } from 'react';
 
 import { supabase } from '@/src/utils/supabase/client';
 import aglintToast from '@/src/utils/toast';
 
 import { appKey, GC_TIME } from '..';
+import { Request, RequestProgress, RequestResponse } from './types';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -28,10 +32,18 @@ export const requestQueries = {
     queryOptions({
       enabled: !!payload.assigner_id,
       gcTime: payload.assigner_id ? GC_TIME : 0,
-      refetchInterval: 5000,
       refetchOnMount: true,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
-      queryFn: async () => await getRequests({ payload, sort, filters }),
+      queryFn: async () =>
+        getRequests(await getUnfilteredRequests({ payload, sort, filters })),
+      placeholderData: {
+        urgent_request: [],
+        schedule_request: [],
+        reschedule_request: [],
+        cancel_schedule_request: [],
+        decline_request: [],
+        completed_request: [],
+      },
     }),
   requests_mutationOptions: <
     T extends 'create' | 'update' | 'delete',
@@ -73,6 +85,15 @@ export const requestQueries = {
       requestQueries.request_progress_key(),
       { request_id },
     ] as const,
+  all_request_progress_predicate: () => (query) =>
+    query.queryKey.includes(requestQueries.request_progress_key()) &&
+    query.state.data !== undefined,
+  request_progress_predicate:
+    ({ request_id }: GetRequestProgress) =>
+    (query) =>
+      query.queryKey.includes(requestQueries.request_progress_key()) &&
+      query.state.data !== undefined &&
+      !!query.queryKey.find((key) => key?.request_id === request_id),
   request_progress: ({
     request_id,
     enabled = true,
@@ -80,7 +101,8 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchInterval: 5000,
+      refetchInterval:
+        process.env.NODE_ENV === 'development' ? 2000 : undefined,
       refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
@@ -107,6 +129,9 @@ export const useRequestsCreate = () => {
     mutationKey: requestQueries.requests_mutationKey('create'),
     mutationFn: async ({ payload }: UseCreateRequest) => {
       await createRequests(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -136,6 +161,9 @@ export const useRequestsUpdate = () => {
     mutationKey: requestQueries.requests_mutationKey('update'),
     mutationFn: async ({ payload }: UseUpdateRequest) => {
       await updateRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -165,6 +193,9 @@ export const useRequestsDelete = () => {
     mutationKey: requestQueries.requests_mutationKey('delete'),
     mutationFn: async ({ payload }: UseDeleteRequest) => {
       await deleteRequest(payload);
+      await queryClient.cancelQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      );
       await Promise.allSettled([
         queryClient.refetchQueries(
           requestQueries.requests_invalidate().refetchQueries(),
@@ -184,6 +215,151 @@ export const useRequestsDelete = () => {
   return {
     ...mutation,
     mutationState,
+  };
+};
+
+type RealtimeRequest = RealtimePostgresInsertPayload<DatabaseTable['request']>;
+type RealtimeRequestProgress = RealtimePostgresInsertPayload<
+  DatabaseTable['request_progress']
+>;
+
+export const useRequestRealtime = () => {
+  const queryClient = useQueryClient();
+  const insertRequest = useCallback(() => {
+    queryClient.cancelQueries(
+      requestQueries.requests_invalidate().refetchQueries(),
+    );
+    Promise.allSettled([
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      ),
+      queryClient.refetchQueries(
+        requestQueries.requests_invalidate().refetchQueries(),
+      ),
+    ]);
+  }, [queryClient]);
+  const updateRequest = useCallback(
+    (payload: RealtimeRequest) => {
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      );
+      queryClient
+        .getQueriesData<RequestResponse>({
+          predicate: requestQueries.requests_invalidate().predicate,
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestResponse>(
+            queryKey,
+            getRequests(
+              Object.values(queryData)
+                .flatMap((entry) => entry)
+                .reduce((acc, curr) => {
+                  if (curr.id === payload.new.id)
+                    acc.push({
+                      ...curr,
+                      ...payload.new,
+                    });
+                  else acc.push(curr);
+                  return acc;
+                }, [] as Request[]),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const deleteRequest = useCallback(
+    (payload: RealtimeRequest) => {
+      queryClient.removeQueries(
+        requestQueries.requests_invalidate().removeQueries(),
+      );
+      queryClient
+        .getQueriesData<RequestResponse>({
+          predicate: requestQueries.requests_invalidate().predicate,
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestResponse>(
+            queryKey,
+            getRequests(
+              Object.values(queryData)
+                .flatMap((entry) => entry)
+                .reduce((acc, curr) => {
+                  if (curr.id !== (payload.old as any).id) acc.push(curr);
+                  return acc;
+                }, [] as Request[]),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const insertRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.request_progress_predicate({
+            request_id: payload.new.request_id,
+          }),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            [...queryData, payload.new].toSorted(
+              (a, z) =>
+                dayjsLocal(a.created_at).date() -
+                dayjsLocal(z.created_at).date(),
+            ),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const updateRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.request_progress_predicate({
+            request_id: payload.new.request_id,
+          }),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            queryData.reduce((acc, curr) => {
+              if (curr.id === payload.new.id) acc.push(payload.new);
+              else acc.push(curr);
+              return acc;
+            }, [] as RequestProgress[]),
+          );
+        });
+    },
+    [queryClient],
+  );
+  const deleteRequestProgress = useCallback(
+    (payload: RealtimeRequestProgress) => {
+      queryClient
+        .getQueriesData<RequestProgress[]>({
+          predicate: requestQueries.all_request_progress_predicate(),
+        })
+        .forEach(([queryKey, queryData]) => {
+          queryClient.setQueryData<RequestProgress[]>(
+            queryKey,
+            queryData.reduce((acc, curr) => {
+              if (curr.id !== (payload.old as any).id) acc.push(curr);
+              return acc;
+            }, [] as RequestProgress[]),
+          );
+        });
+    },
+    [queryClient],
+  );
+  return {
+    insertRequest,
+    updateRequest,
+    deleteRequest,
+    insertRequestProgress,
+    updateRequestProgress,
+    deleteRequestProgress,
   };
 };
 
@@ -213,7 +389,10 @@ type RequestsFilter = {
 
 type RequestsSort = {
   order: 'asc' | 'desc';
-  type: keyof Pick<DatabaseTable['request'], 'title' | 'created_at'>;
+  type: keyof Pick<
+    DatabaseTable['request'],
+    'title' | 'created_at' | 'updated_at'
+  >;
 };
 
 export type GetRequestParams = {
@@ -221,7 +400,11 @@ export type GetRequestParams = {
   filters: RequestsFilter;
   sort: RequestsSort;
 };
-export const getRequests = async ({
+
+const REQUEST_SELECT =
+  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))';
+
+export const getUnfilteredRequests = async ({
   payload: { assigner_id },
   filters: {
     /*assignee_id,*/ is_new,
@@ -233,11 +416,7 @@ export const getRequests = async ({
   },
   sort: { order, type },
 }: GetRequestParams) => {
-  const query = supabase
-    .from('request')
-    .select(
-      '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))',
-    );
+  const query = supabase.from('request').select(REQUEST_SELECT);
 
   query.or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`);
 
@@ -274,6 +453,78 @@ export const getRequests = async ({
   return (await query).data;
 };
 
+type Sections =
+  | Request['type']
+  | `${Extract<Request['status'], 'completed'>}_request`
+  | `${Extract<Request['priority'], 'urgent'>}_request`;
+
+export const getRequests = (response: Request[]) => {
+  return (
+    Object.entries(
+      response.reduce(
+        (acc, curr) => {
+          if (curr.status === 'completed') acc.completed_request.push(curr);
+          else if (curr.priority === 'urgent') acc.urgent_request.push(curr);
+          else acc[curr.type].push(curr);
+          return acc;
+        },
+        {
+          urgent_request: [],
+          schedule_request: [],
+          reschedule_request: [],
+          cancel_schedule_request: [],
+          decline_request: [],
+          completed_request: [],
+          // eslint-disable-next-line no-unused-vars
+        } as { [id in Sections]: typeof response },
+      ),
+    ) as [Sections, typeof response][]
+  ).reduce(
+    (acc, [key, values]) => {
+      switch (key) {
+        case 'completed_request':
+          acc[key] = values.toSorted(
+            (a, z) =>
+              dayjsLocal(z.completed_at).date() -
+              dayjsLocal(a.completed_at).date(),
+          );
+          break;
+        default:
+          acc[key] = requestSort(values);
+      }
+      return acc;
+    },
+    // eslint-disable-next-line no-unused-vars
+    {} as { [id in Sections]: typeof response },
+  );
+};
+
+type SortRequest = Extract<Request['status'], 'to_do' | 'in_progress'> | 'rest';
+
+const requestSort = (request: Request[]) => {
+  return Object.values(
+    request.reduce(
+      (acc, curr) => {
+        if (curr.status === 'to_do') acc.to_do.push(curr);
+        else if (curr.status === 'in_progress') acc.in_progress.push(curr);
+        else acc.rest.push(curr);
+        return acc;
+      },
+      { to_do: [], in_progress: [], rest: [] } as {
+        // eslint-disable-next-line no-unused-vars
+        [id in SortRequest]: typeof request;
+      },
+    ),
+  )
+    .map((values) =>
+      values.toSorted(
+        (a, z) =>
+          dayjsLocal(z.updated_at).date() - dayjsLocal(a.updated_at).date(),
+      ),
+    )
+    .flatMap((values) => values);
+};
+
 type GetRequestProgress = Pick<DatabaseTable['request_progress'], 'request_id'>;
 export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
   (
@@ -281,6 +532,7 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .from('request_progress')
       .select('*')
       .eq('request_id', request_id)
+      .order('created_at', { ascending: true })
       .throwOnError()
   ).data;
 

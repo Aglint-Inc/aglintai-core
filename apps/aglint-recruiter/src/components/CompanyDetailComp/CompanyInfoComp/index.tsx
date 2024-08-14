@@ -446,7 +446,7 @@ const EditBasicInfoSlider = ({ editDrawer, setEditDrawer }) => {
             <ButtonSoft
               size={2}
               color={'neutral'}
-              textButton='Back'
+              textButton='Cancel'
               onClickButton={{ onClick: handleClose }}
             />
             <ButtonSolid

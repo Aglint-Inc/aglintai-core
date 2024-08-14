@@ -14,12 +14,11 @@ export type ApiBodyParamsSignup = {
   user_id: string;
   first_name: string;
   last_name: string;
-  flow: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { email, user_id, first_name, last_name, flow } =
+    const { email, user_id, first_name, last_name } =
       req.body as ApiBodyParamsSignup;
 
     const { error: errUser, data: recUser } = await supabase
@@ -43,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .from('recruiter')
       .insert({
         email: email,
-        recruiter_type: flow,
+        recruiter_type: 'Company',
         id: rec_id,
         primary_admin: user_id,
       })

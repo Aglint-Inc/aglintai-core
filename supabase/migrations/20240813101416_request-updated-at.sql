@@ -1,4 +1,3 @@
-
 alter table "public"."request" add column "updated_at" timestamp with time zone not null default now();
 
 set check_function_bodies = off;

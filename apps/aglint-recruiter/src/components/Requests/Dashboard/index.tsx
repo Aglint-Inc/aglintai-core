@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
@@ -6,6 +7,7 @@ import { RequestList } from '@/devlink2/RequestList';
 import { ReqUrgent } from '@/devlink2/ReqUrgent';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -16,6 +18,7 @@ import { useRequestCount } from './hooks';
 import { requestTypes } from './utils';
 
 function Dashboard() {
+  const { setSections, initialSections } = useRequests();
   const { data: requestCount, status } = useRequestCount();
   const { setQueryParams } = useRouterPro();
 
@@ -53,28 +56,29 @@ function Dashboard() {
     requestCount?.chat.completedRequest[
       requestCount.chat.completedRequest.length - 1
     ]?.count || 0;
-  const lastOngoingRequestCount =
-    requestCount?.chat.onGoingRequest[
-      requestCount.chat.onGoingRequest.length - 1
-    ]?.count || 0;
+  // const lastOngoingRequestCount =
+  //   requestCount?.chat.onGoingRequest[
+  //     requestCount.chat.onGoingRequest.length - 1
+  //   ]?.count || 0;
 
-  const total_requests =
-    lastCreatedRequestCount +
-    lastCompletedRequestCount +
-    lastOngoingRequestCount;
+  // const total_requests =
+  //   lastCreatedRequestCount +
+  //   lastCompletedRequestCount +
+  //   lastOngoingRequestCount;
 
-  const open_request = total_requests - lastCompletedRequestCount || 0;
+  const open_request = lastCreatedRequestCount - lastCompletedRequestCount || 0;
 
   const completed_percentage =
-    Math.floor((lastCompletedRequestCount / total_requests) * 100) || 0;
+    Math.floor((lastCompletedRequestCount / lastCreatedRequestCount) * 100) ||
+    0;
 
   return (
     <>
       <RequestDashboard
         textGreetingTitle={`👋 Hey, ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}!`}
         textGreetingDescription={formatRequestCountText(
-          requestCount?.card.urgentRequest,
-          requestCount?.card.standardRequest,
+          requestCount?.card.urgent_request,
+          requestCount?.card.standard_request,
           'today',
         )}
         textProgressTitle={`${open_request} Open Requests (${completed_percentage}% complete)`}
@@ -102,10 +106,14 @@ function Dashboard() {
         slotRequestList={
           <>
             <ReqUrgent
-              textRequests={`${requestCount?.card.urgentRequest || 0} Urgent Requests`}
+              textRequests={`${requestCount?.card.urgent_request || 0} Urgent Requests`}
               onClickUrgentRequest={{
                 onClick: () => {
-                  setQueryParams({ tab: 'requests', section: 'urgent' });
+                  setSections({ ...initialSections, urgent_request: true });
+                  setQueryParams({
+                    tab: 'requests',
+                    section: 'urgent_request',
+                  });
                 },
               }}
             />
@@ -115,9 +123,10 @@ function Dashboard() {
                   iconName={iconName}
                   textTitle={capitalizeFirstLetter(title)}
                   key={title}
-                  textCount={requestCount?.card[String(title)] || 0}
+                  textCount={requestCount?.card?.[title] ?? 0}
                   onClickCard={{
                     onClick: () => {
+                      setSections({ ...initialSections, [title]: true });
                       setQueryParams({ tab: 'requests', section: title });
                     },
                   }}
@@ -126,7 +135,7 @@ function Dashboard() {
             })}
             <CompletedRequestsBox
               status={status}
-              completedRequest={requestCount?.card.completedRequests || 0}
+              completedRequest={requestCount?.card.completed_request || 0}
             />
           </>
         }

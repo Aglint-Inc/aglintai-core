@@ -669,7 +669,7 @@ const InterviewSession = ({
             onClickLink={{
               onClick: () =>
                 window.open(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/module/members/${session.interview_module.id}`,
+                  `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
                   '_blank',
                 ),
             }}

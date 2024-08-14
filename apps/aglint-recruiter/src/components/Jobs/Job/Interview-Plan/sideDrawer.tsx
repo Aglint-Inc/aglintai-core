@@ -256,7 +256,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
 
   return (
     <SideDrawerBlock
-      textTitle='Edit Interview'
+      textTitle='Update Interview'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }

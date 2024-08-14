@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { UserInfoTeam } from "./UserInfoTeam";
 import * as _utils from "./utils";
 import _styles from "./TeamListItem.module.css";
 
@@ -17,6 +18,9 @@ export function TeamListItem({
   textLastActive = "29 Aug 2023",
   slotThreeDot,
   slotBadge,
+  slotUserInfo,
+  isUserInfoVisible = false,
+  onClickMouseHover = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "team-table-list")} tag="div">
@@ -24,6 +28,7 @@ export function TeamListItem({
         <_Builtin.Block
           className={_utils.cx(_styles, "team-name-wrap")}
           tag="div"
+          {...onClickMouseHover}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "team-user-image-wrap")}
@@ -46,13 +51,14 @@ export function TeamListItem({
             <Text content={userName} weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "user-detail-wrap")}
-          tag="div"
-        >
-          <Text content={textDesignation} color="neutral" />
-          <Text content={userEmail} color="neutral" />
+          {isUserInfoVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "slot-tli-user-info")}
+              tag="div"
+            >
+              {slotUserInfo ?? <UserInfoTeam />}
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

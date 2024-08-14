@@ -1,5 +1,6 @@
 import { ReqCompleted } from '@/devlink2/ReqCompleted';
 import { Text } from '@/devlink2/Text';
+import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function CompletedRequestsBox({
@@ -9,12 +10,14 @@ function CompletedRequestsBox({
   completedRequest: number;
   status: 'pending' | 'success' | 'error';
 }) {
+  const { setSections, initialSections } = useRequests();
   const { setQueryParams } = useRouterPro();
   return (
     <ReqCompleted
       onClickCompleted={{
         onClick: () => {
-          setQueryParams({ tab: 'requests', section: 'completed' });
+          setSections({ ...initialSections, completed_request: true });
+          setQueryParams({ tab: 'requests', section: 'completed_request' });
         },
       }}
       textTitle={

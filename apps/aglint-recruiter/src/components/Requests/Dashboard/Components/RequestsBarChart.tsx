@@ -1,5 +1,3 @@
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable no-unused-vars */
 import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
@@ -9,10 +7,9 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { getOrderedGraphValues } from '@/src/components/Jobs/Job/Dashboard/utils';
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 export const RequestsBarChart: FC<{
@@ -21,7 +18,7 @@ export const RequestsBarChart: FC<{
   onGoingRequestData: { name: string; count: number }[];
 }> = ({ createdRequestData, completedRequestData, onGoingRequestData }) => {
   const matches = useMediaQuery('(min-width:1920px)');
-  const { createdLabels, createdTooltips, createdCounts, createdColors } =
+  const { createdLabels, createdTooltips, createdCounts } =
     createdRequestData.reduce(
       (acc, { name, count }) => {
         const safeName = capitalize((name ?? '').trim());
@@ -40,115 +37,68 @@ export const RequestsBarChart: FC<{
       },
     );
   const { completedCounts } = completedRequestData.reduce(
-    (acc, { name, count }) => {
-      const safeName = capitalize((name ?? '').trim());
-      acc.completedLabels.push(
-        safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
-      );
-      acc.completedLabels.push(safeName);
+    (acc, { count }) => {
       acc.completedCounts.push(count);
       return acc;
     },
     {
-      completedLabels: [],
-      completedTooltips: [],
       completedCounts: [],
-      completedColors: [],
     },
   );
-  const { onGoingCounts } = onGoingRequestData.reduce(
+  const filteredOnGoingRequestData = onGoingRequestData.filter(
+    ({ count }) => count !== 0,
+  );
+  const { onGoingCounts, onGoingLabels } = filteredOnGoingRequestData.reduce(
     (acc, { name, count }) => {
       const safeName = capitalize((name ?? '').trim());
       acc.onGoingLabels.push(
         safeName.length > 12 ? `${safeName.slice(0, 12)}..` : safeName,
       );
-      acc.onGoingLabels.push(safeName);
       acc.onGoingCounts.push(count);
       return acc;
     },
     {
       onGoingLabels: [],
-      onGoingTooltips: [],
       onGoingCounts: [],
-      onGoingColors: [],
+      hiddenFlags: [] as boolean[],
     },
   );
+
   const dataBar = {
     labels: createdLabels,
     datasets: [
-      {
-        label: 'In progress',
-        data: onGoingCounts,
-        backgroundColor: ['#63aaf0'],
-        borderRadius: 4,
-        // borderSkipped: false,
-        grouped: true,
-        barThickness: 30,
-      },
-      {
-        label: 'Completed',
-        data: completedCounts,
-        backgroundColor: ['#208368'],
-        borderRadius: 4,
-        // borderSkipped: false,
-        grouped: true,
-        barThickness: 30,
-      },
       {
         label: 'Created',
         data: createdCounts,
         backgroundColor: ['#63635E30'],
         borderRadius: 4,
-        // borderSkipped: false,
         grouped: true,
-        barThickness: 30,
+        barThickness: 15,
+      },
+
+      {
+        label: 'Completed',
+        data: completedCounts,
+        backgroundColor: ['#208368'],
+        borderRadius: 4,
+        grouped: true,
+        barThickness: 15,
+      },
+      {
+        label: 'In Progress',
+        data: onGoingCounts.map((ele, i) => {
+          return {
+            x: onGoingLabels[Number(i)],
+            y: ele,
+          };
+        }),
+        backgroundColor: ['#63aaf0'],
+        borderRadius: 4,
+        grouped: true,
+        barThickness: 15,
       },
     ],
   };
-
-  const [activeIndex, setActiveIndex] = useState(null);
-
-  // const handleClick = (
-  //   _,
-  //   elements: { datasetIndex: number; index: number }[],
-  // ) => {
-  //   if (elements.length > 0) {
-  //     const { datasetIndex, index } = elements[0];
-  //     const label = dataBar.labels[index];
-  //     const value = dataBar.datasets[datasetIndex].data[index];
-  //     //   console.log(label, value);
-  //     getSelectedBar({ label, value });
-  //     setActiveIndex(index);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (data.length) {
-  //     handleClick(null, [
-  //       {
-  //         datasetIndex: 0,
-  //         index: data.slice(data.length - 10, data.length).length - 1,
-  //       },
-  //     ]);
-  //   }
-  // }, [data]);
-
-  // const getDataset = () => {
-  //   return dataBar.datasets.map((dataset, datasetIndex) => {
-  //     return {
-  //       ...dataset,
-  //       backgroundColor: 'rgba(99, 99, 94, 0.2)',
-
-  //       // borderSkipped: true,
-  //       borderRadius: 4,
-  //     };
-  //   });
-  // };
-
-  // const updatedData = {
-  //   ...dataBar,
-  //   datasets: getDataset(),
-  // };
 
   return (
     <Bar
@@ -168,8 +118,6 @@ export const RequestsBarChart: FC<{
         },
         scales: {
           x: {
-            stacked: true,
-
             title: {
               display: false,
               font: { weight: 'bold' },
@@ -188,7 +136,6 @@ export const RequestsBarChart: FC<{
             },
           },
           y: {
-            stacked: true,
             title: {
               display: false,
               font: { weight: 'bold' },
@@ -204,7 +151,6 @@ export const RequestsBarChart: FC<{
             display: false,
           },
         },
-        // onClick: handleClick,
       }}
       data={dataBar}
     />

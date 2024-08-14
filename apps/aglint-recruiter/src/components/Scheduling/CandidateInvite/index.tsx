@@ -228,7 +228,9 @@ export const ConfirmedInvitePage = (
       Awaited<ReturnType<typeof useCandidateInvite>>['meta']['data'],
       'candidate' | 'schedule' | 'meetings' | 'filter_json' | 'recruiter'
     > &
-    Pick<Awaited<ReturnType<typeof useCandidateInvite>>, 'timezone'>,
+    Pick<Awaited<ReturnType<typeof useCandidateInvite>>, 'timezone'> & {
+      avail_request_id?: string;
+    },
 ) => {
   const { candidate, filter_json, meetings, schedule, recruiter, timezone } =
     props;
@@ -327,8 +329,6 @@ export const ConfirmedInvitePage = (
           start_date: details[0].other_details?.dateRange?.start ?? null,
           end_date: details[0].other_details?.dateRange?.end ?? null,
         },
-        candidate_name: getFullName(candidate.first_name, candidate.last_name),
-        organizer_id: props.meetings[0].interview_meeting.organizer_id,
         type: details[0].type,
       });
     }
@@ -571,8 +571,8 @@ const CancelRescheduleDialog = ({
     type,
     reason: options[0],
     dateRange: {
-      start: dayjs().toISOString(),
-      end: dayjs().add(7, 'day').toISOString(),
+      start: dayjs().add(1, 'day').toISOString(),
+      end: dayjs().add(8, 'day').toISOString(),
     },
     additionalNote: null,
   });

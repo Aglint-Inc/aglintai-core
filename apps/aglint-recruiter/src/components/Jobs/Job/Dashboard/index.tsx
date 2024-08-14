@@ -21,6 +21,7 @@ import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { BannerLoading } from '@/devlink3/BannerLoading';
 import { DarkPill } from '@/devlink3/DarkPill';
@@ -194,6 +195,7 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
+          isJobRoleVisible={false}
             isBanner={banners.length !== 0}
             slotBanner={
               <Stack gap={1}>
@@ -605,39 +607,96 @@ const useBanners = () => {
 
   if (isInterviewPlanDisabled)
     banners.push(
-      <Banner
-        type='warning'
-        title='Interview plan not set'
-        description='To use the scheduling module, enable interview plans for this job.'
-        primary={{
-          title: 'Ignore',
-          onClick: () =>
-            push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
-        }}
-        secondary={{
-          title: 'View',
-          onClick: () =>
-            handleJobUpdate({ interview_plan_warning_ignore: true }),
-        }}
-      />,
+      <>
+        <GlobalBannerInline
+          textContent='Interview plan not set'
+          color={'warning'}
+          slotButton={
+            <>
+              <ButtonSoft
+                textButton='Ignore'
+                color={'neutral'}
+                size={1}
+                onClickButton={{
+                  onClick: () =>
+                    push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+                }}
+              />
+              <ButtonSolid
+                textButton='View'
+                color={'accent'}
+                size={1}
+                onClickButton={{
+                  onClick: () =>
+                    handleJobUpdate({ interview_plan_warning_ignore: true }),
+                }}
+              />
+            </>
+          }
+        />
+        {/* <Banner
+          type='warning'
+          title='Interview plan not set'
+          description='To use the scheduling module, enable interview plans for this job.'
+          primary={{
+            title: 'Ignore',
+            onClick: () =>
+              push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+          }}
+          secondary={{
+            title: 'View',
+            onClick: () =>
+              handleJobUpdate({ interview_plan_warning_ignore: true }),
+          }}
+        /> */}
+        ,
+      </>,
     );
   if (isInterviewSessionEmpty)
     banners.push(
-      <Banner
-        type='warning'
-        title='Interview plan not set'
-        description='Add one or more interview types to create an interview plan.'
-        primary={{
-          title: 'Ignore',
-          onClick: () =>
-            push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
-        }}
-        secondary={{
-          title: 'View',
-          onClick: () =>
-            handleJobUpdate({ interview_session_warning_ignore: true }),
-        }}
-      />,
+      <>
+        <GlobalBannerInline
+          textContent='Interview plan not set'
+          color={'warning'}
+          slotButton={
+            <>
+              <ButtonSoft
+                textButton='Ignore'
+                color={'neutral'}
+                size={1}
+                onClickButton={{
+                  onClick: () =>
+                    push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+                }}
+              />
+              <ButtonSolid
+                textButton='View'
+                color={'accent'}
+                size={1}
+                onClickButton={{
+                  onClick: () =>
+                    handleJobUpdate({ interview_session_warning_ignore: true }),
+                }}
+              />
+            </>
+          }
+        />
+      </>,
+      // <Banner
+      //   type='warning'
+      //   title='Interview plan not set'
+      //   description='Add one or more interview types to create an interview plan.'
+      //   primary={{
+      //     title: 'Ignore',
+      //     onClick: () =>
+      //       push(ROUTES['/jobs/[id]/interview-plan']({ id: job?.id })),
+      //   }}
+      //   secondary={{
+      //     title: 'View',
+      //     onClick: () =>
+      //       handleJobUpdate({ interview_session_warning_ignore: true }),
+      //   }}
+      // />,
     );
   if (
     !publishStatus.detailsValidity.validity ||
@@ -645,30 +704,63 @@ const useBanners = () => {
   ) {
     if (!publishStatus.detailsValidity.validity) {
       banners.push(
-        <Banner
-          type='error'
-          title={publishStatus.detailsValidity.message}
-          description='Please ensure that valid job details are provided.'
-          primary={{
-            title: 'View',
-            onClick: () =>
-              push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
-          }}
+        <GlobalBannerInline
+          textContent={publishStatus.detailsValidity.message}
+          iconName='warning'
+          color={'error'}
+          slotButton={
+            <>
+              <ButtonSolid
+                textButton='View'
+                color={'error'}
+                onClickButton={{
+                  onClick: () =>
+                    push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+                }}
+              />
+            </>
+          }
         />,
+        // <Banner
+        //   type='error'
+        //   title={publishStatus.detailsValidity.message}
+        //   description='Please ensure that valid job details are provided.'
+        //   primary={{
+        //     title: 'View',
+        //     onClick: () =>
+        //       push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+        //   }}
+        // />,
       );
     }
     if (!publishStatus.hiringTeamValidity.validity) {
       banners.push(
-        <Banner
-          type='error'
-          title='Hiring team not set'
-          description='Please ensure that necessary hiring members are selected.'
-          primary={{
-            title: 'Set Now',
-            onClick: () =>
-              push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
-          }}
+        <GlobalBannerInline
+          iconName='warning'
+          color={'error'}
+          textContent='Hiring team not set'
+          slotButton={
+            <ButtonSolid
+              size={1}
+              textButton='Set Now'
+              color={'error'}
+              onClickButton={{
+                onClick: () =>
+                  push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+              }}
+            />
+          }
         />,
+        // <Banner
+        //   type='error'
+        //   title='Hiring team not set'
+        //   description='Please ensure that necessary hiring members are selected.'
+        //   primary={{
+        //     title: 'Set Now',
+        //     onClick: () =>
+        //       push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
+        //   }}
+        // />,
       );
     }
   } else if (publishStatus.loading)
@@ -744,6 +836,31 @@ const useBanners = () => {
             }),
         }}
       />,
+      // <Banner
+      //   type='warning'
+      //   title={'Job details changed.'}
+      //   description='Please publish the updates.'
+      //   primary={{
+      //     title: 'View',
+      //     onClick: () =>
+      //       push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+      //   }}
+      //   secondary={{
+      //     title: 'Revert',
+      //     onClick: () =>
+      //       handleJobUpdate({
+      //         draft: {
+      //           ...job.draft,
+      //           department_id: job.department_id,
+      //           description: job.description,
+      //           job_title: job.job_title,
+      //           job_type: job.job_type,
+      //           location: job.location,
+      //           workplace_type: job.workplace_type,
+      //         },
+      //       }),
+      //   }}
+      // />,
     );
   return banners;
 };

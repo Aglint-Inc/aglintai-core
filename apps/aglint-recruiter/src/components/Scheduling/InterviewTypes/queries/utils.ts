@@ -4,6 +4,7 @@ import {
   PauseJson,
 } from '@aglint/shared-types';
 import axios from 'axios';
+import _ from 'lodash';
 
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -40,7 +41,7 @@ export const fetchSchedulesCountByModule = async (module_id: string) => {
 
 export const fetchModuleSchedules = async (
   module_id: string,
-  filter: DatabaseTable['interview_meeting']['status'],
+  filter: DatabaseTable['interview_meeting']['status'][],
   changeText: string,
 ) => {
   const query = schedulesSupabase()
@@ -51,9 +52,14 @@ export const fetchModuleSchedules = async (
     query.ilike('session_name', `%${changeText}%`);
   }
 
-  if (filter) {
-    query.eq('status', filter);
+  if (typeof filter === 'string' || _.isArray(filter)) {
+    if (typeof filter === 'string') query.eq('status', filter);
+    else if (_.isArray(filter)) query.in('status', filter);
   }
+
+  // if (filter) {
+  //   query.eq('status', filter);
+  // }
 
   const { data } = await query.throwOnError();
 

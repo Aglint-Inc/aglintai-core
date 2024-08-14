@@ -21,19 +21,13 @@ export function JobsBanner({ as: _Component = _Builtin.Block, slotButton }) {
             className={_utils.cx(_styles, "draft-job-icon")}
             tag="div"
           >
-            <GlobalIcon iconName="edit_document" size="8" weight="light" />
+            <GlobalIcon iconName="edit_document" size="5" weight="light" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "jb-desc-wrap")}
             tag="div"
           >
-            <Text content="This job is in draft state." weight="medium" />
-            <Text
-              size="1"
-              color="neutral"
-              weight=""
-              content="Please publish this job to begin evaluating candidates."
-            />
+            <Text content="This job is in draft state." weight="regular" />
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
