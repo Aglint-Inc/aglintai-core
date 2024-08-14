@@ -290,6 +290,7 @@ create or replace view "public"."job_view" as  WITH application_status_view_cte 
     job_cte.jd_json,
     job_cte.job_title,
     job_cte.job_type,
+    job_cte.location_id,
     job_cte.location,
     job_cte.parameter_weights,
     job_cte.phone_screen_enabled,

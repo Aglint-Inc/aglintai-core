@@ -70,7 +70,7 @@ export const useJobForms = (
             <JobType name={safeKey} value={value} onChange={handleChange} />
           );
           break;
-        case 'location':
+        case 'location_id':
           acc[safeKey] = (
             <JobLocation name={safeKey} value={value} onChange={handleChange} />
           );
@@ -198,12 +198,10 @@ JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
-  const defaultAddress = ((recruiter?.office_locations ?? []) as any[]).map(
-    (s) => ({
-      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
-      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
-    }),
-  );
+  const defaultAddress = (recruiter?.office_locations ?? []).map((s) => ({
+    label: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    value: s.id,
+  }));
   return (
     <Autocomplete
       options={defaultAddress}

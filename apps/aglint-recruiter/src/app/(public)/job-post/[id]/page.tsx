@@ -91,7 +91,7 @@ function JobPost({
       logo: recruiter?.logo,
     },
     occupationalCategory: '15-1132.00 Software Developers, Application',
-    salaryCurrency: post?.location?.split(', ')[2] == 'India' ? 'INR' : 'USD',
+    salaryCurrency: 'USD',
     // skills: post?.skills?.join(','),
     title: post?.job_title,
     workHours: '40 hours per week',

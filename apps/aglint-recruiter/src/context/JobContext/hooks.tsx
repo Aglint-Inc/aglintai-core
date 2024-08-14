@@ -86,7 +86,6 @@ const useJobContext = () => {
             description: job.draft.description,
             job_title: job.draft.job_title,
             job_type: job.draft.job_type,
-            location: job.draft.location,
             workplace_type: job.draft.workplace_type,
           } as Omit<Job['draft'], 'jd_json'>,
           {
@@ -94,7 +93,6 @@ const useJobContext = () => {
             description: job.description,
             job_title: job.job_title,
             job_type: job.job_type,
-            location: job.location,
             workplace_type: job.workplace_type,
           } as Omit<Job['draft'], 'jd_json'>,
         ),

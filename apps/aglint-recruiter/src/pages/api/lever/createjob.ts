@@ -272,7 +272,6 @@ export const createJobObject = async ({
         : post.workplaceType === 'onsite'
           ? 'on site'
           : 'off site',
-    location: post.categories.location,
     job_title: post.text,
     description: post.content.descriptionHtml,
     jd_json: {

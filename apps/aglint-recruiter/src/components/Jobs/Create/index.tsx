@@ -65,8 +65,8 @@ const JobCreate = () => {
       required: true,
       error: { value: false, helper: `Job type can't be empty` },
     },
-    location: {
-      value: '',
+    location_id: {
+      value: 0,
       required: false,
       error: { value: false, helper: `Job location can't be empty` },
     },
@@ -232,7 +232,7 @@ const JobForms = ({
     description,
     job_title,
     job_type,
-    location,
+    location_id,
     workplace_type,
     hiring_manager,
     recruiter,
@@ -246,7 +246,7 @@ const JobForms = ({
       {job_type}
       {workplace_type}
       {department_id}
-      {location}
+      {location_id}
     </>
   );
 

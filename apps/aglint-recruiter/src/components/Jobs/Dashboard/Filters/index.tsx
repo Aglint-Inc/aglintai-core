@@ -45,19 +45,6 @@ function FilterJobDashboard({
           },
           {
             type: 'filter',
-            name: 'Job Location',
-            iconname: 'location_on',
-            options: filterOptions.location,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                location: val,
-              });
-            },
-            value: filterValues.location,
-          },
-          {
-            type: 'filter',
             name: 'Job type',
             iconname: 'work',
             options: filterOptions.type,
@@ -234,8 +221,6 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
 
   const filteredJobs = useMemo(() => {
     let temp = [...jobs];
-    if (filterValues.location.length)
-      temp = temp.filter((job) => filterValues.location.includes(job.location));
     if (filterValues.type.length)
       temp = temp.filter((job) => filterValues.type.includes(job.job_type));
     if (filterValues.hiringManager.length)
