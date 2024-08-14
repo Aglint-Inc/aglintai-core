@@ -20,8 +20,6 @@ export async function middleware(request: NextRequest) {
     permissions: PERMISSIONS[requestUrl],
   });
 
-  console.log({ isAllowed, id, rec_id, role });
-
   if (requestUrl.startsWith('/api/')) {
     if (isAllowed) {
       // user this headers to get id and role for requester
