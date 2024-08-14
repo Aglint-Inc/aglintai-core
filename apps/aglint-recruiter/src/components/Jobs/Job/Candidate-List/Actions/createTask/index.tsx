@@ -80,7 +80,7 @@ function CreateTask({
   const {
     interviewPlans: { data },
   } = useJob();
-  const interview_session = data?.interview_session;
+  const interview_session = data?.flatMap((item) => item.interview_session);
   useEffect(() => {
     if (interview_session && assignerList.length) {
       setSelectedSession(

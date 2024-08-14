@@ -232,7 +232,7 @@ const getApplicationInterview = async ({
     (
       (await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`))
         ?.data as GetInterviewPlansType['respone']
-    )?.interview_session ?? []
+    )?.flatMap(item=>item.interview_session) ?? []
   )
     .sort((a, z) => a.session_order - z.session_order)
     .map(

@@ -163,7 +163,7 @@ export const createJobApplications = async (
 };
 
 export const fetchAllCandidates = async (
-  post_id: string,
+  post_id: number,
   apiKey: string,
 ): Promise<GreenhouseApplication[]> => {
   let allCandidates = [];
