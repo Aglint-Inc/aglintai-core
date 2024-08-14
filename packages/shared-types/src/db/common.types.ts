@@ -59,7 +59,7 @@ type jsonItemType = {
 
 type CustomDraft = Pick<
   Database["public"]["Tables"]["public_jobs"]["Row"],
-  "job_title" | "description" | "workplace_type" | "job_type" | "location"
+  "job_title" | "description" | "workplace_type" | "job_type" | "location_id"
 > & { department_id?: number; jd_json: CustomJdJson };
 
 export type CustomRequestType = Custom<
@@ -74,3 +74,6 @@ export type CustomRequestType = Custom<
     priority: "urgent" | "standard";
   }
 >;
+
+export type CustomLocation =
+  Database["public"]["Tables"]["office_locations"]["Row"];

@@ -3,8 +3,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
-import { GreenhouseDepartmentsAPI } from '@/src/app/api/integrations/greenhouse/sync/departments/type';
-import { GreenhouseOfficeLocationsAPI } from '@/src/app/api/integrations/greenhouse/sync/office_locations/type';
+// import { GreenhouseDepartmentsAPI } from '@/src/app/api/integrations/greenhouse/sync/departments/type';
+// import { GreenhouseOfficeLocationsAPI } from '@/src/app/api/integrations/greenhouse/sync/office_locations/type';
 import { GreenhouseUserAPI } from '@/src/app/api/integrations/greenhouse/sync/user/type';
 import { GreenhouseAPI } from '@/src/app/api/integrations/greenhouse/type';
 import axios from '@/src/client/axios';
@@ -233,7 +233,7 @@ const GreenhouseSync: GreenhouseSyncOptions = {
 //     {},
 //   );
 //   return res;
-}
+// }
 
 async function getGreenhouseUser() {
   const res = await axios.call<GreenhouseUserAPI>(
