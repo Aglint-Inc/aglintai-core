@@ -74,7 +74,7 @@ function CreateSchedulePopUp({
 
   return (
     <Collapse in={selectedItems?.schedule_type[0]?.id === 'schedule'}>
-      <Stack position={'relative'} top={'-10px'}>
+      <Stack px={'16px'} position={'relative'} top={'-10px'}>
         <AiChatSuggest
           textHeader={'Schedule an interview'}
           slotList={
