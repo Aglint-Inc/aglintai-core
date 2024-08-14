@@ -7,8 +7,11 @@ import {
 // import InfoDisplay from "@components/InfoDisplay";
 import {
   bookSelfSchedule,
+  requestForCancel,
+  requestForReschedule,
   sendAvailabilityReminder,
   sendReminderSelfSchedule,
+  shuffleAndSplit,
   shuffleAndSplitAsTwo,
   submitAvailability,
   updateRequest,
@@ -22,9 +25,8 @@ const DrawerComponent = () => {
     btn1: false,
     btn2: false,
     btn3: false,
+    btn4: false,
   });
-  console.clear();
-  console.log(loading);
   const drawerRef = useRef(null);
 
   const toggleDrawer = () => {
@@ -102,6 +104,69 @@ const DrawerComponent = () => {
         } catch (e) {
         } finally {
           setLoading((pre) => ({ ...pre, btn3: false }));
+        }
+        break;
+
+      case "reSchedule_request":
+        try {
+          setLoading((pre) => ({ ...pre, btn4: true }));
+          const localSettings1 = await getRequestsWithSettings();
+          console.log(localSettings1);
+
+          const filteredSettings = localSettings1.filter(
+            (set) => set.status === "completed"
+          );
+
+          if (!(filteredSettings?.length > 0)) {
+            alert("No request found");
+            return;
+          }
+
+          const settingsForreSchedule = shuffleAndSplit(
+            filteredSettings,
+            count
+          );
+
+          if (
+            !confirm(
+              `${settingsForreSchedule.length} requests from re-schedule `
+            )
+          )
+            return;
+
+          await requestForReschedule(settingsForreSchedule);
+        } catch (e) {
+        } finally {
+          setLoading((pre) => ({ ...pre, btn4: false }));
+        }
+        break;
+
+      case "cancel_request":
+        try {
+          setLoading((pre) => ({ ...pre, btn4: true }));
+          const localSettings2 = await getRequestsWithSettings();
+
+          const filteredSettings = localSettings2.filter(
+            (set) => set.status === "completed"
+          );
+
+          if (!(filteredSettings?.length > 0)) {
+            alert("No request found");
+            return;
+          }
+
+          const settingsForreSchedule = shuffleAndSplit(
+            filteredSettings,
+            count
+          );
+
+          if (!confirm(`${settingsForreSchedule.length} requests for cancel `))
+            return;
+
+          await requestForCancel(settingsForreSchedule);
+        } catch (e) {
+        } finally {
+          setLoading((pre) => ({ ...pre, btn4: false }));
         }
         break;
 
@@ -198,11 +263,11 @@ const DrawerComponent = () => {
             <Button
               caseNo={"4:"}
               isLoading={loading.btn3}
-              title={"Requests for Rescedule."}
-              defaultCount={2}
+              title={"Requests for Rescedule"}
+              defaultCount={1}
               showInput={true}
-              onClick={() =>
-                handleApiRequest("/api/automation/booking_self_schedule")
+              handleSubmit={(count) =>
+                handleApiRequest("reSchedule_request", count)
               }
             />
             <Button
@@ -211,20 +276,20 @@ const DrawerComponent = () => {
               defaultCount={2}
               title={"Cancels Interview."}
               showInput={true}
-              onClick={() =>
-                handleApiRequest("/api/automation/booking_self_schedule")
+              handleSubmit={(count) =>
+                handleApiRequest("cancel_request", count)
               }
             />
-            <Button
+            {/* <Button
               caseNo={"6:"}
               isLoading={loading.btn3}
               defaultCount={2}
               title={"Declines Interview"}
               showInput={true}
-              onClick={() =>
+              handleSubmit={() =>
                 handleApiRequest("/api/automation/booking_self_schedule")
               }
-            />
+            /> */}
           </div>
         )}
       </div>
@@ -245,7 +310,6 @@ const Button = ({
   showInput = false,
   defaultCount,
 }) => {
-  console.log(isLoading);
   const [count, setCount] = useState(defaultCount ? defaultCount : 0);
   return (
     <div className="button-container">

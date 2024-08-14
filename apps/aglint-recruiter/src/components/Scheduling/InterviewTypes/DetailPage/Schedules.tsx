@@ -74,7 +74,10 @@ function SchedulesModules() {
           {isLoading && allSchedules.length === 0 ? (
             <Loader />
           ) : allSchedules.length === 0 ? (
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <Stack width={'820px'}>
+              <AllInterviewEmpty textDynamic='No schedule found' />
+            </Stack>
+            
           ) : (
             <>
               <CalendarComp

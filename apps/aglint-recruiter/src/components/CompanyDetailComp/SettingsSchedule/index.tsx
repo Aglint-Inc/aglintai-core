@@ -24,11 +24,7 @@ import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-import {
-  holidayType,
-  InterviewLoadType,
-  schedulingSettingType,
-} from '@aglint/shared-types';
+import { holidayType, schedulingSettingType } from '@aglint/shared-types';
 import { ArrowDropDownIcon } from '@mui/x-date-pickers';
 import { useRouter } from 'next/router';
 
@@ -76,6 +72,12 @@ export const LoadMax = {
   weeklyInterviews: 50,
 };
 
+type interviewLoadType = {
+  type: 'Hours' | 'Interviews';
+  value: number;
+  max: number;
+};
+
 function SchedulingSettings({
   updateSettings,
   initialData,
@@ -107,18 +109,29 @@ function SchedulingSettings({
   const [specificLocationOn, setSpecificLocationOn] =
     useState<specificLocationType>('all_locations');
 
-  const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
-    daily: {
-      type: 'Hours',
-      value: 20,
-      max: LoadMax.dailyHours,
-    },
-    weekly: {
-      type: 'Hours',
-      value: 10,
-      max: LoadMax.weeklyHours,
-    },
+  const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
+    value: 20,
+    max: LoadMax.dailyHours,
   });
+  const [weeklyLmit, setWeeklyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
+    value: 10,
+    max: LoadMax.weeklyHours,
+  });
+
+  // const [interviewLoad, setInterviewLoad] = useState<InterviewLoadType>({
+  //   daily: {
+  //     type: 'Hours',
+  //     value: 20,
+  //     max: LoadMax.dailyHours,
+  //   },
+  //   weekly: {
+  //     type: 'Hours',
+  //     value: 10,
+  //     max: LoadMax.weeklyHours,
+  //   },
+  // });
   const [helperWidth, setHelperWidth] = useState(420);
   const [helperKeywords, setHelperKeywords] = useState(420);
   const toggleHelperTextWidth = () => {
@@ -141,57 +154,43 @@ function SchedulingSettings({
   const closeDialog = () => {
     setOpenDialog(false);
   };
-  //value change handler
-  function loadChangeHandle(value, module, type) {
-    if (type === 'type') {
-      setInterviewLoad(
-        (prevState) =>
-          ({
-            ...prevState,
-            [module]: {
-              // eslint-disable-next-line security/detect-object-injection
-              ...prevState[module],
-              [type]: value,
-              value:
-                module === 'weekly'
-                  ? value === 'Hours'
-                    ? // eslint-disable-next-line security/detect-object-injection
-                      prevState[module].value > LoadMax.weeklyHours
-                      ? LoadMax.weeklyHours
-                      : // eslint-disable-next-line security/detect-object-injection
-                        prevState[module].value
-                    : // eslint-disable-next-line security/detect-object-injection
-                      prevState[module].value
-                  : value === 'Interviews'
-                    ? // eslint-disable-next-line security/detect-object-injection
-                      prevState[module].value
-                    : // eslint-disable-next-line security/detect-object-injection
-                      prevState[module].value > LoadMax.dailyHours
-                      ? LoadMax.dailyHours
-                      : // eslint-disable-next-line security/detect-object-injection
-                        prevState[module].value,
-              max:
-                module === 'weekly'
-                  ? value === 'Hours'
-                    ? LoadMax.weeklyHours
-                    : LoadMax.weeklyInterviews
-                  : value === 'Interviews'
-                    ? LoadMax.dailyInterviews
-                    : LoadMax.dailyHours,
-            },
-          }) as InterviewLoadType,
-      );
-    } else {
-      setInterviewLoad((prevState) => ({
-        ...prevState,
-        [module]: {
-          // eslint-disable-next-line security/detect-object-injection
-          ...prevState[module],
-          [type]: value,
-        },
-      }));
-    }
-  }
+
+  const handleDailyValue = (value: number) => {
+    setDailyLimit((pre) => ({
+      ...pre,
+      max: pre.type === 'Hours' ? LoadMax.dailyHours : LoadMax.dailyInterviews,
+      value:
+        pre.type === 'Hours'
+          ? value > LoadMax.dailyHours
+            ? LoadMax.dailyHours
+            : value
+          : value > LoadMax.dailyInterviews
+            ? LoadMax.dailyInterviews
+            : value,
+    }));
+  };
+
+  const handleWeeklyValue = (value: number) => {
+    setWeeklyLimit((pre) => ({
+      ...pre,
+      max:
+        pre.type === 'Hours' ? LoadMax.weeklyHours : LoadMax.weeklyInterviews,
+      value:
+        pre.type === 'Hours'
+          ? value > LoadMax.weeklyHours
+            ? LoadMax.weeklyHours
+            : value
+          : value > LoadMax.weeklyInterviews
+            ? LoadMax.weeklyInterviews
+            : value,
+    }));
+  };
+  const handleType = (type: 'Hours' | 'Interviews') => {
+    setWeeklyLimit((pre) => ({ ...pre, type }));
+    setDailyLimit((pre) => ({ ...pre, type }));
+    handleWeeklyValue(weeklyLmit.value);
+    handleDailyValue(dailyLmit.value);
+  };
 
   ///////////// DayOff Popup //////////////
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -224,24 +223,24 @@ function SchedulingSettings({
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
 
-      setInterviewLoad({
-        daily: {
-          type: schedulingSettingData.interviewLoad.dailyLimit.type,
-          value: schedulingSettingData.interviewLoad.dailyLimit.value,
-          max:
-            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
-              ? LoadMax.dailyHours
-              : LoadMax.dailyInterviews,
-        },
-        weekly: {
-          type: schedulingSettingData.interviewLoad.weeklyLimit.type,
-          value: schedulingSettingData.interviewLoad.weeklyLimit.value,
-          max:
-            schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
-              ? LoadMax.weeklyHours
-              : LoadMax.weeklyInterviews,
-        },
+      setDailyLimit({
+        type: schedulingSettingData.interviewLoad.dailyLimit.type,
+        value: schedulingSettingData.interviewLoad.dailyLimit.value,
+        max:
+          schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+            ? LoadMax.dailyHours
+            : LoadMax.dailyInterviews,
       });
+
+      setWeeklyLimit({
+        type: schedulingSettingData.interviewLoad.weeklyLimit.type,
+        value: schedulingSettingData.interviewLoad.weeklyLimit.value,
+        max:
+          schedulingSettingData.interviewLoad.dailyLimit.type === 'Hours'
+            ? LoadMax.weeklyHours
+            : LoadMax.weeklyInterviews,
+      });
+
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff] as holidayType[]);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
@@ -273,12 +272,12 @@ function SchedulingSettings({
         ...initialData,
         interviewLoad: {
           dailyLimit: {
-            type: interviewLoad.daily.type,
-            value: interviewLoad.daily.value,
+            type: dailyLmit.type,
+            value: dailyLmit.value,
           },
           weeklyLimit: {
-            type: interviewLoad.weekly.type,
-            value: interviewLoad.weekly.value,
+            type: weeklyLmit.type,
+            value: weeklyLmit.value,
           },
         },
         workingHours: workingHours,
@@ -299,7 +298,8 @@ function SchedulingSettings({
       changeValue = 'updating';
     }
   }, [
-    interviewLoad,
+    dailyLmit,
+    weeklyLmit,
     daysOff,
     workingHours,
     freeKeyWords,
@@ -647,13 +647,12 @@ function SchedulingSettings({
                 slotDailyLimit={
                   <Stack spacing={3}>
                     <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'daily', 'value')
-                      }
-                      value={interviewLoad.daily.value}
-                      max={interviewLoad.daily.max}
+                      handleSelect={(value) => handleDailyValue(+value)}
+                      value={dailyLmit.value}
+                      max={dailyLmit.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -661,10 +660,10 @@ function SchedulingSettings({
                       {['Hours', 'Interviews'].map((ele, i) => {
                         return (
                           <FormControlLabel
-                            checked={interviewLoad.daily.type === ele}
+                            checked={dailyLmit.type === ele}
                             key={i}
                             onChange={(e: any) => {
-                              loadChangeHandle(e.target.value, 'daily', 'type');
+                              handleType(e.target.value);
                             }}
                             sx={{
                               marginLeft: '0px',
@@ -684,13 +683,12 @@ function SchedulingSettings({
                 slotWeeklyLimit={
                   <Stack spacing={3}>
                     <MuiNumberfield
-                      handleSelect={(e) =>
-                        loadChangeHandle(e, 'weekly', 'value')
-                      }
-                      value={interviewLoad.weekly.value}
-                      max={interviewLoad.weekly.max}
+                      handleSelect={(value) => handleWeeklyValue(+value)}
+                      value={weeklyLmit.value}
+                      max={weeklyLmit.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -698,14 +696,10 @@ function SchedulingSettings({
                       {['Hours', 'Interviews'].map((ele, i) => {
                         return (
                           <FormControlLabel
-                            checked={interviewLoad.weekly.type === ele}
+                            checked={weeklyLmit.type === ele}
                             key={i}
                             onChange={(e: any) => {
-                              loadChangeHandle(
-                                e.target.value,
-                                'weekly',
-                                'type',
-                              );
+                              handleType(e.target.value);
                             }}
                             sx={{
                               marginLeft: '0px',

@@ -58,6 +58,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
+
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
   '/api/ai/gpt3-5-turbo': ['company_settings_module'],
@@ -132,7 +133,6 @@ const PERMISSIONS: Permissions = {
     'scheduling_module',
     'task_module',
   ],
-  '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/api/encryptData': ['integrations_module', 'manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
@@ -154,6 +154,7 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
+  '/api/agent-workflow/interviewer-decline': ['authorized'],
 };
 
 export default PERMISSIONS;

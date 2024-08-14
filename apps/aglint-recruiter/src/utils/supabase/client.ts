@@ -11,3 +11,14 @@ export const supabase = createBrowserClient<DB>(
   SUPABASE_ANON_KEY,
 );
 
+// declare global {
+//   interface Window {
+//     supabase?: ReturnType<typeof createBrowserClient>;
+//   }
+// }
+
+// if (SUPABASE_URL && SUPABASE_URL.includes('.supabase.co')) {
+//   if (typeof window !== 'undefined') {
+//     window.supabase = supabase;
+//   }
+// }
