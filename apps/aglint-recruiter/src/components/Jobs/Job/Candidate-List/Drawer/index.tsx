@@ -4,12 +4,21 @@ import { useMemo } from 'react';
 import { Application } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
+import { getActiveSection } from '@/src/context/JobsContext/hooks';
 
 const Drawer = () => {
   const {
     interviewPlans: { data: interviewPlans },
   } = useJob();
+
+  const {
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScoringEnabled,
+    isScreeningEnabled,
+  } = useAuthDetails();
 
   const {
     job,
@@ -22,13 +31,21 @@ const Drawer = () => {
   const {
     drawer: { open, application_id },
     handlClose,
-  } = useApplicationStore(({ drawer, handlClose }) => ({
+    initialTab,
+  } = useApplicationStore(({ drawer, handlClose, initialTab }) => ({
     drawer,
     handlClose,
+    initialTab,
   }));
 
   const tabs: Parameters<typeof Application>[0]['placeholderData']['tabs'] =
-    job?.flags;
+    getActiveSection({
+      isAssessmentEnabled,
+      isSchedulingEnabled,
+      isScoringEnabled,
+      isScreeningEnabled,
+      job,
+    });
 
   const placeholderData = useMemo(
     () =>
@@ -125,7 +142,7 @@ const Drawer = () => {
             handleDown: handleSelectNextApplication,
           }}
           showTabs={true}
-          defaultTab={section === 'interview' ? 'Interview' : 'Details'}
+          defaultTab={section === 'interview' ? 'Interview' : initialTab}
         >
           <Application.Body
             topBar={

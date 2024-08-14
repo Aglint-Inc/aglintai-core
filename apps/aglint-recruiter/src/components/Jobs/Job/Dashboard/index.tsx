@@ -901,12 +901,16 @@ const JobClose = ({
 
 const Modules = () => {
   const { manageJob } = useJob();
-  const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
-    useAuthDetails();
+  const {
+    isAssessmentEnabled,
+    isScreeningEnabled,
+    isSchedulingEnabled,
+    isScoringEnabled,
+  } = useAuthDetails();
   return (
     <>
       {manageJob && <JobDetailsModule />}
-      {manageJob && <ProfileScoreModule />}
+      {manageJob && isScoringEnabled && <ProfileScoreModule />}
       {isSchedulingEnabled && <InterviewModule />}
       {isAssessmentEnabled && manageJob && <AssessmentModule />}
       {isScreeningEnabled && manageJob && <ScreeningModule />}

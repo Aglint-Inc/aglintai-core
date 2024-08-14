@@ -53,7 +53,9 @@ const CompanyDetailComp = () => {
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
       .eq('id', recruiter.id)
-      .select('*,office_locations(*), departments(id,name)')
+      .select(
+        '*,office_locations(*), departments(id,name), recruiter_preferences(*)',
+      )
       .single();
     if (!error) {
       setRecruiter(

@@ -312,7 +312,9 @@ const setRecruiter = async (
     .from('recruiter')
     .update(data)
     .eq('id', data.id)
-    .select('*,office_locations(*), departments(id,name)')
+    .select(
+      '*,office_locations(*), departments(id,name), recruiter_preferences(*)',
+    )
     .single()
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);

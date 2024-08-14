@@ -32,7 +32,7 @@ export const getRecruiterDetails = async (user_id: string) => {
     await supabase
       .from('recruiter_relation')
       .select(
-        '*, recruiter(*, office_locations(*), departments(id,name)), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions!inner(name)))',
+        '*, recruiter(*, office_locations(*), recruiter_preferences(*), departments(id,name)), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions!inner(name)))',
       )
       .match({ user_id, is_active: true })
       .single()

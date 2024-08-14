@@ -45,15 +45,33 @@ const getResumeScore = (score: number) => {
       bgColor: 'var(--error-3)',
       color: 'var(--error-11)',
     };
-  else if (score == -1)
+  else if (score === -1)
     return {
-      text: 'Resume not parsable',
+      text: 'Resume processing',
       bgColor: 'var(--neutral-3)',
       color: 'var(--neutral-11)',
     };
-  else if (score == -2)
+  else if (score === -2)
     return {
-      text: 'Resume not found',
+      text: 'Resume fetching',
+      bgColor: 'var(--neutral-3)',
+      color: 'var(--neutral-11)',
+    };
+  else if (score === -3)
+    return {
+      text: 'Resume unparsable',
+      bgColor: 'var(--neutral-3)',
+      color: 'var(--neutral-11)',
+    };
+  else if (score === -4)
+    return {
+      text: 'Resume unavailable',
+      bgColor: 'var(--neutral-3)',
+      color: 'var(--neutral-11)',
+    };
+  else
+    return {
+      text: 'Resume unscorable',
       bgColor: 'var(--neutral-3)',
       color: 'var(--neutral-11)',
     };

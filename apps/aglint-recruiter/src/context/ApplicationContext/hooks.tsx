@@ -20,8 +20,12 @@ export const useApplicationContext = (
       defaultTab?: ApplicationStore['tab'];
     },
 ) => {
-  const { isAssessmentEnabled, isSchedulingEnabled, isScreeningEnabled } =
-    useAuthDetails();
+  const {
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+    isScoringEnabled,
+  } = useAuthDetails();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
   const resumeReupload = useApplications()?.handleReuploadResume;
@@ -42,6 +46,7 @@ export const useApplicationContext = (
       isAssessmentEnabled,
       isSchedulingEnabled,
       isScreeningEnabled,
+      isScoringEnabled,
       enabled: !!props?.showTabs,
     }),
   );
