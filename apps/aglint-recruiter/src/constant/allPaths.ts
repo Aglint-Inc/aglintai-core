@@ -8,6 +8,7 @@ export const PATHS = [
 '/agent/sourcing',
 '/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
+'/api/agent-workflow/interviewer-decline',
 '/api/agent-workflow/new-schedule',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
