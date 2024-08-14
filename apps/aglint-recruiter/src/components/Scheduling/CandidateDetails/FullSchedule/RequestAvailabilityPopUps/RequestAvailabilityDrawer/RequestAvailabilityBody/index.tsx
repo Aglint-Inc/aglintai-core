@@ -7,9 +7,9 @@ import { Divider, Stack } from '@mui/material';
 import { Stepper } from '@/devlink2/Stepper';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
-import FinalScreen from '../ FinalScreen';
 import DayCardWrapper from '../../../../SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../../RequestAvailabilityContext';
+import FinalScreen from '../FinalScreen';
 
 function RequestAvailabilityBody({
   availableSlots,

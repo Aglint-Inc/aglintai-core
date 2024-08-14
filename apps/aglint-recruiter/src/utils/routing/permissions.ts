@@ -61,6 +61,7 @@ const PERMISSIONS: Permissions = {
 
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
+  '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
@@ -132,7 +133,6 @@ const PERMISSIONS: Permissions = {
     'scheduling_module',
     'task_module',
   ],
-  '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/api/encryptData': ['integrations_module', 'manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
