@@ -113,7 +113,7 @@ function AgentInputBox() {
   return (
     <>
       <Stack position={'relative'} alignItems={'center'}>
-        <Stack position={'absolute'} bottom={'95px'} zIndex={10}>
+        <Stack position={'absolute'} bottom={'95px'} zIndex={1}>
           <CreateSchedulePopUp
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}

@@ -175,7 +175,7 @@ function Overview({
                 onClick: () => {
                   checkPermissions(['interview_types']) &&
                     window.open(
-                      `/scheduling/module/members/${schedule.interview_session.module_id}`,
+                      `/scheduling/interview-types/${schedule.interview_session.module_id}?tab=qualified`,
                       '_blank',
                     );
                 },

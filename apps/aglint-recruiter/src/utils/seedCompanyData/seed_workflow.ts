@@ -513,4 +513,22 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'before',
+      title: '8. On Interviewer decline, change to next available Interviewer',
+      trigger: 'onInterviewerDecline',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onInterviewerDecline_agent_changeInterviewer',
+      },
+    ],
+  },
 ];

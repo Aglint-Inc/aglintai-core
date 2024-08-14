@@ -1,6 +1,7 @@
 export const API_PATHS = [
 '/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
+'/api/agent-workflow/interviewer-decline',
 '/api/agent-workflow/new-schedule',
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
@@ -34,6 +35,8 @@ export const API_PATHS = [
 '/api/assistant/submitRun',
 '/api/assistant/updateAssistant',
 '/api/automation/booking_self_schedule',
+'/api/automation/cancel_request',
+'/api/automation/reschedule_request',
 '/api/automation/send_availability_reminder',
 '/api/automation/send_selfSchedule_reminder',
 '/api/automation/update_availability',

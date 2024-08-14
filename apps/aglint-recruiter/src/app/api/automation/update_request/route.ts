@@ -32,7 +32,7 @@ export async function POST(req) {
         message: 'success',
         data: requests.map((req) => ({
           request_id: req.id,
-          application_id: req.id,
+          application_id: req.application_id,
         })),
       },
       { status: 200 },
