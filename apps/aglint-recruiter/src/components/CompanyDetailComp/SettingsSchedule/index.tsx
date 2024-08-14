@@ -652,6 +652,7 @@ function SchedulingSettings({
                       max={dailyLmit.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -687,6 +688,7 @@ function SchedulingSettings({
                       max={weeklyLmit.max}
                     />
                     <RadioGroup
+                    sx={{marginTop:'12px !important'}}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'

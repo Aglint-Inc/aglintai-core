@@ -172,7 +172,7 @@
   grid-column-gap: 30px;
   grid-row-gap: 30px;
 
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 
   height: calc(100vh - 271px);
 }

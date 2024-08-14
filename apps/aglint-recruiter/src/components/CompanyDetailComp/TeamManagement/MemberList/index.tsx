@@ -1,5 +1,5 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { Popover, Stack } from '@mui/material';
+import { Avatar, Popover, Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -7,6 +7,7 @@ import { capitalize } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
+import React from 'react';
 
 import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -14,6 +15,8 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { TeamListItem } from '@/devlink/TeamListItem';
 import { TeamOptionList } from '@/devlink/TeamOptionList';
+import { UserInfoTeam } from '@/devlink/UserInfoTeam';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import {
@@ -98,6 +101,18 @@ const Member = ({
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
+  const [anchorEl1, setAnchorEl1] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl1(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl1(null);
+  };
+
+  const open1 = Boolean(anchorEl1);
+
   const canManage = checkPermissions(['manage_users']);
   return (
     <>
@@ -152,183 +167,266 @@ const Member = ({
         }
         close={ClosePopUp}
       />
-
-      <TeamListItem
-        // isDeleteDisable={member.role !== 'admin' ? false : true}
-        // isEditInviteVisible={member.join_status === 'invited'}
-        slotBadge={
-          member.status !== 'active' && (
-            <GlobalBadge
-              color={
-                member.status === 'suspended'
-                  ? 'error'
-                  : member.status === 'invited'
-                    ? 'warning'
-                    : 'success'
-              }
-              textBadge={capitalize(member.status)}
-            />
-          )
-        }
-        slotThreeDot={
-          canManage &&
-          (member.role !== 'admin' ||
-            member.status === 'invited' ||
-            recruiterUser.primary) && (
+      <Stack>
+        <TeamListItem
+          onClickMouseHover={{
+            ariaOwns: open1 ? 'mouse-over-popover' : undefined,
+            ariaHaspopup: 'true',
+            onMouseEnter: handlePopoverOpen,
+            onMouseLeave: handlePopoverClose,
+          }}
+          isUserInfoVisible={true}
+          slotUserInfo={
             <>
-              <Stack
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClick(e);
-                }}
-              >
-                <IconButtonGhost
-                  iconName='more_vert'
-                  size={2}
-                  iconSize={6}
-                  color={'neutral'}
-                />
-              </Stack>
-
               <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
+                id='mouse-over-popover'
+                sx={{
+                  pointerEvents: 'none',
+                }}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      boxShadow:'none',
+                      marginTop:'8px',
+                      // Additional styles
+                    },
+                  },
+                }}
+                open={open1}
+                anchorEl={anchorEl1}
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'center',
+                  horizontal: 'left',
                 }}
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'right',
+                  horizontal: 'left',
                 }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
               >
-                <TeamOptionList
-                  isMarkActiveVisible={
-                    canSuspend && member.status === 'suspended'
-                  }
-                  isSuspendVisible={canSuspend && member.status === 'active'}
-                  isCancelInviteVisible={member.status === 'invited'}
-                  isDeleteVisible={false}
-                  isResetPasswordVisible={member.status !== 'invited'}
-                  isEditVisible={member.status !== 'invited'}
-                  slotFilterOption={
+                <UserInfoTeam
+                  slotDetails={
                     <>
-                      {member.status === 'invited' && (
-                        <FilterOption
-                          slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
-                          text={'Resend Invitation'}
-                          color={{
-                            style: {
-                              color: 'transparent',
-                            },
-                          }}
-                          onClickCancelInvite={{
-                            onClick: () => {
-                              reinviteUser(
-                                member.email,
-                                recruiterUser.user_id,
-                              ).then(({ error, emailSend }) => {
-                                if (!error && emailSend) {
-                                  return toast.success(
-                                    'Invite sent successfully.',
-                                  );
-                                }
-                                return toast.error(error);
-                              });
-                            },
-                          }}
-                        />
-                      )}
+                      <TextWithIcon
+                        textContent={member.department?.name || '--'}
+                        iconName='corporate_fare'
+                        iconSize={4}
+                        iconWeight={'medium'}
+                      />
+                      <TextWithIcon
+                        textContent={member.office_location?.city || '--'}
+                        iconName='location_on'
+                        iconSize={4}
+                        iconWeight={'medium'}
+                      />
+                      <TextWithIcon
+                        textContent={member.office_location?.timezone || '--'}
+                        iconName='public'
+                        iconSize={4}
+                        iconWeight={'medium'}
+                      />
+                       <TextWithIcon
+                        textContent={member.email || '--'}
+                        iconName='mail'
+                        iconSize={4}
+                        iconWeight={'medium'}
+                      />
+                      <TextWithIcon
+                        textContent={member.phone || '--'}
+                        iconName='smartphone'
+                        iconSize={4}
+                        iconWeight={'medium'}
+                      />
                     </>
                   }
-                  isFilterOptionVisible={true}
-                  onClickMarkActive={{
-                    onClick: () => {
-                      updateMember({ status: 'active' }).then(() => {
-                        toast.success(
-                          `${member.first_name}'s account is activated successfully.`,
-                        );
-                        handleClose();
-                      });
-                    },
-                  }}
-                  onClickEdit={{
-                    onClick: () => {
-                      // editMember(e);
-                      router.push(
-                        `/user/profile/${member.user_id}?edit_enable=true`,
-                      );
-                      handleClose();
-                    },
-                  }}
-                  onClickCancelInvite={{
-                    onClick: () => {
-                      setDialogReason('cancel_invite');
-                      handleClose();
-                    },
-                  }}
-                  onClickSuspend={{
-                    onClick: () => {
-                      setDialogReason('suspend');
-                      handleClose();
-                    },
-                  }}
-                  onClickDelete={{
-                    onClick: () => {
-                      setDialogReason('delete');
-                      handleClose();
-                    },
-                  }}
-                  onClickResetPassword={{
-                    onClick: () => {
-                      resetPassword(member.email)
-                        .then(() => toast.success('Password reset email sent.'))
-                        .catch(() => toast.error('Password reset failed.'));
-                      handleClose();
-                    },
-                  }}
+                  textDesgination={member.position}
+                  textName={getFullName(member.first_name, member.last_name)}
+                  slotImage={
+                    <Avatar src={member.profile_image} variant='rounded' />
+                  }
                 />
               </Popover>
             </>
-          )
-        }
-        key={1}
-        textLastActive={
-          member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
-        }
-        slotProfileImage={
-          <Stack
-            sx={{
-              cursor: 'pointer',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              router.push(
-                ROUTES['/user/profile/[user_id]']({
-                  user_id: member.user_id,
-                }) + '?company=true',
-              );
-            }}
-          >
-            <MuiAvatar
-              src={member.profile_image}
-              level={getFullName(member.first_name, member.last_name)}
-              variant='rounded-small'
-            />
-          </Stack>
-        }
-        userEmail={member.email}
-        userName={
-          <Link
-            href={`/user/profile/${member.user_id}`}
-          >{`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}</Link>
-        }
-        textDepartment={member.department?.name}
-        textDesignation={member.position}
-        slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
-      />
+          }
+          // isDeleteDisable={member.role !== 'admin' ? false : true}
+          // isEditInviteVisible={member.join_status === 'invited'}
+          slotBadge={
+            member.status !== 'active' && (
+              <GlobalBadge
+                color={
+                  member.status === 'suspended'
+                    ? 'error'
+                    : member.status === 'invited'
+                      ? 'warning'
+                      : 'success'
+                }
+                textBadge={capitalize(member.status)}
+              />
+            )
+          }
+          slotThreeDot={
+            canManage &&
+            (member.role !== 'admin' ||
+              member.status === 'invited' ||
+              recruiterUser.primary) && (
+              <>
+                <Stack
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClick(e);
+                  }}
+                >
+                  <IconButtonGhost
+                    iconName='more_vert'
+                    size={2}
+                    iconSize={6}
+                    color={'neutral'}
+                  />
+                </Stack>
+
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <TeamOptionList
+                    isMarkActiveVisible={
+                      canSuspend && member.status === 'suspended'
+                    }
+                    isSuspendVisible={canSuspend && member.status === 'active'}
+                    isCancelInviteVisible={member.status === 'invited'}
+                    isDeleteVisible={false}
+                    isResetPasswordVisible={member.status !== 'invited'}
+                    isEditVisible={member.status !== 'invited'}
+                    slotFilterOption={
+                      <>
+                        {member.status === 'invited' && (
+                          <FilterOption
+                            slotIcon={<GlobalIcon iconName={'mail'} size={4} />}
+                            text={'Resend Invitation'}
+                            color={{
+                              style: {
+                                color: 'transparent',
+                              },
+                            }}
+                            onClickCancelInvite={{
+                              onClick: () => {
+                                reinviteUser(
+                                  member.email,
+                                  recruiterUser.user_id,
+                                ).then(({ error, emailSend }) => {
+                                  if (!error && emailSend) {
+                                    return toast.success(
+                                      'Invite sent successfully.',
+                                    );
+                                  }
+                                  return toast.error(error);
+                                });
+                              },
+                            }}
+                          />
+                        )}
+                      </>
+                    }
+                    isFilterOptionVisible={true}
+                    onClickMarkActive={{
+                      onClick: () => {
+                        updateMember({ status: 'active' }).then(() => {
+                          toast.success(
+                            `${member.first_name}'s account is activated successfully.`,
+                          );
+                          handleClose();
+                        });
+                      },
+                    }}
+                    onClickEdit={{
+                      onClick: () => {
+                        // editMember(e);
+                        router.push(
+                          `/user/profile/${member.user_id}?edit_enable=true`,
+                        );
+                        handleClose();
+                      },
+                    }}
+                    onClickCancelInvite={{
+                      onClick: () => {
+                        setDialogReason('cancel_invite');
+                        handleClose();
+                      },
+                    }}
+                    onClickSuspend={{
+                      onClick: () => {
+                        setDialogReason('suspend');
+                        handleClose();
+                      },
+                    }}
+                    onClickDelete={{
+                      onClick: () => {
+                        setDialogReason('delete');
+                        handleClose();
+                      },
+                    }}
+                    onClickResetPassword={{
+                      onClick: () => {
+                        resetPassword(member.email)
+                          .then(() =>
+                            toast.success('Password reset email sent.'),
+                          )
+                          .catch(() => toast.error('Password reset failed.'));
+                        handleClose();
+                      },
+                    }}
+                  />
+                </Popover>
+              </>
+            )
+          }
+          key={1}
+          textLastActive={
+            member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
+          }
+          slotProfileImage={
+            <Stack
+              sx={{
+                cursor: 'pointer',
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(
+                  ROUTES['/user/profile/[user_id]']({
+                    user_id: member.user_id,
+                  }) + '?company=true',
+                );
+              }}
+            >
+              <MuiAvatar
+                src={member.profile_image}
+                level={getFullName(member.first_name, member.last_name)}
+                variant='rounded-small'
+              />
+            </Stack>
+          }
+          userEmail={member.email}
+          userName={
+            <Link
+              href={`/user/profile/${member.user_id}`}
+            >{`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}</Link>
+          }
+          textDepartment={member.department?.name}
+          textDesignation={member.position}
+          slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
+        />
+      </Stack>
     </>
   );
 };

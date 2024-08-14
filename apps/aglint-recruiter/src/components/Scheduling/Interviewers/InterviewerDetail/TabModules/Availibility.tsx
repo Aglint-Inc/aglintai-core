@@ -282,7 +282,7 @@ function Availibility({
               textDay={capitalize(day.day)}
               textTime={
                 <Typography>
-                  <span style={{ fontWeight: '500' }}>
+                  <span>
                     {dayjsLocal()
                       .set(
                         'hour',
@@ -336,6 +336,9 @@ function Availibility({
       >
         <SideDrawerLarge
           isHeaderIconVisible={false}
+          onClickCancel={{onClick:()=> {
+            setEditDrawer(false);
+          },}}
           drawerSize={'medium'}
           textDrawertitle={'Edit Availability'}
           slotButtons={

@@ -1,13 +1,12 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 import Loader from '@/src/components/Common/Loader';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
-import IconPlusFilter from '../../../Schedules/Filters/FilterChip/IconPlusFilter';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';
@@ -73,14 +72,21 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   textDesc='No Interview type found.'
                   size={6}
                   iconName='school'
+                  styleEmpty={{
+                    style: {
+                      backgroundColor: 'var(--neutral-2)',
+                      height: '220px',
+                    },
+                  }}
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
-                <ButtonSurface
-                  size={1}
+                <ButtonSoft
+                  size={2}
                   isRightIcon={false}
-                  slotIcon={<IconPlusFilter />}
+                  iconName='add'
                   textButton={'Add'}
+                  isLeftIcon={true}
                   onClickButton={{
                     onClick: () => {
                       setAddInterviewType('qualified');
@@ -117,10 +123,11 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>
-                <ButtonSurface
-                  size={1}
+                <ButtonSoft
+                  size={2}
                   isRightIcon={false}
-                  slotIcon={<IconPlusFilter />}
+                  iconName='add'
+                  isLeftIcon={true}
                   textButton={'Add'}
                   onClickButton={{
                     onClick: () => {
