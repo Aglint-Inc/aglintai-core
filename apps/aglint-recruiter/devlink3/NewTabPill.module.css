@@ -10,20 +10,30 @@
   cursor: pointer;
 }
 
-.tab_pill:hover {
-  opacity: 0.8;
-}
-
 .tab_pill_default {
-  display: flex;
   height: 100%;
-  padding: var(--space-2) var(--space-5);
+  padding: 2px 18px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
   color: var(--neutral-11);
+}
+
+.ntp-inner-wrap {
+  display: flex;
+  padding: 6px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: var(--radius-2);
+}
+
+.ntp-inner-wrap:hover {
+  background-color: var(--neutral-2);
 }
 
 .tab-count {
@@ -58,7 +68,7 @@
   bottom: 0%;
 
   display: flex;
-  padding: var(--space-2) var(--space-5);
+  padding: 2px 18px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 6px;

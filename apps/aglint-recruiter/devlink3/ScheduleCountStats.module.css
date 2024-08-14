@@ -24,7 +24,7 @@
 }
 
 .scheduling-menu.success {
-  background-color: var(--success-2);
+  background-color: var(--success-3);
 }
 
 .scheduling-menu.not-scheduled {
@@ -32,15 +32,15 @@
 }
 
 .scheduling-menu.waiting {
-  background-color: var(--warning-2);
+  background-color: var(--warning-3);
 }
 
 .scheduling-menu.confirmed {
-  background-color: var(--info-2);
+  background-color: var(--info-3);
 }
 
 .scheduling-menu.cancelled {
-  background-color: var(--error-2);
+  background-color: var(--error-3);
 }
 
 .count_info {

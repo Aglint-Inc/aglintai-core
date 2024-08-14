@@ -5,7 +5,7 @@ type SchedulesByModuleIdQueryKey = [
   'interview_schedules_modules_id',
   {
     module_id: string;
-    filter: DatabaseTable['interview_meeting']['status'];
+    filter: DatabaseTable['interview_meeting']['status'][];
     changeText;
   },
 ];
@@ -30,7 +30,7 @@ export const QueryKeysInteviewModules = {
     changeText,
   }: {
     moduleId: string;
-    filter: DatabaseTable['interview_meeting']['status'];
+    filter: DatabaseTable['interview_meeting']['status'][];
     changeText: string;
   }) =>
     [

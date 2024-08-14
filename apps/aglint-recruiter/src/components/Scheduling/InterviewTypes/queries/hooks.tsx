@@ -37,7 +37,7 @@ export const useAllSchedulesByModuleId = ({
   filter,
   changeText,
 }: {
-  filter: DatabaseTable['interview_meeting']['status'];
+  filter: DatabaseTable['interview_meeting']['status'][];
   changeText: string;
 }) => {
   const router = useRouter();

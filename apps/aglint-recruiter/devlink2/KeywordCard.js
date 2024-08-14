@@ -17,7 +17,7 @@ export function KeywordCard({
   return (
     <_Component className={_utils.cx(_styles, "keyword_wrap")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "header_desc")} tag="div">
-        <Text content={textTitle} />
+        <Text content={textTitle} weight="medium" />
         {isTextWarningVisible ? (
           <_Builtin.Block tag="div">
             <Text content={textWarning} weight="" color="neutral" />
