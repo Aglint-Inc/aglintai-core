@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
