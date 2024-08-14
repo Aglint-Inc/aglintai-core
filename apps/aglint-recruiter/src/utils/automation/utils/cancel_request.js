@@ -1,6 +1,4 @@
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-
-export const requestReschdule = async (setting, supabase) => {
+export const cancelReschdule = async (setting, supabase) => {
   const request_rel = (
     await supabase
       .from('request_relation')
@@ -11,11 +9,7 @@ export const requestReschdule = async (setting, supabase) => {
   const payload = {
     application_id: setting.application_id,
     session_ids: request_rel.map((rel) => rel.session_id),
-    type: 'reschedule',
-    dates: {
-      start: dayjsLocal().add(7, 'day').toISOString(),
-      end: dayjsLocal().add(20, 'day').toISOString(),
-    },
+    type: 'declined',
   };
 
   try {

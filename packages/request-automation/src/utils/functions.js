@@ -1,22 +1,28 @@
-import { settings } from "./constant";
-
-export function storeRequestsWithSettings(requests) {
-  const combinedData = requests.map((request, index) => {
+export async function storeRequestsWithSettings(requests) {
+  const localData = await localStorage.getItem("requestsWithSettings");
+  const combinedData = requests.map((request) => {
     return {
       ...request,
-      ...settings[index],
-      isSubmitAvailability: null, // All is* fields are empty
-      isTriggerAvailabilityReminders: null,
-      isTriggerSelfSchedulingReminders: null,
-      isRequestReschedule: null,
-      isCancelInterview: null,
-      isSelfSchedule: null,
+      status: "in_progress",
+      isSubmitAvailabilitySubmitted: null,
+      isSelfScheduleSubmitted: null,
+      isRequestRescheduleSubmitted: null,
+      isAvailabilityReminders: null,
+      isSelfSchedulingReminders: null,
+      isCancelRequestSubmitted: null,
     };
   });
-  localStorage.setItem("requestsWithSettings", JSON.stringify(combinedData));
+  const data = localData ? [...combinedData, ...localData] : combinedData;
+  localStorage.setItem("requestsWithSettings", JSON.stringify(data));
 }
 
-export async function updateField(applicationId, requestId, field, value) {
+export async function updateField(
+  applicationId,
+  requestId,
+  field,
+  value,
+  status = "in_progress"
+) {
   const storedData = await localStorage.getItem("requestsWithSettings");
   let requestsWithSettings = storedData ? JSON.parse(storedData) : [];
   requestsWithSettings = requestsWithSettings.map((item) => {
@@ -27,6 +33,7 @@ export async function updateField(applicationId, requestId, field, value) {
       return {
         ...item,
         [field]: value,
+        status: status,
       };
     }
     return item;
@@ -63,5 +70,3 @@ export async function removeRequestFromLocal(application_id, request_id) {
     JSON.stringify(requestsWithSettings)
   );
 }
-
-const getSessionId = async (settings) => {};

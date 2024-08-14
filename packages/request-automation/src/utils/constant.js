@@ -120,3 +120,5 @@ export const settings = [
     selfSchedule: true,
   },
 ];
+
+// type status  = 'in_progress' | 'comp'
