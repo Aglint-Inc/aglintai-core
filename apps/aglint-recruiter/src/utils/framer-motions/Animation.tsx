@@ -16,11 +16,11 @@ const cardVariants: Variants = {
   },
 };
 
-export function YTransform({ children, uniqueKey }) {
+export function YTransform({ children, uniqueKey, height }) {
   return (
     <AnimatePresence mode='wait'>
       <motion.div
-      style={{height:'100%'}}
+        style={{ height: height ? height : '100%' }}
         key={uniqueKey}
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

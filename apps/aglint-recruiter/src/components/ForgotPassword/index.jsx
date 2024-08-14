@@ -8,7 +8,7 @@ import { PwResetConfirm } from '@/devlink2/PwResetConfirm';
 import { PwResetForm } from '@/devlink2/PwResetForm';
 let tempEmail = '';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -112,7 +112,7 @@ export default function ForgotPasswordComponent() {
         }}
       >
         {changetext == 'Send' && (
-          <YTransform uniqueKey={changetext}>
+          <YTransform uniqueKey={changetext} height={'auto'}>
             <PwResetForm
               slotButton={
                 <Stack spacing={'var(--space-2)'}>
