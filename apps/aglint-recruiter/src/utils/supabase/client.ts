@@ -19,6 +19,6 @@ export const supabase = createBrowserClient<DB>(
 
 // if (SUPABASE_URL && SUPABASE_URL.includes('.supabase.co')) {
 //   if (typeof window !== 'undefined') {
-//     window.supabase = supabase;cls
+//     window.supabase = supabase;
 //   }
 // }
