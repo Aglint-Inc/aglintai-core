@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { Text } from '@/devlink/Text';
@@ -53,6 +54,14 @@ export default function FilterHeader({
     }
   });
 
+  const [debouncedSearch, setDebouncedSearch] = useState(search?.value ?? '');
+  useEffect(() => {
+    if (search?.setValue) {
+      const timeout = setTimeout(() => search.setValue(debouncedSearch), 400);
+      return () => clearTimeout(timeout);
+    }
+  }, [debouncedSearch]);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={layoutMode === 'left-align'}>
@@ -89,9 +98,9 @@ export default function FilterHeader({
             </Stack>
             {Boolean(search) && (
               <SearchField
-                value={search.value}
-                onChange={(e) => search.setValue(e.target.value)}
-                onClear={() => search.setValue('')}
+                value={debouncedSearch}
+                onChange={(e) => setDebouncedSearch(e.target.value)}
+                onClear={() => setDebouncedSearch('')}
                 placeholder={search.placeholder}
               />
             )}
@@ -108,9 +117,9 @@ export default function FilterHeader({
           <Stack direction={'row'} spacing={2}>
             {Boolean(search) && (
               <SearchField
-                value={search.value}
-                onChange={(e) => search.setValue(e.target.value)}
-                onClear={() => search.setValue('')}
+                value={debouncedSearch}
+                onChange={(e) => setDebouncedSearch(e.target.value)}
+                onClear={() => setDebouncedSearch('')}
                 placeholder={search.placeholder}
               />
             )}
