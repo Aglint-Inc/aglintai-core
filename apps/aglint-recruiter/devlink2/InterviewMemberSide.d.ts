@@ -17,4 +17,5 @@ declare function InterviewMemberSide(props: {
   textUpcomingCount?: React.ReactNode;
   textCancelledCount?: React.ReactNode;
   textPastCount?: React.ReactNode;
+  isMenuTabVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

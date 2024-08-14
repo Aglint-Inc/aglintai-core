@@ -9,18 +9,16 @@ import { schedulesSupabase } from '../../schedules-query';
 export const useAllSchedulesByUserId = ({
   filter,
   member_id,
-  textSearch,
 }: {
   filter:
     | DatabaseTable['interview_meeting']['status']
     | DatabaseTable['interview_meeting']['status'][]
     | null;
   member_id: string;
-  textSearch: string;
 }) => {
   const query = useQuery({
-    queryKey: ['schedulesByModuleId', member_id, filter, textSearch],
-    queryFn: () => fetchUserSchedules({ member_id, filter, textSearch }),
+    queryKey: ['schedulesByModuleId', member_id, filter],
+    queryFn: () => fetchUserSchedules({ member_id, filter }),
     enabled: !!member_id,
     placeholderData: {
       schedules: [],
@@ -36,22 +34,16 @@ export const useAllSchedulesByUserId = ({
 export const fetchUserSchedules = async ({
   filter,
   member_id,
-  textSearch,
 }: {
   filter:
     | DatabaseTable['interview_meeting']['status']
     | null
     | DatabaseTable['interview_meeting']['status'][];
   member_id: string;
-  textSearch: string;
 }) => {
   const query = schedulesSupabase()
     .contains('confirmed_user_ids', [member_id])
     .eq('meeting_interviewers.is_confirmed', true);
-
-  if (textSearch) {
-    query.ilike('session_name', `%${textSearch}%`);
-  }
 
   if (typeof filter === 'string' || _.isArray(filter)) {
     if (typeof filter === 'string') query.eq('status', filter);

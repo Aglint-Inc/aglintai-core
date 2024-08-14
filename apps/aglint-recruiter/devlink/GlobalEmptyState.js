@@ -13,6 +13,9 @@ export function GlobalEmptyState({
   styleEmpty = {},
   size = "7",
   slotButton,
+  sizes,
+  textSubDesc = "Heading",
+  isSubDescVisible = false,
 }) {
   return (
     <_Component
@@ -25,7 +28,17 @@ export function GlobalEmptyState({
         tag="div"
       >
         <GlobalIcon iconName={iconName} size={size} color="inherit" />
-        <Text content={textDesc} />
+        <_Builtin.Block
+          className={_utils.cx(_styles, "ges-text-wrapper")}
+          tag="div"
+        >
+          <Text content={textDesc} />
+          {isSubDescVisible ? (
+            <_Builtin.Block tag="div">
+              <Text content={textSubDesc} color="neutral" />
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_for_button")}
           tag="div"

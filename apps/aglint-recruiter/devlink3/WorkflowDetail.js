@@ -34,7 +34,7 @@ export function WorkflowDetail({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "connected_jobs_wrap")}
+        className={_utils.cx(_styles, "connected_jobs_wrap-workflow")}
         id={_utils.cx(
           _styles,
           "w-node-_965d923c-99e0-e5e3-fc3b-e0d10190b041-2b3cbc8e"

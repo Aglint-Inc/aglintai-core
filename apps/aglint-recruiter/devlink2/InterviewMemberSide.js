@@ -22,137 +22,140 @@ export function InterviewMemberSide({
   textUpcomingCount = "1",
   textCancelledCount = "1",
   textPastCount = "1",
+  isMenuTabVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "tab_switch_wrappper")}
-        tag="div"
-      >
+      {isMenuTabVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "membership_pill_wrapper")}
+          className={_utils.cx(_styles, "tab_switch_wrappper")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "slot-interview-mod")}
-            tag="div"
-          >
-            {slotInterview}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-wrap-navi")}
+            className={_utils.cx(_styles, "membership_pill_wrapper")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "memberside-pill")}
+              className={_utils.cx(_styles, "slot-interview-mod")}
               tag="div"
-              {...onClickUpcoming}
             >
-              <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "schedule_count")}
-                tag="div"
-              >
-                <Text content={textUpcomingCount} size="1" />
-              </_Builtin.Block>
+              {slotInterview}
             </_Builtin.Block>
-            {isUpcomingActive ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "all-wrap-navi")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "memberside-pill", "active")}
+                className={_utils.cx(_styles, "memberside-pill")}
                 tag="div"
+                {...onClickUpcoming}
               >
                 <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "schedule_count",
-                    "active-tage"
-                  )}
+                  className={_utils.cx(_styles, "schedule_count")}
                   tag="div"
                 >
                   <Text content={textUpcomingCount} size="1" />
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-wrap-navi")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "memberside-pill")}
-              tag="div"
-              {...onClickCancelled}
-            >
-              <_Builtin.Block tag="div">{"Canceled"}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "schedule_count")}
-                tag="div"
-              >
-                <Text content={textCancelledCount} size="1" />
-              </_Builtin.Block>
+              {isUpcomingActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "memberside-pill", "active")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "schedule_count",
+                      "active-tage"
+                    )}
+                    tag="div"
+                  >
+                    <Text content={textUpcomingCount} size="1" />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
-            {isCancelActive ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "all-wrap-navi")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "memberside-pill", "active")}
+                className={_utils.cx(_styles, "memberside-pill")}
                 tag="div"
+                {...onClickCancelled}
               >
                 <_Builtin.Block tag="div">{"Canceled"}</_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "schedule_count",
-                    "active-tage"
-                  )}
+                  className={_utils.cx(_styles, "schedule_count")}
                   tag="div"
                 >
                   <Text content={textCancelledCount} size="1" />
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-wrap-navi")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "memberside-pill")}
-              tag="div"
-              {...onClickCompleted}
-            >
-              <_Builtin.Block tag="div">{"Past"}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "schedule_count")}
-                tag="div"
-              >
-                <Text content={textPastCount} size="1" />
-              </_Builtin.Block>
+              {isCancelActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "memberside-pill", "active")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Canceled"}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "schedule_count",
+                      "active-tage"
+                    )}
+                    tag="div"
+                  >
+                    <Text content={textCancelledCount} size="1" />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
-            {isCompletedActive ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "all-wrap-navi")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "memberside-pill", "active")}
+                className={_utils.cx(_styles, "memberside-pill")}
                 tag="div"
+                {...onClickCompleted}
               >
                 <_Builtin.Block tag="div">{"Past"}</_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "schedule_count",
-                    "active-tage"
-                  )}
+                  className={_utils.cx(_styles, "schedule_count")}
                   tag="div"
                 >
                   <Text content={textPastCount} size="1" />
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
+              {isCompletedActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "memberside-pill", "active")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Past"}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "schedule_count",
+                      "active-tage"
+                    )}
+                    tag="div"
+                  >
+                    <Text content={textPastCount} size="1" />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "all-wrap-navi")}
+              tag="div"
+            />
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-wrap-navi")}
-            tag="div"
-          />
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "interview_screen_card")}
         tag="div"

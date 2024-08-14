@@ -26,7 +26,12 @@ export function RequestList({
       >
         <GlobalIcon iconName={iconName} size="5" />
         <Text content={textTitle} weight="regular" />
-        <_Builtin.Block tag="div">{slotBadge}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_for_badge")}
+          tag="div"
+        >
+          {slotBadge}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         <Text content={textCount} size="3" />
