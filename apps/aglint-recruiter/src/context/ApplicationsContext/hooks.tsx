@@ -164,7 +164,7 @@ export const useApplicationsActions = () => {
       ref.current = false;
       return;
     }
-    const timeout = setTimeout(() => setParams(filters), 800);
+    const timeout = setTimeout(() => setParams(filters), 200);
     return () => clearTimeout(timeout);
   }, [filters]);
 

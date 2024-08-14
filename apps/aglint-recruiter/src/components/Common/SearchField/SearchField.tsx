@@ -1,6 +1,6 @@
 //new component
 import { InputAdornment, Stack } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 
@@ -17,20 +17,12 @@ export default function SearchField({
 }: {
   value: string;
   placeholder?: string;
-  onChange: (
-    // eslint-disable-next-line no-unused-vars
-    x: string,
-  ) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onClear: any;
   isFullWidth?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
 }) {
-  const [search, setSearch] = useState(value);
-  useEffect(() => {
-    const timeout = setTimeout(() => onChange(search), 400);
-    return () => clearTimeout(timeout);
-  }, [search]);
   return (
     <UITextField
       height={26}
@@ -58,8 +50,8 @@ export default function SearchField({
         ),
       }}
       placeholder={placeholder || ''}
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
+      value={value}
+      onChange={onChange}
     />
   );
 }
