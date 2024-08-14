@@ -49,7 +49,6 @@ export const API_PATHS = [
 '/api/checkstatus',
 '/api/decryptApiKey',
 '/api/dns/lookup',
-'/api/editjob/publishjob',
 '/api/email-outreach/get-accesstoken',
 '/api/email-outreach/get-user-email',
 '/api/email-outreach/getNewAcessToken',

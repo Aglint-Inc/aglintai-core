@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Autocomplete, InputAdornment, Stack } from '@mui/material';
+import { InputAdornment, Stack } from '@mui/material';
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
@@ -198,35 +198,19 @@ JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
-  const defaultAddress = (recruiter?.office_locations ?? []).map((s) => ({
-    label: [s.city, s.region, s.country].filter(Boolean).join(', '),
+  const options = (recruiter?.office_locations ?? []).map((s) => ({
+    name: [s.city, s.region, s.country].filter(Boolean).join(', '),
     value: s.id,
   }));
   return (
-    <Autocomplete
-      options={defaultAddress}
-      onChange={(event: any, newValue) => {
-        if (!newValue || typeof newValue === 'string') return;
-        onChange(name, newValue.value);
-      }}
-      renderInput={(params) => (
-        <UITextField
-          name={name}
-          rest={{ ...params }}
-          label='Job Location'
-          required={value.required}
-          placeholder='Ex. San Fransisco, United States'
-          error={value.error.value}
-          helperText={value.error.helper}
-          onChange={(e) => onChange(name, e.target.value)}
-        />
-      )}
-      defaultValue={{
-        label: value.value,
-        value: value.value,
-      }}
-      freeSolo
-      disablePortal
+    <UISelect
+      label={'Location'}
+      menuOptions={options}
+      error={value.error.value}
+      helperText={value.error.helper}
+      required={value.required}
+      value={value.value as string}
+      onChange={(e) => onChange(name, e.target.value)}
     />
   );
 });
