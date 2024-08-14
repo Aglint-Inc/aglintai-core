@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useJobCreate, useJobDelete, useJobsRead } from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
+import { ApplicationStore } from '../ApplicationContext/store';
 import { handleGenerateJd } from '../JobContext/hooks';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 
@@ -12,19 +13,22 @@ export const getActiveSection = ({
   isAssessmentEnabled,
   isSchedulingEnabled,
   isScreeningEnabled,
+  isScoringEnabled,
   job,
 }: {
   isAssessmentEnabled: boolean;
   isSchedulingEnabled: boolean;
   isScreeningEnabled: boolean;
+  isScoringEnabled: boolean;
   job: Pick<Job, 'phone_screen_enabled' | 'assessment'>;
-}): Job['flags'] => ({
-  new: true,
-  screening: !!job?.phone_screen_enabled && isScreeningEnabled,
-  assessment: !!job?.assessment && isAssessmentEnabled,
-  disqualified: true,
-  interview: isSchedulingEnabled,
-  qualified: true,
+  // eslint-disable-next-line no-unused-vars
+}): { [id in ApplicationStore['tab']]: boolean } => ({
+  Details: isScoringEnabled,
+  Screening: !!job?.phone_screen_enabled && isScreeningEnabled,
+  Assessment: !!job?.assessment && isAssessmentEnabled,
+  Activity: true,
+  Interview: isSchedulingEnabled,
+  Tasks: isSchedulingEnabled,
 });
 
 const useJobActions = () => {
