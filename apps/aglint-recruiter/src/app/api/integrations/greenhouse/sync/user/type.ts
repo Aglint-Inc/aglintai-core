@@ -1,4 +1,4 @@
-import type { filterMapUserType } from './route';
+import { filterMapUserType } from './process';
 
 export type GreenhouseUserAPI = {
   request: {};

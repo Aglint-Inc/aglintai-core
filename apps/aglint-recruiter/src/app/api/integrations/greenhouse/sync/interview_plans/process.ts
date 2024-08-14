@@ -65,12 +65,12 @@ async function saveInterviewPlans(
     await supabase
       .from('interview_plan')
       .insert(temp_plans)
-      .select('id, order')
+      .select('id, plan_order')
       .throwOnError()
   ).data;
   const temp_sessions: DatabaseTableInsert['interview_session'][] = plans
     .map((plan) => {
-      return data[plan.order - 1]?.interviews.map((session, index) => {
+      return data[plan.plan_order - 1]?.interviews.map((session, index) => {
         return {
           name: session.name,
           interview_plan_id: plan.id,

@@ -330,7 +330,7 @@ const InterviewPlan = ({
   return (
     <>
       <InterviewPlanWrap
-        textStageName={`Stage ${data.order} ${capitalizeFirstLetter(data.name)}`}
+        textStageName={`Stage ${data.plan_order} ${capitalizeFirstLetter(data.name)}`}
         textInterviewCount={`${sessions.length} Interviews`}
         isInputVisible={editPlan}
         onClickEdit={{ onClick: handleEditPlan }}

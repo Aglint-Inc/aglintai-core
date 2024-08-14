@@ -80,7 +80,7 @@ const Drawer = () => {
     () =>
       sessions.length
         ? []
-        : (interviewPlans?.interview_session ?? [])
+        : (interviewPlans?.flatMap((item) => item.interview_session) ?? [])
             .sort((a, z) => a.session_order - z.session_order)
             .map(
               ({
@@ -103,7 +103,7 @@ const Drawer = () => {
                 meeting_flow: null,
               }),
             ),
-    [interviewPlans?.interview_session, sessions],
+    [interviewPlans?.flatMap((item) => item.interview_session), sessions],
   );
 
   return (
