@@ -142,6 +142,10 @@ const AddMember = ({
       temp = { ...temp, role: true };
       flag = true;
     }
+    if (!form.location) {
+      temp = { ...temp, location: true };
+      flag = true;
+    }
     if (
       form.role !== 'admin' &&
       (!form.manager_id || form.manager_id.trim() === '')
@@ -219,11 +223,13 @@ const AddMember = ({
     return acc;
   }, {});
   const isSubmittable = !(
-    form.email &&
     form.first_name &&
+    form.email &&
+    form.employment &&
     form.position &&
     form.department &&
-    (form.role === 'admin' || Boolean(form.manager_id))
+    form.location &&
+    (form.role === 'admin' ? !!form.role : !!form.role && !!form.manager_id)
   );
 
   return (
@@ -421,6 +427,7 @@ const AddMember = ({
                         <UITextField
                           {...params}
                           error={formError.location}
+                          required
                           onFocus={() => {
                             setFormError({
                               ...formError,
@@ -469,41 +476,44 @@ const AddMember = ({
                   </Stack>
 
                   <Stack direction={'row'} gap={2}>
-                    <Autocomplete
-                      fullWidth
-                      value={{ name: form.role, id: form.role_id }}
-                      getOptionLabel={(option) =>
-                        capitalizeFirstLetter(option.name)
-                      }
-                      onChange={(event: any, newValue) => {
-                        setForm({
-                          ...form,
-                          role: newValue && newValue.name,
-                          role_id: newValue && newValue.id,
-                        });
-                      }}
-                      id='controllable-states-demo'
-                      options={roleOptions}
-                      renderOption={(props, op) => (
-                        <li {...props}>{capitalizeFirstLetter(op.name)}</li>
-                      )}
-                      renderInput={(params) => (
-                        <UITextField
-                          {...params}
-                          name='Role'
-                          placeholder='Choose Role'
-                          label='Role'
-                          required
-                          error={formError.role}
-                          helperText={
-                            formError.role ? 'Role must required' : ''
-                          }
-                          onFocus={() => {
-                            setFormError({ ...formError, role: false });
-                          }}
-                        />
-                      )}
-                    />
+                    <Stack width={'100%'} maxWidth={'276px'}>
+                      <Autocomplete
+                        fullWidth
+                        value={{ name: form.role, id: form.role_id }}
+                        getOptionLabel={(option) =>
+                          capitalizeFirstLetter(option.name)
+                        }
+                        onChange={(event: any, newValue) => {
+                          setForm({
+                            ...form,
+                            role: newValue && newValue.name,
+                            role_id: newValue && newValue.id,
+                          });
+                        }}
+                        id='controllable-states-demo'
+                        options={roleOptions}
+                        renderOption={(props, op) => (
+                          <li {...props}>{capitalizeFirstLetter(op.name)}</li>
+                        )}
+                        renderInput={(params) => (
+                          <UITextField
+                            {...params}
+                            name='Role'
+                            placeholder='Choose Role'
+                            label='Role'
+                            required
+                            error={formError.role}
+                            helperText={
+                              formError.role ? 'Role must required' : ''
+                            }
+                            onFocus={() => {
+                              setFormError({ ...formError, role: false });
+                            }}
+                          />
+                        )}
+                      />
+                    </Stack>
+
                     {form.role != 'admin' && (
                       <Autocomplete
                         fullWidth
