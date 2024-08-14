@@ -734,11 +734,11 @@ const useBanners = () => {
             handleJobUpdate({
               draft: {
                 ...job.draft,
+                location_id: job.location_id,
                 department_id: job.department_id,
                 description: job.description,
                 job_title: job.job_title,
                 job_type: job.job_type,
-                location: job.location,
                 workplace_type: job.workplace_type,
               },
             }),
@@ -758,7 +758,7 @@ const JobClose = ({
   onSubmit: () => void;
 }) => {
   const {
-    job: { job_title, location, status },
+    job: { job_title, status },
   } = useJob();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
@@ -868,7 +868,7 @@ const JobClose = ({
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}
           onClickCloseJob={{ onClick: () => handleClose() }}
-          textLocation={location}
+          textLocation={''}
           slotInput={
             <UITextField
               placeholder={job_title.trim()}

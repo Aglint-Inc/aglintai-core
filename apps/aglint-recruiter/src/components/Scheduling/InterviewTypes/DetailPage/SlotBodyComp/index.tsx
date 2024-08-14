@@ -345,7 +345,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     const { data, error } = await supabase
       .from('interview_session')
       .select(
-        'interview_plan(public_jobs(job_title, departments(name),location,status,id))',
+        'interview_plan(public_jobs(job_title, departments(name),status,id))',
       )
       .eq('module_id', module_id)
       .throwOnError();
@@ -375,7 +375,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               key={i}
               isLinkOffVisible={false}
               role={capitalizeAll(job.job_title)}
-              textLocation={job.location || '---'}
+              textLocation={'---'}
               textRoleCategory={job.departments?.name || '---'}
               slotBadges={
                 job.status && (

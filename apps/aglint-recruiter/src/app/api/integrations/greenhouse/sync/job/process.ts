@@ -77,7 +77,6 @@ function createJobObject(
 ): DatabaseTableInsert['public_jobs'] {
   return {
     draft: {
-      location: post.location.name,
       job_title: post.title,
       description: post.content,
       job_type: 'full time',
@@ -90,7 +89,6 @@ function createJobObject(
         title: post.title,
       },
     },
-    location: post.location.name,
     job_title: post.title,
     status: 'draft',
     scoring_criteria_loading: true,

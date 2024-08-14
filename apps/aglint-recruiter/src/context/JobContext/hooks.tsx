@@ -86,16 +86,16 @@ const useJobContext = () => {
             description: job.draft.description,
             job_title: job.draft.job_title,
             job_type: job.draft.job_type,
-            location: job.draft.location,
             workplace_type: job.draft.workplace_type,
+            location_id: job.draft.location_id,
           } as Omit<Job['draft'], 'jd_json'>,
           {
             department_id: job.department_id,
             description: job.description,
             job_title: job.job_title,
             job_type: job.job_type,
-            location: job.location,
             workplace_type: job.workplace_type,
+            location_id: job.location_id,
           } as Omit<Job['draft'], 'jd_json'>,
         ),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
@@ -165,6 +165,8 @@ const useJobContext = () => {
         application_match,
         // eslint-disable-next-line no-unused-vars
         department,
+        // eslint-disable-next-line no-unused-vars
+        location,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({

@@ -20,7 +20,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
       'description',
       'job_title',
       'job_type',
-      'location',
+      'location_id',
       'workplace_type',
     ];
     const message = getMessage(invalidFields);
@@ -36,7 +36,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
     department: job.department_id,
     description: job.description,
     job_type: job.job_type,
-    location: job.location,
+    location_id: job.location_id,
     workplace_type: job.workplace_type,
     ...(job.draft ?? {}),
   };
@@ -55,7 +55,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
         case 'department_id':
         case 'job_title':
         case 'job_type':
-        case 'location':
+        case 'location_id':
         case 'workplace_type':
           {
             const valid = !validateString(value as string);

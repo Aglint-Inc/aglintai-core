@@ -1,4 +1,8 @@
-import { DatabaseTableInsert, GreenhouseRefDbType, GreenhouseType } from '@aglint/shared-types';
+import {
+  DatabaseTableInsert,
+  GreenhouseRefDbType,
+  GreenhouseType,
+} from '@aglint/shared-types';
 import axios from 'axios';
 
 import { JobInsert } from '@/src/queries/jobs/types';
@@ -69,14 +73,12 @@ export const createJobObject = async (
     (post) => {
       return {
         draft: {
-          location: post.location,
           job_title: post.title,
           description: post.description,
           job_type:
             post.employmentType == 'Contract' ? 'contract' : 'full time',
           workplace_type: 'on site',
         },
-        location: post.location,
         job_title: post.title,
         recruiter_id: recruiter_id,
         posted_by: POSTED_BY.ASHBY,

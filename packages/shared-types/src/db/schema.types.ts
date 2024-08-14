@@ -2920,7 +2920,7 @@ export type Database = {
           job_criteria: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
-          location: string | null
+          location_id: number | null
           new_screening_setting: Json
           parameter_weights: Json
           phone_screen_enabled: boolean | null
@@ -2960,7 +2960,7 @@ export type Database = {
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
-          location?: string | null
+          location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
@@ -3000,7 +3000,7 @@ export type Database = {
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
-          location?: string | null
+          location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
@@ -3071,6 +3071,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_jobs_recruiter_fkey"
@@ -5062,7 +5069,8 @@ export type Database = {
           jd_json: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
-          location: string | null
+          location: Json | null
+          location_id: number | null
           parameter_weights: Json | null
           phone_screen_enabled: boolean | null
           posted_by: string | null
@@ -5127,6 +5135,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_jobs_recruiter_fkey"

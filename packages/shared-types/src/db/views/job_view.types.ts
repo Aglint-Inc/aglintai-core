@@ -1,4 +1,4 @@
-import { CustomJobParamters } from "../common.types";
+import { CustomJobParamters, CustomLocation } from "../common.types";
 import { Database } from "../schema.types";
 import { Custom } from "../utils.types";
 import type { ViewType } from "./index.types";
@@ -10,13 +10,14 @@ type CustomJobViewAllParamters = CustomJobParamters & CustomJobViewParameters;
 type CustomJobViewParameters = Custom<
   Pick<
     Database["public"]["Views"]["job_view"]["Row"],
-    "section_count" | "processing_count" | "flags"
+    "section_count" | "processing_count" | "flags" | "location"
   >,
   {
     section_count: CustomSectionCount;
     processing_count: CustomProcessingCount;
     flags: CustomFlag;
     application_match: CustomApplicationMatch;
+    location?: CustomLocation;
   }
 >;
 

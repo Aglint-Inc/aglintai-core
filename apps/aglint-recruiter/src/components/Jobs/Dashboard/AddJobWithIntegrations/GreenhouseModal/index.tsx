@@ -48,8 +48,7 @@ export function GreenhouseModal() {
           jobs.data?.filter(
             (job) =>
               job.posted_by === POSTED_BY.GREENHOUSE &&
-              job.job_title === post.title &&
-              job.location == post.location.name,
+              job.job_title === post.title,
           ).length == 0
         ) {
           return true;

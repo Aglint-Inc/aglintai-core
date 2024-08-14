@@ -217,7 +217,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           textAboutJob={'Ask your queries about this job to the recruiter. '}
           textCompanyDescription={recruiter?.company_overview}
           isDiscriptionEmpty={Boolean(recruiter?.company_overview)}
-          textCompanyLocation={post?.location}
+          textCompanyLocation={'--'}
           textEmployeeCount={recruiter?.employee_size || '--'}
           slotDescription={
             <>
@@ -288,7 +288,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                       key={ind}
                       textJobRole={job.job_title || '--'}
                       textCompanyType={job.departments?.name || '--'}
-                      textLocation={job.location || '--'}
+                      textLocation={'--'}
                       textWorkingType={job.job_type || '--'}
                       onClickApplyNow={{
                         onClick: () => {

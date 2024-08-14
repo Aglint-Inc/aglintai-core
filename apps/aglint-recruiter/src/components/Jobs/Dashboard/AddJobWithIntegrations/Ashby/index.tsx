@@ -68,9 +68,7 @@ export function AshbyModalComp() {
         if (
           data?.filter(
             (job) =>
-              job.posted_by === POSTED_BY.ASHBY &&
-              job.job_title === post.title &&
-              job.location == post.location,
+              job.posted_by === POSTED_BY.ASHBY && job.job_title === post.title,
           ).length == 0
         ) {
           return true;

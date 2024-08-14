@@ -43,15 +43,6 @@ export async function filterMapUser(
         created_by,
       ),
     );
-    // temp_user.push({
-    //   first_name: user.first_name,
-    //   last_name: user.last_name,
-    //   email: user.primary_email_address,
-    //   department_id: curr_departments[user.departments?.[0]?.name],
-    //   office_location_id: curr_office_locations[user.offices?.[0]?.id],
-    //   status: 'invited',
-    //   user_id: '',
-    // });
   }
   return temp_user;
 }

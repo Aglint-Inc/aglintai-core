@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Autocomplete, InputAdornment, Stack } from '@mui/material';
+import { InputAdornment, Stack } from '@mui/material';
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
@@ -11,6 +11,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { JobCreate } from '@/src/queries/jobs/types';
+import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -70,7 +71,7 @@ export const useJobForms = (
             <JobType name={safeKey} value={value} onChange={handleChange} />
           );
           break;
-        case 'location':
+        case 'location_id':
           acc[safeKey] = (
             <JobLocation name={safeKey} value={value} onChange={handleChange} />
           );
@@ -198,37 +199,19 @@ JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
-  const defaultAddress = ((recruiter?.office_locations ?? []) as any[]).map(
-    (s) => ({
-      label: [s.city, s.region, s.country].filter(Boolean).join(', '),
-      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
-    }),
-  );
+  const options = (recruiter?.office_locations ?? []).map((s) => ({
+    name: formatOfficeLocation(s),
+    value: s.id,
+  }));
   return (
-    <Autocomplete
-      options={defaultAddress}
-      onChange={(event: any, newValue) => {
-        if (!newValue || typeof newValue === 'string') return;
-        onChange(name, newValue.value);
-      }}
-      renderInput={(params) => (
-        <UITextField
-          name={name}
-          rest={{ ...params }}
-          label='Job Location'
-          required={value.required}
-          placeholder='Ex. San Fransisco, United States'
-          error={value.error.value}
-          helperText={value.error.helper}
-          onChange={(e) => onChange(name, e.target.value)}
-        />
-      )}
-      defaultValue={{
-        label: value.value,
-        value: value.value,
-      }}
-      freeSolo
-      disablePortal
+    <UISelect
+      label={'Location'}
+      menuOptions={options}
+      error={value.error.value}
+      helperText={value.error.helper}
+      required={value.required}
+      value={value.value as string}
+      onChange={(e) => onChange(name, e.target.value)}
     />
   );
 });

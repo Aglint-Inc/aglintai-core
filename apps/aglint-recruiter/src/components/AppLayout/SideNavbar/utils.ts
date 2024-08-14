@@ -93,7 +93,6 @@ export const navList: {
     active: [
       '/jobs',
       '/jobs/[id]',
-      '/jobs/[id]/agent',
       '/jobs/[id]/assessment',
       '/jobs/[id]/email-templates',
       '/jobs/[id]/hiring-team',
