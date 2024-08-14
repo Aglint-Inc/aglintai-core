@@ -1,8 +1,4 @@
-import {
-  removeRequestFromLocal,
-  storeRequestsWithSettings,
-  updateField,
-} from "./functions";
+import { storeRequestsWithSettings, updateField } from "./functions";
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -85,8 +81,9 @@ export const submitAvailability = async (settingsForSubmitAva) => {
         updateField(
           setting.application_id,
           setting.request_id,
-          "isSubmitAvailability",
-          true
+          "isSubmitAvailabilitySubmitted",
+          true,
+          "completed"
         );
         alert(`${i + 1} - Avalaibilty succesfully submitted`);
       })
@@ -96,7 +93,7 @@ export const submitAvailability = async (settingsForSubmitAva) => {
   });
 };
 
-export const sendAvailabilityReminder = (settingsForSendRemainder) => {
+export const sendAvailabilityReminder = async (settingsForSendRemainder) => {
   settingsForSendRemainder.map(async (setting, i) => {
     const payload = {
       request_id: setting["request_id"],
@@ -117,15 +114,20 @@ export const sendAvailabilityReminder = (settingsForSendRemainder) => {
         return res.json();
       })
       .then(() => {
-        submitAvailability([setting]);
+        updateField(
+          setting.application_id,
+          setting.request_id,
+          "isAvailabilityReminders",
+          true
+        );
         alert(`${i + 1} - Availability Reminder sent succesfully`);
       })
 
       .catch((e) => {
-        console.log(e.message);
         alert(`${i + 1} - Availability Reminder sending failed ${e.message}`);
       });
   });
+  await submitAvailability(settingsForSendRemainder);
 };
 
 export const bookSelfSchedule = async (settingsForBookSchedule) => {
@@ -149,7 +151,13 @@ export const bookSelfSchedule = async (settingsForBookSchedule) => {
         return res.json();
       })
       .then(() => {
-        removeRequestFromLocal(setting.application_id, setting.request_id);
+        updateField(
+          setting.application_id,
+          setting.request_id,
+          "isSelfScheduleSubmitted",
+          true,
+          "completed"
+        );
         alert(`${i + 1} - self schudle succesfully submitted`);
       })
 
@@ -159,6 +167,7 @@ export const bookSelfSchedule = async (settingsForBookSchedule) => {
       });
   });
 };
+
 export const sendReminderSelfSchedule = async (
   settingsForSendScheduleReminder
 ) => {
@@ -181,11 +190,89 @@ export const sendReminderSelfSchedule = async (
         return res.json();
       })
       .then(() => {
-        bookSelfSchedule([setting]);
+        updateField(
+          setting.application_id,
+          setting.request_id,
+          "isSelfSchedulingReminders",
+          true
+        );
         alert(`${i + 1} - Self schedule Reminder sent succesfully`);
       })
       .catch((e) => {
         alert(`${i + 1} - Self schedule Reminder sending failed ${e.message}`);
+      });
+  });
+  await bookSelfSchedule(settingsForSendScheduleReminder);
+};
+
+export const requestForReschedule = async (settingsForReschedule) => {
+  settingsForReschedule.map(async (setting, i) => {
+    const payload = {
+      request_id: setting.request_id,
+      application_id: setting.application_id,
+    };
+
+    await fetch(`api/automation/reschedule_request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (res.status != 200) {
+          return res.json().then((errorData) => {
+            throw new Error(errorData.message);
+          });
+        }
+        return res.json();
+      })
+      .then(() => {
+        updateField(
+          setting.application_id,
+          setting.request_id,
+          "isRequestRescheduleSubmitted",
+          true,
+          "in_progress"
+        );
+        alert(`${i + 1} - reSchedule request succesfully`);
+      })
+      .catch((e) => {
+        alert(`${i + 1} - reSchedule requesting failed ${e.message}`);
+      });
+  });
+};
+
+export const requestForCancel = async (settingsForCancel) => {
+  settingsForCancel.map(async (setting, i) => {
+    const payload = {
+      request_id: setting.request_id,
+      application_id: setting.application_id,
+    };
+
+    await fetch(`api/automation/cancel_request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (res.status != 200) {
+          return res.json().then((errorData) => {
+            throw new Error(errorData.message);
+          });
+        }
+        return res.json();
+      })
+      .then(() => {
+        updateField(
+          setting.application_id,
+          setting.request_id,
+          "isCancelRequestSubmitted",
+          true,
+          "in_progress"
+        );
+        alert(`${i + 1} - Cancel request succesfully`);
+      })
+      .catch((e) => {
+        alert(`${i + 1} - Cancel requesting failed ${e.message}`);
       });
   });
 };
