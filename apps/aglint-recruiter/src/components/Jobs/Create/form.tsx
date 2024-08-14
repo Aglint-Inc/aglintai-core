@@ -11,6 +11,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { JobCreate } from '@/src/queries/jobs/types';
+import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -199,7 +200,7 @@ JobCompany.displayName = 'JobCompany';
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useAuthDetails();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
-    name: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    name: formatOfficeLocation(s),
     value: s.id,
   }));
   return (

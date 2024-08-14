@@ -20,6 +20,7 @@ import {
   useJobWorkflowDisconnect,
 } from '@/src/queries/job-workflow';
 import { Workflow } from '@/src/types/workflow.types';
+import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -98,11 +99,6 @@ const WorkflowJob = ({
     ({ job_id, workflow_id: wf_id }) => job_id === id && wf_id == workflow_id,
   );
 
-  const textLocation = [location?.city, location?.country]
-    .filter(Boolean)
-    .map((location) => location.trim())
-    .join(', ');
-
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
@@ -110,7 +106,7 @@ const WorkflowJob = ({
         <WorkflowConnectedCard
           key={id}
           role={capitalizeAll(job_title)}
-          textLocation={textLocation || '---'}
+          textLocation={formatOfficeLocation(location)}
           textRoleCategory={department || '---'}
           slotBadges={
             status && (

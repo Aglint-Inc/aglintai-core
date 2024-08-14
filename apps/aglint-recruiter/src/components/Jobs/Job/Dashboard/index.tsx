@@ -734,6 +734,7 @@ const useBanners = () => {
             handleJobUpdate({
               draft: {
                 ...job.draft,
+                location_id: job.location_id,
                 department_id: job.department_id,
                 description: job.description,
                 job_title: job.job_title,

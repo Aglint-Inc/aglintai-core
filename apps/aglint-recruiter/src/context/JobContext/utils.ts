@@ -36,7 +36,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
     department: job.department_id,
     description: job.description,
     job_type: job.job_type,
-    location: job.location,
+    location_id: job.location_id,
     workplace_type: job.workplace_type,
     ...(job.draft ?? {}),
   };
