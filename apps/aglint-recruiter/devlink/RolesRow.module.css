@@ -26,6 +26,14 @@
   padding: var(--space-2) var(--space-3);
   justify-content: flex-start;
   align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.roles-row-avatar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
 }
@@ -45,6 +53,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.slot-add-btn-rr {
+  display: none;
 }
 
 #w-node-_9b38d753-6590-f38b-003b-cadfaf1c4cef-af1c4cef {

@@ -107,6 +107,7 @@ function InterviewerListCard({
               first_name: item.first_name,
               last_name: item.last_name,
               position: item.position,
+              user_id: item.id,
               profile_image: item.profile_image,
             }}
             interviewerTimeZone={item.scheduling_settings?.timeZone?.tzCode}

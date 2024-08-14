@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 import { numberToOrdinal } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
@@ -22,7 +21,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_session')
       .select(
-        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*),candidates(*))))',
+        '*,interview_module(*), interview_meeting(*, recruiter_user(*), interview_schedule(*, applications(*, public_jobs(*,recruiter_table:recruiter(name,logo)),candidates(*))))',
       )
       .eq('id', req_body.session_id),
   );
@@ -36,11 +35,6 @@ export async function fetchUtil(
         training_ints.map((int) => int.user_id),
       ),
     false,
-  );
-
-  const comp_email_temp = await fetchCompEmailTemp(
-    session_detail.interview_meeting.interview_schedule.recruiter_id,
-    'interviewEnd_email_shadowTraineeForMeetingAttendence',
   );
 
   const candidate =
@@ -70,7 +64,7 @@ export async function fetchUtil(
         OrganizerTimeZone: organizer.scheduling_settings.timeZone.tzCode,
         sessionName: session_detail.name,
         interviewType: session_detail.interview_module.name,
-        companyName: job.company,
+        companyName: job.recruiter_table.name,
         jobRole: job.job_title,
         shadowCount: numberToOrdinal(
           trainee_data.shadow_confirmed_count +
@@ -79,20 +73,14 @@ export async function fetchUtil(
         shadowConfirmLink: `<a href=${meeting_details_link} target="_blank">here</a>`,
       };
 
-    const filled_comp_template = fillCompEmailTemplate(
-      comp_email_placeholder,
-      comp_email_temp,
-    );
     const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_shadowTraineeForMeetingAttendence'>['react_email_placeholders'] =
       {
-        companyLogo: job.logo,
-        emailBody: filled_comp_template.body,
-        subject: filled_comp_template.subject,
+        companyLogo: job.recruiter_table.logo,
       };
 
     return {
+      company_id: candidate.recruiter_id,
       comp_email_placeholder,
-      filled_comp_template,
       react_email_placeholders,
       recipient_email: trainee.email,
     };

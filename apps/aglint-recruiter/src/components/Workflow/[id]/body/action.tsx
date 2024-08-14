@@ -1,7 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseTable } from '@aglint/shared-types';
+import type {
+  CustomAgentInstructionPayload,
+  DatabaseTable,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
@@ -12,10 +15,8 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
-import toast from '@/src/utils/toast';
 
 import { useActions } from './context';
 
@@ -84,63 +85,69 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
-      {props.action.company_email_template.type.split('_slack_').length ===
-      2 ? (
-        <GlobalBannerInline
-          textContent={'A slack notification will be sent for this action.'}
-          slotButton={<></>}
-        />
-      ) : (
-        <Template key={props.action.email_template_id} {...props} />
-      )}
+      <TargetAPIBody {...props} />
     </>
   );
 };
 
-const ActionForm = ({
-  action: {
-    id,
-    company_email_template: { type },
-  },
-}: ActionProps) => {
-  const {
-    emailTemplates: { data: all_company_email_template },
-  } = useAuthDetails();
-  const { handleUpdateAction, manageWorkflow } = useWorkflow();
-  const { globalOptions, getCurrentOption } = useActions();
+const TargetAPIBody = (props: ActionProps) => {
+  switch (props.action.action_type) {
+    case 'email':
+      return <EmailTemplate key={props.action.target_api} {...props} />;
+    case 'slack':
+      return <SlackTemplate key={props.action.target_api} {...props} />;
+    case 'end_point':
+      return <EndPointTemplate key={props.action.target_api} {...props} />;
+    case 'agent_instruction':
+      return (
+        <AgentInstructionTemplate key={props.action.target_api} {...props} />
+      );
+  }
+};
+
+const ActionForm = ({ action }: ActionProps) => {
+  const { manageWorkflow } = useWorkflow();
+  const { globalOptions, getCurrentOption, selectAction } = useActions();
+  const currentOption = useMemo(() => {
+    const { name, value } = getCurrentOption(action.target_api);
+    return { name, value: value.target_api, ...value };
+  }, [action.target_api]);
   const options = useMemo(
-    () => [...globalOptions, getCurrentOption(type)],
-    [globalOptions, type],
+    () => [
+      ...globalOptions.map(({ name, value }) => ({
+        name,
+        value: value.target_api,
+        ...value,
+      })),
+      currentOption,
+    ],
+    [globalOptions, currentOption],
   );
+
   return (
     <UISelect
       label='Do this'
-      value={type}
+      value={currentOption.target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
       onChange={(e) => {
-        const emailTemplate = all_company_email_template.find(
-          ({ type }) => type === e.target.value,
+        const { action_type, target_api, payload } = options.find(
+          ({ target_api }) => e.target.value === target_api,
         );
-        if (emailTemplate) {
-          const { body, id: email_template_id, subject } = emailTemplate;
-          handleUpdateAction({
-            id,
-            payload: {
-              email_template_id,
-              payload: {
-                subject,
-                body,
-              },
-            },
-          });
-        } else toast.error('Template for this action is missing');
+        selectAction({
+          ...action,
+          action_type,
+          target_api,
+          payload,
+        } as WorkflowAction);
       }}
     />
   );
 };
 
-const Template = ({ action: { payload } }: ActionProps) => {
+const EmailTemplate = ({ action: { payload, action_type } }: ActionProps) => {
+  if (action_type !== 'email') return <></>;
+
   const email_subject = <EmailSubject name='subject' value={payload} />;
 
   const email_body = <EmailBody name='body' value={payload} />;
@@ -151,17 +158,16 @@ const Template = ({ action: { payload } }: ActionProps) => {
       {email_body}
     </Stack>
   );
-
   return forms;
 };
 
-type EmailTemplate = Pick<
+type EmailTemplateType = Pick<
   DatabaseTable['company_email_template'],
   'body' | 'subject'
 >;
 
 type FormsType = {
-  name: keyof EmailTemplate;
+  name: keyof EmailTemplateType;
   value: {
     [key in keyof WorkflowAction['payload']]: WorkflowAction['payload'][key];
   };
@@ -225,6 +231,86 @@ const EmailBody: React.FC<FormsType> = memo(
   },
 );
 EmailBody.displayName = 'EmailBody';
+
+const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
+  if (action_type !== 'slack') return <></>;
+
+  return (
+    <GlobalBannerInline
+      textContent={'A slack notification will be sent for this action.'}
+      slotButton={<></>}
+    />
+  );
+};
+
+const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
+  if (action_type !== 'end_point') return <></>;
+
+  return (
+    <GlobalBannerInline
+      textContent={'Aglint system will handle this action'}
+      slotButton={<></>}
+    />
+  );
+};
+
+const AgentInstructionTemplate = ({ action }: ActionProps) => {
+  if (action.action_type !== 'agent_instruction') return <></>;
+
+  const email_body = <AgentInstructionBody {...action} />;
+
+  const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
+  return forms;
+};
+
+const AgentInstructionBody: React.FC<
+  ActionProps['action'] & { disabled?: boolean }
+> = memo(({ id, action_type, payload, disabled = false }) => {
+  const { handleUpdateAction } = useWorkflow();
+  const safePayload = payload as CustomAgentInstructionPayload;
+  const [instruction, setInstruction] = useState(
+    safePayload?.instruction ?? '',
+  );
+  const initialRef = useRef(true);
+  useEffect(() => {
+    if (initialRef.current) {
+      initialRef.current = false;
+      return;
+    }
+    if (instruction !== safePayload?.instruction) {
+      const timeout = setTimeout(
+        () =>
+          handleUpdateAction({ id, payload: { ...safePayload, instruction } }),
+        400,
+      );
+      return () => clearTimeout(timeout);
+    }
+  }, [instruction]);
+  if (action_type !== 'agent_instruction') return <></>;
+  return (
+    <Stack>
+      <UITypography type='small'>Aglint AI Instruction</UITypography>
+      <Stack
+        sx={{
+          mt: '8px',
+          border: '1px solid',
+          borderColor: 'var(--neutral-6)',
+          borderRadius: 'var(--radius-2)',
+        }}
+      >
+        <TipTapAIEditor
+          toolbar={false}
+          disabled={disabled}
+          editor_type='regular'
+          initialValue={payload.instruction}
+          handleChange={(newInstruction) => setInstruction(newInstruction)}
+          placeholder='Provide the instructions to guide the agent through this action.'
+        />
+      </Stack>
+    </Stack>
+  );
+});
+AgentInstructionBody.displayName = 'AgentInstructionBody';
 
 const ActionIcon = memo(() => {
   return (

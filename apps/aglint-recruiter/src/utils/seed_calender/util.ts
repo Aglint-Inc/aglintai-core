@@ -73,7 +73,7 @@ export const seedCalendersUtil = (
     const [rec_details] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter')
-        .select('scheduling_settings,service_json')
+        .select('scheduling_settings,integrations(*)')
         .eq('id', company_id),
     );
     const { scheduling_settings: comp_schedule_setting } = rec_details;
@@ -99,7 +99,7 @@ export const seedCalendersUtil = (
     const uniq_inters = Array.from(new Set(interviewers.map((i) => i.user_id)));
 
     return {
-      company_cred_hash_str: rec_details.service_json,
+      company_cred_hash_str: rec_details.integrations.service_json,
       comp_schedule_setting,
       interview_type_details: interviewers,
       uniq_inters,

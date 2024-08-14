@@ -24,6 +24,7 @@ export function SideDrawerLarge({
   slotButtons,
   slotHeaderIcon,
   drawerSize,
+  isHeaderIconVisible = true,
 }) {
   return (
     <_Component
@@ -36,7 +37,9 @@ export function SideDrawerLarge({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "flex_hr_10")} tag="div">
-          <_Builtin.Block tag="div">{slotHeaderIcon}</_Builtin.Block>
+          {isHeaderIconVisible ? (
+            <_Builtin.Block tag="div">{slotHeaderIcon}</_Builtin.Block>
+          ) : null}
           <Text content={textDrawertitle} weight="medium" />
         </_Builtin.Block>
         <IconButtonSoft
@@ -78,7 +81,7 @@ export function SideDrawerLarge({
           )}
         </_Builtin.Block>
       ) : null}
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5BdrawerSize%3D%22small%22%5D%7B%0Awidth%3A450px%3B%0A%7D%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5BdrawerSize%3D%22small%22%5D%7B%0Awidth%3A450px%3B%0A%7D%0A%5BdrawerSize%3D%22medium%22%5D%7B%0Awidth%3A460px%3B%0A%7D%0A%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

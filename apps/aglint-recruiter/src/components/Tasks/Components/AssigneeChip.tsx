@@ -54,7 +54,11 @@ function AssigneeChip({
   }
   useEffect(() => {
     if (!assigneeDetails) {
-      getAssigneeDetails();
+      try {
+        getAssigneeDetails();
+      } catch (error) {
+        setAssigneeDetails([]);
+      }
     }
   }, [recruiter_id]);
   return (

@@ -1,4 +1,4 @@
-import { DatabaseTable, InterviewSession } from '@aglint/shared-types';
+/* eslint-disable no-unused-vars */
 import { isEqual } from 'lodash';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -7,18 +7,10 @@ import { UserType } from './Filters/FilterCordinator';
 
 export interface FilterCandidateState {
   filter: {
-    status?: DatabaseTable['interview_meeting']['status'][];
     job_ids?: string[];
-    module_ids?: string[];
-    dateRange?: string;
+    department_ids?: number[];
     textSearch?: string;
-    sortBy?: 'asc' | 'desc';
     coordinator_ids?: UserType[];
-    scheduleType?: InterviewSession['schedule_type'][];
-  };
-  pagination: {
-    page: number;
-    total: number;
   };
   filterVisible: FilterType[];
   isInitialState?: () => boolean;
@@ -26,32 +18,17 @@ export interface FilterCandidateState {
 }
 
 export enum FilterType {
-  // eslint-disable-next-line no-unused-vars
-  relatedJobs = 'relatedJobs',
-  // eslint-disable-next-line no-unused-vars
-  interviewPanels = 'interviewPanels',
-  // eslint-disable-next-line no-unused-vars
-  scheduleType = 'scheduleType',
-  // eslint-disable-next-line no-unused-vars
-  status = 'status',
-  // eslint-disable-next-line no-unused-vars
+  jobs = 'jobs',
+  departments = 'departments',
   coordinator = 'coordinator',
 }
 
-const initialState: FilterCandidateState = {
+const initialFilterState: FilterCandidateState = {
   filter: {
     textSearch: '',
-    status: [],
-    sortBy: 'asc',
     job_ids: [],
-    module_ids: [],
-    dateRange: null,
+    department_ids: [],
     coordinator_ids: [],
-    scheduleType: [],
-  },
-  pagination: {
-    page: 1,
-    total: 0,
   },
   filterVisible: Object.keys(FilterType) as FilterType[],
 };
@@ -59,12 +36,12 @@ const initialState: FilterCandidateState = {
 export const useFilterCandidateStore = create<FilterCandidateState>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      ...initialFilterState,
       reset: () =>
         set({
-          ...initialState,
+          ...initialFilterState,
           filter: {
-            ...initialState.filter,
+            ...initialFilterState.filter,
             textSearch: get().filter.textSearch,
           },
         }),
@@ -72,7 +49,7 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
         const { filter: curFil, filterVisible: curFilVis } = get();
         const curState = { ...curFil, filterVisible: curFilVis };
 
-        const { filter: iniFil, filterVisible: iniFilVis } = initialState;
+        const { filter: iniFil, filterVisible: iniFilVis } = initialFilterState;
         const iniState = { ...iniFil, filterVisible: iniFilVis };
 
         delete curState['textSearch'];
@@ -89,7 +66,6 @@ export const useFilterCandidateStore = create<FilterCandidateState>()(
 
 export const setFilter = (filter: FilterCandidateState['filter']) => {
   useFilterCandidateStore.setState((state) => ({
-    pagination: { ...state.pagination, page: 1 },
     filter: { ...state.filter, ...filter },
   }));
 };
@@ -97,10 +73,3 @@ export const setFilter = (filter: FilterCandidateState['filter']) => {
 export const setFilterVisible = (
   filterVisible: FilterCandidateState['filterVisible'],
 ) => useFilterCandidateStore.setState({ filterVisible });
-
-export const setPagination = (
-  pagination: Partial<FilterCandidateState['pagination']>,
-) =>
-  useFilterCandidateStore.setState((state) => ({
-    pagination: { ...state.pagination, ...pagination },
-  }));

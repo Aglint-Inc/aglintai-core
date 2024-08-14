@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
@@ -8,10 +7,11 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'meetingAccepted_email_organizer'>;
+type EmailType = ReactTempPayload<'meetingAccepted_email_organizer'>;
 
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody:
     '<p>Hi <span class="temp-variable" data-type="temp-variable" data-id="organizerFirstName">{{organizerFirstName}}</span>,</p><p></p><p>We are pleased to inform you that the <span class="temp-variable" data-type="temp-variable" data-id="interviewerName">{{interviewerName}}</span> has accepted the interview request for the <span class="temp-variable" data-type="temp-variable" data-id="jobRole">{{jobRole}}</span> position at <span class="temp-variable" data-type="temp-variable" data-id="companyName">{{companyName}}</span>.</p><p></p><p>View Schedule details <span class="temp-variable" data-type="temp-variable" data-id="meetingDetailsLink">{{meetingDetailsLink}}</span> </p><p></p><p>Best regards,</p><p>Aglint AI</p>',
   companyLogo: companyLogoDummy,
@@ -38,11 +38,11 @@ export const meetingDeclinedEmailOrganizer = ({
   companyLogo = dummy.companyLogo,
   meetingDetail = dummy.meetingDetail,
   meetingDetailsLink = '',
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Session meetingDetail={meetingDetail} />
-      <ButtonSolid href={meetingDetailsLink} buttonText="Meeting Details" />
+      <ButtonSolid buttonText="Meeting Details" href={meetingDetailsLink} />
     </EmailContainer>
   );
 };

@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from "..";
+import { DatabaseEnums, DatabaseTable } from '..';
 
 export type APIWorkFlowCron = {
   request: {
@@ -13,9 +13,9 @@ export type APIWorkFlowCron = {
       schedule_id: string;
       start_time: string;
       application_id: string;
-      email_type: DatabaseEnums["email_slack_types"];
+      target_api: DatabaseEnums['email_slack_types'];
     };
-    payload: DatabaseTable["workflow_action"]["payload"];
+    payload: DatabaseTable['workflow_action']['payload'];
     execution_time: string;
   };
   response: {

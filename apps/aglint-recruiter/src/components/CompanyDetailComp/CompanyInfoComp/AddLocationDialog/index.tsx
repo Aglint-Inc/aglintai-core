@@ -1,8 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { Autocomplete, Dialog, Stack } from '@mui/material';
+import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { AddLocationPop } from '@/devlink/AddLocationPop';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { Checkbox } from '@/devlink/Checkbox';
+import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
@@ -154,15 +157,43 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     }
   }, [recruiter]);
 
+  const isCheckboxVisiable =
+    hasHeadquarter && initialValue?.is_headquarter ? true : !hasHeadquarter;
   return (
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
-        <AddLocationPop
-          isLocationDescVisible={false}
-          isAddDisable={edit === -1 ? !isRequired : false}
-          headerText={edit === -1 ? 'Add Location' : 'Edit location'}
-          textButtonLabel={edit === -1 ? 'Add' : 'Save'}
-          slotForm={
+        <DcPopup
+          onClickClosePopup={{ onClick: handleClose }}
+          popupName={edit === -1 ? 'Add Location' : 'Edit location'}
+          slotButtons={
+            <>
+              <ButtonSoft
+                textButton='Cancel'
+                size={2}
+                color={'neutral'}
+                onClickButton={{ onClick: handleClose }}
+              />
+              <ButtonSolid
+                textButton={edit === -1 ? 'Add' : 'Save'}
+                size={2}
+                isDisabled={edit === -1 ? !isRequired : false}
+                onClickButton={{
+                  onClick: () => {
+                    if (edit === -1) {
+                      handleAddLocation();
+                    } else {
+                      cityRef.current.value &&
+                      regionRef.current.value &&
+                      countryRef.current.value
+                        ? handleAddLocation()
+                        : toast.message('Please Enter the required fields');
+                    }
+                  },
+                }}
+              />
+            </>
+          }
+          slotBody={
             <Stack spacing={2}>
               <UITextField
                 ref={address1Ref}
@@ -178,7 +209,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               />
               <Stack direction={'row'} spacing={'var(--space-2)'}>
                 <UITextField
-                  width='225px'
+                  width='213px'
                   ref={cityRef}
                   name='city'
                   placeholder='San Francisco'
@@ -188,7 +219,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   defaultValue={initialValue?.city}
                 />
                 <UITextField
-                  width='225px'
+                  width='213px'
                   ref={regionRef}
                   name='region'
                   placeholder='CA'
@@ -200,7 +231,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               </Stack>
               <Stack direction={'row'} spacing={'var(--space-2)'}>
                 <UITextField
-                  width='225px'
+                  width='213px'
                   ref={countryRef}
                   required={true}
                   name='country'
@@ -211,7 +242,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   defaultValue={initialValue?.country}
                 />
                 <UITextField
-                  width='225px'
+                  width='213px'
                   ref={zipRef}
                   placeholder='Please enter the zip code or postal code'
                   label='Zip Code'
@@ -238,37 +269,21 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   />
                 )}
               />
+              {isCheckboxVisiable && (
+                <Stack direction={'row'} spacing={1}>
+                  <Checkbox
+                    isChecked={isHeadQ}
+                    onClickCheck={{
+                      onClick: () => {
+                        setHeadQ(!isHeadQ);
+                      },
+                    }}
+                  />
+                  <Typography>Is this the headquarter</Typography>{' '}
+                </Stack>
+              )}
             </Stack>
           }
-          onClickCancel={{
-            onClick: () => {
-              handleClose();
-            },
-          }}
-          onClickAdd={{
-            onClick: () => {
-              if (edit === -1) {
-                handleAddLocation();
-              } else {
-                cityRef.current.value &&
-                regionRef.current.value &&
-                countryRef.current.value
-                  ? handleAddLocation()
-                  : toast.message('Please Enter the required fields');
-              }
-            },
-          }}
-          isCheckboxVisible={
-            hasHeadquarter && initialValue?.is_headquarter
-              ? true
-              : !hasHeadquarter
-          }
-          isChecked={isHeadQ}
-          onClickCheck={{
-            onClick: () => {
-              setHeadQ(!isHeadQ);
-            },
-          }}
         />
       </Stack>
     </Dialog>

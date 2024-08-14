@@ -3,7 +3,6 @@ import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -14,6 +13,7 @@ import { DatePicker } from '@/devlink2/DatePicker';
 import { PickSlotDay } from '@/devlink2/PickSlotDay';
 import { TimePick } from '@/devlink2/TimePick';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -25,7 +25,7 @@ import {
 import SlotColumn from './SlotColumn';
 
 export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const {
     dateSlots,
     candidateRequestAvailability,
@@ -212,7 +212,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           slots: [{ round: 1, dates: selectedSlots[0].dates }],
           user_timezone: userTzDayjs.tz.guess(),
         },
-        id: String(router.query?.request_id),
+        id: String(router.params?.request_id),
       },
     );
     const { data: task } = await axios.post(
@@ -276,6 +276,7 @@ export default function AvailableSlots({ singleDay }: { singleDay: boolean }) {
           textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
           slotPrimaryButton={
             <ButtonSolid
+              size={2}
               onClickButton={{
                 onClick: handleSubmit,
               }}

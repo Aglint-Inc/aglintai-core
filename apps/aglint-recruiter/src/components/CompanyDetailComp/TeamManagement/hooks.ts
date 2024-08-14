@@ -11,6 +11,7 @@ export const useRolesOptions = () => {
       return getAllRoles(recruiter.id);
     },
     enabled: Boolean(recruiter?.id),
+    placeholderData: [],
   });
 };
 const getAllRoles = async (recruiter_id: string) => {

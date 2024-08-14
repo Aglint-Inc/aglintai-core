@@ -73,6 +73,7 @@ export const createJobApplications = async (
       const checkCandidates = await processEmailsInBatches(
         emails,
         post.recruiter_id,
+        supabase,
       );
 
       //new candidates insert flow
@@ -234,46 +235,42 @@ export const fetchAllJobs = async (
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
   recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
-): Promise<JobInsert[]> => {
-  const dbJobs = selectedPostings.map((post) => {
-    return {
-      draft: {
+) => {
+  const dbJobs: DatabaseTableInsert['public_jobs'][] = selectedPostings.map(
+    (post) => {
+      return {
+        draft: {
+          location: post.location.name,
+          job_title: post.title,
+          description: post.content,
+          job_type: 'full time',
+          workplace_type: 'on site',
+          jd_json: {
+            educations: [],
+            level: 'Mid-level',
+            rolesResponsibilities: [],
+            skills: [],
+            title: post.title,
+          },
+        },
         location: post.location.name,
         job_title: post.title,
+        status: 'draft',
+        scoring_criteria_loading: true,
+        posted_by: POSTED_BY.GREENHOUSE,
+        id: post.public_job_id,
+        recruiter_id: recruiter.id,
         description: post.content,
         job_type: 'full time',
         workplace_type: 'on site',
-        company: recruiter.name,
-        jd_json: {
-          educations: [],
-          level: 'Mid-level',
-          rolesResponsibilities: [],
-          skills: [],
-          title: post.title,
+        parameter_weights: {
+          skills: 0,
+          education: 0,
+          experience: 0,
         },
-        department: recruiter?.departments?.[0]?.name ?? null,
-      },
-      location: post.location.name,
-      job_title: post.title,
-      status: 'draft',
-      scoring_criteria_loading: true,
-      posted_by: POSTED_BY.GREENHOUSE,
-      department: recruiter?.departments?.[0]?.name ?? null,
-      id: post.public_job_id,
-      recruiter_id: recruiter.id,
-      description: post.content,
-      job_type: 'full time',
-      workplace_type: 'on site',
-      company: recruiter.name,
-      skills: [],
-      parameter_weights: {
-        skills: 0,
-        education: 0,
-        experience: 0,
-      },
-      video_assessment: false,
-    } as JobInsert;
-  });
+      } as JobInsert;
+    },
+  );
   return dbJobs;
 };
 
@@ -340,7 +337,7 @@ const processBatch = async (
 export const processEmailsInBatches = async (
   emails: string[],
   recruiter_id: string,
-  supabaseCaller = supabase,
+  supabaseCaller,
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {

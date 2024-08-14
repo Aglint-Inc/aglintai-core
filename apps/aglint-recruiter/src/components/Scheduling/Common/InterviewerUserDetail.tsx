@@ -1,17 +1,17 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
+import Link from 'next/link';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Text } from '@/devlink/Text';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { CustomTooltip } from '../../Common/Tooltip';
-import { getPauseMemberText } from '../InterviewTypes/ModuleMembers/SlotBodyComp/utils';
+import { getPauseMemberText } from '../InterviewTypes/DetailPage/SlotBodyComp/utils';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 
 function InterviewerUserDetail({
@@ -38,6 +38,7 @@ function InterviewerUserDetail({
   userDetails: {
     profile_image: string;
     position: string;
+    user_id: string;
     first_name: string;
     last_name: string;
   };
@@ -134,19 +135,21 @@ function InterviewerUserDetail({
       isRoleVisible={true}
       slotRole={
         userDetails?.position ? (
-          <TextWithIcon
-            fontWeight={'regular'}
-            textContent={userDetails.position}
-            iconName={'work'}
-            iconSize={4}
-            color='neutral'
-            fontSize={1}
+          <Text
+            content={userDetails.position}
+            size={1}
+            color={'neutral'}
+            weight={'regular'}
           />
         ) : (
           '--'
         )
       }
-      textName={getFullName(userDetails.first_name, userDetails.last_name)}
+      textName={
+        <Link href={`/user/profile/${userDetails.user_id}`}>
+          {getFullName(userDetails.first_name, userDetails.last_name)}
+        </Link>
+      }
       slotImage={
         <MuiAvatar
           level={getFullName(userDetails.first_name, userDetails.last_name)}

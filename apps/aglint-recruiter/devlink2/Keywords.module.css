@@ -1,14 +1,9 @@
 .div-block-1481 {
-  width: 650px;
-  margin: var(--space-4);
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-  background-color: var(--white);
+  width: 700px;
 }
 
 .div-block-1228 {
   display: flex;
-  padding: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 14px;

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+'use client';
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import * as radixColors from '@radix-ui/colors';
@@ -545,6 +546,27 @@ function Theme({ children }) {
       //   },
       // },
 
+      MuiListItem: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              borderRadius: '3px',
+              backgroundColor: '#f0f0f0', // Optional: change to your desired hover background color
+            },
+          },
+        },
+      },
+      MuiListItemButton: {
+        styleOverrides: {
+          root: {
+            '&': {
+              px: '0px',
+              borderRadius: '3px',
+              backgroundColor: 'none', // Optional: change to your desired hover background color
+            },
+          },
+        },
+      },
       MuiAlert: {
         styleOverrides: {
           root: {

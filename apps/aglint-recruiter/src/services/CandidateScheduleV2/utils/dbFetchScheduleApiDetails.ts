@@ -9,7 +9,7 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { ApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -165,24 +165,32 @@ export const fetchAndVerifyDb = async (
     }),
   );
 
-  if (!r[0]?.interview_sessions || !r[0]?.interview_modules) {
-    throw new Error('invalid payload');
-  }
-  if (!r[0]?.comp_schedule_setting) {
-    throw new Error('Invalid Company id');
-  }
+  const db_resp = {
+    comp_schedule_setting: (r[0].comp_schedule_setting ??
+      null) as unknown as schedulingSettingType,
 
-  return {
-    comp_schedule_setting: r[0]
-      .comp_schedule_setting as unknown as schedulingSettingType,
-
-    int_meetings: r[0].int_meetings as InterviewerMeetingScheduled[],
-    int_modules_data: r[0]
-      .interview_modules as unknown as InterviewModuleType[][],
-    interview_sessions: r[0].interview_sessions as InterviewSession[],
-    inter_data: r[0].interviewers as unknown as SessionInterviewerType[][],
+    int_meetings: (r[0].int_meetings ?? []) as InterviewerMeetingScheduled[],
+    int_modules_data: (r[0].interview_modules ??
+      []) as unknown as InterviewModuleType[][],
+    interview_sessions: (r[0].interview_sessions ?? []) as InterviewSession[],
+    inter_data: (r[0].interviewers ??
+      []) as unknown as SessionInterviewerType[][],
     company_cred_hash_str: r[0].service_cred,
   };
+
+  if (db_resp.interview_sessions.length === 0) {
+    throw new ApiError('CLIENT', 'Interview Plan not set or invalid sessions');
+  }
+  let all_ints = db_resp.inter_data.filter((i) => Boolean(i)).flat();
+  for (let int_sess of db_resp.interview_sessions) {
+    if (!all_ints.find((int) => int.session_id === int_sess.id)) {
+      throw new ApiError(
+        'CLIENT',
+        `${int_sess.name} does not contain interviewers`,
+      );
+    }
+  }
+  return db_resp;
 };
 
 const getUniqueInts = (ints: SessionInterviewerType[]) => {

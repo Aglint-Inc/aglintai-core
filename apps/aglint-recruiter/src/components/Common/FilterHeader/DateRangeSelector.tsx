@@ -19,9 +19,15 @@ export type DateRangeSelectorType = {
   values: string[];
   // eslint-disable-next-line no-unused-vars
   setValue: (x: dayjs.Dayjs[]) => void;
+  disablePast?: boolean;
 };
 // eslint-disable-next-line no-unused-vars
-function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
+function DateRangeSelector({
+  name,
+  setValue,
+  values,
+  disablePast = true,
+}: DateRangeSelectorType) {
   const [selectedDate, setSelectedDate] = useState<dayjs.Dayjs[]>([]);
   const [rangeActive, setRangeActive] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -40,7 +46,7 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
             setAnchorEl(e.target);
           },
         }}
-        textLabel={'Interview Date'}
+        textLabel={name}
         isDotVisible={values ? Boolean(values.length) : false}
         isActive={selectedDate.length > 0}
         slotRightIcon={
@@ -104,7 +110,7 @@ function DateRangeSelector({ name, setValue, values }: DateRangeSelectorType) {
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       views={['day']}
-                      disablePast
+                      disablePast={disablePast}
                       value={dayjs(selectedDate[0])}
                       onChange={(e) => {
                         setSelectedDate([e]);

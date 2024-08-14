@@ -1,12 +1,21 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 
 export const seed_workflow_actions: {
   workflow: Pick<
     DatabaseTable['workflow'],
-    'auto_connect' | 'description' | 'interval' | 'phase' | 'title' | 'trigger'
+    | 'auto_connect'
+    | 'description'
+    | 'interval'
+    | 'phase'
+    | 'title'
+    | 'trigger'
+    | 'workflow_type'
   >;
-  actions: (Pick<DatabaseTable['workflow_action'], 'order'> & {
-    template_type: DatabaseEnums['email_slack_types'];
+  actions: (Pick<
+    DatabaseTable['workflow_action'],
+    'order' | 'target_api' | 'action_type'
+  > & {
+    payload?: any;
   })[];
 }[] = [
   {
@@ -18,19 +27,23 @@ export const seed_workflow_actions: {
         'Send Email Reminders to candidate, interviewers, organizer 30 Min Before Interview',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewStart_email_applicant',
+        target_api: 'interviewStart_email_applicant',
+        action_type: 'email',
       },
       {
         order: 1,
-        template_type: 'interviewStart_email_interviewers',
+        action_type: 'email',
+        target_api: 'interviewStart_email_interviewers',
       },
       {
         order: 2,
-        template_type: 'interviewStart_email_organizer',
+        action_type: 'email',
+        target_api: 'interviewStart_email_organizer',
       },
     ],
   },
@@ -42,11 +55,13 @@ export const seed_workflow_actions: {
       title: 'Send Slack Reminders 30 Minutes Before Interview',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 1,
-        template_type: 'interviewStart_slack_interviewers',
+        target_api: 'interviewStart_slack_interviewers',
+        action_type: 'slack',
       },
     ],
   },
@@ -55,14 +70,16 @@ export const seed_workflow_actions: {
       trigger: 'candidateBook',
       phase: 'after',
       interval: 0,
-      title: 'Slack Interviewer for Confirmation After Candidate Scheduling',
+      title: '5. Slack: RSVP Interviewers',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'candidateBook_slack_interviewerForConfirmation',
+        target_api: 'candidateBook_slack_interviewerForConfirmation',
+        action_type: 'slack',
       },
     ],
   },
@@ -71,15 +88,17 @@ export const seed_workflow_actions: {
       trigger: 'sendAvailReqReminder',
       phase: 'after',
       interval: 24 * 60,
-      title: 'Send Availability Request Reminder Email for Candidate',
+      title: '2. Candidate Availability reminder',
       auto_connect: true,
       description:
         'Send a reminder to the candidate if they do not respond to the Avalibility request link within 24 hours',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'sendAvailReqReminder_email_applicant',
+        target_api: 'sendAvailReqReminder_email_applicant',
+        action_type: 'email',
       },
     ],
   },
@@ -88,15 +107,16 @@ export const seed_workflow_actions: {
       trigger: 'selfScheduleReminder',
       phase: 'after',
       interval: 24 * 60,
-      title:
-        'Send a reminder to the candidate if they do not respond to the self-scheduling link within 24 hours.',
+      title: '4. Candidate Confirmation Reminder',
       auto_connect: true,
       description: '',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'selfScheduleReminder_email_applicant',
+        target_api: 'selfScheduleReminder_email_applicant',
+        action_type: 'email',
       },
     ],
   },
@@ -109,10 +129,19 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack Reminder to Provide Feedback for the Candidate After the Interview',
       trigger: 'interviewEnd',
+      workflow_type: 'job',
     },
     actions: [
-      { order: 0, template_type: 'interviewEnd_email_interviewerForFeedback' },
-      { order: 0, template_type: 'interviewEnd_slack_interviewerForFeedback' },
+      {
+        order: 0,
+        target_api: 'interviewEnd_email_interviewerForFeedback',
+        action_type: 'email',
+      },
+      {
+        order: 0,
+        target_api: 'interviewEnd_slack_interviewerForFeedback',
+        action_type: 'slack',
+      },
     ],
   },
   {
@@ -124,11 +153,13 @@ export const seed_workflow_actions: {
       title:
         'Send an Email to the Organizer When the Interviewer Declines the Meeting',
       trigger: 'meetingDeclined',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'meetingDeclined_email_organizer',
+        target_api: 'meetingDeclined_email_organizer',
+        action_type: 'email',
       },
     ],
   },
@@ -141,11 +172,13 @@ export const seed_workflow_actions: {
       title:
         'Send an Email to the Organizer When the Interviewer accepts the Meeting',
       trigger: 'meetingAccepted',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'meetingAccepted_email_organizer',
+        target_api: 'meetingAccepted_email_organizer',
+        action_type: 'email',
       },
     ],
   },
@@ -158,15 +191,18 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack to Meeting organizer for Provide Meeting complete status',
       trigger: 'interviewEnd',
+      workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewEnd_slack_organizerForMeetingStatus',
+        target_api: 'interviewEnd_slack_organizerForMeetingStatus',
+        action_type: 'slack',
       },
       {
         order: 0,
-        template_type: 'interviewEnd_email_organizerForMeetingStatus',
+        target_api: 'interviewEnd_email_organizerForMeetingStatus',
+        action_type: 'email',
       },
     ],
   },
@@ -179,23 +215,28 @@ export const seed_workflow_actions: {
       title:
         'Send Slack and Email notifications to the Trainee interviewer for confirming whether He attended or not',
       trigger: 'interviewEnd',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        action_type: 'email',
       },
       {
         order: 1,
-        template_type: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        action_type: 'slack',
       },
       {
         order: 2,
-        template_type: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        action_type: 'email',
       },
       {
         order: 3,
-        template_type: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        target_api: 'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+        action_type: 'slack',
       },
     ],
   },
@@ -208,17 +249,20 @@ export const seed_workflow_actions: {
       title:
         'Send Email, Slack notification to the approver when all Shadow and Reverse Shadow training is completed',
       trigger: 'onTrainingComplete',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type:
+        target_api:
           'onTrainingComplete_email_approverForTraineeMeetingQualification',
+        action_type: 'email',
       },
       {
         order: 0,
-        template_type:
+        target_api:
           'onTrainingComplete_slack_approverForTraineeMeetingQualification',
+        action_type: 'slack',
       },
     ],
   },
@@ -231,15 +275,241 @@ export const seed_workflow_actions: {
       phase: 'after',
       title:
         'Send Slack, Email confirmation for the Interviewer when he is moved to qualified',
+      workflow_type: 'system',
     },
     actions: [
       {
         order: 0,
-        template_type: 'onQualified_email_trainee',
+        target_api: 'onQualified_email_trainee',
+        action_type: 'email',
       },
       {
         order: 1,
-        template_type: 'onQualified_slack_trainee',
+        target_api: 'onQualified_slack_trainee',
+        action_type: 'slack',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: 'Get Availability from Candidate through Aglint Agent via Email',
+      trigger: 'onAvailReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+        action_type: 'end_point',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '1. Get Candidate Availability',
+      trigger: 'onAvailReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+        action_type: 'end_point',
+      },
+    ],
+  },
+  // {
+  //   workflow: {
+  //     auto_connect: false,
+  //     description: '',
+  //     interval: 0,
+  //     phase: 'after',
+  //     title: 'Get Availability from Candidate through Aglint Agent via SMS',
+  //     trigger: 'onAvailReqAgent',
+  //     workflow_type: 'job',
+  //   },
+  //   actions: [
+  //     {
+  //       order: 0,
+  //       target_api: 'onAvailReqAgent_sms_getCandidateAvailability',
+  //     },
+  //   ],
+  // },
+  {
+    workflow: {
+      auto_connect: false,
+      phase: 'after',
+      title: 'Confirm Slot after getting availaibility from Candidate',
+      description: '',
+      interval: 0,
+      trigger: 'onReceivingAvailReq',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onReceivingAvailReq_agent_confirmSlot',
+        action_type: 'agent_instruction',
+        payload: {
+          ai_response: {
+            preferredInterviewer: [],
+            excludeInterviewTimes: [],
+            scheduleWithinNumDays: 3,
+            maxOptionsToCandidates: 10,
+            schedulewithMaxNumDays: 5,
+            prefferredInterviewTimes: [
+              {
+                endTime: '18:00',
+                startTime: '10:00',
+              },
+            ],
+            balanceWorkloadAmongInterviewers: true,
+            scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+          },
+          instruction: null,
+          ai_response_status: 'success',
+        },
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      phase: 'after',
+      title: '3. Send Self-Schedule Request',
+      description: '',
+      interval: 0,
+      trigger: 'onReceivingAvailReq',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+        action_type: 'agent_instruction',
+        payload: {
+          ai_response: {
+            preferredInterviewer: [],
+            excludeInterviewTimes: [],
+            scheduleWithinNumDays: 3,
+            maxOptionsToCandidates: 10,
+            schedulewithMaxNumDays: 5,
+            prefferredInterviewTimes: [
+              {
+                endTime: '18:00',
+                startTime: '10:00',
+              },
+            ],
+            balanceWorkloadAmongInterviewers: true,
+            scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+          },
+          instruction: null,
+          ai_response_status: 'success',
+        },
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Send Self schedulink link using Aglint Agent via Email',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
+        action_type: 'end_point',
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Self Schedulink using Aglint Agent via Phone',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'system',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
+        action_type: 'end_point',
+      },
+    ],
+  },
+  {
+    workflow: {
+      title: 'Send Self schedulink link To Candidate via Email',
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      trigger: 'onSelfScheduleReqAgent',
+      workflow_type: 'system',
+    },
+    actions: [
+      {
+        order: 0,
+        target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
+        action_type: 'end_point',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title:
+        '6. When candidate requests for rescheduling, get new availability',
+      trigger: 'onRequestReschedule',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'email',
+        order: 0,
+        target_api: 'onRequestReschedule_emailLink_resendAvailRequest',
+      },
+    ],
+  },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '7. Candidate requests for cancelling interviews',
+      trigger: 'onRequestCancel',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_agent_cancelEvents',
+      },
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestCancel_slack_interviewersOrganizer',
       },
     ],
   },

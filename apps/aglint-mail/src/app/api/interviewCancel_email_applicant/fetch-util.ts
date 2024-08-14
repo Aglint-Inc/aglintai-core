@@ -3,11 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -15,7 +11,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interviewCancel_email_applicant'>['api_payload'],
@@ -33,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,email,timezone,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -67,15 +62,10 @@ export async function fetchUtil(
 
   const { candidates, public_jobs } = candidateJob;
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'interviewCancel_email_applicant',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'interviewCancel_email_applicant'>['comp_email_placeholders'] =
     {
       candidateFirstName: candidates.first_name,
-      companyName: public_jobs.company,
+      companyName: candidates.recruiter.name,
       jobRole: public_jobs.job_title,
       organizerName: getFullName(
         meeting_organizer.first_name,
@@ -88,21 +78,15 @@ export async function fetchUtil(
       OrganizerTimeZone: org_tz,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const react_email_placeholders: EmailTemplateAPi<'interviewCancel_email_applicant'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
     };
 
   return {
-    filled_comp_template,
+    comp_email_placeholder,
+    company_id: candidateJob.candidates.recruiter_id,
     react_email_placeholders,
     recipient_email: candidates.email,
   };

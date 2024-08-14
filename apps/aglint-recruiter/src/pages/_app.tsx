@@ -1,6 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { DevlinkMainProvider } from '@context/DevlinkContext';
 import '@styles/globals.scss';
+import { DevlinkMainProvider } from '@context/DevlinkContext';
 import PropTypes from 'prop-types';
 import 'regenerator-runtime/runtime';
 
@@ -9,10 +9,23 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Providers from '../context/Providers';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
+import { useEffect } from 'react';
 
 const MyApp = ({ Component, pageProps }) => {
   const provider =
     Component?.privateProvider ?? Component?.publicProvider ?? ((page) => page);
+
+    useEffect(() => {
+      const checkFontLoaded = () => {
+        document.fonts.load('1em "Material Symbols Rounded"').then((fonts) => {
+          if (fonts.length > 0) {
+            document.body.classList.remove('icons-hidden');
+          }
+        })
+      };
+  
+      checkFontLoaded();
+    }, []);
 
   if (Component?.publicProvider) {
     return (
@@ -29,7 +42,7 @@ const MyApp = ({ Component, pageProps }) => {
       </>
     );
   }
-
+  
   return <Providers>{provider(<Component {...pageProps} />)}</Providers>;
 };
 

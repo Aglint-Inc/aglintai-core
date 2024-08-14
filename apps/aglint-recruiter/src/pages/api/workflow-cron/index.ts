@@ -15,41 +15,69 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST')
     return getResponse({ error: 'Method not allowed' }, 405);
   try {
-    if (!workflow_id || !workflow_action_id || !meta || !execution_time)
+    if (!workflow_id || !workflow_action_id || !meta || !execution_time) {
       return getResponse(
         { error: 'Invalid request. Required props missing.' },
         401,
       );
-    if (meta.email_type.split('_').find((s) => s === 'email')) {
+    }
+    if (meta.target_api.split('_').find((s) => s === 'email')) {
       await axios.post(
-        process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.email_type}`,
-        {
-          meta,
-        },
-      );
-    } else if (meta.email_type.split('_').find((s) => s === 'slack')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.email_type}`,
+        process.env.NEXT_PUBLIC_MAIL_HOST + `/api/${meta.target_api}`,
         {
           ...meta,
         },
       );
+    } else if (meta.target_api.split('_').find((s) => s === 'slack')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
+        {
+          ...meta,
+        },
+      );
+    } else if (
+      meta.target_api.startsWith('onAvailReqAgent') ||
+      meta.target_api.startsWith('onSelfScheduleReqAgent') ||
+      meta.target_api.startsWith('onRequestReschedule')
+    ) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
+    } else if (meta.target_api.startsWith('onReceivingAvailReq')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cand-avail-recieved`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
+    } else if (meta.target_api.startsWith('onRequestCancel')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cancel-schedule`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
     }
-
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'success', completed_at: dayjsLocal().toISOString() })
       .eq('id', id)
       .throwOnError();
-    return getResponse({ data: { success: true } });
+    return res.status(200).send('OK');
   } catch (error) {
-    console.error('error', error);
+    console.error('error', error.message);
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'failed' })
       .eq('id', id)
       .throwOnError();
-    return getResponse({ error: error.message }, 500);
+    return res.status(500).send(error.message);
   }
 };
 

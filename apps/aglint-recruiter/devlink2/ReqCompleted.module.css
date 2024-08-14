@@ -1,0 +1,50 @@
+.req-dash-bottom-wrap {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.req-dash-bottom-wrap:hover {
+  background-color: var(--neutral-1);
+}
+
+.req-dash-bottom-wrap.is_completed {
+  display: flex;
+  padding: 10px 17px;
+  justify-content: space-between;
+  align-items: center;
+
+  border-style: none;
+
+  background-color: var(--success-2);
+
+  transition: all 300ms ease;
+}
+
+.req-dash-bottom-wrap.is_completed:hover {
+  background-color: var(--success-3);
+}
+
+.div-block-1738 {
+  display: flex;
+  margin-top: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.req-dash-list-card-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.slot_for_badge {
+  width: auto;
+  height: auto;
+}

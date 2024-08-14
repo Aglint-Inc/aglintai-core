@@ -1,19 +1,22 @@
 import type { Functions } from "./functions/index.types";
 import type { Database } from "./schema.types";
 import type { Tables } from "./tables/index.types";
-import type { Type } from "./utils.types";
+import type { Custom } from "./utils.types";
 import type { Views } from "./views/index.types";
 
-export type DB = Type<
+export type DB = Custom<
   Database,
   {
-    public: Type<
+    public: Custom<
       Database["public"],
-      { Tables: Tables; Functions: Functions; Views: Views }
+      { Tables: Tables; Views: Views; Functions: Functions }
     >;
   }
 >;
 
+export type DatabaseFunctions = {
+  [Functions in keyof DB["public"]["Functions"]]: DB["public"]["Functions"][Functions];
+};
 export type DatabaseView = {
   [View in keyof DB["public"]["Views"]]: DB["public"]["Views"][View]["Row"];
 };

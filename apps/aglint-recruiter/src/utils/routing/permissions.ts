@@ -22,7 +22,9 @@ const PERMISSIONS: Permissions = {
    * permissions will reduced  using 'and'
    */
   '/tasks': ['task_module'],
+
   //
+  '/supervisor': ['authorized'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
   '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
@@ -42,38 +44,48 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/screening': ['job_module', 'manage_job'],
   '/jobs/[id]/workflows': ['job_module'],
   '/workflows': ['workflow_module'],
+  '/api/get_member': ['authorized'],
+  '/api/get_users_by_ids': ['authorized'],
   '/workflows/[id]': ['workflow_module'],
   '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
-  '/scheduling/module/members/[module_id]': ['scheduling_module'],
+  '/scheduling/application': ['scheduling_actions'],
+  '/scheduling/interviewer': ['manage_interviewers'],
+  '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
+  '/scheduling/dashboard': ['scheduling_settings_and_reports'],
+  '/scheduling/interview-types': ['view_interview_types'],
+  '/requests': ['job_module'],
 
   '/integrations': ['integrations_module'],
+  '/integrations/[platform]': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
+  '/user/profile/[user_id]': ['authorized'],
 
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
-  '/api/greenhouse/getPostings': ['job_module'],
+  '/api/greenhouse/getPostings': ['manage_job'],
+  '/api/lever/createjob': ['manage_job'],
   '/api/greenhouse/saveApiKey': ['manage_company'],
-  '/api/lever/getPostings': ['job_module'],
-  '/api/lever/saveApiKey': ['manage_company'],
-  '/api/ashby/getPostings': ['job_module'],
+  '/api/lever/getPostings': ['manage_job'],
+  '/api/lever/saveApiKey': ['manage_job'],
+  '/api/lever/getCandidates': ['manage_job'],
+  '/api/ashby/getPostings': ['manage_job'],
   '/api/ashby/saveApiKey': ['manage_company'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_interview_session_task': ['scheduling_module'],
-  '/api/scheduling/fetch_activities': ['scheduling_module'],
+  '/api/scheduling/fetch_activities': ['authorized'],
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
   '/api/scheduling/application/sendtocandidate': ['scheduling_module'],
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
-  '/api/scheduling/application/candidatesessioncache': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduling_module',
   ],
@@ -141,6 +153,7 @@ const PERMISSIONS: Permissions = {
   '/api/supabase/deleteuser': ['manage_users'],
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
+  '/api/ai/queryToJson': ['scheduling_module'],
 };
 
 export default PERMISSIONS;

@@ -161,9 +161,9 @@ function InterviewModeComp() {
         moduleCurrent?.members.length === 0 ? (
           <GlobalBannerShort
             iconName={'warning'}
-            textTitle={'Interview type has no qualified members'}
+            textTitle={'Interview type has no interviewers.'}
             textDescription={
-              'Please add members to the selected interview type'
+              'Please add members to the selected interview type.'
             }
             color={'error'}
             slotButtons={
@@ -174,8 +174,8 @@ function InterviewModeComp() {
                 onClickButton={{
                   onClick: () =>
                     router.push(
-                      ROUTES['/scheduling/module/members/[module_id]']({
-                        module_id: moduleCurrent.id,
+                      ROUTES['/scheduling/interview-types/[type_id]']({
+                        type_id: moduleCurrent.id,
                       }),
                     ),
                 }}

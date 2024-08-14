@@ -5,7 +5,11 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { RescheduleOptions } from '@/devlink2/RescheduleOptions';
 import toast from '@/src/utils/toast';
 
-import { setRequestSessionIds, setSelectedSessionIds, useSchedulingApplicationStore } from '../../store';
+import {
+  setRequestSessionIds,
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
+} from '../../store';
 import { setScheduleFlow, setStepScheduling } from '../store';
 
 function ButtonReschedule() {
@@ -41,10 +45,13 @@ function ButtonReschedule() {
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        transformOrigin={{ vertical: -6, horizontal: 0 }}
         slotProps={{
           paper: {
             style: {

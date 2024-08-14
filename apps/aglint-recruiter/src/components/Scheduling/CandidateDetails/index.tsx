@@ -48,12 +48,8 @@ function SchedulingApplication() {
     if (selectedApplication?.id) {
       setBreadcrum([
         {
-          name: 'Scheduling',
-          route: ROUTES['/scheduling']() + `?tab=dashboard`,
-        },
-        {
           name: 'Candidates',
-          route: ROUTES['/scheduling']() + `?tab=candidates`,
+          route: ROUTES['/scheduling/application'](),
         },
         {
           name: getFullName(
@@ -95,7 +91,7 @@ function SchedulingApplication() {
               slotFullScheduleCard={
                 <>
                   {tab === 'candidate_detail' ? (
-                    <Stack p={`var(--radius-4)`}>
+                    <Stack>
                       <Stack
                         sx={{
                           borderRadius: 'var(--radius-4)',
@@ -110,7 +106,7 @@ function SchedulingApplication() {
                       <FullSchedule refetch={allActivities.refetch} />
                     </RequestAvailabilityProvider>
                   ) : tab === 'feedback' ? (
-                    <Stack p={'var(--space-4)'}>
+                    <Stack>
                       <FeedbackWindow
                         interview_sessions={initialSessions.map((item) => ({
                           id: item.interview_session.id,

@@ -164,8 +164,9 @@ export default function EmailTemplateEditForm({
             placeholder={''}
             onfocus={onFocus}
             onblur={onBlur}
-            height='360px'
             minHeight='360px'
+            height='330px'
+            padding={'10px'}
             editor_type='email'
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}

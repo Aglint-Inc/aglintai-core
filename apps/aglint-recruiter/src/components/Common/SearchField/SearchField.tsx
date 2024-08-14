@@ -17,10 +17,7 @@ export default function SearchField({
 }: {
   value: string;
   placeholder?: string;
-  onChange: (
-    // eslint-disable-next-line no-unused-vars
-    x: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onClear: any;
   isFullWidth?: boolean;
   onFocus?: () => void;
@@ -28,7 +25,7 @@ export default function SearchField({
 }) {
   return (
     <UITextField
-      height={32}
+      height={26}
       width={isFullWidth ? undefined : '250px'}
       fullWidth={isFullWidth}
       onFocus={onFocus}

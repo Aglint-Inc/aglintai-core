@@ -8,4 +8,7 @@ declare function GlobalEmptyState(props: {
   styleEmpty?: Types.Devlink.RuntimeProps;
   size?: Types.Builtin.Text;
   slotButton?: Types.Devlink.Slot;
+  sizes?: Types.Builtin.Text;
+  textSubDesc?: React.ReactNode;
+  isSubDescVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

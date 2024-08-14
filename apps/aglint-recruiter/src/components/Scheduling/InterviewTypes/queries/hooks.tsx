@@ -8,7 +8,7 @@ import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch
 import toast from '@/src/utils/toast';
 
 import { MemberTypeAutoComplete } from '../../Common/MembersTextField';
-import { PauseType } from '../ModuleMembers/type';
+import { PauseType } from '../DetailPage/type';
 import { ModuleType } from '../types';
 import { QueryKeysInteviewModules } from './type';
 import {
@@ -33,17 +33,15 @@ export const useAllInterviewModules = () => {
   return query;
 };
 
-
-
 export const useAllSchedulesByModuleId = ({
   filter,
   changeText,
 }: {
-  filter: DatabaseTable['interview_meeting']['status'];
+  filter: DatabaseTable['interview_meeting']['status'][];
   changeText: string;
 }) => {
   const router = useRouter();
-  const module_id = router.query.module_id as string;
+  const module_id = router.query.type_id as string;
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.SCHEDULES_BY_MODULE_ID({
       moduleId: module_id,
@@ -64,7 +62,7 @@ export const useProgressModuleUsers = ({
 }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const module_id = router.query.module_id as string;
+  const module_id = router.query.type_id as string;
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.PROGRESS_BY_MODULE_ID({
@@ -91,7 +89,7 @@ export const useProgressModuleUsers = ({
 
 export const useModuleAndUsers = () => {
   const router = useRouter();
-  const module_id = router.query.module_id as string;
+  const module_id = router.query.type_id as string;
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({

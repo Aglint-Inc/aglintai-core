@@ -38,7 +38,7 @@ export class GoogleCalender {
         await supabaseAdmin
           .from('recruiter_relation')
           .select(
-            'recruiter(service_json),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
+            'recruiter(integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
           )
           .eq('user_id', this.recruiter_user_id)
           .then(({ data, error }) => ({
@@ -54,9 +54,9 @@ export class GoogleCalender {
           user_id: this.recruiter_user_id,
         },
       };
-      if (rec_relns.recruiter.service_json) {
+      if (rec_relns.recruiter.integrations.service_json) {
         this.auth_details.company_cred = JSON.parse(
-          decrypt_string(rec_relns.recruiter.service_json),
+          decrypt_string(rec_relns.recruiter.integrations.service_json),
         );
       }
       this.user_auth = await getUserCalAuth({
@@ -75,19 +75,19 @@ export class GoogleCalender {
     const [company] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_relation')
-        .select('recruiter(service_json,domain_admin_email)')
+        .select('recruiter(integrations(service_json,domain_admin_email))')
         .eq('recruiter_id', company_id),
     );
-    if (!company.recruiter.service_json) {
+    if (!company.recruiter.integrations.service_json) {
       throw new Error('Invalid Company Service Cred');
     }
     this.auth_details = {
-      company_cred: JSON.parse(decrypt_string(company.recruiter.service_json)),
+      company_cred: JSON.parse(decrypt_string(company.recruiter.integrations.service_json)),
       recruiter: null,
     };
     this.user_auth = await getSuperAdminAuth(
       this.auth_details.company_cred,
-      company.recruiter.domain_admin_email,
+      company.recruiter.integrations.domain_admin_email,
     );
   }
   public async getAllCalenderEvents(start_date: string, end_date: string) {

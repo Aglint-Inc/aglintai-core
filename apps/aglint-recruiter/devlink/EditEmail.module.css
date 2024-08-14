@@ -1,5 +1,4 @@
 .edit-email-wrap {
-  overflow: auto;
   width: 100%;
   height: 100%;
 }
@@ -8,12 +7,12 @@
   width: 100%;
   height: 100%;
   padding-top: var(--space-4);
-  padding-right: var(--space-4);
   padding-bottom: var(--space-4);
 }
 
 .eemail-tip-wrap {
   display: flex;
+  margin-right: var(--space-4);
   padding: var(--space-3) var(--space-4);
   justify-content: space-between;
   align-items: center;
@@ -31,8 +30,13 @@
   grid-row-gap: var(--space-1);
 }
 
+.ee-body-wrapp {
+  margin-top: var(--space-3);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
 .eemail-body-wrap {
-  margin-top: var(--space-4);
   padding: var(--space-4);
   border-radius: var(--radius-4);
   background-color: var(--neutral-2);

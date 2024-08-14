@@ -1,7 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { fillCompEmailTemplate, getFullName } from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function dbUtil(
   req_body: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'],
@@ -10,7 +9,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo)),public_jobs( company,job_title))',
+        'id,applications(id, candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name)),public_jobs( job_title))',
       )
       .eq('id', req_body.avail_req_id),
   );
@@ -28,25 +27,21 @@ export async function dbUtil(
       recruiter_id,
       first_name,
       last_name,
-      recruiter: { logo },
+      recruiter: { logo, name: companyName },
     },
-    public_jobs: { company, job_title },
+    public_jobs: { job_title },
   } = avail_req_data.applications;
 
   const candidate_link = req_body.avail_req_id
     ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
     : '';
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    recruiter_id,
-    'availabilityReqResend_email_candidate',
-  );
   const comp_email_placeholder: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
       organizerFirstName: recruiter_user.first_name,
       organizerLastName: recruiter_user.last_name,
@@ -57,21 +52,15 @@ export async function dbUtil(
       OrganizerTimeZone: recruiter_tz,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const react_email_placeholders: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['react_email_placeholders'] =
     {
-      emailBody: filled_comp_template.body,
       companyLogo: logo,
-      subject: filled_comp_template.subject,
       availabilityReqLink: candidate_link,
     };
 
   return {
-    filled_comp_template,
+    company_id: recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,
   };

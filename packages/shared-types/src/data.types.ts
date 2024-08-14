@@ -1,10 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 
 import {
-  DB,
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
+  DB,
 } from "./db/index.schema.types";
 
 export type AddressType = {

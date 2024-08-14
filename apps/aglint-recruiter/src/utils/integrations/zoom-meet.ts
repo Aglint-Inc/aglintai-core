@@ -20,7 +20,7 @@ export class ZoomMeet {
   public async authorizeUser() {
     const [rec] = supabaseWrap(
       await supabaseAdmin
-        .from('recruiter')
+        .from('integrations')
         .select('zoom_auth')
         .eq('id', this.recruiter_id),
     );

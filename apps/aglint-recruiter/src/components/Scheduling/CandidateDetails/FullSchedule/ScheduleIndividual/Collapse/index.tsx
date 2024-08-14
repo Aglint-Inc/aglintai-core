@@ -5,7 +5,7 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import { numberToText } from '@/src/utils/number/numberToText';
 
 import InterviewerUserDetail from '../../../../Common/InterviewerUserDetail';
@@ -40,7 +40,7 @@ function CollapseContent({
   jobTitle?: ScheduleIndividualCardType['jobTitle'];
   isCollapseButtonsVisible?: boolean;
 }) {
-  const { recruiter } = useAuthDetails();
+  const {data:allIntegrations} = useAllIntegrations();
 
   let users = allUsers;
 
@@ -144,8 +144,8 @@ function CollapseContent({
                   const pause_json = user.interview_module_relation?.pause_json;
                   const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
                   const isCalendarConnected =
-                    (!!recruiter.service_json &&
-                      recruiter.email.split('@')[1] ===
+                    (!!allIntegrations?.service_json &&
+                      allIntegrations?.google_workspace_domain?.split('//')[1] ===
                         user.user_details.email.split('@')[1]) ||
                     !!(user.user_details.schedule_auth as any)?.access_token;
 
@@ -176,6 +176,7 @@ function CollapseContent({
                       userDetails={{
                         first_name: item.first_name,
                         last_name: item.last_name,
+                        user_id: item.user_id,
                         position: item.position,
                         profile_image: item.profile_image,
                       }}

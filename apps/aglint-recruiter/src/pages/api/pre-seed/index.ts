@@ -18,14 +18,19 @@ export default async function handler(
     const { record } = req.body as { record: DatabaseTable['recruiter'] };
     const recruiter_id = record.id;
     if (!recruiter_id) throw new Error('recruiter_id missing!!');
-    // await seedRolesAndPermissions(recruiter_id); /// seed roles err
+    // start here
+    // eslint-disable-next-line no-unused-vars
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates);
-
+    await Promise.all([
+      seedRolesAndPermissions(recruiter_id),
+      seedPreferencesAndIntegrations(recruiter_id),
+    ]);
+    // end here
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
     return res.status(500).send(err.message);
   }
 }
@@ -34,7 +39,6 @@ export default async function handler(
 async function seedRolesAndPermissions(rec_id: string) {
   const tempRoles = await createRoles(rec_id);
   const tempPermissions = await getPermissions();
-
   const tempRolePermissions: {
     permission_id: number;
     recruiter_id: string;
@@ -74,29 +78,6 @@ async function getPermissions() {
   const temp_p = (
     await supabaseAdmin.from('permissions').select('id,name').throwOnError()
   ).data;
-  //   const temp_p_set = new Set(...temp_p);
-  //   const missing_permissions: { name: string; description: string }[] = [];
-  //   for (let item of defaultPermissions) {
-  //     if (!temp_p_set.has(item.name)) {
-  //       missing_permissions.push(item);
-  //     }
-  //   }
-  //   let missing: string[] = [];
-  //   if (missing_permissions.length) {
-  //     missing = (
-  //       await supabase
-  //         .from('roles')
-  //         .insert(
-  //           defaultPermissions.map((item) => ({
-  //             name: item.name,
-  //             description: item.description,
-  //           })),
-  //         )
-  //         .select('name')
-  //         .throwOnError()
-  //     ).data.map((item) => item.name);
-  //   }
-  //   return [...temp_p, ...missing];
   return temp_p.reduce(
     (acc, crr) => {
       acc[crr.name] = crr.id;
@@ -163,28 +144,30 @@ const seedWorkFlow = async (
           interval: work_flow_act.workflow.interval,
           title: work_flow_act.workflow.title,
           recruiter_id,
+          is_paused: false,
+          workflow_type: work_flow_act.workflow.workflow_type,
         })
         .select(),
     );
     supabaseWrap(
       await supabaseAdmin.from('workflow_action').insert(
+        //@ts-ignore  Fix this
         work_flow_act.actions.map((action) => {
           const temp = company_email_template.find(
-            (temp) => temp.type === action.template_type,
+            (temp) => temp.type === action.target_api,
           );
-          if (!temp) {
-            throw new Error(`${temp.type} not found`);
-          }
           return {
             payload: {
-              body: temp.body,
-              subject: temp.subject,
+              body: temp ? temp.body : undefined,
+              subject: temp ? temp.subject : undefined,
+              ...(action?.payload ?? {}),
             },
             order: action.order,
             workflow_id: workflow.id,
-            email_template_id: temp.id,
+            target_api: action.target_api,
+            action_type: action.action_type,
           };
-        }),
+        }) as any, // TODO: fix
       ),
     );
     //
@@ -192,3 +175,15 @@ const seedWorkFlow = async (
 
   await Promise.all(promies);
 };
+
+async function seedPreferencesAndIntegrations(rec_id: string) {
+  await supabaseAdmin
+    .from('recruiter_preferences')
+    .insert([{ recruiter_id: rec_id, scoring: false }])
+    .throwOnError();
+
+  await supabaseAdmin
+    .from('integrations')
+    .insert([{ recruiter_id: rec_id }])
+    .throwOnError();
+}

@@ -1,5 +1,4 @@
 import { Avatar, Dialog, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -8,7 +7,7 @@ import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RolesPopover } from '@/devlink/RolesPopover';
 import { UserNameRoleCard } from '@/devlink/UserNameRoleCard';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
@@ -28,8 +27,13 @@ function RoleEditMember({
     (typeof members)[number] | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const filteredMember = members
-    .filter((member) => member.role_id !== role.id)
+    .filter(
+      (member) =>
+        member.role_id !== role.id && member.user_id !== member.created_by,
+    )
+
     .filter(
       (member) =>
         `${member.first_name || ''} ${member.last_name || ''}`
@@ -98,7 +102,13 @@ function RoleEditMember({
               <>
                 {selectedMember ? (
                   <>
-                    <GlobalBanner
+                    <GlobalBannerInline
+                      color={'error'}
+                      textContent={`You are about to update ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}'s role.`}
+                      iconName={'warning'}
+                      slotButton={<></>}
+                    />
+                    {/* <GlobalBanner
                       color={'error'}
                       textTitle={
                         'You are about to change a role of the selected user'
@@ -106,7 +116,7 @@ function RoleEditMember({
                       textDescription={`You are attempting to change ${`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()} current role "${capitalize(selectedMember?.role || '')}" to new role "${capitalize(role.role || '')}".`}
                       iconName={'warning'}
                       slotButtons={<></>}
-                    />
+                    /> */}
                     <UserNameRoleCard
                       textName={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
                       textRole={selectedMember.role}
@@ -123,7 +133,7 @@ function RoleEditMember({
                     <Stack
                       alignItems={'center'}
                       width={'100%'}
-                      sx={{ translate: 'rotateY(180)' }}
+                      sx={{ transform: 'rotate(180deg)' }}
                     >
                       <GlobalIcon iconName={'arrow_warm_up'} size={5} />
                     </Stack>

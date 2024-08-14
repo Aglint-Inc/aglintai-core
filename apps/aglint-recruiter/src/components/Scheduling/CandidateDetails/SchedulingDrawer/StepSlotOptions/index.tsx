@@ -59,7 +59,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
       if (!isDebrief)
         axios
           .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
-            meta: { ...payload },
+            ...payload,
           })
           .then(({ data }) => {
             setEmailData(data);
@@ -70,7 +70,7 @@ function StepSlotOptions({ isDebrief }: { isDebrief: boolean }) {
   }, []);
 
   return (
-    <Stack height={'calc(100vh - 96px)'}>
+    <Stack height={'calc(100vh - 97px)'}>
       <ScheduleOptionsList
         slotDescription={
           isDebrief ? (

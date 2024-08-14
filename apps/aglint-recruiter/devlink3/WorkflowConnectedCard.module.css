@@ -12,10 +12,6 @@
   cursor: pointer;
 }
 
-.connected-jobs-card-wrap:hover {
-  background-color: var(--neutral-2);
-}
-
 .cjc-header-wrap {
   display: flex;
   justify-content: flex-start;

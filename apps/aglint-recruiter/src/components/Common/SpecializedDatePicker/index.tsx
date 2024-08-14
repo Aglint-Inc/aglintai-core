@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 
-import { DateIcon } from '../../Scheduling/Settings/Components/DateSelector';
+import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import UITextField from '../UITextField';
 
 export default function SpecializedDatePicker({
@@ -58,14 +58,3 @@ export default function SpecializedDatePicker({
     </LocalizationProvider>
   );
 }
-
-// export const dateFormatter = (date, format = 'MMM-YYYY') => {
-//   if (!date) return;
-//   if (timeEnum.PRESENT == date) return date;
-//   let formatted = dayjs(date)?.format(format);
-//   if (formatted !== 'Invalid Date') return formatted;
-// };
-
-// export const timeEnum = {
-//   PRESENT: 'Present',
-// };

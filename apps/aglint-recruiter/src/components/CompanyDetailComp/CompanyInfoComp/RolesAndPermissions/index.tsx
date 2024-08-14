@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Permissions } from '@/devlink/Permissions';
 import { RolesAndPermissions } from '@/devlink/RolesAndPermissions';
@@ -21,14 +22,13 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
 import axios from '@/src/client/axios';
-import Seo from '@/src/components/Common/Seo';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import {
   allPermissions,
   app_modules,
 } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
@@ -50,7 +50,6 @@ function RolesAndPermissionsComponent() {
 
   return (
     <>
-      <Seo title='Roles & Permissions' />
       {role ? ( // roleDetailsComponent
         <RoleDetails
           role={role}
@@ -98,10 +97,8 @@ const RoleTable = ({
   roles: Awaited<
     ReturnType<typeof getRoleAndPermissionsWithUserCount>
   >['rolesAndPermissions'];
-  setRole: (
-    // eslint-disable-next-line no-unused-vars
-    x: string,
-  ) => void;
+  // eslint-disable-next-line no-unused-vars
+  setRole: (role_id: string, addMode?: boolean) => void;
 }) => {
   const { allMember: members } = useAuthDetails();
   return loading
@@ -131,7 +128,9 @@ const RoleTable = ({
                     <>
                       {role.assignedTo.slice(0, 3).map((user_id) => {
                         const user = members.find(
-                          (member) => member.user_id === user_id,
+                          (member) =>
+                            member.user_id === user_id &&
+                            member.user_id !== member.created_by,
                         );
                         if (!user) return;
                         return (
@@ -152,9 +151,28 @@ const RoleTable = ({
                       )}
                     </>
                   ) : (
-                    <Typography color={'neutral'}>No users assigned</Typography>
+                    <Typography color={'neutral'}>
+                      {`No users with ${details.name}`}
+                    </Typography>
                   )}
                 </>
+              }
+              slotButtonAdd={
+                !count && (
+                  <ButtonSoft
+                    textButton='Add'
+                    size={1}
+                    iconName='Add'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        // setQueryParams({ add: true, role: details.name });
+                        setRole(key, true);
+                      },
+                    }}
+                  />
+                )
               }
             />
           );
@@ -164,6 +182,7 @@ const RoleTable = ({
 const useRoleAndPermissions = () => {
   const { queryParams, setQueryParams } = useSearchQuery<{
     role: string;
+    add: boolean;
   }>();
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
@@ -298,10 +317,10 @@ const useRoleAndPermissions = () => {
     },
   });
 
-  const handelSelectRole = (role_id: string) => {
+  const handelSelectRole = (role_id: string, addMode?: boolean) => {
     setSelectRole(role_id);
     const role = query.data?.rolesAndPermissions[role_id]?.name || null;
-    setQueryParams({ role });
+    setQueryParams({ role, add: addMode });
   };
   return {
     role,
@@ -353,7 +372,8 @@ function RoleDetails({
     >[0],
   ) => void;
 }) {
-  const { checkPermissions } = useRolesAndPermissions();
+  const { checkPermissions } = useRolesAndPermissionsContext();
+  const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
   const { allMember: members, handleMemberUpdate } = useAuthDetails();
@@ -362,13 +382,39 @@ function RoleDetails({
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
   const editDisabled = !checkPermissions(['manage_roles']);
+  useEffect(() => {
+    if (queryParams?.add) {
+      setEditUser(true);
+    }
+  }, [queryParams?.add]);
+  const { ifAllowed } = useRolesAndPermissionsContext();
+
+  const userLength = role.assignedTo.filter((user_id) =>
+    members.find(
+      (member) =>
+        member.user_id === user_id && member.user_id !== member.created_by,
+    ),
+  ).length;
+
   return (
     <>
       <RolesAndPermissionsDetail
+        slotAddButton={ifAllowed(
+          <Stack direction={'row'}>
+            <ButtonSoft
+              onClickButton={{ onClick: () => setEditUser(true) }}
+              textButton={'Add'}
+              size={1}
+              isLeftIcon={true}
+              iconName={'add'}
+            />
+          </Stack>,
+          ['manage_roles'],
+        )}
         textRoleName={
           <RoleDropDown options={AllRoles} selectedItem={role.name} />
         }
-        // textRoleName={capitalizeFirstLetter(role.name + ' Role')}
+        slotText={`These users have the ${capitalizeFirstLetter(role.name)} Role`}
         textTotalEnabledPermissions={`${activePermissionCount} out of ${allPermissions.length} permissions enabled.`}
         slotBackButton={
           <ButtonGhost
@@ -443,14 +489,9 @@ function RoleDetails({
             )}
           </>
         }
-        textUserCount={`Users (${role.assignedTo.length || 0})`}
-        slotUserWithRole={
-          <RoleUserWidget
-            role={role}
-            members={members}
-            setEditUser={() => setEditUser(true)}
-          />
-        }
+        textUserCount={`Users (${userLength || 0})`}
+        // textRoleName={role.name}
+        slotUserWithRole={<RoleUserWidget role={role} members={members} />}
       />
       {editUser && (
         <RoleEditMember

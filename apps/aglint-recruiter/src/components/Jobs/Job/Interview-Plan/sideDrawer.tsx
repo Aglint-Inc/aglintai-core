@@ -132,7 +132,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
       }
       setSessionCreation(false);
     } else {
-      toast.warning('Stage under creation. Please wait.');
+      toast.warning('Interview under creation. Please wait.');
     }
   };
 
@@ -156,7 +156,7 @@ const CreateSession = ({ handleClose, order }: DrawerProps) => {
         </>
       }
       onClickClose={{ onClick: () => handleClose() }}
-      textTitle='Create Stage'
+      textTitle='Create Interview'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
@@ -235,13 +235,13 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Stage under updation. Please wait.');
+      toast.warning('Interview under updation. Please wait.');
     }
   };
 
   return (
     <SideDrawerBlock
-      textTitle='Edit Stage'
+      textTitle='Update Interview'
       slotSidedrawerBody={
         <SessionForms fields={fields} setFields={setFields} />
       }
@@ -256,7 +256,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton='Save'
+            textButton='Update'
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
@@ -296,7 +296,7 @@ const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
       }
       setDebriefCreation(false);
     } else {
-      toast.warning('Stage under creation. Please wait.');
+      toast.warning('Interview under creation. Please wait.');
     }
   };
   return (
@@ -378,7 +378,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Stage under updation. Please wait.');
+      toast.warning('Interview under updation. Please wait.');
     }
   };
 
@@ -399,7 +399,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton='Save'
+            textButton='Update'
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleEdit() }}
@@ -435,7 +435,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Stage under updation. Please wait.');
+      toast.warning('Interview under update. Please wait.');
     }
   };
   return (
@@ -453,7 +453,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
             onClickButton={{ onClick: () => handleClose() }}
           />
           <ButtonSolid
-            textButton={break_duration === 0 ? 'Add' : 'Save'}
+            textButton={break_duration === 0 ? 'Add' : 'Update'}
             isLoading={isLoading}
             size={2}
             onClickButton={{ onClick: () => handleUpdate() }}

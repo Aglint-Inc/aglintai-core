@@ -2,11 +2,7 @@ import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
 } from '@aglint/shared-types';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
@@ -15,7 +11,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
@@ -33,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,timezone,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -71,11 +66,6 @@ export async function fetchUtil(
     meetingIcon: scheduleTypeIcon(schedule_type),
   };
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'debrief_email_interviewer',
-  );
-
   const interviewers_mail_data = debrief_email_interviewers.map((inter) => {
     const comp_email_placeholder: EmailTemplateAPi<'debrief_email_interviewer'>['comp_email_placeholders'] =
       {
@@ -83,7 +73,7 @@ export async function fetchUtil(
         candidateLastName: candidates.last_name,
         candidateFirstName: candidates.first_name,
         jobRole: public_jobs.job_title,
-        companyName: public_jobs.company,
+        companyName: candidates.recruiter.name,
         interviewerFirstName: inter.first_name,
         interviewerLastName: inter.last_name,
         interviewerName: getFullName(inter.first_name, inter.last_name),
@@ -96,11 +86,6 @@ export async function fetchUtil(
         ),
       };
 
-    const filled_comp_template = fillCompEmailTemplate(
-      comp_email_placeholder,
-      comp_email_temp,
-    );
-
     const candidateLink = req_body.application_id
       ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
       : '';
@@ -108,14 +93,13 @@ export async function fetchUtil(
     const react_email_placeholders: EmailTemplateAPi<'debrief_email_interviewer'>['react_email_placeholders'] =
       {
         companyLogo: candidateJob.candidates.recruiter.logo,
-        emailBody: filled_comp_template.body,
-        subject: filled_comp_template.subject,
         meetingDetails: meeting_detail,
-        candidateLink: candidateLink,
+        candidateLink,
       };
 
     return {
-      filled_comp_template,
+      company_id: candidateJob.candidates.recruiter_id,
+      comp_email_placeholder,
       react_email_placeholders,
       recipient_email: inter.email,
     };

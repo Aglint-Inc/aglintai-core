@@ -1,14 +1,18 @@
 .text_with_icon {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }
 
 .slot_icon {
+  display: flex;
   width: 16px;
   height: 16px;
+  padding-top: 3px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #w-node-_978154f6-fd85-cdc5-810b-078c750d7fc1-750d7fc1 {

@@ -81,6 +81,21 @@
   grid-row-gap: var(--space-1);
 }
 
+.rpd-header-wrap {
+  display: flex;
+  padding-right: var(--space-3);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.rpd-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .userwithrole-wrap {
   display: flex;
   padding-top: var(--space-3);

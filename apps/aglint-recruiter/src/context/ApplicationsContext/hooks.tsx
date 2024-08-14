@@ -7,7 +7,10 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import {
   applicationsQueries,
+  useDeleteApplication,
   useMoveApplications,
+  useMoveApplicationsToInterview,
+  useReuploadResume,
   useUpdateApplication,
 } from '@/src/queries/job-applications';
 import { Application } from '@/src/types/applications.types';
@@ -161,7 +164,7 @@ export const useApplicationsActions = () => {
       ref.current = false;
       return;
     }
-    const timeout = setTimeout(() => setParams(filters), 800);
+    const timeout = setTimeout(() => setParams(filters), 200);
     return () => clearTimeout(timeout);
   }, [filters]);
 
@@ -189,7 +192,8 @@ export const useApplicationsActions = () => {
     }),
   );
 
-  const { ...queryParams } = params;
+  // eslint-disable-next-line no-unused-vars
+  const { section: _section, ...queryParams } = params;
 
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
@@ -273,19 +277,69 @@ export const useApplicationsActions = () => {
     [CASCADE_VISIBILITIES, job?.flags, section],
   );
 
-  const { mutateAsync: moveApplications } = useMoveApplications(
-    {
+  const { mutateAsync: moveApplications, mutationQueue: moveMutationQueue } =
+    useMoveApplications({
       job_id,
-    },
-    checklist,
-  );
+    });
 
   const handleMoveApplications = async (
-    payload: Parameters<typeof moveApplications>[0],
+    payload: Omit<Parameters<typeof moveApplications>[0], 'applications'>,
   ) => {
     try {
-      await moveApplications(payload);
+      await moveApplications({ ...payload, applications: checklist });
       resetChecklist();
+    } catch {
+      //
+    }
+  };
+
+  const { mutateAsync: moveApplicationsToInterview } =
+    useMoveApplicationsToInterview({
+      job_id,
+    });
+
+  const handleMoveApplicationToInterview = async (
+    payload: Omit<
+      Parameters<typeof moveApplicationsToInterview>[0],
+      'applications'
+    >,
+  ) => {
+    try {
+      await moveApplicationsToInterview({
+        ...payload,
+        applications: checklist,
+      });
+      resetChecklist();
+    } catch {
+      //
+    }
+  };
+
+  const { mutateAsync: reuploadResume, mutationQueue: reuploadMutationQueue } =
+    useReuploadResume({ job_id });
+
+  const {
+    mutateAsync: deleteApplication,
+    mutationQueue: deleteApplicationQueue,
+  } = useDeleteApplication({
+    job_id,
+  });
+
+  const handleReuploadResume = async (
+    payload: Parameters<typeof reuploadResume>[0],
+  ) => {
+    try {
+      return await reuploadResume(payload);
+    } catch {
+      //
+    }
+  };
+
+  const handleDeleteApplication = async (
+    payload: Parameters<typeof deleteApplication>[0],
+  ) => {
+    try {
+      return await deleteApplication(payload);
     } catch {
       //
     }
@@ -355,6 +409,17 @@ export const useApplicationsActions = () => {
     });
   }, [sectionApplication, currentIndex, applicationsCount, handleOpen]);
 
+  const applicationMutations = useMemo(() => {
+    const reuploads = reuploadMutationQueue.map(
+      ({ application_id }) => application_id,
+    );
+    const deletes = deleteApplicationQueue.map(
+      ({ application_id }) => application_id,
+    );
+    const moves = moveMutationQueue.flatMap(({ applications }) => applications);
+    return [...reuploads, ...deletes, ...moves];
+  }, [reuploadMutationQueue, deleteApplicationQueue, moveMutationQueue]);
+
   return {
     job,
     jobLoad,
@@ -366,6 +431,7 @@ export const useApplicationsActions = () => {
     badgesCount,
     filters,
     manageJob,
+    applicationMutations,
     setFilters,
     setSection,
     handleUpdateApplication,
@@ -373,6 +439,9 @@ export const useApplicationsActions = () => {
     handleMoveApplications,
     handleSelectNextApplication,
     handleSelectPrevApplication,
+    handleReuploadResume,
+    handleDeleteApplication,
+    handleMoveApplicationToInterview,
   };
 };
 

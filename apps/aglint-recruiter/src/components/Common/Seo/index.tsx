@@ -1,6 +1,8 @@
+'use client';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React from 'react';
+
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 const defaultMeta = {
   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
@@ -27,7 +29,7 @@ export default function Seo(props: {
   robots?: string;
   jsonLd?: any;
 }) {
-  const router = useRouter();
+  const router = useRouterPro();
   const meta = {
     ...defaultMeta,
     ...props,

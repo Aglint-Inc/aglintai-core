@@ -55,6 +55,7 @@ export default function EmailPreviewPopover({
                 display={'flex'}
                 alignItems={'center'}
                 paddingTop={'16px'}
+                paddingBottom={'8px'}
               >
                 <Stack>
                   <GlobalBannerInline
@@ -65,10 +66,10 @@ export default function EmailPreviewPopover({
                   />
                 </Stack>
               </Stack>
-              <Stack>
+              <Stack height={'100%'}>
                 <iframe
+                height={'100%'}
                   width={'100%'}
-                  height={'740px'}
                   color='white'
                   srcDoc={isHtml}
                   title='Previw Email'

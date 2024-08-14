@@ -1,5 +1,4 @@
 import * as React from 'react';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Session } from '../components/template/Sessions';
 import { companyLogoDummy } from '../utils/assets/common';
 import { ButtonSolid } from '../components/template/Button';
@@ -8,11 +7,12 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../utils/email/common/functions';
+import type { ReactTempPayload } from '../types/app.types';
 
-type EmailType = EmailTemplateAPi<'debrief_email_interviewer'>;
+type EmailType = ReactTempPayload<'debrief_email_interviewer'>;
 
 // export dummy
-export const dummy: EmailType['react_email_placeholders'] = {
+export const dummy: EmailType = {
   emailBody: `<p>Dear {{ interviewerFirstName }},</p><p></p><p>Please join the debrief session to discuss {{ candidateFirstName }}'s interview for {{ jobTitle }}. Your insights are valuable to the selection process.</p><p></p><p>Thanks,</p><p>{{ companyName }} Recruitment Team</p>`,
 
   companyLogo: companyLogoDummy,
@@ -37,11 +37,11 @@ export const DebriefCalendarInvite = ({
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
   candidateLink = '',
-}: EmailType['react_email_placeholders']) => {
+}: EmailType) => {
   return (
     <EmailContainer companyLogo={companyLogo} emailBody={emailBody}>
       <Session meetingDetail={meetingDetails} />
-      <ButtonSolid href={candidateLink} buttonText=" Candidate details" />
+      <ButtonSolid buttonText=" Candidate details" href={candidateLink} />
     </EmailContainer>
   );
 };

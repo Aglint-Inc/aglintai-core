@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const thread_id = uuidV4();
     const agent_email =
       process.env.LOCAL_AGENT_EMAIL ?? comp_integration.schedule_agent_email;
-    // `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
+    //FORMAT `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
     const message_id = EmailWebHook.getMessageId(thread_id, agent_email);
     const mailPayload: EmailTemplateAPi<'agent_email_candidate'>['api_payload'] =
       {
@@ -55,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/agent_email_candidate`,
       {
-        meta: mailPayload,
+        ...mailPayload,
       },
     );
     const email_details = data as APISendgridPayload;

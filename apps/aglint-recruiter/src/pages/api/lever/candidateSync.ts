@@ -10,11 +10,10 @@ import {
 } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-const crypto = require('crypto');
+import { decrypt } from '../decryptApiKey';
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
-  let apiKey;
   let previousApplications = [];
 
   if (!jobId) {
@@ -22,162 +21,143 @@ export default async function handler(req, res) {
     res.status(400).send('No job id found');
     return;
   }
-  const { data: referenceJob, error: errorJob } = await supabaseAdmin
-    .from('lever_job_reference')
+
+  const { data: job } = await supabaseAdmin
+    .from('public_jobs')
+    .select(
+      '*,company:recruiter!public_jobs_recruiter_id_fkey(integrations(*))',
+    )
+    .eq('public_job_id', jobId)
+    .single()
+    .throwOnError();
+
+  const ats_job_id = job.remote_id;
+  const recruiter_id = job.recruiter_id;
+
+  if (!ats_job_id) {
+    console.log('No ats job id found');
+    res.status(400).send('No ats job id found');
+    return;
+  }
+
+  const apiKey = decrypt(
+    job.company.integrations.lever_key,
+    process.env.ENCRYPTION_KEY,
+  );
+
+  const { data: app } = await supabaseAdmin
+    .from('applications')
     .select('*')
-    .eq('job_id', jobId);
-  if (!errorJob) {
-    if (referenceJob.length === 0) {
-      console.log('No job reference found');
-      res.status(400).send('No job reference found');
-      return;
+    .eq('public_job_id', jobId)
+    .throwOnError();
+
+  previousApplications = app;
+
+  const leverApplications = await fetchAllOpporunities(apiKey, ats_job_id);
+
+  const newApplications = [];
+  leverApplications.forEach(async (appi) => {
+    // Check if app.id does not exist in previousApplications
+
+    const isNew =
+      previousApplications?.filter((p) => p.opportunity_id === appi.id)
+        .length === 0;
+
+    if (isNew) {
+      // Push the new application to the newApplications array
+      newApplications.push(appi);
     }
-    const { data: app, error: errorApp } = await supabaseAdmin
-      .from('lever_reference')
-      .select('*')
-      .eq('public_job_id', jobId);
+  });
 
-    if (!errorApp) {
-      previousApplications = app;
+  if (newApplications.length === 0) {
+    console.log('No new applications found');
+    return res.status(200).send('No new applications found');
+  }
 
-      const { data: rec, error: errorRec } = await supabaseAdmin
-        .from('recruiter')
-        .select('*')
-        .eq('id', referenceJob[0].recruiter_id);
-      if (!errorRec) {
-        apiKey = decrypt(rec[0].lever_key, process.env.ENCRYPTION_KEY);
-        const leverApplications = await fetchAllOpporunities(
-          apiKey,
-          referenceJob[0].posting_id,
-        );
+  // for creating lever job reference
+  const refCandidates = newApplications.map((cand) => {
+    return {
+      first_name: splitFullName(cand.name).firstName,
+      last_name: splitFullName(cand.name).lastName,
+      email: cand.emails[0],
+      linkedin: extractLinkedInURL(cand.links || []),
+      phone: cand.phones[0]?.value,
+      job_id: jobId,
+      application_id: uuidv4(), //our job application id
+      id: cand.id, //lever opportunity id
+    };
+  });
+  // for creating lever job reference
 
-        const newApplications = [];
-        leverApplications.forEach(async (appi) => {
-          // Check if app.id does not exist in previousApplications
+  const emails = [
+    ...new Set(
+      refCandidates.map((cand) => {
+        return cand.email;
+      }),
+    ),
+  ];
 
-          const isNew =
-            previousApplications?.filter((p) => p.opportunity_id === appi.id)
-              .length === 0;
+  const checkCandidates = await processEmailsInBatches(
+    emails,
+    recruiter_id,
+    supabaseAdmin,
+  );
 
-          if (isNew) {
-            // Push the new application to the newApplications array
-            newApplications.push(appi);
-          }
-        });
+  //new candidates insert flow
+  const uniqueRefCandidates = refCandidates.filter((cand) => {
+    return !checkCandidates.some((checkCand) => {
+      return checkCand.email === cand.email;
+    });
+  });
 
-        if (newApplications.length === 0) {
-          console.log('No new applications found');
-          return res.status(200).send('No new applications found');
-        }
+  const insertableCandidates = uniqueRefCandidates.map((cand) => {
+    return {
+      first_name: cand.first_name,
+      last_name: cand.last_name,
+      email: cand.email,
+      linkedin: cand.linkedin,
+      phone: cand.phone,
+      id: uuidv4(),
+      recruiter_id,
+    };
+  });
 
-        // for creating lever job reference
-        const refCandidates = newApplications.map((cand) => {
-          return {
-            first_name: splitFullName(cand.name).firstName,
-            last_name: splitFullName(cand.name).lastName,
-            email: cand.emails[0],
-            linkedin: extractLinkedInURL(cand.links || []),
-            phone: cand.phones[0]?.value,
-            job_id: jobId,
-            application_id: uuidv4(), //our job application id
-            id: cand.id, //lever opportunity id
-          };
-        });
-        // for creating lever job reference
+  const dbCandidates = insertableCandidates.filter((cand, index, self) => {
+    // Use the Array.findIndex() method to check if the current email address
+    // exists in the array at a previous index.
+    const isUnique = self.findIndex((c) => c.email === cand.email) === index;
+    return isUnique;
+  });
 
-        const emails = [
-          ...new Set(
-            refCandidates.map((cand) => {
-              return cand.email;
-            }),
-          ),
-        ];
+  const { data: newCandidates, error: errorCandidates } = await supabaseAdmin
+    .from('candidates')
+    .insert(dbCandidates)
+    .select();
 
-        const checkCandidates = await processEmailsInBatches(
-          emails,
-          rec[0].id,
-          supabaseAdmin,
-        );
+  if (!errorCandidates) {
+    const allCandidates = [...newCandidates, ...checkCandidates];
+    const dbApplications = refCandidates.map((ref) => {
+      return {
+        candidate_id: allCandidates.filter(
+          (cand) => cand.email === ref.email,
+        )[0].id,
+        job_id: jobId,
+        id: ref.application_id,
+        source: 'lever',
+      } as DatabaseTableInsert['applications'];
+    });
 
-        //new candidates insert flow
-        const uniqueRefCandidates = refCandidates.filter((cand) => {
-          return !checkCandidates.some((checkCand) => {
-            return checkCand.email === cand.email;
-          });
-        });
+    const { error } = await supabaseAdmin
+      .from('applications')
+      .insert(dbApplications);
 
-        const insertableCandidates = uniqueRefCandidates.map((cand) => {
-          return {
-            first_name: cand.first_name,
-            last_name: cand.last_name,
-            email: cand.email,
-            linkedin: cand.linkedin,
-            phone: cand.phone,
-            id: uuidv4(),
-            recruiter_id: referenceJob[0].recruiter_id,
-          };
-        });
-
-        const dbCandidates = insertableCandidates.filter(
-          (cand, index, self) => {
-            // Use the Array.findIndex() method to check if the current email address
-            // exists in the array at a previous index.
-            const isUnique =
-              self.findIndex((c) => c.email === cand.email) === index;
-            return isUnique;
-          },
-        );
-
-        const { data: newCandidates, error: errorCandidates } =
-          await supabaseAdmin.from('candidates').insert(dbCandidates).select();
-
-        if (!errorCandidates) {
-          const allCandidates = [...newCandidates, ...checkCandidates];
-          const dbApplications = refCandidates.map((ref) => {
-            return {
-              candidate_id: allCandidates.filter(
-                (cand) => cand.email === ref.email,
-              )[0].id,
-              job_id: jobId,
-              id: ref.application_id,
-              source: 'lever',
-            } as DatabaseTableInsert['applications'];
-          });
-
-          const { error } = await supabaseAdmin
-            .from('applications')
-            .insert(dbApplications);
-
-          if (!error) {
-            const referenceObj = refCandidates.map((ref) => {
-              return {
-                application_id: ref.application_id,
-                posting_id: referenceJob[0].posting_id,
-                opportunity_id: ref.id,
-                public_job_id: jobId,
-              };
-            });
-
-            await createLeverReference(referenceObj);
-            return res.status(200).send('success');
-          } else {
-            console.log('error while inserting into applications');
-          }
-        }
-        //new candidates insert flow
-      } else {
-        res.status(400).send('Error inserting into job_applications');
-      }
+    if (!error) {
+      return res.status(200).send('success');
+    } else {
+      console.log('error while inserting into applications');
     }
   }
-}
-
-// Decrypt data using AES-256
-export function decrypt(encryptedData, encryptionKey) {
-  const decipher = crypto.createDecipher('aes256', encryptionKey);
-  let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
-  decryptedData += decipher.final('utf8');
-  return decryptedData;
+  //new candidates insert flow
 }
 
 const fetchAllOpporunities = async (apiKey, postingId) => {
@@ -215,40 +195,4 @@ const fetchAllOpporunities = async (apiKey, postingId) => {
     }
   }
   return allJobs;
-};
-
-const createLeverReference = async (reference) => {
-  const { data, error } = await supabaseAdmin
-    .from('lever_reference')
-    .insert(reference)
-    .select();
-
-  if (error) {
-    return error;
-  } else {
-    await createGoogleTaskQueue(data);
-    return data;
-  }
-};
-
-const createGoogleTaskQueue = async (dbRecords) => {
-  let data = JSON.stringify({
-    records: dbRecords,
-  });
-
-  let config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: process.env.LEVER_TASK_URL,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  };
-
-  await axios.request(config).then((response) => {
-    if (response.status == 200) {
-      return 'successfully created queue';
-    }
-  });
 };

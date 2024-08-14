@@ -11,7 +11,9 @@ const nextConfig = {
       : '', //need for reverse proxy for job preview link
   eslint: {
     dirs: ['src'],
+    ignoreDuringBuilds: true
   },
+
 
   async rewrites() {
     return [

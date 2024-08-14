@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Text } from '@/devlink/Text';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -35,6 +35,7 @@ function FilterCordinator() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
+  // eslint-disable-next-line no-unused-vars
   const [searchText, setSearchText] = useState('');
   const [members, setMembers] = useState<UserType[]>([]);
   const filter = useFilterCandidateStore((state) => state.filter);
@@ -45,7 +46,7 @@ function FilterCordinator() {
   }, [searchText]);
 
   const open = Boolean(anchorEl);
-  const id = open ? 'interview-panels' : undefined;
+  const id = open ? 'recruiting_coordinator' : undefined;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -128,16 +129,7 @@ function FilterCordinator() {
       >
         <FilterDropdown
           slotOption={
-            <Stack width={'450px'} p={'var(--space-1)'} maxHeight={'340px'}>
-              <Stack height={'40px'}>
-                <SearchField
-                  isFullWidth
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onClear={() => setSearchText('')}
-                  placeholder='Search Co-ordinator'
-                />
-              </Stack>
+            <Stack width={'320px'} p={'var(--space-1)'}>
               <Stack overflow={'auto'} height={'310px'}>
                 {members.length > 0 ? (
                   members.map((member, i) => (
@@ -150,7 +142,7 @@ function FilterCordinator() {
                         borderRadius: 'var(--radius-2)',
                       }}
                       spacing={1}
-                      padding={'var(--space-2) var(--space-3)'}
+                      padding={'var(--space-1) var(--space-1)'}
                     >
                       <Checkbox
                         isChecked={
@@ -207,9 +199,12 @@ function FilterCordinator() {
                           </Typography>
                         </Stack>
 
-                        <Typography variant='caption'>
-                          {capitalize(member.position)}
-                        </Typography>
+                        <Text
+                          size={1}
+                          weight={'regular'}
+                          color={'neutral'}
+                          content={capitalize(member.position)}
+                        />
                       </Stack>
                     </Stack>
                   ))

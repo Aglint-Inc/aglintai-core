@@ -3,6 +3,7 @@ import { PATHS } from '@/src/constant/allPaths';
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
 export const allowedPaths = new Set<t>([
+  '/api/testx',
   '/login',
   '/signup',
   '/api/signup',
@@ -89,12 +90,22 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/request_availability/updateRequestAvailability',
   '/api/scheduling/request_availability/insertScheduleActivities',
   '/api/getUserLocation',
+  '/api/automation/booking_self_schedule',
+  '/api/automation/update_request',
+  '/api/automation/update_availability',
+  '/api/automation/send_availability_reminder',
+  '/api/automation/send_selfSchedule_reminder',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
   '/api/scheduling/application/openselfscheduling',
   '/api/scheduling/v1/booking/schedule-debreif',
-  '/api/agent-scheduling/send-availability-request-link',
-  'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+  '/api/scheduling/candidate/candidate-self-scheduling',
+  '/api/scheduling/candidate/candidate-availability-request',
+  '/api/sendAvailabilityRequest_email_applicant',
+  '/api/agent-workflow/new-schedule',
+  '/api/agent-workflow/cancel-schedule',
+  '/api/agent-workflow/cand-avail-recieved',
+  '/api/request/create',
   ...cronPaths,
 ] as t[]);

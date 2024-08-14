@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
 import { Checkbox, Collapse, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -13,10 +12,9 @@ import { TaskStatesProvider } from '@/src/components/Tasks/TaskStatesContext';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { createTasks } from '@/src/utils/createTasks';
 import { capitalize } from '@/src/utils/text/textUtils';
 
-// import { createTasks } from '@/src/utils/createTasks';
+import { formatSessions } from '../utils';
 import CreateTask from './createTask';
 
 const MoveCandidate = () => {
@@ -112,26 +110,6 @@ const MoveCandidateNew = () => {
   );
 };
 
-//     <DcPopup
-//   popupName={title}
-//   slotBody={
-//     <Stack gap={1}>
-//       <GlobalBannerShort
-//         color={'error'}
-//         iconName={'warning'}
-//         slotButtons={<></>}
-//         textTitle={`You are about to ${description}`}
-//       />
-//       <Stack direction={'row'} alignItems={'center'} gap={1}>
-//         <Checkbox checked={checked} onClick={()=>setChecked((prev)=>!prev)}/>
-//         {capitalize(action)}
-//       </Stack>
-//     </Stack>
-//   }
-//   onClickClosePopup={{ onClick: () => resetActionPopup() }}
-//   slotButtons={buttons}
-// />
-
 const MoveCandidateScreening = () => {
   const { handleMoveApplications } = useApplications();
   const { resetActionPopup } = useApplicationsStore(({ resetActionPopup }) => ({
@@ -202,8 +180,8 @@ type TaskType = {
 };
 
 const MoveCandidateInterview = () => {
-  const { recruiter_id, recruiterUser } = useAuthDetails();
-  const { handleMoveApplications, job, sectionApplication } = useApplications();
+  const { recruiterUser } = useAuthDetails();
+  const { handleMoveApplicationToInterview, job } = useApplications();
   const { resetActionPopup, checklist } = useApplicationsStore(
     ({ resetActionPopup, checklist }) => ({
       checklist,
@@ -213,32 +191,28 @@ const MoveCandidateInterview = () => {
 
   const [taskCheck, setTaskCheck] = useState(true);
   const [task, setTask] = useState<TaskType>(null);
-  const [assigner, setAssigner] = useState(null);
-  const createTask = async () =>
-    taskCheck &&
-    (await createTasks(
-      recruiter_id,
-      {
-        id: recruiterUser.user_id,
-        name: getFullName(recruiterUser.first_name, recruiterUser.last_name),
-        role:recruiterUser?.role
-      },
-      (sectionApplication?.data?.pages ?? [])
-        .flatMap((page) => page)
-        .filter(({ id }) => checklist.includes(id))
-        .map(({ id, name }) => ({ id, name })),
-      task,
-      assigner,
-    ));
-
+  const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
+  const buttonText = taskCheck ? 'Request and Move' : null;
   const { buttons, title, description } = useMeta(() => {
-    handleMoveApplications({
-      status: 'interview',
-      email: null,
-      callBacks: [createTask()],
+    handleMoveApplicationToInterview({
+      request: taskCheck
+        ? {
+            assignee_id: (task?.assignee ?? []).find(Boolean),
+            assigner_id: recruiterUser?.user_id ?? null,
+            title:
+              task?.name ??
+              `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for {{candidateName}} `,
+            type: 'schedule_request',
+            priority: priority,
+            status: 'to_do',
+            schedule_end_date: task.schedule_date_range.end_date,
+            schedule_start_date: task.schedule_date_range.start_date,
+          }
+        : null,
+      sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
     });
     resetActionPopup();
-  });
+  }, buttonText);
 
   return (
     <TaskStatesProvider>
@@ -252,14 +226,15 @@ const MoveCandidateInterview = () => {
                 checked={taskCheck}
                 onClick={() => setTaskCheck((prev) => !prev)}
               />
-              {'Create scheduling task'}
+              {'Create scheduling request'}
             </Stack>
             <Collapse in={taskCheck}>
               <CreateTask
                 applications={checklist}
                 setTask={setTask}
-                setAssigner={setAssigner}
                 job_id={job?.id}
+                setPriority={setPriority}
+                priority={priority}
               />
             </Collapse>
           </Stack>
@@ -342,7 +317,7 @@ const MoveCandidateDisqualified = () => {
   );
 };
 
-function useMeta(onSubmit: () => void) {
+function useMeta(onSubmit: () => void, buttonText: string = null) {
   const { resetActionPopup, actionPopup, checklist } = useApplicationsStore(
     ({ resetActionPopup, actionPopup, checklist }) => ({
       resetActionPopup,
@@ -360,7 +335,7 @@ function useMeta(onSubmit: () => void) {
       />
 
       <ButtonSolid
-        textButton={`Move to ${actionPopup}`}
+        textButton={buttonText ?? `Move to ${actionPopup}`}
         size={2}
         onClickButton={{
           onClick: () => onSubmit(),

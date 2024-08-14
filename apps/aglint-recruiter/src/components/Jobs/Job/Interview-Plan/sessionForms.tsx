@@ -516,7 +516,7 @@ const Interview = ({
           {(currentQualifiedModuleMembers ?? []).length === 0 && (
             <GlobalBannerShort
               iconName={'warning'}
-              textTitle={'Interview type has no qualified members'}
+              textTitle={'Interview type has no interviewers'}
               textDescription={
                 'Please add members to the selected interview type'
               }
@@ -530,8 +530,8 @@ const Interview = ({
                     onClick: () =>
                       interview_module?.value?.id &&
                       push(
-                        ROUTES['/scheduling/module/members/[module_id]']({
-                          module_id: interview_module.value.id,
+                        ROUTES['/scheduling/interview-types/[type_id]']({
+                          type_id: interview_module.value.id,
                         }),
                       ),
                   }}
@@ -738,7 +738,7 @@ const InterviewersField = ({
         options={options}
         value=''
       />
-      {error && (
+      {(error || value.length === 0) && (
         <Stack
           alignItems={'center'}
           direction={'row'}

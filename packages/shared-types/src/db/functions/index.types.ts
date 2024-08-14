@@ -1,9 +1,14 @@
 import type { Database } from "../schema.types";
-import type { CustomizableTypes, Type } from "../utils.types";
+import type { CustomizableTypes, Custom } from "../utils.types";
+import { CustomCreateSessionRequest } from "./create_session_request.types";
+import { CustomCreateSessionRequests } from "./create_session_requests.types";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
+import { CustomGetRequestCountStats } from "./get_request_count_stats.types";
+import { CustomGetRequestCountStatsNew } from "./get_request_count_stats_new.types";
 import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
+import { CustomMoveToInterview } from "./move_to_interview.types";
 import type { CustomUpdateDebriefSession } from "./update_debrief_session.types";
 
 type DatabaseFunctions = Database["public"]["Functions"];
@@ -23,26 +28,21 @@ export type FunctionType<
     ? { [id in keyof Partial<DatabaseFunctionReturns<T>[number]>]: any }
     : DatabaseFunctionReturns<T> extends CustomizableTypes<"Object">
       ? { [id in keyof Partial<DatabaseFunctionReturns<T>>]: any }
-      : any,
-> = Type<
+      : any = never,
+> = Custom<
   DatabaseFunctions[T],
-  //@ts-ignore
+  //@ts-expect-error
   {
-    Args: Type<
-      DatabaseFunctionArgs<T>,
-      //@ts-ignore
-      Partial<U>
-    >;
-    Returns: Type<
-      //@ts-ignore
-      DatabaseFunctionReturns<T>,
-      //@ts-ignore
-      Partial<V>
-    >;
+    Args: Custom<DatabaseFunctionArgs<T>, U>;
+    Returns: V extends never
+      ? DatabaseFunctionReturns<T>
+      : DatabaseFunctionReturns<T> extends CustomizableTypes<"Array">
+        ? V[]
+        : V;
   }
 >;
 
-export type Functions = Type<
+export type Functions = Custom<
   DatabaseFunctions,
   {
     insert_debrief_session: CustomInsertDebriefSession;
@@ -50,5 +50,10 @@ export type Functions = Type<
     getsectioncounts: CustomGetSectionCounts;
     get_applicant_locations: CustomGetApplicantLocations;
     get_applicant_badges: CustomGetApplicantBadges;
+    create_session_request: CustomCreateSessionRequest;
+    move_to_interview: CustomMoveToInterview;
+    create_session_requests: CustomCreateSessionRequests;
+    get_request_count_stats: CustomGetRequestCountStats;
+    get_request_count_stats_new: CustomGetRequestCountStatsNew;
   }
 >;

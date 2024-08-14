@@ -13,6 +13,7 @@ export function Text({
   color = "neutral-12",
   highContrast = "false",
   text = "This is the default text value",
+  styleProps = {},
 }) {
   return (
     <_Component
@@ -23,6 +24,7 @@ export function Text({
       fontWeight={weight}
       font-color={color}
       high-contrast={highContrast}
+      {...styleProps}
     >
       {content}
     </_Component>

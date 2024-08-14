@@ -1,30 +1,29 @@
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 
 import { ScheduleProgress } from '@/devlink/ScheduleProgress';
-import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { SkeletonAllInterviewCard } from '@/devlink2/SkeletonAllInterviewCard';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 
+import { useFilterCandidateStore } from '../filter-store';
 import ListCardInterviewSchedule from '../ListCard';
-import { ApplicationList } from '../utils';
+import {
+  ApplicationList,
+  useAllInterviewSchedules,
+  useGetCount,
+} from '../queries/hooks';
+import InitialLoader from './InitialLoader';
 
-function AllList({
-  isPending,
-  isError,
-  applicationList,
-  isFetching,
-  isLoading,
-}: {
-  isPending: boolean;
-  isError: boolean;
-  applicationList: ApplicationList[];
-  isFetching: boolean;
-  isLoading: boolean;
-}) {
+function AllList() {
+  const { recruiter } = useAuthDetails();
+  const parentRef = useRef();
   const router = useRouter();
-  const onClickCard = (app: ApplicationList) => {
+  const { filter } = useFilterCandidateStore();
+  const onClickCard = (app: ApplicationList[0]) => {
     router.push(
       ROUTES['/scheduling/application/[application_id]']({
         application_id: app.applications.id,
@@ -36,84 +35,141 @@ function AllList({
     );
   };
 
+  const { data: count, isLoading } = useGetCount({
+    recruiter_id: recruiter.id,
+  });
+
+  const {
+    data,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    isLoading: isLoadingCandidate,
+    isError,
+    isFetching,
+  } = useAllInterviewSchedules({
+    rec_id: recruiter.id,
+    count,
+    isLoading,
+    filter,
+  });
+
+  const allRows = data ? data.pages.flatMap((d) => d) : [];
+
+  const rowVirtualizer = useVirtualizer({
+    count: hasNextPage ? allRows.length + 1 : allRows.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 52,
+    overscan: 5,
+  });
+
+  useEffect(() => {
+    const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+
+    if (!lastItem) {
+      return;
+    }
+
+    if (
+      lastItem.index >= allRows.length - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [
+    hasNextPage,
+    fetchNextPage,
+    allRows.length,
+    isFetchingNextPage,
+    rowVirtualizer.getVirtualItems(),
+  ]);
+
   return (
     <Stack
+      ref={parentRef}
       style={{
-        opacity: isLoading ? 0.5 : 1,
-        pointerEvents: isLoading ? 'none' : 'auto',
-        height: 'calc(100vh - 182px)',
+        height: 'calc(100vh - 134px)',
+        width: 'calc(100vw - 58px)',
         overflowY: 'auto',
       }}
     >
-      {isLoading ||
-      isPending ||
-      (isFetching && applicationList.length === 0) ? (
-        <Stack width={'100%'} height={'100%'}>
-          {Array.from({
-            length: 15,
-          }).map((_, index) => (
-            <SkeletonAllInterviewCard
-              key={index}
-              slotInterviewProgress={
-                <Stack borderRadius={'var(--radius-2)'} overflow={'hidden'}>
-                  <ScheduleProgress
-                    slotScheduleProgressPill={Array.from({
-                      length: index === 0 || !!(index && !(index % 2)) ? 5 : 2,
-                    }).map((_, index) => (
-                      <Stack
-                        key={index}
-                        width={'60px'}
-                        height={'20px'}
-                        position={'relative'}
-                      >
-                        <Skeleton />
-                      </Stack>
-                    ))}
-                  />
-                </Stack>
-              }
-            />
-          ))}
-        </Stack>
-      ) : isError ? (
-        <Stack
-          width={'100%'}
-          height={'100%'}
-          alignItems={'center'}
-          justifyContent={'center'}
-        >
-          Unable to fetch schedules
-        </Stack>
-      ) : (
-        <>
-          {!isPending && !isFetching && applicationList.length === 0 && (
-            <Box
-              sx={{
-                margin: 'var(--space-4)',
-                borderRadius: 'var(--radius-2)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: 'calc(100vh - 166px)',
-                backgroundColor: 'var(--neutral-2)', // replace with your desired background color
+      <InitialLoader
+        isError={isError}
+        isLoading={
+          isLoadingCandidate ||
+          isLoading ||
+          (isFetching && allRows.length === 0)
+        }
+        rowLength={allRows.length}
+      />
+
+      <Stack
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow, index) => {
+          const isLoaderRow = virtualRow.index > allRows.length - 1;
+          const application = allRows[virtualRow.index];
+          return (
+            <Stack
+              key={virtualRow.index}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+                zIndex: count - virtualRow.index,
               }}
             >
-              <Box maxWidth='sm' width='300px'>
-                <AllInterviewEmpty textDynamic='No candidate found.' />
-              </Box>
-            </Box>
-          )}
-          {applicationList.map((app) => {
-            return (
-              <ListCardInterviewSchedule
-                key={app.applications.id}
-                app={app}
-                onClickCard={onClickCard}
-              />
-            );
-          })}
-        </>
-      )}
+              <>
+                {isLoaderRow ? (
+                  hasNextPage ? (
+                    <SkeletonAllInterviewCard
+                      slotInterviewProgress={
+                        <Stack
+                          borderRadius={'var(--radius-2)'}
+                          overflow={'hidden'}
+                        >
+                          <ScheduleProgress
+                            slotScheduleProgressPill={Array.from({
+                              length:
+                                index === 0 || !!(index && !(index % 2))
+                                  ? 5
+                                  : 2,
+                            }).map((_, index) => (
+                              <Stack
+                                key={index}
+                                width={'60px'}
+                                height={'20px'}
+                                position={'relative'}
+                              >
+                                <Skeleton />
+                              </Stack>
+                            ))}
+                          />
+                        </Stack>
+                      }
+                    />
+                  ) : (
+                    <></>
+                  )
+                ) : (
+                  <ListCardInterviewSchedule
+                    app={application}
+                    onClickCard={onClickCard}
+                  />
+                )}
+              </>
+            </Stack>
+          );
+        })}
+      </Stack>
     </Stack>
   );
 }

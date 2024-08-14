@@ -6,12 +6,15 @@ declare function InterviewerDetail(props: {
   textInterviewerName?: React.ReactNode;
   textDepartment?: React.ReactNode;
   textTimeZone?: React.ReactNode;
-  textInterviewPerDay?: React.ReactNode;
-  textInterviewPerWeek?: React.ReactNode;
   slotInterviewerAvatar?: Types.Devlink.Slot;
   slotTabContent?: Types.Devlink.Slot;
   slotNewTabPill?: Types.Devlink.Slot;
   textMail?: React.ReactNode;
   textLocation?: React.ReactNode;
   textRole?: React.ReactNode;
+  slotEditButton?: Types.Devlink.Slot;
+  onClickLinkedIn?: Types.Devlink.RuntimeProps;
+  isLinkedInVisible?: Types.Visibility.VisibilityConditions;
+  textPhone?: React.ReactNode;
+  textInterviewer?: React.ReactNode;
 }): React.JSX.Element;

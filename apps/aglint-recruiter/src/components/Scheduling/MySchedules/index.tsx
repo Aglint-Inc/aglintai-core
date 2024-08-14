@@ -10,17 +10,21 @@ import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
+import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import ScheduleMeetingCard from '../Common/ModuleSchedules/ScheduleMeetingCard';
-import { fetchSchedulesCountByUserId, useAllSchedulesByUserId } from '../Interviewers/InterviewerDetail/query';
+import {
+  fetchSchedulesCountByUserId,
+  useAllSchedulesByUserId,
+} from '../Interviewers/InterviewerDetail/query';
 import { transformDataSchedules } from '../schedules-query';
-import { DateIcon } from '../Settings/Components/DateSelector';
 
 function MySchedule() {
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
   const [changeText, setChangeText] = useState('');
@@ -59,16 +63,17 @@ function MySchedule() {
   } = useAllSchedulesByUserId({
     filter,
     member_id: recruiterUser.user_id,
-    textSearch: changeText,
   });
+
+  const { data: allIntegrations } = useAllIntegrations();
 
   return (
     <>
       <ShowCode>
         <ShowCode.When
           isTrue={
-            (!!recruiter.service_json &&
-              recruiter.email.split('@')[1] ===
+            (!!allIntegrations?.service_json &&
+              allIntegrations?.google_workspace_domain?.split('//')[1] ===
                 recruiterUser.email.split('@')[1]) ||
             !!(recruiterUser.schedule_auth as any)?.access_token
           }
@@ -152,7 +157,9 @@ function MySchedule() {
           />
         </ShowCode.When>
         <ShowCode.When
-          isTrue={!recruiter.service_json || !recruiterUser.schedule_auth}
+          isTrue={
+            !allIntegrations?.service_json || !recruiterUser.schedule_auth
+          }
         >
           <MyScheduleLanding
             onClickConnectCalender={{

@@ -3,11 +3,7 @@ import type {
   MeetingDetailCardType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
@@ -15,7 +11,6 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
@@ -33,7 +28,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,recruiter(logo)),public_jobs(job_title,company)',
+        'candidates(first_name,last_name,recruiter_id,recruiter(logo,name)),public_jobs(job_title)',
       )
       .eq('id', req_body.application_id),
   );
@@ -45,10 +40,7 @@ export async function fetchUtil(
   );
 
   const { candidates } = candidateJob;
-  const comp_email_temp = await fetchCompEmailTemp(
-    candidateJob.candidates.recruiter_id,
-    'interReschedReq_email_recruiter',
-  );
+
   const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
 
   const int_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
@@ -85,7 +77,7 @@ export async function fetchUtil(
         meeting_organizer.last_name,
       ),
       jobRole: candidateJob.public_jobs.job_title,
-      companyName: candidateJob.public_jobs.company,
+      companyName: candidateJob.candidates.recruiter.name,
       startDate: dayjsLocal(req_start_date)
         .tz(int_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
@@ -101,20 +93,15 @@ export async function fetchUtil(
       candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
   const react_email_placeholders: EmailTemplateAPi<'interReschedReq_email_recruiter'>['react_email_placeholders'] =
     {
       companyLogo: candidateJob.candidates.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetails: meeting_details,
     };
 
   return {
-    filled_comp_template,
+    company_id: candidateJob.candidates.recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: meeting_organizer.email,
   };

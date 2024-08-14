@@ -7,7 +7,6 @@ import {
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
   FacebookIcon,
@@ -27,6 +26,7 @@ import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ThankYou from '@/public/lottie/ThankYouLottie';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -39,7 +39,7 @@ import UploadDB from './UploadDB';
 type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
 
 const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
-  const router = useRouter();
+  const router = useRouterPro();
   const [email, setEmail] = useState<string>();
   const [error, setError] = useState<boolean>(false);
   const [thank, setThank] = useState<boolean>(false);
@@ -184,7 +184,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             <Avatar
               id='topAvatar'
               variant='rounded'
-              src={post?.logo || recruiter?.logo}
+              src={recruiter?.logo}
               sx={{
                 p: 'var(--space-1)',
                 color: 'common.black',
@@ -212,7 +212,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             },
           }}
           textRole={post?.job_title}
-          textCompanyName={post?.company}
+          textCompanyName={recruiter?.name}
           textCompanyType={recruiter?.industry}
           textAboutJob={'Ask your queries about this job to the recruiter. '}
           textCompanyDescription={recruiter?.company_overview}
@@ -287,7 +287,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     <OpenJobListingCard
                       key={ind}
                       textJobRole={job.job_title || '--'}
-                      textCompanyType={job.department || '--'}
+                      textCompanyType={job.departments?.name || '--'}
                       textLocation={job.location || '--'}
                       textWorkingType={job.job_type || '--'}
                       onClickApplyNow={{

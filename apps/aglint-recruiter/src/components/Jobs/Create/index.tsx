@@ -55,12 +55,7 @@ const JobCreate = () => {
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
     },
-    company: {
-      value: initialCompany,
-      required: true,
-      error: { value: false, helper: `Company name can't be empty` },
-    },
-    department: {
+    department_id: {
       value: null,
       required: false,
       error: { value: false, helper: `Department name can't be empty` },
@@ -139,11 +134,12 @@ const validateForms = (fields: Form) => {
       value: value.value,
       required: value.required,
       error: {
-        value: value?.value
-          ? key === 'description'
-            ? value.value.length < 100
-            : value.value.length === 0
-          : value.required,
+        value:
+          value?.value && typeof value?.value === 'string'
+            ? key === 'description'
+              ? value.value.length < 100
+              : value.value.length === 0
+            : value.required,
         helper: value.error.helper,
       },
     };
@@ -232,8 +228,7 @@ const JobForms = ({
   handleCancel,
 }: JobMetaFormProps) => {
   const {
-    company,
-    department,
+    department_id,
     description,
     job_title,
     job_type,
@@ -247,11 +242,10 @@ const JobForms = ({
 
   const forms = (
     <>
-      {company}
       {job_title}
       {job_type}
       {workplace_type}
-      {department}
+      {department_id}
       {location}
     </>
   );

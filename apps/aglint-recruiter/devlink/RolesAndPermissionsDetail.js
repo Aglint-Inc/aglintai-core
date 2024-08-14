@@ -17,8 +17,9 @@ export function RolesAndPermissionsDetail({
   slotBackButton,
   textUserCount = "Users (5)",
   textRoleName = "Role Name",
-  textUserDescription = "These are the users with this role.",
   slotBanner,
+  slotAddButton,
+  slotText,
 }) {
   return (
     <_Component
@@ -36,7 +37,7 @@ export function RolesAndPermissionsDetail({
         <_Builtin.Block tag="div">
           {slotBackButton ?? (
             <ButtonGhost
-              size="2"
+              size="1"
               textButton="Back"
               isLeftIcon={true}
               iconName="arrow_back_ios"
@@ -107,8 +108,21 @@ export function RolesAndPermissionsDetail({
             )}
             tag="div"
           >
-            <Text content={textUserCount} weight="medium" />
-            <Text content={textUserDescription} color="neutral" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "rpd-header-wrap")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">
+                <Text content={textUserCount} weight="medium" />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "rpd-wrapper")}
+                  tag="div"
+                >
+                  {slotText}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">{slotAddButton}</_Builtin.Block>
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "userwithrole-wrap")}
               tag="div"

@@ -47,16 +47,14 @@ const JobEdit = () => {
   //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
   const {
     job_title,
-    company,
-    department,
+    department_id,
     description,
     job_type,
     location,
     workplace_type,
   } = {
     job_title: job.job_title,
-    company: job.company,
-    department: job.department,
+    department_id: job.department_id,
     description: job.description,
     job_type: job.job_type,
     location: job.location,
@@ -72,19 +70,11 @@ const JobEdit = () => {
         helper: `Job title can't be empty`,
       },
     },
-    company: {
-      value: company,
-      required: true,
-      error: {
-        value: validateString(company),
-        helper: `Company name can't be empty`,
-      },
-    },
-    department: {
-      value: department,
+    department_id: {
+      value: department_id,
       required: false,
       error: {
-        value: validateString(department),
+        value: validateString(department_id),
         helper: `Department name can't be empty`,
       },
     },
@@ -195,11 +185,14 @@ const validateForms = (fields: JobDetailsForm) => {
       value: value.value,
       required: value.required,
       error: {
-        value: value?.value
-          ? key === 'description'
-            ? value.value.length < 100
-            : value.value.length === 0
-          : value.required,
+        value:
+          typeof value?.value === 'number'
+            ? false
+            : value?.value
+              ? key === 'description'
+                ? value.value.length < 100
+                : value.value.length === 0
+              : value.required,
         helper: value.error.helper,
       },
     };
@@ -254,8 +247,7 @@ const JobEditForm = ({
 
 const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   const {
-    company,
-    department,
+    department_id,
     description,
     job_title,
     job_type,
@@ -265,11 +257,10 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   const forms = (
     <>
-      {company}
       {job_title}
       {job_type}
       {workplace_type}
-      {department}
+      {department_id}
       {location}
     </>
   );

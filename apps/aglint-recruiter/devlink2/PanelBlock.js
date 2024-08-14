@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./PanelBlock.module.css";
 
@@ -20,7 +21,8 @@ export function PanelBlock({
           />
         )}
       </_Builtin.Block>
-      <Text content={textPanelName} weight="medium" />
+      <Text content={textPanelName} weight="medium" size="1" />
+      <GlobalIcon iconName="call_made" />
     </_Component>
   );
 }

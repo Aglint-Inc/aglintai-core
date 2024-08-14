@@ -1,0 +1,53 @@
+.mention-component {
+    position: relative;
+    width: '100%';
+  }
+  
+  .mentions__control {
+    font-size: 16px;
+   
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: none;
+  }
+  
+ 
+  
+  /* .mentions__input {
+    padding: 8px;
+    margin: 0;
+  } */
+  
+  .mentions__suggestions {
+    /* border: 1px solid #ccc; */
+    background: red;
+    z-index: 1000;
+    max-height: 150px;
+    overflow: auto;
+
+  }
+  
+  .mentions__suggestion {
+    cursor: pointer;
+    padding:  6px 8px 6px 8px;
+    text-wrap: break-word;
+    width: 360px;
+    border-radius: 3px;
+    
+  }
+  
+  .mentions__suggestion--focused {
+    background-color: #F1F0EF;
+    cursor: pointer;
+    padding:  6px 8px 6px 8px;
+    text-wrap: break-word;
+    width: 360px;
+    border-radius: 3px;
+
+  }
+  
+  #listContainer ul {
+    max-width: 200px;
+  }

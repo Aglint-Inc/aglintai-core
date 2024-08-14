@@ -9,8 +9,6 @@ import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 
-
-
 function Instructions({
   instruction,
   setTextValue,
@@ -63,7 +61,6 @@ function Instructions({
               overflow={'auto'}
             >
               <TipTapAIEditor
-                height='440px'
                 enablAI={false}
                 placeholder={'Instructions'}
                 handleChange={(html) => {
@@ -92,7 +89,7 @@ function Instructions({
           padding={isPadding && 'var(--space-4)'}
           border={isBorder && '1px solid var(--neutral-6)'}
           borderRadius={'var(--radius-4)'}
-          width={'800px'}
+          width={'855px'}
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>

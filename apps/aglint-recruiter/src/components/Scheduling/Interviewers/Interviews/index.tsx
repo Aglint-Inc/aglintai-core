@@ -8,13 +8,13 @@ import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
+import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
   SchedulesSupabase,
   transformDataSchedules,
 } from '../../schedules-query';
-import { DateIcon } from '../../Settings/Components/DateSelector';
 import { fetchSchedulesCountByUserId } from '../InterviewerDetail/query';
 
 function Interviews({
@@ -41,7 +41,7 @@ function Interviews({
     cancelledCount: 0,
   });
 
-  const member_id = router?.query?.member_id as string;
+  const member_id = router?.query?.user_id as string;
 
   useEffect(() => {
     if (member_id) {

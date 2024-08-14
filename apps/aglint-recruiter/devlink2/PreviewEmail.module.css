@@ -27,7 +27,7 @@
 .pe-body-wrap {
   display: flex;
   overflow: auto;
-  height: 600px;
+  height: 80vh;
   flex-direction: column;
   flex-wrap: nowrap;
 }

@@ -32,6 +32,8 @@
 
   color: var(--neutral-11);
 
+  cursor: pointer;
+
   user-select: none;
 }
 

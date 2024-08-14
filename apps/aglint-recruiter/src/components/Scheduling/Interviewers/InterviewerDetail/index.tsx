@@ -9,21 +9,25 @@ import { useImrQuery } from './hooks';
 export type TabInterviewerDetail =
   | 'overview'
   | 'interviewtypes'
-  | 'allschedules'
+  | 'calendar'
   | 'availibility'
-  | 'keywords';
+  | 'keywords'
+  | 'qualified'
+  | 'training';
 
 function Interviewer() {
   const router = useRouter();
 
-  const user_id = router.query.member_id as string;
+  const user_id = router.query.user_id as string;
 
-  const { data: interviewerDetails } = useImrQuery({ user_id });
+  const { data: interviewerDetails, isLoading } = useImrQuery({ user_id });
 
   return (
     <>
       <PageLayout
-        slotTopbarLeft={<Breadcrumb interviewerDetails={interviewerDetails} />}
+        slotTopbarLeft={
+          !isLoading && <Breadcrumb interviewerDetails={interviewerDetails} />
+        }
         slotBody={<BodyComp />}
       />
     </>

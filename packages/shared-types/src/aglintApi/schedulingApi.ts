@@ -9,6 +9,11 @@ import {
   schema_confirm_slot_no_conflict,
 } from './valibotSchema/candidate-self-schedule';
 import {
+  candidate_avail_request_schema,
+  candidate_new_schedule_schema,
+  candidate_self_schedule_request,
+  email_agent_self_schedule_schema,
+  phone_agent_self_schedule_schema,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   schema_find_availability_payload,
@@ -69,7 +74,7 @@ export type APIFindInterviewSlot = v.InferInput<
 >;
 
 export type APIFindSlotsDateRange = v.InferInput<
-  typeof schema_find_slots_date_range
+  typeof schema_find_availability_payload
 >;
 
 export type CandReqAvailableSlots = v.InferInput<
@@ -148,3 +153,23 @@ export type CurrRoundCandidateAvailReq = {
     is_slot_available: boolean;
   }[];
 };
+
+export type APICandidateAvailableRequestType = v.InferOutput<
+  typeof candidate_avail_request_schema
+>;
+
+export type APICandidateSelfScheduleRequest = v.InferOutput<
+  typeof candidate_self_schedule_request
+>;
+
+export type APICandidateNewSchedule = v.InferOutput<
+  typeof candidate_new_schedule_schema
+>;
+
+export type APIPhoneAgent = v.InferOutput<
+  typeof phone_agent_self_schedule_schema
+>;
+
+export type APIEmailAgentPayload = v.InferOutput<
+  typeof email_agent_self_schedule_schema
+>;

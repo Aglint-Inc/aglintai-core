@@ -1,4 +1,3 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -20,7 +19,6 @@ import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
-import EditMember from './EditMemberDialog';
 import FilterDropDown from './FilterDropDown';
 import DepartmentIcon from './Icons/DepartmentIcon';
 import LocationIcon from './Icons/LocationIcon';
@@ -32,8 +30,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, recruiterUser, setMembers, handleMemberUpdate } =
-    useAuthDetails();
+  const { recruiterUser, setMembers, handleMemberUpdate } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
@@ -43,9 +40,6 @@ const TeamManagement = () => {
     open: false,
     window: 'addMember',
   });
-  const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
-    null,
-  );
 
   // filter members
   const [searchText, setSearchText] = useState('');
@@ -59,9 +53,19 @@ const TeamManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
 
-  const uniqueDepartments = recruiter.departments.map((dep) => dep.name);
+  const uniqueDepartments = [
+    ...members.reduce((acc, curr) => {
+      curr.department?.name && acc.add(curr.department.name);
+      return acc;
+    }, new Set<string>()),
+  ];
 
-  const uniqueLocations = recruiter.office_locations.map((loc) => loc.city);
+  const uniqueLocations = [
+    ...members.reduce((acc, curr) => {
+      curr.office_location?.city && acc.add(curr.office_location.city);
+      return acc;
+    }, new Set<string>()),
+  ];
 
   const uniqueRoles = [
     ...new Set(
@@ -83,18 +87,15 @@ const TeamManagement = () => {
     const filtered = members.filter((member) => {
       const departmentMatch =
         !selectedDepartments.length ||
-        selectedDepartments.includes(String(member.department));
+        selectedDepartments.includes(member.department?.name);
       const locationMatch =
         !selectedLocations.length ||
         selectedLocations.includes(member.office_location?.city);
       const statusMatch =
         !selectedStatus.length ||
-        selectedStatus
-          .map((item) => (item === 'active' ? 'joined' : item))
-          .includes(String(member.status).toLowerCase());
+        selectedStatus.includes(String(member.status).toLowerCase());
       const roleMatch =
-        !selectedRoles.length ||
-        selectedRoles.includes(String(member.role).toLowerCase());
+        !selectedRoles.length || selectedRoles.includes(String(member.role));
 
       return departmentMatch && locationMatch && statusMatch && roleMatch;
     });
@@ -151,6 +152,12 @@ const TeamManagement = () => {
     Boolean(selectedLocations.length);
 
   const canManage = checkPermissions(['manage_users']);
+  const [isInitalLoading, setIsInitalLoading] = useState(
+    filteredMembers.length ? false : true,
+  );
+  useEffect(() => {
+    if (filteredMembers.length) setIsInitalLoading(false);
+  }, [filteredMembers.length]);
   return (
     <Stack bgcolor={'white'}>
       <TeamUsersList
@@ -235,7 +242,11 @@ const TeamManagement = () => {
         slotTeamList={
           <>
             <ShowCode>
-              <ShowCode.When isTrue={!filteredMembers.length && isFetching}>
+              <ShowCode.When
+                isTrue={
+                  (!filteredMembers.length && isFetching) || isInitalLoading
+                }
+              >
                 <Stack
                   width={'100%'}
                   height={'100%'}
@@ -254,7 +265,7 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  editMember={() => setEditMember(member)}
+                  // editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
                       toast.error(
@@ -319,7 +330,7 @@ const TeamManagement = () => {
         )} pending invites awaiting your response.`}
       />
 
-      {editMember ? (
+      {/* {editMember ? (
         <EditMember
           open={Boolean(editMember)}
           memberList={activeMembers
@@ -333,27 +344,27 @@ const TeamManagement = () => {
             setEditMember(null);
           }}
         />
-      ) : (
-        <AddMember
-          open={openDrawer.open}
-          menu={openDrawer.window}
-          memberList={activeMembers.map((mem) => ({
-            id: mem.user_id,
-            name: getFullName(mem.first_name, mem.last_name),
-          }))}
-          pendingList={pendingList}
-          onClose={() => {
-            setOpenDrawer({ open: false, window: null });
-          }}
-        />
-      )}
+      ) : ( */}
+      <AddMember
+        open={openDrawer.open}
+        menu={openDrawer.window}
+        memberList={activeMembers.map((mem) => ({
+          id: mem.user_id,
+          name: getFullName(mem.first_name, mem.last_name),
+        }))}
+        pendingList={pendingList}
+        onClose={() => {
+          setOpenDrawer({ open: false, window: null });
+        }}
+      />
+      {/* )} */}
     </Stack>
   );
 };
 
 export default TeamManagement;
 
-const useTeamMembers = () => {
+export const useTeamMembers = () => {
   const {
     allMember: members,
     members: activeMembers,
@@ -396,4 +407,12 @@ const getLastLogins = (ids: string[], recruiter_id: string) => {
       });
       return tempData;
     });
+};
+
+export const getFullName = (firstName: string, lastName: string) => {
+  return [firstName, lastName]
+    .filter(Boolean)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join(' ');
 };

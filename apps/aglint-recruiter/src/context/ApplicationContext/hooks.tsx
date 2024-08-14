@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
 import {
@@ -24,10 +24,17 @@ export const useApplicationContext = (
     useAuthDetails();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
-  const { setTab, tab } = useApplicationStore(({ setTab, tab }) => ({
-    setTab,
-    tab,
-  }));
+  const resumeReupload = useApplications()?.handleReuploadResume;
+  const applicationMutations = useApplications()?.applicationMutations ?? [];
+  const deleteApplication = useApplications()?.handleDeleteApplication;
+
+  const { setTab, tab, handlClose } = useApplicationStore(
+    ({ setTab, tab, handlClose }) => ({
+      setTab,
+      tab,
+      handlClose,
+    }),
+  );
 
   const tabs = useQuery(
     applicationQuery.tabs({
@@ -94,10 +101,34 @@ export const useApplicationContext = (
     ],
   );
 
+  const handleResumeReUpload = async (
+    files: Parameters<typeof resumeReupload>[0]['files'],
+  ) => {
+    if (resumeReupload)
+      return await resumeReupload({
+        application_id: props.application_id,
+        candidate_id: meta?.data?.candidate_id,
+        files,
+      });
+  };
+
+  const handleDeleteApplication = useCallback(async () => {
+    if (deleteApplication) {
+      handlClose();
+      return await deleteApplication({ application_id: props.application_id });
+    }
+  }, [deleteApplication, props.application_id]);
+
+  const applicationUpdating = useMemo(
+    () => applicationMutations.includes(props.application_id),
+    [applicationMutations, props.application_id],
+  );
+
   useEffect(() => {
     setTab(props?.defaultTab ?? 'Details');
     return () => setTab(props?.defaultTab ?? 'Details');
   }, []);
+
   return {
     tabs,
     meta,
@@ -106,6 +137,9 @@ export const useApplicationContext = (
     tasks,
     activity,
     handleUpdateApplication,
+    handleResumeReUpload,
+    handleDeleteApplication,
+    applicationUpdating,
     ...props,
   };
 };

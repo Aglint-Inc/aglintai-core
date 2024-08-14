@@ -3,6 +3,8 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { LeaderBoardCard } from "./LeaderBoardCard";
+import { LeaderBoardLoader } from "./LeaderBoardLoader";
 import * as _utils from "./utils";
 import _styles from "./LeaderBoard.module.css";
 
@@ -51,6 +53,9 @@ export function LeaderBoard({
           <>
             <SlotComp componentNeme="LeaderBoardCard" />
             <SlotComp componentNeme="LeaderBoardLoader" />
+            <LeaderBoardCard />
+            <LeaderBoardCard />
+            <LeaderBoardLoader />
           </>
         )}
       </_Builtin.Block>

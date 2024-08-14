@@ -1,0 +1,13 @@
+.request-wrap {
+  display: flex;
+  height: 100vh;
+}
+
+.slot-agent-chat {
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.slot_request_right {
+  width: 100%;
+}

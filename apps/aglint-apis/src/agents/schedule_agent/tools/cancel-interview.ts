@@ -40,7 +40,6 @@ export const cancelInterview = () => {
         `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/cancel_interview_scheduling`,
         {
           session_ids: cand_info.interview_sessions.map(s => s.id),
-          cand_email: cand_info.req_payload.cand_email,
         }
       );
       cand_info.schedule_status = 'cancelled';

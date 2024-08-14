@@ -1,18 +1,16 @@
 import { RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
+import Link from 'next/link';
 import React from 'react';
 
-import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { UserWithRole } from '@/devlink/UserWithRole';
-import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 
 export const RoleUserWidget = ({
   role,
   members,
-  setEditUser,
 }: {
   role: Awaited<
     GetRoleAndPermissionsAPI['response']
@@ -20,24 +18,9 @@ export const RoleUserWidget = ({
     name: string;
   };
   members: RecruiterUserType[];
-  // eslint-disable-next-line no-unused-vars
-  setEditUser: () => void;
 }) => {
-  const { ifAllowed } = useRolesAndPermissions();
   return (
     <>
-      {ifAllowed(
-        <Stack direction={'row'}>
-          <ButtonGhost
-            onClickButton={{ onClick: () => setEditUser() }}
-            textButton={'Add'}
-            size={2}
-            isLeftIcon={true}
-            iconName={'add'}
-          />
-        </Stack>,
-        ['manage_roles'],
-      )}
       {role.assignedTo.length ? (
         role.assignedTo.map((user_id) => (
           <UserCard members={members} user_id={user_id} key={user_id} />
@@ -58,12 +41,19 @@ export const RoleUserWidget = ({
 };
 
 const UserCard = ({ members, user_id }) => {
-  const user = members.find((member) => member.user_id === user_id);
+  const user = members.find(
+    (member) =>
+      member.user_id === user_id && member.user_id !== member.created_by,
+  );
   if (!user) return;
   return (
     <Stack key={user_id}>
       <UserWithRole
-        textName={`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+        textName={
+          <Link href={`/user/profile/${user.user_id}`}>
+            {`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+          </Link>
+        }
         textRole={user.position}
         slotBadge={
           <GlobalBadge

@@ -1,0 +1,8 @@
+/* Add this CSS to your stylesheet or in a style tag */
+.info-content {
+  display: none;
+}
+
+.drawer-warning:hover .info-content {
+  display: block;
+}

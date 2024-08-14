@@ -34,10 +34,6 @@ import {
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  ApiBodyParamsSessionCache,
-  ApiResponseSessionCache,
-} from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -53,11 +49,9 @@ import {
 } from '../SchedulingDrawer/store';
 import {
   setSelectedSessionIds,
-  setSelectedTasks,
-  useSchedulingApplicationStore,
+  useSchedulingApplicationStore
 } from '../store';
 import { ApiResponseFindAvailability } from '../types';
-import { getTaskDetails } from '../utils';
 import EmailPreview from './Components/EmailPriview';
 import {
   createTask,
@@ -83,7 +77,6 @@ function RequestAvailability() {
     requestSessionIds,
     initialSessions,
     selectedApplication,
-    selectedSchedule,
   } = useSchedulingApplicationStore();
   const { scheduleFlow, updateRequestAvailibityId, selectedTaskId } =
     useSchedulingFlowStore();
@@ -174,45 +167,6 @@ function RequestAvailability() {
 
     try {
       let localSessions = selectedSessions;
-
-      if (!selectedSchedule) {
-        const bodyParams: ApiBodyParamsSessionCache = {
-          allSessions: initialSessions,
-          application_id: selectedApplication.id,
-          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-          recruiter_id: recruiter.id,
-          rec_user_id: recruiterUser.user_id,
-          session_ids: [],
-        };
-
-        const resClone = await axios.post(
-          '/api/scheduling/application/candidatesessioncache',
-          bodyParams,
-        );
-        if (resClone.status === 200) {
-          const resData = resClone.data as ApiResponseSessionCache;
-
-          localSessions = selectedSessions.map((ses) => {
-            const newSession = resData.refSessions.find(
-              (ele) => ele.interview_session.id === ses.interview_session.id,
-            );
-
-            return {
-              ...ses,
-              interview_meeting: newSession.interview_meeting,
-              interview_session: {
-                ...newSession.interview_session,
-                id: newSession.newId,
-              },
-            };
-          });
-
-          const data = await getTaskDetails(selectedApplication.id);
-          setSelectedTasks(data);
-        } else {
-          throw new Error();
-        }
-      }
 
       if (scheduleFlow === 'update_request_availibility') {
         const result = await updateCandidateRequestAvailability({
@@ -308,9 +262,7 @@ function RequestAvailability() {
           await axios.post(
             `/api/emails/sendAvailabilityRequest_email_applicant`,
             {
-              meta: {
-                ...payload,
-              },
+              ...payload,
             },
           );
         } catch (error) {

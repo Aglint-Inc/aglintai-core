@@ -45,7 +45,7 @@ const useJobContext = () => {
   const job = useMemo(
     () =>
       jobLoad
-        ? (jobs.data ?? []).find((job) => job.id === job_id) ?? null
+        ? ((jobs.data ?? []).find((job) => job.id === job_id) ?? null)
         : undefined,
     [jobs.data, job_id, jobs.status, jobLoad],
   );
@@ -82,8 +82,7 @@ const useJobContext = () => {
         !job.scoring_criteria_loading &&
         !isEqual(
           {
-            company: job.draft.company,
-            department: job.draft.department,
+            department_id: job.draft.department_id,
             description: job.draft.description,
             job_title: job.draft.job_title,
             job_type: job.draft.job_type,
@@ -91,8 +90,7 @@ const useJobContext = () => {
             workplace_type: job.draft.workplace_type,
           } as Omit<Job['draft'], 'jd_json'>,
           {
-            company: job.company,
-            department: job.department,
+            department_id: job.department_id,
             description: job.description,
             job_title: job.job_title,
             job_type: job.job_type,
@@ -165,6 +163,8 @@ const useJobContext = () => {
         flags,
         // eslint-disable-next-line no-unused-vars
         application_match,
+        // eslint-disable-next-line no-unused-vars
+        department,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({
@@ -172,7 +172,6 @@ const useJobContext = () => {
         ...safeJob.draft,
         status: 'published',
       });
-      toast.success('Job published successfully');
       return true;
     } else {
       if (publishStatus.loading)

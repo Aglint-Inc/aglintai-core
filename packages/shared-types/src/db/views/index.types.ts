@@ -1,7 +1,8 @@
 import type { Database } from "../schema.types";
-import type { CustomizableTypes, Type } from "../utils.types";
+import type { CustomizableTypes, Custom } from "../utils.types";
 import { CustomAllInterviewers } from "./all_interviewer";
 import { CustomApplicationView } from "./application_view.types";
+import { CustomInterviewDataView } from "./interview_data_view";
 import { CustomInterviewTypesView } from "./interview_types_view";
 import { CustomJobView } from "./job_view.types";
 import { CustomMeetingInterviewersView } from "./meeting_interviewers.types";
@@ -16,22 +17,17 @@ export type ViewType<
   T extends keyof DatabaseViews,
   U extends DatabaseViewRow<T> extends CustomizableTypes<"Array">
     ? { [id in keyof Partial<DatabaseViewRow<T>[number]>]: any }
-    : DatabaseViewRow<T> extends CustomizableTypes<"Object">
-      ? { [id in keyof Partial<DatabaseViewRow<T>>]: any }
-      : never,
-> = Type<
+    : { [id in keyof Partial<DatabaseViewRow<T>>]: any },
+> = Custom<
   DatabaseViews[T],
-  //@ts-ignore
+  //@ts-expect-error
   {
-    Row: Type<
-      DatabaseViewRow<T>,
-      //@ts-ignore
-      Partial<U>
-    >;
+    //@ts-expect-error
+    Row: Custom<DatabaseViewRow<T>, U>;
   }
 >;
 
-export type Views = Type<
+export type Views = Custom<
   DatabaseViews,
   {
     workflow_view: CustomWorkflowView;
@@ -42,5 +38,6 @@ export type Views = Type<
     all_interviewers: CustomAllInterviewers;
     interview_types_view: CustomInterviewTypesView;
     module_relations_view: CustomModuleRelationView;
+    interview_data_view: CustomInterviewDataView;
   }
 >;

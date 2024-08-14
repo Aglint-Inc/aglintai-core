@@ -11,6 +11,7 @@ type SelectedEmailSlackTypes = Extract<
   | 'interviewEnd_slack_shadowTraineeForMeetingAttendence'
   | 'interviewer_attend_comfirmation'
   | 'interviewEnd_slack_organizerForMeetingStatus'
+  | 'onRequestCancel_slack_interviewersOrganizer'
 >;
 
 export const slackEndPoints: {
@@ -30,4 +31,6 @@ export const slackEndPoints: {
     'interviewEnd_slack_shadowTraineeForMeetingAttendence',
   interviewEnd_slack_organizerForMeetingStatus:
     'interviewEnd_slack_organizerForMeetingStatus',
+  onRequestCancel_slack_interviewersOrganizer:
+    'onRequestCancel_slack_interviewersOrganizer',
 };

@@ -550,8 +550,9 @@ function TaskCard({
                         task.applications?.public_jobs?.recruiter,
                       ]}
                       hideAgents={task.type !== 'schedule'}
-                      selectedAssignee={selectedAssignee}
-                      setSelectedAssignee={setSelectedAssignee}
+                      selectedAssignee={selectedAssignee as any}
+                      setSelectedAssignee={setSelectedAssignee as any}
+                      assignerList={[]}
                       onChange={(assigner: AssignerType) => {
                         // createProgress(assigner);
                         if (task.assignee[0] !== assigner.user_id) {

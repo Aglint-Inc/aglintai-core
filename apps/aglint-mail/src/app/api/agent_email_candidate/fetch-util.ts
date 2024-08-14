@@ -15,7 +15,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title,company),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,id))))',
+        'filter_json,interview_schedule(id,applications(public_jobs(job_title),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name,id))))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -37,9 +37,9 @@ export async function fetchUtil(
           recruiter_id,
           first_name,
           last_name,
-          recruiter: { logo },
+          recruiter: { name: companyName },
         },
-        public_jobs: { company, job_title },
+        public_jobs: { job_title },
       },
     },
   } = filterJson;
@@ -54,7 +54,7 @@ export async function fetchUtil(
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: first_name,
-      companyName: company,
+      companyName: companyName,
       jobRole: job_title,
       OrganizerTimeZone: recruiter_tz,
       organizerName: getFullName(recr.first_name, recr.last_name),
@@ -79,16 +79,8 @@ export async function fetchUtil(
     comp_email_temp,
   );
 
-  const react_email_placeholders: EmailTemplateAPi<'agent_email_candidate'>['react_email_placeholders'] =
-    {
-      companyLogo: logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
-    };
-
   return {
     filled_comp_template,
-    react_email_placeholders,
     recipient_email: cand_email,
   };
 }

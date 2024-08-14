@@ -4,6 +4,7 @@ import {
   EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -84,6 +85,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'interview_schedule',
       );
     }
+    if (filter_id) {
+      const payloadDebriefAddUsers: ApiDebriefAddUsers = {
+        filter_id,
+      };
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
+        payloadDebriefAddUsers,
+      );
+      supabaseWrap(
+        await supabaseAdmin
+          .from('interview_filter_json')
+          .update({
+            confirmed_on: dayjsLocal().toISOString(),
+          })
+          .eq('id', filter_id),
+      );
+    }
 
     if (!is_debreif) {
       const payload: EmailTemplateAPi<'confirmInterview_email_applicant'>['api_payload'] =
@@ -96,18 +114,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         };
       await axios.post(
         `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/confirmInterview_email_applicant`,
-        { meta: payload },
+        { ...payload },
       );
-
-      if (filter_id) {
-        const payloadDebriefAddUsers: ApiDebriefAddUsers = {
-          filter_id,
-        };
-        axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
-          payloadDebriefAddUsers,
-        );
-      }
     }
 
     return res.status(200).send('ok');

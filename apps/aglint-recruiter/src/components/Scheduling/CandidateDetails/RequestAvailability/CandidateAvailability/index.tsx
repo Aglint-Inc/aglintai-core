@@ -3,7 +3,6 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -17,6 +16,7 @@ import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import Footer from '@/src/components/Common/Footer';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
@@ -32,7 +32,7 @@ import DateSlotsPoPup from './DateSlotsPopUp';
 import DaySessionCard from './DaySessionCard';
 
 function CandidateAvailability() {
-  const router = useRouter();
+  const router = useRouterPro();
   const {
     multiDaySessions,
     candidateRequestAvailability,
@@ -67,6 +67,7 @@ function CandidateAvailability() {
         session_ids,
       },
     );
+
     const { rounds } = meetings.reduce(
       (acc, curr) => {
         const count = acc.rounds.length;
@@ -113,11 +114,11 @@ function CandidateAvailability() {
     const { data: requestData } = await axios.post(
       `/api/scheduling/request_availability/updateRequestAvailability`,
       {
-        id: String(router.query?.request_id),
+        id: String(router.params?.request_id),
         data: { slots: daySlots, user_timezone: userTzDayjs.tz.guess() },
       },
     );
- 
+
     if (task.id) {
       await insertTaskProgress({
         taskData: {
@@ -188,7 +189,7 @@ function CandidateAvailability() {
           const { data: requestData } = await axios.post(
             `/api/scheduling/request_availability/updateRequestAvailability`,
             {
-              id: String(router.query?.request_id),
+              id: String(router.params?.request_id),
               data: { visited: true },
             },
           );
@@ -259,6 +260,7 @@ function CandidateAvailability() {
   ) {
     return (
       <ConfirmedInvitePage
+        avail_request_id={candidateRequestAvailability.id}
         candidate={candidateRequestAvailability.applications.candidates}
         filter_json={null}
         meetings={meetingsAndRounds.meetings}
@@ -266,8 +268,8 @@ function CandidateAvailability() {
         schedule={meetingsAndRounds.schedule}
         recruiter={{
           id: candidateRequestAvailability.recruiter_id,
-          name: candidateRequestAvailability.applications.public_jobs.company,
-          logo: candidateRequestAvailability.applications.public_jobs.logo,
+          name: '', // typescript is not correct fix it
+          logo: '', //it was connected to job logo which is wrong it should connect to recruiter
         }}
         timezone={initialTimezone}
       />
@@ -347,15 +349,13 @@ function CandidateAvailability() {
             },
           }}
           slotCompanyIcon={
-            candidateRequestAvailability?.applications.public_jobs.logo && (
+            candidateRequestAvailability?.recruiter.logo && (
               <MuiAvatar
                 variant='square-large'
                 height='100px'
                 width='100px'
                 level=''
-                src={
-                  candidateRequestAvailability?.applications.public_jobs.logo
-                }
+                src={candidateRequestAvailability?.recruiter.logo}
               />
             )
           }

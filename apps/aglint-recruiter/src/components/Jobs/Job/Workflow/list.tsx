@@ -85,6 +85,7 @@ const JobWorkflows = () => {
         <WorkflowCard
           key={workflow.id}
           showButtons={true}
+          isCheckboxVisible={false}
           onClickDelete={{
             onClick: () =>
               mutate({
@@ -185,7 +186,7 @@ const WorkflowBrowser = () => {
         <WorkflowCard
           key={id}
           isCheckboxVisible={true}
-          isChecked={checked}
+          // isChecked={checked}
           slotCheckbox={
             <RcCheckbox
               isChecked={checked}

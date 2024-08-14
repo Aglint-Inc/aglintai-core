@@ -1,8 +1,4 @@
-import {
-  DAYJS_FORMATS,
-  fillCompEmailTemplate,
-  getFullName,
-} from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
@@ -12,7 +8,6 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../../utils/email/common/functions';
-import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
   req_body: EmailTemplateAPi<'meetingDeclined_email_organizer'>['api_payload'],
@@ -21,7 +16,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo)),public_jobs(job_title,company,recruiter,recruiter_id)',
+        'candidates(first_name,last_name,recruiter_id,timezone,recruiter(logo,name)),public_jobs(job_title,recruiter_id)',
       )
       .eq('id', req_body.application_id),
   );
@@ -68,11 +63,6 @@ export async function fetchUtil(
       meetingIcon: scheduleTypeIcon(schedule_type),
     };
 
-  const comp_email_temp = await fetchCompEmailTemp(
-    public_jobs.recruiter_id,
-    'meetingDeclined_email_organizer',
-  );
-
   const comp_email_placeholder: EmailTemplateAPi<'meetingDeclined_email_organizer'>['comp_email_placeholders'] =
     {
       organizerName: getFullName(organizer.first_name, organizer.last_name),
@@ -80,7 +70,7 @@ export async function fetchUtil(
       organizerLastName: organizer.last_name,
       OrganizerTimeZone: int_tz,
       jobRole: public_jobs.job_title,
-      companyName: public_jobs.company,
+      companyName: candidate.recruiter.name,
       candidateName: getFullName(candidate.first_name, candidate.last_name),
       candidateFirstName: candidate.first_name,
       candidateLastName: candidate.last_name,
@@ -93,21 +83,15 @@ export async function fetchUtil(
       meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details" target="_blank">here</a>`,
     };
 
-  const filled_comp_template = fillCompEmailTemplate(
-    comp_email_placeholder,
-    comp_email_temp,
-  );
-
   const react_email_placeholders: EmailTemplateAPi<'meetingDeclined_email_organizer'>['react_email_placeholders'] =
     {
       companyLogo: candidate.recruiter.logo,
-      emailBody: filled_comp_template.body,
-      subject: filled_comp_template.subject,
       meetingDetail: meeting_detail,
     };
 
   return {
-    filled_comp_template,
+    company_id: candidateJob.candidates.recruiter_id,
+    comp_email_placeholder,
     react_email_placeholders,
     recipient_email: organizer.email,
   };

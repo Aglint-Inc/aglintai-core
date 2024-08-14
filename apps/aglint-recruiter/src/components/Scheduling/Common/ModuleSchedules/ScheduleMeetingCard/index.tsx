@@ -28,7 +28,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  let interviewers = meetingDetails.meeting_interviewers || [];
+  let interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
 
   return (
     <>
@@ -86,6 +86,7 @@ function ScheduleMeetingCard({
                           userDetails={{
                             first_name: user.first_name,
                             last_name: user.last_name,
+                            user_id: user.user_id,
                             position: user.position,
                             profile_image: user.profile_image,
                           }}

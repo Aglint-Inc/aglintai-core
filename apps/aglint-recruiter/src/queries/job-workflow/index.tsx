@@ -32,7 +32,11 @@ const getJobWorkflow = async ({ id }: JobRequisite) => {
     .select('workflow(*)')
     .eq('job_id', id);
   if (error) throw new Error(error.message);
-  return (data ?? []).map(({ workflow }) => workflow);
+  return (data ?? [])
+    .map(({ workflow }) => workflow)
+    .toSorted((a, b) =>
+      a?.title > b?.title ? 1 : b?.title > a?.title ? -1 : 0,
+    );
 };
 
 export const useJobWorkflowUpdateMutations = (args: JobRequisite) => {

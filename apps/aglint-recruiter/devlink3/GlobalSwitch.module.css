@@ -1,0 +1,11 @@
+.task-switch-button-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.task_switch_comp {
+  display: flex;
+  border-radius: var(--radius-2);
+  background-color: var(--neutral-3);
+}

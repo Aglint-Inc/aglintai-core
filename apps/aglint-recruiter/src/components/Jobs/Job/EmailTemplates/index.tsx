@@ -127,7 +127,9 @@ const JobEmailTemplates = ({ setSaving }) => {
 
   return (
     <EmailTemplatesStart
+    isSearchFilterVisible={false}
       showTabs={false}
+      // isSearchFilterVisible={false}// build is failing
       isWarningVisible={true}
       slotEmailTemplateCards={
         <>

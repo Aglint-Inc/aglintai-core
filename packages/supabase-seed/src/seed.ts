@@ -9,6 +9,7 @@ const main = async () => {
   await supabaseAdmin.auth.signOut();
   const tables_in_order: (keyof DatabaseTable)[] = [
     'recruiter',
+    'integrations',
     'roles',
     'permissions',
     'recruiter_user',
@@ -22,6 +23,7 @@ const main = async () => {
     'interview_module',
     'interview_module_relation',
     'interview_plan',
+    'interview_schedule',
     'interview_meeting',
     'interview_session',
     'interview_session_relation',

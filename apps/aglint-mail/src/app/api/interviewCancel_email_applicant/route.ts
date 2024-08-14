@@ -8,17 +8,21 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(
-      interviewCancelEmailApplicantSchema,
-      req_body.meta,
-    );
-    const { filled_comp_template, react_email_placeholders, recipient_email } =
-      await fetchUtil(parsed_body);
-
-    await sendMailFun({
-      filled_comp_template,
+    const parsed_body = v.parse(interviewCancelEmailApplicantSchema, req_body);
+    const {
+      comp_email_placeholder,
+      company_id,
       react_email_placeholders,
       recipient_email,
+    } = await fetchUtil(parsed_body);
+
+    await sendMailFun({
+      comp_email_placeholder,
+      company_id,
+      react_email_placeholders,
+      recipient_email,
+      api_target: 'interviewCancel_email_applicant',
+      payload: req_body.payload,
     });
     return NextResponse.json('success', {
       status: 200,
@@ -35,12 +39,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-// {
-//   "meta": {
-//       "application_id": "e8218fdc-524c-4f05-8786-23399370777b",
-//       "session_ids": [
-//           "edab9d72-53f1-4a34-91e2-934f50bcea0e"
-//       ]
-//   }
-// }

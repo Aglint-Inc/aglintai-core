@@ -3,7 +3,9 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -55,7 +57,7 @@ function SchedulingViewComp() {
             : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
-          name: `${data.schedule_data.schedule.schedule_name}`.trim(),
+          name: `${data.schedule_data.schedule.schedule_name || 'Schedule'}`.trim(),
         },
       ]);
     }
@@ -114,19 +116,39 @@ function SchedulingViewComp() {
   return (
     <>
       <PageLayout
-        slotTopbarLeft={<>{breadcrum}</>}
+        slotTopbarLeft={
+          isLoading ? (
+            <Stack width={'150px'} height={'20px'}>
+              <Skeleton />
+            </Stack>
+          ) : (
+            <>{breadcrum}</>
+          )
+        }
         slotBody={
           <Stack height={'calc(100vh - 48px)'} overflow={'hidden'}>
             {!isLoading ? (
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack height={'100vh'} overflow={'auto'} width={'100%'}>
-                  <DetailsOverview
-                    data={data}
-                    refetch={refetch}
-                    isCancelOpen={isCancelOpen}
-                    setIsCancelOpen={setIsCancelOpen}
-                    viewScheduleTabs={viewScheduleTabs}
-                  />
+                  {data?.schedule_data ? (
+                    <DetailsOverview
+                      data={data}
+                      refetch={refetch}
+                      isCancelOpen={isCancelOpen}
+                      setIsCancelOpen={setIsCancelOpen}
+                      viewScheduleTabs={viewScheduleTabs}
+                    />
+                  ) : (
+                    <Stack padding={2}>
+                      <GlobalBanner
+                        textTitle={'Meeting Not Found'}
+                        iconName={'schedule'}
+                        isDescriptionVisible={false}
+                        isAdditionalNotes={false}
+                        slotButtons={<></>}
+                      />
+                    </Stack>
+                  )}
                 </Stack>
 
                 <Stack

@@ -1,13 +1,13 @@
 import { CustomJobParamters } from "../common.types";
 import { Database } from "../schema.types";
-import { Type } from "../utils.types";
+import { Custom } from "../utils.types";
 import type { ViewType } from "./index.types";
 
 export type CustomJobView = ViewType<"job_view", CustomJobViewAllParamters>;
 
 type CustomJobViewAllParamters = CustomJobParamters & CustomJobViewParameters;
 
-type CustomJobViewParameters = Type<
+type CustomJobViewParameters = Custom<
   Pick<
     Database["public"]["Views"]["job_view"]["Row"],
     "section_count" | "processing_count" | "flags"

@@ -1,18 +1,15 @@
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
-import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
   fetchApplicationDetails,
-  fetchSessionDetailsFromInterviewPlan,
   fetchSessionDetailsFromSchedule,
 } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
-import { getScheduleName } from '@/src/components/Scheduling/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type ApiCandidateDetails = {
   request: {
@@ -29,24 +26,6 @@ export type ApiCandidateDetails = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createServerClient<DB>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies[String(name)];
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, value, options));
-          },
-          remove(name: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, '', options));
-          },
-        },
-      },
-    );
-
     const requestHandler = apiRequestHandlerFactory<ApiCandidateDetails>(
       req,
       res,
@@ -63,10 +42,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         let scheduleName = '';
         let sessions: SchedulingApplication['initialSessions'] = [];
 
-        const resApplicationDetails = await fetchApplicationDetails({
-          application_id,
-          supabaseCaller: supabase,
-        });
+        const [resApplicationDetails, sessionsWithPlan] = await Promise.all([
+          fetchApplicationDetails({
+            application_id,
+            supabaseCaller: supabaseAdmin,
+          }),
+          fetchSessionDetailsFromSchedule({
+            application_id,
+            supabaseCaller: supabaseAdmin,
+          }),
+        ]);
 
         if (resApplicationDetails) {
           applicationDetail = resApplicationDetails;
@@ -83,40 +68,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const recruiter = resApplicationDetails?.public_jobs?.recruiter;
 
-        if (!resApplicationDetails.interview_schedule?.id) {
-          const resSessionDetails = await fetchSessionDetailsFromInterviewPlan({
-            job_id: resApplicationDetails.public_jobs.id,
-            supabaseCaller: supabase,
-          });
-
-          scheduleName = getScheduleName({
-            job_title: resApplicationDetails?.public_jobs?.job_title,
-            first_name: resApplicationDetails?.candidates?.first_name,
-            last_name: resApplicationDetails?.candidates?.last_name,
-          });
-
-          if (resSessionDetails?.length > 0) {
-            sessions = resSessionDetails.sort(
-              (itemA, itemB) =>
-                itemA.interview_session['session_order'] -
-                itemB.interview_session['session_order'],
-            );
-          }
-        } else {
-          await fetchSessionDetailsFromSchedule({
-            application_id,
-            supabaseCaller: supabase,
-          }).then((sessionsWithPlan) => {
-            if (sessionsWithPlan?.length > 0) {
-              sessions = sessionsWithPlan.sort(
-                (itemA, itemB) =>
-                  itemA.interview_session['session_order'] -
-                  itemB.interview_session['session_order'],
-              );
-            }
-          });
-          scheduleName = scheduleDetail?.schedule_name;
+        if (sessionsWithPlan?.length > 0) {
+          sessions = sessionsWithPlan.sort(
+            (itemA, itemB) =>
+              itemA.interview_session['session_order'] -
+              itemB.interview_session['session_order'],
+          );
         }
+
+        scheduleName = scheduleDetail?.schedule_name;
+
         sessions = sessions.map((session) => {
           let banners: BannerType[] = [];
           if (session.users.length === 0) {
@@ -136,9 +97,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               const pause_json = user.interview_module_relation?.pause_json;
               const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
               const isCalendarConnected =
-                (!!recruiter.service_json &&
-                  recruiter.google_workspace_domain.split('//')[1] ===
-                    user.user_details.email.split('@')[1]) ||
+                (!!recruiter.integrations.service_json &&
+                  recruiter.integrations.google_workspace_domain.split(
+                    '//',
+                  )[1] === user.user_details.email.split('@')[1]) ||
                 !!(user.user_details.schedule_auth as any)?.access_token;
               if (!isCalendarConnected) {
                 banners.push({

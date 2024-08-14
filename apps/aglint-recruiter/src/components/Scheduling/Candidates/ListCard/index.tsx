@@ -1,49 +1,24 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { AllInterviewCard } from '@/devlink2/AllInterviewCard';
 import { EmptyInterviewProgress } from '@/devlink2/EmptyInterviewProgress';
 import { ScheduleWithAgent } from '@/devlink2/ScheduleWithAgent';
-import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
-import { ApplicationList } from '../utils';
+import { ApplicationList } from '../queries/hooks';
 
 function ListCardInterviewSchedule({
   app,
   onClickCard,
-  slotBookmark = <></>,
-  slotCheckbox = <></>,
-  slotResumeScore = <></>,
-  isJobDasboard = false,
-  isSelected = false,
-  isChecked = false,
 }: {
-  app: ApplicationList;
-  // eslint-disable-next-line no-unused-vars
-  onClickCard: (app: ApplicationList) => void;
-  slotBookmark?: ReactNode;
-  slotResumeScore?: ReactNode;
-  isJobDasboard?: boolean;
-  slotCheckbox?: ReactNode;
-  isSelected?: boolean;
-  isChecked?: boolean;
+  app: ApplicationList[number];
+  onClickCard: (app: ApplicationList[number]) => void;
 }) {
-  const avatarStyles = isJobDasboard
-    ? {
-        width: '18px',
-        height: '18px',
-        fontSize: '12px',
-      }
-    : {
-        width: '100%',
-        height: '100%',
-        fontSize: '20px',
-      };
   const [isHover, setIsHovered] = useState(false);
 
   return (
@@ -57,48 +32,20 @@ function ListCardInterviewSchedule({
     >
       <AllInterviewCard
         onClickCard={{ onClick: () => onClickCard(app) }}
-        isDragVisible={isChecked}
+        isDragVisible={false}
         slotScheduleWithAgent={<ScheduleWithAgent />}
-        textCurrentRole={
-          (app.file?.resume_json as unknown as ResumeJson)?.basics
-            ?.currentJobTitle || <></>
-        }
-        isSelected={isSelected}
-        propsGrid={{
-          style: {
-            gridTemplateColumns: isJobDasboard && '60px 300px 250px 1fr',
-          },
-        }}
-        slotBookmark={slotBookmark}
-        isSchedulerTable={!isJobDasboard}
-        isCheckBoxVisible={isJobDasboard}
-        slotCheckbox={slotCheckbox}
+        textCurrentRole={app.candidates.current_job_title || '--'}
+        isSelected={false}
+        slotBookmark={<></>}
+        isSchedulerTable={true}
+        isCheckBoxVisible={false}
+        slotCheckbox={<></>}
         textName={getFullName(
           app.candidates.first_name,
           app.candidates.last_name,
         )}
-        slotCandidateImage={
-          <Stack
-            width={'100%'}
-            height={'100%'}
-            alignItems={'center'}
-            justifyContent={'center'}
-          >
-            <MuiAvatar
-              level={getFullName(
-                app.candidates.first_name,
-                app.candidates.last_name,
-              )}
-              src={app.candidates.avatar}
-              variant={'circular'}
-              width={avatarStyles.width}
-              height={avatarStyles.height}
-              fontSize={avatarStyles.fontSize}
-            />
-          </Stack>
-        }
-        isResumeScoreVisible={isJobDasboard}
-        slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
+        isResumeScoreVisible={false}
+        slotResumeScore={<></>}
         textInterviewPanel={'0'}
         slotInterviewProgress={
           <>
@@ -115,7 +62,7 @@ const SessionProgressPipeline = ({
   app,
   isHover,
 }: {
-  app: ApplicationList;
+  app: ApplicationList[0];
   isHover: boolean;
 }) => {
   const router = useRouter();
@@ -155,21 +102,7 @@ const SessionProgressPipeline = ({
     <ScheduleProgress sessions={sessions} />
   ) : (
     <Stack display={'flex'} flexDirection={'row'} gap={'4px'}>
-      <EmptyInterviewProgress />
-      {isHover && (
-        <ButtonGhost
-          iconName='add'
-          textButton='Create'
-          size={1}
-          isLeftIcon={true}
-          onClickButton={{
-            onClick: (e) => {
-              e.stopPropagation();
-              router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
-            },
-          }}
-        />
-      )}
+      Intview plan not found
     </Stack>
   );
 };

@@ -48,7 +48,7 @@ export function GeneralScheduleCard({
   isHeaderTitleVisible = true,
   isCardSelected = false,
   slotAddScheduleCard,
-  isAddCardVisible = false,
+  isAddCardVisible = true,
   onClickScheduleNow = {},
   isScheduleNowVisible = false,
   isSubHeaderVisible = true,

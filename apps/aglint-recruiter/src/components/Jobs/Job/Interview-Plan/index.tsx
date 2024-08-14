@@ -294,8 +294,8 @@ const InterviewPlan = ({
   if (sessionsCount === 0)
     return (
       <GlobalEmptyState
-        iconName={'group'}
-        styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
+        iconName={'process_chart'}
+        styleEmpty={{ style: { backgroundColor: 'var(--neutral-2)', height:'280px' } }}
         textDesc={'No interview plan found'}
       />
     );

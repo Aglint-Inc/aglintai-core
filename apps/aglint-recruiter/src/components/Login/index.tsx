@@ -7,12 +7,12 @@ import {
   Typography,
 } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -26,7 +26,7 @@ interface LoginFormInputs {
 }
 
 function Login() {
-  const router = useRouter();
+  const router = useRouterPro<{ redirect?: string }>();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -100,13 +100,13 @@ function Login() {
     pattern: {
       value:
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      message:
-        'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
+      message: 'Invalid login credentials',
+      // 'Password must contain at least 8 characters, including UPPER/lowercase, one number and special characters',
     },
   });
 
   const oauthHandler = async (provider) => {
-    const redirectURL = router?.query?.redirect as string;
+    const redirectURL = router?.queryParams?.redirect as string;
     if (redirectURL) {
       localStorage.setItem('redirectURL', redirectURL);
     }

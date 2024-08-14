@@ -1,4 +1,6 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { Skeleton } from '@/devlink2/Skeleton';
@@ -48,24 +50,41 @@ type InterviewLeaderboardProps = {
 const LeaderBoardWidgetComponent = ({
   interviewLeaderboard,
 }: InterviewLeaderboardProps) => {
+  const router = useRouter();
   return (
     <>
       {interviewLeaderboard.map((item, index) => (
-        <LeaderBoardCard
+        <Stack
           key={item.user_id}
-          textCountNo={index + 1}
-          textName={capitalizeAll(getFullName(item.first_name, item.last_name))}
-          textRole={item.user_position}
-          slotImage={
-            <Avatar
-              src={item.profile_image}
-              alt={getFullName(item.first_name, item.last_name)}
-              variant='rounded-medium'
-            />
-          }
-          noInterview={item.interviews}
-          noHours={(item.duration / 60).toFixed(1)}
-        />
+          onClick={() => {
+            router.push(`scheduling/interviewer/${item.user_id}?tab=overview`);
+          }}
+          sx={{
+            borderRadius: '4px',
+          }}
+        >
+           <Link href={`/user/profile/${item.user_id}`}>
+           <LeaderBoardCard
+            textCountNo={index + 1}
+            textName={
+              <Link href={`/user/profile/${item.user_id}`}>
+                {capitalizeAll(getFullName(item.first_name, item.last_name))}
+              </Link>
+            }
+            textRole={item.user_position}
+            slotImage={
+              <Avatar
+                src={item.profile_image}
+                alt={getFullName(item.first_name, item.last_name)}
+                variant='rounded-medium'
+              />
+            }
+            noInterview={item.interviews}
+            noHours={(item.duration / 60).toFixed(1)}
+          />
+           </Link>
+         
+        </Stack>
       ))}
     </>
   );

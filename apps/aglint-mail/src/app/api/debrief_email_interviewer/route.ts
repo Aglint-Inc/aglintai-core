@@ -9,18 +9,22 @@ export async function POST(req: Request) {
   const req_body = await req.json();
 
   try {
-    const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body.meta);
+    const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body);
     const { interviewers_mail_data } = await fetchUtil(parsed_body);
 
     for (const {
+      company_id,
+      comp_email_placeholder,
       react_email_placeholders,
       recipient_email,
-      filled_comp_template,
     } of interviewers_mail_data) {
       await sendMailFun({
-        filled_comp_template,
+        comp_email_placeholder,
+        company_id,
         react_email_placeholders,
         recipient_email,
+        api_target: 'debrief_email_interviewer',
+        payload: req_body.payload,
       });
     }
 

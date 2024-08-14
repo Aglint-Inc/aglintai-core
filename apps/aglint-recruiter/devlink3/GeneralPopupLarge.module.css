@@ -34,6 +34,14 @@
   width: 100%;
 }
 
+.gpl-header-wrapp {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
 .popup_header {
   display: flex;
   justify-content: space-between;

@@ -7,7 +7,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
 import { useModuleRelations } from '../hooks';
@@ -18,7 +17,8 @@ import {
 
 function AddInterviewTypeDialog() {
   const router = useRouter();
-  const interviewer_id = router?.query?.member_id as string;
+  const interviewer_id = router?.query?.user_id as string;
+
   const { isAddInterviewTypeDialogOpen, addInterviewType } =
     useInterviewerDetailStore((state) => ({
       isAddInterviewTypeDialogOpen: state.isAddInterviewTypeDialogOpen,
@@ -31,30 +31,45 @@ function AddInterviewTypeDialog() {
     user_id: interviewer_id,
   });
 
-  const module_ids = [...new Set(data?.map((rel) => rel.module_id))] || [];
+  const module_ids =
+    [
+      ...new Set(
+        data?.filter((rel) => !rel.is_archived).map((rel) => rel.module_id),
+      ),
+    ] || [];
 
   const { data: allModules } = useAllInterviewModules();
 
   const filteredModules = allModules?.filter(
-    (module) => !module_ids.includes(module.id),
+    (module) => !module_ids.includes(module.id) && !module.is_archived,
   );
 
   async function addModule() {
-    if (selectedModule?.id) {
+    const modRel = data.find((rel) => rel.module_id === selectedModule.id);
+
+    if (!modRel) {
       await supabase
         .from('interview_module_relation')
         .insert({
           user_id: interviewer_id,
           module_id: selectedModule.id,
           training_status: addInterviewType,
+          is_archived: false,
         })
         .select();
-      setSelectedModule(null);
-      close();
-      refetch();
     } else {
-      toast.warning('Please pick interview type.');
+      await supabase
+        .from('interview_module_relation')
+        .update({
+          is_archived: false,
+          training_status: addInterviewType,
+        })
+        .eq('user_id', interviewer_id)
+        .eq('module_id', selectedModule.id);
     }
+    setSelectedModule(null);
+    close();
+    refetch();
   }
 
   const close = () => {
@@ -131,6 +146,7 @@ function AddInterviewTypeDialog() {
               <ButtonSolid
                 size={2}
                 textButton={'Add'}
+                isDisabled={!selectedModule?.id}
                 onClickButton={{ onClick: addModule }}
               />
             </>

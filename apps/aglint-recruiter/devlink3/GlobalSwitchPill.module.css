@@ -1,0 +1,38 @@
+.taskwitch_individual {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.taskwitch_individual:hover {
+  color: var(--accent-11);
+}
+
+.text_wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.active_wrap {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  margin: var(--space-1);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  background-color: var(--white);
+}

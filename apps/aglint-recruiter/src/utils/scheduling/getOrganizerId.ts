@@ -1,4 +1,4 @@
-import { SupabaseType } from "@aglint/shared-types";
+import { SupabaseType } from '@aglint/shared-types';
 
 export const getOrganizerId = async (
   application_id: string,
@@ -16,9 +16,8 @@ export const getOrganizerId = async (
 
   let organizer_id =
     app.public_jobs.recruiting_coordinator ||
-    app.public_jobs.interview_coordinator ||
-    app.public_jobs.hiring_manager ||
-    app.public_jobs.recruiter;
+    app.public_jobs.recruiter ||
+    app.public_jobs.hiring_manager;
 
   if (!organizer_id) {
     const { data: recRel, error: errRecRel } = await supabase

@@ -1,6 +1,5 @@
 import { Avatar, Stack } from '@mui/material';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { CompanyListing } from '@/devlink/CompanyListing';
@@ -8,6 +7,7 @@ import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { CompanyPostAPI } from '@/src/pages/api/jobpost/company';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -18,7 +18,7 @@ import Icon from '../Common/Icons/Icon';
 type CompanyJobPostType = CompanyPostAPI;
 
 const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
-  const router = useRouter();
+  const router = useRouterPro();
 
   const filteredJobs = jobs.filter((job: any) => job.status === 'published');
   return (
@@ -49,7 +49,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
         textCompanyType={recruiter.industry || '--'}
         textEmployeeCount={recruiter.employee_size || '--'}
         // isHeaderDescriptionVisible={Boolean(recruiter.company_values)}
-        textHeaderDiscription={recruiter.company_values}
+        textHeaderDiscription={''}
         textOpenJobCount={filteredJobs.length}
         slotOpenJobListing={
           <>
@@ -61,7 +61,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 <OpenJobListingCard
                   key={ind}
                   textJobRole={job.job_title || '--'}
-                  textCompanyType={job.department || '--'}
+                  textCompanyType={job.departments?.name || '--'}
                   textLocation={job.location || '--'}
                   textWorkingType={job.job_type || '--'}
                   onClickApplyNow={{

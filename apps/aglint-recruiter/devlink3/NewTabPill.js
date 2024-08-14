@@ -27,28 +27,8 @@ export function NewTabPill({
         className={_utils.cx(_styles, "tab_pill_default")}
         tag="div"
       >
-        {isStartIconVisible ? (
-          <_Builtin.Block tag="div">{slotStartIcon}</_Builtin.Block>
-        ) : null}
-        <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
-        {isEndIconVisible ? (
-          <_Builtin.Block tag="div">{slotEndIcon}</_Builtin.Block>
-        ) : null}
-        {isTabCountVisible ? (
-          <_Builtin.Block className={_utils.cx(_styles, "tab-count")} tag="div">
-            <Text
-              content={tabCount}
-              weight="regular"
-              color="inherit"
-              size="1"
-              align="center"
-            />
-          </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
-      {isPillActive ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "tab_pill_active")}
+          className={_utils.cx(_styles, "ntp-inner-wrap")}
           tag="div"
         >
           {isStartIconVisible ? (
@@ -60,7 +40,7 @@ export function NewTabPill({
           ) : null}
           {isTabCountVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "tab-count", "active")}
+              className={_utils.cx(_styles, "tab-count")}
               tag="div"
             >
               <Text
@@ -72,6 +52,39 @@ export function NewTabPill({
               />
             </_Builtin.Block>
           ) : null}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      {isPillActive ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "tab_pill_active")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ntp-inner-wrap")}
+            tag="div"
+          >
+            {isStartIconVisible ? (
+              <_Builtin.Block tag="div">{slotStartIcon}</_Builtin.Block>
+            ) : null}
+            <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
+            {isEndIconVisible ? (
+              <_Builtin.Block tag="div">{slotEndIcon}</_Builtin.Block>
+            ) : null}
+            {isTabCountVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "tab-count", "active")}
+                tag="div"
+              >
+                <Text
+                  content={tabCount}
+                  weight="regular"
+                  color="inherit"
+                  size="1"
+                  align="center"
+                />
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "active_pill_underline")}
             tag="div"
