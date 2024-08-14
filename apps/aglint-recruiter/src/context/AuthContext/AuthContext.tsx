@@ -89,6 +89,7 @@ export interface ContextValue {
   isAssessmentEnabled: boolean;
   isScreeningEnabled: boolean;
   isSchedulingEnabled: boolean;
+  isScoringEnabled: boolean;
   emailTemplates: UseQueryResult<
     {
       created_at: string;
@@ -127,6 +128,7 @@ const defaultProvider: ContextValue = {
   handleDepartmentsUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
   allowAction: (func, role) => func,
+  isScoringEnabled: false,
   isAssessmentEnabled: false,
   isScreeningEnabled: false,
   isSchedulingEnabled: false,
@@ -326,6 +328,7 @@ const AuthProvider = ({ children }) => {
   const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+  const isScoringEnabled = recruiter?.recruiter_preferences?.scoring ?? false;
 
   // role based access
   const isAllowed: ContextValue['isAllowed'] = (roles, flags) => {
@@ -414,6 +417,7 @@ const AuthProvider = ({ children }) => {
         isAssessmentEnabled,
         isScreeningEnabled,
         isSchedulingEnabled,
+        isScoringEnabled,
         emailTemplates,
       }}
     >
