@@ -295,7 +295,9 @@ const InterviewPlan = ({
     return (
       <GlobalEmptyState
         iconName={'process_chart'}
-        styleEmpty={{ style: { backgroundColor: 'var(--neutral-2)', height:'280px' } }}
+        styleEmpty={{
+          style: { backgroundColor: 'var(--neutral-2)', height: '280px' },
+        }}
         textDesc={'No interview plan found'}
       />
     );
@@ -513,7 +515,7 @@ const InterviewSession = ({
             onClickLink={{
               onClick: () =>
                 window.open(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/module/members/${session.interview_module.id}`,
+                  `/scheduling/interview-types/${session.interview_module.id}?tab=qualified`,
                   '_blank',
                 ),
             }}
