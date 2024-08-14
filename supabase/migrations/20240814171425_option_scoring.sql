@@ -1,3 +1,5 @@
+drop view if exists "public"."job_view";
+
 drop view if exists "public"."application_view";
 
 drop view if exists "public"."application_status_view";
@@ -7,6 +9,8 @@ alter type "public"."resume_processing_state" rename to "resume_processing_state
 create type "public"."resume_processing_state" as enum ('unavailable', 'fetching', 'processing', 'unparsable', 'processed', 'unscorable');
 
 drop type "public"."resume_processing_state__old_version_to_be_dropped";
+
+
 
 create or replace view "public"."application_status_view" as  WITH processing_state_cte AS (
          SELECT applications.id,
