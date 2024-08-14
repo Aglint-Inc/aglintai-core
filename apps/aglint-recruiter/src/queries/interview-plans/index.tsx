@@ -275,7 +275,7 @@ export const createInterviewPlan = async (
 ) => {
   const { data, error } = await supabase
     .from('interview_plan')
-    .insert({ name, job_id, order })
+    .insert({ name, job_id, plan_order: order })
     .select();
   if (error) throw new Error(error.message);
   return data[0];
@@ -287,7 +287,7 @@ export const updateInterviewPlan = async (
 ) => {
   const { data, error } = await supabase
     .from('interview_plan')
-    .update({ name, order })
+    .update({ name, plan_order: order })
     .eq('id', id)
     .select();
   if (error) throw new Error(error.message);

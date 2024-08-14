@@ -4,7 +4,7 @@ drop index if exists "public"."interview_plan_job_id_key";
 
 alter table "public"."interview_plan" add column "name" text not null default ''::text;
 
-alter table "public"."interview_plan" add column "plan_order" numeric not null default '0'::numeric;
+alter table "public"."interview_plan" add column "plan_order" numeric not null default '1'::numeric;
 
 ALTER TABLE "public"."office_locations"
   ADD COLUMN "name" text NOT NULL DEFAULT '';
