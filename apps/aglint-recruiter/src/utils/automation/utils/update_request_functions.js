@@ -1,11 +1,12 @@
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 //getting requests
-export async function fetchTodoRequests(count = 15) {
+export async function fetchTodoRequests(count = 15, type = 'to_do') {
   const { data: requests, error } = await supabaseAdmin
     .from('request')
     .select('id, application_id')
     .eq('status', 'to_do')
+    .eq('type', type)
     .limit(count);
 
   if (error) {
