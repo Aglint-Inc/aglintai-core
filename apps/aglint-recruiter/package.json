@@ -62,7 +62,7 @@
     "@vercel/edge": "^1.1.1",
     "@vercel/edge-config": "^1.1.0",
     "@webflow/webflow-cli": "^1.6.9",
-    "axios": "^1.6.8",
+    "axios": "^1.7.4",
     "chart.js": "^4.4.1",
     "date-fns": "^3.6.0",
     "dayjs-plugin-utc": "^0.1.2",
