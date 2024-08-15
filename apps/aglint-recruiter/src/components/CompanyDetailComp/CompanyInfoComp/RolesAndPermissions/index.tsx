@@ -32,6 +32,7 @@ import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/c
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
+import { useAllMembers } from '@/src/queries/members';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -100,7 +101,7 @@ const RoleTable = ({
   // eslint-disable-next-line no-unused-vars
   setRole: (role_id: string, addMode?: boolean) => void;
 }) => {
-  const { allMember: members } = useAuthDetails();
+  const { members } = useAllMembers();
   return loading
     ? [
         <RolesRowSkeleton key={'x'} slotSkeleton={<Skeleton />} />,
@@ -376,8 +377,7 @@ function RoleDetails({
   const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
-  const { allMember: members, handleMemberUpdate } = useAuthDetails();
-  const { refetch } = useRoleAndPermissions();
+  const { members } = useAllMembers();
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;
@@ -497,13 +497,6 @@ function RoleDetails({
         <RoleEditMember
           close={() => setEditUser(false)}
           role={{ id: role.id, role: role.name }}
-          handleMemberUpdate={async (x) => {
-            const res = await handleMemberUpdate(x);
-            toast.success('Role updated successfully');
-            setEditUser(false);
-            refetch();
-            return res;
-          }}
         />
       )}
     </>

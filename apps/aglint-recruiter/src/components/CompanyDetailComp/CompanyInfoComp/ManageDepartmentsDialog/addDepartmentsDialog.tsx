@@ -7,6 +7,8 @@ import { DcPopup } from '@/devlink/DcPopup';
 import { RolesPill } from '@/devlink/RolesPill';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { manageDepartments } from '@/src/context/AuthContext/utils';
+import { useAllDepartments } from '@/src/queries/departments';
 import toast from '@/src/utils/toast';
 
 interface DepartmentsProps {
@@ -22,7 +24,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   handleClose,
   open,
 }) => {
-  const { recruiter, handleDepartmentsUpdate } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
   let initialDepartments = [];
 
@@ -60,7 +62,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
     }
   };
 
-  const currentDeps = recruiter.departments.map((dep) => dep.name);
+  const { data: departments, refetch } = useAllDepartments();
+  const currentDeps = departments.map((dep) => dep.name);
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xl'}>
@@ -92,7 +95,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               size={2}
               textButton='Add'
               onClickButton={{
-                onClick: () => {
+                onClick: async () => {
                   const exitingDep = currentDeps.filter((item) =>
                     departmentState.includes(item),
                   );
@@ -100,7 +103,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                     toast.error(`${exitingDep.join(', ')} are already exists`);
                     return;
                   }
-                  handleDepartmentsUpdate({
+                  await manageDepartments({
                     type: 'insert',
                     data: departmentState.map((item) => ({
                       recruiter_id: recruiter.id,
@@ -113,6 +116,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                         : String(err),
                     );
                   });
+                  refetch();
                   setTimeout(() => {
                     setDepartmentState([]);
                     setInputValue('');

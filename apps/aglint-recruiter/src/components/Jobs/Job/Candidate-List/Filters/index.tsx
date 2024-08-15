@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import type React from 'react';
 import { useMemo } from 'react';
 
 import FilterHeader from '@/src/components/Common/FilterHeader';
@@ -9,7 +8,7 @@ import {
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
@@ -32,7 +31,7 @@ const Filters = () => {
     setFilters,
   } = useApplications();
 
-  const { isScoringEnabled, isSchedulingEnabled } = useAuthDetails();
+  const { isScoringEnabled, isSchedulingEnabled } = useRolesAndPermissions();
 
   const badgesOptions = useMemo(
     () =>

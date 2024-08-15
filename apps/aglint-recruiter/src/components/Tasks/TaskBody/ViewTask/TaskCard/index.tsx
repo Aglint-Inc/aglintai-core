@@ -17,6 +17,7 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { useAllMembers } from '@/src/queries/members';
 import { supabase } from '@/src/utils/supabase/client';
 import {
   capitalizeAll,
@@ -42,7 +43,8 @@ function TaskCard({
   loadingTask: boolean;
 }) {
   const router = useRouter();
-  const { recruiterUser, members } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const { members } = useAllMembers();
   const { handelUpdateTask } = useTasksContext();
   const { assignerList, setIsImmediate } = useTaskStatesContext();
 

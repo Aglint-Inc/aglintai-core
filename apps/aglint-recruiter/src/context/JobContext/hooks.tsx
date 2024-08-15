@@ -16,6 +16,7 @@ import toast from '@/src/utils/toast';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
+import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 import {
   getDetailsValidity,
   getHiringTeamValidity,
@@ -31,7 +32,8 @@ const useJobContext = () => {
       'Invalid pathname, context must be wrapped to a page with [id]',
     );
 
-  const { recruiter_id, recruiter, isScoringEnabled } = useAuthDetails();
+  const { recruiter_id, recruiter } = useAuthDetails();
+  const { isScoringEnabled } = useRolesAndPermissions();
 
   const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 

@@ -40,7 +40,6 @@ export type CandidateListTypeDB = DatabaseTable["candidate_list"];
 export type JobApplcationDB = DatabaseTable["applications"];
 
 export type RecruiterDB = DatabaseTable["recruiter"];
-export type RecruiterRelationsType = DatabaseTable["recruiter_relation"];
 
 export type JobType = Omit<JobTypeDB, "active_status"> & {
   active_status: StatusJobs | null;

@@ -37,6 +37,7 @@ import {
 } from '@/src/components/Tasks/Components/TaskStatusTag/utils';
 import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { useAllMembers } from '@/src/queries/members';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -271,7 +272,8 @@ const reducer = (
 export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
   const { recruiter_id, recruiterUser } = useAuthDetails();
-  const { members, loading: isFetching } = useAuthDetails();
+  const { loading: isFetching } = useAuthDetails();
+  const { members } = useAllMembers();
   const { checkPermissions } = useRolesAndPermissions();
 
   const router = useRouter();

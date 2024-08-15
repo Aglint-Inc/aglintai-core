@@ -16,9 +16,9 @@ import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import dayjs from '@/src/utils/dayjs';
 import timeZones from '@/src/utils/timeZone';
 
-import { TimezoneObj, TimezoneSelector } from '..';
-import SelectTime from '../Components/SelectTime';
-import ToggleBtn from '../Components/ToggleBtn';
+import { TimezoneObj, TimezoneSelector } from '.';
+import SelectTime from './Components/SelectTime';
+import ToggleBtn from './Components/ToggleBtn';
 
 let schedulingSettingObj = {};
 

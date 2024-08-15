@@ -12,7 +12,7 @@ import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
 import TaskStatusTag from '@/src/components/Tasks/Components/TaskStatusTag';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllMembers } from '@/src/queries/members';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { EmptyState } from './Common/EmptyState';
@@ -123,7 +123,7 @@ const TaskIcon = ({ created_by }: { created_by: string }) => {
 };
 
 const useTaskMember = (id: string) => {
-  const { members } = useAuthDetails();
+  const { members } = useAllMembers();
   const member = members.find(({ user_id }) => user_id === id);
   return member ?? null;
 };
