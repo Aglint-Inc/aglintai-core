@@ -6821,6 +6821,7 @@ export type Database = {
         | "processing"
         | "unparsable"
         | "processed"
+        | "unscorable"
       sender_type: "aglint" | "you" | "system" | "user"
       session_accepted_status:
         | "waiting"
