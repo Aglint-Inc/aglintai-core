@@ -16,11 +16,12 @@ export async function fetchTodoRequests(count = 15) {
 }
 
 //updating requests
-export async function updateRequestStatus(requestId, status = 'in_progress') {
+export async function updateRequestStatus(requestIds, status = 'in_progress') {
+  console.log(requestIds);
   const { error } = await supabaseAdmin
     .from('request')
     .update({ status })
-    .eq('id', requestId);
+    .in('id', requestIds);
 
   if (error) {
     throw new Error('Error fetching requests (fetchTodoRequests): ', error);

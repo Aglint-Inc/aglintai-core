@@ -21,11 +21,7 @@ export async function POST(req) {
       );
     }
 
-    const promises = requests.map((request) => updateRequestStatus(request.id));
-
-    Promise.all(promises).catch((error) => {
-      throw new Error(error.message);
-    });
+    await updateRequestStatus(requests.map((request) => request.id));
 
     return NextResponse.json(
       {
