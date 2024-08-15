@@ -127,6 +127,7 @@ const Dashboard = () => {
     canPublish,
     manageJob,
   } = useJob();
+  const { isScoringEnabled } = useAuthDetails();
   const {
     schedules: { data: schedule },
   } = useJobDashboard();
@@ -195,7 +196,8 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-          isJobRoleVisible={false}
+            isJobStatsVisible={isScoringEnabled}
+            isJobRoleVisible={false}
             isBanner={banners.length !== 0}
             slotBanner={
               <Stack gap={1}>
