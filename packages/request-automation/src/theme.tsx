@@ -41,7 +41,7 @@ const theme = createTheme({
     },
     MuiTab: {
       defaultProps: {
-        size: "small",
+        // size: "small",
       },
     },
     // Add other components as needed
