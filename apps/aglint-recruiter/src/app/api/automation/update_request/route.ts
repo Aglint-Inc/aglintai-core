@@ -6,10 +6,10 @@ import {
 } from '@/src/utils/automation/utils/update_request_functions';
 
 export async function POST(req) {
-  const { count } = await req.json();
+  const { count, type } = await req.json();
   try {
     const requests: Awaited<ReturnType<typeof fetchTodoRequests>> =
-      await fetchTodoRequests(count);
+      await fetchTodoRequests(count, type);
 
     if (!requests.length) {
       return NextResponse.json(
