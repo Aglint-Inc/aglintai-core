@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 
 import Seo from '@/src/components/Common/Seo';
 import Tasks from '@/src/components/Tasks';
-import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import { TasksProvider } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function TasksPage() {
@@ -24,13 +23,9 @@ function TasksPage() {
         />
       )}
       <div>
-        {/* <TaskProvider> */}
-        <JobAssistantProvider>
-          <TasksProvider>
-            <Tasks />
-          </TasksProvider>
-        </JobAssistantProvider>
-        {/* </TaskProvider> */}
+        <TasksProvider>
+          <Tasks />
+        </TasksProvider>
       </div>
     </>
   );
