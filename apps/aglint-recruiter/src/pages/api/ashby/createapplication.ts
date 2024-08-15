@@ -41,12 +41,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     if (json) {
-      await supabase
-        .from('application_reference')
-        .update({ is_processed: true })
-        .eq('recruiter_id', recruiter_id)
-        .eq('ats_json->>id', json.id);
-
       let application = json;
       if (!application?.candidate?.primaryEmailAddress?.value) {
         console.log('no email in ashby application');

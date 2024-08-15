@@ -1,13 +1,7 @@
-import {
-  DatabaseTableInsert,
-  GreenhouseRefDbType,
-  GreenhouseType,
-} from '@aglint/shared-types';
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 
 import { JobInsert } from '@/src/queries/jobs/types';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
 import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
@@ -108,21 +102,3 @@ export function getLeverStatusColor(state: string): string {
         ? '#ED8F1C'
         : '#d93f4c';
 }
-
-export const createReference = async (
-  reference: GreenhouseType[],
-): Promise<GreenhouseRefDbType[] | undefined> => {
-  const { data, error } = await supabase
-    .from('greenhouse_reference')
-    .insert(reference)
-    .select();
-
-  if (error) {
-    toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
-    );
-    return undefined;
-  } else {
-    return data;
-  }
-};
