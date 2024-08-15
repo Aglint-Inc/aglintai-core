@@ -18,7 +18,6 @@ export async function fetchTodoRequests(count = 15, type = 'to_do') {
 
 //updating requests
 export async function updateRequestStatus(requestIds, status = 'in_progress') {
-  console.log(requestIds);
   const { error } = await supabaseAdmin
     .from('request')
     .update({ status })

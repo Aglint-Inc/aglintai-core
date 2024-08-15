@@ -32,15 +32,15 @@ export const getActiveSection = ({
 });
 
 const useJobActions = () => {
+  const { recruiter } = useAuthDetails();
+
   const {
-    recruiter,
+    checkPermissions,
+    devlinkProps: getDevlinkProps,
     isAssessmentEnabled,
     isSchedulingEnabled,
     isScreeningEnabled,
-  } = useAuthDetails();
-
-  const { checkPermissions, devlinkProps: getDevlinkProps } =
-    useRolesAndPermissions();
+  } = useRolesAndPermissions();
 
   const manageJob = useMemo(
     () => checkPermissions(['manage_job']),

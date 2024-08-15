@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 import { Application } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { getActiveSection } from '@/src/context/JobsContext/hooks';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const Drawer = () => {
   const {
@@ -18,7 +18,7 @@ const Drawer = () => {
     isSchedulingEnabled,
     isScoringEnabled,
     isScreeningEnabled,
-  } = useAuthDetails();
+  } = useRolesAndPermissions();
 
   const {
     job,

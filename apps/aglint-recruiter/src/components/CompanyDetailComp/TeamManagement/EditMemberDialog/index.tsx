@@ -44,14 +44,10 @@ const EditMember = ({
     first_name: string;
     last_name: string;
     linked_in: string;
-    location: ReturnType<
-      typeof useAuthDetails
-    >['recruiter']['office_locations'][number];
+    location_id: number;
     employment: employmentTypeEnum;
     position: string;
-    department: ReturnType<
-      typeof useAuthDetails
-    >['members'][number]['department'];
+    department_id: number;
     role: string;
     role_id: string;
     manager_id: string;
@@ -97,10 +93,10 @@ const EditMember = ({
         last_name: member.last_name,
         phone: member.phone,
         linked_in: member.linked_in,
-        location: member.office_locations,
+        location_id: member.office_location_id,
         employment: member.employment,
         profile_image: member.profile_image,
-        department: member.departments,
+        department_id: member.department_id,
         position: member.position,
         role: member?.recruiter_relation[0].roles.name,
         role_id: member?.recruiter_relation[0].roles.id,
@@ -119,7 +115,7 @@ const EditMember = ({
       temp.first_name = true;
       flag = true;
     }
-    if (!form.department) {
+    if (!form.department_id) {
       temp.department = true;
       flag = true;
     }
@@ -211,8 +207,8 @@ const EditMember = ({
         role_id: form.role_id,
         phone: form.phone,
         manager_id: form.manager_id,
-        department_id: form.department.id,
-        office_location_id: form.location.id,
+        department_id: form.department_id,
+        office_location_id: form.location_id,
         user_id: member.user_id,
       };
       await axios
@@ -383,11 +379,15 @@ const EditMember = ({
                 <Stack flexDirection={'row'} gap={2} width={'100%'}>
                   <Autocomplete
                     fullWidth
-                    value={form.location || null}
+                    value={
+                      officeLocations.find(
+                        (loc) => loc.id === form.location_id,
+                      ) || null
+                    }
                     onChange={(_, newValue) => {
                       setForm({
                         ...form,
-                        location: newValue,
+                        location_id: newValue.id,
                       });
                     }}
                     getOptionLabel={(item) =>
@@ -421,11 +421,15 @@ const EditMember = ({
                   />
                   <Autocomplete
                     fullWidth
-                    value={form.department}
+                    value={
+                      departments.find(
+                        (dep) => dep.id === form.department_id,
+                      ) || null
+                    }
                     onChange={(event: any, newValue) => {
                       setForm({
                         ...form,
-                        department: newValue,
+                        department_id: newValue.id,
                       });
                     }}
                     getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
@@ -582,10 +586,10 @@ const EditMember = ({
                           setForm({
                             first_name: null,
                             last_name: null,
-                            department: null,
+                            department_id: null,
                             employment: null,
                             linked_in: null,
-                            location: null,
+                            location_id: null,
                             position: null,
                             profile_image: null,
                             phone: null,
@@ -622,11 +626,11 @@ const EditMember = ({
                   setForm({
                     first_name: null,
                     last_name: null,
-                    department: null,
+                    department_id: null,
                     employment: null,
                     linked_in: null,
                     profile_image: null,
-                    location: null,
+                    location_id: null,
                     phone: null,
                     position: null,
                     role: null,

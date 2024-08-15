@@ -18,6 +18,7 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { updateMember } from '@/src/context/AuthContext/utils';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -35,8 +36,6 @@ import Tabs from '../Tabs';
 
 function BodyComp() {
   const router = useRouter();
-
-  const { handleMemberUpdate } = useAuthDetails();
 
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
@@ -332,11 +331,12 @@ function BodyComp() {
                     totalHoursToday={totalHoursToday}
                     totalInterviewsThisWeek={totalInterviewsThisWeek}
                     totalInterviewsToday={totalInterviewsToday}
-                    handleMemberUpdate={handleMemberUpdate}
                     updateSettings={(x) => {
-                      return handleMemberUpdate({
-                        user_id: interviewerDetails.user_id,
-                        data: { scheduling_settings: x },
+                      return updateMember({
+                        data: {
+                          user_id: interviewerDetails.user_id,
+                          scheduling_settings: x,
+                        },
                       });
                     }}
                   />

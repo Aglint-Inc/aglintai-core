@@ -1,5 +1,5 @@
 import { Avatar, Dialog, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -9,19 +9,17 @@ import { RolesPopover } from '@/devlink/RolesPopover';
 import { UserNameRoleCard } from '@/devlink/UserNameRoleCard';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { updateMember } from '@/src/context/AuthContext/utils';
+import { useAllMembers } from '@/src/queries/members';
 
 function RoleEditMember({
   role,
   close,
-  handleMemberUpdate,
 }: {
   role: { role: string; id: string };
   close: () => void;
-  // eslint-disable-next-line no-unused-vars
-  handleMemberUpdate: ReturnType<typeof useAuthDetails>['handleMemberUpdate'];
 }) {
-  const { members } = useAuthDetails();
+  const { members } = useAllMembers();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
     (typeof members)[number] | null
@@ -71,11 +69,14 @@ function RoleEditMember({
               onClickButton={{
                 onClick: async () => {
                   setIsLoading(true);
-                  await handleMemberUpdate({
-                    user_id: selectedMember.user_id,
-                    data: { role_id: role.id },
+                  await updateMember({
+                    data: {
+                      user_id: selectedMember.user_id,
+                      role_id: role.id,
+                    },
                   });
                   setIsLoading(false);
+                  close();
                 },
               }}
             />

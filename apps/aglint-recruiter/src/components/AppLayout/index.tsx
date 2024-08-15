@@ -18,7 +18,7 @@ import SideNavbar from './SideNavbar';
 export default function AppLayout({ children }) {
   const { checkPermissions } = useRolesAndPermissions();
   const { handleLogout } = useAuthDetails();
-  const { recruiter, recruiterUser, userDetails } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { windowSize } = useResizeWindow();
@@ -82,7 +82,7 @@ export default function AppLayout({ children }) {
                 onClick: () =>
                   router.push(
                     ROUTES['/user/profile/[user_id]']({
-                      user_id: userDetails?.user.id,
+                      user_id: recruiterUser?.user_id,
                     }) + '?profile=true',
                   ),
               }}

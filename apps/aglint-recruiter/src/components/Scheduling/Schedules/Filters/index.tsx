@@ -4,8 +4,8 @@ import { Stack } from '@mui/material';
 import { useState } from 'react';
 
 import FilterHeader from '@/src/components/Common/FilterHeader';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
+import { useAllMembers } from '@/src/queries/members';
 
 import { useScheduleStatesContext } from '../ScheduleStatesContext';
 
@@ -14,8 +14,7 @@ function Filters() {
 
   const [searchText, setSearchText] = useState<string>('');
 
-  const { members } = useAuthDetails();
-
+  const { members } = useAllMembers();
   const ScheduleTypes = [
     {
       id: 'google_meet' as DatabaseEnums['interview_schedule_type'],

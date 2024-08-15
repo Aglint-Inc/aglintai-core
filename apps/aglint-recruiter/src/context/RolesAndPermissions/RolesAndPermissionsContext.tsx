@@ -2,6 +2,7 @@
 'use client';
 
 import { DatabaseTable } from '@aglint/shared-types';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { createContext, ReactNode, useContext } from 'react';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
@@ -16,6 +17,10 @@ export type RolesAndPermissionsContextType = {
     func: T,
     permission: DatabaseTable['permissions']['name'][],
   ) => T;
+  isAssessmentEnabled: boolean;
+  isScreeningEnabled: boolean;
+  isSchedulingEnabled: boolean;
+  isScoringEnabled: boolean;
 };
 
 const RolesAndPermissionsContext =
@@ -26,7 +31,7 @@ export const RolesAndPermissionsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { userPermissions } = useAuthDetails();
+  const { userPermissions, recruiter } = useAuthDetails();
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
     permissions,
   ) => {
@@ -78,9 +83,22 @@ export const RolesAndPermissionsProvider = ({
     return { onClick: null, style: { display: 'none' } };
   };
 
+  const isAssessmentEnabled = false; //useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = false; //useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+  const isScoringEnabled = recruiter?.recruiter_preferences?.scoring ?? false;
+
   return (
     <RolesAndPermissionsContext.Provider
-      value={{ checkPermissions, ifAllowed, devlinkProps }}
+      value={{
+        checkPermissions,
+        ifAllowed,
+        devlinkProps,
+        isAssessmentEnabled,
+        isSchedulingEnabled,
+        isScoringEnabled,
+        isScreeningEnabled,
+      }}
     >
       {children}
     </RolesAndPermissionsContext.Provider>

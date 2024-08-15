@@ -1,15 +1,10 @@
-import { DatabaseTableUpdate, DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
+import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { API_setMembersWithRole } from './type';
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
 
 export default async function handler(
   req: NextApiRequest,
@@ -63,7 +58,7 @@ const setMembers = (
     user_id: string;
   },
 ) => {
-  return supabase
+  return supabaseAdmin
     .from('recruiter_user')
     .update(data)
     .eq('user_id', data.user_id)
@@ -86,7 +81,7 @@ const setRelation = (
     recruiter_id: string;
   },
 ) => {
-  return supabase
+  return supabaseAdmin
     .from('recruiter_relation')
     .update(data)
     .eq('user_id', data.user_id)

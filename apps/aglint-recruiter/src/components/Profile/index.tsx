@@ -14,7 +14,6 @@ import { capitalize } from '@/src/utils/text/textUtils';
 
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
-import { ChangeEmail } from './components/ChangeEmail';
 import { PasswordUpdate } from './components/PasswordUpdate';
 import { UserDetail } from './components/UserDetails';
 import {
@@ -33,10 +32,6 @@ const navTabs: {
   {
     label: 'Your Details',
     route: 'user_detail',
-  },
-  {
-    label: 'Change Email',
-    route: 'change_email',
   },
   {
     label: 'Password Update',
@@ -64,7 +59,6 @@ const ProfileDashboard = () => {
           slotInfo={
             <>
               {currTab === 'user_detail' && <UserDetail />}
-              {currTab === 'change_email' && <ChangeEmail />}
               {currTab === 'password_update' && <PasswordUpdate />}
             </>
           }

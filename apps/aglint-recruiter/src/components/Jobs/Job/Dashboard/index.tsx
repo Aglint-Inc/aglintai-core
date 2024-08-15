@@ -56,10 +56,10 @@ import {
   useApplicationsParams,
 } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
@@ -127,7 +127,7 @@ const Dashboard = () => {
     canPublish,
     manageJob,
   } = useJob();
-  const { isScoringEnabled } = useAuthDetails();
+  const { isScoringEnabled } = useRolesAndPermissions();
   const {
     schedules: { data: schedule },
   } = useJobDashboard();
@@ -1025,7 +1025,7 @@ const Modules = () => {
     isScreeningEnabled,
     isSchedulingEnabled,
     isScoringEnabled,
-  } = useAuthDetails();
+  } = useRolesAndPermissions();
   return (
     <>
       {manageJob && <JobDetailsModule />}

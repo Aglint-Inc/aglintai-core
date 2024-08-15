@@ -10,9 +10,12 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  useAuthDetails
+} from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
+import { useAllMembers } from '@/src/queries/members';
 import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
@@ -30,7 +33,7 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser, setMembers, handleMemberUpdate } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const { data: members, activeMembers, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
@@ -265,7 +268,6 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  // editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
                       toast.error(
@@ -282,17 +284,7 @@ const TeamManagement = () => {
                         );
                         return null;
                       }
-                      setMembers((members) =>
-                        members.filter((mem) => mem.user_id !== member.user_id),
-                      );
                     }
-                  }}
-                  updateMember={(updatedMem, updateDB = true) => {
-                    return handleMemberUpdate({
-                      user_id: member.user_id,
-                      data: updatedMem,
-                      updateDB,
-                    });
                   }}
                   canSuspend={member.role !== 'admin'}
                 />
@@ -319,32 +311,11 @@ const TeamManagement = () => {
           </>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
-        // onClickViewPendingInvites={{
-        //   onClick: () => {
-        //     setSelectedStatus(['invited']);
-        //     // setOpenDrawer({ open: true, window: 'pendingMember' });
-        //   },
-        // }}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
         )} pending invites awaiting your response.`}
       />
 
-      {/* {editMember ? (
-        <EditMember
-          open={Boolean(editMember)}
-          memberList={activeMembers
-            .map((mem) => ({
-              id: mem.user_id,
-              name: getFullName(mem.first_name, mem.last_name),
-            }))
-            .filter((mem) => mem.id !== editMember.user_id)}
-          member={editMember}
-          onClose={() => {
-            setEditMember(null);
-          }}
-        />
-      ) : ( */}
       <AddMember
         open={openDrawer.open}
         menu={openDrawer.window}
@@ -365,33 +336,35 @@ const TeamManagement = () => {
 export default TeamManagement;
 
 export const useTeamMembers = () => {
-  const {
-    allMember: members,
-    members: activeMembers,
-    recruiter,
-  } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
+
+  const { allMembers, members } = useAllMembers();
+
+  const activeMembers = members;
+
   const query = useQuery({
     queryKey: ['TeamMembers'],
     queryFn: () => {
       return getLastLogins(
-        members.map((item) => item.user_id),
+        allMembers.map((item) => item.user_id),
         recruiter.id,
       ).then((data) => {
-        return members.map((member) => {
+        return allMembers.map((member) => {
           return { ...member, last_login: data[member.user_id] };
         });
       });
     },
     placeholderData: [],
-    enabled: Boolean(members?.length),
+    enabled: Boolean(allMembers?.length),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
+
   useEffect(() => {
-    if (query.data && members.length) {
+    if (query.data && allMembers.length) {
       query.refetch();
     }
-  }, [members, query.refetch]);
+  }, [allMembers.length, query.refetch]);
   return { activeMembers, ...query };
 };
 

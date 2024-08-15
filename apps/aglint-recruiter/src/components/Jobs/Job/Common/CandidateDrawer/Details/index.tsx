@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { Analysis } from './Analysis';
 import { Education } from './Education';
@@ -10,7 +10,7 @@ import { Insights } from './Insights';
 import { Skills } from './Skills';
 
 const Details = (props: PropsWithChildren) => {
-  const { isScoringEnabled } = useAuthDetails();
+  const { isScoringEnabled } = useRolesAndPermissions();
   if (!isScoringEnabled) return <></>;
   return (
     <Stack sx={{ display: 'flex', gap: 4 }}>
@@ -33,3 +33,4 @@ Details.Education = Education;
 Details.Skills = Skills;
 
 export { Details };
+

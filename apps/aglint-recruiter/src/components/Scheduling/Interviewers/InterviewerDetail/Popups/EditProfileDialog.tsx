@@ -43,11 +43,7 @@ export const EditProfileDialog = ({
   setIsOpen,
   interviewerDetailsRefetch,
 }) => {
-  const {
-    recruiterUser,
-    userDetails: userDetail,
-    setRecruiterUser,
-  } = useAuthDetails();
+  const { recruiterUser, setRecruiterUser } = useAuthDetails();
   const [selectedTimeZone, setSelectedTimeZone] = useState(
     recruiterUser.scheduling_settings.timeZone || null,
   );
@@ -146,7 +142,7 @@ export const EditProfileDialog = ({
         if (isImageChanged) {
           const { data } = await supabase.storage
             .from('recruiter-user')
-            .upload(`public/${userDetail?.user?.id}`, imageFile.current, {
+            .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
               cacheControl: '3600',
               upsert: true,
             });
