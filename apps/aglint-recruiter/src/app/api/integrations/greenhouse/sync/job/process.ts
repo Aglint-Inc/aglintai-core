@@ -1,4 +1,4 @@
-import { DatabaseTableInsert, DB, GreenhouseType } from '@aglint/shared-types';
+import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
@@ -37,21 +37,8 @@ export async function createSyncedJob(
   recruiter_id: string,
 ) {
   const temp_public_job = createJobObject(job_post, recruiter_id);
-  const job_ref: DatabaseTableInsert['job_reference'] = {
-    ats_job_id: job_post.job_id as unknown as string,
-    // @ts-ignore
-    ats_json: job_post,
-    recruiter_id,
-    ats: 'greenhouse',
-    public_job_id: await saveJobToDb(supabase, temp_public_job),
-  };
-  await supabase
-    .from('job_reference')
-    .insert(job_ref)
-    .select('id')
-    .single()
-    .throwOnError();
-  return job_ref.public_job_id;
+  const public_job_id = await saveJobToDb(supabase, temp_public_job);
+  return public_job_id;
 }
 async function saveJobToDb(
   supabase: SupabaseClient<DB>,
@@ -187,17 +174,6 @@ export async function syncJobApplications(
       .filter(Boolean);
 
     await supabase.from('applications').insert(dbApplications).throwOnError();
-
-    const referenceObj = refCandidates.map((ref) => {
-      return {
-        application_id: ref.application_id,
-        posting_id: post.job_id,
-        greenhouse_id: ref.id,
-        public_job_id: post.public_job_id,
-        resume: ref.resume,
-      };
-    }) as unknown as GreenhouseType[];
-    await createReference(supabase, referenceObj);
   }
   //new candidates insert flow
 }
@@ -303,16 +279,3 @@ async function processBatch(
     return [];
   }
 }
-
-export const createReference = async (
-  supabase: SupabaseClient<DB>,
-  reference: GreenhouseType[],
-) => {
-  return (
-    await supabase
-      .from('greenhouse_reference')
-      .insert(reference)
-      .select()
-      .throwOnError()
-  ).data;
-};
