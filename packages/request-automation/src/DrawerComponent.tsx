@@ -30,6 +30,7 @@ export const DrawerComponent = () => {
     btn2: false,
     btn3: false,
     btn4: false,
+    btn5: false,
   });
   const drawerRef = useRef(null);
 
@@ -49,6 +50,7 @@ export const DrawerComponent = () => {
     switch (btn) {
       case "proceed":
         try {
+          console.clear();
           setLoading((pre) => ({ ...pre, btn1: true }));
           await updateRequest(count, type);
         } catch (e) {
@@ -60,6 +62,7 @@ export const DrawerComponent = () => {
 
       case "update_availability":
         try {
+          console.clear();
           setLoading((pre) => ({ ...pre, btn2: true }));
 
           await submitAvailability(type, count);
@@ -71,8 +74,8 @@ export const DrawerComponent = () => {
         break;
 
       case "booking_self_schedule":
-        console.log(type, count);
         try {
+          console.clear();
           setLoading((pre) => ({ ...pre, btn3: true }));
           await bookSelfSchedule(count, type);
         } catch (e) {
@@ -82,8 +85,8 @@ export const DrawerComponent = () => {
         break;
 
       case "reSchedule_request":
-        console.log(type);
         try {
+          console.clear();
           setLoading((pre) => ({ ...pre, btn4: true }));
           await requestForReschedule(type, count);
         } catch (e) {
@@ -94,11 +97,12 @@ export const DrawerComponent = () => {
 
       case "cancel_request":
         try {
-          setLoading((pre) => ({ ...pre, btn4: true }));
+          console.clear();
+          setLoading((pre) => ({ ...pre, btn5: true }));
           await requestForCancel(type, count);
         } catch (e) {
         } finally {
-          setLoading((pre) => ({ ...pre, btn4: false }));
+          setLoading((pre) => ({ ...pre, btn5: false }));
         }
         break;
     }
@@ -209,7 +213,7 @@ export const DrawerComponent = () => {
               }
             />
             <Button
-              isLoading={loading.btn3}
+              isLoading={loading.btn4}
               title={"Requests for Rescedule"}
               defaultCount={1}
               showInput={true}
@@ -222,7 +226,7 @@ export const DrawerComponent = () => {
               }
             />
             <Button
-              isLoading={loading.btn3}
+              isLoading={loading.btn5}
               defaultCount={2}
               title={"Cancels Interview."}
               showInput={true}

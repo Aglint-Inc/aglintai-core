@@ -76,10 +76,10 @@ const sumbitAva = async (
           status: "in_progress",
           type: type,
         });
-        alert(`${i + 1} - Avalaibilty succesfully submitted`);
+        console.log(`${i + 1} - Avalaibilty succesfully submitted`);
       })
       .catch((e) => {
-        alert(`${i + 1} - Avalaibilty submit failed ${e.message}`);
+        console.log(`${i + 1} - Avalaibilty submit failed ${e.message}`);
       });
   });
 };
@@ -109,7 +109,7 @@ export const updateRequest = async (count: number, type: requestType) => {
     })
     .catch((e) => {
       console.log(e.message);
-      alert(`Something went wrong`);
+      console.log(`Something went wrong`);
     });
 };
 
@@ -176,11 +176,13 @@ export const sendAvailabilityReminder = async (
           type: type,
           value: true,
         });
-        alert(`${i + 1} - Availability Reminder sent succesfully`);
+        console.log(`${i + 1} - Availability Reminder sent succesfully`);
       })
 
       .catch((e) => {
-        alert(`${i + 1} - Availability Reminder sending failed ${e.message}`);
+        console.log(
+          `${i + 1} - Availability Reminder sending failed ${e.message}`
+        );
       });
   });
   await sumbitAva(settingsForSendRemainder, type);
@@ -217,12 +219,12 @@ const bookSchedule = async (
           type,
           value: true,
         });
-        alert(`${i + 1} - self schudle succesfully submitted`);
+        console.log(`${i + 1} - self schudle succesfully submitted`);
       })
 
       .catch((e) => {
         console.log("selfschedule booking error:", e.message);
-        alert(`${i + 1} - self schudle booking failed `);
+        console.log(`${i + 1} - self schudle booking failed `);
       });
   });
 };
@@ -286,10 +288,12 @@ export const sendReminderSelfSchedule = async (
           status: "in_progress",
           type: type,
         });
-        alert(`${i + 1} - Self schedule Reminder sent succesfully`);
+        console.log(`${i + 1} - Self schedule Reminder sent succesfully`);
       })
       .catch((e) => {
-        alert(`${i + 1} - Self schedule Reminder sending failed ${e.message}`);
+        console.log(
+          `${i + 1} - Self schedule Reminder sending failed ${e.message}`
+        );
       });
   });
   await bookSchedule(settingsForSendScheduleReminder, type);
@@ -344,10 +348,10 @@ export const requestForReschedule = async (
           type,
           value: true,
         });
-        alert(`${i + 1} - reSchedule request succesfully`);
+        console.log(`${i + 1} - reSchedule request succesfully`);
       })
       .catch((e) => {
-        alert(`${i + 1} - reSchedule requesting failed ${e.message}`);
+        console.log(`${i + 1} - reSchedule requesting failed ${e.message}`);
       });
   });
 };
@@ -397,10 +401,10 @@ export const requestForCancel = async (type: requestType, count: number) => {
           type: type,
           value: true,
         });
-        alert(`${i + 1} - Cancel request succesfully`);
+        console.log(`${i + 1} - Cancel request succesfully`);
       })
       .catch((e) => {
-        alert(`${i + 1} - Cancel requesting failed ${e.message}`);
+        console.log(`${i + 1} - Cancel requesting failed ${e.message}`);
       });
   });
 };

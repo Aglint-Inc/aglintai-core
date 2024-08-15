@@ -51,7 +51,6 @@ export const updateLocalStorage = async <
   request_id: string;
   status: requestStatusType;
 }) => {
-  console.log({ type, field, value, application_id, request_id, status });
   const storedData = await localStorage.getItem(type);
   let requestsWithSettings: localScheduleRequestType[] = storedData
     ? JSON.parse(storedData)
