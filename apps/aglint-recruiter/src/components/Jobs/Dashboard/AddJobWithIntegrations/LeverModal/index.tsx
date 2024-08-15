@@ -60,9 +60,7 @@ export default function LeverModalComp() {
         if (
           jobs.data?.filter(
             (job) =>
-              job.posted_by === POSTED_BY.LEVER &&
-              job.job_title === post.text &&
-              job.location == post.categories.location,
+              job.posted_by === POSTED_BY.LEVER && job.job_title === post.text,
           ).length == 0
         ) {
           return true;

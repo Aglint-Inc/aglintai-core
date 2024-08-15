@@ -58,7 +58,6 @@ export function UserInfoTeam({
       >
         {slotDetails}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotButton}</_Builtin.Block>
     </_Component>
   );
 }

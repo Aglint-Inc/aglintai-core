@@ -8,10 +8,12 @@ import {
   useAddDebriefSession,
   useAddInterviewSession,
   useCreateInterviewPlan,
+  useDeleteInterviewPlan,
   useDeleteInterviewSession,
   useEditDebriefSession,
   useEditInterviewSession,
   useReorderInterviewSessions,
+  useUpdateInterviewPlan,
   useUpdateInterviewSession,
 } from '@/src/queries/interview-plans';
 import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys';
@@ -23,6 +25,8 @@ const useJobInterviewPlanActions = () => {
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
+  const { mutateAsync: updatePlan } = useUpdateInterviewPlan();
+  const { mutateAsync: deletePlan } = useDeleteInterviewPlan();
   const { mutateAsync: createSession } = useAddInterviewSession();
   const { mutate: handleUpdateSession } = useUpdateInterviewSession();
   const { mutate: handleEditSession } = useEditInterviewSession();
@@ -59,9 +63,9 @@ const useJobInterviewPlanActions = () => {
     );
   };
 
-  const handleCreatePlan = async () => {
+  const handleCreatePlan = async (name: string, order?: number) => {
     try {
-      await createPlan();
+      await createPlan({ name, order });
     } catch {
       //toast.error('Unable to create interview plan');
     }
@@ -83,8 +87,6 @@ const useJobInterviewPlanActions = () => {
     }
   };
 
-  const plan_id = interviewPlans?.data?.id;
-
   const value = {
     job,
     initialLoad,
@@ -98,9 +100,10 @@ const useJobInterviewPlanActions = () => {
     handleDeleteSession,
     getLoadingState,
     handleCreatePlan,
+    updatePlan,
+    deletePlan,
     handleReorderSessions,
     interviewPlans,
-    plan_id,
     manageJob,
   };
   return value;

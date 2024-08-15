@@ -31,7 +31,7 @@ const useJobContext = () => {
       'Invalid pathname, context must be wrapped to a page with [id]',
     );
 
-  const { recruiter_id, recruiter } = useAuthDetails();
+  const { recruiter_id, recruiter, isScoringEnabled } = useAuthDetails();
 
   const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 
@@ -50,6 +50,9 @@ const useJobContext = () => {
     [jobs.data, job_id, jobs.status, jobLoad],
   );
 
+  const scoringCriteriaLoading =
+    isScoringEnabled && job?.scoring_criteria_loading;
+
   const total = useMemo(
     () =>
       Object.values(job?.section_count ?? {}).reduce((acc, curr) => {
@@ -59,10 +62,11 @@ const useJobContext = () => {
     [job?.section_count],
   );
 
-  const scoreParameterPollEnabled = !!job && job.scoring_criteria_loading;
+  const scoreParameterPollEnabled = !!job && scoringCriteriaLoading;
 
   const applicationScoringPollEnabled =
     !!job &&
+    isScoringEnabled &&
     job.status === 'published' &&
     (job.processing_count.fetching !== 0 ||
       job.processing_count.processing !== 0);
@@ -74,9 +78,9 @@ const useJobContext = () => {
 
   const status = job &&
     jobLoad && {
-      loading: job?.scoring_criteria_loading,
+      loading: scoringCriteriaLoading,
       description_error:
-        !job?.scoring_criteria_loading &&
+        !scoringCriteriaLoading &&
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
@@ -86,16 +90,16 @@ const useJobContext = () => {
             description: job.draft.description,
             job_title: job.draft.job_title,
             job_type: job.draft.job_type,
-            location: job.draft.location,
             workplace_type: job.draft.workplace_type,
+            location_id: job.draft.location_id,
           } as Omit<Job['draft'], 'jd_json'>,
           {
             department_id: job.department_id,
             description: job.description,
             job_title: job.job_title,
             job_type: job.job_type,
-            location: job.location,
             workplace_type: job.workplace_type,
+            location_id: job.location_id,
           } as Omit<Job['draft'], 'jd_json'>,
         ),
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
@@ -139,12 +143,12 @@ const useJobContext = () => {
     detailsValidity,
     hiringTeamValidity,
     jdValidity,
-    loading: job?.scoring_criteria_loading,
+    loading: scoringCriteriaLoading,
     publishable:
       detailsValidity.validity &&
       hiringTeamValidity.validity &&
       jdValidity &&
-      !job?.scoring_criteria_loading,
+      !scoringCriteriaLoading,
   };
 
   const canPublish =
@@ -165,6 +169,8 @@ const useJobContext = () => {
         application_match,
         // eslint-disable-next-line no-unused-vars
         department,
+        // eslint-disable-next-line no-unused-vars
+        location,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({

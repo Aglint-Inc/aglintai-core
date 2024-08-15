@@ -418,6 +418,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       },
     },
   ],
+  onInterviewerDecline: null, //fix needed causing lint
 } as const;
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =

@@ -50,14 +50,14 @@ const JobEdit = () => {
     department_id,
     description,
     job_type,
-    location,
+    location_id,
     workplace_type,
   } = {
     job_title: job.job_title,
     department_id: job.department_id,
     description: job.description,
     job_type: job.job_type,
-    location: job.location,
+    location_id: job.location_id,
     workplace_type: job.workplace_type,
     ...(job.draft ?? {}),
   };
@@ -86,11 +86,11 @@ const JobEdit = () => {
         helper: `Job type can't be empty`,
       },
     },
-    location: {
-      value: location,
+    location_id: {
+      value: location_id,
       required: false,
       error: {
-        value: validateString(location),
+        value: validateString(location_id),
         helper: `Job location can't be empty`,
       },
     },
@@ -251,7 +251,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
     description,
     job_title,
     job_type,
-    location,
+    location_id,
     workplace_type,
   } = useJobForms(fields, handleChange);
 
@@ -261,7 +261,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
       {job_type}
       {workplace_type}
       {department_id}
-      {location}
+      {location_id}
     </>
   );
 

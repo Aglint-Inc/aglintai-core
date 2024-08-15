@@ -33,7 +33,6 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
-  '/jobs/[id]/agent': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -61,6 +60,7 @@ const PERMISSIONS: Permissions = {
 
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
+  '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/company': ['company_settings_module'],
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
@@ -132,7 +132,6 @@ const PERMISSIONS: Permissions = {
     'scheduling_module',
     'task_module',
   ],
-  '/api/ai/gpt3-5-turbo': ['company_settings_module'],
   '/api/encryptData': ['integrations_module', 'manage_company'],
   '/api/emails/selfScheduleReminder_email_applicant': ['scheduling_module'],
   '/api/emails/availabilityReqResend_email_candidate': ['scheduling_module'],
@@ -156,6 +155,13 @@ const PERMISSIONS: Permissions = {
   '/api/ai/queryToJson': ['scheduling_module'],
   '/api/scheduling/v1/find-alternative-time-slots': ['authorized'],
   '/api/scheduling/v1/update_meeting_interviewers': ['authorized'],
+  '/api/integrations/greenhouse': ['authorized'],
+  '/api/integrations/greenhouse/sync/interview_plans': ['manage_job'],
+  '/api/integrations/greenhouse/sync/job': ['manage_job'],
+  '/api/integrations/greenhouse/sync/user': ['integrations_module'],
+  '/api/integrations/greenhouse/sync/departments': ['integrations_module'],
+  '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
+  '/api/agent-workflow/interviewer-decline': ['authorized'],
 };
 
 export default PERMISSIONS;

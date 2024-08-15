@@ -76,6 +76,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
 
     const { error } = handleValidate();
     if (!error) {
+      // @ts-ignore
       handleOfficeLocationsUpdate({
         type: edit === -1 ? 'insert' : 'update',
         data: {

@@ -20,6 +20,7 @@ import {
   useJobWorkflowDisconnect,
 } from '@/src/queries/job-workflow';
 import { Workflow } from '@/src/types/workflow.types';
+import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -105,7 +106,7 @@ const WorkflowJob = ({
         <WorkflowConnectedCard
           key={id}
           role={capitalizeAll(job_title)}
-          textLocation={location || '---'}
+          textLocation={formatOfficeLocation(location)}
           textRoleCategory={department || '---'}
           slotBadges={
             status && (

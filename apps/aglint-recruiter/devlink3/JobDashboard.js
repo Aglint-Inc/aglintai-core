@@ -43,6 +43,7 @@ export function JobDashboard({
   onClickNotaMatch = {},
   slotJobRole,
   isJobRoleVisible = true,
+  isJobStatsVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
@@ -55,20 +56,17 @@ export function JobDashboard({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1735")}
-          tag="div"
-        >
-          {isBanner ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jd_titleblock")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">
-                {slotBanner ?? <JobsBanner />}
-              </_Builtin.Block>
+        {isBanner ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "jd_titleblock")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">
+              {slotBanner ?? <JobsBanner />}
             </_Builtin.Block>
-          ) : null}
+          </_Builtin.Block>
+        ) : null}
+        {isJobStatsVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "jd_stats_block")}
             tag="div"
@@ -206,7 +204,7 @@ export function JobDashboard({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "jd_pipeline_pillls")}
           tag="div"
