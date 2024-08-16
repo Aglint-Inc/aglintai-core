@@ -132,7 +132,7 @@ const DepartmentManager = () => {
     <div>
       <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          <h3>Existing Departments</h3>
+          <h5>Existing Departments</h5>
           {departments.map((department) => (
             <div
               key={department.id}
@@ -155,7 +155,7 @@ const DepartmentManager = () => {
         </div>
 
         <div>
-          <h3>Available Departments to Add</h3>
+          <h5>Available Departments to Add</h5>
 
           {availableDepartments.map((department, index) => (
             <div
