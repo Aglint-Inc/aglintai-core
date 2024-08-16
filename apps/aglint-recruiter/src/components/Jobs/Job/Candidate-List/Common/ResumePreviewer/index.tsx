@@ -108,7 +108,7 @@ const ResumePreviewer = ({
               position={'absolute'}
               zIndex={1}
             >
-              <Embed url={url} />
+              <ResumeEmbed url={url} />
             </Stack>
             <Stack
               position={'absolute'}
@@ -131,7 +131,7 @@ const ResumePreviewer = ({
 
 export { ResumePreviewer };
 
-const Embed = ({ url }: { url: string }) => {
+export const ResumeEmbed = ({ url }: { url: string }) => {
   const extension = getExtension(url);
   return (
     <embed
