@@ -49,7 +49,7 @@ type Props = {
   labelBold?: 'default' | 'normal';
   defaultLabelColor?: string;
   id?: string;
-  autoFocus?:boolean;
+  autoFocus?: boolean;
 };
 
 // eslint-disable-next-line react/display-name

@@ -6,7 +6,6 @@ function MuiNumberfield({
   value,
   handleSelect,
   width = '160px',
-  height = '36px',
   isDebounceEnable = true,
   isDisable = false,
   isMarginTop = true,
@@ -47,13 +46,25 @@ function MuiNumberfield({
   );
 
   return (
-    <FormControl sx={{ marginTop: isMarginTop ? '12px !important' : '' }}>
+    <FormControl
+      sx={{
+        marginTop: isMarginTop ? '12px !important' : '',
+      }}
+    >
       <TextField
         disabled={isDisable}
+        inputProps={{ type: 'number' }}
         sx={{
           width: width,
           '& .MuiInputBase-root': {
-            height: height, // Customize the height here
+            // height: height, // Customize the height here
+          },
+          '& .MuiInputBase-input': {
+            // bgcolor: 'yellow',
+            paddingRight: 0,
+            width: width,
+            border: 'none',
+            margin: 'none !important',
           },
         }}
         value={Number(tempValue).toString()}
