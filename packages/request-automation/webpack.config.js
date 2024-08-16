@@ -28,6 +28,14 @@ module.exports = {
         ],
       },
       {
+        test: /\.scss$/, // Rule for SCSS files
+        use: [
+          "style-loader", // Injects styles into the DOM
+          "css-loader", // Turns CSS into CommonJS
+          "sass-loader", // Compiles Sass to CSS
+        ],
+      },
+      {
         test: /\.(ts|tsx)$/, // Add loader for TypeScript
         exclude: /node_modules/,
         use: "ts-loader",
@@ -50,7 +58,7 @@ module.exports = {
       "@components": path.resolve(__dirname, "src/components/"),
       "@src": path.resolve(__dirname, "src/"),
     },
-    extensions: [".js", ".jsx", ".ts", ".tsx"], // Add TypeScript extensions
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"],
   },
 };
 
