@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
-import "./InfoDisplay.css";
-import { AppContext } from "../AppContext";
+import React from "react";
+import { useAppContext } from "../AppContext";
 
 const InfoDisplay = () => {
-  const { companyName, recruiterId, userId } = useContext(AppContext);
+  const { companyName, recruiterId, userId } = useAppContext();
 
   return (
     <div style={{ position: "relative", display: "inline-block" }}>

@@ -1,30 +1,21 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import "./DrawerComponent.css"; // Assuming your styles are in a separate CSS file
+import React, { useState, useRef } from "react";
 
 import {
   bookSelfSchedule,
   requestForCancel,
   requestForReschedule,
-  sendAvailabilityReminder,
-  sendReminderSelfSchedule,
-  shuffleAndSplit,
-  shuffleAndSplitAsTwo,
   submitAvailability,
   updateRequest,
 } from "./utils/util_functions";
-import {
-  localScheduleRequestType,
-  requestType,
-} from "./type/localStorageTypes";
+import { requestType } from "./type/localStorageTypes";
 import { buttonsType, radioBtnOptions } from "./type/UITypes";
-import {
-  clearRequestsLocalStorage,
-  getRequestLocalStorage,
-} from "./utils/localStorageFunctions";
+import { clearRequestsLocalStorage } from "./utils/localStorageFunctions";
+import InfoDisplay from "./components/InfoDisplay";
 
 export const DrawerComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeDiv, setActiveDiv] = useState("demo"); // 'demo' or 'seed'
+  const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
   const [loading, setLoading] = useState({
     btn1: false,
     btn2: false,
@@ -51,8 +42,9 @@ export const DrawerComponent = () => {
       case "proceed":
         try {
           console.clear();
+          setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn1: true }));
-          await updateRequest(count, type);
+          await updateRequest({ count, type, setConsoleMessage });
         } catch (e) {
           //
         } finally {
@@ -63,9 +55,10 @@ export const DrawerComponent = () => {
       case "update_availability":
         try {
           console.clear();
+          setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn2: true }));
 
-          await submitAvailability(type, count);
+          await submitAvailability({ type, count, setConsoleMessage });
         } catch (e) {
           //
         } finally {
@@ -76,8 +69,9 @@ export const DrawerComponent = () => {
       case "booking_self_schedule":
         try {
           console.clear();
+          setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn3: true }));
-          await bookSelfSchedule(count, type);
+          await bookSelfSchedule({ count, type, setConsoleMessage });
         } catch (e) {
         } finally {
           setLoading((pre) => ({ ...pre, btn3: false }));
@@ -86,9 +80,9 @@ export const DrawerComponent = () => {
 
       case "reSchedule_request":
         try {
-          console.clear();
+          setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn4: true }));
-          await requestForReschedule(type, count);
+          await requestForReschedule({ type, count, setConsoleMessage });
         } catch (e) {
         } finally {
           setLoading((pre) => ({ ...pre, btn4: false }));
@@ -98,8 +92,9 @@ export const DrawerComponent = () => {
       case "cancel_request":
         try {
           console.clear();
+          setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn5: true }));
-          await requestForCancel(type, count);
+          await requestForCancel({ type, count, setConsoleMessage });
         } catch (e) {
         } finally {
           setLoading((pre) => ({ ...pre, btn5: false }));
@@ -118,7 +113,7 @@ export const DrawerComponent = () => {
           <div className="flex-h">
             <span className="drawer-warning">
               <strong>⚠️ Warning:</strong> This is a utility for speeding up
-              demos, not a product feature.
+              demos, not a product feature. <InfoDisplay />
             </span>
             <span>
               <span
@@ -152,92 +147,104 @@ export const DrawerComponent = () => {
           </div>
         </div>
         {activeDiv === "demo" && (
-          <div id="demo" className="drawer-body">
-            <Button
-              isLoading={loading.btn1}
-              title={"Proceed request"}
-              showInput={true}
-              defaultCount={8}
-              isRadio
-              options={[
-                { name: "Schedule", value: "schedule_request" },
-                { name: "Re-schedule", value: "reschedule_request" },
-                { name: "Cancel schedule", value: "cancel_schedule_request" },
-              ]}
-              handleSubmit={({
-                count,
-                type,
-              }: {
-                count: number;
-                type: requestType;
-              }) => handleApiRequest({ btn: "proceed", count, type })}
-            />
-            <Button
-              isLoading={loading.btn2}
-              title={"Submits Availability."}
-              defaultCount={4}
-              showInput={true}
-              isRadio
-              options={[
-                { name: "Schedule", value: "schedule_request" },
-                { name: "Re-schedule", value: "reschedule_request" },
-              ]}
-              handleSubmit={({
-                count,
-                type,
-              }: {
-                count: number;
-                type: requestType;
-              }) =>
-                handleApiRequest({ btn: "update_availability", count, type })
-              }
-            />
-            <Button
-              isLoading={loading.btn3}
-              title={"Coinfirms Interview."}
-              defaultCount={2}
-              showInput={true}
-              isRadio
-              options={[
-                { name: "Schedule", value: "schedule_request" },
-                { name: "Re-schedule", value: "reschedule_request" },
-              ]}
-              handleSubmit={({
-                count,
-                type,
-              }: {
-                count: number;
-                type: requestType;
-              }) =>
-                handleApiRequest({ btn: "booking_self_schedule", count, type })
-              }
-            />
-            <Button
-              isLoading={loading.btn4}
-              title={"Requests for Rescedule"}
-              defaultCount={1}
-              showInput={true}
-              handleSubmit={({ count }: { count: number }) =>
-                handleApiRequest({
-                  btn: "reSchedule_request",
+          <div id="demo">
+            <div className="drawer-body">
+              <Button
+                isLoading={loading.btn1}
+                title={"Proceed request"}
+                showInput={true}
+                defaultCount={8}
+                isRadio
+                options={[
+                  { name: "Schedule", value: "schedule_request" },
+                  { name: "Re-schedule", value: "reschedule_request" },
+                  { name: "Cancel schedule", value: "cancel_schedule_request" },
+                ]}
+                handleSubmit={({
                   count,
-                  type: "schedule_request",
-                })
-              }
-            />
-            <Button
-              isLoading={loading.btn5}
-              defaultCount={2}
-              title={"Cancels Interview."}
-              showInput={true}
-              handleSubmit={({ count }: { count: number }) =>
-                handleApiRequest({
-                  btn: "cancel_request",
+                  type,
+                }: {
+                  count: number;
+                  type: requestType;
+                }) => handleApiRequest({ btn: "proceed", count, type })}
+              />
+              <Button
+                isLoading={loading.btn2}
+                title={"Submits Availability."}
+                defaultCount={4}
+                showInput={true}
+                isRadio
+                options={[
+                  { name: "Schedule", value: "schedule_request" },
+                  { name: "Re-schedule", value: "reschedule_request" },
+                ]}
+                handleSubmit={({
                   count,
-                  type: "schedule_request",
-                })
-              }
-            />
+                  type,
+                }: {
+                  count: number;
+                  type: requestType;
+                }) =>
+                  handleApiRequest({ btn: "update_availability", count, type })
+                }
+              />
+              <Button
+                isLoading={loading.btn3}
+                title={"Coinfirms Interview."}
+                defaultCount={2}
+                showInput={true}
+                isRadio
+                options={[
+                  { name: "Schedule", value: "schedule_request" },
+                  { name: "Re-schedule", value: "reschedule_request" },
+                ]}
+                handleSubmit={({
+                  count,
+                  type,
+                }: {
+                  count: number;
+                  type: requestType;
+                }) =>
+                  handleApiRequest({
+                    btn: "booking_self_schedule",
+                    count,
+                    type,
+                  })
+                }
+              />
+              <Button
+                isLoading={loading.btn4}
+                title={"Requests for Rescedule"}
+                defaultCount={1}
+                showInput={true}
+                handleSubmit={({ count }: { count: number }) =>
+                  handleApiRequest({
+                    btn: "reSchedule_request",
+                    count,
+                    type: "schedule_request",
+                  })
+                }
+              />
+              <Button
+                isLoading={loading.btn5}
+                defaultCount={2}
+                title={"Cancels Interview."}
+                showInput={true}
+                handleSubmit={({ count }: { count: number }) =>
+                  handleApiRequest({
+                    btn: "cancel_request",
+                    count,
+                    type: "schedule_request",
+                  })
+                }
+              />
+            </div>
+            <div className="console">
+              <h4>Console</h4>
+              {consoleMessage.length
+                ? consoleMessage.map((mes) => <p>{mes}</p>)
+                : "no message"}
+            </div>
           </div>
         )}
       </div>

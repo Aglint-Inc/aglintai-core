@@ -45,10 +45,15 @@ export function shuffleAndSplit(arr: localScheduleRequestType[], num: number) {
   return shuffled.slice(0, num);
 }
 
-const sumbitAva = async (
-  settingsForSubmitAva: localScheduleRequestType[],
-  type: requestType
-) => {
+const sumbitAva = async ({
+  settingsForSubmitAva,
+  type,
+  setConsoleMessage,
+}: {
+  settingsForSubmitAva: localScheduleRequestType[];
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   settingsForSubmitAva.map(async (setting, i) => {
     const payload = {
       request_id: setting["request_id"],
@@ -76,15 +81,29 @@ const sumbitAva = async (
           status: "in_progress",
           type: type,
         });
-        console.log(`${i + 1} - Avalaibilty succesfully submitted`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Avalaibilty succesfully submitted`,
+        ]);
       })
       .catch((e) => {
-        console.log(`${i + 1} - Avalaibilty submit failed ${e.message}`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Avalaibilty submit failed ${e.message}`,
+        ]);
       });
   });
 };
 
-export const updateRequest = async (count: number, type: requestType) => {
+export const updateRequest = async ({
+  count,
+  type,
+  setConsoleMessage,
+}: {
+  count: number;
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   await fetch("/api/automation/update_request", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -102,18 +121,32 @@ export const updateRequest = async (count: number, type: requestType) => {
     .then((data) => {
       if (data?.length) {
         createLocalStorage(data, type);
-        alert(`${data.length} Request successfully Process.`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `${data.length} Request successfully Process.`,
+        ]);
       } else {
-        alert(`No New ${fullForm(type)} request found`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `No New ${fullForm(type)} request found`,
+        ]);
       }
     })
     .catch((e) => {
       console.log(e.message);
-      console.log(`Something went wrong`);
+      setConsoleMessage((pre) => [...pre, `Something went wrong`]);
     });
 };
 
-export const submitAvailability = async (type: requestType, count: number) => {
+export const submitAvailability = async ({
+  type,
+  count,
+  setConsoleMessage,
+}: {
+  count: number;
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const settings: Awaited<localScheduleRequestType[]> =
     await getRequestLocalStorage(type);
 
@@ -122,7 +155,11 @@ export const submitAvailability = async (type: requestType, count: number) => {
       !setting.isSubmitAvailabilitySubmitted && setting.status !== "completed"
   );
   if (!(filteredSettings?.length > 0)) {
-    alert(`No ${fullForm(type)} request found for submit Availability`);
+    setConsoleMessage((pre) => [
+      ...pre,
+      `No ${fullForm(type)} request found for submit Availability`,
+    ]);
+
     return;
   }
 
@@ -131,23 +168,30 @@ export const submitAvailability = async (type: requestType, count: number) => {
     count
   );
 
-  if (
-    !confirm(
-      `${settingsForSubmitAva.length} for Submit availability \n${settingsForSendRemainder.length} for send reminder`
-    )
-  )
-    return;
+  setConsoleMessage((pre) => [
+    ...pre,
+    `${settingsForSubmitAva.length} for Submit availability \n${settingsForSendRemainder.length} for send reminder`,
+  ]);
 
   if (settingsForSendRemainder?.length > 0) {
-    await sendAvailabilityReminder(settingsForSendRemainder, type);
+    await sendAvailabilityReminder({
+      settingsForSendRemainder,
+      type,
+      setConsoleMessage,
+    });
   }
-  await sumbitAva(settingsForSubmitAva, type);
+  await sumbitAva({ settingsForSubmitAva, type, setConsoleMessage });
 };
 
-export const sendAvailabilityReminder = async (
-  settingsForSendRemainder: localScheduleRequestType[],
-  type: requestType
-) => {
+export const sendAvailabilityReminder = async ({
+  settingsForSendRemainder,
+  type,
+  setConsoleMessage,
+}: {
+  settingsForSendRemainder: localScheduleRequestType[];
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   settingsForSendRemainder.map(async (setting, i) => {
     const payload = {
       request_id: setting["request_id"],
@@ -176,22 +220,35 @@ export const sendAvailabilityReminder = async (
           type: type,
           value: true,
         });
-        console.log(`${i + 1} - Availability Reminder sent succesfully`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Availability Reminder sent succesfully`,
+        ]);
       })
 
       .catch((e) => {
-        console.log(
-          `${i + 1} - Availability Reminder sending failed ${e.message}`
-        );
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Availability Reminder sending failed ${e.message}`,
+        ]);
       });
   });
-  await sumbitAva(settingsForSendRemainder, type);
+  await sumbitAva({
+    settingsForSubmitAva: settingsForSendRemainder,
+    type,
+    setConsoleMessage,
+  });
 };
 
-const bookSchedule = async (
-  settingsForBookSchedule: localScheduleRequestType[],
-  type: requestType
-) => {
+const bookSchedule = async ({
+  settingsForBookSchedule,
+  type,
+  setConsoleMessage,
+}: {
+  settingsForBookSchedule: localScheduleRequestType[];
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   settingsForBookSchedule.map(async (setting, i) => {
     const payload = {
       request_id: setting["request_id"],
@@ -219,48 +276,67 @@ const bookSchedule = async (
           type,
           value: true,
         });
-        console.log(`${i + 1} - self schudle succesfully submitted`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          "self schudle succesfully submitted",
+        ]);
       })
 
       .catch((e) => {
-        console.log("selfschedule booking error:", e.message);
-        console.log(`${i + 1} - self schudle booking failed `);
+        setConsoleMessage((pre) => [...pre, "self schudle booking failed"]);
       });
   });
 };
-export const bookSelfSchedule = async (count: number, type: requestType) => {
+export const bookSelfSchedule = async ({
+  count,
+  type,
+  setConsoleMessage,
+}: {
+  count: number;
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const localSettings = await getRequestLocalStorage(type);
 
   const filteredSettings = localSettings.filter(
     (setting) =>
       setting.isSubmitAvailabilitySubmitted && !setting.isSelfScheduleSubmitted
   );
-  console.log(filteredSettings);
   if (!(filteredSettings?.length > 0)) {
-    alert(`No ${fullForm(type)} request found for booking`);
+    setConsoleMessage((pre) => [
+      ...pre,
+      `No ${fullForm(type)} request found for booking`,
+    ]);
     return;
   }
 
   const [settingsForBookSchedule, settingsForSendScheduleReminder] =
     shuffleAndSplitAsTwo(filteredSettings, count);
 
-  if (
-    !confirm(
-      `${settingsForBookSchedule.length} for booking self schedule | ${settingsForSendScheduleReminder.length} for send reminder`
-    )
-  )
-    return;
+  setConsoleMessage((pre) => [
+    ...pre,
+    `${settingsForBookSchedule.length} for booking self schedule | ${settingsForSendScheduleReminder.length} for send reminder`,
+  ]);
 
-  await bookSchedule(settingsForBookSchedule, type);
+  await bookSchedule({ settingsForBookSchedule, type, setConsoleMessage });
   if (settingsForSendScheduleReminder?.length > 0) {
-    await sendReminderSelfSchedule(settingsForSendScheduleReminder, type);
+    await sendReminderSelfSchedule({
+      settingsForSendScheduleReminder,
+      type,
+      setConsoleMessage,
+    });
   }
 };
 
-export const sendReminderSelfSchedule = async (
-  settingsForSendScheduleReminder: localScheduleRequestType[],
-  type: requestType
-) => {
+export const sendReminderSelfSchedule = async ({
+  settingsForSendScheduleReminder,
+  type,
+  setConsoleMessage,
+}: {
+  settingsForSendScheduleReminder: localScheduleRequestType[];
+  type: requestType;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   settingsForSendScheduleReminder.map(async (setting, i) => {
     const payload = {
       request_id: setting["request_id"],
@@ -288,21 +364,34 @@ export const sendReminderSelfSchedule = async (
           status: "in_progress",
           type: type,
         });
-        console.log(`${i + 1} - Self schedule Reminder sent succesfully`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          " Self schedule Reminder sent succesfully",
+        ]);
       })
       .catch((e) => {
-        console.log(
-          `${i + 1} - Self schedule Reminder sending failed ${e.message}`
-        );
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Self schedule Reminder sending failed ${e.message}`,
+        ]);
       });
   });
-  await bookSchedule(settingsForSendScheduleReminder, type);
+  await bookSchedule({
+    settingsForBookSchedule: settingsForSendScheduleReminder,
+    type,
+    setConsoleMessage,
+  });
 };
 
-export const requestForReschedule = async (
-  type: requestType,
-  count: number
-) => {
+export const requestForReschedule = async ({
+  type,
+  count,
+  setConsoleMessage,
+}: {
+  type: requestType;
+  count: number;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const localSettings = await getRequestLocalStorage(type);
 
   const filteredSettings = localSettings.filter(
@@ -311,14 +400,16 @@ export const requestForReschedule = async (
   );
 
   if (!(filteredSettings?.length > 0)) {
-    alert("No request found for Reschedule");
+    setConsoleMessage((pre) => [...pre, "No request found for Reschedule"]);
     return;
   }
 
   const settingsForreSchedule = shuffleAndSplit(filteredSettings, count);
 
-  if (!confirm(`${settingsForreSchedule.length} requests from re-schedule `))
-    return;
+  setConsoleMessage((pre) => [
+    ...pre,
+    `${settingsForreSchedule.length} requests from re-schedule `,
+  ]);
 
   settingsForreSchedule.map(async (setting, i) => {
     const payload = {
@@ -348,15 +439,26 @@ export const requestForReschedule = async (
           type,
           value: true,
         });
-        console.log(`${i + 1} - reSchedule request succesfully`);
+        setConsoleMessage((pre) => [...pre, "Reschedule request succesfully"]);
       })
       .catch((e) => {
-        console.log(`${i + 1} - reSchedule requesting failed ${e.message}`);
+        setConsoleMessage((pre) => [
+          ...pre,
+          `Reschedule requesting failed ${e.message}`,
+        ]);
       });
   });
 };
 
-export const requestForCancel = async (type: requestType, count: number) => {
+export const requestForCancel = async ({
+  type,
+  count,
+  setConsoleMessage,
+}: {
+  type: requestType;
+  count: number;
+  setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const localSettings2 = await getRequestLocalStorage(type);
 
   const filteredSettings = localSettings2.filter(
@@ -365,13 +467,16 @@ export const requestForCancel = async (type: requestType, count: number) => {
   );
 
   if (!(filteredSettings?.length > 0)) {
-    alert("No request found for cancel");
+    setConsoleMessage((pre) => [...pre, "No request found for cancel"]);
     return;
   }
 
   const settingsforCancel = shuffleAndSplit(filteredSettings, count);
 
-  if (!confirm(`${settingsforCancel.length} requests for cancel `)) return;
+  setConsoleMessage((pre) => [
+    ...pre,
+    `${settingsforCancel.length} requests for cancel `,
+  ]);
 
   settingsforCancel.map(async (setting, i) => {
     const payload = {
@@ -401,10 +506,14 @@ export const requestForCancel = async (type: requestType, count: number) => {
           type: type,
           value: true,
         });
-        console.log(`${i + 1} - Cancel request succesfully`);
+        setConsoleMessage((pre) => [...pre, "Cancel request succesfully"]);
       })
       .catch((e) => {
-        console.log(`${i + 1} - Cancel requesting failed ${e.message}`);
+        setConsoleMessage((pre) => [
+          ...pre,
+
+          `Cancel requesting failed ${e.message}`,
+        ]);
       });
   });
 };

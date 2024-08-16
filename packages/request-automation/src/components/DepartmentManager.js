@@ -27,7 +27,6 @@ const DepartmentManager = () => {
     fetchDepartments();
   }, [supabase, recruiter_id]);
 
-  // Fetch departments from external URL
   useEffect(() => {
     const fetchAvailableDepartments = async () => {
       try {
@@ -36,7 +35,6 @@ const DepartmentManager = () => {
         );
         const data = await response.json();
 
-        // Filter out departments that already exist in Supabase
         const existingNames = departments.map((dept) =>
           dept.name.toLowerCase()
         );
