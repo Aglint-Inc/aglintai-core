@@ -241,9 +241,15 @@ export const DrawerComponent = () => {
             </div>
             <div className="console">
               <h4>Console</h4>
-              {consoleMessage.length
-                ? consoleMessage.map((mes) => <p>{mes}</p>)
-                : "no message"}
+              <div>
+                {consoleMessage.length
+                  ? consoleMessage.map((mes, i) => (
+                      <p>
+                        {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
+                      </p>
+                    ))
+                  : "no message"}
+              </div>
             </div>
           </div>
         )}

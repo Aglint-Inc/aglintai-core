@@ -169,5 +169,13 @@
 }
 .bottom-drawer-container .console {
   margin-left: 20px;
+  padding-left: 20px;
+  max-height: 150px;
   width: 100%;
+  border-left: 1px solid rgb(189, 189, 189);
+}
+.bottom-drawer-container .console > div {
+  max-height: 130px;
+  overflow-y: scroll;
+  overflow-x: scroll;
 }
