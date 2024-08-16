@@ -97,7 +97,7 @@ function Demo() {
       <div className="drawer-body">
         <Button
           isLoading={loading.btn1}
-          title={"Proceed request"}
+          title={"Proceed request."}
           showInput={true}
           defaultCount={8}
           isRadio

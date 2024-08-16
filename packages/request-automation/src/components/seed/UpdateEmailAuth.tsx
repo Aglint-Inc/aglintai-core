@@ -70,7 +70,7 @@ const UpdateEmailAuth = () => {
 
   return (
     <div>
-      <h5>Users with Emails Not Matching the Constant Emails:</h5>
+      <h5>Users calander not conneted:</h5>
       {emailsToUpdate?.length === 0 ? (
         <p>No users to update.</p>
       ) : (
