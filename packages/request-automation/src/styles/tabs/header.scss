@@ -1,0 +1,30 @@
+#header {
+  span.tab-btn {
+    cursor: pointer;
+    border-radius: 4px;
+    color: rgb(70, 70, 70);
+    padding: 2px 10px;
+  }
+  .drawer-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Adjust spacing between the warning text and the info icon */
+  }
+
+  span.tab-btn.active {
+    background-color: rgb(218, 218, 218);
+  }
+
+  .flex-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  margin-bottom: 16px;
+  color: var(--error-a11);
+
+  strong {
+    color: var(--error-a11);
+  }
+}

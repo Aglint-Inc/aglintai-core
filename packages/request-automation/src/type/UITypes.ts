@@ -9,3 +9,5 @@ export type radioBtnOptions = {
   name: string;
   value: string;
 };
+
+export type tabs = "seed" | "demo" | "clear";
