@@ -1,5 +1,10 @@
-{
-  /*import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useContext,
+} from "react";
 
 // Define types for the context values
 interface AppContextType {
@@ -13,14 +18,17 @@ interface AppContextType {
   userId: string | null;
 }
 
-// Create context with default values
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Define types for the provider props
 interface AppProviderProps {
   children: ReactNode;
 }
-
+declare global {
+  // eslint-disable-next-line no-unused-vars
+  interface Window {
+    supabase: any;
+  }
+}
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [applicationIds, setApplicationIds] = useState<number[]>([]);
   const [requestIds, setRequestIds] = useState<number[]>([]);
@@ -31,7 +39,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const supabase = window.supabase;
 
   useEffect(() => {
-    // Function to retrieve and set the Supabase session
     async function getSupabaseSession() {
       const { data, error } = await supabase.auth.getSession();
 
@@ -41,25 +48,22 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           error.message
         );
       } else if (data?.session) {
-        setSession(data.session); // Save session to state
+        setSession(data.session);
         const currentUserId = data.session.user.id;
-        setUserId(currentUserId); // Set user_id in state
-        console.log("Session ID:", currentUserId); // Log the session ID
-        fetchRecruiterInfo(currentUserId); // Fetch recruiter info after session is retrieved
+        setUserId(currentUserId);
+        fetchRecruiterInfo(currentUserId);
       } else {
         console.error("Session not found");
       }
     }
 
-    // Function to check relation and fetch recruiter info and company name
     async function fetchRecruiterInfo(user_id: string) {
       try {
-        // Query the recruiter_relation table to get recruiter_id
         const { data: relationData, error: relationError } = await supabase
           .from("recruiter_relation")
           .select("recruiter_id")
           .eq("user_id", user_id)
-          .single(); // Assuming there is only one relation per user_id
+          .single();
 
         if (relationError) {
           throw new Error(relationError.message);
@@ -67,9 +71,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
         if (relationData) {
           const recruiter_id = relationData.recruiter_id;
-          setRecruiterId(recruiter_id); // Set recruiter_id in state
+          setRecruiterId(recruiter_id);
 
-          // Query the recruiter table to get the company name
           const { data: recruiterData, error: recruiterError } = await supabase
             .from("recruiter")
             .select("name")
@@ -81,12 +84,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           }
 
           if (recruiterData) {
-            setCompanyName(recruiterData.name); // Set the company name in state
+            setCompanyName(recruiterData.name);
           } else {
-            setCompanyName(null); // No recruiter found
+            setCompanyName(null);
           }
         } else {
-          setCompanyName(null); // No relation found
+          setCompanyName(null);
         }
       } catch (error) {
         console.error(
@@ -95,8 +98,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         );
       }
     }
-
-    // Call the session retrieval function when the component mounts
     getSupabaseSession();
   }, []);
 
@@ -108,14 +109,20 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         requestIds,
         setRequestIds,
         session,
-        companyName, // Provide companyName in the context
-        recruiterId, // Provide recruiter_id in the context
-        userId, // Provide user_id in the context
+        companyName,
+        recruiterId,
+        userId,
       }}
     >
       {children}
     </AppContext.Provider>
   );
+};
+
+export const useAppContext = () => {
+  const value = useContext(AppContext);
+  if (!value) throw new Error("Tour Provider not found");
+  return value;
 };
 
 // import React, { createContext, useState, useEffect } from "react";
@@ -215,7 +222,3 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 //     </AppContext.Provider>
 //   );
 // };
-
-
-*/
-}

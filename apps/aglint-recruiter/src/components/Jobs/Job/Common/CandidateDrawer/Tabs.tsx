@@ -15,6 +15,7 @@ import {
 } from './Common/ActionsProvider';
 
 const allTabs: ApplicationStore['tab'][] = [
+  'Resume',
   'Details',
   'Screening',
   'Assessment',
@@ -62,6 +63,7 @@ const AllTabs = memo(() => {
     [id in ApplicationStore['tab']]: number | null;
   } = useMemo(
     () => ({
+      Resume: null,
       Screening: null,
       Assessment: null,
       Details: null,

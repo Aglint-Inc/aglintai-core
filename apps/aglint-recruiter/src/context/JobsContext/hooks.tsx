@@ -23,6 +23,7 @@ export const getActiveSection = ({
   job: Pick<Job, 'phone_screen_enabled' | 'assessment'>;
   // eslint-disable-next-line no-unused-vars
 }): { [id in ApplicationStore['tab']]: boolean } => ({
+  Resume: true,
   Details: isScoringEnabled,
   Screening: !!job?.phone_screen_enabled && isScreeningEnabled,
   Assessment: !!job?.assessment && isAssessmentEnabled,

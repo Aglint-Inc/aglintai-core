@@ -422,7 +422,6 @@ function ModuleSettingComp({
                       />
                       <MuiNumberfield
                         width='80px'
-                        height='26px'
                         isMarginTop={false}
                         value={localModule.settings.noReverseShadow}
                         isDebounceEnable={false}
@@ -482,7 +481,6 @@ function ModuleSettingComp({
                       />
                       <MuiNumberfield
                         width='80px'
-                        height='26px'
                         isMarginTop={false}
                         value={localModule.settings.noShadow}
                         isDebounceEnable={false}

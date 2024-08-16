@@ -11,4 +11,5 @@ declare function ApplicantsTable(props: {
   propsDrag?: Types.Devlink.RuntimeProps;
   isDragVisible?: Types.Visibility.VisibilityConditions;
   isAssessmentVisible?: Types.Visibility.VisibilityConditions;
+  isResumeMatchVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

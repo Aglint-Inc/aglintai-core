@@ -2,6 +2,7 @@ import { CreateSlice } from '.';
 
 type Tab =
   | 'Details'
+  | 'Resume'
   | 'Screening'
   | 'Assessment'
   | 'Interview'
@@ -17,7 +18,7 @@ export type TabSlice = {
   initialTab: Tab;
 };
 
-const initialTab: Tab = 'Activity';
+const initialTab: Tab = 'Resume';
 
 export const createTabSlice: CreateSlice<TabSlice> = (set) => ({
   tab: initialTab,
