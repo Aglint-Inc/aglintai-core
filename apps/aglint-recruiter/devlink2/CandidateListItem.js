@@ -39,6 +39,7 @@ export function CandidateListItem({
   slotInterviewPipline,
   isAssessmentVisible = true,
   highlightType,
+  isResumeMatchVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -136,39 +137,41 @@ export function CandidateListItem({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(
-          _styles,
-          "cv-list-column-wrapper",
-          "items-v-center"
-        )}
-        tag="div"
-        table-column="resume-match"
-        {...onClickCandidate}
-      >
-        {isHighlighted ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-item-highlight")}
-            tag="div"
-            data-highlight-state={highlightType}
-          />
-        ) : null}
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-hover-bg")}
-          tag="div"
-        />
+      {isResumeMatchVisible ? (
         <_Builtin.Block
           className={_utils.cx(
             _styles,
-            "cv-list-column",
-            "resume",
-            "width-100"
+            "cv-list-column-wrapper",
+            "items-v-center"
           )}
           tag="div"
+          table-column="resume-match"
+          {...onClickCandidate}
         >
-          {slotResumeScore ?? <ResumeTag />}
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-item-highlight")}
+              tag="div"
+              data-highlight-state={highlightType}
+            />
+          ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-hover-bg")}
+            tag="div"
+          />
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "cv-list-column",
+              "resume",
+              "width-100"
+            )}
+            tag="div"
+          >
+            {slotResumeScore ?? <ResumeTag />}
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       {isInterviewVisible ? (
         <_Builtin.Block
           className={_utils.cx(
