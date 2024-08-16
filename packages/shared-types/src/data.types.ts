@@ -31,9 +31,6 @@ export type SocialsType = {
 export type RecruiterType = DatabaseTable["recruiter"];
 
 export type JobTypeDB = DatabaseTable["public_jobs"];
-export type JobAssistantChats = DatabaseTable["job_assiatan_chat"];
-export type JobAssistantChatMessages =
-  DatabaseTable["job_assiatan_chat_messages"];
 
 export type AglintCandidatesTypeDB = DatabaseTable["aglint_candidates"];
 
@@ -43,7 +40,6 @@ export type CandidateListTypeDB = DatabaseTable["candidate_list"];
 export type JobApplcationDB = DatabaseTable["applications"];
 
 export type RecruiterDB = DatabaseTable["recruiter"];
-export type RecruiterRelationsType = DatabaseTable["recruiter_relation"];
 
 export type JobType = Omit<JobTypeDB, "active_status"> & {
   active_status: StatusJobs | null;
@@ -182,13 +178,6 @@ export type PublicJobsType = DatabaseTable["public_jobs"];
 export type SupportTicketType = DatabaseTable["support_ticket"];
 
 export type SearchHistoryType = DatabaseTable["candidate_search_history"];
-
-export type GreenhouseRefDbType = DatabaseTable["greenhouse_reference"];
-
-export type GreenhouseType = Pick<
-  DatabaseTable["greenhouse_reference"],
-  "posting_id" | "application_id" | "greenhouse_id" | "public_job_id" | "resume"
->;
 
 export type OutreachEmailDbType = DatabaseTable["outreached_emails"];
 

@@ -29,6 +29,7 @@ import { LoadMax } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import SelectTime from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { updateMember } from '@/src/context/AuthContext/utils';
 import timeZones from '@/src/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
@@ -48,7 +49,6 @@ function Availibility({
   totalInterviewsThisWeek,
   interviewerDetailsRefetch,
   totalInterviewsToday,
-  handleMemberUpdate,
 }) {
   const [workingHours, setWorkingHours] = useState([]);
 
@@ -322,9 +322,11 @@ function Availibility({
         initialData={interviewerDetails?.scheduling_settings}
         companyKeywords={recruiter.scheduling_settings.schedulingKeyWords}
         updateSettings={(x) => {
-          return handleMemberUpdate({
-            user_id: interviewerDetails.user_id,
-            data: { scheduling_settings: x },
+          return updateMember({
+            data: {
+              user_id: interviewerDetails.user_id,
+              scheduling_settings: x,
+            },
           });
         }}
         isAvailability={false}
@@ -336,9 +338,11 @@ function Availibility({
       >
         <SideDrawerLarge
           isHeaderIconVisible={false}
-          onClickCancel={{onClick:()=> {
-            setEditDrawer(false);
-          },}}
+          onClickCancel={{
+            onClick: () => {
+              setEditDrawer(false);
+            },
+          }}
           drawerSize={'medium'}
           textDrawertitle={'Edit Availability'}
           slotButtons={

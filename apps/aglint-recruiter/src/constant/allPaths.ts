@@ -114,7 +114,6 @@ export const PATHS = [
 '/api/google/overview',
 '/api/google/overview-handler',
 '/api/greenhouse/batchsave',
-'/api/greenhouse/candidatesync',
 '/api/greenhouse/getCandidates',
 '/api/greenhouse/getPostings',
 '/api/greenhouse/saveApiKey',

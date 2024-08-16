@@ -35,7 +35,7 @@ function ImageUpload({
   const router = useRouter();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>();
-  const { userDetails } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
 
   image = image === null ? '/images/logo/company.png' : image;
   const setProfilePicture = async (file) => {
@@ -49,7 +49,7 @@ function ImageUpload({
     }
     const { data } = await supabase.storage
       .from(table)
-      .upload(`public/${userDetails?.user?.id}`, file, {
+      .upload(`public/${recruiterUser?.user_id}`, file, {
         cacheControl: '3600',
         upsert: true,
       });

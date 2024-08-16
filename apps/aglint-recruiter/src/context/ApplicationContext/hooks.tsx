@@ -9,7 +9,7 @@ import {
 import { diffApplication } from '@/src/queries/job-applications';
 
 import { useApplications } from '../ApplicationsContext';
-import { useAuthDetails } from '../AuthContext/AuthContext';
+import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 import { ApplicationStore, useApplicationStore } from './store';
 
 export const useApplicationContext = (
@@ -25,7 +25,7 @@ export const useApplicationContext = (
     isSchedulingEnabled,
     isScreeningEnabled,
     isScoringEnabled,
-  } = useAuthDetails();
+  } = useRolesAndPermissions();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
   const resumeReupload = useApplications()?.handleReuploadResume;

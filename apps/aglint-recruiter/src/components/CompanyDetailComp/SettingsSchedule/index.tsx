@@ -26,6 +26,7 @@ dayjs.extend(timezone);
 
 import { holidayType, schedulingSettingType } from '@aglint/shared-types';
 import { ArrowDropDownIcon } from '@mui/x-date-pickers';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
@@ -47,6 +48,7 @@ import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
 import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { emailTemplateQueries } from '@/src/queries/email-templates';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -59,8 +61,9 @@ import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
-import { settingsItems, settingSubNavItem } from './SubNav/utils';
-import WorkingHour from './SubNav/WorkingHour';
+import { settingsItems, settingSubNavItem } from './utils';
+import WorkingHour from './WorkingHour';
+
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -652,7 +655,7 @@ function SchedulingSettings({
                       max={dailyLmit.max}
                     />
                     <RadioGroup
-                    sx={{marginTop:'12px !important'}}
+                      sx={{ marginTop: '12px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -688,7 +691,7 @@ function SchedulingSettings({
                       max={weeklyLmit.max}
                     />
                     <RadioGroup
-                    sx={{marginTop:'12px !important'}}
+                      sx={{ marginTop: '12px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -1132,7 +1135,10 @@ export const TimezoneSelector = ({
 
 export function SettingsSubNabItem() {
   const router = useRouter();
-  const { emailTemplates } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
+  const emailTemplates = useQuery(
+    emailTemplateQueries.emailTemplates(recruiter.id),
+  );
   const [firstTemplate, setFirstTemplate] = useState(null);
   const { ifAllowed } = useRolesAndPermissions();
   //for select the first email template type
