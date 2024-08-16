@@ -11,3 +11,14 @@ export type radioBtnOptions = {
 };
 
 export type tabs = "seed" | "demo" | "clear";
+
+export type departmentType = {
+  name: string;
+  id: number;
+  recruiter_id: string;
+  remote_id: string;
+};
+
+export type companyDepartmentType = {
+  name: string;
+};
