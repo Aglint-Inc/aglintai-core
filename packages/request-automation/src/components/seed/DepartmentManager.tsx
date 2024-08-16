@@ -1,16 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AppContext } from "../AppContext";
+import React, { useState, useEffect } from "react";
+import { useAppContext } from "../../AppContext";
+import { companyDepartmentType, departmentType } from "../../type/UITypes";
+import { yellow } from "@mui/material/colors";
 
 const DepartmentManager = () => {
-  const { recruiterId: recruiter_id } = useContext(AppContext); // Destructuring and renaming recruiterId to recruiter_id
-  const supabase = window.supabase; // Supabase object from window
-  const [departments, setDepartments] = useState([]);
-  const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const [availableDepartments, setAvailableDepartments] = useState([]);
-  const [selectedNewDepartments, setSelectedNewDepartments] = useState([]);
+  const { recruiterId: recruiter_id } = useAppContext();
+  const supabase = window.supabase;
+  const [departments, setDepartments] = useState<departmentType[]>([]);
+  const [selectedDepartments, setSelectedDepartments] = useState<number[]>([]);
+  const [availableDepartments, setAvailableDepartments] = useState<
+    companyDepartmentType[]
+  >([]);
+  const [selectedNewDepartments, setSelectedNewDepartments] = useState<
+    string[]
+  >([]);
   const [message, setMessage] = useState("");
 
-  // Fetch departments from Supabase
   const fetchDepartments = async () => {
     const { data, error } = await supabase
       .from("departments")
@@ -19,6 +24,7 @@ const DepartmentManager = () => {
     if (error) {
       console.error("Error fetching departments:", error);
     } else {
+      console.log(data);
       setDepartments(data);
     }
   };
@@ -33,7 +39,7 @@ const DepartmentManager = () => {
         const response = await fetch(
           "https://aglintai-seed-data.vercel.app/company/departments.json"
         );
-        const data = await response.json();
+        const data: companyDepartmentType[] = await response.json();
 
         const existingNames = departments.map((dept) =>
           dept.name.toLowerCase()
@@ -51,7 +57,7 @@ const DepartmentManager = () => {
     fetchAvailableDepartments();
   }, [departments]);
 
-  const handleSelectDepartment = (id) => {
+  const handleSelectDepartment = (id: number) => {
     setSelectedDepartments((prevSelected) =>
       prevSelected.includes(id)
         ? prevSelected.filter((deptId) => deptId !== id)
@@ -59,7 +65,7 @@ const DepartmentManager = () => {
     );
   };
 
-  const handleSelectNewDepartment = (name) => {
+  const handleSelectNewDepartment = (name: any) => {
     setSelectedNewDepartments((prevSelected) =>
       prevSelected.includes(name)
         ? prevSelected.filter((deptName) => deptName !== name)
@@ -71,7 +77,6 @@ const DepartmentManager = () => {
     let success = true;
     const usedNewDepartments = [];
 
-    // Handle existing departments marked for "deletion" (try to update them with new departments)
     for (let id of selectedDepartments) {
       if (selectedNewDepartments.length > 0) {
         const newName = selectedNewDepartments.shift();
@@ -101,7 +106,6 @@ const DepartmentManager = () => {
       }
     }
 
-    // Handle adding new departments (those that were not used in the update)
     for (let name of selectedNewDepartments) {
       if (!usedNewDepartments.includes(name)) {
         const { error } = await supabase
@@ -117,40 +121,57 @@ const DepartmentManager = () => {
 
     if (success) {
       setMessage("Departments updated successfully.");
-      setTimeout(() => setMessage(""), 3000); // Clear message after 3 seconds
+      setTimeout(() => setMessage(""), 3000);
       setSelectedDepartments([]);
       setSelectedNewDepartments([]);
-      fetchDepartments(); // Refresh the existing departments list
+      fetchDepartments();
     }
   };
 
   return (
-    <div style={overlayStyle}>
-      <div style={containerStyle}>
-        {/* Existing Departments Column */}
-        <div style={columnStyle}>
+    <div>
+      <div style={{ display: "flex", gap: "20px" }}>
+        <div>
           <h3>Existing Departments</h3>
           {departments.map((department) => (
-            <div key={department.id}>
+            <div
+              key={department.id}
+              style={{
+                display: "flex",
+                gap: "5px",
+                alignItems: "center",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+              onClick={() => handleSelectDepartment(department.id)}
+            >
               <input
                 type="checkbox"
                 checked={selectedDepartments.includes(department.id)}
-                onChange={() => handleSelectDepartment(department.id)}
               />
               {department.name}
             </div>
           ))}
         </div>
 
-        {/* Available Departments Column */}
-        <div style={columnStyle}>
+        <div>
           <h3>Available Departments to Add</h3>
+
           {availableDepartments.map((department, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                gap: "5px",
+                alignItems: "center",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+              onClick={() => handleSelectNewDepartment(department.name)}
+            >
               <input
                 type="checkbox"
                 checked={selectedNewDepartments.includes(department.name)}
-                onChange={() => handleSelectNewDepartment(department.name)}
               />
               {department.name}
             </div>
@@ -159,6 +180,9 @@ const DepartmentManager = () => {
       </div>
       <button
         onClick={handleUpdate}
+        style={{
+          marginTop: "10px",
+        }}
         disabled={
           selectedDepartments.length === 0 &&
           selectedNewDepartments.length === 0
@@ -171,38 +195,6 @@ const DepartmentManager = () => {
       )}
     </div>
   );
-};
-
-const overlayStyle = {
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  width: "100%",
-  height: "50%",
-  backgroundColor: "rgba(0, 0, 0, 0.8)",
-  color: "white",
-  zIndex: 1000,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const containerStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  width: "90%",
-  maxWidth: "1200px",
-  margin: "0 auto",
-  padding: "20px",
-  backgroundColor: "rgba(255, 255, 255, 0.1)",
-  borderRadius: "8px",
-};
-
-const columnStyle = {
-  flex: 1,
-  marginRight: "20px",
-  overflowY: "auto",
-  maxHeight: "80%",
 };
 
 export default DepartmentManager;
