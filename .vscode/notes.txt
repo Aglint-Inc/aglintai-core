@@ -1,0 +1,25 @@
+triggers :
+
+selfScheduleReminder
+interviewStart
+sendAvailReqReminder
+interviewerConfirmation
+interviewEnd
+meetingDeclined
+meetingAccepted
+candidateBook
+onQualified
+onTrainingComplete
+onAvailReqAgent
+onReceivingAvailReq
+onSelfScheduleReqAgent
+onRequestCancel
+onRequestReschedule
+
+
+interview_meeting
+request table
+acndidaet_avail
+interviwew_filter_json
+session_cancel
+sessn_relation
