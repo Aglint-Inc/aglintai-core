@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const trigger_to_exec =
       db_event_triggers[`${payload.operation_type}_${payload.table_name}`];
     if (trigger_to_exec) {
-      await trigger_to_exec(payload.old_data, payload.new_data);
+      await trigger_to_exec({ ...payload });
     } else {
       console.error('Missing', payload.operation_type, payload.table_name);
     }
