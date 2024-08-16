@@ -27,4 +27,23 @@
   strong {
     color: var(--error-a11);
   }
+  .info-display {
+    position: relative;
+    display: inline-block;
+
+    .i-btn {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .info-content {
+      position: absolute;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      z-index: 1;
+    }
+  }
 }

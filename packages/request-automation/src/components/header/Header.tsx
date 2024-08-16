@@ -1,7 +1,6 @@
 import React from "react";
-import InfoDisplay from "../InfoDisplay";
-import { clearRequestsLocalStorage } from "../../utils/localStorageFunctions";
 import { tabs } from "../../type/UITypes";
+import InfoDisplay from "./InfoDisplay";
 
 const Tabs: {
   name: string;

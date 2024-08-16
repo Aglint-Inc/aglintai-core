@@ -1,9 +1,7 @@
 import React, { useState, useRef } from "react";
 
-import { clearRequestsLocalStorage } from "./utils/localStorageFunctions";
-import InfoDisplay from "./components/InfoDisplay";
 import Demo from "./components/demo/Demo";
-import Header from "./components/common/Header";
+import Header from "./components/header/Header";
 import { tabs } from "./type/UITypes";
 import Seed from "./components/seed/Seed";
 import Clear from "./components/clear/Clear";
