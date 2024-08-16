@@ -11,12 +11,35 @@
   transform: translateY(100%);
   transition: transform 0.3s ease-in-out;
 
+  .clear-btn {
+    margin-left: 10px;
+    color: rgb(70, 70, 70);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px 10px;
+    background-color: rgb(193, 222, 231);
+  }
+  .clear-btn:hover {
+    background-color: rgb(184, 194, 206);
+  }
+  span.tab-btn {
+    cursor: alias;
+    border-radius: 4px;
+    color: rgb(70, 70, 70);
+    padding: 2px 10px;
+  }
+
+  span.tab-btn.active {
+    background-color: rgb(218, 218, 218);
+  }
+
   .drawer-header {
     margin-bottom: 16px;
     color: var(--error-a11);
-  }
-  .drawer-header strong {
-    color: var(--error-a11);
+
+    strong {
+      color: var(--error-a11);
+    }
   }
 
   &.open {

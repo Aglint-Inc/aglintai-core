@@ -14,7 +14,7 @@ import InfoDisplay from "./components/InfoDisplay";
 
 export const DrawerComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeDiv, setActiveDiv] = useState("demo"); // 'demo' or 'seed'
+  const [activeDiv, setActiveDiv] = useState<"demo" | "seed">("demo");
   const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
   const [loading, setLoading] = useState({
     btn1: false,
@@ -117,24 +117,19 @@ export const DrawerComponent = () => {
             </span>
             <span>
               <span
-                button-size-ghost="1"
-                color-ghost="neutral"
+                className={activeDiv === "demo" ? "tab-btn active" : "tab-btn"}
                 onClick={() => setActiveDiv("demo")}
               >
                 Demo
               </span>
               <span
-                button-color-soft="neutral"
-                button-size-ghost="1"
-                color-ghost="neutral"
+                className={activeDiv === "seed" ? "tab-btn active" : "tab-btn"}
                 onClick={() => setActiveDiv("seed")}
               >
                 Seed
               </span>
               <span
-                button-color-soft="neutral"
-                button-size-ghost="1"
-                color-ghost="neutral"
+                className={"clear-btn"}
                 onClick={() => {
                   clearRequestsLocalStorage("schedule_request");
                   clearRequestsLocalStorage("reschedule_request");
