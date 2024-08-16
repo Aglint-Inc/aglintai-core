@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DepartmentManager from "./DepartmentManager";
+import UpdateEmailAuth from "./UpdateEmailAuth";
 
 const navTabs: {
   name: string;
@@ -13,9 +14,13 @@ const navTabs: {
     name: "Email",
     value: "email",
   },
+  {
+    name: "Interview Type",
+    value: "interview_type",
+  },
 ];
 
-type seedTabs = "department" | "email";
+type seedTabs = "department" | "email" | "interview_type";
 
 function Seed() {
   const [tab, setTab] = useState<seedTabs>("department");
@@ -31,7 +36,11 @@ function Seed() {
           </span>
         ))}
       </div>
-      <div>{tab === "department" && <DepartmentManager />}</div>
+      <div>
+        {tab === "department" && <DepartmentManager />}
+        {tab === "email" && <UpdateEmailAuth />}
+        {/* {tab === "interview_type" && <AddInterviewModules />} */}
+      </div>
     </div>
   );
 }
