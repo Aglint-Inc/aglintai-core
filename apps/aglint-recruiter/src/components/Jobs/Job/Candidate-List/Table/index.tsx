@@ -5,6 +5,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
 import { SkeletonCandidateListItem } from '@/devlink2/SkeletonCandidateListItem';
 import { useApplications } from '@/src/context/ApplicationsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
 import { Loader } from '../../Common/CandidateDrawer/Common/Loader';
@@ -20,6 +21,8 @@ export const Table = memo(() => {
     handleSelectPrevApplication,
     handleSelectNextApplication,
   } = useApplications();
+
+  const { isScoringEnabled } = useRolesAndPermissions();
 
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
@@ -61,6 +64,7 @@ export const Table = memo(() => {
           }}
         >
           <ApplicantsTable
+            isResumeMatchVisible={isScoringEnabled}
             isAllChecked={false}
             isScreeningVisible={cascadeVisibilites.screening}
             isAssessmentVisible={cascadeVisibilites.assessment}

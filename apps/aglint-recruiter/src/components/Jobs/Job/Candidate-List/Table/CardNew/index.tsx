@@ -7,6 +7,7 @@ import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { Application } from '@/src/types/applications.types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -32,6 +33,8 @@ const ApplicationCard = memo(
         setChecklist,
       }),
     );
+
+    const { isScoringEnabled } = useRolesAndPermissions();
 
     const { application_id } = useApplicationStore(({ drawer }) => drawer);
 
@@ -102,6 +105,7 @@ const ApplicationCard = memo(
     return (
       <OptimisticWrapper loading={applicationLoading}>
         <CandidateListItem
+          isResumeMatchVisible={isScoringEnabled}
           onClickCandidate={{
             onClick: () => handleOpen({ application_id: application.id }),
           }}
