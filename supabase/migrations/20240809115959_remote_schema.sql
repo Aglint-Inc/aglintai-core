@@ -109,8 +109,8 @@ BEGIN
     UPDATE workflow_action_logs
     SET status = 'stopped'::workflow_cron_run_status
     WHERE status = 'not_started' 
-      AND related_table = 'candidate_request_availability'::workflow_cron_trigger_tables 
-      AND related_table_pkey = NEW.id;
+    AND related_table = 'candidate_request_availability'::workflow_cron_trigger_tables 
+    AND related_table_pkey = NEW.id;
 
     -- Retrieve application job ID
     SELECT applications.job_id INTO app_job_id

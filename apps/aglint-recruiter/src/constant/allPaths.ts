@@ -57,6 +57,7 @@ export const PATHS = [
 '/api/candidatedb/save-emails',
 '/api/candidatedb/search',
 '/api/checkstatus',
+'/api/db-events',
 '/api/decryptApiKey',
 '/api/dns/lookup',
 '/api/email-outreach/get-accesstoken',
