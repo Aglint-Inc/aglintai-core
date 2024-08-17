@@ -486,5 +486,3 @@ create or replace view "public"."application_view" as  WITH application_candidat
      LEFT JOIN application_logs_cte ON ((application_logs_cte.id = application_candidate_cte.id)))
      LEFT JOIN application_latest_activity_cte ON ((application_latest_activity_cte.application_id = application_candidate_cte.id)));
 
-
-
