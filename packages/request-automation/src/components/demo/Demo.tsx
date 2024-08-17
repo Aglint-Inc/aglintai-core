@@ -97,14 +97,14 @@ function Demo() {
       <div className="drawer-body">
         <Button
           isLoading={loading.btn1}
-          title={"Proceed request"}
+          title={"Proceed Request."}
           showInput={true}
           defaultCount={8}
           isRadio
           options={[
             { name: "Schedule", value: "schedule_request" },
-            { name: "Re-schedule", value: "reschedule_request" },
-            { name: "Cancel schedule", value: "cancel_schedule_request" },
+            { name: "ReSchedule", value: "reschedule_request" },
+            { name: "Cancel Schedule", value: "cancel_schedule_request" },
           ]}
           handleSubmit={({
             count,
@@ -184,7 +184,7 @@ function Demo() {
         />
       </div>
       <div className="console">
-        <h4>Console</h4>
+        <h5>Console</h5>
         <div>
           {consoleMessage.length
             ? consoleMessage.map((mes, i) => (
@@ -229,7 +229,7 @@ const Button = ({
 
   return (
     <div className="button-container">
-      <h4>{title}</h4>
+      <h5>{title}</h5>
 
       {isRadio &&
         options &&

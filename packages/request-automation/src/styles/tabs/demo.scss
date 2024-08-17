@@ -41,7 +41,7 @@
   .button-container {
     display: flex;
     flex-direction: column;
-    width: 155px;
+    width: 180px;
     gap: 5px;
   }
 
@@ -81,6 +81,7 @@
 
   .input-field {
     width: 40px;
+    font-size: 14px;
   }
   .input-field.mr-2 {
     margin-right: 10px;
@@ -95,7 +96,7 @@
   input[type="number"] {
     width: 100px;
     padding: 5px 10px;
-    font-size: 16px;
+    font-size: 14px;
     border: 2px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
