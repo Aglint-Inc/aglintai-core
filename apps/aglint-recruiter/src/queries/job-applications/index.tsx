@@ -14,6 +14,7 @@ import {
   useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/src/apiUtils/job/utils';
@@ -509,7 +510,10 @@ export const useMoveApplicationsToInterview = (
       mutationFn: async (
         args: DatabaseFunctions['move_to_interview']['Args'],
       ) => {
-        await supabase.rpc('move_to_interview', args).throwOnError();
+        // TODO: fix this if u can
+        await axios.post('/api/application/move-to-interview', {
+          ...args,
+        });
         await Promise.allSettled([
           revalidateJobQueries(payload.job_id),
           queryClient.refetchQueries(refetchQueries()),
