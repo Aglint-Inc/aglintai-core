@@ -11,7 +11,11 @@ export const onUpdateInterviewFilterJson = async ({
   old_data: DatabaseTable['interview_filter_json'];
 }) => {
   // when candidate schedule interview filter json
-  if (old_data.confirmed_on === null && new_data.confirmed_on.length > 0) {
+  if (
+    old_data.confirmed_on === null &&
+    new_data.confirmed_on &&
+    new_data.confirmed_on.length > 0
+  ) {
     await stopSelfScheduleReminder(new_data);
     await candConfirmSlot(new_data);
   }
