@@ -23,6 +23,7 @@ import { CustomModule } from "./interview_module";
 import { CustomRequest } from "./requests.types";
 import { CustomRequestProgress } from "./request_progress";
 import { CustomUserChat } from "./user_chat";
+import { CustomIntegrations } from "./integrations.types";
 
 type DatabaseTables = Database["public"]["Tables"];
 type DatabaseTableInsert<T extends keyof DatabaseTables> =
@@ -80,5 +81,6 @@ export type Tables = Custom<
     request: CustomRequest;
     request_progress: CustomRequestProgress;
     user_chat: CustomUserChat;
+    integrations: CustomIntegrations;
   }
 >;
