@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAppContext } from "../../AppContext";
+import { useAppContext } from "../../context/AppContext";
 import { companyDepartmentType, departmentType } from "../../type/UITypes";
 import { yellow } from "@mui/material/colors";
 
