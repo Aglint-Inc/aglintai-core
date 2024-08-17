@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/global.scss";
 import { DrawerComponent } from "./DrawerComponent";
-import { AppProvider } from "./AppContext";
+import { AppProvider } from "./context/AppContext";
 
 const appContainer = document.getElementById("aglilntai-test-suite-app");
 

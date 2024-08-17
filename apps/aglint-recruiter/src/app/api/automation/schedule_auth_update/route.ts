@@ -18,7 +18,7 @@ export async function POST(req) {
       const { error } = await supabaseAdmin
         .from('recruiter_user')
         .update({
-          email_auth:
+          schedule_auth:
             emailAuthData[getRandomValue(0, emailAuthData.length - 1)],
         })
         .eq('user_id', user.user_id);
