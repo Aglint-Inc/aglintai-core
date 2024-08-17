@@ -81,4 +81,14 @@ CREATE TRIGGER event_trigger_interview_filter_json_insert AFTER INSERT ON public
 
 CREATE TRIGGER event_trigger_interview_filter_json_update AFTER UPDATE ON public.interview_filter_json FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
 
+drop trigger if exists "after_update_interview_meeting" on "public"."interview_meeting";
+
+drop function if exists "public"."workflow_log_on_update_interview_meeting"();
+
+CREATE TRIGGER event_trigger_interview_meeting_delete AFTER DELETE ON public.interview_meeting FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
+
+CREATE TRIGGER event_trigger_interview_meeting_insert AFTER INSERT ON public.interview_meeting FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
+
+CREATE TRIGGER event_trigger_interview_meeting_update AFTER UPDATE ON public.interview_meeting FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
+
 

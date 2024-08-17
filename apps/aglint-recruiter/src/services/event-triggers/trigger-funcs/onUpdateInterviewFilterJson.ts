@@ -1,6 +1,7 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export const onUpdateInterviewFilterJson = async ({
   new_data,
@@ -10,7 +11,7 @@ export const onUpdateInterviewFilterJson = async ({
   old_data: DatabaseTable['interview_filter_json'];
 }) => {
   // when candidate schedule interview filter json
-  if (old_data.confirmed_on !== null && new_data.confirmed_on.length > 0) {
+  if (old_data.confirmed_on === null && new_data.confirmed_on.length > 0) {
     await stopSelfScheduleReminder(new_data);
     await candConfirmSlot(new_data);
   }
@@ -37,6 +38,7 @@ const candConfirmSlot = async (
   new_data: DatabaseTable['interview_filter_json'],
 ) => {
   try {
+    if (!new_data.request_id) return;
     supabaseWrap(
       await supabaseAdmin.from('request_progress').insert({
         event_type: 'CAND_CONFIRM_SLOT',
@@ -44,6 +46,14 @@ const candConfirmSlot = async (
         status: 'completed',
         is_progress_step: false,
       }),
+    );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'completed',
+        })
+        .eq('id', new_data.request_id),
     );
   } catch (err) {
     console.error('Failed to candConfirmSlot', err.message);

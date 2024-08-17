@@ -11,14 +11,14 @@ export const getWActions = async (job_id: string) => {
       .select()
       .eq('job_id', job_id),
   );
-  const company_actions = supabaseWrap(
+  const all_actions = supabaseWrap(
     await supabaseAdmin
       .from('workflow_action')
       .select('*,workflow(*)')
       .eq('workflow.recruiter_id', job.recruiter_id),
   );
   //job level
-  const job_level_actions = company_actions.filter(
+  const job_level_actions = all_actions.filter(
     (w_a) =>
       w_a.workflow.workflow_type === 'job' &&
       job_level_workflows.find(
@@ -27,7 +27,9 @@ export const getWActions = async (job_id: string) => {
   );
 
   return {
-    company_actions,
+    company_actions: all_actions.filter(
+      (act) => act.workflow.workflow_type === 'system',
+    ),
     job_level_actions,
   };
 };

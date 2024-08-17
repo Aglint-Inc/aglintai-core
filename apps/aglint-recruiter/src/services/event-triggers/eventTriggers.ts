@@ -2,12 +2,12 @@ import { onInsertCandidateRequestAvailability } from './trigger-funcs/onInsertCa
 import { onInsertInterviewFilterJson } from './trigger-funcs/onInsertInterviewFilterJson';
 import { onUpdateCandidateRequestAvailability } from './trigger-funcs/onUpdateCandidateRequestAvailability';
 import { onUpdateInterviewFilterJson } from './trigger-funcs/onUpdateInterviewFilterJson';
-import { onUpdateMeetingInterview } from './trigger-funcs/onUpdateMeetingInterview';
+import { onUpdateInterviewMeeting } from './trigger-funcs/onUpdateInterviewMeeting';
 import { onUpdateRequest } from './trigger-funcs/onUpdateRequest';
 
 type DBEvents = 'UPDATE' | 'INSERT' | 'DELETE';
 export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
-  UPDATE_interview_meeting: onUpdateMeetingInterview,
+  UPDATE_interview_meeting: onUpdateInterviewMeeting,
   UPDATE_request: onUpdateRequest,
   INSERT_interview_filter_json: onInsertInterviewFilterJson,
   UPDATE_interview_filter_json: onUpdateInterviewFilterJson,

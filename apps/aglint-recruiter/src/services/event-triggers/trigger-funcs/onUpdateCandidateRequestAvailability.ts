@@ -1,6 +1,7 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { isArray } from 'lodash';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -14,7 +15,11 @@ export const onUpdateCandidateRequestAvailability = async ({
   old_data: DatabaseTable['candidate_request_availability'];
 }) => {
   // candidate availability recieved
-  if (old_data.slots === null && new_data.slots.length > 0) {
+  if (
+    old_data.slots === null &&
+    isArray(new_data.slots) &&
+    new_data.slots.length > 0
+  ) {
     await updateRequestProgress(new_data);
     await pauseCandAvailabilityReminder(new_data.id);
     await triggerActions(new_data);
