@@ -1,0 +1,20 @@
+#seed {
+  height: fit-content;
+  display: flex;
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    span {
+      padding: 5px 10px;
+
+      &.active {
+        background: rgba(135, 207, 235, 0.5);
+      }
+      &:hover {
+        background: rgba(199, 222, 231, 0.5);
+      }
+    }
+  }
+}
