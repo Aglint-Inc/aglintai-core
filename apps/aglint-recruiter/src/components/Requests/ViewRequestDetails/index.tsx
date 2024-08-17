@@ -30,7 +30,8 @@ function ViewRequestDetails() {
   const { replace } = useRouterPro();
   const { query } = useRouter();
   const {
-    requests: { data: requestList, status, isPlaceholderData },
+    requests: { data: requestList, isPlaceholderData },
+    handleAsyncUpdateRequest,
   } = useRequests();
 
   const { setCollapse } = useRequest();
@@ -77,6 +78,14 @@ function ViewRequestDetails() {
     );
   }
 
+  async function handleProceed(id) {
+    await handleAsyncUpdateRequest({
+      payload: {
+        requestId: id,
+        requestPayload: { status: 'in_progress' },
+      },
+    });
+  }
   return (
     <>
       <PageLayout
@@ -130,7 +139,17 @@ function ViewRequestDetails() {
                 {Boolean(selectedRequest?.status === 'to_do') && (
                   <Stack width={'60%'}>
                     <AiTaskBanner
-                      slotButton={<ButtonSolid size={1} textButton='Proceed' />}
+                      slotButton={
+                        <ButtonSolid
+                          onClickButton={{
+                            onClick: () => {
+                              handleProceed(selectedRequest.id);
+                            },
+                          }}
+                          size={1}
+                          textButton='Proceed'
+                        />
+                      }
                     />
                   </Stack>
                 )}
