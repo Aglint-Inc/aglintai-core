@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppContext } from "../../context/AppContext";
-
-type emailAuthData = {
-  email: string;
-  expiry_date: string;
-  access_token: string;
-  refresh_token: string;
-};
+import { emailAuthData } from "../../type/UITypes";
 
 const UpdateEmailAuth = () => {
   const [emailsToUpdate, setEmailsToUpdate] = useState<
