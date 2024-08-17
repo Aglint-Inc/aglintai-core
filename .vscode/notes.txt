@@ -17,9 +17,7 @@ onRequestCancel
 onRequestReschedule
 
 
+
+candidate_request_avilablility
+interview_filter_json
 interview_meeting
-request table
-acndidaet_avail
-interviwew_filter_json
-session_cancel
-sessn_relation
