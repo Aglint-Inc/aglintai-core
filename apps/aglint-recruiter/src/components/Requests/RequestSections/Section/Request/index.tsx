@@ -32,7 +32,7 @@ export const Request = (
           border: '1px solid var(--neutral-5)',
         }}
       >
-        <Collapse in={collapse} collapsedSize={22}>
+        <Collapse in={collapse} collapsedSize={24}>
           <Stack gap={'10px'}>
             <RequestCard
               isNewBadgeVisible={props.is_new}

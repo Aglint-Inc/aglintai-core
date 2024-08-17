@@ -146,14 +146,22 @@ function ViewRequestDetails() {
                 slotPriority={
                   <GlobalBadge
                     showIcon={true}
-                    iconName={'flag_2'}
-                    color={'warning'}
+                    iconSize={4}
+                    iconName={
+                      selectedRequest?.priority === 'urgent' ? 'flag_2' : ''
+                    }
+                    color={
+                      selectedRequest?.priority === 'urgent'
+                        ? 'warning'
+                        : 'neutral'
+                    }
                     textBadge={capitalizeFirstLetter(selectedRequest?.priority)}
                   />
                 }
                 slotRequestType={
                   <GlobalBadge
                     showIcon={true}
+                    iconSize={4}
                     iconName={'calendar_add_on'}
                     color={'neutral'}
                     textBadge={capitalizeFirstLetter(selectedRequest?.type)}
