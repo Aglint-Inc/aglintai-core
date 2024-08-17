@@ -1,0 +1,28 @@
+.req-detail-right-sub-wrap {
+  display: flex;
+  padding: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+
+  border-radius: var(--radius-4);
+
+  background-color: var(--neutral-2);
+}
+
+.req-detail-tight-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.asigned-to-wraper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}

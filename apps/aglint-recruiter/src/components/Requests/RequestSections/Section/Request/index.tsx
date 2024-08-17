@@ -3,11 +3,13 @@ import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -19,6 +21,7 @@ export const Request = (
 ) => {
   const { collapse, setCollapse, isMutating } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
+  const { push } = useRouterPro();
   return (
     <OptimisticWrapper loading={isMutating}>
       <div
@@ -50,6 +53,22 @@ export const Request = (
               )}
               slotRightIcons={
                 <>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <ButtonSoft
+                      onClickButton={{
+                        onClick: () => {
+                          push('/requests/' + props.id);
+                        },
+                      }}
+                      textButton='View Details'
+                      size={1}
+                      color={'neutral'}
+                    />
+                  </div>
                   <GlobalBadge
                     size={1}
                     textBadge={capitalizeFirstLetter(props.status)}

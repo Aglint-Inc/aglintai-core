@@ -21,6 +21,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   const request_progress = useQuery(
     requestQueries.request_progress({ request_id, enabled: collapse }),
   );
+  console.log(request_id, request_progress.data);
 
   const handleUpdateRequest = useCallback(
     (
