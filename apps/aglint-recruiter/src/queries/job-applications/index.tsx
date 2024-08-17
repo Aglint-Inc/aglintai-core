@@ -509,7 +509,7 @@ export const useMoveApplicationsToInterview = (
       mutationFn: async (
         args: DatabaseFunctions['move_to_interview']['Args'],
       ) => {
-        await supabase.rpc('move_to_interview', args);
+        await supabase.rpc('move_to_interview', args).throwOnError();
         await Promise.allSettled([
           revalidateJobQueries(payload.job_id),
           queryClient.refetchQueries(refetchQueries()),
