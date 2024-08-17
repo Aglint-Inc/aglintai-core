@@ -14,11 +14,14 @@ drop function if exists "public"."workflow_log_on_insert_candidate_request_avail
 
 drop function if exists "public"."workflow_log_on_insert_interview_filter_json"();
 
+
 set check_function_bodies = off;
+
 
 CREATE OR REPLACE FUNCTION public.call_webhook_on_change()
  RETURNS trigger
  LANGUAGE plpgsql
+ SECURITY DEFINER
 AS $function$
 DECLARE
     url text;
@@ -92,3 +95,14 @@ CREATE TRIGGER event_trigger_interview_meeting_insert AFTER INSERT ON public.int
 CREATE TRIGGER event_trigger_interview_meeting_update AFTER UPDATE ON public.interview_meeting FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
 
 
+drop trigger if exists "workflow_on_update_request" on "public"."request";
+
+drop function if exists "public"."func_on_update_request"();
+
+CREATE TRIGGER event_trigger_request_update AFTER UPDATE ON public.request FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
+
+drop trigger if exists "workflow_log_on_update_interview_module_relation" on "public"."interview_module_relation";
+
+drop function if exists "public"."func_workflow_log_on_update_interview_module_relation"();
+
+CREATE TRIGGER event_trigger_interview_module_relation_update AFTER UPDATE ON public.interview_module_relation FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();

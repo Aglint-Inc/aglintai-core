@@ -17,7 +17,3 @@ onRequestCancel
 onRequestReschedule
 
 
-
-candidate_request_avilablility
-interview_filter_json
-interview_meeting

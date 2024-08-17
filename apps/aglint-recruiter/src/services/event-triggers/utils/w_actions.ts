@@ -33,3 +33,18 @@ export const getWActions = async (job_id: string) => {
     job_level_actions,
   };
 };
+
+export const getCompanyWActions = async (company_id: string) => {
+  const all_actions = supabaseWrap(
+    await supabaseAdmin
+      .from('workflow_action')
+      .select('*,workflow(*)')
+      .eq('workflow.recruiter_id', company_id),
+  );
+
+  return {
+    company_actions: all_actions.filter(
+      (act) => act.workflow.workflow_type === 'system',
+    ),
+  };
+};

@@ -3,6 +3,7 @@ import { onInsertInterviewFilterJson } from './trigger-funcs/onInsertInterviewFi
 import { onUpdateCandidateRequestAvailability } from './trigger-funcs/onUpdateCandidateRequestAvailability';
 import { onUpdateInterviewFilterJson } from './trigger-funcs/onUpdateInterviewFilterJson';
 import { onUpdateInterviewMeeting } from './trigger-funcs/onUpdateInterviewMeeting';
+import { onUpdateInterviewModuleRelation } from './trigger-funcs/onUpdateInterviewModuleRelation';
 import { onUpdateRequest } from './trigger-funcs/onUpdateRequest';
 
 type DBEvents = 'UPDATE' | 'INSERT' | 'DELETE';
@@ -13,4 +14,5 @@ export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
   UPDATE_interview_filter_json: onUpdateInterviewFilterJson,
   INSERT_candidate_request_availability: onInsertCandidateRequestAvailability,
   UPDATE_candidate_request_availability: onUpdateCandidateRequestAvailability,
+  UPDATE_interview_module_relation: onUpdateInterviewModuleRelation,
 };
