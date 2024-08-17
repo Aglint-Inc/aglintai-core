@@ -106,3 +106,9 @@ drop trigger if exists "workflow_log_on_update_interview_module_relation" on "pu
 drop function if exists "public"."func_workflow_log_on_update_interview_module_relation"();
 
 CREATE TRIGGER event_trigger_interview_module_relation_update AFTER UPDATE ON public.interview_module_relation FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();
+
+drop trigger if exists "workflow_log_on_update_interview_training_progress" on "public"."interview_training_progress";
+
+drop function if exists "public"."func_workflow_log_on_update_interview_training_progress"();
+
+CREATE TRIGGER event_trigger_interview_training_progress_update AFTER UPDATE ON public.interview_training_progress FOR EACH ROW EXECUTE FUNCTION call_webhook_on_change();

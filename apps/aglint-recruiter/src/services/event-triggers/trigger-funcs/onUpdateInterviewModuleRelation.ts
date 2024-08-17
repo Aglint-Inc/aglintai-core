@@ -44,7 +44,7 @@ const addToQueue = async (
         supabaseWrap(
           await supabaseAdmin.rpc('create_new_workflow_action_log', {
             base_time: base_time,
-            triggered_table: 'interview_meeting',
+            triggered_table: 'interview_module_relation',
             triggered_table_pkey: new_data.id,
             workflow_id: act.workflow_id,
             workflow_action_id: act.id,
