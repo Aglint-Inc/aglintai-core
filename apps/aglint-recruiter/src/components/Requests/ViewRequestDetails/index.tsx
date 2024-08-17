@@ -1,30 +1,30 @@
+import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
+import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
+import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
+import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { RequestDetail } from '@/devlink2/RequestDetail';
+import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import Loader from '../../Common/Loader';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
-import { Breadcrum } from '@/devlink2/Breadcrum';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import { GlobalBadge, Text, TextWithIcon } from '@/devlink2';
-import { getFullName } from '@aglint/shared-utils';
-import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { UserInfoTeam } from '@/devlink/UserInfoTeam';
-import Loader from '../../Common/Loader';
-import ScheduleIndividualCard from '../../Scheduling/CandidateDetails/FullSchedule/ScheduleIndividual';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -45,8 +45,6 @@ function ViewRequestDetails() {
     .find((request) => request?.id === query?.id);
 
   const candidateDetails = selectedRequest?.applications?.candidates;
-
-  console.log(selectedRequest);
 
   if (isPlaceholderData) {
     return (
@@ -197,7 +195,10 @@ function ViewRequestDetails() {
                     )}
                     textRole={selectedRequest?.assignee?.position}
                     slotImage={
-                      <Avatar src={selectedRequest?.assignee?.profile_image} />
+                      <Avatar
+                        variant='rounded'
+                        src={selectedRequest?.assignee?.profile_image}
+                      />
                     }
                   />
                 }
@@ -207,8 +208,19 @@ function ViewRequestDetails() {
                     onClickLinkedIn={() => {
                       window.open(candidateDetails?.linkedin, '_blank');
                     }}
-                    slotImage={<Avatar src={candidateDetails?.avatar} />}
-                    textDesgination={candidateDetails?.current_job_title}
+                    slotImage={
+                      <Avatar
+                        variant='rounded'
+                        src={candidateDetails?.avatar}
+                      />
+                    }
+                    textName={getFullName(
+                      candidateDetails?.first_name,
+                      candidateDetails?.last_name,
+                    )}
+                    textDesgination={capitalizeFirstLetter(
+                      candidateDetails?.current_job_title,
+                    )}
                     slotDetails={
                       <>
                         <TextWithIcon
@@ -236,13 +248,29 @@ function ViewRequestDetails() {
                           iconSize={4}
                           iconWeight={'medium'}
                         />
+                        <Stack width={'110px'}></Stack>
                       </>
                     }
-                    slotButton={<>asd</>}
-                    textName={getFullName(
-                      candidateDetails?.first_name,
-                      candidateDetails?.last_name,
-                    )}
+                    isButtonVisible={true}
+                    slotButton={
+                      <>
+                        <ButtonSoft
+                          onClickButton={{
+                            onClick: () => {
+                              window.open(
+                                `/scheduling/application/${candidateDetails?.id}`,
+                                '_blank',
+                              );
+                            },
+                          }}
+                          size={1}
+                          color={'neutral'}
+                          textButton={'View Profile'}
+                          isRightIcon={true}
+                          iconName='call_made'
+                        />
+                      </>
+                    }
                   />
                 }
                 slotRelatedJob={<>Not found</>}
