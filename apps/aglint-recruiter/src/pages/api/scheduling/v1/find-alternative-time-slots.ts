@@ -1,11 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { SessionCombinationRespType } from '@aglint/shared-types';
-import { schema_find_alternative_slots } from '@aglint/shared-utils';
+import {
+  schema_find_alternative_slots,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+//ignore current interviewer
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -15,20 +21,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         include_conflicting_slots: {},
       },
     });
-
-    const cand_schedule = new CandidatesSchedulingV2(parsed_body.api_options);
+    const [meeting_detail] = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_details')
+        .select()
+        .eq('session_id', parsed_body.session_id),
+    );
+    const meeting_ints = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_interviewers')
+        .select()
+        .eq('session_id', parsed_body.session_id),
+    );
+    const [module_rec] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_module')
+        .select()
+        .eq('id', meeting_detail.module_id),
+    );
+    const cand_schedule = new CandidatesSchedulingV2({});
     await cand_schedule.fetchDetails({
-      company_id: parsed_body.recruiter_id,
+      company_id: module_rec.recruiter_id,
       session_ids: [parsed_body.session_id],
       req_user_tz: parsed_body.user_tz,
-      end_date_str: userTzDayjs(parsed_body.slot_start_time)
+      end_date_str: userTzDayjs(meeting_detail.start_time)
         .tz(parsed_body.user_tz)
         .format('DD/MM/YYYY'),
-      start_date_str: userTzDayjs(parsed_body.slot_start_time)
+      start_date_str: userTzDayjs(meeting_detail.start_time)
         .tz(parsed_body.user_tz)
         .format('DD/MM/YYYY'),
     });
     cand_schedule.ignoreTrainee();
+    cand_schedule.ignoreInterviewers([
+      ...meeting_ints
+        .filter((i) => i.is_confirmed)
+        .map((i) => i.session_relation_id),
+      ...parsed_body.ignore_interviewers,
+    ]);
 
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
     if (!single_day_slots) {
@@ -36,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const slot_combs = single_day_slots.plans.map((comb) => comb.sessions[0]);
     const time_filtered_slots = slot_combs.filter((comb) =>
-      filter_slots(comb, parsed_body.slot_start_time, parsed_body.user_tz),
+      filter_slots(comb, meeting_detail.start_time, parsed_body.user_tz),
     );
 
     return res.status(200).json(time_filtered_slots);

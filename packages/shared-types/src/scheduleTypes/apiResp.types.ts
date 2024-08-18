@@ -3,48 +3,48 @@
  *@author Dileep BC
  */
 
-import { InterviewerSessionRelation, RecruiterUserType } from "../data.types";
-import { InterviewSessionApiType } from "./types";
+import { InterviewerSessionRelation, RecruiterUserType } from '../data.types';
+import { InterviewSessionApiType } from './types';
 
 export type CalConflictType =
-  | "soft"
-  | "ooo"
-  | "out_of_working_hours"
-  | "week_load_reached"
-  | "day_load_reached"
-  | "day_passed"
-  | "holiday"
-  | "day_off"
-  | "free_time"
-  | "recruiting_blocks"
-  | "cal_event";
+  | 'soft'
+  | 'ooo'
+  | 'out_of_working_hours'
+  | 'week_load_reached'
+  | 'day_load_reached'
+  | 'day_passed'
+  | 'holiday'
+  | 'day_off'
+  | 'free_time'
+  | 'recruiting_blocks'
+  | 'cal_event';
 export type ConflictReason = {
   conflict_type:
     | CalConflictType
-    | "calender_diconnected"
-    | "interviewer_paused";
+    | 'calender_diconnected'
+    | 'interviewer_paused';
   conflict_event: string;
   start_time: string;
   end_time: string;
 };
 export type InterviwerConflicts = {
-  interviewer: Pick<SessionInterviewerApiRespType, "user_id">;
+  interviewer: Pick<SessionInterviewerApiRespType, 'user_id'>;
   conflict_reasons: ConflictReason[];
 };
 
 export type InterviewSessionApiRespType = Pick<
   InterviewSessionApiType,
-  | "session_id"
-  | "meeting_id"
-  | "session_name"
-  | "duration"
-  | "schedule_type"
-  | "break_duration"
-  | "session_type"
-  | "session_order"
-  | "interviewer_cnt"
-  | "location"
-  | "module_name"
+  | 'session_id'
+  | 'meeting_id'
+  | 'session_name'
+  | 'duration'
+  | 'schedule_type'
+  | 'break_duration'
+  | 'session_type'
+  | 'session_order'
+  | 'interviewer_cnt'
+  | 'location'
+  | 'module_name'
 > & {
   qualifiedIntervs: SessionInterviewerApiRespType[];
   trainingIntervs: SessionInterviewerApiRespType[];
@@ -57,21 +57,21 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
   end_time: string;
   ints_conflicts: InterviwerConflicts[];
   is_conflict: boolean;
-  conflict_types: ConflictReason["conflict_type"][];
+  conflict_types: ConflictReason['conflict_type'][];
 };
 
 export type SessionInterviewerApiRespType = Pick<
   RecruiterUserType,
-  | "first_name"
-  | "last_name"
-  | "email"
-  | "profile_image"
-  | "user_id"
-  | "position"
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'profile_image'
+  | 'user_id'
+  | 'position'
 > &
   Pick<
     InterviewerSessionRelation,
-    "training_type" | "interviewer_type" | "interview_module_relation_id"
+    'training_type' | 'interviewer_type' | 'interview_module_relation_id' | 'id'
   > & { int_tz: string };
 // planCombination reponse types
 export type PlanCombinationRespType = {

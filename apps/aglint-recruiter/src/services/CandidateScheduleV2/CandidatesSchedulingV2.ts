@@ -211,13 +211,16 @@ export class CandidatesSchedulingV2 {
       (i) => i.interviewer_type !== 'training',
     );
   }
-  public ignoreInterviewer(inter_id: string) {
+  public ignoreInterviewers(sess_reln_ids: string[]) {
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
+      qualifiedIntervs: s.qualifiedIntervs.filter(
+        (i) => !sess_reln_ids.includes(i.id),
+      ),
       trainingIntervs: [],
     }));
     this.db_details.all_inters = this.db_details.all_inters.filter(
-      (i) => i.user_id !== inter_id,
+      (i) => !sess_reln_ids.includes(i.session_relation_id),
     );
   }
 

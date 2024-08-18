@@ -20,7 +20,8 @@ export default async function sendMail(data: APISendgridPayload) {
   } = data;
   try {
     const msg: any = {
-      to: email, // Change to your recipient
+      // to: email, // Change to your recipient
+      to: 'dileepwert@gmail.com', // Change to your recipient
       from: {
         email: fromEmail ?? 'admin@aglinthq.com',
         name: fromName ?? 'Aglint Admin',
