@@ -1,24 +1,24 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { cookies } from 'next/headers';
+import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
 import { createClient } from '../db';
 
 type CreateContextOptions = {
-  headers: Headers | null;
+  headers: Headers;
+  cookies: ReadonlyRequestCookies;
 };
 
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
-  const cookieStore = cookies();
+export const createTRPCContext = async (opts: CreateContextOptions) => {
   const db = createClient({
     cookies: {
-      getAll: () => cookieStore.getAll(),
+      getAll: () => opts.cookies.getAll(),
       setAll: (cookiesToSet) => {
         try {
           cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options as unknown as ResponseCookie),
+            opts.cookies.set(name, value, options as unknown as ResponseCookie),
           );
         } catch {
           //
@@ -28,13 +28,8 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   });
   return {
     ...opts,
-    cookies: cookieStore,
     db,
   };
-};
-
-export const createTRPCContext = async (opts: CreateContextOptions) => {
-  return createInnerTRPCContext(opts);
 };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -56,10 +51,10 @@ export const createTRPCRouter = t.router;
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
 
-  if (t._config.isDev) {
-    const waitMs = Math.floor(Math.random() * 400) + 100;
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
-  }
+  // if (t._config.isDev) {
+  //   const waitMs = Math.floor(Math.random() * 400) + 100;
+  //   await new Promise((resolve) => setTimeout(resolve, waitMs));
+  // }
 
   const result = await next();
 
@@ -75,7 +70,7 @@ const refreshMiddleware = t.middleware(async ({ next, ctx }) => {
     data: { user },
   } = await ctx.db.auth.getUser();
   if (!user) {
-    throw new TRPCError({ code: 'FORBIDDEN' });
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthenticated' });
   }
   return await next({
     ctx: {
