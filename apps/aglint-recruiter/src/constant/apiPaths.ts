@@ -6,7 +6,6 @@ export const API_PATHS = [
 '/api/ai/create-embeddings',
 '/api/ai/gpt3-5-turbo',
 '/api/ai/queryToJson',
-'/api/application/move-to-interview',
 '/api/ashby/batchsave',
 '/api/ashby/createapplication',
 '/api/ashby/cron',
