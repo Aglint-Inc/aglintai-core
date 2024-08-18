@@ -63,7 +63,12 @@ export const schema_verify_interviewer_selected_slots = v.object({
 export const schema_find_alternative_slots = v.object({
   session_id: v.string(),
   user_tz: v.string(),
-  ignore_interviewers: v.optional(v.array(v.string()), []),
+  ignore_int_session_ids: v.optional(v.array(v.string()), []),
+});
+
+export const schema_update_meeting_ints = v.object({
+  session_id: v.string(),
+  new_ints_session_reln_id: v.array(v.string()),
 });
 
 export const schema_troubleshoot = v.object({

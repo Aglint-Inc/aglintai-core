@@ -53,7 +53,9 @@ export class CandidatesSchedulingV2 {
     // scheduling_options_schema;
     const parsed_api_options = v.parse(scheduling_options_schema, {
       ...(_api_options ?? {}),
-      include_conflicting_slots: _api_options?.include_conflicting_slots ?? {},
+      include_conflicting_slots: {
+        ...(_api_options?.include_conflicting_slots ?? {}),
+      },
     });
     this.api_options = { ...parsed_api_options };
     this.intervs_details_map = new Map();

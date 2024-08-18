@@ -16,6 +16,7 @@ import {
   phone_agent_self_schedule_schema,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
+  schema_find_alternative_slots,
   schema_find_availability_payload,
   schema_find_interview_slot,
   schema_find_slots_date_range,
@@ -39,12 +40,6 @@ export type APIFindAltenativeTimeSlot = {
   user_tz: string;
   ignore_interviewer: string;
   api_options?: APIOptions;
-};
-
-export type APIUpdateMeetingInterviewers = {
-  meeting_id: string;
-  replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
-  candidate_email: string;
 };
 
 export type APIFindAltenativeTimeSlotResponse = SessionCombinationRespType[];
@@ -172,4 +167,8 @@ export type APIPhoneAgent = v.InferOutput<
 
 export type APIEmailAgentPayload = v.InferOutput<
   typeof email_agent_self_schedule_schema
+>;
+
+export type APIUpdateMeetingInterviewers = v.InferInput<
+  typeof schema_find_alternative_slots
 >;

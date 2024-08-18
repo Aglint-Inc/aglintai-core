@@ -17,9 +17,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed_body = v.parse(schema_find_alternative_slots, {
       ...req.body,
-      options: req.body.options || {
-        include_conflicting_slots: {},
-      },
     });
     const [meeting_detail] = supabaseWrap(
       await supabaseAdmin
@@ -39,7 +36,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select()
         .eq('id', meeting_detail.module_id),
     );
-    const cand_schedule = new CandidatesSchedulingV2({});
+    const cand_schedule = new CandidatesSchedulingV2({
+      return_empty_slots_err: true,
+      include_conflicting_slots: {
+        day_off: true,
+        holiday: true,
+        interviewer_pause: true,
+        interviewers_load: true,
+        out_of_office: true,
+        out_of_working_hrs: true,
+        show_soft_conflicts: true,
+        show_conflicts_events: true,
+        calender_not_connected: true,
+      },
+    });
     await cand_schedule.fetchDetails({
       company_id: module_rec.recruiter_id,
       session_ids: [parsed_body.session_id],
@@ -51,13 +61,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .tz(parsed_body.user_tz)
         .format('DD/MM/YYYY'),
     });
-    cand_schedule.ignoreTrainee();
-    cand_schedule.ignoreInterviewers([
+    const all_ignored_ints = [
       ...meeting_ints
         .filter((i) => i.is_confirmed)
         .map((i) => i.session_relation_id),
-      ...parsed_body.ignore_interviewers,
-    ]);
+      ...parsed_body.ignore_int_session_ids,
+    ];
+    cand_schedule.ignoreTrainee();
+    cand_schedule.ignoreInterviewers(all_ignored_ints);
 
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
     if (!single_day_slots) {

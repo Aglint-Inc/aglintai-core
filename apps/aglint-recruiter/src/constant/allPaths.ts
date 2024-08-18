@@ -210,7 +210,7 @@ export const PATHS = [
 '/api/scheduling/v1/find_slots_date_range',
 '/api/scheduling/v1/get-candidate-selected-slots',
 '/api/scheduling/v1/update-calender-event-status',
-'/api/scheduling/v1/update_meeting_interviewers',
+'/api/scheduling/v1/update-meeting-interviewers',
 '/api/scheduling/v1/verify-recruiter-selected-slots',
 '/api/seed_calender',
 '/api/sendgrid',

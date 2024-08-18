@@ -4,29 +4,19 @@ import {
   CalendarEvent,
   ScheduleAuthType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
-import { has } from 'lodash';
+import { schema_update_meeting_ints, supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-const required_fields: (keyof APIUpdateMeetingInterviewers)[] = [
-  'meeting_id',
-  'replaced_inters',
-  'candidate_email',
-];
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        return res.status(400).send(`missing Field ${field}`);
-      }
+    const parsed_body = v.parse(schema_update_meeting_ints, {
+      ...req.body,
     });
-    const { replaced_inters } = req.body as APIUpdateMeetingInterviewers;
-
     const {
       company_cred_hash_str,
       meeting_organizer_auth,
@@ -42,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     await google_cal.authorizeUser();
     let updated_attendees_auth = session_ints_auth.filter((int) =>
-      replaced_inters.find((int2) => int2.user_id === int.user_id),
+      parsed_body.new_ints_session_reln_id.includes(int.session_relation_id),
     );
     const updated_event = await google_cal.updateEvent({
       id: (meeting_details.meeting_json as CalendarEvent).id,
@@ -69,11 +59,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }));
 
     await Promise.all(
-      updated_session_attendees.map(async (reln) =>
-        updateInterviewers({
-          id: reln.session_relation_id,
-          is_confirmed: reln.is_confirmed,
-        }),
+      updated_session_attendees.map(
+        async (reln) =>
+          await updateInterviewers({
+            id: reln.session_relation_id,
+            is_confirmed: reln.is_confirmed,
+          }),
       ),
     );
 
@@ -89,7 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
-  const { meeting_id } = payload;
+  const { session_id } = payload;
 
   const [meeting_details, session_intes] = await Promise.all([
     (async () => {
@@ -97,7 +88,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         await supabaseAdmin
           .from('meeting_details')
           .select()
-          .eq('id', meeting_id),
+          .eq('session_id', session_id),
       );
       const [rec_auth] = await supabaseWrap(
         await supabaseAdmin
@@ -117,13 +108,16 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         await supabaseAdmin
           .from('meeting_interviewers')
           .select()
-          .eq('meeting_id', meeting_id),
+          .eq('session_id', session_id),
       );
       return session_intes;
     })(),
   ]);
 
-  const meeting_organizer_auth: CalEventAttendeesAuthDetails = {
+  const meeting_organizer_auth: Omit<
+    CalEventAttendeesAuthDetails,
+    'session_relation_id'
+  > = {
     email: meeting_details.organizer_email,
     schedule_auth: meeting_details.schedule_auth,
     user_id: meeting_details.organizer_id,
@@ -140,13 +134,18 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         session_intes.map((i) => i.user_id),
       ),
   );
-  const session_ints_auth: CalEventAttendeesAuthDetails[] =
-    session_ints_auth_details.map((int) => ({
-      email: int.recruiter_user.email,
-      schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
-      user_id: int.recruiter_user.user_id,
-    }));
-  const hashed_comp_cred = session_ints_auth_details[0].recruiter.integrations.service_json;
+  const session_ints_auth: (CalEventAttendeesAuthDetails & {
+    session_relation_id: string;
+  })[] = session_ints_auth_details.map((int) => ({
+    email: int.recruiter_user.email,
+    schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
+    user_id: int.recruiter_user.user_id,
+    session_relation_id: session_intes.find(
+      (s_int) => s_int.user_id === int.recruiter_user.user_id,
+    ).session_relation_id,
+  }));
+  const hashed_comp_cred =
+    session_ints_auth_details[0].recruiter.integrations.service_json;
 
   return {
     company_cred_hash_str: hashed_comp_cred,

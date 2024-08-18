@@ -144,7 +144,7 @@ const mapInt = (i: SessionInterviewerType) => {
     training_type: i.training_type,
     user_id: i.user_id,
     position: i.position,
-    int_tz: i.int_tz,
+    int_tz: i.scheduling_settings.timeZone.tzCode,
   };
   return int;
 };
@@ -169,7 +169,6 @@ export const fetchAndVerifyDb = async (
   const db_resp = {
     comp_schedule_setting: (r[0].comp_schedule_setting ??
       null) as unknown as schedulingSettingType,
-
     int_meetings: (r[0].int_meetings ?? []) as InterviewerMeetingScheduled[],
     int_modules_data: (r[0].interview_modules ??
       []) as unknown as InterviewModuleType[][],
