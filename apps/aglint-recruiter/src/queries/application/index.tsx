@@ -4,10 +4,10 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import axios from 'axios';
 
+import axios from '@/src/client/axios';
 import { getActiveSection } from '@/src/context/JobsContext/hooks';
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { ApiInterviewStages } from '@/src/pages/api/scheduling/application/fetchinterviewstages';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueries } from '../job';
@@ -88,7 +88,7 @@ export const applicationQuery = {
     enabled,
   }: ToggleParams) =>
     queryOptions({
-      placeholderData: placeholderData?.interview,
+      placeholderData: placeholderData?.interview || [],
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -216,50 +216,23 @@ const getApplicationDetails = async ({
   };
 };
 
-const getApplicationInterview = async ({
+export const getApplicationInterview = async ({
   application_id,
-  job_id,
 }: Pick<Params, 'application_id' | 'job_id'>) => {
-  const sessions = (
-    (
-      await supabase
-        .from('application_view')
-        .select('meeting_details')
-        .eq('id', application_id)
-        .single()
-        .throwOnError()
-    )?.data?.meeting_details ?? []
-  ).sort((a, z) => a.session_order - z.session_order);
-  if (sessions.length) return sessions;
-  const plans: typeof sessions = (
-    (
-      (await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`))
-        ?.data as GetInterviewPlansType['respone']
-    )?.flatMap((item) => item.interview_session) ?? []
-  )
-    .sort((a, z) => a.session_order - z.session_order)
-    .map(
-      ({
-        session_duration,
-        name,
-        session_type,
-        schedule_type,
-        session_order,
-      }) => ({
-        session_duration,
-        session_name: name,
-        session_type,
-        schedule_type,
-        status: 'not_scheduled',
-        session_order,
-        date: null,
-        meeting_id: null,
-        session_id: null,
-        meeting_flow: null,
-      }),
-    );
-  return plans;
+  const res = await axios.call<ApiInterviewStages>(
+    'POST',
+    '/api/scheduling/application/fetchinterviewstages',
+    {
+      application_id,
+    },
+  );
+
+  return res.stages;
 };
+
+export type StageWithSessions = Awaited<
+  ReturnType<typeof getApplicationInterview>
+>;
 
 const getApplicationTasks = async ({
   application_id,

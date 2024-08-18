@@ -1,0 +1,34 @@
+.app-detail-header-wrap {
+  padding: var(--space-4);
+}
+
+.applcant-detail-body-scroll {
+  overflow: auto;
+  height: calc(100vh - 228px);
+}
+
+.body-content-aap-wrap {
+  display: flex;
+  max-width: 964px;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.bodyd-content-nav-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.slot-applicant-detail {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
