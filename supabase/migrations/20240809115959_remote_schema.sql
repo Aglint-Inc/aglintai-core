@@ -109,8 +109,8 @@ BEGIN
     UPDATE workflow_action_logs
     SET status = 'stopped'::workflow_cron_run_status
     WHERE status = 'not_started' 
-      AND related_table = 'candidate_request_availability'::workflow_cron_trigger_tables 
-      AND related_table_pkey = NEW.id;
+    AND related_table = 'candidate_request_availability'::workflow_cron_trigger_tables 
+    AND related_table_pkey = NEW.id;
 
     -- Retrieve application job ID
     SELECT applications.job_id INTO app_job_id
@@ -717,10 +717,14 @@ BEGIN
                 workflow.interval AS interval_minutes, 
                 workflow.phase AS phase, 
                 workflow.trigger AS trigger, 
-                json_build_object('schedule_id', i_s.id, 'meeeting_id',NEW.id,
+                json_build_object(
+                'schedule_id', i_s.id, 
+                'meeeting_id',NEW.id,
                 'payload',workflow_action.payload,
                 'application_id',i_s.application_id,
-                'target_api',workflow_action.target_api,'organizer_id',NEW.organizer_id,'session_id', (select i_m_s.id from interview_session i_m_s where i_m_s.meeting_id=NEW.id)) AS meta
+                'target_api',workflow_action.target_api,
+                'organizer_id',NEW.organizer_id,
+                'session_id', (select i_m_s.id from interview_session i_m_s where i_m_s.meeting_id=NEW.id)) AS meta
             FROM workflow
             LEFT JOIN workflow_action ON workflow_action.workflow_id = workflow.id
             LEFT JOIN interview_schedule i_s ON i_s.recruiter_id = workflow.recruiter_id

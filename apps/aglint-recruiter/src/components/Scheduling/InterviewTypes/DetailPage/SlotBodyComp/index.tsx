@@ -362,6 +362,9 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     queryFn: getConnectedJobs,
   });
 
+  let filteredConnectedJobs = connectedJobs?.length
+    ? connectedJobs.filter((job) => job?.id)
+    : [];
   if (isLoading) {
     return <Loader />;
   }
@@ -369,14 +372,14 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
     <>
       <Typography fontWeight={500}>Connected Jobs</Typography>
       <Stack mt={2} spacing={1}>
-        {connectedJobs.length > 0 ? (
-          connectedJobs.map((job, i) => (
+        {filteredConnectedJobs.length > 0 ? (
+          filteredConnectedJobs.map((job, i) => (
             <WorkflowConnectedCard
               key={i}
               isLinkOffVisible={false}
               role={capitalizeAll(job.job_title)}
               textLocation={'---'}
-              textRoleCategory={job.departments?.name || '---'}
+              textRoleCategory={job.departments.name || '---'}
               slotBadges={
                 job.status && (
                   <GlobalBadge
@@ -393,7 +396,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               }
               onClickJob={{
                 onClick: () =>
-                  router.push(ROUTES['/jobs/[id]']({ id: job?.id })),
+                  router.push(ROUTES['/jobs/[id]']({ id: job.id })),
               }}
             />
           ))

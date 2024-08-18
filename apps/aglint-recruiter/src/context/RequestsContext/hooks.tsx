@@ -1,6 +1,4 @@
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { subscriptions } from '@/src/hooks/useRealtime';
@@ -83,18 +81,6 @@ export const useRequestsActions = () => {
     async (payload: Parameters<typeof asyncUpdateRequest>[0]) => {
       try {
         await asyncUpdateRequest(payload);
-        const [rec] = supabaseWrap(
-          await supabase
-            .from('workflow_action_logs')
-            .select('id')
-            .eq('meta->>request_id', payload.payload.requestId),
-          false,
-        );
-        if (rec?.id) {
-          await axios.post(`/api/workflow-cron/execute`, {
-            action_id: rec.id,
-          });
-        }
       } catch {
         //
       }
