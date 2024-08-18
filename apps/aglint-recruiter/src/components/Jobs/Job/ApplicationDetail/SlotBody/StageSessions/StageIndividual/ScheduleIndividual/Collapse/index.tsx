@@ -1,18 +1,17 @@
 import { Collapse, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import InterviewerUserDetail from '@/src/components/Scheduling/Common/InterviewerUserDetail';
+import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 import { applicationQuery, StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { numberToText } from '@/src/utils/number/numberToText';
 
 import CancelBanners from './AdminCancelBanners';
-import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 
 function CollapseContent({
   currentSession,
@@ -54,7 +53,7 @@ function CollapseContent({
       {!!currentSession && (
         <Stack padding={'var(--space-4)'} spacing={'var(--space-4)'}>
           <>
-            {candidate.timezone && interview_meeting?.start_time && (
+            {detail.timezone && interview_meeting?.start_time && (
               <Stack spacing={'var(--space-2)'}>
                 <GlobalUserDetail
                   textTimeZone={
@@ -62,21 +61,21 @@ function CollapseContent({
                       ? formatTimeWithTimeZone({
                           start_time: interview_meeting.start_time,
                           end_time: interview_meeting.end_time,
-                          timeZone: candidate.timezone,
+                          timeZone: detail.timezone,
                         })
                       : '--'
                   }
-                  isRoleVisible={Boolean(candidate.currentJobTitle)}
+                  isRoleVisible={Boolean(detail.current_job_title)}
                   slotRole={
                     <TextWithIcon
                       fontWeight={'regular'}
-                      textContent={candidate.currentJobTitle}
+                      textContent={detail.current_job_title}
                       iconName={'work'}
                       iconSize={4}
                       color='neutral'
                     />
                   }
-                  textName={candidate.fullname}
+                  textName={detail.name}
                   isCandidateAvatarVisible={true}
                   textRole={''}
                 />
@@ -168,59 +167,8 @@ function CollapseContent({
               )}
             </Stack>
           </>
-          <>
-            {(interview_meeting?.status === 'waiting' ||
-              interview_meeting?.status === 'confirmed') && (
-              <Stack
-                direction={'row'}
-                spacing={'var(--space-2)'}
-                justifyContent={'flex-end'}
-              >
-                <ButtonSoft
-                  size={1}
-                  color={'neutral'}
-                  textButton={'Reschedule'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      if (
-                        currentSession.interview_session.session_type !==
-                        'debrief'
-                      ) {
-                        setSelectedSession(currentSession);
-                        const session_ids = currentSession.interview_session.id;
-                        setRescheduleSessionIds([session_ids]);
-                        setStepScheduling('reschedule');
-                      } else {
-                        setSelectedSessionIds([
-                          currentSession.interview_session.id,
-                        ]);
-                        setStepScheduling('pick_date');
-                        setScheduleFlow('debrief');
-                      }
-                      setIsScheduleNowOpen(true);
-                    },
-                  }}
-                />
-                <ButtonSoft
-                  size={1}
-                  color={'error'}
-                  textButton={'Cancel'}
-                  onClickButton={{
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      setSelectedSession(currentSession);
-                      setIndividualCancelOpen(true);
-                    },
-                  }}
-                />
-              </Stack>
-            )}
-          </>
-          <CancelBanners
-            cancelReasons={cancelReasons}
-            currentSession={currentSession}
-          />
+
+          <CancelBanners session={currentSession} />
         </Stack>
       )}
     </Collapse>

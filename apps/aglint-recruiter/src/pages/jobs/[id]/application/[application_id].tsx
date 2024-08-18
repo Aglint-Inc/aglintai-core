@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ApplicationDetail from '@/src/components/Jobs/Job/ApplicationDetail';
 
 function ApplicationDetailPage() {

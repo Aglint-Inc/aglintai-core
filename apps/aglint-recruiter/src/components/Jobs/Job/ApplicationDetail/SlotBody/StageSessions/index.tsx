@@ -1,5 +1,7 @@
-import { applicationQuery } from '@/src/queries/application';
 import { useQuery } from '@tanstack/react-query';
+
+import { applicationQuery } from '@/src/queries/application';
+
 import StageIndividual from './StageIndividual';
 
 function StageSessions({
@@ -29,6 +31,8 @@ function StageSessions({
                 key={stage.interview_plan.id}
                 stage={stage}
                 index={index}
+                application_id={application_id}
+                job_id={job_id}
               />
             );
           })}

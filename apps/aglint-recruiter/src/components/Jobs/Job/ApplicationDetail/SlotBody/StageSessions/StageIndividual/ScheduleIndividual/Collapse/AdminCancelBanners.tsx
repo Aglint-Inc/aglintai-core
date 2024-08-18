@@ -3,25 +3,15 @@ import { getFullName } from '@aglint/shared-utils';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-
-import {
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '../../../SchedulingDrawer/store';
-import {
-  SchedulingApplication,
-  setRescheduleSessionIds
-} from '../../../store';
+import { StageWithSessions } from '@/src/queries/application';
 
 function CancelBanners({
-  cancelReasons,
-  currentSession,
+  session,
 }: {
-  cancelReasons: SchedulingApplication['initialSessions'][0]['cancel_reasons'];
-  currentSession: SchedulingApplication['initialSessions'][0];
+  session: StageWithSessions[0]['sessions'][0];
 }) {
   const { recruiterUser } = useAuthDetails();
-  const adminCancel = cancelReasons?.filter(
+  const adminCancel = session.cancel_reasons?.filter(
     (reason) => reason.interview_session_cancel.cancel_user_id,
   );
 
@@ -50,11 +40,6 @@ function CancelBanners({
                   onClickButton={{
                     onClick: (e) => {
                       e.stopPropagation();
-                      setIsScheduleNowOpen(true);
-                      setRescheduleSessionIds([
-                        currentSession.interview_session.id,
-                      ]);
-                      setStepScheduling('reschedule');
                     },
                   }}
                 />
