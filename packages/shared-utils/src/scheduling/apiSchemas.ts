@@ -62,11 +62,8 @@ export const schema_verify_interviewer_selected_slots = v.object({
 
 export const schema_find_alternative_slots = v.object({
   session_id: v.string(),
-  recruiter_id: v.string(),
-  slot_start_time: v.string(),
   user_tz: v.string(),
-  ignore_interviewer: v.string(),
-  api_options: v.optional(scheduling_options_schema, {}),
+  ignore_interviewers: v.optional(v.array(v.string()), []),
 });
 
 export const schema_troubleshoot = v.object({
