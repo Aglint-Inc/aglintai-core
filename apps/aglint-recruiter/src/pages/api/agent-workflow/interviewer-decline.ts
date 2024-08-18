@@ -1,7 +1,7 @@
 import {
-  APIFindAltenativeTimeSlot,
   APIFindAltenativeTimeSlotResponse,
   APIUpdateMeetingInterviewers,
+  SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { addErrorHandlerWrap } from '@aglint/shared-utils';
 import axios from 'axios';
@@ -10,55 +10,39 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
   const {
-    listInterviewerPayload,
-    updatedMeetingPayload,
+    declined_int_sesn_reln_id,
+    session_id,
   }: {
-    listInterviewerPayload: APIFindAltenativeTimeSlot;
-    updatedMeetingPayload: APIUpdateMeetingInterviewers;
+    declined_int_sesn_reln_id: string;
+    session_id: string;
   } = req.body;
 
   try {
     // list interviewers
-    const { data: interviewerList } = (await axios.post(
+    const api_payload: APIFindAltenativeTimeSlotResponse = {
+      session_id,
+      ignore_int_session_ids: [declined_int_sesn_reln_id],
+      user_tz: 'Asia/Colombo',
+    };
+    const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find-alternative-time-slots`,
-      listInterviewerPayload,
-    )) as { data: APIFindAltenativeTimeSlotResponse };
+      api_payload,
+    );
 
-    if (!interviewerList || !interviewerList?.length) {
-      // inform to organizer
-      return res.status(200).end();
-    } else {
-      // change the interviewer
-      const bodyParams: APIUpdateMeetingInterviewers = {
-        meeting_id: interviewerList[0].meeting_id,
-        candidate_email: updatedMeetingPayload.candidate_email,
-        replaced_inters: [
-          {
-            email: interviewerList[0].qualifiedIntervs[0].email,
-            user_id: interviewerList[0].qualifiedIntervs[0].user_id,
-          },
-        ],
-      };
-
-      const { data: updatedInterviewer } = await axios.post(
-        '/api/scheduling/v1/update_meeting_interviewers',
-        bodyParams,
-      );
-      // eslint-disable-next-line no-console
-      console.log('updatedInterviewer', updatedInterviewer);
-      return res.status(200).end();
-    }
+    const alternate_slots: SessionCombinationRespType[] = data;
+    const filtered_slots: SessionCombinationRespType[] = alternate_slots.filter(
+      (slot) => {
+        slot.ints_conflicts;
+      },
+    );
   } catch (error) {
-    return error;
+    return res.status(200).json({
+      //
+    });
   }
 };
 
 export default addErrorHandlerWrap(handler);
-
-
-
-
-
 
 // const { data: interviewerList } = await axios.post(
 //   '/api/agent-workflow/interviewer-decline',

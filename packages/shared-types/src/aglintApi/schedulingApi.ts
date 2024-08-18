@@ -42,7 +42,9 @@ export type APIFindAltenativeTimeSlot = {
   api_options?: APIOptions;
 };
 
-export type APIFindAltenativeTimeSlotResponse = SessionCombinationRespType[];
+export type APIFindAltenativeTimeSlotResponse = v.InferInput<
+  typeof schema_find_alternative_slots
+>;
 
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
