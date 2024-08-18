@@ -19,9 +19,16 @@ function StageSessions({
     }),
   );
 
+  const { isLoading: isLoadingMeta } = useQuery(
+    applicationQuery.meta({
+      application_id,
+      job_id,
+    }),
+  );
+
   return (
     <>
-      {isLoadingSession ? (
+      {isLoadingSession || isLoadingMeta ? (
         <div>Loading...</div>
       ) : (
         <>

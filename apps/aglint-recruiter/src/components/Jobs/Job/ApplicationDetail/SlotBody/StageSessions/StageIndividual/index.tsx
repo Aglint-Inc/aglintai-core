@@ -9,6 +9,7 @@ import {
   setSelectedStageId,
   useApplicationDetailStore,
 } from '../../../store';
+import SideDrawerEdit from '../EditDrawer';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function StageIndividual({
@@ -36,6 +37,7 @@ function StageIndividual({
   );
   return (
     <>
+      <SideDrawerEdit />
       <ApplicantDetailStage
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} interviews`}

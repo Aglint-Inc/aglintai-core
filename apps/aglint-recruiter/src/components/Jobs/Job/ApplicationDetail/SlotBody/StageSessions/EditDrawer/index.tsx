@@ -7,7 +7,6 @@ import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import UITextField from '@/src/components/Common/UITextField';
 import { ScheduleTypeField } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 
-import { useSchedulingApplicationStore } from '../../store';
 import DebriedForm from './DebriefFrom';
 import SessionDuration from './DurationDropdown';
 import { useEditSession } from './hooks';
@@ -16,7 +15,7 @@ import ModuleDropdown from './ModuleDropdown';
 import { setEditSession, useEditSessionDrawerStore } from './store';
 
 function SideDrawerEdit() {
-  const { isEditOpen } = useSchedulingApplicationStore((state) => ({
+  const { isEditOpen } = useEditSessionDrawerStore((state) => ({
     isEditOpen: state.isEditOpen,
   }));
 

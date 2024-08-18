@@ -7,24 +7,20 @@ import {
 } from '@mui/material';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
+import { StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
-import { SchedulingApplication } from '../../store';
-import { ScheduleIndividualCardType } from './types';
-
 function BadgesRight({
-  interview_module,
-  interview_meeting,
-  cancelReasons,
-  users,
+  session,
 }: {
-  interview_module: SchedulingApplication['initialSessions'][0]['interview_module'];
-  interview_meeting: ScheduleIndividualCardType['interview_meeting'];
-  cancelReasons: ScheduleIndividualCardType['cancelReasons'];
-  users: SchedulingApplication['initialSessions'][0]['users'];
+  session: StageWithSessions[0]['sessions'][0];
 }) {
   const { data: allIntegrations } = useAllIntegrations();
-  let allUsers = users;
+  let allUsers = session.users;
+  const interview_meeting = session.interview_meeting;
+  const interview_module = session.interview_module;
+  const users = session.users;
+  const cancelReasons = session.cancel_reasons;
 
   if (
     interview_meeting?.status === 'confirmed' ||
@@ -171,17 +167,6 @@ function BadgesRight({
             )}
           </>
         )}
-
-      {/* {interview_meeting?.status !== 'cancelled' && // when cancelled it should not show
-        cancelRequests.length > 0 && (
-          <GlobalBadge
-            color={'error'}
-            iconName='event_busy'
-            textBadge={`${cancelRequests.length} Cancel Request`}
-            showIcon={true}
-            iconSize={2}
-          />
-        )} */}
 
       {rescheduleRequests.length > 0 &&
         interview_meeting?.status !== 'completed' &&

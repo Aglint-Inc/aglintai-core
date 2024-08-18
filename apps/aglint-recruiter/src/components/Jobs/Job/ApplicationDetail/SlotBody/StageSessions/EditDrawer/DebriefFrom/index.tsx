@@ -1,6 +1,6 @@
 import { MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
@@ -17,7 +17,6 @@ import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUser
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import { setMembers, useSchedulingApplicationStore } from '../../../store';
 import {
   setDebriefMembers,
   setEditSession,
@@ -27,7 +26,7 @@ import {
 
 function DebriedForm() {
   const { recruiter } = useAuthDetails();
-  const members = useSchedulingApplicationStore((state) => state.members);
+  const [members, setMembers] = useState([]);
   const { editSession, debriefMembers, errorValidation } =
     useEditSessionDrawerStore((state) => ({
       editSession: state.editSession,

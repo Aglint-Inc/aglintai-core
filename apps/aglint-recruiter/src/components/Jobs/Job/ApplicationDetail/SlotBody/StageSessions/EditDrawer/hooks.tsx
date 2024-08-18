@@ -1,5 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { applicationQuery } from '@/src/queries/application';
 import {
   EditInterviewSession,
   editInterviewSession,
@@ -8,23 +11,29 @@ import {
 } from '@/src/queries/interview-plans';
 import toast from '@/src/utils/toast';
 
-import { useGetScheduleApplication } from '../../queries/hooks';
-import { setIsEditOpen, useSchedulingApplicationStore } from '../../store';
 import {
   initialError,
   resetEditSessionDrawerState,
   setEditSession,
   setErrorValidation,
+  setIsEditOpen,
   setSaving,
   useEditSessionDrawerStore,
 } from './store';
 
 export const useEditSession = () => {
-  const { allSessions } = useSchedulingApplicationStore((state) => ({
-    allSessions: state.initialSessions,
-  }));
+  const router = useRouter();
+  const application_id = router.query.application_id as string;
+  const job_id = router.query.id as string;
+  const { data: stages, refetch } = useQuery(
+    applicationQuery.interview({
+      application_id,
+      job_id,
+      enabled: true,
+    }),
+  );
 
-  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const allSessions = stages.flatMap((stage) => stage.sessions);
 
   const {
     editSession,
@@ -119,7 +128,7 @@ export const useEditSession = () => {
         };
         await updateDebriefSession(updateDebriefParams);
       }
-      await fetchInterviewDataByApplication();
+      await refetch();
       handleClose();
     } catch (e) {
       toast.error('Error saving session. Please contact support.');

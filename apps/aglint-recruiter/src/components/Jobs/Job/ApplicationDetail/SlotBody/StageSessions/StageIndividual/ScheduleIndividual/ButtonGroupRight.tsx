@@ -9,6 +9,7 @@ import { StageWithSessions } from '@/src/queries/application';
 import {
   setDebriefMembers,
   setEditSession,
+  setIsEditOpen,
   setSelectedInterviewers,
   setTrainingInterviewers,
   setTrainingToggle,
