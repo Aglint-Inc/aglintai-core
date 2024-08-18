@@ -122,8 +122,8 @@ export default function ForgotPasswordComponent() {
                     onClickButton={{ onClick: handleSubmit }}
                   />
                   <ButtonGhost
-                    textButton='Back to login'
-                    size={2}
+                    textButton='Back to Login'
+                    size={1}
                     color={'neutral'}
                     onClickButton={{
                       onClick: () => {
