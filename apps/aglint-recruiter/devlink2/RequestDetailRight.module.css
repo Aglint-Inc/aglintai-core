@@ -1,5 +1,6 @@
 .req-detail-right-sub-wrap {
   display: flex;
+  width: 100%;
   padding: var(--space-3);
   flex-direction: column;
   flex-wrap: nowrap;
