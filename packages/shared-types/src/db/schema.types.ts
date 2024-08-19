@@ -6517,7 +6517,6 @@ export type Database = {
         | "interview_module_relation"
         | "interview_training_progress"
         | "request"
-        | "interview_session_cancel"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
         | "selfScheduleReminder"
