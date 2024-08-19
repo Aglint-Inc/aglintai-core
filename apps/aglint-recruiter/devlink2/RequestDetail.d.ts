@@ -6,4 +6,6 @@ declare function RequestDetail(props: {
   slotInterview?: Types.Devlink.Slot;
   slotNewTask?: Types.Devlink.Slot;
   slotRequestDetailRight?: Types.Devlink.Slot;
+  slotBannerReq?: Types.Devlink.Slot;
+  isBannerVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

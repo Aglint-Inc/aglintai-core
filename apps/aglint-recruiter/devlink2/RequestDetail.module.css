@@ -43,8 +43,6 @@
 
 .req-detail-right-wrap {
   width: 430px;
-  padding-top: var(--space-4);
-  padding-right: var(--space-4);
-  padding-bottom: var(--space-4);
+  padding: var(--space-4);
   flex: 0 0 auto;
 }

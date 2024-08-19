@@ -15,13 +15,16 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { RequestDetail } from '@/devlink2/RequestDetail';
 import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
+import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
+import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
@@ -45,6 +48,7 @@ function ViewRequestDetails() {
     .find((request) => request?.id === query?.id);
 
   const candidateDetails = selectedRequest?.applications?.candidates;
+  const jobDetails = selectedRequest?.applications?.public_jobs;
 
   if (isPlaceholderData) {
     return (
@@ -100,16 +104,40 @@ function ViewRequestDetails() {
             />
             <Breadcrum
               showArrow={true}
-              textName={selectedRequest?.title.replace(
-                '{{candidateName}}',
-                getFullName(
-                  selectedRequest?.applications?.candidates.first_name,
-                  selectedRequest?.applications?.candidates.last_name,
-                ),
-              )}
+              textName={
+                <Stack
+                  direction={'row'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  spacing={0.5}
+                >
+                  <Text
+                    size={3}
+                    content={`Schedule ${formatSessions(selectedRequest.request_relation.map(({ interview_session }) => interview_session.name))} interview with `}
+                  />
+                  <Text
+                    color={'accent'}
+                    highContrast={true}
+                    size={3}
+                    content={getFullName(
+                      candidateDetails.first_name,
+                      candidateDetails.last_name,
+                    )}
+                    styleProps={{
+                      onClick: () => {
+                        window.open(
+                          `/scheduling/application/${candidateDetails?.id}`,
+                          '_blank',
+                        );
+                      },
+                      style: { cursor: 'pointer' },
+                    }}
+                  />
+                </Stack>
+              }
             />
             <Breadcrum
-              showArrow={true}
+              showArrow={false}
               textName={
                 <GlobalBadge
                   size={1}
@@ -273,7 +301,29 @@ function ViewRequestDetails() {
                     }
                   />
                 }
-                slotRelatedJob={<>Not found</>}
+                slotRelatedJob={
+                  <Stack bgcolor={'white'}>
+                    <WorkflowConnectedCard
+                      isLinkOffVisible={false}
+                      textRoleCategory={
+                        capitalizeFirstLetter(jobDetails.departments?.name) ||
+                        '--'
+                      }
+                      role={jobDetails.job_title || '--'}
+                      textLocation={
+                        !jobDetails.office_locations?.city ||
+                        !jobDetails.office_locations?.country
+                          ? '--'
+                          : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
+                      }
+                      onClickJob={{
+                        onClick: () => {
+                          window.open(`/jobs/${jobDetails.id}`, '_blank');
+                        },
+                      }}
+                    />
+                  </Stack>
+                }
               />
             }
           />

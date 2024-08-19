@@ -12,6 +12,8 @@ export function RequestDetail({
   slotInterview,
   slotNewTask,
   slotRequestDetailRight,
+  slotBannerReq,
+  isBannerVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-detail-wrap")} tag="div">
@@ -19,6 +21,14 @@ export function RequestDetail({
         className={_utils.cx(_styles, "req-detail-left-wrap")}
         tag="div"
       >
+        {isBannerVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-banner-req-detail")}
+            tag="div"
+          >
+            {slotBannerReq}
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "req-detail-left-card")}
           tag="div"
