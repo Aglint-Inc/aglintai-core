@@ -1,0 +1,48 @@
+.request-detail-wrap {
+  display: flex;
+}
+
+.req-detail-left-wrap {
+  display: flex;
+  overflow: auto;
+  width: 100%;
+  padding-top: var(--space-4);
+  padding-right: var(--space-4);
+  padding-bottom: var(--space-4);
+  padding-left: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+  height: calc(100vh - 48px);
+}
+
+.req-detail-left-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-detail-left-interview {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.slot-req-detail-left-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.req-detail-right-wrap {
+  width: 430px;
+  padding: var(--space-4);
+  flex: 0 0 auto;
+}

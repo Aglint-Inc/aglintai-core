@@ -104,6 +104,7 @@ function SchedulingApplication() {
                   ) : tab === 'interview_plan' || !tab ? (
                     <RequestAvailabilityProvider>
                       <FullSchedule refetch={allActivities.refetch} />
+                      <></>
                     </RequestAvailabilityProvider>
                   ) : tab === 'feedback' ? (
                     <Stack>

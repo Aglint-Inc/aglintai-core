@@ -40,10 +40,10 @@ const Requests = () => {
         .length,
     );
   useEffect(() => {
-    if (!tab) {
+    if (!queryParams?.tab) {
       setQueryParams({ tab: 'dashboard' });
     }
-  }, [tab]);
+  }, [tab, queryParams]);
 
   useEffect(() => {
     document.querySelector('#outer-div') &&
