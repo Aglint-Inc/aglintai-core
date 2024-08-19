@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Location } from "./Location";
 import { Department } from "./Department";
 function Company() {
-  const [message, setMessage] = useState<string[]>(["ds"]);
+  const [message, setMessage] = useState<string[]>([]);
   return (
     <div
       style={{

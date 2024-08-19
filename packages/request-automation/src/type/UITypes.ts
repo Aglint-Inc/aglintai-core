@@ -13,7 +13,12 @@ export type radioBtnOptions = {
 export type tabs = "seed" | "demo" | "clear";
 
 //------------------------------------------------
-export type seedTabs = "company" | "email" | "interview_type" | "jobs";
+export type seedTabs =
+  | "company"
+  | "email"
+  | "interview_type"
+  | "jobs"
+  | "workflow";
 
 // -----------------------------------------------
 
