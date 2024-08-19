@@ -32,7 +32,6 @@ Interviewers.displayName = 'Interviewers';
 type Props = Pick<SchedulingAnalyticsContextType['interviewers'], 'data'>;
 
 const List = ({ data }: Props) => {
-  console.log(data, '🔥');
   return (
     <>
       {(data ?? []).map(({ user_id, name, accepted, declined }) => (

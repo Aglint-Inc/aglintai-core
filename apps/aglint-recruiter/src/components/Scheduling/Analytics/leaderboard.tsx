@@ -35,7 +35,6 @@ Leaderboard.displayName = 'Leaderboard';
 type Props = Pick<SchedulingAnalyticsContextType['leaderboard'], 'data'>;
 
 const List = ({ data }: Props) => {
-  console.log(data, '🔥');
   return (
     <>
       {(data ?? []).map(
