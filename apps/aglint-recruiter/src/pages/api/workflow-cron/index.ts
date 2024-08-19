@@ -63,6 +63,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           event_run_id: id,
         },
       );
+    } else if (meta.target_api.startsWith('onInterviewerDecline')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/interviewer-decline`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
     }
     await supabaseAdmin
       .from('workflow_action_logs')

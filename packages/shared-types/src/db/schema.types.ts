@@ -1852,6 +1852,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
+          request_id: string | null
           schedule_id: string | null
           session_id: string
           session_relation_id: string | null
@@ -1865,6 +1866,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id: string
           session_relation_id?: string | null
@@ -1878,6 +1880,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id?: string
           session_relation_id?: string | null
@@ -1904,6 +1907,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "interview_session_cancel_schedule_id_fkey"
@@ -6507,6 +6517,7 @@ export type Database = {
         | "interview_module_relation"
         | "interview_training_progress"
         | "request"
+        | "interview_session_cancel"
       workflow_phase: "before" | "after" | "now"
       workflow_trigger:
         | "selfScheduleReminder"

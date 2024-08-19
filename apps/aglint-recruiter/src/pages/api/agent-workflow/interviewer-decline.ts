@@ -1,4 +1,7 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import {
+  APICreateInterviewerRequest,
+  DatabaseEnums,
+} from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
@@ -16,10 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     if (target_api === 'onInterviewerDecline_agent_changeInterviewer') {
-      await changeInterviewer({
-        declined_int_sesn_reln_id,
-        session_id,
-      });
+      // await changeInterviewer({
+      //   declined_int_sesn_reln_id,
+      //   session_id,
+      // });
     }
     return res.status(200).send('ok');
   } catch (error) {

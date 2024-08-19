@@ -12,6 +12,7 @@ import {
   candidate_avail_request_schema,
   candidate_new_schedule_schema,
   candidate_self_schedule_request,
+  createInterviewerRequestSchema,
   email_agent_self_schedule_schema,
   phone_agent_self_schedule_schema,
   scheduling_options_schema,
@@ -174,4 +175,8 @@ export type APIEmailAgentPayload = v.InferOutput<
 
 export type APIUpdateMeetingInterviewers = v.InferInput<
   typeof schema_update_meeting_ints
+>;
+
+export type APICreateInterviewerRequest = v.InferInput<
+  typeof createInterviewerRequestSchema
 >;
