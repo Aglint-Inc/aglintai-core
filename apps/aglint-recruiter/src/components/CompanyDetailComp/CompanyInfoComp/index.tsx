@@ -133,7 +133,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           >
             <DeletePopup
               textDescription={
-                'Are u sure u want to delete this office location? This action cannot be undone.'
+                'Are you sure you want to delete this office location? This action is permanent.'
               }
               textTitle={'Delete Office Location'}
               isIcon={false}
