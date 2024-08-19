@@ -70,7 +70,9 @@ const useActions = () => {
 };
 
 const SchedulingAnalyticsContext =
-  createContext<ReturnType<typeof useActions>>(undefined);
+  createContext<SchedulingAnalyticsContextType>(undefined);
+
+export type SchedulingAnalyticsContextType = ReturnType<typeof useActions>;
 
 export const SchedulingAnalyticsContextProvider = memo(
   (props: PropsWithChildren) => {
