@@ -9,6 +9,7 @@ import { CustomGetRequestCountStatsNew } from "./get_request_count_stats_new.typ
 import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
 import { CustomMoveToInterview } from "./move_to_interview.types";
+import { CustomSchedulingAnalyticsCompletedInterviews } from "./scheduling_analytics_completed_interviews.types";
 import type { CustomUpdateDebriefSession } from "./update_debrief_session.types";
 
 type DatabaseFunctions = Database["public"]["Functions"];
@@ -55,5 +56,6 @@ export type Functions = Custom<
     create_session_requests: CustomCreateSessionRequests;
     get_request_count_stats: CustomGetRequestCountStats;
     get_request_count_stats_new: CustomGetRequestCountStatsNew;
+    scheduling_analytics_completed_interviews: CustomSchedulingAnalyticsCompletedInterviews;
   }
 >;
