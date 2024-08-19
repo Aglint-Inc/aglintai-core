@@ -33,6 +33,7 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
+  '/jobs/[id]/application/[application_id]': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -57,6 +58,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
+  '/requests/[id]': ['job_module'],
 
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
@@ -69,6 +71,7 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
+  '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],
@@ -153,8 +156,6 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
-  '/api/scheduling/v1/find-alternative-time-slots': ['authorized'],
-  '/api/scheduling/v1/update_meeting_interviewers': ['authorized'],
   '/api/integrations/greenhouse': ['authorized'],
   '/api/integrations/greenhouse/sync/interview_plans': ['manage_job'],
   '/api/integrations/greenhouse/sync/job': ['manage_job'],

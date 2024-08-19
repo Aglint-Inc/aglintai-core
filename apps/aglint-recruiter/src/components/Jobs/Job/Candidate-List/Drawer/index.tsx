@@ -4,15 +4,10 @@ import { useMemo } from 'react';
 import { Application } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
-import { useJob } from '@/src/context/JobContext';
 import { getActiveSection } from '@/src/context/JobsContext/hooks';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const Drawer = () => {
-  const {
-    interviewPlans: { data: interviewPlans },
-  } = useJob();
-
   const {
     isAssessmentEnabled,
     isSchedulingEnabled,
@@ -73,6 +68,7 @@ const Drawer = () => {
           task_count: placeholderData?.task_count,
           status: placeholderData?.status,
           candidate_id: placeholderData?.candidate_id,
+          timezone: placeholderData?.timezone,
         }
       : undefined;
 
@@ -81,48 +77,6 @@ const Drawer = () => {
   >[0]['placeholderData']['activity'] =
     placeholderData?.activity_count === 0 ? [] : undefined;
 
-  const tasks: Parameters<typeof Application>[0]['placeholderData']['tasks'] =
-    placeholderData?.activity_count === 0 ? [] : undefined;
-
-  const sessions: Parameters<
-    typeof Application
-  >[0]['placeholderData']['interview'] = useMemo(
-    () => placeholderData?.meeting_details ?? [],
-    [placeholderData?.meeting_details],
-  );
-
-  const plans: Parameters<
-    typeof Application
-  >[0]['placeholderData']['interview'] = useMemo(
-    () =>
-      sessions.length
-        ? []
-        : (interviewPlans?.flatMap((item) => item.interview_session) ?? [])
-            .sort((a, z) => a.session_order - z.session_order)
-            .map(
-              ({
-                id,
-                session_duration,
-                name,
-                session_type,
-                schedule_type,
-                session_order,
-                meeting_id,
-              }) => ({
-                session_duration,
-                session_name: name,
-                session_type,
-                schedule_type,
-                status: 'not_scheduled',
-                session_order,
-                meeting_id,
-                session_id: id,
-                meeting_flow: null,
-              }),
-            ),
-    [interviewPlans?.flatMap((item) => item.interview_session), sessions],
-  );
-
   return (
     <DrawerDev open={open} onClose={() => handlClose()} anchor='right'>
       {!!application_id && (
@@ -130,11 +84,10 @@ const Drawer = () => {
           application_id={application_id}
           job_id={job?.id}
           placeholderData={{
-            interview: [...sessions, ...plans],
+            interview: [],
             meta,
             tabs,
             activity,
-            tasks,
           }}
           showResumePreviewActions={true}
           navigation={{
@@ -171,7 +124,7 @@ const Drawer = () => {
                 <Application.Body.Details.Skills />
               </Application.Body.Details>
             }
-            interview={<Application.Body.Interview />}
+            interview={''}
           />
         </Application>
       )}

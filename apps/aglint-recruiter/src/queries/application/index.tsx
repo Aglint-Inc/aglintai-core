@@ -4,10 +4,10 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import axios from 'axios';
 
+import axios from '@/src/client/axios';
 import { getActiveSection } from '@/src/context/JobsContext/hooks';
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { ApiInterviewStages } from '@/src/pages/api/scheduling/application/fetchinterviewstages';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueries } from '../job';
@@ -81,14 +81,8 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
-  interview: ({
-    application_id,
-    job_id,
-    placeholderData,
-    enabled,
-  }: ToggleParams) =>
+  interview: ({ application_id, job_id, enabled }: ToggleParams) =>
     queryOptions({
-      placeholderData: placeholderData?.interview,
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -98,9 +92,8 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationInterview({ application_id, job_id }),
     }),
-  tasks: ({ application_id, job_id, enabled, placeholderData }: ToggleParams) =>
+  requests: ({ application_id, job_id, enabled }: ToggleParams) =>
     queryOptions({
-      placeholderData: placeholderData?.tasks,
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -108,7 +101,7 @@ export const applicationQuery = {
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'tasks',
       ],
-      queryFn: () => getApplicationTasks({ application_id }),
+      queryFn: () => getApplicationRequests({ application_id }),
     }),
   activity: ({
     application_id,
@@ -164,7 +157,7 @@ type Params = ApplicationAllQueryPrerequistes & {
     meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
     details?: Awaited<ReturnType<typeof getApplicationDetails>>;
     interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
-    tasks?: Awaited<ReturnType<typeof getApplicationTasks>>;
+    requests?: Awaited<ReturnType<typeof getApplicationRequests>>;
     activity?: Awaited<ReturnType<typeof getApplicationActivity>>;
   };
 };
@@ -188,7 +181,7 @@ const getApplicationMeta = async ({
     await supabase
       .from('application_view')
       .select(
-        'name, city, email, phone, current_job_title, resume_processing_state, processing_status, resume_score, badges, bookmarked, file_url, task_count, activity_count, status, candidate_id',
+        'name, city, email, phone, current_job_title, resume_processing_state,timezone, processing_status, resume_score, badges, bookmarked, file_url, task_count, activity_count, status, candidate_id',
       )
       .eq('id', application_id)
       .single()
@@ -216,59 +209,32 @@ const getApplicationDetails = async ({
   };
 };
 
-const getApplicationInterview = async ({
+export const getApplicationInterview = async ({
   application_id,
-  job_id,
 }: Pick<Params, 'application_id' | 'job_id'>) => {
-  const sessions = (
-    (
-      await supabase
-        .from('application_view')
-        .select('meeting_details')
-        .eq('id', application_id)
-        .single()
-        .throwOnError()
-    )?.data?.meeting_details ?? []
-  ).sort((a, z) => a.session_order - z.session_order);
-  if (sessions.length) return sessions;
-  const plans: typeof sessions = (
-    (
-      (await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`))
-        ?.data as GetInterviewPlansType['respone']
-    )?.flatMap((item) => item.interview_session) ?? []
-  )
-    .sort((a, z) => a.session_order - z.session_order)
-    .map(
-      ({
-        session_duration,
-        name,
-        session_type,
-        schedule_type,
-        session_order,
-      }) => ({
-        session_duration,
-        session_name: name,
-        session_type,
-        schedule_type,
-        status: 'not_scheduled',
-        session_order,
-        date: null,
-        meeting_id: null,
-        session_id: null,
-        meeting_flow: null,
-      }),
-    );
-  return plans;
+  const res = await axios.call<ApiInterviewStages>(
+    'POST',
+    '/api/scheduling/application/fetchinterviewstages',
+    {
+      application_id,
+    },
+  );
+
+  return res.stages;
 };
 
-const getApplicationTasks = async ({
+export type StageWithSessions = Awaited<
+  ReturnType<typeof getApplicationInterview>
+>;
+
+const getApplicationRequests = async ({
   application_id,
 }: Pick<Params, 'application_id'>) =>
   (
     await supabase
-      .from('tasks_view')
+      .from('request')
       .select(
-        'id, name, created_by, status, type, session_ids, schedule_date_range,assignee,latest_progress',
+        '*,assignee_details:recruiter_user!request_assignee_id_fkey(first_name, last_name, profile_image),request_relation(*)',
       )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })

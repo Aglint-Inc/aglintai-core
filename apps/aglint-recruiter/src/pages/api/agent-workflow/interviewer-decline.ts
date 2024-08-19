@@ -1,70 +1,47 @@
-import {
-  APIFindAltenativeTimeSlot,
-  APIFindAltenativeTimeSlotResponse,
-  APIUpdateMeetingInterviewers,
-} from '@aglint/shared-types';
-import { addErrorHandlerWrap } from '@aglint/shared-utils';
-import axios from 'axios';
+import { DatabaseEnums } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
+import {
+  createRequestProgressLogger,
+  executeWorkflowAction,
+  ProgressLoggerType,
+} from '@/src/services/api-schedulings/utils';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  // const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
+  const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
+  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
+    req.body.request_id,
+    req.body.event_run_id,
+  );
   const {
-    listInterviewerPayload,
-    updatedMeetingPayload,
+    request_id,
+    session_ids,
   }: {
-    listInterviewerPayload: APIFindAltenativeTimeSlot;
-    updatedMeetingPayload: APIUpdateMeetingInterviewers;
+    request_id: string;
+    session_ids: string[];
   } = req.body;
 
   try {
-    // list interviewers
-    const { data: interviewerList } = (await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find-alternative-time-slots`,
-      listInterviewerPayload,
-    )) as { data: APIFindAltenativeTimeSlotResponse };
-
-    if (!interviewerList || !interviewerList?.length) {
-      // inform to organizer
-      return res.status(200).end();
-    } else {
-      // change the interviewer
-      const bodyParams: APIUpdateMeetingInterviewers = {
-        meeting_id: interviewerList[0].meeting_id,
-        candidate_email: updatedMeetingPayload.candidate_email,
-        replaced_inters: [
-          {
-            email: interviewerList[0].qualifiedIntervs[0].email,
-            user_id: interviewerList[0].qualifiedIntervs[0].user_id,
-          },
-        ],
-      };
-
-      const { data: updatedInterviewer } = await axios.post(
-        '/api/scheduling/v1/update_meeting_interviewers',
-        bodyParams,
+    if (target_api === 'onRequestInterviewerDecline_agent_changeInterviewer') {
+      await executeWorkflowAction(
+        changeInterviewer,
+        {
+          request_id,
+          session_id: session_ids[0],
+          reqProgressLogger,
+        },
+        reqProgressLogger,
+        {
+          event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
+        },
       );
-      // eslint-disable-next-line no-console
-      console.log('updatedInterviewer', updatedInterviewer);
-      return res.status(200).end();
     }
+    return res.status(200).send('ok');
   } catch (error) {
-    return error;
+    console.error(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
-export default addErrorHandlerWrap(handler);
-
-
-
-
-
-
-// const { data: interviewerList } = await axios.post(
-//   '/api/agent-workflow/interviewer-decline',
-//   {
-//     listInterviewerPayload: {
-//       ...bodyParams,
-//     } as APIFindAltenativeTimeSlot,
-//   },
-// );
+export default handler;

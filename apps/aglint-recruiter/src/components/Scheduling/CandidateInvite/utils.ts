@@ -1,4 +1,4 @@
-import { APICreateRequest, DatabaseTable } from '@aglint/shared-types';
+import { APICreateCandidateRequest, DatabaseTable } from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
 import axios from 'axios';
 
@@ -55,7 +55,7 @@ export const createRequest = async ({
   new_dates: { start_date: string; end_date: string };
   type: DatabaseTable['interview_session_cancel']['type'];
 }) => {
-  const creatReqPayload: APICreateRequest = {
+  const creatReqPayload: APICreateCandidateRequest = {
     application_id,
     session_ids,
     type,
@@ -64,5 +64,5 @@ export const createRequest = async ({
       end: new_dates.end_date,
     },
   };
-  await axios.post('/api/request/create', creatReqPayload);
+  await axios.post('/api/request/candidate-request', creatReqPayload);
 };
