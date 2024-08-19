@@ -275,6 +275,7 @@ export const PATHS = [
 '/requests/[id]',
 '/reset-password',
 '/scheduling',
+'/scheduling/analytics',
 '/scheduling/application',
 '/scheduling/application/[application_id]',
 '/scheduling/dashboard',
