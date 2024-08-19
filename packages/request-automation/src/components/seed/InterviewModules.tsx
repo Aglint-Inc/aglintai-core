@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import { interviewType, module } from "../../type/UITypes";
 
-const AddInterviewModules = () => {
+export const InterviewModules = () => {
   const [modules, setModules] = useState<interviewType[]>([]);
   const [newModules, setNewModules] = useState<module[]>([]);
   const [selectedModules, setSelectedModules] = useState<interviewType[]>([]);
@@ -48,13 +48,13 @@ const AddInterviewModules = () => {
     );
   };
 
-  const handleSelectModule = (id: string) => {
-    setSelectedModules((prevSelected) =>
-      prevSelected.map((pre) => pre.id).includes(id)
-        ? prevSelected.filter((module) => module.id !== id)
-        : [...prevSelected, ...modules.filter((mod) => mod.id === id)]
-    );
-  };
+  // const handleSelectModule = (id: string) => {
+  //   setSelectedModules((prevSelected) =>
+  //     prevSelected.map((pre) => pre.id).includes(id)
+  //       ? prevSelected.filter((module) => module.id !== id)
+  //       : [...prevSelected, ...modules.filter((mod) => mod.id === id)]
+  //   );
+  // };
 
   const addModules = async () => {
     const modulesToInsert = newModules
@@ -221,5 +221,3 @@ const AddInterviewModules = () => {
     </div>
   );
 };
-
-export default AddInterviewModules;

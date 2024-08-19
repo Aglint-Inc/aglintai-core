@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import UpdateEmailAuth from "./UpdateEmailAuth";
 import { seedTabs } from "../../type/UITypes";
-import AddInterviewModules from "./AddInterviewModules";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
 import Workflow from "./Workflow";
+import { InterviewModules } from "./InterviewModules";
 
 const navTabs: {
   name: string;
@@ -49,7 +49,7 @@ function Seed() {
       <div>
         {tab === "company" && <Company />}
         {tab === "email" && <UpdateEmailAuth />}
-        {tab === "interview_type" && <AddInterviewModules />}
+        {tab === "interview_type" && <InterviewModules />}
         {tab === "jobs" && <Jobs />}
         {tab === "workflow" && <Workflow />}
       </div>
