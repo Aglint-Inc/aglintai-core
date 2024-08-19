@@ -1,5 +1,4 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { use } from 'react';
 import { create } from 'zustand';
 
 export type TabSchedulingType =
@@ -15,16 +14,21 @@ export interface AvailabilitiesApplicationDetail {
 export interface ApplicationDetail {
   selectedStageId: string;
   selectedSessionIds: string[];
+  isScheduleOpen: boolean;
 }
 
 const initialState: ApplicationDetail = {
   selectedStageId: null,
   selectedSessionIds: [],
+  isScheduleOpen: false,
 };
 
 export const useApplicationDetailStore = create<ApplicationDetail>()(() => ({
   ...initialState,
 }));
+
+export const setIsScheduleOpen = (isScheduleOpen: boolean) =>
+  useApplicationDetailStore.setState({ isScheduleOpen });
 
 export const setSelectedStageId = (selectedStageId: string) =>
   useApplicationDetailStore.setState({ selectedStageId });

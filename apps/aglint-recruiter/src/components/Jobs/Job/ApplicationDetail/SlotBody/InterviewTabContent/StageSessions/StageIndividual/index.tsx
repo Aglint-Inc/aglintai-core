@@ -5,23 +5,20 @@ import { ApplicantDetailStage } from '@/devlink2/ApplicantDetailStage';
 import { StageWithSessions } from '@/src/queries/application';
 
 import {
+  setIsScheduleOpen,
   setSelectedSessionIds,
   setSelectedStageId,
   useApplicationDetailStore,
-} from '../../../store';
+} from '../../../../store';
 import SideDrawerEdit from '../EditDrawer';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function StageIndividual({
   stage,
   index,
-  application_id,
-  job_id,
 }: {
   stage: StageWithSessions[0];
   index: number;
-  application_id: string;
-  job_id: string;
 }) {
   const { selectedStageId, selectedSessionIds } = useApplicationDetailStore(
     (state) => ({
@@ -49,8 +46,6 @@ function StageIndividual({
                   <ScheduleIndividualCard
                     session={session}
                     key={session.interview_session.id}
-                    application_id={application_id}
-                    job_id={job_id}
                   />
                 );
               })}
@@ -72,7 +67,17 @@ function StageIndividual({
         isScheduleButtonVisible={
           isStageSelected && selectedSessionIds.length > 0
         }
-        slotScheduleButton={<ButtonSolid textButton={'Schedule'} size={2} />}
+        slotScheduleButton={
+          <ButtonSolid
+            textButton={'Schedule'}
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                setIsScheduleOpen(true);
+              },
+            }}
+          />
+        }
       />
     </>
   );

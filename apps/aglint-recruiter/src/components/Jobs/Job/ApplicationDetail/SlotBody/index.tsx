@@ -1,42 +1,63 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { ApplicationDetail } from '@/devlink2/ApplicationDetail';
+import Loader from '@/src/components/Common/Loader';
+import { Application, useApplication } from '@/src/context/ApplicationContext';
 
+import { Activity } from '../../Common/CandidateDrawer/Activity';
+import { Resume } from '../../Common/CandidateDrawer/Resume';
 import CandidateInfo from './CandidateInfo';
-import Progress from './Progress';
-import StageSessions from './StageSessions';
+import InterviewTabContent from './InterviewTabContent';
+import Requests from './Requests';
 import Tabs, { TabsType } from './Tabs';
 
-function SlotBody({
-  application_id,
-  job_id,
-}: {
-  application_id: string;
-  job_id: string;
-}) {
+function SlotBody() {
   const router = useRouter();
   const tab = router.query.tab as TabsType;
+
+  const {
+    meta: { isLoading: isLoadingDetail },
+  } = useApplication();
+
+  if (isLoadingDetail) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
+
   return (
     <>
       <ApplicationDetail
-        slotApplicantDetailStage={
-          tab === 'stages' ? (
-            <StageSessions application_id={application_id} job_id={job_id} />
-          ) : tab === 'activity' ? (
-            ''
-          ) : (
-            ''
-          )
+        slotTabBody={
+          <Stack width={'900px'} height={'100%'}>
+            {tab === 'interview' ? (
+              <>
+                <InterviewTabContent />
+              </>
+            ) : tab === 'activity' ? (
+              <Stack width={'600px'} padding={'var(--space-4)'}>
+                <Activity />
+              </Stack>
+            ) : tab === 'resume' ? (
+              <Stack padding={'var(--space-4)'} minHeight={'1000px'}>
+                <Resume />
+              </Stack>
+            ) : tab === 'scoring' ? (
+              <Stack padding={'var(--space-4)'}>
+                <Application.Body.Details />
+              </Stack>
+            ) : tab === 'requests' ? (
+              <Requests />
+            ) : (
+              ''
+            )}
+          </Stack>
         }
-        slotApplicantInfoBox={
-          <CandidateInfo application_id={application_id} job_id={job_id} />
-        }
-        slotCandidateInterviewProgress={
-          tab === 'stages' && (
-            <Progress application_id={application_id} job_id={job_id} />
-          )
-        }
-        slotTab={<Tabs application_id={application_id} job_id={job_id} />}
+        slotApplicantInfoBox={<CandidateInfo />}
+        slotTab={<Tabs />}
       />
     </>
   );

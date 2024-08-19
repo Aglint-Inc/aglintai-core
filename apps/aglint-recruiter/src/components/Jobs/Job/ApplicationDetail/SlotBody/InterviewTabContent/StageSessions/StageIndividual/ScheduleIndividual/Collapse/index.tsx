@@ -1,5 +1,4 @@
 import { Collapse, Stack } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
@@ -7,7 +6,8 @@ import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import InterviewerUserDetail from '@/src/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { applicationQuery, StageWithSessions } from '@/src/queries/application';
+import { useApplication } from '@/src/context/ApplicationContext';
+import { StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { numberToText } from '@/src/utils/number/numberToText';
 
@@ -16,13 +16,9 @@ import CancelBanners from './AdminCancelBanners';
 function CollapseContent({
   currentSession,
   collapsed,
-  application_id,
-  job_id,
 }: {
   currentSession: StageWithSessions[0]['sessions'][0];
   collapsed: boolean;
-  application_id: string;
-  job_id: string;
 }) {
   const { data: allIntegrations } = useAllIntegrations();
 
@@ -41,12 +37,9 @@ function CollapseContent({
   }
   const cancelReasons = currentSession?.cancel_reasons;
   const count = users?.length ?? 0;
-  const { data: detail } = useQuery(
-    applicationQuery.meta({
-      application_id,
-      job_id,
-    }),
-  );
+  const {
+    meta: { data: detail },
+  } = useApplication();
 
   return (
     <Collapse in={collapsed}>

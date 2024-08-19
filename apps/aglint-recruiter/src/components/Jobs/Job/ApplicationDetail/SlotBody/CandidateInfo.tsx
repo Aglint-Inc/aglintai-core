@@ -1,49 +1,41 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { ApplicantInfoBox } from '@/devlink2/ApplicantInfoBox';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { applicationQuery } from '@/src/queries/application';
+import { useApplication } from '@/src/context/ApplicationContext';
 
-function CandidateInfo({
-  application_id,
-  job_id,
-}: {
-  application_id: string;
-  job_id: string;
-}) {
-  const { data: detail, isLoading: isLoadingDetail } = useQuery(
-    applicationQuery.meta({
-      application_id,
-      job_id,
-    }),
-  );
+function CandidateInfo() {
+  const {
+    details: { data: resume, isLoading },
+  } = useApplication();
+  const {
+    meta: { data: applicationDetail },
+  } = useApplication();
 
-  const { data: resume, isLoading: isLoadingResume } = useQuery(
-    applicationQuery.details({
-      application_id,
-      job_id,
-    }),
-  );
   return (
-    <div>
-      {isLoadingResume || isLoadingDetail ? null : (
+    <>
+      {isLoading ? null : (
         <ApplicantInfoBox
-          textName={detail.name}
-          textEmail={detail.email}
-          textRole={detail.current_job_title || '--'}
+          isDepartmentVisible={false}
+          textName={applicationDetail.name}
+          textEmail={applicationDetail.email}
+          isRoleVisible={Boolean(applicationDetail.current_job_title)}
+          textRole={applicationDetail.current_job_title || '--'}
           slotImage={<CandidateDefaultIcon />}
-          isLinkedInVisible={!!resume.resume_json.basics.linkedIn}
+          isLinkedInVisible={!!resume.resume_json?.basics.linkedIn}
           onClickLinkedIn={{
             onClick: () => {
-              window.open(resume.resume_json.basics.linkedIn, '_blank');
+              window.open(
+                `https://${resume.resume_json?.basics.linkedIn}`,
+                '_blank',
+              );
             },
           }}
-          textLocation={detail.city || '--'}
+          textLocation={applicationDetail.city || '--'}
           textDepartment={'--'}
-          textPhone={detail.phone || '--'}
+          textPhone={applicationDetail.phone || '--'}
+          textTimeZone={applicationDetail.timezone || '--'}
         />
       )}
-    </div>
+    </>
   );
 }
 

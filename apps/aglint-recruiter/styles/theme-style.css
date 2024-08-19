@@ -1741,30 +1741,30 @@ box-shadow: inset 0 0 0 1px var(--pink-8);
 }
 
 /*pipeline css*/
-[data-text-color="info"]{
+body [data-text-color="info"]{
   color: var(--info-11);
 }
-[data-embed-color="info"]{
+body [data-embed-color="info"]{
   color: var(--info-3);
 }
-[data-bg-color="info"]{
-  background-color: var(--info-3) !important;
+body [data-bg-color="info"]{
+ background-color: var(--info-3) !important;
 }
-[data-text-color="success"]{
-    color: var(--success-11);;
+body [data-text-color="success"]{
+  color: var(--success-11);;
 }
-[data-embed-color="success"]{
-    color: var(--success-3);
+body [data-embed-color="success"]{
+  color: var(--success-3);
 }
-[data-bg-color="success"]{
-    background-color: var(--success-3) !important;
+body [data-bg-color="success"]{
+  background-color: var(--success-3) !important;
 }
-[data-text-color="neutral"]{
-    color: var(--neutral-11) ;;
+body [data-text-color="neutral"]{
+  color: var(--neutral-11) ;;
 }
-[data-embed-color="neutral"]{
-    color: var(--neutral-3);
+body [data-embed-color="neutral"]{
+  color: var(--neutral-3);
 }
-[data-bg-color="neutral"]{
-    background-color: var(--neutral-3) !important;
+body [data-bg-color="neutral"]{
+  background-color: var(--neutral-3) !important;
 }

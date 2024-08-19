@@ -1,7 +1,6 @@
 'use strict';
 
 import { Checkbox, Stack } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -13,13 +12,14 @@ import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightP
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { applicationQuery, StageWithSessions } from '@/src/queries/application';
+import { useApplication } from '@/src/context/ApplicationContext';
+import { StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
 import {
   setSelectedSessionIds,
   useApplicationDetailStore,
-} from '../../../../store';
+} from '../../../../../store';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
@@ -27,12 +27,8 @@ import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 
 function ScheduleIndividualCard({
   session,
-  application_id,
-  job_id,
 }: {
   session: StageWithSessions[0]['sessions'][0];
-  application_id: string;
-  job_id: string;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const { data: allIntegrations } = useAllIntegrations();
@@ -54,13 +50,9 @@ function ScheduleIndividualCard({
       ),
   );
 
-  const { data: detail } = useQuery(
-    applicationQuery.meta({
-      application_id,
-      job_id,
-    }),
-  );
-
+  const {
+    meta: { data: detail },
+  } = useApplication();
 
   const onClickCheckBox = ({ session_id }: { session_id: string }) => {
     if (selectedSessionIds.includes(session_id)) {
@@ -173,12 +165,7 @@ function ScheduleIndividualCard({
         },
       }}
       slotDropdownContent={
-        <CollapseContent
-          collapsed={collapsed}
-          currentSession={session}
-          application_id={application_id}
-          job_id={job_id}
-        />
+        <CollapseContent collapsed={collapsed} currentSession={session} />
       }
       slotButtonViewDetail={
         <ButtonGroupRight

@@ -18,6 +18,8 @@ export function ApplicantInfoBox({
   textRole = "dileep@aglinthq.com",
   textPhone = "Asia, Kolkata, Chennai (GMT+5:30)",
   slotEditButton,
+  isRoleVisible = true,
+  isDepartmentVisible = true,
 }) {
   return (
     <_Component
@@ -82,33 +84,35 @@ export function ApplicantInfoBox({
                 className={_utils.cx(_styles, "id-details-wrap")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "id-detail--item")}
-                  tag="div"
-                >
+                {isDepartmentVisible ? (
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "icon_general-4")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
-                    icon-font="true"
-                    icon-size="4"
-                    icon-weight="medium"
-                    icon-color="inherit"
                   >
-                    <_Builtin.Block tag="div">
-                      {"corporate_fare "}
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "icon_general-4")}
+                      tag="div"
+                      icon-font="true"
+                      icon-size="4"
+                      icon-weight="medium"
+                      icon-color="inherit"
+                    >
+                      <_Builtin.Block tag="div">
+                        {"corporate_fare "}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      tag="div"
+                      text-align="left"
+                      fontSize="2"
+                      fontWeight=""
+                      font-color="neutral-12"
+                      high-contrast="false"
+                    >
+                      {textDepartment}
                     </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    tag="div"
-                    text-align="left"
-                    fontSize="2"
-                    fontWeight=""
-                    font-color="neutral-12"
-                    high-contrast="false"
-                  >
-                    {textDepartment}
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                ) : null}
                 <_Builtin.Block
                   className={_utils.cx(_styles, "id-detail--item")}
                   tag="div"
@@ -168,31 +172,33 @@ export function ApplicantInfoBox({
                 )}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "id-detail--item")}
-                  tag="div"
-                >
+                {isRoleVisible ? (
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "icon_general-4")}
+                    className={_utils.cx(_styles, "id-detail--item")}
                     tag="div"
-                    icon-font="true"
-                    icon-size="4"
-                    icon-weight="medium"
-                    icon-color="inherit"
                   >
-                    <_Builtin.Block tag="div">{"person"}</_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "icon_general-4")}
+                      tag="div"
+                      icon-font="true"
+                      icon-size="4"
+                      icon-weight="medium"
+                      icon-color="inherit"
+                    >
+                      <_Builtin.Block tag="div">{"person"}</_Builtin.Block>
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      tag="div"
+                      text-align="left"
+                      fontSize="2"
+                      fontWeight=""
+                      font-color="neutral-12"
+                      high-contrast="false"
+                    >
+                      {textRole}
+                    </_Builtin.Block>
                   </_Builtin.Block>
-                  <_Builtin.Block
-                    tag="div"
-                    text-align="left"
-                    fontSize="2"
-                    fontWeight=""
-                    font-color="neutral-12"
-                    high-contrast="false"
-                  >
-                    {textRole}
-                  </_Builtin.Block>
-                </_Builtin.Block>
+                ) : null}
                 <_Builtin.Block
                   className={_utils.cx(_styles, "id-detail--item")}
                   tag="div"

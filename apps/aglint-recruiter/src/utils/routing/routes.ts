@@ -107,6 +107,18 @@ const jobPostAssistant = {
 const jobsById = {
   '/jobs/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([jobs['/jobs'](), id]),
+  '/jobs/[id]/application/[application_id]': ({
+    id,
+    application_id,
+  }: {
+    id: string;
+    application_id: string;
+  }) =>
+    pageRouteBuilder([
+      pageRouteBuilder([jobs['/jobs'](), id]),
+      'application',
+      application_id,
+    ]),
   '/jobs/[id]/agent': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'agent']),
   '/jobs/[id]/assessment': ({ id }: { id: string }) =>

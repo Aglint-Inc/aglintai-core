@@ -1,13 +1,12 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import React from 'react';
 
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
-import { ScheduleIndividualCardType } from './types';
-
 function RequestStatusUnconfirmed({
   interview_meeting,
 }: {
-  interview_meeting: ScheduleIndividualCardType['interview_meeting'];
+  interview_meeting: DatabaseTable['interview_meeting'];
 }) {
   return (
     <>

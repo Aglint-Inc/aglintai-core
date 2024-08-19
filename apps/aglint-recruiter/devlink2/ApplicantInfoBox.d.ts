@@ -14,4 +14,6 @@ declare function ApplicantInfoBox(props: {
   textRole?: React.ReactNode;
   textPhone?: React.ReactNode;
   slotEditButton?: Types.Devlink.Slot;
+  isRoleVisible?: Types.Visibility.VisibilityConditions;
+  isDepartmentVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

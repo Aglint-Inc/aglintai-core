@@ -81,14 +81,8 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationDetails({ application_id }),
     }),
-  interview: ({
-    application_id,
-    job_id,
-    placeholderData,
-    enabled,
-  }: ToggleParams) =>
+  interview: ({ application_id, job_id, enabled }: ToggleParams) =>
     queryOptions({
-      placeholderData: placeholderData?.interview || [],
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -98,9 +92,8 @@ export const applicationQuery = {
       ],
       queryFn: () => getApplicationInterview({ application_id, job_id }),
     }),
-  tasks: ({ application_id, job_id, enabled, placeholderData }: ToggleParams) =>
+  requests: ({ application_id, job_id, enabled }: ToggleParams) =>
     queryOptions({
-      placeholderData: placeholderData?.tasks,
       enabled: enabled && !!application_id && !!job_id,
       gcTime: application_id ? 1 * 60_000 : 0,
       refetchOnMount: true,
@@ -108,7 +101,7 @@ export const applicationQuery = {
         ...applicationQuery.application({ application_id, job_id }).queryKey,
         'tasks',
       ],
-      queryFn: () => getApplicationTasks({ application_id }),
+      queryFn: () => getApplicationRequests({ application_id }),
     }),
   activity: ({
     application_id,
@@ -164,7 +157,7 @@ type Params = ApplicationAllQueryPrerequistes & {
     meta?: Awaited<ReturnType<typeof getApplicationMeta>>;
     details?: Awaited<ReturnType<typeof getApplicationDetails>>;
     interview?: Awaited<ReturnType<typeof getApplicationInterview>>;
-    tasks?: Awaited<ReturnType<typeof getApplicationTasks>>;
+    requests?: Awaited<ReturnType<typeof getApplicationRequests>>;
     activity?: Awaited<ReturnType<typeof getApplicationActivity>>;
   };
 };
@@ -234,14 +227,14 @@ export type StageWithSessions = Awaited<
   ReturnType<typeof getApplicationInterview>
 >;
 
-const getApplicationTasks = async ({
+const getApplicationRequests = async ({
   application_id,
 }: Pick<Params, 'application_id'>) =>
   (
     await supabase
-      .from('tasks_view')
+      .from('request')
       .select(
-        'id, name, created_by, status, type, session_ids, schedule_date_range,assignee,latest_progress',
+        '*,assignee_details:recruiter_user!request_assignee_id_fkey(first_name, last_name, profile_image),request_relation(*)',
       )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })

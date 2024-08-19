@@ -1,29 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
+import { useApplication } from '@/src/context/ApplicationContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
-import { applicationQuery } from '@/src/queries/application';
 import { useJobsRead } from '@/src/queries/jobs';
 import ROUTES from '@/src/utils/routing/routes';
 
-function BreadCrumb({
-  application_id,
-  job_id,
-}: {
-  application_id: string;
-  job_id: string;
-}) {
+function BreadCrumb() {
   const router = useRouter();
   const { breadcrum, setBreadcrum } = useBreadcrumContext();
   const { data: allJobs } = useJobsRead();
+  const {
+    meta: { data: detail },
+    job_id,
+  } = useApplication();
   const job = allJobs?.find((job) => job.id === job_id);
-  const { data: detail } = useQuery(
-    applicationQuery.meta({
-      application_id,
-      job_id,
-    }),
-  );
+
   const tab = router.query.tab;
 
   useEffect(() => {
