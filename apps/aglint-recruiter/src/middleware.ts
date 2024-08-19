@@ -47,5 +47,5 @@ export const config = {
 };
 
 const isAllowedPaths = (reqUrl: any) => {
-  return allowedPaths.has(reqUrl);
+  return reqUrl.startsWith('/api/trpc') || allowedPaths.has(reqUrl);
 };

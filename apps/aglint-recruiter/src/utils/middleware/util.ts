@@ -24,6 +24,7 @@ export const server_check_permissions = async ({
 
     const user_id = jsonDetail.user.id;
     const token = jsonDetail.access_token;
+
     const { payload } = await jwtVerify(
       token,
       new TextEncoder().encode(process.env.SUPABASE_SECRET_KEY!),
@@ -76,7 +77,7 @@ function getToken(base: string, func: Function) {
   }
   tempData = tempData.filter((item) => Boolean(item));
   try {
-    jsonData = JSON.parse(tempData.join('')) as {
+    jsonData = JSON.parse(atob(tempData.join('').replace('base64-', ''))) as {
       access_token: string;
       token_type: string;
       expires_in: number;
@@ -84,7 +85,8 @@ function getToken(base: string, func: Function) {
       refresh_token: string;
       user: { id: string };
     };
-  } catch (_) {
+  } catch (error) {
+    console.error(error);
     throw new Error('failed to load session');
   }
   // (new Date(1721397061*1000) - new Date())/(1000*60) < .3 && throw new Error('Access token Expired') //  reject
