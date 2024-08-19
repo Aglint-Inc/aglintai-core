@@ -1,16 +1,20 @@
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
-import { SafeObject } from '@/src/utils/safeObject';
+import { Tabs } from './tabs';
+import { memo } from 'react';
+import Loader from '../../Common/Loader';
 
-export const Analytics = () => {
-  const value = useSchedulingAnalytics();
+export const Analytics = memo(() => {
+  const { enabled } = useSchedulingAnalytics();
+  if (!enabled)
+    return (
+      <>
+        <Loader />
+      </>
+    );
   return (
     <>
-      {JSON.stringify(
-        SafeObject.entries(value).reduce((acc, [key, value]) => {
-          acc[key] = value.data;
-          return acc;
-        }, {}),
-      )}
+      <Tabs />
     </>
   );
-};
+});
+Analytics.displayName = 'Analytics';

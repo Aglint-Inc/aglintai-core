@@ -187,6 +187,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
               recruiter_id,
               jobs,
             })
+            .single()
             .throwOnError()
         ).data,
     ),

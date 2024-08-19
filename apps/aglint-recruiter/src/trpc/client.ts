@@ -1,10 +1,11 @@
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import { httpLink } from '@trpc/client/links/httpLink';
 import { splitLink } from '@trpc/client/links/splitLink';
+import { loggerLink } from '@trpc/client/links/loggerLink';
 import superjson from 'superjson';
 
 import type { AppRouter } from '../server/api/root';
-import { createTRPCClient, loggerLink } from '@trpc/client';
+import { createTRPCClient } from '@trpc/client';
 
 function getBaseUrl() {
   if (typeof window !== 'undefined') return window.location.origin;
