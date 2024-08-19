@@ -4,8 +4,15 @@
   justify-content: space-between;
   align-items: center;
 
-  border: 1px solid var(--neutral-6);
   border-radius: var(--radius-4);
+
+  transition: background-color 200ms ease;
+
+  cursor: pointer;
+}
+
+.interviewer-rd-card:hover {
+  background-color: var(--neutral-2);
 }
 
 .interviewer-rd-left-wrap {
@@ -25,5 +32,10 @@
 }
 
 .slot-arrow-hover-in {
-  display: none;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
 }
