@@ -8,7 +8,7 @@ import Clear from "./components/clear/Clear";
 
 export const DrawerComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeDiv, setActiveDiv] = useState<tabs>("seed");
+  const [activeDiv, setActiveDiv] = useState<tabs>("demo");
 
   const drawerRef = useRef(null);
 

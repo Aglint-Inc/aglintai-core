@@ -137,7 +137,7 @@ function CreateTask({
   }, [recruiter_id]);
   return (
     <>
-      <Stack mx={'10px'} mb={'10px'}>
+      <Stack mb={'10px'}>
         <FormControl>
           <RadioGroup
             row
@@ -153,11 +153,28 @@ function CreateTask({
               value={'standard'}
               control={<Radio />}
               label='Standard'
+              sx={{
+                display: 'flex !important',
+                gap: '3px',
+                marginLeft: '0px',
+                '& .MuiRadio-root': {
+                  marginRight: 'var(--space-1)',
+                },
+              }}
             />
+
             <FormControlLabel
               value='urgent'
               control={<Radio />}
               label='Urgent'
+              sx={{
+                display: 'flex !important',
+                gap: '3px',
+                marginLeft: '0px',
+                '& .MuiRadio-root': {
+                  marginRight: 'var(--space-1)',
+                },
+              }}
             />
           </RadioGroup>
         </FormControl>
