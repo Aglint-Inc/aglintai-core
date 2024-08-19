@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { StagePipeline } from '@/devlink3/StagePipeline';
 import { useApplication } from '@/src/context/ApplicationContext';
+
 import { setSelectedSessionIds, setSelectedStageId } from '../store';
 
 function Progress() {
