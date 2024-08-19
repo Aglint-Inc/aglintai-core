@@ -17,11 +17,9 @@ import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { ResumeUploadComp } from '../UploadApplications/importManual';
 import { Activity } from './Activity';
 import { Details } from './Details';
-import { Interview } from './Interview';
 import { Meta } from './Meta';
 import { Resume } from './Resume';
 import { Tabs } from './Tabs';
-import { Tasks } from './Tasks';
 import { TopBar } from './TopBar';
 
 type Props = {
@@ -68,8 +66,6 @@ Body.Meta = Meta;
 Body.Tabs = Tabs;
 Body.Resume = Resume;
 Body.Details = Details;
-Body.Interview = Interview;
-Body.Tasks = Tasks;
 Body.Activity = Activity;
 
 export { Body };
@@ -87,10 +83,6 @@ const TabContent = (
       return props.details ?? <Details />;
     case 'Screening':
     case 'Assessment':
-    case 'Interview':
-      return props.interview ?? <Interview />;
-    case 'Tasks':
-      return props.tasks ?? <Tasks />;
     case 'Activity':
       return props.activity ?? <Activity />;
   }

@@ -14,7 +14,6 @@ import JobNotFound from '../Common/JobNotFound';
 import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
-import Drawer from './Drawer';
 import Filters from './Filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './Table';
@@ -119,7 +118,6 @@ const ApplicationsComponent = () => {
         isFilterVisible={true}
         slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
       />
-      <Drawer />
       <UploadApplications />
     </DNDProvider>
   );

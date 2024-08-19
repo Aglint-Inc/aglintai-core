@@ -65,6 +65,7 @@ const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
         `*, interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, pause_json, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
       )
       .eq('job_id', job_id)
+      .order('plan_order', { ascending: true })
       .throwOnError()
   ).data;
   if (response?.length) {

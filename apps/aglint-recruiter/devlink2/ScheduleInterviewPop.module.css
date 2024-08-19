@@ -1,0 +1,108 @@
+.scehdule-inter-pop {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.candidate-sip {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.candidate-wrap-sip {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.selected-sip {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.request-type-wrap-sip {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
