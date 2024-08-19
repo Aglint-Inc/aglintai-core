@@ -27,10 +27,6 @@ const navTabs: {
     value: "jobs",
   },
   {
-    name: "Jobs",
-    value: "jobs",
-  },
-  {
     name: "Workflow",
     value: "workflow",
   },
