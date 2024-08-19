@@ -1,19 +1,27 @@
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import {
   APIFindAltenativeTimeSlotResponse,
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
 type BodyParams = {
-  declined_int_sesn_reln_id: string;
+  request_id: string;
   session_id: string;
 };
 export const changeInterviewer = async (payload: BodyParams) => {
   try {
     // list interviewers
+    const [cancel_rec] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session_cancel')
+        .select()
+        .eq('request_id', payload.request_id),
+    );
     const api_payload1: APIFindAltenativeTimeSlotResponse = {
-      session_id: payload.session_id,
-      declined_int_sesn_reln_id: payload.declined_int_sesn_reln_id,
+      session_id: cancel_rec.session_id,
+      declined_int_sesn_reln_id: cancel_rec.session_relation_id,
       user_tz: 'Asia/Colombo',
     };
     const { data } = await axios.post(
@@ -30,7 +38,7 @@ export const changeInterviewer = async (payload: BodyParams) => {
     }
     const api_payload2: APIUpdateMeetingInterviewers = {
       session_id: payload.session_id,
-      curr_declined_int_sesn_reln_id: payload.declined_int_sesn_reln_id,
+      curr_declined_int_sesn_reln_id: cancel_rec.session_relation_id,
       new_int_sesn_reln_id: alternate_slots[0].replacement_int.id,
     };
     await axios.post(

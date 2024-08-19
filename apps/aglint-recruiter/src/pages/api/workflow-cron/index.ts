@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           event_run_id: id,
         },
       );
-    } else if (meta.target_api.startsWith('onInterviewerDecline')) {
+    } else if (meta.target_api.startsWith('onRequestInterviewerDecline')) {
       await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/interviewer-decline`,
         {
