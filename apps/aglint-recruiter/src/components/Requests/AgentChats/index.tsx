@@ -8,11 +8,19 @@ import {
   setChatList,
   setViewHistory,
   setViewList,
+  useAgentChatStore,
 } from './ChatMessageList/store';
 import SettingsPopup from './SettingsPopup';
 
 function AgentChats() {
   const [openSetting, setOpenSettings] = useState(false);
+  const { chatList } = useAgentChatStore((state) => ({
+    isFetchingNextPage: state.isFetchingNextPage,
+    chatList: state.chatList,
+    viewHistory: state.viewHistory,
+    tempLoading: state.tempLoading,
+    viewList: state.viewList,
+  }));
 
   return (
     <>
@@ -23,6 +31,7 @@ function AgentChats() {
             setOpenSettings(!openSetting);
           },
         }}
+        isClearVisible={chatList.length > 0}
         onClickClear={{
           onClick: () => {
             setChatList([]);

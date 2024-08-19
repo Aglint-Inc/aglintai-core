@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
+import { InterviewerListRd } from "./InterviewerListRd";
 import { AiTaskBanner } from "./AiTaskBanner";
 import { RequestDetailRight } from "./RequestDetailRight";
 import * as _utils from "./utils";
@@ -38,7 +39,7 @@ export function RequestDetail({
             className={_utils.cx(_styles, "req-detail-left-interview")}
             tag="div"
           >
-            {slotInterview}
+            {slotInterview ?? <InterviewerListRd />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
