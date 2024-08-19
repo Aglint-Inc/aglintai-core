@@ -12,7 +12,10 @@ function Progress() {
   } = useApplication();
 
   return (
-    <Stack direction={'row'} gap={'10px'}>
+    <Stack direction={'row'} gap={'10px'} sx={{
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    }}>
       {stages.map((stage, index) => {
         const isCompleted = stage.sessions.every((session) => {
           return session.interview_meeting.status === 'completed';
@@ -27,6 +30,8 @@ function Progress() {
 
         return (
           <Stack
+            width={'100%'}
+            minWidth={'250px'}
             key={index}
             onClick={() => {
               setSelectedStageId(stage.interview_plan.id);
