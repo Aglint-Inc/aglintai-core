@@ -21,7 +21,6 @@
 }
 
 .text-link-accent {
-  transition: opacity 200ms ease;
   color: var(--accent-11);
   text-decoration: underline;
   cursor: pointer;

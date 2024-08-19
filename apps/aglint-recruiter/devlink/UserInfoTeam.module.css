@@ -1,6 +1,5 @@
 .tli-user-card {
   display: flex;
-  width: 300px;
   padding: var(--space-4);
   flex-direction: column;
   justify-content: flex-start;

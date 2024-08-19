@@ -60,7 +60,14 @@ export function RequestDetailRight({
         className={_utils.cx(_styles, "asigned-to-wraper")}
         tag="div"
       >
-        <Text content="Candidate" />
+        <Text
+          content={
+            <>
+              {"Candidate Detail"}
+              <br />
+            </>
+          }
+        />
         <_Builtin.Block tag="div">{slotCandidate}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
