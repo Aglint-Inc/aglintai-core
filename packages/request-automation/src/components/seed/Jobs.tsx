@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
+import axios from "axios";
+import Papa from "papaparse";
 
 type job = {
   slug: string;
@@ -13,7 +15,7 @@ function Jobs() {
   const [loading, setLoading] = useState<boolean>(true);
   const { recruiterId } = useAppContext();
   const supabase = window.supabase;
-  //https://aglintai-seed-data.vercel.app/jobs/senior-software-engineer-full-stack/candidate.csv
+  const [message, setMessage] = useState<string[]>([]);
   const fetchJobs = async () => {
     try {
       const response = await fetch(
@@ -59,7 +61,10 @@ function Jobs() {
       .select("id");
 
     if (departmentError) {
-      console.error("department fetching error ", departmentError.message);
+      setMessage((pre) => [
+        ...pre,
+        `department fetching error ${departmentError.message}`,
+      ]);
     }
     const {
       data: locations,
@@ -69,7 +74,10 @@ function Jobs() {
       .select("id");
 
     if (locationError) {
-      console.error("location fetching error ", locationError.message);
+      setMessage((pre) => [
+        ...pre,
+        `location fetching error ${locationError.message}`,
+      ]);
     }
 
     const locationsIds = locations.map((loc) => loc.id);
@@ -113,51 +121,107 @@ function Jobs() {
         };
       });
 
-    const { data, error } = await supabase
+    const {
+      data: jobsData,
+      error: jobAddError,
+    }: { data: { id: string; slug: string }[]; error: any } = await supabase
       .from("public_jobs")
       .insert(jobsToAdd)
       .select("id,slug");
 
-    if (error) {
-      console.error("adding job", error);
+    if (jobAddError) {
+      setMessage((pre) => [...pre, `Job adding failed`]);
+      return;
     } else {
-      console.log("job added");
-      await fetchJobs();
+      setMessage((pre) => [...pre, `Job added succuessfully`]);
     }
+
+    jobsData.map(async (job) => {
+      const url = `https://aglintai-seed-data.vercel.app/jobs/${job.slug}/candidate.csv`;
+      // const url = `https://aglintai-seed-data.vercel.app/jobs/senior-software-engineer-full-stack/candidate.csv`;
+
+      await fetch(url)
+        .then((response) => response.text())
+        .then((data) => {
+          Papa.parse(data, {
+            header: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+              const candidates = results.data as uploadCsv["candidates"];
+              handleUpdate(
+                {
+                  candidates: candidates,
+                  job_id: job.id,
+                  recruiter_id: recruiterId,
+                },
+                setMessage
+              );
+            },
+          });
+        })
+        .catch((e) => {
+          setMessage((pre) => [...pre, `candidate upload error ${e.message}`]);
+        });
+    });
+    await fetchJobs();
   };
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h5>Jobs to add</h5>
-      {jobs.length ? (
-        <>
-          {jobs.map((job) => (
-            <div
-              key={job.slug}
-              style={{
-                display: "flex",
-                gap: "5px",
-                alignItems: "center",
-                cursor: "pointer",
-                userSelect: "none",
-              }}
-              onClick={() => handleSelectJobs(job.slug)}
-            >
-              <input
-                type="checkbox"
-                checked={selectedJobsSlug.includes(job.slug)}
-              />
-              {job.job_title}
-            </div>
-          ))}
-          <button style={{ marginTop: "10px" }} onClick={addJobs}>
-            Add jobs
-          </button>
-        </>
+    <div style={{ display: "flex" }}>
+      <div
+        style={{
+          minWidth: "500px",
+        }}
+      >
+        <h5>Jobs to add</h5>
+        {jobs.length ? (
+          <>
+            {jobs.map((job) => (
+              <div
+                key={job.slug}
+                style={{
+                  display: "flex",
+                  gap: "5px",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  userSelect: "none",
+                }}
+                onClick={() => handleSelectJobs(job.slug)}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedJobsSlug.includes(job.slug)}
+                />
+                {job.job_title}
+              </div>
+            ))}
+            <button style={{ marginTop: "10px" }} onClick={addJobs}>
+              Add jobs
+            </button>
+          </>
+        ) : (
+          <p>no jobs found to add</p>
+        )}
+      </div>
+      {message?.length ? (
+        <div
+          style={{
+            marginLeft: "20px",
+            paddingLeft: "20px",
+            borderLeft: "1px solid grey",
+          }}
+        >
+          <div>
+            <h5>Console</h5>
+            {message.map((mes) => (
+              <p>{mes}</p>
+            ))}
+          </div>
+        </div>
       ) : (
-        <p>no jobs found to add</p>
+        ""
       )}
     </div>
   );
@@ -167,4 +231,34 @@ export default Jobs;
 
 const randomPickEle = (array: number[]) => {
   return array[Math.floor(Math.random() * array.length)];
+};
+
+type uploadCsv = {
+  candidates: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    linkedin: string;
+    file_url: string;
+  }[];
+  recruiter_id: string;
+  job_id: string;
+};
+
+const handleUpdate = async (
+  data: uploadCsv,
+  setMessage: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  try {
+    const { status } = await axios.post("api/job/candidateUpload/csvUpload", {
+      ...data,
+    });
+
+    if (status != 200) throw new Error("failed to update");
+    setMessage((pre) => [...pre, "candidates added successfully"]);
+  } catch (error) {
+    setMessage((pre) => [...pre, "candidates adding failed"]);
+  } finally {
+  }
 };

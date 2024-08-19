@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import DepartmentManager from "./DepartmentManager";
 import UpdateEmailAuth from "./UpdateEmailAuth";
 import { seedTabs } from "../../type/UITypes";
 import AddInterviewModules from "./AddInterviewModules";
 import Jobs from "./Jobs";
+import Company from "./company/Company";
 
 const navTabs: {
   name: string;
   value: seedTabs;
 }[] = [
   {
-    name: "Department",
-    value: "department",
+    name: "Company",
+    value: "company",
   },
   {
     name: "Email",
@@ -28,7 +28,7 @@ const navTabs: {
 ];
 
 function Seed() {
-  const [tab, setTab] = useState<seedTabs>("jobs");
+  const [tab, setTab] = useState<seedTabs>("company");
   return (
     <div id="seed">
       <div className="nav-menu">
@@ -42,7 +42,7 @@ function Seed() {
         ))}
       </div>
       <div>
-        {tab === "department" && <DepartmentManager />}
+        {tab === "company" && <Company />}
         {tab === "email" && <UpdateEmailAuth />}
         {tab === "interview_type" && <AddInterviewModules />}
         {tab === "jobs" && <Jobs />}

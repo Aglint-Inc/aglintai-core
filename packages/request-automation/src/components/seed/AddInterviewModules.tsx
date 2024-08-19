@@ -127,7 +127,8 @@ const AddInterviewModules = () => {
             gap: "50px",
           }}
         >
-          <div>
+          {/* this for remove  */}
+          {/* <div>
             <h5 style={{ marginBottom: "5px" }}>Select modules to remove </h5>
             {modules.length > 0 ? (
               modules.map((module) => (
@@ -152,7 +153,7 @@ const AddInterviewModules = () => {
             ) : (
               <p>no current modules found</p>
             )}
-          </div>
+          </div> */}
           <div>
             <h5 style={{ marginBottom: "5px" }}>
               Select Interview Modules to Add
