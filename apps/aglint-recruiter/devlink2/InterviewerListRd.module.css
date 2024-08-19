@@ -23,3 +23,7 @@
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
 }
+
+.slot-arrow-hover-in {
+  display: none;
+}

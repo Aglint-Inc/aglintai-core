@@ -7,4 +7,5 @@ declare function AglintAiChat(props: {
   slotAiInput?: Types.Devlink.Slot;
   onClickMemory?: Types.Devlink.RuntimeProps;
   onClickClear?: Types.Devlink.RuntimeProps;
+  isClearVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
