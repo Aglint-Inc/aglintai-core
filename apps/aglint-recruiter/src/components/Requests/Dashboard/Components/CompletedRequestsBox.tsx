@@ -26,7 +26,7 @@ function CompletedRequestsBox({
           content={
             status === 'success' && !completedRequest
               ? `Looks like there is no completed requests 😴`
-              : `${completedRequest} Requests completed 🎉`
+              : `Today ${completedRequest} Requests completed🎉`
           }
         />
       }
