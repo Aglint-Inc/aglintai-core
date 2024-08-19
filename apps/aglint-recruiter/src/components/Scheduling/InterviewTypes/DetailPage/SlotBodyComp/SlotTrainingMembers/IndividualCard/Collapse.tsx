@@ -296,6 +296,7 @@ function CollapseTrainingProgress({
               }}
             />
             <MuiNumberfield
+              isMarginTop={false}
               width='80px'
               isDisable={isSaving}
               value={mutatedShadowProgress.length + shadowProgress.length}
@@ -345,6 +346,7 @@ function CollapseTrainingProgress({
               }}
             />
             <MuiNumberfield
+              isMarginTop={false}
               width='80px'
               isDisable={isSaving}
               value={

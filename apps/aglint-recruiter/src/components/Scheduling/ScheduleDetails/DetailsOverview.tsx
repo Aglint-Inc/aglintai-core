@@ -285,6 +285,7 @@ function DetailsOverview({
                 updateInstruction={updateInstruction}
                 isBorder={false}
                 isPadding={false}
+                isWidth={false}
               />
             </ShowCode.When>
             <ShowCode.When
