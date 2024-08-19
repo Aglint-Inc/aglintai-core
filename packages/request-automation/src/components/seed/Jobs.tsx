@@ -61,7 +61,10 @@ function Jobs() {
         status: "published",
       }));
 
-    const { error } = await supabase.from("public_jobs").insert(jobsToAdd);
+    const { data, error } = await supabase
+      .from("public_jobs")
+      .insert(jobsToAdd)
+      .select("id,slug");
 
     if (error) {
       console.error("adding job", error);
