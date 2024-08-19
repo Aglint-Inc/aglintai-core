@@ -27,7 +27,7 @@ export const CompletedInterviews = memo(() => {
     );
   return (
     <Stack style={{ height: '500px', width: '100%' }}>
-      <BarChart data={data} />;
+      <BarChart data={data} />
     </Stack>
   );
 });
