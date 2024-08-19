@@ -13,7 +13,7 @@ function Jobs() {
   const [loading, setLoading] = useState<boolean>(true);
   const { recruiterId } = useAppContext();
   const supabase = window.supabase;
-
+  //https://aglintai-seed-data.vercel.app/jobs/senior-software-engineer-full-stack/candidate.csv
   const fetchJobs = async () => {
     try {
       const response = await fetch(
@@ -51,15 +51,67 @@ function Jobs() {
 
   const addJobs = async () => {
     setLoading(true);
+    const {
+      data: departments,
+      error: departmentError,
+    }: { data: { id: number }[]; error: any } = await supabase
+      .from("departments")
+      .select("id");
+
+    if (departmentError) {
+      console.error("department fetching error ", departmentError.message);
+    }
+    const {
+      data: locations,
+      error: locationError,
+    }: { data: { id: number }[]; error: any } = await supabase
+      .from("office_locations")
+      .select("id");
+
+    if (locationError) {
+      console.error("location fetching error ", locationError.message);
+    }
+
+    const locationsIds = locations.map((loc) => loc.id);
+    const departmentIds = departments.map((dep) => dep.id);
+
     const jobsToAdd = jobs
       .filter((job) => selectedJobsSlug.includes(job.slug))
-      .map((job) => ({
-        ...job,
-        job_type: "full time",
-        workplace_type: "on site",
-        recruiter_id: recruiterId,
-        status: "published",
-      }));
+      .map((job) => {
+        const dep_id = randomPickEle(departmentIds);
+        const loc_id = randomPickEle(locationsIds);
+        return {
+          ...job,
+          job_type: "full time",
+          workplace_type: "on site",
+          recruiter_id: recruiterId,
+          status: "published",
+          department_id: dep_id,
+          location_id: loc_id,
+          jd_json: {
+            level: "Senior-level",
+            title: job.job_title,
+            skills: [],
+            educations: [],
+            rolesResponsibilities: [],
+          },
+          draft: {
+            jd_json: {
+              level: "Senior-level",
+              title: job.job_title,
+              skills: [],
+              educations: [],
+              rolesResponsibilities: [],
+            },
+            job_type: "full time",
+            job_title: job.job_title,
+            description: job.description,
+            location_id: loc_id,
+            department_id: dep_id,
+            workplace_type: "on site",
+          },
+        };
+      });
 
     const { data, error } = await supabase
       .from("public_jobs")
@@ -112,3 +164,7 @@ function Jobs() {
 }
 
 export default Jobs;
+
+const randomPickEle = (array: number[]) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
