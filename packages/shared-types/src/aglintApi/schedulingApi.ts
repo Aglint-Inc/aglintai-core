@@ -21,6 +21,7 @@ import {
   schema_find_interview_slot,
   schema_find_slots_date_range,
   schema_send_avail_req_link,
+  schema_update_meeting_ints,
 } from '@aglint/shared-utils';
 
 export type ApiCancelScheduledInterview = {
@@ -172,5 +173,5 @@ export type APIEmailAgentPayload = v.InferOutput<
 >;
 
 export type APIUpdateMeetingInterviewers = v.InferInput<
-  typeof schema_find_alternative_slots
+  typeof schema_update_meeting_ints
 >;

@@ -202,7 +202,7 @@ export const API_PATHS = [
 '/api/scheduling/v1/cancel_interview_scheduling',
 '/api/scheduling/v1/cand_req_available_slots',
 '/api/scheduling/v1/event_attendee_status',
-'/api/scheduling/v1/find-alternative-time-slots',
+'/api/scheduling/v1/find-replacement-ints',
 '/api/scheduling/v1/find_availability',
 '/api/scheduling/v1/find_interview_slots',
 '/api/scheduling/v1/find_slots_date_range',

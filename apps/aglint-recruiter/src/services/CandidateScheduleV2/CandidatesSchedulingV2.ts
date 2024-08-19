@@ -15,6 +15,7 @@ import {
   SessionsCombType,
 } from '@aglint/shared-types';
 import {
+  ApiError,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
@@ -214,6 +215,15 @@ export class CandidatesSchedulingV2 {
     );
   }
   public ignoreInterviewers(sess_reln_ids: string[]) {
+    sess_reln_ids.forEach((reln_id) => {
+      if (
+        !this.db_details.all_inters.find(
+          (int) => int.session_relation_id === reln_id,
+        )
+      ) {
+        throw new ApiError('SERVER_ERROR', `${reln_id} does not exist`);
+      }
+    });
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       qualifiedIntervs: s.qualifiedIntervs.filter(

@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { SessionCombinationRespType } from '@aglint/shared-types';
 import {
+  APIRespFindReplaceMentInts,
+  SessionCombinationRespType,
+} from '@aglint/shared-types';
+import {
+  ApiError,
   schema_find_alternative_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -36,6 +40,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select()
         .eq('id', meeting_detail.module_id),
     );
+    const current_confirmed_ints = meeting_ints
+      .filter((int) => int.is_confirmed)
+      .map((int) => int.user_id);
+    if (
+      !meeting_ints.find(
+        (int) =>
+          int.is_confirmed &&
+          int.session_relation_id === parsed_body.declined_int_sesn_reln_id,
+      )
+    ) {
+      throw new ApiError(
+        'SERVER_ERROR',
+        `${parsed_body.declined_int_sesn_reln_id} is not confirmed interviwer`,
+      );
+    }
     const cand_schedule = new CandidatesSchedulingV2({
       return_empty_slots_err: true,
       include_conflicting_slots: {
@@ -61,12 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .tz(parsed_body.user_tz)
         .format('DD/MM/YYYY'),
     });
-    const all_ignored_ints = [
-      ...meeting_ints
-        .filter((i) => i.is_confirmed)
-        .map((i) => i.session_relation_id),
-      ...parsed_body.ignore_int_session_ids,
-    ];
+    const all_ignored_ints = [parsed_body.declined_int_sesn_reln_id];
     cand_schedule.ignoreTrainee();
     cand_schedule.ignoreInterviewers(all_ignored_ints);
 
@@ -78,8 +92,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const time_filtered_slots = slot_combs.filter((comb) =>
       filter_slots(comb, meeting_detail.start_time, parsed_body.user_tz),
     );
+    const replacement_ints: APIRespFindReplaceMentInts =
+      time_filtered_slots.map((slot) => {
+        const replacement_int = slot.qualifiedIntervs.filter(
+          (int) => !current_confirmed_ints.includes(int.user_id),
+        )[0];
 
-    return res.status(200).json(time_filtered_slots);
+        const int_conflict = slot.ints_conflicts.find(
+          (int) => int.interviewer.user_id === replacement_int.user_id,
+        );
+
+        return {
+          replacement_int,
+          conflicts: int_conflict?.conflict_reasons ?? [],
+        };
+      });
+    return res.status(200).json(replacement_ints);
   } catch (error) {
     console.error(error);
     return res

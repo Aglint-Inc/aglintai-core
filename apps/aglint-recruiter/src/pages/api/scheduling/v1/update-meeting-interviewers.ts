@@ -1,10 +1,13 @@
-/* eslint-disable no-console */
 import {
   APIUpdateMeetingInterviewers,
   CalendarEvent,
   ScheduleAuthType,
 } from '@aglint/shared-types';
-import { schema_update_meeting_ints, supabaseWrap } from '@aglint/shared-utils';
+import {
+  ApiError,
+  schema_update_meeting_ints,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
@@ -22,8 +25,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_organizer_auth,
       session_ints_auth,
       meeting_details,
-      session_intes,
     } = await fetch_details(req.body);
+
+    const updated_session_attendees = session_ints_auth.map((int) => {
+      let updated_int = {
+        ...int,
+      };
+      if (
+        int.session_relation_id === parsed_body.curr_declined_int_sesn_reln_id
+      ) {
+        updated_int.is_confirmed = false;
+      }
+      if (int.session_relation_id === parsed_body.new_int_sesn_reln_id) {
+        updated_int.is_confirmed = true;
+      }
+      return updated_int;
+    });
 
     const google_cal = new GoogleCalender(company_cred_hash_str, {
       email: meeting_organizer_auth.email,
@@ -31,32 +48,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user_id: meeting_organizer_auth.user_id,
     });
     await google_cal.authorizeUser();
-    let updated_attendees_auth = session_ints_auth.filter((int) =>
-      parsed_body.new_ints_session_reln_id.includes(int.session_relation_id),
-    );
+
     const updated_event = await google_cal.updateEvent({
       id: (meeting_details.meeting_json as CalendarEvent).id,
-      attendees: updated_attendees_auth.map((int) => ({
-        email: (int.schedule_auth as ScheduleAuthType)?.email ?? int.email,
-        organizer: false,
-      })),
+      attendees: updated_session_attendees
+        .filter((i) => i.is_confirmed)
+        .map((int) => ({
+          email: (int.schedule_auth as ScheduleAuthType)?.email ?? int.email,
+          organizer: false,
+        })),
     });
-    console.log('updateed event');
 
-    const attendees_promises = updated_attendees_auth.map(async (int) => {
-      const email = (int.schedule_auth as ScheduleAuthType)?.email ?? int.email;
-      const int_cal = new GoogleCalender(company_cred_hash_str, int);
-      await int_cal.authorizeUser();
-      await int_cal.importEvent(updated_event, email);
-    });
+    const attendees_promises = updated_session_attendees
+      .filter((i) => i.is_confirmed)
+      .map(async (int) => {
+        const email =
+          (int.schedule_auth as ScheduleAuthType)?.email ?? int.email;
+        const int_cal = new GoogleCalender(company_cred_hash_str, int);
+        await int_cal.authorizeUser();
+        await int_cal.importEvent(updated_event, email);
+      });
     await Promise.all(attendees_promises);
-    console.log('imported event');
-    const updated_session_attendees = session_intes.map((int) => ({
-      session_relation_id: int.session_relation_id,
-      is_confirmed: Boolean(
-        updated_attendees_auth.find((att) => att.user_id === int.user_id),
-      ),
-    }));
 
     await Promise.all(
       updated_session_attendees.map(
@@ -136,10 +148,14 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   );
   const session_ints_auth: (CalEventAttendeesAuthDetails & {
     session_relation_id: string;
+    is_confirmed: boolean;
   })[] = session_ints_auth_details.map((int) => ({
     email: int.recruiter_user.email,
     schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
     user_id: int.recruiter_user.user_id,
+    is_confirmed: session_intes.find(
+      (s_int) => s_int.user_id === int.recruiter_user.user_id,
+    ).is_confirmed,
     session_relation_id: session_intes.find(
       (s_int) => s_int.user_id === int.recruiter_user.user_id,
     ).session_relation_id,
@@ -147,6 +163,28 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   const hashed_comp_cred =
     session_ints_auth_details[0].recruiter.integrations.service_json;
 
+  if (
+    !session_ints_auth.find(
+      (int) =>
+        int.session_relation_id === payload.curr_declined_int_sesn_reln_id,
+    )
+  ) {
+    throw new ApiError(
+      'SERVER_ERROR',
+      `${payload.curr_declined_int_sesn_reln_id} not exist in meeting_interviewers`,
+    );
+  }
+
+  if (
+    !session_ints_auth.find(
+      (int) => int.session_relation_id === payload.new_int_sesn_reln_id,
+    )
+  ) {
+    throw new ApiError(
+      'SERVER_ERROR',
+      `${payload.new_int_sesn_reln_id} not exist in meeting_interviewers`,
+    );
+  }
   return {
     company_cred_hash_str: hashed_comp_cred,
     meeting_organizer_auth,
