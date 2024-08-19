@@ -46,7 +46,7 @@ export function RequestDetail({
           className={_utils.cx(_styles, "req-detail-left-card")}
           tag="div"
         >
-          <Text color="neutral" content="Next Tasks" />
+          <Text color="neutral" content="Request Progress" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-req-detail-left-card")}
             tag="div"
