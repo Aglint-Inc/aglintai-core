@@ -33,6 +33,7 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
+  '/jobs/[id]/application/[application_id]': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -70,6 +71,7 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
+  '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],
