@@ -197,7 +197,7 @@ export const InterviewModules = () => {
             selectedNewModules.length === 0 && selectedModules.length === 0
           }
         >
-          Update Modules
+          Add Interview Types
         </button>
       </div>
       {message?.length ? (
