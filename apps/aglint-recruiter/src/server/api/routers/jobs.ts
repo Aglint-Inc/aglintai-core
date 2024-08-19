@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, privateProcedure } from '../trpc';
 
 export const jobsRouter = createTRPCRouter({
-  read: publicProcedure
+  read: privateProcedure
     .input(z.object({ recruiter_id: z.string().uuid() }))
     .query(
       async ({ ctx: { db }, input: { recruiter_id } }) =>
