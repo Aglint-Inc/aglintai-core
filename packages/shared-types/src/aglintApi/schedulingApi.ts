@@ -35,16 +35,7 @@ export type APIEventAttendeeStatus = {
   attendee_interv_id: string;
 };
 
-export type APIFindAltenativeTimeSlot = {
-  session_id: string;
-  recruiter_id: string;
-  slot_start_time: string;
-  user_tz: string;
-  ignore_interviewer: string;
-  api_options?: APIOptions;
-};
-
-export type APIFindAltenativeTimeSlotResponse = v.InferInput<
+export type APIFindAltenativeTimeSlot = v.InferInput<
   typeof schema_find_alternative_slots
 >;
 

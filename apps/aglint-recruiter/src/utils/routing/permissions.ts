@@ -154,8 +154,6 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
-  '/api/scheduling/v1/find-alternative-time-slots': ['authorized'],
-  '/api/scheduling/v1/update_meeting_interviewers': ['authorized'],
   '/api/integrations/greenhouse': ['authorized'],
   '/api/integrations/greenhouse/sync/interview_plans': ['manage_job'],
   '/api/integrations/greenhouse/sync/job': ['manage_job'],

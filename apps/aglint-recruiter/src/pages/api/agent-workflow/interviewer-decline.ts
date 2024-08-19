@@ -3,9 +3,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
 import {
-  ProgressLoggerType,
   createRequestProgressLogger,
   executeWorkflowAction,
+  ProgressLoggerType,
 } from '@/src/services/api-schedulings/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

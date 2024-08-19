@@ -1,11 +1,13 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import {
-  APIFindAltenativeTimeSlotResponse,
+  APIFindAltenativeTimeSlot,
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
 import { ApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
+
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
 import { ProgressLoggerType } from '../utils';
 type FuncParams = {
   request_id: string;
@@ -21,7 +23,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
         .select()
         .eq('request_id', payload.request_id),
     );
-    const api_payload1: APIFindAltenativeTimeSlotResponse = {
+    const api_payload1: APIFindAltenativeTimeSlot = {
       session_id: cancel_rec.session_id,
       declined_int_sesn_reln_id: cancel_rec.session_relation_id,
       user_tz: 'Asia/Colombo',

@@ -23,7 +23,7 @@ export default async function handler(
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
     await seedWorkFlow(recruiter_id, comp_templates); //NOTE: don't change order
-    await Promise.all([
+    await Promise.allSettled([
       seedRolesAndPermissions(recruiter_id),
       seedPreferencesAndIntegrations(recruiter_id),
     ]);
