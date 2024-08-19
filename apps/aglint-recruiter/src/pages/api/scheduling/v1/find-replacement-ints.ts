@@ -15,8 +15,6 @@ import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/Candi
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-//ignore current interviewer
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed_body = v.parse(schema_find_alternative_slots, {
