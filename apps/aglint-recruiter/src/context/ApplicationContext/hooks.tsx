@@ -1,4 +1,4 @@
-import { APICreateRequest } from '@aglint/shared-types';
+import { APICreateCandidateRequest } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -154,7 +154,7 @@ export const useApplicationContext = (
   }) => {
     try {
       if (!sel_user_id) return;
-      const creatReqPayload: APICreateRequest = {
+      const creatReqPayload: APICreateCandidateRequest = {
         application_id: props.application_id,
         session_ids: selectedSessionIds,
         type: 'schedule',
