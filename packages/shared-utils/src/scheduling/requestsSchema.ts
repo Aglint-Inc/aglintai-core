@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export const createRequestSchema = v.object({
+export const createCandidateRequestSchema = v.object({
   session_ids: v.array(v.string()),
   application_id: v.string(),
   type: v.picklist(["reschedule", "declined", "schedule"]),
@@ -14,4 +14,9 @@ export const createRequestSchema = v.object({
   assignee_id: v.nullish(v.string()),
   assigner_id: v.nullish(v.string()),
   session_names: v.nullish(v.array(v.string())),
+});
+
+export const createInterviewerRequestSchema = v.object({
+  session_id: v.string(),
+  interview_cancel_id: v.string(),
 });

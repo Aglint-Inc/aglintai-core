@@ -1,6 +1,6 @@
 import { DatabaseFunctions } from '@aglint/shared-types';
 import {
-  createRequestSchema,
+  createCandidateRequestSchema,
   getFullName,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -16,7 +16,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const parsed = v.parse(createRequestSchema, req.body);
+    const parsed = v.parse(createCandidateRequestSchema, req.body);
     const organizer_id = await getOrganizerId(
       parsed.application_id,
       supabaseAdmin,

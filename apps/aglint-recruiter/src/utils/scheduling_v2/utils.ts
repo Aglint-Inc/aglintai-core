@@ -71,6 +71,7 @@ export const combineSlots = (
 
 export const convertIntToResp = (inters: SessionInterviewerType[]) => {
   const r: SessionInterviewerApiRespType[] = inters.map((i) => ({
+    id: i.session_relation_id,
     email: i.email,
     first_name: i.first_name,
     last_name: i.last_name,

@@ -218,5 +218,5 @@ export const emailTemplateCopy: CompanyEmailType = {
   onRequestReschedule_emailLink_resendAvailRequest: null,
   onRequestCancel_agent_cancelEvents: null,
   onRequestCancel_slack_interviewersOrganizer: null,
-  onInterviewerDecline_agent_changeInterviewer: null,
+  onRequestInterviewerDecline_agent_changeInterviewer: null,
 };
