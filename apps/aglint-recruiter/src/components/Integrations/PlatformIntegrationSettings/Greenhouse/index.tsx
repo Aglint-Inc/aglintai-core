@@ -237,7 +237,7 @@ const GreenhouseSync: GreenhouseSyncOptions = {
 async function getGreenhouseUser() {
   const res = await axios.call<GreenhouseUserAPI>(
     'GET',
-    '/api/integrations/greenhouse/sync/user',
+    '/api/sync/greenhouse/full',
     null,
   );
   return res;
