@@ -266,7 +266,7 @@ function ModuleSettingComp({
         </Stack>
       )}
       {editModule?.settings?.require_training && (
-        <Stack spacing={'var(--space-2)'}>
+        <Stack spacing={'var(--space-4)'}>
           <SlotTrainingMembers editModule={editModule} refetch={refetch} />
         </Stack>
       )}

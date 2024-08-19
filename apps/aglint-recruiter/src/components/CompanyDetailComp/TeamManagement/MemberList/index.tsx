@@ -174,6 +174,7 @@ const Member = ({
                 slotProps={{
                   paper: {
                     sx: {
+                      width:'280px',
                       boxShadow: 'none',
                       marginTop: '8px',
                       // Additional styles

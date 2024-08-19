@@ -171,6 +171,7 @@ const fetchSessionDetails = async ({
                 session_id: cancel.session_id,
                 session_relation_id: cancel.session_relation_id,
                 type: cancel.type,
+                request_id: null,
               };
             return {
               interview_session_cancel: interview_session_cancel,

@@ -14,7 +14,7 @@ interface AppContextType {
   setRequestIds: React.Dispatch<React.SetStateAction<number[]>>;
   session: any; // Replace `any` with the actual type if known
   companyName: string | null;
-  recruiterId: number | null;
+  recruiterId: string;
   userId: string | null;
 }
 
@@ -34,7 +34,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [requestIds, setRequestIds] = useState<number[]>([]);
   const [session, setSession] = useState<any>(null); // State to hold the Supabase session
   const [companyName, setCompanyName] = useState<string | null>(null); // State to hold the company name
-  const [recruiterId, setRecruiterId] = useState<number | null>(null); // State to hold the recruiter_id
+  const [recruiterId, setRecruiterId] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null); // State to hold the user_id
   const supabase = window.supabase;
 
