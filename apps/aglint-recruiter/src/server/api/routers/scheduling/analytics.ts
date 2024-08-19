@@ -1,5 +1,6 @@
-import { DatabaseFunctions } from '@aglint/shared-types';
 import { z } from 'zod';
+
+import { SchedulingAnalyticsFunctions } from '@/src/queries/scheduling-analytics/types';
 
 import { createTRPCRouter, privateProcedure } from '../../trpc';
 
@@ -29,8 +30,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -72,8 +73,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
         type: z.enum(['training', 'qualified']).optional(),
       }),
     )
@@ -99,8 +100,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -124,8 +125,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -149,8 +150,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -174,8 +175,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -194,8 +195,8 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       z.object({
         recruiter_id: z.string().uuid(),
         jobs: z.array(z.string().uuid()).optional(),
-        end_time: z.string().optional(),
-        start_time: z.string().optional(),
+        end_time: z.string().date().optional(),
+        start_time: z.string().date().optional(),
       }),
     )
     .query(
@@ -210,12 +211,4 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
         ).data,
     ),
   // eslint-disable-next-line no-unused-vars
-} as { [id in SchedulingAnalyticsFunctions]: any });
-
-type SchedulingAnalyticsFunctions =
-  Extract<
-    keyof DatabaseFunctions,
-    `scheduling_analytics_${string}`
-  > extends `scheduling_analytics_${infer R}`
-    ? R
-    : never;
+} satisfies { [id in SchedulingAnalyticsFunctions]: any });
