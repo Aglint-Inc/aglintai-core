@@ -182,7 +182,7 @@ const resetPassword = {
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
   '/scheduling/application': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/application']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/application']),
   '/scheduling/interviewer': () =>
     pageRouteBuilder([ROUTES.app(), 'scheduling/interviewer']),
   '/scheduling/interview-types': () =>

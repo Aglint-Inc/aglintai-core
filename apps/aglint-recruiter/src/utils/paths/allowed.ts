@@ -113,5 +113,7 @@ export const allowedPaths = new Set<t>([
   '/api/request/create',
   '/api/scheduling/v1/find-alternative-time-slots',
   '/api/scheduling/v1/update_meeting_interviewers',
+  '/api/db-events',
+  '/api/application/move-to-interview',
   ...cronPaths,
 ] as t[]);

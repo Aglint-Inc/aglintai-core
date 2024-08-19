@@ -1269,7 +1269,6 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
-          request_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1287,7 +1286,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1305,7 +1303,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1364,13 +1361,6 @@ export type Database = {
             columns: ["interview_schedule_id"]
             isOneToOne: false
             referencedRelation: "interview_schedule"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_meeting_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]

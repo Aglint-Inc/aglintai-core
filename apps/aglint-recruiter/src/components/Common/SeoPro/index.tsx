@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 type Props = {
   title: string;
   site_name?: string;
@@ -24,7 +26,7 @@ const defaultMeta = {
   robots: 'follow, index',
   jsonLd: null,
 };
-export async function SeoPro(params: Props) {
+export function SeoPro(params: Props) {
   // read route params
   const meta = {
     ...defaultMeta,
@@ -33,7 +35,7 @@ export async function SeoPro(params: Props) {
   // optionally access and extend (rather than replace) parent metadata
   return (
     // eslint-disable-next-line @next/next/no-head-element
-    <head>
+    <Head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />
       <meta name='description' content={meta.description} />
@@ -67,6 +69,6 @@ export async function SeoPro(params: Props) {
       <meta name='msapplication-TileColor' content='#ffffff' />
       <meta name='msapplication-TileImage' content={meta.image} />
       <meta name='theme-color' content='#ffffff' />
-    </head>
+    </Head>
   );
 }
