@@ -38,7 +38,11 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 type Props = Pick<SchedulingAnalyticsContextType['decline_requests'], 'data'>;
 
 const BarChart = memo(({ data }: Props) => {
-  const { labels, counts } = (data ?? []).reduce(
+  const a = [
+    { completed_at: 'Jul', count: 6 },
+    { completed_at: 'Aug', count: 10 },
+  ] satisfies typeof data;
+  const { labels, counts } = ([...data, ...a] ?? []).reduce(
     (acc, curr) => {
       acc.labels.push(curr.completed_at ?? '--');
       acc.counts.push(curr.count);
