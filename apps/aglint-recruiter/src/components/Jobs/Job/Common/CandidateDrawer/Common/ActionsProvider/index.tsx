@@ -1,8 +1,3 @@
-import {
-  EmailAgentId,
-  PhoneAgentId,
-  SystemAgentId,
-} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import {
   type PropsWithChildren,
@@ -37,23 +32,10 @@ export const useApplicationInterviewActions = () =>
   useContext(ApplicationInterviewActionsContext);
 
 const useApplicationInterviewActionsContext = () => {
-  const { interview, tasks, activity } = useApplication();
-  const scheduledSessions = useMemo(
-    () =>
-      (interview.data ?? []).filter(({ status }) => status !== 'not_scheduled'),
-    [interview],
-  );
+  const { activity } = useApplication();
+  const scheduledSessions = [];
 
-  const notStartedTasks = useMemo(
-    () =>
-      (tasks.data ?? []).filter(
-        ({ status, type, created_by }) =>
-          type === 'schedule' &&
-          ![EmailAgentId, PhoneAgentId, SystemAgentId].includes(created_by) &&
-          (status === 'not_started' || status === 'overdue'),
-      ),
-    [tasks, EmailAgentId, PhoneAgentId, SystemAgentId],
-  );
+  const notStartedTasks = [];
 
   const latestActivities = useMemo(
     () =>
