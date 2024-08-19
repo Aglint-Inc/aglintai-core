@@ -264,6 +264,8 @@ const workflows = {
 } as const;
 const requests = {
   '/requests': () => pageRouteBuilder([ROUTES.app(), 'requests']),
+  '/requests/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([requests['/requests'](), id]),
 } as const;
 const ROUTES = {
   app: () => '',

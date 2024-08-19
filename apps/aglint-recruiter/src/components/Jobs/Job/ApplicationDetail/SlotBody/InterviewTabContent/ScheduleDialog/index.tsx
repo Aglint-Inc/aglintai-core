@@ -21,7 +21,10 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllMembers } from '@/src/queries/members';
 import dayjs from '@/src/utils/dayjs';
 
-import { setIsScheduleOpen, useApplicationDetailStore } from '../../../store';
+import {
+  setIsScheduleOpen,
+  useApplicationDetailStore
+} from '../../../store';
 import { Interviewer } from '../StageSessions/EditDrawer/types';
 
 function DialogSchedule() {
@@ -100,17 +103,28 @@ function DialogSchedule() {
       sessionNames: sessions.map((session) => session.interview_session.name),
     });
     setIsSaving(false);
+    setIsScheduleOpen(false);
+  };
+
+  const onClose = () => {
+    if (isSaving) return;
+    setIsScheduleOpen(false);
   };
 
   return (
     <Dialog
       open={isScheduleOpen}
       onClose={() => {
-        setIsScheduleOpen(false);
+        onClose();
       }}
     >
       <DcPopup
         popupName={'Schedule Interviews'}
+        onClickClosePopup={{
+          onClick: () => {
+            onClose();
+          },
+        }}
         slotBody={
           <>
             {sessionHasRequest.length > 0 && (
@@ -127,7 +141,7 @@ function DialogSchedule() {
                             query: { tab: 'requests' },
                             pathname: `/jobs/${job_id}/application/${application_id}`,
                           });
-                          setIsScheduleOpen(false);
+                          onClose();
                         },
                       }}
                     />

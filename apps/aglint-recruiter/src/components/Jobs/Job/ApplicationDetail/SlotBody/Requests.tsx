@@ -1,5 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
@@ -11,6 +12,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function Requests() {
+  const router = useRouter();
   const {
     requests: { data: requests, isLoading },
   } = useApplication();
@@ -34,7 +36,11 @@ function Requests() {
                 cursor: 'pointer',
               }}
               onClick={() => {
-                ROUTES['/requests'];
+                router.push(
+                  ROUTES['/requests/[id]']({
+                    id: req.id,
+                  }),
+                );
               }}
               spacing={'var(--space-2)'}
             >

@@ -67,8 +67,10 @@ export default async function handler(
       session_ids: parsed.session_ids,
       supabase: supabaseAdmin,
     });
-    supabaseWrap(await supabaseAdmin.rpc('create_session_request', details));
-    return res.status(201).send('OK');
+    const { data } = await supabaseAdmin
+      .rpc('create_session_request', details)
+      .throwOnError();
+    return res.status(201).send(data);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send(err.message);

@@ -1,6 +1,7 @@
 import { APICreateRequest } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
@@ -9,6 +10,7 @@ import {
   useUpdateApplication,
 } from '@/src/queries/application';
 import { diffApplication } from '@/src/queries/job-applications';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { useApplications } from '../ApplicationsContext';
@@ -29,6 +31,7 @@ export const useApplicationContext = (
     isScreeningEnabled,
     isScoringEnabled,
   } = useRolesAndPermissions();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
   const resumeReupload = useApplications()?.handleReuploadResume;
@@ -171,7 +174,11 @@ export const useApplicationContext = (
         if (isCreateRequest) {
           toast.success('Request Created Successfully');
         } else {
-          //
+          router.push(
+            ROUTES['/requests/[id]']({
+              id: res.data,
+            }),
+          );
         }
         queryClient.invalidateQueries({
           queryKey: applicationQuery.requests({
