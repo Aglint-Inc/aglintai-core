@@ -6,6 +6,8 @@ create type "public"."workflow_type" as enum ('system', 'job');
 
 alter table "public"."workflow_action" drop constraint "workflow_action_email_template_id_fkey";
 
+delete from "public"."workflow";  -- fix for next line
+
 alter table "public"."workflow" add column "is_paused" boolean not null;
 
 alter table "public"."workflow" add column "workflow_type" workflow_type not null;
