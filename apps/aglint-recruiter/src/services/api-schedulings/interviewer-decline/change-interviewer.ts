@@ -4,13 +4,15 @@ import {
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { ApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
-type BodyParams = {
+import { ProgressLoggerType } from '../utils';
+type FuncParams = {
   request_id: string;
   session_id: string;
+  reqProgressLogger: ProgressLoggerType;
 };
-export const changeInterviewer = async (payload: BodyParams) => {
+export const changeInterviewer = async (payload: FuncParams) => {
   try {
     // list interviewers
     const [cancel_rec] = supabaseWrap(
@@ -31,11 +33,17 @@ export const changeInterviewer = async (payload: BodyParams) => {
 
     const alternate_slots: APIRespFindReplaceMentInts = data;
     if (alternate_slots.length === 0) {
-      //NOTE: handle
+      throw new ApiError('SERVER_ERROR', 'Empty alternative slots');
     }
     if (alternate_slots.every((r) => r.conflicts.length > 0)) {
-      //NOTE: handle
+      // await payload.reqProgressLogger({
+      //   event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
+      //   log: `Resolve Conflicts ${alternate_slots.map(slot=>slot.conflicts.)}`,
+      //   is_progress_step: false,
+      //   status: 'failed',
+      // });
     }
+
     const api_payload2: APIUpdateMeetingInterviewers = {
       session_id: payload.session_id,
       curr_declined_int_sesn_reln_id: cancel_rec.session_relation_id,
@@ -45,10 +53,28 @@ export const changeInterviewer = async (payload: BodyParams) => {
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/update-meeting-interviewers`,
       api_payload2,
     );
+    await payload.reqProgressLogger({
+      event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
+      is_progress_step: true,
+      status: 'completed',
+      log: `Replaced ${getFullName(alternate_slots[0].replacement_int.first_name, alternate_slots[0].replacement_int.last_name)} for the interview`,
+    });
+    await payload.reqProgressLogger({
+      event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
+      is_progress_step: false,
+      status: 'completed',
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       console.error('Failed to perform changeInterviewer', err.response);
     }
+
+    await payload.reqProgressLogger({
+      event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
+      log: err.message,
+      is_progress_step: false,
+      status: 'failed',
+    });
     console.error(err.message);
   }
 };
