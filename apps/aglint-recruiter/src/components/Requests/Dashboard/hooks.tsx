@@ -87,10 +87,7 @@ export async function getRequestsCount({
       supabase
         .from('request')
         .select('type,status,priority')
-        .or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`)
-        .or(
-          `status.neq.completed, or(status.eq.completed, and(completed_at.gte.${dayjsLocal().format('YYYY-MM-DD')}), and(completed_at.lt.${dayjsLocal().add(1, 'day').format('YYYY-MM-DD')}))`,
-        ), // For the below listing
+        .or(`assigner_id.eq.${assigner_id},assignee_id.eq.${assigner_id}`),
     ]);
 
   const createdRequest = (
@@ -142,6 +139,9 @@ export async function getRequestsCount({
     } as SectionRequests,
   );
 
+  const all_open_request =
+    (card?.urgent_request ?? 0) + (card?.standard_request ?? 0);
+
   return {
     chat: {
       createdRequest,
@@ -149,6 +149,7 @@ export async function getRequestsCount({
       onGoingRequest,
     },
     card,
+    all_open_request,
   };
 }
 
