@@ -1,6 +1,5 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import {
-  ApiError,
   candidate_new_schedule_schema,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -18,6 +17,7 @@ import {
   executeWorkflowAction,
   ProgressLoggerType,
 } from '@/src/services/api-schedulings/utils';
+import { ApiError } from '@/src/utils/customApiError';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const TIME_ZONE = 'Asia/Colombo';

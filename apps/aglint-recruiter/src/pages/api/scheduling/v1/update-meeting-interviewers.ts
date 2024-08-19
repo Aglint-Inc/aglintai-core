@@ -3,15 +3,12 @@ import {
   CalendarEvent,
   ScheduleAuthType,
 } from '@aglint/shared-types';
-import {
-  ApiError,
-  schema_update_meeting_ints,
-  supabaseWrap,
-} from '@aglint/shared-utils';
+import { schema_update_meeting_ints, supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { ApiError } from '@/src/utils/customApiError';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

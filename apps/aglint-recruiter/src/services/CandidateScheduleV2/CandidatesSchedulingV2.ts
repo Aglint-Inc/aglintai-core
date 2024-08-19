@@ -15,7 +15,6 @@ import {
   SessionsCombType,
 } from '@aglint/shared-types';
 import {
-  ApiError,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
@@ -25,6 +24,8 @@ import { Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
+
+import { ApiError } from '@/src/utils/customApiError';
 
 import {
   IntervsWorkHrsEventMapType,

@@ -1,4 +1,4 @@
-import { ApiError, candidate_new_schedule_schema } from '@aglint/shared-utils';
+import { candidate_new_schedule_schema } from '@aglint/shared-utils';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
@@ -8,6 +8,7 @@ import {
   executeWorkflowAction,
   ProgressLoggerType,
 } from '@/src/services/api-schedulings/utils';
+import { ApiError } from '@/src/utils/customApiError';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
