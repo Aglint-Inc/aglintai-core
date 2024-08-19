@@ -182,11 +182,11 @@ const resetPassword = {
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
   '/scheduling/application': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/application']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/application']),
   '/scheduling/interviewer': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/interviewer']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/interviewer']),
   '/scheduling/interview-types': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/interview-types']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/interview-types']),
   '/scheduling/interview-types/[type_id]': ({ type_id }: { type_id: string }) =>
     pageRouteBuilder([scheduling['/scheduling'](), 'interview-types', type_id]),
   '/scheduling/application/[application_id]': ({
