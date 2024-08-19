@@ -30,7 +30,7 @@ export const useAllScheduleList = () => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_All_request'],
-    refetchInterval: 5000,
+    refetchInterval: 30000,
     refetchOnMount: true,
     queryFn: () => getRequestsList({ assigner_id: user_id }),
     gcTime: 20000,
@@ -62,7 +62,7 @@ export const useRequestCount = () => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_requests_Count'],
-    refetchInterval: 5000,
+    refetchInterval: 30000,
     refetchOnMount: true,
     queryFn: () => getRequestsCount({ assigner_id: user_id }),
     gcTime: 20000,
