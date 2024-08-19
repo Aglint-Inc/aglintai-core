@@ -13,6 +13,7 @@ import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { PageLayout } from '@/devlink2/PageLayout';
+import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { RequestDetail } from '@/devlink2/RequestDetail';
 import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
 import { Text } from '@/devlink2/Text';
@@ -28,6 +29,8 @@ import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
+import InterviewCard from './Components/InterviewCard';
+import { useMeetingList } from './hooks';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -47,8 +50,17 @@ function ViewRequestDetails() {
     .flat()
     .find((request) => request?.id === query?.id);
 
+  const { data: meetingList, status } = useMeetingList({
+    session_ids: selectedRequest?.request_relation?.map(
+      (ses) => ses?.session_id,
+    ),
+  });
+
   const candidateDetails = selectedRequest?.applications?.candidates;
   const jobDetails = selectedRequest?.applications?.public_jobs;
+  const sessions = selectedRequest?.request_relation.map(
+    (ele) => ele.interview_session.id,
+  );
 
   if (isPlaceholderData) {
     return (
@@ -112,13 +124,13 @@ function ViewRequestDetails() {
                   spacing={0.5}
                 >
                   <Text
-                    size={3}
+                    size={2}
                     content={`Schedule ${formatSessions(selectedRequest.request_relation.map(({ interview_session }) => interview_session.name))} interview with `}
                   />
                   <Text
                     color={'accent'}
                     highContrast={true}
-                    size={3}
+                    size={2}
                     content={getFullName(
                       candidateDetails.first_name,
                       candidateDetails.last_name,
@@ -160,6 +172,23 @@ function ViewRequestDetails() {
         }
         slotBody={
           <RequestDetail
+            slotInterview={
+              sessions &&
+              sessions.map((session_id, index) => {
+                if (status === 'pending') {
+                  return <RequestCardSkeleton key={session_id} />;
+                }
+                return (
+                  <>
+                    <InterviewCard
+                      session_id={session_id}
+                      meetingList={meetingList}
+                      key={index}
+                    />
+                  </>
+                );
+              })
+            }
             slotNewTask={
               <>
                 {Boolean(selectedRequest?.status === 'to_do') && (

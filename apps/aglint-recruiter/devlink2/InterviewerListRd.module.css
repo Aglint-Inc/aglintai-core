@@ -1,0 +1,25 @@
+.interviewer-rd-card {
+  display: flex;
+  padding: var(--space-4);
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
+.interviewer-rd-left-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.interview-rd-text-icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}

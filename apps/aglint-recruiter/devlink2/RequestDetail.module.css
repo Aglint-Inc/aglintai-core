@@ -42,7 +42,12 @@
 }
 
 .req-detail-right-wrap {
+  display: flex;
   width: 430px;
   padding: var(--space-4);
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: stretch;
   flex: 0 0 auto;
 }
