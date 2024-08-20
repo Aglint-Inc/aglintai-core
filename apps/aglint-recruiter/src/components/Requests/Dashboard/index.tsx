@@ -59,8 +59,11 @@ function Dashboard() {
   const open_request = requestCount?.all_open_request || 0;
 
   const completed_percentage =
-    Math.floor((requestCount?.card.completed_request / open_request) * 100) ||
-    0;
+    Math.floor(
+      (requestCount?.card.completed_request /
+        (open_request + requestCount?.card.completed_request)) *
+        100,
+    ) || 0;
 
   return (
     <>
