@@ -46,7 +46,7 @@ function Reset() {
     <div id="reset">
       <div className="reset-btns-container">
         <div>
-          <p style={{ marginBottom: "10px" }}>Reset all request automation.</p>
+          <p style={{ marginBottom: "10px" }}>Reset all requests.</p>
           <button
             className={"reset-btn"}
             onClick={() => {
@@ -61,25 +61,25 @@ function Reset() {
               setIsLoading((pre) => ({ ...pre, request: false }));
             }}
           >
-            Reset Request
+            Reset Requests
           </button>
         </div>
 
         <div>
           <p style={{ marginBottom: "10px" }}>
-            Reset all workflows to defualt.
+            Reset all workflows.
           </p>
           <button onClick={seedWorkflows} disabled={isLoading.workflow}>
-            {isLoading.workflow ? "Reseting..." : " Reset Workflow"}
+            {isLoading.workflow ? "Reseting..." : " Reset Workflows"}
           </button>
         </div>
 
         <div>
           <p style={{ marginBottom: "10px" }}>
-            Reset all email templates to defualt.
+            Reset all email templates.
           </p>
           <button onClick={seedTemplates} disabled={isLoading.template}>
-            {isLoading.template ? "Reseting..." : " Reset Email"}
+            {isLoading.template ? "Reseting..." : " Reset Templates"}
           </button>
         </div>
 

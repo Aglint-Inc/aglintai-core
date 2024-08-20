@@ -15,7 +15,7 @@ export type tabs = "automation" | "seed" | "reset";
 //------------------------------------------------
 export type seedTabs =
   | "company"
-  | "email"
+  | "users"
   | "interview_type"
   | "jobs"
   | "workflow";
