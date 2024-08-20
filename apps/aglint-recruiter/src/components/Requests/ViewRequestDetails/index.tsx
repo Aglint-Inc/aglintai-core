@@ -25,10 +25,11 @@ import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { ApiInterviewSessionsStage } from '@/src/pages/api/scheduling/application/fetchInterviewStagesBySessionId';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import ROUTES from '@/src/utils/routing/routes';
 import Loader from '../../Common/Loader';
+import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import { MemberType } from '../../Scheduling/InterviewTypes/types';
@@ -153,6 +154,7 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <SideDrawerEdit refetch={getApplicationInterview} />
       <PageLayout
         slotTopbarLeft={
           <>
@@ -221,7 +223,7 @@ function ViewRequestDetails() {
                       onClickCheckBox={() => {}}
                       isCheckboxVisible={false}
                       candidate={null}
-                      isEditIconVisible={false}
+                      isEditIconVisible={true}
                       isViewDetailVisible={true}
                       isStatusVisible={
                         session.interview_meeting?.status === 'not_scheduled'
