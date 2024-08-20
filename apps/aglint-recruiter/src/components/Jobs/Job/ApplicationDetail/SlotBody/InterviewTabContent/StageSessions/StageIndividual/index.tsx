@@ -51,7 +51,6 @@ function StageIndividual({
 
   return (
     <>
-      
       <ApplicantDetailStage
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} interviews`}

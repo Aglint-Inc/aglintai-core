@@ -27,6 +27,7 @@ import { ApiInterviewSessionsStage } from '@/src/pages/api/scheduling/applicatio
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import ROUTES from '@/src/utils/routing/routes';
 import Loader from '../../Common/Loader';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
@@ -188,7 +189,10 @@ function ViewRequestDetails() {
                     styleProps={{
                       onClick: () => {
                         window.open(
-                          `/scheduling/application/${selectedRequest?.application_id}`,
+                          ROUTES['/jobs/[id]/application/[application_id]']({
+                            id: jobDetails.id,
+                            application_id: selectedRequest.application_id,
+                          }) + '?tab=interview',
                           '_blank',
                         );
                       },
@@ -361,7 +365,13 @@ function ViewRequestDetails() {
                           onClickButton={{
                             onClick: () => {
                               window.open(
-                                `/scheduling/application/${selectedRequest?.application_id}`,
+                                ROUTES[
+                                  '/jobs/[id]/application/[application_id]'
+                                ]({
+                                  id: jobDetails.id,
+                                  application_id:
+                                    selectedRequest.application_id,
+                                }) + '?tab=interview',
                                 '_blank',
                               );
                             },
