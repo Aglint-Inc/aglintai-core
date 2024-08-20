@@ -167,7 +167,7 @@ const DistributeDatesButton = ({
   return (
     <div>
       <p style={{ marginBottom: "10px" }}>
-        Seed Request grapth with random dates.
+        Reset Request graph with random dates.
       </p>
       <button
         onClick={distributeDates}

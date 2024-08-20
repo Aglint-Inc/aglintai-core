@@ -21,7 +21,7 @@ function Workflow() {
           Reset all workflows to defualt.
         </p>
         <button onClick={seedHandler} disabled={isLoading}>
-          {isLoading ? "Seeding..." : " Seed Workflow"}
+          {isLoading ? "Reseting..." : " Reset Workflow"}
         </button>
       </div>
       <div>
@@ -29,7 +29,7 @@ function Workflow() {
           Reset all email templates to defualt.
         </p>
         <button onClick={seedHandler} disabled={isLoading}>
-          {isLoading ? "Seeding..." : " Seed Workflow"}
+          {isLoading ? "Reseting..." : " Reset Email"}
         </button>
       </div>
     </div>

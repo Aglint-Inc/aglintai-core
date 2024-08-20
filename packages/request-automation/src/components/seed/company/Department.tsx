@@ -122,7 +122,7 @@ export const Department = ({
             }}
             disabled={selectedNewDepartments.length === 0}
           >
-            Add department
+            Add Department
           </button>
         </>
       )}
