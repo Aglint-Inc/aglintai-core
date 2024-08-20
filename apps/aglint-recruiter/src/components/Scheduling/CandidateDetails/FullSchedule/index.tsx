@@ -11,14 +11,12 @@ import { breakDurations } from '@/src/utils/scheduling/const';
 import toast from '@/src/utils/toast';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
-import RescheduleDialog from '../../ScheduleDetails/RescheduleDialog';
 import { useGetScheduleApplication } from '../queries/hooks';
 import SelfSchedulingDrawer from '../SchedulingDrawer';
 import {
   setIndividualCancelOpen,
-  setIndividualRescheduleOpen,
   setSelectedSessionIds,
-  useSchedulingApplicationStore,
+  useSchedulingApplicationStore
 } from '../store';
 import SideDrawerEdit from './EditDrawer';
 import { useEditSessionDrawerStore } from './EditDrawer/store';
@@ -37,7 +35,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     selectedApplication,
     isIndividualCancelOpen,
     selectedSession,
-    isIndividualRescheduleOpen,
   } = useSchedulingApplicationStore((state) => ({
     initialSessions: state.initialSessions,
     selectedSessionIds: state.selectedSessionIds,
@@ -46,7 +43,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
     selectedApplication: state.selectedApplication,
     isIndividualCancelOpen: state.isIndividualCancelOpen,
     selectedSession: state.selectedSession,
-    isIndividualRescheduleOpen: state.isIndividualRescheduleOpen,
   }));
 
   const saving = useEditSessionDrawerStore((state) => state.saving);
@@ -113,20 +109,6 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
             setIsDeclineOpen={setIndividualCancelOpen}
             closeDialog={() => {}}
             application_log_id={null}
-          />
-
-          <RescheduleDialog
-            refetch={() => {
-              fetchInterviewDataByApplication();
-              refetch();
-            }}
-            isRescheduleOpen={isIndividualRescheduleOpen}
-            setIsRescheduleOpen={setIndividualRescheduleOpen}
-            application_id={selectedApplication.id}
-            meeting_id={selectedSession?.interview_meeting.id}
-            session_id={selectedSession?.interview_session.id}
-            session_name={selectedSession?.interview_session.name}
-            meeting_flow={selectedSession?.interview_meeting.meeting_flow}
           />
         </>
       )}

@@ -52,6 +52,9 @@ function ScheduleIndividualCard({
 
   const {
     meta: { data: detail },
+    details: {
+      data: { job_status, status },
+    },
   } = useApplication();
 
   const onClickCheckBox = ({ session_id }: { session_id: string }) => {
@@ -82,10 +85,12 @@ function ScheduleIndividualCard({
         )
       }
       isCheckboxVisible={
-        !interview_meeting ||
-        interview_meeting.status === 'not_scheduled' ||
-        interview_meeting.status === 'cancelled' ||
-        interview_meeting.status === 'reschedule'
+        job_status === 'published' &&
+        status === 'interview' &&
+        (!interview_meeting ||
+          interview_meeting.status === 'not_scheduled' ||
+          interview_meeting.status === 'cancelled' ||
+          interview_meeting.status === 'reschedule')
       }
       slotCheckbox={
         <Checkbox

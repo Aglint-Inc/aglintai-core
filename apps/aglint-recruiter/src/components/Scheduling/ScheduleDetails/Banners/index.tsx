@@ -12,39 +12,27 @@ import toast from '@/src/utils/toast';
 
 import { onClickResendInvite } from '../../CandidateDetails/utils';
 import { useScheduleDetails } from '../hooks';
-import { ScheduleMeeting } from '../types';
 import { fetchFilterJson, onClickAccept, onClickCopyLink } from '../utils';
-import CancelBannersScheduleDetails from './Cancel';
 
 interface CancelReasonCardsProps {
-  cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
-  schedule: ScheduleMeeting;
-  setCancelUserId: React.Dispatch<React.SetStateAction<string>>;
-  cancelUserId: string;
-  setIsChangeInterviewerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   filterJson: Awaited<ReturnType<typeof fetchFilterJson>>;
   requestAvailibility: DatabaseTable['candidate_request_availability'];
   refetch: () => void;
   sessionRelation: DatabaseTable['interview_session_relation'];
   setIsDeclineOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsRequestRescheduleOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Banners({
-  cancelReasons,
-  schedule,
-  setCancelUserId,
-  cancelUserId,
-  setIsChangeInterviewerOpen,
   filterJson,
   requestAvailibility,
   refetch,
   sessionRelation,
   setIsDeclineOpen,
-  setIsRequestRescheduleOpen,
 }: CancelReasonCardsProps) {
   const { recruiterUser } = useAuthDetails();
   const { checkPermissions } = useRolesAndPermissions();
+  const { data } = useScheduleDetails();
+  const schedule = data?.schedule_data;
 
   const [copied, setCopied] = useState(false);
 
@@ -70,21 +58,6 @@ function Banners({
 
   const isConfirmed = schedule.interview_meeting.status === 'confirmed';
 
-  // if logged in user is an interviewer in this session
-  const isRequestRescheduleButtonVisible =
-    schedule?.users?.find(
-      (user) =>
-        user.interview_session_relation.is_confirmed &&
-        user.email === recruiterUser.email &&
-        user.interview_session_relation.training_type === 'qualified',
-    ) &&
-    !cancelReasons?.some(
-      (item) =>
-        item.recruiter_user.id === recruiterUser.user_id &&
-        !item.interview_session_cancel.is_resolved,
-    ) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
   return (
     <Stack spacing={'var(--space-4)'}>
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
@@ -108,18 +81,7 @@ function Banners({
                   }}
                 />
               )}
-              {isRequestRescheduleButtonVisible && (
-                <ButtonSoft
-                  color={'accent'}
-                  size={1}
-                  textButton={'Request Reschedule'}
-                  onClickButton={{
-                    onClick: () => {
-                      setIsRequestRescheduleOpen(true);
-                    },
-                  }}
-                />
-              )}
+
               {isAcceptVisible && (
                 <ButtonSolid
                   size={'1'}
@@ -209,13 +171,6 @@ function Banners({
           }
         />
       )}
-      <CancelBannersScheduleDetails
-        cancelReasons={cancelReasons}
-        schedule={schedule}
-        cancelUserId={cancelUserId}
-        setCancelUserId={setCancelUserId}
-        setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-      />
     </Stack>
   );
 }
