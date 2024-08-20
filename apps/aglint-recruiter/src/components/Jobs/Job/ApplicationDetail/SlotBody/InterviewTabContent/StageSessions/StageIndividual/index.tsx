@@ -77,6 +77,7 @@ function StageIndividual({
                     candidate={{
                       name: detail?.name,
                       current_job_title: detail?.current_job_title,
+                      timezone: detail?.timezone,
                     }}
                     isEditIconVisible={true}
                     isViewDetailVisible={true}

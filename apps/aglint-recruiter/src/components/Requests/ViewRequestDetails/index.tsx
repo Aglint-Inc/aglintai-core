@@ -23,20 +23,17 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import {
-  ApiInterviewSessionsStage,
-  ApiInterviewStages,
-} from '@/src/pages/api/scheduling/application/fetchInterviewStagesBySessionId';
+import { ApiInterviewSessionsStage } from '@/src/pages/api/scheduling/application/fetchInterviewStagesBySessionId';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
+import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import { MemberType } from '../../Scheduling/InterviewTypes/types';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import InterviewCard from './Components/InterviewCard';
 import MemberList from './Components/MemberList';
 import { useMeetingList } from './hooks';
 
@@ -210,11 +207,22 @@ function ViewRequestDetails() {
               sessions &&
               sessionsCards.map((session, index) => {
                 if (status === 'pending') {
-                  return <RequestCardSkeleton key={session_id} />;
+                  return <RequestCardSkeleton key={index} />;
                 }
                 return (
                   <>
-                    <InterviewCard session={session} key={index} />
+                    <ScheduleIndividualCard
+                      session={session}
+                      key={session.interview_session.id}
+                      selectedSessionIds={[]}
+                      onClickCheckBox={() => {}}
+                      isCheckboxVisible={false}
+                      candidate={null}
+                      isEditIconVisible={false}
+                      isViewDetailVisible={true}
+                      gridStyle='0fr 1.8fr 0.8fr'
+                      isStatusVisible={false}
+                    />
                   </>
                 );
               })

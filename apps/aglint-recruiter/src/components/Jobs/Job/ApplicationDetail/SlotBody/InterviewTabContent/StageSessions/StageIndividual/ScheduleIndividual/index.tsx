@@ -28,18 +28,23 @@ function ScheduleIndividualCard({
   candidate,
   isEditIconVisible = false,
   isViewDetailVisible = false,
+  gridStyle = '1fr 1.8fr 0.8fr',
+  isStatusVisible = true,
 }: {
   session: StageWithSessions[0]['sessions'][0];
   selectedSessionIds: string[];
   // eslint-disable-next-line no-unused-vars
   onClickCheckBox: ({ session_id }: { session_id: string }) => void;
   isCheckboxVisible?: boolean;
-  candidate: {
+  candidate?: {
     name: string;
     current_job_title: string;
+    timezone: string;
   };
   isEditIconVisible?: boolean;
   isViewDetailVisible?: boolean;
+  gridStyle?: '1fr 1.8fr 0.8fr' | '0fr 1.8fr 0.8fr';
+  isStatusVisible?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const { data: allIntegrations } = useAllIntegrations();
@@ -111,7 +116,8 @@ function ScheduleIndividualCard({
       }
       isRoleVisible={false}
       slotGlobalBadge={
-        interview_meeting?.status ? (
+        isStatusVisible &&
+        (interview_meeting?.status ? (
           <StatusBadge
             isCancelledVisible={interview_meeting.status === 'cancelled'}
             isConfirmedVisible={interview_meeting.status === 'confirmed'}
@@ -129,7 +135,7 @@ function ScheduleIndividualCard({
             isWaitingVisible={false}
             isCompletedVisible={false}
           />
-        )
+        ))
       }
       textDate={
         interview_meeting?.end_time
@@ -145,10 +151,10 @@ function ScheduleIndividualCard({
             })
           : '--'
       }
-      textCandidateName={candidate.name}
+      textCandidateName={candidate?.name}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlaformName={getScheduleType(interview_session.schedule_type)}
-      textRole={candidate.current_job_title || '--'}
+      textRole={candidate?.current_job_title || '--'}
       textPanelName={interview_session.name}
       onClickDropdown={{
         onClick: (e) => {
@@ -157,7 +163,11 @@ function ScheduleIndividualCard({
         },
       }}
       slotDropdownContent={
-        <CollapseContent collapsed={collapsed} currentSession={session} />
+        <CollapseContent
+          collapsed={collapsed}
+          currentSession={session}
+          candidate={candidate}
+        />
       }
       slotButtonViewDetail={
         <ButtonGroupRight
@@ -168,7 +178,7 @@ function ScheduleIndividualCard({
       }
       styleGrid={{
         style: {
-          gridTemplateColumns: '1fr 1.8fr 0.8fr',
+          gridTemplateColumns: gridStyle,
         },
       }}
       slotRequestStatus={
