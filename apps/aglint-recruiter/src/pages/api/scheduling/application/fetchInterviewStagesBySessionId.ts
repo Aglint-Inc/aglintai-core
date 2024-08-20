@@ -131,8 +131,6 @@ const fetchSessionDetails = async ({
   session_ids: string[];
   supabaseCaller: SupabaseType;
 }) => {
-  console.log('asdasd');
-
   const { data } = await supabaseCaller
     .from('interview_plan')
     .select(
@@ -172,6 +170,7 @@ const fetchSessionDetails = async ({
                 session_id: cancel.session_id,
                 session_relation_id: cancel.session_relation_id,
                 type: cancel.type,
+                request_id: null,
               };
             return {
               interview_session_cancel: interview_session_cancel,
