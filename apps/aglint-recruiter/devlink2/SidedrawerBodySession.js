@@ -21,7 +21,7 @@ export function SidedrawerBodySession({
         className={_utils.cx(_styles, "input_and_label")}
         tag="div"
       >
-        <Text content="Stage Name" weight="" />
+        <Text content="Interview Name" weight="" />
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
           tag="div"

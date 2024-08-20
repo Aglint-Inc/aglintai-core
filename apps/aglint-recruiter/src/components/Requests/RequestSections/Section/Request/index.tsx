@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Collapse, Stack } from '@mui/material';
-import type { PropsWithChildren } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
@@ -15,6 +15,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
+import { IconButtonSoft } from '@/devlink';
 
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
@@ -22,6 +23,8 @@ export const Request = (
   const { collapse, setCollapse, isMutating } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
   const { push } = useRouterPro();
+
+  const [isHover, setIsHover] = useState(false);
   return (
     <OptimisticWrapper loading={isMutating}>
       <div
@@ -33,7 +36,11 @@ export const Request = (
         }}
       >
         <Collapse in={collapse} collapsedSize={24}>
-          <Stack gap={'10px'}>
+          <Stack
+            gap={'10px'}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
             <RequestCard
               isNewBadgeVisible={props.is_new}
               slotBadgeNew={
@@ -56,7 +63,7 @@ export const Request = (
                       e.stopPropagation();
                     }}
                   >
-                    <ButtonSoft
+                    {/* <ButtonSoft
                       onClickButton={{
                         onClick: () => {
                           push('/requests/' + props.id);
@@ -65,7 +72,23 @@ export const Request = (
                       textButton='View Details'
                       size={1}
                       color={'neutral'}
-                    />
+                    /> */}
+                    <Stack width={'24px'} height={'24px'}>
+                      {isHover && (
+                        <Stack>
+                          <IconButtonSoft
+                            iconName='arrow_outward'
+                            color={'neutral'}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => {
+                                push('/requests/' + props.id);
+                              },
+                            }}
+                          />
+                        </Stack>
+                      )}
+                    </Stack>
                   </div>
                   <GlobalBadge
                     size={1}

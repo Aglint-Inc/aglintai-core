@@ -17,6 +17,7 @@ function Instructions({
   isBorder = false,
   isPadding = true,
   isWidth = true,
+  isMinWidth= true,
 }: {
   instruction: string;
   updateInstruction: any;
@@ -25,6 +26,7 @@ function Instructions({
   isBorder?: boolean;
   isPadding?: boolean;
   isWidth?: boolean;
+  isMinWidth?: boolean;
 }) {
   const [edit, setEdit] = useState(false);
 
@@ -92,7 +94,7 @@ function Instructions({
           border={isBorder && '1px solid var(--neutral-6)'}
           borderRadius={'var(--radius-4)'}
           width={isWidth && '855px'}
-          minWidth={'100%'}
+          minWidth={isMinWidth && '100%'}
         >
           <ShowCode>
             <ShowCode.When isTrue={showEditButton}>
