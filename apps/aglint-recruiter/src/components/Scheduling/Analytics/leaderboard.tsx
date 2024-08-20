@@ -51,7 +51,7 @@ const List = ({ data }: Props) => {
             }}
           >
             <LeaderBoardCard
-              textCountNo={index + 1}
+              textCountNo={interviews}
               textName={<Link href={`/user/profile/${user_id}`}>{}</Link>}
               textRole={position}
               slotImage={
