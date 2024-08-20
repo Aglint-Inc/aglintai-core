@@ -13,7 +13,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
-import { IconButtonSoft } from '@/devlink3';
+import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
 
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
