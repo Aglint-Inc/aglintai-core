@@ -1,6 +1,6 @@
-import { Avatar, Stack } from '@mui/material';
-import Link from 'next/link';
-import React, { memo } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { memo } from 'react';
 
 import { Skeleton } from '@/devlink2/Skeleton';
 import { LeaderBoard } from '@/devlink3/LeaderBoard';
