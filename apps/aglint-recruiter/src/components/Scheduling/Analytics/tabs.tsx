@@ -1,8 +1,9 @@
+import Stack from '@mui/material/Stack';
+import { memo } from 'react';
+
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ScheduleCountStats } from '@/devlink3/ScheduleCountStats';
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
-import Stack from '@mui/material/Stack';
-import { memo } from 'react';
 
 export const Tabs = memo(() => {
   const {

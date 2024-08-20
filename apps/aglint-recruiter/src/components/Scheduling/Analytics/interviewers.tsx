@@ -1,10 +1,12 @@
-import { InterviewModuleStatsCard } from '@/devlink3';
+import Stack from '@mui/material/Stack';
+import { memo } from 'react';
+
+import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
-import Stack from '@mui/material/Stack';
-import { memo } from 'react';
+
 import Loader from '../../Common/Loader';
 
 export const Interviewers = memo(() => {

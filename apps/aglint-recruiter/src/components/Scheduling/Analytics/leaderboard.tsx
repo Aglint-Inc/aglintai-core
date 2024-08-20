@@ -1,14 +1,16 @@
-import {
-  useSchedulingAnalytics,
-  type SchedulingAnalyticsContextType,
-} from '@/src/context/SchedulingAnalytics';
+import { Avatar } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import Link from 'next/link';
 import { memo } from 'react';
-import Loader from '../../Common/Loader';
+
 import { LeaderBoard } from '@/devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@/devlink3/LeaderBoardCard';
-import Link from 'next/link';
-import { Avatar } from '@mui/material';
+import {
+  type SchedulingAnalyticsContextType,
+  useSchedulingAnalytics,
+} from '@/src/context/SchedulingAnalytics';
+
+import Loader from '../../Common/Loader';
 
 export const Leaderboard = memo(() => {
   const {

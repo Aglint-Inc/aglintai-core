@@ -1,8 +1,4 @@
-import {
-  SchedulingAnalyticsContextType,
-  useSchedulingAnalytics,
-} from '@/src/context/SchedulingAnalytics';
-import { memo } from 'react';
+import Stack from '@mui/material/Stack';
 import {
   BarElement,
   CategoryScale,
@@ -10,8 +6,14 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
-import Stack from '@mui/material/Stack';
+
+import {
+  SchedulingAnalyticsContextType,
+  useSchedulingAnalytics,
+} from '@/src/context/SchedulingAnalytics';
+
 import Loader from '../../Common/Loader';
 
 export const CompletedInterviews = memo(() => {

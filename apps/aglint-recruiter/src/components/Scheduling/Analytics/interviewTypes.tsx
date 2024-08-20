@@ -1,14 +1,16 @@
+import Stack from '@mui/material/Stack';
+import { useRouter } from 'next/router';
+import { memo } from 'react';
+
+import { InterviewModuleStats } from '@/devlink3/InterviewModuleStats';
+import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
-import Stack from '@mui/material/Stack';
-import { memo } from 'react';
-import Loader from '../../Common/Loader';
-import { InterviewModuleStats } from '@/devlink3/InterviewModuleStats';
 import ROUTES from '@/src/utils/routing/routes';
-import { useRouter } from 'next/router';
-import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
+
+import Loader from '../../Common/Loader';
 
 export const InterviewTypes = memo(() => {
   const { push } = useRouter();

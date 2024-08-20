@@ -1,15 +1,17 @@
-import {
-  useSchedulingAnalytics,
-  type SchedulingAnalyticsContextType,
-} from '@/src/context/SchedulingAnalytics';
 import { Avatar, Stack } from '@mui/material';
-import { memo } from 'react';
-import { HistoryPill } from '@/devlink3/HistoryPill';
-import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
-import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
-import Loader from '../../Common/Loader';
-import ROUTES from '@/src/utils/routing/routes';
 import { useRouter } from 'next/router';
+import { memo } from 'react';
+
+import { HistoryPill } from '@/devlink3/HistoryPill';
+import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
+import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
+import {
+  type SchedulingAnalyticsContextType,
+  useSchedulingAnalytics,
+} from '@/src/context/SchedulingAnalytics';
+import ROUTES from '@/src/utils/routing/routes';
+
+import Loader from '../../Common/Loader';
 
 export const TrainingProgress = memo(() => {
   const { push } = useRouter();
