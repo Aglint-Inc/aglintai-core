@@ -125,7 +125,7 @@ export function Location({
         <>
           <div style={{ display: "flex", gap: "20px" }}>
             <div>
-              <h5>Select Location to add</h5>
+              <h5>Select Locations to add</h5>
 
               {availableLocations.map((location, index) => (
                 <div
@@ -155,7 +155,7 @@ export function Location({
             }}
             disabled={selectedNewLocation.length === 0}
           >
-            Add Location
+            Add Locations
           </button>
         </>
       )}

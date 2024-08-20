@@ -76,7 +76,7 @@ const UpdateEmailAuth = () => {
         </ul>
       )}
       <button onClick={handleUpdate} disabled={emailsToUpdate?.length === 0}>
-        Update Email Auth
+        Update all email Auth
       </button>
     </div>
   );
