@@ -80,6 +80,7 @@ function ViewRequestDetails() {
       <Page404
         slot404={
           <ButtonSoft
+            size={2}
             onClickButton={{
               onClick: () => {
                 replace('/requests?tab=requests');
@@ -138,7 +139,7 @@ function ViewRequestDetails() {
                     styleProps={{
                       onClick: () => {
                         window.open(
-                          `/scheduling/application/${candidateDetails?.id}`,
+                          `/scheduling/application/${selectedRequest?.application_id}`,
                           '_blank',
                         );
                       },
@@ -315,7 +316,7 @@ function ViewRequestDetails() {
                           onClickButton={{
                             onClick: () => {
                               window.open(
-                                `/scheduling/application/${candidateDetails?.id}`,
+                                `/scheduling/application/${selectedRequest?.application_id}`,
                                 '_blank',
                               );
                             },
