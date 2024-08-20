@@ -1,7 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, Stack } from '@mui/material';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -19,10 +18,15 @@ import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
+import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import {
+  ApiInterviewSessionsStage,
+  ApiInterviewStages,
+} from '@/src/pages/api/scheduling/application/fetchInterviewStagesBySessionId';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -45,6 +49,9 @@ function ViewRequestDetails() {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
+  const [sessionsCards, setSessionsCards] = useState<
+    ApiInterviewSessionsStage['response']['stage']['sessions']
+  >([]);
 
   const { setCollapse } = useRequest();
 
@@ -90,6 +97,23 @@ function ViewRequestDetails() {
     (ele) => ele.interview_session.id,
   );
 
+  const getApplicationInterview = async () => {
+    const res = await axios.call<ApiInterviewSessionsStage>(
+      'POST',
+      '/api/scheduling/application/fetchInterviewStagesBySessionId',
+      {
+        application_id: selectedRequest.application_id,
+        sessions_ids: sessions,
+      },
+    );
+    setSessionsCards(res.stage.sessions);
+    console.log(res.stage.sessions);
+  };
+
+  useEffect(() => {
+    if (selectedRequest) getApplicationInterview();
+  }, [selectedRequest]);
+
   if (isPlaceholderData) {
     return (
       <Stack
@@ -129,6 +153,7 @@ function ViewRequestDetails() {
       },
     });
   }
+
   return (
     <>
       <PageLayout
@@ -183,17 +208,13 @@ function ViewRequestDetails() {
           <RequestDetail
             slotInterview={
               sessions &&
-              sessions.map((session_id, index) => {
+              sessionsCards.map((session, index) => {
                 if (status === 'pending') {
                   return <RequestCardSkeleton key={session_id} />;
                 }
                 return (
                   <>
-                    <InterviewCard
-                      session_id={session_id}
-                      meetingList={meetingList}
-                      key={index}
-                    />
+                    <InterviewCard session={session} key={index} />
                   </>
                 );
               })

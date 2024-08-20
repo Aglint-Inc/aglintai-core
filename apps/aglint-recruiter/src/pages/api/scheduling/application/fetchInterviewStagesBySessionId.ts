@@ -11,20 +11,20 @@ import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export type ApiInterviewStages = {
+export type ApiInterviewSessionsStage = {
   request: {
     application_id: string;
     sessions_ids: string[];
   };
   response: {
     success: boolean;
-    stages: Awaited<ReturnType<typeof fetchSessionDetails>>;
+    stage: Awaited<ReturnType<typeof fetchSessionDetails>>[number];
   };
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const requestHandler = apiRequestHandlerFactory<ApiInterviewStages>(
+    const requestHandler = apiRequestHandlerFactory<ApiInterviewSessionsStage>(
       req,
       res,
     );
@@ -33,10 +33,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'POST',
       async ({ body }) => {
         const { application_id, sessions_ids } = body;
-        const stages = await fetchDetails(application_id, sessions_ids);
+        const stage = await fetchDetails(application_id, sessions_ids);
         return {
           success: true,
-          stages,
+          stage,
         };
       },
       ['application_id', 'sessions_ids'],
@@ -121,7 +121,7 @@ const fetchDetails = async (application_id: string, session_ids: string[]) => {
     };
   });
 
-  return reducedStages;
+  return reducedStages[0];
 };
 
 const fetchSessionDetails = async ({
