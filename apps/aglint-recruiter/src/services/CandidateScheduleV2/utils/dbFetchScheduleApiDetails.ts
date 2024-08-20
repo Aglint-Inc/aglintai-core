@@ -9,8 +9,9 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { ApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
+import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';
@@ -134,6 +135,7 @@ export const dbFetchScheduleApiDetails = async (
 // utility functions
 const mapInt = (i: SessionInterviewerType) => {
   const int: SessionInterviewerApiRespType = {
+    id: i.session_relation_id,
     email: i.email,
     first_name: i.first_name,
     interview_module_relation_id: i.interview_module_relation_id,
@@ -143,7 +145,7 @@ const mapInt = (i: SessionInterviewerType) => {
     training_type: i.training_type,
     user_id: i.user_id,
     position: i.position,
-    int_tz: i.int_tz,
+    int_tz: i.scheduling_settings.timeZone.tzCode,
   };
   return int;
 };
@@ -168,7 +170,6 @@ export const fetchAndVerifyDb = async (
   const db_resp = {
     comp_schedule_setting: (r[0].comp_schedule_setting ??
       null) as unknown as schedulingSettingType,
-
     int_meetings: (r[0].int_meetings ?? []) as InterviewerMeetingScheduled[],
     int_modules_data: (r[0].interview_modules ??
       []) as unknown as InterviewModuleType[][],
@@ -226,6 +227,7 @@ const getAllSessionIntDetails = (
     const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
     all_ints.forEach((int) => {
       all_session_int_detail[s.session_id].interviewers[int.user_id] = {
+        session_relation_id: int.session_relation_id,
         email: int.email,
         first_name: int.first_name,
         interview_module_relation_id: int.interview_module_relation_id,

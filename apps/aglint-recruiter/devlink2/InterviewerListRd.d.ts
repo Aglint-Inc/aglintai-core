@@ -6,4 +6,5 @@ declare function InterviewerListRd(props: {
   slotStatus?: Types.Devlink.Slot;
   slotTextWithIcon?: Types.Devlink.Slot;
   slotIconButtonSoft?: Types.Devlink.Slot;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

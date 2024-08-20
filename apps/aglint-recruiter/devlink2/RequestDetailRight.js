@@ -14,12 +14,22 @@ export function RequestDetailRight({
   slotAssignedTo,
   slotCandidate,
   slotRelatedJob,
+  slotStatus,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "req-detail-right-sub-wrap")}
       tag="div"
     >
+      <_Builtin.Block
+        className={_utils.cx(_styles, "req-detail-tight-list")}
+        tag="div"
+      >
+        <_Builtin.Block tag="div">
+          <Text content="Status" />
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "req-detail-tight-list")}
         tag="div"
@@ -60,7 +70,14 @@ export function RequestDetailRight({
         className={_utils.cx(_styles, "asigned-to-wraper")}
         tag="div"
       >
-        <Text content="Candidate" />
+        <Text
+          content={
+            <>
+              {"Candidate Detail"}
+              <br />
+            </>
+          }
+        />
         <_Builtin.Block tag="div">{slotCandidate}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

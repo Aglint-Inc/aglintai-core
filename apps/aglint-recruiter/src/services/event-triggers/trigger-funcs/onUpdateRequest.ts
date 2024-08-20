@@ -44,7 +44,9 @@ const triggerActions = async (new_data: DatabaseTable['request']) => {
           (new_data.type === 'reschedule_request' &&
             j_l_a.workflow.trigger === 'onRequestReschedule') ||
           (new_data.type === 'cancel_schedule_request' &&
-            j_l_a.workflow.trigger === 'onRequestCancel'),
+            j_l_a.workflow.trigger === 'onRequestCancel') ||
+          (new_data.type === 'decline_request' &&
+            j_l_a.workflow.trigger === 'onRequestInterviewerDecline'),
       )
       .map(async (j_l_a) => {
         supabaseWrap(

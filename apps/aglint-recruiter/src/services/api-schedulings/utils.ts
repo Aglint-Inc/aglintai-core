@@ -1,8 +1,9 @@
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
-import { ApiError, supabaseWrap } from '@aglint/shared-utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type ProgressLoggerType = ReturnType<typeof createRequestProgressLogger>;

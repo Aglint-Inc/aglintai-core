@@ -1,6 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { ApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
+import { ApiError } from '@/src/utils/customApiError';
 
 import { EventNode } from './node';
 

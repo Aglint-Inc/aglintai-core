@@ -418,7 +418,15 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       },
     },
   ],
-  onInterviewerDecline: null, //fix needed causing lint
+  onRequestInterviewerDecline: [
+    {
+      name: 'Change next Available interviewer',
+      value: {
+        action_type: 'agent_instruction',
+        target_api: 'onRequestInterviewerDecline_agent_changeInterviewer',
+      },
+    },
+  ], //fix needed causing lint
 } as const;
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =

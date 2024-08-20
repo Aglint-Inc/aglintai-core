@@ -648,11 +648,12 @@ function SchedulingSettings({
               <InterviewLoad
                 borderStyle={'true'}
                 slotDailyLimit={
-                  <Stack spacing={3}>
+                  <Stack spacing={3} gap={2} flexDirection={'row'} >
                     <MuiNumberfield
                       handleSelect={(value) => handleDailyValue(+value)}
                       value={dailyLmit.value}
                       max={dailyLmit.max}
+                      width='70px'
                     />
                     <RadioGroup
                       sx={{ marginTop: '12px !important' }}
@@ -684,11 +685,12 @@ function SchedulingSettings({
                   </Stack>
                 }
                 slotWeeklyLimit={
-                  <Stack spacing={3}>
+                  <Stack spacing={3} gap={2} flexDirection={'row'}>
                     <MuiNumberfield
                       handleSelect={(value) => handleWeeklyValue(+value)}
                       value={weeklyLmit.value}
                       max={weeklyLmit.max}
+                      width='70px'
                     />
                     <RadioGroup
                       sx={{ marginTop: '12px !important' }}

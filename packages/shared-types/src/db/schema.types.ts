@@ -1827,6 +1827,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
+          request_id: string | null
           schedule_id: string | null
           session_id: string
           session_relation_id: string | null
@@ -1840,6 +1841,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id: string
           session_relation_id?: string | null
@@ -1853,6 +1855,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id?: string
           session_relation_id?: string | null
@@ -1879,6 +1882,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "interview_session_cancel_schedule_id_fkey"
@@ -2420,7 +2430,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2: string | null
-          name: string
+          name: string | null
           recruiter_id: string
           region: string
           remote_id: string | null
@@ -2434,7 +2444,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2?: string | null
-          name: string
+          name?: string | null
           recruiter_id: string
           region: string
           remote_id?: string | null
@@ -2448,7 +2458,7 @@ export type Database = {
           is_headquarter?: boolean
           line1?: string
           line2?: string | null
-          name?: string
+          name?: string | null
           recruiter_id?: string
           region?: string
           remote_id?: string | null
@@ -6043,6 +6053,128 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      scheduling_analytics_completed_interviews: {
+        Args: {
+          recruiter_id: string
+          type?: string
+          jobs?: string[]
+        }
+        Returns: {
+          date: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_decline_requests: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+          start_time?: string
+          end_time?: string
+        }
+        Returns: {
+          completed_at: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_interview_types: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+        }
+        Returns: {
+          id: string
+          name: string
+          qualified: number
+          training: number
+        }[]
+      }
+      scheduling_analytics_interviewers: {
+        Args: {
+          recruiter_id: string
+          type?: Database["public"]["Enums"]["status_training"]
+          jobs?: string[]
+          start_time?: string
+          end_time?: string
+        }
+        Returns: {
+          name: string
+          user_id: string
+          profile_image: string
+          accepted: number
+          declined: number
+        }[]
+      }
+      scheduling_analytics_leaderboard: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+          start_time?: string
+          end_time?: string
+        }
+        Returns: {
+          name: string
+          position: string
+          profile_image: string
+          user_id: string
+          duration: number
+          interviews: number
+        }[]
+      }
+      scheduling_analytics_reasons: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+          start_time?: string
+          end_time?: string
+        }
+        Returns: {
+          reason: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_recent_decline_reschedule: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+          start_time?: string
+          end_time?: string
+        }
+        Returns: {
+          profile_image: string
+          name: string
+          note: string
+          id: string
+          type: Database["public"]["Enums"]["cancel_type"]
+        }[]
+      }
+      scheduling_analytics_tabs: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+        }
+        Returns: {
+          cancelled: number
+          waiting: number
+          completed: number
+          confirmed: number
+          not_scheduled: number
+        }[]
+      }
+      scheduling_analytics_training_progress: {
+        Args: {
+          recruiter_id: string
+          jobs?: string[]
+        }
+        Returns: {
+          number_of_shadow: number
+          noshadow: number
+          number_of_reverse_shadow: number
+          noreverseshadow: number
+          user_id: string
+          name: string
+          position: string
+        }[]
+      }
       score_application: {
         Args: {
           scores?: Json
@@ -6281,7 +6413,7 @@ export type Database = {
         | "onRequestReschedule_emailLink_resendAvailRequest"
         | "onRequestCancel_agent_cancelEvents"
         | "onRequestCancel_slack_interviewersOrganizer"
-        | "onInterviewerDecline_agent_changeInterviewer"
+        | "onRequestInterviewerDecline_agent_changeInterviewer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -6500,7 +6632,7 @@ export type Database = {
         | "onSelfScheduleReqAgent"
         | "onRequestCancel"
         | "onRequestReschedule"
-        | "onInterviewerDecline"
+        | "onRequestInterviewerDecline"
       workflow_type: "system" | "job"
     }
     CompositeTypes: {

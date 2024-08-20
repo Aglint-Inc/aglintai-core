@@ -12,7 +12,7 @@ function Clear() {
           clearRequestsLocalStorage("cancel_schedule_request");
         }}
       >
-        Clear
+        Reset Automation Requests
       </span>
     </div>
   );

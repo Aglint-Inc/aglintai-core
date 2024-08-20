@@ -21,10 +21,6 @@
     "gen_types": "npx tsc script/genTypesFromDB.ts --skipLibCheck && node script/genTypesFromDB.js"
   },
   "dependencies": {
-    "@trpc/client": "^11.0.0-rc.446",
-    "@trpc/server": "^11.0.0-rc.446",
-    "superjson": "^2.2.1",
-    "zod": "^3.23.3",
     "@aglint/shared-utils": "*",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -43,7 +39,7 @@
     "@react-email/components": "^0.0.17",
     "@react-email/render": "^0.0.13",
     "@sendgrid/mail": "^8.1.3",
-    "@supabase/ssr": "0.4.0",
+    "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.1",
     "@tabler/icons-react": "^3.1.0",
     "@tanstack/react-query": "^5.18.1",
@@ -63,6 +59,8 @@
     "@trigger.dev/nextjs": "^2.2.11",
     "@trigger.dev/react": "^2.2.11",
     "@trigger.dev/sdk": "^2.2.11",
+    "@trpc/client": "^11.0.0-rc.446",
+    "@trpc/server": "^11.0.0-rc.446",
     "@vercel/edge": "^1.1.1",
     "@vercel/edge-config": "^1.1.0",
     "@webflow/webflow-cli": "^1.6.9",
@@ -110,6 +108,7 @@
     "react-transition-group": "^4.4.5",
     "sass": "1.55.0",
     "supabase": "^1.187.3",
+    "superjson": "^2.2.1",
     "tippy.js": "^6.3.7",
     "tiptap": "^1.32.2",
     "use-deep-compare-effect": "^1.8.1",
@@ -117,6 +116,7 @@
     "valibot": "^0.31.0-rc.12",
     "vercel-toast": "^1.8.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz",
+    "zod": "^3.23.3",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

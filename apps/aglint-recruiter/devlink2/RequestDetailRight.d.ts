@@ -9,4 +9,5 @@ declare function RequestDetailRight(props: {
   slotAssignedTo?: Types.Devlink.Slot;
   slotCandidate?: Types.Devlink.Slot;
   slotRelatedJob?: Types.Devlink.Slot;
+  slotStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

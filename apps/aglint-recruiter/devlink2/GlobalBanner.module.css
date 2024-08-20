@@ -24,6 +24,23 @@
   grid-row-gap: 40px;
 }
 
+.global_banner.info_short-ai {
+  width: 100%;
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+
+  border-color: var(--accent-6);
+  border-radius: var(--radius-4);
+
+  background-color: var(--accent-2);
+}
+
 .banner_main_block {
   display: grid;
   align-content: center;

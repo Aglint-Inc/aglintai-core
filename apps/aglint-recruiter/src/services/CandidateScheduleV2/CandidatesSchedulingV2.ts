@@ -25,6 +25,8 @@ import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
+import { ApiError } from '@/src/utils/customApiError';
+
 import {
   IntervsWorkHrsEventMapType,
   IntervsWorkHrsEventType,
@@ -53,7 +55,9 @@ export class CandidatesSchedulingV2 {
     // scheduling_options_schema;
     const parsed_api_options = v.parse(scheduling_options_schema, {
       ...(_api_options ?? {}),
-      include_conflicting_slots: _api_options?.include_conflicting_slots ?? {},
+      include_conflicting_slots: {
+        ...(_api_options?.include_conflicting_slots ?? {}),
+      },
     });
     this.api_options = { ...parsed_api_options };
     this.intervs_details_map = new Map();
@@ -211,13 +215,25 @@ export class CandidatesSchedulingV2 {
       (i) => i.interviewer_type !== 'training',
     );
   }
-  public ignoreInterviewer(inter_id: string) {
+  public ignoreInterviewers(sess_reln_ids: string[]) {
+    sess_reln_ids.forEach((reln_id) => {
+      if (
+        !this.db_details.all_inters.find(
+          (int) => int.session_relation_id === reln_id,
+        )
+      ) {
+        throw new ApiError('SERVER_ERROR', `${reln_id} does not exist`);
+      }
+    });
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
+      qualifiedIntervs: s.qualifiedIntervs.filter(
+        (i) => !sess_reln_ids.includes(i.id),
+      ),
       trainingIntervs: [],
     }));
     this.db_details.all_inters = this.db_details.all_inters.filter(
-      (i) => i.user_id !== inter_id,
+      (i) => !sess_reln_ids.includes(i.session_relation_id),
     );
   }
 

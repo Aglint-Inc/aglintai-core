@@ -110,6 +110,7 @@ const ImportCsv = () => {
             if (validityOfHeaders) {
               // toast.success('Headers Are Valid.');
               // console.log('valid header');
+
               setbulkImportdata(data);
             } else {
               toast.error('Invalid header.');

@@ -32,5 +32,10 @@
 }
 
 .slot-arrow-hover-in {
-  display: none;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
 }

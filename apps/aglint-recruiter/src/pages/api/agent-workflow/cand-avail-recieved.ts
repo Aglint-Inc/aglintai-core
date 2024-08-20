@@ -1,5 +1,5 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import { addErrorHandlerWrap, supabaseWrap } from '@aglint/shared-utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
@@ -8,6 +8,7 @@ import {
   createRequestProgressLogger,
   executeWorkflowAction,
 } from '@/src/services/api-schedulings/utils';
+import { addErrorHandlerWrap } from '@/src/utils/errorHandlerWrap';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

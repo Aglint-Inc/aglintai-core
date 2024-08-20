@@ -25,7 +25,7 @@ export function InterviewMemberSide({
   isMenuTabVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
+    <_Component className={_utils.cx(_styles, "ims-wrappers")} tag="div">
       {isMenuTabVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "tab_switch_wrappper")}

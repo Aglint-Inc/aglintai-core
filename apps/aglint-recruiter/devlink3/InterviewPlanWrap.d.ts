@@ -10,4 +10,5 @@ declare function InterviewPlanWrap(props: {
   slotInputButton?: Types.Devlink.Slot;
   isInputVisible?: Types.Visibility.VisibilityConditions;
   slotInterviewPlanDetail?: Types.Devlink.Slot;
+  isSlotInterviewPlanVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
