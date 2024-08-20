@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Collapse, Stack } from '@mui/material';
 import { useState, type PropsWithChildren } from 'react';
-
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
@@ -15,7 +13,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
-import { IconButtonSoft } from '@/devlink';
+import { IconButtonSoft } from '@/devlink3';
 
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
@@ -63,16 +61,6 @@ export const Request = (
                       e.stopPropagation();
                     }}
                   >
-                    {/* <ButtonSoft
-                      onClickButton={{
-                        onClick: () => {
-                          push('/requests/' + props.id);
-                        },
-                      }}
-                      textButton='View Details'
-                      size={1}
-                      color={'neutral'}
-                    /> */}
                     <Stack width={'24px'} height={'24px'}>
                       {isHover && (
                         <Stack>
