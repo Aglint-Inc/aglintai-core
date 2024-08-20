@@ -229,3 +229,6 @@ type AnalysisProcedures<
     table: `scheduling_analytics_${id}`;
   };
 };
+
+export type SchedulingAnalysisSchema<T extends SchedulingAnalyticsFunctions> =
+  AnalysisProcedures[T]['schema'] extends z.ZodSchema<infer R> ? R : never;

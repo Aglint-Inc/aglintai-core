@@ -5,19 +5,41 @@ import {
   memo,
   useContext,
   useMemo,
+  useState,
 } from 'react';
 
 import { schedulingAnalyticsQueries } from '@/src/queries/scheduling-analytics';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
 
 const useActions = () => {
   const { recruiter_id } = useAuthDetails();
 
+  const [completedInterviewType, setCompletedInterviewType] =
+    useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('day');
+
+  const [interviewersType, setInterviewersType] =
+    useState<SchedulingAnalysisSchema<'interviewers'>['type']>('qualified');
+
+  const [leaderboardType, setLeaderboardType] =
+    useState<SchedulingAnalysisSchema<'leaderboard'>['type']>('all_time');
+
+  const [reasonsType, setReasonsType] =
+    useState<SchedulingAnalysisSchema<'reasons'>['type']>('reschedule');
+
+  const [trainingProgressType, setTrainingProgressType] =
+    useState<SchedulingAnalysisSchema<'training_progress'>['type']>(
+      'qualified',
+    );
+
   const enabled = useMemo(() => !!recruiter_id, [recruiter_id]);
 
   const completed_interviews = useQuery(
-    schedulingAnalyticsQueries.completed_interviews({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.completed_interviews(
+      { recruiter_id, type: completedInterviewType },
+      enabled,
+    ),
   );
 
   const decline_requests = useQuery(
@@ -29,15 +51,24 @@ const useActions = () => {
   );
 
   const interviewers = useQuery(
-    schedulingAnalyticsQueries.interviewers({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.interviewers(
+      { recruiter_id, type: interviewersType },
+      enabled,
+    ),
   );
 
   const leaderboard = useQuery(
-    schedulingAnalyticsQueries.leaderboard({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.leaderboard(
+      { recruiter_id, type: leaderboardType },
+      enabled,
+    ),
   );
 
   const reasons = useQuery(
-    schedulingAnalyticsQueries.reasons({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.reasons(
+      { recruiter_id, type: reasonsType },
+      enabled,
+    ),
   );
 
   const recent_decline_reschedule = useQuery(
@@ -52,7 +83,10 @@ const useActions = () => {
   );
 
   const training_progress = useQuery(
-    schedulingAnalyticsQueries.training_progress({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.training_progress(
+      { recruiter_id, type: trainingProgressType },
+      enabled,
+    ),
   );
 
   return {
