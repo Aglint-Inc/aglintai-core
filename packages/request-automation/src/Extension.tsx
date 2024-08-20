@@ -4,11 +4,11 @@ import Demo from "./components/demo/Demo";
 import Header from "./components/header/Header";
 import { tabs } from "./type/UITypes";
 import Seed from "./components/seed/Seed";
-import Clear from "./components/clear/Clear";
+import Reset from "./components/Reset/Reset";
 
-export const DrawerComponent = () => {
+export const Extension = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeDiv, setActiveDiv] = useState<tabs>("demo");
+  const [activeDiv, setActiveDiv] = useState<tabs>("reset");
 
   const drawerRef = useRef(null);
 
@@ -23,9 +23,9 @@ export const DrawerComponent = () => {
     >
       <div className="bottom-drawer-content">
         <Header activeDiv={activeDiv} setActiveDiv={setActiveDiv} />
-        {activeDiv === "demo" && <Demo />}
+        {activeDiv === "automation" && <Demo />}
         {activeDiv === "seed" && <Seed />}
-        {activeDiv === "clear" && <Clear />}
+        {activeDiv === "reset" && <Reset />}
       </div>
       <div className="drawer-handle" onClick={toggleDrawer}>
         {isOpen ? "↧" : "↥"}

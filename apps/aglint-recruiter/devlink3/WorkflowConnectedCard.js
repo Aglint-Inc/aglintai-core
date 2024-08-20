@@ -46,12 +46,14 @@ export function WorkflowConnectedCard({
           iconName="corporate_fare"
           iconWeight="medium"
           color="neutral"
+          fontWeight="regular"
         />
         <TextWithIcon
           textContent={textLocation}
           iconName="location_on"
           iconWeight="medium"
           color="neutral"
+          fontWeight="regular"
         />
         <_Builtin.Block
           className={_utils.cx(_styles, "cjc-icon-btn-wrap")}

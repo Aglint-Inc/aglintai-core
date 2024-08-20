@@ -4,7 +4,6 @@ import {
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
-  ApiError,
   schema_find_alternative_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -13,9 +12,8 @@ import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-
-//ignore current interviewer
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

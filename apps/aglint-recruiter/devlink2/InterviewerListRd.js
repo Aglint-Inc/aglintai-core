@@ -14,6 +14,7 @@ export function InterviewerListRd({
   slotStatus,
   slotTextWithIcon,
   slotIconButtonSoft,
+  onClickCard = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -22,6 +23,7 @@ export function InterviewerListRd({
       className={_utils.cx(_styles, "interviewer-rd-card")}
       data-w-id="d41e6221-bfe9-1b5a-396a-1cabe5c5ca7b"
       tag="div"
+      {...onClickCard}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "interviewer-rd-left-wrap")}

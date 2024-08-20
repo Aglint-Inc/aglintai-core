@@ -9,8 +9,9 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { ApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
+import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';

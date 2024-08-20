@@ -16,6 +16,8 @@ export function RolesPill({
   textRoles = "CSS",
   onClickRemoveRoles = {},
   isCloseIconVisible = true,
+  slotLeftIcon,
+  isLeftIconVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -25,6 +27,14 @@ export function RolesPill({
       data-w-id="b0b624ad-6560-5d17-4315-cf5001976582"
       tag="div"
     >
+      {isLeftIconVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-left-icon-rp")}
+          tag="div"
+        >
+          {slotLeftIcon}
+        </_Builtin.Block>
+      ) : null}
       <Text content={textRoles} size="2" color="neutral-11" weight="regular" />
       {isCloseIconVisible ? (
         <_Builtin.Block

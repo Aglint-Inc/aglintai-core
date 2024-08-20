@@ -35,8 +35,29 @@
     transform: translateY(0%);
   }
 
+  button {
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #ffffff;
+    display: flex;
+    font-size: 12px;
+    justify-content: center;
+    text-decoration: none;
+    border: 0;
+    padding: 3px 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    background-color: #17759c;
+  }
+
+  button:hover {
+    background-image: linear-gradient(-180deg, #1d95c9 0%, #17759c 100%);
+  }
+
   @import "tabs/demo";
   @import "tabs/header";
-  @import "tabs/clear";
+  @import "tabs/reset";
   @import "tabs/seed";
 }

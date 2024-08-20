@@ -34,12 +34,17 @@ const AddMember = ({
   memberList,
   pendingList,
   onClose,
+  defaultRole,
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
   memberList: { id: string; name: string }[];
-  pendingList: RecruiterUserType[];
+  pendingList?: RecruiterUserType[];
   onClose: () => void;
+  defaultRole?: {
+    role: string;
+    role_id: string;
+  };
 }) => {
   const { recruiter, recruiterUser } = useAuthDetails();
   const { data: locations } = useAllOfficeLocations();
@@ -66,8 +71,8 @@ const AddMember = ({
     location_id: null,
     position: null,
     department_id: null,
-    role: null,
-    role_id: null,
+    role_id: defaultRole?.role_id ? defaultRole.role_id : null,
+    role: defaultRole?.role ? defaultRole.role : null,
     manager_id: null,
   });
 

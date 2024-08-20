@@ -198,7 +198,7 @@ function Jobs() {
               </div>
             ))}
             <button style={{ marginTop: "10px" }} onClick={addJobs}>
-              Add jobs
+              Add Jobs
             </button>
           </>
         ) : (
