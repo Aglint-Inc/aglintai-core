@@ -9,6 +9,7 @@ import { ActionEmptyState } from '../../../Common/CandidateDrawer/Common/ActionE
 import Progress from '../Progress';
 import DialogSchedule from './ScheduleDialog';
 import StageSessions from './StageSessions';
+import SideDrawerEdit from './StageSessions/EditDrawer';
 
 function InterviewTabContent() {
   const {
@@ -19,7 +20,7 @@ function InterviewTabContent() {
 
   if (isLoadingSession)
     return (
-      <Stack height={'100%'}>
+      <Stack height={'50vh'}>
         <Loader />
       </Stack>
     );
@@ -33,6 +34,7 @@ function InterviewTabContent() {
 
   return (
     <>
+      <SideDrawerEdit />
       <InterviewPlanApplication
         slotApplicantDetailStage={<StageSessions />}
         slotCandidateInterviewProgress={<Progress />}
