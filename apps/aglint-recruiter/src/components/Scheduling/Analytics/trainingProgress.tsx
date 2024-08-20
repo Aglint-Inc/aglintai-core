@@ -1,6 +1,6 @@
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
@@ -85,24 +85,32 @@ const Pills = ({
   | 'number_of_reverse_shadow'
   | 'number_of_shadow'
 >) => {
-  const pillData = [
-    ...[...new Array(number_of_shadow)].map(() => ({
-      shadow: true,
-      active: true,
-    })),
-    ...[...new Array(noshadow - number_of_shadow)].map(() => ({
-      shadow: true,
-      active: true,
-    })),
-    ...[...new Array(number_of_reverse_shadow)].map(() => ({
-      shadow: true,
-      active: true,
-    })),
-    ...[...new Array(noreverseshadow - number_of_shadow)].map(() => ({
-      shadow: true,
-      active: true,
-    })),
-  ] satisfies { shadow: boolean; active: boolean }[];
+  const pillData = useMemo(
+    () =>
+      [
+        ...[...new Array(number_of_shadow)].map(() => ({
+          shadow: true,
+          active: true,
+        })),
+        ...[...new Array(noshadow - number_of_shadow)].map(() => ({
+          shadow: true,
+          active: false,
+        })),
+        ...[...new Array(number_of_reverse_shadow)].map(() => ({
+          shadow: false,
+          active: true,
+        })),
+        ...[...new Array(noreverseshadow - number_of_reverse_shadow)].map(
+          () => ({
+            shadow: false,
+            active: false,
+          }),
+        ),
+      ] satisfies { shadow: boolean; active: boolean }[],
+    [number_of_shadow, noshadow, number_of_reverse_shadow, number_of_shadow],
+  );
+
+  const maxLength = useMemo(() => pillData.length, [pillData]);
 
   return (
     <>
@@ -113,7 +121,7 @@ const Pills = ({
           isShadow={shadow}
           isReverseShadow={!shadow}
           position={
-            index === 0 ? 'start' : index === pillData.length ? 'end' : ''
+            index === 0 ? 'start' : index === maxLength - 1 ? 'end' : ''
           }
         />
       ))}
