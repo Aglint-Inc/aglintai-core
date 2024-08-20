@@ -47,7 +47,7 @@ function ViewRequestDetails() {
     handleAsyncUpdateRequest,
   } = useRequests();
   const [sessionsCards, setSessionsCards] = useState<
-    ApiInterviewSessionsStage['response']['stage']['sessions']
+    ApiInterviewSessionsStage['response']['sessions']
   >([]);
 
   const { setCollapse } = useRequest();
@@ -103,8 +103,7 @@ function ViewRequestDetails() {
         sessions_ids: sessions,
       },
     );
-    setSessionsCards(res.stage.sessions);
-    console.log(res.stage.sessions);
+    setSessionsCards(res.sessions);
   };
 
   useEffect(() => {
@@ -220,8 +219,9 @@ function ViewRequestDetails() {
                       candidate={null}
                       isEditIconVisible={false}
                       isViewDetailVisible={true}
-                      gridStyle='0fr 1.8fr 0.8fr'
-                      isStatusVisible={false}
+                      isStatusVisible={
+                        session.interview_meeting?.status === 'not_scheduled'
+                      }
                     />
                   </>
                 );

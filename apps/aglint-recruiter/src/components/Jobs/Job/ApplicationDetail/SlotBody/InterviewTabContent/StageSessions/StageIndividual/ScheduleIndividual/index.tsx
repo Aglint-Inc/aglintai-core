@@ -28,7 +28,6 @@ function ScheduleIndividualCard({
   candidate,
   isEditIconVisible = false,
   isViewDetailVisible = false,
-  gridStyle = '1fr 1.8fr 0.8fr',
   isStatusVisible = true,
 }: {
   session: StageWithSessions[0]['sessions'][0];
@@ -43,7 +42,6 @@ function ScheduleIndividualCard({
   };
   isEditIconVisible?: boolean;
   isViewDetailVisible?: boolean;
-  gridStyle?: '1fr 1.8fr 0.8fr' | '0fr 1.8fr 0.8fr';
   isStatusVisible?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -178,7 +176,7 @@ function ScheduleIndividualCard({
       }
       styleGrid={{
         style: {
-          gridTemplateColumns: gridStyle,
+          gridTemplateColumns: '1fr 1.8fr 0.8fr',
         },
       }}
       slotRequestStatus={

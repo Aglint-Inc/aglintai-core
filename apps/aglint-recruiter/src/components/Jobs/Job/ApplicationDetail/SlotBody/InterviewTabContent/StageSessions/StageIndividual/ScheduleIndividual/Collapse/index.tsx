@@ -104,9 +104,7 @@ function CollapseContent({
                 <GlobalBannerInline
                   color={'error'}
                   iconName={'warning'}
-                  textContent={
-                    'No interviewers assigned. Click on edit to assign interviewers.'
-                  }
+                  textContent={'No interviewers assigned.'}
                   slotButton={<></>}
                 />
               ) : (
