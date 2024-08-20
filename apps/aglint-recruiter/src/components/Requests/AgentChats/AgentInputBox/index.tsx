@@ -132,23 +132,22 @@ function AgentInputBox() {
                   .flatMap((ele) => ele)
                   .map((ele) => ({
                     id: ele.id,
-                    display: ele.title.replace(
-                      '{{candidateName}}',
-                      getFullName(
-                        ele.applications.candidates.first_name,
-                        ele.applications.candidates.last_name,
-                      ),
-                    ),
+                    display: getRequestTitle({
+                      title: ele.title,
+                      first_name: ele.applications.candidates.first_name,
+                      last_name: ele.applications.candidates.last_name,
+                    }),
                   }))
               : []
           }
           scheduleTypes={scheduleTypes}
           jobList={
-            isJobFetched &&
-            jobsAndApplications.jobs.map((job) => ({
-              id: job.id,
-              display: job.job_title,
-            }))
+            isJobFetched
+              ? jobsAndApplications.jobs.map((job) => ({
+                  id: job.id,
+                  display: job.job_title,
+                }))
+              : []
           }
           applicationsList={
             applications
@@ -177,6 +176,18 @@ function AgentInputBox() {
 
 export default AgentInputBox;
 
+export const getRequestTitle = ({
+  title,
+  first_name,
+  last_name,
+}: {
+  title: string;
+  first_name: string;
+  last_name: string;
+}) => {
+  return title.replace('{{candidateName}}', getFullName(first_name, last_name));
+};
+
 export const useAllJobsAndApplications = ({
   recruiter_id,
 }: {
@@ -192,6 +203,7 @@ export const useAllJobsAndApplications = ({
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
+    refetchInterval: 10000,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });

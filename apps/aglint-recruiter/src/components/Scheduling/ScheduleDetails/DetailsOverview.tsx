@@ -1,34 +1,26 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import CandidateInfo from '../Common/CandidateInfo';
 import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
-import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
 import FeedbackWindow from './Feedback';
 import { useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
-import RequestRescheduleDialog from './RequestRescheduleDialog';
-import RescheduleDialog from './RescheduleDialog';
 import { fetchFilterJson } from './utils';
 
 function DetailsOverview({
@@ -50,11 +42,7 @@ function DetailsOverview({
 }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
-  const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false); //role interviewers will ask for reschedule
-  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false); // role who have permission to reschedule
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
-  const [cancelUserId, setCancelUserId] = useState('');
   const [textValue, setTextValue] = useState('');
   const [filterJson, setFilterJson] =
     useState<Awaited<ReturnType<typeof fetchFilterJson>>>(null);
@@ -89,11 +77,6 @@ function DetailsOverview({
   }
 
   const schedule = data?.schedule_data;
-  const cancelReasons = data?.cancel_data?.filter(
-    (item) =>
-      item.interview_session_cancel.is_ignored === false &&
-      item.interview_session_cancel.is_resolved === false,
-  );
 
   useEffect(() => {
     if (schedule?.interview_meeting) {
@@ -147,99 +130,27 @@ function DetailsOverview({
   useEffect(() => {
     if (confirmedUsers?.length > 0) {
       setSessionRelation(
-        confirmedUsers.find((user) => user.email === recruiterUser.email)
-          ?.interview_session_relation,
+        confirmedUsers.find(
+          (user) => user.user_details.email === recruiterUser.email,
+        )?.interview_session_relation,
       );
     }
   }, [confirmedUsers]);
   // if logged in user is interviewer session relation will be there or else null
 
-  const [task, setTask] = useState<DatabaseTable['new_tasks']>();
-  const fetchTask = async () => {
-    const { data: tasks } = await supabase
-      .from('task_session_relation')
-      .select('task_id,new_tasks(*)')
-      .eq('session_id', schedule.interview_session.id)
-      .order('new_tasks(created_at)', { ascending: false });
-    if (tasks?.length) setTask(tasks[0].new_tasks);
-  };
-  useEffect(() => {
-    if (schedule) fetchTask();
-  }, [schedule]);
   return (
     <Stack pb={'var(--space-8)'}>
       <ScheduleDetailTabs
         slotScheduleTabOverview={
           <Stack spacing={'var(--space-2)'}>
-            {((schedule?.interview_meeting.meeting_flow === 'phone_agent' &&
-              schedule.interview_meeting.status === 'waiting') ||
-              (schedule?.interview_meeting.meeting_flow === 'mail_agent' &&
-                schedule.interview_meeting.status === 'waiting')) && (
-              <GlobalBanner
-                iconName={
-                  schedule?.interview_meeting.meeting_flow === 'phone_agent'
-                    ? 'smartphone'
-                    : 'mail'
-                }
-                textTitle={
-                  <Stack direction={'row'} spacing={2}>
-                    <Typography>
-                      This schedule is handling by{' '}
-                      {capitalizeAll(
-                        schedule.interview_meeting.meeting_flow.replaceAll(
-                          '_',
-                          ' ',
-                        ),
-                      )}
-                    </Typography>
-                    <GlobalBadge
-                      textBadge={capitalize(
-                        // eslint-disable-next-line no-unsafe-optional-chaining
-                        (task?.status ? task?.status : 'Loading...').replaceAll(
-                          '_',
-                          ' ',
-                        ),
-                      )}
-                      color={'info'}
-                    />
-                  </Stack>
-                }
-                slotButtons={
-                  task?.id ? (
-                    <ButtonSolid
-                      color={'neutral'}
-                      textButton='view task'
-                      size={1}
-                      onClickButton={{
-                        onClick: () => {
-                          router.push(`/tasks?task_id=${task.id}`);
-                        },
-                      }}
-                    />
-                  ) : (
-                    <></>
-                  )
-                }
-                textDescription={''}
-                color={'info'}
-              />
-            )}
-            {
-              <Banners
-                cancelReasons={cancelReasons}
-                schedule={schedule}
-                setCancelUserId={setCancelUserId}
-                cancelUserId={cancelUserId}
-                setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-                filterJson={filterJson}
-                requestAvailibility={requestAvailibility}
-                sessionRelation={sessionRelation}
-                refetch={refetch}
-                setIsDeclineOpen={setIsDeclineOpen}
-                setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-              />
-            }
-            <Overview schedule={schedule} cancelReasons={data?.cancel_data} />
+            <Banners
+              filterJson={filterJson}
+              requestAvailibility={requestAvailibility}
+              sessionRelation={sessionRelation}
+              refetch={refetch}
+              setIsDeclineOpen={setIsDeclineOpen}
+            />
+            <Overview />
           </Stack>
         }
         slotDarkPills={viewScheduleTabs
@@ -270,6 +181,7 @@ function DetailsOverview({
               {schedule && (
                 <CandidateInfo
                   application_id={schedule.schedule.application_id}
+                  job_id={schedule.job.id}
                 />
               )}
             </ShowCode.When>
@@ -361,30 +273,6 @@ function DetailsOverview({
           ]}
           closeDialog={() => {}}
           application_log_id={null}
-        />
-        <RequestRescheduleDialog
-          isRequestRescheduleOpen={isRequestRescheduleOpen}
-          setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
-          sessionRelation={sessionRelation}
-          schedule={schedule}
-          refetch={refetch}
-        />
-        <RescheduleDialog
-          refetch={() => {}}
-          isRescheduleOpen={isRescheduleOpen}
-          setIsRescheduleOpen={setIsRescheduleOpen}
-          application_id={schedule.schedule.application_id}
-          meeting_id={schedule.interview_meeting.id}
-          session_id={schedule.interview_session.id}
-          meeting_flow={schedule.interview_meeting.meeting_flow}
-          session_name={schedule.interview_session.name}
-        />
-        <ChangeInterviewerDialog
-          isChangeInterviewerOpen={isChangeInterviewerOpen}
-          setIsChangeInterviewerOpen={setIsChangeInterviewerOpen}
-          schedule={schedule}
-          cancelUserId={cancelUserId}
-          setCancelUserId={setCancelUserId}
         />
       </>
     </Stack>

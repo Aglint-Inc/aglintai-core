@@ -408,7 +408,7 @@ export const requestForReschedule = async ({
 
   setConsoleMessage((pre) => [
     ...pre,
-    `${settingsForreSchedule.length} requests from re-schedule `,
+    `${settingsForreSchedule.length} requests from Reschedule `,
   ]);
 
   settingsForreSchedule.map(async (setting, i) => {
@@ -459,9 +459,11 @@ export const requestForCancel = async ({
   count: number;
   setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
-  const localSettings2 = await getRequestLocalStorage(type);
+  const localSettings1 = await getRequestLocalStorage("schedule_request");
+  const localSettings2 = await getRequestLocalStorage("reschedule_request");
+  const localSettings = [...localSettings1, ...localSettings2];
 
-  const filteredSettings = localSettings2.filter(
+  const filteredSettings = localSettings.filter(
     (set) =>
       set.status === "completed" && !set.isCancelRequest && !set.isReschedule
   );

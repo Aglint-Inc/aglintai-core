@@ -3,9 +3,10 @@ import {
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
-import { ApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
+import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ProgressLoggerType } from '../utils';

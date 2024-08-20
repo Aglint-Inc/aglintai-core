@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Stack } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
@@ -13,6 +12,7 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 
@@ -44,13 +44,11 @@ export const Request = (
                   variant={'solid'}
                 />
               }
-              textTitle={props.title.replace(
-                '{{candidateName}}',
-                getFullName(
-                  props.applications.candidates.first_name,
-                  props.applications.candidates.last_name,
-                ),
-              )}
+              textTitle={getRequestTitle({
+                title: props.title,
+                first_name: props.applications.candidates.first_name,
+                last_name: props.applications.candidates.last_name,
+              })}
               slotRightIcons={
                 <>
                   <div

@@ -17,4 +17,6 @@ declare function InterviewerDetail(props: {
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   textPhone?: React.ReactNode;
   textInterviewer?: React.ReactNode;
+  slotUpcomingList?: Types.Devlink.Slot;
+  isUpcomingInterviewVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

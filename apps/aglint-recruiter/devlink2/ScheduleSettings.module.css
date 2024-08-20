@@ -348,8 +348,8 @@
   width: 100%;
   max-width: 370px;
   align-content: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
   grid-template-columns: max-content;
 }
 

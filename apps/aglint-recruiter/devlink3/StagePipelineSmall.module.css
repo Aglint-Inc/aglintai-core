@@ -1,0 +1,163 @@
+.pipeline {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+  height: 89px;
+  align-items: stretch;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  color: var(--neutral-3);
+
+  cursor: pointer;
+}
+
+.pipeline.is_small {
+  height: 24px;
+}
+
+.pipeline.is_small-copy {
+  width: auto;
+  height: 24px;
+}
+
+.arrow_left {
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
+.text_bloxk {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+  padding-right: 16px;
+  padding-left: 16px;
+  flex-direction: column;
+  justify-content: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+
+  color: #2f3941;
+}
+
+.text_bloxk.change_on_hover {
+  background-color: var(--neutral-3);
+}
+
+.change_on_hover {
+  background-color: var(--neutral-3);
+}
+
+.text_bloxk.change_on_hover.auto_width {
+  width: auto;
+}
+
+.slot-text-with-icon {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.slot_icon_20 {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.is_start {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  border-radius: 10px 0px 0px 10px;
+}
+
+.is_start.change_on_hover {
+  background-color: var(--neutral-3);
+}
+
+.is_end {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  border-radius: 0px 10px 10px 0px;
+}
+
+.is_end.change_on_hover {
+  background-color: var(--neutral-3);
+}
+
+.arrow_right {
+  position: absolute;
+  left: auto;
+  top: 0%;
+  right: -34px;
+  bottom: 0%;
+  z-index: 2;
+
+  display: flex;
+  width: 34px;
+  flex-direction: row;
+}

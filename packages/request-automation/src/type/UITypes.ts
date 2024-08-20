@@ -10,12 +10,12 @@ export type radioBtnOptions = {
   value: string;
 };
 
-export type tabs = "seed" | "demo" | "clear";
+export type tabs = "automation" | "seed" | "reset";
 
 //------------------------------------------------
 export type seedTabs =
   | "company"
-  | "email"
+  | "users"
   | "interview_type"
   | "jobs"
   | "workflow";

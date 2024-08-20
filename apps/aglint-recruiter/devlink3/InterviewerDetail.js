@@ -5,6 +5,8 @@ import { Text } from "./Text";
 import { GlobalIcon } from "./GlobalIcon";
 import { NewTabPill } from "./NewTabPill";
 import { InterviewerDetailOverview } from "./InterviewerDetailOverview";
+import { TextWithIcon } from "./TextWithIcon";
+import { UpcomingInterviewList } from "./UpcomingInterviewList";
 import * as _utils from "./utils";
 import _styles from "./InterviewerDetail.module.css";
 
@@ -24,6 +26,8 @@ export function InterviewerDetail({
   isLinkedInVisible = true,
   textPhone = "Asia, Kolkata, Chennai (GMT+5:30)",
   textInterviewer = "dileep@aglinthq.com",
+  slotUpcomingList,
+  isUpcomingInterviewVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewerdetail")} tag="div">
@@ -178,6 +182,31 @@ export function InterviewerDetail({
           {slotTabContent ?? <InterviewerDetailOverview />}
         </_Builtin.Block>
       </_Builtin.Block>
+      {isUpcomingInterviewVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "interviewer-detail-right")}
+          id={_utils.cx(
+            _styles,
+            "w-node-d697b9d2-697e-1d44-8a38-92ee4bcede30-4e99ee91"
+          )}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">
+            <TextWithIcon
+              iconName="event_upcoming"
+              fontWeight="medium"
+              iconWeight="medium"
+              textContent="Upcoming Interview"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "interviewer-detail-right-list")}
+            tag="div"
+          >
+            {slotUpcomingList ?? <UpcomingInterviewList />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

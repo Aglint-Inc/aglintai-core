@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ApiError } from './customApiError';
+
+import { ApiError } from './customApiError/customApiError';
 
 export const addErrorHandlerWrap = (call_back) => {
   const handlerWrap = async (req: NextApiRequest, res: NextApiResponse) => {

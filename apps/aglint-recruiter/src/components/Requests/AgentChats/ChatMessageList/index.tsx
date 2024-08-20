@@ -1,5 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Divider, Stack } from '@mui/material';
+import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { AglintAiWelcome } from '@/devlink2/AglintAiWelcome';
@@ -8,21 +9,19 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAgentIEditor } from '../AgentEditorContext';
 import CommandShortCuts from '../CommandShortCuts';
 import { useUserChat } from './hooks/fetch';
-import {
-  useScrollListenerAgentChat
-} from './hooks/scroll';
+import { useScrollListenerAgentChat } from './hooks/scroll';
 import MessageIndividual from './MessageIndividual';
 import SkeletonMessage from './MessageIndividual/Skeleton';
 import {
   setCursor,
   setViewHistory,
   setViewList,
-  useAgentChatStore
+  useAgentChatStore,
 } from './store';
 
 function ChatMessageList() {
   const { recruiterUser } = useAuthDetails();
-
+  const [fetchingChat, setFetchingChat] = useState(false);
   const { isFetchingNextPage, chatList, viewHistory, tempLoading, viewList } =
     useAgentChatStore((state) => ({
       isFetchingNextPage: state.isFetchingNextPage,
@@ -65,7 +64,9 @@ function ChatMessageList() {
                           setViewList(true);
                           setViewHistory(true);
                           setCursor(0);
+                          setFetchingChat(true);
                           await fetchChat(0);
+                          setFetchingChat(false);
                         },
                       }}
                     />
@@ -79,7 +80,13 @@ function ChatMessageList() {
           </>
         ) : (
           <>
-            {!viewList ? (
+            {fetchingChat ? (
+              <>
+                {Array.from({ length: 15 }).map((_, index) => (
+                  <SkeletonMessage key={index} />
+                ))}
+              </>
+            ) : !viewList ? (
               <Stack
                 direction={'row'}
                 justifyContent={'center'}

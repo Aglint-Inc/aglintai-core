@@ -9,7 +9,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { ScheduleMeeting } from '../types';
+import { ScheduleDetailsType } from '../hooks';
 
 function DeclineScheduleDialog({
   isDeclineOpen,
@@ -21,7 +21,7 @@ function DeclineScheduleDialog({
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
-  schedule: ScheduleMeeting;
+  schedule: ScheduleDetailsType['schedule_data'];
   refetch: () => void;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();

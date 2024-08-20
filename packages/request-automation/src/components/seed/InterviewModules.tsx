@@ -156,7 +156,7 @@ export const InterviewModules = () => {
           </div> */}
           <div>
             <h5 style={{ marginBottom: "5px" }}>
-              Select Interview Modules to Add
+              Select Interview Types to add
             </h5>
             {newModules.length > 0 ? (
               newModules
