@@ -100,6 +100,16 @@ const useActions = () => {
     recent_decline_reschedule,
     tabs,
     training_progress,
+    completedInterviewType,
+    setCompletedInterviewType,
+    interviewersType,
+    setInterviewersType,
+    leaderboardType,
+    setLeaderboardType,
+    reasonsType,
+    setReasonsType,
+    trainingProgressType,
+    setTrainingProgressType,
   };
 };
 

@@ -19,6 +19,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'completed_interviews',
+        { type: args.type },
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -64,7 +65,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'interviewers'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'interviewers',
+        { type: args.type },
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -79,7 +84,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'leaderboard'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'leaderboard',
+        { type: args.type },
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -94,7 +103,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'reasons'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'reasons',
+        { type: args.type },
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -142,7 +155,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'training_progress'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'training_progress',
+        { type: args.type },
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>

@@ -6,14 +6,13 @@ import CancelReasons from './CancelReasons';
 import CompletedInterviewBarChart from './CompletedInterview';
 import InterviewersAnalyticCards from './InterviewersAnalyticCards';
 import InterviewMeetingStatus from './InterviewMeetingStatus';
-import LeaderBoardWidget from './LeaderBoardWidget';
 import RecentRescheduleCancel from './RecentRescheduleCancel';
-import ScheduleAnalyticsCards from './ScheduleAnalyticsCards';
 import TrainingProgress from './TrainingProgress';
 import InterviewTrainingStatus from './TrainingStatus';
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 import Loader from '../../Common/Loader';
 import { Tabs } from './tabs';
+import { Leaderboard } from './leaderboard';
 
 const SchedulingDashboard = () => {
   const { enabled } = useSchedulingAnalytics();
@@ -23,7 +22,7 @@ const SchedulingDashboard = () => {
       slotFirstGrid={
         <>
           <CancelReasons />
-          <LeaderBoardWidget />
+          <Leaderboard />
         </>
       }
       slotGridInterviewDetail={
