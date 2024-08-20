@@ -4,21 +4,42 @@ import { clearRequestsLocalStorage } from "../../utils/localStorageFunctions";
 import React, { useState } from "react";
 import RequestToDefault from "./RequestToDefault";
 
+type loading = {
+  request: boolean;
+  workflow: boolean;
+  template: boolean;
+};
+
 function Reset() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<loading>({
+    request: false,
+    workflow: false,
+    template: false,
+  });
   const { recruiterId } = useAppContext();
   const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
 
-  const seedHandler = async () => {
+  const seedWorkflows = async () => {
     setConsoleMessage([]);
-    setIsLoading(true);
-    await axios.post("/api/pre-seed", {
-      record: {
-        id: recruiterId,
-      },
+    setIsLoading((pre) => ({ ...pre, workflow: true }));
+
+    await axios.post("/api/automation/seed_default_data", {
+      recruiter_id: recruiterId,
+      type: "workflow",
     });
-    setIsLoading(false);
+    setIsLoading((pre) => ({ ...pre, workflow: false }));
     setConsoleMessage(["Workflow reset successfully"]);
+  };
+  const seedTemplates = async () => {
+    setConsoleMessage([]);
+    setIsLoading((pre) => ({ ...pre, template: true }));
+
+    await axios.post("/api/automation/seed_default_data", {
+      recruiter_id: recruiterId,
+      type: "email_template",
+    });
+    setIsLoading((pre) => ({ ...pre, template: false }));
+    setConsoleMessage(["Template reset successfully"]);
   };
 
   return (
@@ -29,6 +50,7 @@ function Reset() {
           <button
             className={"reset-btn"}
             onClick={() => {
+              setIsLoading((pre) => ({ ...pre, request: true }));
               setConsoleMessage([]);
               clearRequestsLocalStorage("schedule_request");
               clearRequestsLocalStorage("reschedule_request");
@@ -36,6 +58,7 @@ function Reset() {
               setConsoleMessage([
                 "All automation requests reset have been processed successfully.",
               ]);
+              setIsLoading((pre) => ({ ...pre, request: false }));
             }}
           >
             Reset Automation Requests
@@ -46,8 +69,8 @@ function Reset() {
           <p style={{ marginBottom: "10px" }}>
             Reset all workflows to defualt.
           </p>
-          <button onClick={seedHandler} disabled={isLoading}>
-            {isLoading ? "Reseting..." : " Reset Workflow"}
+          <button onClick={seedWorkflows} disabled={isLoading.workflow}>
+            {isLoading.workflow ? "Reseting..." : " Reset Workflow"}
           </button>
         </div>
 
@@ -55,8 +78,8 @@ function Reset() {
           <p style={{ marginBottom: "10px" }}>
             Reset all email templates to defualt.
           </p>
-          <button onClick={seedHandler} disabled={isLoading}>
-            {isLoading ? "Reseting..." : " Reset Email"}
+          <button onClick={seedTemplates} disabled={isLoading.template}>
+            {isLoading.template ? "Reseting..." : " Reset Email"}
           </button>
         </div>
 
