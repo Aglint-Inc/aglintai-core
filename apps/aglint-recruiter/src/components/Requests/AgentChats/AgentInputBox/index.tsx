@@ -144,11 +144,12 @@ function AgentInputBox() {
           }
           scheduleTypes={scheduleTypes}
           jobList={
-            isJobFetched &&
-            jobsAndApplications.jobs.map((job) => ({
-              id: job.id,
-              display: job.job_title,
-            }))
+            isJobFetched
+              ? jobsAndApplications.jobs.map((job) => ({
+                  id: job.id,
+                  display: job.job_title,
+                }))
+              : []
           }
           applicationsList={
             applications
@@ -192,6 +193,7 @@ export const useAllJobsAndApplications = ({
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
+    refetchInterval: 10000,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });

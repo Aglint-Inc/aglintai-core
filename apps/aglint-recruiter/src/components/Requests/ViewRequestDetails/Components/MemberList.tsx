@@ -1,14 +1,15 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { getFullName } from '@aglint/shared-utils';
+import { Avatar, Popover, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/src/context/RequestsContext';
-import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import { getFullName } from '@aglint/shared-utils';
-import { Avatar, Popover, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 
 function MemberList({
   members,
@@ -17,10 +18,7 @@ function MemberList({
   members: MemberType[];
   selectedMemberId: string;
 }) {
-  const {
-    requests: { data: requestList, isPlaceholderData },
-    handleAsyncUpdateRequest,
-  } = useRequests();
+  const { handleAsyncUpdateRequest } = useRequests();
   const { query } = useRouter();
 
   const selectedMembers = members.find(
@@ -75,6 +73,7 @@ function MemberList({
             .filter(({ user_id }) => user_id !== selectedMemberId)
             .map((member) => (
               <AssignedToList
+                key={member.user_id}
                 onClickCard={{
                   onClick: async () => {
                     setAnchorEl(null);

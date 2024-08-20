@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Avatar, Collapse, Popover, Stack } from '@mui/material';
+import { Avatar, Stack } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
-import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
@@ -19,24 +19,22 @@ import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
+import { MemberType } from '../../Scheduling/InterviewTypes/types';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import InterviewCard from './Components/InterviewCard';
-import { useMeetingList } from './hooks';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import axios from 'axios';
-import { MemberType } from '../../Scheduling/InterviewTypes/types';
 import MemberList from './Components/MemberList';
-import { AssignedToList } from '@/devlink2/AssignedToList';
+import { useMeetingList } from './hooks';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
