@@ -8,7 +8,6 @@ import {
   submitAvailability,
   updateRequest,
 } from "../../utils/util_functions";
-import RequestGraphLook from "./GraphLook";
 
 function Demo() {
   const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
@@ -184,7 +183,6 @@ function Demo() {
           }
         />
       </div>
-      <RequestGraphLook setConsoleMessage={setConsoleMessage} />
       <div className="console">
         <h5>Console</h5>
         <div>

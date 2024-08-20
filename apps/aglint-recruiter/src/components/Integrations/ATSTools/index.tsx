@@ -10,7 +10,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';
@@ -22,7 +21,7 @@ import {
   updateIntegrations,
 } from '../utils';
 
-function ATSTools() {
+function ATSTools({ integrations, refetch }) {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,7 +30,7 @@ function ATSTools() {
   const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
-  const { data: integrations, refetch } = useAllIntegrations();
+  // const { data: integrations, refetch } = useAllIntegrations();
 
   async function action() {
     const apiKey = inputRef.current && inputRef.current.value;

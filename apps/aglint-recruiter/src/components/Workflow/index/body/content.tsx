@@ -1,9 +1,10 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
-import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflows } from '@/src/context/Workflows';
 import ROUTES from '@/src/utils/routing/routes';
@@ -20,7 +21,18 @@ const Content = memo(() => {
     workflows: { data, status },
   } = useWorkflows();
   if (status === 'error') return <>Error</>;
-  if (status == 'pending') return <Loader />;
+  if (status == 'pending')
+    return (
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        width={'100%'}
+        height={'100vh'}
+        justifyContent={'center'}
+      >
+        <LoaderSvg />
+      </Stack>
+    );
   return <Cards data={data} />;
 });
 Content.displayName = 'Content';

@@ -2,7 +2,10 @@ import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import { SupabaseClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
-import { JobGreenhouse } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import {
+  GreenhouseApplication,
+  JobGreenhouse,
+} from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { getGreenhouseCandidates } from '@/src/pages/api/greenhouse/getCandidates';
 
@@ -166,6 +169,8 @@ export async function syncJobApplications(
             id: ref.application_id,
             is_resume_fetching: true,
             source: 'greenhouse',
+            remote_data: ref.ref,
+            remote_id: String(ref.id),
           } as DatabaseTableInsert['applications'];
         } else {
           return null;
@@ -182,7 +187,7 @@ async function fetchAllCandidates(
   post: { job_id: number; public_job_id: string; recruiter_id: string },
   apiKey: string,
 ) {
-  let allCandidates = [];
+  let allCandidates: GreenhouseApplication[] = [];
   let hasMore = true;
   let page = 1;
   while (hasMore) {
@@ -229,6 +234,7 @@ async function fetchAllCandidates(
           job_id: post.public_job_id,
           application_id: crypto.randomUUID(), //our job application id
           id: cand.id, //greenhouse candidate id
+          ref: cand,
         };
       } else {
         return null;
