@@ -54,6 +54,7 @@ export * from "./AssessmentSubmitPop";
 export * from "./AssessmentSuccessfull";
 export * from "./AssessmentTypeIcon";
 export * from "./AssignedNameCard";
+export * from "./AssignedToList";
 export * from "./AssistantHelp";
 export * from "./AssistantLanding";
 export * from "./AssistantLogo";

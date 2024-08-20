@@ -1,8 +1,8 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Avatar, Stack } from '@mui/material';
+import { Avatar, Collapse, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
@@ -31,16 +31,46 @@ import RequestProgress, {
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import InterviewCard from './Components/InterviewCard';
 import { useMeetingList } from './hooks';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import axios from 'axios';
+import { MemberType } from '../../Scheduling/InterviewTypes/types';
+import MemberList from './Components/MemberList';
+import { AssignedToList } from '@/devlink2/AssignedToList';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
+  const { recruiter } = useAuthDetails();
   const { query } = useRouter();
+
   const {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
 
   const { setCollapse } = useRequest();
+
+  const [members, setMembers] = useState<MemberType[]>([]);
+  useEffect(() => {
+    if (recruiter?.id) {
+      fetchAllMembers();
+    }
+  }, [recruiter?.id]);
+
+  const fetchAllMembers = async () => {
+    const bodyParams: BodyParamsFetchUserDetails = {
+      recruiter_id: recruiter.id,
+      includeSupended: true,
+    };
+    const resMem = (await axios.post(
+      '/api/scheduling/fetchUserDetails',
+      bodyParams,
+    )) as { data: MemberType[] };
+
+    if (resMem?.data?.length > 0) {
+      setMembers(resMem.data);
+    }
+  };
 
   useEffect(() => {
     setCollapse(true);
@@ -149,26 +179,6 @@ function ViewRequestDetails() {
                 </Stack>
               }
             />
-            <Breadcrum
-              showArrow={false}
-              textName={
-                <GlobalBadge
-                  size={1}
-                  textBadge={capitalizeFirstLetter(selectedRequest?.status)}
-                  color={
-                    selectedRequest?.status === 'to_do'
-                      ? 'purple'
-                      : selectedRequest?.status === 'in_progress'
-                        ? 'info'
-                        : selectedRequest?.status === 'blocked'
-                          ? 'error'
-                          : selectedRequest?.status === 'completed'
-                            ? 'success'
-                            : 'neutral'
-                  }
-                />
-              }
-            />
           </>
         }
         slotBody={
@@ -218,6 +228,23 @@ function ViewRequestDetails() {
             }
             slotRequestDetailRight={
               <RequestDetailRight
+                slotStatus={
+                  <GlobalBadge
+                    size={1}
+                    textBadge={capitalizeFirstLetter(selectedRequest?.status)}
+                    color={
+                      selectedRequest?.status === 'to_do'
+                        ? 'purple'
+                        : selectedRequest?.status === 'in_progress'
+                          ? 'info'
+                          : selectedRequest?.status === 'blocked'
+                            ? 'error'
+                            : selectedRequest?.status === 'completed'
+                              ? 'success'
+                              : 'neutral'
+                    }
+                  />
+                }
                 slotPriority={
                   <GlobalBadge
                     showIcon={true}
@@ -246,18 +273,9 @@ function ViewRequestDetails() {
                   selectedRequest?.schedule_start_date,
                 ).format('DD MMMM, YYYY')}
                 slotAssignedTo={
-                  <AssignedNameCard
-                    textName={getFullName(
-                      selectedRequest?.assigner?.first_name,
-                      selectedRequest?.assignee?.last_name,
-                    )}
-                    textRole={selectedRequest?.assignee?.position}
-                    slotImage={
-                      <Avatar
-                        variant='rounded'
-                        src={selectedRequest?.assignee?.profile_image}
-                      />
-                    }
+                  <MemberList
+                    selectedMemberId={selectedRequest?.assignee.user_id}
+                    members={members}
                   />
                 }
                 slotCandidate={

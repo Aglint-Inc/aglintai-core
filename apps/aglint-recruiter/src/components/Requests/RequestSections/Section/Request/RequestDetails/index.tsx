@@ -22,6 +22,7 @@ function RequestDetails({
   index: number;
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
+  
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
@@ -84,7 +85,10 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress request_type={request.type} />
+          <RequestProgress
+          
+        // workflow={}
+          request_type={request.type} />
 
           {Boolean(request.status === 'to_do') && (
             <Stack
