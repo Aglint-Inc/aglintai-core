@@ -10,7 +10,7 @@ export type radioBtnOptions = {
   value: string;
 };
 
-export type tabs = "automation" | "seed" | "reset";
+export type tabs = "automation" | "seed" | "reset" | "mode";
 
 //------------------------------------------------
 export type seedTabs =
