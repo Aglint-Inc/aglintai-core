@@ -4,6 +4,7 @@ import { seedTabs } from "../../type/UITypes";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
 import { InterviewModules } from "./InterviewModules";
+import User from "./User";
 
 const navTabs: {
   name: string;
@@ -25,10 +26,14 @@ const navTabs: {
     name: "Jobs",
     value: "jobs",
   },
+  {
+    name: "User",
+    value: "user",
+  },
 ];
 
 function Seed() {
-  const [tab, setTab] = useState<seedTabs>("company");
+  const [tab, setTab] = useState<seedTabs>("user");
   return (
     <div id="seed">
       <div className="nav-menu">
@@ -46,6 +51,7 @@ function Seed() {
         {tab === "email" && <UpdateEmailAuth />}
         {tab === "interview_type" && <InterviewModules />}
         {tab === "jobs" && <Jobs />}
+        {tab === "user" && <User />}
       </div>
     </div>
   );

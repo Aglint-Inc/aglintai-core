@@ -9,7 +9,7 @@ import Mode from "./components/mode/Mode";
 
 export const Extension = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeDiv, setActiveDiv] = useState<tabs>("mode");
+  const [activeDiv, setActiveDiv] = useState<tabs>("seed");
 
   const drawerRef = useRef(null);
 

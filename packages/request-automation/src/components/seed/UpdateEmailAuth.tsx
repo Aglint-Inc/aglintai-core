@@ -66,18 +66,34 @@ const UpdateEmailAuth = () => {
   return (
     <div>
       <h5>Users calander not conneted:</h5>
-      {emailsToUpdate?.length === 0 ? (
-        <p>No users to update.</p>
-      ) : (
-        <ul>
-          {emailsToUpdate?.map((user) => (
-            <li key={user.user_id}>{user.email}</li>
-          ))}
-        </ul>
-      )}
-      <button onClick={handleUpdate} disabled={emailsToUpdate?.length === 0}>
-        Update Email Auth
-      </button>
+
+      <div>
+        {emailsToUpdate?.length === 0 ? (
+          <p>No users to update.</p>
+        ) : (
+          <div>
+            <div
+              style={{
+                maxHeight: "150px",
+                overflow: "scroll",
+                paddingRight: "20px",
+              }}
+            >
+              <ul>
+                {emailsToUpdate?.map((user) => (
+                  <li key={user.user_id}>{user.email}</li>
+                ))}
+              </ul>
+            </div>
+            <button
+              onClick={handleUpdate}
+              disabled={emailsToUpdate?.length === 0}
+            >
+              Update Email Auth
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

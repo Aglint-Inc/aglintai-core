@@ -18,7 +18,8 @@ export type seedTabs =
   | "email"
   | "interview_type"
   | "jobs"
-  | "workflow";
+  | "workflow"
+  | "user";
 
 // -----------------------------------------------
 
