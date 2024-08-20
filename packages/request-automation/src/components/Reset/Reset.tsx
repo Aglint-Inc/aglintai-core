@@ -61,7 +61,7 @@ function Reset() {
               setIsLoading((pre) => ({ ...pre, request: false }));
             }}
           >
-            Reset Automation Requests
+            Reset Request
           </button>
         </div>
 
@@ -85,7 +85,7 @@ function Reset() {
 
         <div>
           <p style={{ marginBottom: "10px" }}>
-            Reset Request graph with random dates.
+            Beautify Request trends.
           </p>
           <RequestToDefault setConsoleMessage={setConsoleMessage} />
         </div>
@@ -100,7 +100,7 @@ function Reset() {
                     {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
                   </p>
                 ))
-              : "no message"}
+              : "No message"}
           </div>
         </div>
       ) : (

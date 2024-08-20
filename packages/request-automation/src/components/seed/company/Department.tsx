@@ -92,7 +92,7 @@ export const Department = ({
         <>
           <div style={{ display: "flex", gap: "20px" }}>
             <div>
-              <h5>Select department to Add</h5>
+              <h5>Select department to add</h5>
 
               {availableDepartments.map((department, index) => (
                 <div
