@@ -7,16 +7,16 @@ const Tabs: {
   value: tabs;
 }[] = [
   {
-    name: "Demo",
-    value: "demo",
+    name: "Automation",
+    value: "automation",
   },
   {
     name: "Seed",
     value: "seed",
   },
   {
-    name: "Clear",
-    value: "clear",
+    name: "Reset",
+    value: "reset",
   },
 ];
 

@@ -8,7 +8,7 @@ import Clear from "./components/clear/Clear";
 
 export const DrawerComponent = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeDiv, setActiveDiv] = useState<tabs>("demo");
+  const [activeDiv, setActiveDiv] = useState<tabs>("automation");
 
   const drawerRef = useRef(null);
 
@@ -23,9 +23,9 @@ export const DrawerComponent = () => {
     >
       <div className="bottom-drawer-content">
         <Header activeDiv={activeDiv} setActiveDiv={setActiveDiv} />
-        {activeDiv === "demo" && <Demo />}
+        {activeDiv === "automation" && <Demo />}
         {activeDiv === "seed" && <Seed />}
-        {activeDiv === "clear" && <Clear />}
+        {activeDiv === "reset" && <Clear />}
       </div>
       <div className="drawer-handle" onClick={toggleDrawer}>
         {isOpen ? "↧" : "↥"}

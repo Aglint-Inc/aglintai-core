@@ -16,12 +16,22 @@ function Workflow() {
   };
   return (
     <div>
-      <p style={{ marginBottom: "10px" }}>
-        Click this button to seed workflows
-      </p>
-      <button onClick={seedHandler} disabled={isLoading}>
-        {isLoading ? "Seeding..." : " Seed Workflow"}
-      </button>
+      <div>
+        <p style={{ marginBottom: "10px" }}>
+          Reset all workflows to defualt.
+        </p>
+        <button onClick={seedHandler} disabled={isLoading}>
+          {isLoading ? "Seeding..." : " Seed Workflow"}
+        </button>
+      </div>
+      <div>
+        <p style={{ marginBottom: "10px" }}>
+          Reset all email templates to defualt.
+        </p>
+        <button onClick={seedHandler} disabled={isLoading}>
+          {isLoading ? "Seeding..." : " Seed Workflow"}
+        </button>
+      </div>
     </div>
   );
 }
