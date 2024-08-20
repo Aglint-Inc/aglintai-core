@@ -1,0 +1,25 @@
+.interviewer-detail-right-wrap {
+  display: flex;
+  padding: var(--space-3);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  transition: background-color 200ms ease;
+
+  cursor: pointer;
+}
+
+.interviewer-detail-right-wrap:hover {
+  background-color: var(--neutral-3);
+}
+
+.interviewer-text-icon {
+  display: flex;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}

@@ -170,7 +170,7 @@ const RequestToDefault = ({
       disabled={loading}
       style={{ width: "150px" }}
     >
-      {loading ? "Processing..." : "Change graph"}
+      {loading ? "Processing..." : "Beautify"}
     </button>
   );
 };

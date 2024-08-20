@@ -192,11 +192,11 @@ const getApplicationMeta = async ({
 const getApplicationDetails = async ({
   application_id,
 }: Pick<Params, 'application_id'>) => {
-  const { candidate_files, score_json } = (
+  const { candidate_files, score_json, public_jobs, status } = (
     await supabase
       .from('applications')
       .select(
-        'score_json, overall_score, processing_status, candidate_files(resume_json)',
+        'score_json, overall_score, processing_status, candidate_files(resume_json),status,public_jobs(id,status)',
       )
       .eq('id', application_id)
       .not('candidate_files.resume_json', 'is', null)
@@ -206,6 +206,8 @@ const getApplicationDetails = async ({
   return {
     score_json,
     resume_json: candidate_files?.resume_json,
+    status,
+    job_status: public_jobs?.status,
   };
 };
 

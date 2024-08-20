@@ -23,7 +23,8 @@ import dayjs from '@/src/utils/dayjs';
 
 import {
   setIsScheduleOpen,
-  useApplicationDetailStore
+  setSelectedSessionIds,
+  useApplicationDetailStore,
 } from '../../../store';
 import { Interviewer } from '../StageSessions/EditDrawer/types';
 
@@ -77,7 +78,7 @@ function DialogSchedule() {
     requestSessionIds.includes(session.interview_session.id),
   );
 
-  let optionsInterviewers: Interviewer[] = members.map((member) => {
+  let optionsInterviewers: Interviewer[] = members?.map((member) => {
     return {
       name: getFullName(member.first_name, member.last_name),
       value: member.user_id,
@@ -103,6 +104,7 @@ function DialogSchedule() {
       sessionNames: sessions.map((session) => session.interview_session.name),
     });
     setIsSaving(false);
+    setSelectedSessionIds([]);
     setIsScheduleOpen(false);
   };
 
@@ -248,7 +250,7 @@ function DialogSchedule() {
 
 export default DialogSchedule;
 
-const RangePicker = ({
+export const RangePicker = ({
   dateRange,
   setDateRange,
 }: {
@@ -294,7 +296,7 @@ const RangePicker = ({
   );
 };
 
-const RequestOption = ({
+export const RequestOption = ({
   requestType,
   setRequestType,
 }: {

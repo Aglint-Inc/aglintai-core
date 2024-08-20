@@ -11,6 +11,7 @@ export const Resume = () => {
   const {
     meta: { status, data },
   } = useApplication();
+
   if (status === 'success' && typeof data?.file_url !== 'string')
     return <EmptyState tab='Resume' />;
   if (status === 'error') return <>Something went wrong</>;
