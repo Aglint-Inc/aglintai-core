@@ -1,5 +1,6 @@
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
+import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -25,7 +26,6 @@ function MemberList({
   const selectedMembers = members.find(
     (member) => member.user_id === selectedMemberId,
   );
-  console.log(selectedMembers);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,6 +33,7 @@ function MemberList({
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
   return (
     <>
       <div
@@ -42,16 +43,20 @@ function MemberList({
           paddingBottom: '5px',
         }}
       >
-        <AssignedNameCard
-          textName={getFullName(
-            selectedMembers?.first_name,
-            selectedMembers?.last_name,
-          )}
-          textRole={selectedMembers?.position}
-          slotImage={
-            <Avatar variant='rounded' src={selectedMembers?.profile_image} />
-          }
-        />
+        {selectedMembers?.user_id ? (
+          <AssignedNameCard
+            textName={getFullName(
+              selectedMembers?.first_name,
+              selectedMembers?.last_name,
+            )}
+            textRole={selectedMembers?.position}
+            slotImage={
+              <Avatar variant='rounded' src={selectedMembers?.profile_image} />
+            }
+          />
+        ) : (
+          <RequestCardSkeleton />
+        )}
       </div>
       <Popover
         id={id}
