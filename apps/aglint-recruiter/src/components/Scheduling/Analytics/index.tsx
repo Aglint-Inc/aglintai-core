@@ -6,6 +6,7 @@ import Loader from '../../Common/Loader';
 import { CompletedInterviews } from './completedInterviews';
 import { DeclineRequests } from './declineRequests';
 import { Interviewers } from './interviewers';
+import { Interviews } from './interviews';
 import { InterviewTypes } from './interviewTypes';
 import { Leaderboard } from './leaderboard';
 import { Reasons } from './reasons';
@@ -23,6 +24,8 @@ export const Analytics = memo(() => {
     );
   return (
     <>
+      <Interviews />
+      <Tabs />
       <CompletedInterviews />
       <DeclineRequests />
       <InterviewTypes />
@@ -30,7 +33,6 @@ export const Analytics = memo(() => {
       <Leaderboard />
       <Reasons />
       <RecentDeclineReschedule />
-      <Tabs />
       <TrainingProgress />
     </>
   );

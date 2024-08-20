@@ -13,12 +13,13 @@ import {
   SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
+import { SafeObject } from '@/src/utils/safeObject';
 
 import Loader from '../../Common/Loader';
 
-export const DeclineRequests = memo(() => {
+export const Interviews = memo(() => {
   const {
-    decline_requests: { data, status },
+    tabs: { data, status },
   } = useSchedulingAnalytics();
   if (status === 'error') return <>Error</>;
   if (status === 'pending')
@@ -29,25 +30,21 @@ export const DeclineRequests = memo(() => {
     );
   return (
     <Stack style={{ height: '500px', width: '100%' }}>
-      <BarChart data={data} />;
+      <BarChart data={data} />
     </Stack>
   );
 });
-DeclineRequests.displayName = 'DeclineRequests';
+Interviews.displayName = 'Interviews';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
-type Props = Pick<SchedulingAnalyticsContextType['decline_requests'], 'data'>;
+type Props = Pick<SchedulingAnalyticsContextType['tabs'], 'data'>;
 
 const BarChart = memo(({ data }: Props) => {
-  const a = [
-    { completed_at: 'Jul', count: 6 },
-    { completed_at: 'Aug', count: 10 },
-  ] satisfies typeof data;
-  const { labels, counts } = ([...data, ...a] ?? []).reduce(
-    (acc, curr) => {
-      acc.labels.push(curr.completed_at ?? '--');
-      acc.counts.push(curr.count);
+  const { labels, counts } = SafeObject.entries(data ?? {}).reduce(
+    (acc, [key, value]) => {
+      acc.labels.push(key ?? '--');
+      acc.counts.push(value);
       return acc;
     },
     { labels: [], counts: [] } satisfies { labels: string[]; counts: number[] },
@@ -56,23 +53,19 @@ const BarChart = memo(({ data }: Props) => {
     labels: labels,
     datasets: [
       {
-        label: 'Decline requests',
+        label: 'Interviews',
         data: counts,
-        backgroundColor: '#8d8d86',
-        borderRadius: {
-          topRight: 100,
-          bottomRight: 100,
-        },
+        backgroundColor: '#bcbbb5',
+        borderRadius: 8,
         borderSkipped: false,
         grouped: true,
-        barThickness: 20,
+        barThickness: 40,
       },
     ],
   };
   return (
     <Bar
       options={{
-        indexAxis: 'y',
         elements: {
           bar: {
             borderRadius: 20,
@@ -108,7 +101,7 @@ const BarChart = memo(({ data }: Props) => {
             title: {
               display: false,
               font: { weight: 'bold' },
-              text: 'Decline Requests',
+              text: 'Interviews',
             },
             border: {
               color: 'transparent',
