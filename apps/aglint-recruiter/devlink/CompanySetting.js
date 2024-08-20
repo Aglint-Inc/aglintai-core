@@ -38,7 +38,7 @@ export function CompanySetting({
         className={_utils.cx(_styles, "cs-layout-header")}
         tag="div"
       >
-        <Text content="Company Settings " weight="medium" />
+        <Text content="Settings " weight="medium" />
         {isSaved ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "slot-saved", "compna")}
