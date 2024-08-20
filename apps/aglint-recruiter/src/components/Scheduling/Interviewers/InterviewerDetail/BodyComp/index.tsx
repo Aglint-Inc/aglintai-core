@@ -1,6 +1,7 @@
 import '@styles/fullcalendar-theme.css';
 
 import { DatabaseTable } from '@aglint/shared-types';
+import { getShortTimeZone } from '@aglint/shared-utils';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -12,6 +13,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
+import { UpcomingInterviewList } from '@/devlink3/UpcomingInterviewList';
 import CalendarComp from '@/src/components/Common/Calendar/Calendar';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
@@ -20,9 +22,11 @@ import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMe
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateMember } from '@/src/context/AuthContext/utils';
 import { useAllIntegrations } from '@/src/queries/intergrations';
+import dayjs from '@/src/utils/dayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
+import IconSessionType from '../../../CandidateDetails/RightPanel/IconSessionType';
 import DynamicLoader from '../../DynamicLoader';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
@@ -85,6 +89,12 @@ function BodyComp() {
   const handleClose = () => {
     setDialogOpen(null);
   };
+
+  const upcomingSchedules = allSchedules.filter((schedule) => {
+    const itemDateTime = dayjs(schedule.start_time);
+    const now = dayjs();
+    return itemDateTime.isAfter(now);
+  });
 
   return (
     <>
@@ -291,6 +301,24 @@ function BodyComp() {
               </>
             )}
           <InterviewerDetail
+            slotPanelIcon={<>slotPanelIcon</>}
+            textDate={'textDate'}
+            textPanelName={'textPanelName'}
+            textTime={'textTime'}
+            isUpcomingInterviewVisible={true}
+            slotUpcomingList={upcomingSchedules.map((schedule) => (
+              <UpcomingInterviewList
+                key={schedule.application_id}
+                textPanelName={schedule.session_name}
+                slotPanelIcon={
+                  <IconSessionType type={schedule.session_type} size={4} />
+                }
+                textDate={dayjs(schedule.start_time).format('ddd, MMM DD,YYYY')}
+                textTime={`${dayjs(schedule.start_time).format('hh:mm A')} - ${dayjs(schedule.end_time).format('hh:mm A')} ${getShortTimeZone(
+                  schedule.meeting_interviewers[0].tz_code,
+                )}`}
+              />
+            ))}
             slotNewTabPill={<Tabs />}
             slotEditButton={
               interviewerDetails.user_id === recruiterUser.user_id ||
