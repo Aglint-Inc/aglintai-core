@@ -11,11 +11,13 @@ export function UpcomingInterviewList({
   textPanelName = "This is a global text component",
   textDate = "This is a global text component",
   textTime = "This is a global text component",
+  onClickCard = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "interviewer-detail-right-wrap")}
       tag="div"
+      {...onClickCard}
     >
       <TextWithIcon slotIcon={slotPanelIcon} textContent={textPanelName} />
       <_Builtin.Block

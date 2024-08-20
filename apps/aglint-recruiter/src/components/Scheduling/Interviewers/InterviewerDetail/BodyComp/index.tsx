@@ -10,6 +10,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
@@ -301,24 +302,31 @@ function BodyComp() {
               </>
             )}
           <InterviewerDetail
-            slotPanelIcon={<>slotPanelIcon</>}
-            textDate={'textDate'}
-            textPanelName={'textPanelName'}
-            textTime={'textTime'}
             isUpcomingInterviewVisible={true}
-            slotUpcomingList={upcomingSchedules.map((schedule) => (
-              <UpcomingInterviewList
-                key={schedule.application_id}
-                textPanelName={schedule.session_name}
-                slotPanelIcon={
-                  <IconSessionType type={schedule.session_type} size={4} />
-                }
-                textDate={dayjs(schedule.start_time).format('ddd, MMM DD,YYYY')}
-                textTime={`${dayjs(schedule.start_time).format('hh:mm A')} - ${dayjs(schedule.end_time).format('hh:mm A')} ${getShortTimeZone(
-                  schedule.meeting_interviewers[0].tz_code,
-                )}`}
-              />
-            ))}
+            slotUpcomingList={
+              upcomingSchedules.length > 0 ? (
+                upcomingSchedules.map((schedule) => (
+                  <UpcomingInterviewList
+                    onClickCard={router.push(
+                      `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
+                    )}
+                    key={schedule.application_id}
+                    textPanelName={schedule.session_name}
+                    slotPanelIcon={
+                      <IconSessionType type={schedule.session_type} size={4} />
+                    }
+                    textDate={dayjs(schedule.start_time).format(
+                      'ddd, MMM DD,YYYY',
+                    )}
+                    textTime={`${dayjs(schedule.start_time).format('hh:mm A')} - ${dayjs(schedule.end_time).format('hh:mm A')} ${getShortTimeZone(
+                      schedule.meeting_interviewers[0].tz_code,
+                    )}`}
+                  />
+                ))
+              ) : (
+                <AllInterviewEmpty textDynamic='No Interviews found' />
+              )
+            }
             slotNewTabPill={<Tabs />}
             slotEditButton={
               interviewerDetails.user_id === recruiterUser.user_id ||

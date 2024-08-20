@@ -26,10 +26,6 @@ export function InterviewerDetail({
   isLinkedInVisible = true,
   textPhone = "Asia, Kolkata, Chennai (GMT+5:30)",
   textInterviewer = "dileep@aglinthq.com",
-  slotPanelIcon,
-  textPanelName = "This is a global text component",
-  textDate = "This is a global text component",
-  textTime = "This is a global text component",
   slotUpcomingList,
   isUpcomingInterviewVisible = false,
 }) {

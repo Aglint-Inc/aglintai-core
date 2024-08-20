@@ -20,4 +20,6 @@
 
 .interviewer-text-icon {
   display: flex;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }

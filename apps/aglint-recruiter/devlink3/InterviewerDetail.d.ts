@@ -17,10 +17,6 @@ declare function InterviewerDetail(props: {
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   textPhone?: React.ReactNode;
   textInterviewer?: React.ReactNode;
-  slotPanelIcon?: Types.Devlink.Slot;
-  textPanelName?: React.ReactNode;
-  textDate?: React.ReactNode;
-  textTime?: React.ReactNode;
   slotUpcomingList?: Types.Devlink.Slot;
   isUpcomingInterviewVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

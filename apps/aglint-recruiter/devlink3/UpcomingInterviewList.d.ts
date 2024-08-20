@@ -7,4 +7,5 @@ declare function UpcomingInterviewList(props: {
   textPanelName?: React.ReactNode;
   textDate?: React.ReactNode;
   textTime?: React.ReactNode;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
