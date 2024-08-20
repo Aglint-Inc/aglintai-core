@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/global.scss";
-import { DrawerComponent } from "./DrawerComponent";
 import { AppProvider } from "./context/AppContext";
+import { Extension } from "./Extension";
 
 const appContainer = document.getElementById("aglilntai-test-suite-app");
 
@@ -10,7 +10,7 @@ if (appContainer) {
   const root = ReactDOM.createRoot(appContainer);
   root.render(
     <AppProvider>
-      <DrawerComponent />
+      <Extension />
     </AppProvider>
   );
 } else {
