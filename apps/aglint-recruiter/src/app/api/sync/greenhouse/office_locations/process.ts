@@ -11,6 +11,7 @@ export async function syncOfficeLocations(
   return await saveOfficeLocations(office_locations, recruiter_id);
 }
 
+// eslint-disable-next-line no-unused-vars
 export async function getGreenhouseOfficeLocations(key: string) {
   // const res = await axios.get<GreenhouseOfficesAPI>('', {
   //   auth: {

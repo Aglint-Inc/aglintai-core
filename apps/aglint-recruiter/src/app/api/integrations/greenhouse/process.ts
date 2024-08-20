@@ -1,35 +1,28 @@
-import { DB } from '@aglint/shared-types';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { DatabaseTable } from '@aglint/shared-types';
 
-export async function getGreenhouseMeta(
-  supabase: SupabaseClient<DB>,
-  recruiter_id: string,
-) {
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+export async function getGreenhouseMeta(recruiter_id: string) {
   return (
-    (
-      await supabase
-        .from('integrations')
-        .select('greenhouse_metadata')
-        .eq('recruiter_id', recruiter_id)
-        .single()
-        .throwOnError()
-    ).data.greenhouse_metadata || {}
-  );
+    await supabaseAdmin
+      .from('integrations')
+      .select('greenhouse_metadata')
+      .eq('recruiter_id', recruiter_id)
+      .single()
+      .throwOnError()
+  ).data.greenhouse_metadata;
 }
 export async function setGreenhouseMeta(
-  supabase: SupabaseClient<DB>,
   recruiter_id: string,
-  body: Record<string, boolean>,
+  body: DatabaseTable['integrations']['greenhouse_metadata'],
 ) {
   return (
-    (
-      await supabase
-        .from('integrations')
-        .update({ greenhouse_metadata: body })
-        .eq('recruiter_id', recruiter_id)
-        .select('greenhouse_metadata')
-        .single()
-        .throwOnError()
-    ).data.greenhouse_metadata || {}
-  );
+    await supabaseAdmin
+      .from('integrations')
+      .update({ greenhouse_metadata: body })
+      .eq('recruiter_id', recruiter_id)
+      .select('greenhouse_metadata')
+      .single()
+      .throwOnError()
+  ).data.greenhouse_metadata;
 }

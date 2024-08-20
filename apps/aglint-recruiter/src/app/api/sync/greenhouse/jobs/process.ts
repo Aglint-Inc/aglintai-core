@@ -3,12 +3,14 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+import { getOfficeLocations } from '../office_locations/process';
 import { GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
   getGreenhouseCandidates,
   getGreenhouseJobPlan,
   getGreenhouseJobs,
+  setLastSync,
 } from '../util';
 
 const MAX_EMAILS_PER_BATCH = 100;
@@ -27,8 +29,9 @@ export async function mapSaveJobs(
   job_posts: Awaited<ReturnType<typeof getGreenhouseJobs>>,
   recruiter_id: string,
 ) {
+  const curr_office_locations = await getOfficeLocations(recruiter_id);
   const temp_public_jobs = job_posts.map((job_post) =>
-    createJobObject(job_post, recruiter_id),
+    createJobObject(recruiter_id, job_post, curr_office_locations),
   );
   const job_ids = (
     await supabaseAdmin
@@ -37,6 +40,7 @@ export async function mapSaveJobs(
       .select('id,remote_id')
       .throwOnError()
   ).data;
+  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
   const jobs_count = job_ids.length;
   if (jobs_count) {
     const chunks = chunkArray(job_ids, 10);
@@ -68,16 +72,19 @@ export async function mapSaveJobs(
       );
     }
   }
+  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
   return job_ids;
 }
 
 function createJobObject(
-  post: Awaited<ReturnType<typeof getGreenhouseJobs>>[number],
   recruiter_id: string,
+  post: Awaited<ReturnType<typeof getGreenhouseJobs>>[number],
+  officeLocations: Awaited<ReturnType<typeof getOfficeLocations>>,
 ): DatabaseTableInsert['public_jobs'] {
+  const location_id = officeLocations[post.location.id];
   return {
     draft: {
-      location: post.location.name,
+      location_id,
       job_title: post.title,
       description: post.content,
       job_type: 'full time',
@@ -91,7 +98,7 @@ function createJobObject(
       },
       department_id: null,
     },
-    location: post.location.name,
+    location_id,
     job_title: post.title,
     status: 'draft',
     scoring_criteria_loading: true,
@@ -106,6 +113,7 @@ function createJobObject(
       experience: 0,
     },
     remote_id: String(post.job_id),
+    remote_sync_time: new Date().toISOString(),
   };
 }
 
@@ -181,7 +189,7 @@ export async function syncJobApplications(
             id: ref.application_id,
             is_resume_fetching: true,
             source: 'greenhouse',
-            remote_id: ref.id, //greenhouse candidate id
+            remote_id: ref.remote_id, //greenhouse candidate id
             remote_data: ref,
           } as DatabaseTableInsert['applications'];
         } else {
@@ -250,7 +258,7 @@ async function fetchAllCandidates(
               : candidate.attachments[0]?.url,
           job_id: post.public_job_id,
           application_id: crypto.randomUUID(), //our job application id
-          id: candidate.id, //greenhouse candidate id
+          remote_id: candidate.id, //greenhouse candidate id
         };
       } else {
         return null;
@@ -317,7 +325,7 @@ async function mapSaveInterviewPlans(
       return {
         name: item.name,
         job_id: job_id,
-        order: index + 1,
+        plan_order: index + 1,
       };
     },
   );
@@ -325,12 +333,12 @@ async function mapSaveInterviewPlans(
     await supabaseAdmin
       .from('interview_plan')
       .insert(temp_plans)
-      .select('id, order')
+      .select('id, plan_order')
       .throwOnError()
   ).data;
   const temp_sessions: DatabaseTableInsert['interview_session'][] = plans
     .map((plan) => {
-      return data[plan.order - 1]?.interviews.map((session, index) => {
+      return data[plan.plan_order - 1]?.interviews.map((session, index) => {
         return {
           name: session.name,
           interview_plan_id: plan.id,

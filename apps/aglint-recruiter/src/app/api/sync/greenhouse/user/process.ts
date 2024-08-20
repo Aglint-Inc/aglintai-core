@@ -63,6 +63,7 @@ export async function filterMapUser(
   await setLastSync(recruiter_id, { users: new Date().toISOString() });
   return temp_user;
 }
+
 export type filterMapUserType = Awaited<ReturnType<typeof filterMapUser>>;
 
 async function getCurrentUserEmail() {
@@ -75,6 +76,7 @@ async function getCurrentUserEmail() {
 export async function getGreenhouseUsers(key: string, last_sync?: string) {
   let url = 'https://harvest.greenhouse.io/v1/users';
   if (last_sync) {
+    // eslint-disable-next-line no-unused-vars
     url += `?created_after=${last_sync}`;
   }
   // return axios.get<GreenhouseUserAPI>(
@@ -231,7 +233,7 @@ const dummyData: GreenhouseUserApi = [
     ],
   },
 ];
-async function getRole(recruiter_id: string) {
+export async function getRole(recruiter_id: string) {
   return (
     await supabaseAdmin
       .from('roles')

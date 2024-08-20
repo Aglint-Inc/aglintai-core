@@ -11,8 +11,19 @@ const decryptKey = process.env.ENCRYPTION_KEY!;
 if (!decryptKey) {
   throw new Error('ENCRYPTION_KEY is not defined');
 }
-export async function getDecryptKey(key: string) {
+export function getDecryptKey(key: string) {
   return decrypt(key, decryptKey);
+}
+
+export async function getGreenhouseKey(recruiter_id: string) {
+  return (
+    await supabaseAdmin
+      .from('integrations')
+      .select('greenhouse_key')
+      .eq('recruiter_id', recruiter_id)
+      .single()
+      .throwOnError()
+  ).data.greenhouse_key;
 }
 
 export async function getLastSync(recruiter_id: string) {
@@ -51,11 +62,10 @@ export async function setLastSync(
 
 export async function getGreenhouseJobs(key: string, last_sync?: string) {
   let url =
-    'https://harvest.greenhouse.io/v1/job_posts?per_page=10&page=1&live=true&active=true';
+    'https://harvest.greenhouse.io/v1/job_posts?per_page=2&page=1&live=true&active=true';
   if (last_sync) {
     url += `?created_after=${last_sync}`;
   }
-  url;
   const res = await axios.get<JobGreenhouse[]>(url, {
     auth: {
       username: key,

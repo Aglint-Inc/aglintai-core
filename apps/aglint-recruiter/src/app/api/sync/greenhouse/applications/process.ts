@@ -75,42 +75,45 @@ export async function syncJobApplications(
     return isUnique;
   });
 
-  const { data: newCandidates, error: errorCandidates } = await supabaseAdmin
-    .from('candidates')
-    .insert(dbCandidates)
-    .select();
-
-  if (!errorCandidates) {
-    const allCandidates = [...newCandidates, ...checkCandidates];
-
-    const dbApplications = refCandidates
-      .map((ref) => {
-        const matchingCandidate = allCandidates.find(
-          (candidate) => candidate.email === ref.email,
-        );
-
-        if (matchingCandidate && matchingCandidate.id) {
-          return {
-            applied_at: ref.created_at,
-            candidate_id: matchingCandidate.id,
-            job_id: post.job_id,
-            id: ref.application_id,
-            is_resume_fetching: true,
-            source: 'greenhouse',
-            remote_id: ref.id, //greenhouse candidate id
-            remote_data: ref,
-          } as DatabaseTableInsert['applications'];
-        } else {
-          return null;
-        }
-      })
-      .filter(Boolean);
-
+  const newCandidates = (
     await supabaseAdmin
-      .from('applications')
-      .upsert(dbApplications, { onConflict: 'remote_id' })
-      .throwOnError();
-  }
+      .from('candidates')
+      .insert(dbCandidates)
+      .select()
+      .throwOnError()
+  ).data;
+
+  const allCandidates = [...newCandidates, ...checkCandidates];
+
+  const dbApplications = refCandidates
+    .map((ref) => {
+      const matchingCandidate = allCandidates.find(
+        (candidate) => candidate.email === ref.email,
+      );
+
+      if (matchingCandidate && matchingCandidate.id) {
+        return {
+          applied_at: ref.created_at,
+          candidate_id: matchingCandidate.id,
+          job_id: post.job_id,
+          id: ref.application_id,
+          is_resume_fetching: true,
+          source: 'greenhouse',
+          remote_id: ref.id, //greenhouse candidate id
+          remote_data: ref,
+        } as DatabaseTableInsert['applications'];
+      } else {
+        return null;
+      }
+    })
+    .filter(Boolean);
+
+  await supabaseAdmin
+    .from('applications')
+    .upsert(dbApplications, { onConflict: 'remote_id' })
+    .throwOnError();
+
+  await setJobLastSync(post.job_id);
   //new candidates insert flow
 }
 
@@ -229,7 +232,6 @@ export async function syncGreenhouseJobPlan(
 }
 
 // eslint-disable-next-line no-unused-vars
-
 async function mapSaveInterviewPlans(
   data: GreenhouseJobStagesAPI,
   job_id: string,
@@ -247,12 +249,12 @@ async function mapSaveInterviewPlans(
     await supabaseAdmin
       .from('interview_plan')
       .insert(temp_plans)
-      .select('id, order')
+      .select('id, plan_order')
       .throwOnError()
   ).data;
   const temp_sessions: DatabaseTableInsert['interview_session'][] = plans
     .map((plan) => {
-      return data[plan.order - 1]?.interviews.map((session, index) => {
+      return data[plan.plan_order - 1]?.interviews.map((session, index) => {
         return {
           name: session.name,
           interview_plan_id: plan.id,
@@ -268,4 +270,13 @@ async function mapSaveInterviewPlans(
     .insert(temp_sessions)
     .throwOnError();
   return true;
+}
+
+async function setJobLastSync(job_id: string) {
+  return supabaseAdmin
+    .from('public_jobs')
+    .update({ remote_sync_time: new Date().toISOString() })
+    .eq('id', job_id)
+    .single()
+    .throwOnError();
 }

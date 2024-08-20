@@ -1,5 +1,6 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
+
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import { DatabaseTableInsert, DB } from '@aglint/shared-types';
 
 export async function syncDepartments(
   recruiter_id: string,

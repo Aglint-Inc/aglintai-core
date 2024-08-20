@@ -116,7 +116,7 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/v1/update-meeting-interviewers',
   '/api/db-events',
   '/api/application/move-to-interview',
-  '/api/sync/greenhouse/full',
+  '/api/sync/greenhouse/full_db',
   '/api/sync/greenhouse/applications',
   '/api/sync/greenhouse/departments',
   '/api/sync/greenhouse/office_locations',
