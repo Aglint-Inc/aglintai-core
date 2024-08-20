@@ -164,6 +164,9 @@ const PERMISSIONS: Permissions = {
   '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/sync/greenhouse/full_sync': ['authorized'],
+  '/api/scheduling/application/fetchInterviewStagesBySessionId': [
+    'scheduling_module',
+  ],
 };
 
 export default PERMISSIONS;

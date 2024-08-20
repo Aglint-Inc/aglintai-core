@@ -4,6 +4,7 @@ import {
   MenuItem,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -22,6 +23,7 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
+import { AddScheduleOption } from '@/devlink3/AddScheduleOption';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
 import { InterviewPlanDetail } from '@/devlink3/InterviewPlanDetail';
@@ -331,7 +333,7 @@ const InterviewPlan = ({
     <>
       <InterviewPlanWrap
         textStageName={`Stage ${data.plan_order} ${capitalizeFirstLetter(data.name)}`}
-        textInterviewCount={ `${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
+        textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
         isInputVisible={editPlan}
         onClickEdit={{ onClick: handleEditPlan }}
         isSlotInterviewPlanVisible={expanded}
@@ -606,6 +608,9 @@ const InterviewSession = ({
     }),
   });
   drag(drop(ref));
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
   return (
     <Stack
       ref={manageJob ? ref : null}
@@ -697,16 +702,54 @@ const InterviewSession = ({
             isAddCardVisible={hover}
             slotAddScheduleCard={
               <Stack style={{ opacity: manageJob ? 100 : 0 }}>
-                <AddScheduleCard
-                  handleCreate={handleCreate}
-                  showBreak={!lastSession && session.break_duration === 0}
-                  handleBreak={() =>
-                    handleUpdateSession({
-                      session: { break_duration: 30 },
-                      session_id: session.id,
-                    })
+                <Tooltip
+                  open={tooltipOpen}
+                  onOpen={() => setTooltipOpen(true)}
+                  onClose={() => setTooltipOpen(false)}
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        marginTop: '0px !important',
+                        padding: 0,
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        boxShadow: 'none',
+                      },
+                    },
+                  }}
+                  title={
+                    <AddScheduleOption
+                      isBreakVisibe={
+                        !lastSession && session.break_duration === 0
+                      }
+                      onClickAddSession={{
+                        onClick: () => {
+                          handleCreate('session');
+                          setTooltipOpen(false);
+                        },
+                      }}
+                      onClickAddDebriefSession={{
+                        onClick: () => {
+                          handleCreate('debrief');
+                          setTooltipOpen(false);
+                        },
+                      }}
+                      onClickAddBreak={{
+                        onClick: () => {
+                          handleUpdateSession({
+                            session: { break_duration: 30 },
+                            session_id: session.id,
+                          });
+                          setTooltipOpen(false);
+                        },
+                      }}
+                    />
                   }
-                />
+                >
+                  <Stack>
+                    <AddScheduleCardDev />
+                  </Stack>
+                </Tooltip>
               </Stack>
             }
             slotButtons={
@@ -888,37 +931,50 @@ const InterviewBreak = ({
   );
 };
 
-const AddScheduleCard = ({
-  handleCreate,
-  showBreak,
-  handleBreak = () => {},
-}: {
-  handleCreate: InterviewSessionProps['handleCreate'];
-  showBreak: boolean;
-  handleBreak?: () => void;
-}) => {
-  const [hover, setHover] = useState(false);
-  return (
-    <Stack
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-    >
-      <AddScheduleCardDev
-        isAddSessionOptionVisible={hover}
-        isBreakVisibe={showBreak}
-        onClickAddSession={{
-          onClick: () => handleCreate('session'),
-        }}
-        onClickAddDebriefSession={{
-          onClick: () => handleCreate('debrief'),
-        }}
-        onClickAddBreak={{
-          onClick: () => handleBreak(),
-        }}
-      />
-    </Stack>
-  );
-};
+// const AddScheduleCard = ({
+//   handleCreate,
+//   showBreak,
+//   handleBreak = () => {},
+// }: {
+//   handleCreate: InterviewSessionProps['handleCreate'];
+//   showBreak: boolean;
+//   handleBreak?: () => void;
+// }) => {
+//   return (
+//     <Stack>
+//       {/* <AddScheduleOption
+//         isBreakVisibe={showBreak}
+//         onClickAddSession={{
+//           onClick: () => handleCreate('session'),
+//         }}
+//         onClickAddDebriefSession={{
+//           onClick: () => handleCreate('debrief'),
+//         }}
+//         onClickAddBreak={{
+//           onClick: () => handleBreak(),
+//         }}
+//       /> */}
+//       <Tooltip
+//         title={
+//           <AddScheduleOption
+//             isBreakVisibe={showBreak}
+//             onClickAddSession={{
+//               onClick: () => handleCreate('session'),
+//             }}
+//             onClickAddDebriefSession={{
+//               onClick: () => handleCreate('debrief'),
+//             }}
+//             onClickAddBreak={{
+//               onClick: () => handleBreak(),
+//             }}
+//           />
+//         }
+//       >
+//         <AddScheduleCardDev />
+//       </Tooltip>
+//     </Stack>
+//   );
+// };
 
 export const RoleIcon = () => {
   return (

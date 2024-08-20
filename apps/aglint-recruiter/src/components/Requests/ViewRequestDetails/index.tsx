@@ -2,45 +2,75 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
-import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { RequestDetail } from '@/devlink2/RequestDetail';
 import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
+import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
+import axios from '@/src/client/axios';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
+import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
+import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
+import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
+import { MemberType } from '../../Scheduling/InterviewTypes/types';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import InterviewCard from './Components/InterviewCard';
+import MemberList from './Components/MemberList';
 import { useMeetingList } from './hooks';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
+  const { recruiter } = useAuthDetails();
   const { query } = useRouter();
+
   const {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
 
   const { setCollapse } = useRequest();
+
+  const [members, setMembers] = useState<MemberType[]>([]);
+  useEffect(() => {
+    if (recruiter?.id) {
+      fetchAllMembers();
+    }
+  }, [recruiter?.id]);
+
+  const fetchAllMembers = async () => {
+    const bodyParams: BodyParamsFetchUserDetails = {
+      recruiter_id: recruiter.id,
+      includeSupended: true,
+    };
+    const resMem = (await axios.post(
+      '/api/scheduling/fetchUserDetails',
+      bodyParams,
+    )) as { data: MemberType[] };
+
+    if (resMem?.data?.length > 0) {
+      setMembers(resMem.data);
+    }
+  };
 
   useEffect(() => {
     setCollapse(true);
@@ -50,17 +80,20 @@ function ViewRequestDetails() {
     .flat()
     .find((request) => request?.id === query?.id);
 
-  const { data: meetingList, status } = useMeetingList({
-    session_ids: selectedRequest?.request_relation?.map(
-      (ses) => ses?.session_id,
-    ),
-  });
-
   const candidateDetails = selectedRequest?.applications?.candidates;
   const jobDetails = selectedRequest?.applications?.public_jobs;
   const sessions = selectedRequest?.request_relation.map(
     (ele) => ele.interview_session.id,
   );
+
+  const {
+    data: sessionsCards,
+    status,
+    refetch,
+  } = useMeetingList({
+    application_id: selectedRequest?.applications?.id,
+    session_ids: sessions,
+  });
 
   if (isPlaceholderData) {
     return (
@@ -80,6 +113,7 @@ function ViewRequestDetails() {
       <Page404
         slot404={
           <ButtonSoft
+            size={2}
             onClickButton={{
               onClick: () => {
                 replace('/requests?tab=requests');
@@ -100,8 +134,10 @@ function ViewRequestDetails() {
       },
     });
   }
+
   return (
     <>
+      <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={
           <>
@@ -138,7 +174,10 @@ function ViewRequestDetails() {
                     styleProps={{
                       onClick: () => {
                         window.open(
-                          `/scheduling/application/${candidateDetails?.id}`,
+                          ROUTES['/jobs/[id]/application/[application_id]']({
+                            id: jobDetails.id,
+                            application_id: selectedRequest.application_id,
+                          }) + '?tab=interview',
                           '_blank',
                         );
                       },
@@ -148,46 +187,36 @@ function ViewRequestDetails() {
                 </Stack>
               }
             />
-            <Breadcrum
-              showArrow={false}
-              textName={
-                <GlobalBadge
-                  size={1}
-                  textBadge={capitalizeFirstLetter(selectedRequest?.status)}
-                  color={
-                    selectedRequest?.status === 'to_do'
-                      ? 'purple'
-                      : selectedRequest?.status === 'in_progress'
-                        ? 'info'
-                        : selectedRequest?.status === 'blocked'
-                          ? 'error'
-                          : selectedRequest?.status === 'completed'
-                            ? 'success'
-                            : 'neutral'
-                  }
-                />
-              }
-            />
           </>
         }
         slotBody={
           <RequestDetail
             slotInterview={
-              sessions &&
-              sessions.map((session_id, index) => {
-                if (status === 'pending') {
-                  return <RequestCardSkeleton key={session_id} />;
-                }
-                return (
-                  <>
-                    <InterviewCard
-                      session_id={session_id}
-                      meetingList={meetingList}
-                      key={index}
-                    />
-                  </>
-                );
-              })
+              status === 'pending' ? (
+                <Stack position={'relative'}>
+                  <SkeletonScheduleCard />
+                </Stack>
+              ) : (
+                sessionsCards.map((session) => {
+                  return (
+                    <>
+                      <ScheduleIndividualCard
+                        session={session}
+                        key={session.interview_session.id}
+                        selectedSessionIds={[]}
+                        onClickCheckBox={() => {}}
+                        isCheckboxVisible={false}
+                        candidate={null}
+                        isEditIconVisible={true}
+                        isViewDetailVisible={true}
+                        isStatusVisible={
+                          session.interview_meeting?.status === 'not_scheduled'
+                        }
+                      />
+                    </>
+                  );
+                })
+              )
             }
             slotNewTask={
               <>
@@ -217,6 +246,23 @@ function ViewRequestDetails() {
             }
             slotRequestDetailRight={
               <RequestDetailRight
+                slotStatus={
+                  <GlobalBadge
+                    size={1}
+                    textBadge={capitalizeFirstLetter(selectedRequest?.status)}
+                    color={
+                      selectedRequest?.status === 'to_do'
+                        ? 'purple'
+                        : selectedRequest?.status === 'in_progress'
+                          ? 'info'
+                          : selectedRequest?.status === 'blocked'
+                            ? 'error'
+                            : selectedRequest?.status === 'completed'
+                              ? 'success'
+                              : 'neutral'
+                    }
+                  />
+                }
                 slotPriority={
                   <GlobalBadge
                     showIcon={true}
@@ -245,18 +291,9 @@ function ViewRequestDetails() {
                   selectedRequest?.schedule_start_date,
                 ).format('DD MMMM, YYYY')}
                 slotAssignedTo={
-                  <AssignedNameCard
-                    textName={getFullName(
-                      selectedRequest?.assigner?.first_name,
-                      selectedRequest?.assignee?.last_name,
-                    )}
-                    textRole={selectedRequest?.assignee?.position}
-                    slotImage={
-                      <Avatar
-                        variant='rounded'
-                        src={selectedRequest?.assignee?.profile_image}
-                      />
-                    }
+                  <MemberList
+                    selectedMemberId={selectedRequest?.assignee.user_id}
+                    members={members}
                   />
                 }
                 slotCandidate={
@@ -315,7 +352,13 @@ function ViewRequestDetails() {
                           onClickButton={{
                             onClick: () => {
                               window.open(
-                                `/scheduling/application/${candidateDetails?.id}`,
+                                ROUTES[
+                                  '/jobs/[id]/application/[application_id]'
+                                ]({
+                                  id: jobDetails.id,
+                                  application_id:
+                                    selectedRequest.application_id,
+                                }) + '?tab=interview',
                                 '_blank',
                               );
                             },

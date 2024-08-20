@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DistributeDatesButton = ({
+const RequestToDefault = ({
   setConsoleMessage,
 }: {
   setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
@@ -165,19 +165,14 @@ const DistributeDatesButton = ({
   };
 
   return (
-    <div>
-      <p style={{ marginBottom: "10px" }}>
-        Reset Request graph with random dates.
-      </p>
-      <button
-        onClick={distributeDates}
-        disabled={loading}
-        style={{ width: "150px" }}
-      >
-        {loading ? "Processing..." : "Change graph"}
-      </button>
-    </div>
+    <button
+      onClick={distributeDates}
+      disabled={loading}
+      style={{ width: "150px" }}
+    >
+      {loading ? "Processing..." : "Beautify Trends"}
+    </button>
   );
 };
 
-export default DistributeDatesButton;
+export default RequestToDefault;

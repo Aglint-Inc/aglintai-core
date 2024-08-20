@@ -3,7 +3,6 @@ import UpdateEmailAuth from "./UpdateEmailAuth";
 import { seedTabs } from "../../type/UITypes";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
-import Workflow from "./Workflow";
 import { InterviewModules } from "./InterviewModules";
 
 const navTabs: {
@@ -15,8 +14,8 @@ const navTabs: {
     value: "company",
   },
   {
-    name: "Email",
-    value: "email",
+    name: "Users",
+    value: "users",
   },
   {
     name: "Interview Type",
@@ -25,10 +24,6 @@ const navTabs: {
   {
     name: "Jobs",
     value: "jobs",
-  },
-  {
-    name: "Workflow",
-    value: "workflow",
   },
 ];
 
@@ -48,10 +43,9 @@ function Seed() {
       </div>
       <div>
         {tab === "company" && <Company />}
-        {tab === "email" && <UpdateEmailAuth />}
+        {tab === "users" && <UpdateEmailAuth />}
         {tab === "interview_type" && <InterviewModules />}
         {tab === "jobs" && <Jobs />}
-        {tab === "workflow" && <Workflow />}
       </div>
     </div>
   );

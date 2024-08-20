@@ -8,7 +8,6 @@ import {
   submitAvailability,
   updateRequest,
 } from "../../utils/util_functions";
-import RequestGraphLook from "./GraphLook";
 
 function Demo() {
   const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
@@ -104,7 +103,7 @@ function Demo() {
           isRadio
           options={[
             { name: "Schedule", value: "schedule_request" },
-            { name: "ReSchedule", value: "reschedule_request" },
+            { name: "Reschedule", value: "reschedule_request" },
             { name: "Cancel Schedule", value: "cancel_schedule_request" },
           ]}
           handleSubmit={({
@@ -123,7 +122,7 @@ function Demo() {
           isRadio
           options={[
             { name: "Schedule", value: "schedule_request" },
-            { name: "Re-schedule", value: "reschedule_request" },
+            { name: "Reschedule", value: "reschedule_request" },
           ]}
           handleSubmit={({
             count,
@@ -141,7 +140,7 @@ function Demo() {
           isRadio
           options={[
             { name: "Schedule", value: "schedule_request" },
-            { name: "Re-schedule", value: "reschedule_request" },
+            { name: "Reschedule", value: "reschedule_request" },
           ]}
           handleSubmit={({
             count,
@@ -184,7 +183,6 @@ function Demo() {
           }
         />
       </div>
-      <RequestGraphLook setConsoleMessage={setConsoleMessage} />
       <div className="console">
         <h5>Console</h5>
         <div>
@@ -194,7 +192,7 @@ function Demo() {
                   {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
                 </p>
               ))
-            : "no message"}
+            : "No message"}
         </div>
       </div>
     </div>

@@ -42,7 +42,7 @@ function SlotBody() {
                 <Activity />
               </Stack>
             ) : tab === 'resume' ? (
-              <Stack padding={'var(--space-4)'} minHeight={'1000px'}>
+              <Stack padding={'var(--space-4)'} height={'1000px'}>
                 <Resume />
               </Stack>
             ) : tab === 'scoring' ? (

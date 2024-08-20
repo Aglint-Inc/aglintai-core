@@ -7,4 +7,5 @@ declare function AssignedNameCard(props: {
   textName?: React.ReactNode;
   textRole?: React.ReactNode;
   onClickCard?: Types.Devlink.RuntimeProps;
+  isEditVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -40,7 +40,7 @@ function CollapseContent({
   jobTitle?: ScheduleIndividualCardType['jobTitle'];
   isCollapseButtonsVisible?: boolean;
 }) {
-  const {data:allIntegrations} = useAllIntegrations();
+  const { data: allIntegrations } = useAllIntegrations();
 
   let users = allUsers;
 
@@ -145,8 +145,9 @@ function CollapseContent({
                   const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
                   const isCalendarConnected =
                     (!!allIntegrations?.service_json &&
-                      allIntegrations?.google_workspace_domain?.split('//')[1] ===
-                        user.user_details.email.split('@')[1]) ||
+                      allIntegrations?.google_workspace_domain?.split(
+                        '//',
+                      )[1] === user.user_details.email.split('@')[1]) ||
                     !!(user.user_details.schedule_auth as any)?.access_token;
 
                   const cancelReason = cancelReasons?.find(

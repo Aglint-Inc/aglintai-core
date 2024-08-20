@@ -6,7 +6,6 @@ import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import InterviewerUserDetail from '@/src/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { useApplication } from '@/src/context/ApplicationContext';
 import { StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { numberToText } from '@/src/utils/number/numberToText';
@@ -16,9 +15,15 @@ import CancelBanners from './AdminCancelBanners';
 function CollapseContent({
   currentSession,
   collapsed,
+  candidate,
 }: {
   currentSession: StageWithSessions[0]['sessions'][0];
   collapsed: boolean;
+  candidate?: {
+    name: string;
+    current_job_title: string;
+    timezone: string;
+  };
 }) {
   const { data: allIntegrations } = useAllIntegrations();
 
@@ -37,43 +42,42 @@ function CollapseContent({
   }
   const cancelReasons = currentSession?.cancel_reasons;
   const count = users?.length ?? 0;
-  const {
-    meta: { data: detail },
-  } = useApplication();
 
   return (
     <Collapse in={collapsed}>
       {!!currentSession && (
         <Stack padding={'var(--space-4)'} spacing={'var(--space-4)'}>
           <>
-            {detail.timezone && interview_meeting?.start_time && (
-              <Stack spacing={'var(--space-2)'}>
-                <GlobalUserDetail
-                  textTimeZone={
-                    interview_meeting?.start_time
-                      ? formatTimeWithTimeZone({
-                          start_time: interview_meeting.start_time,
-                          end_time: interview_meeting.end_time,
-                          timeZone: detail.timezone,
-                        })
-                      : '--'
-                  }
-                  isRoleVisible={Boolean(detail.current_job_title)}
-                  slotRole={
-                    <TextWithIcon
-                      fontWeight={'regular'}
-                      textContent={detail.current_job_title}
-                      iconName={'work'}
-                      iconSize={4}
-                      color='neutral'
-                    />
-                  }
-                  textName={detail.name}
-                  isCandidateAvatarVisible={true}
-                  textRole={''}
-                />
-              </Stack>
-            )}
+            {candidate &&
+              candidate.timezone &&
+              interview_meeting?.start_time && (
+                <Stack spacing={'var(--space-2)'}>
+                  <GlobalUserDetail
+                    textTimeZone={
+                      interview_meeting?.start_time
+                        ? formatTimeWithTimeZone({
+                            start_time: interview_meeting.start_time,
+                            end_time: interview_meeting.end_time,
+                            timeZone: candidate.timezone,
+                          })
+                        : '--'
+                    }
+                    isRoleVisible={Boolean(candidate.current_job_title)}
+                    slotRole={
+                      <TextWithIcon
+                        fontWeight={'regular'}
+                        textContent={candidate.current_job_title}
+                        iconName={'work'}
+                        iconSize={4}
+                        color='neutral'
+                      />
+                    }
+                    textName={candidate.name}
+                    isCandidateAvatarVisible={true}
+                    textRole={''}
+                  />
+                </Stack>
+              )}
 
             <Stack spacing={'var(--space-2)'}>
               {count !== 0 && (
@@ -100,9 +104,7 @@ function CollapseContent({
                 <GlobalBannerInline
                   color={'error'}
                   iconName={'warning'}
-                  textContent={
-                    'No interviewers assigned. Click on edit to assign interviewers.'
-                  }
+                  textContent={'No interviewers assigned.'}
                   slotButton={<></>}
                 />
               ) : (

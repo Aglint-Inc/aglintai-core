@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { MyScheduleLanding } from '@/devlink/MyScheduleLanding';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
@@ -59,13 +60,27 @@ function MySchedule() {
 
   const {
     data: { schedules: allSchedules },
-    isLoading,
+    isLoading: scheduleLoading,
   } = useAllSchedulesByUserId({
     filter,
     member_id: recruiterUser.user_id,
   });
 
-  const { data: allIntegrations } = useAllIntegrations();
+  const { data: allIntegrations, isLoading: integrationLoading } =
+    useAllIntegrations();
+
+  if (scheduleLoading || integrationLoading)
+    return (
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        width={'100%'}
+        height={'100vh'}
+        justifyContent={'center'}
+      >
+        <LoaderSvg />
+      </Stack>
+    );
 
   return (
     <>
@@ -79,7 +94,7 @@ function MySchedule() {
           }
         >
           <InterviewMemberSide
-          propsGrids={{style:{maxWidth:'none'}}}
+            propsGrids={{ style: { maxWidth: 'none' } }}
             slotInterview={
               <Stack>
                 <SearchField
@@ -109,7 +124,7 @@ function MySchedule() {
             }}
             slotInterviewCard={
               <>
-                {isLoading ? (
+                {scheduleLoading ? (
                   ''
                 ) : allSchedules.length === 0 ? (
                   <AllInterviewEmpty textDynamic='No schedule found' />

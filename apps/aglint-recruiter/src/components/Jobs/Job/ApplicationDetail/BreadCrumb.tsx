@@ -40,7 +40,7 @@ function BreadCrumb() {
         name: detail?.name,
       },
     ]);
-  }, [tab]);
+  }, [tab, router?.query]);
 
   return <>{breadcrum}</>;
 }

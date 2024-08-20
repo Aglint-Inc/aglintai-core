@@ -5,34 +5,22 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
 
-import {
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '../CandidateDetails/SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '../CandidateDetails/store';
-import { ScheduleMeeting } from './types';
+import { useScheduleDetails } from './hooks';
 
 function ButtonGroup({
   setIsCancelOpen,
-  schedule,
   isMeetingJobHiringTeam,
 }: {
   setIsCancelOpen: Dispatch<React.SetStateAction<boolean>>;
-  schedule: ScheduleMeeting;
   isMeetingJobHiringTeam: boolean;
 }) {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
-
-  // if logged in user is an interviewer in this session
+  const { data } = useScheduleDetails();
+  const schedule = data?.schedule_data;
 
   const isCancelButtonVisible =
     (checkPermissions(['scheduling_actions']) || isMeetingJobHiringTeam) &&
-    schedule?.interview_meeting?.status === 'confirmed';
-
-  //if logged in user is hiring team or having scheduler_update permission
-  const isRescheduleButtonVisible =
-    (isMeetingJobHiringTeam || checkPermissions(['scheduling_actions'])) &&
     schedule?.interview_meeting?.status === 'confirmed';
 
   return (
@@ -49,21 +37,17 @@ function ButtonGroup({
           }}
         />
       )}
-
-      {isRescheduleButtonVisible && (
+      {checkPermissions(['scheduling_actions']) && (
         <ButtonSoft
-          color={'accent'}
           size={1}
-          textButton={'Reschedule'}
+          textButton={'Application Detail'}
           onClickButton={{
             onClick: () => {
-              setIsScheduleNowOpen(true);
-              setRescheduleSessionIds([schedule.interview_session.id]);
-              setStepScheduling('reschedule');
               router.push(
-                ROUTES['/scheduling/application/[application_id]']({
-                  application_id: schedule.schedule.application_id,
-                }),
+                ROUTES['/jobs/[id]/application/[application_id]']({
+                  id: schedule?.job.id,
+                  application_id: schedule?.application_id,
+                }) + `?tab=interview`,
               );
             },
           }}
