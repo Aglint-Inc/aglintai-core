@@ -9,9 +9,9 @@ import {
 } from 'react';
 
 import { schedulingAnalyticsQueries } from '@/src/queries/scheduling-analytics';
+import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
 
 const useActions = () => {
   const { recruiter_id } = useAuthDetails();

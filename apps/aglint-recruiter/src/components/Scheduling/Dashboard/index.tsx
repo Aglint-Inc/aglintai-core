@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3/SchedulingDashboard';
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 
@@ -9,10 +11,10 @@ import InterviewMeetingStatus from './InterviewMeetingStatus';
 import { Leaderboard } from './leaderboard';
 import RecentRescheduleCancel from './RecentRescheduleCancel';
 import { Tabs } from './tabs';
-// import TrainingProgress from './TrainingProgress';
+import { TrainingProgress } from './trainingProgress';
 import InterviewTrainingStatus from './TrainingStatus';
 
-const SchedulingDashboard = () => {
+const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
   if (!enabled) return <Loader />;
   return (
@@ -29,7 +31,7 @@ const SchedulingDashboard = () => {
           <InterviewTrainingStatus />
         </>
       }
-      slotTrainingProgress={<></>}
+      slotTrainingProgress={<TrainingProgress />}
       slotScheduleCount={<Tabs />}
       slotRecentReschedule={<RecentRescheduleCancel />}
       slotCompletedInterview={
@@ -40,6 +42,7 @@ const SchedulingDashboard = () => {
       }
     />
   );
-};
+});
+SchedulingDashboard.displayName = 'SchedulingDashboard';
 
 export default SchedulingDashboard;

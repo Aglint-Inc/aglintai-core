@@ -6,13 +6,13 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import { LeaderBoard } from '@/devlink3/LeaderBoard';
 import { LeaderBoardCard } from '@/devlink3/LeaderBoardCard';
 import { LeaderBoardLoader } from '@/devlink3/LeaderBoardLoader';
-import { NoData } from '@/devlink3/NoData';
-
-import { FilterDropDownDash } from './FilterDropDownDash';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
+
+import { Empty } from './common';
+import { FilterDropDownDash } from './FilterDropDownDash';
 
 export const Leaderboard = memo(() => {
   return (
@@ -22,6 +22,7 @@ export const Leaderboard = memo(() => {
     />
   );
 });
+Leaderboard.displayName = 'Leaderboard';
 
 const Dropdown = memo(() => {
   const { leaderboardType, setLeaderboardType } = useSchedulingAnalytics();
@@ -38,6 +39,7 @@ const Dropdown = memo(() => {
     />
   );
 });
+Dropdown.displayName = 'Dropdown';
 
 const Container = memo(() => {
   const {
@@ -60,10 +62,11 @@ const Container = memo(() => {
 
   if (status === 'pending') return <Loader />;
 
-  if (data.length !== 0) return <Empty />;
+  if (data.length === 0) return <Empty />;
 
   return <List data={data} />;
 });
+Container.displayName = 'Container';
 
 type Props = Pick<SchedulingAnalyticsContextType['leaderboard'], 'data'>;
 
@@ -104,11 +107,11 @@ const List = memo(({ data }: Props) => {
     </>
   );
 });
+List.displayName = 'ListList';
 
 const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
     <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
   ));
 });
-
-const Empty = memo(() => <NoData />);
+Loader.displayName = 'Loader';
