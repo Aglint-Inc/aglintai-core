@@ -12,9 +12,9 @@ import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { RequestDetail } from '@/devlink2/RequestDetail';
 import { RequestDetailRight } from '@/devlink2/RequestDetailRight';
+import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
@@ -23,7 +23,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { ApiInterviewSessionsStage } from '@/src/pages/api/scheduling/application/fetchInterviewStagesBySessionId';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -48,9 +47,6 @@ function ViewRequestDetails() {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
-  const [sessionsCards, setSessionsCards] = useState<
-    ApiInterviewSessionsStage['response']['sessions']
-  >([]);
 
   const { setCollapse } = useRequest();
 
@@ -84,33 +80,20 @@ function ViewRequestDetails() {
     .flat()
     .find((request) => request?.id === query?.id);
 
-  const { data: meetingList, status } = useMeetingList({
-    session_ids: selectedRequest?.request_relation?.map(
-      (ses) => ses?.session_id,
-    ),
-  });
-
   const candidateDetails = selectedRequest?.applications?.candidates;
   const jobDetails = selectedRequest?.applications?.public_jobs;
   const sessions = selectedRequest?.request_relation.map(
     (ele) => ele.interview_session.id,
   );
 
-  const getApplicationInterview = async () => {
-    const res = await axios.call<ApiInterviewSessionsStage>(
-      'POST',
-      '/api/scheduling/application/fetchInterviewStagesBySessionId',
-      {
-        application_id: selectedRequest.application_id,
-        sessions_ids: sessions,
-      },
-    );
-    setSessionsCards(res.sessions);
-  };
-
-  useEffect(() => {
-    if (selectedRequest) getApplicationInterview();
-  }, [selectedRequest]);
+  const {
+    data: sessionsCards,
+    status,
+    refetch,
+  } = useMeetingList({
+    application_id: selectedRequest?.applications?.id,
+    session_ids: sessions,
+  });
 
   if (isPlaceholderData) {
     return (
@@ -154,7 +137,7 @@ function ViewRequestDetails() {
 
   return (
     <>
-      <SideDrawerEdit refetch={getApplicationInterview} />
+      <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={
           <>
@@ -209,29 +192,31 @@ function ViewRequestDetails() {
         slotBody={
           <RequestDetail
             slotInterview={
-              sessions &&
-              sessionsCards.map((session, index) => {
-                if (status === 'pending') {
-                  return <RequestCardSkeleton key={index} />;
-                }
-                return (
-                  <>
-                    <ScheduleIndividualCard
-                      session={session}
-                      key={session.interview_session.id}
-                      selectedSessionIds={[]}
-                      onClickCheckBox={() => {}}
-                      isCheckboxVisible={false}
-                      candidate={null}
-                      isEditIconVisible={true}
-                      isViewDetailVisible={true}
-                      isStatusVisible={
-                        session.interview_meeting?.status === 'not_scheduled'
-                      }
-                    />
-                  </>
-                );
-              })
+              status === 'pending' ? (
+                <Stack position={'relative'}>
+                  <SkeletonScheduleCard />
+                </Stack>
+              ) : (
+                sessionsCards.map((session) => {
+                  return (
+                    <>
+                      <ScheduleIndividualCard
+                        session={session}
+                        key={session.interview_session.id}
+                        selectedSessionIds={[]}
+                        onClickCheckBox={() => {}}
+                        isCheckboxVisible={false}
+                        candidate={null}
+                        isEditIconVisible={true}
+                        isViewDetailVisible={true}
+                        isStatusVisible={
+                          session.interview_meeting?.status === 'not_scheduled'
+                        }
+                      />
+                    </>
+                  );
+                })
+              )
             }
             slotNewTask={
               <>
