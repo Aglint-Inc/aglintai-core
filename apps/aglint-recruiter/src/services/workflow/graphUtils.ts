@@ -176,6 +176,15 @@ export const createCancelWorkflowGraph = () => {
   return req_cancel_graph;
 };
 
+export const createInterviewerDeclineRequest = () => {
+  const req_decline_graph = new WorkflowGraph();
+  req_decline_graph.addNode(
+    new EventNode('not_started', 'REPLACE_ALTERNATIVE_INTERVIEWER', true, 0),
+  );
+
+  return req_decline_graph;
+};
+
 export const updateEventProgress = (
   graph: WorkflowGraph,
   progress_entries: DatabaseTable['request_progress'][],

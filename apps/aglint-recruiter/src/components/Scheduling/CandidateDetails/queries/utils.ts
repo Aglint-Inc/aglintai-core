@@ -57,8 +57,8 @@ export const fetchApplicationDetails = async ({
   return data[0];
 };
 
-const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;
-const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
+export const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;
+export const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
 
 export const fetchSessionDetailsFromSchedule = async ({
   application_id,
@@ -117,6 +117,7 @@ export const fetchSessionDetailsFromSchedule = async ({
               session_id: cancel.session_id,
               session_relation_id: cancel.session_relation_id,
               type: cancel.type,
+              request_id: undefined,
             };
           return {
             interview_session_cancel: interview_session_cancel,

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 

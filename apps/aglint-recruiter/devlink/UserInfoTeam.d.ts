@@ -10,4 +10,5 @@ declare function UserInfoTeam(props: {
   textDesgination?: React.ReactNode;
   slotDetails?: Types.Devlink.Slot;
   slotButton?: Types.Devlink.Slot;
+  isButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

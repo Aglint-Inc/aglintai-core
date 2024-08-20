@@ -79,6 +79,7 @@ function MySchedule() {
           }
         >
           <InterviewMemberSide
+          propsGrids={{style:{maxWidth:'none'}}}
             slotInterview={
               <Stack>
                 <SearchField

@@ -24,7 +24,5 @@
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "dependencies": {
-    "aglint-recruiter": "^1.0.0"
-  }
+  "dependencies": {}
 }

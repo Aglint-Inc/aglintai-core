@@ -16,6 +16,7 @@ export const Activity = () => {
   const {
     activity: { data, status },
   } = useApplication();
+
   if (status === 'pending')
     return (
       <Loader count={10}>

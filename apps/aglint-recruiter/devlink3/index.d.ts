@@ -237,6 +237,8 @@ export * from "./SkeletonActivitiesCard";
 export * from "./SkeletonNewInterviewPlanCard";
 export * from "./SlotComp";
 export * from "./SoundTask";
+export * from "./StagePipeline";
+export * from "./StagePipelineSmall";
 export * from "./SuggestedActions";
 export * from "./SuggetionCard";
 export * from "./SuggetionPill";

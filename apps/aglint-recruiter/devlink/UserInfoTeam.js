@@ -19,6 +19,7 @@ export function UserInfoTeam({
   textDesgination = "Heading",
   slotDetails,
   slotButton,
+  isButtonVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -58,6 +59,9 @@ export function UserInfoTeam({
       >
         {slotDetails}
       </_Builtin.Block>
+      {isButtonVisible ? (
+        <_Builtin.Block tag="div">{slotButton}</_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

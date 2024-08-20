@@ -331,9 +331,10 @@ const InterviewPlan = ({
     <>
       <InterviewPlanWrap
         textStageName={`Stage ${data.plan_order} ${capitalizeFirstLetter(data.name)}`}
-        textInterviewCount={`${sessions.length} Interviews`}
+        textInterviewCount={ `${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
         isInputVisible={editPlan}
         onClickEdit={{ onClick: handleEditPlan }}
+        isSlotInterviewPlanVisible={expanded}
         slotInputButton={
           <Stack direction={'row'} gap={1} alignItems={'center'}>
             <UITextField ref={planRef} defaultValue={data.name} fullWidth />

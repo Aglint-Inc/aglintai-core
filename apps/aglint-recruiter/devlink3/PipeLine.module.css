@@ -14,6 +14,15 @@
   cursor: pointer;
 }
 
+.pipeline.is_small {
+  height: 24px;
+}
+
+.pipeline.is_small-copy {
+  width: auto;
+  height: 24px;
+}
+
 .arrow_left {
   z-index: 2;
   display: flex;
@@ -46,6 +55,10 @@
 
 .change_on_hover {
   background-color: var(--neutral-3);
+}
+
+.text_bloxk.change_on_hover.auto_width {
+  width: auto;
 }
 
 .fw-semibold {
