@@ -14,14 +14,14 @@ import {
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
 
-export const Leaderboard = () => {
+export const Leaderboard = memo(() => {
   return (
     <LeaderBoard
       slotDropdownButton={<Dropdown />}
       slotLeaderboardCard={<Container />}
     />
   );
-};
+});
 
 const Dropdown = memo(() => {
   const { leaderboardType, setLeaderboardType } = useSchedulingAnalytics();
@@ -39,13 +39,13 @@ const Dropdown = memo(() => {
   );
 });
 
-const Container = () => {
+const Container = memo(() => {
   const {
     leaderboard: { data: d, status },
   } = useSchedulingAnalytics();
 
   const data = [
-    ...d,
+    ...(d ?? []),
     {
       duration: 60,
       interviews: 10,
@@ -56,20 +56,18 @@ const Container = () => {
     },
   ];
 
-  if (status === 'pending')
-    return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
-      <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
-    ));
+  if (status === 'error') return <>Error</>;
 
-  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <NoData />;
+  if (status === 'pending') return <Loader />;
+
+  if (data.length !== 0) return <Empty />;
 
   return <List data={data} />;
-};
+});
 
 type Props = Pick<SchedulingAnalyticsContextType['leaderboard'], 'data'>;
 
-const List = ({ data }: Props) => {
+const List = memo(({ data }: Props) => {
   return (
     <>
       {(data ?? []).map(
@@ -105,4 +103,12 @@ const List = ({ data }: Props) => {
       )}
     </>
   );
-};
+});
+
+const Loader = memo(() => {
+  return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
+    <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
+  ));
+});
+
+const Empty = memo(() => <NoData />);
