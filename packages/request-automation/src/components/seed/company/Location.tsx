@@ -125,7 +125,7 @@ export function Location({
         <>
           <div style={{ display: "flex", gap: "20px" }}>
             <div>
-              <h5>Select Location to Add</h5>
+              <h5>Select Location to add</h5>
 
               {availableLocations.map((location, index) => (
                 <div
