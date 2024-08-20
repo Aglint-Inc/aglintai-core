@@ -57,7 +57,7 @@ async function saveInterviewPlans(
       return {
         name: item.name,
         job_id: job_id,
-        order: index + 1,
+        plan_order: index + 1,
       };
     },
   );
