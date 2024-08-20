@@ -30,9 +30,8 @@
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
-
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
 }
 
 .slot-req-detail-left-card {

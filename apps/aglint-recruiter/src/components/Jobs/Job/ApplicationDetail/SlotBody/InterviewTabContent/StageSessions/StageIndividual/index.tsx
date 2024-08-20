@@ -2,6 +2,7 @@ import { Collapse, Stack } from '@mui/material';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ApplicantDetailStage } from '@/devlink2/ApplicantDetailStage';
+import { useApplication } from '@/src/context/ApplicationContext';
 import { StageWithSessions } from '@/src/queries/application';
 
 import {
@@ -10,7 +11,6 @@ import {
   setSelectedStageId,
   useApplicationDetailStore,
 } from '../../../../store';
-import SideDrawerEdit from '../EditDrawer';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
 function StageIndividual({
@@ -32,9 +32,25 @@ function StageIndividual({
   const isCurrentSessionSelected = sessions.some((session) =>
     selectedSessionIds.includes(session.interview_session.id),
   );
+
+  const onClickCheckBox = ({ session_id }: { session_id: string }) => {
+    if (selectedSessionIds.includes(session_id)) {
+      return setSelectedSessionIds(
+        selectedSessionIds.filter((id) => id !== session_id),
+      );
+    }
+    return setSelectedSessionIds([...selectedSessionIds, session_id]);
+  };
+
+  const {
+    meta: { data: detail },
+    details: {
+      data: { job_status, status },
+    },
+  } = useApplication();
+
   return (
     <>
-      <SideDrawerEdit />
       <ApplicantDetailStage
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} interviews`}
@@ -42,10 +58,28 @@ function StageIndividual({
           <Collapse in={isStageSelected}>
             <Stack spacing={'var(--space-2)'}>
               {sessions.map((session) => {
+                const interview_meeting = session.interview_meeting;
                 return (
                   <ScheduleIndividualCard
                     session={session}
                     key={session.interview_session.id}
+                    selectedSessionIds={selectedSessionIds}
+                    onClickCheckBox={onClickCheckBox}
+                    isCheckboxVisible={
+                      job_status === 'published' &&
+                      status === 'interview' &&
+                      (!interview_meeting ||
+                        interview_meeting.status === 'not_scheduled' ||
+                        interview_meeting.status === 'cancelled' ||
+                        interview_meeting.status === 'reschedule')
+                    }
+                    candidate={{
+                      name: detail?.name,
+                      current_job_title: detail?.current_job_title,
+                      timezone: detail?.timezone,
+                    }}
+                    isEditIconVisible={true}
+                    isViewDetailVisible={true}
                   />
                 );
               })}
