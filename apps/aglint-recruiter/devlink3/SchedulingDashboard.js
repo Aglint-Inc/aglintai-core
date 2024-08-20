@@ -102,12 +102,7 @@ export function SchedulingDashboard({
         <_Builtin.Block className={_utils.cx(_styles, "sd_row_5")} tag="div">
           {slotCompletedInterview ?? (
             <>
-              <CompletedInterviews
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_96458fef-0fca-f087-1b6c-cdd6d67568d2-aa8c5b1c"
-                )}
-              />
+              <CompletedInterviews />
               <InterviewersDash
                 isTraineeActive={true}
                 isQualifiedActive={false}

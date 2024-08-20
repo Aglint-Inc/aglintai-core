@@ -31,13 +31,13 @@ export function InterviewersDash({
         >
           <DarkPill
             onClickPill={onClickQualified}
-            isActive={isQualifiedActive}
             textPill="Qualified"
+            isActive={false}
           />
           <DarkPill
             onClickPill={onClickTrainee}
-            isActive={isTraineeActive}
             textPill="Trainees"
+            isActive={true}
           />
         </_Builtin.Block>
       </_Builtin.Block>
