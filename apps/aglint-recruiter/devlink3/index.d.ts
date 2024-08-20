@@ -14,6 +14,7 @@ export * from "./Activities";
 export * from "./ActivitiesCard";
 export * from "./AddCandidateButton";
 export * from "./AddScheduleCard";
+export * from "./AddScheduleOption";
 export * from "./AgentFollowUp";
 export * from "./AgentLayout";
 export * from "./AgentPill";
