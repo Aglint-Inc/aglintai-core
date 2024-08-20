@@ -20,7 +20,7 @@ $function$
 
 select
   cron.schedule(
-    'greeenhouse_full_sync',
+    'greenhouse_full_sync',
     '0 7 * * *', 
     $$
     select greenhouse_sync();
