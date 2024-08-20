@@ -173,6 +173,12 @@ export const useApplicationContext = (
       if (res.status === 201 || res.status === 200) {
         if (isCreateRequest) {
           toast.success('Request Created Successfully');
+          router.push(
+            ROUTES['/jobs/[id]/application/[application_id]']({
+              application_id: props.application_id,
+              id: props.job_id,
+            }) + '?tab=requests',
+          );
         } else {
           router.push(
             ROUTES['/requests/[id]']({

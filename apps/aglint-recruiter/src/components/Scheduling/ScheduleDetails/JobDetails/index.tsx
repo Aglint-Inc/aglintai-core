@@ -2,9 +2,13 @@ import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import { ScheduleMeeting } from '../types';
+import { ScheduleDetailsType } from '../hooks';
 
-function JobDetails({ schedule }: { schedule: ScheduleMeeting }) {
+function JobDetails({
+  schedule,
+}: {
+  schedule: ScheduleDetailsType['schedule_data'];
+}) {
   const editor = useEditor({
     editable: false,
     content: schedule?.job.description,

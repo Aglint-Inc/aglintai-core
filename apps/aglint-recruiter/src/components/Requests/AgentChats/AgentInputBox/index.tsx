@@ -132,13 +132,11 @@ function AgentInputBox() {
                   .flatMap((ele) => ele)
                   .map((ele) => ({
                     id: ele.id,
-                    display: ele.title.replace(
-                      '{{candidateName}}',
-                      getFullName(
-                        ele.applications.candidates.first_name,
-                        ele.applications.candidates.last_name,
-                      ),
-                    ),
+                    display: getRequestTitle({
+                      title: ele.title,
+                      first_name: ele.applications.candidates.first_name,
+                      last_name: ele.applications.candidates.last_name,
+                    }),
                   }))
               : []
           }
@@ -176,6 +174,18 @@ function AgentInputBox() {
 }
 
 export default AgentInputBox;
+
+export const getRequestTitle = ({
+  title,
+  first_name,
+  last_name,
+}: {
+  title: string;
+  first_name: string;
+  last_name: string;
+}) => {
+  return title.replace('{{candidateName}}', getFullName(first_name, last_name));
+};
 
 export const useAllJobsAndApplications = ({
   recruiter_id,

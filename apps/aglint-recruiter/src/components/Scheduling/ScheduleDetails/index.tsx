@@ -13,11 +13,10 @@ import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
-import { useAllActivities } from '../CandidateDetails/queries/hooks';
-import RightPanel from '../CandidateDetails/RightPanel';
 import ButtonGroup from './ButtonGroup';
 import DetailsOverview from './DetailsOverview';
 import { useScheduleDetails } from './hooks';
+import Requests from './Requests';
 
 function SchedulingViewComp() {
   const router = useRouter();
@@ -57,17 +56,16 @@ function SchedulingViewComp() {
             : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
-          name: `${data.schedule_data.schedule.schedule_name || 'Schedule'}`.trim(),
+          name: `${schedule.interview_session.name}`.trim(),
         },
       ]);
     }
   }, [data?.schedule_data?.candidates.id]);
 
   const isMeetingJobHiringTeam =
-    schedule?.hiring_manager?.id === recruiterUser.user_id ||
-    schedule?.organizer?.id === recruiterUser.user_id ||
-    schedule?.recruiting_coordinator?.id === recruiterUser.user_id ||
-    schedule?.recruiter?.id === recruiterUser.user_id;
+    schedule?.hiring_manager?.user_id === recruiterUser.user_id ||
+    schedule?.organizer?.user_id === recruiterUser.user_id ||
+    schedule?.recruiter?.user_id === recruiterUser.user_id;
 
   const sections = viewScheduleTabs
     .filter(
@@ -108,11 +106,6 @@ function SchedulingViewComp() {
     else if (right) handleNext();
   }, [left, right]);
 
-  const allActivities = useAllActivities({
-    application_id: schedule?.schedule?.application_id,
-    session_id: schedule?.interview_session?.id,
-  });
-
   return (
     <>
       <PageLayout
@@ -151,18 +144,20 @@ function SchedulingViewComp() {
                   )}
                 </Stack>
 
-                <Stack
-                  height={'100vh'}
-                  minWidth={'400px'}
-                  overflow={'auto'}
-                  p={'var(--space-4)'}
-                  sx={{
-                    borderLeft: '1px solid',
-                    borderColor: 'var(--neutral-6)',
-                  }}
-                >
-                  <RightPanel allActivities={allActivities} />
-                </Stack>
+                {checkPermissions(['scheduling_actions']) && (
+                  <Stack
+                    height={'100vh'}
+                    minWidth={'400px'}
+                    overflow={'auto'}
+                    p={'var(--space-4)'}
+                    sx={{
+                      borderLeft: '1px solid',
+                      borderColor: 'var(--neutral-6)',
+                    }}
+                  >
+                    <Requests session_id={schedule?.interview_session?.id} />
+                  </Stack>
+                )}
               </Stack>
             ) : (
               <Loader />
@@ -173,7 +168,6 @@ function SchedulingViewComp() {
           <ButtonGroup
             setIsCancelOpen={setIsCancelOpen}
             isMeetingJobHiringTeam={isMeetingJobHiringTeam}
-            schedule={schedule}
           />
         }
       />
