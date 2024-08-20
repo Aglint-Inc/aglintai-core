@@ -51,7 +51,6 @@ function StageIndividual({
 
   return (
     <>
-      
       <ApplicantDetailStage
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} interviews`}
@@ -77,6 +76,7 @@ function StageIndividual({
                     candidate={{
                       name: detail?.name,
                       current_job_title: detail?.current_job_title,
+                      timezone: detail?.timezone,
                     }}
                     isEditIconVisible={true}
                     isViewDetailVisible={true}
