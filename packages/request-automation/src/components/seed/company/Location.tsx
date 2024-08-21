@@ -104,9 +104,9 @@ export function Location({
         .insert(locationsToAdd);
 
       if (error)
-        setMessage((pre) => [...pre, `Location adding error ${error.message}`]);
+        setMessage((pre) => [...pre, `Location adding error ${error.message}.`]);
 
-      setMessage((pre) => [...pre, `Location added successfully`]);
+      setMessage((pre) => [...pre, `Location added successfully.`]);
       setSelectedNewLocation([]);
       fetchLocation();
     } catch (e) {
