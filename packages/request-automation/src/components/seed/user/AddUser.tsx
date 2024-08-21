@@ -3,7 +3,8 @@ import { useAppContext } from "../../../context/AppContext";
 import axios from "axios";
 
 type form = {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   title: string;
   role: string;
@@ -52,7 +53,7 @@ function AddUser({
         data: form[];
         error: any;
       } = await axios.get(
-        "https://aglintai-seed-data.vercel.app/company/users.json"
+        "https://aglintai-seed-data.vercel.app/company/aglint/users.json"
       );
 
       if (newUserError) {
@@ -140,7 +141,7 @@ function AddUser({
                       type="checkbox"
                       checked={selectedUser.includes(user.email)}
                     />
-                    <p>{user.name}</p>
+                    <p>{user.first_name}</p>
                     <p style={{ opacity: 0.5 }}>{user.email}</p>
                     <p style={{ opacity: 0.5 }}>({user.role})</p>
                   </div>
