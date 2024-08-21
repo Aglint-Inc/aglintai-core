@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { cancelReschdule } from '@/src/utils/automation/utils/cancel_request';
@@ -21,8 +22,6 @@ export async function POST(req) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
-
-import { cookies } from 'next/headers';
 
 function createClient() {
   const cookieStore = cookies();
