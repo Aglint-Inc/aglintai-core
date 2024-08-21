@@ -213,14 +213,19 @@ function MembersPopUps({
                 );
               }}
             />
-            {filteredMembers.length === 0 && (
+
+            {filteredMembers.length === 0 ? (
               <GlobalEmptyState
                 iconName={'Search'}
                 textDesc={'No members found'}
               />
-            )}
-            {status === 'success' ? (
-              <Stack maxHeight={'300px'} overflow={'auto'} width={'375px'}>
+            ) : status === 'success' ? (
+              <Stack
+                height={'150px'}
+                maxHeight={'150px'}
+                overflow={'auto'}
+                width={'375px'}
+              >
                 {filteredMembers
                   .filter(
                     ({ user_id }) => user_id !== selectedRequest?.assignee_id,
