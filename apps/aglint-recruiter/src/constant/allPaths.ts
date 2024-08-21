@@ -117,6 +117,8 @@ export const PATHS = [
 '/api/get_member',
 '/api/get_scheduling_reason',
 '/api/get_users_by_ids',
+'/api/google-calender/watch-changes',
+'/api/google-calender/webhook',
 '/api/google/overview',
 '/api/google/overview-handler',
 '/api/greenhouse/batchsave',
