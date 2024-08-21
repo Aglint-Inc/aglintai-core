@@ -15,7 +15,6 @@ import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import { jobs } from 'googleapis/build/src/apis/jobs';
 
 const defaultFilter = {
   is_new: false,

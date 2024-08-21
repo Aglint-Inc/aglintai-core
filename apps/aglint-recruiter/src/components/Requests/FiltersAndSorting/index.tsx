@@ -2,11 +2,11 @@
 
 import { useMemo } from 'react';
 
+import { useJobs } from '@/src/context/JobsContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { GetRequestParams } from '@/src/queries/requests';
 
 import FilterHeader from '../../Common/FilterHeader';
-import { useJobs } from '@/src/context/JobsContext';
 
 // const sortOptions: GetRequestParams['sort']['type'][] = [
 //   'created_at',
