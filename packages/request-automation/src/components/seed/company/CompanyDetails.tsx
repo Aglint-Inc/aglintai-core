@@ -3,6 +3,14 @@ import { useAppContext } from "../../../context/AppContext";
 import axios from "axios";
 import { CompanyProfile } from "../../../type/UITypes";
 
+type form = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  title?: string;
+  role?: string;
+};
+
 function CompanyDetails({
   setMessage,
 }: {
@@ -72,7 +80,7 @@ function CompanyDetails({
         const {
           data: users,
         }: {
-          data: { first_name: string; last_name: string; email: string }[];
+          data: form[];
         } = await axios.get(
           `https://aglintai-seed-data.vercel.app/company/${selComp.slug}/users.json`
         );
