@@ -54,15 +54,6 @@ export default async function handler(
       details.request.type = 'cancel_schedule_request';
     }
 
-    if (parsed.type === 'schedule') {
-      details.request.title = `Schedule ${parsed.session_names.map((ses) => ses).join(' and ')} for ${candidate_name}`;
-      details.request.type = 'schedule_request';
-      details.request.priority =
-        parsed.priority === 'urgent' ? 'urgent' : 'standard';
-      details.request.assignee_id = parsed.assignee_id;
-      details.request.assigner_id = parsed.assigner_id;
-    }
-
     await resetSessionRelations({
       session_ids: parsed.session_ids,
       supabase: supabaseAdmin,

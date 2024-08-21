@@ -4,9 +4,11 @@ import axios from 'axios';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { workflowCopy } from '@/src/services/workflow/copy';
 import { EventNode } from '@/src/services/workflow/node';
 import toast from '@/src/utils/toast';
+
 type TenseType = 'past' | 'present' | 'future' | 'error';
 export const EventHeading = ({ event }: { event: EventNode }) => {
   let tense: TenseType;
@@ -19,7 +21,6 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   } else if (event.status === 'failed') {
     tense = 'error';
   }
-
   const handleRetry = async (id: number) => {
     try {
       await axios.post('/api/workflow-cron/execute', { action_id: id });
@@ -40,7 +41,7 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
           ) : tense === 'future' ? (
             'circle'
           ) : (
-            <AtrIconFilled />
+            <LottieAnimations animation='loading_spinner' size={1.2} />
           )
         }
       />
@@ -74,19 +75,19 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
   );
 };
 
-function AtrIconFilled() {
-  return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      height='16px'
-      viewBox='0 -960 960 960'
-      width='16px'
-      fill='#00749E'
-    >
-      <path d='M230-160q-45 0-77.5-32.5T120-270q0-45 32.5-77.5T230-380q45 0 77.5 32.5T340-270q0 45-32.5 77.5T230-160Zm500 0q-45 0-77.5-32.5T620-270q0-45 32.5-77.5T730-380q46 0 78 32.5t32 77.5q0 45-32 77.5T730-160ZM480-580q-45 0-77.5-32.5T370-690q0-45 32.5-77.5T480-800q45 0 77.5 32.5T590-690q0 45-32.5 77.5T480-580Z' />
-    </svg>
-  );
-}
+// function AtrIconFilled() {
+//   return (
+//     <svg
+//       xmlns='http://www.w3.org/2000/svg'
+//       height='16px'
+//       viewBox='0 -960 960 960'
+//       width='16px'
+//       fill='#00749E'
+//     >
+//       <path d='M230-160q-45 0-77.5-32.5T120-270q0-45 32.5-77.5T230-380q45 0 77.5 32.5T340-270q0 45-32.5 77.5T230-160Zm500 0q-45 0-77.5-32.5T620-270q0-45 32.5-77.5T730-380q46 0 78 32.5t32 77.5q0 45-32 77.5T730-160ZM480-580q-45 0-77.5-32.5T370-690q0-45 32.5-77.5T480-800q45 0 77.5 32.5T590-690q0 45-32.5 77.5T480-580Z' />
+//     </svg>
+//   );
+// }
 
 function CheckCircleFilled() {
   return (

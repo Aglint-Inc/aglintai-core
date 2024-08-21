@@ -1,10 +1,10 @@
-import { APICreateCandidateRequest } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 
 import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { APICreateScheduleRequest } from '@/src/pages/api/request/schedule-request';
 import {
   applicationQuery,
   useUpdateApplication,
@@ -154,7 +154,7 @@ export const useApplicationContext = (
   }) => {
     try {
       if (!sel_user_id) return;
-      const creatReqPayload: APICreateCandidateRequest = {
+      const creatReqPayload: APICreateScheduleRequest = {
         application_id: props.application_id,
         session_ids: selectedSessionIds,
         type: 'schedule',
@@ -168,7 +168,10 @@ export const useApplicationContext = (
         session_names: sessionNames,
       };
 
-      const res = await axios.post('/api/request/create', creatReqPayload);
+      const res = await axios.post(
+        '/api/request/schedule-request',
+        creatReqPayload,
+      );
 
       if (res.status === 201 || res.status === 200) {
         if (isCreateRequest) {

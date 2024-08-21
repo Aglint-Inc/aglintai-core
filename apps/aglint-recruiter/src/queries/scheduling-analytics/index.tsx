@@ -2,11 +2,19 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { api } from '@/src/trpc/client';
 
-import { appKey, GC_TIME } from '..';
+import { appKey, argsToKeys, GC_TIME } from '..';
 import {
   SchedulingAnalyticsFunctions,
   SchedulingAnalyticsProcedureArgs,
 } from './types';
+
+const schedulingArgsToKeys = <
+  T extends SchedulingAnalyticsProcedureArgs<SchedulingAnalyticsFunctions>,
+>({
+  // eslint-disable-next-line no-unused-vars
+  recruiter_id,
+  ...args
+}: T) => argsToKeys(args);
 
 export const schedulingAnalyticsQueries = {
   key: () => 'scheduling-analytics' as const,
@@ -19,12 +27,12 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'completed_interviews',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.completed_interviews.query(args, {
+        await api.scheduling.analytics.completed_interviews.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -35,11 +43,15 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'decline_requests'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'decline_requests',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.decline_requests.query(args, {
+        await api.scheduling.analytics.decline_requests.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -50,11 +62,15 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'interview_types'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'interview_types',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.interview_types.query(args, {
+        await api.scheduling.analytics.interview_types.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -68,12 +84,12 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'interviewers',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.interviewers.query(args, {
+        await api.scheduling.analytics.interviewers.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -87,12 +103,12 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'leaderboard',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.leaderboard.query(args, {
+        await api.scheduling.analytics.leaderboard.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -106,12 +122,12 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'reasons',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.reasons.query(args, {
+        await api.scheduling.analytics.reasons.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -125,11 +141,12 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'recent_decline_reschedule',
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.recent_decline_reschedule.query(args, {
+        await api.scheduling.analytics.recent_decline_reschedule.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -140,11 +157,15 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'tabs'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'tabs',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.tabs.query(args, {
+        await api.scheduling.analytics.tabs.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -158,12 +179,31 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'training_progress',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.training_progress.query(args, {
+        await api.scheduling.analytics.training_progress.mutate(args, {
+          context: {
+            skipBatch: true,
+          },
+        }),
+    }),
+  filters: (
+    args: SchedulingAnalyticsProcedureArgs<'filters'>,
+    enabled: boolean = true,
+  ) =>
+    queryOptions({
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'filters',
+        ...schedulingArgsToKeys(args),
+      ],
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      queryFn: async () =>
+        await api.scheduling.analytics.filters.mutate(args, {
           context: {
             skipBatch: true,
           },

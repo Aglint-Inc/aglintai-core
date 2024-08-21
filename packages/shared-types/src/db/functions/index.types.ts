@@ -10,6 +10,7 @@ import type { CustomGetSectionCounts } from "./getsectioncounts.types";
 import type { CustomInsertDebriefSession } from "./insert_debrief_session.types";
 import { CustomMoveToInterview } from "./move_to_interview.types";
 import { CustomSchedulingAnalyticsCompletedInterviews } from "./scheduling_analytics_completed_interviews.types";
+import { CustomSchedulingAnalyticsFilters } from "./scheduling_analytics_filters.types";
 import { CustomSchedulingAnalyticsLeaderboard } from "./scheduling_analytics_leaderboard.types";
 import type { CustomUpdateDebriefSession } from "./update_debrief_session.types";
 
@@ -59,5 +60,6 @@ export type Functions = Custom<
     get_request_count_stats_new: CustomGetRequestCountStatsNew;
     scheduling_analytics_completed_interviews: CustomSchedulingAnalyticsCompletedInterviews;
     scheduling_analytics_leaderboard: CustomSchedulingAnalyticsLeaderboard;
+    scheduling_analytics_filters: CustomSchedulingAnalyticsFilters;
   }
 >;
