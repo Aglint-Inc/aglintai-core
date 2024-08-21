@@ -1,7 +1,3 @@
-import { DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from './server';
 
-export const supabaseAdmin = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!,
-);
+export const supabaseAdmin = createAdminClient();
