@@ -33,6 +33,7 @@ function CancelScheduleDialog({
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const reasons = recruiter.scheduling_reason?.internal?.cancellation || [
     'Too Many Interviews',
     'Out of the office',
@@ -46,6 +47,7 @@ function CancelScheduleDialog({
 
   const onClickConfirm = async () => {
     try {
+      setIsSaving(true);
       const promises = metaDetails.map(async (meta) => {
         const req_body: ApiBodyParamsCancelSchedule = {
           cancel_user_id: recruiterUser.user_id,
@@ -67,6 +69,7 @@ function CancelScheduleDialog({
     } catch {
       toast.error('Unable to save cancel reason');
     } finally {
+      setIsSaving(false);
       setIsDeclineOpen(false);
     }
   };
@@ -101,12 +104,13 @@ function CancelScheduleDialog({
               }}
             />
             <ButtonSolid
+              isLoading={isSaving}
               textButton='Cancel Schedule'
               color={'error'}
               size={2}
               onClickButton={{
                 onClick: () => {
-                  if (reason) {
+                  if (reason && !isSaving) {
                     onClickConfirm();
                   }
                 },

@@ -18,6 +18,10 @@ const Tabs: {
     name: "Reset",
     value: "reset",
   },
+  {
+    name: "Mode",
+    value: "mode",
+  },
 ];
 
 function Header({
@@ -31,8 +35,7 @@ function Header({
     <div id="header">
       <div className="flex-h">
         <span className="drawer-warning">
-          <strong>⚠️ Warning:</strong> This is a utility for speeding up demos,
-          not a product feature. <InfoDisplay />
+          <strong>⚠️ Warning:</strong> This is a utility for testing not a product feature. <InfoDisplay />
         </span>
 
         <span>

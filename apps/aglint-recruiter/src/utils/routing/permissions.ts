@@ -165,6 +165,9 @@ const PERMISSIONS: Permissions = {
   '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
+  '/api/scheduling/application/fetchInterviewStagesBySessionId': [
+    'scheduling_module',
+  ],
 };
 
 export default PERMISSIONS;

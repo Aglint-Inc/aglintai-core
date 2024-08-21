@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { getFullName } from '@aglint/shared-utils';
 import { Collapse, Stack } from '@mui/material';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
+import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
@@ -13,6 +12,7 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 
@@ -22,6 +22,8 @@ export const Request = (
   const { collapse, setCollapse, isMutating } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
   const { push } = useRouterPro();
+
+  const [isHover, setIsHover] = useState(false);
   return (
     <OptimisticWrapper loading={isMutating}>
       <div
@@ -33,7 +35,11 @@ export const Request = (
         }}
       >
         <Collapse in={collapse} collapsedSize={24}>
-          <Stack gap={'10px'}>
+          <Stack
+            gap={'10px'}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
             <RequestCard
               isNewBadgeVisible={props.is_new}
               slotBadgeNew={
@@ -44,13 +50,11 @@ export const Request = (
                   variant={'solid'}
                 />
               }
-              textTitle={props.title.replace(
-                '{{candidateName}}',
-                getFullName(
-                  props.applications.candidates.first_name,
-                  props.applications.candidates.last_name,
-                ),
-              )}
+              textTitle={getRequestTitle({
+                title: props.title,
+                first_name: props.applications.candidates.first_name,
+                last_name: props.applications.candidates.last_name,
+              })}
               slotRightIcons={
                 <>
                   <div
@@ -58,16 +62,22 @@ export const Request = (
                       e.stopPropagation();
                     }}
                   >
-                    <ButtonSoft
-                      onClickButton={{
-                        onClick: () => {
-                          push('/requests/' + props.id);
-                        },
-                      }}
-                      textButton='View Details'
-                      size={1}
-                      color={'neutral'}
-                    />
+                    <Stack width={'24px'} height={'24px'}>
+                      {isHover && (
+                        <Stack>
+                          <IconButtonSoft
+                            iconName='arrow_outward'
+                            color={'neutral'}
+                            size={1}
+                            onClickButton={{
+                              onClick: () => {
+                                push('/requests/' + props.id);
+                              },
+                            }}
+                          />
+                        </Stack>
+                      )}
+                    </Stack>
                   </div>
                   <GlobalBadge
                     size={1}

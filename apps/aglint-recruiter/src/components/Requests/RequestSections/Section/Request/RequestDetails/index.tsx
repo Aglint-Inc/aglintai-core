@@ -38,11 +38,17 @@ function RequestDetails({
             application_id={request.applications.id}
           />
           <CandidateDetails
-            candidateName={getFullName(
-              request.applications.candidates.first_name,
-              request.applications.candidates.last_name,
-            )}
-            jobTitle={request.applications.public_jobs.job_title}
+            candidateDetails={{
+              name:getFullName(
+                request.applications.candidates.first_name,
+                request.applications.candidates.last_name,
+              ),
+              application_id: request.application_id,
+            }}
+            jobDetails={{
+              id: request.applications.public_jobs.id,
+              job_title: request.applications.public_jobs.job_title,
+            }}
             dateRange={{
               start_date: request.schedule_start_date,
               end_date: request.schedule_end_date,

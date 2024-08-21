@@ -408,7 +408,7 @@ export const requestForReschedule = async ({
 
   setConsoleMessage((pre) => [
     ...pre,
-    `${settingsForreSchedule.length} requests from re-schedule `,
+    `${settingsForreSchedule.length} requests from Reschedule `,
   ]);
 
   settingsForreSchedule.map(async (setting, i) => {

@@ -12,6 +12,9 @@ function Company() {
     >
       <Department setMessage={setMessage} />
       <Location setMessage={setMessage} />
+
+      {/* console */}
+
       {message?.length ? (
         <div
           style={{

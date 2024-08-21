@@ -5524,6 +5524,14 @@ export type Database = {
           count: number
         }[]
       }
+      get_filtered_job_ids: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: string[]
+      }
       get_interview_data_count: {
         Args: {
           rec_id: string
@@ -6056,8 +6064,9 @@ export type Database = {
       scheduling_analytics_completed_interviews: {
         Args: {
           recruiter_id: string
-          type?: string
+          departments?: number[]
           jobs?: string[]
+          type?: string
         }
         Returns: {
           date: string
@@ -6067,9 +6076,8 @@ export type Database = {
       scheduling_analytics_decline_requests: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
-          start_time?: string
-          end_time?: string
         }
         Returns: {
           completed_at: string
@@ -6079,6 +6087,7 @@ export type Database = {
       scheduling_analytics_interview_types: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
         }
         Returns: {
@@ -6091,10 +6100,9 @@ export type Database = {
       scheduling_analytics_interviewers: {
         Args: {
           recruiter_id: string
-          type?: Database["public"]["Enums"]["status_training"]
+          departments?: number[]
           jobs?: string[]
-          start_time?: string
-          end_time?: string
+          type?: Database["public"]["Enums"]["status_training"]
         }
         Returns: {
           name: string
@@ -6107,9 +6115,9 @@ export type Database = {
       scheduling_analytics_leaderboard: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
-          start_time?: string
-          end_time?: string
+          type?: string
         }
         Returns: {
           name: string
@@ -6123,9 +6131,9 @@ export type Database = {
       scheduling_analytics_reasons: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
-          start_time?: string
-          end_time?: string
+          type?: Database["public"]["Enums"]["cancel_type"]
         }
         Returns: {
           reason: string
@@ -6135,9 +6143,8 @@ export type Database = {
       scheduling_analytics_recent_decline_reschedule: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
-          start_time?: string
-          end_time?: string
         }
         Returns: {
           profile_image: string
@@ -6150,6 +6157,7 @@ export type Database = {
       scheduling_analytics_tabs: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
         }
         Returns: {
@@ -6163,7 +6171,9 @@ export type Database = {
       scheduling_analytics_training_progress: {
         Args: {
           recruiter_id: string
+          departments?: number[]
           jobs?: string[]
+          type?: Database["public"]["Enums"]["status_training"]
         }
         Returns: {
           number_of_shadow: number

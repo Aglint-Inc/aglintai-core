@@ -12,14 +12,9 @@ import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightP
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { useApplication } from '@/src/context/ApplicationContext';
 import { StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
-import {
-  setSelectedSessionIds,
-  useApplicationDetailStore,
-} from '../../../../../store';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
@@ -27,14 +22,30 @@ import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
 
 function ScheduleIndividualCard({
   session,
+  selectedSessionIds,
+  onClickCheckBox,
+  isCheckboxVisible = false,
+  candidate,
+  isEditIconVisible = false,
+  isViewDetailVisible = false,
+  isStatusVisible = true,
 }: {
   session: StageWithSessions[0]['sessions'][0];
+  selectedSessionIds: string[];
+  // eslint-disable-next-line no-unused-vars
+  onClickCheckBox: ({ session_id }: { session_id: string }) => void;
+  isCheckboxVisible?: boolean;
+  candidate?: {
+    name: string;
+    current_job_title: string;
+    timezone: string;
+  };
+  isEditIconVisible?: boolean;
+  isViewDetailVisible?: boolean;
+  isStatusVisible?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const { data: allIntegrations } = useAllIntegrations();
-  const { selectedSessionIds } = useApplicationDetailStore((state) => ({
-    selectedSessionIds: state.selectedSessionIds,
-  }));
 
   const users = session.users;
   const interview_meeting = session.interview_meeting;
@@ -49,19 +60,6 @@ function ScheduleIndividualCard({
         !!(user.user_details.schedule_auth as any)?.access_token
       ),
   );
-
-  const {
-    meta: { data: detail },
-  } = useApplication();
-
-  const onClickCheckBox = ({ session_id }: { session_id: string }) => {
-    if (selectedSessionIds.includes(session_id)) {
-      return setSelectedSessionIds(
-        selectedSessionIds.filter((id) => id !== session_id),
-      );
-    }
-    return setSelectedSessionIds([...selectedSessionIds, session_id]);
-  };
 
   return (
     <GlobalScheduleCard
@@ -81,27 +79,24 @@ function ScheduleIndividualCard({
           </Stack>
         )
       }
-      isCheckboxVisible={
-        !interview_meeting ||
-        interview_meeting.status === 'not_scheduled' ||
-        interview_meeting.status === 'cancelled' ||
-        interview_meeting.status === 'reschedule'
-      }
+      isCheckboxVisible={isCheckboxVisible}
       slotCheckbox={
-        <Checkbox
-          size='small'
-          disabled={
-            usersWithErrors.length === users.length ||
-            (session?.interview_module
-              ? session.interview_module.is_archived
-              : false)
-          }
-          checked={selectedSessionIds.includes(interview_session.id)}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClickCheckBox({ session_id: interview_session.id });
-          }}
-        />
+        isCheckboxVisible && (
+          <Checkbox
+            size='small'
+            disabled={
+              usersWithErrors.length === users.length ||
+              (session?.interview_module
+                ? session.interview_module.is_archived
+                : false)
+            }
+            checked={selectedSessionIds.includes(interview_session.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClickCheckBox({ session_id: interview_session.id });
+            }}
+          />
+        )
       }
       isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
       isDropdownIconVisible={true}
@@ -119,7 +114,8 @@ function ScheduleIndividualCard({
       }
       isRoleVisible={false}
       slotGlobalBadge={
-        interview_meeting?.status ? (
+        isStatusVisible &&
+        (interview_meeting?.status ? (
           <StatusBadge
             isCancelledVisible={interview_meeting.status === 'cancelled'}
             isConfirmedVisible={interview_meeting.status === 'confirmed'}
@@ -137,7 +133,7 @@ function ScheduleIndividualCard({
             isWaitingVisible={false}
             isCompletedVisible={false}
           />
-        )
+        ))
       }
       textDate={
         interview_meeting?.end_time
@@ -153,10 +149,10 @@ function ScheduleIndividualCard({
             })
           : '--'
       }
-      textCandidateName={detail.name}
+      textCandidateName={candidate?.name}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlaformName={getScheduleType(interview_session.schedule_type)}
-      textRole={detail.current_job_title || '--'}
+      textRole={candidate?.current_job_title || '--'}
       textPanelName={interview_session.name}
       onClickDropdown={{
         onClick: (e) => {
@@ -165,12 +161,16 @@ function ScheduleIndividualCard({
         },
       }}
       slotDropdownContent={
-        <CollapseContent collapsed={collapsed} currentSession={session} />
+        <CollapseContent
+          collapsed={collapsed}
+          currentSession={session}
+          candidate={candidate}
+        />
       }
       slotButtonViewDetail={
         <ButtonGroupRight
-          isViewDetailVisible={true}
-          isEditIconVisible={true}
+          isViewDetailVisible={isViewDetailVisible}
+          isEditIconVisible={isEditIconVisible}
           currentSession={session}
         />
       }
