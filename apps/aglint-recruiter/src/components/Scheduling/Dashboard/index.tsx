@@ -6,7 +6,7 @@ import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 import Loader from '../../Common/Loader';
 import CancelReasons from './CancelReasons';
 import CompletedInterviewBarChart from './CompletedInterview';
-import InterviewersAnalyticCards from './InterviewersAnalyticCards';
+import { Interviewers } from './interviewers';
 import InterviewMeetingStatus from './InterviewMeetingStatus';
 import { InterviewTypes } from './interviewTypes';
 import { Leaderboard } from './leaderboard';
@@ -37,7 +37,7 @@ const SchedulingDashboard = memo(() => {
       slotCompletedInterview={
         <>
           <CompletedInterviewBarChart />
-          <InterviewersAnalyticCards />
+          <Interviewers />
         </>
       }
     />
