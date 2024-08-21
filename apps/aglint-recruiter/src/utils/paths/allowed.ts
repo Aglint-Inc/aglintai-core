@@ -122,6 +122,7 @@ export const allowedPaths = new Set<t>([
   '/api/application/move-to-interview',
   '/api/agent-workflow/interviewer-decline',
   '/api/scheduling/v1/find-replacement-ints',
+  '/api/request/workflow-clone',
   '/api/scheduling/v1/event_attendee_status',
   '/api/google-calender/watch-changes',
   '/api/google-calender/webhook',
