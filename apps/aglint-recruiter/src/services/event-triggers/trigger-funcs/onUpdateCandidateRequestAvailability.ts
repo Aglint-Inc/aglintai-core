@@ -38,13 +38,16 @@ const triggerActions = async (
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
-        .select()
+        .select('*,public_jobs(*)')
         .eq('id', new_data.application_id),
     );
 
-    const { job_level_actions } = await getWActions(applications.job_id);
+    const { request_workflows } = await getWActions({
+      company_id: applications.public_jobs.recruiter_id,
+      request_id: new_data.request_id,
+    });
 
-    const promises = job_level_actions
+    const promises = request_workflows
       .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
       .map(async (j_l_a) => {
         supabaseWrap(

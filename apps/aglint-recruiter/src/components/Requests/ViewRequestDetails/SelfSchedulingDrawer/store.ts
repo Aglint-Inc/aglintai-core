@@ -8,7 +8,7 @@ import dayjs from '@/src/utils/dayjs';
 import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 
 export interface SelfSchedulingFlow {
-  isScheduleNowOpen: boolean;
+  isSelfScheduleDrawerOpen: boolean;
   dateRange: {
     start_date: string;
     end_date: string;
@@ -51,7 +51,7 @@ export interface SelfSchedulingFlow {
 }
 
 const initialState: SelfSchedulingFlow = {
-  isScheduleNowOpen: false, //scheduling drawer open
+  isSelfScheduleDrawerOpen: false, //scheduling drawer open
   dateRange: {
     start_date: dayjs().toISOString(),
     end_date: dayjs().add(7, 'day').toISOString(),
@@ -101,8 +101,9 @@ export const setStepScheduling = (
   stepScheduling: SelfSchedulingFlow['stepScheduling'],
 ) => useSelfSchedulingFlowStore.setState({ stepScheduling });
 
-export const setIsScheduleNowOpen = (isScheduleNowOpen: boolean) =>
-  useSelfSchedulingFlowStore.setState({ isScheduleNowOpen });
+export const setIsSelfScheduleDrawerOpen = (
+  isSelfScheduleDrawerOpen: boolean,
+) => useSelfSchedulingFlowStore.setState({ isSelfScheduleDrawerOpen });
 
 export const setIsSendingToCandidate = (isSendingToCandidate: boolean) =>
   useSelfSchedulingFlowStore.setState({ isSendingToCandidate });

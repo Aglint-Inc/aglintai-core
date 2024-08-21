@@ -2,6 +2,7 @@ import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import { PropsWithChildren } from 'react';
 
 import { Text } from '@/devlink/Text';
@@ -118,6 +119,9 @@ function RequestDetails({
               <ButtonSoft
                 onClickButton={{
                   onClick: async () => {
+                    await axios.post('/api/request/workflow-clone', {
+                      request_id: request.id,
+                    });
                     await handleAsyncUpdateRequest({
                       payload: {
                         requestId: request.id,

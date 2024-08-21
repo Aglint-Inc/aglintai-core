@@ -10,9 +10,9 @@ import { useSelfSchedulingFlowStore } from './store';
 import TextDrawerTitle from './TextDrawerTitle';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const { isScheduleNowOpen, stepScheduling, fetchingPlan } =
+  const { isSelfScheduleDrawerOpen, stepScheduling, fetchingPlan } =
     useSelfSchedulingFlowStore((state) => ({
-      isScheduleNowOpen: state.isScheduleNowOpen,
+      isSelfScheduleDrawerOpen: state.isSelfScheduleDrawerOpen,
       stepScheduling: state.stepScheduling,
       fetchingPlan: state.fetchingPlan,
     }));
@@ -25,7 +25,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     <>
       <Drawer
         anchor={'right'}
-        open={isScheduleNowOpen}
+        open={isSelfScheduleDrawerOpen}
         onClose={() => {
           resetStateSelfScheduling();
         }}

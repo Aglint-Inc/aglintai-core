@@ -33,6 +33,7 @@ import RequestProgress, {
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import MemberList, { useMemberList } from './Components/MemberList';
 import { useMeetingList } from './hooks';
+import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -157,32 +158,48 @@ function ViewRequestDetails() {
           <>
             <RequestDetail
               slotInterview={
-                status === 'pending' ? (
-                  <Stack position={'relative'}>
-                    <SkeletonScheduleCard />
-                  </Stack>
-                ) : (
-                  sessionsCards.map((session) => {
-                    return (
-                      <>
-                        <ScheduleIndividualCard
-                          session={session}
-                          key={session.interview_session.id}
-                          selectedSessionIds={[]}
-                          onClickCheckBox={() => {}}
-                          isCheckboxVisible={false}
-                          candidate={null}
-                          isEditIconVisible={true}
-                          isViewDetailVisible={true}
-                          isStatusVisible={
-                            session.interview_meeting?.status ===
-                            'not_scheduled'
-                          }
-                        />
-                      </>
-                    );
-                  })
-                )
+                <>
+                  {status === 'pending' ? (
+                    <Stack position={'relative'}>
+                      <SkeletonScheduleCard />
+                    </Stack>
+                  ) : (
+                    sessionsCards.map((session) => {
+                      return (
+                        <>
+                          <ScheduleIndividualCard
+                            session={session}
+                            key={session.interview_session.id}
+                            selectedSessionIds={[]}
+                            onClickCheckBox={() => {}}
+                            isCheckboxVisible={false}
+                            candidate={null}
+                            isEditIconVisible={true}
+                            isViewDetailVisible={true}
+                            isStatusVisible={
+                              session.interview_meeting?.status ===
+                              'not_scheduled'
+                            }
+                          />
+                        </>
+                      );
+                    })
+                  )}
+
+                  {requestList?.schedule_request[0]?.status === 'to_do' && (
+                    <Stack direction={'row'}>
+                      <ButtonSoft
+                        size={1}
+                        textButton={'Self Schedule'}
+                        onClickButton={{
+                          onClick: () => {
+                            setIsSelfScheduleDrawerOpen(true);
+                          },
+                        }}
+                      />
+                    </Stack>
+                  )}
+                </>
               }
               slotNewTask={
                 <>

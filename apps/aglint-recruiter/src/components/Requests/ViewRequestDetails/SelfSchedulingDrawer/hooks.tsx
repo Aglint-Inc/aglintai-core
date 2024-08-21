@@ -16,7 +16,7 @@ import {
   setErrorNoSlotFilter,
   setFetchingPlan,
   setFilteredSchedulingOptions,
-  setIsScheduleNowOpen,
+  setIsSelfScheduleDrawerOpen,
   setIsSendingToCandidate,
   setNoOptions,
   setResSendToCandidate,
@@ -38,7 +38,7 @@ export const useSelfSchedulingDrawer = ({
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
-  const application_id = allSessions[0].interview_meeting.application_id;
+  const application_id = allSessions[0]?.interview_meeting.application_id;
 
   const {
     dateRange,
@@ -229,7 +229,7 @@ export const useSelfSchedulingDrawer = ({
   const resetStateSelfScheduling = () => {
     if (!isSendingToCandidate && !fetchingPlan) {
       setNoOptions(false);
-      setIsScheduleNowOpen(false);
+      setIsSelfScheduleDrawerOpen(false);
       setSchedulingOptions([]);
       setFilteredSchedulingOptions([]);
       setStepScheduling('pick_date');
