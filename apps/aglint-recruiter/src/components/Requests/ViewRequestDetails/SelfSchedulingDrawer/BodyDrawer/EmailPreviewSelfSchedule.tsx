@@ -11,24 +11,22 @@ import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import toast from '@/src/utils/toast';
 
+import { useMeetingList } from '../../hooks';
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';
 
 function EmailPreviewSelfSchedule() {
-  const {
-    requests: {
-      data: { schedule_request },
-    },
-  } = useRequests();
   const [fetching, setFetching] = useState(false);
+  const { data } = useMeetingList();
+  const allSessions = data;
+  const application_id = allSessions[0]?.interview_meeting.application_id;
 
   const { recruiterUser } = useAuthDetails();
 
   const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
     {
-      application_id: schedule_request[0].application_id,
+      application_id,
       organizer_id: recruiterUser.user_id,
     };
 
