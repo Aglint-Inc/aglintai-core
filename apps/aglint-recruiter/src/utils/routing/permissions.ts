@@ -163,6 +163,8 @@ const PERMISSIONS: Permissions = {
   '/api/integrations/greenhouse/sync/departments': ['integrations_module'],
   '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
+  '/api/google-calender/watch-changes': ['authorized'],
+  '/api/google-calender/webhook': ['authorized'],
 };
 
 export default PERMISSIONS;

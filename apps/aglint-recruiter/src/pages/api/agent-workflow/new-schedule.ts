@@ -189,7 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err: any) {
-    console.error(err.message);
+    console.error(err);
 
     if (err instanceof ApiError) {
       return res.status(500).json({
