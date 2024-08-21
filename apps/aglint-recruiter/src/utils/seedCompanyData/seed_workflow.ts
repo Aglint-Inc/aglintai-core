@@ -297,13 +297,13 @@ export const seed_workflow_actions: {
       interval: 0,
       phase: 'after',
       title: 'Get Availability from Candidate through Aglint Agent via Email',
-      trigger: 'onAvailReqAgent',
+      trigger: 'onRequestSchedule',
       workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+        target_api: 'onRequestSchedule_emailAgent_getCandidateAvailability',
         action_type: 'end_point',
       },
     ],
@@ -315,34 +315,17 @@ export const seed_workflow_actions: {
       interval: 0,
       phase: 'after',
       title: '1. Get Candidate Availability',
-      trigger: 'onAvailReqAgent',
+      trigger: 'onRequestSchedule',
       workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+        target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
         action_type: 'end_point',
       },
     ],
   },
-  // {
-  //   workflow: {
-  //     auto_connect: false,
-  //     description: '',
-  //     interval: 0,
-  //     phase: 'after',
-  //     title: 'Get Availability from Candidate through Aglint Agent via SMS',
-  //     trigger: 'onAvailReqAgent',
-  //     workflow_type: 'job',
-  //   },
-  //   actions: [
-  //     {
-  //       order: 0,
-  //       target_api: 'onAvailReqAgent_sms_getCandidateAvailability',
-  //     },
-  //   ],
-  // },
   {
     workflow: {
       auto_connect: false,
@@ -508,7 +491,7 @@ export const seed_workflow_actions: {
       },
       {
         action_type: 'end_point',
-        order: 0,
+        order: 1,
         target_api: 'onRequestCancel_slack_interviewersOrganizer',
       },
     ],

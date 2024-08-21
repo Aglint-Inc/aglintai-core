@@ -23,19 +23,19 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
     const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set([
       'interviewStart_email_applicant',
       'interviewStart_email_organizer',
+      'candidateBook_slack_interviewerForConfirmation',
       'interviewEnd_slack_organizerForMeetingStatus',
       'interviewEnd_email_organizerForMeetingStatus',
       'interviewEnd_email_shadowTraineeForMeetingAttendence',
       'interviewEnd_email_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_shadowTraineeForMeetingAttendence',
-      'candidateBook_slack_interviewerForConfirmation',
     ]);
     await stopJobPreviouslyQueuedJobs(new_data);
     const [schedule_application] = supabaseWrap(
       await supabaseAdmin
         .from('interview_schedule')
-        .select('*,applications(*)')
+        .select('*,applications(*,public_jobs(*))')
         .eq('id', new_data.interview_schedule_id),
     );
     const [session] = supabaseWrap(
@@ -44,10 +44,11 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
         .select()
         .eq('meeting_id', new_data.id),
     );
-    const { job_level_actions, company_actions } = await getWActions(
-      schedule_application.applications.job_id,
-    );
-    const all_actions = [...job_level_actions, ...company_actions]
+    const { request_workflows, company_actions } = await getWActions({
+      company_id: schedule_application.applications.public_jobs.recruiter_id,
+      request_id: new_data.request_id,
+    });
+    const all_actions = [...request_workflows, ...company_actions]
       .filter((act) => jobs_set.has(act.target_api))
       .map(async (act) => {
         let base_time = dayjsLocal().toISOString();

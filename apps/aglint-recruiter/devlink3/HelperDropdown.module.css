@@ -1,0 +1,21 @@
+.dropdown-helper-wrap {
+  overflow: hidden;
+  width: 100%;
+  padding: var(--space-3);
+
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-3);
+
+  cursor: pointer;
+}
+
+.dropdown-toggle-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slot-dropdown-body-wrap {
+  height: 100%;
+  margin-top: var(--space-3);
+}
