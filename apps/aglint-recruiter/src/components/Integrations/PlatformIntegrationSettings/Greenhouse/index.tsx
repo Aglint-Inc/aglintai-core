@@ -19,7 +19,7 @@ function GreenhouseSettings() {
   const { data, isPending, setOptions } = useGreenhouseDetails();
 
   return (
-    <Stack p={2} maxWidth={'900px'}>
+    <Stack p={2}>
       {isPending ? (
         <DynamicLoader />
       ) : (
@@ -92,7 +92,7 @@ function GreenhouseSettings() {
               multiline
               minRows={2}
               maxRows={5}
-              defaultValue='When you mention `@aglintai` in a comment, Aglint AI can create a scheduling request and assign it to the appropriate coordinator or user.'
+              defaultValue='Enter your Instructions'
             />
           }
         />
