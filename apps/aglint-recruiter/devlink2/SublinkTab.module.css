@@ -54,7 +54,5 @@
   justify-content: flex-start;
   align-items: center;
 
-  background-color: var(--accent-3);
-
-  color: var(--accent-11);
+  background-color: var(--neutral-3);
 }

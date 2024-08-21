@@ -644,19 +644,21 @@ function SchedulingSettings({
               height={'calc(100vh - 48px)'}
               padding={2}
               spacing={2}
+              gap={'16px'}
             >
               <InterviewLoad
-                borderStyle={'true'}
+                borderStyle={'false'}
                 slotDailyLimit={
                   <Stack spacing={3} gap={2} flexDirection={'row'} >
                     <MuiNumberfield
+                    isMarginTop={false}
                       handleSelect={(value) => handleDailyValue(+value)}
                       value={dailyLmit.value}
                       max={dailyLmit.max}
                       width='70px'
                     />
                     <RadioGroup
-                      sx={{ marginTop: '12px !important' }}
+                      sx={{ marginTop: '0px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -691,9 +693,10 @@ function SchedulingSettings({
                       value={weeklyLmit.value}
                       max={weeklyLmit.max}
                       width='70px'
+                      isMarginTop={false}
                     />
                     <RadioGroup
-                      sx={{ marginTop: '12px !important' }}
+                      sx={{ marginTop: '0px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -727,7 +730,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
-                borderStyle={'true'}
+                borderStyle={'false'}
                 size={'large'}
                 slotKeywordsCard={
                   <>

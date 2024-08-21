@@ -56,6 +56,7 @@ function Availibility({
   const [isTimeZone, setIsTimeZone] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const { recruiter } = useAuthDetails();
+  const [isHover, setIsHover] = useState(false);
 
   const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
     type: 'Hours',
@@ -201,12 +202,11 @@ function Availibility({
       overflow={'hidden'}
       padding={2}
       spacing={2}
-      borderRadius={'8px'}
-      border={'1px solid var(--neutral-6)'}
       bgcolor={'white'}
-      width={'870px'}
-      margin={2}
+      width={'900px'}
       gap={1}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <Stack bgcolor={'white'}>
         <Stack
@@ -216,12 +216,16 @@ function Availibility({
           spacing={1}
         >
           <Text weight={'medium'} content='Time Zone' />
-          <ButtonSoft
-            textButton='Edit'
-            color={'neutral'}
-            size={2}
-            onClickButton={{ onClick: () => setEditDrawer(true) }}
-          />
+          <Stack width={'47px'} height={'32px'}>
+            {isHover && (
+              <ButtonSoft
+                textButton='Edit'
+                color={'neutral'}
+                size={2}
+                onClickButton={{ onClick: () => setEditDrawer(true) }}
+              />
+            )}
+          </Stack>
         </Stack>
         <Typography>{selectedTimeZone?.label}</Typography>
       </Stack>

@@ -37,6 +37,7 @@
 
 .slot-text-card-right {
   display: flex;
+  padding-right: 30px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-2);
