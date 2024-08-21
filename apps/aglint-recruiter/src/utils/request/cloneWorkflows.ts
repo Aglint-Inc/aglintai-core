@@ -1,21 +1,24 @@
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ApiError } from '@/src/utils/customApiError';
 
+import { supabaseAdmin } from '../supabase/supabaseAdmin';
+
 export const cloneWorkflows = async ({
-  job_id,
   request_id,
   meeting_flow,
 }: {
-  job_id: string;
   request_id: string;
   meeting_flow?: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
   const [request] = supabaseWrap(
-    await supabaseAdmin.from('request').select().eq('id', request_id),
+    await supabaseAdmin
+      .from('request')
+      .select('*,applications(*)')
+      .eq('id', request_id),
   );
+  const job_id = request.applications.job_id;
   if (request.type === 'schedule_request' && !meeting_flow) {
     throw new ApiError('SERVER_ERROR', 'missing meeting flow');
   }
@@ -48,7 +51,7 @@ export const cloneWorkflows = async ({
     );
   } else if (request.type === 'schedule_request') {
     let triggers: DatabaseTable['workflow']['trigger'][] = [
-      'onAvailReqAgent',
+      'onRequestSchedule',
       'onReceivingAvailReq',
       'sendAvailReqReminder',
       'selfScheduleReminder',
