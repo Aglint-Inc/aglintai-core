@@ -12,10 +12,14 @@ function Progress() {
   } = useApplication();
 
   return (
-    <Stack direction={'row'} gap={'10px'} sx={{
-      overflowX: 'auto',
-      overflowY: 'hidden',
-    }}>
+    <Stack
+      direction={'row'}
+      gap={'10px'}
+      sx={{
+        overflowX: 'auto',
+        overflowY: 'hidden',
+      }}
+    >
       {stages.map((stage, index) => {
         const isCompleted = stage.sessions.every((session) => {
           return session.interview_meeting.status === 'completed';
