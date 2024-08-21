@@ -83,6 +83,7 @@ function Mode() {
           {modes.map((mode) => (
             <label>
               <input
+                disabled
                 type="radio"
                 name={"job"}
                 value={mode.value}

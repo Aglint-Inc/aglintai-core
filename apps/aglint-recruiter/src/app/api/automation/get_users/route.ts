@@ -7,7 +7,9 @@ export async function POST(req) {
   try {
     const { data, error } = await supabaseAdmin
       .from('recruiter_relation')
-      .select('recruiter_user!public_recruiter_relation_user_id_fkey(email)')
+      .select(
+        'recruiter_user!public_recruiter_relation_user_id_fkey(user_id,email,status)',
+      )
       .eq('recruiter_id', recruiter_id);
 
     if (error) throw new Error(error.message);
