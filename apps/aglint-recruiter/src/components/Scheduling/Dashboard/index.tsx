@@ -10,9 +10,9 @@ import { Interviewers } from './interviewers';
 import InterviewMeetingStatus from './InterviewMeetingStatus';
 import { InterviewTypes } from './interviewTypes';
 import { Leaderboard } from './leaderboard';
-import RecentRescheduleCancel from './RecentRescheduleCancel';
 import { Tabs } from './tabs';
 import { TrainingProgress } from './trainingProgress';
+import { RecentDeclines } from './recentDeclines';
 
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
@@ -33,7 +33,11 @@ const SchedulingDashboard = memo(() => {
       }
       slotTrainingProgress={<TrainingProgress />}
       slotScheduleCount={<Tabs />}
-      slotRecentReschedule={<RecentRescheduleCancel />}
+      slotRecentReschedule={
+        <>
+          <RecentDeclines />
+        </>
+      }
       slotCompletedInterview={
         <>
           <CompletedInterviewBarChart />
