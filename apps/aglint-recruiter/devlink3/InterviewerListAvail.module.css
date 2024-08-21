@@ -1,0 +1,44 @@
+.interviewer-avail-body-list {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto;
+  background-color: var(--white);
+}
+
+.interviewer-avail-body-item {
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.ia-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-3);
+}
+
+.slot-ia-body-item {
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9be-a572f9bd {
+}
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9c5-a572f9bd {
+}
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9c6-a572f9bd {
+}
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9c7-a572f9bd {
+}
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9c8-a572f9bd {
+}
+#w-node-_497e388a-b58b-2afe-eaea-ea4ea572f9c9-a572f9bd {
+}
