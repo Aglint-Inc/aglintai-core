@@ -33,6 +33,7 @@ import RequestProgress, {
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import MemberList, { useMemberList } from './Components/MemberList';
 import { useMeetingList } from './hooks';
+import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
 function ViewRequestDetails() {
@@ -164,29 +165,34 @@ function ViewRequestDetails() {
                       <SkeletonScheduleCard />
                     </Stack>
                   ) : (
-                    sessionsCards.map((session) => {
-                      return (
-                        <>
-                          <ScheduleIndividualCard
-                            session={session}
-                            key={session.interview_session.id}
-                            selectedSessionIds={[]}
-                            onClickCheckBox={() => {}}
-                            isCheckboxVisible={false}
-                            candidate={null}
-                            isEditIconVisible={true}
-                            isViewDetailVisible={true}
-                            isStatusVisible={
-                              session.interview_meeting?.status ===
-                              'not_scheduled'
-                            }
-                          />
-                        </>
-                      );
-                    })
+                    <>
+                      {selectedRequest.status === 'to_do' && (
+                        <SelfSchedulingDrawer refetch={refetch} />
+                      )}
+                      {sessionsCards.map((session) => {
+                        return (
+                          <>
+                            <ScheduleIndividualCard
+                              session={session}
+                              key={session.interview_session.id}
+                              selectedSessionIds={[]}
+                              onClickCheckBox={() => {}}
+                              isCheckboxVisible={false}
+                              candidate={null}
+                              isEditIconVisible={true}
+                              isViewDetailVisible={true}
+                              isStatusVisible={
+                                session.interview_meeting?.status ===
+                                'not_scheduled'
+                              }
+                            />
+                          </>
+                        );
+                      })}
+                    </>
                   )}
-
-                  {requestList?.schedule_request[0]?.status === 'to_do' && (
+                  
+                  {selectedRequest.status === 'to_do' && (
                     <Stack direction={'row'}>
                       <ButtonSoft
                         size={1}

@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import {
   type PropsWithChildren,
@@ -15,6 +16,12 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 
 const useActions = () => {
   const { recruiter_id } = useAuthDetails();
+
+  const [jobs, setJobs] = useState<DatabaseTable['public_jobs']['id'][]>([]);
+
+  const [departments, setDepartments] = useState<
+    DatabaseTable['departments']['id'][]
+  >([]);
 
   const [completedInterviewType, setCompletedInterviewType] =
     useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('day');
@@ -35,62 +42,76 @@ const useActions = () => {
 
   const enabled = useMemo(() => !!recruiter_id, [recruiter_id]);
 
+  const filters = useQuery(
+    schedulingAnalyticsQueries.filters({ recruiter_id }, enabled),
+  );
+
   const completed_interviews = useQuery(
     schedulingAnalyticsQueries.completed_interviews(
-      { recruiter_id, type: completedInterviewType },
+      { recruiter_id, departments, jobs, type: completedInterviewType },
       enabled,
     ),
   );
 
   const decline_requests = useQuery(
-    schedulingAnalyticsQueries.decline_requests({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.decline_requests(
+      { recruiter_id, departments, jobs },
+      enabled,
+    ),
   );
 
   const interview_types = useQuery(
-    schedulingAnalyticsQueries.interview_types({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.interview_types(
+      { recruiter_id, departments, jobs },
+      enabled,
+    ),
   );
 
   const interviewers = useQuery(
     schedulingAnalyticsQueries.interviewers(
-      { recruiter_id, type: interviewersType },
+      { recruiter_id, departments, jobs, type: interviewersType },
       enabled,
     ),
   );
 
   const leaderboard = useQuery(
     schedulingAnalyticsQueries.leaderboard(
-      { recruiter_id, type: leaderboardType },
+      { recruiter_id, departments, jobs, type: leaderboardType },
       enabled,
     ),
   );
 
   const reasons = useQuery(
     schedulingAnalyticsQueries.reasons(
-      { recruiter_id, type: reasonsType },
+      { recruiter_id, departments, jobs, type: reasonsType },
       enabled,
     ),
   );
 
   const recent_decline_reschedule = useQuery(
     schedulingAnalyticsQueries.recent_decline_reschedule(
-      { recruiter_id },
+      { recruiter_id, departments, jobs },
       enabled,
     ),
   );
 
   const tabs = useQuery(
-    schedulingAnalyticsQueries.tabs({ recruiter_id }, enabled),
+    schedulingAnalyticsQueries.tabs(
+      { recruiter_id, departments, jobs },
+      enabled,
+    ),
   );
 
   const training_progress = useQuery(
     schedulingAnalyticsQueries.training_progress(
-      { recruiter_id, type: trainingProgressType },
+      { recruiter_id, departments, jobs, type: trainingProgressType },
       enabled,
     ),
   );
 
   return {
     enabled,
+    filters,
     completed_interviews,
     decline_requests,
     interview_types,
@@ -110,6 +131,10 @@ const useActions = () => {
     setReasonsType,
     trainingProgressType,
     setTrainingProgressType,
+    jobs,
+    setJobs,
+    departments,
+    setDepartments,
   };
 };
 
