@@ -74,6 +74,7 @@ const PERMISSIONS: Permissions = {
   '/candidates/history': ['authorized'],
   '/candidates/aglintdb': ['authorized'],
   '/candidates/search': ['authorized'],
+  '/interviewers': ['authorized'],
   '/api/ai/create-embeddings': ['authorized'],
   '/api/candidatedb/query': ['authorized'],
   '/api/candidatedb/get-company': ['authorized'],
