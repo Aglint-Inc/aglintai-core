@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import UpdateEmailAuth from "./UpdateEmailAuth";
 import { seedTabs } from "../../type/UITypes";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
 import { InterviewModules } from "./InterviewModules";
-import User from "./User";
+import User from "./user/User";
 
 const navTabs: {
   name: string;
@@ -29,7 +28,7 @@ const navTabs: {
 ];
 
 function Seed() {
-  const [tab, setTab] = useState<seedTabs>("company");
+  const [tab, setTab] = useState<seedTabs>("user");
   return (
     <div id="seed">
       <div className="nav-menu">
