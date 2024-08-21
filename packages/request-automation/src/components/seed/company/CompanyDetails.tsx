@@ -94,7 +94,7 @@ function CompanyDetails({
       ) : (
         <div style={{ display: "flex", gap: "20px" }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <h5>Select company to update details</h5>
+            <h5>Persona col</h5>
 
             {companies.length ? (
               <>
