@@ -24,7 +24,7 @@ export async function POST(req) {
 
 import { cookies } from 'next/headers';
 
-export function createClient() {
+function createClient() {
   const cookieStore = cookies();
 
   return createServerClient(
