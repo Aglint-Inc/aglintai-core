@@ -23,13 +23,15 @@ export const TrainingProgress = memo(() => {
     training_progress: { data },
   } = useSchedulingAnalytics();
   return (
-    <TrainingProgressDev
-      onClickViewAllInterviewers={{
-        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-      }}
-      isViewAllVisible={(data ?? []).length > LIMIT}
-      slotTrainingProgressList={<Containter />}
-    />
+    <Stack width={'100%'}>
+      <TrainingProgressDev
+        onClickViewAllInterviewers={{
+          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
+        }}
+        isViewAllVisible={(data ?? []).length > LIMIT}
+        slotTrainingProgressList={<Containter />}
+      />
+    </Stack>
   );
 });
 TrainingProgress.displayName = 'TrainingProgress';

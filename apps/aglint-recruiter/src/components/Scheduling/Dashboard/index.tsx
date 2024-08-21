@@ -14,6 +14,8 @@ import { RecentDeclines } from './recentDeclines';
 import { RecentReschedules } from './recentReschedules';
 import { CompletedInterviews } from './completedInterviews';
 import { DeclineRequests } from './declineRequests';
+import { Interviewes } from './interviews';
+import Stack from '@mui/material/Stack';
 
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
@@ -32,7 +34,12 @@ const SchedulingDashboard = memo(() => {
           <InterviewTypes />
         </>
       }
-      slotTrainingProgress={<TrainingProgress />}
+      slotTrainingProgress={
+        <Stack direction={'row'} justifyContent={'space-between'} gap={2}>
+          <TrainingProgress />
+          <Interviewes />
+        </Stack>
+      }
       slotScheduleCount={<Tabs />}
       slotRecentReschedule={
         <>
