@@ -74,7 +74,8 @@ function DebriedForm() {
   const fetchAllMembers = async () => {
     const bodyParams: BodyParamsFetchUserDetails = {
       recruiter_id: recruiter.id,
-      includeSupended: true,
+      includeSupended: false,
+      isCalendar: true,
     };
     const resMem = (await axios.post(
       '/api/scheduling/fetchUserDetails',
