@@ -248,6 +248,8 @@ function SlotBodyComp({
                   {currentTab === 'instructions' && (
                     <>
                       <Instructions
+                      isWidth={true}
+                      isMinWidth={false}
                         instruction={editModule?.instructions}
                         setTextValue={setTextValue}
                         showEditButton={true}

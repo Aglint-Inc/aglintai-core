@@ -307,9 +307,12 @@ function BodyComp() {
               upcomingSchedules.length > 0 ? (
                 upcomingSchedules.map((schedule) => (
                   <UpcomingInterviewList
-                    onClickCard={router.push(
-                      `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
-                    )}
+                    onClickCard={{
+                      onClick: () =>
+                        router.push(
+                          `/scheduling/view?meeting_id=${schedule.id}&tab=candidate_details`,
+                        ),
+                    }}
                     key={schedule.application_id}
                     textPanelName={schedule.session_name}
                     slotPanelIcon={
