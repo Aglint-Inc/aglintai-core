@@ -78,11 +78,11 @@ function CreateTask({
     dayjs().add(5, 'minute').toString(),
   );
   const {
-    interviewPlans: { data },
+    interviewPlans: { data, status },
   } = useJob();
-  const interview_session = data?.flatMap((item) => item.interview_session);
   useEffect(() => {
-    if (interview_session && assignerList.length) {
+    if (status === 'success' && assignerList.length) {
+      const interview_session = data?.flatMap((item) => item.interview_session);
       setSelectedSession(
         interview_session
           .slice(0, 2)
@@ -118,7 +118,7 @@ function CreateTask({
         };
       });
     }
-  }, [interview_session, assignerList]);
+  }, [assignerList, status]);
 
   async function getMemberList({ recruiter_id }: { recruiter_id: string }) {
     const bodyParams: BodyParamsFetchUserDetails = {

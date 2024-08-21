@@ -23,6 +23,7 @@ const defaultFilter = {
   type: [],
   created_at: '',
   end_at: '',
+  jobs: [],
 };
 
 // eslint-disable-next-line no-unused-vars

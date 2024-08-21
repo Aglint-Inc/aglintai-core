@@ -2,34 +2,36 @@
 
 import { useMemo } from 'react';
 
+import { useJobs } from '@/src/context/JobsContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { GetRequestParams } from '@/src/queries/requests';
 
 import FilterHeader from '../../Common/FilterHeader';
 
-const options: Partial<GetRequestParams['filters']> = {
-  status: ['blocked', 'completed', 'in_progress', 'to_do'],
-  type: [
-    'schedule_request',
-    'cancel_schedule_request',
-    'decline_request',
-    'reschedule_request',
-  ],
-};
-
-const sortOptions: GetRequestParams['sort']['type'][] = [
-  'created_at',
-  'title',
-  'updated_at',
-];
+// const sortOptions: GetRequestParams['sort']['type'][] = [
+//   'created_at',
+//   'title',
+//   'updated_at',
+// ];
 
 function FilterAndSorting() {
   const {
-    filters: { created_at, end_at, is_new, title, ...filters },
-    sort: { order, type },
+    // eslint-disable-next-line no-unused-vars
+    filters: { created_at, end_at, is_new, title, jobs, ...filters },
     setFilters,
-    setSort,
   } = useRequests();
+
+  const { jobs: jobList } = useJobs();
+
+  const options: Partial<GetRequestParams['filters']> = {
+    status: ['blocked', 'completed', 'in_progress', 'to_do'],
+    type: [
+      'schedule_request',
+      'cancel_schedule_request',
+      'decline_request',
+      'reschedule_request',
+    ],
+  };
 
   const safeOptions = useMemo(
     () =>
@@ -69,55 +71,35 @@ function FilterAndSorting() {
         }) as (typeof safeFilters)[number],
     );
 
-  const isNewButton: Parameters<typeof FilterHeader>[0]['filters'][number] = {
-    type: 'button',
-    isActive: is_new,
-    isVisible: true,
-    name: 'New Requests',
-    onClick: () => setFilters((prev) => ({ ...prev, is_new: !is_new })),
-  };
+  const jobFilter = {
+    active: jobs.length,
+    name: 'Jobs',
+    value: jobs ?? [],
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue) => {
+      setFilters((prev) => ({ ...prev, jobs: newValue }));
+    },
+    options: jobList.data
+      .filter((ele) => ele.status === 'published')
+      .map((ele) => {
+        return {
+          id: ele.id,
+          label: ele.job_title,
+        };
+      }),
+  } as (typeof safeFilters)[number];
 
-  const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = {
-    sortOptions: {
-      options: sortOptions,
-      order: [
-        {
-          id: 'asc',
-          label: 'Ascending',
-        },
-        {
-          id: 'desc',
-          label: 'Descending',
-        },
-      ],
-    },
-    selected: {
-      option: type,
-      order: order,
-    },
-    setOrder: (payload) =>
-      setSort((prev) => ({ ...prev, ...(payload as typeof prev) })),
-  } as typeof safeSort;
   return (
     <FilterHeader
       layoutMode='left-align'
-      filters={[isNewButton, ...safeFilters]}
-      dateRangeSelector={{
-        disablePast: false,
-        name: 'Created At',
-        values: [created_at, end_at].filter(Boolean),
-        setValue: (value) =>
-          setFilters((prev) => ({
-            ...prev,
-            created_at: value?.[0] ?? '',
-            end_at: value?.[1] ?? value?.[0] ?? '',
-          })),
-      }}
-      sort={safeSort}
+      filters={[...safeFilters, jobFilter]}
       search={{
         value: title,
-        setValue: (newValue: typeof title) =>
-          setFilters((prev) => ({ ...prev, title: newValue })),
+        setValue: (newValue: typeof title) => {
+          setFilters((prev) => ({ ...prev, title: newValue }));
+        },
         placeholder: 'Search Requests',
       }}
     />
