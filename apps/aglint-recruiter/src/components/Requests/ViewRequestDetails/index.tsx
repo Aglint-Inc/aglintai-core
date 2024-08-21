@@ -105,7 +105,6 @@ function ViewRequestDetails() {
       <PageLayout
         slotTopbarLeft={
           <>
-            <ButtonSoft />
             <Breadcrum
               onClickLink={{
                 onClick: () => {
@@ -299,78 +298,79 @@ function ViewRequestDetails() {
                             iconWeight={'medium'}
                           />
 
-                        <TextWithIcon
-                          textContent={candidateDetails?.email || '--'}
-                          iconName='mail'
-                          iconSize={4}
-                          iconWeight={'medium'}
-                        />
-                        <TextWithIcon
-                          textContent={candidateDetails?.phone || '--'}
-                          iconName='smartphone'
-                          iconSize={4}
-                          iconWeight={'medium'}
-                        />
-                        <Stack width={'110px'}></Stack>
-                      </>
-                    }
-                    isButtonVisible={true}
-                    slotButton={
-                      <>
-                        <ButtonSoft
-                          onClickButton={{
-                            onClick: () => {
-                              window.open(
-                                ROUTES[
-                                  '/jobs/[id]/application/[application_id]'
-                                ]({
-                                  id: jobDetails.id,
-                                  application_id:
-                                    selectedRequest.application_id,
-                                }) + '?tab=interview',
-                                '_blank',
-                              );
-                            },
-                          }}
-                          size={1}
-                          color={'neutral'}
-                          textButton={'View Profile'}
-                          isRightIcon={true}
-                          iconName='call_made'
-                        />
-                      </>
-                    }
-                  />
-                }
-                slotRelatedJob={
-                  <Stack bgcolor={'white'}>
-                    <WorkflowConnectedCard
-                      isLinkOffVisible={false}
-                      textRoleCategory={
-                        capitalizeFirstLetter(jobDetails.departments?.name) ||
-                        '--'
+                          <TextWithIcon
+                            textContent={candidateDetails?.email || '--'}
+                            iconName='mail'
+                            iconSize={4}
+                            iconWeight={'medium'}
+                          />
+                          <TextWithIcon
+                            textContent={candidateDetails?.phone || '--'}
+                            iconName='smartphone'
+                            iconSize={4}
+                            iconWeight={'medium'}
+                          />
+                          <Stack width={'110px'}></Stack>
+                        </>
                       }
-                      role={jobDetails.job_title || '--'}
-                      textLocation={
-                        !jobDetails.office_locations?.city ||
-                        !jobDetails.office_locations?.country
-                          ? '--'
-                          : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
+                      isButtonVisible={true}
+                      slotButton={
+                        <>
+                          <ButtonSoft
+                            onClickButton={{
+                              onClick: () => {
+                                window.open(
+                                  ROUTES[
+                                    '/jobs/[id]/application/[application_id]'
+                                  ]({
+                                    id: jobDetails.id,
+                                    application_id:
+                                      selectedRequest.application_id,
+                                  }) + '?tab=interview',
+                                  '_blank',
+                                );
+                              },
+                            }}
+                            size={1}
+                            color={'neutral'}
+                            textButton={'View Profile'}
+                            isRightIcon={true}
+                            iconName='call_made'
+                          />
+                        </>
                       }
-                      onClickJob={{
-                        onClick: () => {
-                          window.open(
-                            `/jobs/${jobDetails.id}/candidate-list?section=interview`,
-                            '_blank',
-                          );
-                        },
-                      }}
                     />
-                  </Stack>
-                }
-              />
-            }
-          />
+                  }
+                  slotRelatedJob={
+                    <Stack bgcolor={'white'}>
+                      <WorkflowConnectedCard
+                        isLinkOffVisible={false}
+                        textRoleCategory={
+                          capitalizeFirstLetter(jobDetails.departments?.name) ||
+                          '--'
+                        }
+                        role={jobDetails.job_title || '--'}
+                        textLocation={
+                          !jobDetails.office_locations?.city ||
+                          !jobDetails.office_locations?.country
+                            ? '--'
+                            : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
+                        }
+                        onClickJob={{
+                          onClick: () => {
+                            window.open(
+                              `/jobs/${jobDetails.id}/candidate-list?section=interview`,
+                              '_blank',
+                            );
+                          },
+                        }}
+                      />
+                    </Stack>
+                  }
+                />
+              }
+            />
+          </>
         }
       />
     </>
