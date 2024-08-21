@@ -16,7 +16,7 @@ import {
   setErrorNoSlotFilter,
   setFetchingPlan,
   setFilteredSchedulingOptions,
-  setIsScheduleNowOpen,
+  setIsSelfScheduleDrawerOpen,
   setIsSendingToCandidate,
   setNoOptions,
   setResSendToCandidate,
@@ -229,7 +229,7 @@ export const useSelfSchedulingDrawer = ({
   const resetStateSelfScheduling = () => {
     if (!isSendingToCandidate && !fetchingPlan) {
       setNoOptions(false);
-      setIsScheduleNowOpen(false);
+      setIsSelfScheduleDrawerOpen(false);
       setSchedulingOptions([]);
       setFilteredSchedulingOptions([]);
       setStepScheduling('pick_date');
