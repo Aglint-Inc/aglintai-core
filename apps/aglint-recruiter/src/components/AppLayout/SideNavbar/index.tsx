@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { NavLink } from '@/devlink/NavLink';
-import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import toast from '@/src/utils/toast';
 
@@ -13,6 +12,7 @@ import IntegrationIcon from '../IconsSideBar/IntegrationIcon';
 import Interviewers from '../IconsSideBar/Interviewers';
 import InterviewTypeIcon from '../IconsSideBar/InterviewType';
 import JobsIcon from '../IconsSideBar/JobsIcon';
+import RequestIcon from '../IconsSideBar/RequestIcon';
 import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
 import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
 import TaskIcon from '../IconsSideBar/TaskIcon';
@@ -66,8 +66,15 @@ const LinkIcon = ({
   active: boolean;
 }) => {
   switch (module) {
-    case 'Aglint AI':
-      return <AssistantLogo isActive={active} />;
+    case 'Requests':
+      return (
+        <NavLink
+          isActive={active}
+          texttooltip={module}
+          slotIcon={<RequestIcon />}
+        />
+      );
+      //return <AssistantLogo isActive={active} />;
     case 'Jobs':
       return (
         <NavLink
@@ -76,7 +83,7 @@ const LinkIcon = ({
           slotIcon={<JobsIcon />}
         />
       );
-    case 'Dashboard':
+    case 'Interviews':
       return (
         <NavLink
           texttooltip={module}
@@ -148,14 +155,14 @@ const LinkIcon = ({
           slotIcon={<TaskIcon />}
         />
       );
-    case 'Requests':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<TaskIcon />}
-        />
-      );
+    // case 'Requests':
+    //   return (
+    //     <NavLink
+    //       isActive={active}
+    //       texttooltip={module}
+    //       slotIcon={<TaskIcon />}
+    //     />
+    //   );
   }
 };
 

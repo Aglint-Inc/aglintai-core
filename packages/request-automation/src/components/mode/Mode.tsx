@@ -96,7 +96,7 @@ function Mode() {
       </div>
 
       <div className="score">
-        <h5>Scoring Enable / Disable</h5>
+        <h5>Enable Scoring</h5>
 
         {isLoading.scoring ? (
           "Updating..."
@@ -113,7 +113,7 @@ function Mode() {
       </div>
 
       <div className="Sourcing">
-        <h5>Sourcing Enable / Disable</h5>
+        <h5>Enable Sourcing</h5>
 
         {isLoading.sourcing ? (
           "Updating..."
