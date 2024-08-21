@@ -2,11 +2,19 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { api } from '@/src/trpc/client';
 
-import { appKey, GC_TIME } from '..';
+import { appKey, argsToKeys, GC_TIME } from '..';
 import {
   SchedulingAnalyticsFunctions,
   SchedulingAnalyticsProcedureArgs,
 } from './types';
+
+const schedulingArgsToKeys = <
+  T extends SchedulingAnalyticsProcedureArgs<SchedulingAnalyticsFunctions>,
+>({
+  // eslint-disable-next-line no-unused-vars
+  recruiter_id,
+  ...args
+}: T) => argsToKeys(args);
 
 export const schedulingAnalyticsQueries = {
   key: () => 'scheduling-analytics' as const,
@@ -19,7 +27,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'completed_interviews',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -35,7 +43,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'decline_requests'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'decline_requests',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -50,7 +62,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'interview_types'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'interview_types',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -68,7 +84,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'interviewers',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -87,7 +103,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'leaderboard',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -106,7 +122,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'reasons',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -125,6 +141,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'recent_decline_reschedule',
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
@@ -140,7 +157,11 @@ export const schedulingAnalyticsQueries = {
     enabled: boolean = true,
   ) =>
     queryOptions({
-      queryKey: [...schedulingAnalyticsQueries.queryKey(), 'tabs'],
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'tabs',
+        ...schedulingArgsToKeys(args),
+      ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
@@ -158,7 +179,7 @@ export const schedulingAnalyticsQueries = {
       queryKey: [
         ...schedulingAnalyticsQueries.queryKey(),
         'training_progress',
-        { type: args.type },
+        ...schedulingArgsToKeys(args),
       ],
       enabled,
       gcTime: enabled ? GC_TIME : 0,
