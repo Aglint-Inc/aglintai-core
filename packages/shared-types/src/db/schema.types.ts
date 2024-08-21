@@ -1244,6 +1244,7 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
+          request_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1261,6 +1262,7 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
+          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1278,6 +1280,7 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
+          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1330,6 +1333,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
@@ -4309,6 +4319,49 @@ export type Database = {
           },
         ]
       }
+      workflow_request_relation: {
+        Row: {
+          created_at: string
+          id: string
+          request_id: string
+          workflow_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          request_id: string
+          workflow_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          request_id?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_request_relation_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       all_interviewers: {
@@ -6428,8 +6481,8 @@ export type Database = {
         | "interviewerResumed_email_admin"
         | "interviewEnd_slack_organizerForMeetingStatus"
         | "interviewEnd_email_organizerForMeetingStatus"
-        | "onAvailReqAgent_emailAgent_getCandidateAvailability"
-        | "onAvailReqAgent_emailLink_getCandidateAvailability"
+        | "onRequestSchedule_emailAgent_getCandidateAvailability"
+        | "onRequestSchedule_emailLink_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
         | "onReceivingAvailReq_agent_confirmSlot"
         | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
@@ -6652,8 +6705,8 @@ export type Database = {
         | "candidateBook"
         | "onQualified"
         | "onTrainingComplete"
-        | "onAvailReqAgent"
         | "onReceivingAvailReq"
+        | "onRequestSchedule"
         | "onSelfScheduleReqAgent"
         | "onRequestCancel"
         | "onRequestReschedule"
