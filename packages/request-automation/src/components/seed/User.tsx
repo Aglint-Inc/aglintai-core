@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import axios from "axios";
+import UpdateEmailAuth from "./UpdateEmailAuth";
 
 type form = {
   name: string;
@@ -136,85 +137,97 @@ function User() {
       <div style={{ minWidth: "300px" }}>
         {isLoading.addUser ? (
           "Loading..."
-        ) : avaUsers.length ? (
+        ) : (
           <>
             <h5>Select users to add</h5>
-            <div
-              style={{
-                maxHeight: "150px",
-                overflow: "scroll",
-              }}
-            >
-              {avaUsers.map((user) => (
+            {avaUsers.length ? (
+              <>
                 <div
-                  key={user.email}
                   style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    userSelect: "none",
+                    maxHeight: "150px",
+                    overflow: "scroll",
                   }}
-                  onClick={() => handleSelectUser(user.email)}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedUser.includes(user.email)}
-                  />
-                  <p>{user.name}</p>
-                  <p style={{ opacity: 0.5 }}>{user.email}</p>
-                  <p style={{ opacity: 0.5 }}>({user.role})</p>
+                  {avaUsers.map((user) => (
+                    <div
+                      key={user.email}
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        userSelect: "none",
+                      }}
+                      onClick={() => handleSelectUser(user.email)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedUser.includes(user.email)}
+                      />
+                      <p>{user.name}</p>
+                      <p style={{ opacity: 0.5 }}>{user.email}</p>
+                      <p style={{ opacity: 0.5 }}>({user.role})</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <button onClick={addUserHandle} disabled={isLoading.addUser}>
-              Add Users
-            </button>
+
+                <button onClick={addUserHandle} disabled={isLoading.addUser}>
+                  Add Users
+                </button>
+              </>
+            ) : (
+              <p>No Users found</p>
+            )}
           </>
-        ) : (
-          "No users found"
         )}
       </div>
 
       <div style={{ minWidth: "300px" }}>
         {isLoading.updateUser ? (
           "Loading..."
-        ) : invitedUser.length ? (
+        ) : (
           <>
             <h5>Move users invited to active</h5>
-            <div
-              style={{
-                maxHeight: "150px",
-                overflow: "scroll",
-              }}
-            >
-              {invitedUser.map((user) => (
+            {invitedUser.length ? (
+              <>
                 <div
-                  key={user.email}
                   style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    userSelect: "none",
+                    maxHeight: "150px",
+                    overflow: "scroll",
                   }}
-                  onClick={() => handleSelectUser(user.email)}
                 >
-                  <p>{user.email}</p>
+                  {invitedUser.map((user) => (
+                    <div
+                      key={user.email}
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        userSelect: "none",
+                      }}
+                      onClick={() => handleSelectUser(user.email)}
+                    >
+                      <p>{user.email}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <button
-              onClick={activeHandler}
-              disabled={!invitedUser.length || isLoading.updateUser}
-            >
-              Update Users
-            </button>
+                <button
+                  onClick={activeHandler}
+                  disabled={!invitedUser.length || isLoading.updateUser}
+                >
+                  Update Users
+                </button>
+              </>
+            ) : (
+              <p>No users found</p>
+            )}
           </>
-        ) : (
-          "No Invited Users found"
         )}
       </div>
+
+      <UpdateEmailAuth />
+
       {message.length ? (
         <div>
           <h5>Console</h5>

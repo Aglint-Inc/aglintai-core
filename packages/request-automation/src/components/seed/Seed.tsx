@@ -15,20 +15,16 @@ const navTabs: {
     value: "company",
   },
   {
-    name: "Users",
-    value: "users",
-  },
-  {
-    name: "Interview Type",
-    value: "interview_type",
+    name: "User",
+    value: "user",
   },
   {
     name: "Jobs",
     value: "jobs",
   },
   {
-    name: "User",
-    value: "user",
+    name: "Interview Type",
+    value: "interview_type",
   },
 ];
 
@@ -48,10 +44,9 @@ function Seed() {
       </div>
       <div>
         {tab === "company" && <Company />}
-        {tab === "users" && <UpdateEmailAuth />}
+        {tab === "user" && <User />}
         {tab === "interview_type" && <InterviewModules />}
         {tab === "jobs" && <Jobs />}
-        {tab === "user" && <User />}
       </div>
     </div>
   );
