@@ -37,7 +37,6 @@ import RequestProgress, {
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import MemberList from './Components/MemberList';
 import { useMeetingList } from './hooks';
-import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
 function ViewRequestDetails() {
@@ -129,10 +128,6 @@ function ViewRequestDetails() {
 
   return (
     <>
-      {requestList?.schedule_request[0]?.status === 'to_do' && (
-        <SelfSchedulingDrawer refetch={refetch} />
-      )}
-
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={

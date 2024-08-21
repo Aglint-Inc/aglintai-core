@@ -38,7 +38,7 @@ export const useSelfSchedulingDrawer = ({
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
-  const application_id = allSessions[0].interview_meeting.application_id;
+  const application_id = allSessions[0]?.interview_meeting.application_id;
 
   const {
     dateRange,
