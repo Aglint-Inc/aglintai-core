@@ -190,6 +190,25 @@ export const schedulingAnalyticsQueries = {
           },
         }),
     }),
+  filters: (
+    args: SchedulingAnalyticsProcedureArgs<'filters'>,
+    enabled: boolean = true,
+  ) =>
+    queryOptions({
+      queryKey: [
+        ...schedulingAnalyticsQueries.queryKey(),
+        'filters',
+        ...schedulingArgsToKeys(args),
+      ],
+      enabled,
+      gcTime: enabled ? GC_TIME : 0,
+      queryFn: async () =>
+        await api.scheduling.analytics.filters.query(args, {
+          context: {
+            skipBatch: true,
+          },
+        }),
+    }),
 } satisfies {
   // eslint-disable-next-line no-unused-vars
   [id in `${'key' | 'queryKey' | SchedulingAnalyticsFunctions}`]: any;
