@@ -35,7 +35,7 @@ export const Request = (
         <Collapse in={collapse} collapsedSize={24}>
           <Stack gap={'10px'}>
             <RequestCard
-              isNewBadgeVisible={props.is_new}
+              isNewBadgeVisible={false}
               slotBadgeNew={
                 <GlobalBadge
                   size={1}

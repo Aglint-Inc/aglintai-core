@@ -371,7 +371,8 @@ type RequestsFilterKeys =
       | 'type' //assignee_id'
       | 'created_at'
     >
-  | 'end_at';
+  | 'end_at'
+  | 'jobs';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
@@ -380,6 +381,7 @@ type RequestFilterValues = {
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];
+  jobs: string[];
 };
 type RequestsFilter = {
   [id in RequestsFilterKeys]: RequestFilterValues[id];
@@ -411,6 +413,7 @@ export const getUnfilteredRequests = async ({
     type: filterType,
     created_at,
     end_at,
+    jobs,
   },
   sort: { order, type },
 }: GetRequestParams) => {
@@ -434,6 +437,10 @@ export const getUnfilteredRequests = async ({
   if (status?.length) query.or(`status.in.(${status.join(',')})`);
 
   if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
+  if (jobs?.length)
+    query.or(`job_id.in.(${jobs.join(',')})`, {
+      referencedTable: 'applications',
+    });
 
   if (title?.length) {
     query.ilike('title', `%${title}%`);
@@ -448,7 +455,9 @@ export const getUnfilteredRequests = async ({
 
   query.order('id');
 
-  return (await query).data;
+  return ((await query).data ?? []).filter(
+    ({ applications }) => !!applications,
+  );
 };
 
 type Sections =

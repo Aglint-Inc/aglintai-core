@@ -15,13 +15,13 @@ function MoreOptions({ request_id }: { request_id: string }) {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const items = [
-    {
-      iconName: 'refresh',
-      iconSize: 4,
-      textContent: 'Reassign',
-      color: 'neutral',
-      action: 'in_progress' as actionType,
-    },
+    // {
+    //   iconName: 'refresh',
+    //   iconSize: 4,
+    //   textContent: 'Reassign',
+    //   color: 'neutral',
+    //   action: 'in_progress' as actionType,
+    // },
     {
       iconName: 'check',
       iconSize: 4,

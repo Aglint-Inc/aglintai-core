@@ -15,6 +15,7 @@ import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import { jobs } from 'googleapis/build/src/apis/jobs';
 
 const defaultFilter = {
   is_new: false,
@@ -23,6 +24,7 @@ const defaultFilter = {
   type: [],
   created_at: '',
   end_at: '',
+  jobs: [],
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -181,7 +181,11 @@ type TaskType = {
 
 const MoveCandidateInterview = () => {
   const { recruiterUser } = useAuthDetails();
-  const { handleMoveApplicationToInterview, job } = useApplications();
+  const {
+    handleMoveApplicationToInterview,
+    job,
+    sectionApplication: { data },
+  } = useApplications();
   const { resetActionPopup, checklist } = useApplicationsStore(
     ({ resetActionPopup, checklist }) => ({
       checklist,
@@ -195,20 +199,28 @@ const MoveCandidateInterview = () => {
   const buttonText = taskCheck ? 'Request and Move' : null;
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
-      request: taskCheck
-        ? {
-            assignee_id: (task?.assignee ?? []).find(Boolean),
-            assigner_id: recruiterUser?.user_id ?? null,
-            title:
-              task?.name ??
-              `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for {{candidateName}} `,
-            type: 'schedule_request',
-            priority: priority,
-            status: 'to_do',
-            schedule_end_date: task.schedule_date_range.end_date,
-            schedule_start_date: task.schedule_date_range.start_date,
-          }
-        : null,
+      requests: taskCheck
+        ? checklist.map((application_id) => {
+            const name =
+              (data?.pages ?? [])
+                .flatMap((list) => list)
+                .find(({ id }) => id === application_id)?.name ??
+              `{{candidateName}}`;
+            return {
+              assignee_id: (task?.assignee ?? []).find(Boolean),
+              assigner_id: recruiterUser?.user_id ?? null,
+              title:
+                task?.name ??
+                `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for ${name}`,
+              type: 'schedule_request',
+              priority: priority,
+              status: 'to_do',
+              schedule_end_date: task.schedule_date_range.end_date,
+              schedule_start_date: task.schedule_date_range.start_date,
+              application_id,
+            };
+          })
+        : [],
       sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
     });
     resetActionPopup();
