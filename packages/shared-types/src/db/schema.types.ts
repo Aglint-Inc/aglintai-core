@@ -4367,6 +4367,7 @@ export type Database = {
       all_interviewers: {
         Row: {
           completed_meeting_count: number | null
+          completed_meeting_last_month: Json | null
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null

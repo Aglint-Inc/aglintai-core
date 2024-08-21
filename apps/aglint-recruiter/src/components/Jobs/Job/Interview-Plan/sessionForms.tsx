@@ -788,7 +788,7 @@ const InterviewModulesField = ({
         onChange={onChange}
         options={options}
         value={value?.id}
-        showIcons={true}
+        showIcons={false}
       />
       {error && !value?.id && (
         <Stack
