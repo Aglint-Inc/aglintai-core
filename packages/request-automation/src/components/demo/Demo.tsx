@@ -225,6 +225,7 @@ const Button = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
+    console.log("sdjfk");
   };
 
   return (
