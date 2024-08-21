@@ -280,7 +280,6 @@ const sendToCandidate = async ({
     selfScheduleMailToCandidate({
       filter_id: filterJson[0].id,
       organizer_id,
-      task_id: update_task_id,
     });
   }
 

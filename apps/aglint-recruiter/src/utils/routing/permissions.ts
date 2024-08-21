@@ -33,7 +33,7 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
-  // '/jobs/[id]/application/[application_id]': ['job_module'],
+  '/jobs/[id]/application/[application_id]': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -59,7 +59,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
-  // '/requests/[id]': ['job_module'],
+  '/requests/[id]': ['job_module'],
 
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
@@ -82,7 +82,8 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
-  // '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
+  '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
+  '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],
@@ -103,6 +104,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduling_module',
   ],
+  '/api/request/schedule-request': ['scheduling_actions'],
   '/api/scheduling/get-accesstoken': ['scheduling_module'],
   '/api/email-outreach/get-user-email': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagent': ['scheduling_module'],
