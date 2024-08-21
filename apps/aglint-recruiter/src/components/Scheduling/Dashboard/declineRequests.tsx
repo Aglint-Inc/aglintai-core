@@ -35,17 +35,22 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'350px'}>
+      <Stack height={'200px'}>
         <Loader />
       </Stack>
     );
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return (
-    <Stack height={'350px'}>
+    <Stack height={'200px'}>
       <BarChart data={data} />
     </Stack>
   );

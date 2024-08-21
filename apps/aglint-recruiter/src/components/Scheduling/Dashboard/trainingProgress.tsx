@@ -5,7 +5,6 @@ import React, { memo, useMemo } from 'react';
 
 import { Skeleton } from '@/devlink2/Skeleton';
 import { HistoryPill } from '@/devlink3/HistoryPill';
-import { NoData } from '@/devlink3/NoData';
 import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
 import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
@@ -14,6 +13,8 @@ import {
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
 import ROUTES from '@/src/utils/routing/routes';
+import { Empty } from './common';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
 
@@ -40,27 +41,19 @@ type Props = Pick<SchedulingAnalyticsContextType['training_progress'], 'data'>;
 
 const Containter = () => {
   const {
-    training_progress: { data: d, status },
+    training_progress: { data, status },
   } = useSchedulingAnalytics();
-
-  const data = [
-    ...(d ?? []),
-    {
-      name: 'abc',
-      user_id: 'abc',
-      position: 'abc',
-      number_of_reverse_shadow: 2,
-      number_of_shadow: 2,
-      noshadow: 3,
-      noreverseshadow: 3,
-    },
-  ];
 
   if (status === 'pending') return <Loader />;
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <NoData />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return <List data={data} />;
 };
@@ -82,13 +75,13 @@ const List = memo(({ data }: Props) => {
             slotHistoryPill={<Pills {...data} />}
             slotInterviewerImage={
               <Avatar
-                // src={data.}
+                //src={data.}
                 alt={data.name}
                 variant='rounded-medium'
               />
             }
             textInterviewModule={''}
-            textName={data.name}
+            textName={capitalizeAll(data.name)}
             textRole={data.position}
           />
         </Stack>

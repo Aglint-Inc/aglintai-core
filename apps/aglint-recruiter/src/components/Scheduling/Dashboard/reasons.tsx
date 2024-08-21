@@ -46,14 +46,19 @@ const Container = memo(() => {
 
   if (status === 'pending')
     return (
-      <Stack height={'296px'} alignItems={'center'} justifyContent={'center'}>
+      <Stack height={'300px'}>
         <Loader />
       </Stack>
     );
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   const safeData = useMemo(() => getOrderedGraphValues(data), [data]);
 

@@ -13,6 +13,7 @@ import {
 import ROUTES from '@/src/utils/routing/routes';
 
 import { Empty } from './common';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 6;
 
@@ -35,24 +36,19 @@ InterviewTypes.displayName = 'InterviewTypes';
 
 const Container = memo(() => {
   const {
-    interview_types: { data: d, status },
+    interview_types: { data, status },
   } = useSchedulingAnalytics();
-
-  const data = [
-    ...(d ?? []),
-    {
-      id: 'abc',
-      name: 'abc',
-      training: 3,
-      qualified: 4,
-    },
-  ];
 
   if (status === 'pending') return <Loader />;
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return <List data={data} />;
 });
@@ -61,30 +57,15 @@ Container.displayName = 'Container';
 type Props = Pick<SchedulingAnalyticsContextType['interview_types'], 'data'>;
 
 const List = memo(({ data }: Props) => {
-  const { push } = useRouter();
   return (
     <>
       {(data ?? []).map(({ id, name, qualified, training }) => (
-        <Stack
+        <InterviewModuleStatsCard
           key={id}
-          onClick={() =>
-            push(
-              `${ROUTES['/scheduling/interview-types/[type_id]']({ type_id: id })}`,
-            )
-          }
-          sx={{
-            cursor: 'pointer',
-            '&:hover': {
-              backgroundColor: 'var(--neutral-3)',
-            },
-          }}
-        >
-          <InterviewModuleStatsCard
-            textInterviewModule={name}
-            textQualifiedMember={qualified}
-            textTraining={training}
-          />
-        </Stack>
+          textInterviewModule={capitalizeAll(name)}
+          textQualifiedMember={qualified}
+          textTraining={training}
+        />
       ))}
     </>
   );

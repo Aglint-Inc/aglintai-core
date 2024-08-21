@@ -17,6 +17,7 @@ import {
 import Loader from '../../Common/Loader';
 import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
 import { SafeObject } from '@/src/utils/safeObject';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 export const Interviewes = memo(() => (
   <NewInterviewDetail
@@ -56,7 +57,7 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const BarChart = memo(({ data }: Props) => {
   const { labels, counts } = SafeObject.entries(data ?? {}).reduce(
     (acc, [key, value]) => {
-      acc.labels.push(key ?? '--');
+      acc.labels.push(capitalizeAll(key ?? '--'));
       acc.counts.push(value);
       return acc;
     },

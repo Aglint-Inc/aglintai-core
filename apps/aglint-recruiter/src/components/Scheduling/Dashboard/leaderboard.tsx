@@ -13,6 +13,9 @@ import {
 
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
+
+const LIMIT = 5;
 
 export const Leaderboard = memo(() => {
   return (
@@ -43,28 +46,21 @@ Dropdown.displayName = 'Dropdown';
 
 const Container = memo(() => {
   const {
-    leaderboard: { data: d, status },
+    leaderboard: { data, status },
   } = useSchedulingAnalytics();
-
-  const data = [
-    ...(d ?? []),
-    {
-      duration: 60,
-      interviews: 10,
-      name: 'abc',
-      position: 'sdf',
-      profile_image: null,
-      user_id: 'kkkk',
-    },
-  ];
 
   if (status === 'error') return <>Error</>;
 
   if (status === 'pending') return <Loader />;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
-  return <List data={data} />;
+  return <List data={data.slice(0, LIMIT + 1)} />;
 });
 Container.displayName = 'Container';
 
@@ -89,8 +85,8 @@ const List = memo(({ data }: Props) => {
           >
             <LeaderBoardCard
               textCountNo={index + 1}
-              textName={name}
-              textRole={position}
+              textName={capitalizeAll(name)}
+              textRole={capitalizeAll(position)}
               slotImage={
                 <Avatar
                   src={profile_image}
@@ -110,7 +106,7 @@ const List = memo(({ data }: Props) => {
 List.displayName = 'ListList';
 
 const Loader = memo(() => {
-  return [...new Array(Math.trunc(Math.random() * 9) + 1)].map((_, i) => (
+  return [...new Array(Math.trunc(Math.random() * LIMIT) + 1)].map((_, i) => (
     <LeaderBoardLoader key={i} slotSkeleton={<Skeleton />} />
   ));
 });

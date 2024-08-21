@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import { memo } from 'react';
 
@@ -10,6 +11,7 @@ import {
 import { Empty } from './common';
 import { RecentDeclineList } from '@/devlink3/RecentDeclineList';
 import Skeleton from '@mui/material/Skeleton';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
 
@@ -23,22 +25,18 @@ const Container = memo(() => {
     recent_decline_reschedule: { data: d, status },
   } = useSchedulingAnalytics();
 
-  const data = [
-    ...(d ?? []),
-    {
-      id: 'abc',
-      name: 'abc',
-      note: 'abc',
-      type: 'reschedule' as const,
-      profile_image: null as string,
-    },
-  ].filter(({ type }) => type === 'reschedule');
-
   if (status === 'pending') return <Loader />;
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  const data = (d ?? []).filter(({ type }) => type === 'reschedule');
+
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return <List data={data} />;
 });
@@ -58,8 +56,8 @@ const List = memo(({ data }: Props) => {
           slotImage={
             <Avatar src={profile_image} alt={name} variant='rounded-medium' />
           }
-          textDesc={note?.trim() || '---'}
-          textName={name}
+          textDesc={note?.trim() || '--'}
+          textName={capitalizeAll(name)}
           textTime={''}
         />
       ))}

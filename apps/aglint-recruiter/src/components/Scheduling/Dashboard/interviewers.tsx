@@ -11,6 +11,7 @@ import {
 import { Empty } from './common';
 import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
 
@@ -30,24 +31,19 @@ Interviewers.displayName = 'Interviewers';
 
 const Container = memo(() => {
   const {
-    interviewers: { data: d, status },
+    interviewers: { data, status },
   } = useSchedulingAnalytics();
-
-  const data = [
-    ...(d ?? []),
-    {
-      user_id: 'abc',
-      name: 'abc',
-      accepted: 3,
-      declined: 4,
-    },
-  ];
 
   if (status === 'pending') return <Loader />;
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return <List data={data} />;
 });
@@ -69,10 +65,10 @@ const List = ({ data }: Props) => {
           }}
         >
           <InterviewersCardList
-            textName={name}
+            textName={capitalizeAll(name)}
             textCompleted={accepted}
             textDeclined={declined}
-            textUpcoming={''}
+            textUpcoming={'--'}
           />
         </Stack>
       ))}

@@ -51,7 +51,12 @@ const Container = memo(() => {
 
   if (status === 'error') return <>Error</>;
 
-  if (data.length === 0) return <Empty />;
+  if (data.length === 0)
+    return (
+      <Stack>
+        <Empty />
+      </Stack>
+    );
 
   return (
     <Stack height={'350px'}>
