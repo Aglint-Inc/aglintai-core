@@ -92,6 +92,10 @@ export const TRIGGER_PAYLOAD: {
     phase: ['after'],
     trigger: 'onRequestReschedule',
   },
+  {
+    phase: ['after'],
+    trigger: 'onRequestInterviewerDecline',
+  },
 ] as const;
 
 export function getTriggerOption(
