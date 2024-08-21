@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import UpdateEmailAuth from "./UpdateEmailAuth";
 import { seedTabs } from "../../type/UITypes";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
 import { InterviewModules } from "./InterviewModules";
-import User from "./User";
+import User from "./user/User";
 
 const navTabs: {
   name: string;

@@ -7,7 +7,8 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import timeZone from '@/src/utils/timeZone';
 
 type user = {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   title: string;
   role: string;
@@ -36,17 +37,6 @@ export async function POST(req) {
       .eq('recruiter_user.status', 'active')
       .throwOnError();
 
-    const manager_ids = recruiter_user
-      .filter((user) => user?.recruiter_user?.user_id)
-      .map((user) => user.recruiter_user.user_id);
-
-    const adminIds = recruiter_user
-      .filter(
-        (user) =>
-          user?.recruiter_user?.user_id && user?.roles?.name === 'admin',
-      )
-      .map((user) => user.recruiter_user.user_id);
-
     const { data: recruiter } = await supabaseAdmin
       .from('recruiter')
       .select('*')
@@ -72,6 +62,17 @@ export async function POST(req) {
       .eq('recruiter_id', recruiter_id)
       .throwOnError();
 
+    const manager_ids = recruiter_user
+      .filter((user) => user?.recruiter_user?.user_id)
+      .map((user) => user.recruiter_user.user_id);
+
+    const adminIds = recruiter_user
+      .filter(
+        (user) =>
+          user?.recruiter_user?.user_id && user?.roles?.name === 'admin',
+      )
+      .map((user) => user.recruiter_user.user_id);
+
     const users = forms.map((form) => {
       const locationId =
         locations[Math.floor(Math.random() * locations.length)].id;
@@ -80,12 +81,12 @@ export async function POST(req) {
         departments[Math.floor(Math.random() * departments.length)].id;
 
       const role =
-        roles.find((role) => role.name === form.name) ||
+        roles.find((role) => role.name === form.role) ||
         roles[Math.floor(Math.random() * roles.length)];
 
       return {
-        first_name: form.name,
-        last_name: '',
+        first_name: form.first_name,
+        last_name: form.last_name,
         email: form.email,
         linked_in: null,
         employment: employment[Math.floor(Math.random() * employment.length)],

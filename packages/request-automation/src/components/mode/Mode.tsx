@@ -75,6 +75,12 @@ function Mode() {
   const sourcingHandler = () => {
     setIsSourcing((pre) => !pre);
   };
+
+  const handleSourcing = () => {
+    const url = "/candidates/history?currentTab=discover%20talent";
+    window.open(url, "_blank");
+  };
+
   return (
     <div id="mode">
       <div className="job-mode">
@@ -129,6 +135,12 @@ function Mode() {
             Sourcing
           </label>
         )}
+      </div>
+
+      <div>
+        <h5>Sourcing Page</h5>
+
+        <button onClick={handleSourcing}>Click here</button>
       </div>
     </div>
   );
