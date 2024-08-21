@@ -64,25 +64,25 @@ const TrainingProgressComponent = () => {
         count,
       }) => (
         <>
-        <Link href={`/user/profile/${user_id}`}>
-          <TrainingProgressList
-            key={module.id + user_id}
-            slotHistoryPill={<HistoryPills count={count} module={module} />}
-            slotInterviewerImage={
-              <Avatar
-                src={profile_image}
-                alt={capitalizeAll(getFullName(first_name, last_name))}
-                variant='rounded-medium'
-              />
-            }
-            textInterviewModule={module.name}
-            textName={
-              <Link href={`/user/profile/${user_id}`}>
-                {capitalizeAll(getFullName(first_name, last_name))}
-              </Link>
-            }
-            textRole={position}
-          />
+          <Link href={`/user/profile/${user_id}`}>
+            <TrainingProgressList
+              key={module.id + user_id}
+              slotHistoryPill={<HistoryPills count={count} module={module} />}
+              slotInterviewerImage={
+                <Avatar
+                  src={profile_image}
+                  alt={capitalizeAll(getFullName(first_name, last_name))}
+                  variant='rounded-medium'
+                />
+              }
+              textInterviewModule={module.name}
+              textName={
+                <Link href={`/user/profile/${user_id}`}>
+                  {capitalizeAll(getFullName(first_name, last_name))}
+                </Link>
+              }
+              textRole={position}
+            />
           </Link>
         </>
       ),

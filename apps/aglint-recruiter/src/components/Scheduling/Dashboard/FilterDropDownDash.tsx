@@ -1,32 +1,26 @@
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-export interface ItemList {
-  label: string;
-  value: string;
-}
-export function FilterDropDownDash({
+export function FilterDropDownDash<T>({
   itemList,
   value,
   onChange,
 }: {
-  itemList: ItemList[];
-  value: string;
-  onChange: any;
+  value: T;
+  itemList: { label: string; value: T }[];
+  onChange: Dispatch<SetStateAction<T>>;
 }) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
 
-  const [selectedItem, setSelectedItem] = useState<string>(value);
+  const [selectedItem, setSelectedItem] = useState<T>(value);
   const open = Boolean(anchorEl);
-
-  //   const itemList: ItemList[] = [{ name: '', value: '' }];
 
   const handleChange = (val) => {
     onChange(val);
