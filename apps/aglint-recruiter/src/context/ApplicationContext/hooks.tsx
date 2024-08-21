@@ -168,7 +168,10 @@ export const useApplicationContext = (
         session_names: sessionNames,
       };
 
-      const res = await axios.post('/api/request/create', creatReqPayload);
+      const res = await axios.post(
+        '/api/request/candidate-request',
+        creatReqPayload,
+      );
 
       if (res.status === 201 || res.status === 200) {
         if (isCreateRequest) {
