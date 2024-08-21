@@ -122,7 +122,11 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      queryKey: [...requestQueries.requests_queryKey(), { request_id }],
+      queryKey: [
+        ...requestQueries.requests_queryKey(),
+        'workflow',
+        { request_id },
+      ],
       queryFn: async () =>
         (
           await supabase

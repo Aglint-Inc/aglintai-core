@@ -5,12 +5,12 @@ import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { NavigationPill } from '@/devlink2/NavigationPill';
 import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
 import { RequestsWrapper } from '@/devlink2/RequestsWrapper';
+import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { IconButtonSoft } from '@/devlink3';
 import Loader from '../Common/Loader';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';

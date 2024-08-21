@@ -1,5 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
-import { Collapse, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';

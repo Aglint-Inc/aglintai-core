@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
@@ -23,7 +24,6 @@ import { useRequests } from '@/src/context/RequestsContext';
 import { Request } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 type actionType = Request['status'] | 'change_assignee';
 

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -8,11 +9,11 @@ import { PropsWithChildren } from 'react';
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
@@ -69,17 +70,28 @@ function RequestDetails({
             alignItems={'center'}
           >
             <Text size={1} color={'neutral'} content={'Created by:'} />
-            <Text
-              content={
-                getFullName(
-                  request.assigner.first_name,
-                  request.assigner.last_name,
-                ) +
-                `${
-                  request.assigner_id === recruiterUser.user_id ? ' (You)' : ''
-                }`
-              }
-            />
+            <div
+              onClick={() => {
+                window.open(`/user/profile/${request.assigner_id}`, '_blank');
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              <Text
+                content={
+                  getFullName(
+                    request.assigner.first_name,
+                    request.assigner.last_name,
+                  ) +
+                  `${
+                    request.assigner_id === recruiterUser.user_id
+                      ? ' (You)'
+                      : ''
+                  }`
+                }
+              />
+            </div>
           </Stack>
           <Stack
             direction={'row'}

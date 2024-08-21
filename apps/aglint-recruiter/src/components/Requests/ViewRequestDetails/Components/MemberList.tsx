@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
@@ -14,7 +15,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 function MemberList({
   members,

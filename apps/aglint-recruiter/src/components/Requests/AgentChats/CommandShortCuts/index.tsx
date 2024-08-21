@@ -80,7 +80,6 @@ function CommandShortCuts() {
           <StartOption
             onClickCard={{
               onClick: () => {
-                console.log(command);
                 handleClick(command);
               },
             }}
