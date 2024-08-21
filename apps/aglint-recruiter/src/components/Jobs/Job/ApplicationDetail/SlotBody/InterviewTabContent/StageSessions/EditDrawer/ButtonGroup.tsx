@@ -12,7 +12,7 @@ function ButtonGroup() {
     errorValidation: state.errorValidation,
   }));
 
-  const { handleClose, handleSave } = useEditSession();
+  const { handleClose, handleSave } = useEditSession({ refetch: () => {} });
 
   return (
     <>
