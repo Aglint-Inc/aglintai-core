@@ -16,6 +16,7 @@ import { CompletedInterviews } from './completedInterviews';
 import { DeclineRequests } from './declineRequests';
 import { Interviewes } from './interviews';
 import Stack from '@mui/material/Stack';
+import { Reasons } from './reasons';
 
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
@@ -24,7 +25,7 @@ const SchedulingDashboard = memo(() => {
     <SchedulingDashboardDev
       slotFirstGrid={
         <>
-          <CancelReasons />
+          <Reasons />
           <Leaderboard />
         </>
       }
