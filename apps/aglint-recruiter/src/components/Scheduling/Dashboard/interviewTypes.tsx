@@ -11,9 +11,9 @@ import {
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { Empty } from './common';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 6;
 

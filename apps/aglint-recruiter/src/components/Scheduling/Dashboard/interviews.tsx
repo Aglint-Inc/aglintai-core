@@ -9,15 +9,15 @@ import {
 import { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
-
-import Loader from '../../Common/Loader';
-import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
+
+import Loader from '../../Common/Loader';
 
 export const Interviewes = memo(() => (
   <NewInterviewDetail

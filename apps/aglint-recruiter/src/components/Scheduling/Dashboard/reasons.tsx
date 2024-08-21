@@ -1,4 +1,6 @@
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
   CategoryScale,
@@ -6,17 +8,15 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import { memo, useMemo } from 'react';
-import { Reason } from '@/devlink3/Reason';
+import { memo } from 'react';
+import { Doughnut } from 'react-chartjs-2';
 
+import { Reason } from '@/devlink3/Reason';
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 
-import { Empty } from './common';
 import Loader from '../../Common/Loader';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Doughnut } from 'react-chartjs-2';
-import Typography from '@mui/material/Typography';
 import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
+import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
 
 export const Reasons = memo(() => {
@@ -60,7 +60,7 @@ const Container = memo(() => {
       </Stack>
     );
 
-  const safeData = useMemo(() => getOrderedGraphValues(data), [data]);
+  const safeData = getOrderedGraphValues(data);
 
   return (
     <Stack alignItems={'center'} justifyContent={'center'} gap={4}>

@@ -1,17 +1,17 @@
 import Stack from '@mui/material/Stack';
 import React, { memo } from 'react';
 
+import { Skeleton } from '@/devlink2/Skeleton';
 import { InterviewersCardList } from '@/devlink3/InterviewersCardList';
 import { InterviewersDash } from '@/devlink3/InterviewersDash';
+import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { Empty } from './common';
-import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
-import { Skeleton } from '@/devlink2/Skeleton';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
 

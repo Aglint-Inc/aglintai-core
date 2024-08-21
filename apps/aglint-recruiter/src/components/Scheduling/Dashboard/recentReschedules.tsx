@@ -1,17 +1,17 @@
-import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import { memo } from 'react';
 
+import { RecentDeclineList } from '@/devlink3/RecentDeclineList';
 import { RecentReschedule as RecentRescheduleDev } from '@/devlink3/RecentReschedule';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { Empty } from './common';
-import { RecentDeclineList } from '@/devlink3/RecentDeclineList';
-import Skeleton from '@mui/material/Skeleton';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
 
@@ -70,6 +70,7 @@ const Loader = memo(() => {
   return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
     (_, i) => (
       <RecentDeclineList
+        key={i}
         slotImage={
           <Skeleton variant='circular' width={'100%'} height={'100%'} />
         }

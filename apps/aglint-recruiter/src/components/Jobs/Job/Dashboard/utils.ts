@@ -75,7 +75,6 @@ const mutateData = (data: GraphEntries) =>
                   delete acc['key'];
                 } else acc[curr] = undefined;
               }
-              console.log(curr, '🔥', acc);
               return acc;
             }, {}),
           ),

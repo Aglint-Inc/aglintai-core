@@ -10,10 +10,10 @@ import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { Empty } from './common';
 import { FilterDropDownDash } from './FilterDropDownDash';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 5;
 

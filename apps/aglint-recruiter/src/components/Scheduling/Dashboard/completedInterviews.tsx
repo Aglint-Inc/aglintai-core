@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import Stack from '@mui/material/Stack';
 import {
   BarElement,
@@ -9,15 +10,14 @@ import {
 import { memo, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import { CompletedInterviews as CompletedInterviewsDev } from '@/devlink3/CompletedInterviews';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
-import { CompletedInterviews as CompletedInterviewsDev } from '@/devlink3/CompletedInterviews';
 
-import { Empty } from './common';
 import Loader from '../../Common/Loader';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Empty } from './common';
 
 export const CompletedInterviews = memo(() => {
   const { completedInterviewType, setCompletedInterviewType } =
