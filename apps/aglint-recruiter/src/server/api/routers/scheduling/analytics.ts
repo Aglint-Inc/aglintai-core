@@ -32,45 +32,62 @@ const training_progress_type = z.object({
 });
 
 const schedulingAnalyticsSchema: AnalysisProcedures = {
+  filters: {
+    rpc: 'scheduling_analytics_filters',
+    schema: z.object({ recruiter_id: z.string().uuid() }),
+  },
   completed_interviews: {
-    table: 'scheduling_analytics_completed_interviews',
+    rpc: 'scheduling_analytics_completed_interviews',
     schema: common_schema.merge(completed_interviews_type),
   },
   decline_requests: {
-    table: 'scheduling_analytics_decline_requests',
+    rpc: 'scheduling_analytics_decline_requests',
     schema: common_schema,
   },
   interview_types: {
-    table: 'scheduling_analytics_interview_types',
+    rpc: 'scheduling_analytics_interview_types',
     schema: common_schema,
   },
   interviewers: {
-    table: 'scheduling_analytics_interviewers',
+    rpc: 'scheduling_analytics_interviewers',
     schema: common_schema.merge(interviewers_type),
   },
   leaderboard: {
-    table: 'scheduling_analytics_leaderboard',
+    rpc: 'scheduling_analytics_leaderboard',
     schema: common_schema.merge(leaderboard_type),
   },
   reasons: {
-    table: 'scheduling_analytics_reasons',
+    rpc: 'scheduling_analytics_reasons',
     schema: common_schema.merge(reasons_type),
   },
   recent_decline_reschedule: {
-    table: 'scheduling_analytics_recent_decline_reschedule',
+    rpc: 'scheduling_analytics_recent_decline_reschedule',
     schema: common_schema,
   },
   tabs: {
-    table: 'scheduling_analytics_tabs',
+    rpc: 'scheduling_analytics_tabs',
     schema: common_schema,
   },
   training_progress: {
-    table: 'scheduling_analytics_training_progress',
+    rpc: 'scheduling_analytics_training_progress',
     schema: common_schema.merge(training_progress_type),
   },
 };
 
 export const schedulingAnalyticsRouter = createTRPCRouter({
+  filters: privateProcedure
+    .input(schedulingAnalyticsSchema.filters.schema)
+    .query(
+      async ({ ctx: { db }, input: { recruiter_id } }) =>
+        (
+          await db
+            .rpc(schedulingAnalyticsSchema.filters.rpc, {
+              recruiter_id,
+            })
+            .single()
+            .throwOnError()
+        ).data,
+    ),
   completed_interviews: privateProcedure
     .input(schedulingAnalyticsSchema.completed_interviews.schema)
     .query(
@@ -80,7 +97,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.completed_interviews.table, {
+            .rpc(schedulingAnalyticsSchema.completed_interviews.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -95,7 +112,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.decline_requests.table, {
+            .rpc(schedulingAnalyticsSchema.decline_requests.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -109,7 +126,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.interview_types.table, {
+            .rpc(schedulingAnalyticsSchema.interview_types.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -126,7 +143,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.interviewers.table, {
+            .rpc(schedulingAnalyticsSchema.interviewers.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -144,7 +161,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.leaderboard.table, {
+            .rpc(schedulingAnalyticsSchema.leaderboard.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -162,7 +179,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.reasons.table, {
+            .rpc(schedulingAnalyticsSchema.reasons.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -177,7 +194,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.recent_decline_reschedule.table, {
+            .rpc(schedulingAnalyticsSchema.recent_decline_reschedule.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -189,7 +206,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
       (
         await db
-          .rpc(schedulingAnalyticsSchema.tabs.table, {
+          .rpc(schedulingAnalyticsSchema.tabs.rpc, {
             recruiter_id,
             departments,
             jobs,
@@ -207,7 +224,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
       }) =>
         (
           await db
-            .rpc(schedulingAnalyticsSchema.training_progress.table, {
+            .rpc(schedulingAnalyticsSchema.training_progress.rpc, {
               recruiter_id,
               departments,
               jobs,
@@ -226,7 +243,7 @@ type AnalysisProcedures<
     schema: z.ZodSchema<
       Partial<DatabaseFunctions[`scheduling_analytics_${id}`]['Args']>
     >;
-    table: `scheduling_analytics_${id}`;
+    rpc: `scheduling_analytics_${id}`;
   };
 };
 

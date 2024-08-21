@@ -7,6 +7,7 @@ import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 import Loader from '../../Common/Loader';
 import { CompletedInterviews } from './completedInterviews';
 import { DeclineRequests } from './declineRequests';
+import { Filters } from './filters';
 import { Interviewers } from './interviewers';
 import { Interviewes } from './interviews';
 // import { InterviewTypes } from './interviewTypes';
@@ -42,7 +43,12 @@ const SchedulingDashboard = memo(() => {
           <Interviewes />
         </Stack>
       }
-      slotScheduleCount={<Tabs />}
+      slotScheduleCount={
+        <Stack gap={2}>
+          <Filters />
+          <Tabs />
+        </Stack>
+      }
       slotRecentReschedule={
         <>
           <RecentDeclines />
