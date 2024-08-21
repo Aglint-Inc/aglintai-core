@@ -41,6 +41,7 @@ export const PATHS = [
 '/api/automation/get_users_not_in_constantEmails',
 '/api/automation/reschedule_request',
 '/api/automation/schedule_auth_update',
+'/api/automation/seed_default_data',
 '/api/automation/send_availability_reminder',
 '/api/automation/send_selfSchedule_reminder',
 '/api/automation/update_availability',
