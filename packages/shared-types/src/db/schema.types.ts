@@ -6021,7 +6021,7 @@ export type Database = {
         Args: {
           applications?: string[]
           sessions?: string[]
-          request?: Json
+          requests?: Json[]
         }
         Returns: undefined
       }
