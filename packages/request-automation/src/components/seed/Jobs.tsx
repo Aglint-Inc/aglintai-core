@@ -33,7 +33,7 @@ function Jobs() {
       );
       setJobs(newJobsAva);
     } catch (error) {
-      console.error("error fetching jobs");
+      console.error("Error fetching jobs.");
     } finally {
       setLoading(false);
     }
@@ -130,10 +130,10 @@ function Jobs() {
       .select("id,slug");
 
     if (jobAddError) {
-      setMessage((pre) => [...pre, `Job adding failed`]);
+      setMessage((pre) => [...pre, `Job adding failed.`]);
       return;
     } else {
-      setMessage((pre) => [...pre, `Job added succuessfully`]);
+      setMessage((pre) => [...pre, `Job added succuessfully.`]);
     }
 
     jobsData.map(async (job) => {
@@ -160,7 +160,7 @@ function Jobs() {
           });
         })
         .catch((e) => {
-          setMessage((pre) => [...pre, `candidate upload error ${e.message}`]);
+          setMessage((pre) => [...pre, `Candidate upload error ${e.message}.`]);
         });
     });
     await fetchJobs();
@@ -255,10 +255,10 @@ const handleUpdate = async (
       ...data,
     });
 
-    if (status != 200) throw new Error("failed to update");
-    setMessage((pre) => [...pre, "candidates added successfully"]);
+    if (status != 200) throw new Error("Failed to update.");
+    setMessage((pre) => [...pre, "Candidates added successfully."]);
   } catch (error) {
-    setMessage((pre) => [...pre, "candidates adding failed"]);
+    setMessage((pre) => [...pre, "Candidates adding failed."]);
   } finally {
   }
 };

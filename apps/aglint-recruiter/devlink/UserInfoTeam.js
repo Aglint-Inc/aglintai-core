@@ -40,7 +40,7 @@ export function UserInfoTeam({
             className={_utils.cx(_styles, "tli-header-text-wrap")}
             tag="div"
           >
-            <Text content={textName} weight="medium" size="3" />
+            <Text content={textName} weight="medium" size="2" />
             {isLinkedInVisible ? (
               <_Builtin.Block tag="div" {...onClickLinkedIn}>
                 <_Builtin.HtmlEmbed

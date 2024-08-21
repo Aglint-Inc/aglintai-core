@@ -4,7 +4,10 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 // import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import {
+  ApiFetchUserDetails,
+  BodyParamsFetchUserDetails,
+} from '@/src/pages/api/scheduling/fetchUserDetails';
 import { supabase } from '@/src/utils/supabase/client';
 
 export type InterviewScheduleContextType = {
@@ -51,6 +54,8 @@ const SchedulingProvider = ({ children }) => {
 
       const bodyParams: BodyParamsFetchUserDetails = {
         recruiter_id: recruiter.id,
+        includeSupended: false,
+        isCalendar: true,
       };
 
       const resMem = await axios.post(
@@ -58,7 +63,7 @@ const SchedulingProvider = ({ children }) => {
         bodyParams,
       );
       if (resMem.data) {
-        setMembers(resMem.data);
+        setMembers(resMem.data as ApiFetchUserDetails);
       }
     } catch (e) {
       //

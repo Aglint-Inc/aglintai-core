@@ -4,6 +4,7 @@ import { seedTabs } from "../../type/UITypes";
 import Jobs from "./Jobs";
 import Company from "./company/Company";
 import { InterviewModules } from "./InterviewModules";
+import User from "./User";
 
 const navTabs: {
   name: string;
@@ -14,16 +15,16 @@ const navTabs: {
     value: "company",
   },
   {
-    name: "Users",
-    value: "users",
-  },
-  {
-    name: "Interview Type",
-    value: "interview_type",
+    name: "User",
+    value: "user",
   },
   {
     name: "Jobs",
     value: "jobs",
+  },
+  {
+    name: "Interview Type",
+    value: "interview_type",
   },
 ];
 
@@ -43,7 +44,7 @@ function Seed() {
       </div>
       <div>
         {tab === "company" && <Company />}
-        {tab === "users" && <UpdateEmailAuth />}
+        {tab === "user" && <User />}
         {tab === "interview_type" && <InterviewModules />}
         {tab === "jobs" && <Jobs />}
       </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Location } from "./Location";
 import { Department } from "./Department";
+import CompanyDetails from "./CompanyDetails";
 function Company() {
   const [message, setMessage] = useState<string[]>([]);
   return (
@@ -12,6 +13,8 @@ function Company() {
     >
       <Department setMessage={setMessage} />
       <Location setMessage={setMessage} />
+      <CompanyDetails setMessage={setMessage} />
+
       {message?.length ? (
         <div
           style={{

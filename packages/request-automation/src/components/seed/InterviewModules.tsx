@@ -73,9 +73,9 @@ export const InterviewModules = () => {
       .insert(modulesToInsert);
 
     if (error) {
-      setMessage((pre) => [...pre, "Error inserting modules"]);
+      setMessage((pre) => [...pre, "Error inserting modules."]);
     } else {
-      setMessage((pre) => [...pre, "Modules inserted successfully"]);
+      setMessage((pre) => [...pre, "Modules inserted successfully."]);
     }
 
     setSelectedNewModules([]);
@@ -91,9 +91,9 @@ export const InterviewModules = () => {
       .in("id", modulesToDelete);
 
     if (error) {
-      setMessage((pre) => [...pre, "Error deleting modules"]);
+      setMessage((pre) => [...pre, "Error deleting modules."]);
     } else {
-      setMessage((pre) => [...pre, "Modules deleted successfully"]);
+      setMessage((pre) => [...pre, "Modules deleted successfully."]);
     }
     setSelectedModules([]);
   };
@@ -114,7 +114,6 @@ export const InterviewModules = () => {
     mod.name.toLowerCase().trim().replace(/\s+/g, "")
   );
 
-  const selectedModulesIds = selectedModules.map((mod) => mod.id);
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -127,78 +126,54 @@ export const InterviewModules = () => {
             gap: "50px",
           }}
         >
-          {/* this for remove  */}
-          {/* <div>
-            <h5 style={{ marginBottom: "5px" }}>Select modules to remove </h5>
-            {modules.length > 0 ? (
-              modules.map((module) => (
-                <div
-                  key={module.name}
-                  style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    userSelect: "none",
-                  }}
-                  onClick={() => handleSelectModule(module.id)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedModulesIds.includes(module.id)}
-                  />
-                  <p>{module.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>no current modules found</p>
-            )}
-          </div> */}
           <div>
             <h5 style={{ marginBottom: "5px" }}>
               Select Interview Types to add
             </h5>
             {newModules.length > 0 ? (
-              newModules
-                .filter(
-                  (mod) =>
-                    !curModulesName.includes(
-                      mod.name.toLowerCase().trim().replace(/\s+/g, "")
-                    )
-                )
-                .map((module) => (
-                  <div
-                    key={module.name}
-                    style={{
-                      display: "flex",
-                      gap: "5px",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      userSelect: "none",
-                    }}
-                    onClick={() => handleSelectnewModule(module.name)}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedNewModules.includes(module.name)}
-                    />
-                    <p>{module.name}</p>
-                  </div>
-                ))
+              <>
+                {newModules
+                  .filter(
+                    (mod) =>
+                      !curModulesName.includes(
+                        mod.name.toLowerCase().trim().replace(/\s+/g, "")
+                      )
+                  )
+                  .map((module) => (
+                    <div
+                      key={module.name}
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        userSelect: "none",
+                      }}
+                      onClick={() => handleSelectnewModule(module.name)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedNewModules.includes(module.name)}
+                      />
+                      <p>{module.name}</p>
+                    </div>
+                  ))}
+                <button
+                  onClick={handleAddSelectedModules}
+                  style={{ marginTop: "10px" }}
+                  disabled={
+                    selectedNewModules.length === 0 &&
+                    selectedModules.length === 0
+                  }
+                >
+                  Add Interview Types
+                </button>
+              </>
             ) : (
               <p>no new modules found</p>
             )}
           </div>
         </div>
-        <button
-          onClick={handleAddSelectedModules}
-          style={{ marginTop: "10px" }}
-          disabled={
-            selectedNewModules.length === 0 && selectedModules.length === 0
-          }
-        >
-          Add Interview Types
-        </button>
       </div>
       {message?.length ? (
         <div

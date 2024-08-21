@@ -18,6 +18,10 @@ const Tabs: {
     name: "Reset",
     value: "reset",
   },
+  {
+    name: "Mode",
+    value: "mode",
+  },
 ];
 
 function Header({

@@ -79,7 +79,7 @@ export const getSessionFields = (
 const getLabel = (key: keyof SessionFormProps) => {
   switch (key) {
     case 'name':
-      return 'Stage name';
+      return 'Interview name';
     case 'schedule_type':
       return 'Schedule type';
     case 'location':
