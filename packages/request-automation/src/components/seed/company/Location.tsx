@@ -20,7 +20,7 @@ export function Location({
 }: {
   setMessage: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [availableLocations, setAvailableLocations] = useState<location[]>([]);
   const supabase = window.supabase;
   const { recruiterId: recruiter_id } = useAppContext();
@@ -104,7 +104,10 @@ export function Location({
         .insert(locationsToAdd);
 
       if (error)
-        setMessage((pre) => [...pre, `Location adding error ${error.message}.`]);
+        setMessage((pre) => [
+          ...pre,
+          `Location adding error ${error.message}.`,
+        ]);
 
       setMessage((pre) => [...pre, `Location added successfully.`]);
       setSelectedNewLocation([]);
@@ -127,36 +130,44 @@ export function Location({
             <div>
               <h5>Select Locations to add</h5>
 
-              {availableLocations.map((location, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    userSelect: "none",
-                  }}
-                  onClick={() => handleSelectNewLocation(location.city)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedNewLocationCites.includes(location.city)}
-                  />
-                  {`${location.city}, ${location.region}, ${location.country}`}
-                </div>
-              ))}
+              {availableLocations.length ? (
+                <>
+                  {availableLocations.map((location, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center",
+                        cursor: "pointer",
+                        userSelect: "none",
+                      }}
+                      onClick={() => handleSelectNewLocation(location.city)}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedNewLocationCites.includes(
+                          location.city
+                        )}
+                      />
+                      {`${location.city}, ${location.region}, ${location.country}`}
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleAddLocation}
+                    style={{
+                      marginTop: "10px",
+                    }}
+                    disabled={selectedNewLocation.length === 0}
+                  >
+                    Add Locations
+                  </button>
+                </>
+              ) : (
+                "No Locations Available"
+              )}
             </div>
           </div>
-          <button
-            onClick={handleAddLocation}
-            style={{
-              marginTop: "10px",
-            }}
-            disabled={selectedNewLocation.length === 0}
-          >
-            Add Locations
-          </button>
         </>
       )}
     </div>

@@ -89,42 +89,46 @@ export const Department = ({
       {isLoading ? (
         <p>Department Loading...</p>
       ) : (
-        <>
-          <div style={{ display: "flex", gap: "20px" }}>
-            <div>
-              <h5>Select Departments to add</h5>
+        <div style={{ display: "flex", gap: "20px" }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <h5>Select Departments to add</h5>
 
-              {availableDepartments.map((department, index) => (
-                <div
-                  key={index}
+            {availableDepartments.length ? (
+              <>
+                {availableDepartments.map((department, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      userSelect: "none",
+                    }}
+                    onClick={() => handleSelectNewDepartment(department.name)}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedNewDepartments.includes(department.name)}
+                    />
+                    {department.name}
+                  </div>
+                ))}
+                <button
+                  onClick={handleUpdate}
                   style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    userSelect: "none",
+                    marginTop: "10px",
                   }}
-                  onClick={() => handleSelectNewDepartment(department.name)}
+                  disabled={selectedNewDepartments.length === 0}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedNewDepartments.includes(department.name)}
-                  />
-                  {department.name}
-                </div>
-              ))}
-            </div>
+                  Add Departments
+                </button>
+              </>
+            ) : (
+              "No departments Available"
+            )}
           </div>
-          <button
-            onClick={handleUpdate}
-            style={{
-              marginTop: "10px",
-            }}
-            disabled={selectedNewDepartments.length === 0}
-          >
-            Add Departments
-          </button>
-        </>
+        </div>
       )}
     </div>
   );
