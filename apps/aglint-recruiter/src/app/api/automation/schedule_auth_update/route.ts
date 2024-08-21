@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { createAdminClient } from '@/src/utils/supabase/server';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type usersToUpdate = {
   user_id: string;
@@ -13,7 +13,6 @@ export async function POST(req) {
   }: { emailAuthData: any[]; usersToUpdate: usersToUpdate[] } =
     await req.json();
   try {
-    const supabaseAdmin = createAdminClient();
     for (const user_id of usersToUpdate) {
       const { error } = await supabaseAdmin
         .from('recruiter_user')

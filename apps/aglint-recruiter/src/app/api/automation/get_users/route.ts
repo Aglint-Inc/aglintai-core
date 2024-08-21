@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { createAdminClient } from '@/src/utils/supabase/server';
-
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function POST(req) {
   const { recruiter_id }: { recruiter_id: string } = await req.json();
   try {
-    const supabaseAdmin = createAdminClient();
     const { data, error } = await supabaseAdmin
       .from('recruiter_relation')
       .select(

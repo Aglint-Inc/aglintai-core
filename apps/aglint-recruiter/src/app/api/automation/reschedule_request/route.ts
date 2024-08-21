@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { requestReschdule } from '@/src/utils/automation/utils/reschedule_request';
-import { createAdminClient } from '@/src/utils/supabase/server';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type setting = {
   application_id: string;
@@ -10,7 +10,6 @@ type setting = {
 export async function POST(req) {
   const setting: setting = await req.json();
   try {
-    const supabaseAdmin = createAdminClient();
     await requestReschdule(setting, supabaseAdmin);
 
     return NextResponse.json(
