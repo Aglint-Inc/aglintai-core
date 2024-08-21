@@ -19,15 +19,16 @@ export const onInsertInterviewFilterJson = async ({
   const [schedule_cand_rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_schedule')
-      .select('*, applications(*)')
+      .select('*, applications(*,public_jobs(*))')
       .eq('id', new_data.schedule_id),
   );
 
-  const { job_level_actions } = await getWActions(
-    schedule_cand_rec.applications.job_id,
-  );
+  const { request_workflows } = await getWActions({
+    company_id: schedule_cand_rec.applications.public_jobs.recruiter_id,
+    request_id: new_data.request_id,
+  });
 
-  const promises = job_level_actions
+  const promises = request_workflows
     .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
     .map(async (j_l_a) => {
       supabaseWrap(

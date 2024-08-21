@@ -133,7 +133,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         { event_type: null }, //TODO: mention
       );
     } else if (
-      api_target === 'onAvailReqAgent_emailLink_getCandidateAvailability'
+      api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'
     ) {
       await executeWorkflowAction(
         candidateAvailRequest,
@@ -180,6 +180,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           meeting_flow,
           status: 'waiting',
           organizer_id,
+          request_id: request_id,
         })
         .in(
           'id',
