@@ -1,5 +1,14 @@
 .ats-settings-wrap {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-4);
+  grid-row-gap: var(--space-4);
+}
+
+.ats-setting-left-wrap {
+  display: flex;
   max-width: 580px;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -31,22 +40,6 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-}
-
-.ats-connect-freq {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
-}
-
-.asi-header-wrap {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
 }
 
 .more-menu-ats-setting {
@@ -112,6 +105,18 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-1);
   grid-row-gap: var(--space-1);
+}
+
+.asi-header-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.ats-setting-right-wrap {
+  width: 420px;
 }
 
 .ats-sync-item-wrap-copy {

@@ -55,7 +55,6 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
-  '/scheduling/analytics': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
@@ -125,21 +124,20 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/insertTaskProgress': [
     'scheduling_module',
   ],
-  // '/api/scheduling/request_availability/updateRequestAvailability': [
-  //   'scheduling_module',
-  //   'scheduler_create',
-  // ], //
+  '/api/scheduling/request_availability/updateRequestAvailability': [
+    'scheduling_module',
+  ], //
   '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
     'scheduling_module',
   ],
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
   '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
+ 
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduling_module'],
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
   // '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'], //
-  // '/api/request_feedback': ['scheduler_update'], //
   '/api/scheduling/application/fetchfeedbackdetails': [
     'scheduling_module',
     'task_module',
@@ -179,9 +177,6 @@ const PERMISSIONS: Permissions = {
   '/api/sync/greenhouse/full_sync': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
-  '/api/scheduling/application/fetchInterviewStagesBySessionId': [
-    'scheduling_module',
-  ],
 };
 
 export default PERMISSIONS;

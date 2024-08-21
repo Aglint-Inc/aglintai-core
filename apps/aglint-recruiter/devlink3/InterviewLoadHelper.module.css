@@ -87,14 +87,6 @@
   color: var(--neutral-11);
 }
 
-.debrief-info-text-wrap {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  grid-column-gap: var(--space-1);
-  grid-row-gap: var(--space-1);
-}
-
 .debrief-list-hightlight {
   font-weight: 500;
 }
