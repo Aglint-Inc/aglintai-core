@@ -102,7 +102,7 @@ const InterviewTab = () => {
                                       />
                                     }
                                     isCalenderNotConnected={
-                                      member.is_calendar_connected
+                                      !member.is_calendar_connected
                                     }
                                     isConnectedCalenderVisible={
                                       member.is_calendar_connected
