@@ -46,6 +46,8 @@ export const API_PATHS = [
 '/api/automation/send_selfSchedule_reminder',
 '/api/automation/update_availability',
 '/api/automation/update_request',
+'/api/automation/update_user_to_active',
+'/api/automation/update_users_name',
 '/api/candidate-assessment/assessment-answers',
 '/api/candidate-assessment/assessment-details',
 '/api/candidate-assessment/assessment-result-create',

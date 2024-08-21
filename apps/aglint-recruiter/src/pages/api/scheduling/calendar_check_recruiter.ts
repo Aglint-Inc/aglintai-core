@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,24 +9,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { recruiter_id } = req.body;
 
   if (!recruiter_id) {
+    // eslint-disable-next-line no-console
     console.log('missing fields');
     return res.status(400).send('missing fields');
   }
 
   try {
-    const users = (
-      await supabaseAdmin
-        .from('recruiter_relation')
-        .select('user_id')
-        .eq('recruiter_id', recruiter_id)
-        .throwOnError()
-    ).data;
+    const { data: users, error } = await supabaseAdmin
+      .from('recruiter_relation')
+      .select('user_id')
+      .eq('recruiter_id', recruiter_id);
 
-    await Promise.all(
-      users.map(async (user) => {
-        axios.post(userCalendarCheck, { user_id: user.user_id });
-      }),
-    );
+    if (error) throw error;
+
+    users.forEach((user) => {
+      axios
+        .post(userCalendarCheck, { user_id: user.user_id })
+        .catch(console.error);
+    });
+
+    res.status(200).send('Requests sent'); // Sends response immediately after initiating requests
   } catch (error) {
     console.error(error?.message ? error.message : String(error));
     return res.status(500).send(String(error));

@@ -4313,6 +4313,7 @@ export type Database = {
           completed_meeting_count: number | null
           email: string | null
           first_name: string | null
+          is_calendar_connected: boolean | null
           last_name: string | null
           position: string | null
           profile_image: string | null
@@ -5280,6 +5281,10 @@ export type Database = {
           app_id: string
         }
         Returns: boolean
+      }
+      check_user_auth: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       connectassessmenttemplate: {
         Args: {
