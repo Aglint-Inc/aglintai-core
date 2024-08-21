@@ -8,7 +8,7 @@ import Reset from "./components/Reset/Reset";
 import Mode from "./components/mode/Mode";
 
 export const Extension = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [activeDiv, setActiveDiv] = useState<tabs>("automation");
 
   const drawerRef = useRef(null);
