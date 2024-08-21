@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import { memo } from 'react';
 
-import { RecentDeclines as RecentDeclinesDev } from '@/devlink3/RecentDeclines';
+import { RecentReschedule as RecentRescheduleDev } from '@/devlink3/RecentReschedule';
 import {
   type SchedulingAnalyticsContextType,
   useSchedulingAnalytics,
@@ -13,10 +13,10 @@ import Skeleton from '@mui/material/Skeleton';
 
 const LIMIT = 4;
 
-export const RecentDeclines = memo(() => (
-  <RecentDeclinesDev slotRecentDeclineList={<Container />} />
+export const RecentReschedules = memo(() => (
+  <RecentRescheduleDev slotRecentRescheduleList={<Container />} />
 ));
-RecentDeclines.displayName = 'RecentDeclines';
+RecentReschedules.displayName = 'RecentReschedules';
 
 const Container = memo(() => {
   const {
@@ -32,7 +32,7 @@ const Container = memo(() => {
       type: 'reschedule' as const,
       profile_image: null as string,
     },
-  ].filter(({ type }) => type === 'declined');
+  ].filter(({ type }) => type === 'reschedule');
 
   if (status === 'pending') return <Loader />;
 
