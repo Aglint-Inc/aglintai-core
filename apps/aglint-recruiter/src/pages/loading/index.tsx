@@ -138,7 +138,7 @@ export default function Loading() {
             localStorage.removeItem('redirectURL');
           } else if (recruiterRel.roles.name === 'recruiting_coordinator') {
             router.push(
-              localStorage.getItem('redirectURL') || ROUTES['/scheduling'](),
+              localStorage.getItem('redirectURL') || ROUTES['/requests'](),
             );
             localStorage.removeItem('redirectURL');
           } else {
