@@ -370,13 +370,13 @@ export const seed_workflow_actions: {
       title: '3. Send Self-Schedule Request',
       description: '',
       interval: 0,
-      trigger: 'onRequestSchedule',
+      trigger: 'onReceivingAvailReq',
       workflow_type: 'job',
     },
     actions: [
       {
         order: 0,
-        target_api: 'onRequestSchedule_agent_sendSelfScheduleRequest',
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
         action_type: 'agent_instruction',
         payload: {
           ai_response: {
