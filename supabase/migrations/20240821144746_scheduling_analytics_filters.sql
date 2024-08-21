@@ -14,9 +14,7 @@ begin
           departments.id as department_id,
           departments.name as department_title
         from
-          request
-          left join applications on applications.id = request.application_id
-          left join public_jobs on public_jobs.id = applications.job_id
+          public_jobs
           left join departments on departments.id = public_jobs.department_id
         where
           public_jobs.recruiter_id = scheduling_analytics_filters.recruiter_id
@@ -31,5 +29,3 @@ begin
 end;
 $function$
 ;
-
-

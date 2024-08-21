@@ -32,7 +32,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.completed_interviews.query(args, {
+        await api.scheduling.analytics.completed_interviews.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -51,7 +51,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.decline_requests.query(args, {
+        await api.scheduling.analytics.decline_requests.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -70,7 +70,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.interview_types.query(args, {
+        await api.scheduling.analytics.interview_types.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -89,7 +89,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.interviewers.query(args, {
+        await api.scheduling.analytics.interviewers.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -108,7 +108,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.leaderboard.query(args, {
+        await api.scheduling.analytics.leaderboard.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -127,7 +127,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.reasons.query(args, {
+        await api.scheduling.analytics.reasons.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -146,7 +146,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.recent_decline_reschedule.query(args, {
+        await api.scheduling.analytics.recent_decline_reschedule.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -165,7 +165,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.tabs.query(args, {
+        await api.scheduling.analytics.tabs.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -184,7 +184,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.training_progress.query(args, {
+        await api.scheduling.analytics.training_progress.mutate(args, {
           context: {
             skipBatch: true,
           },
@@ -203,7 +203,7 @@ export const schedulingAnalyticsQueries = {
       enabled,
       gcTime: enabled ? GC_TIME : 0,
       queryFn: async () =>
-        await api.scheduling.analytics.filters.query(args, {
+        await api.scheduling.analytics.filters.mutate(args, {
           context: {
             skipBatch: true,
           },
