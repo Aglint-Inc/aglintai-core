@@ -15,7 +15,7 @@ import {
   useScheduleSessionsAnalytics,
 } from '@/src/queries/scheduling-dashboard';
 
-import { FilterDropDownDash, ItemList } from './FilterDropDownDash';
+import { FilterDropDownDash } from './FilterDropDownDash';
 
 const RecentRescheduleCancel = () => {
   const { data: analyticsData } = useScheduleSessionsAnalytics();
@@ -29,7 +29,7 @@ const RecentRescheduleCancel = () => {
 
   const [type, setType] = useState<'interviewer' | 'candidate'>('candidate');
 
-  const itemList: ItemList[] = [
+  const itemList = [
     { label: 'Interview', value: 'interviewer' },
     { label: 'Candidate', value: 'candidate' },
   ];

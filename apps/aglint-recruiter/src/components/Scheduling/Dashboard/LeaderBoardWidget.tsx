@@ -63,27 +63,26 @@ const LeaderBoardWidgetComponent = ({
             borderRadius: '4px',
           }}
         >
-           <Link href={`/user/profile/${item.user_id}`}>
-           <LeaderBoardCard
-            textCountNo={index + 1}
-            textName={
-              <Link href={`/user/profile/${item.user_id}`}>
-                {capitalizeAll(getFullName(item.first_name, item.last_name))}
-              </Link>
-            }
-            textRole={item.user_position}
-            slotImage={
-              <Avatar
-                src={item.profile_image}
-                alt={getFullName(item.first_name, item.last_name)}
-                variant='rounded-medium'
-              />
-            }
-            noInterview={item.interviews}
-            noHours={(item.duration / 60).toFixed(1)}
-          />
-           </Link>
-         
+          <Link href={`/user/profile/${item.user_id}`}>
+            <LeaderBoardCard
+              textCountNo={index + 1}
+              textName={
+                <Link href={`/user/profile/${item.user_id}`}>
+                  {capitalizeAll(getFullName(item.first_name, item.last_name))}
+                </Link>
+              }
+              textRole={item.user_position}
+              slotImage={
+                <Avatar
+                  src={item.profile_image}
+                  alt={getFullName(item.first_name, item.last_name)}
+                  variant='rounded-medium'
+                />
+              }
+              noInterview={item.interviews}
+              noHours={(item.duration / 60).toFixed(1)}
+            />
+          </Link>
         </Stack>
       ))}
     </>

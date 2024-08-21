@@ -17,13 +17,14 @@ export const grapDependencies = {
     '#949494',
     '#BAEDBD',
     '#95A4FC',
-    '#C4D2CD'
+    '#C4D2CD',
   ],
-  defer: ['others', 'unknown']
+  defer: ['others', 'unknown'],
 };
 
-export const getOrderedGraphValues = (data: { [id: string]: number }) => {
-  const safeData = { ...data };
+type GraphEntries = Record<string, number> | Record<string, string | number>[];
+export const getOrderedGraphValues = (data: GraphEntries) => {
+  const safeData = mutateData(data);
   const deferedValues = grapDependencies.defer.reduce((acc, curr) => {
     if (safeData[curr]) {
       acc['others'] = acc['others']
@@ -40,7 +41,7 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
         acc.push({
           name: curr[0],
           count: curr[1],
-          color: grapDependencies.colors[i % grapDependencies.colors.length]
+          color: grapDependencies.colors[i % grapDependencies.colors.length],
         });
       return acc;
     }, []) as { name: string; count: number; color: string }[];
@@ -51,8 +52,32 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
     result.push({
       name: key,
       count: value,
-      color: grapDependencies.colors[colorPosition]
+      color: grapDependencies.colors[colorPosition],
     });
   });
   return result;
 };
+
+const mutateData = (data: GraphEntries) =>
+  (Array.isArray(data)
+    ? (data ?? []).reduce((acc, curr) => {
+        return {
+          ...acc,
+          ...Object.assign(
+            {},
+            Object.values(curr).reduce((acc, curr) => {
+              if (typeof curr === 'number') {
+                if (Object.values(acc).length === 0) acc['key'] = curr;
+                else acc[Object.keys(acc)[0]] = curr;
+              } else {
+                if (acc['key']) {
+                  acc[curr] = acc['key'];
+                  delete acc['key'];
+                } else acc[curr] = undefined;
+              }
+              return acc;
+            }, {}),
+          ),
+        };
+      }, {})
+    : { ...data }) as Record<string, number>;

@@ -95,7 +95,7 @@ function Demo() {
   return (
     <div id="demo">
       <div className="drawer-body">
-        <Button
+        <Request
           isLoading={loading.btn1}
           title={"Proceed Request."}
           showInput={true}
@@ -114,7 +114,7 @@ function Demo() {
             type: requestType;
           }) => handleApiRequest({ btn: "proceed", count, type })}
         />
-        <Button
+        <Request
           isLoading={loading.btn2}
           title={"Submits Availability."}
           defaultCount={4}
@@ -132,7 +132,7 @@ function Demo() {
             type: requestType;
           }) => handleApiRequest({ btn: "update_availability", count, type })}
         />
-        <Button
+        <Request
           isLoading={loading.btn3}
           title={"Coinfirms Interview."}
           defaultCount={2}
@@ -156,7 +156,7 @@ function Demo() {
             })
           }
         />
-        <Button
+        <Request
           isLoading={loading.btn4}
           title={"Requests for Rescedule"}
           defaultCount={1}
@@ -169,7 +169,7 @@ function Demo() {
             })
           }
         />
-        <Button
+        <Request
           isLoading={loading.btn5}
           defaultCount={2}
           title={"Cancels Interview."}
@@ -183,25 +183,30 @@ function Demo() {
           }
         />
       </div>
-      <div className="console">
-        <h5>Console</h5>
-        <div>
-          {consoleMessage.length
-            ? consoleMessage.map((mes, i) => (
-                <p>
-                  {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
-                </p>
-              ))
-            : "No message"}
+
+      {consoleMessage.length ? (
+        <div className="console">
+          <h5>Console</h5>
+          <div>
+            {consoleMessage.length
+              ? consoleMessage.map((mes, i) => (
+                  <p>
+                    {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
+                  </p>
+                ))
+              : "No message"}
+          </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
 
 export default Demo;
 
-const Button = ({
+const Request = ({
   title,
   isLoading,
   handleSubmit,
@@ -256,7 +261,7 @@ const Button = ({
         />
       )}
       <button
-        className={isLoading ? `radix-button visible` : "radix-button"}
+        className={isLoading ? `request-button visible` : "request-button"}
         disabled={isLoading}
         onClick={() => handleSubmit({ count, type: selectedOption })}
       >
