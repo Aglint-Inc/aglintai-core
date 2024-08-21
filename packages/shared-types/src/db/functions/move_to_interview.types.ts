@@ -1,3 +1,4 @@
+import { CustomRequestType } from "../common.types";
 import { Database } from "../schema.types";
 import { Custom } from "../utils.types";
 import { CustomRequestPayload } from "./common.types";
@@ -8,7 +9,8 @@ export type CustomMoveToInterview = FunctionType<
   Custom<
     Database["public"]["Functions"]["move_to_interview"]["Args"],
     {
-      requests?: CustomRequestPayload[];
+      requests?: (CustomRequestPayload &
+        Pick<CustomRequestType, "application_id">)[];
     }
   >,
   {}
