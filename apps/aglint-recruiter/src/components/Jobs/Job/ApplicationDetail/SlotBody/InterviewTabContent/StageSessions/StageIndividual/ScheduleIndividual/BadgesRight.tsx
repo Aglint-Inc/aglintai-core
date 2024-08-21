@@ -8,14 +8,12 @@ import {
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { StageWithSessions } from '@/src/queries/application';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 
 function BadgesRight({
   session,
 }: {
   session: StageWithSessions[0]['sessions'][0];
 }) {
-  const { data: allIntegrations } = useAllIntegrations();
   let allUsers = session.users;
   const interview_meeting = session.interview_meeting;
   const interview_module = session.interview_module;
@@ -52,13 +50,7 @@ function BadgesRight({
     (user) => !!user?.interview_module_relation?.pause_json,
   );
   const calenderNotConnectedUser = users.filter(
-    (user) =>
-      !(
-        (!!allIntegrations?.service_json &&
-          allIntegrations?.google_workspace_domain?.split('//')[1] ===
-            user.user_details.email.split('@')[1]) ||
-        !!(user.user_details.schedule_auth as any)?.access_token
-      ),
+    (user) => !user.user_details.is_calendar_connected,
   );
 
   return (
