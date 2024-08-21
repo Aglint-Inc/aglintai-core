@@ -169,10 +169,6 @@ export const useApplicationContext = (
       };
 
       const res = await axios.post(
-        '/api/request/candidate-request',
-        creatReqPayload,
-      );
-      const res = await axios.post(
         '/api/request/schedule-request',
         creatReqPayload,
       );
