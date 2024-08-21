@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
 import { registerMember } from '@/src/pages/api/invite_user';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { createAdminClient } from '@/src/utils/supabase/server';
 import timeZone from '@/src/utils/timeZone';
 
 type user = {
@@ -20,6 +20,7 @@ const employment: emp[] = ['fulltime', 'parttime', 'contractor'];
 
 export async function POST(req) {
   try {
+    const supabaseAdmin = createAdminClient();
     const {
       recruiter_id,
       forms,
