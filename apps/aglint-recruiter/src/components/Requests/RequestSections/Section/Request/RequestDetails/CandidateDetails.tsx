@@ -41,7 +41,9 @@ function CandidateDetails({
       icon: 'work',
       text: jobDetails.job_title,
       hide: !jobDetails.job_title,
-      route: ROUTES['/jobs/[id]']({ id: jobDetails.id }) + '?tab=overview',
+      route:
+        ROUTES['/jobs/[id]']({ id: jobDetails.id }) +
+        '/candidate-list?section=interview',
     },
     {
       icon: 'calendar_today',

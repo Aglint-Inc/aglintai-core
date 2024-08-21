@@ -22,6 +22,10 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     requestQueries.request_progress({ request_id, enabled: collapse }),
   );
 
+  const request_workflow = useQuery(
+    requestQueries.request_workflow({ request_id, enabled: collapse }),
+  );
+
   const handleUpdateRequest = useCallback(
     (
       requestPayload: Parameters<
@@ -66,6 +70,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
 
   return {
     request_progress,
+    request_workflow,
     handleDeleteRequest,
     handleAsyncDeleteRequest,
     handleUpdateRequest,
