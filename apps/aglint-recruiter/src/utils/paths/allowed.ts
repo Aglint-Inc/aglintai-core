@@ -120,5 +120,7 @@ export const allowedPaths = new Set<t>([
   '/api/agent-workflow/interviewer-decline',
   '/api/scheduling/v1/find-replacement-ints',
   '/api/scheduling/v1/event_attendee_status',
+  '/api/scheduling/v1/check_calendar_status',
+  '/api/scheduling/calendar_check_recruiter',
   ...cronPaths,
 ] as t[]);

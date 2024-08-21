@@ -109,7 +109,7 @@ export const navList: {
     route: ROUTES['/workflows'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['workflow_module'],
+    permission: ['manage_workflow'],
     active: ['/workflows', '/workflows/[id]'],
   },
   {

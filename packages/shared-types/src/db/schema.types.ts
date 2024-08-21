@@ -3073,6 +3073,7 @@ export type Database = {
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
+          is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
@@ -3094,6 +3095,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -3115,6 +3117,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null

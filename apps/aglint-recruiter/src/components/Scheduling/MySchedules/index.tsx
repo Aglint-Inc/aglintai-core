@@ -172,11 +172,7 @@ function MySchedule() {
             }
           />
         </ShowCode.When>
-        <ShowCode.When
-          isTrue={
-            !allIntegrations?.service_json || !recruiterUser.schedule_auth
-          }
-        >
+        <ShowCode.Else>
           <MyScheduleLanding
             onClickConnectCalender={{
               onClick: getConsent,
@@ -185,7 +181,7 @@ function MySchedule() {
             isConnectedVisible={!!recruiterUser.schedule_auth}
             isConnectCalenderVisible={!recruiterUser.schedule_auth}
           />
-        </ShowCode.When>
+        </ShowCode.Else>
       </ShowCode>
     </>
   );
