@@ -102,6 +102,7 @@ export const allowedPaths = new Set<t>([
   '/api/automation/seed_default_data',
   '/api/automation/get_users',
   '/api/automation/add_users',
+  '/api/automation/update_user_to_active',
   '/api/emails/sendSelfScheduleRequest_email_applicant',
   '/api/emails/interviewCancel_email_applicant',
   '/api/emails/selfScheduleReminder_email_applicant',
