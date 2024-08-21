@@ -6,7 +6,6 @@ import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 import Loader from '../../Common/Loader';
 import CancelReasons from './CancelReasons';
 import { Interviewers } from './interviewers';
-import InterviewMeetingStatus from './InterviewMeetingStatus';
 import { InterviewTypes } from './interviewTypes';
 import { Leaderboard } from './leaderboard';
 import { Tabs } from './tabs';
@@ -14,6 +13,7 @@ import { TrainingProgress } from './trainingProgress';
 import { RecentDeclines } from './recentDeclines';
 import { RecentReschedules } from './recentReschedules';
 import { CompletedInterviews } from './completedInterviews';
+import { DeclineRequests } from './declineRequests';
 
 const SchedulingDashboard = memo(() => {
   const { enabled } = useSchedulingAnalytics();
@@ -28,7 +28,7 @@ const SchedulingDashboard = memo(() => {
       }
       slotGridInterviewDetail={
         <>
-          <InterviewMeetingStatus />
+          <DeclineRequests />
           <InterviewTypes />
         </>
       }
