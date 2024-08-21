@@ -6,9 +6,7 @@ import {
   interviewCancelReasons,
   userDetails,
 } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
-import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
-import { getFullName } from '@/src/utils/jsonResume';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type ApiInterviewStages = {
@@ -48,63 +46,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchDetails = async (application_id: string) => {
-  const [resApplicationDetails, resStages] = await Promise.all([
-    fetchApplicationDetails({
-      application_id,
-      supabaseCaller: supabaseAdmin,
-    }),
+  const [resStages] = await Promise.all([
     fetchSessionDetails({
       application_id,
       supabaseCaller: supabaseAdmin,
     }),
   ]);
 
-  const recruiter = resApplicationDetails?.public_jobs?.recruiter;
-
   const reducedStages = resStages.map((stage) => {
     const sessions = stage.sessions.map((session) => {
-      let banners: BannerType[] = [];
-      if (session.users.length === 0) {
-        banners.push({
-          type: 'no_interviewers',
-          message: 'No Interviewers',
-          color: 'error',
-          session_relation_id: null,
-          user_id: null,
-          user_message: 'No interviewers assigned to this stage.',
-        });
-      }
       return {
         ...session,
-        banners,
         users: session.users.map((user) => {
-          const pause_json = user.interview_module_relation?.pause_json;
-          const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
-          const isCalendarConnected =
-            (!!recruiter.integrations.service_json &&
-              recruiter.integrations.google_workspace_domain.split('//')[1] ===
-                user.user_details.email.split('@')[1]) ||
-            !!(user.user_details.schedule_auth as any)?.access_token;
-          if (!isCalendarConnected) {
-            banners.push({
-              type: 'calender',
-              message: 'Calendar Not Connected',
-              color: 'error',
-              session_relation_id: user.interview_session_relation.id,
-              user_id: user.user_details.user_id,
-              user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)}'s calendar is not connected.`,
-            });
-          }
-          if (isPaused) {
-            banners.push({
-              type: 'paused',
-              message: 'Interviewer Paused',
-              color: 'warning',
-              session_relation_id: user.interview_session_relation.id,
-              user_id: user.user_details.user_id,
-              user_message: `${getFullName(user.user_details.first_name, user.user_details.last_name)} is paused.`,
-            });
-          }
           return {
             ...user,
             user_details: {
@@ -200,6 +153,8 @@ const fetchSessionDetails = async ({
   return reducedPlan;
 };
 
+
+// eslint-disable-next-line no-unused-vars
 const fetchApplicationDetails = async ({
   application_id,
   supabaseCaller,

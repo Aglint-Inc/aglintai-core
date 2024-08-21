@@ -11,5 +11,6 @@ export type CustomRequestPayload = Required<
     | "priority"
     | "schedule_end_date"
     | "schedule_start_date"
+    | "application_id"
   >
 >;

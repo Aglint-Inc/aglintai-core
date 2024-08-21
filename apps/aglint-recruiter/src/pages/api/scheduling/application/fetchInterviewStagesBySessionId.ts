@@ -49,18 +49,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchDetails = async (application_id: string, session_ids: string[]) => {
-  const [resApplicationDetails, resSessions] = await Promise.all([
-    fetchApplicationDetails({
-      application_id,
-      supabaseCaller: supabaseAdmin,
-    }),
+  const [resSessions] = await Promise.all([
     fetchSessionDetails({
       session_ids,
       supabaseCaller: supabaseAdmin,
     }),
   ]);
-
-  const recruiter = resApplicationDetails?.public_jobs?.recruiter;
 
   const sessions = resSessions.map((session) => {
     let banners: BannerType[] = [];
@@ -80,11 +74,7 @@ const fetchDetails = async (application_id: string, session_ids: string[]) => {
       users: session.users.map((user) => {
         const pause_json = user.interview_module_relation?.pause_json;
         const isPaused = !!pause_json; //null check needed because debrief doesnt have module relation
-        const isCalendarConnected =
-          (!!recruiter.integrations.service_json &&
-            recruiter.integrations.google_workspace_domain.split('//')[1] ===
-              user.user_details.email.split('@')[1]) ||
-          !!(user.user_details.schedule_auth as any)?.access_token;
+        const isCalendarConnected = user.user_details.is_calendar_connected;
         if (!isCalendarConnected) {
           banners.push({
             type: 'calender',
@@ -175,22 +165,4 @@ const fetchSessionDetails = async ({
   });
 
   return reducedPlan;
-};
-
-const fetchApplicationDetails = async ({
-  application_id,
-  supabaseCaller,
-}: {
-  application_id: string;
-  supabaseCaller: SupabaseType;
-}) => {
-  const { data } = await supabaseCaller
-    .from('applications')
-    .select(
-      `id,public_jobs(recruiter!public_jobs_recruiter_id_fkey(id,integrations(service_json,google_workspace_domain))),interview_schedule(id,schedule_name)`,
-    )
-    .eq('id', application_id)
-    .throwOnError();
-
-  return data[0];
 };

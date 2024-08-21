@@ -31,7 +31,8 @@ const Requests = () => {
     filters.status.length === 0 &&
     filters.type.length === 0 &&
     !filters.title &&
-    !filters.created_at;
+    !filters.created_at &&
+    filters.jobs.length === 0;
 
   const showEmptyPage =
     !isPlaceholderData &&

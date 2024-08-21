@@ -57,7 +57,7 @@ export const fetchApplicationDetails = async ({
   return data[0];
 };
 
-export const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;
+export const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth,is_calendar_connected)`;
 export const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
 
 export const fetchSessionDetailsFromSchedule = async ({

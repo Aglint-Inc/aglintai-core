@@ -2,26 +2,25 @@ import { NextResponse } from 'next/server';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-type emailsToUpdate = {
-  email: string;
+type usersToUpdate = {
   user_id: string;
 };
 
 export async function POST(req) {
   const {
     emailAuthData,
-    emailsToUpdate,
-  }: { emailAuthData: any[]; emailsToUpdate: emailsToUpdate[] } =
+    usersToUpdate,
+  }: { emailAuthData: any[]; usersToUpdate: usersToUpdate[] } =
     await req.json();
   try {
-    for (const user of emailsToUpdate) {
+    for (const user_id of usersToUpdate) {
       const { error } = await supabaseAdmin
         .from('recruiter_user')
         .update({
           schedule_auth:
             emailAuthData[getRandomValue(0, emailAuthData.length - 1)],
         })
-        .eq('user_id', user.user_id);
+        .eq('user_id', user_id);
       if (error) {
         throw new Error(error.message);
       }

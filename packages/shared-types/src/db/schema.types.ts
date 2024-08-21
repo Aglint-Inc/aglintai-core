@@ -2605,6 +2605,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator: string | null
           remote_id: string | null
+          remote_sync_time: string | null
           scoring_criteria_loading: boolean
           screening_questions: Json[] | null
           screening_setting: Json | null
@@ -2645,6 +2646,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -2685,6 +2687,7 @@ export type Database = {
           recruiter_id?: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -3098,6 +3101,7 @@ export type Database = {
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
+          is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
@@ -3119,6 +3123,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -3140,6 +3145,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -4378,6 +4384,7 @@ export type Database = {
           completed_meeting_count: number | null
           email: string | null
           first_name: string | null
+          is_calendar_connected: boolean | null
           last_name: string | null
           position: string | null
           profile_image: string | null
@@ -5346,6 +5353,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_user_auth: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string
@@ -5993,6 +6004,10 @@ export type Database = {
           jobid: string
         }
         Returns: Json
+      }
+      greenhouse_sync: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>

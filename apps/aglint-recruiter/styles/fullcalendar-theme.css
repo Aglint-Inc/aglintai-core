@@ -262,4 +262,18 @@
 .fc-daygrid-dot-event:hover {
   background-color: none;
 }
-/* -------------------------------------- */
+/* border radius -------------------------------------- */
+
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section {
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the border-radius is applied correctly */
+}
+
+.fc-list,
+.fc-list > * {
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the border-radius is applied correctly */
+}
+
+/* ------------------------------------------------------- */

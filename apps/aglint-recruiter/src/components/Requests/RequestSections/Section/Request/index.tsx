@@ -41,7 +41,7 @@ export const Request = (
             onMouseLeave={() => setIsHover(false)}
           >
             <RequestCard
-              isNewBadgeVisible={props.is_new}
+              isNewBadgeVisible={false}
               slotBadgeNew={
                 <GlobalBadge
                   size={1}

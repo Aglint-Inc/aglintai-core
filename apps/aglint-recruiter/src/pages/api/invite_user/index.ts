@@ -1,5 +1,6 @@
 import { DB, RecruiterUserType } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
@@ -34,6 +35,7 @@ export default async function handler(
       try {
         for (let user of users) {
           const recUser = await registerMember(user, recruiter_id, id);
+          checkCalendarStatus(recUser.user_id);
           const { error: resetEmail } =
             await supabase.auth.resetPasswordForEmail(recUser.email, {
               redirectTo,
@@ -56,6 +58,13 @@ export default async function handler(
     ['users', 'recruiter_id'],
   );
 }
+
+const checkCalendarStatus = async (user_id: string) => {
+  axios.post(
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/check_calendar_status`,
+    { user_id },
+  );
+};
 
 export async function registerMember(
   user: Omit<InviteUserAPIType['request']['users'][number], 'manager_id'> & {

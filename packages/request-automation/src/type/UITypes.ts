@@ -15,7 +15,6 @@ export type tabs = "automation" | "seed" | "reset" | "mode";
 //------------------------------------------------
 export type seedTabs =
   | "company"
-  | "users"
   | "interview_type"
   | "jobs"
   | "workflow"
@@ -63,4 +62,27 @@ export type interviewType = {
   created_by: string;
   is_archived: boolean;
   department_id: number;
+};
+
+// ------------------------------------------------ company
+
+type SocialLinks = {
+  custom: any; // For custom social links or additional fields
+  twitter: string;
+  youtube: string;
+  facebook: string;
+  linkedin: string;
+  instagram: string;
+};
+
+export type CompanyProfile = {
+  slug: string;
+  name: string;
+  profile_image: string;
+  company_website: string;
+  industry: string;
+  logo: string;
+  phone_number: string;
+  employee_size: string;
+  socials: SocialLinks;
 };

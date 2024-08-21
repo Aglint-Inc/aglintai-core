@@ -1,10 +1,12 @@
+import { DatabaseTable } from '@aglint/shared-types';
+
 export type GreenhouseAPI = {
   GET: {
     request: {};
-    response: Record<string, boolean>;
+    response: DatabaseTable['integrations']['greenhouse_metadata'];
   };
   POST: {
-    request: Record<string, boolean>;
-    response: Record<string, boolean>;
+    request: DatabaseTable['integrations']['greenhouse_metadata'];
+    response: DatabaseTable['integrations']['greenhouse_metadata'];
   };
 };
