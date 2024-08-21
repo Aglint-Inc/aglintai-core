@@ -112,6 +112,26 @@ export const requestQueries = {
             .throwOnError()
         ).data,
     }),
+  request_workflow: ({
+    request_id,
+    enabled,
+  }: {
+    request_id: string;
+    enabled?: boolean;
+  }) =>
+    queryOptions({
+      enabled: !!request_id && enabled,
+      gcTime: request_id ? GC_TIME : 0,
+      queryKey: [...requestQueries.requests_queryKey(), { request_id }],
+      queryFn: async () =>
+        (
+          await supabase
+            .from('workflow_request_relation')
+            .select('*, workflow(*, workflow_action(*))')
+            .eq('request_id', request_id)
+            .throwOnError()
+        ).data,
+    }),
 } as const;
 
 type Options = {
@@ -402,7 +422,7 @@ export type GetRequestParams = {
 };
 
 const REQUEST_SELECT =
-  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name,position,profile_image), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title,departments(name),office_locations(city,country)), candidates(id,first_name, last_name,current_job_title,city,state,country,email,phone,linkedin,avatar))';
+  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name,position,profile_image), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title,departments(name),office_locations(city,country),workflow_job_relation(*)), candidates(id,first_name, last_name,current_job_title,city,state,country,email,phone,linkedin,avatar))';
 
 export const getUnfilteredRequests = async ({
   payload: { assigner_id },

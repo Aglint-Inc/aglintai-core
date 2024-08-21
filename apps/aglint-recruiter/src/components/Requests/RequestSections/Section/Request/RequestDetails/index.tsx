@@ -12,10 +12,10 @@ import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function RequestDetails({
   request,
@@ -25,6 +25,7 @@ function RequestDetails({
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const { recruiterUser } = useAuthDetails();
+
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
@@ -98,12 +99,14 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress
-            // workflow={}
-            request_type={request.type}
-          />
+          {request.applications.public_jobs.workflow_job_relation.length > 0 ? (
+            <RequestProgress request_type={request.type} />
+          ) : null}
 
-          {Boolean(request.status === 'to_do') && (
+          {Boolean(
+            request.status === 'to_do' &&
+              request.applications.public_jobs.workflow_job_relation.length > 0,
+          ) && (
             <Stack
               direction={'row'}
               justifyContent={'space-between'}
