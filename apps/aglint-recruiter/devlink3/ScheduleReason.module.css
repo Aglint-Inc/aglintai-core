@@ -7,11 +7,18 @@
 }
 
 .tab_wrapper {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+
   display: flex;
   padding-left: var(--space-4);
   justify-content: flex-start;
   align-items: center;
+
   border-bottom: 1px solid var(--neutral-a6);
+
+  background-color: var(--white);
 }
 
 .schedule_reasons {

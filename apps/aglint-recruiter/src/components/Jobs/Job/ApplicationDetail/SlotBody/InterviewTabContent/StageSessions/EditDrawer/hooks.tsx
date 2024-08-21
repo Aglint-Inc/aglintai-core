@@ -1,8 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { applicationQuery } from '@/src/queries/application';
 import {
   EditInterviewSession,
   editInterviewSession,
@@ -21,20 +18,7 @@ import {
   useEditSessionDrawerStore,
 } from './store';
 
-export const useEditSession = () => {
-  const router = useRouter();
-  const application_id = router.query.application_id as string;
-  const job_id = router.query.id as string;
-  const { data: stages, refetch } = useQuery(
-    applicationQuery.interview({
-      application_id,
-      job_id,
-      enabled: true,
-    }),
-  );
-
-  const allSessions = stages.flatMap((stage) => stage.sessions);
-
+export const useEditSession = ({ refetch }: { refetch: () => void }) => {
   const {
     editSession,
     selectedInterviewers,
@@ -61,11 +45,7 @@ export const useEditSession = () => {
     }
   }, [editSession?.interview_session?.id]);
 
-  const isDebrief = allSessions
-    .filter(
-      (ses) => editSession?.interview_session.id === ses.interview_session.id,
-    )
-    .some((ses) => ses.interview_session.session_type === 'debrief');
+  const isDebrief = editSession?.interview_session.session_type === 'debrief';
 
   const handleSave = async () => {
     try {

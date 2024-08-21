@@ -13,7 +13,7 @@ import SideDrawerEdit from './StageSessions/EditDrawer';
 
 function InterviewTabContent() {
   const {
-    interview: { data: stages, isLoading: isLoadingSession },
+    interview: { data: stages, isLoading: isLoadingSession, refetch },
   } = useApplication();
 
   useInterviewModules(); //needed to fetch interview modules which is used in edit interview plan
@@ -34,7 +34,7 @@ function InterviewTabContent() {
 
   return (
     <>
-      <SideDrawerEdit />
+      <SideDrawerEdit refetch={refetch} />
       <InterviewPlanApplication
         slotApplicantDetailStage={<StageSessions />}
         slotCandidateInterviewProgress={<Progress />}

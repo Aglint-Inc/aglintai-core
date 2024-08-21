@@ -111,10 +111,8 @@ export default function WorkingHour({ updateSettings, initialData }) {
       <Stack
         width={'700px'}
         overflow={'auto'}
-        padding={'16px'}
         spacing={2}
         borderRadius={'8px'}
-        border={'1px solid var(--neutral-6)'}
         bgcolor={'white'}
         margin={2}
         position={'relative'}
