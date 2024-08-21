@@ -56,7 +56,6 @@ export default async function handler(
         status: 'to_do',
         title: `${getFullName(interviewer.first_name, interviewer.last_name)} Declined ${meeting_details.session_name} with candidate ${getFullName(application.candidates.first_name, application.candidates.last_name)}  Request`,
         type: 'decline_request',
-        application_id: meeting_details.application_id,
       },
       sessions: [parsed.session_id],
     };

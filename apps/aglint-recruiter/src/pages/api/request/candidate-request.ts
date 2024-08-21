@@ -45,7 +45,6 @@ export default async function handler(
         status: 'to_do',
         title: `${candidate_name} Requested for rescheduling Interview`,
         type: 'reschedule_request',
-        application_id: parsed.application_id,
       },
       sessions: parsed.session_ids,
     };

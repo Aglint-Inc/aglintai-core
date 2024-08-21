@@ -110,9 +110,7 @@ const InterviewTab = () => {
                                       )[1] === member.email.split('@')[1] &&
                                       member.schedule_auth === null
                                     }
-                                    isConnectedCalenderVisible={
-                                      member.is_calendar_connected
-                                    }
+                                    // isConnectedCalenderVisible={member}
                                     slotInterviewModules={
                                       <>
                                         <ShowCode>

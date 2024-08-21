@@ -55,7 +55,6 @@ const PERMISSIONS: Permissions = {
   '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
   '/scheduling/application/[application_id]': ['scheduling_module'],
-  '/scheduling/analytics': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
