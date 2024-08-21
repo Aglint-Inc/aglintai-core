@@ -2,9 +2,9 @@
 import { Collapse, Stack } from '@mui/material';
 import { type PropsWithChildren, useState } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
-import { IconButtonSoft } from '@/devlink3/IconButtonSoft';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
@@ -36,7 +36,7 @@ export const Request = (
       >
         <Collapse in={collapse} collapsedSize={24}>
           <Stack
-            gap={'10px'}
+            gap={'16px'}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
           >
@@ -62,11 +62,11 @@ export const Request = (
                       e.stopPropagation();
                     }}
                   >
-                    <Stack width={'24px'} height={'24px'}>
+                    <Stack height={'24px'}>
                       {isHover && (
                         <Stack>
-                          <IconButtonSoft
-                            iconName='arrow_outward'
+                          <ButtonSoft
+                            textButton='View Details'
                             color={'neutral'}
                             size={1}
                             onClickButton={{
