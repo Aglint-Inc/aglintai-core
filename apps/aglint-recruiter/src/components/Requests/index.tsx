@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { NavigationPill } from '@/devlink2/NavigationPill';
-import { RequestAgent } from '@/devlink2/RequestAgent';
 import { RequestAgentEmpty } from '@/devlink2/RequestAgentEmpty';
 import { RequestsWrapper } from '@/devlink2/RequestsWrapper';
 import { useRequests } from '@/src/context/RequestsContext';
@@ -10,6 +10,7 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
+import { IconButtonSoft } from '@/devlink3';
 import Loader from '../Common/Loader';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
@@ -134,82 +135,120 @@ const Requests = () => {
       });
     });
   }
+  const [openChat, setOpenChat] = useState(true);
   return (
-    <RequestAgent
-      slotRequest={
-        <ShowCode>
-          <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
-            <Loader />
-          </ShowCode.When>
-          <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
-            <RequestAgentEmpty />
-          </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'requests'}>
-            <ShowCode>
-              <RequestsWrapper
-                slotFilter={
-                  <>
-                    <ButtonSoft
-                      size={1}
-                      color={'neutral'}
-                      isLeftIcon={true}
-                      iconName={'arrow_back'}
-                      textButton='Dashboard'
-                      onClickButton={{
-                        onClick: () =>
-                          setQueryParams({ tab: 'dashboard', section: '' }),
-                      }}
-                    />
-                    {<FilterAndSorting />}
-                  </>
-                }
-                slotRequestSection={<RequestSections />}
-                slotNavigationPills={
-                  <>
-                    {Object.entries(requestList ?? {}).map(
-                      ({ '0': item, '1': value }, i) => (
-                        <NavigationPill
-                          attributeValue={item}
-                          textCount={value.length}
-                          key={item}
-                          iconName={
-                            sectionDefaultsData[Number(i)].sectionIconName
-                          }
-                          onClickPill={{
-                            onClick: () => {
-                              gotoSection();
-                            },
-                          }}
-                          textPill={capitalizeFirstLetter(item)}
-                        />
-                      ),
-                    )}
-                    <NavigationPill
-                      showNumberCount={false}
-                      attributeValue={'back'}
-                      textCount={''}
-                      iconName={'arrow_warm_up'}
-                      onClickPill={{
-                        onClick: gotoSection,
-                      }}
-                      textPill={capitalizeFirstLetter('back_to_top')}
-                    />
-                  </>
-                }
-              />
-            </ShowCode>
-          </ShowCode.When>
-          <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
-            <Dashboard />
-          </ShowCode.When>
-        </ShowCode>
-      }
-      slotAglintAiChat={
+    <>
+      <Stack
+        onClick={() => {
+          setOpenChat(!openChat);
+        }}
+        position={'absolute'}
+        top={'14px'}
+        left={'58px'}
+        right={0}
+        width={'50px'}
+        zIndex={9999}
+        bgcolor={'white'}
+        pl={'20px'}
+      >
+        <IconButtonSoft
+          iconName={'dock_to_right'}
+          color={'neutral'}
+          size={1}
+          iconSize={4}
+        />
+      </Stack>
+      <Stack direction='row' width={'100%'}>
         <AgentIEditorProvider>
-          <AgentChats />
+          <Stack
+            sx={{
+              width: openChat ? '450px' : '0px',
+              transform: openChat ? 'translateX(0)' : 'translateX(-450px)',
+              transition: 'all 0.3s ease',
+            }}
+            direction={'row'}
+            justifyContent={'start'}
+            alignItems={'end'}
+          >
+            <AgentChats />
+          </Stack>
         </AgentIEditorProvider>
-      }
-    />
+
+        <Stack width={openChat ? 'calc(100% - 400px)' : '100%'}>
+          <ShowCode>
+            <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
+              <Loader />
+            </ShowCode.When>
+            <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
+              <RequestAgentEmpty />
+            </ShowCode.When>
+            <ShowCode.When isTrue={queryParams.tab === 'requests'}>
+              <ShowCode>
+                <RequestsWrapper
+                  slotFilter={
+                    <Stack
+                      direction={'row'}
+                      justifyContent={'space-between'}
+                      ml={!openChat ? '28px' : '0px'}
+                      width={'100%'}
+                    >
+                      <ButtonSoft
+                        size={1}
+                        color={'neutral'}
+                        isLeftIcon={true}
+                        iconName={'arrow_back'}
+                        textButton='Dashboard'
+                        onClickButton={{
+                          onClick: () =>
+                            setQueryParams({ tab: 'dashboard', section: '' }),
+                        }}
+                      />
+                      {<FilterAndSorting />}
+                    </Stack>
+                  }
+                  slotRequestSection={<RequestSections />}
+                  slotNavigationPills={
+                    <>
+                      {Object.entries(requestList ?? {}).map(
+                        ({ '0': item, '1': value }, i) => (
+                          <NavigationPill
+                            attributeValue={item}
+                            textCount={value.length}
+                            key={item}
+                            iconName={
+                              sectionDefaultsData[Number(i)].sectionIconName
+                            }
+                            onClickPill={{
+                              onClick: () => {
+                                gotoSection();
+                              },
+                            }}
+                            textPill={capitalizeFirstLetter(item)}
+                          />
+                        ),
+                      )}
+                      <NavigationPill
+                        showNumberCount={false}
+                        attributeValue={'back'}
+                        textCount={''}
+                        iconName={'arrow_warm_up'}
+                        onClickPill={{
+                          onClick: gotoSection,
+                        }}
+                        textPill={capitalizeFirstLetter('back_to_top')}
+                      />
+                    </>
+                  }
+                />
+              </ShowCode>
+            </ShowCode.When>
+            <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
+              <Dashboard />
+            </ShowCode.When>
+          </ShowCode>
+        </Stack>
+      </Stack>
+    </>
   );
 };
 
