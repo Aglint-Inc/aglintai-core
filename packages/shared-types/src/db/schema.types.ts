@@ -1269,7 +1269,6 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
-          request_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1287,7 +1286,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1305,7 +1303,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1358,13 +1355,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "interview_meeting_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
-            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
@@ -2465,7 +2455,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2: string | null
-          name: string
+          name: string | null
           recruiter_id: string
           region: string
           remote_id: string | null
@@ -2479,7 +2469,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2?: string | null
-          name: string
+          name?: string | null
           recruiter_id: string
           region: string
           remote_id?: string | null
@@ -2493,7 +2483,7 @@ export type Database = {
           is_headquarter?: boolean
           line1?: string
           line2?: string | null
-          name?: string
+          name?: string | null
           recruiter_id?: string
           region?: string
           remote_id?: string | null
@@ -2615,6 +2605,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator: string | null
           remote_id: string | null
+          remote_sync_time: string | null
           scoring_criteria_loading: boolean
           screening_questions: Json[] | null
           screening_setting: Json | null
@@ -2655,6 +2646,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -2695,6 +2687,7 @@ export type Database = {
           recruiter_id?: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -3108,6 +3101,7 @@ export type Database = {
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
+          is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
@@ -3129,6 +3123,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -3150,6 +3145,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -5356,6 +5352,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_user_auth: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string
@@ -6004,6 +6004,10 @@ export type Database = {
         }
         Returns: Json
       }
+      greenhouse_sync: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -6084,7 +6088,7 @@ export type Database = {
         Args: {
           applications?: string[]
           sessions?: string[]
-          request?: Json
+          requests?: Json[]
         }
         Returns: undefined
       }
@@ -6493,7 +6497,7 @@ export type Database = {
         | "interviewEnd_email_organizerForMeetingStatus"
         | "onRequestSchedule_emailAgent_getCandidateAvailability"
         | "onRequestSchedule_emailLink_getCandidateAvailability"
-        | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
+        | "onRequestSchedule_agent_sendSelfScheduleRequest"
         | "onReceivingAvailReq_agent_confirmSlot"
         | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
         | "onSelfScheduleReqAgent_PhoneAgent_SelfSchedule"
