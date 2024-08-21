@@ -72,66 +72,66 @@ function CreateSchedulePopUp({
     }
   }
 
-  return (
-    <Collapse in={selectedItems?.schedule_type[0]?.id === 'schedule'}>
-      <Stack px={'16px'} position={'relative'} top={'-10px'}>
-        <AiChatSuggest
-          textHeader={'Schedule an interview'}
-          slotList={
-            <Stack
-              height={'100%'}
-              width={'100%'}
-              direction={'column'}
-              justifyContent={'space-between'}
-              alignItems={'flex-end'}
-              p={1}
-            >
-              <Stack>
-                <Text
-                  size={1}
-                  color={'neutral'}
-                  content={`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
-                />
-                <SelectScheduleDate
-                  scheduleDate={{
-                    start_date: selectedDateRange.start_date,
-                    end_date: selectedDateRange.end_date,
-                  }}
-                  onChange={(e: any) => {
-                    if (e[1]) {
-                      setSelectedDateRange({
-                        start_date: e[0],
-                        end_date: e[1],
-                      });
-                    } else {
-                      setSelectedDateRange({
-                        start_date: e[0],
-                        end_date: null,
-                      });
-                    }
-                  }}
-                />
-              </Stack>
-              <ButtonSoft
-                isLoading={loading}
-                isDisabled={
-                  Boolean(!selectedItems?.interview_name.length) ||
-                  Boolean(!selectedItems?.applicant_name.length)
-                }
-                iconName={'send'}
-                isRightIcon={true}
+  return selectedItems?.schedule_type[0]?.id === 'schedule' &&
+    selectedItems.applicant_name[0]?.id &&
+    !!selectedItems.interview_name.length ? (
+    <Stack px={'16px'} position={'relative'} top={'-10px'}>
+      <AiChatSuggest
+        textHeader={'Schedule an interview'}
+        slotList={
+          <Stack
+            height={'100%'}
+            width={'100%'}
+            direction={'column'}
+            justifyContent={'space-between'}
+            alignItems={'flex-end'}
+            p={1}
+          >
+            <Stack>
+              <Text
                 size={1}
-                textButton='Schedule'
-                onClickButton={{
-                  onClick: createNewRequest,
+                color={'neutral'}
+                content={`Aglint AI will ${assignerText} to ${candidate} to get ${scheduleType} for the ${interviewName} interview between. `}
+              />
+              <SelectScheduleDate
+                scheduleDate={{
+                  start_date: selectedDateRange.start_date,
+                  end_date: selectedDateRange.end_date,
+                }}
+                onChange={(e: any) => {
+                  if (e[1]) {
+                    setSelectedDateRange({
+                      start_date: e[0],
+                      end_date: e[1],
+                    });
+                  } else {
+                    setSelectedDateRange({
+                      start_date: e[0],
+                      end_date: null,
+                    });
+                  }
                 }}
               />
             </Stack>
-          }
-        />
-      </Stack>
-    </Collapse>
-  );
+            <ButtonSoft
+              isLoading={loading}
+              isDisabled={
+                Boolean(!selectedItems?.interview_name.length) ||
+                Boolean(!selectedItems?.applicant_name.length)
+              }
+              iconName={'send'}
+              isRightIcon={true}
+              size={1}
+              textButton='Create Request'
+              onClickButton={{
+                onClick: createNewRequest,
+              }}
+            />
+          </Stack>
+        }
+      />
+    </Stack>
+  ) : null;
 }
 
 export default CreateSchedulePopUp;

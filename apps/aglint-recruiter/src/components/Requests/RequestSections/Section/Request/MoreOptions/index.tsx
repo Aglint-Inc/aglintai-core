@@ -1,7 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
-import { Avatar, List, ListItem, ListItemButton, Stack } from '@mui/material';
-import { useState } from 'react';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemButton,
+  Stack,
+  TextField,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
@@ -16,6 +23,7 @@ import { useRequests } from '@/src/context/RequestsContext';
 import { Request } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 type actionType = Request['status'] | 'change_assignee';
 
@@ -135,7 +143,14 @@ function MembersPopUps({
   openAssigneePopup?: boolean;
   selectedRequest?: Request;
 }) {
-  const { data: members } = useMemberList();
+  const { data: members, status } = useMemberList();
+  const [filteredMembers, setFilteredMembers] = useState<MemberType[]>([]);
+
+  useEffect(() => {
+    if (members) {
+      setFilteredMembers(members);
+    }
+  }, [members]);
   const [selectedMember, setSelectedMember] = useState<MemberType>(null);
   const { handleAsyncUpdateRequest } = useRequests();
   return (
@@ -180,58 +195,86 @@ function MembersPopUps({
         // textPopupDescription={`Are you sure you want to reassign this request to ?`}
         textPopupDescription={`${selectedRequest?.title}`}
         slotWidget={
-          members ? (
-            <Stack maxHeight={'300px'} overflow={'auto'} width={'375px'}>
-              {members
-                .filter(
-                  ({ user_id }) => user_id !== selectedRequest?.assignee_id,
-                )
-                .map((member) => (
-                  <AssignedToList
-                    key={member.user_id}
-                    onClickCard={{
-                      onClick: () => {
-                        setSelectedMember(member);
-                      },
-                      style: {
-                        background:
-                          selectedMember?.user_id === member.user_id
-                            ? 'rgba(0, 0, 0, 0.08)'
-                            : 'none',
-                        borderRadius: '4px',
-                      },
-                    }}
-                    // onClickCard={{
-                    //   onClick: async () => {
-                    //     setAnchorEl(null);
-                    //     await handleAsyncUpdateRequest({
-                    //       payload: {
-                    //         requestId: String(query?.id),
-                    //         requestPayload: {
-                    //           assignee_id: member.user_id,
-                    //         },
-                    //       },
-                    //       loading: false,
-                    //       toast: false,
-                    //     });
-                    //   },
-                    // }}
-                    textName={getFullName(member.first_name, member.last_name)}
-                    textRole={capitalizeFirstLetter(member.role)}
-                    slotImage={
-                      <Avatar src={member.profile_image} variant='rounded' />
-                    }
-                  />
-                ))}
-            </Stack>
-          ) : (
-            <Stack height={'300px'} overflow={'auto'} gap={1} width={'375px'}>
-              <RequestCardSkeleton />
-              <RequestCardSkeleton />
-              <RequestCardSkeleton />
-              <RequestCardSkeleton />
-            </Stack>
-          )
+          <>
+            <TextField
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={true}
+              fullWidth
+              sx={{
+                p: '10px',
+              }}
+              placeholder='Search by name.'
+              onChange={(e) => {
+                const text = String(e.target.value).toLowerCase();
+                setFilteredMembers(
+                  members.filter((ele) =>
+                    ele.first_name.toLowerCase().includes(text),
+                  ),
+                );
+              }}
+            />
+            {filteredMembers.length === 0 && (
+              <GlobalEmptyState
+                iconName={'Search'}
+                textDesc={'No members found'}
+              />
+            )}
+            {status === 'success' ? (
+              <Stack maxHeight={'300px'} overflow={'auto'} width={'375px'}>
+                {filteredMembers
+                  .filter(
+                    ({ user_id }) => user_id !== selectedRequest?.assignee_id,
+                  )
+                  .map((member) => (
+                    <AssignedToList
+                      key={member.user_id}
+                      onClickCard={{
+                        onClick: () => {
+                          setSelectedMember(member);
+                        },
+                        style: {
+                          background:
+                            selectedMember?.user_id === member.user_id
+                              ? 'rgba(0, 0, 0, 0.08)'
+                              : 'none',
+                          borderRadius: '4px',
+                        },
+                      }}
+                      // onClickCard={{
+                      //   onClick: async () => {
+                      //     setAnchorEl(null);
+                      //     await handleAsyncUpdateRequest({
+                      //       payload: {
+                      //         requestId: String(query?.id),
+                      //         requestPayload: {
+                      //           assignee_id: member.user_id,
+                      //         },
+                      //       },
+                      //       loading: false,
+                      //       toast: false,
+                      //     });
+                      //   },
+                      // }}
+                      textName={getFullName(
+                        member.first_name,
+                        member.last_name,
+                      )}
+                      textRole={capitalizeFirstLetter(member.role)}
+                      slotImage={
+                        <Avatar src={member.profile_image} variant='rounded' />
+                      }
+                    />
+                  ))}
+              </Stack>
+            ) : (
+              <Stack height={'300px'} overflow={'auto'} gap={1} width={'375px'}>
+                <RequestCardSkeleton />
+                <RequestCardSkeleton />
+                <RequestCardSkeleton />
+                <RequestCardSkeleton />
+              </Stack>
+            )}
+          </>
         }
         textPopupButton={'Change Assignee'}
       />

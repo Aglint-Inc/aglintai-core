@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
-import { Avatar, Popover, Stack } from '@mui/material';
+import { Avatar, Popover, Stack, TextField } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
@@ -14,6 +14,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 function MemberList({
   members,
@@ -32,6 +33,12 @@ function MemberList({
     setAnchorEl(event.currentTarget);
   };
 
+  const [filteredMembers, setFilteredMembers] = useState<MemberType[]>([]);
+  useEffect(() => {
+    if (members) {
+      setFilteredMembers(members);
+    }
+  }, [members]);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -71,8 +78,28 @@ function MemberList({
           horizontal: 'left',
         }}
       >
+        <TextField
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus={true}
+          fullWidth
+          sx={{
+            p: '10px',
+          }}
+          placeholder='Search by name.'
+          onChange={(e) => {
+            const text = String(e.target.value).toLowerCase();
+            setFilteredMembers(
+              members.filter((ele) =>
+                ele.first_name.toLowerCase().includes(text),
+              ),
+            );
+          }}
+        />
+        {filteredMembers.length === 0 && (
+          <GlobalEmptyState iconName={'Search'} textDesc={'No members found'} />
+        )}
         <Stack maxHeight={'300px'} overflow={'auto'} width={'375px'}>
-          {members
+          {filteredMembers
             .filter(({ user_id }) => user_id !== selectedMemberId)
             .map((member) => (
               <AssignedToList

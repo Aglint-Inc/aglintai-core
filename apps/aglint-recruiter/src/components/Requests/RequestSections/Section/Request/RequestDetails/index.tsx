@@ -14,6 +14,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function RequestDetails({
   request,
@@ -22,7 +23,7 @@ function RequestDetails({
   index: number;
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
-  
+  const { recruiterUser } = useAuthDetails();
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
@@ -39,7 +40,7 @@ function RequestDetails({
           />
           <CandidateDetails
             candidateDetails={{
-              name:getFullName(
+              name: getFullName(
                 request.applications.candidates.first_name,
                 request.applications.candidates.last_name,
               ),
@@ -65,12 +66,17 @@ function RequestDetails({
             spacing={1}
             alignItems={'center'}
           >
-            <Text size={1} color={'neutral'} content={'From'} />
+            <Text size={1} color={'neutral'} content={'Created by:'} />
             <Text
-              content={getFullName(
-                request.assigner.first_name,
-                request.assigner.last_name,
-              )}
+              content={
+                getFullName(
+                  request.assigner.first_name,
+                  request.assigner.last_name,
+                ) +
+                `${
+                  request.assigner_id === recruiterUser.user_id ? ' (You)' : ''
+                }`
+              }
             />
           </Stack>
           <Stack
@@ -92,9 +98,9 @@ function RequestDetails({
       slotBody={
         <>
           <RequestProgress
-          
-        // workflow={}
-          request_type={request.type} />
+            // workflow={}
+            request_type={request.type}
+          />
 
           {Boolean(request.status === 'to_do') && (
             <Stack
