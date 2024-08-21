@@ -8,8 +8,11 @@ import {
   useSchedulingAnalytics,
 } from '@/src/context/SchedulingAnalytics';
 
-import Loader from '../../Common/Loader';
 import { Empty } from './common';
+import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
+import { Skeleton } from '@/devlink2/Skeleton';
+
+const LIMIT = 4;
 
 export const Interviewers = memo(() => {
   const { interviewersType, setInterviewersType } = useSchedulingAnalytics();
@@ -76,3 +79,10 @@ const List = ({ data }: Props) => {
     </>
   );
 };
+
+const Loader = memo(() => {
+  return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
+    (_, i) => <InterviewStatsLoader key={i} slotSkeleton={<Skeleton />} />,
+  );
+});
+Loader.displayName = 'Loader';
