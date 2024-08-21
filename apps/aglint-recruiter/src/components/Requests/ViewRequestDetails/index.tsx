@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
@@ -18,12 +18,9 @@ import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
-import axios from '@/src/client/axios';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -31,16 +28,14 @@ import Loader from '../../Common/Loader';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
-import { MemberType } from '../../Scheduling/InterviewTypes/types';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
-import MemberList from './Components/MemberList';
+import MemberList, { useMemberList } from './Components/MemberList';
 import { useMeetingList } from './hooks';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
-  const { recruiter } = useAuthDetails();
   const { query } = useRouter();
 
   const {
@@ -49,28 +44,7 @@ function ViewRequestDetails() {
   } = useRequests();
 
   const { setCollapse } = useRequest();
-
-  const [members, setMembers] = useState<MemberType[]>([]);
-  useEffect(() => {
-    if (recruiter?.id) {
-      fetchAllMembers();
-    }
-  }, [recruiter?.id]);
-
-  const fetchAllMembers = async () => {
-    const bodyParams: BodyParamsFetchUserDetails = {
-      recruiter_id: recruiter.id,
-      includeSupended: true,
-    };
-    const resMem = (await axios.post(
-      '/api/scheduling/fetchUserDetails',
-      bodyParams,
-    )) as { data: MemberType[] };
-
-    if (resMem?.data?.length > 0) {
-      setMembers(resMem.data);
-    }
-  };
+  const { data: members } = useMemberList();
 
   useEffect(() => {
     setCollapse(true);
