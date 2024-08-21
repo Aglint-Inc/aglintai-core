@@ -26,16 +26,25 @@ export type CalEventOrganizerAuthDetails = CalEventAttendeesAuthDetails & {
   timezone: string;
 };
 
-export const bookSession = async (
-  session: SessionCombinationRespType,
-  company_id: string,
-  meeting_id: string,
-  candidate_name: string,
-  job_title: string,
-  cal_event_organizer: CalEventOrganizerAuthDetails,
-  cal_event_attendees: CalEventAttendeesAuthDetails[],
-  company_cred_hash_str: string,
-) => {
+export const bookSession = async ({
+  cal_event_attendees,
+  cal_event_organizer,
+  candidate_name,
+  company_cred_hash_str,
+  company_id,
+  job_title,
+  meeting_id,
+  session,
+}: {
+  session: SessionCombinationRespType;
+  company_id: string;
+  meeting_id: string;
+  candidate_name: string;
+  job_title: string;
+  cal_event_organizer: CalEventOrganizerAuthDetails;
+  cal_event_attendees: CalEventAttendeesAuthDetails[];
+  company_cred_hash_str: string;
+}) => {
   const event_name = `${session.module_name} : ${candidate_name} for ${job_title}`;
   const event_description = getCalEventDescription(meeting_id);
   const calendar_event: NewCalenderEvent = {
@@ -118,6 +127,7 @@ export const bookSession = async (
       await int_cal.authorizeUser();
       await int_cal.importEvent(cal_event, email);
     } catch (err) {
+      console.error(err);
       //ignore if importing the event is failed
     }
   });

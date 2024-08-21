@@ -73,9 +73,9 @@ export const InterviewModules = () => {
       .insert(modulesToInsert);
 
     if (error) {
-      setMessage((pre) => [...pre, "Error inserting modules"]);
+      setMessage((pre) => [...pre, "Error inserting modules."]);
     } else {
-      setMessage((pre) => [...pre, "Modules inserted successfully"]);
+      setMessage((pre) => [...pre, "Modules inserted successfully."]);
     }
 
     setSelectedNewModules([]);
@@ -91,9 +91,9 @@ export const InterviewModules = () => {
       .in("id", modulesToDelete);
 
     if (error) {
-      setMessage((pre) => [...pre, "Error deleting modules"]);
+      setMessage((pre) => [...pre, "Error deleting modules."]);
     } else {
-      setMessage((pre) => [...pre, "Modules deleted successfully"]);
+      setMessage((pre) => [...pre, "Modules deleted successfully."]);
     }
     setSelectedModules([]);
   };

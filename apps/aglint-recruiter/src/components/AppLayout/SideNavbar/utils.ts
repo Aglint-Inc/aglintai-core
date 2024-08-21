@@ -15,43 +15,13 @@ export const navList: {
   active: (typeof PATHS)[number][];
 }[] = [
   {
-    text: 'Aglint AI',
+    text: 'Requests',
     SubComponents: null,
     route: ROUTES['/requests'](),
     comingSoon: false,
     isVisible: true,
     permission: ['task_module'],
     active: ['/requests'],
-  },
-  {
-    text: 'Tasks',
-    SubComponents: null,
-    route: ROUTES['/tasks']() + '?myTasks',
-    comingSoon: false,
-    isVisible: false,
-    permission: ['task_module'],
-    active: ['/tasks'],
-  },
-  {
-    text: 'Candidates',
-    SubComponents: null,
-    route: ROUTES['/scheduling/application'](),
-    comingSoon: false,
-    isVisible: false,
-    permission: ['scheduling_actions'],
-    active: [
-      '/scheduling/application',
-      '/scheduling/application/[application_id]',
-    ],
-  },
-  {
-    text: 'Dashboard',
-    SubComponents: null,
-    route: ROUTES['/scheduling']() + '?tab=dashboard',
-    comingSoon: false,
-    isVisible: true,
-    permission: ['scheduling_module'],
-    active: ['/scheduling'],
   },
   {
     text: 'Jobs',
@@ -73,6 +43,16 @@ export const navList: {
       '/jobs/[id]/candidate-list',
     ],
   },
+  {
+    text: 'Interviews',
+    SubComponents: null,
+    route: ROUTES['/scheduling']() + '?tab=dashboard',
+    comingSoon: false,
+    isVisible: true,
+    permission: ['scheduling_module'],
+    active: ['/scheduling'],
+  },
+  
   {
     text: 'Interviewers',
     SubComponents: null,
@@ -129,5 +109,26 @@ export const navList: {
     isVisible: true,
     permission: ['company_settings_module'],
     active: ['/company'],
+  },
+  {
+    text: 'Tasks',
+    SubComponents: null,
+    route: ROUTES['/tasks']() + '?myTasks',
+    comingSoon: false,
+    isVisible: false,
+    permission: ['task_module'],
+    active: ['/tasks'],
+  },
+  {
+    text: 'Candidates',
+    SubComponents: null,
+    route: ROUTES['/scheduling/application'](),
+    comingSoon: false,
+    isVisible: false,
+    permission: ['scheduling_actions'],
+    active: [
+      '/scheduling/application',
+      '/scheduling/application/[application_id]',
+    ],
   },
 ];

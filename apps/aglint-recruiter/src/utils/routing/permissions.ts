@@ -67,6 +67,16 @@ const PERMISSIONS: Permissions = {
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
 
+  //  For candidateDB module
+
+  '/candidates': ['authorized'],
+  '/candidates/history': ['authorized'],
+  '/candidates/aglintdb': ['authorized'],
+  '/candidates/search': ['authorized'],
+  '/api/ai/create-embeddings': ['authorized'],
+  '/api/candidatedb/query': ['authorized'],
+  '/api/candidatedb/get-company': ['authorized'],
+
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
@@ -164,6 +174,8 @@ const PERMISSIONS: Permissions = {
   '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/sync/greenhouse/full_sync': ['authorized'],
+  '/api/google-calender/watch-changes': ['authorized'],
+  '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/fetchInterviewStagesBySessionId': [
     'scheduling_module',
   ],

@@ -110,12 +110,12 @@ export function InterviewMemberList({
               {slotEditButton}
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_newtab_pill")}
-            tag="div"
-          >
-            {slotNewTabPill ?? <SlotComp componentName="NewTabPill" />}
-          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_newtab_pill")}
+          tag="div"
+        >
+          {slotNewTabPill ?? <SlotComp componentName="NewTabPill" />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "iml-new-body-wrap")}
