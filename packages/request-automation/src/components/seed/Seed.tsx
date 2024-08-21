@@ -28,7 +28,7 @@ const navTabs: {
 ];
 
 function Seed() {
-  const [tab, setTab] = useState<seedTabs>("user");
+  const [tab, setTab] = useState<seedTabs>("company");
   return (
     <div id="seed">
       <div className="nav-menu">
