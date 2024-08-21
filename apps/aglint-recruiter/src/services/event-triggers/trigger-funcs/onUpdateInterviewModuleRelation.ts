@@ -4,7 +4,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { getCompanyWActions } from '../utils/w_actions';
+import { getWActions } from '../utils/w_actions';
 
 export const onUpdateInterviewModuleRelation = async ({
   new_data,
@@ -32,9 +32,9 @@ const addToQueue = async (
       'onQualified_email_trainee',
       'onQualified_slack_trainee',
     ];
-    const { company_actions } = await getCompanyWActions(
-      int_module.recruiter_id,
-    );
+    const { company_actions } = await getWActions({
+      company_id: int_module.recruiter_id,
+    });
 
     const act_promises = company_actions
       .filter((c_a) => trig_actions.find((a) => a === c_a.target_api))

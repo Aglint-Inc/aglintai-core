@@ -4,7 +4,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { getCompanyWActions } from '../utils/w_actions';
+import { getWActions } from '../utils/w_actions';
 
 export const onUpdateInterviewTrainingProgress = async ({
   new_data,
@@ -54,7 +54,9 @@ const addJobsToQueue = async (
       'onTrainingComplete_slack_approverForTraineeMeetingQualification',
     ];
 
-    const { company_actions } = await getCompanyWActions(company_id);
+    const { company_actions } = await getWActions({
+      company_id: company_id,
+    });
 
     const promises = company_actions
       .filter((act) => trig_actions.find((a) => a === act.target_api))

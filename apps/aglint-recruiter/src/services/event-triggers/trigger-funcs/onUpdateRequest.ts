@@ -23,7 +23,7 @@ const triggerActions = async (new_data: DatabaseTable['request']) => {
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
-        .select()
+        .select('*,public_jobs(*)')
         .eq('id', new_data.application_id),
     );
     const req_relns = supabaseWrap(
@@ -33,14 +33,15 @@ const triggerActions = async (new_data: DatabaseTable['request']) => {
         .eq('request_id', new_data.id),
     );
 
-    const { job_level_actions } = await getWActions(applications.job_id);
+    const { request_workflows } = await getWActions({
+      company_id: applications.public_jobs.id,
+    });
 
-    const promises = job_level_actions
+    const promises = request_workflows
       .filter(
         (j_l_a) =>
           (new_data.type === 'schedule_request' &&
-            (j_l_a.workflow.trigger === 'onAvailReqAgent' ||
-              j_l_a.workflow.trigger === 'onSelfScheduleReqAgent')) ||
+            j_l_a.workflow.trigger === 'onRequestSchedule') ||
           (new_data.type === 'reschedule_request' &&
             j_l_a.workflow.trigger === 'onRequestReschedule') ||
           (new_data.type === 'cancel_schedule_request' &&
