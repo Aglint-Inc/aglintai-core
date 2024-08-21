@@ -36,8 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     } else if (
-      meta.target_api.startsWith('onAvailReqAgent') ||
-      meta.target_api.startsWith('onSelfScheduleReqAgent') ||
+      meta.target_api.startsWith('onRequestSchedule') ||
       meta.target_api.startsWith('onRequestReschedule')
     ) {
       await axios.post(
