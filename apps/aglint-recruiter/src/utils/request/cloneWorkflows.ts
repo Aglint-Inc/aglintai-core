@@ -1,13 +1,10 @@
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { ApiError } from '@/src/utils/customApiError';
-
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 export const cloneWorkflows = async ({
   request_id,
-  meeting_flow,
 }: {
   request_id: string;
   meeting_flow?: DatabaseTable['interview_meeting']['meeting_flow'];
@@ -19,48 +16,17 @@ export const cloneWorkflows = async ({
       .eq('id', request_id),
   );
   const job_id = request.applications.job_id;
-  if (request.type === 'schedule_request' && !meeting_flow) {
-    throw new ApiError('SERVER_ERROR', 'missing meeting flow');
-  }
+
   const job_workflows = supabaseWrap(
     await supabaseAdmin
       .from('workflow_job_relation')
       .select('*, workflow(*, workflow_action(*))')
       .eq('job_id', job_id),
+    false,
   );
 
-  let filtered_workflows: typeof job_workflows = [];
-  if (request.type === 'cancel_schedule_request') {
-    filtered_workflows = job_workflows.filter(
-      (j_w) => j_w.workflow.trigger === 'onRequestCancel',
-    );
-  } else if (request.type === 'decline_request') {
-    filtered_workflows = job_workflows.filter(
-      (j_w) => j_w.workflow.trigger === 'onRequestInterviewerDecline',
-    );
-  } else if (request.type === 'reschedule_request') {
-    let triggers: DatabaseTable['workflow']['trigger'][] = [
-      'onRequestReschedule',
-      'onReceivingAvailReq',
-      'sendAvailReqReminder',
-      'selfScheduleReminder',
-      'candidateBook',
-    ];
-    filtered_workflows = job_workflows.filter((j_w) =>
-      triggers.includes(j_w.workflow.trigger),
-    );
-  } else if (request.type === 'schedule_request') {
-    let triggers: DatabaseTable['workflow']['trigger'][] = [
-      'onRequestSchedule',
-      'onReceivingAvailReq',
-      'sendAvailReqReminder',
-      'selfScheduleReminder',
-      'candidateBook',
-    ];
-    filtered_workflows = job_workflows.filter((j_w) =>
-      triggers.includes(j_w.workflow.trigger),
-    );
-  }
+  let filtered_workflows: typeof job_workflows = [...job_workflows];
+
   const new_relations_promises = filtered_workflows.map(async (j_w) => {
     const [req_workflow] = supabaseWrap(
       await supabaseAdmin
@@ -100,4 +66,13 @@ export const cloneWorkflows = async ({
     );
   });
   await Promise.all(new_relations_promises);
+
+  const req_w_relns = supabaseWrap(
+    await supabaseAdmin
+      .from('workflow_request_relation')
+      .select('*, workflow(*, workflow_action(*))')
+      .eq('request_id', request_id),
+    false,
+  );
+  return req_w_relns;
 };

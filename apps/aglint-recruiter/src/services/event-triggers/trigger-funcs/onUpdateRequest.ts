@@ -34,7 +34,8 @@ const triggerActions = async (new_data: DatabaseTable['request']) => {
     );
 
     const { request_workflows } = await getWActions({
-      company_id: applications.public_jobs.id,
+      company_id: applications.public_jobs.recruiter_id,
+      request_id: new_data.id,
     });
 
     const promises = request_workflows
