@@ -1,25 +1,24 @@
-import { Stack } from '@mui/material';
-
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { StagePipeline } from '@/devlink3/StagePipeline';
+import { PiplelineTab } from '@/devlink3/PiplelineTab';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { setSelectedSessionIds, setSelectedStageId } from '../store';
+import {
+  setSelectedSessionIds,
+  setSelectedStageId,
+  useApplicationDetailStore,
+} from '../store';
 
 function Progress() {
   const {
     interview: { data: stages },
   } = useApplication();
 
+  const { selectedStageId } = useApplicationDetailStore((state) => ({
+    selectedStageId: state.selectedStageId,
+  }));
+
   return (
-    <Stack
-      direction={'row'}
-      gap={'10px'}
-      sx={{
-        overflowX: 'auto',
-        overflowY: 'hidden',
-      }}
-    >
+    <>
       {stages.map((stage, index) => {
         const isCompleted = stage.sessions.every((session) => {
           return session.interview_meeting.status === 'completed';
@@ -33,46 +32,38 @@ function Progress() {
         ).length;
 
         return (
-          <Stack
-            width={'100%'}
-            minWidth={'250px'}
-            key={index}
-            onClick={() => {
-              setSelectedStageId(stage.interview_plan.id);
-              setSelectedSessionIds([]);
+          <PiplelineTab
+            key={stage.interview_plan.id}
+            textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
+            slotIcon={
+              <GlobalIcon
+                iconName={
+                  isNotScheduled
+                    ? 'brightness_1'
+                    : isCompleted
+                      ? 'check_circle'
+                      : 'workspaces'
+                }
+                color={
+                  isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
+                }
+              />
+            }
+            onClickTab={{
+              onClick: () => {
+                setSelectedStageId(stage.interview_plan.id);
+                setSelectedSessionIds([]);
+              },
             }}
-          >
-            <StagePipeline
-              textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
-              slotIcon={
-                <GlobalIcon
-                  iconName={
-                    isNotScheduled
-                      ? 'brightness_1'
-                      : isCompleted
-                        ? 'check_circle'
-                        : 'workspaces'
-                  }
-                  color={
-                    isNotScheduled
-                      ? 'neutral'
-                      : isCompleted
-                        ? 'success'
-                        : 'info'
-                  }
-                />
-              }
-              isLeft={index !== 0}
-              isRight={index !== stages.length - 1}
-              color={
-                isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
-              }
-              textInterviewProgress={`${completedSessions}/${totalSessions} Interviews completed`}
-            />
-          </Stack>
+            isActive={selectedStageId === stage.interview_plan.id}
+            color={
+              isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
+            }
+            textProgress={`${completedSessions}/${totalSessions} Interviews completed`}
+          />
         );
       })}
-    </Stack>
+    </>
   );
 }
 

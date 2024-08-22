@@ -10,7 +10,6 @@ export function ApplicantDetailStage({
   as: _Component = _Builtin.Block,
   textName = "Stage 3 Final Session",
   textInterviewCount = "This is a global text component",
-  onClickDrop = {},
   slotInterviewStageDetail,
   isInterviewStageDetailVisible = true,
   isCountVisible = true,
@@ -37,11 +36,15 @@ export function ApplicantDetailStage({
             className={_utils.cx(_styles, "app-detail-wrap-left-icon")}
             tag="div"
           >
-            <Text content={textInterviewCount} size="1" color="neutral" />
+            <Text
+              content={textInterviewCount}
+              size="2"
+              color="neutral"
+              weight="regular"
+            />
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1739")}
               tag="div"
-              {...onClickDrop}
             >
               <GlobalIcon iconName="keyboard_double_arrow_down" size="5" />
             </_Builtin.Block>
