@@ -2971,14 +2971,17 @@ export type Database = {
       }
       recruiter_preferences: {
         Row: {
+          greenhouse: boolean
           recruiter_id: string
           scoring: boolean
         }
         Insert: {
+          greenhouse?: boolean
           recruiter_id: string
           scoring?: boolean
         }
         Update: {
+          greenhouse?: boolean
           recruiter_id?: string
           scoring?: boolean
         }
@@ -4738,6 +4741,7 @@ export type Database = {
           recruiter: string | null
           recruiter_id: string | null
           recruiting_coordinator: string | null
+          remote_sync_time: string | null
           scoring_criteria_loading: boolean | null
           section_count: Json | null
           sourcer: string | null
