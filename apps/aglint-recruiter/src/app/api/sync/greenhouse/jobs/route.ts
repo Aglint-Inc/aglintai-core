@@ -2,6 +2,7 @@
 import { NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getDecryptKey } from '../util';
 import { syncGreenhouseJob } from './process';
@@ -12,8 +13,14 @@ export function POST(request: NextRequest) {
   return method(
     async ({ body }) => {
       const { recruiter_id, key, last_sync } = body;
+      const supabaseAdmin = getSupabaseServer();
       const decryptKey = await getDecryptKey(key);
-      await syncGreenhouseJob(decryptKey, recruiter_id, last_sync);
+      await syncGreenhouseJob(
+        supabaseAdmin,
+        decryptKey,
+        recruiter_id,
+        last_sync,
+      );
       return { success: true };
     },
     ['recruiter_id', 'key'],

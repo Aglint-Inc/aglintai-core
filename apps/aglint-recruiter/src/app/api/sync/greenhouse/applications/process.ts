@@ -1,6 +1,6 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { GreenhouseJobStagesAPI } from '../types';
 import { getGreenhouseCandidates, getGreenhouseJobPlan } from '../util';
@@ -8,6 +8,7 @@ import { getGreenhouseCandidates, getGreenhouseJobPlan } from '../util';
 const MAX_EMAILS_PER_BATCH = 100;
 
 export async function syncGreenhouseApplication(
+  supabaseAdmin: SupabaseClientType,
   key: string,
   job_id: string,
   remote_id: number,
@@ -15,12 +16,14 @@ export async function syncGreenhouseApplication(
   last_sync?: string,
 ) {
   return syncJobApplications(
+    supabaseAdmin,
     { job_id, remote_id, recruiter_id, last_sync },
     key,
   );
 }
 
 export async function syncJobApplications(
+  supabaseAdmin: SupabaseClientType,
   post: {
     job_id: string;
     remote_id: number;
@@ -39,6 +42,7 @@ export async function syncJobApplications(
     ),
   ];
   const checkCandidates = await processEmailsInBatches(
+    supabaseAdmin,
     emails,
     post.recruiter_id,
   );
@@ -113,7 +117,7 @@ export async function syncJobApplications(
     .upsert(dbApplications, { onConflict: 'remote_id' })
     .throwOnError();
 
-  await setJobLastSync(post.job_id);
+  await setJobLastSync(supabaseAdmin, post.job_id);
   //new candidates insert flow
 }
 
@@ -195,17 +199,29 @@ export function extractLinkedInURLGreenhouse(item: string): string {
   }
 }
 
-async function processEmailsInBatches(emails: string[], recruiter_id: string) {
+async function processEmailsInBatches(
+  supabaseAdmin: SupabaseClientType,
+  emails: string[],
+  recruiter_id: string,
+) {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
-    const candidate = await processBatch(emailBatch, recruiter_id);
+    const candidate = await processBatch(
+      supabaseAdmin,
+      emailBatch,
+      recruiter_id,
+    );
     allCandidates = [...allCandidates, ...candidate];
   }
   return allCandidates;
 }
 
-async function processBatch(emailBatch: string[], recruiter_id: string) {
+async function processBatch(
+  supabaseAdmin: SupabaseClientType,
+  emailBatch: string[],
+  recruiter_id: string,
+) {
   const { data: checkCandidates, error: errorCheck } = await supabaseAdmin
     .from('candidates')
     .select()
@@ -220,6 +236,7 @@ async function processBatch(emailBatch: string[], recruiter_id: string) {
 }
 
 export async function syncGreenhouseJobPlan(
+  supabaseAdmin: SupabaseClientType,
   prop: {
     recruiter_id: string;
     ats_job_id: number;
@@ -228,11 +245,12 @@ export async function syncGreenhouseJobPlan(
   key?: string,
 ) {
   const plans = await getGreenhouseJobPlan(key, prop.ats_job_id);
-  return mapSaveInterviewPlans(plans, prop.public_job_id);
+  return mapSaveInterviewPlans(supabaseAdmin, plans, prop.public_job_id);
 }
 
 // eslint-disable-next-line no-unused-vars
 async function mapSaveInterviewPlans(
+  supabaseAdmin: SupabaseClientType,
   data: GreenhouseJobStagesAPI,
   job_id: string,
 ) {
@@ -272,7 +290,10 @@ async function mapSaveInterviewPlans(
   return true;
 }
 
-async function setJobLastSync(job_id: string) {
+async function setJobLastSync(
+  supabaseAdmin: SupabaseClientType,
+  job_id: string,
+) {
   return supabaseAdmin
     .from('public_jobs')
     .update({ remote_sync_time: new Date().toISOString() })
