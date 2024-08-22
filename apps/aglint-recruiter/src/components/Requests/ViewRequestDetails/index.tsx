@@ -31,6 +31,7 @@ import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
+import CandidateAvailability from './CandidateAvailability';
 import MemberList, { useMemberList } from './Components/MemberList';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
@@ -103,6 +104,7 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <CandidateAvailability selectedRequest={selectedRequest} />
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={

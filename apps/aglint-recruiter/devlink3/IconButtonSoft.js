@@ -27,7 +27,10 @@ export function IconButtonSoft({
       button-high-contrast-soft={highContrast}
       {...onClickButton}
     >
-      <_Builtin.Block tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "display-icons-wrap")}
+        tag="div"
+      >
         <GlobalIcon
           size={iconSize}
           weight={iconWeight}

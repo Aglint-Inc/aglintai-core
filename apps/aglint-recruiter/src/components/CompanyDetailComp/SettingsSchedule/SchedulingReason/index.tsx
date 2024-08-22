@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { ButtonGhost } from '@/devlink3/ButtonGhost';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ReasonList } from '@/devlink3/ReasonList';
 import { ScheduleReason } from '@/devlink3/ScheduleReason';
@@ -148,6 +149,20 @@ const ScheduleReasonSectionCard = <
   }>({ state: false, index: null });
   return (
     <ScheduleReasonSection
+      slotAddButton={
+        <ButtonGhost
+        highContrast={false}
+        iconName={'add'}
+        isLeftIcon={true}
+        size={2}
+          textButton='Add'
+          onClickButton={{
+            onClick: () => {
+              setEdit({ state: true, index: null });
+            },
+          }}
+        />
+      }
       textHeading={`${capitalize(scheduleReason)} Reason`}
       textDesc={description}
       onClickAdd={{

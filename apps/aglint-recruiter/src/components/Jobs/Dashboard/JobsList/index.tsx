@@ -76,7 +76,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }
                 isInterviewPillVisible={isSchedulingEnabled}
                 slotAtsBadge={
-                  job.posted_by == POSTED_BY.LEVER ? (
+                  job.posted_by === POSTED_BY.LEVER ? (
                     <AtsBadge
                       slotLogo={
                         <Avatar
@@ -86,7 +86,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         />
                       }
                     />
-                  ) : job.posted_by == POSTED_BY.GREENHOUSE ? (
+                  ) : job.posted_by === POSTED_BY.GREENHOUSE ? (
                     <AtsBadge
                       slotLogo={
                         <Avatar
@@ -96,7 +96,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         />
                       }
                     />
-                  ) : job.posted_by == POSTED_BY.ASHBY ? (
+                  ) : job.posted_by === POSTED_BY.ASHBY ? (
                     <AtsBadge
                       slotLogo={
                         <Avatar
@@ -119,6 +119,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 disqualifiedCount={job?.section_count?.disqualified}
                 bgColorProps={{
                   style: {
+                    display: job?.posted_by === 'Greenhouse' ? 'none' : 'flex',
                     backgroundColor: getBgColorJobsList(job.status),
                     color: getTextColorJobsList(job.status),
                   },
@@ -131,9 +132,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     ? true
                     : false
                 }
-                textPostedDate={
-                  'Posted ' + calculateTimeDifference(job.created_at)
-                }
+                textPostedDate={getTimestamp(job)}
                 onClickCard={{
                   onClick: () => {
                     router.push(ROUTES['/jobs/[id]']({ id: job.id }));
@@ -150,3 +149,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 };
 
 export default JobsList;
+
+const getTimestamp = (job: Job) => {
+  if (job.posted_by === 'Greenhouse')
+    return `Last synced ${calculateTimeDifference(job?.remote_sync_time ?? job?.created_at ?? '')}`;
+  return `Post ${calculateTimeDifference(job?.created_at ?? '')}`;
+};
