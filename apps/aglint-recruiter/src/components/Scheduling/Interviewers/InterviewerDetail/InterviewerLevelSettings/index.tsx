@@ -399,7 +399,7 @@ function InterviewerLevelSettings({
                   aria-labelledby='demo-row-radio-buttons-group-label'
                   name='row-radio-buttons-group'
                 >
-                  {['Hours', 'Interviews'].map((ele, i) => {
+                  {['Interviews', 'Hours'].map((ele, i) => {
                     return (
                       <FormControlLabel
                         checked={dailyLmit.type === ele}
@@ -436,7 +436,7 @@ function InterviewerLevelSettings({
                   aria-labelledby='demo-row-radio-buttons-group-label'
                   name='row-radio-buttons-group'
                 >
-                  {['Hours', 'Interviews'].map((ele, i) => {
+                  {['Interviews', 'Hours'].map((ele, i) => {
                     return (
                       <FormControlLabel
                         checked={weeklyLmit.type === ele}
