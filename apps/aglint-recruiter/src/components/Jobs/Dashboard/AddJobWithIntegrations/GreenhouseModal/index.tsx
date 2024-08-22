@@ -1,6 +1,4 @@
 import { Drawer, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { AtsCard } from '@/devlink/AtsCard';
@@ -9,12 +7,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import axios from '@/src/client/axios';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { useAllIntegrations } from '@/src/queries/intergrations';
-import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
@@ -23,8 +19,7 @@ import { fetchAllJobs, getGreenhouseStatusColor } from './utils';
 
 export function GreenhouseModal() {
   const { setIntegration, integration, handleClose } = useIntegration();
-  const router = useRouter();
-  const { jobs, handleJobsRefresh } = useJobs();
+  const { jobs } = useJobs();
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [saving, setSaving] = useState(false);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
@@ -67,29 +62,29 @@ export function GreenhouseModal() {
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       }));
 
-      const public_job_id = await axios.call(
-        'POST',
-        '/api/integrations/greenhouse/sync/job',
-        {
-          ats_job: selectedGreenhousePostings[0],
-        },
-      );
+      // const public_job_id = await axios.call(
+      //   'POST',
+      //   '/api/integrations/greenhouse/sync/job',
+      //   {
+      //     ats_job: selectedGreenhousePostings[0],
+      //   },
+      // );
 
-      if (public_job_id) {
-        await handleJobsRefresh();
-        //closing modal once done
-        setIntegration((prev) => ({
-          ...prev,
-          greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
-        }));
-        router.push(ROUTES['/jobs/[id]']({ id: String(public_job_id) }));
-      } else {
-        toast.error(
-          'Import failed. Please try again later or contact support for assistance.',
-        );
-        posthog.capture('GreenHouse Import Error');
-        handleClose();
-      }
+      // if (public_job_id) {
+      //   await handleJobsRefresh();
+      //   //closing modal once done
+      //   setIntegration((prev) => ({
+      //     ...prev,
+      //     greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
+      //   }));
+      //   router.push(ROUTES['/jobs/[id]']({ id: String(public_job_id) }));
+      // } else {
+      //   toast.error(
+      //     'Import failed. Please try again later or contact support for assistance.',
+      //   );
+      //   posthog.capture('GreenHouse Import Error');
+      //   handleClose();
+      // }
     } catch (error) {
       toast.error(
         'Import failed. Please try again later or contact support for assistance.',
