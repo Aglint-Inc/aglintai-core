@@ -12,6 +12,7 @@ import Loader from '../../Common/Loader';
 import { getColor, getDatesArray, groupByDateAndHour } from '../utils';
 import { Event, GroupedEvents } from '../types';
 import { useAvailabilty } from '../Hook';
+import { InterviewerNotConnected } from '@/devlink3/InterviewerNotConnected';
 
 function Availability() {
   const [dayCount, setDayCount] = useState<number>(0);
@@ -87,7 +88,22 @@ const InterviewerList = ({
 
   const grouped_events = groupByDateAndHour(events) as GroupedEvents[];
 
-  console.log([...grouped_events]);
+  if (interviewer.isCalenderConnected)
+    return (
+      <InterviewerNotConnected
+        textName={getFullName(interviewer.first_name, interviewer.last_name)}
+        textRole={interviewer.position}
+        textDescription={`${getFullName(interviewer.first_name, '')} not connected the calender.`}
+        slotImage={
+          <Avatar
+            src={interviewer.profile_image || undefined}
+            variant='rounded'
+            alt={interviewer.first_name}
+            sx={{ height: '24px', width: '24px' }}
+          />
+        }
+      />
+    );
 
   return (
     <InterviewerListAvail
