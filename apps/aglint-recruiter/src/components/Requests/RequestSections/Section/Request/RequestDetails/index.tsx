@@ -115,7 +115,9 @@ function RequestDetails({
             <RequestProgress
               request_type={request.type}
               job_workflow={
-                request.applications.public_jobs.workflow_job_relation
+                request.applications.public_jobs.workflow_job_relation?.map(
+                  (j) => j.workflow,
+                ) ?? []
               }
             />
           ) : null}

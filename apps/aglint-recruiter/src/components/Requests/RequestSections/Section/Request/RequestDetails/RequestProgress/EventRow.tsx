@@ -1,38 +1,27 @@
-/* eslint-disable security/detect-object-injection */
-import { Box } from '@mui/material';
-import axios from 'axios';
-
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { ButtonSoft } from '@/devlink';
+import { TextWithIcon } from '@/devlink2';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { workflowCopy } from '@/src/services/workflow/copy';
-import { EventNode } from '@/src/services/workflow/node';
-import toast from '@/src/utils/toast';
-
+import { RequestLogsActionType } from '@/src/services/workflow/types';
+import { Box } from '@mui/material';
 type TenseType = 'past' | 'present' | 'future' | 'error';
-export const EventHeading = ({ event }: { event: EventNode }) => {
+
+const EventRow = ({ requestLog }: { requestLog: RequestLogsActionType }) => {
   let tense: TenseType;
-  if (event.status === 'not_started') {
+  if (requestLog.status === 'not_started') {
     tense = 'future';
-  } else if (event.status === 'in_progress') {
+  } else if (requestLog.status === 'in_progress') {
     tense = 'present';
-  } else if (event.status === 'completed') {
+  } else if (requestLog.status === 'completed') {
     tense = 'past';
-  } else if (event.status === 'failed') {
+  } else if (requestLog.status === 'failed') {
     tense = 'error';
   }
-  const handleRetry = async (id: number) => {
-    try {
-      await axios.post('/api/workflow-cron/execute', { action_id: id });
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-  console.log(event);
+
   return (
     <>
       <TextWithIcon
-        textContent={<>{workflowCopy[event.event_type][tense]}</>}
+        textContent={<>{workflowCopy[requestLog.type][tense]}</>}
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}
@@ -47,7 +36,7 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
         }
       />
       <Box pl={2.5}>
-        {event.progress.map((prog) => {
+        {requestLog.progress.map((prog) => {
           return (
             <p key={prog.id} style={{ display: 'flex', alignItems: 'center' }}>
               <p
@@ -58,37 +47,28 @@ export const EventHeading = ({ event }: { event: EventNode }) => {
               >
                 {prog.log}
               </p>
-              {event.status === 'failed' && (
+              {requestLog.status === 'failed' && (
                 <ButtonSoft
                   size={1}
                   color={'primary'}
                   textButton='Click to retry'
-                  onClickButton={{
-                    onClick: () => handleRetry(prog.meta.event_run_id),
-                  }}
+                  onClickButton={
+                    {
+                      // onClick: () => handleRetry(prog.meta.event_run_id),
+                    }
+                  }
                 />
               )}
             </p>
           );
         })}
       </Box>
+      <>{requestLog.action && <requestLog.action />}</>
     </>
   );
 };
 
-// function AtrIconFilled() {
-//   return (
-//     <svg
-//       xmlns='http://www.w3.org/2000/svg'
-//       height='16px'
-//       viewBox='0 -960 960 960'
-//       width='16px'
-//       fill='#00749E'
-//     >
-//       <path d='M230-160q-45 0-77.5-32.5T120-270q0-45 32.5-77.5T230-380q45 0 77.5 32.5T340-270q0 45-32.5 77.5T230-160Zm500 0q-45 0-77.5-32.5T620-270q0-45 32.5-77.5T730-380q46 0 78 32.5t32 77.5q0 45-32 77.5T730-160ZM480-580q-45 0-77.5-32.5T370-690q0-45 32.5-77.5T480-800q45 0 77.5 32.5T590-690q0 45-32.5 77.5T480-580Z' />
-//     </svg>
-//   );
-// }
+export default EventRow;
 
 function CheckCircleFilled() {
   return (

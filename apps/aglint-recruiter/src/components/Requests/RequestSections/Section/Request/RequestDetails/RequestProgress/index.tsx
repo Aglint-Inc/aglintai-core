@@ -5,74 +5,38 @@ import { useMemo, useRef } from 'react';
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
+import type { Request as RequestType } from '@/src/queries/requests/types';
 import {
   createCancelWorkflowGraph,
   createInterviewerDeclineRequest,
   createReqAvailWorkflowGraph,
   createRescheduleWorkflowGraph,
-  updateEventProgress,
 } from '@/src/services/workflow/graphUtils';
 
-import { EventHeading } from './EventHeading';
-
+import { traverseProgress } from '@/src/services/workflow/traverseProgress';
+import EventRow from './EventRow';
+type TriggerActionsType =
+  RequestType['applications']['public_jobs']['workflow_job_relation'][0]['workflow'][];
 function RequestProgress({
   request_type,
   job_workflow,
 }: {
   request_type: DatabaseTable['request']['type'];
-  job_workflow: any;
+  job_workflow: TriggerActionsType;
 }) {
   const { request_progress, request_workflow } = useRequest();
-
-  console.log(job_workflow);
-  console.log(request_workflow);
-
-  const graphRef = useRef(createWorkflowGraph(request_type));
   const orderedEvents = useMemo(() => {
-    if (request_progress.data) {
-      graphRef.current = updateEventProgress(
-        graphRef.current,
-        request_progress.data,
-      );
+    let event_actions: TriggerActionsType = [];
+    if (request_workflow.data?.length > 0) {
+      event_actions = request_workflow.data.map((r) => r.workflow);
+    } else {
+      event_actions = [...job_workflow];
     }
-    const traverseGraphNodes = () => {
-      if (
-        request_type === 'schedule_request' ||
-        request_type === 'reschedule_request'
-      ) {
-        let events = graphRef.current.traverseGraph(
-          'FIND_CURR_AVAIL_SLOTS',
-          new Set(),
-        );
-        events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
-
-        return events;
-      } else if (request_type === 'cancel_schedule_request') {
-        let events = graphRef.current.traverseGraph(
-          'CANCEL_INTERVIEW_MEETINGS',
-          new Set(),
-        );
-        events = [
-          graphRef.current.getNode('CANCEL_INTERVIEW_MEETINGS'),
-          ...events,
-        ];
-
-        return events;
-      } else if (request_type === 'decline_request') {
-        let events = graphRef.current.traverseGraph(
-          'REPLACE_ALTERNATIVE_INTERVIEWER',
-          new Set(),
-        );
-        events = [
-          graphRef.current.getNode('REPLACE_ALTERNATIVE_INTERVIEWER'),
-          ...events,
-        ];
-
-        return events;
-      }
-      return [];
-    };
-    return traverseGraphNodes();
+    return traverseProgress({
+      event_actions,
+      request_progress: request_progress.data ?? [],
+      request_type,
+    });
   }, [request_progress.data]);
 
   //
@@ -87,7 +51,7 @@ function RequestProgress({
         </ShowCode.When>
         <ShowCode.Else>
           {orderedEvents.map((event, idx) => {
-            return <EventHeading event={event} key={idx} />;
+            return <EventRow requestLog={event} key={idx} />;
           })}
         </ShowCode.Else>
       </ShowCode>

@@ -5,6 +5,7 @@ export type EventStatusType =
   | 'completed';
 
 export type EventNodeType =
+  | 'INIT_SCHEDULE'
   | 'FIND_CURR_AVAIL_SLOTS'
   | 'REQ_CAND_AVAIL_EMAIL_LINK'
   | 'CAND_AVAIL_REC'

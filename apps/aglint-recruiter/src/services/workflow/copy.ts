@@ -10,6 +10,12 @@ type WorkflowCopyType = {
   };
 };
 export const workflowCopy: WorkflowCopyType = {
+  INIT_SCHEDULE: {
+    error: 'Schedule the candidate',
+    future: 'Schedule the candidate',
+    past: 'Schedule the candidate',
+    present: 'Schedule the candidate',
+  },
   CANCEL_AVAIL_REQ: {
     past: 'The availability request was cancelled.',
     present: 'The availability request is being cancelled.',
