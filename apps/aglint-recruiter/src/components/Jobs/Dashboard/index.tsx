@@ -9,7 +9,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 
-import SubNavBar from '../../AppLayout/SubNavbar';
 import Loader from '../../Common/Loader';
 import SearchField from '../../Common/SearchField/SearchField';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
@@ -139,7 +138,6 @@ const DashboardComp = () => {
             </>
           ) : (
             <Stack height={'100%'} direction={'row'}>
-              {manageJob && <SubNavBar />}
               <JobsDashboard
                 slotFilters={
                   <FilterJobDashboard
