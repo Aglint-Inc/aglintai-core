@@ -1,23 +1,46 @@
+import { Stack } from '@mui/material';
+
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerMetricList } from '@/devlink3/InterviewerMetricList';
 import { InterviewerMetrics } from '@/devlink3/InterviewerMetrics';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
-import { api } from '@/src/trpc/client';
-import { Avatar } from '@mui/material';
-import { useEffect } from 'react';
+
+import Loader from '../../Common/Loader';
+import { useLeaderBoard } from '../Hook';
 
 function Metrics() {
-  const { recruiter } = useAuthDetails();
+  const { data, isLoading } = useLeaderBoard();
 
-  useEffect(() => {
-    (async () =>
-      await api.scheduling.analytics.leaderboard.mutate({
-        recruiter_id: recruiter.id,
-      }))().then((data) => {});
-  }, []);
+  if (isLoading)
+    return (
+      <Stack
+        height={'100%'}
+        width={'100%'}
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Loader />
+      </Stack>
+    );
+
   return (
     <>
-      <InterviewerMetrics textDescription={'change the text'} />
+      <InterviewerMetrics
+        textDescription={`Metrics showing for the date range aug 24-28 for sales department `}
+        slotInterviewerMetricsList={
+          data?.length > 0 ? (
+            data.map((interviewer) => {
+              return <InterviewerMetricList key={interviewer.user_id} />;
+            })
+          ) : (
+            <GlobalEmptyState
+              iconName={'monitoring'}
+              size={9}
+              textDesc={'No Data Available'}
+            />
+          )
+        }
+      />
     </>
   );
 }

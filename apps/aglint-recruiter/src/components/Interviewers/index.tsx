@@ -4,8 +4,8 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import Availability from './Availability';
 import InterviewerLoad from './InterviewerLoad';
-import { interviewersTab } from './types';
 import Metrics from './Metrics';
+import { interviewersTab } from './types';
 
 function Interviewers() {
   const router = useRouter();

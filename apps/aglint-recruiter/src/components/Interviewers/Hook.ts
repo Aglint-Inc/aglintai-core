@@ -1,8 +1,9 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { initUser } from '@/src/pages/api/interviewers';
 import { supabase } from '@/src/utils/supabase/client';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 
 // -------------------------------------------------------- InterviewerLoad
 export type useAllInterviewerType = Awaited<
@@ -32,8 +33,6 @@ const fetchAllInterviewer = async (recruiter_id: string) => {
 export type useAvailabiltyWithCalType = Awaited<
   ReturnType<typeof useAvailabilty>
 >;
-
-console.log('object');
 
 export const useAvailabilty = ({
   startDate,
@@ -72,4 +71,37 @@ const fetchAvailabiltyWithCal = async (
     .then((data) => {
       return data.data.data as initUser[];
     });
+};
+
+// -------------------------------------------------------- leader board
+
+export type useLeaderBoardType = Awaited<
+  ReturnType<typeof fetchLeaderBoardAnalytics>
+>;
+
+export const useLeaderBoard = () => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_leaderBoard-analytics', recruiter_id],
+    refetchOnMount: true,
+    queryFn: () => fetchLeaderBoardAnalytics(recruiter_id),
+    gcTime: 20000,
+    enabled: !!recruiter_id,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['get_leaderBoard-analytics', recruiter_id],
+    });
+  return { ...query, refetch };
+};
+
+const fetchLeaderBoardAnalytics = async (recruiter_id: string) => {
+  return (
+    await supabase
+      .rpc('scheduling_analytics_leaderboard', {
+        recruiter_id,
+      })
+      .throwOnError()
+  ).data;
 };
