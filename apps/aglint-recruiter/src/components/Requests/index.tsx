@@ -193,9 +193,6 @@ const Requests = () => {
           }}
         >
           <ShowCode>
-            <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
-              <Loader />
-            </ShowCode.When>
             <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
               <RequestAgentEmpty />
             </ShowCode.When>
@@ -223,7 +220,16 @@ const Requests = () => {
                       {<FilterAndSorting />}
                     </Stack>
                   }
-                  slotRequestSection={<RequestSections />}
+                  slotRequestSection={
+                    <ShowCode>
+                      <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
+                        <Loader />
+                      </ShowCode.When>
+                      <ShowCode.Else>
+                        <RequestSections />
+                      </ShowCode.Else>
+                    </ShowCode>
+                  }
                   slotNavigationPills={
                     <>
                       {Object.entries(requestList ?? {}).map(
