@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
@@ -118,6 +119,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     options: ['published_date', 'name'] as const,
     order: ['descending', 'ascending'] as const,
   };
+  const [searchText, setSearchText] = useState<string>('');
   const [sort, setSort] = useState<{
     option: (typeof sortOptions.options)[number];
     order: (typeof sortOptions.order)[number];
@@ -126,7 +128,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
-    status: [] as string[],
+    status: [] as DatabaseTable['public_jobs']['status'][],
     location: [] as string[],
     type: [] as string[],
     hiringManager: [] as string[],
@@ -202,7 +204,9 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     };
   };
   // console.log(sort);
-
+  const statusFilterValues = String(
+    filterValues.status.sort((a, b) => a.localeCompare(b)),
+  );
   const locationFilterValues = String(
     filterValues.location.sort((a, b) => a.localeCompare(b)),
   );
@@ -230,6 +234,14 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
 
   const filteredJobs = useMemo(() => {
     let temp = [...jobs];
+    if (searchText.length)
+      temp = temp.filter((job) =>
+        (job?.job_title ?? '')
+          .toLowerCase()
+          .includes((searchText ?? '').toLowerCase()),
+      );
+    if (filterValues.status.length)
+      temp = temp.filter((job) => filterValues.status.includes(job.status));
     if (filterValues.type.length)
       temp = temp.filter((job) => filterValues.type.includes(job.job_type));
     if (filterValues.hiringManager.length)
@@ -267,6 +279,8 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     departmentFilterValues,
     workplaceFilterValues,
     coOrdinatorFilterValues,
+    statusFilterValues,
+    searchText,
   ]);
   const sortedJobs = useMemo(() => {
     return filteredJobs.sort((a, b) => {
@@ -286,6 +300,8 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
   }, [filteredJobs, sort.order, sort.option]);
   let filterOptions = getFilterOptions(jobs);
   return {
+    searchText,
+    setSearchText,
     sortOptions,
     setSort,
     sortValue: sort,
