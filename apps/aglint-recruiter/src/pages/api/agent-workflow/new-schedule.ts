@@ -180,7 +180,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           meeting_flow,
           status: 'waiting',
           organizer_id,
-          request_id: request_id,
         })
         .in(
           'id',
