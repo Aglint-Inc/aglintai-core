@@ -1,7 +1,7 @@
-.interviewer-avail-body-list {
+.interviewer-avail-body-list-wrap {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: auto;
   background-color: var(--white);
 }

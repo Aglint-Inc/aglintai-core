@@ -7,8 +7,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
-import { useAllInterviewer, useAllInterviewerType } from '../utils';
 import LineGraph from './LineGraph';
+import { useAllInterviewer, useAllInterviewerType } from '../Hook';
 
 function InterviewerLoad() {
   const { recruiter } = useAuthDetails();

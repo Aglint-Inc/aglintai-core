@@ -18,7 +18,7 @@ export function InterviewerListAvail({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "interviewer-avail-body-list")}
+      className={_utils.cx(_styles, "interviewer-avail-body-list-wrap")}
       tag="div"
     >
       <_Builtin.Block

@@ -9,8 +9,9 @@ import { initUser } from '@/src/pages/api/interviewers';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
-import { getDatesArray, groupByDateAndHour, useAvailabilty } from '../utils';
-import { getDatesBetween } from '../../Scheduling/CandidateDetails/RequestAvailability/RequestAvailabilityContext';
+import { getColor, getDatesArray, groupByDateAndHour } from '../utils';
+import { Event, GroupedEvents } from '../types';
+import { useAvailabilty } from '../Hook';
 
 function Availability() {
   const [dayCount, setDayCount] = useState<number>(0);
@@ -82,9 +83,11 @@ const InterviewerList = ({
     start: event.start.dateTime,
     end: event.end.dateTime,
     type: event.type,
-  }));
+  })) as Event[];
 
-  const grouped_events = groupByDateAndHour(events);
+  const grouped_events = groupByDateAndHour(events) as GroupedEvents[];
+
+  console.log([...grouped_events]);
 
   return (
     <InterviewerListAvail
@@ -99,37 +102,21 @@ const InterviewerList = ({
           sx={{ height: '24px', width: '24px' }}
         />
       }
-      slotDay1={grouped_events[0].events.slice(0, 8).map((event) => (
-        <InterviewerSlot />
+      slotDay1={grouped_events[0].events.map((event) => (
+        <InterviewerSlot propsColor={getColor(event.type)} />
       ))}
-      slotDay2={grouped_events[1].events.slice(0, 8).map((event) => (
-        <InterviewerSlot />
+      slotDay2={grouped_events[1].events.map((event) => (
+        <InterviewerSlot propsColor={getColor(event.type)} />
       ))}
-      slotDay3={grouped_events[2].events.slice(0, 8).map((event) => (
-        <InterviewerSlot />
+      slotDay3={grouped_events[2].events.map((event) => (
+        <InterviewerSlot propsColor={getColor(event.type)} />
       ))}
-      slotDay4={grouped_events[3].events.slice(0, 8).map((event) => (
-        <InterviewerSlot />
+      slotDay4={grouped_events[3].events.map((event) => (
+        <InterviewerSlot propsColor={getColor(event.type)} />
       ))}
-      slotDay5={grouped_events[4].events.slice(0, 8).map((event) => (
-        <InterviewerSlot />
+      slotDay5={grouped_events[4].events.map((event) => (
+        <InterviewerSlot propsColor={getColor(event.type)} />
       ))}
-      // slotDay2={}
     />
   );
 };
-
-type Event = {
-  id: string;
-  start: string;
-  end: string;
-  type: string;
-};
-
-type GroupedEvents = {
-  [date: string]: {
-    [hour: string]: Event[];
-  };
-};
-
-const color = (value: '') => {};
