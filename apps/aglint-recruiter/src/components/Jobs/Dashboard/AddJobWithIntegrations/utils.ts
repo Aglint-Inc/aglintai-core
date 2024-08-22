@@ -41,5 +41,6 @@ export const POSTED_BY = {
   GREENHOUSE: 'Greenhouse',
   ASHBY: 'Ashby',
 } satisfies {
+  // eslint-disable-next-line no-unused-vars
   [id in string]: DatabaseTable['public_jobs']['posted_by'];
 };

@@ -21,7 +21,6 @@ import {
   getBgColorJobsList,
   getTextColorJobsList,
 } from '../utils';
-import { DatabaseTable } from '@aglint/shared-types';
 
 interface JobsListProps {
   jobs: Job[];
