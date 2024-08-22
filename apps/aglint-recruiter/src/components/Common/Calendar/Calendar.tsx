@@ -22,6 +22,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import { SchedulesSupabase } from '../../Scheduling/schedules-query';
 import CalendarHeader from './CalendarHeader';
 import { colorType, event, Modes, Types } from './calendarTypes';
+import CalendarFilter from './Filter';
 
 function CalendarComp({
   allSchedules,
@@ -106,8 +107,6 @@ function CalendarComp({
             <CalendarHeader
               calendarApi={calendarApi}
               currentDate={currentDate}
-              filter={filter}
-              setFilter={setFilter}
               handleMode={handleMode}
               handleType={handleType}
               mode={viewMode}
@@ -142,6 +141,7 @@ function CalendarComp({
                 }}
               />
             </Stack>
+            <CalendarFilter filter={filter} setFilter={setFilter} />
           </>
         )}
       </Stack>
