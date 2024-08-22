@@ -5,6 +5,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { initUser } from '@/src/pages/api/interviewers';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { LeaderAnalyticsFilterType } from './types';
+
 // -------------------------------------------------------- InterviewerLoad
 export type useAllInterviewerType = Awaited<
   ReturnType<typeof useAllInterviewer>
@@ -79,13 +81,22 @@ export type useLeaderBoardType = Awaited<
   ReturnType<typeof fetchLeaderBoardAnalytics>
 >;
 
-export const useLeaderBoard = () => {
+export const useLeaderBoard = ({
+  type,
+  jobs,
+  departments,
+}: {
+  type: LeaderAnalyticsFilterType['type'];
+  jobs: LeaderAnalyticsFilterType['jobs'];
+  departments: LeaderAnalyticsFilterType['departments'];
+}) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_leaderBoard-analytics', recruiter_id],
     refetchOnMount: true,
-    queryFn: () => fetchLeaderBoardAnalytics(recruiter_id),
+    queryFn: () =>
+      fetchLeaderBoardAnalytics({ recruiter_id, type, jobs, departments }),
     gcTime: 20000,
     enabled: !!recruiter_id,
   });
@@ -96,11 +107,24 @@ export const useLeaderBoard = () => {
   return { ...query, refetch };
 };
 
-const fetchLeaderBoardAnalytics = async (recruiter_id: string) => {
+const fetchLeaderBoardAnalytics = async ({
+  recruiter_id,
+  type,
+  jobs,
+  departments,
+}: {
+  recruiter_id: string;
+  type: LeaderAnalyticsFilterType['type'];
+  jobs: LeaderAnalyticsFilterType['jobs'];
+  departments: LeaderAnalyticsFilterType['departments'];
+}) => {
   return (
     await supabase
       .rpc('scheduling_analytics_leaderboard', {
         recruiter_id,
+        type,
+        jobs,
+        departments,
       })
       .throwOnError()
   ).data;

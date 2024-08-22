@@ -1,3 +1,5 @@
+import { SchedulingAnalyticsProcedureArgs } from '@/src/queries/scheduling-analytics/types';
+
 export type interviewersTab =
   | 'availability'
   | 'interview_load'
@@ -21,3 +23,6 @@ export type GroupedEvents = {
   date: string;
   events: Event[];
 };
+
+export type LeaderAnalyticsFilterType =
+  SchedulingAnalyticsProcedureArgs<'leaderboard'>;
