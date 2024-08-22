@@ -39,6 +39,7 @@ function RequestDetails({
               };
             })}
             job_id={request.applications.public_jobs.id}
+            application_id={request.application_id}
           />
           <CandidateDetails
             candidateDetails={{
