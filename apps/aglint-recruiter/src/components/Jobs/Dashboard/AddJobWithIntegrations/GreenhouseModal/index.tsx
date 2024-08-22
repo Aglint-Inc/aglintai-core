@@ -105,6 +105,7 @@ export function GreenhouseModal() {
       }}
     >
       <SideDrawerLarge
+        textDrawertitle={'Import from Greenhouse'}
         drawerSize={'small'}
         slotButtons={
           <>
