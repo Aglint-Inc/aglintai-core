@@ -21,6 +21,7 @@ function RequestProgress({
   request_type: DatabaseTable['request']['type'];
 }) {
   const { request_progress } = useRequest();
+
   const graphRef = useRef(createWorkflowGraph(request_type));
   const orderedEvents = useMemo(() => {
     if (request_progress.data) {

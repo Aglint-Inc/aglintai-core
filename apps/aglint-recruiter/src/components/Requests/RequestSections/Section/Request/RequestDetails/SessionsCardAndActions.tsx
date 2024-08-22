@@ -28,7 +28,7 @@ function SessionsCardAndActions({
                 key={id ?? i}
                 size={1}
                 color={`neutral`}
-                textButton={name}
+                textButton={capitalizeFirstLetter(name)}
                 isRightIcon={true}
                 iconName={'north_east'}
                 onClickButton={{

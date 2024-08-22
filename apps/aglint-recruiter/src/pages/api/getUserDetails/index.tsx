@@ -1,15 +1,9 @@
-import { DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { GetUserDetailsAPI } from './type';
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,7 +23,7 @@ export default async function handler(
 
 export const getRecruiterDetails = async (user_id: string) => {
   const temp = (
-    await supabase
+    await supabaseAdmin
       .from('recruiter_relation')
       .select(
         '*, recruiter(*, office_locations(*), recruiter_preferences(*), departments(id,name)), recruiter_user!public_recruiter_relation_user_id_fkey(*), manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), roles(name,role_permissions(permissions!inner(name)))',
