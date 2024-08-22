@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
-import InterviewLoad from './InterviewLoad';
+import InterviewerLoad from './InterviewerLoad';
 import { interviewersTab } from './types';
 
 function Interviewers() {
@@ -14,7 +14,7 @@ function Interviewers() {
         Availability
       </ShowCode.When>
       <ShowCode.When isTrue={tab === 'interview_load'}>
-        <InterviewLoad />
+        <InterviewerLoad />
       </ShowCode.When>
       <ShowCode.When isTrue={tab === 'metrics'}>Metrics</ShowCode.When>
       <ShowCode.When isTrue={tab === 'training'}>Training</ShowCode.When>
