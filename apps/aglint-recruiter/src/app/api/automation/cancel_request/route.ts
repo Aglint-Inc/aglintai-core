@@ -23,7 +23,7 @@ export async function POST(req) {
   }
 }
 
-export const cancelReschdule = async (setting, supabase) => {
+ const cancelReschdule = async (setting, supabase) => {
   const request_rel = (
     await supabase
       .from('request_relation')
