@@ -8,6 +8,15 @@ import { useAllMembers } from '@/src/queries/members';
 import FilterHeader from '../../../Common/FilterHeader';
 import { initalFilterValue } from '..';
 
+const ORDER = {
+  published: 0,
+  draft: 1,
+  closed: 2,
+} satisfies {
+  // eslint-disable-next-line no-unused-vars
+  [id in Job['status']]: 0 | 1 | 2;
+};
+
 function FilterJobDashboard({
   filterOptions,
   setFilterValues,
@@ -128,7 +137,7 @@ export default FilterJobDashboard;
 export const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAllMembers();
   const sortOptions = {
-    options: ['published_date', 'name'] as const,
+    options: ['published_date', 'name', 'status'] as const,
     order: ['descending', 'ascending'] as const,
   };
   const [searchText, setSearchText] = useState<string>('');
@@ -136,7 +145,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     option: (typeof sortOptions.options)[number];
     order: (typeof sortOptions.order)[number];
   }>({
-    option: 'published_date',
+    option: 'status',
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
@@ -300,6 +309,19 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     searchText,
   ]);
   const sortedJobs = useMemo(() => {
+    if (sort.option === 'status') {
+      const statusSortedJobs = filteredJobs
+        .reduce(
+          (acc, curr) => {
+            acc[ORDER[curr.status]].push(curr);
+            return acc;
+          },
+          [[], [], []] as Job[][],
+        )
+        .flatMap((jobs) => jobs);
+      if (sort.order === 'descending') return statusSortedJobs;
+      return statusSortedJobs.toReversed();
+    }
     return filteredJobs.sort((a, b) => {
       if (sort.option === 'name') {
         return (
