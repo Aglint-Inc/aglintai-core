@@ -18,8 +18,6 @@ type emp = 'fulltime' | 'parttime' | 'contractor';
 
 const employment: emp[] = ['fulltime', 'parttime', 'contractor'];
 
-export const dynamic = 'force-dynamic';
-
 export async function POST(req) {
   try {
     const {
