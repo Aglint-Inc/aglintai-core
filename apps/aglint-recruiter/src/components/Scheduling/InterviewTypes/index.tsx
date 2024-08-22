@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Breadcrum } from '@/devlink2/Breadcrum';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
@@ -67,11 +67,11 @@ export function InterviewTypes() {
         slotTopbarRight={
           checkPermissions(['interview_types']) && (
             <Stack direction={'row'} alignItems={'center'} spacing={2}>
-              <ButtonSolid
+              <ButtonSoft
                 isRightIcon={false}
                 isLeftIcon={true}
                 iconName={'add'}
-                size={2}
+                size={1}
                 textButton={'Interview Type'}
                 onClickButton={{
                   onClick: () => {

@@ -77,8 +77,9 @@ const Edit = () => {
     <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
+        <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
           <ButtonSoft
-            size={'2'}
+            size={'1'}
             iconName={'bolt'}
             isLeftIcon={true}
             textButton={'Edit Workflow'}
@@ -94,6 +95,7 @@ const Edit = () => {
               },
             }}
           />
+          </Stack>
 
           <Popover
             open={open}
