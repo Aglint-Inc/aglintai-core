@@ -147,6 +147,8 @@ export * from "./InterviewersButton";
 export * from "./InterviewersCardList";
 export * from "./InterviewersDash";
 export * from "./InterviewerSlot";
+export * from "./InterviewerTraining";
+export * from "./InterviewerTrainingList";
 export * from "./InterviewerWorkload";
 export * from "./InterviewLoadCard";
 export * from "./InterviewLoadDetails";

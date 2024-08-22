@@ -26,3 +26,6 @@ export type GroupedEvents = {
 
 export type LeaderAnalyticsFilterType =
   SchedulingAnalyticsProcedureArgs<'leaderboard'>;
+
+export type TrainingProgressType =
+  SchedulingAnalyticsProcedureArgs<'training_progress'>;

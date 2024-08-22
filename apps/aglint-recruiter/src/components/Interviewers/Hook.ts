@@ -129,3 +129,40 @@ const fetchLeaderBoardAnalytics = async ({
       .throwOnError()
   ).data;
 };
+
+// -------------------------------------------------------- Training
+
+export type useTrainingProgressType = Awaited<
+  ReturnType<typeof fetchTrainingProgressAnalytics>
+>;
+
+export const useTrainingProgress = () => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_scheduling_analytics_training_progress', recruiter_id],
+    refetchOnMount: true,
+    queryFn: () => fetchTrainingProgressAnalytics({ recruiter_id }),
+    gcTime: 20000,
+    enabled: !!recruiter_id,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['get_scheduling_analytics_training_progress', recruiter_id],
+    });
+  return { ...query, refetch };
+};
+
+const fetchTrainingProgressAnalytics = async ({
+  recruiter_id,
+}: {
+  recruiter_id: string;
+}) => {
+  return (
+    await supabase
+      .rpc('scheduling_analytics_training_progress', {
+        recruiter_id,
+      })
+      .throwOnError()
+  ).data;
+};
