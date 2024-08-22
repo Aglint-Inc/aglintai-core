@@ -40,6 +40,7 @@ export const initalFilterValue = {
 const DashboardComp = () => {
   const router = useRouter();
   const {
+    manageJob,
     jobs: { data },
     initialLoad,
   } = useJobs();
@@ -91,7 +92,7 @@ const DashboardComp = () => {
                   />
                 }
                 slotAllJobs={<JobsList jobs={jobs} />}
-                slotSearchInputJob={<AddJob />}
+                slotSearchInputJob={manageJob && <AddJob />}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'
