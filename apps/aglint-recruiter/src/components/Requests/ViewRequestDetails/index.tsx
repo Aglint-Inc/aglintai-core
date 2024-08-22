@@ -197,7 +197,12 @@ function ViewRequestDetails() {
                   )}
 
                   {selectedRequest.status === 'to_do' && (
-                    <Stack direction={'row'}>
+                    <Stack
+                      direction={'row'}
+                      sx={{
+                        display: 'none',
+                      }}
+                    >
                       <ButtonSoft
                         size={1}
                         textButton={'Self Schedule'}

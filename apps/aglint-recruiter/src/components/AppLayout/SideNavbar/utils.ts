@@ -26,7 +26,7 @@ export const navList: {
   {
     text: 'Jobs',
     SubComponents: null,
-    route: ROUTES['/jobs']() + '?status=published',
+    route: ROUTES['/jobs'](),
     comingSoon: false,
     isVisible: true,
     permission: ['job_module'],
