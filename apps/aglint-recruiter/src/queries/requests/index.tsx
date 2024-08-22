@@ -102,6 +102,8 @@ export const requestQueries = {
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
+      refetchInterval:
+        process.env.NODE_ENV === 'development' ? 1000 : undefined,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (

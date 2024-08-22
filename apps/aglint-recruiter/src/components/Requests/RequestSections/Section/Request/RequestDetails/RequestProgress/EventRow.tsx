@@ -1,8 +1,8 @@
 import { ButtonSoft } from '@/devlink';
 import { TextWithIcon } from '@/devlink2';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { workflowCopy } from '@/src/services/workflow/copy';
-import { RequestLogsActionType } from '@/src/services/workflow/types';
+import { workflowCopy } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/copy';
+import { RequestLogsActionType } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/types';
 import { Box } from '@mui/material';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 

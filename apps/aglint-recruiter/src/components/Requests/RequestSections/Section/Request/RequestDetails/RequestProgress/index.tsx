@@ -11,9 +11,9 @@ import {
   createInterviewerDeclineRequest,
   createReqAvailWorkflowGraph,
   createRescheduleWorkflowGraph,
-} from '@/src/services/workflow/graphUtils';
+} from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/graphUtils';
 
-import { traverseProgress } from '@/src/services/workflow/traverseProgress';
+import { traverseProgress } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/traverseProgress';
 import EventRow from './EventRow';
 type TriggerActionsType =
   RequestType['applications']['public_jobs']['workflow_job_relation'][0]['workflow'][];

@@ -5,8 +5,8 @@ import axios from 'axios';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { workflowCopy } from '@/src/services/workflow/copy';
-import { EventNode } from '@/src/services/workflow/node';
+import { workflowCopy } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/copy';
+import { EventNode } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/node';
 import toast from '@/src/utils/toast';
 
 type TenseType = 'past' | 'present' | 'future' | 'error';
