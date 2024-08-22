@@ -1,4 +1,5 @@
 import dayjs from '@/src/utils/dayjs';
+
 import { Event, GroupedEvents } from './types';
 
 export const getDatesArray = (count: number, format: string) => {
