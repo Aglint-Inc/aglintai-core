@@ -12,13 +12,11 @@ export interface AvailabilitiesApplicationDetail {
   request_session_relations: DatabaseTable['request_session_relation'][];
 }
 export interface ApplicationDetail {
-  selectedStageId: string;
   selectedSessionIds: string[];
   isScheduleOpen: boolean;
 }
 
 const initialState: ApplicationDetail = {
-  selectedStageId: null,
   selectedSessionIds: [],
   isScheduleOpen: false,
 };
@@ -29,9 +27,6 @@ export const useApplicationDetailStore = create<ApplicationDetail>()(() => ({
 
 export const setIsScheduleOpen = (isScheduleOpen: boolean) =>
   useApplicationDetailStore.setState({ isScheduleOpen });
-
-export const setSelectedStageId = (selectedStageId: string) =>
-  useApplicationDetailStore.setState({ selectedStageId });
 
 export const setSelectedSessionIds = (selectedSessionIds: string[]) =>
   useApplicationDetailStore.setState({ selectedSessionIds });

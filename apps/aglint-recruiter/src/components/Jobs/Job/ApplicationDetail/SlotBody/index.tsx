@@ -32,17 +32,21 @@ function SlotBody() {
     <>
       <ApplicationDetail
         slotTabBody={
-          <Stack width={'900px'} height={'100%'}>
+          <Stack height={'100%'}>
             {tab === 'interview' ? (
-              <>
+              <Stack maxWidth={'1400px'} padding={'var(--space-4)'}>
                 <InterviewTabContent />
-              </>
+              </Stack>
             ) : tab === 'activity' ? (
-              <Stack width={'600px'} padding={'var(--space-4)'}>
+              <Stack maxWidth={'600px'} padding={'var(--space-4)'}>
                 <Activity />
               </Stack>
             ) : tab === 'resume' ? (
-              <Stack padding={'var(--space-4)'} height={'1000px'}>
+              <Stack
+                padding={'var(--space-4)'}
+                height={'1000px'}
+                maxWidth={'900px'}
+              >
                 <Resume />
               </Stack>
             ) : tab === 'scoring' ? (
