@@ -126,6 +126,7 @@ export const API_PATHS = [
 '/api/greenhouse/getPostings',
 '/api/greenhouse/saveApiKey',
 '/api/greenhouse/saveResume',
+'/api/integrations/greenhouse',
 '/api/interviewChatOpenAi',
 '/api/interview_feedback',
 '/api/invite_user',

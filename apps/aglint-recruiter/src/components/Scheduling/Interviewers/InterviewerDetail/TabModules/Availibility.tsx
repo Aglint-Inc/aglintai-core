@@ -375,6 +375,7 @@ function Availibility({
             </>
           }
           slotSideDrawerbody={
+            <Stack padding={'16px'}>
             <ScheduleSettings
               isTimeZoneToggleVisible={false}
               slotTimeZoneInput={
@@ -582,6 +583,7 @@ function Availibility({
               }
               isCompanyDaysOffVisible={false}
             />
+            </Stack>
           }
         />
       </Drawer>

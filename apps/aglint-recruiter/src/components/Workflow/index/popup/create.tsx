@@ -51,8 +51,8 @@ const Create = () => {
 
   return (
     <>
-      <ButtonSolid
-        size={'2'}
+      <ButtonSoft
+        size={'1'}
         iconName={'bolt'}
         isLeftIcon={true}
         textButton={'Create'}
