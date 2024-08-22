@@ -7,6 +7,8 @@ import { registerMember } from '@/src/pages/api/invite_user';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import timeZone from '@/src/utils/timeZone';
 
+export const dynamic = 'force-dynamic';
+
 type user = {
   first_name: string;
   last_name: string;
