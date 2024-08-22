@@ -192,6 +192,11 @@ const Filter = ({
                     sx={{
                       alignItems: 'center',
                       userSelect: 'none',
+                      backgroundColor: isSingle
+                        ? selectedItems === item.value
+                          ? 'var(--neutral-2)'
+                          : ''
+                        : '',
                       ':hover': { bgcolor: 'var(--neutral-2)' },
                       borderRadius: 'var(--radius-2)',
                       cursor: 'pointer',
@@ -209,13 +214,9 @@ const Filter = ({
                         );
                     }}
                   >
-                    <Checkbox
-                      checked={
-                        isSingle
-                          ? selectedItems === item.value
-                          : selectedItems.includes(item.value)
-                      }
-                    />
+                    {!isSingle && (
+                      <Checkbox checked={selectedItems.includes(item.value)} />
+                    )}
                     <Typography>{capitalizeFirstLetter(item.name)}</Typography>
                   </Stack>
                 );
