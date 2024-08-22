@@ -33,7 +33,8 @@ const Requests = () => {
     filters.type.length === 0 &&
     !filters.title &&
     !filters.created_at &&
-    filters.jobs.length === 0;
+    filters.jobs.length === 0 &&
+    filters.applications.length === 0;
 
   const showEmptyPage =
     !isPlaceholderData &&
@@ -135,11 +136,22 @@ const Requests = () => {
       });
     });
   }
-  const [openChat, setOpenChat] = useState(true);
+  const [openChat, setOpenChat] = useState(
+    localStorage.getItem('openChat') === 'true' ? true : false,
+  );
+
+  useEffect(() => {
+    setOpenChat(localStorage.getItem('openChat') === 'true' ? true : false);
+  }, [localStorage.getItem('openChat')]);
   return (
     <>
       <Stack
         onClick={() => {
+          if (openChat) {
+            localStorage.setItem('openChat', 'false');
+          } else {
+            localStorage.setItem('openChat', 'true');
+          }
           setOpenChat(!openChat);
         }}
         position={'absolute'}
@@ -152,7 +164,7 @@ const Requests = () => {
         pl={'20px'}
       >
         <IconButtonSoft
-          iconName={'dock_to_right'}
+          iconName={openChat ? <DockToRightFilled /> : 'dock_to_right'}
           color={'neutral'}
           size={1}
           iconSize={4}
@@ -163,8 +175,9 @@ const Requests = () => {
           <Stack
             sx={{
               width: openChat ? '450px' : '0px',
+              opacity: openChat ? 1 : 0,
               transform: openChat ? 'translateX(0)' : 'translateX(-450px)',
-              transition: 'all 0.3s ease',
+              transition: openChat ? 'all 0.3s ease-in' : 'all 0.3s ease-out',
             }}
             direction={'row'}
             justifyContent={'start'}
@@ -174,11 +187,13 @@ const Requests = () => {
           </Stack>
         </AgentIEditorProvider>
 
-        <Stack width={openChat ? 'calc(100% - 400px)' : '100%'}>
+        <Stack
+          width={openChat ? 'calc(100% - 400px)' : '100%'}
+          sx={{
+            transition: openChat ? 'all 0.3s ease-in' : 'all 0.3s ease-out',
+          }}
+        >
           <ShowCode>
-            <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
-              <Loader />
-            </ShowCode.When>
             <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
               <RequestAgentEmpty />
             </ShowCode.When>
@@ -206,7 +221,16 @@ const Requests = () => {
                       {<FilterAndSorting />}
                     </Stack>
                   }
-                  slotRequestSection={<RequestSections />}
+                  slotRequestSection={
+                    <ShowCode>
+                      <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
+                        <Loader />
+                      </ShowCode.When>
+                      <ShowCode.Else>
+                        <RequestSections />
+                      </ShowCode.Else>
+                    </ShowCode>
+                  }
                   slotNavigationPills={
                     <>
                       {Object.entries(requestList ?? {}).map(
@@ -253,3 +277,20 @@ const Requests = () => {
 };
 
 export default Requests;
+
+function DockToRightFilled() {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      height='16px'
+      viewBox='0 -960 960 960'
+      width='16px'
+      fill='#080800A1'
+      style={{
+        padding: '0px',
+      }}
+    >
+      <path d='M180-120q-24.75 0-42.37-17.63Q120-155.25 120-180v-600q0-24.75 17.63-42.38Q155.25-840 180-840h600q24.75 0 42.38 17.62Q840-804.75 840-780v600q0 24.75-17.62 42.37Q804.75-120 780-120H180Zm207-60h393v-600H387v600Z' />
+    </svg>
+  );
+}

@@ -1,27 +1,45 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useJobs } from '@/src/context/JobsContext';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { GetRequestParams } from '@/src/queries/requests';
+import { supabase } from '@/src/utils/supabase/client';
 
 import FilterHeader from '../../Common/FilterHeader';
 
-// const sortOptions: GetRequestParams['sort']['type'][] = [
-//   'created_at',
-//   'title',
-//   'updated_at',
-// ];
-
 function FilterAndSorting() {
+  const [candidateAndJobs, setCandidateAndJobs] =
+    useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
   const {
-    // eslint-disable-next-line no-unused-vars
-    filters: { created_at, end_at, is_new, title, jobs, ...filters },
+    filters: {
+      created_at,
+      end_at,
+      is_new,
+      title,
+      jobs,
+      applications,
+      ...filters
+    },
     setFilters,
   } = useRequests();
+  const { recruiter_id } = useAuthDetails();
 
-  const { jobs: jobList } = useJobs();
+  async function getCandidateList() {
+    const { data } = await supabase
+      .rpc('get_requests_candidate_list', {
+        rec_id: recruiter_id,
+      })
+      .single();
+    setCandidateAndJobs(data);
+    return data;
+  }
+
+  useEffect(() => {
+    getCandidateList();
+  }, []);
 
   const options: Partial<GetRequestParams['filters']> = {
     status: ['blocked', 'completed', 'in_progress', 'to_do'],
@@ -81,20 +99,42 @@ function FilterAndSorting() {
     setValue: (newValue) => {
       setFilters((prev) => ({ ...prev, jobs: newValue }));
     },
-    options: jobList.data
-      .filter((ele) => ele.status === 'published')
-      .map((ele) => {
-        return {
-          id: ele.id,
-          label: ele.job_title,
-        };
-      }),
+    options: candidateAndJobs
+      ? candidateAndJobs.jobs.map((ele: { id: string; job_title: string }) => {
+          return {
+            id: ele.id,
+            label: ele.job_title,
+          };
+        })
+      : [],
+  } as (typeof safeFilters)[number];
+
+  const candidateFilter = {
+    active: applications.length,
+    name: 'Candidates',
+    value: applications ?? [],
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue) => {
+      setFilters((prev) => ({ ...prev, applications: newValue }));
+    },
+    options: candidateAndJobs
+      ? candidateAndJobs?.applications.map(
+          (ele: { candidate_name: string; application_id: string }) => {
+            return {
+              id: ele.application_id,
+              label: ele.candidate_name,
+            };
+          },
+        )
+      : [],
   } as (typeof safeFilters)[number];
 
   return (
     <FilterHeader
       layoutMode='left-align'
-      filters={[...safeFilters, jobFilter]}
+      filters={[...safeFilters, jobFilter, candidateFilter]}
       search={{
         value: title,
         setValue: (newValue: typeof title) => {
