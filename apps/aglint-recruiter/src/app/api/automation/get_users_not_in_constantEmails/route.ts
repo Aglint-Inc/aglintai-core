@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { createAdminClient } from '@/src/utils/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   const {
     recruiter_id,

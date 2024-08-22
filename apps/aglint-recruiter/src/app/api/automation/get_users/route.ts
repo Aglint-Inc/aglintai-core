@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   const { recruiter_id }: { recruiter_id: string } = await req.json();
   try {

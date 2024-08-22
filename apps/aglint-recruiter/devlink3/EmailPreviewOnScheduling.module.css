@@ -9,7 +9,7 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-4);
   grid-row-gap: var(--space-4);
-  height: calc(100vh - 96px);
+  height: calc(100vh - 98px);
 }
 
 .selected_schedules {
