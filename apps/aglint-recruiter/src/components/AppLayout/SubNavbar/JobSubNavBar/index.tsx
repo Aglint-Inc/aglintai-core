@@ -1,22 +1,10 @@
-import { Popover, Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-import { AddNewJob } from '@/devlink/AddNewJob';
-import { CreateJob } from '@/devlink/CreateJob';
 import { NavJobSubLink } from '@/devlink/NavJobSubLink';
-import { AshbyModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby';
-import { GreenhouseModal } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal';
-import LeverModalComp from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
+import { AddJob } from '@/src/components/Jobs/Dashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import {
-  STATE_ASHBY_DIALOG,
-  STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
-} from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 import ROUTES from '@/src/utils/routing/routes';
 
 function JobSubNavbar() {
@@ -66,105 +54,3 @@ function JobSubNavbar() {
 }
 
 export default JobSubNavbar;
-
-function AddJob() {
-  const router = useRouter();
-  const { setIntegration } = useIntegration();
-  const { data: int, isLoading } = useAllIntegrations();
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  //popover Add Job
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClosePop = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <>
-      <Popover
-        id='add-job'
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClosePop}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{ vertical: -14, horizontal: 0 }}
-        slotProps={{
-          paper: {
-            style: {
-              border: 'none',
-              overflow: 'visible !important',
-              boxShadow: 'none',
-            },
-          },
-        }}
-      >
-        {!isLoading && (
-          <CreateJob
-            isAshbyVisible={!!int.ashby_key}
-            isGreenhouseVisible={!!int.greenhouse_key}
-            isLeverVisible={!!int.lever_key}
-            isEmpty={!(int.ashby_key || int.greenhouse_key || int.lever_key)}
-            onClickLinktoIntegration={{
-              onClick: () => {
-                router.push(ROUTES['/integrations']());
-              },
-            }}
-            onClickAshby={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.LISTJOBS,
-                  },
-                }));
-                setAnchorEl(null);
-              },
-            }}
-            onClickGreenhouse={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-                  },
-                }));
-                setAnchorEl(null);
-              },
-            }}
-            onClickCreateNewJob={{
-              onClick: () => {
-                setAnchorEl(null);
-                router.push(ROUTES['/jobs/create']());
-              },
-            }}
-            onClickLeverImport={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
-                }));
-                setAnchorEl(null);
-              },
-            }}
-          />
-        )}
-      </Popover>
-
-      <LeverModalComp />
-      <GreenhouseModal />
-      <AshbyModalComp />
-      <AddNewJob
-        onClickAdd={{
-          onClick: handleClick,
-        }}
-      />
-    </>
-  );
-}

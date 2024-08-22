@@ -23,12 +23,13 @@ export type CustomApplicationBadges = {
 export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft"
+    "parameter_weights" | "jd_json" | "draft" | "posted_by"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
     draft: CustomDraft;
+    posted_by: "Greenhouse" | "Aglint" | "Lever" | "Ashby";
   }
 >;
 
