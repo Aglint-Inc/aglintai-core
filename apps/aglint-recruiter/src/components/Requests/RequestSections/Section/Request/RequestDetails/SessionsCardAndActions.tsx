@@ -4,19 +4,20 @@ import { PropsWithChildren } from 'react';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import type { Request as RequestType } from '@/src/queries/requests/types';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function SessionsCardAndActions({
   request,
   sessions,
-  application_id,
+  job_id,
 }: {
   request: PropsWithChildren<RequestType>;
   sessions: {
     id: string;
     name: string;
   }[];
-  application_id: string;
+  job_id: string;
 }) {
   return (
     <>
@@ -33,7 +34,10 @@ function SessionsCardAndActions({
                 iconName={'north_east'}
                 onClickButton={{
                   onClick: () => {
-                    window.open(`/scheduling/application/${application_id}`);
+                    window.open(
+                      ROUTES['/jobs/[id]']({ id: job_id }) +
+                        '/candidate-list?section=interview',
+                    );
                   },
                 }}
               />

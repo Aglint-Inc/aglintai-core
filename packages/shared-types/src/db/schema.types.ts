@@ -5811,6 +5811,15 @@ export type Database = {
           on_going: number
         }[]
       }
+      get_requests_candidate_list: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          applications: Json[]
+          jobs: Json[]
+        }[]
+      }
       get_screening_candidates: {
         Args: {
           p_recruiter_id: string

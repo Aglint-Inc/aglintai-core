@@ -38,7 +38,7 @@ function RequestDetails({
                 name: relation.interview_session.name,
               };
             })}
-            application_id={request.applications.id}
+            job_id={request.applications.public_jobs.id}
           />
           <CandidateDetails
             candidateDetails={{
