@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
+
 
 export async function POST(req) {
+  const supabaseAdmin = getSupabaseServer();
   const users: { first_name: string; last_name: string; email: string }[] =
     await req.json();
 

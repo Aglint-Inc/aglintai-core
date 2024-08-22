@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
+  const supabaseAdmin = getSupabaseServer();
   const { recruiter_id }: { recruiter_id: string } = await req.json();
   try {
     const { data, error } = await supabaseAdmin

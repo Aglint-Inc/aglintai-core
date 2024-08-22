@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 type setting = {
   application_id: string;
@@ -10,6 +10,7 @@ type setting = {
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
+  const supabaseAdmin = getSupabaseServer();
   const setting: setting = await req.json();
   try {
     await cancelReschdule(setting, supabaseAdmin);
@@ -23,7 +24,7 @@ export async function POST(req) {
   }
 }
 
- const cancelReschdule = async (setting, supabase) => {
+const cancelReschdule = async (setting, supabase) => {
   const request_rel = (
     await supabase
       .from('request_relation')
