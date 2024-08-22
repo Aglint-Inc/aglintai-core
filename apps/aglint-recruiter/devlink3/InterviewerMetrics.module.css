@@ -1,0 +1,39 @@
+.interviewer-metrics-wrap {
+  display: flex;
+  overflow: auto;
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+  justify-content: center;
+  align-items: flex-start;
+  height: calc(100vh - 48px);
+}
+
+.interviewer-metrics-sub {
+  display: flex;
+  width: 620px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.metrics-interview-leader {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
+.metrics-table-header {
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+}
+
+.metrics-table-body-wrap {
+  display: flex;
+  margin-top: var(--space-1);
+  padding-right: var(--space-1);
+  padding-left: var(--space-1);
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
