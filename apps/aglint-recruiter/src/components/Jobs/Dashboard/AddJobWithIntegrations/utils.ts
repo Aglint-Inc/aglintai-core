@@ -1,3 +1,5 @@
+import { DatabaseTable } from '@aglint/shared-types';
+
 export function extractLinkedInURL(arr) {
   for (const item of arr) {
     // Check if the item starts with "http://linkedin.com" or "https://linkedin.com"
@@ -38,4 +40,7 @@ export const POSTED_BY = {
   AGLINT: 'Aglint',
   GREENHOUSE: 'Greenhouse',
   ASHBY: 'Ashby',
+} satisfies {
+  // eslint-disable-next-line no-unused-vars
+  [id in string]: DatabaseTable['public_jobs']['posted_by'];
 };

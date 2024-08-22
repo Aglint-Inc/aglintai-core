@@ -1,4 +1,5 @@
-import { Collapse, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ApplicantDetailStage } from '@/devlink2/ApplicantDetailStage';
@@ -8,7 +9,6 @@ import { StageWithSessions } from '@/src/queries/application';
 import {
   setIsScheduleOpen,
   setSelectedSessionIds,
-  setSelectedStageId,
   useApplicationDetailStore,
 } from '../../../../store';
 import ScheduleIndividualCard from './ScheduleIndividual';
@@ -20,12 +20,11 @@ function StageIndividual({
   stage: StageWithSessions[0];
   index: number;
 }) {
-  const { selectedStageId, selectedSessionIds } = useApplicationDetailStore(
-    (state) => ({
-      selectedStageId: state.selectedStageId,
-      selectedSessionIds: state.selectedSessionIds,
-    }),
-  );
+  const router = useRouter();
+  const selectedStageId= router.query.stage as string;
+  const { selectedSessionIds } = useApplicationDetailStore((state) => ({
+    selectedSessionIds: state.selectedSessionIds,
+  }));
 
   const sessions = stage.sessions;
   const isStageSelected = selectedStageId === stage.interview_plan.id;
@@ -55,48 +54,35 @@ function StageIndividual({
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} interviews`}
         slotInterviewStageDetail={
-          <Collapse in={isStageSelected}>
-            <Stack spacing={'var(--space-2)'}>
-              {sessions.map((session) => {
-                const interview_meeting = session.interview_meeting;
-                return (
-                  <ScheduleIndividualCard
-                    session={session}
-                    key={session.interview_session.id}
-                    selectedSessionIds={selectedSessionIds}
-                    onClickCheckBox={onClickCheckBox}
-                    isCheckboxVisible={
-                      job_status === 'published' &&
-                      status === 'interview' &&
-                      (!interview_meeting ||
-                        interview_meeting.status === 'not_scheduled' ||
-                        interview_meeting.status === 'cancelled' ||
-                        interview_meeting.status === 'reschedule')
-                    }
-                    candidate={{
-                      name: detail?.name,
-                      current_job_title: detail?.current_job_title,
-                      timezone: detail?.timezone,
-                    }}
-                    isEditIconVisible={true}
-                    isViewDetailVisible={true}
-                  />
-                );
-              })}
-            </Stack>
-          </Collapse>
+          <Stack spacing={'var(--space-2)'}>
+            {sessions.map((session) => {
+              const interview_meeting = session.interview_meeting;
+              return (
+                <ScheduleIndividualCard
+                  session={session}
+                  key={session.interview_session.id}
+                  selectedSessionIds={selectedSessionIds}
+                  onClickCheckBox={onClickCheckBox}
+                  isCheckboxVisible={
+                    job_status === 'published' &&
+                    status === 'interview' &&
+                    (!interview_meeting ||
+                      interview_meeting.status === 'not_scheduled' ||
+                      interview_meeting.status === 'cancelled' ||
+                      interview_meeting.status === 'reschedule')
+                  }
+                  candidate={{
+                    name: detail?.name,
+                    current_job_title: detail?.current_job_title,
+                    timezone: detail?.timezone,
+                  }}
+                  isEditIconVisible={true}
+                  isViewDetailVisible={true}
+                />
+              );
+            })}
+          </Stack>
         }
-        onClickDrop={{
-          onClick: () => {
-            setSelectedSessionIds([]);
-            if (isStageSelected) {
-              setSelectedStageId(null);
-              return;
-            } else {
-              setSelectedStageId(stage.interview_plan.id);
-            }
-          },
-        }}
         isCountVisible={!isCurrentSessionSelected}
         isScheduleButtonVisible={
           isStageSelected && selectedSessionIds.length > 0

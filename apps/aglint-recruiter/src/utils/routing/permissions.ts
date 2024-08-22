@@ -170,6 +170,7 @@ const PERMISSIONS: Permissions = {
   '/api/ai/queryToJson': ['scheduling_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/sync/greenhouse/full_sync': ['authorized'],
+  '/api/integrations/greenhouse': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
