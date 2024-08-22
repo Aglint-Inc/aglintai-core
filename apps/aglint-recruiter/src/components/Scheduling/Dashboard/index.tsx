@@ -26,6 +26,7 @@ const SchedulingDashboard = memo(() => {
       slotFirstGrid={
         <>
           <Reasons />
+
           <Leaderboard />
         </>
       }

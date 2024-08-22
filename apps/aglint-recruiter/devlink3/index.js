@@ -139,6 +139,7 @@ export * from "./InterviewerDetail";
 export * from "./InterviewerDetailOverview";
 export * from "./InterviewerList";
 export * from "./InterviewerListAvail";
+export * from "./InterviewerMetricList";
 export * from "./InterviewerMetrics";
 export * from "./InterviewerNotConnected";
 export * from "./InterviewerPage";

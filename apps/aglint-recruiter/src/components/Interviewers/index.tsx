@@ -5,6 +5,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import Availability from './Availability';
 import InterviewerLoad from './InterviewerLoad';
 import { interviewersTab } from './types';
+import Metrics from './Metrics';
 
 function Interviewers() {
   const router = useRouter();
@@ -17,7 +18,9 @@ function Interviewers() {
       <ShowCode.When isTrue={tab === 'interview_load'}>
         <InterviewerLoad />
       </ShowCode.When>
-      <ShowCode.When isTrue={tab === 'metrics'}>Metrics</ShowCode.When>
+      <ShowCode.When isTrue={tab === 'metrics'}>
+        <Metrics />
+      </ShowCode.When>
       <ShowCode.When isTrue={tab === 'training'}>Training</ShowCode.When>
     </ShowCode>
   );
