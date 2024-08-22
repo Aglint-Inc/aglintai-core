@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 import { seed_email_templates } from '@/src/utils/seedCompanyData/seed_email_templates';
 import { seed_workflow_actions } from '@/src/utils/seedCompanyData/seed_workflow';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function POST(req) {
   try {
@@ -36,6 +36,7 @@ export async function POST(req) {
 }
 
 const removeAllTemps = async (recruiter_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
   supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -45,6 +46,7 @@ const removeAllTemps = async (recruiter_id: string) => {
   );
 };
 const removeAllWorkflow = async (recruiter_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
   supabaseWrap(
     await supabaseAdmin
       .from('workflow')
@@ -55,6 +57,7 @@ const removeAllWorkflow = async (recruiter_id: string) => {
 };
 
 const seedCompTemplate = async (recruiter_id) => {
+  const supabaseAdmin = getSupabaseServer();
   supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -68,6 +71,7 @@ const seedCompTemplate = async (recruiter_id) => {
   );
 };
 const getAlltemps = async (recruiter_id) => {
+  const supabaseAdmin = getSupabaseServer();
   const allTemplates = supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -81,7 +85,7 @@ const seedWorkFlow = async (recruiter_id: string) => {
   const company_email_template: Awaited<
     DatabaseTable['company_email_template'][]
   > = await getAlltemps(recruiter_id);
-
+  const supabaseAdmin = getSupabaseServer();
   const promies = seed_workflow_actions.map(async (work_flow_act) => {
     const [workflow] = supabaseWrap(
       await supabaseAdmin

@@ -179,7 +179,9 @@ function ViewRequestDetails() {
                               onClickCheckBox={() => {}}
                               isCheckboxVisible={false}
                               candidate={null}
-                              isEditIconVisible={true}
+                              isEditIconVisible={
+                                selectedRequest.status === 'to_do'
+                              }
                               isViewDetailVisible={true}
                               isStatusVisible={
                                 session.interview_meeting?.status ===

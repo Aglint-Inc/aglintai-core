@@ -1,16 +1,18 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function syncDepartments(
+  supabaseAdmin: SupabaseClientType,
   recruiter_id: string,
   decryptKey: string,
 ) {
   const departments = await getGreenhouseDepartments(decryptKey);
-  return await mapSaveDepartments(departments, recruiter_id);
+  return await mapSaveDepartments(supabaseAdmin, departments, recruiter_id);
 }
 
 export async function mapSaveDepartments(
+  supabaseAdmin: SupabaseClientType,
   departments: Awaited<ReturnType<typeof getGreenhouseDepartments>>,
   recruiter_id: string,
 ) {
@@ -78,7 +80,10 @@ const dummyData: GreenhouseDepartmentAPI[] = [
   },
 ];
 
-export async function getDepartment(recruiter_id: string) {
+export async function getDepartment(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   return (
     await supabaseAdmin
       .from('departments')
