@@ -38,16 +38,25 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
         .select('*,applications(*,public_jobs(*))')
         .eq('id', new_data.interview_schedule_id),
     );
-    const [session] = supabaseWrap(
+
+    const [req_reln] = supabaseWrap(
       await supabaseAdmin
-        .from('interview_session')
-        .select()
-        .eq('meeting_id', new_data.id),
+        .from('request_relation')
+        .select('*,interview_session(*), request(*)')
+        .eq('interview_session.meeting_id', new_data.id)
+        .eq('request.status', 'in_progress'),
+      false,
     );
     const { request_workflows, company_actions } = await getWActions({
       company_id: schedule_application.applications.public_jobs.recruiter_id,
-      request_id: new_data.request_id,
+      request_id: req_reln?.request?.id,
     });
+    const [meeting_details] = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_details')
+        .select()
+        .eq('id', new_data.id),
+    );
     const all_actions = [...request_workflows, ...company_actions]
       .filter((act) => jobs_set.has(act.target_api))
       .map(async (act) => {
@@ -70,7 +79,7 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
               application_id: schedule_application.application_id,
               target_api: act.target_api,
               organizer_id: new_data.organizer_id,
-              session_id: session.id,
+              session_id: meeting_details.session_id,
               payload: act.payload,
             },
           }),
