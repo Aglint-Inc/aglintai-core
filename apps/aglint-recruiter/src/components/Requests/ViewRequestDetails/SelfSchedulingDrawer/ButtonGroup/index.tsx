@@ -1,4 +1,3 @@
-
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 
@@ -6,9 +5,12 @@ import { useSelfSchedulingDrawer } from '../hooks';
 import { setStepScheduling, useSelfSchedulingFlowStore } from '../store';
 
 function ButtonMain({ refetch }: { refetch: () => void }) {
-  const { stepScheduling } = useSelfSchedulingFlowStore((state) => ({
-    stepScheduling: state.stepScheduling,
-  }));
+  const { stepScheduling, isSendingToCandidate } = useSelfSchedulingFlowStore(
+    (state) => ({
+      stepScheduling: state.stepScheduling,
+      isSendingToCandidate: state.isSendingToCandidate,
+    }),
+  );
 
   const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
     refetch,
@@ -47,7 +49,7 @@ function ButtonMain({ refetch }: { refetch: () => void }) {
       />
 
       <ButtonSolid
-        isLoading={false}
+        isLoading={isSendingToCandidate}
         size={2}
         textButton={primaryButtonText()}
         onClickButton={{

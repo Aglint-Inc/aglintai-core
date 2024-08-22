@@ -133,7 +133,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
   '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
- 
+
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduling_module'],
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
@@ -177,6 +177,7 @@ const PERMISSIONS: Permissions = {
   '/api/sync/greenhouse/full_sync': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
+  '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
 };
 
 export default PERMISSIONS;
