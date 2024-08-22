@@ -40,6 +40,7 @@ export const cloneWorkflows = async ({
           is_paused: j_w.workflow.is_paused,
           title: j_w.workflow.title,
           workflow_type: j_w.workflow.workflow_type,
+          is_request_workflow: true,
         })
         .select(),
     );
