@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Job } from '@/src/queries/jobs/types';
 import { useAllMembers } from '@/src/queries/members';
 
@@ -135,6 +136,11 @@ function FilterJobDashboard({
 export default FilterJobDashboard;
 
 export const useJobFilterAndSort = (jobs: Job[]) => {
+  const {
+    recruiter: {
+      recruiter_preferences: { greenhouse },
+    },
+  } = useAuthDetails();
   const { members } = useAllMembers();
   const sortOptions = {
     options: ['published_date', 'name', 'status'] as const,
@@ -145,7 +151,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     option: (typeof sortOptions.options)[number];
     order: (typeof sortOptions.order)[number];
   }>({
-    option: 'status',
+    option: 'published_date',
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
@@ -338,10 +344,22 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     });
   }, [filteredJobs, sort.order, sort.option]);
   let filterOptions = getFilterOptions(jobs);
+
+  const safeOptions = useMemo(
+    () =>
+      greenhouse
+        ? {
+            ...sortOptions,
+            options: sortOptions.options.filter((type) => type !== 'status'),
+          }
+        : sortOptions,
+    [greenhouse, sortOptions],
+  );
+
   return {
     searchText,
     setSearchText,
-    sortOptions,
+    sortOptions: safeOptions,
     setSort,
     sortValue: sort,
     filterOptions,
