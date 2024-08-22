@@ -17,15 +17,15 @@ import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { ResumeUploadComp } from '../UploadApplications/importManual';
 import { Activity } from './Activity';
 import { Details } from './Details';
-import { Interview } from './Interview';
 import { Meta } from './Meta';
+import { Resume } from './Resume';
 import { Tabs } from './Tabs';
-import { Tasks } from './Tasks';
 import { TopBar } from './TopBar';
 
 type Props = {
   topBar: ReactNode;
   meta: ReactNode;
+  resume: ReactNode;
   details: ReactNode;
   interview: ReactNode;
   tabs: ReactNode;
@@ -51,7 +51,11 @@ const Body = (props: Partial<Props> & { showTabs?: boolean }) => {
       slotBasicInfo={props.meta ?? <Meta />}
       slotNewTabPill={props.tabs ?? <Tabs />}
       slotTabContent={
-        <TabContent interview={props.interview} details={props.details} />
+        <TabContent
+          interview={props.interview}
+          details={props.details}
+          resume={props.resume}
+        />
       }
     />
   );
@@ -60,26 +64,25 @@ const Body = (props: Partial<Props> & { showTabs?: boolean }) => {
 Body.TopBar = TopBar;
 Body.Meta = Meta;
 Body.Tabs = Tabs;
+Body.Resume = Resume;
 Body.Details = Details;
-Body.Interview = Interview;
-Body.Tasks = Tasks;
 Body.Activity = Activity;
 
 export { Body };
 
 const TabContent = (
-  props: Partial<Pick<Props, 'details' | 'interview' | 'tasks' | 'activity'>>,
+  props: Partial<
+    Pick<Props, 'details' | 'interview' | 'tasks' | 'activity' | 'resume'>
+  >,
 ) => {
   const tab = useApplicationStore(({ tab }) => tab);
   switch (tab) {
+    case 'Resume':
+      return props.resume ?? <Resume />;
     case 'Details':
       return props.details ?? <Details />;
     case 'Screening':
     case 'Assessment':
-    case 'Interview':
-      return props.interview ?? <Interview />;
-    case 'Tasks':
-      return props.tasks ?? <Tasks />;
     case 'Activity':
       return props.activity ?? <Activity />;
   }

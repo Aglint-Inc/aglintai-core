@@ -36,8 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     } else if (
-      meta.target_api.startsWith('onAvailReqAgent') ||
-      meta.target_api.startsWith('onSelfScheduleReqAgent') ||
+      meta.target_api.startsWith('onRequestSchedule') ||
       meta.target_api.startsWith('onRequestReschedule')
     ) {
       await axios.post(
@@ -63,6 +62,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           event_run_id: id,
         },
       );
+    } else if (meta.target_api.startsWith('onRequestInterviewerDecline')) {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/interviewer-decline`,
+        {
+          ...meta,
+          event_run_id: id,
+        },
+      );
     }
     await supabaseAdmin
       .from('workflow_action_logs')
@@ -71,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .throwOnError();
     return res.status(200).send('OK');
   } catch (error) {
-    console.error('error', error.message);
+    console.error(error.message);
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'failed' })

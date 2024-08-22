@@ -11,7 +11,7 @@ BEGIN
 
     -- Check if result is not NULL and make an HTTP request if it's not empty
     IF exists( SELECT
-           application_id AS application_id
+           id AS application_id
        FROM applications
        WHERE is_resume_fetching
        ORDER BY created_at ASC ) THEN

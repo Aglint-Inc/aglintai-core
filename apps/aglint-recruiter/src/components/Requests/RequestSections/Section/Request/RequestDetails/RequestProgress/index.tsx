@@ -7,6 +7,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 import {
   createCancelWorkflowGraph,
+  createInterviewerDeclineRequest,
   createReqAvailWorkflowGraph,
   createRescheduleWorkflowGraph,
   updateEventProgress,
@@ -20,6 +21,7 @@ function RequestProgress({
   request_type: DatabaseTable['request']['type'];
 }) {
   const { request_progress } = useRequest();
+
   const graphRef = useRef(createWorkflowGraph(request_type));
   const orderedEvents = useMemo(() => {
     if (request_progress.data) {
@@ -40,14 +42,24 @@ function RequestProgress({
         events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
 
         return events;
-      }
-      if (request_type === 'cancel_schedule_request') {
+      } else if (request_type === 'cancel_schedule_request') {
         let events = graphRef.current.traverseGraph(
           'CANCEL_INTERVIEW_MEETINGS',
           new Set(),
         );
         events = [
           graphRef.current.getNode('CANCEL_INTERVIEW_MEETINGS'),
+          ...events,
+        ];
+
+        return events;
+      } else if (request_type === 'decline_request') {
+        let events = graphRef.current.traverseGraph(
+          'REPLACE_ALTERNATIVE_INTERVIEWER',
+          new Set(),
+        );
+        events = [
+          graphRef.current.getNode('REPLACE_ALTERNATIVE_INTERVIEWER'),
           ...events,
         ];
 
@@ -98,8 +110,9 @@ const createWorkflowGraph = (
   }
   if (request_type === 'schedule_request') {
     return createReqAvailWorkflowGraph();
+  } else if (request_type === 'cancel_schedule_request') {
+    return createCancelWorkflowGraph();
+  } else {
+    return createInterviewerDeclineRequest();
   }
-
-  // cancel
-  return createCancelWorkflowGraph();
 };

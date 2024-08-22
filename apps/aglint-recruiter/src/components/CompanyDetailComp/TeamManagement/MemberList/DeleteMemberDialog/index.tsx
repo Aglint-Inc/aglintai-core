@@ -9,6 +9,7 @@ import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { JobCoordinator } from '@/src/components/Jobs/Create/form';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllMembers } from '@/src/queries/members';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function DeleteMemberDialog({
@@ -240,7 +241,9 @@ function TaskAutoComplete({
   setVal: (x: string) => void;
   error;
 }) {
-  const { members, recruiterUser } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+
+  const { members } = useAllMembers();
   return (
     <AutoCompletePro
       options={members.filter((user) => user.user_id !== recruiterUser.user_id)}

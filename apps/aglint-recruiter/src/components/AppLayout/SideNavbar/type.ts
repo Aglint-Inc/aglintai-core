@@ -18,7 +18,7 @@ export type LinkProps =
       path: Path<'/jobs'>;
     }
   | {
-      module: 'Dashboard';
+      module: 'Interviews';
       path: Path<'/scheduling'>;
     }
   | {

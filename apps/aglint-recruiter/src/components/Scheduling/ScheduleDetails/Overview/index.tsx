@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
@@ -18,28 +17,15 @@ import IconSessionType from '../../CandidateDetails/RightPanel/IconSessionType';
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../utils';
-import { ScheduleDetailsType } from '../hooks';
+import { useScheduleDetails } from '../hooks';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
 
-function Overview({
-  schedule,
-  cancelReasons,
-}: {
-  schedule: ScheduleDetailsType['schedule_data'];
-  cancelReasons: ScheduleDetailsType['cancel_data'];
-}) {
+function Overview() {
   const { checkPermissions } = useRolesAndPermissions();
-
-  // eslint-disable-next-line no-unused-vars
-  const [allCalendarStatus, setAllCalendarStatus] = useState<
-    {
-      email: string;
-      organizer: boolean;
-      self: boolean;
-      responseStatus: 'needsAction' | 'accepted' | 'declined' | 'tentative';
-    }[]
-  >([]);
+  const { data } = useScheduleDetails();
+  const schedule = data?.schedule_data;
+  const cancelReasons = data?.cancel_data;
 
   const users = schedule?.users || [];
 
@@ -72,7 +58,6 @@ function Overview({
               return (
                 <>
                   <InterviewerListCard
-                    disableHoverListener={true}
                     item={item}
                     schedule={schedule}
                     cancelReasons={cancelReasons}
@@ -96,12 +81,12 @@ function Overview({
             />
           )
         }
-        slotHiringTeamList={<AllRolesMeetings schedule={schedule} />}
+        slotHiringTeamList={<AllRolesMeetings />}
         slotOrganizerList={
           <UserNameCard
             textRole={schedule.organizer.position}
             textName={
-              <Link href={`/user/profile/${schedule.organizer.id}`}>
+              <Link href={`/user/profile/${schedule.organizer.user_id}`}>
                 {getFullName(
                   schedule.organizer.first_name,
                   schedule.organizer.last_name,

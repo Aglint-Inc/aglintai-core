@@ -27,7 +27,9 @@ export const createMeetingEvents = async (
       cand_schedule.db_details.all_session_int_details[session.session_id];
 
     const meeting_attendees_auth: CalEventAttendeesAuthDetails[] = [
-      ...session.qualifiedIntervs.slice(1),
+      ...session.qualifiedIntervs.filter(
+        (int) => int.user_id !== meeting_info.organizer_id,
+      ),
       ...session.trainingIntervs,
     ].map((attendee) => ({
       email: attendee.email,
@@ -44,19 +46,19 @@ export const createMeetingEvents = async (
     };
 
     const training_ints = session.trainingIntervs;
-    const booked_meeting = await bookSession(
-      session,
-      schedule_db_details.company.id,
-      meeting_info.meeting_id,
-      getFullName(
+    const booked_meeting = await bookSession({
+      session: session,
+      company_id: schedule_db_details.company.id,
+      meeting_id: meeting_info.meeting_id,
+      candidate_name: getFullName(
         schedule_db_details.candidate.first_name,
         schedule_db_details.candidate.last_name,
       ),
-      schedule_db_details.job.job_title,
-      meeting_organizer_auth,
-      meeting_attendees_auth,
-      cand_schedule.db_details.company_cred_hash_str,
-    );
+      job_title: schedule_db_details.job.job_title,
+      cal_event_organizer: meeting_organizer_auth,
+      cal_event_attendees: meeting_attendees_auth,
+      company_cred_hash_str: cand_schedule.db_details.company_cred_hash_str,
+    });
     const meeting_organizer =
       sess_inters_full_details.interviewers[
         session.qualifiedIntervs[0].user_id

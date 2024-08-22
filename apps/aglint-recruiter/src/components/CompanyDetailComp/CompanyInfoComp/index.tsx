@@ -15,7 +15,13 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import {
+  manageDepartments,
+  manageOfficeLocation,
+} from '@/src/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useAllDepartments } from '@/src/queries/departments';
+import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -34,12 +40,11 @@ import SocialComp from './SocialComp';
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
-  const {
-    recruiter,
-    setRecruiter,
-    handleOfficeLocationsUpdate,
-    handleDepartmentsUpdate,
-  } = useAuthDetails();
+  const { recruiter, setRecruiter } = useAuthDetails();
+  const { data: locations, refetch: refetchLocations } =
+    useAllOfficeLocations();
+  const { data: departments, refetch: refetchDepartments } =
+    useAllDepartments();
   const [dialog, setDialog] = useState(initialDialog());
 
   const [deleteDialog, setDeleteDialog] = useState<{
@@ -72,29 +77,20 @@ const CompanyInfoComp = ({ setIsSaving }) => {
     setDialog(initialDialog());
   };
 
-  const handleDeleteLocation = (id: number) => {
-    handleOfficeLocationsUpdate({ type: 'delete', data: id });
+  const handleDeleteLocation = async (id: number) => {
+    await manageOfficeLocation({ type: 'delete', data: id });
+    refetchLocations();
   };
 
   const isFormDisabled = !checkPermissions(['manage_company']);
 
   return (
     <Stack width={'100%'}>
-      {/* <AddSpecialityDialog
-        handleClose={handleClose}
-        open={dialog.stacks}
-        handleChange={handleChange}
-      /> */}
       <AddDepartmentsDialog
         handleClose={handleClose}
         open={dialog.departments}
         handleChange={handleChange}
       />
-      {/* <AddRolesDialog
-        handleClose={handleClose}
-        open={dialog.roles}
-        handleChange={handleChange}
-      /> */}
       <AddLocationDialog
         key={Math.random()}
         handleClose={handleClose}
@@ -105,10 +101,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         <DeleteDepartmentsDialog
           handleDelete={() =>
             deleteDialog.id &&
-            handleDepartmentsUpdate({
+            manageDepartments({
               type: 'delete',
               data: [deleteDialog.id as number],
-            }).then(() => setDeleteDialog({ ...deleteDialog, open: false }))
+            }).then(() => {
+              setDeleteDialog({ ...deleteDialog, open: false });
+              refetchDepartments();
+            })
           }
           handleClose={() => setDeleteDialog({ ...deleteDialog, open: false })}
           open={deleteDialog.open}
@@ -134,7 +133,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           >
             <DeletePopup
               textDescription={
-                'Are u sure u want to delete this office location? This action cannot be undone.'
+                'Are you sure you want to delete this office location? This action is permanent.'
               }
               textTitle={'Delete Office Location'}
               isIcon={false}
@@ -256,52 +255,51 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               }
               slotLocation={
                 <>
-                  {recruiter?.office_locations &&
-                    recruiter?.office_locations.map((loc) => {
-                      const location = [loc.city, loc.region, loc.country]
-                        .filter(Boolean)
-                        .join(', ');
-                      const [address] = [loc.line1];
-                      const timeZone = [loc.timezone];
-                      const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
+                  {locations.map((loc) => {
+                    const location = [loc.city, loc.region, loc.country]
+                      .filter(Boolean)
+                      .join(', ');
+                    const [address] = [loc.line1];
+                    const timeZone = [loc.timezone];
+                    const isHeadQuaterVisible = Boolean(loc?.is_headquarter);
 
-                      return (
-                        <>
-                          <Stack p={'var(--space-1)'}>
-                            <CompanyLocation
-                              isHeadQuaterVisible={isHeadQuaterVisible}
-                              isEditDeleteVisible={!isFormDisabled}
-                              onClickEdit={{
-                                onClick: () => {
-                                  setDialog({
-                                    ...dialog,
-                                    location: { open: true, edit: loc.id },
-                                  });
-                                },
-                              }}
-                              textFullAddress={address || '-'}
-                              textLocationHeader={location}
-                              textTimeZone={timeZone}
-                              onClickDelete={{
-                                onClick: () => {
-                                  setDialog({
-                                    ...dialog,
-                                    deletelocation: {
-                                      open: true,
-                                      edit: loc.id,
-                                    },
-                                  });
-                                },
-                              }}
-                            />
-                          </Stack>
-                        </>
-                      );
-                    })}
+                    return (
+                      <>
+                        <Stack p={'var(--space-1)'}>
+                          <CompanyLocation
+                            isHeadQuaterVisible={isHeadQuaterVisible}
+                            isEditDeleteVisible={!isFormDisabled}
+                            onClickEdit={{
+                              onClick: () => {
+                                setDialog({
+                                  ...dialog,
+                                  location: { open: true, edit: loc.id },
+                                });
+                              },
+                            }}
+                            textFullAddress={address || '-'}
+                            textLocationHeader={location}
+                            textTimeZone={timeZone}
+                            onClickDelete={{
+                              onClick: () => {
+                                setDialog({
+                                  ...dialog,
+                                  deletelocation: {
+                                    open: true,
+                                    edit: loc.id,
+                                  },
+                                });
+                              },
+                            }}
+                          />
+                        </Stack>
+                      </>
+                    );
+                  })}
                 </>
               }
               slotRolesPills={<></>}
-              slotDepartmentPills={recruiter?.departments?.map((dep) => {
+              slotDepartmentPills={departments?.map((dep) => {
                 return (
                   <RolesPill
                     key={dep.id}

@@ -8,6 +8,8 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { manageOfficeLocation } from '@/src/context/AuthContext/utils';
+import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import timeZone from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
@@ -46,7 +48,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   open,
   edit,
 }) => {
-  const { recruiter, handleOfficeLocationsUpdate } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
+  const { data: office_locations, refetch } = useAllOfficeLocations();
   const address1Ref = useRef<HTMLInputElement>(null);
   const address2Ref = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
@@ -58,25 +61,24 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const [timeValue, setTimeZoneValue] = useState(null);
   const [isRequired, setIsRequired] = useState(false);
 
-  const initialValue = recruiter.office_locations.find(
-    (item) => item.id === edit,
-  );
+  const initialValue = office_locations.find((item) => item.id === edit);
 
-  const hasHeadquarter = (
-    recruiter.office_locations as initialValueType[]
-  ).some((location) => location.is_headquarter === true);
+  const hasHeadquarter = (office_locations as initialValueType[]).some(
+    (location) => location.is_headquarter === true,
+  );
 
   const [isHeadQ, setHeadQ] = useState(
     initialValue?.is_headquarter ? true : false,
   );
   const [loading, setLoading] = useState(false);
 
-  const handleAddLocation = () => {
+  const handleAddLocation = async () => {
     setLoading(true);
 
     const { error } = handleValidate();
     if (!error) {
-      handleOfficeLocationsUpdate({
+      // @ts-ignore
+      await manageOfficeLocation({
         type: edit === -1 ? 'insert' : 'update',
         data: {
           id: edit !== -1 ? edit : undefined,
@@ -89,8 +91,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           timezone: timeValue,
           zipcode: zipRef.current.value,
           recruiter_id: recruiter.id,
+          name: '',
         },
       });
+      refetch();
       handleClose();
     }
     setLoading(false);

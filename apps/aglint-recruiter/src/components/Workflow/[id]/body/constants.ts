@@ -73,7 +73,7 @@ export const TRIGGER_PAYLOAD: {
     phase: ['after'],
   },
   {
-    trigger: 'onAvailReqAgent',
+    trigger: 'onRequestSchedule',
     phase: ['after'],
   },
   {
@@ -91,6 +91,10 @@ export const TRIGGER_PAYLOAD: {
   {
     phase: ['after'],
     trigger: 'onRequestReschedule',
+  },
+  {
+    phase: ['after'],
+    trigger: 'onRequestInterviewerDecline',
   },
 ] as const;
 
@@ -130,20 +134,20 @@ export function getTriggerOption(
     case 'onTrainingComplete':
       message = 'a trainee completes training';
       break;
-    case 'onAvailReqAgent':
-      message = 'raising a request';
+    case 'onRequestSchedule':
+      message = 'Receiving a candidate schedule request';
       break;
     case 'onReceivingAvailReq':
-      message = 'receiving a candidate availability';
+      message = 'Receiving a candidate availability';
       break;
     case 'onSelfScheduleReqAgent':
-      message = 'candidate submits a self-schedule';
+      message = 'Candidate submits a self-schedule';
       break;
     case 'onRequestCancel':
-      message = 'candidate cancels a request';
+      message = 'Candidate cancels a request';
       break;
     case 'onRequestReschedule':
-      message = 'candiate requests a reschedule';
+      message = 'Candiate requests a reschedule';
       break;
   }
   let preMessage = '';
@@ -338,18 +342,18 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       name: 'Send slack notification to approver',
     },
   ],
-  onAvailReqAgent: [
+  onRequestSchedule: [
     {
       name: 'Request Availability through Agent via Email',
       value: {
-        target_api: 'onAvailReqAgent_emailAgent_getCandidateAvailability',
+        target_api: 'onRequestSchedule_emailAgent_getCandidateAvailability',
         action_type: 'end_point',
       },
     },
     {
       name: 'Request Availability through link',
       value: {
-        target_api: 'onAvailReqAgent_emailLink_getCandidateAvailability',
+        target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
         action_type: 'agent_instruction',
       },
     },
@@ -364,7 +368,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     },
     {
       value: {
-        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest' as any, //TODO: fix lint
         action_type: 'agent_instruction',
       },
       name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
@@ -418,7 +422,15 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       },
     },
   ],
-  onInterviewerDecline: null, //fix needed causing lint
+  onRequestInterviewerDecline: [
+    {
+      name: 'Change next Available interviewer',
+      value: {
+        action_type: 'agent_instruction',
+        target_api: 'onRequestInterviewerDecline_agent_changeInterviewer',
+      },
+    },
+  ], //fix needed causing lint
 } as const;
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =

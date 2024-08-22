@@ -9,6 +9,8 @@ import {
   getSelfSchudleSlots,
 } from '@/src/utils/automation/utils/confirm_selfSchedule';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   try {
     const { request_id } = await req.json();

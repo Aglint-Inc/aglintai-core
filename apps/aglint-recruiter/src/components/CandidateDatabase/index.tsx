@@ -400,7 +400,6 @@ function CandidateSearchHistory() {
                         }}
                       />
                     )}
-
                   {currentTab === 'talent rediscovery' &&
                     localStorage.getItem('talentRediscovery') !== 'true' && (
                       <WelcomeMatTalentRediscovery
@@ -449,11 +448,9 @@ function CandidateSearchHistory() {
                         }
                       />
                     )}
-
                   {currentTab === 'talent directory' && !isCandidates && (
                     <WelcomeMatTalentDirectory />
                   )}
-
                   {(currentTab === 'talent rediscovery' ||
                     currentTab === 'discover talent') &&
                     isWelMatVisible() && (

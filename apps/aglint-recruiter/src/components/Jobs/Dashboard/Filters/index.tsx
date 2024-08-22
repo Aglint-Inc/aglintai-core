@@ -2,8 +2,8 @@ import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Job } from '@/src/queries/jobs/types';
+import { useAllMembers } from '@/src/queries/members';
 
 import FilterHeader from '../../../Common/FilterHeader';
 import { initalFilterValue } from '..';
@@ -42,19 +42,6 @@ function FilterJobDashboard({
               });
             },
             value: filterValues.department,
-          },
-          {
-            type: 'filter',
-            name: 'Job Location',
-            iconname: 'location_on',
-            options: filterOptions.location,
-            setValue: (val) => {
-              setFilterValues({
-                ...filterValues,
-                location: val,
-              });
-            },
-            value: filterValues.location,
           },
           {
             type: 'filter',
@@ -117,7 +104,7 @@ function FilterJobDashboard({
 export default FilterJobDashboard;
 
 export const useJobFilterAndSort = (jobs: Job[]) => {
-  const { members } = useAuthDetails();
+  const { members } = useAllMembers();
   const sortOptions = {
     options: ['published_date', 'name'] as const,
     order: ['descending', 'ascending'] as const,
@@ -234,8 +221,6 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
 
   const filteredJobs = useMemo(() => {
     let temp = [...jobs];
-    if (filterValues.location.length)
-      temp = temp.filter((job) => filterValues.location.includes(job.location));
     if (filterValues.type.length)
       temp = temp.filter((job) => filterValues.type.includes(job.job_type));
     if (filterValues.hiringManager.length)

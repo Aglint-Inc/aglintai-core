@@ -78,11 +78,11 @@ function CreateTask({
     dayjs().add(5, 'minute').toString(),
   );
   const {
-    interviewPlans: { data },
+    interviewPlans: { data, status },
   } = useJob();
-  const interview_session = data?.interview_session;
   useEffect(() => {
-    if (interview_session && assignerList.length) {
+    if (status === 'success' && assignerList.length) {
+      const interview_session = data?.flatMap((item) => item.interview_session);
       setSelectedSession(
         interview_session
           .slice(0, 2)
@@ -118,7 +118,7 @@ function CreateTask({
         };
       });
     }
-  }, [interview_session, assignerList]);
+  }, [assignerList, status]);
 
   async function getMemberList({ recruiter_id }: { recruiter_id: string }) {
     const bodyParams: BodyParamsFetchUserDetails = {
@@ -137,7 +137,7 @@ function CreateTask({
   }, [recruiter_id]);
   return (
     <>
-      <Stack mx={'10px'} mb={'10px'}>
+      <Stack mb={'10px'}>
         <FormControl>
           <RadioGroup
             row
@@ -153,11 +153,28 @@ function CreateTask({
               value={'standard'}
               control={<Radio />}
               label='Standard'
+              sx={{
+                display: 'flex !important',
+                gap: '3px',
+                marginLeft: '0px',
+                '& .MuiRadio-root': {
+                  marginRight: 'var(--space-1)',
+                },
+              }}
             />
+
             <FormControlLabel
               value='urgent'
               control={<Radio />}
               label='Urgent'
+              sx={{
+                display: 'flex !important',
+                gap: '3px',
+                marginLeft: '0px',
+                '& .MuiRadio-root': {
+                  marginRight: 'var(--space-1)',
+                },
+              }}
             />
           </RadioGroup>
         </FormControl>

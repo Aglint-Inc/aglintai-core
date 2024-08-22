@@ -21,7 +21,7 @@ export function ModuleMembers({
           className={_utils.cx(_styles, "mm-header-wrap")}
           tag="div"
         >
-          <Text content="Interviewers" />
+          <Text content="Interviewers" weight="medium" />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "mm-slot-list-card")}
@@ -42,7 +42,7 @@ export function ModuleMembers({
             className={_utils.cx(_styles, "mm-header-wrap")}
             tag="div"
           >
-            <Text content="Members in training" />
+            <Text content="Members in training" weight="medium" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "mm-slot-list-card")}

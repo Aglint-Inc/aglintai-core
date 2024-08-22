@@ -48,29 +48,22 @@ function Dashboard() {
 
     return 'You have ' + finalText;
   }
-  const lastCreatedRequestCount =
-    requestCount?.chat.createdRequest[
-      requestCount.chat.createdRequest.length - 1
-    ]?.count || 0;
+
   const lastCompletedRequestCount =
     requestCount?.chat.completedRequest[
       requestCount.chat.completedRequest.length - 1
     ]?.count || 0;
-  // const lastOngoingRequestCount =
-  //   requestCount?.chat.onGoingRequest[
-  //     requestCount.chat.onGoingRequest.length - 1
-  //   ]?.count || 0;
 
-  // const total_requests =
-  //   lastCreatedRequestCount +
-  //   lastCompletedRequestCount +
-  //   lastOngoingRequestCount;
+  const completedToday = lastCompletedRequestCount;
 
-  const open_request = lastCreatedRequestCount - lastCompletedRequestCount || 0;
+  const open_request = requestCount?.all_open_request || 0;
 
   const completed_percentage =
-    Math.floor((lastCompletedRequestCount / lastCreatedRequestCount) * 100) ||
-    0;
+    Math.floor(
+      (requestCount?.card.completed_request /
+        (open_request + requestCount?.card.completed_request)) *
+        100,
+    ) || 0;
 
   return (
     <>
@@ -135,7 +128,7 @@ function Dashboard() {
             })}
             <CompletedRequestsBox
               status={status}
-              completedRequest={requestCount?.card.completed_request || 0}
+              completedRequest={completedToday || 0}
             />
           </>
         }

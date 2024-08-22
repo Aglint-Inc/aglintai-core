@@ -56,10 +56,10 @@ import {
   useApplicationsParams,
 } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/jobs/types';
@@ -127,6 +127,7 @@ const Dashboard = () => {
     canPublish,
     manageJob,
   } = useJob();
+  const { isScoringEnabled } = useRolesAndPermissions();
   const {
     schedules: { data: schedule },
   } = useJobDashboard();
@@ -195,7 +196,8 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-          isJobRoleVisible={false}
+            isJobStatsVisible={isScoringEnabled}
+            isJobRoleVisible={false}
             isBanner={banners.length !== 0}
             slotBanner={
               <Stack gap={1}>
@@ -811,41 +813,30 @@ const useBanners = () => {
     );
   if (status.description_changed)
     banners.push(
-      <GlobalBannerInline
-        textContent='Job details changed'
-        color={'warning'}
-        slotButton={
-          <>
-            <ButtonSoft
-            size={1}
-              textButton='View'
-              color='neutral'
-              onClickButton={{
-                onClick: () =>
-                  push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
-              }}
-            />
-            <ButtonSolid
-              textButton='Revert'
-              size={1}
-              color={'accent'}
-              onClickButton={{
-                onClick: () =>
-                  handleJobUpdate({
-                    draft: {
-                      ...job.draft,
-                      department_id: job.department_id,
-                      description: job.description,
-                      job_title: job.job_title,
-                      job_type: job.job_type,
-                      location: job.location,
-                      workplace_type: job.workplace_type,
-                    },
-                  }),
-              }}
-            />
-          </>
-        }
+      <Banner
+        type='warning'
+        title={'Job details changed.'}
+        description='Please publish the updates.'
+        primary={{
+          title: 'View',
+          onClick: () =>
+            push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
+        }}
+        secondary={{
+          title: 'Revert',
+          onClick: () =>
+            handleJobUpdate({
+              draft: {
+                ...job.draft,
+                location_id: job.location_id,
+                department_id: job.department_id,
+                description: job.description,
+                job_title: job.job_title,
+                job_type: job.job_type,
+                workplace_type: job.workplace_type,
+              },
+            }),
+        }}
       />,
       // <Banner
       //   type='warning'
@@ -886,7 +877,7 @@ const JobClose = ({
   onSubmit: () => void;
 }) => {
   const {
-    job: { job_title, location, status },
+    job: { job_title, status },
   } = useJob();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
@@ -996,7 +987,7 @@ const JobClose = ({
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}
           onClickCloseJob={{ onClick: () => handleClose() }}
-          textLocation={location}
+          textLocation={''}
           slotInput={
             <UITextField
               placeholder={job_title.trim()}
@@ -1029,12 +1020,16 @@ const JobClose = ({
 
 const Modules = () => {
   const { manageJob } = useJob();
-  const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
-    useAuthDetails();
+  const {
+    isAssessmentEnabled,
+    isScreeningEnabled,
+    isSchedulingEnabled,
+    isScoringEnabled,
+  } = useRolesAndPermissions();
   return (
     <>
       {manageJob && <JobDetailsModule />}
-      {manageJob && <ProfileScoreModule />}
+      {manageJob && isScoringEnabled && <ProfileScoreModule />}
       {isSchedulingEnabled && <InterviewModule />}
       {isAssessmentEnabled && manageJob && <AssessmentModule />}
       {isScreeningEnabled && manageJob && <ScreeningModule />}

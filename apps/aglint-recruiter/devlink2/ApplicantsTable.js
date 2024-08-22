@@ -15,6 +15,7 @@ export function ApplicantsTable({
   propsDrag = {},
   isDragVisible = true,
   isAssessmentVisible = true,
+  isResumeMatchVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate-list")} tag="div">
@@ -81,24 +82,26 @@ export function ApplicantsTable({
             <Text content="Candidate" size="1" />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
-          tag="div"
-          table-column="resume-match"
-        >
+        {isResumeMatchVisible ? (
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "cv-list-column",
-              "name",
-              "overflow-visible",
-              "width-100"
-            )}
+            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
             tag="div"
+            table-column="resume-match"
           >
-            <Text content="Resume Match" size="1" />
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "cv-list-column",
+                "name",
+                "overflow-visible",
+                "width-100"
+              )}
+              tag="div"
+            >
+              <Text content="Resume Match" size="1" />
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         {isInterviewVisible ? (
           <_Builtin.Block
             className={_utils.cx(

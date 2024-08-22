@@ -40,6 +40,7 @@ export const handleMeetingsOrganizerResetRelations = async ({
       interview_schedule_id: ses.interview_schedule_id,
       organizer_id,
       meeting_flow,
+      application_id,
     }));
 
   // Upsert meetings

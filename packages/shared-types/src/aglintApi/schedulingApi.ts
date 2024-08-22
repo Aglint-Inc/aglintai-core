@@ -12,14 +12,17 @@ import {
   candidate_avail_request_schema,
   candidate_new_schedule_schema,
   candidate_self_schedule_request,
+  createInterviewerRequestSchema,
   email_agent_self_schedule_schema,
   phone_agent_self_schedule_schema,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
+  schema_find_alternative_slots,
   schema_find_availability_payload,
   schema_find_interview_slot,
   schema_find_slots_date_range,
   schema_send_avail_req_link,
+  schema_update_meeting_ints,
 } from '@aglint/shared-utils';
 
 export type ApiCancelScheduledInterview = {
@@ -32,22 +35,9 @@ export type APIEventAttendeeStatus = {
   attendee_interv_id: string;
 };
 
-export type APIFindAltenativeTimeSlot = {
-  session_id: string;
-  recruiter_id: string;
-  slot_start_time: string;
-  user_tz: string;
-  ignore_interviewer: string;
-  api_options?: APIOptions;
-};
-
-export type APIUpdateMeetingInterviewers = {
-  meeting_id: string;
-  replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
-  candidate_email: string;
-};
-
-export type APIFindAltenativeTimeSlotResponse = SessionCombinationRespType[];
+export type APIFindAltenativeTimeSlot = v.InferInput<
+  typeof schema_find_alternative_slots
+>;
 
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
@@ -172,4 +162,12 @@ export type APIPhoneAgent = v.InferOutput<
 
 export type APIEmailAgentPayload = v.InferOutput<
   typeof email_agent_self_schedule_schema
+>;
+
+export type APIUpdateMeetingInterviewers = v.InferInput<
+  typeof schema_update_meeting_ints
+>;
+
+export type APICreateInterviewerRequest = v.InferInput<
+  typeof createInterviewerRequestSchema
 >;

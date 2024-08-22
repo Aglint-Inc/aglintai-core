@@ -10,7 +10,6 @@ import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
@@ -20,7 +19,7 @@ import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateIntegrations, ZoomLogo } from '../utils';
 
-function Scheduling() {
+function Scheduling({ allIntegrations }) {
   const { recruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
   const [hideApiKey, setHideApiKey] = useState(true);
@@ -38,7 +37,7 @@ function Scheduling() {
   const clientIdRef = useRef<HTMLInputElement>(null);
   const clientSecretRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
-  const { data: allIntegrations } = useAllIntegrations();
+  // const { data: allIntegrations } = useAllIntegrations();
 
   async function action() {
     const google_workspace_domain = domainRef.current?.value;
@@ -165,7 +164,8 @@ function Scheduling() {
           }
           secondaryAction={() => {
             setLoading(false);
-            if (allIntegrations?.service_json) disConnectApi('google_workspace');
+            if (allIntegrations?.service_json)
+              disConnectApi('google_workspace');
             else readDocs('google_workspace');
           }}
           primaryAction={() => {

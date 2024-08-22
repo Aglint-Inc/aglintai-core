@@ -1,0 +1,21 @@
+#mode {
+  display: flex;
+
+  h5 {
+    margin-bottom: 5px;
+  }
+  label {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  display: flex;
+  gap: 20px;
+  & > div {
+    padding: 10px;
+    border-right: 1px solid #ccc;
+  }
+  & > div:last-child {
+    border-right: none;
+  }
+}

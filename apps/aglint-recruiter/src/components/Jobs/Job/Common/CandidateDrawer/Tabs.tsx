@@ -7,7 +7,6 @@ import {
   ApplicationStore,
   useApplicationStore,
 } from '@/src/context/ApplicationContext/store';
-import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
 import {
@@ -15,17 +14,15 @@ import {
   useApplicationInterviewActions,
 } from './Common/ActionsProvider';
 
-const allTabs: {
-  // eslint-disable-next-line no-unused-vars
-  [id in ApplicationStore['tab']]: ApplicationsParams['section'] | null;
-} = {
-  Details: null,
-  Screening: 'screening',
-  Assessment: 'assessment',
-  Interview: 'interview',
-  Tasks: 'interview',
-  Activity: null,
-};
+const allTabs: ApplicationStore['tab'][] = [
+  'Resume',
+  'Details',
+  'Screening',
+  'Assessment',
+  'Interview',
+  'Tasks',
+  'Activity',
+];
 
 const Tabs = () => {
   const { showTabs, tabs, interview, meta } = useApplication();
@@ -66,6 +63,7 @@ const AllTabs = memo(() => {
     [id in ApplicationStore['tab']]: number | null;
   } = useMemo(
     () => ({
+      Resume: null,
       Screening: null,
       Assessment: null,
       Details: null,
@@ -76,10 +74,9 @@ const AllTabs = memo(() => {
     [interview, meta, validActions, notStartedTasks, latestActivities],
   );
 
-  const tabs = Object.entries(allTabs).reduce(
-    (acc, [key, value]) => {
-      const safeKey = key as ApplicationStore['tab'];
-      if (!value || data[value]) acc.push(safeKey);
+  const tabs = allTabs.reduce(
+    (acc, value) => {
+      if (data[value]) acc.push(value);
       return acc;
     },
     [] as ApplicationStore['tab'][],

@@ -1,7 +1,4 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Alert,
   Autocomplete,
   Chip,
@@ -18,14 +15,14 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import { MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { holidayType, schedulingSettingType } from '@aglint/shared-types';
-import { ArrowDropDownIcon } from '@mui/x-date-pickers';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
@@ -33,7 +30,6 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink/Text';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
@@ -44,9 +40,12 @@ import { SublinkTab } from '@/devlink2/SublinkTab';
 import { TextWithBg } from '@/devlink2/TextWithBg';
 import { DayOffHelper } from '@/devlink3/DayOffHelper';
 import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
+import { HelperDropdown } from '@/devlink3/HelperDropdown';
+import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
 import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { emailTemplateQueries } from '@/src/queries/email-templates';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -59,8 +58,9 @@ import DebriefDefaults from './DebriefDefaults';
 import SchedulerEmailTemps from './SchedulingEmailTemplates';
 import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 import SchedulingRegions from './SchedulingReason';
-import { settingsItems, settingSubNavItem } from './SubNav/utils';
-import WorkingHour from './SubNav/WorkingHour';
+import { settingsItems, settingSubNavItem } from './utils';
+import WorkingHour from './WorkingHour';
+
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -132,16 +132,16 @@ function SchedulingSettings({
   //     max: LoadMax.weeklyHours,
   //   },
   // });
-  const [helperWidth, setHelperWidth] = useState(420);
-  const [helperKeywords, setHelperKeywords] = useState(420);
-  const toggleHelperTextWidth = () => {
-    // Toggle between 0px and 420px
-    setHelperWidth(helperWidth === 10 ? 420 : 10);
-  };
-  const toggleHelperKeywords = () => {
-    // Toggle between 0px and 420px
-    setHelperKeywords(helperKeywords === 10 ? 420 : 10);
-  };
+  // const [helperWidth, setHelperWidth] = useState(420);
+  // const [helperKeywords, setHelperKeywords] = useState(420);
+  // // const toggleHelperTextWidth = () => {
+  //   // Toggle between 0px and 420px
+  //   setHelperWidth(helperWidth === 10 ? 420 : 10);
+  // };
+  // const toggleHelperKeywords = () => {
+  //   // Toggle between 0px and 420px
+  //   setHelperKeywords(helperKeywords === 10 ? 420 : 10);
+  // };
 
   const [isTipVisible, setIsTipVisible] = useState(true);
   const handleCloseInfo = () => {
@@ -641,18 +641,21 @@ function SchedulingSettings({
               height={'calc(100vh - 48px)'}
               padding={2}
               spacing={2}
+              gap={'16px'}
             >
               <InterviewLoad
-                borderStyle={'true'}
+                borderStyle={'false'}
                 slotDailyLimit={
-                  <Stack spacing={3}>
+                  <Stack spacing={3} gap={2} flexDirection={'row'}>
                     <MuiNumberfield
+                      isMarginTop={false}
                       handleSelect={(value) => handleDailyValue(+value)}
                       value={dailyLmit.value}
                       max={dailyLmit.max}
+                      width='70px'
                     />
                     <RadioGroup
-                    sx={{marginTop:'12px !important'}}
+                      sx={{ marginTop: '0px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -681,14 +684,16 @@ function SchedulingSettings({
                   </Stack>
                 }
                 slotWeeklyLimit={
-                  <Stack spacing={3}>
+                  <Stack spacing={3} gap={2} flexDirection={'row'}>
                     <MuiNumberfield
                       handleSelect={(value) => handleWeeklyValue(+value)}
                       value={weeklyLmit.value}
                       max={weeklyLmit.max}
+                      width='70px'
+                      isMarginTop={false}
                     />
                     <RadioGroup
-                    sx={{marginTop:'12px !important'}}
+                      sx={{ marginTop: '0px !important' }}
                       row
                       aria-labelledby='demo-row-radio-buttons-group-label'
                       name='row-radio-buttons-group'
@@ -722,7 +727,7 @@ function SchedulingSettings({
                 setValue={setDebriefDefaults}
               />
               <Keywords
-                borderStyle={'true'}
+                borderStyle={'false'}
                 size={'large'}
                 slotKeywordsCard={
                   <>
@@ -958,109 +963,44 @@ function SchedulingSettings({
               padding={'var(--space-4)'}
               borderLeft={'1px solid var(--neutral-6)'}
               height={'calc(100vh - 48px)'}
-              display={'flex'}
               flexDirection={'column'}
               gap={'var(--space-4)'}
               sx={{
                 overflowY: 'auto',
               }}
             >
-              {isTipVisible && (
-                <Stack>
-                  <GlobalInfo
-                    color={'purple'}
-                    iconName='lightbulb'
-                    textTitle={'Pro Tip'}
-                    textDescription={
-                      'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
-                    }
-                    showCloseButton
-                    onClickClose={{
-                      onClick: () => {
-                        handleCloseInfo();
-                      },
-                    }}
-                  />
-                </Stack>
-              )}
-              <TipAccordion
-                title='Interview Load Tips'
-                body={
-                  <Stack
-                    borderRadius={'4px'}
-                    display={'flex'}
-                    flexDirection={'column'}
-                    gap={'4px'}
-                    padding={'16px'}
-                  >
-                    <Text
-                      content='How It Works'
-                      weight={'medium'}
-                      size={2}
-                      color={'info'}
+              <Stack flexDirection={'column'} gap={'var(--space-4)'}>
+                {isTipVisible && (
+                  <Stack>
+                    <GlobalInfo
+                      color={'purple'}
+                      iconName='lightbulb'
+                      textTitle={'Pro Tip'}
+                      textDescription={
+                        'Tailor the evaluation criteria to match the specific needs of the role you are hiring for by adjusting the weightages.'
+                      }
+                      showCloseButton
+                      onClickClose={{
+                        onClick: () => {
+                          handleCloseInfo();
+                        },
+                      }}
                     />
-
-                    <ul>
-                      <li style={{ color: 'var(--neutral-11)' }}>
-                        <span style={{ fontWeight: 'bold' }}>
-                          Daily Limit:{' '}
-                        </span>
-                        Specify the maximum number of interviews or hours an
-                        interviewer can handle each day.
-                      </li>
-                      <li style={{ color: 'var(--neutral-11)' }}>
-                        <span style={{ fontWeight: 'bold' }}>
-                          Weekly Limit:{' '}
-                        </span>
-                        Set the total number of interviews or hours per week to
-                        ensure balanced workloads.
-                      </li>
-                      <li style={{ color: 'var(--neutral-11)' }}>
-                        <span style={{ fontWeight: 'bold' }}>
-                          Customization:{' '}
-                        </span>
-                        Adjust settings for each interviewer based on their
-                        capacity and role requirements.
-                      </li>
-                      <li style={{ color: 'var(--neutral-11)' }}>
-                        <span style={{ fontWeight: 'bold' }}>Overrides: </span>
-                        You can override these settings in the interviewer
-                        settings for personalized scheduling needs.
-                      </li>
-                    </ul>
                   </Stack>
-                }
-              />
-              <TipAccordion
-                title='Debrief Tips'
-                body={
-                  <DebreifHelperText
-                    onClickArrow={{
-                      style: {
-                        transform: `rotate(${helperWidth === 420 ? '0deg' : '180deg'})`,
-                      },
-                      onClick: () => {
-                        toggleHelperTextWidth();
-                      },
-                    }}
-                  />
-                }
-              />
-              <TipAccordion
-                title='Keyword Tips'
-                body={
-                  <KeywordsHelper
-                    onClickArrow={{
-                      style: {
-                        transform: `rotate(${helperKeywords === 420 ? '0deg' : '180deg'})`,
-                      },
-                      onClick: () => {
-                        toggleHelperKeywords();
-                      },
-                    }}
-                  />
-                }
-              />
+                )}
+                <HelperDropdown
+                  textName='Interview Load Tips'
+                  slotBody={<InterviewLoadHelper />}
+                />
+                <HelperDropdown
+                  textName='Debrief Tips'
+                  slotBody={<DebreifHelperText />}
+                />
+                <HelperDropdown
+                  textName='Keyword Tips'
+                  slotBody={<KeywordsHelper />}
+                />
+              </Stack>
             </Stack>
           </Stack>
         </ShowCode.When>
@@ -1132,7 +1072,10 @@ export const TimezoneSelector = ({
 
 export function SettingsSubNabItem() {
   const router = useRouter();
-  const { emailTemplates } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
+  const emailTemplates = useQuery(
+    emailTemplateQueries.emailTemplates(recruiter.id),
+  );
   const [firstTemplate, setFirstTemplate] = useState(null);
   const { ifAllowed } = useRolesAndPermissions();
   //for select the first email template type
@@ -1198,34 +1141,3 @@ export function SettingsSubNabItem() {
   );
 }
 
-const TipAccordion = ({ title, body }: { title: string; body: ReactNode }) => {
-  return (
-    <Stack>
-      <Accordion
-        sx={{
-          borderRadius: '80px',
-          border: '1px solid var(--neutral-6)',
-          boxShadow: 'none',
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ArrowDropDownIcon />}
-          aria-controls='panel2-content'
-          id='panel2-header'
-          sx={{
-            background: 'white',
-            borderRadius: '3px',
-          }}
-        >
-          <Typography fontWeight={500}>{title}</Typography>
-        </AccordionSummary>
-        {/* <AccordionDetails> */}
-        <AccordionDetails
-          sx={{ backgroundColor: 'white', borderRadius: '3px', padding: 0 }}
-        >
-          {body}
-        </AccordionDetails>
-      </Accordion>
-    </Stack>
-  );
-};

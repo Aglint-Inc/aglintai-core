@@ -1,8 +1,6 @@
 import {
   CandidateType,
   DatabaseTableInsert,
-  GreenhouseRefDbType,
-  GreenhouseType,
   NewCandidateType,
 } from '@aglint/shared-types';
 import axios from 'axios';
@@ -11,7 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
 import {
@@ -136,26 +133,10 @@ export const createJobApplications = async (
           })
           .filter(Boolean);
 
-        const { error } = await supabase
+        await supabase
           .from('applications')
-          .insert(dbApplications);
-
-        if (!error) {
-          const referenceObj = refCandidates.map((ref) => {
-            return {
-              application_id: ref.application_id,
-              posting_id: post.id,
-              greenhouse_id: ref.id,
-              public_job_id: post.public_job_id,
-              resume: ref.resume,
-            };
-          }) as unknown as GreenhouseType[];
-          await createReference(referenceObj);
-        } else {
-          toast.error(
-            'Import failed. Please try again later or contact support for assistance.',
-          );
-        }
+          .insert(dbApplications)
+          .throwOnError();
       }
       //new candidates insert flow
     }),
@@ -163,7 +144,7 @@ export const createJobApplications = async (
 };
 
 export const fetchAllCandidates = async (
-  post_id: string,
+  post_id: number,
   apiKey: string,
 ): Promise<GreenhouseApplication[]> => {
   let allCandidates = [];
@@ -201,17 +182,20 @@ export const fetchAllJobs = async (
   apiKey: string,
 ): Promise<JobGreenhouse[]> => {
   //pagination need to done
-  let allJobs = [];
+  let allJobs: JobGreenhouse[] = [];
   let hasMore = true;
   let page = 1;
 
   while (hasMore) {
     try {
-      const response = await axios.post('/api/greenhouse/getPostings', {
-        apiKey: apiKey,
-        isInitial: false,
-        page: page,
-      });
+      const response = await axios.post<JobGreenhouse[]>(
+        '/api/greenhouse/getPostings',
+        {
+          apiKey: apiKey,
+          isInitial: false,
+          page: page,
+        },
+      );
 
       if (response.status == 200 && response.data) {
         allJobs = allJobs.concat(response.data);
@@ -295,24 +279,6 @@ export function extractLinkedInURLGreenhouse(item: string): string {
     return '';
   }
 }
-
-export const createReference = async (
-  reference: GreenhouseType[],
-): Promise<GreenhouseRefDbType[] | undefined> => {
-  const { data, error } = await supabase
-    .from('greenhouse_reference')
-    .insert(reference)
-    .select();
-
-  if (error) {
-    toast.error(
-      'Import failed. Please try again later or contact support for assistance.',
-    );
-    return undefined;
-  } else {
-    return data;
-  }
-};
 
 const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requirements
 

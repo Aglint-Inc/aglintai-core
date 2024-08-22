@@ -19,8 +19,51 @@ export const useCreateInterviewPlan = () => {
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
-    mutationFn: async () => {
-      await createInterviewPlan(id);
+    mutationFn: async ({ name, order }: { name: string; order?: number }) => {
+      await createInterviewPlan(name, id, order);
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to create interview plan.');
+    },
+  });
+  return mutation;
+};
+
+export const useUpdateInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
+  const mutation = useMutation({
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: {
+        name?: string;
+        order?: number;
+      };
+    }) => {
+      await updateInterviewPlan(id, data);
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to create interview plan.');
+    },
+  });
+  return mutation;
+};
+
+export const useDeleteInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const id = job_id;
+  const { queryKey } = jobQueries.interview_plans({ id });
+  const mutation = useMutation({
+    mutationFn: async (id: string) => {
+      await deleteInterviewPlan(id);
       await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
@@ -152,7 +195,7 @@ export const useReorderInterviewSessions = () => {
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: {
-      updatedInterviewSessions: InterviewPlansType['interview_session'];
+      updatedInterviewSessions: InterviewPlansType[number]['interview_session'];
       interviewPlanId: string;
     }) => {
       const sessions = args.updatedInterviewSessions.map(
@@ -168,10 +211,14 @@ export const useReorderInterviewSessions = () => {
       await queryClient.cancelQueries({ queryKey });
       const oldInterviewPlan =
         queryClient.getQueryData<InterviewPlansType>(queryKey);
-      queryClient.setQueryData<InterviewPlansType>(queryKey, {
-        ...oldInterviewPlan,
-        interview_session: payload.updatedInterviewSessions,
-      });
+      queryClient.setQueryData<InterviewPlansType>(
+        queryKey,
+        oldInterviewPlan.map((item) =>
+          item.id === payload.interviewPlanId
+            ? { ...item, interview_session: payload.updatedInterviewSessions }
+            : item,
+        ),
+      );
       return { oldInterviewPlan };
     },
     onError: (error, variables, context) => {
@@ -221,10 +268,37 @@ export const updateInterviewSession = async ({
   if (error) throw new Error(error.message);
 };
 
-export const createInterviewPlan = async (job_id: string) => {
+export const createInterviewPlan = async (
+  name: string,
+  job_id: string,
+  order: number = 1,
+) => {
   const { data, error } = await supabase
     .from('interview_plan')
-    .insert({ job_id })
+    .insert({ name, job_id, plan_order: order })
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0];
+};
+
+export const updateInterviewPlan = async (
+  id: string,
+  { name, order }: { name?: string; order?: number },
+) => {
+  const { data, error } = await supabase
+    .from('interview_plan')
+    .update({ name, plan_order: order })
+    .eq('id', id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data[0];
+};
+
+export const deleteInterviewPlan = async (id: string) => {
+  const { data, error } = await supabase
+    .from('interview_plan')
+    .delete()
+    .eq('id', id)
     .select();
   if (error) throw new Error(error.message);
   return data[0];

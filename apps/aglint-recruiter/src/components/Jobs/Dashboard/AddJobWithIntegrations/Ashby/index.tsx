@@ -68,9 +68,7 @@ export function AshbyModalComp() {
         if (
           data?.filter(
             (job) =>
-              job.posted_by === POSTED_BY.ASHBY &&
-              job.job_title === post.title &&
-              job.location == post.location,
+              job.posted_by === POSTED_BY.ASHBY && job.job_title === post.title,
           ).length == 0
         ) {
           return true;
@@ -104,16 +102,6 @@ export function AshbyModalComp() {
         .insert(dbJobs)
         .select();
       if (!error) {
-        const astJobsObj = refJobsObj.map((post) => {
-          return {
-            ats_json: post.ats_json as any,
-            public_job_id: post.public_job_id,
-            recruiter_id: recruiter.id,
-            ats_job_id: post.jobId, //saving job posting id from ashby
-            ats: 'ashby',
-          };
-        });
-        await supabase.from('job_reference').insert(astJobsObj).select();
         await handleGenerateJd(newJobs[0].id);
         await handleJobsRefresh();
         axios.post('/api/ashby/syncapplications', {

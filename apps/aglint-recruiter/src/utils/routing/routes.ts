@@ -107,6 +107,18 @@ const jobPostAssistant = {
 const jobsById = {
   '/jobs/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([jobs['/jobs'](), id]),
+  '/jobs/[id]/application/[application_id]': ({
+    id,
+    application_id,
+  }: {
+    id: string;
+    application_id: string;
+  }) =>
+    pageRouteBuilder([
+      pageRouteBuilder([jobs['/jobs'](), id]),
+      'application',
+      application_id,
+    ]),
   '/jobs/[id]/agent': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'agent']),
   '/jobs/[id]/assessment': ({ id }: { id: string }) =>
@@ -182,11 +194,11 @@ const resetPassword = {
 const scheduling = {
   '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
   '/scheduling/application': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/application']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/application']),
   '/scheduling/interviewer': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/interviewer']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/interviewer']),
   '/scheduling/interview-types': () =>
-    pageRouteBuilder([ROUTES.app(), '/scheduling/interview-types']),
+    pageRouteBuilder([ROUTES.app(), 'scheduling/interview-types']),
   '/scheduling/interview-types/[type_id]': ({ type_id }: { type_id: string }) =>
     pageRouteBuilder([scheduling['/scheduling'](), 'interview-types', type_id]),
   '/scheduling/application/[application_id]': ({
@@ -252,6 +264,8 @@ const workflows = {
 } as const;
 const requests = {
   '/requests': () => pageRouteBuilder([ROUTES.app(), 'requests']),
+  '/requests/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([requests['/requests'](), id]),
 } as const;
 const ROUTES = {
   app: () => '',

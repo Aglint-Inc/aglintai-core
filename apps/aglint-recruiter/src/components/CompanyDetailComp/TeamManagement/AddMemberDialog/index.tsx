@@ -17,6 +17,9 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useAllDepartments } from '@/src/queries/departments';
+import { useAllMembers } from '@/src/queries/members';
+import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import timeZone from '@/src/utils/timeZone';
@@ -31,15 +34,22 @@ const AddMember = ({
   memberList,
   pendingList,
   onClose,
+  defaultRole,
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
   memberList: { id: string; name: string }[];
-  pendingList: RecruiterUserType[];
+  pendingList?: RecruiterUserType[];
   onClose: () => void;
+  defaultRole?: {
+    role: string;
+    role_id: string;
+  };
 }) => {
-  const { userDetails, setMembers, recruiter, recruiterUser } =
-    useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
+  const { data: locations } = useAllOfficeLocations();
+  const { data: departments } = useAllDepartments();
+  const { refetchMembers } = useAllMembers();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -47,12 +57,8 @@ const AddMember = ({
     linked_in: string;
     employment: employmentTypeEnum;
     position: string;
-    location: ReturnType<
-      typeof useAuthDetails
-    >['members'][number]['office_location'];
-    department: ReturnType<
-      typeof useAuthDetails
-    >['members'][number]['department'];
+    location_id: number;
+    department_id: number;
     role: string;
     role_id: string;
     manager_id: string;
@@ -62,11 +68,11 @@ const AddMember = ({
     email: null,
     linked_in: null,
     employment: null,
-    location: null,
+    location_id: null,
     position: null,
-    department: null,
-    role: null,
-    role_id: null,
+    department_id: null,
+    role_id: defaultRole?.role_id ? defaultRole.role_id : null,
+    role: defaultRole?.role ? defaultRole.role : null,
     manager_id: null,
   });
 
@@ -97,7 +103,6 @@ const AddMember = ({
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
   const [isInviteCardVisible, setInviteCardVisible] = useState(false);
-
   const { data: roleOptions } = useRolesOptions();
 
   const checkValidation = () => {
@@ -130,7 +135,7 @@ const AddMember = ({
       temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
       flag = true;
     }
-    if (!form.department) {
+    if (!form.department_id) {
       temp = { ...temp, department: true };
       flag = true;
     }
@@ -142,7 +147,7 @@ const AddMember = ({
       temp = { ...temp, role: true };
       flag = true;
     }
-    if (!form.location) {
+    if (!form.location_id) {
       temp = { ...temp, location: true };
       flag = true;
     }
@@ -165,21 +170,23 @@ const AddMember = ({
       const resData = await inviteUserApi(
         {
           ...form,
-          department_id: form.department.id,
-          office_location_id: form.location.id,
+          department_id: form.department_id,
+          office_location_id: form.location_id,
           scheduling_settings: {
             ...recruiter.scheduling_settings,
             timeZone: timeZone.find(
-              (item) => item.label === form.location?.timezone,
+              (item) =>
+                item.label ===
+                locations.find((loc) => loc.id === form.location_id).timezone,
             ),
           } as schedulingSettingType,
         },
         recruiter.id,
       );
 
-      let { created, user } = resData;
+      let { created } = resData;
       if (created) {
-        setMembers((prev) => [...prev, user]);
+        refetchMembers();
         setInviteData((prev) => [
           ...prev,
           {
@@ -187,8 +194,8 @@ const AddMember = ({
             last_name: form.last_name,
             email: form.email,
             linked_in: form.linked_in,
-            department: form.department,
-            location: form.location,
+            department_id: form.department_id,
+            location_id: form.location_id,
             position: form.position,
             role_id: form.role_id,
             manager_id: form.manager_id,
@@ -203,8 +210,8 @@ const AddMember = ({
           last_name: null,
           email: null,
           linked_in: null,
-          department: null,
-          location: null,
+          department_id: null,
+          location_id: null,
           position: null,
           role: null,
           role_id: null,
@@ -227,8 +234,8 @@ const AddMember = ({
     form.email &&
     form.employment &&
     form.position &&
-    form.department &&
-    form.location &&
+    form.department_id &&
+    form.location_id &&
     (form.role === 'admin' ? !!form.role : !!form.role && !!form.manager_id)
   );
 
@@ -253,7 +260,7 @@ const AddMember = ({
                           first_name: null,
                           last_name: null,
                           email: null,
-                          department: null,
+                          department_id: null,
                           position: null,
                         });
                     },
@@ -400,12 +407,14 @@ const AddMember = ({
                   <Stack direction={'row'} gap={2}>
                     <Autocomplete
                       fullWidth
-                      value={form.location || null}
+                      value={
+                        locations.find((loc) => form.location_id === loc.id) ||
+                        null
+                      }
                       onChange={(event, newValue) => {
                         setForm({
                           ...form,
-                          // @ts-ignore
-                          location: newValue,
+                          location_id: newValue.id,
                         });
                       }}
                       getOptionLabel={(item) =>
@@ -414,7 +423,7 @@ const AddMember = ({
                           `${item.city}, ${item.region}, ${item.country}`,
                         )
                       }
-                      options={recruiter?.office_locations}
+                      options={locations}
                       renderOption={(props, item) => (
                         <li {...props}>
                           {capitalizeFirstLetter(
@@ -442,15 +451,19 @@ const AddMember = ({
                     />
                     <Autocomplete
                       fullWidth
-                      value={form.department}
+                      value={
+                        departments.find(
+                          (dep) => form.department_id === dep.id,
+                        ) || null
+                      }
                       onChange={(event: any, newValue) => {
                         setForm({
                           ...form,
-                          department: newValue,
+                          department_id: newValue.id,
                         });
                       }}
                       getOptionLabel={(op) => capitalizeFirstLetter(op.name)}
-                      options={recruiter?.departments}
+                      options={departments}
                       renderOption={(props, op) => (
                         <li {...props}>{capitalizeFirstLetter(op.name)}</li>
                       )}
@@ -573,13 +586,13 @@ const AddMember = ({
                               first_name: null,
                               last_name: null,
                               email: null,
-                              department: null,
+                              department_id: null,
                               position: null,
                               employment: null,
                               role: null,
                               role_id: null,
                               manager_id: null,
-                              location: null,
+                              location_id: null,
                               linked_in: null,
                             });
                         },
@@ -614,7 +627,7 @@ const AddMember = ({
                       first_name: null,
                       last_name: null,
                       email: null,
-                      department: null,
+                      department_id: null,
                       position: null,
                     });
                 },
@@ -648,7 +661,7 @@ const AddMember = ({
                     onClickButton={{
                       onClick: () => {
                         setResendDisable(member.user_id);
-                        reinviteUser(member.email, userDetails.user.id).then(
+                        reinviteUser(member.email, recruiterUser.user_id).then(
                           ({ error, emailSend }) => {
                             setResendDisable(null);
                             if (!error && emailSend) {

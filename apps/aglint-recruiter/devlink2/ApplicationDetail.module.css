@@ -1,0 +1,15 @@
+.app-detail-comp-wrap {
+  overflow: auto;
+  height: calc(100vh - 48px);
+}
+
+.app-detail-header-wrap {
+  padding: var(--space-4);
+}
+
+.ta-aap-detail-wrap {
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  background-color: var(--white);
+}

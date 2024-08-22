@@ -22,15 +22,14 @@ export default async function handler(
     // eslint-disable-next-line no-unused-vars
     await removeAllTemps(recruiter_id);
     const comp_templates = await seedCompTemplate(recruiter_id);
-    await seedWorkFlow(recruiter_id, comp_templates);
-    await Promise.all([
+    await seedWorkFlow(recruiter_id, comp_templates); //NOTE: don't change order
+    await Promise.allSettled([
       seedRolesAndPermissions(recruiter_id),
       seedPreferencesAndIntegrations(recruiter_id),
     ]);
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error(err.message);
     return res.status(500).send(err.message);
   }
 }

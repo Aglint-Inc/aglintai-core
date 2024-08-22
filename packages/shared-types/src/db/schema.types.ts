@@ -322,30 +322,6 @@ export type Database = {
           },
         ]
       }
-      application_reference: {
-        Row: {
-          ats_json: Json
-          created_at: string
-          id: number
-          is_processed: boolean
-          recruiter_id: string
-        }
-        Insert: {
-          ats_json: Json
-          created_at?: string
-          id?: number
-          is_processed?: boolean
-          recruiter_id: string
-        }
-        Update: {
-          ats_json?: Json
-          created_at?: string
-          id?: number
-          is_processed?: boolean
-          recruiter_id?: string
-        }
-        Relationships: []
-      }
       applications: {
         Row: {
           applied_at: string
@@ -713,18 +689,6 @@ export type Database = {
           mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
-        }
-        Relationships: []
-      }
-      cancel_data: {
-        Row: {
-          row_to_json: Json | null
-        }
-        Insert: {
-          row_to_json?: Json | null
-        }
-        Update: {
-          row_to_json?: Json | null
         }
         Relationships: []
       }
@@ -1102,16 +1066,19 @@ export type Database = {
           id: number
           name: string
           recruiter_id: string
+          remote_id: string | null
         }
         Insert: {
           id?: number
           name: string
           recruiter_id: string
+          remote_id?: string | null
         }
         Update: {
           id?: number
           name?: string
           recruiter_id?: string
+          remote_id?: string | null
         }
         Relationships: [
           {
@@ -1144,51 +1111,6 @@ export type Database = {
         }
         Relationships: []
       }
-      function_url: {
-        Row: {
-          value: string | null
-        }
-        Insert: {
-          value?: string | null
-        }
-        Update: {
-          value?: string | null
-        }
-        Relationships: []
-      }
-      greenhouse_reference: {
-        Row: {
-          application_id: string
-          created_at: string
-          greenhouse_id: string
-          id: number
-          posting_id: string
-          public_job_id: string
-          resume: string | null
-          resume_saved: boolean
-        }
-        Insert: {
-          application_id: string
-          created_at?: string
-          greenhouse_id: string
-          id?: number
-          posting_id: string
-          public_job_id: string
-          resume?: string | null
-          resume_saved?: boolean
-        }
-        Update: {
-          application_id?: string
-          created_at?: string
-          greenhouse_id?: string
-          id?: number
-          posting_id?: string
-          public_job_id?: string
-          resume?: string | null
-          resume_saved?: boolean
-        }
-        Relationships: []
-      }
       integrations: {
         Row: {
           ashby_key: string | null
@@ -1198,6 +1120,7 @@ export type Database = {
           domain_admin_email: string | null
           google_workspace_domain: string | null
           greenhouse_key: string | null
+          greenhouse_metadata: Json | null
           id: string
           lever_key: string | null
           recruiter_id: string
@@ -1214,6 +1137,7 @@ export type Database = {
           domain_admin_email?: string | null
           google_workspace_domain?: string | null
           greenhouse_key?: string | null
+          greenhouse_metadata?: Json | null
           id?: string
           lever_key?: string | null
           recruiter_id: string
@@ -1230,6 +1154,7 @@ export type Database = {
           domain_admin_email?: string | null
           google_workspace_domain?: string | null
           greenhouse_key?: string | null
+          greenhouse_metadata?: Json | null
           id?: string
           lever_key?: string | null
           recruiter_id?: string
@@ -1331,6 +1256,7 @@ export type Database = {
       }
       interview_meeting: {
         Row: {
+          application_id: string
           cal_event_id: string | null
           candidate_feedback: Json | null
           confirmed_date: string | null
@@ -1343,11 +1269,11 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
-          request_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
+          application_id: string
           cal_event_id?: string | null
           candidate_feedback?: Json | null
           confirmed_date?: string | null
@@ -1360,11 +1286,11 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
+          application_id?: string
           cal_event_id?: string | null
           candidate_feedback?: Json | null
           confirmed_date?: string | null
@@ -1377,11 +1303,38 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "interview_meeting_organizer_id_fkey"
             columns: ["organizer_id"]
@@ -1408,13 +1361,6 @@ export type Database = {
             columns: ["interview_schedule_id"]
             isOneToOne: false
             referencedRelation: "interview_schedule"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_meeting_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -1627,30 +1573,36 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          job_id: string
+          job_id: string | null
+          name: string
+          plan_order: number
         }
         Insert: {
           created_at?: string
           id?: string
-          job_id: string
+          job_id?: string | null
+          name?: string
+          plan_order?: number
         }
         Update: {
           created_at?: string
           id?: string
-          job_id?: string
+          job_id?: string | null
+          name?: string
+          plan_order?: number
         }
         Relationships: [
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "job_view"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           },
@@ -1900,6 +1852,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
+          request_id: string | null
           schedule_id: string | null
           session_id: string
           session_relation_id: string | null
@@ -1913,6 +1866,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id: string
           session_relation_id?: string | null
@@ -1926,6 +1880,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
+          request_id?: string | null
           schedule_id?: string | null
           session_id?: string
           session_relation_id?: string | null
@@ -1952,6 +1907,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "interview_session_cancel_schedule_id_fkey"
@@ -2167,89 +2129,6 @@ export type Database = {
           },
         ]
       }
-      job_assiatan_chat: {
-        Row: {
-          created_at: string
-          id: string
-          job_id: string
-          last_message: string | null
-          name: string | null
-          thread_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          job_id: string
-          last_message?: string | null
-          name?: string | null
-          thread_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          job_id?: string
-          last_message?: string | null
-          name?: string | null
-          thread_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "job_assiatan_chat_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "job_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "job_assiatan_chat_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      job_assiatan_chat_messages: {
-        Row: {
-          content: Json
-          created_at: string
-          id: number
-          job_assiatan_chat_id: string
-          message_id: string
-          sender: string
-          type: string
-        }
-        Insert: {
-          content: Json
-          created_at?: string
-          id?: number
-          job_assiatan_chat_id: string
-          message_id: string
-          sender: string
-          type: string
-        }
-        Update: {
-          content?: Json
-          created_at?: string
-          id?: number
-          job_assiatan_chat_id?: string
-          message_id?: string
-          sender?: string
-          type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "job_assiatan_chat_messages_job_assiatan_chat_id_fkey"
-            columns: ["job_assiatan_chat_id"]
-            isOneToOne: false
-            referencedRelation: "job_assiatan_chat"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       job_email_template: {
         Row: {
           body: string | null
@@ -2289,155 +2168,6 @@ export type Database = {
           {
             foreignKeyName: "job_email_template_job_id_fkey"
             columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      job_reference: {
-        Row: {
-          ats: string | null
-          ats_job_id: string
-          ats_json: Json | null
-          created_at: string
-          id: number
-          public_job_id: string
-          recruiter_id: string
-        }
-        Insert: {
-          ats?: string | null
-          ats_job_id: string
-          ats_json?: Json | null
-          created_at?: string
-          id?: number
-          public_job_id: string
-          recruiter_id: string
-        }
-        Update: {
-          ats?: string | null
-          ats_job_id?: string
-          ats_json?: Json | null
-          created_at?: string
-          id?: number
-          public_job_id?: string
-          recruiter_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "job_reference_public_job_id_fkey"
-            columns: ["public_job_id"]
-            isOneToOne: false
-            referencedRelation: "job_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "job_reference_public_job_id_fkey"
-            columns: ["public_job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "job_reference_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      lever_job_reference: {
-        Row: {
-          created_at: string
-          id: number
-          job_id: string
-          last_synced_at: string | null
-          posting_id: string
-          recruiter_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          job_id: string
-          last_synced_at?: string | null
-          posting_id: string
-          recruiter_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          job_id?: string
-          last_synced_at?: string | null
-          posting_id?: string
-          recruiter_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lever_job_reference_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "job_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lever_job_reference_job_id_fkey"
-            columns: ["job_id"]
-            isOneToOne: false
-            referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lever_job_reference_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      lever_reference: {
-        Row: {
-          application_id: string
-          created_at: string
-          feedback: Json | null
-          last_synced: string
-          opportunity_id: string
-          posting_id: string
-          public_job_id: string
-          stage: string | null
-        }
-        Insert: {
-          application_id: string
-          created_at?: string
-          feedback?: Json | null
-          last_synced?: string
-          opportunity_id: string
-          posting_id: string
-          public_job_id: string
-          stage?: string | null
-        }
-        Update: {
-          application_id?: string
-          created_at?: string
-          feedback?: Json | null
-          last_synced?: string
-          opportunity_id?: string
-          posting_id?: string
-          public_job_id?: string
-          stage?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "lever_reference_public_job_id_fkey"
-            columns: ["public_job_id"]
-            isOneToOne: false
-            referencedRelation: "job_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "lever_reference_public_job_id_fkey"
-            columns: ["public_job_id"]
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
@@ -2725,8 +2455,10 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2: string | null
+          name: string | null
           recruiter_id: string
           region: string
+          remote_id: string | null
           timezone: string
           zipcode: string | null
         }
@@ -2737,8 +2469,10 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2?: string | null
+          name?: string | null
           recruiter_id: string
           region: string
+          remote_id?: string | null
           timezone: string
           zipcode?: string | null
         }
@@ -2749,8 +2483,10 @@ export type Database = {
           is_headquarter?: boolean
           line1?: string
           line2?: string | null
+          name?: string | null
           recruiter_id?: string
           region?: string
+          remote_id?: string | null
           timezone?: string
           zipcode?: string | null
         }
@@ -2840,18 +2576,6 @@ export type Database = {
         }
         Relationships: []
       }
-      plan_count: {
-        Row: {
-          count: number | null
-        }
-        Insert: {
-          count?: number | null
-        }
-        Update: {
-          count?: number | null
-        }
-        Relationships: []
-      }
       public_jobs: {
         Row: {
           active_status: Json
@@ -2871,7 +2595,7 @@ export type Database = {
           job_criteria: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
-          location: string | null
+          location_id: number | null
           new_screening_setting: Json
           parameter_weights: Json
           phone_screen_enabled: boolean | null
@@ -2881,6 +2605,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator: string | null
           remote_id: string | null
+          remote_sync_time: string | null
           scoring_criteria_loading: boolean
           screening_questions: Json[] | null
           screening_setting: Json | null
@@ -2911,7 +2636,7 @@ export type Database = {
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
-          location?: string | null
+          location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
@@ -2921,6 +2646,7 @@ export type Database = {
           recruiter_id: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -2951,7 +2677,7 @@ export type Database = {
           job_criteria?: Json | null
           job_title?: string | null
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
-          location?: string | null
+          location_id?: number | null
           new_screening_setting?: Json
           parameter_weights?: Json
           phone_screen_enabled?: boolean | null
@@ -2961,6 +2687,7 @@ export type Database = {
           recruiter_id?: string
           recruiting_coordinator?: string | null
           remote_id?: string | null
+          remote_sync_time?: string | null
           scoring_criteria_loading?: boolean
           screening_questions?: Json[] | null
           screening_setting?: Json | null
@@ -3022,6 +2749,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_jobs_recruiter_fkey"
@@ -3367,6 +3101,7 @@ export type Database = {
           email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string | null
+          is_calendar_connected: boolean
           joined_at: string | null
           last_name: string | null
           linked_in: string | null
@@ -3374,6 +3109,7 @@ export type Database = {
           phone: string | null
           position: string | null
           profile_image: string | null
+          remote_id: string | null
           schedule_auth: Json | null
           scheduling_settings: Json | null
           status: string
@@ -3387,6 +3123,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -3394,6 +3131,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           profile_image?: string | null
+          remote_id?: string | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           status: string
@@ -3407,6 +3145,7 @@ export type Database = {
           email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string | null
+          is_calendar_connected?: boolean
           joined_at?: string | null
           last_name?: string | null
           linked_in?: string | null
@@ -3414,6 +3153,7 @@ export type Database = {
           phone?: string | null
           position?: string | null
           profile_image?: string | null
+          remote_id?: string | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           status?: string
@@ -3589,7 +3329,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_request_integration_tool_recruiter_id_fkey"
+            foreignKeyName: "request_integration_tool_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
@@ -4074,30 +3814,6 @@ export type Database = {
           },
         ]
       }
-      session_count: {
-        Row: {
-          count: number | null
-        }
-        Insert: {
-          count?: number | null
-        }
-        Update: {
-          count?: number | null
-        }
-        Relationships: []
-      }
-      sessions_count: {
-        Row: {
-          count: number | null
-        }
-        Insert: {
-          count?: number | null
-        }
-        Update: {
-          count?: number | null
-        }
-        Relationships: []
-      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -4327,51 +4043,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      threads: {
-        Row: {
-          applied: boolean | null
-          assistant_id: string | null
-          candidate_email: string | null
-          candidate_name: string | null
-          candidate_phone: string | null
-          chat_end: boolean | null
-          created_at: string
-          designation: string | null
-          document_text: string | null
-          file_url: string | null
-          id: number
-          thread_id: string | null
-        }
-        Insert: {
-          applied?: boolean | null
-          assistant_id?: string | null
-          candidate_email?: string | null
-          candidate_name?: string | null
-          candidate_phone?: string | null
-          chat_end?: boolean | null
-          created_at?: string
-          designation?: string | null
-          document_text?: string | null
-          file_url?: string | null
-          id?: number
-          thread_id?: string | null
-        }
-        Update: {
-          applied?: boolean | null
-          assistant_id?: string | null
-          candidate_email?: string | null
-          candidate_name?: string | null
-          candidate_phone?: string | null
-          chat_end?: boolean | null
-          created_at?: string
-          designation?: string | null
-          document_text?: string | null
-          file_url?: string | null
-          id?: number
-          thread_id?: string | null
-        }
-        Relationships: []
       }
       tour: {
         Row: {
@@ -4663,6 +4334,49 @@ export type Database = {
           },
         ]
       }
+      workflow_request_relation: {
+        Row: {
+          created_at: string
+          id: string
+          request_id: string
+          workflow_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          request_id: string
+          workflow_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          request_id?: string
+          workflow_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_request_relation_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       all_interviewers: {
@@ -4670,6 +4384,7 @@ export type Database = {
           completed_meeting_count: number | null
           email: string | null
           first_name: string | null
+          is_calendar_connected: boolean | null
           last_name: string | null
           position: string | null
           profile_image: string | null
@@ -4802,6 +4517,7 @@ export type Database = {
           state: string | null
           status: Database["public"]["Enums"]["application_status"] | null
           task_count: number | null
+          timezone: string | null
         }
         Relationships: [
           {
@@ -5010,7 +4726,8 @@ export type Database = {
           jd_json: Json | null
           job_title: string | null
           job_type: Database["public"]["Enums"]["public_job_type"] | null
-          location: string | null
+          location: Json | null
+          location_id: number | null
           parameter_weights: Json | null
           phone_screen_enabled: boolean | null
           posted_by: string | null
@@ -5075,6 +4792,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "public_jobs_recruiter_fkey"
@@ -5629,6 +5353,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_user_auth: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       connectassessmenttemplate: {
         Args: {
           assessmentid: string
@@ -5865,6 +5593,14 @@ export type Database = {
           timeline: string
           count: number
         }[]
+      }
+      get_filtered_job_ids: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: string[]
       }
       get_interview_data_count: {
         Args: {
@@ -6260,6 +5996,10 @@ export type Database = {
         }
         Returns: Json
       }
+      greenhouse_sync: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -6340,7 +6080,7 @@ export type Database = {
         Args: {
           applications?: string[]
           sessions?: string[]
-          request?: Json
+          requests?: Json[]
         }
         Returns: undefined
       }
@@ -6394,6 +6134,139 @@ export type Database = {
       schedulercron: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      scheduling_analytics_completed_interviews: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+          type?: string
+        }
+        Returns: {
+          date: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_decline_requests: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: {
+          completed_at: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_filters: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: {
+          jobs: Json[]
+          departments: Json[]
+        }[]
+      }
+      scheduling_analytics_interview_types: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: {
+          id: string
+          name: string
+          qualified: number
+          training: number
+        }[]
+      }
+      scheduling_analytics_interviewers: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+          type?: Database["public"]["Enums"]["status_training"]
+        }
+        Returns: {
+          name: string
+          user_id: string
+          profile_image: string
+          accepted: number
+          declined: number
+        }[]
+      }
+      scheduling_analytics_leaderboard: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+          type?: string
+        }
+        Returns: {
+          name: string
+          position: string
+          profile_image: string
+          user_id: string
+          duration: number
+          interviews: number
+        }[]
+      }
+      scheduling_analytics_reasons: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+          type?: Database["public"]["Enums"]["cancel_type"]
+        }
+        Returns: {
+          reason: string
+          count: number
+        }[]
+      }
+      scheduling_analytics_recent_decline_reschedule: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: {
+          profile_image: string
+          name: string
+          note: string
+          id: string
+          type: Database["public"]["Enums"]["cancel_type"]
+        }[]
+      }
+      scheduling_analytics_tabs: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+        }
+        Returns: {
+          cancelled: number
+          waiting: number
+          completed: number
+          confirmed: number
+          not_scheduled: number
+        }[]
+      }
+      scheduling_analytics_training_progress: {
+        Args: {
+          recruiter_id: string
+          departments?: number[]
+          jobs?: string[]
+          type?: Database["public"]["Enums"]["status_training"]
+        }
+        Returns: {
+          number_of_shadow: number
+          noshadow: number
+          number_of_reverse_shadow: number
+          noreverseshadow: number
+          user_id: string
+          name: string
+          position: string
+        }[]
       }
       score_application: {
         Args: {
@@ -6623,8 +6496,8 @@ export type Database = {
         | "interviewerResumed_email_admin"
         | "interviewEnd_slack_organizerForMeetingStatus"
         | "interviewEnd_email_organizerForMeetingStatus"
-        | "onAvailReqAgent_emailAgent_getCandidateAvailability"
-        | "onAvailReqAgent_emailLink_getCandidateAvailability"
+        | "onRequestSchedule_emailAgent_getCandidateAvailability"
+        | "onRequestSchedule_emailLink_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
         | "onReceivingAvailReq_agent_confirmSlot"
         | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
@@ -6633,7 +6506,7 @@ export type Database = {
         | "onRequestReschedule_emailLink_resendAvailRequest"
         | "onRequestCancel_agent_cancelEvents"
         | "onRequestCancel_slack_interviewersOrganizer"
-        | "onInterviewerDecline_agent_changeInterviewer"
+        | "onRequestInterviewerDecline_agent_changeInterviewer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
@@ -6770,6 +6643,7 @@ export type Database = {
         | "processing"
         | "unparsable"
         | "processed"
+        | "unscorable"
       sender_type: "aglint" | "you" | "system" | "user"
       session_accepted_status:
         | "waiting"
@@ -6846,12 +6720,12 @@ export type Database = {
         | "candidateBook"
         | "onQualified"
         | "onTrainingComplete"
-        | "onAvailReqAgent"
         | "onReceivingAvailReq"
+        | "onRequestSchedule"
         | "onSelfScheduleReqAgent"
         | "onRequestCancel"
         | "onRequestReschedule"
-        | "onInterviewerDecline"
+        | "onRequestInterviewerDecline"
       workflow_type: "system" | "job"
     }
     CompositeTypes: {

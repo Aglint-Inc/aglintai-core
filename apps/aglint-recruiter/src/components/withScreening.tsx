@@ -2,9 +2,9 @@ import { PropsWithChildren } from 'react';
 
 import { Page404 } from '@/devlink/Page404';
 
-import { useAuthDetails } from '../context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 
 export const WithScreening = (props: PropsWithChildren) => {
-  const { isScreeningEnabled } = useAuthDetails();
+  const { isScreeningEnabled } = useRolesAndPermissions();
   return isScreeningEnabled ? props.children : <Page404 />;
 };

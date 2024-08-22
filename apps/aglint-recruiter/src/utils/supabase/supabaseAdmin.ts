@@ -1,7 +1,17 @@
 import { DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-export const supabaseAdmin = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const key = process.env.SUPABASE_SERVICE_KEY;
+const env = process.env.NEXT_PUBLIC_HOST_NAME!;
+if (!url) {
+  throw new Error(`Missing SUPABASE_URL on ${env}`);
+}
+if (!key) {
+  throw new Error(`Missing SUPABASE_SERVICE_KEY on ${env}`);
+}
+export const supabaseAdmin = createClient<DB>(url, key);
+export function getSupabaseServer() {
+  return createClient<DB>(url, key);
+}
+export type SupabaseClientType = SupabaseClient<DB>;

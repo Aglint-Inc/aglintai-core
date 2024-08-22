@@ -1,84 +1,75 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+// import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { GreenhouseAPI } from '@/src/app/api/integrations/greenhouse/type';
+import { GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
+import axios from '@/src/client/axios';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
 import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 
 function GreenhouseSettings() {
-  const { data, isPending } = useGreenhouseDetails();
+  const { data, isPending, setOptions } = useGreenhouseDetails();
+
   return (
-    <Stack p={2} maxWidth={'900px'}>
+    <Stack p={2}>
       {isPending ? (
         <DynamicLoader />
       ) : (
         <AtsSettings
-          slotButton={
-            <>
-              <ButtonSoft
-                size={'1'}
-                color={'neutral'}
-                textButton={'Edit API Key'}
-              />
-              <ButtonSolid
-                size={'1'}
-                color={'error'}
-                textButton={'Disconnect'}
-              />
-            </>
-          }
+          slotButton={<>actions</>}
           slotAtsIcon={<GreenhouseIcon />}
           textAtsConnected={'Greenhouse is connected'}
           textSyncItems={'Sync items'}
           slotConnectIcon={<GreenInCircle />}
           slotSyncItems={
-            <Stack gap={0.7}>
-              {Object.entries(GreenhouseSync.options).map(([key, value]) => (
-                <Stack key={key}>
-                  <CheckBoxWithText
-                    checked={value.isEnabled}
-                    text={value.name}
-                    onClick={async () => {
-                      data[key] = !data[key];
-                      data[key] && (await value.onCheck());
-                    }}
-                  />
-                  {(value.subOption?.description ||
-                    value.subOption?.options) && (
-                    <Stack pl={3} py={1} gap={0.3}>
-                      {value.subOption?.description && (
-                        <Typography variant='subtitle2' color={'GrayText'}>
-                          {value.subOption.description}
-                        </Typography>
-                      )}
-                      {value.subOption?.options && (
-                        <Stack gap={0.5}>
-                          {Object.entries(value.subOption?.options).map(
-                            ([subKey, subValue]) => (
-                              <CheckBoxWithText
-                                key={subKey}
-                                checked={subValue.isEnabled}
-                                text={subValue.name}
-                                onClick={async () => {
-                                  data[key] = !data[key];
-                                  data[key] && (await subValue.onCheck());
-                                }}
-                              />
-                            ),
-                          )}
-                        </Stack>
-                      )}
-                    </Stack>
-                  )}
+            <>
+              <Stack gap={1}>
+                {Object.entries(GreenhouseSync.options).map(
+                  ([key, subOptions]) => (
+                    <CheckBoxWithText
+                      key={key}
+                      checked={data.options[key]}
+                      text={subOptions.name}
+                      onClick={async () => {
+                        data.options[key] = !data.options?.[key];
+                        setOptions(data);
+                        // setSyncData((pre) => ({
+                        //   ...pre,
+                        //   options: {
+                        //     ...syncData.options,
+                        //     [key]: !syncData.options[key],
+                        //   },
+                        // }));
+                      }}
+                    />
+                    //  {subOptions.description && (
+                    //   <Typography pl={3} variant='subtitle2' color={'GrayText'}>
+                    //     {subOptions.description}
+                    //   </Typography>
+                    // )}
+                  ),
+                )}
+              </Stack>
+              <hr />
+              <Stack direction={'row'} justifyContent={'space-between'}>
+                <Stack direction={'row'} alignItems={'center'}>
+                  <Typography variant='subtitle2'>{`Last Sync: ${dayjs(data.last_sync['jobs']).fromNow() || 'Never'}`}</Typography>
                 </Stack>
-              ))}
-            </Stack>
+                <ButtonSoft
+                  size={1}
+                  textButton='Sync'
+                  onClickButton={{ onClick: () => getGreenhouseSync(data) }}
+                />
+              </Stack>
+            </>
           }
           slotFrequencySync={
             <AutoCompletePro
@@ -101,7 +92,7 @@ function GreenhouseSettings() {
               multiline
               minRows={2}
               maxRows={5}
-              defaultValue='When you mention `@aglintai` in a comment, Aglint AI can create a scheduling request and assign it to the appropriate coordinator or user.'
+              defaultValue='Enter your Instructions'
             />
           }
         />
@@ -164,11 +155,32 @@ function useGreenhouseDetails() {
     queryKey: ['integrations', 'greenhouse'],
     queryFn: getGreenhouseDetails,
   });
-  return { ...query };
+  const { mutateAsync } = useMutation({
+    mutationKey: ['integrations', 'greenhouse'],
+    mutationFn: setGreenhouseDetails,
+    onSuccess: () => {
+      query.refetch();
+    },
+  });
+  return { ...query, setOptions: mutateAsync };
 }
 
 async function getGreenhouseDetails() {
-  return {};
+  const res = await axios.call<GreenhouseAPI['GET']>(
+    'GET',
+    '/api/integrations/greenhouse',
+    null,
+  );
+  return res || ({} as typeof res);
+}
+
+async function setGreenhouseDetails(data: GreenhouseAPI['POST']['request']) {
+  const res = await axios.call<GreenhouseAPI['POST']>(
+    'POST',
+    '/api/integrations/greenhouse',
+    data,
+  );
+  return res;
 }
 
 type GreenhouseSyncOptions = {
@@ -176,16 +188,11 @@ type GreenhouseSyncOptions = {
   options: {
     [options: string]: {
       name: string;
-      isEnabled: boolean;
       onCheck?: () => Promise<unknown>;
       subOption: {
         description: string;
         options: {
-          [options: string]: {
-            name: string;
-            isEnabled: true;
-            onCheck?: () => Promise<unknown>;
-          };
+          [options: string]: string;
         };
       };
     };
@@ -197,7 +204,6 @@ const GreenhouseSync: GreenhouseSyncOptions = {
   options: {
     jobs: {
       name: 'Jobs',
-      isEnabled: true,
       subOption: undefined,
       // subOption: {
       //   description: 'Sync Greenhouse Interview Stages',
@@ -216,36 +222,57 @@ const GreenhouseSync: GreenhouseSyncOptions = {
     },
     interview_stages: {
       name: 'Interview Plan',
-      isEnabled: true,
       subOption: undefined,
     },
     candidates: {
       name: 'Candidates',
-      isEnabled: true,
       subOption: undefined,
     },
     applications: {
       name: 'Applications',
-      isEnabled: true,
       subOption: undefined,
     },
-    user: {
-      name: 'Users',
-      isEnabled: true,
-      onCheck: undefined,
+    departments: {
+      name: 'Departments',
       subOption: undefined,
     },
     office_locations: {
       name: 'Office Locations',
-      isEnabled: true,
-      onCheck: undefined,
       subOption: undefined,
     },
-    department: {
-      name: 'Department',
-      isEnabled: true,
-      onCheck: undefined,
+    users: {
+      name: 'Users',
       subOption: undefined,
     },
   },
 } as const;
+
+// async function syncGreenhouseDepartments() {
+//   return await axios.call<GreenhouseDepartmentsAPI>(
+//     'GET',
+//     '/api/integrations/greenhouse/sync/departments',
+//     null,
+//   );
+// }
+
+// async function setGreenhouseOfficeLocations() {
+//   const res = await axios.call<GreenhouseOfficeLocationsAPI>(
+//     'GET',
+//     '/api/integrations/greenhouse/sync/office_locations',
+//     {},
+//   );
+//   return res;
+// }
+
+async function getGreenhouseSync(
+  syncData: GreenHouseFullSyncAPI['request']['syncData'],
+) {
+  const res = await axios.call<GreenHouseFullSyncAPI>(
+    'POST',
+    '/api/sync/greenhouse/full_sync',
+    {
+      syncData,
+    },
+  );
+  return res;
+}

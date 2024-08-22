@@ -6,4 +6,6 @@ declare function RolesPill(props: {
   textRoles?: React.ReactNode;
   onClickRemoveRoles?: Types.Devlink.RuntimeProps;
   isCloseIconVisible?: Types.Visibility.VisibilityConditions;
+  slotLeftIcon?: Types.Devlink.Slot;
+  isLeftIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

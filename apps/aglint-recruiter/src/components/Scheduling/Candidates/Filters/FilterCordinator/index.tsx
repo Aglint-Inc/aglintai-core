@@ -203,7 +203,9 @@ function FilterCordinator() {
                           size={1}
                           weight={'regular'}
                           color={'neutral'}
-                          content={capitalize(member.position)}
+                          content={
+                            member?.position ? capitalize(member.position) : ''
+                          }
                         />
                       </Stack>
                     </Stack>

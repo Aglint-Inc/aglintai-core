@@ -101,8 +101,6 @@ export const requestQueries = {
     queryOptions({
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      refetchInterval:
-        process.env.NODE_ENV === 'development' ? 2000 : undefined,
       refetchOnMount: true,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
@@ -110,6 +108,30 @@ export const requestQueries = {
           await supabase
             .from('request_progress')
             .select('*')
+            .eq('request_id', request_id)
+            .throwOnError()
+        ).data,
+    }),
+  request_workflow: ({
+    request_id,
+    enabled,
+  }: {
+    request_id: string;
+    enabled?: boolean;
+  }) =>
+    queryOptions({
+      enabled: !!request_id && enabled,
+      gcTime: request_id ? GC_TIME : 0,
+      queryKey: [
+        ...requestQueries.requests_queryKey(),
+        'workflow',
+        { request_id },
+      ],
+      queryFn: async () =>
+        (
+          await supabase
+            .from('workflow_request_relation')
+            .select('*, workflow(*, workflow_action(*))')
             .eq('request_id', request_id)
             .throwOnError()
         ).data,
@@ -373,7 +395,9 @@ type RequestsFilterKeys =
       | 'type' //assignee_id'
       | 'created_at'
     >
-  | 'end_at';
+  | 'end_at'
+  | 'jobs'
+  | 'applications';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
@@ -382,6 +406,8 @@ type RequestFilterValues = {
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];
+  jobs: string[];
+  applications?: string[];
 };
 type RequestsFilter = {
   [id in RequestsFilterKeys]: RequestFilterValues[id];
@@ -402,7 +428,7 @@ export type GetRequestParams = {
 };
 
 const REQUEST_SELECT =
-  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title), candidates(first_name, last_name))';
+  '*, request_relation(*,interview_session(id,name)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name,position,profile_image), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title,departments(name),office_locations(city,country),workflow_job_relation(*)), candidates(id,first_name, last_name,current_job_title,city,state,country,email,phone,linkedin,avatar))';
 
 export const getUnfilteredRequests = async ({
   payload: { assigner_id },
@@ -413,6 +439,8 @@ export const getUnfilteredRequests = async ({
     type: filterType,
     created_at,
     end_at,
+    jobs,
+    applications,
   },
   sort: { order, type },
 }: GetRequestParams) => {
@@ -436,6 +464,12 @@ export const getUnfilteredRequests = async ({
   if (status?.length) query.or(`status.in.(${status.join(',')})`);
 
   if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
+  if (jobs?.length)
+    query.or(`job_id.in.(${jobs.join(',')})`, {
+      referencedTable: 'applications',
+    });
+  if (applications?.length)
+    query.or(`application_id.in.(${applications.join(',')})`);
 
   if (title?.length) {
     query.ilike('title', `%${title}%`);
@@ -450,7 +484,9 @@ export const getUnfilteredRequests = async ({
 
   query.order('id');
 
-  return (await query).data;
+  return ((await query).data ?? []).filter(
+    ({ applications }) => !!applications,
+  );
 };
 
 type Sections =

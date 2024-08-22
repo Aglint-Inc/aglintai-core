@@ -20,7 +20,7 @@ function CommandShortCuts() {
     },
     {
       prefix: 'Schedule with',
-      command: 'Ctrl + 1',
+      command: 'ctrl + 1',
       suffix: '@Candidate',
     },
     // {
@@ -35,7 +35,7 @@ function CommandShortCuts() {
     // },
   ];
 
-  const { setText, inputRef } = useAgentIEditor();
+  const { setText, inputRef, text } = useAgentIEditor();
   const handleClick = (commandText: string) => {
     if (commandText) {
       let taskType = '';
@@ -50,19 +50,25 @@ function CommandShortCuts() {
           taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
           break;
         case 'ctrl + 2':
-          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] /`;
           break;
         case 'ctrl + 3':
-          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] !`;
+          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] /`;
           break;
         default:
           break;
       }
       if (taskType) {
-        setText(taskType);
+        const regex = /schedule_type\[[^\]]+\]:\[[^\]]+\] ?/;
+
+        if (regex.test(text)) {
+          setText(text.replace(regex, taskType));
+        } else {
+          setText(`${taskType}${text}`);
+        }
         setTimeout(() => {
           inputRef.current?.focus();
-        }, 10);
+        }, 100);
       }
     }
   };

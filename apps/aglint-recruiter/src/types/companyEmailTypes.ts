@@ -205,11 +205,8 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Reverse Shadow Trainee Meeting Attendence',
     description: '',
   },
-  onAvailReqAgent_emailAgent_getCandidateAvailability: {
-    heading: '',
-    description: '',
-  },
-  onAvailReqAgent_emailLink_getCandidateAvailability: null,
+  onRequestSchedule_emailAgent_getCandidateAvailability: null,
+  onRequestSchedule_emailLink_getCandidateAvailability: null,
   onReceivingAvailReq_agent_sendSelfScheduleRequest: null,
   onReceivingAvailReq_agent_confirmSlot: null,
   onSelfScheduleReqAgent_EmailAgent_SelfSchedule: null,
@@ -218,5 +215,5 @@ export const emailTemplateCopy: CompanyEmailType = {
   onRequestReschedule_emailLink_resendAvailRequest: null,
   onRequestCancel_agent_cancelEvents: null,
   onRequestCancel_slack_interviewersOrganizer: null,
-  onInterviewerDecline_agent_changeInterviewer: null,
+  onRequestInterviewerDecline_agent_changeInterviewer: null,
 };

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import type { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 const cardVariants: Variants = {
   offscreen: {

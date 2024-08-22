@@ -31,14 +31,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 type Response = Awaited<ReturnType<typeof getInterviewPlans>>;
-
 export type GetInterviewPlansType = {
   request: Parameters<typeof getInterviewPlans>[0];
   respone: CustomType<
     Response,
     {
       interview_session: CustomType<
-        Response['interview_session'],
+        Response[number]['interview_session'],
         {
           members_meta: {
             // eslint-disable-next-line no-unused-vars
@@ -66,12 +65,17 @@ const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
         `*, interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, pause_json, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
       )
       .eq('job_id', job_id)
-      .single()
+      .order('plan_order', { ascending: true })
       .throwOnError()
   ).data;
-  if (response?.interview_session)
-    response.interview_session.sort(
-      (a, b) => a.session_order - b.session_order,
-    );
+  if (response?.length) {
+    response.map((item) => {
+      if (item?.interview_session)
+        item.interview_session.sort(
+          (a, b) => a.session_order - b.session_order,
+        );
+    });
+  }
+
   return response;
 };

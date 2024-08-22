@@ -35,6 +35,7 @@ function AgentInputBox() {
   const { data: jobsAndApplications, isFetched: isJobFetched } =
     useAllJobsAndApplications({
       recruiter_id,
+      schedule_type: selectedItems?.schedule_type[0]?.id,
     });
   const applications = selectedItems?.job_title[0]?.id
     ? jobsAndApplications?.applications.filter(
@@ -132,23 +133,22 @@ function AgentInputBox() {
                   .flatMap((ele) => ele)
                   .map((ele) => ({
                     id: ele.id,
-                    display: ele.title.replace(
-                      '{{candidateName}}',
-                      getFullName(
-                        ele.applications.candidates.first_name,
-                        ele.applications.candidates.last_name,
-                      ),
-                    ),
+                    display: getRequestTitle({
+                      title: ele.title,
+                      first_name: ele.applications.candidates.first_name,
+                      last_name: ele.applications.candidates.last_name,
+                    }),
                   }))
               : []
           }
           scheduleTypes={scheduleTypes}
           jobList={
-            isJobFetched &&
-            jobsAndApplications.jobs.map((job) => ({
-              id: job.id,
-              display: job.job_title,
-            }))
+            isJobFetched
+              ? jobsAndApplications.jobs.map((job) => ({
+                  id: job.id,
+                  display: job.job_title,
+                }))
+              : []
           }
           applicationsList={
             applications
@@ -177,10 +177,24 @@ function AgentInputBox() {
 
 export default AgentInputBox;
 
+export const getRequestTitle = ({
+  title,
+  first_name,
+  last_name,
+}: {
+  title: string;
+  first_name: string;
+  last_name: string;
+}) => {
+  return title.replace('{{candidateName}}', getFullName(first_name, last_name));
+};
+
 export const useAllJobsAndApplications = ({
   recruiter_id,
+  schedule_type,
 }: {
   recruiter_id: string;
+  schedule_type: selectedItemsType['schedule_type'][0]['id'];
 }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -189,20 +203,28 @@ export const useAllJobsAndApplications = ({
     queryFn: () =>
       getJobsAndApplications({
         recruiter_id,
+        schedule_type,
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
+    refetchInterval: schedule_type ? 500 : 10000,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });
   return { ...query, refetch };
 };
 
-async function getJobsAndApplications({ recruiter_id }) {
+async function getJobsAndApplications({
+  recruiter_id,
+  schedule_type,
+}: {
+  recruiter_id: string;
+  schedule_type: selectedItemsType['schedule_type'][0]['id'];
+}) {
   const { data: jobs } = await supabase
     .from('public_jobs')
     .select(
-      '*, applications(*, candidates(first_name,last_name), public_jobs(id,job_title), request(request_relation(session_id)), interview_schedule(interview_meeting(interview_session(id,name))))',
+      '*, applications(*, candidates(first_name,last_name), public_jobs(id,job_title), request(status,request_relation(session_id)), interview_schedule(interview_meeting(status,interview_session(id,name))))',
     )
     .eq('recruiter_id', recruiter_id)
     .eq('status', 'published')
@@ -212,23 +234,40 @@ async function getJobsAndApplications({ recruiter_id }) {
     ({ applications }) => applications,
   );
   const applications = applicationsList.map((ele) => {
-    const requestSessions =
-      ele.request
-        ?.map((req) => req.request_relation)
-        .flat()
-        .map((rel) => rel.session_id)
-        .flat() || [];
+    // eslint-disable-next-line no-console
+    console.log(schedule_type); // remove this line latter
 
-    const applicantSessions = (
-      ele.interview_schedule?.interview_meeting
-        ? ele.interview_schedule.interview_meeting
-            .map((meeting) => meeting.interview_session)
-            .flat()
-        : []
-    ).filter(
-      (session) =>
-        !requestSessions.includes(session.id) && session.name !== 'Debrief',
-    );
+    // const requestSessions =
+    //   ele.request
+    //     .filter((request) => {
+    //       if (schedule_type === 're_schedule') {
+    //         return request.status === 'in_progress';
+    //       } else {
+    //         return request;
+    //       }
+    //     })
+    //     ?.map((req) => req.request_relation)
+    //     .flat()
+    //     .map((rel) => rel.session_id)
+    //     .flat() || [];
+
+    // const applicantSessions = (
+    //   ele.interview_schedule?.interview_meeting
+    //     ? ele.interview_schedule.interview_meeting
+    //         .map((meeting) => meeting.interview_session)
+    //         .flat()
+    //     : []
+    // ).filter(
+    //   (session) =>
+    //     !requestSessions.includes(session.id) && session.name !== 'Debrief',
+    // );
+    const applicantSessions = ele.interview_schedule?.interview_meeting
+      ? ele.interview_schedule.interview_meeting
+          .filter((meeting) => meeting.status !== 'waiting')
+          .map((meeting) => meeting.interview_session)
+          .flat()
+      : [];
+
     return { ...ele, applicantSessions };
   });
   return { jobs, applications };

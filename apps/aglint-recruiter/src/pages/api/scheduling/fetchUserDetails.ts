@@ -9,22 +9,30 @@ const supabase = createClient<DB>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+export type ApiFetchUserDetails = Awaited<ReturnType<typeof fetchUsers>>;
+
 export interface BodyParamsFetchUserDetails {
   recruiter_id: string;
   includeSupended?: boolean;
+  isCalendar?: boolean | null;
 }
 
 export type CompanyMembersAPI = Awaited<ReturnType<typeof fetchUsers>>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { recruiter_id, includeSupended } =
-      req.body as BodyParamsFetchUserDetails;
+    const {
+      recruiter_id,
+      includeSupended,
+      isCalendar = null,
+    } = req.body as BodyParamsFetchUserDetails;
 
-    const resUsers = await fetchUsers(recruiter_id, includeSupended);
-    if (resUsers.length) {
-      return res.status(200).json(resUsers);
-    }
+    const resUsers = await fetchUsers(
+      recruiter_id,
+      includeSupended,
+      isCalendar,
+    );
+    return res.status(200).json(resUsers);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -32,7 +40,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
+const fetchUsers = async (
+  recruiter_id: string,
+  includeSuspended: boolean,
+  isCalendarConnected: boolean | null,
+) => {
   const query = supabase
     .from('recruiter_relation')
     .select(
@@ -45,6 +57,10 @@ const fetchUsers = async (recruiter_id: string, includeSuspended: boolean) => {
     query.in('recruiter_user.status', ['active', 'suspended']);
   } else {
     query.in('recruiter_user.status', ['active']);
+  }
+
+  if (isCalendarConnected) {
+    query.eq('recruiter_user.is_calendar_connected', true);
   }
 
   return query.throwOnError().then(({ data, error }) => {

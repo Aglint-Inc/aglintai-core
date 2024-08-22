@@ -266,7 +266,7 @@ function ModuleSettingComp({
         </Stack>
       )}
       {editModule?.settings?.require_training && (
-        <Stack spacing={'var(--space-2)'}>
+        <Stack spacing={'var(--space-4)'}>
           <SlotTrainingMembers editModule={editModule} refetch={refetch} />
         </Stack>
       )}
@@ -422,7 +422,6 @@ function ModuleSettingComp({
                       />
                       <MuiNumberfield
                         width='80px'
-                        height='26px'
                         isMarginTop={false}
                         value={localModule.settings.noReverseShadow}
                         isDebounceEnable={false}
@@ -482,7 +481,6 @@ function ModuleSettingComp({
                       />
                       <MuiNumberfield
                         width='80px'
-                        height='26px'
                         isMarginTop={false}
                         value={localModule.settings.noShadow}
                         isDebounceEnable={false}

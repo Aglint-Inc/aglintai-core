@@ -19,6 +19,7 @@ export function UserInfoTeam({
   textDesgination = "Heading",
   slotDetails,
   slotButton,
+  isButtonVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -39,7 +40,7 @@ export function UserInfoTeam({
             className={_utils.cx(_styles, "tli-header-text-wrap")}
             tag="div"
           >
-            <Text content={textName} weight="medium" size="3" />
+            <Text content={textName} weight="medium" size="2" />
             {isLinkedInVisible ? (
               <_Builtin.Block tag="div" {...onClickLinkedIn}>
                 <_Builtin.HtmlEmbed
@@ -58,6 +59,9 @@ export function UserInfoTeam({
       >
         {slotDetails}
       </_Builtin.Block>
+      {isButtonVisible ? (
+        <_Builtin.Block tag="div">{slotButton}</_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

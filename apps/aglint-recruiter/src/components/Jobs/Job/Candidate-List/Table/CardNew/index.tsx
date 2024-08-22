@@ -1,13 +1,15 @@
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { Application } from '@/src/types/applications.types';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import ResumeScore from '../../Common/ResumeScoreNew';
@@ -16,6 +18,7 @@ import { ScheduleProgress } from './ScheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
+    const router = useRouter();
     const {
       cascadeVisibilites,
       job: { status },
@@ -33,19 +36,14 @@ const ApplicationCard = memo(
       }),
     );
 
-    const { application_id } = useApplicationStore(({ drawer }) => drawer);
+    const { isScoringEnabled } = useRolesAndPermissions();
 
-    const handleOpen = useApplicationStore(({ handleOpen }) => handleOpen);
     const isChecked = useMemo(
       () => checklist.includes(application.id),
       [application, checklist],
     );
 
-    const isSelected = useMemo(
-      () => application.id === application_id,
-      [application_id, application],
-    );
-
+    const isSelected = false;
     const { pressed: shift } = useKeyPress('Shift');
 
     const handleCheck = useCallback(() => {
@@ -87,7 +85,10 @@ const ApplicationCard = memo(
     );
 
     const checkEnabled = useMemo(
-      () => application?.resume_processing_state === 'processed' && manageJob,
+      () =>
+        (application?.resume_processing_state === 'processed' ||
+          application?.resume_processing_state === 'unscorable') &&
+        manageJob,
       [application?.resume_processing_state, manageJob],
     );
 
@@ -99,17 +100,27 @@ const ApplicationCard = memo(
     return (
       <OptimisticWrapper loading={applicationLoading}>
         <CandidateListItem
+          isResumeMatchVisible={isScoringEnabled}
           onClickCandidate={{
-            onClick: () => handleOpen({ application_id: application.id }),
+            onClick: () => {
+              router.push(
+                `${ROUTES['/jobs/[id]/application/[application_id]']({
+                  application_id: application.id,
+                  id: application.job_id,
+                })}${
+                  application.status === 'interview'
+                    ? `?tab=interview`
+                    : `?tab=resume`
+                }`,
+              );
+            },
           }}
           isHighlighted={isSelected || isChecked}
           highlightType={isSelected ? 'highlighted' : 'checked'}
           slotBookmark={<Banners application={application} />}
           isDragVisible={isChecked}
           onClickSelect={{
-            onClick: checkEnabled
-              ? () => handleCheck()
-              : () => handleOpen({ application_id: application.id }),
+            onClick: checkEnabled ? () => handleCheck() : undefined,
             style: {
               opacity: checkEnabled ? 100 : 0,
             },

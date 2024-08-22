@@ -2,14 +2,17 @@
   display: flex;
   overflow: auto;
   width: 100%;
-  height: 100%;
   flex-direction: column;
+
+  background-color: var(--neutral-2);
+
+  height: calc(100vh - 48px);
 }
 
 .header-interview-list-wrap {
   padding-right: var(--space-4);
   padding-left: var(--space-4);
-  border-bottom: 1px solid var(--neutral-6);
+  background-color: var(--white);
 }
 
 .iml-details-wrapper {
@@ -73,39 +76,47 @@
 }
 
 .slot_newtab_pill {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+
   height: 36px;
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+
+  border-bottom: 1px solid var(--neutral-6);
+
+  background-color: var(--white);
 }
 
 .iml-new-body-wrap {
   position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 }
 
 .im-slot-tab-content {
-  overflow: auto;
   width: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
 
-  background-color: var(--neutral-2);
-
-  height: calc(100vh - 165px);
+  background-color: var(--white);
 }
 
 .iml-right-wrappers {
-  position: absolute;
+  position: sticky;
   left: auto;
-  top: 16px;
+  top: 48px;
   right: 16px;
   bottom: 16px;
   z-index: 2;
 
   overflow: auto;
   width: 400px;
+  margin-top: var(--space-4);
   padding-top: var(--space-4);
   padding-right: var(--space-4);
   padding-bottom: var(--space-4);
@@ -119,7 +130,7 @@
   border-bottom-left-radius: var(--radius-4);
   border-bottom-right-radius: var(--radius-4);
 
-  background-color: var(--white);
+  background-color: var(--neutral-2);
 
   height: calc(100vh - 197px);
 }

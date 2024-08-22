@@ -62,7 +62,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                   key={ind}
                   textJobRole={job.job_title || '--'}
                   textCompanyType={job.departments?.name || '--'}
-                  textLocation={job.location || '--'}
+                  textLocation={'---'}
                   textWorkingType={job.job_type || '--'}
                   onClickApplyNow={{
                     onClick: () => {
@@ -124,10 +124,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 }
                 textCountry={capitalizeAll(loc.city)}
                 textHeadquater={'asda'}
-                textJobPostCount={`${
-                  jobs?.filter((job) => job?.location?.includes(loc.city))
-                    .length
-                } Jobs`}
+                textJobPostCount={'--'}
               />
             );
           },

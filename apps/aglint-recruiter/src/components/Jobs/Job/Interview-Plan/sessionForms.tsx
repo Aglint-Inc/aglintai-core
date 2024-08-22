@@ -30,7 +30,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
 import { CompanyMember, PausedBadge, RoleIcon } from '.';
-import { getBreakLabel } from './utils';
+import { getBreakLabelV2 } from './utils';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
@@ -79,7 +79,7 @@ export const getSessionFields = (
 const getLabel = (key: keyof SessionFormProps) => {
   switch (key) {
     case 'name':
-      return 'Stage name';
+      return 'Interview name';
     case 'schedule_type':
       return 'Schedule type';
     case 'location':
@@ -677,7 +677,7 @@ export const SessionDurationField = ({
 }) => {
   const options = sessionDurations.reduce(
     (acc, curr) => {
-      acc.push({ name: getBreakLabel(curr), value: curr });
+      acc.push({ name: getBreakLabelV2(curr), value: curr });
       return acc;
     },
     [] as { name: string; value: number }[],
@@ -788,7 +788,7 @@ const InterviewModulesField = ({
         onChange={onChange}
         options={options}
         value={value?.id}
-        showIcons={true}
+        showIcons={false}
       />
       {error && !value?.id && (
         <Stack

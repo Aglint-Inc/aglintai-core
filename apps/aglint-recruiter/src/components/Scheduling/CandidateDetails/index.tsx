@@ -98,12 +98,16 @@ function SchedulingApplication() {
                           background: 'var(--white)',
                         }}
                       >
-                        <CandidateInfo application_id={application_id} />
+                        <CandidateInfo
+                          application_id={application_id}
+                          job_id={selectedApplication?.job_id}
+                        />
                       </Stack>
                     </Stack>
                   ) : tab === 'interview_plan' || !tab ? (
                     <RequestAvailabilityProvider>
                       <FullSchedule refetch={allActivities.refetch} />
+                      <></>
                     </RequestAvailabilityProvider>
                   ) : tab === 'feedback' ? (
                     <Stack>

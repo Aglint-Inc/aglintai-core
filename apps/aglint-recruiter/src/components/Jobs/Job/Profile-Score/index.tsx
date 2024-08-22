@@ -39,6 +39,7 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
 import { Job } from '@/src/queries/jobs/types';
@@ -50,10 +51,11 @@ import JobNotFound from '../Common/JobNotFound';
 type Sections = 'experience' | 'education' | 'skills';
 
 const JobProfileScoreDashboard = () => {
+  const { isScoringEnabled } = useRolesAndPermissions();
   const { jobLoad, job } = useJob();
 
   return jobLoad ? (
-    job && job?.status !== 'closed' ? (
+    job && isScoringEnabled && job?.status !== 'closed' ? (
       <ProfileScorePage />
     ) : (
       <JobNotFound />

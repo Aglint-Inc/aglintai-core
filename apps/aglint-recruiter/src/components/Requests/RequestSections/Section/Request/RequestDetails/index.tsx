@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -7,6 +8,7 @@ import { PropsWithChildren } from 'react';
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { RequestCardDetail } from '@/devlink2/RequestCardDetail';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
@@ -22,6 +24,8 @@ function RequestDetails({
   index: number;
 }) {
   const { handleAsyncUpdateRequest } = useRequests();
+  const { recruiterUser } = useAuthDetails();
+
   return (
     <RequestCardDetail
       slotTextWithIconDetail={
@@ -37,11 +41,17 @@ function RequestDetails({
             application_id={request.applications.id}
           />
           <CandidateDetails
-            candidateName={getFullName(
-              request.applications.candidates.first_name,
-              request.applications.candidates.last_name,
-            )}
-            jobTitle={request.applications.public_jobs.job_title}
+            candidateDetails={{
+              name: getFullName(
+                request.applications.candidates.first_name,
+                request.applications.candidates.last_name,
+              ),
+              application_id: request.application_id,
+            }}
+            jobDetails={{
+              id: request.applications.public_jobs.id,
+              job_title: request.applications.public_jobs.job_title,
+            }}
             dateRange={{
               start_date: request.schedule_start_date,
               end_date: request.schedule_end_date,
@@ -58,13 +68,29 @@ function RequestDetails({
             spacing={1}
             alignItems={'center'}
           >
-            <Text size={1} color={'neutral'} content={'From'} />
-            <Text
-              content={getFullName(
-                request.assigner.first_name,
-                request.assigner.last_name,
-              )}
-            />
+            <Text size={1} color={'neutral'} content={'Created by:'} />
+            <div
+              onClick={() => {
+                window.open(`/user/profile/${request.assigner_id}`, '_blank');
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              <Text
+                content={
+                  getFullName(
+                    request.assigner.first_name,
+                    request.assigner.last_name,
+                  ) +
+                  `${
+                    request.assigner_id === recruiterUser.user_id
+                      ? ' (You)'
+                      : ''
+                  }`
+                }
+              />
+            </div>
           </Stack>
           <Stack
             direction={'row'}
@@ -84,9 +110,14 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          <RequestProgress request_type={request.type} />
+          {request.applications.public_jobs.workflow_job_relation.length > 0 ? (
+            <RequestProgress request_type={request.type} />
+          ) : null}
 
-          {Boolean(request.status === 'to_do') && (
+          {Boolean(
+            request.status === 'to_do' &&
+              request.applications.public_jobs.workflow_job_relation.length > 0,
+          ) && (
             <Stack
               direction={'row'}
               justifyContent={'space-between'}

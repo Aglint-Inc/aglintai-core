@@ -1,27 +1,36 @@
 /* eslint-disable security/detect-object-injection */
-import { MenuItem, Stack, TextField } from '@mui/material';
+import {
+  Collapse,
+  MenuItem,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { RolesPill } from '@/devlink/RolesPill';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
+import { AddScheduleOption } from '@/devlink3/AddScheduleOption';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
-import { EnableInterviewPlan as EnableInterviewPlanDev } from '@/devlink3/EnableInterviewPlan';
-import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
 import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
+import { InterviewPlanDetail } from '@/devlink3/InterviewPlanDetail';
+import { InterviewPlanWrap } from '@/devlink3/InterviewPlanWrap';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
@@ -70,39 +79,25 @@ const InterviewPlanPage = () => {
   const {
     interviewPlans: { data },
   } = useJobInterviewPlan();
-  const [drawers, setDrawers] = useState<DrawerType>(initalDrawer);
+  const [drawers, setDrawers] = useState<DrawerType>(initialDrawer());
   const [drawerModal, setDrawerModal] = useState(false);
+
   const handleCreate = useCallback(
-    (key: keyof DrawerType['create'], order: number) => {
+    (key: keyof DrawerType['create'], plan_id: string, order: number) => {
       setDrawerModal(true);
       setDrawers((prev) => ({
         ...prev,
-        create: { ...prev.create, [key]: { open: true, id: '', order } },
+        create: {
+          ...prev.create,
+          [key]: { open: true, id: '', plan_id: plan_id, order },
+        },
       }));
     },
     [],
   );
   const handleDrawerClose = useCallback(() => {
     setDrawerModal(false);
-    setTimeout(
-      () =>
-        setDrawers(
-          Object.entries(drawers).reduce((acc, [key, value]) => {
-            const safeKey = key as keyof DrawerType;
-            const safeValue = value as DrawerType[typeof safeKey];
-            acc[safeKey] = Object.keys(safeKey).reduce(
-              (acc, curr) => {
-                const safeCurr = curr as keyof typeof acc;
-                acc[safeCurr] = { open: false, id: '', order: -1 };
-                return acc;
-              },
-              {} as typeof safeValue,
-            );
-            return acc;
-          }, {} as DrawerType),
-        ),
-      400,
-    );
+    setTimeout(() => setDrawers(initialDrawer()), 400);
   }, []);
   const handleEdit = useCallback(
     (key: keyof DrawerType['edit'], id: string, order: number) => {
@@ -114,22 +109,34 @@ const InterviewPlanPage = () => {
     },
     [],
   );
+
   return (
     <>
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
-        slotTopbarRight={<Actions handleCreate={handleCreate} />}
         slotBody={
-          data ? (
-            <Stack gap={1} margin={2} width={'800px'}>
-              <InterviewPlan
-                handleCreate={handleCreate}
-                handleEdit={handleEdit}
-              />
-            </Stack>
-          ) : (
-            <EnableInterviewPlan />
-          )
+          <Stack gap={1} margin={2} width={'800px'}>
+            {data?.length ? (
+              data.map((plan) => (
+                <InterviewPlan
+                  key={plan.id}
+                  plan_id={plan.id}
+                  handleCreate={handleCreate}
+                  handleEdit={handleEdit}
+                />
+              ))
+            ) : (
+              <Typography>
+                {`Create your interview stages for the job to ensure a structured
+                evaluation process. Add different interview types such as
+                "Initial Screening" or "Technical Interview." Use this template
+                each time you schedule interviews for candidates to maintain
+                consistency and efficiency.`}
+              </Typography>
+            )}
+
+            <AddStageComponent />
+          </Stack>
         }
       />
       <InterviewDrawers
@@ -141,54 +148,55 @@ const InterviewPlanPage = () => {
   );
 };
 
-const Actions = ({
-  handleCreate,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  handleCreate: (key: keyof DrawerType['create'], order: number) => void;
-}) => {
-  const {
-    manageJob,
-    interviewPlans: { data },
-  } = useJobInterviewPlan();
-  const sessionsCount = data?.interview_session?.length ?? 0;
+const AddStageComponent = () => {
+  const { interviewPlans, handleCreatePlan } = useJobInterviewPlan();
+  const [form, setForm] = useState(false);
+  const nameField = useRef<null | HTMLInputElement>(null);
+  function handleAddStage() {
+    if (nameField.current.value.length) {
+      handleCreatePlan(nameField.current.value, interviewPlans.data.length + 1);
+      setForm(false);
+    }
+  }
+  useEffect(() => {
+    nameField.current?.focus();
+  }, []);
   return (
     <>
-      {manageJob && (
-        <ButtonSolid
-          textButton='Create'
-          size={2}
-          iconName='bolt'
-          isLeftIcon
-          onClickButton={{
-            onClick: () => handleCreate('session', sessionsCount),
-          }}
-        />
+      {form && (
+        <Stack
+          direction={'row'}
+          bgcolor={'var(--neutral-2)'}
+          p={2}
+          width={'100%'}
+          gap={1}
+          alignItems={'center'}
+        >
+          {
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            <UITextField placeholder='Stage Name' ref={nameField} autoFocus />
+          }
+          <ButtonSolid
+            textButton={'Add'}
+            size={2}
+            onClickButton={{ onClick: handleAddStage }}
+          />
+          <ButtonSoft
+            textButton={'Cancel'}
+            size={2}
+            onClickButton={{ onClick: () => setForm(!form) }}
+          />
+        </Stack>
       )}
-    </>
-  );
-};
-
-const EnableInterviewPlan = () => {
-  const { handleCreatePlan } = useJobInterviewPlan();
-  const [planCreation, setPlanCreation] = useState(false);
-  const handleCreate = async () => {
-    if (!planCreation) {
-      setPlanCreation(true);
-      await handleCreatePlan();
-      setPlanCreation(false);
-    } else {
-      toast.warning('Interview plan under creation. Please wait.');
-    }
-  };
-  return (
-    <Stack p={2}>
-      <OptimisticWrapper loading={planCreation}>
-        <EnableInterviewPlanDev
-          onClickEnableInterviewPlan={{ onClick: () => handleCreate() }}
+      <Stack direction={'row'}>
+        <ButtonSolid
+          textButton={'Add Stage'}
+          isDisabled={form}
+          size={2}
+          onClickButton={{ onClick: () => setForm(!form) }}
         />
-      </OptimisticWrapper>
-    </Stack>
+      </Stack>
+    </>
   );
 };
 
@@ -223,22 +231,23 @@ const BreadCrumbs = () => {
   );
 };
 
-const initalDrawer = {
+const initialDrawer = () => ({
   create: {
-    session: { open: false, id: '', order: -1 },
-    debrief: { open: false, id: '', order: -1 },
-    break: { open: false, id: '', order: -1 },
+    session: { open: false, id: '', plan_id: '', order: -1 },
+    debrief: { open: false, id: '', plan_id: '', order: -1 },
+    break: { open: false, id: '', plan_id: '', order: -1 },
   },
   edit: {
     session: { open: false, id: '', order: -1 },
     debrief: { open: false, id: '', order: -1 },
     break: { open: false, id: '', order: -1 },
   },
-};
-export type DrawerType = typeof initalDrawer;
+});
+export type DrawerType = ReturnType<typeof initialDrawer>;
 
 const InterviewPlan = ({
   handleEdit,
+  plan_id,
   handleCreate,
 }: {
   handleEdit: (
@@ -249,14 +258,34 @@ const InterviewPlan = ({
     // eslint-disable-next-line no-unused-vars
     order: number,
   ) => void;
-  // eslint-disable-next-line no-unused-vars
-  handleCreate: (key: keyof DrawerType['create'], order: number) => void;
+  plan_id: string;
+  handleCreate: (
+    // eslint-disable-next-line no-unused-vars
+    key: keyof DrawerType['create'],
+    // eslint-disable-next-line no-unused-vars
+    plan_id: string,
+    // eslint-disable-next-line no-unused-vars
+    order: number,
+  ) => void;
 }) => {
   const {
-    interviewPlans: { data },
+    interviewPlans,
     handleDeleteSession,
     getLoadingState,
+    updatePlan,
+    deletePlan,
+    // handleUpdateSession,
   } = useJobInterviewPlan();
+  const data = interviewPlans.data.find((plan) => plan.id === plan_id);
+  const [expanded, setExpanded] = React.useState(true);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  const [editPlan, setEditPlan] = useState(false);
+  const handleEditPlan = () => {
+    setEditPlan((pre) => !pre);
+  };
+  const planRef = useRef<HTMLInputElement>();
   const [popup, setPopup] = useState<InterviewDeletePopupType['popup']>(null);
   const [popupModal, setPopupModal] = useState(false);
   const handlePopupClose = useCallback(() => {
@@ -284,26 +313,150 @@ const InterviewPlan = ({
     <InterviewSession
       key={session.id}
       session={session}
-      handleCreate={(key) => handleCreate(key, order + 1)}
+      plan_id={plan_id}
+      handleCreate={(key) => handleCreate(key, plan_id, order + 1)}
       handleEdit={(key, id) => handleEdit(key, id, order + 1)}
       handleDeletionSelect={handleDeletionSelect}
       index={order}
       lastSession={order === sessionsCount - 1}
     />
   ));
-  if (sessionsCount === 0)
-    return (
-      <GlobalEmptyState
-        iconName={'process_chart'}
-        styleEmpty={{
-          style: { backgroundColor: 'var(--neutral-2)', height: '280px' },
-        }}
-        textDesc={'No interview plan found'}
-      />
-    );
+
+  const handleUpdatePlan = async (name: string) => {
+    if (name.trim().length) {
+      await updatePlan({ id: plan_id, data: { name } });
+      handleEditPlan();
+    }
+  };
+
   return (
     <>
-      {<DndProvider backend={HTML5Backend}>{sessions}</DndProvider>}
+      <InterviewPlanWrap
+        textStageName={`Stage ${data.plan_order} ${capitalizeFirstLetter(data.name)}`}
+        textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
+        isInputVisible={editPlan}
+        onClickEdit={{ onClick: handleEditPlan }}
+        isSlotInterviewPlanVisible={expanded}
+        slotInputButton={
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
+            <UITextField ref={planRef} defaultValue={data.name} fullWidth />
+            <ButtonSolid
+              size={2}
+              textButton={'Update'}
+              onClickButton={{
+                onClick: () => handleUpdatePlan(planRef.current.value),
+              }}
+            />
+            <ButtonSoft
+              color={'neutral'}
+              size={2}
+              textButton={'Cancel'}
+              onClickButton={{
+                onClick: handleEditPlan,
+              }}
+            />
+          </Stack>
+        }
+        slotRightIconButton={
+          <Stack direction={'row'} gap={1}>
+            <IconButtonSoft
+              iconName='delete'
+              color={'error'}
+              onClickButton={{
+                onClick: () => deletePlan(plan_id),
+              }}
+            />
+            <IconButtonSoft
+              iconName='keyboard_double_arrow_down'
+              color={'neutral'}
+              onClickButton={{
+                onClick: handleExpandClick,
+              }}
+            />
+          </Stack>
+        }
+        slotInterviewPlanDetail={
+          <Collapse in={expanded} timeout='auto' unmountOnExit>
+            <Stack pt={2}>
+              {sessionsCount ? (
+                <>
+                  <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
+                  {/* <Stack direction={'row'} gap={1}>
+                    <ButtonSoft
+                      size={1}
+                      iconName='add'
+                      isLeftIcon
+                      textButton={'Add Session'}
+                      color={'neutral'}
+                      onClickButton={{
+                        onClick: () => {
+                          handleCreate(
+                            'session',
+                            plan_id,
+                            data.interview_session.length,
+                          );
+                        },
+                      }}
+                    />
+                    <ButtonSoft
+                      size={1}
+                      iconName='add'
+                      isLeftIcon
+                      textButton={'Add Debrief'}
+                      color={'neutral'}
+                      onClickButton={{
+                        onClick: () => {
+                          handleCreate(
+                            'debrief',
+                            plan_id,
+                            data.interview_session.length,
+                          );
+                        },
+                      }}
+                    />
+                    <ButtonSoft
+                      size={1}
+                      iconName='add'
+                      isLeftIcon
+                      textButton={'Add Break'}
+                      color={'neutral'}
+                      onClickButton={{
+                        onClick: () => {
+                          data.interview_session.length > 1 &&
+                            handleUpdateSession({
+                              session: { break_duration: 30 },
+                              session_id:
+                                data.interview_session[
+                                  data.interview_session.length - 2
+                                ]?.id,
+                            });
+                        },
+                      }}
+                    />
+                  </Stack> */}
+                </>
+              ) : (
+                <GlobalEmptyState
+                  iconName={'group'}
+                  textDesc={'No interview plan found'}
+                  slotButton={
+                    <ButtonSoft
+                      iconName='add'
+                      isLeftIcon={true}
+                      color={'neutral'}
+                      size={1}
+                      textButton={'Add Interview'}
+                      onClickButton={{
+                        onClick: () => handleCreate('session', plan_id, 0),
+                      }}
+                    />
+                  }
+                />
+              )}
+            </Stack>
+          </Collapse>
+        }
+      />
       <InterviewDeletePopup
         open={popupModal}
         popup={popup}
@@ -321,6 +474,7 @@ const InterviewPlan = ({
 
 type InterviewSessionProps = {
   session: InterviewSessionType;
+  plan_id: string;
   handleCreate: (
     // eslint-disable-next-line no-unused-vars
     key: keyof DrawerType['create'],
@@ -344,6 +498,7 @@ type InterviewSessonMembers = {
 };
 const InterviewSession = ({
   session,
+  plan_id,
   handleCreate,
   handleEdit,
   handleDeletionSelect,
@@ -391,28 +546,30 @@ const InterviewSession = ({
       members: CompanyMember[];
     },
   );
-  const roles = Object.entries(session?.members_meta ?? {}).reduce(
-    (acc, [key, value]) => {
-      if (value) acc.push(key as (typeof acc)[number]);
-      return acc;
-    },
-    [] as (keyof typeof session.members_meta)[],
-  );
+  // const roles = Object.entries(session?.members_meta ?? {}).reduce(
+  //   (acc, [key, value]) => {
+  //     if (value) acc.push(key as (typeof acc)[number]);
+  //     return acc;
+  //   },
+  //   [] as (keyof typeof session.members_meta)[],
+  // );
   const isLoading = getLoadingState(session.id);
 
   const { queryKey } = jobQueries.interview_plans({ id: job?.id });
+  const currPlan = data.find((plan) => plan.id === plan_id);
 
   const handleMoveCard = (dragIndex, hoverIndex) => {
-    const sessions = structuredClone(data.interview_session);
+    const sessions = structuredClone(currPlan?.interview_session);
     const temp = structuredClone(sessions[dragIndex]);
     sessions[dragIndex] = structuredClone(sessions[hoverIndex]);
     sessions[dragIndex]['session_order'] = dragIndex + 1;
     sessions[hoverIndex] = temp;
     sessions[hoverIndex]['session_order'] = hoverIndex + 1;
-    queryClient.setQueryData<InterviewPlansType>(queryKey, {
-      ...data,
-      interview_session: sessions,
-    });
+    currPlan.interview_session = sessions;
+    queryClient.setQueryData<InterviewPlansType>(
+      queryKey,
+      data.map((item) => (item.id === plan_id ? currPlan : item)),
+    );
   };
 
   const [{ handlerId }, drop] = useDrop({
@@ -422,8 +579,8 @@ const InterviewSession = ({
     }),
     drop: () => {
       handleReorderSessions({
-        interviewPlanId: data.id,
-        updatedInterviewSessions: data.interview_session,
+        interviewPlanId: currPlan.id,
+        updatedInterviewSessions: currPlan.interview_session,
       });
     },
     hover: (item: any, monitor) => {
@@ -451,6 +608,9 @@ const InterviewSession = ({
     }),
   });
   drag(drop(ref));
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
   return (
     <Stack
       ref={manageJob ? ref : null}
@@ -463,7 +623,7 @@ const InterviewSession = ({
           onMouseOut={() => setHover(false)}
           mb={hover ? 1 : 4}
         >
-          <GeneralScheduleCard
+          <InterviewPlanDetail
             textModuleName={
               <Stack style={{ flexDirection: 'row', gap: '12px' }}>
                 <>{session.name}</>
@@ -479,39 +639,39 @@ const InterviewSession = ({
                 </Stack>
               </Stack>
             }
-            isRolesvisible={
-              session.session_type === 'debrief' && !!roles.length
-            }
-            slotRoles={<Roles roles={roles} />}
-            isSubHeaderVisible={false}
-            isHeaderTitleVisible={true}
+            // isRolesvisible={
+            //   session.session_type === 'debrief' && !!roles.length
+            // }
+            // slotRoles={<Roles roles={roles} />}
+            // isSubHeaderVisible={false}
+            // isHeaderTitleVisible={true}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
-            isTimingVisible={false}
+            // isTimingVisible={false}
             textDuration={`${session.session_duration} minutes`}
             slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
-            isLinkVisilble={session.session_type !== 'debrief'}
+            // isLinkVisilble={session.session_type !== 'debrief'}
             textPlatformName={capitalizeAll(session.schedule_type)}
             textLink={session?.interview_module?.name ?? '---'}
-            isTextSelectedVisible={
-              session.session_type !== 'debrief' && members.qualified.length > 1
-            }
-            textSelected={`(${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
-            isTraineesVisible={members.training.length !== 0}
-            slotTrainees={members.training.map((member) => (
-              <InterviewSessionMember key={member.user_id} member={member} />
-            ))}
-            isInterviewersVisible={session.session_type !== 'debrief'}
+            // isTextSelectedVisible={
+            //   session.session_type !== 'debrief' && members.qualified.length > 1
+            // }
+            textSelected={`Interviewers (${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
+            // isTraineesVisible={members.training.length !== 0}
+            // slotTrainees={members.training.map((member) => (
+            //   <InterviewSessionMember key={member.user_id} member={member} />
+            // ))}
+            // isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
-            isMembersVisible={
-              session.session_type === 'debrief' && members.members.length !== 0
-            }
-            slotMembers={members.members.map((member) => (
-              <InterviewSessionMember key={member.user_id} member={member} />
-            ))}
+            // isMembersVisible={
+            //   session.session_type === 'debrief' && members.members.length !== 0
+            // }
+            // slotMembers={members.members.map((member) => (
+            //   <InterviewSessionMember key={member.user_id} member={member} />
+            // ))}
             onClickLink={{
               onClick: () =>
                 window.open(
@@ -542,16 +702,54 @@ const InterviewSession = ({
             isAddCardVisible={hover}
             slotAddScheduleCard={
               <Stack style={{ opacity: manageJob ? 100 : 0 }}>
-                <AddScheduleCard
-                  handleCreate={handleCreate}
-                  showBreak={!lastSession && session.break_duration === 0}
-                  handleBreak={() =>
-                    handleUpdateSession({
-                      session: { break_duration: 30 },
-                      session_id: session.id,
-                    })
+                <Tooltip
+                  open={tooltipOpen}
+                  onOpen={() => setTooltipOpen(true)}
+                  onClose={() => setTooltipOpen(false)}
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        marginTop: '0px !important',
+                        padding: 0,
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        boxShadow: 'none',
+                      },
+                    },
+                  }}
+                  title={
+                    <AddScheduleOption
+                      isBreakVisibe={
+                        !lastSession && session.break_duration === 0
+                      }
+                      onClickAddSession={{
+                        onClick: () => {
+                          handleCreate('session');
+                          setTooltipOpen(false);
+                        },
+                      }}
+                      onClickAddDebriefSession={{
+                        onClick: () => {
+                          handleCreate('debrief');
+                          setTooltipOpen(false);
+                        },
+                      }}
+                      onClickAddBreak={{
+                        onClick: () => {
+                          handleUpdateSession({
+                            session: { break_duration: 30 },
+                            session_id: session.id,
+                          });
+                          setTooltipOpen(false);
+                        },
+                      }}
+                    />
                   }
-                />
+                >
+                  <Stack>
+                    <AddScheduleCardDev />
+                  </Stack>
+                </Tooltip>
               </Stack>
             }
             slotButtons={
@@ -592,19 +790,19 @@ const InterviewSession = ({
   );
 };
 
-const Roles = ({ roles }: { roles: string[] }) => {
-  return (
-    <>
-      {roles.map((role) => (
-        <RolesPill
-          key={role}
-          onClickRemoveRoles={{ style: { display: 'none' } }}
-          textRoles={capitalizeFirstLetter(role)}
-        />
-      ))}
-    </>
-  );
-};
+// const Roles = ({ roles }: { roles: string[] }) => {
+//   return (
+//     <>
+//       {roles.map((role) => (
+//         <RolesPill
+//           key={role}
+//           onClickRemoveRoles={{ style: { display: 'none' } }}
+//           textRoles={capitalizeFirstLetter(role)}
+//         />
+//       ))}
+//     </>
+//   );
+// };
 
 const getSessionType = (session_type: InterviewSessionType['session_type']) => {
   switch (session_type) {
@@ -733,37 +931,50 @@ const InterviewBreak = ({
   );
 };
 
-const AddScheduleCard = ({
-  handleCreate,
-  showBreak,
-  handleBreak = () => {},
-}: {
-  handleCreate: InterviewSessionProps['handleCreate'];
-  showBreak: boolean;
-  handleBreak?: () => void;
-}) => {
-  const [hover, setHover] = useState(false);
-  return (
-    <Stack
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
-    >
-      <AddScheduleCardDev
-        isAddSessionOptionVisible={hover}
-        isBreakVisibe={showBreak}
-        onClickAddSession={{
-          onClick: () => handleCreate('session'),
-        }}
-        onClickAddDebriefSession={{
-          onClick: () => handleCreate('debrief'),
-        }}
-        onClickAddBreak={{
-          onClick: () => handleBreak(),
-        }}
-      />
-    </Stack>
-  );
-};
+// const AddScheduleCard = ({
+//   handleCreate,
+//   showBreak,
+//   handleBreak = () => {},
+// }: {
+//   handleCreate: InterviewSessionProps['handleCreate'];
+//   showBreak: boolean;
+//   handleBreak?: () => void;
+// }) => {
+//   return (
+//     <Stack>
+//       {/* <AddScheduleOption
+//         isBreakVisibe={showBreak}
+//         onClickAddSession={{
+//           onClick: () => handleCreate('session'),
+//         }}
+//         onClickAddDebriefSession={{
+//           onClick: () => handleCreate('debrief'),
+//         }}
+//         onClickAddBreak={{
+//           onClick: () => handleBreak(),
+//         }}
+//       /> */}
+//       <Tooltip
+//         title={
+//           <AddScheduleOption
+//             isBreakVisibe={showBreak}
+//             onClickAddSession={{
+//               onClick: () => handleCreate('session'),
+//             }}
+//             onClickAddDebriefSession={{
+//               onClick: () => handleCreate('debrief'),
+//             }}
+//             onClickAddBreak={{
+//               onClick: () => handleBreak(),
+//             }}
+//           />
+//         }
+//       >
+//         <AddScheduleCardDev />
+//       </Tooltip>
+//     </Stack>
+//   );
+// };
 
 export const RoleIcon = () => {
   return (

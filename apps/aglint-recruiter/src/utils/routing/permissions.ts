@@ -33,7 +33,7 @@ const PERMISSIONS: Permissions = {
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
-  '/jobs/[id]/agent': ['job_module'],
+  '/jobs/[id]/application/[application_id]': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/candidate-list': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
@@ -58,6 +58,7 @@ const PERMISSIONS: Permissions = {
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
+  '/requests/[id]': ['job_module'],
 
   '/integrations': ['integrations_module'],
   '/integrations/[platform]': ['integrations_module'],
@@ -66,10 +67,22 @@ const PERMISSIONS: Permissions = {
   '/profile': ['authorized'],
   '/user/profile/[user_id]': ['authorized'],
 
+  //  For candidateDB module
+
+  '/candidates': ['authorized'],
+  '/candidates/history': ['authorized'],
+  '/candidates/aglintdb': ['authorized'],
+  '/candidates/search': ['authorized'],
+  '/api/ai/create-embeddings': ['authorized'],
+  '/api/candidatedb/query': ['authorized'],
+  '/api/candidatedb/get-company': ['authorized'],
+
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
+  '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
+  '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],
@@ -90,6 +103,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduling_module',
   ],
+  '/api/request/schedule-request': ['scheduling_actions'],
   '/api/scheduling/get-accesstoken': ['scheduling_module'],
   '/api/email-outreach/get-user-email': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagent': ['scheduling_module'],
@@ -110,21 +124,20 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/insertTaskProgress': [
     'scheduling_module',
   ],
-  // '/api/scheduling/request_availability/updateRequestAvailability': [
-  //   'scheduling_module',
-  //   'scheduler_create',
-  // ], //
+  '/api/scheduling/request_availability/updateRequestAvailability': [
+    'scheduling_module',
+  ], //
   '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
     'scheduling_module',
   ],
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
   '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
+
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduling_module'],
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
   // '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'], //
-  // '/api/request_feedback': ['scheduler_update'], //
   '/api/scheduling/application/fetchfeedbackdetails': [
     'scheduling_module',
     'task_module',
@@ -155,6 +168,10 @@ const PERMISSIONS: Permissions = {
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
+  '/api/sync/greenhouse/full_sync': ['authorized'],
+  '/api/google-calender/watch-changes': ['authorized'],
+  '/api/google-calender/webhook': ['authorized'],
+  '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
 };
 
 export default PERMISSIONS;

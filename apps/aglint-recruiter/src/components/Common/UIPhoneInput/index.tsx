@@ -3,11 +3,13 @@ import 'react-phone-input-2/lib/style.css';
 
 import Icon from '@components/Common/Icons/Icon';
 import { Stack, Typography } from '@mui/material';
-// import countries from '@utils/CountryUtils';
 import React from 'react';
 import PhoneInput, { CountryData } from 'react-phone-input-2';
 
+import countries from '@/src/utils/CountryUtils';
+
 import UITypography from '../UITypography';
+
 type Props = {
   value?: string;
   type?: React.HTMLInputTypeAttribute;
@@ -79,7 +81,7 @@ const UIPhoneInput = ({
       )}
       <PhoneInput
         autoFormat={true}
-        // onlyCountries={countries.map((c) => c.code)}
+        onlyCountries={countries.map((c) => c.code)}
         enableLongNumbers
         copyNumbersOnly={false}
         country={defaultCountry ? defaultCountry.toLowerCase() : null}
@@ -91,14 +93,7 @@ const UIPhoneInput = ({
           ) {
             onChange(value, data, event, formattedValue);
           } else {
-            // event.preventDefault();
-            onChange(
-              value,
-              data,
-              event,
-              // @ts-ignore
-              formattedValue.substring(0, data.format.length),
-            );
+            onChange(value, data, event, formattedValue);
           }
         }}
         isValid={!error}

@@ -49,7 +49,7 @@ export const fetchApplicationDetails = async ({
   const { data } = await supabaseCaller
     .from('applications')
     .select(
-      `id,job_id,status,candidates(id,first_name,last_name,email,current_job_title,timezone,phone),public_jobs(id,job_title,location,recruiter!public_jobs_recruiter_id_fkey(id,integrations(service_json,google_workspace_domain))),candidate_files(id,file_url,resume_json,type,candidate_id),interview_schedule(id,schedule_name)`,
+      `id,job_id,status,candidates(id,first_name,last_name,email,current_job_title,timezone,phone),public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(id,integrations(service_json,google_workspace_domain))),candidate_files(id,file_url,resume_json,type,candidate_id),interview_schedule(id,schedule_name)`,
     )
     .eq('id', application_id)
     .throwOnError();
@@ -57,8 +57,8 @@ export const fetchApplicationDetails = async ({
   return data[0];
 };
 
-const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth)`;
-const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
+export const userDetails = `recruiter_user(user_id,first_name,last_name,email,profile_image,position,scheduling_settings,schedule_auth,is_calendar_connected)`;
+export const interviewCancelReasons = `interview_session_cancel(*,interview_session_relation(*,interview_module_relation(*,${userDetails})),admin:${userDetails})`;
 
 export const fetchSessionDetailsFromSchedule = async ({
   application_id,
@@ -117,6 +117,7 @@ export const fetchSessionDetailsFromSchedule = async ({
               session_id: cancel.session_id,
               session_relation_id: cancel.session_relation_id,
               type: cancel.type,
+              request_id: undefined,
             };
           return {
             interview_session_cancel: interview_session_cancel,

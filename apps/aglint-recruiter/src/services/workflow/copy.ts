@@ -107,4 +107,10 @@ export const workflowCopy: WorkflowCopyType = {
     error:
       'There was an error informing the interviewer and organizer about the meeting cancellation.',
   },
+  REPLACE_ALTERNATIVE_INTERVIEWER: {
+    past: 'An alternative interviewer was replaced.',
+    present: 'Replacing an alternative interviewer.',
+    future: 'An alternative interviewer will be replaced.',
+    error: 'There was an error replacing the alternative interviewer.',
+  },
 };

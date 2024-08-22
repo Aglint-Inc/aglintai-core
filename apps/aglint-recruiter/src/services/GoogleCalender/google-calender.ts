@@ -33,7 +33,7 @@ export class GoogleCalender {
   }
 
   public async authorizeUser() {
-    if (!this.auth_details) {
+    if (this.recruiter_user_id) {
       const [rec_relns] = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_relation')
@@ -82,7 +82,9 @@ export class GoogleCalender {
       throw new Error('Invalid Company Service Cred');
     }
     this.auth_details = {
-      company_cred: JSON.parse(decrypt_string(company.recruiter.integrations.service_json)),
+      company_cred: JSON.parse(
+        decrypt_string(company.recruiter.integrations.service_json),
+      ),
       recruiter: null,
     };
     this.user_auth = await getSuperAdminAuth(
@@ -171,5 +173,28 @@ export class GoogleCalender {
     });
 
     return result.data;
+  }
+  public async watchEvents(organizer_id: string) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const watchResponse = await calendar.events.watch({
+      resource: {
+        id: organizer_id,
+        type: 'web_hook',
+        address: `https://rested-logically-lynx.ngrok-free.app/api/google-calender/webhook`, // Expose localhost using a secure tunnel
+        // token: webhookToken,
+      },
+      calendarId: 'primary',
+    });
+    return watchResponse.data;
+  }
+  public async stopWatch(channel_id: string, resource_id: string) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.channels.stop({
+      requestBody: {
+        id: channel_id, // The unique channel ID
+        resourceId: resource_id, // The resource ID from the watch response
+      },
+    });
+    return response.data;
   }
 }

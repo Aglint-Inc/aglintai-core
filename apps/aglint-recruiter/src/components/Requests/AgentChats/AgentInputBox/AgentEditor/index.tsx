@@ -55,7 +55,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   const [inputText, setInputText] = useState<{
     planText: string;
     mentions: MentionType[];
-  }>(null);
+  }>({ planText: '', mentions: [] });
   const [triggerType, setTriggerType] = useState<
     '@' | '#' | '$' | '%' | '/' | null
   >(null);
@@ -93,7 +93,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       let taskType = '';
       switch (event.key) {
         case '1':
-          taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] `;
+          taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
           break;
         case '2':
           taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] `;
@@ -301,32 +301,42 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
 
   const mentionScheduleTypes = createMentionComponent(
     '%',
-    scheduleTypes,
+    scheduleTypes.filter(
+      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+    ),
     '#8E00F112',
     'schedule_type[__id__]:[__display__]',
   );
 
   const mentionJobList = createMentionComponent(
     '#',
-    jobList,
+    jobList.filter(
+      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+    ),
     '#fcf4a3',
     'job_title[__id__]:[__display__]',
   );
   const mentionApplicationsList = createMentionComponent(
     '@',
-    applicationsList,
+    applicationsList.filter(
+      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+    ),
     '#daf4fa',
     'applicant_name[__id__]:[__display__]',
   );
   const mentionSessionList = createMentionComponent(
     '$',
-    sessionList,
+    sessionList.filter(
+      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+    ),
     '#F1F0EF',
     'interview_name[__id__]:[__display__]',
   );
   const mentionRequestList = createMentionComponent(
     '/',
-    requestList,
+    requestList.filter(
+      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+    ),
     '#fcf',
     'request_name[__id__]:[__display__]',
   );

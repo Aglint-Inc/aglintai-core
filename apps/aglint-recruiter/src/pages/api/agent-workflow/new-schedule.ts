@@ -1,6 +1,5 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import {
-  ApiError,
   candidate_new_schedule_schema,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -18,6 +17,7 @@ import {
   executeWorkflowAction,
   ProgressLoggerType,
 } from '@/src/services/api-schedulings/utils';
+import { ApiError } from '@/src/utils/customApiError';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const TIME_ZONE = 'Asia/Colombo';
@@ -133,7 +133,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         { event_type: null }, //TODO: mention
       );
     } else if (
-      api_target === 'onAvailReqAgent_emailLink_getCandidateAvailability'
+      api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'
     ) {
       await executeWorkflowAction(
         candidateAvailRequest,
@@ -180,7 +180,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           meeting_flow,
           status: 'waiting',
           organizer_id,
-          request_id: request_id,
         })
         .in(
           'id',
@@ -190,7 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err: any) {
-    console.error(err.message);
+    console.error(err);
 
     if (err instanceof ApiError) {
       return res.status(500).json({

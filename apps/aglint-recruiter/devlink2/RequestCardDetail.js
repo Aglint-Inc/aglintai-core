@@ -26,12 +26,6 @@ export function RequestCardDetail({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "req-card-left-first")}
-            tag="div"
-          >
-            {slotButton}
-          </_Builtin.Block>
-          <_Builtin.Block
             className={_utils.cx(_styles, "req-card-left-sec")}
             tag="div"
           >

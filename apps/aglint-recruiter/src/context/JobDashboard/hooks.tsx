@@ -59,7 +59,8 @@ const useProviderJobDashboardActions = () => {
     !job?.interview_plan_warning_ignore;
   const isInterviewSessionEmpty =
     interviewPlans.status !== 'pending' &&
-    interviewPlans?.data?.interview_session?.length === 0 &&
+    interviewPlans?.data?.flatMap((item) => item.interview_session)?.length ===
+      0 &&
     !job?.interview_session_warning_ignore;
 
   const value = {

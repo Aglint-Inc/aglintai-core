@@ -28,7 +28,7 @@ export interface JobGreenhouse {
   location: Location;
   internal: boolean;
   external: boolean;
-  job_id: string;
+  job_id: number;
   content: string | null;
   internal_content: string | null;
   updated_at: string;

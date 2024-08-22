@@ -1,12 +1,19 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { GlobalIcon } from "./GlobalIcon";
 import { NewTabPill } from "./NewTabPill";
 import { InterviewerDetailOverview } from "./InterviewerDetailOverview";
+import { TextWithIcon } from "./TextWithIcon";
+import { UpcomingInterviewList } from "./UpcomingInterviewList";
 import * as _utils from "./utils";
 import _styles from "./InterviewerDetail.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-99":{"id":"e-99","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-72","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-100"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"48dc49b4-b6a7-0079-3fcc-fe0a232312e4","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"48dc49b4-b6a7-0079-3fcc-fe0a232312e4","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1724165395241},"e-100":{"id":"e-100","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-73","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-99"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"48dc49b4-b6a7-0079-3fcc-fe0a232312e4","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"48dc49b4-b6a7-0079-3fcc-fe0a232312e4","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1724165395241}},"actionLists":{"a-72":{"id":"a-72","title":"InterviewerDetail Info Hover In","actionItemGroups":[{"actionItems":[{"id":"a-72-n","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".id-details-right","selectorGuids":["0cd754d5-6eaa-6ed5-2765-8b49d58eafa5"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-72-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".id-details-right","selectorGuids":["0cd754d5-6eaa-6ed5-2765-8b49d58eafa5"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1724165399483},"a-73":{"id":"a-73","title":"InterviewerDetail Info Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-73-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".id-details-right","selectorGuids":["0cd754d5-6eaa-6ed5-2765-8b49d58eafa5"]},"value":0,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1724165399483}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function InterviewerDetail({
   as: _Component = _Builtin.Block,
@@ -24,7 +31,11 @@ export function InterviewerDetail({
   isLinkedInVisible = true,
   textPhone = "Asia, Kolkata, Chennai (GMT+5:30)",
   textInterviewer = "dileep@aglinthq.com",
+  slotUpcomingList,
+  isUpcomingInterviewVisible = false,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component className={_utils.cx(_styles, "interviewerdetail")} tag="div">
       <_Builtin.Block
@@ -34,6 +45,7 @@ export function InterviewerDetail({
         <_Builtin.Block tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer_basic_details")}
+            data-w-id="48dc49b4-b6a7-0079-3fcc-fe0a232312e4"
             tag="div"
           >
             <_Builtin.Block
@@ -164,12 +176,9 @@ export function InterviewerDetail({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "tab_wrapper")}
-            tag="div"
-          >
-            {slotNewTabPill ?? <NewTabPill isPillActive={true} />}
-          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "tab_wrapper")} tag="div">
+          {slotNewTabPill ?? <NewTabPill isPillActive={true} />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_interviewer_detail_overview")}
@@ -178,6 +187,31 @@ export function InterviewerDetail({
           {slotTabContent ?? <InterviewerDetailOverview />}
         </_Builtin.Block>
       </_Builtin.Block>
+      {isUpcomingInterviewVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "interviewer-detail-right")}
+          id={_utils.cx(
+            _styles,
+            "w-node-d697b9d2-697e-1d44-8a38-92ee4bcede30-4e99ee91"
+          )}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">
+            <TextWithIcon
+              iconName="event_upcoming"
+              fontWeight="medium"
+              iconWeight="medium"
+              textContent="Upcoming Interview"
+            />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "interviewer-detail-right-list")}
+            tag="div"
+          >
+            {slotUpcomingList ?? <UpcomingInterviewList />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

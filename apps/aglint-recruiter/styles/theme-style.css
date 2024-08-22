@@ -1739,3 +1739,32 @@ box-shadow: inset 0 0 0 1px var(--pink-8);
 [data-color="accent"] {
   color: var(--accent-11);
 }
+
+/*pipeline css*/
+body [data-text-color="info"]{
+  color: var(--info-11);
+}
+body [data-embed-color="info"]{
+  color: var(--info-3);
+}
+body [data-bg-color="info"]{
+ background-color: var(--info-3) !important;
+}
+body [data-text-color="success"]{
+  color: var(--success-11);;
+}
+body [data-embed-color="success"]{
+  color: var(--success-3);
+}
+body [data-bg-color="success"]{
+  background-color: var(--success-3) !important;
+}
+body [data-text-color="neutral"]{
+  color: var(--neutral-11) ;;
+}
+body [data-embed-color="neutral"]{
+  color: var(--neutral-3);
+}
+body [data-bg-color="neutral"]{
+  background-color: var(--neutral-3) !important;
+}

@@ -6,8 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -19,10 +18,8 @@ import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
-import {
-  ContextValue,
-  useAuthDetails,
-} from '@/src/context/AuthContext/AuthContext';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { updateMember } from '@/src/context/AuthContext/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -42,18 +39,10 @@ dayjs.extend(relativeTime);
 const Member = ({
   member,
   removeMember,
-  updateMember,
   canSuspend,
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
-  updateMember: (
-    // eslint-disable-next-line no-unused-vars
-    x: Parameters<ContextValue['handleMemberUpdate']>[number]['data'],
-    // eslint-disable-next-line no-unused-vars
-    updateDB?: boolean,
-  ) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   canSuspend: boolean;
 }) => {
   const router = useRouter();
@@ -139,13 +128,12 @@ const Member = ({
                     task_owner: task,
                   })
                   .then(() => {
-                    updateMember(
-                      {
+                    updateMember({
+                      data: {
                         user_id: member.user_id,
                         status: 'suspended',
                       },
-                      false,
-                    );
+                    });
                     toast.success(
                       `${member.first_name}'s account is suspended successfully.`,
                     );
@@ -186,8 +174,9 @@ const Member = ({
                 slotProps={{
                   paper: {
                     sx: {
-                      boxShadow:'none',
-                      marginTop:'8px',
+                      width: '280px',
+                      boxShadow: 'none',
+                      marginTop: '8px',
                       // Additional styles
                     },
                   },
@@ -226,7 +215,7 @@ const Member = ({
                         iconSize={4}
                         iconWeight={'medium'}
                       />
-                       <TextWithIcon
+                      <TextWithIcon
                         textContent={member.email || '--'}
                         iconName='mail'
                         iconSize={4}
@@ -341,7 +330,9 @@ const Member = ({
                     isFilterOptionVisible={true}
                     onClickMarkActive={{
                       onClick: () => {
-                        updateMember({ status: 'active' }).then(() => {
+                        updateMember({
+                          data: { user_id: member.user_id, status: 'active' },
+                        }).then(() => {
                           toast.success(
                             `${member.first_name}'s account is activated successfully.`,
                           );
@@ -422,7 +413,8 @@ const Member = ({
               href={`/user/profile/${member.user_id}`}
             >{`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}</Link>
           }
-          textDepartment={member.department?.name}
+          textDepartment={member.department?.name || 'Not Assigned'}
+          textLocation={member?.office_location?.city || '--'}
           textDesignation={member.position}
           slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
         />

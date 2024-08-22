@@ -73,6 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meetings: resMeetings,
     });
   } catch (error) {
+    console.error(error.message);
     res.status(400).send(error.message);
   }
 };
@@ -88,7 +89,7 @@ const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
   const { data: sch, error: errSch } = await supabase
     .from('interview_schedule')
     .select(
-      '*,applications(*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
+      '*,applications(*, public_jobs(id,job_title,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
     )
     .eq('id', schedule_id)
     .eq('interview_filter_json.id', filter_id)
