@@ -10,7 +10,6 @@ import { Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
-import SearchField from '../../Common/SearchField/SearchField';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
@@ -36,7 +35,7 @@ const DashboardComp = () => {
     initialLoad,
   } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<Job[]>(data);
-  const [searchText, setSearchText] = useState<string>();
+  const [searchText, setSearchText] = useState<string>('');
   const [, startTransition] = useTransition();
   const { recruiter } = useAuthDetails();
   const { ifAllowed } = useRolesAndPermissions();
@@ -84,8 +83,7 @@ const DashboardComp = () => {
     sortValue,
   } = useJobFilterAndSort(filteredJobs);
 
-  const handlerFilter = (e) => {
-    const value = e.target.value;
+  const handlerFilter = (value: typeof searchText) => {
     setSearchText(value);
     startTransition(() => {
       if (router.query.status == 'all') {
@@ -103,20 +101,20 @@ const DashboardComp = () => {
     });
   };
 
-  const handleTextClear = () => {
-    setSearchText('');
-    startTransition(() => {
-      if (router.query.status == 'all') {
-        setFilteredJobs(data);
-      } else if (router.query.status == 'published') {
-        setFilteredJobs(data.filter((job) => job.status == 'published'));
-      } else if (router.query.status == 'closed') {
-        setFilteredJobs(data.filter((job) => job.status == 'closed'));
-      } else if (router.query.status == 'draft') {
-        setFilteredJobs(data.filter((job) => job.status == 'draft'));
-      }
-    });
-  };
+  // const handleTextClear = () => {
+  //   setSearchText('');
+  //   startTransition(() => {
+  //     if (router.query.status == 'all') {
+  //       setFilteredJobs(data);
+  //     } else if (router.query.status == 'published') {
+  //       setFilteredJobs(data.filter((job) => job.status == 'published'));
+  //     } else if (router.query.status == 'closed') {
+  //       setFilteredJobs(data.filter((job) => job.status == 'closed'));
+  //     } else if (router.query.status == 'draft') {
+  //       setFilteredJobs(data.filter((job) => job.status == 'draft'));
+  //     }
+  //   });
+  // };
 
   return (
     <Stack height={'100%'} width={'100%'}>
@@ -147,19 +145,12 @@ const DashboardComp = () => {
                     setSort={setSort}
                     sortOptions={sortOptions}
                     sortValue={sortValue}
+                    searchText={searchText}
+                    handlerFilter={handlerFilter}
                   />
                 }
                 slotAllJobs={<JobsList jobs={jobs} />}
-                slotSearchInputJob={
-                  <Stack>
-                    <SearchField
-                      value={searchText}
-                      onChange={handlerFilter}
-                      onClear={handleTextClear}
-                      placeholder='Search'
-                    />
-                  </Stack>
-                }
+                slotSearchInputJob={<></>}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'

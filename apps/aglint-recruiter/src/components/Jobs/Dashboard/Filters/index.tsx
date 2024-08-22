@@ -15,6 +15,8 @@ function FilterJobDashboard({
   setSort,
   sortValue,
   sortOptions,
+  searchText,
+  handlerFilter,
 }: {
   filterOptions: ReturnType<typeof useJobFilterAndSort>['filterOptions'];
   setFilterValues: ReturnType<typeof useJobFilterAndSort>['setFilterValues'];
@@ -22,6 +24,9 @@ function FilterJobDashboard({
   setSort: ReturnType<typeof useJobFilterAndSort>['setSort'];
   sortValue: ReturnType<typeof useJobFilterAndSort>['sortValue'];
   sortOptions: ReturnType<typeof useJobFilterAndSort>['sortOptions'];
+  searchText: string;
+  // eslint-disable-next-line no-unused-vars
+  handlerFilter: (value: string) => void;
 }) {
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
@@ -95,6 +100,10 @@ function FilterJobDashboard({
             options: string[];
             order: string[];
           },
+        }}
+        search={{
+          value: searchText,
+          setValue: (value) => handlerFilter(value),
         }}
       />
     </Stack>
