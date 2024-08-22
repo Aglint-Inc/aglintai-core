@@ -8,6 +8,8 @@ if (!url) {
   throw new Error(`Missing SUPABASE_URL on ${env}`);
 }
 if (!key) {
-  throw new Error(`Missing SUPABASE_SERVICE_KEY on ${env}, ${JSON.stringify(process.env)}`);
+  throw new Error(
+    `Missing SUPABASE_SERVICE_KEY on ${env}, ${key} , ${JSON.stringify(process.env)}`,
+  );
 }
 export const supabaseAdmin = createClient<DB>(url, key);
