@@ -7,13 +7,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { memo, ReactNode } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { Skeleton } from '@/devlink2/Skeleton';
 import { FilterItem } from '@/devlink3/FilterItem';
 import { MultiFilterLayout } from '@/devlink3/MultiFilterLayout';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -69,6 +70,7 @@ export type FilterComponentType = {
   setValue: (value: string[]) => void;
   isVisible?: boolean;
   multiSelect?: boolean;
+  loading?: boolean;
 };
 /* eslint-enable no-unused-vars */
 export type FilterTypes =
@@ -160,6 +162,7 @@ function FilterSwitcher(filter: FilterTypes, index: number) {
           iconname={filter.iconname}
           icon={filter.icon}
           multiSelect={filter.multiSelect}
+          loading={filter.loading}
         />
       );
     case 'multi-section-filter': {
@@ -220,6 +223,7 @@ export function FilterComponent({
   searchPlaceholder = '',
   multiSelect = true,
   icon,
+  loading = false,
 }: FilterComponentType) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -277,7 +281,9 @@ export function FilterComponent({
           isRemoveVisible={false}
           isResetVisible={itemList.length !== 0}
           slotOption={
-            itemList.length ? (
+            loading ? (
+              <Loader />
+            ) : itemList.length ? (
               <FilterOptionsList
                 optionList={itemList}
                 selectedItems={selectedItems}
@@ -314,6 +320,19 @@ export function FilterComponent({
     </>
   );
 }
+
+const Loader = memo(() => {
+  return (
+    <Stack direction={'column'} gap={2} p={2} minWidth={'176px'}>
+      {[...new Array(5)].map((_, i) => (
+        <Stack key={i} width={'200px'} height={'20px'} position={'relative'}>
+          <Skeleton />
+        </Stack>
+      ))}
+    </Stack>
+  );
+});
+Loader.displayName = 'Loader';
 
 export type MultiSectionFilterComponentType = {
   title: string;
