@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { JobGreenhouse } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
 import { decrypt } from '@/src/pages/api/decryptApiKey';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { JobStageData } from './dummy.data';
 import { GreenhouseCandidateAPI, GreenhouseJobStagesAPI } from './types';
@@ -15,7 +15,10 @@ export function getDecryptKey(key: string) {
   return decrypt(key, decryptKey);
 }
 
-export async function getGreenhouseKey(recruiter_id: string) {
+export async function getGreenhouseKey(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   return (
     await supabaseAdmin
       .from('integrations')
@@ -26,7 +29,10 @@ export async function getGreenhouseKey(recruiter_id: string) {
   ).data.greenhouse_key;
 }
 
-export async function getLastSync(recruiter_id: string) {
+export async function getLastSync(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   const last_sync =
     (
       await supabaseAdmin
@@ -40,6 +46,7 @@ export async function getLastSync(recruiter_id: string) {
 }
 
 export async function setLastSync(
+  supabaseAdmin: SupabaseClientType,
   recruiter_id: string,
   lastSync: Record<string, string>,
 ) {

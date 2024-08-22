@@ -174,7 +174,7 @@ const Member = ({
                 slotProps={{
                   paper: {
                     sx: {
-                      width:'280px',
+                      width: '280px',
                       boxShadow: 'none',
                       marginTop: '8px',
                       // Additional styles
@@ -413,7 +413,8 @@ const Member = ({
               href={`/user/profile/${member.user_id}`}
             >{`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === recruiterUser?.user_id ? '(You)' : ''}`}</Link>
           }
-          textDepartment={member.department?.name}
+          textDepartment={member.department?.name || 'Not Assigned'}
+          textLocation={member?.office_location?.city || '--'}
           textDesignation={member.position}
           slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
         />

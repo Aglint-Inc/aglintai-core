@@ -41,6 +41,7 @@ export const navList: {
       '/jobs/[id]/screening',
       '/jobs/[id]/workflows',
       '/jobs/[id]/candidate-list',
+      '/jobs/[id]/application/[application_id]',
     ],
   },
   {
@@ -52,7 +53,7 @@ export const navList: {
     permission: ['scheduling_module'],
     active: ['/scheduling'],
   },
-  
+
   {
     text: 'Interviewers',
     SubComponents: null,

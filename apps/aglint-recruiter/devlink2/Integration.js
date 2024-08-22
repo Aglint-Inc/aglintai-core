@@ -74,7 +74,7 @@ export function Integration({
         >
           <Text content="Communication Platforms" align="" />
           <Text
-            content="Coming soon! You’ll be able to connect popular communication tools to enhance your team’s coordination."
+            content="Connect popular communication tools to enhance your team's coordination."
             color="neutral"
             weight=""
             align=""

@@ -134,7 +134,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
   '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
- 
+
   // request availability mail apis
   '/api/emails/sendAvailabilityRequest_email_applicant': ['scheduling_module'],
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
@@ -168,16 +168,11 @@ const PERMISSIONS: Permissions = {
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
   '/api/ai/queryToJson': ['scheduling_module'],
-  '/api/integrations/greenhouse': ['authorized'],
-  '/api/integrations/greenhouse/sync/interview_plans': ['manage_job'],
-  '/api/integrations/greenhouse/sync/job': ['manage_job'],
-  '/api/integrations/greenhouse/sync/user': ['integrations_module'],
-  '/api/integrations/greenhouse/sync/departments': ['integrations_module'],
-  '/api/integrations/greenhouse/sync/office_locations': ['integrations_module'],
   '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/sync/greenhouse/full_sync': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
+  '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],
 };
 
 export default PERMISSIONS;
