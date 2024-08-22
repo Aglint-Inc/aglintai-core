@@ -112,7 +112,12 @@ function RequestDetails({
       slotBody={
         <>
           {request.applications.public_jobs.workflow_job_relation.length > 0 ? (
-            <RequestProgress request_type={request.type} />
+            <RequestProgress
+              request_type={request.type}
+              job_workflow={
+                request.applications.public_jobs.workflow_job_relation
+              }
+            />
           ) : null}
 
           {Boolean(

@@ -17,10 +17,15 @@ import { EventHeading } from './EventHeading';
 
 function RequestProgress({
   request_type,
+  job_workflow,
 }: {
   request_type: DatabaseTable['request']['type'];
+  job_workflow: any;
 }) {
-  const { request_progress } = useRequest();
+  const { request_progress, request_workflow } = useRequest();
+
+  console.log(job_workflow);
+  console.log(request_workflow);
 
   const graphRef = useRef(createWorkflowGraph(request_type));
   const orderedEvents = useMemo(() => {
