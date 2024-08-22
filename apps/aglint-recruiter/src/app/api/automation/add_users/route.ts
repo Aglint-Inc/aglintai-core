@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
 import { registerMember } from '@/src/pages/api/invite_user';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 import timeZone from '@/src/utils/timeZone';
 
 export const dynamic = 'force-dynamic';
@@ -21,6 +21,7 @@ type emp = 'fulltime' | 'parttime' | 'contractor';
 const employment: emp[] = ['fulltime', 'parttime', 'contractor'];
 
 export async function POST(req) {
+  const supabaseAdmin = getSupabaseServer();
   try {
     const {
       recruiter_id,

@@ -1,5 +1,8 @@
 import { registerMember } from '@/src/pages/api/invite_user';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import {
+  supabaseAdmin,
+  SupabaseClientType,
+} from '@/src/utils/supabase/supabaseAdmin';
 
 import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';
@@ -14,19 +17,27 @@ export async function syncUsers(
   const updatedUsers = last_sync
     ? await getGreenhouseUpdatedUsers(decryptKey, last_sync)
     : [];
-  return await filterMapUser([...users, ...updatedUsers], recruiter_id);
+  return await filterMapUser(
+    supabaseAdmin,
+    [...users, ...updatedUsers],
+    recruiter_id,
+  );
 }
 
 export async function filterMapUser(
+  supabaseAdmin: SupabaseClientType,
   users: Awaited<ReturnType<typeof getGreenhouseUsers>>,
   recruiter_id: string,
 ) {
   const curr_email = await getCurrentUserEmail();
-  const curr_departments = await getDepartment(recruiter_id);
+  const curr_departments = await getDepartment(supabaseAdmin, recruiter_id);
   const curr_role = await getRole(recruiter_id);
   const { scheduling_settings, primary_admin } =
     await getScheduleSetting(recruiter_id);
-  const curr_office_locations = await getOfficeLocations(recruiter_id);
+  const curr_office_locations = await getOfficeLocations(
+    supabaseAdmin,
+    recruiter_id,
+  );
   const temp_user: Awaited<ReturnType<typeof registerMember>>[] = [];
   const filtered_user = users.filter(
     (user) => !curr_email.includes(user.primary_email_address),
@@ -60,7 +71,9 @@ export async function filterMapUser(
     //   user_id: '',
     // });
   }
-  await setLastSync(recruiter_id, { users: new Date().toISOString() });
+  await setLastSync(supabaseAdmin, recruiter_id, {
+    users: new Date().toISOString(),
+  });
   return temp_user;
 }
 

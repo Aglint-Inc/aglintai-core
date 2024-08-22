@@ -1,7 +1,7 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getOfficeLocations } from '../office_locations/process';
 import { GreenhouseJobStagesAPI } from '../types';
@@ -16,20 +16,25 @@ import {
 const MAX_EMAILS_PER_BATCH = 100;
 
 export async function syncGreenhouseJob(
+  supabaseAdmin: SupabaseClientType,
   key: string,
   recruiter_id: string,
   last_sync?: string,
 ) {
   const job_posts = await getGreenhouseJobs(key, last_sync);
-  return mapSaveJobs(key, job_posts, recruiter_id);
+  return mapSaveJobs(supabaseAdmin, key, job_posts, recruiter_id);
 }
 
 export async function mapSaveJobs(
+  supabaseAdmin: SupabaseClientType,
   key: string,
   job_posts: Awaited<ReturnType<typeof getGreenhouseJobs>>,
   recruiter_id: string,
 ) {
-  const curr_office_locations = await getOfficeLocations(recruiter_id);
+  const curr_office_locations = await getOfficeLocations(
+    supabaseAdmin,
+    recruiter_id,
+  );
   const temp_public_jobs = job_posts.map((job_post) =>
     createJobObject(recruiter_id, job_post, curr_office_locations),
   );
@@ -40,7 +45,9 @@ export async function mapSaveJobs(
       .select('id,remote_id')
       .throwOnError()
   ).data;
-  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
+  await setLastSync(supabaseAdmin, recruiter_id, {
+    jobs: new Date().toISOString(),
+  });
   const jobs_count = job_ids.length;
   if (jobs_count) {
     const chunks = chunkArray(job_ids, 10);
@@ -51,6 +58,7 @@ export async function mapSaveJobs(
             // api call
             return [
               syncJobApplications(
+                supabaseAdmin,
                 {
                   job_id: Number(job.remote_id),
                   public_job_id: job.id,
@@ -59,6 +67,7 @@ export async function mapSaveJobs(
                 key,
               ),
               syncGreenhouseJobPlan(
+                supabaseAdmin,
                 {
                   ats_job_id: Number(job.remote_id),
                   public_job_id: job.id,
@@ -72,7 +81,9 @@ export async function mapSaveJobs(
       );
     }
   }
-  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
+  await setLastSync(supabaseAdmin, recruiter_id, {
+    jobs: new Date().toISOString(),
+  });
   return job_ids;
 }
 
@@ -118,6 +129,7 @@ function createJobObject(
 }
 
 export async function syncJobApplications(
+  supabaseAdmin: SupabaseClientType,
   post: { job_id: number; public_job_id: string; recruiter_id: string },
   apiKey: string,
 ) {
@@ -131,6 +143,7 @@ export async function syncJobApplications(
     ),
   ];
   const checkCandidates = await processEmailsInBatches(
+    supabaseAdmin,
     emails,
     post.recruiter_id,
   );
@@ -278,17 +291,29 @@ export function extractLinkedInURLGreenhouse(item: string): string {
   }
 }
 
-async function processEmailsInBatches(emails: string[], recruiter_id: string) {
+async function processEmailsInBatches(
+  supabaseAdmin: SupabaseClientType,
+  emails: string[],
+  recruiter_id: string,
+) {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
-    const candidate = await processBatch(emailBatch, recruiter_id);
+    const candidate = await processBatch(
+      supabaseAdmin,
+      emailBatch,
+      recruiter_id,
+    );
     allCandidates = [...allCandidates, ...candidate];
   }
   return allCandidates;
 }
 
-async function processBatch(emailBatch: string[], recruiter_id: string) {
+async function processBatch(
+  supabaseAdmin: SupabaseClientType,
+  emailBatch: string[],
+  recruiter_id: string,
+) {
   const { data: checkCandidates, error: errorCheck } = await supabaseAdmin
     .from('candidates')
     .select()
@@ -303,6 +328,7 @@ async function processBatch(emailBatch: string[], recruiter_id: string) {
 }
 
 export async function syncGreenhouseJobPlan(
+  supabaseAdmin: SupabaseClientType,
   prop: {
     recruiter_id: string;
     ats_job_id: number;
@@ -311,12 +337,13 @@ export async function syncGreenhouseJobPlan(
   key?: string,
 ) {
   const plans = await getGreenhouseJobPlan(key, prop.ats_job_id);
-  return mapSaveInterviewPlans(plans, prop.public_job_id);
+  return mapSaveInterviewPlans(supabaseAdmin, plans, prop.public_job_id);
 }
 
 // eslint-disable-next-line no-unused-vars
 
 async function mapSaveInterviewPlans(
+  supabaseAdmin: SupabaseClientType,
   data: GreenhouseJobStagesAPI,
   job_id: string,
 ) {

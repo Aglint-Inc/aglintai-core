@@ -5,6 +5,7 @@ import superjson from 'superjson';
 import { ZodError } from 'zod';
 
 import { createClient } from '../db';
+import { UNAUTHENTICATED } from './enums';
 
 type CreateContextOptions = {
   headers: Headers;
@@ -70,7 +71,7 @@ const refreshMiddleware = t.middleware(async ({ next, ctx }) => {
     data: { user },
   } = await ctx.db.auth.getUser();
   if (!user) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthenticated' });
+    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
   }
   return await next({
     ctx: {

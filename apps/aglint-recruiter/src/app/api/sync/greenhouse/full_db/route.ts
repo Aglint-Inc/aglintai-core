@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 import { syncDepartments } from '../departments/process';
 import { syncOfficeLocations } from '../office_locations/process';
@@ -14,9 +15,10 @@ export function POST(request: NextRequest) {
     async ({ body }) => {
       const { recruiter_id, key } = body;
       const decryptKey = await getDecryptKey(key);
-      const lastSync = await getLastSync(recruiter_id);
-      await syncDepartments(recruiter_id, decryptKey);
-      await syncOfficeLocations(recruiter_id, decryptKey);
+      const supabaseAdmin = getSupabaseServer();
+      const lastSync = await getLastSync(supabaseAdmin, recruiter_id);
+      await syncDepartments(supabaseAdmin, recruiter_id, decryptKey);
+      await syncOfficeLocations(supabaseAdmin, recruiter_id, decryptKey);
       await Promise.all([
         syncGreenhouseUsers(recruiter_id, key, lastSync.users),
         syncGreenhouseJobs(recruiter_id, key, lastSync.jobs),

@@ -1,14 +1,19 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 
 import { searchExactLocation } from '@/src/utils/externalApi/google/geoLocation';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function syncOfficeLocations(
+  supabaseAdmin: SupabaseClientType,
   recruiter_id: string,
   decryptKey: string,
 ) {
   const office_locations = await getGreenhouseOfficeLocations(decryptKey);
-  return await saveOfficeLocations(office_locations, recruiter_id);
+  return await saveOfficeLocations(
+    supabaseAdmin,
+    office_locations,
+    recruiter_id,
+  );
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -87,6 +92,7 @@ const dummyData: GreenhouseOfficesAPI = [
   },
 ];
 export async function saveOfficeLocations(
+  supabaseAdmin: SupabaseClientType,
   office_locations: Awaited<ReturnType<typeof getGreenhouseOfficeLocations>>,
   recruiter_id: string,
 ) {
@@ -118,7 +124,10 @@ export async function saveOfficeLocations(
   ).data;
 }
 
-export async function getOfficeLocations(recruiter_id: string) {
+export async function getOfficeLocations(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   return (
     await supabaseAdmin
       .from('office_locations')

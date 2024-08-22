@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 type usersToUpdate = {
   user_id: string;
 };
 
 export async function POST(req) {
+  const supabaseAdmin = getSupabaseServer();
   const {
     emailAuthData,
     usersToUpdate,
