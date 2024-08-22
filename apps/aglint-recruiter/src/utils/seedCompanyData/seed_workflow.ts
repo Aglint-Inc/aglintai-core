@@ -496,4 +496,22 @@ export const seed_workflow_actions: {
       },
     ],
   },
+  {
+    workflow: {
+      auto_connect: false,
+      description: '',
+      interval: 0,
+      phase: 'after',
+      title: '8. Interviewer declines meeting',
+      trigger: 'onRequestInterviewerDecline',
+      workflow_type: 'job',
+    },
+    actions: [
+      {
+        action_type: 'end_point',
+        order: 0,
+        target_api: 'onRequestInterviewerDecline_agent_changeInterviewer',
+      },
+    ],
+  },
 ];
