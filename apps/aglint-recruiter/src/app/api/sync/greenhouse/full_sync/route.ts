@@ -15,9 +15,9 @@ export function POST(request: NextRequest) {
     async ({ requesterDetails, body }) => {
       const { recruiter_id } = requesterDetails;
       const { syncData } = body;
-      const key = await getGreenhouseKey(recruiter_id);
-      const decryptKey = await getDecryptKey(key);
       const supabaseAdmin = getSupabaseServer();
+      const key = await getGreenhouseKey(supabaseAdmin, recruiter_id);
+      const decryptKey = await getDecryptKey(key);
       // const lastSync = await getLastSync(recruiter_id);
       if (syncData.options['departments']) {
         await syncDepartments(supabaseAdmin, recruiter_id, decryptKey);

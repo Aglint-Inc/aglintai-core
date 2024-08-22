@@ -18,7 +18,7 @@ export function POST(request: NextRequest) {
       const supabaseAdmin = getSupabaseServer();
       const lastSync = await getLastSync(supabaseAdmin, recruiter_id);
       await syncDepartments(supabaseAdmin, recruiter_id, decryptKey);
-      await syncOfficeLocations(recruiter_id, decryptKey);
+      await syncOfficeLocations(supabaseAdmin, recruiter_id, decryptKey);
       await Promise.all([
         syncGreenhouseUsers(recruiter_id, key, lastSync.users),
         syncGreenhouseJobs(recruiter_id, key, lastSync.jobs),

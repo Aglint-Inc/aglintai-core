@@ -45,7 +45,9 @@ export async function mapSaveJobs(
       .select('id,remote_id')
       .throwOnError()
   ).data;
-  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
+  await setLastSync(supabaseAdmin, recruiter_id, {
+    jobs: new Date().toISOString(),
+  });
   const jobs_count = job_ids.length;
   if (jobs_count) {
     const chunks = chunkArray(job_ids, 10);
@@ -79,7 +81,9 @@ export async function mapSaveJobs(
       );
     }
   }
-  await setLastSync(recruiter_id, { jobs: new Date().toISOString() });
+  await setLastSync(supabaseAdmin, recruiter_id, {
+    jobs: new Date().toISOString(),
+  });
   return job_ids;
 }
 

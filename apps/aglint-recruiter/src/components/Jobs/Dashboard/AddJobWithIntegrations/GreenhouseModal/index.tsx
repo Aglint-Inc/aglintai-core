@@ -9,7 +9,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import { GreenhouseJobSyncAPI } from '@/src/app/api/integrations/greenhouse/sync/job/type';
 import axios from '@/src/client/axios';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
@@ -68,7 +67,7 @@ export function GreenhouseModal() {
         greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
       }));
 
-      const public_job_id = await axios.call<GreenhouseJobSyncAPI>(
+      const public_job_id = await axios.call(
         'POST',
         '/api/integrations/greenhouse/sync/job',
         {
@@ -83,7 +82,7 @@ export function GreenhouseModal() {
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-        router.push(ROUTES['/jobs/[id]']({ id: public_job_id }));
+        router.push(ROUTES['/jobs/[id]']({ id: String(public_job_id) }));
       } else {
         toast.error(
           'Import failed. Please try again later or contact support for assistance.',
