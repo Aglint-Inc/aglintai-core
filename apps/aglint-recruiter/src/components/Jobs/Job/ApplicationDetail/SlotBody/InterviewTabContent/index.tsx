@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { InterviewPlanApplication } from '@/devlink2/InterviewPlanApplication';
+import { InterviewStage } from '@/devlink3/InterviewStage';
 import Loader from '@/src/components/Common/Loader';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useInterviewModules } from '@/src/queries/interview-modules';
@@ -35,10 +35,11 @@ function InterviewTabContent() {
   return (
     <>
       <SideDrawerEdit refetch={refetch} />
-      <InterviewPlanApplication
-        slotApplicantDetailStage={<StageSessions />}
-        slotCandidateInterviewProgress={<Progress />}
+      <InterviewStage
+        slotInterviewStage={<StageSessions />}
+        slotPiplineTab={<Progress />}
       />
+
       <DialogSchedule />
     </>
   );

@@ -8,6 +8,7 @@
 
 .app-detail-card-header-drop {
   display: flex;
+  height: 40px;
   justify-content: space-between;
   align-items: center;
 }
@@ -21,7 +22,7 @@
 }
 
 .div-block-1739 {
-  display: flex;
+  display: none;
   width: 24px;
   height: 24px;
   justify-content: center;
@@ -36,7 +37,7 @@
 
 .appdetails-drop-card-wrap {
   display: flex;
-  margin-top: var(--space-4);
+  margin-top: var(--radius-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-3);
