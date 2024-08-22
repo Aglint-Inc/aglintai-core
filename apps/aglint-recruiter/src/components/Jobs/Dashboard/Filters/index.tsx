@@ -1,4 +1,3 @@
-import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
@@ -36,6 +35,19 @@ function FilterJobDashboard({
       <FilterHeader
         isResetAll={!isResetAll}
         filters={[
+          {
+            type: 'filter',
+            name: 'status',
+            iconname: '',
+            options: filterOptions.status,
+            setValue: (val) => {
+              setFilterValues({
+                ...filterValues,
+                status: val,
+              });
+            },
+            value: filterValues.status,
+          },
           {
             type: 'filter',
             name: 'department',
@@ -128,7 +140,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
-    status: [] as DatabaseTable['public_jobs']['status'][],
+    status: [] as string[],
     location: [] as string[],
     type: [] as string[],
     hiringManager: [] as string[],
@@ -199,6 +211,11 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
           jobs
             .map((job) => job.interview_coordinator)
             .filter((item) => Boolean(item)),
+        ),
+      ],
+      status: [
+        ...new Set(
+          jobs.map((job) => job.status).filter((item) => Boolean(item)),
         ),
       ],
     };
