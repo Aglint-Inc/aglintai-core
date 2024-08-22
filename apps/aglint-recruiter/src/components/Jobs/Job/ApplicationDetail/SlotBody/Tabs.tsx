@@ -1,9 +1,11 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useKeyPress } from '@/src/hooks/useKeyPress';
 
 export type TabsType =
   | 'interview'
@@ -77,6 +79,42 @@ function Tabs() {
       isVisible: true,
     },
   ];
+
+  const sections = allTabs
+    .filter((item) => item.isVisible)
+    .map((item) => item.tab);
+  const tabCount: number = sections.length - 1;
+  const currentIndex: number = sections.indexOf(tab);
+
+  const handlePrevious = () => {
+    const pre =
+      // eslint-disable-next-line security/detect-object-injection
+      currentIndex === 0 ? sections[tabCount] : sections[currentIndex - 1];
+    const currentQuery = { ...router.query };
+    currentQuery.tab = pre;
+    router.replace({
+      pathname: router.pathname,
+      query: currentQuery,
+    });
+  };
+  const handleNext = () => {
+    const next =
+      currentIndex === tabCount ? sections[0] : sections[currentIndex + 1];
+    const currentQuery = { ...router.query };
+    currentQuery.tab = next;
+    router.replace({
+      pathname: router.pathname,
+      query: currentQuery,
+    });
+  };
+
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (left) handlePrevious();
+    else if (right) handleNext();
+  }, [left, right]);
 
   return (
     <Stack

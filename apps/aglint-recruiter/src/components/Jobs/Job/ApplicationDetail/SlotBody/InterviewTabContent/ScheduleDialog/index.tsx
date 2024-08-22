@@ -29,9 +29,9 @@ import {
 import { Interviewer } from '../StageSessions/EditDrawer/types';
 
 function DialogSchedule() {
-  const { isScheduleOpen, selectedSessionIds, selectedStageId } =
-    useApplicationDetailStore();
+  const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
   const router = useRouter();
+  const selectedStageId = router.query.stage as string;
   const { recruiterUser } = useAuthDetails();
 
   const [isCreateRequest, setIsCreateRequest] = React.useState(false);

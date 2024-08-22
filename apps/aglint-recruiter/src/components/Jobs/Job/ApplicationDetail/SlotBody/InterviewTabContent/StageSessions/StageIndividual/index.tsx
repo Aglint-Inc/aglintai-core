@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ApplicantDetailStage } from '@/devlink2/ApplicantDetailStage';
@@ -8,7 +9,7 @@ import { StageWithSessions } from '@/src/queries/application';
 import {
   setIsScheduleOpen,
   setSelectedSessionIds,
-  useApplicationDetailStore
+  useApplicationDetailStore,
 } from '../../../../store';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
@@ -19,12 +20,11 @@ function StageIndividual({
   stage: StageWithSessions[0];
   index: number;
 }) {
-  const { selectedStageId, selectedSessionIds } = useApplicationDetailStore(
-    (state) => ({
-      selectedStageId: state.selectedStageId,
-      selectedSessionIds: state.selectedSessionIds,
-    }),
-  );
+  const router = useRouter();
+  const selectedStageId= router.query.stage as string;
+  const { selectedSessionIds } = useApplicationDetailStore((state) => ({
+    selectedSessionIds: state.selectedSessionIds,
+  }));
 
   const sessions = stage.sessions;
   const isStageSelected = selectedStageId === stage.interview_plan.id;

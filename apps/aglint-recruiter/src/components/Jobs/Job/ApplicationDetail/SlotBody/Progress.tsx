@@ -1,21 +1,30 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { PiplelineTab } from '@/devlink3/PiplelineTab';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import {
-  setSelectedSessionIds,
-  setSelectedStageId,
-  useApplicationDetailStore,
-} from '../store';
+import { setSelectedSessionIds } from '../store';
 
 function Progress() {
+  const router = useRouter();
   const {
     interview: { data: stages },
   } = useApplication();
 
-  const { selectedStageId } = useApplicationDetailStore((state) => ({
-    selectedStageId: state.selectedStageId,
-  }));
+  const selectedStageId = router.query.stage as string;
+
+  useEffect(() => {
+    if (!selectedStageId) {
+      const currentQuery = { ...router.query };
+      currentQuery.stage = stages[0].interview_plan.id;
+      router.replace({
+        pathname: router.pathname,
+        query: currentQuery,
+      });
+    }
+  }, [stages]);
 
   return (
     <>
@@ -51,8 +60,13 @@ function Progress() {
             }
             onClickTab={{
               onClick: () => {
-                setSelectedStageId(stage.interview_plan.id);
                 setSelectedSessionIds([]);
+                const currentQuery = { ...router.query };
+                currentQuery.stage = stage.interview_plan.id;
+                router.replace({
+                  pathname: router.pathname,
+                  query: currentQuery,
+                });
               },
             }}
             isActive={selectedStageId === stage.interview_plan.id}
