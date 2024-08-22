@@ -43,8 +43,7 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
       await supabaseAdmin
         .from('request_relation')
         .select('*,interview_session(*), request(*)')
-        .eq('interview_session.meeting_id', new_data.id)
-        .eq('request.status', 'in_progress'),
+        .eq('interview_session.meeting_id', new_data.id),
       false,
     );
     const { request_workflows, company_actions } = await getWActions({
