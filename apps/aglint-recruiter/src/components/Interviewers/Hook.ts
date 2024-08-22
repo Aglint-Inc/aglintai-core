@@ -87,13 +87,13 @@ export const useLeaderBoard = ({
   departments,
 }: {
   type: LeaderAnalyticsFilterType['type'];
-  jobs: LeaderAnalyticsFilterType['jobs'];
+  jobs?: LeaderAnalyticsFilterType['jobs'];
   departments: LeaderAnalyticsFilterType['departments'];
 }) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_leaderBoard-analytics', recruiter_id],
+    queryKey: ['get_leaderBoard-analytics', type, departments, recruiter_id],
     refetchOnMount: true,
     queryFn: () =>
       fetchLeaderBoardAnalytics({ recruiter_id, type, jobs, departments }),

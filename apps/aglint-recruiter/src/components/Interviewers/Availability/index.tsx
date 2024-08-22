@@ -4,15 +4,15 @@ import { useState } from 'react';
 
 import { InterviewerAvailability } from '@/devlink3/InterviewerAvailability';
 import { InterviewerListAvail } from '@/devlink3/InterviewerListAvail';
+import { InterviewerNotConnected } from '@/devlink3/InterviewerNotConnected';
 import { InterviewerSlot } from '@/devlink3/InterviewerSlot';
 import { initUser } from '@/src/pages/api/interviewers';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
-import { getColor, getDatesArray, groupByDateAndHour } from '../utils';
-import { Event, GroupedEvents } from '../types';
 import { useAvailabilty } from '../Hook';
-import { InterviewerNotConnected } from '@/devlink3/InterviewerNotConnected';
+import { Event, GroupedEvents } from '../types';
+import { getColor, getDatesArray, groupByDateAndHour } from '../utils';
 
 function Availability() {
   const [dayCount, setDayCount] = useState<number>(0);
@@ -119,19 +119,19 @@ const InterviewerList = ({
         />
       }
       slotDay1={grouped_events[0].events.map((event) => (
-        <InterviewerSlot propsColor={getColor(event.type)} />
+        <InterviewerSlot propsColor={getColor(event.type)} key={event.id} />
       ))}
       slotDay2={grouped_events[1].events.map((event) => (
-        <InterviewerSlot propsColor={getColor(event.type)} />
+        <InterviewerSlot propsColor={getColor(event.type)} key={event.id} />
       ))}
       slotDay3={grouped_events[2].events.map((event) => (
-        <InterviewerSlot propsColor={getColor(event.type)} />
+        <InterviewerSlot propsColor={getColor(event.type)} key={event.id} />
       ))}
       slotDay4={grouped_events[3].events.map((event) => (
-        <InterviewerSlot propsColor={getColor(event.type)} />
+        <InterviewerSlot propsColor={getColor(event.type)} key={event.id} />
       ))}
       slotDay5={grouped_events[4].events.map((event) => (
-        <InterviewerSlot propsColor={getColor(event.type)} />
+        <InterviewerSlot propsColor={getColor(event.type)} key={event.id} />
       ))}
     />
   );

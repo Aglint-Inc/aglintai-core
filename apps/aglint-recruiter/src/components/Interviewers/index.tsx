@@ -5,6 +5,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import Availability from './Availability';
 import InterviewerLoad from './InterviewerLoad';
 import Metrics from './Metrics';
+import Training from './Traning';
 import { interviewersTab } from './types';
 
 function Interviewers() {
@@ -21,7 +22,9 @@ function Interviewers() {
       <ShowCode.When isTrue={tab === 'metrics'}>
         <Metrics />
       </ShowCode.When>
-      <ShowCode.When isTrue={tab === 'training'}>Training</ShowCode.When>
+      <ShowCode.When isTrue={tab === 'training'}>
+        <Training />
+      </ShowCode.When>
     </ShowCode>
   );
 }
