@@ -10,14 +10,13 @@ export const Filters = memo(() => {
     filters: { status },
   } = useSchedulingAnalytics();
   if (status === 'error') return <></>;
-  if (status === 'pending') return <></>;
   return <Content />;
 });
 Filters.displayName = 'Filters';
 
 const Content = memo(() => {
   const {
-    filters: { data },
+    filters: { data, status },
     jobs,
     setJobs,
     departments,
@@ -52,8 +51,9 @@ const Content = memo(() => {
       setValue: (newJobs) => setJobs(newJobs),
       iconname: '',
       icon: <></>,
+      loading: status === 'pending',
     }),
-    [jobs, jobOptions],
+    [jobs, jobOptions, status],
   );
   const deparmentFilter: FilterArg = useMemo(
     () => ({
@@ -65,8 +65,9 @@ const Content = memo(() => {
         setDepartments(newJobs.map((department) => Number(department))),
       iconname: '',
       icon: <></>,
+      loading: status === 'pending',
     }),
-    [safeDepartments, departmentOptions],
+    [safeDepartments, departmentOptions, status],
   );
   return <FilterHeader filters={[jobFilter, deparmentFilter]} />;
 });

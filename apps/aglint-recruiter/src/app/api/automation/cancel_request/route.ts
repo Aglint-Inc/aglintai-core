@@ -7,6 +7,9 @@ type setting = {
   application_id: string;
   request_id: string;
 };
+
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   const setting: setting = await req.json();
   try {
