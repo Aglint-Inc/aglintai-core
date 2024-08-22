@@ -1,4 +1,5 @@
 import { schedulingSettingType } from '@aglint/shared-types';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
@@ -20,6 +21,7 @@ const employment: emp[] = ['fulltime', 'parttime', 'contractor'];
 
 export async function POST(req) {
   try {
+    cookies();
     const {
       recruiter_id,
       forms,
