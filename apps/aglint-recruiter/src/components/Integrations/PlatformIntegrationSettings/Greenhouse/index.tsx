@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
-// import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-// import { GreenhouseAPI } from '@/src/app/api/integrations/greenhouse/type';
+import { GreenhouseAPI } from '@/src/app/api/integrations/greenhouse/type';
 import { GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
 import axios from '@/src/client/axios';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
@@ -16,14 +16,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 
 function GreenhouseSettings() {
-  // const { data, isPending, setOptions } = useGreenhouseDetails();
-  const { data, isPending, setOptions } = {
-    data: {} as any,
-    isPending: true,
-    setOptions: (x: any) => {
-      x;
-    },
-  };
+  const { data, isPending, setOptions } = useGreenhouseDetails();
 
   return (
     <Stack p={2}>
@@ -157,38 +150,38 @@ function GreenInCircle() {
   );
 }
 
-// function useGreenhouseDetails() {
-// const query = useQuery({
-//   queryKey: ['integrations', 'greenhouse'],
-//   queryFn: getGreenhouseDetails,
-// });
-// const { mutateAsync } = useMutation({
-//   mutationKey: ['integrations', 'greenhouse'],
-//   mutationFn: setGreenhouseDetails,
-//   onSuccess: () => {
-//     query.refetch();
-//   },
-// });
-//   return { ...query, setOptions: mutateAsync };
-// }
+function useGreenhouseDetails() {
+  const query = useQuery({
+    queryKey: ['integrations', 'greenhouse'],
+    queryFn: getGreenhouseDetails,
+  });
+  const { mutateAsync } = useMutation({
+    mutationKey: ['integrations', 'greenhouse'],
+    mutationFn: setGreenhouseDetails,
+    onSuccess: () => {
+      query.refetch();
+    },
+  });
+  return { ...query, setOptions: mutateAsync };
+}
 
-// async function getGreenhouseDetails() {
-//   const res = await axios.call<GreenhouseAPI['GET']>(
-//     'GET',
-//     '/api/integrations/greenhouse',
-//     null,
-//   );
-//   return res || ({} as typeof res);
-// }
+async function getGreenhouseDetails() {
+  const res = await axios.call<GreenhouseAPI['GET']>(
+    'GET',
+    '/api/integrations/greenhouse',
+    null,
+  );
+  return res || ({} as typeof res);
+}
 
-// async function setGreenhouseDetails(data: GreenhouseAPI['POST']['request']) {
-//   const res = await axios.call<GreenhouseAPI['POST']>(
-//     'POST',
-//     '/api/integrations/greenhouse',
-//     data,
-//   );
-//   return res;
-// }
+async function setGreenhouseDetails(data: GreenhouseAPI['POST']['request']) {
+  const res = await axios.call<GreenhouseAPI['POST']>(
+    'POST',
+    '/api/integrations/greenhouse',
+    data,
+  );
+  return res;
+}
 
 type GreenhouseSyncOptions = {
   description: string;
