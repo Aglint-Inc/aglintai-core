@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { cancelReschdule } from '@/src/utils/automation/utils/cancel_request';
@@ -12,7 +11,6 @@ type setting = {
 export async function POST(req) {
   const setting: setting = await req.json();
   try {
-    cookies();
     await cancelReschdule(setting, supabaseAdmin);
 
     return NextResponse.json(
