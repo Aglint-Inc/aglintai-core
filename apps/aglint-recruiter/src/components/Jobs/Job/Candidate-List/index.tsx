@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { JobDetails } from '@/devlink2/JobDetails';
-import { JobsBanner } from '@/devlink3/JobsBanner';
+import { PageLayout } from '@/devlink2/PageLayout';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import Loader from '@/src/components/Common/Loader';
 import PublishButton from '@/src/components/Common/PublishButton';
@@ -54,22 +54,31 @@ const ApplicationsComponent = () => {
   );
   return (
     <DNDProvider>
-      <JobDetails
-        isImportCandidates={false}
-        isFetchingPillVisible={false}
-        slotRefresh={<></>}
-        slotShowFilterButton={<></>}
-        slotLoadingLottie={
-          <CircularProgress
-            style={{
-              color: '#17494D',
-              width: '12px',
-              height: '12px',
-            }}
+      <PageLayout
+        slotBody={
+          <JobDetails
+            isImportCandidates={false}
+            isFetchingPillVisible={false}
+            slotRefresh={<></>}
+            slotShowFilterButton={<></>}
+            slotLoadingLottie={
+              <CircularProgress
+                style={{
+                  color: '#17494D',
+                  width: '12px',
+                  height: '12px',
+                }}
+              />
+            }
+            slotBreadcrumb={<></>}
+            slotGlobalBanner={<></>}
+            slotTabs={<Tabs />}
+            slotTable={<Table />}
+            isFilterVisible={true}
+            slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
           />
         }
-        slotBreadcrumb={<BreadCrumbs />}
-        slotGlobalBanner={
+        slotTopbarRight={
           <Stack direction={'row'} alignItems={'center'} gap={2}>
             {applicationScoringPollEnabled && (
               <ScoreSetting
@@ -90,33 +99,24 @@ const ApplicationsComponent = () => {
               />
             )}
             {job?.status !== 'closed' && manageJob && (
-              <ButtonSoft
-                size={2}
-                color='neutral'
-                textButton='Add candidates'
-                onClickButton={{ onClick: () => setImportPopup(true) }}
-                isLeftIcon
-                iconName='person_add'
-              />
-            )}
-            {job?.status === 'draft' && (
-              <JobsBanner
-                slotButton={
-                  manageJob && (
-                    <PublishButton
-                      onClick={() => handlePublish()}
-                      disabled={!canPublish}
-                    />
-                  )
-                }
-              />
+              <>
+                <ButtonSoft
+                  size={2}
+                  color='neutral'
+                  textButton='Add candidates'
+                  onClickButton={{ onClick: () => setImportPopup(true) }}
+                  isLeftIcon
+                  iconName='person_add'
+                />
+                <PublishButton
+                  onClick={() => handlePublish()}
+                  disabled={!canPublish}
+                />
+              </>
             )}
           </Stack>
         }
-        slotTabs={<Tabs />}
-        slotTable={<Table />}
-        isFilterVisible={true}
-        slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
+        slotTopbarLeft={<BreadCrumbs />}
       />
       <UploadApplications />
     </DNDProvider>
