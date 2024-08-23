@@ -16,7 +16,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
-import { GlobalBannerInline } from '@/devlink2';
+
 
 function RequestDetails({
   request,
