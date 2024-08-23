@@ -21,7 +21,6 @@ import { useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
-import { fetchFilterJson } from './utils';
 
 function DetailsOverview({
   data,
@@ -44,11 +43,6 @@ function DetailsOverview({
   const { recruiterUser } = useAuthDetails();
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
   const [textValue, setTextValue] = useState('');
-  const [filterJson, setFilterJson] =
-    useState<Awaited<ReturnType<typeof fetchFilterJson>>>(null);
-  const [requestAvailibility, setRequestAvailibility] = useState<
-    DatabaseTable['candidate_request_availability'] | null
-  >(null);
 
   const queryClient = useQueryClient();
 
@@ -78,46 +72,6 @@ function DetailsOverview({
 
   const schedule = data?.schedule_data;
 
-  useEffect(() => {
-    if (schedule?.interview_meeting) {
-      if (
-        schedule?.interview_meeting.meeting_flow === 'self_scheduling' ||
-        schedule?.interview_meeting.meeting_flow === 'debrief' ||
-        schedule?.interview_meeting.meeting_flow === 'phone_agent' ||
-        schedule?.interview_meeting.meeting_flow === 'mail_agent'
-      ) {
-        (async () => {
-          const res = await fetchFilterJson([schedule.interview_session.id]);
-          setFilterJson(res);
-        })();
-      } else if (
-        schedule?.interview_meeting.meeting_flow === 'candidate_request'
-      ) {
-        fetchRequestAvailibilty();
-      }
-    }
-  }, [schedule?.interview_meeting]);
-
-  const fetchRequestAvailibilty = async () => {
-    try {
-      const { data } = await supabase
-        .from('candidate_request_availability')
-        .select('*, request_session_relation(*)')
-        .eq('application_id', schedule.schedule.application_id);
-
-      // TODO: verify
-      const reqAvail = data.find((item) =>
-        item.request_session_relation.some(
-          (ses) => ses.session_id === schedule.interview_session.id,
-        ),
-      );
-
-      setRequestAvailibility(reqAvail);
-    } catch (e) {
-      //
-    }
-  };
-
   // if logged in user is interviewer session relation will be there or else null
   const [sessionRelation, setSessionRelation] = useState<
     DatabaseTable['interview_session_relation'] | null
@@ -144,8 +98,6 @@ function DetailsOverview({
         slotScheduleTabOverview={
           <Stack spacing={'var(--space-2)'}>
             <Banners
-              filterJson={filterJson}
-              requestAvailibility={requestAvailibility}
               sessionRelation={sessionRelation}
               refetch={refetch}
               setIsDeclineOpen={setIsDeclineOpen}

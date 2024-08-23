@@ -1,22 +1,15 @@
 'use client';
 /* eslint-disable security/detect-object-injection */
-import { SessionsCombType } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { Container, Dialog, Stack, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Container, Dialog, Stack } from '@mui/material';
+import React, { useEffect } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { ButtonSurface } from '@/devlink/ButtonSurface';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
-import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Page404 } from '@/devlink/Page404';
-import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
-import { SessionAndTime } from '@/devlink/SessionAndTime';
 import { SessionInfo } from '@/devlink/SessionInfo';
 import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
@@ -35,8 +28,10 @@ import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
 import { ConfirmedInvitePage } from './CandidateConfirm';
+import MultiDay from './MultiDay';
+import { SingleDayConfirmation } from './SingleDayConfirmation';
 import { ScheduleCardProps, ScheduleCardsProps } from './types';
-import { dayJS, getDurationText } from './utils';
+import { getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -74,7 +69,7 @@ const CandidateInvitePlanPage = () => {
   const {
     setDetailsPop,
     meta: {
-      data: { candidate, meetings, filter_json, schedule, recruiter },
+      data: { candidate, meetings, filter_json, recruiter, application_id },
     },
     timezone,
     setSelectedSlots,
@@ -127,9 +122,9 @@ const CandidateInvitePlanPage = () => {
         candidate={candidate}
         filter_json={filter_json}
         meetings={meetings}
-        schedule={schedule}
         recruiter={recruiter}
         timezone={timezone}
+        application_id={application_id}
       />
     );
 
@@ -180,10 +175,7 @@ const DetailsPopup = () => {
     detailsPop,
     setDetailsPop,
     meta: {
-      data: {
-        meetings,
-        schedule: { schedule_name },
-      },
+      data: { meetings },
     },
   } = useCandidateInvite();
 
@@ -191,6 +183,8 @@ const DetailsPopup = () => {
     acc += curr.interview_session.session_duration;
     return acc;
   }, 0);
+
+  const schedule_name = '';
 
   return (
     <Dialog
@@ -287,399 +281,6 @@ const SingleDaySuccess = () => {
       />
       <SingleDayConfirmation />
     </>
-  );
-};
-
-const SingleDayConfirmation = () => {
-  const { selectedSlots, setSelectedSlots, handleSubmit, timezone } =
-    useCandidateInvite();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedSlots.length !== 0) setOpen(true);
-  }, [selectedSlots.length]);
-
-  const handleClose = () => {
-    setOpen(false);
-    setTimeout(() => setSelectedSlots([]), 200);
-  };
-  const [month, date, day] = dayJS(
-    selectedSlots?.[0]?.sessions?.[0]?.start_time ?? null,
-    timezone.tzCode,
-  )
-    .format('MMMM DD dddd')
-    .split(' ');
-  // calculate total duration of each session
-  let totalHours = 0;
-  let totalMinutes = 0;
-
-  selectedSlots[0]?.sessions.forEach((session) => {
-    const start = dayJS(session.start_time, timezone.tzCode);
-    const end = dayJS(session.end_time, timezone.tzCode);
-    const duration = end.diff(start, 'minutes');
-
-    totalHours += Math.floor(duration / 60);
-    totalMinutes += duration % 60;
-  });
-
-  totalHours += Math.floor(totalMinutes / 60);
-  totalMinutes %= 60;
-
-  const totalTimeDifference = `${
-    totalHours ? totalHours + ' hour' : ''
-  } ${totalMinutes} minutes`;
-  // end
-
-  return (
-    <Dialog open={open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack>
-            <Typography mb={2}>
-              Before we finalize your schedule, please take a moment to confirm
-              the chosen option. Your interview is crucial, and we want to
-              ensure it aligns perfectly with your availability.
-            </Typography>
-            <CandidateScheduleCard
-              isTitle={false}
-              textDuration={totalTimeDifference}
-              slotButton={<></>}
-              slotSessionInfo={
-                <SelectedDateAndTime
-                  slotSessionAndTime={<SingleDaySessions index={0} />}
-                  textDate={date}
-                  textDay={day}
-                  textMonth={month}
-                />
-              }
-            />
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
-          </>
-        }
-      />
-    </Dialog>
-  );
-};
-
-type SingleDaySessionsProps = {
-  index: number;
-};
-const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInvite();
-  const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
-    (session) => (
-      <SingleDaySession key={session.session_id} session={session} />
-    ),
-  );
-  return <>{sessions}</>;
-};
-
-type SingleDaySessionProps = {
-  session: ReturnType<
-    typeof useCandidateInvite
-  >['selectedSlots'][number]['sessions'][number];
-};
-const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInvite();
-  const name = props.session.session_name;
-  const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
-    'hh:mm A',
-  )} to ${dayJS(props.session.end_time, timezone.tzCode).format('hh:mm A')}`;
-  return <SessionAndTime textSessionName={name} textTime={duration} />;
-};
-
-const MultiDay = ({ rounds }: ScheduleCardsProps) => {
-  const { params } = useCandidateInvite();
-  const { status } = useInviteSlots(params);
-  if (status === 'error') return <MultiDayError />;
-  if (status === 'pending') return <MultiDayLoading />;
-  return <MultiDaySuccess rounds={rounds} />;
-};
-
-const MultiDayError = () => {
-  const { params } = useCandidateInvite();
-  const { refetch } = useInviteSlots(params);
-  useEffect(() => {
-    toast.error('Something went wrong. Please try again.');
-  }, []);
-  return (
-    <ButtonSolid
-      size={2}
-      textButton='Try again'
-      onClickButton={{ onClick: () => refetch() }}
-    />
-  );
-};
-
-const MultiDayLoading = () => {
-  return (
-    <Stack direction={'row'} justifyContent={'center'}>
-      <Stack width={'120px'}>
-        <CandidateSlotLoad />
-      </Stack>
-    </Stack>
-  );
-};
-
-const MultiDaySuccess = (props: ScheduleCardsProps) => {
-  const { selectedSlots } = useCandidateInvite();
-  const [open, setOpen] = useState(false);
-  const enabled = selectedSlots.length === props.rounds.length;
-  return (
-    <>
-      <ScheduleCards rounds={props.rounds} />
-      <Stack direction={'row'} justifyContent={'center'}>
-        <ButtonSolid
-          isLeftIcon={false}
-          isRightIcon={false}
-          textButton='Proceed'
-          size={2}
-          onClickButton={{
-            onClick: () => {
-              setOpen(true);
-            },
-          }}
-          isDisabled={!enabled}
-        />
-      </Stack>
-      <MultiDayConfirmation
-        rounds={props.rounds}
-        open={open}
-        setOpen={setOpen}
-      />
-    </>
-  );
-};
-
-type MultiDayConfirmationProps = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  rounds: ScheduleCardsProps['rounds'];
-};
-const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
-  const { handleSubmit } = useCandidateInvite();
-  const handleClose = () => {
-    props.setOpen(false);
-  };
-  const { selectedSlots, timezone } = useCandidateInvite();
-
-  type SelectedDateAndSessionsType = {
-    date: string;
-    sessions: SessionsCombType['sessions'] | null;
-  }[];
-  const [selectedDateAndSessions, setSelectedDateAndSessions] =
-    useState<SelectedDateAndSessionsType>([]);
-
-  function getSelectedDateAndSessions() {
-    const sessions = selectedSlots.map((round, i) => {
-      return {
-        date: dayJS(
-          round?.sessions?.[0]?.start_time ?? null,
-          timezone.tzCode,
-        ).format('MMMM DD'),
-        sessions: selectedSlots?.[i]?.sessions,
-      };
-      //@ts-ignore
-    });
-    setSelectedDateAndSessions(sessions);
-  }
-  useEffect(() => {
-    getSelectedDateAndSessions();
-  }, [props.rounds]);
-
-  return (
-    <Dialog open={props.open} onClose={() => handleClose()}>
-      <DcPopup
-        popupName={'Confirm your interview'}
-        slotBody={
-          <Stack gap={'10px'}>
-            <Stack>
-              {selectedDateAndSessions.map((item, index) => (
-                <>
-                  <Typography variant='subtitle1'>
-                    Day-{index + 1} -{' '}
-                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                    {item.date}
-                  </Typography>
-                </>
-              ))}
-            </Stack>
-            <Typography>
-              Please review and confirm your selected time slot before we
-              finalize your schedule. It’s important that your interview time
-              aligns with your availability.
-            </Typography>
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: handleClose }}
-        slotButtons={
-          <>
-            <ButtonSoft
-              textButton='Cancel'
-              size={2}
-              color={'neutral'}
-              onClickButton={{
-                onClick: () => handleClose(),
-              }}
-            />
-            <ButtonSolid
-              size={2}
-              textButton={'Confirm'}
-              onClickButton={{ onClick: handleSubmit }}
-            />
-          </>
-        }
-      />
-    </Dialog>
-  );
-};
-
-const ScheduleCards = (props: ScheduleCardsProps) => {
-  const scheduleCards = props.rounds.map((round, index) => (
-    <ScheduleCard key={index} round={round} index={index} showTitle={true} />
-  ));
-
-  return <>{scheduleCards}</>;
-};
-
-const ScheduleCard = (props: ScheduleCardProps) => {
-  const { params, selectedSlots, handleSelectSlot, timezone } =
-    useCandidateInvite();
-  const { data } = useInviteSlots(params);
-
-  const [open, setOpen] = useState(false);
-
-  const isSelected = !!selectedSlots[props.index];
-  const enabled = props.index <= selectedSlots.length;
-
-  const [month, date, day] = dayJS(
-    selectedSlots?.[props.index]?.sessions?.[0]?.start_time ?? null,
-    timezone.tzCode,
-  )
-    .format('MMMM DD dddd')
-    .split(' ');
-
-  const sessions =
-    props.index === 0
-      ? data.reduce(
-          (acc, curr) => {
-            const { start_time } = curr[props.index][0].sessions[0];
-            acc.push({
-              date: start_time,
-              slots: curr[props.index],
-            });
-            return acc;
-          },
-          [] as CandidateInviteCalendarProps['sessions'],
-        )
-      : data.reduce(
-          (acc, curr) => {
-            if (
-              selectedSlots.length !== 0 &&
-              curr[0].includes(selectedSlots[0])
-            ) {
-              const { start_time } = curr[props.index][0].sessions[0];
-              acc.push({
-                date: start_time,
-                slots: curr[props.index],
-              });
-            }
-            return acc;
-          },
-          [] as CandidateInviteCalendarProps['sessions'],
-        );
-
-  const handleSelect = (session: Parameters<typeof handleSelectSlot>['1']) => {
-    handleSelectSlot(props.index, session);
-    setOpen(false);
-  };
-
-  const duration = (props?.round?.sessions ?? []).reduce((acc, curr) => {
-    acc += curr.interview_session.session_duration;
-    return acc;
-  }, 0);
-
-  return (
-    <Stack
-      style={{
-        pointerEvents: enabled ? 'auto' : 'none',
-        opacity: enabled ? 1 : 0.4,
-      }}
-    >
-      <CandidateScheduleCard
-        textDay={props.round.title}
-        isSelected={isSelected}
-        slotButton={
-          enabled ? (
-            isSelected ? (
-              <IconButtonSoft
-                color={'neutral'}
-                onClickButton={{
-                  onClick: () => setOpen(true),
-                }}
-                iconName='repeat'
-                highContrast={true}
-              />
-            ) : (
-              <ButtonSurface
-                slotIcon={<GlobalIcon iconName='add' size={'sm'} />}
-                isLeftIcon={true}
-                isRightIcon={false}
-                size={1}
-                onClickButton={{ onClick: () => setOpen(true) }}
-                textButton='Select Option'
-              />
-            )
-          ) : (
-            <></>
-          )
-        }
-        textDuration={getDurationText(duration)}
-        slotSessionInfo={
-          isSelected ? (
-            <SelectedDateAndTime
-              slotSessionAndTime={<SingleDaySessions index={props.index} />}
-              textDate={date}
-              textDay={day}
-              textMonth={month}
-            />
-          ) : (
-            <Sessions sessions={props.round.sessions} showBreak={false} />
-          )
-        }
-        onClickCard={{ onClick: () => setOpen(true) }}
-      />
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        sx={{ '& .MuiPaper-root': { maxWidth: 'none !important' } }}
-      >
-        <CandidateInviteCalendar
-          sessions={sessions}
-          selections={selectedSlots}
-          handleSelect={handleSelect}
-          tz={timezone.tzCode}
-        />
-      </Dialog>
-    </Stack>
   );
 };
 

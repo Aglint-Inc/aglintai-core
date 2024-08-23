@@ -1,4 +1,4 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -15,6 +15,7 @@ import Footer from '@/src/components/Common/Footer';
 import { TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
@@ -28,14 +29,20 @@ export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
     Pick<
       Awaited<ReturnType<typeof useCandidateInvite>>['meta']['data'],
-      'candidate' | 'schedule' | 'meetings' | 'filter_json' | 'recruiter'
+      'candidate' | 'meetings' | 'filter_json' | 'recruiter' | 'application_id'
     > &
     Pick<Awaited<ReturnType<typeof useCandidateInvite>>, 'timezone'> & {
       avail_request_id?: string;
     },
 ) => {
-  const { candidate, filter_json, meetings, schedule, recruiter, timezone } =
-    props;
+  const {
+    candidate,
+    filter_json,
+    meetings,
+    recruiter,
+    timezone,
+    application_id,
+  } = props;
   const [cancelReschedule, setCancelReschedule] = useState<
     'reschedule' | 'cancel'
   >(null);
@@ -44,22 +51,26 @@ export const ConfirmedInvitePage = (
   const [cancelReschedulingDetails, setCancelReschedulingDetails] = useState<{
     all: boolean;
     type: 'reschedule' | 'declined';
-    other_details: Awaited<
-      ReturnType<typeof getCancelRescheduleData>
-    >[number]['other_details'];
-    sessions: Awaited<ReturnType<typeof getCancelRescheduleData>>;
+    other_details: DatabaseTable['interview_session_cancel']['other_details'];
+    sessions: {
+      session_id: string;
+      reason: string;
+      other_details: DatabaseTable['interview_session_cancel']['other_details'];
+      type: 'reschedule' | 'declined';
+    }[];
   }>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (schedule?.id && candidate?.recruiter_id) {
-      get_scheduling_reason(candidate.recruiter_id).then((data) => {
-        setSchedulingReason(data);
-      });
-      getCancelRescheduleData({
-        schedule_id: schedule.id,
-        session_ids: meetings.flatMap((ses) => ses.interview_session.id),
+    if (application_id && candidate?.recruiter_id) {
+      const session_ids = meetings.map((ses) => ses.interview_session.id);
+      get_scheduling_reason({
+        application_id: application_id,
+        recruiter_id: candidate.recruiter_id,
+        session_ids,
       }).then((data) => {
+        setSchedulingReason(data.scheduling_reason);
+        const cancelData = data.cancel_data;
         const temp = new Set(
           props.rounds
             .map((round) =>
@@ -68,14 +79,14 @@ export const ConfirmedInvitePage = (
             .flat(2),
         );
 
-        data.length &&
+        cancelData.length &&
           setCancelReschedulingDetails({
             all:
-              data.length == temp.size ||
-              data.every((item) => temp.has(item.session_id)),
+              cancelData.length == temp.size ||
+              cancelData.every((item) => temp.has(item.session_id)),
             type: data[0]?.type,
             other_details: data[0]?.other_details,
-            sessions: data,
+            sessions: cancelData,
           });
 
         setLoading(false);
@@ -83,28 +94,34 @@ export const ConfirmedInvitePage = (
     }
   }, [props]);
 
-  const handleCancelReschedule = async (
-    detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
-  ) => {
+  const handleCancelReschedule = async ({
+    reason,
+    other_details,
+    type,
+  }: {
+    reason: string;
+    other_details: DatabaseTable['interview_session_cancel']['other_details'];
+    type: DatabaseTable['interview_session_cancel']['type'];
+  }) => {
     // return true;
 
     if (filter_json?.id) {
       const metadata: CandidateResponseSelfSchedule = {
         action: 'waiting',
         type: 'candidate_response_self_schedule',
-        reason: detail.reason,
-        other_details: detail.other_details,
-        response_type: detail.type === 'declined' ? 'cancel' : 'reschedule',
+        reason: reason,
+        other_details: other_details,
+        response_type: type === 'declined' ? 'cancel' : 'reschedule',
         filter_id: filter_json.id,
         session_ids: meetings.map((ses) => ses.interview_session.id),
       };
 
       addScheduleActivity({
         title:
-          detail.type === 'declined'
+          type === 'declined'
             ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
             : `${getFullName(candidate.first_name, candidate.last_name)} requested to reschedule the ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
-        application_id: schedule.application_id,
+        application_id,
         logged_by: 'candidate',
         supabase: supabase,
         created_by: null,
@@ -112,44 +129,32 @@ export const ConfirmedInvitePage = (
       });
     }
 
-    const details = props.rounds
-      .reduce(
-        (prev, curr) => [...prev, ...curr.sessions],
-        [] as (typeof props.rounds)[number]['sessions'],
-      )
-      .map((session) => ({
-        ...detail,
-        session_id: session.interview_session.id,
-        schedule_id: session.interview_meeting.interview_schedule_id,
-      }));
-
-    if (details[0]?.other_details) {
-      createRequest({
-        application_id: schedule.application_id,
-        session_ids: details.map((d) => d.session_id),
-        new_dates: {
-          start_date: details[0].other_details?.dateRange?.start ?? null,
-          end_date: details[0].other_details?.dateRange?.end ?? null,
-        },
-        type: details[0].type,
-      });
-    }
-    return saveCancelReschedule({
-      details,
-    }).then(() => {
-      setCancelReschedulingDetails({
-        all: true,
-        type: detail.type,
-        other_details: detail.other_details,
-        sessions: details.map((item) => ({
-          session_id: item.session_id,
-          reason: item.reason,
-          other_details: item.other_details,
-          type: item.type,
-        })),
-      });
-      return true;
+    const session_ids = meetings.map((ses) => ses.interview_session.id);
+    await createRequest({
+      application_id,
+      session_ids,
+      new_dates: {
+        start_date: other_details?.dateRange?.start ?? null,
+        end_date: other_details?.dateRange?.end ?? null,
+      },
+      type,
+      other_details,
+      reason,
     });
+
+    setCancelReschedulingDetails({
+      all: true,
+      type: type,
+      other_details: other_details,
+      sessions: session_ids.map((id) => ({
+        session_id: id,
+        reason: reason,
+        other_details: other_details,
+        type: type,
+      })),
+    });
+
+    return true;
   };
 
   const reasons = cancelReschedulingDetails?.sessions.map(
@@ -205,7 +210,7 @@ export const ConfirmedInvitePage = (
                         {reasons.join(', ')}
                       </Typography>
                     )}
-                    {cancelReschedulingDetails.other_details.note && (
+                    {cancelReschedulingDetails.other_details?.note && (
                       <Typography>
                         <span style={{ fontWeight: '500' }}>
                           Additional Notes:{' '}
@@ -293,52 +298,15 @@ export const ConfirmedInvitePage = (
   );
 };
 
-const get_scheduling_reason = async (id: string) => {
+const get_scheduling_reason = async (
+  params: API_get_scheduling_reason['request'],
+) => {
   return axios
     .post<
       API_get_scheduling_reason['response']
-    >('/api/get_scheduling_reason', { id })
+    >('/api/get_scheduling_reason', params)
     .then(({ data }) => {
       return data.data;
-    });
-};
-
-const saveCancelReschedule = async ({
-  details,
-}: {
-  details: DatabaseTableInsert['interview_session_cancel'][];
-}) => {
-  //NOTE: code for creating the request for newSchedule
-  return supabase
-    .from('interview_session_cancel')
-    .insert(details)
-    .then(async ({ error }) => {
-      if (error) {
-        throw new Error(error.message);
-      }
-      return true;
-    });
-};
-
-const getCancelRescheduleData = async ({
-  session_ids,
-  schedule_id,
-}: {
-  session_ids: string[];
-  schedule_id: string;
-}) => {
-  return supabase
-    .from('interview_session_cancel')
-    .select('reason, session_id, type, other_details')
-    .eq('is_resolved', false)
-    .eq('is_ignored', false)
-    .in('session_id', session_ids)
-    .eq('schedule_id', schedule_id)
-    .then(({ data, error }) => {
-      if (error) {
-        return [];
-      }
-      return data;
     });
 };
 

@@ -120,7 +120,7 @@ const fetchCandDetails = async ({ filter_json_id }) => {
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule(id,application_id, applications(public_jobs(id,recruiter_id), candidates(first_name,last_name)))',
+        '*, applications(public_jobs(id,recruiter_id), candidates(first_name,last_name))',
       )
       .eq('id', filter_json_id),
   );
@@ -128,15 +128,15 @@ const fetchCandDetails = async ({ filter_json_id }) => {
   if (!rec) {
     throw new Error('Invalid Application');
   }
-  const cand_basic_info = rec.interview_schedule.applications.candidates;
-  const job = rec.interview_schedule.applications.public_jobs;
+  const cand_basic_info = rec.applications.candidates;
+  const job = rec.applications.public_jobs;
 
   if (rec.session_ids.length === 0) {
     throw new Error('Empty sessions');
   }
 
   let cand_details = {
-    application_id: rec.interview_schedule.application_id,
+    application_id: rec.application_id,
     job_id: job.id,
     candidate_name: getFullName(
       cand_basic_info.first_name,

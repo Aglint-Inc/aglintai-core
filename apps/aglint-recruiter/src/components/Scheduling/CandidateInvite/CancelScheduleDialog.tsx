@@ -1,17 +1,25 @@
-import { DatabaseTableInsert } from "@aglint/shared-types";
-import { dayjsLocal } from "@aglint/shared-utils/src/scheduling/dayjsLocal";
-import { Dialog, FormControl, FormControlLabel, Radio, RadioGroup, Stack, TextField } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useEffect, useState } from "react";
+import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import {
+  Dialog,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+} from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useEffect, useState } from 'react';
 
-import { ButtonSoft } from "@/devlink/ButtonSoft";
-import { ButtonSolid } from "@/devlink/ButtonSolid";
-import { RequestReschedule } from "@/devlink2/RequestReschedule";
-import { capitalizeFirstLetter } from "@/src/utils/text/textUtils";
-import toast from "@/src/utils/toast";
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { RequestReschedule } from '@/devlink2/RequestReschedule';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
-import { DateIcon } from "../../CompanyDetailComp/SettingsSchedule/Components/DateSelector";
+import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 
 const CancelRescheduleDialog = ({
   title,
@@ -26,10 +34,15 @@ const CancelRescheduleDialog = ({
   options: string[];
   onClose: () => void;
   onClickTryRescheduling: () => void;
-  onSubmit: (
-    // eslint-disable-next-line no-unused-vars
-    x: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
-  ) => Promise<boolean>;
+  onSubmit: ({
+    reason,
+    other_details,
+    type,
+  }: {
+    reason: string;
+    other_details: DatabaseTable['interview_session_cancel']['other_details'];
+    type: DatabaseTable['interview_session_cancel']['type'];
+  }) => Promise<boolean>;
 }) => {
   const [formData, setFormData] = useState<{
     type;
@@ -100,7 +113,9 @@ const CancelRescheduleDialog = ({
               <DatePicker
                 value={dayjsLocal(formData.dateRange.start)}
                 onChange={(newValue) => {
-                  if (dayjsLocal(newValue) < dayjsLocal(formData.dateRange.end)) {
+                  if (
+                    dayjsLocal(newValue) < dayjsLocal(formData.dateRange.end)
+                  ) {
                     setFormData((pre) => {
                       pre.dateRange.start = dayjsLocal(newValue).toISOString();
                       return pre;

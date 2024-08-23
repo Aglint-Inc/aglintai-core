@@ -22,7 +22,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
-import { ConfirmedInvitePage } from '../../../CandidateInvite';
+import { ConfirmedInvitePage } from '../../../CandidateInvite/CandidateConfirm';
 import {
   insertTaskProgress,
   useRequestAvailabilityContext,
@@ -265,13 +265,15 @@ function CandidateAvailability() {
         filter_json={null}
         meetings={meetingsAndRounds.meetings}
         rounds={meetingsAndRounds.rounds}
-        schedule={meetingsAndRounds.schedule}
         recruiter={{
           id: candidateRequestAvailability.recruiter_id,
-          name: '', // typescript is not correct fix it
-          logo: '', //it was connected to job logo which is wrong it should connect to recruiter
+          name: candidateRequestAvailability.applications.candidates.recruiter
+            .name,
+          logo: candidateRequestAvailability.applications.candidates.recruiter
+            .logo,
         }}
         timezone={initialTimezone}
+        application_id={candidateRequestAvailability.application_id}
       />
     );
   }

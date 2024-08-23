@@ -59,7 +59,6 @@ export const useConfirmSlots = () => {
           slot_start_time: bodyParams.selected_plan[0].start_time,
         },
         agent_type: 'candidate',
-        task_id: bodyParams.task_id,
       };
       if (is_agent_link) {
         await confirmSlotNoConflict(no_conf_payload);

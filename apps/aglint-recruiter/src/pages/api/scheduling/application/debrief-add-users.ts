@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: filterJson, error: errorFilterJson } = await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
+        '*,applications( id,public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator),candidates(*)),recruiter_user(first_name,last_name,user_id,email)',
       )
       .eq('id', filter_id)
       .single();
@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (errorFilterJson) throw new Error(errorFilterJson.message);
 
     const intMeetSessions = await fetchMeetingsSessions(
-      filterJson.interview_schedule.id,
+      filterJson.application_id,
     );
 
     let debriefSessionId = null;
@@ -70,39 +70,39 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (
       members_meta.hiring_manager &&
-      filterJson.interview_schedule.applications.public_jobs.hiring_manager
+      filterJson.applications.public_jobs.hiring_manager
     ) {
       allUserIds.push(
-        filterJson.interview_schedule.applications.public_jobs.hiring_manager,
+        filterJson.applications.public_jobs.hiring_manager,
       );
     }
 
     if (
       members_meta.recruiter &&
-      filterJson.interview_schedule.applications.public_jobs.recruiter
+      filterJson.applications.public_jobs.recruiter
     ) {
       allUserIds.push(
-        filterJson.interview_schedule.applications.public_jobs.recruiter,
+        filterJson.applications.public_jobs.recruiter,
       );
     }
 
     if (
       members_meta.recruiting_coordinator &&
-      filterJson.interview_schedule.applications.public_jobs
+      filterJson.applications.public_jobs
         .recruiting_coordinator
     ) {
       allUserIds.push(
-        filterJson.interview_schedule.applications.public_jobs
+        filterJson.applications.public_jobs
           .recruiting_coordinator,
       );
     }
 
     if (
       members_meta.sourcer &&
-      filterJson.interview_schedule.applications.public_jobs.sourcer
+      filterJson.applications.public_jobs.sourcer
     ) {
       allUserIds.push(
-        filterJson.interview_schedule.applications.public_jobs.sourcer,
+        filterJson.applications.public_jobs.sourcer,
       );
     }
 
@@ -146,8 +146,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (isAllPreviousMeetingsBooked) {
       const bodyParams: ApiBodyParamTaskCreate = {
-        application_id: filterJson.interview_schedule.application_id,
-        schedule_id: filterJson.interview_schedule.id,
+        application_id: filterJson.application_id,
+        schedule_id: filterJson.id,
       };
       axios.post(`${debrief_task_create_url}`, bodyParams);
     }
@@ -163,13 +163,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchMeetingsSessions = async (interview_schedule_id: string) => {
+const fetchMeetingsSessions = async (application_id: string) => {
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(
       'id,interview_schedule_id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
     )
-    .eq('interview_schedule_id', interview_schedule_id);
+    .eq('application_id', application_id);
 
   if (errSessions) throw new Error(errSessions.message);
 
