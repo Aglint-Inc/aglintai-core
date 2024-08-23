@@ -1,25 +1,21 @@
 import { CircularProgress, Stack } from '@mui/material';
 import { useEffect } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { JobDetails } from '@/devlink2/JobDetails';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import Loader from '@/src/components/Common/Loader';
-import PublishButton from '@/src/components/Common/PublishButton';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 
 import JobNotFound from '../Common/JobNotFound';
+import { SharedActions } from '../Common/SharedTopNav/actions';
+import { SharedBreadCrumbs } from '../Common/SharedTopNav/breadcrumbs';
 import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
 import Filters from './Filters';
-import { BreadCrumbs } from './layout';
 import { Table } from './Table';
 import Tabs from './Tabs';
-import { SharedActions } from '../Common/SharedTopNav/actions';
-import { SharedBreadCrumbs } from '../Common/SharedTopNav/breadcrumbs';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useJob();
@@ -43,17 +39,9 @@ const ApplicationsDashboard = () => {
 export default ApplicationsDashboard;
 
 const ApplicationsComponent = () => {
-  const {
-    job,
-    handlePublish,
-    canPublish,
-    total,
-    applicationScoringPollEnabled,
-    manageJob,
-  } = useJob();
-  const { setImportPopup, checklist } = useApplicationsStore(
-    ({ setImportPopup, checklist }) => ({ setImportPopup, checklist }),
-  );
+  const { checklist } = useApplicationsStore(({ checklist }) => ({
+    checklist,
+  }));
   return (
     <DNDProvider>
       <PageLayout

@@ -112,7 +112,7 @@ const Dashboard = () => {
     resume_match: ApplicationsParams['filters']['resume_match'][number],
   ) => {
     const params = getParams({ resume_match: [resume_match] });
-    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
+    push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
   };
 
   const banners = useBanners();
@@ -290,7 +290,7 @@ const Pipeline = () => {
   );
   const handlClick = (section: Application['status']) => {
     const params = getParams({ section });
-    push(`/jobs/${job.id}/candidate-list${params ? `?${params}` : ''}`);
+    push(`/jobs/${job.id}${params ? `?${params}` : ''}`);
   };
   return (
     <>

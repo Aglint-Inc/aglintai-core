@@ -26,12 +26,6 @@ function BreadCrumb() {
         }),
       },
       {
-        name: 'Applications',
-        route: ROUTES['/jobs/[id]/candidate-list']({
-          id: job_id,
-        }),
-      },
-      {
         name: detail?.name || '',
       },
     ]);

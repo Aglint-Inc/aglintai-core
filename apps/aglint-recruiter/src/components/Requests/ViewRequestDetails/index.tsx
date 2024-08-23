@@ -389,7 +389,7 @@ function ViewRequestDetails() {
                         onClickJob={{
                           onClick: () => {
                             window.open(
-                              `/jobs/${jobDetails.id}/candidate-list?section=interview`,
+                              `/jobs/${jobDetails.id}?section=interview`,
                               '_blank',
                             );
                           },
