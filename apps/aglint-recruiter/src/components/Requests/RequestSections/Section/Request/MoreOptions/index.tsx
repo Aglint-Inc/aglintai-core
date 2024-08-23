@@ -50,14 +50,14 @@ function MoreOptions({ request_id }: { request_id: string }) {
     {
       iconName: 'check',
       iconSize: 4,
-      textContent: 'Mark As Completed',
+      textContent: 'Mark Completed',
       color: 'neutral',
       action: 'completed' as actionType,
     },
     {
       iconName: 'block',
       iconSize: 4,
-      textContent: 'Mark As Blocked',
+      textContent: 'Mark Blocked',
       color: 'error',
       action: 'blocked' as actionType,
     },
