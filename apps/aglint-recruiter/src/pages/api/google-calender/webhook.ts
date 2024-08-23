@@ -16,10 +16,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const split = channel_id.split('-');
     const user_id = split.slice(1).join('');
-
+    const dbuser = await getUser(user_id);
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
-    const results = await google_cal.fullCalendarSync();
+    const results = await google_cal.fullCalendarSync(
+      dbuser.calendar_sync?.syncToken,
+    );
+    if (!results || results.events?.length === 0) {
+      return res.status(200).send('No events found');
+    }
+
     const meetings = await fetchMeetings(user_id);
     const calendarIds = [...new Set(meetings.map((meet) => meet.cal_event_id))];
     const calendarEvents = results.events.filter((event) =>
@@ -37,9 +43,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const interviewers = meet.meeting_interviewers
           .filter((int) => int.is_confirmed)
           .map((interviewer) => {
-            const calendarstatus = event.attendees.find(
+            const calendarstatus = event.attendees?.find(
               (attendee) => attendee.email === interviewer.email,
-            ).responseStatus as MeetingStatus;
+            )?.responseStatus as MeetingStatus;
+
+            if (!calendarstatus) return null;
+
             return {
               session_relation_id: interviewer.session_relation_id,
               status: (calendarstatus === 'accepted'
@@ -105,6 +114,17 @@ const fetchMeetings = async (user_id: string) => {
       .select('*,meeting_interviewers(*),interview_session(*)')
       .eq('status', 'confirmed')
       .eq('organizer_id', user_id)
+      .throwOnError()
+  ).data;
+};
+
+const getUser = async (user_id: string) => {
+  return (
+    await supabaseAdmin
+      .from('recruiter_user')
+      .select('calendar_sync')
+      .eq('user_id', user_id)
+      .single()
       .throwOnError()
   ).data;
 };

@@ -187,9 +187,9 @@ export class GoogleCalender {
         // address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
         address:
           process.env.NEXT_PUBLIC_HOST_NAME + '/api/google-calender/webhook',
-        params: {
-          ttl: '3600', // Channel expires in 1 hour
-        },
+        // params: {
+        //   ttl: '3600',
+        // },
       },
       calendarId: 'primary',
     });
@@ -205,10 +205,10 @@ export class GoogleCalender {
     });
     return response.data;
   }
-  public async fullCalendarSync() {
+  public async fullCalendarSync(sync_token: string | null) {
     let events: CalendarEvent[] = [];
     let pageToken = null;
-    let syncToken = null; // Initially, this will be null for the first sync
+    let syncToken = sync_token; // Initially, this will be null for the first sync
 
     do {
       const requestParams = {
