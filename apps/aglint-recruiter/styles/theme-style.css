@@ -1768,3 +1768,6 @@ body [data-embed-color="neutral"]{
 body [data-bg-color="neutral"]{
   background-color: var(--neutral-3) !important;
 }
+.rpv-core__page-layer::after {
+  box-shadow: none !important;
+}
