@@ -60,7 +60,6 @@ const useInviteActions = () => {
     const bodyParams: CandidateDirectBookingType = {
       cand_tz: timezone.tzCode,
       filter_id: router.queryParams.filter_id as string,
-      task_id: router.queryParams?.task_id as string,
       selected_plan: candSelectedSlots.map((slot) => ({
         start_time: slot[0].start_time,
         end_time: slot[slot.length - 1].end_time,
@@ -83,7 +82,7 @@ const useInviteActions = () => {
   const handleViewedOn = async () => {
     try {
       const bodyParams: ApiBodyOpenSelfScheduling = {
-        application_id: meta.data.schedule.application_id,
+        application_id: meta.data.application_id,
         filter_id: meta.data.filter_json.id,
         sesssion_name: meta.data.meetings.map(
           (ses) => ses.interview_session.name,
@@ -130,13 +129,13 @@ export const useInviteParams = (): BodyParamsCandidateInvite & {
     filter_id: string;
   }>();
 
-  const schedule_id = params?.id ?? null;
+  const application_id = params?.id ?? null;
   const filter_id = query?.filter_id ?? null;
   const user_tz = dayjs?.tz?.guess() ?? null;
   return {
-    schedule_id,
+    application_id,
     filter_id,
     user_tz,
-    enabled: !!(schedule_id && filter_id && user_tz),
+    enabled: !!(application_id && filter_id && user_tz),
   };
 };

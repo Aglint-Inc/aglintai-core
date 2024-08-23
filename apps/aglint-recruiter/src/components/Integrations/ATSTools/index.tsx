@@ -65,6 +65,7 @@ function ATSTools({ integrations, refetch }) {
               responseRec.data[0]?.greenhouse_key
             ) {
               posthog.capture('Green House Data Fetched');
+              router.push('/integrations/greenhouse');
             }
           } else {
             toast.error('API is invalid!');

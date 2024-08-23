@@ -89,11 +89,11 @@ async function getSchedule(meeting_id: string) {
             is_resolved: cancel.is_resolved,
             other_details: cancel.other_details,
             reason: cancel.reason,
-            schedule_id: cancel.schedule_id,
             session_id: cancel.session_id,
             session_relation_id: cancel.session_relation_id,
             type: cancel.type,
             request_id: cancel.request_id,
+            application_id: cancel.application_id,
           },
           interview_session_relation: cancel?.interview_session_relation,
           recruiter_user:

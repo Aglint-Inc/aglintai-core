@@ -3,10 +3,15 @@ import React from 'react';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 
+import { useMeetingList } from '../hooks';
 import { useSelfSchedulingFlowStore } from './store';
 
 function SelfScheduleSuccess() {
   const [isCopied, setIsCopied] = React.useState(false);
+  const { data } = useMeetingList();
+  const allSessions = data;
+
+  const application_id = allSessions[0]?.interview_meeting.application_id;
 
   const { resSendToCandidate } = useSelfSchedulingFlowStore((state) => ({
     resSendToCandidate: state.resSendToCandidate,
@@ -15,7 +20,7 @@ function SelfScheduleSuccess() {
   const handleCopyLink = async () => {
     setIsCopied(true);
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${resSendToCandidate.schedule_id}?filter_id=${resSendToCandidate.filter_id}&task_id=${resSendToCandidate.task_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${resSendToCandidate.filter_id}`,
     );
     await new Promise((resolve) => setTimeout(resolve, 4000));
   };

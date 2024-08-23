@@ -9,7 +9,7 @@ export async function dbUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule(id,applications(public_jobs(job_title,recruiter!public_jobs_recruiter_id_fkey(id,name,logo)),candidates(first_name,last_name,email)))',
+        '*,applications(public_jobs(job_title,recruiter!public_jobs_recruiter_id_fkey(id,name,logo)),candidates(first_name,last_name,email))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -28,23 +28,21 @@ export async function dbUtil(
   const meeting_organizer = meetingDetails.interview_meeting.recruiter_user;
 
   const {
-    interview_schedule: {
-      applications: {
-        candidates: { email: cand_email, first_name, last_name },
-        public_jobs: {
-          job_title,
-          recruiter: { name: companyName, id: recruiter_id, logo },
-        },
+    applications: {
+      candidates: { email: cand_email, first_name, last_name },
+      public_jobs: {
+        job_title,
+        recruiter: { name: companyName, id: recruiter_id, logo },
       },
     },
   } = filterJson;
 
   const task_id = req_body.task_id;
   let scheduleLink = '';
-  if (filterJson.interview_schedule.id && req_body.filter_id) {
+  if (filterJson.application_id && req_body.filter_id) {
     scheduleLink = task_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
-      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {

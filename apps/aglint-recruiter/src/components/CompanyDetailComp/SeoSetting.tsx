@@ -47,6 +47,12 @@ export default function SeoSetting({ tab }) {
           description='AI for People Products'
         />
       )}
+      {tab === 'schedulingReasons' && (
+        <Seo
+          title='Reasons - Company settings | Aglint AI'
+          description='AI for People Products'
+        />
+      )}
     </>
   );
 }
