@@ -84,8 +84,18 @@ function MoreOptions({ request_id }: { request_id: string }) {
       }}
     >
       <CustomTooltip
+        slotProps={{
+          popper: {
+            sx: {
+              '& .MuiTooltip-tooltip': {
+                margin: '0px !important',
+                marginTop: '10px !important',
+              },
+            },
+          },
+        }}
         onMouseEnter={() => setTooltipOpen(true)}
-        placement={'left-start'}
+        placement={'bottom-start'}
         open={tooltipOpen}
         onClose={() => setTooltipOpen(false)}
         title={
