@@ -40,7 +40,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     setBreadcrum([
       {
-        name: 'Interview Metrics',
+        name: tab,
         route: ROUTES['/scheduling']() + `?tab=dashboard`,
       },
     ]);
