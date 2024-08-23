@@ -10,12 +10,6 @@ type WorkflowCopyType = {
   };
 };
 export const workflowCopy: WorkflowCopyType = {
-  INIT_SCHEDULE: {
-    error: 'Schedule the candidate',
-    future: 'Schedule the candidate',
-    past: 'Schedule the candidate',
-    present: 'Schedule the candidate',
-  },
   CANCEL_AVAIL_REQ: {
     past: 'The availability request was cancelled.',
     present: 'The availability request is being cancelled.',
@@ -118,5 +112,12 @@ export const workflowCopy: WorkflowCopyType = {
     present: 'Replacing an alternative interviewer.',
     future: 'An alternative interviewer will be replaced.',
     error: 'There was an error replacing the alternative interviewer.',
+  },
+  SEND_INTERVIEWER_ATTENDANCE_RSVP: {
+    past: "The Slack RSVP for the interviewer's attendance was sent.",
+    present: "Sending Slack RSVP for the interviewer's attendance.",
+    future: "The Slack RSVP for the interviewer's attendance will be sent.",
+    error:
+      "There was an error sending the Slack RSVP for the interviewer's attendance.",
   },
 };

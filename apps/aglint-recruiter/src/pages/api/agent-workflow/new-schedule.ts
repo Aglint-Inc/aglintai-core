@@ -25,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
     req.body.request_id,
     req.body.event_run_id,
+    req.body.target_api,
   );
 
   try {

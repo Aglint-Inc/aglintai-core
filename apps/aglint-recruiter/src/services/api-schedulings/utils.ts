@@ -1,4 +1,8 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +15,7 @@ export type ProgressLoggerType = ReturnType<typeof createRequestProgressLogger>;
 export const createRequestProgressLogger = (
   request_id: string,
   event_run_id: number,
+  target_api: DatabaseEnums['email_slack_types'],
 ) => {
   const logger = async (
     payload: Pick<
@@ -31,6 +36,7 @@ export const createRequestProgressLogger = (
           meta: {
             event_run_id,
           },
+          target_api,
         })
         .select(),
     );

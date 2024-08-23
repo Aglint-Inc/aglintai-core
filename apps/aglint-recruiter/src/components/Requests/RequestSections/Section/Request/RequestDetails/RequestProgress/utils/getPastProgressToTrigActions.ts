@@ -1,5 +1,7 @@
+/* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
 import { progressActionMap } from './ProgressActionMap';
 import { RequestLogsActionType } from './types';
 

@@ -1,19 +1,13 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { traverseProgress } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/traverseProgress';
 import { useRequest } from '@/src/context/RequestContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
-import {
-  createCancelWorkflowGraph,
-  createInterviewerDeclineRequest,
-  createReqAvailWorkflowGraph,
-  createRescheduleWorkflowGraph,
-} from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/graphUtils';
 
-import { traverseProgress } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/traverseProgress';
 import EventRow from './EventRow';
 type TriggerActionsType =
   RequestType['applications']['public_jobs']['workflow_job_relation'][0]['workflow'][];
@@ -26,14 +20,17 @@ function RequestProgress({
 }) {
   const { request_progress, request_workflow } = useRequest();
   const orderedEvents = useMemo(() => {
-    let event_actions: TriggerActionsType = [];
+    let eventActions: TriggerActionsType = [];
     if (request_workflow.data?.length > 0) {
-      event_actions = request_workflow.data.map((r) => r.workflow);
+      eventActions = request_workflow.data.map((r) => r.workflow);
     } else {
-      event_actions = [...job_workflow];
+      eventActions = [...job_workflow];
+    }
+    if (eventActions.length === 0) {
+      return [];
     }
     return traverseProgress({
-      event_actions,
+      eventActions,
       request_progress: request_progress.data ?? [],
       request_type,
     });
@@ -70,18 +67,3 @@ export function RequestProgressSkeleton() {
     </Stack>
   );
 }
-
-const createWorkflowGraph = (
-  request_type: DatabaseTable['request']['type'],
-) => {
-  if (request_type === 'reschedule_request') {
-    return createRescheduleWorkflowGraph();
-  }
-  if (request_type === 'schedule_request') {
-    return createReqAvailWorkflowGraph();
-  } else if (request_type === 'cancel_schedule_request') {
-    return createCancelWorkflowGraph();
-  } else {
-    return createInterviewerDeclineRequest();
-  }
-};
