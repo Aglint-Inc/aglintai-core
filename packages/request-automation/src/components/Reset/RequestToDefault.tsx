@@ -20,8 +20,11 @@ const RequestToDefault = ({
     setConsoleMessage([]);
 
     try {
-      // Fetch all records
-      const { data, error } = await supabase.from("request").select("*");
+      const { data, error } = await supabase
+        .from("request")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100);
 
       if (error) {
         throw error;

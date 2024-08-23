@@ -50,6 +50,7 @@ export const PATHS = [
 '/api/automation/update_request',
 '/api/automation/update_user_to_active',
 '/api/automation/update_users_name',
+'/api/automation/workflow_connect_to_jobs',
 '/api/candidate-assessment/assessment-answers',
 '/api/candidate-assessment/assessment-details',
 '/api/candidate-assessment/assessment-result-create',
