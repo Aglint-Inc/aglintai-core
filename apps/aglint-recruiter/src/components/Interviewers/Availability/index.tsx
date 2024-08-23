@@ -110,6 +110,8 @@ const AvailabilityView = ({
             pixelPropertiesAndEmptyEventsAdded,
           );
 
+          console.log(interviewerEvent);
+
           return (
             <TimeLineList
               key={index}
@@ -170,16 +172,23 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
                   <Box
                     key={hour}
                     sx={{
-                      width: `calc( ${event.end.endingPx} - ${event.start.startingPx} )`,
+                      width:
+                        event.type === 'sleep_event_1'
+                          ? `calc( 192px - ${event.start.startingPx} )`
+                          : `calc( ${event.end.endingPx} - ${event.start.startingPx} )`,
                       height: '100%',
                       backgroundColor:
                         event.type === 'cal_event'
                           ? 'orange'
-                          : event.type === 'full_day_no_event'
+                          : event.type === 'full_day_event'
                             ? 'var(--success-9)'
                             : event.type === 'gap_event'
                               ? 'yellow'
-                              : '',
+                              : event.type === 'sleep_event'
+                                ? 'blue'
+                                : event.type === 'sleep_event_1'
+                                  ? 'lightblue'
+                                  : 'blue',
                     }}
                   />
                 </>
