@@ -1,4 +1,4 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Dialog,
@@ -34,11 +34,8 @@ const CancelRescheduleDialog = ({
   options: string[];
   onClose: () => void;
   onClickTryRescheduling: () => void;
-  onSubmit: ({
-    reason,
-    other_details,
-    type,
-  }: {
+  // eslint-disable-next-line no-unused-vars
+  onSubmit: (x: {
     reason: string;
     other_details: DatabaseTable['interview_session_cancel']['other_details'];
     type: DatabaseTable['interview_session_cancel']['type'];
