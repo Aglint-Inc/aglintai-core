@@ -11,6 +11,7 @@
 .slot-workflow-cards {
   display: flex;
   overflow: auto;
+  padding-bottom: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 16px;
@@ -19,7 +20,14 @@
 }
 
 .slot-workflowpreview {
-  padding: 20px;
+  position: relative;
+
+  overflow: auto;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  height: calc(100vh - 48px);
 }
 
 #w-node-_463e6d3e-a507-7c54-d345-80e0014fdf69-014fdf67 {

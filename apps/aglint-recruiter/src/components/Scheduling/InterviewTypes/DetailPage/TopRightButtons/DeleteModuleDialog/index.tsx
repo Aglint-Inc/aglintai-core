@@ -138,7 +138,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
                   color={'neutral'}
                   content={`By clicking delete the Interview Type will be permanently deleted.`}
                 />
-                <Stack direction={'row'} spacing={'4px'}>
+                <Stack direction={'row'} spacing={'3px'} flexWrap={'wrap'}>
                   <Text
                     size={2}
                     color={'neutral'}

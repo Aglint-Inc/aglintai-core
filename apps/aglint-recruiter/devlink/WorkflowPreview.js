@@ -1,19 +1,19 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { GlobalIcon } from "./GlobalIcon";
-import { Text } from "./Text";
 import { GlobalBadge } from "./GlobalBadge";
+import { Text } from "./Text";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./WorkflowPreview.module.css";
 
 export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
   return (
-    <_Component className={_utils.cx(_styles, "workflow_preview")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "h-flex-8")} tag="div">
-        <GlobalIcon size="6" iconName="bolt" weight="regular" />
-        <Text size="4" content="Workflow Preview" />
-      </_Builtin.Block>
+    <_Component
+      className={_utils.cx(_styles, "workflow_preview")}
+      tag="div"
+      data-scrollbar="none"
+    >
       <_Builtin.TabsWrapper
         className={_utils.cx(_styles, "tabs")}
         current="Tab 1"
@@ -41,17 +41,17 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
           </_Builtin.TabsLink>
           <_Builtin.TabsLink
             className={_utils.cx(_styles, "tab-link")}
-            data-w-tab="Tab 3"
-            block="inline"
-          >
-            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
-          </_Builtin.TabsLink>
-          <_Builtin.TabsLink
-            className={_utils.cx(_styles, "tab-link")}
             data-w-tab="Tab 4"
             block="inline"
           >
             <_Builtin.Block tag="div">{"Decline"}</_Builtin.Block>
+          </_Builtin.TabsLink>
+          <_Builtin.TabsLink
+            className={_utils.cx(_styles, "tab-link")}
+            data-w-tab="Tab 3"
+            block="inline"
+          >
+            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
           </_Builtin.TabsLink>
         </_Builtin.TabsMenu>
         <_Builtin.TabsContent
@@ -125,7 +125,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"Send request availability link to the candidate"}
+                      {"Send request availability link to the candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -162,7 +162,11 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       tag="div"
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "preview-card", "cm-1")}
+                        className={_utils.cx(
+                          _styles,
+                          "preview-card",
+                          "cm-1-copy"
+                        )}
                         tag="div"
                       >
                         <_Builtin.HtmlEmbed
@@ -177,8 +181,9 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                           tag="div"
                         >
                           {
-                            "Send followup email to the candidate on the availability link"
+                            "Send a follow-up email to the candidate after 24 hours if availability is not received."
                           }
+                          <br />
                         </_Builtin.Block>
                       </_Builtin.Block>
                     </_Builtin.Block>
@@ -213,7 +218,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Candidate Submitted Availability"
+                    textBadge="Candidate availability received"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -247,7 +252,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"Send self scheduling link to the candidate"}
+                      {"Send self scheduling link to the candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -299,7 +304,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                           tag="div"
                         >
                           {
-                            "Send followup email to the candidate on the self scheduling link"
+                            "Send a follow-up email to the candidate after 24 hours if not scheduled."
                           }
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -335,7 +340,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Candidate Booked meeting"
+                    textBadge="Candidate booked meeting"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -373,7 +378,25 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"interview details send to the interviewers"}
+                      {"RSVP sent to interviewers."}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "preview-card", "cm-2")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "embed_flex")}
+                      value="%3Csvg%20width%3D%2245%22%20height%3D%2244%22%20viewBox%3D%220%200%2045%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%204C0.5%201.79086%202.29086%200%204.5%200H40.5C42.7091%200%2044.5%201.79086%2044.5%204V40C44.5%2042.2091%2042.7091%2044%2040.5%2044H4.5C2.29086%2044%200.5%2042.2091%200.5%2040V4Z%22%20fill%3D%22%23EDF2FE%22%2F%3E%0A%3Cmask%20id%3D%22mask0_6926_132078%22%20style%3D%22mask-type%3Aalpha%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%224%22%20y%3D%224%22%20width%3D%2237%22%20height%3D%2236%22%3E%0A%3Crect%20x%3D%224.5%22%20y%3D%224%22%20width%3D%2236%22%20height%3D%2236%22%20fill%3D%22%23D9D9D9%22%2F%3E%0A%3C%2Fmask%3E%0A%3Cg%20mask%3D%22url(%23mask0_6926_132078)%22%3E%0A%3Cpath%20d%3D%22M34.1997%2013.8997H10.7997V29.6381C10.7997%2029.7728%2010.843%2029.8835%2010.9295%2029.97C11.016%2030.0565%2011.1266%2030.0997%2011.2614%2030.0997H24.5997C24.8765%2030.0997%2025.1082%2030.1922%2025.295%2030.3772C25.4815%2030.5625%2025.5747%2030.7923%2025.5747%2031.0668C25.5747%2031.3413%2025.4815%2031.5737%2025.295%2031.764C25.1082%2031.9545%2024.8765%2032.0497%2024.5997%2032.0497H11.2614C10.6036%2032.0497%2010.0372%2031.8122%209.56223%2031.3372C9.08723%2030.8622%208.84973%2030.2958%208.84973%2029.6381V14.3613C8.84973%2013.7036%209.08723%2013.1372%209.56223%2012.6622C10.0372%2012.1872%2010.6036%2011.9497%2011.2614%2011.9497H33.7381C34.4134%2011.9497%2034.9841%2012.1872%2035.4504%2012.6622C35.9166%2013.1372%2036.1497%2013.7036%2036.1497%2014.3613V23.1997C36.1497%2023.4765%2036.0571%2023.7082%2035.8719%2023.895C35.6869%2024.0815%2035.4571%2024.1747%2035.1826%2024.1747C34.9081%2024.1747%2034.6757%2024.0815%2034.4855%2023.895C34.295%2023.7082%2034.1997%2023.4765%2034.1997%2023.1997V13.8997ZM10.7997%2013.8997V30.0997V23.7768V23.8717V13.8997ZM22.4997%2020.6122L34.1997%2013.8997V16.2506L23.1402%2022.6083C22.9407%2022.7236%2022.7351%2022.7812%2022.5234%2022.7812C22.3114%2022.7812%2022.1025%2022.7236%2021.8967%2022.6083L10.7997%2016.3661V13.8997L22.4997%2020.6122ZM34.1307%2032.0497H28.9587C28.6827%2032.0497%2028.4516%2031.9571%2028.2654%2031.7718C28.0794%2031.5868%2027.9864%2031.3571%2027.9864%2031.0826C27.9864%2030.8081%2028.0794%2030.5757%2028.2654%2030.3855C28.4516%2030.195%2028.6827%2030.0997%2028.9587%2030.0997H34.145L32.3011%2028.2558C32.1091%2028.0638%2032.0084%2027.8347%2031.9989%2027.5685C31.9891%2027.3022%2032.0881%2027.064%2032.2959%2026.8537C32.4939%2026.6582%2032.7261%2026.5652%2032.9926%2026.5747C33.2589%2026.5842%2033.4887%2026.6861%2033.6822%2026.8803L37.0257%2030.2313C37.1512%2030.3573%2037.2467%2030.4897%2037.3122%2030.6285C37.3775%2030.7675%2037.4101%2030.9177%2037.4101%2031.0792C37.4101%2031.231%2037.3775%2031.3787%2037.3122%2031.5225C37.2467%2031.6662%2037.1564%2031.7958%2037.0411%2031.9113L33.6747%2035.2777C33.467%2035.4852%2033.241%2035.578%2032.9967%2035.556C32.7525%2035.5337%2032.5314%2035.4236%2032.3334%2035.2256C32.1256%2035.0178%2032.0217%2034.7905%2032.0217%2034.5435C32.0217%2034.2962%2032.1256%2034.0688%2032.3334%2033.8613L34.1307%2032.0497Z%22%20fill%3D%22%23002BB7%22%20fill-opacity%3D%220.772549%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-c3b54455-90db-650a-f193-77f1acd26b2f-d9fadd23"
+                      )}
+                      tag="div"
+                    >
+                      {"Confirmation email sent to candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -413,7 +436,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Reschedule request recievd from candidate"
+                    textBadge="Reschedule request recieved from candidate"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -447,7 +470,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"Send request availability link to the candidate"}
+                      {"Send request availability link to the candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -484,7 +507,11 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       tag="div"
                     >
                       <_Builtin.Block
-                        className={_utils.cx(_styles, "preview-card", "cm-1")}
+                        className={_utils.cx(
+                          _styles,
+                          "preview-card",
+                          "cm-1-copy"
+                        )}
                         tag="div"
                       >
                         <_Builtin.HtmlEmbed
@@ -499,7 +526,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                           tag="div"
                         >
                           {
-                            "Send followup email to the candidate on the availability link"
+                            "Send a follow-up email to the candidate after 24 hours if availability is not received."
                           }
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -535,7 +562,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Candidate Submitted New Availability"
+                    textBadge="Candidate submitted new availability"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -569,7 +596,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"Send self scheduling link to the candidate"}
+                      {"Send self scheduling link to the candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -621,7 +648,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                           tag="div"
                         >
                           {
-                            "Send followup email to the candidate on the self scheduling link"
+                            "Send a follow-up email to the candidate after 24 hours if not scheduled."
                           }
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -657,7 +684,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Candidate Booked new schedule"
+                    textBadge="Candidate booked new schedule"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -698,86 +725,8 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       {"Updated schedule details send to the interviewers"}
                     </_Builtin.Block>
                   </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.TabsPane>
-          <_Builtin.TabsPane
-            className={_utils.cx(_styles, "tab-pane")}
-            tag="div"
-            data-w-tab="Tab 3"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "workflow-preview-wrapper", "auot")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "preview-block")}
-                tag="div"
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex")}
-                  id={_utils.cx(
-                    _styles,
-                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda5-d9fadd23"
-                  )}
-                  value="%3Csvg%20width%3D%2211%22%20height%3D%2210%22%20viewBox%3D%220%200%2011%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Ccircle%20cx%3D%225.5%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23E54D2E%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "trigger-flow")}
-                  id={_utils.cx(
-                    _styles,
-                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda6-d9fadd23"
-                  )}
-                  tag="div"
-                >
-                  <GlobalBadge
-                    variant="surface"
-                    size="3"
-                    color="error"
-                    textBadge="Cancel request recievd from candidate"
-                  />
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "vertical-devider",
-                    "opacity-o"
-                  )}
-                  id={_utils.cx(
-                    _styles,
-                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda9-d9fadd23"
-                  )}
-                  tag="div"
-                />
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "workflow-cards")}
-                  id={_utils.cx(
-                    _styles,
-                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddaa-d9fadd23"
-                  )}
-                  tag="div"
-                >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "preview-card", "cm-1")}
-                    tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "embed_flex")}
-                      value="%3Csvg%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204C0%201.79086%201.79086%200%204%200H40C42.2091%200%2044%201.79086%2044%204V40C44%2042.2091%2042.2091%2044%2040%2044H4C1.79086%2044%200%2042.2091%200%2040V4Z%22%20fill%3D%22%23FFEFD6%22%2F%3E%0A%3Cpath%20d%3D%22M27.6952%2022.0954C25.1493%2021.4185%2023.8735%2021.0863%2022.9933%2020.1524C22.1132%2019.2123%2021.8002%2017.8648%2021.1622%2015.1635L20.223%2011.1836L19.2838%2015.1635C18.6459%2017.8648%2018.3328%2019.2186%2017.4527%2020.1524C16.5667%2021.0863%2015.2967%2021.4185%2012.7509%2022.0954L9%2023.0919L12.7509%2024.0884C15.2967%2024.7653%2016.5726%2025.0975%2017.4527%2026.0314C18.3328%2026.9715%2018.6459%2028.319%2019.2838%2031.0203L20.223%2035.0002L21.1622%2031.0203C21.8002%2028.319%2022.1132%2026.9652%2022.9933%2026.0314C23.8794%2025.0975%2025.1493%2024.7653%2027.6952%2024.0884L31.4461%2023.0919L27.6952%2022.0954Z%22%20fill%3D%22%23FF6224%22%2F%3E%0A%3Cpath%20d%3D%22M33.4997%2013.3647C32.4813%2013.094%2031.971%2012.9611%2031.6189%2012.5875C31.2669%2012.2115%2031.1416%2011.6725%2030.8865%2010.592L30.5108%209L30.1351%2010.592C29.8799%2011.6725%2029.7547%2012.214%2029.4027%2012.5875C29.0482%2012.9611%2028.5403%2013.094%2027.5219%2013.3647L26.0216%2013.7633L27.5219%2014.1619C28.5403%2014.4327%2029.0506%2014.5656%2029.4027%2014.9391C29.7547%2015.3152%2029.8799%2015.8542%2030.1351%2016.9347L30.5108%2018.5266L30.8865%2016.9347C31.1416%2015.8542%2031.2669%2015.3127%2031.6189%2014.9391C31.9733%2014.5656%2032.4813%2014.4327%2033.4997%2014.1619L35%2013.7633L33.4997%2013.3647Z%22%20fill%3D%22%23FF6224%22%2F%3E%0A%3C%2Fsvg%3E"
-                    />
-                    <_Builtin.Block
-                      id={_utils.cx(
-                        _styles,
-                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddad-d9fadd23"
-                      )}
-                      tag="div"
-                    >
-                      {"Cancels the schedule and revokes all associated links."}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    className={_utils.cx(_styles, "preview-card", "cm-2")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -787,29 +736,11 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     <_Builtin.Block
                       id={_utils.cx(
                         _styles,
-                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddb1-d9fadd23"
+                        "w-node-e39f1162-ac78-1ed5-d4a0-f414b2fce371-d9fadd23"
                       )}
                       tag="div"
                     >
-                      {"Send cancellatioin confirm email to the candidate"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "preview-card", "cm-1")}
-                    tag="div"
-                  >
-                    <_Builtin.HtmlEmbed
-                      className={_utils.cx(_styles, "embed_flex")}
-                      value="%3Csvg%20width%3D%2245%22%20height%3D%2244%22%20viewBox%3D%220%200%2045%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%204C0.5%201.79086%202.29086%200%204.5%200H40.5C42.7091%200%2044.5%201.79086%2044.5%204V40C44.5%2042.2091%2042.7091%2044%2040.5%2044H4.5C2.29086%2044%200.5%2042.2091%200.5%2040V4Z%22%20fill%3D%22%23FEE9F5%22%2F%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_6926_132162)%22%3E%0A%3Cpath%20d%3D%22M14.9612%2025.4299C14.9612%2026.933%2013.7308%2028.1634%2012.2277%2028.1634C10.7246%2028.1634%209.5%2026.933%209.5%2025.4299C9.5%2023.9268%2010.7304%2022.6964%2012.2335%2022.6964H14.967V25.4299H14.9612ZM16.3366%2025.4299C16.3366%2023.9268%2017.567%2022.6964%2019.0701%2022.6964C20.5732%2022.6964%2021.8036%2023.9268%2021.8036%2025.4299V32.2665C21.8036%2033.7696%2020.5732%2035%2019.0701%2035C17.567%2035%2016.3366%2033.7696%2016.3366%2032.2665V25.4299ZM19.0701%2014.4612C17.567%2014.4612%2016.3366%2013.2308%2016.3366%2011.7277C16.3366%2010.2246%2017.567%209%2019.0701%209C20.5732%209%2021.8036%2010.2304%2021.8036%2011.7335V14.467H19.0701V14.4612ZM19.0701%2015.8366C20.5732%2015.8366%2021.8036%2017.067%2021.8036%2018.5701C21.8036%2020.0732%2020.5732%2021.3036%2019.0701%2021.3036H12.2335C10.7304%2021.3036%209.5%2020.0732%209.5%2018.5701C9.5%2017.067%2010.7304%2015.8366%2012.2335%2015.8366H19.0701ZM30.0388%2018.5701C30.0388%2017.067%2031.2692%2015.8366%2032.7723%2015.8366C34.2754%2015.8366%2035.5058%2017.067%2035.5058%2018.5701C35.5058%2020.0732%2034.2754%2021.3036%2032.7723%2021.3036H30.0388V18.5701ZM28.6634%2018.5701C28.6634%2020.0732%2027.433%2021.3036%2025.9299%2021.3036C24.4268%2021.3036%2023.1964%2020.0732%2023.1964%2018.5701V11.7335C23.1964%2010.2304%2024.4268%209%2025.9299%209C27.433%209%2028.6634%2010.2304%2028.6634%2011.7335V18.5701ZM25.9299%2029.5388C27.433%2029.5388%2028.6634%2030.7692%2028.6634%2032.2723C28.6634%2033.7754%2027.433%2035.0058%2025.9299%2035.0058C24.4268%2035.0058%2023.1964%2033.7754%2023.1964%2032.2723V29.5388H25.9299ZM25.9299%2028.1634C24.4268%2028.1634%2023.1964%2026.933%2023.1964%2025.4299C23.1964%2023.9268%2024.4268%2022.6964%2025.9299%2022.6964H32.7665C34.2696%2022.6964%2035.5%2023.9268%2035.5%2025.4299C35.5%2026.933%2034.2696%2028.1634%2032.7665%2028.1634H25.9299Z%22%20fill%3D%22%23B60074%22%20fill-opacity%3D%220.839216%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_6926_132162%22%3E%0A%3Crect%20width%3D%2226%22%20height%3D%2229.7143%22%20fill%3D%22white%22%20transform%3D%22translate(9.5%207.14307)%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
-                    />
-                    <_Builtin.Block
-                      id={_utils.cx(
-                        _styles,
-                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddb5-d9fadd23"
-                      )}
-                      tag="div"
-                    >
-                      {"Updated cancellation to corresponding interviewers."}
+                      {"Confirmation email sent to candidate."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -849,7 +780,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="error"
-                    textBadge="Interviewer declined interview"
+                    textBadge="The interviewer declines the interview"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -884,7 +815,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       tag="div"
                     >
                       {
-                        "Finds the next available interviewer and assigns the interview."
+                        "Aglint AI finds the next available interviewer and assigns them"
                       }
                     </_Builtin.Block>
                   </_Builtin.Block>
@@ -945,7 +876,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                             )}
                             tag="div"
                           >
-                            {"Iniatiating reschedule flow"}
+                            {"Initiate a reschedule request."}
                           </_Builtin.Block>
                         </_Builtin.Block>
                       </_Builtin.Block>
@@ -981,7 +912,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                     variant="surface"
                     size="3"
                     color="success"
-                    textBadge="Interviewer Reassigned"
+                    textBadge="The interviewer is swapped"
                   />
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -1005,7 +936,7 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    className={_utils.cx(_styles, "preview-card", "cm-1-copy")}
                     tag="div"
                   >
                     <_Builtin.HtmlEmbed
@@ -1019,7 +950,141 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
                       )}
                       tag="div"
                     >
-                      {"Updates interview details to the interviewer"}
+                      {"Update the interview details for the new interviewer."}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "embed_flex")}
+                      value="%3Csvg%20width%3D%2245%22%20height%3D%2244%22%20viewBox%3D%220%200%2045%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%204C0.5%201.79086%202.29086%200%204.5%200H40.5C42.7091%200%2044.5%201.79086%2044.5%204V40C44.5%2042.2091%2042.7091%2044%2040.5%2044H4.5C2.29086%2044%200.5%2042.2091%200.5%2040V4Z%22%20fill%3D%22%23EDF2FE%22%2F%3E%0A%3Cmask%20id%3D%22mask0_6926_132078%22%20style%3D%22mask-type%3Aalpha%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%224%22%20y%3D%224%22%20width%3D%2237%22%20height%3D%2236%22%3E%0A%3Crect%20x%3D%224.5%22%20y%3D%224%22%20width%3D%2236%22%20height%3D%2236%22%20fill%3D%22%23D9D9D9%22%2F%3E%0A%3C%2Fmask%3E%0A%3Cg%20mask%3D%22url(%23mask0_6926_132078)%22%3E%0A%3Cpath%20d%3D%22M34.1997%2013.8997H10.7997V29.6381C10.7997%2029.7728%2010.843%2029.8835%2010.9295%2029.97C11.016%2030.0565%2011.1266%2030.0997%2011.2614%2030.0997H24.5997C24.8765%2030.0997%2025.1082%2030.1922%2025.295%2030.3772C25.4815%2030.5625%2025.5747%2030.7923%2025.5747%2031.0668C25.5747%2031.3413%2025.4815%2031.5737%2025.295%2031.764C25.1082%2031.9545%2024.8765%2032.0497%2024.5997%2032.0497H11.2614C10.6036%2032.0497%2010.0372%2031.8122%209.56223%2031.3372C9.08723%2030.8622%208.84973%2030.2958%208.84973%2029.6381V14.3613C8.84973%2013.7036%209.08723%2013.1372%209.56223%2012.6622C10.0372%2012.1872%2010.6036%2011.9497%2011.2614%2011.9497H33.7381C34.4134%2011.9497%2034.9841%2012.1872%2035.4504%2012.6622C35.9166%2013.1372%2036.1497%2013.7036%2036.1497%2014.3613V23.1997C36.1497%2023.4765%2036.0571%2023.7082%2035.8719%2023.895C35.6869%2024.0815%2035.4571%2024.1747%2035.1826%2024.1747C34.9081%2024.1747%2034.6757%2024.0815%2034.4855%2023.895C34.295%2023.7082%2034.1997%2023.4765%2034.1997%2023.1997V13.8997ZM10.7997%2013.8997V30.0997V23.7768V23.8717V13.8997ZM22.4997%2020.6122L34.1997%2013.8997V16.2506L23.1402%2022.6083C22.9407%2022.7236%2022.7351%2022.7812%2022.5234%2022.7812C22.3114%2022.7812%2022.1025%2022.7236%2021.8967%2022.6083L10.7997%2016.3661V13.8997L22.4997%2020.6122ZM34.1307%2032.0497H28.9587C28.6827%2032.0497%2028.4516%2031.9571%2028.2654%2031.7718C28.0794%2031.5868%2027.9864%2031.3571%2027.9864%2031.0826C27.9864%2030.8081%2028.0794%2030.5757%2028.2654%2030.3855C28.4516%2030.195%2028.6827%2030.0997%2028.9587%2030.0997H34.145L32.3011%2028.2558C32.1091%2028.0638%2032.0084%2027.8347%2031.9989%2027.5685C31.9891%2027.3022%2032.0881%2027.064%2032.2959%2026.8537C32.4939%2026.6582%2032.7261%2026.5652%2032.9926%2026.5747C33.2589%2026.5842%2033.4887%2026.6861%2033.6822%2026.8803L37.0257%2030.2313C37.1512%2030.3573%2037.2467%2030.4897%2037.3122%2030.6285C37.3775%2030.7675%2037.4101%2030.9177%2037.4101%2031.0792C37.4101%2031.231%2037.3775%2031.3787%2037.3122%2031.5225C37.2467%2031.6662%2037.1564%2031.7958%2037.0411%2031.9113L33.6747%2035.2777C33.467%2035.4852%2033.241%2035.578%2032.9967%2035.556C32.7525%2035.5337%2032.5314%2035.4236%2032.3334%2035.2256C32.1256%2035.0178%2032.0217%2034.7905%2032.0217%2034.5435C32.0217%2034.2962%2032.1256%2034.0688%2032.3334%2033.8613L34.1307%2032.0497Z%22%20fill%3D%22%23002BB7%22%20fill-opacity%3D%220.772549%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-_0ed0c21e-083e-d78f-039c-0987d79f809c-d9fadd23"
+                      )}
+                      tag="div"
+                    >
+                      {"Send a calendar invite to the interviewer."}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.TabsPane>
+          <_Builtin.TabsPane
+            className={_utils.cx(_styles, "tab-pane")}
+            tag="div"
+            data-w-tab="Tab 3"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "workflow-preview-wrapper", "auot")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "preview-block")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex")}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda5-d9fadd23"
+                  )}
+                  value="%3Csvg%20width%3D%2211%22%20height%3D%2210%22%20viewBox%3D%220%200%2011%2010%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Ccircle%20cx%3D%225.5%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23E54D2E%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "trigger-flow")}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda6-d9fadd23"
+                  )}
+                  tag="div"
+                >
+                  <GlobalBadge
+                    variant="surface"
+                    size="3"
+                    color="error"
+                    textBadge="Cancel request received from the candidate"
+                  />
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "vertical-devider",
+                    "opacity-o"
+                  )}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9fadda9-d9fadd23"
+                  )}
+                  tag="div"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "workflow-cards")}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddaa-d9fadd23"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "embed_flex")}
+                      value="%3Csvg%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2044%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%204C0%201.79086%201.79086%200%204%200H40C42.2091%200%2044%201.79086%2044%204V40C44%2042.2091%2042.2091%2044%2040%2044H4C1.79086%2044%200%2042.2091%200%2040V4Z%22%20fill%3D%22%23FFEFD6%22%2F%3E%0A%3Cpath%20d%3D%22M27.6952%2022.0954C25.1493%2021.4185%2023.8735%2021.0863%2022.9933%2020.1524C22.1132%2019.2123%2021.8002%2017.8648%2021.1622%2015.1635L20.223%2011.1836L19.2838%2015.1635C18.6459%2017.8648%2018.3328%2019.2186%2017.4527%2020.1524C16.5667%2021.0863%2015.2967%2021.4185%2012.7509%2022.0954L9%2023.0919L12.7509%2024.0884C15.2967%2024.7653%2016.5726%2025.0975%2017.4527%2026.0314C18.3328%2026.9715%2018.6459%2028.319%2019.2838%2031.0203L20.223%2035.0002L21.1622%2031.0203C21.8002%2028.319%2022.1132%2026.9652%2022.9933%2026.0314C23.8794%2025.0975%2025.1493%2024.7653%2027.6952%2024.0884L31.4461%2023.0919L27.6952%2022.0954Z%22%20fill%3D%22%23FF6224%22%2F%3E%0A%3Cpath%20d%3D%22M33.4997%2013.3647C32.4813%2013.094%2031.971%2012.9611%2031.6189%2012.5875C31.2669%2012.2115%2031.1416%2011.6725%2030.8865%2010.592L30.5108%209L30.1351%2010.592C29.8799%2011.6725%2029.7547%2012.214%2029.4027%2012.5875C29.0482%2012.9611%2028.5403%2013.094%2027.5219%2013.3647L26.0216%2013.7633L27.5219%2014.1619C28.5403%2014.4327%2029.0506%2014.5656%2029.4027%2014.9391C29.7547%2015.3152%2029.8799%2015.8542%2030.1351%2016.9347L30.5108%2018.5266L30.8865%2016.9347C31.1416%2015.8542%2031.2669%2015.3127%2031.6189%2014.9391C31.9733%2014.5656%2032.4813%2014.4327%2033.4997%2014.1619L35%2013.7633L33.4997%2013.3647Z%22%20fill%3D%22%23FF6224%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddad-d9fadd23"
+                      )}
+                      tag="div"
+                    >
+                      {"Cancel the schedule and remove calendar invites."}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "embed_flex")}
+                      value="%3Csvg%20width%3D%2245%22%20height%3D%2244%22%20viewBox%3D%220%200%2045%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%204C0.5%201.79086%202.29086%200%204.5%200H40.5C42.7091%200%2044.5%201.79086%2044.5%204V40C44.5%2042.2091%2042.7091%2044%2040.5%2044H4.5C2.29086%2044%200.5%2042.2091%200.5%2040V4Z%22%20fill%3D%22%23EDF2FE%22%2F%3E%0A%3Cmask%20id%3D%22mask0_6926_132078%22%20style%3D%22mask-type%3Aalpha%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%224%22%20y%3D%224%22%20width%3D%2237%22%20height%3D%2236%22%3E%0A%3Crect%20x%3D%224.5%22%20y%3D%224%22%20width%3D%2236%22%20height%3D%2236%22%20fill%3D%22%23D9D9D9%22%2F%3E%0A%3C%2Fmask%3E%0A%3Cg%20mask%3D%22url(%23mask0_6926_132078)%22%3E%0A%3Cpath%20d%3D%22M34.1997%2013.8997H10.7997V29.6381C10.7997%2029.7728%2010.843%2029.8835%2010.9295%2029.97C11.016%2030.0565%2011.1266%2030.0997%2011.2614%2030.0997H24.5997C24.8765%2030.0997%2025.1082%2030.1922%2025.295%2030.3772C25.4815%2030.5625%2025.5747%2030.7923%2025.5747%2031.0668C25.5747%2031.3413%2025.4815%2031.5737%2025.295%2031.764C25.1082%2031.9545%2024.8765%2032.0497%2024.5997%2032.0497H11.2614C10.6036%2032.0497%2010.0372%2031.8122%209.56223%2031.3372C9.08723%2030.8622%208.84973%2030.2958%208.84973%2029.6381V14.3613C8.84973%2013.7036%209.08723%2013.1372%209.56223%2012.6622C10.0372%2012.1872%2010.6036%2011.9497%2011.2614%2011.9497H33.7381C34.4134%2011.9497%2034.9841%2012.1872%2035.4504%2012.6622C35.9166%2013.1372%2036.1497%2013.7036%2036.1497%2014.3613V23.1997C36.1497%2023.4765%2036.0571%2023.7082%2035.8719%2023.895C35.6869%2024.0815%2035.4571%2024.1747%2035.1826%2024.1747C34.9081%2024.1747%2034.6757%2024.0815%2034.4855%2023.895C34.295%2023.7082%2034.1997%2023.4765%2034.1997%2023.1997V13.8997ZM10.7997%2013.8997V30.0997V23.7768V23.8717V13.8997ZM22.4997%2020.6122L34.1997%2013.8997V16.2506L23.1402%2022.6083C22.9407%2022.7236%2022.7351%2022.7812%2022.5234%2022.7812C22.3114%2022.7812%2022.1025%2022.7236%2021.8967%2022.6083L10.7997%2016.3661V13.8997L22.4997%2020.6122ZM34.1307%2032.0497H28.9587C28.6827%2032.0497%2028.4516%2031.9571%2028.2654%2031.7718C28.0794%2031.5868%2027.9864%2031.3571%2027.9864%2031.0826C27.9864%2030.8081%2028.0794%2030.5757%2028.2654%2030.3855C28.4516%2030.195%2028.6827%2030.0997%2028.9587%2030.0997H34.145L32.3011%2028.2558C32.1091%2028.0638%2032.0084%2027.8347%2031.9989%2027.5685C31.9891%2027.3022%2032.0881%2027.064%2032.2959%2026.8537C32.4939%2026.6582%2032.7261%2026.5652%2032.9926%2026.5747C33.2589%2026.5842%2033.4887%2026.6861%2033.6822%2026.8803L37.0257%2030.2313C37.1512%2030.3573%2037.2467%2030.4897%2037.3122%2030.6285C37.3775%2030.7675%2037.4101%2030.9177%2037.4101%2031.0792C37.4101%2031.231%2037.3775%2031.3787%2037.3122%2031.5225C37.2467%2031.6662%2037.1564%2031.7958%2037.0411%2031.9113L33.6747%2035.2777C33.467%2035.4852%2033.241%2035.578%2032.9967%2035.556C32.7525%2035.5337%2032.5314%2035.4236%2032.3334%2035.2256C32.1256%2035.0178%2032.0217%2034.7905%2032.0217%2034.5435C32.0217%2034.2962%2032.1256%2034.0688%2032.3334%2033.8613L34.1307%2032.0497Z%22%20fill%3D%22%23002BB7%22%20fill-opacity%3D%220.772549%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddb1-d9fadd23"
+                      )}
+                      tag="div"
+                    >
+                      {
+                        "Send a cancellation confirmation email to the candidate."
+                      }
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "preview-card", "cm-1")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "embed_flex")}
+                      value="%3Csvg%20width%3D%2245%22%20height%3D%2244%22%20viewBox%3D%220%200%2045%2044%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.5%204C0.5%201.79086%202.29086%200%204.5%200H40.5C42.7091%200%2044.5%201.79086%2044.5%204V40C44.5%2042.2091%2042.7091%2044%2040.5%2044H4.5C2.29086%2044%200.5%2042.2091%200.5%2040V4Z%22%20fill%3D%22%23FEE9F5%22%2F%3E%0A%3Cg%20clip-path%3D%22url(%23clip0_6926_132162)%22%3E%0A%3Cpath%20d%3D%22M14.9612%2025.4299C14.9612%2026.933%2013.7308%2028.1634%2012.2277%2028.1634C10.7246%2028.1634%209.5%2026.933%209.5%2025.4299C9.5%2023.9268%2010.7304%2022.6964%2012.2335%2022.6964H14.967V25.4299H14.9612ZM16.3366%2025.4299C16.3366%2023.9268%2017.567%2022.6964%2019.0701%2022.6964C20.5732%2022.6964%2021.8036%2023.9268%2021.8036%2025.4299V32.2665C21.8036%2033.7696%2020.5732%2035%2019.0701%2035C17.567%2035%2016.3366%2033.7696%2016.3366%2032.2665V25.4299ZM19.0701%2014.4612C17.567%2014.4612%2016.3366%2013.2308%2016.3366%2011.7277C16.3366%2010.2246%2017.567%209%2019.0701%209C20.5732%209%2021.8036%2010.2304%2021.8036%2011.7335V14.467H19.0701V14.4612ZM19.0701%2015.8366C20.5732%2015.8366%2021.8036%2017.067%2021.8036%2018.5701C21.8036%2020.0732%2020.5732%2021.3036%2019.0701%2021.3036H12.2335C10.7304%2021.3036%209.5%2020.0732%209.5%2018.5701C9.5%2017.067%2010.7304%2015.8366%2012.2335%2015.8366H19.0701ZM30.0388%2018.5701C30.0388%2017.067%2031.2692%2015.8366%2032.7723%2015.8366C34.2754%2015.8366%2035.5058%2017.067%2035.5058%2018.5701C35.5058%2020.0732%2034.2754%2021.3036%2032.7723%2021.3036H30.0388V18.5701ZM28.6634%2018.5701C28.6634%2020.0732%2027.433%2021.3036%2025.9299%2021.3036C24.4268%2021.3036%2023.1964%2020.0732%2023.1964%2018.5701V11.7335C23.1964%2010.2304%2024.4268%209%2025.9299%209C27.433%209%2028.6634%2010.2304%2028.6634%2011.7335V18.5701ZM25.9299%2029.5388C27.433%2029.5388%2028.6634%2030.7692%2028.6634%2032.2723C28.6634%2033.7754%2027.433%2035.0058%2025.9299%2035.0058C24.4268%2035.0058%2023.1964%2033.7754%2023.1964%2032.2723V29.5388H25.9299ZM25.9299%2028.1634C24.4268%2028.1634%2023.1964%2026.933%2023.1964%2025.4299C23.1964%2023.9268%2024.4268%2022.6964%2025.9299%2022.6964H32.7665C34.2696%2022.6964%2035.5%2023.9268%2035.5%2025.4299C35.5%2026.933%2034.2696%2028.1634%2032.7665%2028.1634H25.9299Z%22%20fill%3D%22%23B60074%22%20fill-opacity%3D%220.839216%22%2F%3E%0A%3C%2Fg%3E%0A%3Cdefs%3E%0A%3CclipPath%20id%3D%22clip0_6926_132162%22%3E%0A%3Crect%20width%3D%2226%22%20height%3D%2229.7143%22%20fill%3D%22white%22%20transform%3D%22translate(9.5%207.14307)%22%2F%3E%0A%3C%2FclipPath%3E%0A%3C%2Fdefs%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-_4d524d51-aceb-33d7-b108-53c5d9faddb5-d9fadd23"
+                      )}
+                      tag="div"
+                    >
+                      {"Update interviewers about the cancellation on Slack."}
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
@@ -1028,6 +1093,11 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
           </_Builtin.TabsPane>
         </_Builtin.TabsContent>
       </_Builtin.TabsWrapper>
+      <_Builtin.Block className={_utils.cx(_styles, "h-flex-8")} tag="div">
+        <GlobalIcon size="4" iconName="bolt" weight="regular" />
+        <Text size="2" content="Preview" />
+      </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-scrollbar%3D%22none%22%5D%3A%3A-webkit-scrollbar%20%7B%0A%20%20%20%20display%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

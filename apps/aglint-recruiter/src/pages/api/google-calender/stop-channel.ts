@@ -8,11 +8,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { user_id } = req.body;
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
-    const resp = await google_cal.watchEvents(user_id);
+    const user = await getUser(user_id);
+    const resp = await google_cal.stopWatch(
+      user.calendar_sync.channelId,
+      user.calendar_sync.resourceId,
+    );
     await updateUser({
-      channelId: resp.id,
-      resourceId: resp.resourceId,
       user_id,
+      syncToken: user.calendar_sync.syncToken,
     });
     return res.status(200).json(resp);
   } catch (err) {
@@ -23,13 +26,25 @@ export default handler;
 
 const updateUser = async ({
   user_id,
-  resourceId,
-  channelId,
+  syncToken,
 }: {
   user_id: string;
-  resourceId: string;
-  channelId: string;
+  syncToken: string;
 }) => {
+  await supabaseAdmin
+    .from('recruiter_user')
+    .update({
+      calendar_sync: {
+        syncToken: syncToken,
+        resourceId: null,
+        channelId: null,
+      },
+    })
+    .eq('user_id', user_id)
+    .throwOnError();
+};
+
+const getUser = async (user_id: string) => {
   const user = (
     await supabaseAdmin
       .from('recruiter_user')
@@ -39,15 +54,5 @@ const updateUser = async ({
       .throwOnError()
   ).data;
 
-  await supabaseAdmin
-    .from('recruiter_user')
-    .update({
-      calendar_sync: {
-        syncToken: user.calendar_sync?.syncToken,
-        resourceId,
-        channelId,
-      },
-    })
-    .eq('user_id', user_id)
-    .throwOnError();
+  return user;
 };
