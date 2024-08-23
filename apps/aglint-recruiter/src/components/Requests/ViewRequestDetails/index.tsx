@@ -287,9 +287,15 @@ function ViewRequestDetails() {
                       textBadge={capitalizeFirstLetter(selectedRequest?.type)}
                     />
                   }
-                  textDueDate={dayjsLocal(
-                    selectedRequest?.schedule_start_date,
-                  ).format('DD MMMM, YYYY')}
+                  textDueDate={
+                    dayjsLocal(selectedRequest?.schedule_start_date).format(
+                      'DD MMMM, YYYY',
+                    ) +
+                    ' - ' +
+                    dayjsLocal(selectedRequest?.schedule_end_date).format(
+                      'DD MMMM, YYYY',
+                    )
+                  }
                   slotAssignedTo={
                     <MemberList
                       selectedMemberId={selectedRequest?.assignee.user_id}
