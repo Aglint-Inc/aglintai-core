@@ -26,8 +26,9 @@ function RequestSections() {
     filters.type.length > 0 ||
     !!filters.title ||
     filters.jobs.length > 0 ||
-    filters.applications.length > 0;
-
+    filters.applications.length > 0 ||
+    filters.assigneeList.length > 0 ||
+    filters.assignerList.length > 0;
   if (
     isFilterApplied &&
     isFetched &&

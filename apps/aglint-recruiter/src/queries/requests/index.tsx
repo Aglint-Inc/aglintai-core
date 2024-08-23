@@ -397,7 +397,9 @@ type RequestsFilterKeys =
     >
   | 'end_at'
   | 'jobs'
-  | 'applications';
+  | 'applications'
+  | 'assignerList'
+  | 'assigneeList';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
   status: DatabaseTable['request']['status'][];
@@ -408,6 +410,8 @@ type RequestFilterValues = {
   // assignee_id: DatabaseTable['request']['assignee_id'][];
   jobs: string[];
   applications?: string[];
+  assignerList?: string[];
+  assigneeList?: string[];
 };
 type RequestsFilter = {
   [id in RequestsFilterKeys]: RequestFilterValues[id];
@@ -441,6 +445,8 @@ export const getUnfilteredRequests = async ({
     end_at,
     jobs,
     applications,
+    assigneeList,
+    assignerList,
   },
   sort: { order, type },
 }: GetRequestParams) => {
@@ -470,6 +476,11 @@ export const getUnfilteredRequests = async ({
     });
   if (applications?.length)
     query.or(`application_id.in.(${applications.join(',')})`);
+
+  if (assignerList?.length)
+    query.or(`assigner_id.in.(${assignerList.join(',')})`);
+  if (assigneeList?.length)
+    query.or(`assignee_id.in.(${assigneeList.join(',')})`);
 
   if (title?.length) {
     query.ilike('title', `%${title}%`);
