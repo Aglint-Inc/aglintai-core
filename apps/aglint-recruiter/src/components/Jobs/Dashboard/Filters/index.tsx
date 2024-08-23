@@ -127,6 +127,7 @@ function FilterJobDashboard({
         search={{
           value: searchText,
           setValue: (value) => handlerFilter(value),
+          placeholder: 'Search jobs',
         }}
       />
     </Stack>

@@ -1,23 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack, Typography } from '@mui/material';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GreenhouseAPI } from '@/src/app/api/integrations/greenhouse/type';
 import { GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
 import axios from '@/src/client/axios';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
 import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { useGreenhouseDetails } from '@/src/queries/greenhouse';
 
 function GreenhouseSettings() {
-  const { data, isPending, setOptions } = useGreenhouseDetails();
-
+  const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
+  const timeStamp = data && data.last_sync['full_sync'];
+  const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
   return (
     <Stack p={2}>
       {isPending ? (
@@ -58,15 +58,18 @@ function GreenhouseSettings() {
                   ),
                 )}
               </Stack>
-              <hr />
+              <Divider sx={{ borderColor: 'var(--neutral-6)' }} />
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack direction={'row'} alignItems={'center'}>
-                  <Typography variant='subtitle2'>{`Last Sync: ${dayjs(data.last_sync['jobs']).fromNow() || 'Never'}`}</Typography>
+                  <Typography variant='subtitle2'>{`Last Sync: ${last_sync}`}</Typography>
                 </Stack>
                 <ButtonSoft
                   size={1}
                   textButton='Sync'
-                  onClickButton={{ onClick: () => getGreenhouseSync(data) }}
+                  onClickButton={{
+                    onClick: () =>
+                      getGreenhouseSync(data).then(() => refetch()),
+                  }}
                 />
               </Stack>
             </>
@@ -148,39 +151,6 @@ function GreenInCircle() {
       />
     </svg>
   );
-}
-
-function useGreenhouseDetails() {
-  const query = useQuery({
-    queryKey: ['integrations', 'greenhouse'],
-    queryFn: getGreenhouseDetails,
-  });
-  const { mutateAsync } = useMutation({
-    mutationKey: ['integrations', 'greenhouse'],
-    mutationFn: setGreenhouseDetails,
-    onSuccess: () => {
-      query.refetch();
-    },
-  });
-  return { ...query, setOptions: mutateAsync };
-}
-
-async function getGreenhouseDetails() {
-  const res = await axios.call<GreenhouseAPI['GET']>(
-    'GET',
-    '/api/integrations/greenhouse',
-    null,
-  );
-  return res || ({} as typeof res);
-}
-
-async function setGreenhouseDetails(data: GreenhouseAPI['POST']['request']) {
-  const res = await axios.call<GreenhouseAPI['POST']>(
-    'POST',
-    '/api/integrations/greenhouse',
-    data,
-  );
-  return res;
 }
 
 type GreenhouseSyncOptions = {

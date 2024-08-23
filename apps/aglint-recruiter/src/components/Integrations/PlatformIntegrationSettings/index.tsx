@@ -24,7 +24,7 @@ function PlatformIntegrationSettingsComponent() {
             <Breadcrum
               textName='Integrations'
               isLink={true}
-              onClickLink={() => push(ROUTES['/integrations']())}
+              onClickLink={{ onClick: () => push(ROUTES['/integrations']()) }}
             />
             <Breadcrum
               textName={`${capitalizeFirstLetter(params.platform)} Setting`}

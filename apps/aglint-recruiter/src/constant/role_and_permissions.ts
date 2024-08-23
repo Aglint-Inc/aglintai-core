@@ -70,4 +70,13 @@ const app_modules: {
 ];
 const allPermissions = app_modules.map((module) => module.permissions).flat();
 
-export { allPermissions, app_modules };
+const rolesOrder = {
+  admin: 0,
+  recruiter: 1,
+  'recruiting coordinator': 2,
+  'hiring manager': 2,
+  sourcer: 3,
+  interview: 4,
+};
+
+export { allPermissions, app_modules, rolesOrder };
