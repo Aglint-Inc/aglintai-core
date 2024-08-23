@@ -15,7 +15,7 @@ function SelfScheduleSuccess() {
   const handleCopyLink = async () => {
     setIsCopied(true);
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${resSendToCandidate.schedule_id}?filter_id=${resSendToCandidate.filter_id}&task_id=${resSendToCandidate.task_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${resSendToCandidate.application_id}?filter_id=${resSendToCandidate.filter_id}`,
     );
     await new Promise((resolve) => setTimeout(resolve, 4000));
   };

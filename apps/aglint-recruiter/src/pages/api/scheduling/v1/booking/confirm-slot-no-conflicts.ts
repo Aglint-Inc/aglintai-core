@@ -21,7 +21,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_time: '',
         },
       ],
-      task_id: parsed.task_id,
     });
     const { filter_json_data } = schedule_db_details;
     const zod_options = v.parse(scheduling_options_schema, {
@@ -36,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_user_tz: parsed.cand_tz,
       start_date_str: selected_date,
       end_date_str: selected_date,
-      company_id: filter_json_data.interview_schedule.recruiter_id,
+      company_id: filter_json_data.applications.candidates.recruiter.id,
       session_ids: filter_json_data.session_ids,
     });
 

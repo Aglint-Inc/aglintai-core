@@ -76,9 +76,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dateRange,
       organizer_name: recruiter_user.first_name,
       sessions_ids: [session_id],
-      schedule_id: schedule_id,
       supabase: supabaseAdmin,
       rec_user_id: organizer_id,
+      application_id,
     });
 
     const filter_id = filterJson.id;

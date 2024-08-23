@@ -56,7 +56,6 @@ export const bookRecruiterSelectedOption = async (
   const payload: APICandScheduleMailThankYou = {
     cand_tz: fetched_cand_details.cand_tz,
     filter_id: null,
-    task_id: req_body.task_id,
     application_id: fetched_cand_details.application.id,
     session_ids: fetched_cand_details.session_ids,
     availability_request_id: req_body.availability_req_id,

@@ -10,7 +10,6 @@ import { onClickResendInvite } from '@/src/components/Scheduling/CandidateDetail
 import { onClickCopyLink } from '@/src/components/Scheduling/ScheduleDetails/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 function SelfScheduleResend({
@@ -34,17 +33,10 @@ function SelfScheduleResend({
   };
 
   const copyLink = async () => {
-    const { data: sch } = await supabase
-      .from('interview_schedule')
-      .select()
-      .eq('application_id', selectedTask.application_id)
-      .single()
-      .throwOnError();
     onClickCopyLink({
       filter_id: selectedTask.filter_id,
       request_id: null,
-      schedule_id: sch.id,
-      task_id: selectedTask.id,
+      application_id: selectedTask.application_id,
     });
     handleButtonClick();
   };

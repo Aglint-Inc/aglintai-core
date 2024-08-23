@@ -19,58 +19,56 @@ const supabase = createClient<DB>(
 );
 
 export type BodyParamsCandidateInvite = {
-  schedule_id: string;
+  application_id: string;
   filter_id: string;
   user_tz: string;
 };
 
 export type ApiResponseCandidateInvite = {
-  job: Awaited<
-    ReturnType<typeof getScheduleDetails>
-  >['applications']['public_jobs'];
-  schedule: Awaited<ReturnType<typeof getScheduleDetails>>;
-  candidate: Awaited<
-    ReturnType<typeof getScheduleDetails>
-  >['applications']['candidates'];
+  job: Awaited<ReturnType<typeof getScheduleDetails>>['public_jobs'];
+  candidate: Awaited<ReturnType<typeof getScheduleDetails>>['candidates'];
   filter_json: DatabaseTable['interview_filter_json'];
-  recruiter: Awaited<ReturnType<typeof getScheduleDetails>>['recruiter'];
+  recruiter: Awaited<
+    ReturnType<typeof getScheduleDetails>
+  >['candidates']['recruiter'];
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
   >['resMeetings'];
+  application_id: string;
 };
 
 export type ApiResponseAllSlots = SessionsCombType[][][];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { filter_id, schedule_id, user_tz } =
+    const { filter_id, application_id, user_tz } =
       req.body as BodyParamsCandidateInvite;
 
-    if (!filter_id || !schedule_id || !user_tz) {
+    if (!filter_id || !application_id || !user_tz) {
       throw new Error('Invalid request');
     }
 
-    const schedule = await getScheduleDetails(schedule_id, filter_id);
+    const schedule = await getScheduleDetails(application_id, filter_id);
 
     const filterJson = schedule.interview_filter_json[0];
 
-    const application = schedule.applications;
-
-    const recruiter = schedule.recruiter;
+    const recruiter = schedule.candidates.recruiter;
 
     const { resMeetings } = await getInterviewSessionsMeetings(
       filterJson.session_ids,
     );
 
-    // console.log(dateRanges);
-
-    return res.status(200).json({
-      job: application.public_jobs,
-      schedule: schedule,
-      candidate: application.candidates,
+    const redRes: ApiResponseCandidateInvite = {
+      job: schedule.public_jobs,
+      application_id,
+      candidate: schedule.candidates,
       filter_json: filterJson,
       recruiter: recruiter,
       meetings: resMeetings,
+    };
+
+    return res.status(200).json({
+      ...redRes,
     });
   } catch (error) {
     console.error(error.message);
@@ -85,13 +83,16 @@ export interface DateRangeCandidateInvite {
   end_date: dayjs.Dayjs | null;
 }
 
-const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
+const getScheduleDetails = async (
+  application_id: string,
+  filter_id: string,
+) => {
   const { data: sch, error: errSch } = await supabase
-    .from('interview_schedule')
+    .from('applications')
     .select(
-      '*,applications(*, public_jobs(id,job_title,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
+      '*, public_jobs(id,job_title,recruiter_id),candidates(*,recruiter(id,logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json(*)',
     )
-    .eq('id', schedule_id)
+    .eq('id', application_id)
     .eq('interview_filter_json.id', filter_id)
     .single();
 

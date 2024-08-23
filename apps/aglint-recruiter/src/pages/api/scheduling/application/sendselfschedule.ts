@@ -64,14 +64,14 @@ const sendToCandidate = async ({
 
   const schedule = (
     await supabaseAdmin
-      .from('interview_schedule')
-      .select('id,applications(candidates(*))')
+      .from('applications')
+      .select('id,candidates(*)')
       .eq('application_id', application_id)
       .single()
       .throwOnError()
   ).data;
 
-  const candidate = schedule.applications.candidates;
+  const candidate = schedule.candidates;
   const schedule_id = schedule.id;
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
@@ -95,10 +95,10 @@ const sendToCandidate = async ({
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
       },
       session_ids: selectedSessionIds,
-      schedule_id,
       selected_options: selectedSlots,
       created_by: recruiterUser.user_id,
       request_id,
+      application_id,
     })
     .select();
 
