@@ -7,7 +7,6 @@ import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -20,7 +19,6 @@ export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
 ) => {
   const { collapse, setCollapse, isMutating } = useRequest();
-  const { handleAsyncUpdateRequest } = useRequests();
   const { push } = useRouterPro();
 
   const [isHover, setIsHover] = useState(false);
@@ -100,16 +98,6 @@ export const Request = (
               onClickCard={{
                 onClick: () => {
                   setCollapse((prev) => !prev);
-                  if (props.is_new) {
-                    handleAsyncUpdateRequest({
-                      payload: {
-                        requestId: props.id,
-                        requestPayload: { is_new: false },
-                      },
-                      loading: false,
-                      toast: false,
-                    });
-                  }
                 },
               }}
             />
