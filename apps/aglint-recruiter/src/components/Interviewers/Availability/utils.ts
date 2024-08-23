@@ -1,4 +1,5 @@
 import dayjs from '@/src/utils/dayjs';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 const sleepStart = 22;
 const sleepEnd = 6;
@@ -7,25 +8,27 @@ const timeToPx = (hours, minutes) => {
   return hours * 60 * 0.133 + minutes * 0.133;
 };
 
-export function EventFilling(events: Event[], dayCount: number, index: number) {
+export function EventFilling(events: Event[], tzCode: string, index: number) {
   const res = events.filter((event) => {
     const startTime = dayjs(event.start.dateTime);
     const endTime = dayjs(event.end.dateTime);
-    return (
-      startTime.hour() >= sleepEnd &&
-      startTime.hour() <= sleepStart &&
-      startTime.isBefore(dayjs().hour(sleepStart).minute(0)) &&
-      endTime.isBefore(dayjs().hour(sleepStart).minute(0))
-    );
+    return startTime.hour() >= sleepEnd;
   });
 
-  // if (events.length === 0) console.log('empty array');
-  // else console.log('not empty');
-
-  const date = dayjs(events[0]?.start.dateTime).format('YYYY-MM-DD');
-  const tz = events[0]?.start.timeZone;
-  const gm = events[0]?.start.dateTime.split('+');
+  const date = dayjs().add(index, 'day').format('YYYY-MM-DD');
+  const tz = tzCode;
+  const gm = dayjsLocal().add(index, 'day').tz(tzCode).toISOString().split('+');
   const utc = gm?.length > 0 ? gm[1] : '';
+
+  // const date = dayjs(events[0]?.start.dateTime).format('YYYY-MM-DD');
+  // const tz = events[0]?.start.timeZone;
+  // const gm = events[0]?.start.dateTime.split('+');
+  // const utc = gm?.length > 0 ? gm[1] : '';
+
+  // startTime.hour() >= sleepEnd &&
+  // startTime.hour() <= sleepStart &&
+  // startTime.isBefore(dayjs().hour(sleepStart).minute(0)) &&
+  // endTime.isBefore(dayjs().hour(sleepStart).minute(0))
 
   res.unshift({
     start: {
@@ -72,6 +75,8 @@ export function EventFilling(events: Event[], dayCount: number, index: number) {
     },
     type: 'night_sleep',
   });
+
+  // console.log('res : ', res);
 
   return fillingGap(res);
 }

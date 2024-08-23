@@ -24,7 +24,7 @@ const TimeLineCalendar = () => {
   });
 
   if (isLoading) return <>Loading</>;
-  // console.log(allInterviewers);
+  console.log(allInterviewers);
 
   return (
     <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
@@ -125,9 +125,12 @@ const AvailabilityView = ({
           ) as Event[][];
 
           const interviewerEvent = dateGrouped.map((dg, index) =>
-            EventFilling(dg, dayCount, index),
+            EventFilling(
+              dg,
+              interviewer.scheduling_settings.timeZone.tzCode,
+              index,
+            ),
           );
-
           console.log(interviewerEvent);
 
           return (
@@ -185,12 +188,6 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
             }}
           >
             {events.map((event, hour) => {
-              console.log(
-                'type :',
-                event.type,
-                event.end.endPx,
-                event.start.startPx,
-              );
               return (
                 <>
                   <Box
