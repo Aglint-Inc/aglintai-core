@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { useRequests } from '@/src/context/RequestsContext';
 import { Request, RequestResponse } from '@/src/queries/requests/types';
 
@@ -8,7 +9,8 @@ import Section from './Section';
 
 function RequestSections() {
   const {
-    requests: { data, isPlaceholderData },
+    requests: { data, isPlaceholderData, isFetched },
+    filters,
   } = useRequests();
   const defaults = sectionDefaultsData.map(
     // eslint-disable-next-line no-unused-vars
@@ -19,9 +21,30 @@ function RequestSections() {
     }),
   );
 
+  const isFilterApplied =
+    filters.status.length > 0 ||
+    filters.type.length > 0 ||
+    !!filters.title ||
+    filters.jobs.length > 0 ||
+    filters.applications.length > 0 ||
+    filters.assigneeList.length > 0 ||
+    filters.assignerList.length > 0;
+  if (
+    isFilterApplied &&
+    isFetched &&
+    defaults.flatMap((d) => d.requests).length === 0
+  )
+    return (
+      <>
+        <GlobalEmptyState iconName='task_alt' textDesc='No results found' />
+      </>
+    );
+
   return (
     <>
       {defaults.map(({ color, requests, sectionIconName, sectionName }) => {
+        if (isFilterApplied && isFetched && (requests ?? []).length === 0)
+          return <></>;
         return (
           <section
             style={{

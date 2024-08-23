@@ -11,7 +11,6 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { SafeObject } from '@/src/utils/safeObject';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import Loader from '../Common/Loader';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
@@ -34,7 +33,9 @@ const Requests = () => {
     !filters.title &&
     !filters.created_at &&
     filters.jobs.length === 0 &&
-    filters.applications.length === 0;
+    filters.applications.length === 0 &&
+    filters.assigneeList.length === 0 &&
+    filters.assignerList.length === 0;
 
   const showEmptyPage =
     !isPlaceholderData &&
@@ -198,73 +199,62 @@ const Requests = () => {
               <RequestAgentEmpty />
             </ShowCode.When>
             <ShowCode.When isTrue={queryParams.tab === 'requests'}>
-              <ShowCode>
-                <RequestsWrapper
-                  slotFilter={
-                    <Stack
-                      direction={'row'}
-                      justifyContent={'space-between'}
-                      ml={!openChat ? '28px' : '0px'}
-                      width={'100%'}
-                    >
-                      <ButtonSoft
-                        size={1}
-                        color={'neutral'}
-                        isLeftIcon={true}
-                        iconName={'arrow_back'}
-                        textButton='Dashboard'
-                        onClickButton={{
-                          onClick: () =>
-                            setQueryParams({ tab: 'dashboard', section: '' }),
-                        }}
-                      />
-                      {<FilterAndSorting />}
-                    </Stack>
-                  }
-                  slotRequestSection={
-                    <ShowCode>
-                      <ShowCode.When isTrue={isPlaceholderData && isNotApplied}>
-                        <Loader />
-                      </ShowCode.When>
-                      <ShowCode.Else>
-                        <RequestSections />
-                      </ShowCode.Else>
-                    </ShowCode>
-                  }
-                  slotNavigationPills={
-                    <>
-                      {Object.entries(requestList ?? {}).map(
-                        ({ '0': item, '1': value }, i) => (
-                          <NavigationPill
-                            attributeValue={item}
-                            textCount={value.length}
-                            key={item}
-                            iconName={
-                              sectionDefaultsData[Number(i)].sectionIconName
-                            }
-                            onClickPill={{
-                              onClick: () => {
-                                gotoSection();
-                              },
-                            }}
-                            textPill={capitalizeFirstLetter(item)}
-                          />
-                        ),
-                      )}
-                      <NavigationPill
-                        showNumberCount={false}
-                        attributeValue={'back'}
-                        textCount={''}
-                        iconName={'arrow_warm_up'}
-                        onClickPill={{
-                          onClick: gotoSection,
-                        }}
-                        textPill={capitalizeFirstLetter('back_to_top')}
-                      />
-                    </>
-                  }
-                />
-              </ShowCode>
+              <RequestsWrapper
+                slotFilter={
+                  <Stack
+                    direction={'row'}
+                    justifyContent={'space-between'}
+                    ml={!openChat ? '28px' : '0px'}
+                    width={'100%'}
+                  >
+                    <ButtonSoft
+                      size={1}
+                      color={'neutral'}
+                      isLeftIcon={true}
+                      iconName={'arrow_back'}
+                      textButton='Dashboard'
+                      onClickButton={{
+                        onClick: () =>
+                          setQueryParams({ tab: 'dashboard', section: '' }),
+                      }}
+                    />
+                    {<FilterAndSorting />}
+                  </Stack>
+                }
+                slotRequestSection={<RequestSections />}
+                slotNavigationPills={
+                  <>
+                    {Object.entries(requestList ?? {}).map(
+                      ({ '0': item, '1': value }, i) => (
+                        <NavigationPill
+                          attributeValue={item}
+                          textCount={value.length}
+                          key={item}
+                          iconName={
+                            sectionDefaultsData[Number(i)].sectionIconName
+                          }
+                          onClickPill={{
+                            onClick: () => {
+                              gotoSection();
+                            },
+                          }}
+                          textPill={capitalizeFirstLetter(item)}
+                        />
+                      ),
+                    )}
+                    <NavigationPill
+                      showNumberCount={false}
+                      attributeValue={'back'}
+                      textCount={''}
+                      iconName={'arrow_warm_up'}
+                      onClickPill={{
+                        onClick: gotoSection,
+                      }}
+                      textPill={capitalizeFirstLetter('back_to_top')}
+                    />
+                  </>
+                }
+              />
             </ShowCode.When>
             <ShowCode.When isTrue={queryParams.tab === 'dashboard'}>
               <Dashboard />
