@@ -18,6 +18,8 @@ import Filters from './Filters';
 import { BreadCrumbs } from './layout';
 import { Table } from './Table';
 import Tabs from './Tabs';
+import { SharedActions } from '../Common/SharedTopNav/actions';
+import { SharedBreadCrumbs } from '../Common/SharedTopNav/breadcrumbs';
 
 const ApplicationsDashboard = () => {
   const { job, jobLoad } = useJob();
@@ -78,45 +80,8 @@ const ApplicationsComponent = () => {
             slotFilters={checklist.length === 0 ? <Filters /> : <Actions />}
           />
         }
-        slotTopbarRight={
-          <Stack direction={'row'} alignItems={'center'} gap={2}>
-            {applicationScoringPollEnabled && (
-              <ScoreSetting
-                textScoreCount={`${
-                  job?.processing_count.processed +
-                  job?.processing_count.unavailable +
-                  job?.processing_count.unparsable
-                }/${total ?? '---'}`}
-                slotScoringLoader={
-                  <Stack sx={{ width: '12px', aspectRatio: 1 }}>
-                    <CircularProgress
-                      color='inherit'
-                      size={'100%'}
-                      sx={{ color: 'var(--white)' }}
-                    />
-                  </Stack>
-                }
-              />
-            )}
-            {job?.status !== 'closed' && manageJob && (
-              <>
-                <ButtonSoft
-                  size={2}
-                  color='neutral'
-                  textButton='Add candidates'
-                  onClickButton={{ onClick: () => setImportPopup(true) }}
-                  isLeftIcon
-                  iconName='person_add'
-                />
-                <PublishButton
-                  onClick={() => handlePublish()}
-                  disabled={!canPublish}
-                />
-              </>
-            )}
-          </Stack>
-        }
-        slotTopbarLeft={<BreadCrumbs />}
+        slotTopbarRight={<SharedActions />}
+        slotTopbarLeft={<SharedBreadCrumbs />}
       />
       <UploadApplications />
     </DNDProvider>
