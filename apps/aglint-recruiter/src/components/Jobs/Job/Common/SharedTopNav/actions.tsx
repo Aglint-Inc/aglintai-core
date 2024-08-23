@@ -1,4 +1,4 @@
-import { CircularProgress, Dialog, Popover, Typography } from '@mui/material';
+import { CircularProgress, Dialog, Popover } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import React, {
@@ -15,12 +15,11 @@ import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { EnableDisable } from '@/devlink3/EnableDisable';
-import { ModuleCard } from '@/devlink3/ModuleCard';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
+import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
 import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
@@ -134,35 +133,19 @@ const Dropdown = ({
     <>
       <Pop anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
         <Modules />
-        <Stack
-          direction={'row'}
-          sx={{
-            alignItems: 'center',
-            ':hover': { bgcolor: 'var(--neutral-2)' },
-            borderRadius: 'var(--radius-2)',
-          }}
-          spacing={1}
-          marginTop={'0px !important'}
-        >
-          <Typography
-            sx={{
-              fontSize: '14px',
-              cursor: 'pointer',
-              padding: '5px 10px ',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              color: 'var(--error-11)',
-            }}
-            onClick={() => {
+        <FilterOption
+          onClickCancelInvite={{
+            onClick: () => {
               setModal(true);
               setAnchorEl(null);
-            }}
-          >
-            <GlobalIcon iconName={isDelete ? 'delete' : 'close'} size={4} />
-            {`${isDelete ? 'Delete' : 'Close'} Job`}
-          </Typography>
-        </Stack>
+            },
+          }}
+          text={`${isDelete ? 'Delete' : 'Close'} Job`}
+          slotIcon={
+            <GlobalIcon size={4} iconName={isDelete ? 'delete' : 'close'} />
+          }
+          color={'black'}
+        />
       </Pop>
       {modal && <Close open={modal} handleClose={() => setModal(false)} />}
     </>
@@ -315,6 +298,7 @@ const WorkflowModule = () => {
       onClickCancelInvite={{ onClick: () => handleClick() }}
       text={'Workflows'}
       slotIcon={<WorkflowIcon />}
+      color={'black'}
     />
   );
 };
@@ -322,53 +306,41 @@ const WorkflowModule = () => {
 const HiringTeamModule = () => {
   const {
     job,
-    publishStatus: {
-      hiringTeamValidity: { validity },
-    },
+    // publishStatus: {
+    //   hiringTeamValidity: { validity },
+    // },
   } = useJob();
   const { push } = useRouter();
   const handleClick = () => {
     push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
   };
   return (
-    <ModuleCard
-      isAlert={!validity}
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Hiring Team'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Hiring Team'}
       slotIcon={<HiringTeamIcon />}
+      color={'black'}
     />
   );
 };
 
 const ProfileScoreModule = () => {
-  const { job, status } = useJob();
+  const { job } = useJob();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);
   };
-  const isAlert = status.jd_json_error && !status.description_error;
-  const isWarning =
-    !isAlert &&
-    ((status.description_changed && !status.scoring_criteria_changed) ||
-      status.description_error);
+  // const isAlert = status.jd_json_error && !status.description_error;
+  // const isWarning =
+  //   !isAlert &&
+  //   ((status.description_changed && !status.scoring_criteria_changed) ||
+  //     status.description_error);
   return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      isWarning={isWarning}
-      isAlert={isAlert}
-      textName={'Profile Score'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Profile Score'}
       slotIcon={<ProfileScoreIcon />}
-      slotEnableDisable={
-        <>
-          {status.loading && (
-            <CircularProgress
-              color='inherit'
-              size={'15px'}
-              sx={{ color: 'var(--neutral-6)' }}
-            />
-          )}
-        </>
-      }
+      color={'black'}
     />
   );
 };
@@ -383,14 +355,8 @@ const JobDetailsModule = () => {
     <FilterOption
       onClickCancelInvite={{ onClick: () => handleClick() }}
       text={'Job Details'}
-      slotIcon={
-        <GlobalIcon
-          iconName='edit_square'
-          color={'inherit'}
-          size={6}
-          weight={'regular'}
-        />
-      }
+      slotIcon={<JobDetailsIcon />}
+      color={'black'}
     />
   );
 };
@@ -402,11 +368,11 @@ const AssessmentModule = () => {
     push(`/jobs/${job.id}/assessment`);
   };
   return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Assessment'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Assessment'}
       slotIcon={<AssessmentIcon />}
-      slotEnableDisable={<EnableDisable isEnabled={job.assessment} />}
+      color={'black'}
     />
   );
 };
@@ -418,11 +384,11 @@ const EmailTemplatesModule = () => {
     push(`/jobs/${job.id}/email-templates`);
   };
   return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Email Templates'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Email Templates'}
       slotIcon={<EmailTemplateIcon />}
-      // isWarning={emailTemplateValidity?.length !== 0}
+      color={'black'}
     />
   );
 };
@@ -435,11 +401,11 @@ const ScreeningModule = () => {
     push(`/jobs/${job.id}/screening`);
   };
   return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Screening'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Screening'}
       slotIcon={<ScreeningIcon />}
-      slotEnableDisable={<EnableDisable isEnabled={job.phone_screen_enabled} />}
+      color={'black'}
     />
   );
 };
@@ -451,12 +417,11 @@ const InterviewModule = () => {
     push(`/jobs/${job.id}/interview-plan`);
   };
   return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Interview Plan'}
+    <FilterOption
+      onClickCancelInvite={{ onClick: () => handleClick() }}
+      text={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
-      slotEnableDisable={<></>}
-      // isWarning={isInterviewPlanDisabled || isInterviewSessionEmpty}
+      color={'black'}
     />
   );
 };
