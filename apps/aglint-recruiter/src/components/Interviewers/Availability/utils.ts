@@ -1,252 +1,312 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import dayjs from '@/src/utils/dayjs';
 
-dayjs.extend(utc);
+const sleepStart = 22;
+const sleepEnd = 6;
 
-const MINUTE_TO_PIXEL = 0.133; // 8px / 60 minutes
-
-const calculatePixels = (time) => {
-  const [hours, minutes] = time.split(':').map(Number);
-  return (hours * 60 + minutes) * MINUTE_TO_PIXEL;
+const timeToPx = (hours, minutes) => {
+  return hours * 60 * 0.133 + minutes * 0.133;
 };
 
-const formatTime = (minutes) => {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-};
+export function EventFilling(events: Event[], dayCount: number, index: number) {
+  const res = events.filter((event) => {
+    const startTime = dayjs(event.start.dateTime);
+    const endTime = dayjs(event.end.dateTime);
+    return (
+      startTime.hour() >= sleepEnd &&
+      startTime.hour() <= sleepStart &&
+      startTime.isBefore(dayjs().hour(sleepStart).minute(0)) &&
+      endTime.isBefore(dayjs().hour(sleepStart).minute(0))
+    );
+  });
 
-export const addPixelPropertiesAndEmptyEvents = (events) => {
-  return Object.keys(events).reduce((result, date) => {
-    const sleepStart = '22:00';
-    const sleepEnd = '06:00';
-    const dayEvents = events[date];
-    const newEvents = [];
+  // if (events.length === 0) console.log('empty array');
+  // else console.log('not empty');
 
-    // Add sleep event split across two periods
-    newEvents.push({
-      start: {
-        dateTime: `${date}T${sleepStart}:00+05:30`,
-        timeZone: 'Asia/Kolkata',
-        startingPx: '0px',
-      },
-      end: {
-        dateTime: `${date}T24:00:00+05:30`,
-        timeZone: 'Asia/Kolkata',
-        endingPx: `${calculatePixels('24:00').toFixed(1)}px`,
-      },
-      type: 'sleep_event_1',
-    });
+  const date = dayjs(events[0]?.start.dateTime).format('YYYY-MM-DD');
+  const tz = events[0]?.start.timeZone;
+  const gm = events[0]?.start.dateTime.split('+');
+  const utc = gm?.length > 0 ? gm[1] : '';
 
-    // Create a separate sleep event for the next day if sleepEnd is before sleepStart
-    const nextDay = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
-    if (sleepEnd !== '00:00') {
-      newEvents.push({
+  res.unshift({
+    start: {
+      dateTime: `${date}T00:00:00+${utc}`,
+      timeZone: tz,
+      startPx: timeToPx(
+        dayjs(`${date}T00:00:00+${utc}`).format('H'),
+        dayjs(`${date}T00:00:00+${utc}`).format('m'),
+      ),
+    },
+
+    end: {
+      dateTime: `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
+      timeZone: tz,
+      endPx: timeToPx(
+        dayjs(
+          `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
+        ).format('H'),
+        dayjs(
+          `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
+        ).format('m'),
+      ),
+    },
+    type: 'morning_sleep',
+  });
+
+  res.push({
+    start: {
+      dateTime: `${date}T${sleepStart}:00:00+${utc}`,
+      timeZone: tz,
+      startPx: timeToPx(
+        dayjs(`${date}T${sleepStart}:00:00+${utc}`).format('H'),
+        dayjs(`${date}T${sleepStart}:00:00+${utc}`).format('m'),
+      ),
+    },
+
+    end: {
+      dateTime: `${date}T24:00:00+${utc}`,
+      timeZone: tz,
+      endPx: timeToPx(
+        dayjs(`${date}T24:00:00+${utc}`).format('H'),
+        dayjs(`${date}T24:00:00+${utc}`).format('m'),
+      ),
+    },
+    type: 'night_sleep',
+  });
+
+  return fillingGap(res);
+}
+
+const fillingGap = (events: Event[]) => {
+  // Sort events by start time
+  const sortedEvents = events.sort((a, b) =>
+    dayjs(a.start.dateTime).isBefore(dayjs(b.start.dateTime)) ? -1 : 1,
+  );
+
+  // Container for the new events including empty events
+  const newEvents: Event[] = [];
+
+  sortedEvents.forEach((event, index) => {
+    // Add the original event
+    newEvents.push(event);
+
+    // Check if there's a next event
+    if (index < sortedEvents.length - 1) {
+      const currentEnd = dayjs(event.end.dateTime);
+      const nextStart = dayjs(sortedEvents[index + 1].start.dateTime);
+
+      // Create an empty event immediately after the current event and before the next event
+      const emptyEvent = {
         start: {
-          dateTime: `${nextDay}T00:00:00+05:30`,
-          timeZone: 'Asia/Kolkata',
-          startingPx: '0px',
+          dateTime: currentEnd.format(),
+          timeZone: event.start.timeZone,
+          startPx: timeToPx(+currentEnd.format('H'), +currentEnd.format('m')),
         },
         end: {
-          dateTime: `${nextDay}T${sleepEnd}:00+05:30`,
-          timeZone: 'Asia/Kolkata',
-          endingPx: `${calculatePixels(sleepEnd).toFixed(1)}px`,
+          dateTime: nextStart.format(),
+          timeZone: event.start.timeZone,
+          endPx: timeToPx(+nextStart.format('H'), +nextStart.format('m')),
         },
-        type: 'sleep_event',
-      });
+        type: 'empty_event',
+      };
+
+      // Add the empty event
+      newEvents.push(emptyEvent);
     }
+  });
 
-    // Filter out any events that fall within the sleep period
-    const filteredEvents = dayEvents.filter((event) => {
-      const eventStartTime = dayjs(event.start.dateTime).format('HH:mm');
-      return eventStartTime >= sleepEnd || eventStartTime < sleepStart;
-    });
-
-    if (filteredEvents.length === 0) {
-      // If no events after sleepEnd, create a full day event
-      newEvents.push({
-        start: {
-          dateTime: `${date}T${sleepEnd}:00+05:30`,
-          timeZone: 'Asia/Kolkata',
-          startingPx: `${calculatePixels(sleepEnd).toFixed(1)}px`,
-        },
-        end: {
-          dateTime: `${date}T24:00:00+05:30`,
-          timeZone: 'Asia/Kolkata',
-          endingPx: '192px',
-        },
-        type: 'full_day_event',
-      });
-    } else {
-      let lastEnd = sleepEnd;
-
-      filteredEvents.forEach((event) => {
-        const startTime = dayjs(event.start.dateTime).format('HH:mm');
-        const endTime = dayjs(event.end.dateTime).format('HH:mm');
-
-        if (lastEnd !== startTime) {
-          // Create gap event before the current event
-          const startingPx = calculatePixels(lastEnd);
-          const endingPx = calculatePixels(startTime);
-          newEvents.push({
-            start: {
-              dateTime: `${date}T${lastEnd}:00+05:30`,
-              timeZone: 'Asia/Kolkata',
-              startingPx: `${startingPx.toFixed(1)}px`,
-            },
-            end: {
-              dateTime: `${date}T${startTime}:00+05:30`,
-              timeZone: 'Asia/Kolkata',
-              endingPx: `${endingPx.toFixed(1)}px`,
-            },
-            type: 'gap_event',
-          });
-        }
-
-        newEvents.push({
-          ...event,
-          start: {
-            ...event.start,
-            startingPx: `${calculatePixels(startTime).toFixed(1)}px`,
-          },
-          end: {
-            ...event.end,
-            endingPx: `${calculatePixels(endTime).toFixed(1)}px`,
-          },
-        });
-
-        lastEnd = endTime;
-      });
-
-      // Add a gap event if the last event doesn't end at 24:00
-      if (lastEnd !== '24:00') {
-        const startingPx = calculatePixels(lastEnd);
-        const endingPx = calculatePixels('24:00');
-        newEvents.push({
-          start: {
-            dateTime: `${date}T${lastEnd}:00+05:30`,
-            timeZone: 'Asia/Kolkata',
-            startingPx: `${startingPx.toFixed(1)}px`,
-          },
-          end: {
-            dateTime: `${date}T24:00:00+05:30`,
-            timeZone: 'Asia/Kolkata',
-            endingPx: `${endingPx.toFixed(1)}px`,
-          },
-          type: 'gap_event',
-        });
-      }
-    }
-
-    result[date] = newEvents;
-    return result;
-  }, {});
+  return newEvents;
 };
 
-// export const addPixelPropertiesAndEmptyEvents = (events) => {
-//   return Object.keys(events).reduce((result, date) => {
-//     const dayEvents = events[date];
-//     const newEvents = [];
+export interface Event {
+  start: {
+    dateTime: string;
+    timeZone: string;
+    startPx: string | number;
+  };
+  end: {
+    dateTime: string;
+    timeZone: string;
+    endPx: string | number;
+  };
+  type: string;
+}
 
-//     if (dayEvents.length === 0) {
-//       // If no events on the day, create full day events
-//       newEvents.push({
-//         start: {
-//           dateTime: `${date}T00:00:00+05:30`,
-//           timeZone: 'Asia/Kolkata',
-//           startingPx: '0px',
-//         },
-//         end: {
-//           dateTime: `${date}T24:00:00+05:30`,
-//           timeZone: 'Asia/Kolkata',
-//           endingPx: '192px',
-//         },
-//         type: 'full_day_no_event',
-//       });
-//     } else {
-//       let lastEnd = '00:00';
-
-//       dayEvents.forEach((event) => {
-//         const startTime = dayjs(event.start.dateTime).format('HH:mm');
-//         const endTime = dayjs(event.end.dateTime).format('HH:mm');
-
-//         if (lastEnd !== startTime) {
-//           // Create gap event before the current event
-//           const startingPx = calculatePixels(lastEnd);
-//           const endingPx = calculatePixels(startTime);
-//           newEvents.push({
-//             start: {
-//               dateTime: `${date}T${lastEnd}:00+05:30`,
-//               timeZone: 'Asia/Kolkata',
-//               startingPx: `${startingPx.toFixed(1)}px`,
-//             },
-//             end: {
-//               dateTime: `${date}T${startTime}:00+05:30`,
-//               timeZone: 'Asia/Kolkata',
-//               endingPx: `${endingPx.toFixed(1)}px`,
-//             },
-//             type: 'gap_event',
-//           });
-//         }
-
-//         newEvents.push({
-//           ...event,
-//           start: {
-//             ...event.start,
-//             startingPx: `${calculatePixels(startTime).toFixed(1)}px`,
-//           },
-//           end: {
-//             ...event.end,
-//             endingPx: `${calculatePixels(endTime).toFixed(1)}px`,
-//           },
-//         });
-
-//         lastEnd = endTime;
-//       });
-
-//       // Add a full-day event if the last event doesn't end at 24:00
-//       if (lastEnd !== '24:00') {
-//         const startingPx = calculatePixels(lastEnd);
-//         const endingPx = calculatePixels('24:00');
-//         newEvents.push({
-//           start: {
-//             dateTime: `${date}T${lastEnd}:00+05:30`,
-//             timeZone: 'Asia/Kolkata',
-//             startingPx: `${startingPx.toFixed(1)}px`,
-//           },
-//           end: {
-//             dateTime: `${date}T24:00:00+05:30`,
-//             timeZone: 'Asia/Kolkata',
-//             endingPx: `${endingPx.toFixed(1)}px`,
-//           },
-//           type: 'gap_event',
-//         });
-//       }
-//     }
-
-//     result[date] = newEvents;
-//     return result;
-//   }, {});
-// };
-
-// export const getEventColor = (value: Event['type']) => {
-//   const color =
-//     value === 'empty_event'
-//       ? 'var(--success-8)'
-//       : value === 'soft'
-//         ? 'var(--warning-8)'
-//         : value === 'ooo'
-//           ? 'var(--info-8)'
-//           : value === 'free_time'
-//             ? 'var(--success-8)'
-//             : value === 'recruiting_blocks'
-//               ? 'var(--error-8)'
-//               : value === 'cal_event'
-//                 ? 'var(--error-9)'
-//                 : '';
-//   return {
-//     style: {
-//       background: color,
+// const events: Event[] = [
+//   {
+//     start: {
+//       dateTime: '2024-08-23T05:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
 //     },
-//   };
-// };
+
+//     end: {
+//       dateTime: '2024-08-23T07:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T10:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T10:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T11:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T11:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T11:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T11:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T12:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T12:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T13:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T13:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T14:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T14:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T15:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T15:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+//   {
+//     start: {
+//       dateTime: '2024-08-23T16:00:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     end: {
+//       dateTime: '2024-08-23T22:30:00+05:30',
+//       timeZone: 'Asia/Kolkata',
+//     },
+//     type: 'cal_event',
+//   },
+// ];

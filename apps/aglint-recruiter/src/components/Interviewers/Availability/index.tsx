@@ -6,7 +6,12 @@ import React, { useState } from 'react';
 import { initUser } from '@/src/pages/api/interviewers';
 
 import { useAvailabilty } from '../Hook';
-import { addPixelPropertiesAndEmptyEvents } from './utils';
+import { Event, EventFilling } from './utils';
+import dayjs from '@/src/utils/dayjs';
+
+const timeToPx = (hours, minutes) => {
+  return hours * 60 * 0.133 + minutes * 0.133;
+};
 
 const TimeLineCalendar = () => {
   const [dayCount, setDayCount] = useState<number>(6);
@@ -19,6 +24,7 @@ const TimeLineCalendar = () => {
   });
 
   if (isLoading) return <>Loading</>;
+  // console.log(allInterviewers);
 
   return (
     <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
@@ -96,18 +102,30 @@ const AvailabilityView = ({
           const intervierEvents = interviewer.all_events
             .filter((event) => event.start.dateTime)
             .map((event) => ({
-              start: event.start,
-              end: event.end,
+              start: {
+                ...event.start,
+                startPx: timeToPx(
+                  dayjs(event.start.dateTime).format('H'),
+                  dayjs(event.start.dateTime).format('m'),
+                ),
+              },
+              end: {
+                ...event.end,
+                endPx: timeToPx(
+                  dayjs(event.end.dateTime).format('H'),
+                  dayjs(event.end.dateTime).format('m'),
+                ),
+              },
               type: event.type,
             }));
 
-          const dateGrouped = groupByDate(intervierEvents, dayCount);
+          const dateGrouped = groupByDate(
+            intervierEvents,
+            dayCount,
+          ) as Event[][];
 
-          const pixelPropertiesAndEmptyEventsAdded =
-            addPixelPropertiesAndEmptyEvents(dateGrouped);
-
-          const interviewerEvent = Object.values(
-            pixelPropertiesAndEmptyEventsAdded,
+          const interviewerEvent = dateGrouped.map((dg, index) =>
+            EventFilling(dg, dayCount, index),
           );
 
           console.log(interviewerEvent);
@@ -167,28 +185,38 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
             }}
           >
             {events.map((event, hour) => {
+              console.log(
+                'type :',
+                event.type,
+                event.end.endPx,
+                event.start.startPx,
+              );
               return (
                 <>
                   <Box
                     key={hour}
                     sx={{
                       width:
-                        event.type === 'sleep_event_1'
-                          ? `calc( 192px - ${event.start.startingPx} )`
-                          : `calc( ${event.end.endingPx} - ${event.start.startingPx} )`,
+                        event.type === 'morning_sleep'
+                          ? `${event.end.endPx}px`
+                          : event.type === 'night_sleep'
+                            ? `${192 - event.start.startPx}px`
+                            : `${event.end.endPx - event.start.startPx}px`,
                       height: '100%',
                       backgroundColor:
                         event.type === 'cal_event'
                           ? 'orange'
-                          : event.type === 'full_day_event'
+                          : event.type === 'empty_event'
                             ? 'var(--success-9)'
                             : event.type === 'gap_event'
                               ? 'yellow'
                               : event.type === 'sleep_event'
                                 ? 'blue'
-                                : event.type === 'sleep_event_1'
+                                : event.type === 'morning_sleep'
                                   ? 'lightblue'
-                                  : 'blue',
+                                  : event.type === 'night_sleep'
+                                    ? 'yellow'
+                                    : 'blue',
                     }}
                   />
                 </>
@@ -222,8 +250,10 @@ const groupByDate = (events, dayCount) => {
   }, {});
 
   // Step 3: Ensure all dates in the range are present, even if they have no events
-  return dateRange.reduce((acc, date) => {
-    acc[date] = groupedEvents[date] || [];
-    return acc;
-  }, {});
+  return Object.values(
+    dateRange.reduce((acc, date) => {
+      acc[date] = groupedEvents[date] || [];
+      return acc;
+    }, {}),
+  );
 };
