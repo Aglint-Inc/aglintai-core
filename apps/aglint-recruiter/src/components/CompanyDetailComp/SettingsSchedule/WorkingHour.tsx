@@ -74,6 +74,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isHover, setIsHover] = useState(false);
 
   const handleUpdate = async () => {
     setIsUpdating(true);
@@ -109,6 +110,8 @@ export default function WorkingHour({ updateSettings, initialData }) {
       sx={{ overflowX: 'hidden' }}
     >
       <Stack
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
         width={'700px'}
         overflow={'auto'}
         spacing={2}
@@ -117,14 +120,16 @@ export default function WorkingHour({ updateSettings, initialData }) {
         margin={2}
         position={'relative'}
       >
-        <Stack position={'absolute'} top={'16px'} right={'16px'}>
-          <ButtonSoft
-            textButton='Edit'
-            color={'neutral'}
-            size={2}
-            onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
-          />
-        </Stack>
+        {isHover && (
+          <Stack position={'absolute'} top={'16px'} right={'16px'}>
+            <ButtonSoft
+              textButton='Edit'
+              color={'neutral'}
+              size={2}
+              onClickButton={{ onClick: () => setIsDrawerOpen(true) }}
+            />
+          </Stack>
+        )}
         <TimeZone timeZone={initialData?.timeZone?.label} />
         <WorkingHourView workingHours={initialData.workingHours} />
         <Debreif breaktime={initialData.break_hour} />

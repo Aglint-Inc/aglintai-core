@@ -93,7 +93,7 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 }
 
 .im-slot-tab-content {
@@ -103,7 +103,7 @@
   grid-column-gap: 30px;
   grid-row-gap: 30px;
 
-  background-color: var(--neutral-2);
+  background-color: var(--white);
 }
 
 .iml-right-wrappers {
@@ -130,7 +130,7 @@
   border-bottom-left-radius: var(--radius-4);
   border-bottom-right-radius: var(--radius-4);
 
-  background-color: var(--white);
+  background-color: var(--neutral-2);
 
   height: calc(100vh - 197px);
 }

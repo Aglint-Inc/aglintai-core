@@ -26,7 +26,7 @@ export const navList: {
   {
     text: 'Jobs',
     SubComponents: null,
-    route: ROUTES['/jobs']() + '?status=published',
+    route: ROUTES['/jobs'](),
     comingSoon: false,
     isVisible: true,
     permission: ['job_module'],
@@ -41,6 +41,7 @@ export const navList: {
       '/jobs/[id]/screening',
       '/jobs/[id]/workflows',
       '/jobs/[id]/candidate-list',
+      '/jobs/[id]/application/[application_id]',
     ],
   },
   {
@@ -52,7 +53,7 @@ export const navList: {
     permission: ['scheduling_module'],
     active: ['/scheduling'],
   },
-  
+
   {
     text: 'Interviewers',
     SubComponents: null,

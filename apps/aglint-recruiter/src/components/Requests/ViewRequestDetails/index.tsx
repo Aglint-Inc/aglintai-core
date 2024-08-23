@@ -31,6 +31,7 @@ import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
+import CandidateAvailability from './CandidateAvailability';
 import MemberList, { useMemberList } from './Components/MemberList';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
@@ -103,6 +104,7 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <CandidateAvailability selectedRequest={selectedRequest} />
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={
@@ -195,7 +197,12 @@ function ViewRequestDetails() {
                   )}
 
                   {selectedRequest.status === 'to_do' && (
-                    <Stack direction={'row'}>
+                    <Stack
+                      direction={'row'}
+                      sx={{
+                        display: 'none',
+                      }}
+                    >
                       <ButtonSoft
                         size={1}
                         textButton={'Self Schedule'}
@@ -287,9 +294,15 @@ function ViewRequestDetails() {
                       textBadge={capitalizeFirstLetter(selectedRequest?.type)}
                     />
                   }
-                  textDueDate={dayjsLocal(
-                    selectedRequest?.schedule_start_date,
-                  ).format('DD MMMM, YYYY')}
+                  textDueDate={
+                    dayjsLocal(selectedRequest?.schedule_start_date).format(
+                      'DD MMMM, YYYY',
+                    ) +
+                    ' - ' +
+                    dayjsLocal(selectedRequest?.schedule_end_date).format(
+                      'DD MMMM, YYYY',
+                    )
+                  }
                   slotAssignedTo={
                     <MemberList
                       selectedMemberId={selectedRequest?.assignee.user_id}

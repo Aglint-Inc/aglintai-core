@@ -1,25 +1,33 @@
-import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { StagePipeline } from '@/devlink3/StagePipeline';
+import { PiplelineTab } from '@/devlink3/PiplelineTab';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { setSelectedSessionIds, setSelectedStageId } from '../store';
+import { setSelectedSessionIds } from '../store';
 
 function Progress() {
+  const router = useRouter();
   const {
     interview: { data: stages },
   } = useApplication();
 
+  const selectedStageId = router.query.stage as string;
+
+  useEffect(() => {
+    if (!selectedStageId) {
+      const currentQuery = { ...router.query };
+      currentQuery.stage = stages[0].interview_plan.id;
+      router.replace({
+        pathname: router.pathname,
+        query: currentQuery,
+      });
+    }
+  }, [stages]);
+
   return (
-    <Stack
-      direction={'row'}
-      gap={'10px'}
-      sx={{
-        overflowX: 'auto',
-        overflowY: 'hidden',
-      }}
-    >
+    <>
       {stages.map((stage, index) => {
         const isCompleted = stage.sessions.every((session) => {
           return session.interview_meeting.status === 'completed';
@@ -33,46 +41,43 @@ function Progress() {
         ).length;
 
         return (
-          <Stack
-            width={'100%'}
-            minWidth={'250px'}
-            key={index}
-            onClick={() => {
-              setSelectedStageId(stage.interview_plan.id);
-              setSelectedSessionIds([]);
+          <PiplelineTab
+            key={stage.interview_plan.id}
+            textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
+            slotIcon={
+              <GlobalIcon
+                iconName={
+                  isNotScheduled
+                    ? 'brightness_1'
+                    : isCompleted
+                      ? 'check_circle'
+                      : 'workspaces'
+                }
+                color={
+                  isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
+                }
+              />
+            }
+            onClickTab={{
+              onClick: () => {
+                setSelectedSessionIds([]);
+                const currentQuery = { ...router.query };
+                currentQuery.stage = stage.interview_plan.id;
+                router.replace({
+                  pathname: router.pathname,
+                  query: currentQuery,
+                });
+              },
             }}
-          >
-            <StagePipeline
-              textStageName={`Stage ${index + 1} ${stage.interview_plan.name}`}
-              slotIcon={
-                <GlobalIcon
-                  iconName={
-                    isNotScheduled
-                      ? 'brightness_1'
-                      : isCompleted
-                        ? 'check_circle'
-                        : 'workspaces'
-                  }
-                  color={
-                    isNotScheduled
-                      ? 'neutral'
-                      : isCompleted
-                        ? 'success'
-                        : 'info'
-                  }
-                />
-              }
-              isLeft={index !== 0}
-              isRight={index !== stages.length - 1}
-              color={
-                isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
-              }
-              textInterviewProgress={`${completedSessions}/${totalSessions} Interviews completed`}
-            />
-          </Stack>
+            isActive={selectedStageId === stage.interview_plan.id}
+            color={
+              isNotScheduled ? 'neutral' : isCompleted ? 'success' : 'info'
+            }
+            textProgress={`${completedSessions}/${totalSessions} Interviews completed`}
+          />
         );
       })}
-    </Stack>
+    </>
   );
 }
 

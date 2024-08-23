@@ -2946,14 +2946,17 @@ export type Database = {
       }
       recruiter_preferences: {
         Row: {
+          greenhouse: boolean
           recruiter_id: string
           scoring: boolean
         }
         Insert: {
+          greenhouse?: boolean
           recruiter_id: string
           scoring?: boolean
         }
         Update: {
+          greenhouse?: boolean
           recruiter_id?: string
           scoring?: boolean
         }
@@ -4105,6 +4108,7 @@ export type Database = {
           id: string
           interval: number
           is_paused: boolean
+          is_request_workflow: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title: string | null
@@ -4118,6 +4122,7 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
+          is_request_workflow?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title?: string | null
@@ -4131,6 +4136,7 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
+          is_request_workflow?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           title?: string | null
@@ -4710,6 +4716,7 @@ export type Database = {
           recruiter: string | null
           recruiter_id: string | null
           recruiting_coordinator: string | null
+          remote_sync_time: string | null
           scoring_criteria_loading: boolean | null
           section_count: Json | null
           sourcer: string | null
@@ -5243,6 +5250,7 @@ export type Database = {
           id: string | null
           interval: number | null
           is_paused: boolean | null
+          is_request_workflow: boolean | null
           jobs: Json | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
@@ -5793,6 +5801,15 @@ export type Database = {
           created: number
           completed: number
           on_going: number
+        }[]
+      }
+      get_requests_candidate_list: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          applications: Json[]
+          jobs: Json[]
         }[]
       }
       get_screening_candidates: {
