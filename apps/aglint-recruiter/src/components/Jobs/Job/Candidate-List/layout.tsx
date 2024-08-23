@@ -13,10 +13,10 @@ export const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
           onClick: () => {
-            push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
+            push(ROUTES['/jobs']());
           },
           style: { cursor: 'pointer' },
         }}
@@ -32,7 +32,7 @@ export const BreadCrumbs = () => {
         }}
         showArrow
       />
-      <Breadcrum textName={`Candidate list`} showArrow />
+      <Breadcrum textName={`Applications`} showArrow />
     </>
   );
 };

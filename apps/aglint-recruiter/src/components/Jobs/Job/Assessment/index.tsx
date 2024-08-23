@@ -10,6 +10,7 @@ import Loader from '@/src/components/Common/Loader';
 import AssessmentResetWrapper from '@/src/components/NewAssessment/Common/wrapper/resetWrapper';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import JobAssessment from './list';
@@ -45,11 +46,9 @@ const JobAssessmentDashboardBreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />

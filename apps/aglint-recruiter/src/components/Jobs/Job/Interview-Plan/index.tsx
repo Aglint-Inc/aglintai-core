@@ -43,6 +43,7 @@ import {
 } from '@/src/queries/interview-plans/types';
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
+import ROUTES from '@/src/utils/routing/routes';
 import { breakDurations } from '@/src/utils/scheduling/const';
 import {
   capitalizeAll,
@@ -207,11 +208,9 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />

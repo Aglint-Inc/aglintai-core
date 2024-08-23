@@ -18,6 +18,7 @@ import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -325,11 +326,9 @@ const JobScreeningDashboardBreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
