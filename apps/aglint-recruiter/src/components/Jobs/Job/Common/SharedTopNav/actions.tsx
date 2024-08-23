@@ -37,7 +37,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import { UploadApplications } from '../UploadApplications';
 import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
 import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
-import { PATHS } from '@/src/constant/allPaths';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
@@ -146,7 +145,7 @@ const useSettingsActions = () => {
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
     handleJobDelete(job.id);
-  }, [job.id]);
+  }, [job?.id]);
 
   const handleCloseModal = useCallback(() => {
     setModal(false);
@@ -165,7 +164,7 @@ const useSettingsActions = () => {
         handleDeleteJob();
         break;
     }
-  }, [job.status, handleCloseModal]);
+  }, [job?.status, handleCloseModal]);
 
   const handlePush = <
     T extends Extract<keyof R, `/jobs/${string}`>,
