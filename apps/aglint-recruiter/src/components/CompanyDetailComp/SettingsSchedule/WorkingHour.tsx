@@ -470,16 +470,14 @@ const Debreif = ({ breaktime }) => {
             .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
             .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
             .format('hh:mm A')}
-        </span>
-      </Typography>
-      <Typography>
-        <span style={{ fontWeight: '500' }}>Break End Time</span>{' '}
-        <span style={{ marginLeft: '24px' }}> </span>
+        </span>{' '}
+        -{' '}
         {dayjs()
           .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
           .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
           .format('hh:mm A')}
       </Typography>
+      <Typography></Typography>
     </Stack>
   );
 };
