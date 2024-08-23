@@ -1,6 +1,5 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
@@ -10,12 +9,14 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
-import {
-  useAuthDetails
-} from '@/src/context/AuthContext/AuthContext';
+import { GreenHouseUserSyncAPI } from '@/src/app/api/sync/greenhouse/user/type';
+import axios from '@/src/client/axios';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
+import { useGreenhouseDetails } from '@/src/queries/greenhouse';
 import { useAllMembers } from '@/src/queries/members';
+import dayjs from '@/src/utils/dayjs';
 import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
@@ -34,7 +35,15 @@ type ItemType = string;
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiterUser } = useAuthDetails();
-  const { data: members, activeMembers, isFetching } = useTeamMembers();
+  const {
+    data: members,
+    activeMembers,
+    isPending,
+    remote_sync,
+  } = useTeamMembers();
+
+  const timeStamp = remote_sync?.lastSync;
+  const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
 
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
@@ -155,11 +164,12 @@ const TeamManagement = () => {
     Boolean(selectedLocations.length);
 
   const canManage = checkPermissions(['manage_users']);
-  const [isInitalLoading, setIsInitalLoading] = useState(
+  const [isInitialLoading, setIsInitialLoading] = useState(
     filteredMembers.length ? false : true,
   );
+
   useEffect(() => {
-    if (filteredMembers.length) setIsInitalLoading(false);
+    if (filteredMembers.length) setIsInitialLoading(false);
   }, [filteredMembers.length]);
   return (
     <Stack bgcolor={'white'}>
@@ -247,7 +257,7 @@ const TeamManagement = () => {
             <ShowCode>
               <ShowCode.When
                 isTrue={
-                  (!filteredMembers.length && isFetching) || isInitalLoading
+                  (!filteredMembers.length && isPending) || isInitialLoading
                 }
               >
                 <Stack
@@ -294,20 +304,35 @@ const TeamManagement = () => {
         }
         slotInviteBtn={
           <>
-            {canManage && (
-              <ButtonSolid
-                isRightIcon={false}
-                isLeftIcon={true}
-                size={'2'}
-                textButton={'Invite'}
-                iconName={'send'}
-                onClickButton={{
-                  onClick: () => {
-                    setOpenDrawer({ open: true, window: 'addMember' });
-                  },
-                }}
-              />
-            )}
+            {canManage &&
+              (remote_sync.isEnabled ? (
+                <Stack>
+                  <ButtonSolid
+                    isRightIcon={false}
+                    isLeftIcon={true}
+                    size={'2'}
+                    textButton={'Sync Now'}
+                    iconName={'send'}
+                    onClickButton={{
+                      onClick: remote_sync.sync,
+                    }}
+                  />
+                  <Typography>{`* ${last_sync}`}</Typography>
+                </Stack>
+              ) : (
+                <ButtonSolid
+                  isRightIcon={false}
+                  isLeftIcon={true}
+                  size={'2'}
+                  textButton={'Invite'}
+                  iconName={'send'}
+                  onClickButton={{
+                    onClick: () => {
+                      setOpenDrawer({ open: true, window: 'addMember' });
+                    },
+                  }}
+                />
+              ))}
           </>
         }
         pendInvitesVisibility={Boolean(inviteUser)}
@@ -338,7 +363,12 @@ export default TeamManagement;
 export const useTeamMembers = () => {
   const { recruiter } = useAuthDetails();
 
-  const { allMembers, members } = useAllMembers();
+  const { allMembers, members, refetchMembers } = useAllMembers();
+  const {
+    data: syncData,
+    isPending,
+    refetch: refetchLastSync,
+  } = useGreenhouseDetails();
 
   const activeMembers = members;
 
@@ -360,12 +390,31 @@ export const useTeamMembers = () => {
     refetchOnMount: false,
   });
 
+  async function sync_users() {
+    syncUsers(recruiter.id, syncData?.key, syncData?.last_sync['users']).then(
+      () => {
+        refetchMembers();
+        refetchLastSync();
+      },
+    );
+  }
+
   useEffect(() => {
     if (query.data && allMembers.length) {
       query.refetch();
     }
   }, [allMembers.length, query.refetch]);
-  return { activeMembers, ...query };
+
+  return {
+    activeMembers,
+    ...query,
+    isPending: query.isPending || isPending,
+    remote_sync: {
+      lastSync: syncData?.last_sync['users'],
+      isEnabled: Boolean(syncData?.key),
+      sync: sync_users,
+    },
+  };
 };
 
 const getLastLogins = (ids: string[], recruiter_id: string) => {
@@ -389,3 +438,19 @@ export const getFullName = (firstName: string, lastName: string) => {
     .filter(Boolean)
     .join(' ');
 };
+
+async function syncUsers(
+  recruiter_id: string,
+  key: string,
+  last_sync?: string,
+) {
+  return await axios.call<GreenHouseUserSyncAPI>(
+    'POST',
+    `/api/sync/greenhouse/user`,
+    {
+      recruiter_id,
+      key,
+      last_sync,
+    },
+  );
+}
