@@ -26,9 +26,7 @@ function RequestProgress({
     } else {
       eventActions = [...job_workflow];
     }
-    if (eventActions.length === 0) {
-      return [];
-    }
+
     return traverseProgress({
       eventActions,
       request_progress: request_progress.data ?? [],
