@@ -14,6 +14,7 @@ type user = {
   position: string;
   email: string;
   profile_image: string;
+  scheduling_settings: CustomSchedulingSettings;
 };
 
 export type initUser = {
@@ -39,7 +40,9 @@ export default async function handler(
 
     const { data: users, error } = await supabaseAdmin
       .from('all_interviewers')
-      .select('user_id,first_name,last_name,position,email,profile_image')
+      .select(
+        'user_id,first_name,last_name,position,email,profile_image,scheduling_settings',
+      )
       .eq('recruiter_id', recruiter_id);
 
     const {
