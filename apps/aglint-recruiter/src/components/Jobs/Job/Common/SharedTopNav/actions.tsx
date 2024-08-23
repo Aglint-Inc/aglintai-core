@@ -342,7 +342,7 @@ const Modules = () => {
         <ScreeningModule />
       )}
       {currentPath !== '/jobs/[id]/hiring-team' && <HiringTeamModule />}
-      {currentPath !== '/jobs/[id]/email-templates' && <EmailTemplatesModule />}
+      {/* {currentPath !== '/jobs/[id]/email-templates' && <EmailTemplatesModule />} */}
       {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
     </>
   );
@@ -418,6 +418,7 @@ const AssessmentModule = () => {
   );
 };
 
+// eslint-disable-next-line no-unused-vars
 const EmailTemplatesModule = () => {
   const { handlePush } = useSettings();
   return (
