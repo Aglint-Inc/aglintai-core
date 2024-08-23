@@ -1,0 +1,26 @@
+.workflow-jobs {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 500px 1fr;
+  grid-template-rows: auto;
+  height: calc(100vh - 48px);
+}
+
+.slot-workflow-cards {
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  height: calc(100vh - 48px);
+}
+
+.slot-workflowpreview {
+  padding: 20px;
+}
+
+#w-node-_463e6d3e-a507-7c54-d345-80e0014fdf69-014fdf67 {
+}

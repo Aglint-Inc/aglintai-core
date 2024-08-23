@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { WorkflowJobs } from '@/devlink/WorkflowJobs';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -22,7 +23,7 @@ const JobWorkflowDashboard = () => {
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Actions />}
-        slotBody={<JobWorkflow />}
+        slotBody={<WorkflowJobs slotWorkflowCards={<JobWorkflow />} />}
       />
     ) : (
       <JobNotFound />
