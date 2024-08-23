@@ -1150,6 +1150,7 @@ export type Database = {
       }
       interview_filter_json: {
         Row: {
+          application_id: string | null
           confirmed_on: string | null
           created_at: string
           created_by: string | null
@@ -1164,6 +1165,7 @@ export type Database = {
           viewed_on: string | null
         }
         Insert: {
+          application_id?: string | null
           confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
@@ -1178,6 +1180,7 @@ export type Database = {
           viewed_on?: string | null
         }
         Update: {
+          application_id?: string | null
           confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
@@ -1192,6 +1195,34 @@ export type Database = {
           viewed_on?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "public_interview_filter_json_created_by_fkey"
             columns: ["created_by"]
@@ -5810,6 +5841,8 @@ export type Database = {
         Returns: {
           applications: Json[]
           jobs: Json[]
+          assignerlist: Json[]
+          assigneelist: Json[]
         }[]
       }
       get_screening_candidates: {

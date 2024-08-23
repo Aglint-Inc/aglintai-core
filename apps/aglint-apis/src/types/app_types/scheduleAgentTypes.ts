@@ -31,7 +31,6 @@ export type CandidateInfoType = {
   begin_message: string;
   job_id: string;
   company_id: string;
-  schedule_id: string;
   company_logo: string;
   job_title: string;
   candidate_name: string;

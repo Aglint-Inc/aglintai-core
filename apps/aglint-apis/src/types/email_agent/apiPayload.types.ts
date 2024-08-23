@@ -17,7 +17,6 @@ export type EmailAgentPayload = {
     application_id: string;
     job_id: string;
     company_id: string;
-    schedule_id: string;
     company_logo: string;
     cand_application_status: string;
     candidate_time_zone: string | null;
