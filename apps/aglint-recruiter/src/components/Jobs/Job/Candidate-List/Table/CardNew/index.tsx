@@ -4,6 +4,7 @@ import { memo, useCallback, useMemo } from 'react';
 
 import { CandidateListItem } from '@/devlink2/CandidateListItem';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import StageProgress from '@/src/components/Scheduling/Common/StageProgress';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useKeyPress } from '@/src/context/ApplicationsContext/hooks';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
@@ -14,7 +15,6 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import ResumeScore from '../../Common/ResumeScoreNew';
 import { formatTimeStamp } from '../../utils';
-import { ScheduleProgress } from './ScheduleProgress';
 
 const ApplicationCard = memo(
   ({ application }: { application: Application }) => {
@@ -147,7 +147,7 @@ const ApplicationCard = memo(
           slotScreening={<>---</>}
           slotAssessmentScore={<>---</>}
           slotInterviewPipline={
-            <ScheduleProgress meeting_details={application.meeting_details} />
+            <StageProgress interview_plans={application.interview_plans} />
           }
           slotDisqualified={<>---</>}
           appliedDate={appliedDate}
