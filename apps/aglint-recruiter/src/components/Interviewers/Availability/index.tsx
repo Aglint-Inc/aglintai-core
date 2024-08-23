@@ -6,11 +6,10 @@ import React, { useState } from 'react';
 import { initUser } from '@/src/pages/api/interviewers';
 
 import { useAvailabilty } from '../Hook';
-import { getColor } from './components';
-import { addPixelPropertiesAndEmptyEvents, getEventColor } from './utils';
+import { addPixelPropertiesAndEmptyEvents } from './utils';
 
 const TimeLineCalendar = () => {
-  const [dayCount, setDayCount] = useState<number>(3);
+  const [dayCount, setDayCount] = useState<number>(6);
 
   const startDate = dayjsLocal().startOf('day').add(0, 'day');
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
@@ -82,6 +81,10 @@ const AvailabilityView = ({
         }}
       >
         {allInterviewers.map((interviewer, index) => {
+          if (!interviewer.isCalenderConnected)
+            return (
+              <Typography key={index}>Calendar is not connected</Typography>
+            );
           const timeZoneOffset = dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)
             .utcOffset(); // Time zone offset in minutes
@@ -89,17 +92,6 @@ const AvailabilityView = ({
           const totalOffset = timeZoneOffset - referenceOffset; // Difference in minutes
 
           const timeZoneLeftOffset = (totalOffset / 60) * 8; // Convert offset from minutes to pixels (1 hour = 8px)
-
-          const days = Array.from({ length: dayCount }, (_, i) =>
-            dayjsLocal().add(i, 'day'),
-          );
-
-          const intervi = {
-            name: getFullName(interviewer.first_name, interviewer.last_name),
-            timezone: interviewer.scheduling_settings.timeZone.tzCode,
-            availability: [5, 6, 7, 10, 11, 12],
-            softConflicts: [8, 14],
-          };
 
           const intervierEvents = interviewer.all_events
             .filter((event) => event.start.dateTime)
@@ -118,12 +110,9 @@ const AvailabilityView = ({
             pixelPropertiesAndEmptyEventsAdded,
           );
 
-          // const pixelAddedData = addPixelProperties(dateGrouped);
-
           return (
             <TimeLineList
               key={index}
-              days={days}
               timeZoneLeftOffset={timeZoneLeftOffset}
               interviewerEvent={interviewerEvent}
             />
@@ -134,7 +123,7 @@ const AvailabilityView = ({
   );
 };
 
-const TimeLineList = ({ days, timeZoneLeftOffset, interviewerEvent }) => {
+const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
   return (
     // whole box
     <Box
@@ -176,7 +165,6 @@ const TimeLineList = ({ days, timeZoneLeftOffset, interviewerEvent }) => {
             }}
           >
             {events.map((event, hour) => {
-              console.log(event);
               return (
                 <>
                   <Box
@@ -230,158 +218,3 @@ const groupByDate = (events, dayCount) => {
     return acc;
   }, {});
 };
-
-const MINUTE_TO_PIXEL = 0.133; // 8px / 60 minutes
-
-const calculatePixels = (time) => {
-  const [hours, minutes] = time.split(':').map(Number);
-  return (hours * 60 + minutes) * MINUTE_TO_PIXEL;
-};
-
-const addPixelProperties = (events) => {
-  return Object.keys(events).reduce((result, date) => {
-    result[date] = events[date].map((event) => {
-      const startTime = dayjsLocal(event.start.dateTime).format('HH:mm');
-      const endTime = dayjsLocal(event.end.dateTime).format('HH:mm');
-
-      const startingPx = calculatePixels(startTime);
-      const endingPx = calculatePixels(endTime);
-
-      return {
-        ...event,
-        start: {
-          ...event.start,
-          startingPx: `${startingPx.toFixed(1)}px`, // rounding to 1 decimal place
-        },
-        end: {
-          ...event.end,
-          endingPx: `${endingPx.toFixed(1)}px`, // rounding to 1 decimal place
-        },
-      };
-    });
-    return result;
-  }, {});
-};
-
-const interviewers = [
-  {
-    name: 'Peter Thiel',
-    timezone: 'America/Los_Angeles',
-    availability: [9, 10, 11, 14, 15, 16],
-    softConflicts: [12, 18],
-  },
-  {
-    name: 'Elon Musk',
-    timezone: 'America/New_York',
-    availability: [8, 9, 10, 13, 14, 17],
-    softConflicts: [11, 18],
-  },
-  {
-    name: 'Sundar Pichai',
-    timezone: 'Asia/Kolkata',
-    availability: [5, 6, 7, 10, 11, 12],
-    softConflicts: [8, 14],
-  },
-  {
-    name: 'Tim Cook',
-    timezone: 'Australia/Sydney',
-    availability: [3, 4, 5, 8, 9, 10],
-    softConflicts: [6, 12],
-  },
-  {
-    name: 'Satya Nadella',
-    timezone: 'America/Chicago',
-    availability: [10, 11, 12, 14, 15, 16],
-    softConflicts: [13, 17],
-  },
-  {
-    name: 'Jeff Bezos',
-    timezone: 'America/Denver',
-    availability: [9, 10, 11, 13, 14, 15],
-    softConflicts: [12, 16],
-  },
-  {
-    name: 'Sheryl Sandberg',
-    timezone: 'America/Los_Angeles',
-    availability: [10, 11, 12, 15, 16, 17],
-    softConflicts: [14, 18],
-  },
-  {
-    name: 'Jack Dorsey',
-    timezone: 'America/New_York',
-    availability: [8, 9, 10, 13, 14, 15],
-    softConflicts: [12, 16],
-  },
-  {
-    name: 'Larry Page',
-    timezone: 'Europe/London',
-    availability: [8, 9, 10, 12, 13, 14],
-    softConflicts: [11, 15],
-  },
-  {
-    name: 'Sergey Brin',
-    timezone: 'Europe/Moscow',
-    availability: [9, 10, 11, 13, 14, 15],
-    softConflicts: [12, 16],
-  },
-  {
-    name: 'Mark Zuckerberg',
-    timezone: 'Asia/Singapore',
-    availability: [4, 5, 6, 9, 10, 11],
-    softConflicts: [7, 12],
-  },
-  {
-    name: 'Reed Hastings',
-    timezone: 'Europe/Paris',
-    availability: [8, 9, 10, 12, 13, 14],
-    softConflicts: [11, 15],
-  },
-  {
-    name: 'Elon Musk',
-    timezone: 'America/New_York',
-    availability: [8, 9, 10, 13, 14, 17],
-    softConflicts: [11, 18],
-  },
-  {
-    name: 'Sundar Pichai',
-    timezone: 'Asia/Kolkata',
-    availability: [5, 6, 7, 10, 11, 12],
-    softConflicts: [8, 14],
-  },
-  {
-    name: 'Tim Cook',
-    timezone: 'Australia/Sydney',
-    availability: [3, 4, 5, 8, 9, 10],
-    softConflicts: [6, 12],
-  },
-  {
-    name: 'Satya Nadella',
-    timezone: 'America/Chicago',
-    availability: [10, 11, 12, 14, 15, 16],
-    softConflicts: [13, 17],
-  },
-  {
-    name: 'Jeff Bezos',
-    timezone: 'America/Denver',
-    availability: [9, 10, 11, 13, 14, 15],
-    softConflicts: [12, 16],
-  },
-  {
-    name: 'Sheryl Sandberg',
-    timezone: 'America/Los_Angeles',
-    availability: [10, 11, 12, 15, 16, 17],
-    softConflicts: [14, 18],
-  },
-  {
-    name: 'Jack Dorsey',
-    timezone: 'America/New_York',
-    availability: [8, 9, 10, 13, 14, 15],
-    softConflicts: [12, 16],
-  },
-  {
-    name: 'Larry Page',
-    timezone: 'Europe/London',
-    availability: [8, 9, 10, 12, 13, 14],
-    softConflicts: [11, 15],
-  },
-];
