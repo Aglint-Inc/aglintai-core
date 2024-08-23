@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { ButtonGhost } from '@/devlink3/ButtonGhost';
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ReasonList } from '@/devlink3/ReasonList';
 import { ScheduleReason } from '@/devlink3/ScheduleReason';
@@ -150,7 +150,7 @@ const ScheduleReasonSectionCard = <
   return (
     <ScheduleReasonSection
       slotAddButton={
-        <ButtonGhost
+        <ButtonSoft
         highContrast={false}
         iconName={'add'}
         isLeftIcon={true}
