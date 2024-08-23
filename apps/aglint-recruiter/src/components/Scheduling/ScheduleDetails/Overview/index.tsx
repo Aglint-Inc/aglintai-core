@@ -83,29 +83,31 @@ function Overview() {
         }
         slotHiringTeamList={<AllRolesMeetings />}
         slotOrganizerList={
-          <UserNameCard
-            textRole={schedule.organizer.position}
-            textName={
-              <Link href={`/user/profile/${schedule.organizer.user_id}`}>
-                {getFullName(
-                  schedule.organizer.first_name,
-                  schedule.organizer.last_name,
-                )}
-              </Link>
-            }
-            slotAvatar={
-              <MuiAvatar
-                level={getFullName(
-                  schedule.organizer.first_name,
-                  schedule.organizer.last_name,
-                )}
-                src={schedule.organizer.profile_image}
-                variant={'rounded'}
-                width='100%'
-                height='100%'
-              />
-            }
-          />
+          schedule.organizer && (
+            <UserNameCard
+              textRole={schedule.organizer.position}
+              textName={
+                <Link href={`/user/profile/${schedule.organizer.user_id}`}>
+                  {getFullName(
+                    schedule.organizer.first_name,
+                    schedule.organizer.last_name,
+                  )}
+                </Link>
+              }
+              slotAvatar={
+                <MuiAvatar
+                  level={getFullName(
+                    schedule.organizer.first_name,
+                    schedule.organizer.last_name,
+                  )}
+                  src={schedule.organizer.profile_image}
+                  variant={'rounded'}
+                  width='100%'
+                  height='100%'
+                />
+              }
+            />
+          )
         }
         textDate={
           schedule.interview_meeting.end_time
