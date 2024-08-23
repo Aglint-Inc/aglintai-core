@@ -17,6 +17,7 @@ import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
+
 function RequestDetails({
   request,
 }: {

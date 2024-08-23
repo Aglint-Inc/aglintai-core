@@ -93,7 +93,7 @@ function CancelScheduleDialog({
         slotButtons={
           <>
             <ButtonSoft
-              textButton='Cancel'
+              textButton='Close'
               color={'neutral'}
               size={2}
               onClickButton={{

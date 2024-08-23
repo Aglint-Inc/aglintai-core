@@ -323,7 +323,7 @@ const TeamManagement = () => {
                 <ButtonSolid
                   isRightIcon={false}
                   isLeftIcon={true}
-                  size={'2'}
+                  size={'1'}
                   textButton={'Invite'}
                   iconName={'send'}
                   onClickButton={{
