@@ -18,6 +18,7 @@ import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -32,7 +33,10 @@ import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import CandidateAvailability from './CandidateAvailability';
+import InterviewDateList from './Components/InterviewDateList';
 import MemberList, { useMemberList } from './Components/MemberList';
+import PriorityList from './Components/PriorityList';
+import StatusList from './Components/StatusList';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
@@ -40,6 +44,8 @@ import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
   const { query } = useRouter();
+
+  const { recruiterUser } = useAuthDetails();
 
   const {
     requests: { data: requestList, isPlaceholderData },
@@ -261,6 +267,9 @@ function ViewRequestDetails() {
                       }
                     />
                   }
+                  slotStatusEdit={
+                    <StatusList selectedFilter={selectedRequest?.status} />
+                  }
                   slotPriority={
                     <GlobalBadge
                       showIcon={true}
@@ -278,6 +287,9 @@ function ViewRequestDetails() {
                       )}
                     />
                   }
+                  slotPriorityEdit={
+                    <PriorityList selectedFilter={selectedRequest?.priority} />
+                  }
                   slotRequestType={
                     <GlobalBadge
                       showIcon={true}
@@ -287,14 +299,31 @@ function ViewRequestDetails() {
                       textBadge={capitalizeFirstLetter(selectedRequest?.type)}
                     />
                   }
+                  slotRequestTypeEdit={<></>}
                   textDueDate={
-                    dayjsLocal(selectedRequest?.schedule_start_date).format(
-                      'DD MMMM, YYYY',
-                    ) +
-                    ' - ' +
-                    dayjsLocal(selectedRequest?.schedule_end_date).format(
-                      'DD MMMM, YYYY',
-                    )
+                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                      <Text
+                        content={
+                          dayjsLocal(
+                            selectedRequest?.schedule_start_date,
+                          ).format('DD MMM, YYYY') +
+                          ' - ' +
+                          dayjsLocal(selectedRequest?.schedule_end_date).format(
+                            'DD MMM, YYYY',
+                          )
+                        }
+                      />
+                      {selectedRequest?.status === 'to_do' &&
+                        selectedRequest?.assigner_id ===
+                          recruiterUser?.user_id && (
+                          <InterviewDateList
+                            selectedFilter={{
+                              startDate: selectedRequest?.schedule_start_date,
+                              endDate: selectedRequest?.schedule_end_date,
+                            }}
+                          />
+                        )}
+                    </Stack>
                   }
                   slotAssignedTo={
                     <MemberList
