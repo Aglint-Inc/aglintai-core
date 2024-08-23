@@ -10,7 +10,6 @@ import { useJob } from '@/src/context/JobContext';
 import JobNotFound from '../Common/JobNotFound';
 import { SharedActions } from '../Common/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '../Common/SharedTopNav/breadcrumbs';
-import { UploadApplications } from '../Common/UploadApplications';
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
 import Filters from './Filters';
@@ -71,7 +70,6 @@ const ApplicationsComponent = () => {
         slotTopbarRight={<SharedActions />}
         slotTopbarLeft={<SharedBreadCrumbs />}
       />
-      <UploadApplications />
     </DNDProvider>
   );
 };

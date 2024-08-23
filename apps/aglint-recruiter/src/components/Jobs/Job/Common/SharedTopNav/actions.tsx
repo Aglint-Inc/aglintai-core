@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { CircularProgress, Dialog, Popover } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
@@ -17,6 +18,8 @@ import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
+import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
@@ -35,8 +38,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
-import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
@@ -110,7 +111,6 @@ const Publish = () => {
 
 const Switcher = () => {
   const { handlePush, currentPath } = useSettings();
-  const router = useRouter();
   return (
     <GlobalSwitch
       slotGlobalSwitchPill={
