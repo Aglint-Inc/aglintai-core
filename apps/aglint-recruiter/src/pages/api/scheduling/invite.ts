@@ -37,6 +37,7 @@ export type ApiResponseCandidateInvite = {
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
   >['resMeetings'];
+  cancel_reasons: DatabaseTable['recruiter']['scheduling_reason'];
 };
 
 export type ApiResponseAllSlots = SessionsCombType[][][];
@@ -62,6 +63,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       filterJson.session_ids,
     );
 
+    const cancelReasons = await getSchedulingReason(schedule.recruiter.id);
+
     // console.log(dateRanges);
 
     return res.status(200).json({
@@ -71,6 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       filter_json: filterJson,
       recruiter: recruiter,
       meetings: resMeetings,
+      cancel_reasons: cancelReasons,
     });
   } catch (error) {
     console.error(error.message);
@@ -84,6 +88,18 @@ export interface DateRangeCandidateInvite {
   start_date: dayjs.Dayjs;
   end_date: dayjs.Dayjs | null;
 }
+
+const getSchedulingReason = async (id: string) => {
+  return supabase
+    .from('recruiter')
+    .select('scheduling_reason')
+    .eq('id', id)
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data.scheduling_reason;
+    });
+};
 
 const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
   const { data: sch, error: errSch } = await supabase
