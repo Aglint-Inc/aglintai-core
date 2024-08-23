@@ -68,12 +68,17 @@ export function RequestDashboard({
               className={_utils.cx(_styles, "req-dash-progress-wrap")}
               tag="div"
             >
-              <Text content={textProgressTitle} size="4" weight="regular" />
               <_Builtin.Block
-                className={_utils.cx(_styles, "req_progress")}
+                className={_utils.cx(_styles, "req-dash-header-progress")}
                 tag="div"
               >
-                {slotProgressBar}
+                <Text content={textProgressTitle} size="4" weight="regular" />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "req_progress")}
+                  tag="div"
+                >
+                  {slotProgressBar}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
