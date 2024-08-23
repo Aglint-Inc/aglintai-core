@@ -96,63 +96,66 @@ const fetchSessionDetails = async ({
 
   if (!data) return [];
 
-  const reducedPlan = data.map((op) => {
-    const plan: DatabaseTable['interview_plan'] = {
-      created_at: op.created_at,
-      id: op.id,
-      job_id: op.job_id,
-      name: op.name,
-      plan_order: op.plan_order,
-    };
-    const sessions = op.interview_session.map((ses) => {
+  const reducedPlan = data
+    .sort((a, b) => a.plan_order - b.plan_order)
+    .map((op) => {
+      const plan: DatabaseTable['interview_plan'] = {
+        created_at: op.created_at,
+        id: op.id,
+        job_id: op.job_id,
+        name: op.name,
+        plan_order: op.plan_order,
+      };
+      const sessions = op.interview_session
+        .sort((a, b) => a.session_order - b.session_order)
+        .map((ses) => {
+          return {
+            interview_session: ses,
+            interview_meeting: ses.interview_meeting,
+            cancel_reasons: ses.interview_session_cancel
+              .filter((cancel) => !cancel.is_resolved && !cancel.is_ignored)
+              .map((cancel) => {
+                const interview_session_cancel: DatabaseTable['interview_session_cancel'] =
+                  {
+                    id: cancel.id,
+                    reason: cancel.reason,
+                    is_resolved: cancel.is_resolved,
+                    is_ignored: cancel.is_ignored,
+                    created_at: cancel.created_at,
+                    cancel_user_id: cancel.cancel_user_id,
+                    other_details: cancel.other_details,
+                    schedule_id: cancel.schedule_id,
+                    session_id: cancel.session_id,
+                    session_relation_id: cancel.session_relation_id,
+                    type: cancel.type,
+                    request_id: null,
+                  };
+                return {
+                  interview_session_cancel: interview_session_cancel,
+                  recruiter_user: cancel.interview_session_relation
+                    ? cancel.interview_session_relation
+                        .interview_module_relation.recruiter_user
+                    : cancel.admin,
+                };
+              }),
+            interview_module: ses.interview_module,
+            users: ses.interview_session_relation.map((sesitem) => ({
+              interview_session_relation: sesitem,
+              interview_module_relation: sesitem.interview_module_relation,
+              user_details: sesitem.interview_module_relation_id
+                ? sesitem.interview_module_relation.recruiter_user
+                : sesitem.debrief_user,
+            })),
+          };
+        });
       return {
-        interview_session: ses,
-        interview_meeting: ses.interview_meeting,
-        cancel_reasons: ses.interview_session_cancel
-          .filter((cancel) => !cancel.is_resolved && !cancel.is_ignored)
-          .map((cancel) => {
-            const interview_session_cancel: DatabaseTable['interview_session_cancel'] =
-              {
-                id: cancel.id,
-                reason: cancel.reason,
-                is_resolved: cancel.is_resolved,
-                is_ignored: cancel.is_ignored,
-                created_at: cancel.created_at,
-                cancel_user_id: cancel.cancel_user_id,
-                other_details: cancel.other_details,
-                schedule_id: cancel.schedule_id,
-                session_id: cancel.session_id,
-                session_relation_id: cancel.session_relation_id,
-                type: cancel.type,
-                request_id: null,
-              };
-            return {
-              interview_session_cancel: interview_session_cancel,
-              recruiter_user: cancel.interview_session_relation
-                ? cancel.interview_session_relation.interview_module_relation
-                    .recruiter_user
-                : cancel.admin,
-            };
-          }),
-        interview_module: ses.interview_module,
-        users: ses.interview_session_relation.map((sesitem) => ({
-          interview_session_relation: sesitem,
-          interview_module_relation: sesitem.interview_module_relation,
-          user_details: sesitem.interview_module_relation_id
-            ? sesitem.interview_module_relation.recruiter_user
-            : sesitem.debrief_user,
-        })),
+        interview_plan: plan,
+        sessions,
       };
     });
-    return {
-      interview_plan: plan,
-      sessions,
-    };
-  });
 
   return reducedPlan;
 };
-
 
 // eslint-disable-next-line no-unused-vars
 const fetchApplicationDetails = async ({
