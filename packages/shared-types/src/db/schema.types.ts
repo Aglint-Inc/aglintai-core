@@ -4108,6 +4108,7 @@ export type Database = {
           id: string
           interval: number
           is_paused: boolean
+          is_request_workflow: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title: string | null
@@ -4121,6 +4122,7 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
+          is_request_workflow?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           title?: string | null
@@ -4134,6 +4136,7 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
+          is_request_workflow?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           title?: string | null
@@ -5247,6 +5250,7 @@ export type Database = {
           id: string | null
           interval: number | null
           is_paused: boolean | null
+          is_request_workflow: boolean | null
           jobs: Json | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null

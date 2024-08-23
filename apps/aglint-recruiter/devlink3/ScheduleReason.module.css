@@ -1,8 +1,5 @@
 .sr-wrapper {
   overflow: hidden;
-  margin: var(--space-4);
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
   background-color: var(--white);
 }
 
@@ -32,7 +29,7 @@
   flex-wrap: nowrap;
   grid-column-gap: var(--space-5);
   grid-row-gap: var(--space-5);
-  height: calc(100vh - 75px);
+  height: calc(100vh - 85px);
 }
 
 .scheduling_reason_header {
