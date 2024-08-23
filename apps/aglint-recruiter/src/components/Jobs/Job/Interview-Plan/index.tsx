@@ -53,6 +53,7 @@ import {
 import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
@@ -115,6 +116,7 @@ const InterviewPlanPage = () => {
     <>
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
+        slotTopbarRight={<Settings />}
         slotBody={
           <Stack gap={1} margin={2} width={'800px'}>
             {data?.length ? (

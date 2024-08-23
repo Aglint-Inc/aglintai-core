@@ -48,6 +48,7 @@ import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -73,6 +74,7 @@ const ProfileScorePage = () => {
     <>
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
+        slotTopbarRight={<Settings />}
         slotBody={
           <BodyWithSidePanel
             slotLeft={<ProfileScore />}

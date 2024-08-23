@@ -2,9 +2,10 @@ import { CircularProgress, Dialog, Popover } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import React, {
+  createContext,
   PropsWithChildren,
-  PropsWithoutRef,
   useCallback,
+  useContext,
   useState,
 } from 'react';
 
@@ -100,66 +101,102 @@ const Publish = () => {
   );
 };
 
-const Settings = () => {
+const useSettingsActions = () => {
+  const { push } = useRouter();
+  const { handleJobDelete } = useJobs();
+  const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
+  const [modal, setModal] = useState(false);
+
+  const isDelete = job?.status !== 'published';
+
+  const handleDeleteJob = useCallback(() => {
+    push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
+    handleJobDelete(job.id);
+  }, [job.id]);
+
+  const handleCloseModal = useCallback(() => {
+    setModal(false);
+  }, []);
+
+  const handleModalSubmit = useCallback(async () => {
+    handleCloseModal();
+    switch (job.status) {
+      case 'draft':
+        handleDeleteJob();
+        break;
+      case 'published':
+        await handleJobAsyncUpdate({ status: 'closed' });
+        break;
+      case 'closed':
+        handleDeleteJob();
+        break;
+    }
+  }, [job.status, handleCloseModal]);
+
+  const handlePush = <
+    T extends Extract<keyof R, `/jobs/${string}`>,
+    R extends typeof ROUTES = typeof ROUTES,
+  >(
+    type: T,
+  ) => {
+    setAnchorEl(null);
+    //@ts-expect-error
+    push(ROUTES[type]({ id: job?.id }));
+  };
+
+  return {
+    job,
+    anchorEl,
+    setAnchorEl,
+    modal,
+    setModal,
+    isDelete,
+    handleCloseModal,
+    handleModalSubmit,
+    handlePush,
+  };
+};
+
+const SettingsContext =
+  createContext<ReturnType<typeof useSettingsActions>>(undefined);
+
+const useSettings = () => useContext(SettingsContext);
+
+export const Settings = () => {
+  const value = useSettingsActions();
   return (
-    <>
+    <SettingsContext.Provider value={value}>
       <IconButtonGhost
         color={'neutral'}
         iconSize={6}
         iconName='more_vert'
         onClickButton={{
-          onClick: (e) => setAnchorEl(e.currentTarget),
+          onClick: (e) => value.setAnchorEl(e.currentTarget),
         }}
       />
-      <Dropdown anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-    </>
+      <Dropdown />
+    </SettingsContext.Provider>
   );
 };
 
-const Dropdown = ({
-  anchorEl,
-  setAnchorEl,
-}: PropsWithoutRef<{
-  anchorEl: HTMLButtonElement | null;
-  setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement>>;
-}>) => {
-  const { job } = useJob();
-  const [modal, setModal] = useState(false);
-  const isDelete = job?.status !== 'published';
+const Dropdown = () => {
+  const { modal } = useSettings();
   return (
     <>
-      <Pop anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
+      <Pop>
         <Modules />
-        <FilterOption
-          onClickCancelInvite={{
-            onClick: () => {
-              setModal(true);
-              setAnchorEl(null);
-            },
-          }}
-          text={`${isDelete ? 'Delete' : 'Close'} Job`}
-          slotIcon={
-            <GlobalIcon size={4} iconName={isDelete ? 'delete' : 'close'} />
-          }
-          color={'black'}
-        />
+        <CloseJob />
       </Pop>
-      {modal && <Close open={modal} handleClose={() => setModal(false)} />}
+      {modal && <Close />}
     </>
   );
 };
 
-const Pop = ({
-  anchorEl,
-  setAnchorEl,
-  children,
-}: PropsWithChildren<{
-  anchorEl: HTMLButtonElement | null;
-  setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement>>;
-}>) => {
+const Pop = ({ children }: PropsWithChildren) => {
+  const { anchorEl, setAnchorEl } = useSettings();
   return (
     <>
       <Popover
@@ -195,36 +232,13 @@ const Pop = ({
   );
 };
 
-const Close = ({
-  open,
-  handleClose,
-}: PropsWithoutRef<{ open: boolean; handleClose: () => void }>) => {
-  const { push } = useRouter();
-  const { handleJobDelete } = useJobs();
-  const { job, handleJobAsyncUpdate } = useJob();
+const Close = () => {
+  const { job, modal, handleModalSubmit, handleCloseModal, isDelete } =
+    useSettings();
   const [value, setValue] = useState('');
-  const handleDeleteJob = useCallback(() => {
-    push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
-    handleJobDelete(job.id);
-  }, [job.id]);
-  const handleSubmit = useCallback(async () => {
-    handleClose();
-    switch (job.status) {
-      case 'draft':
-        handleDeleteJob();
-        break;
-      case 'published':
-        await handleJobAsyncUpdate({ status: 'closed' });
-        break;
-      case 'closed':
-        handleDeleteJob();
-        break;
-    }
-  }, [job.status, handleClose]);
-  const isDelete = job?.status !== 'published';
   const job_title = job?.job_title ?? '';
   return (
-    <Dialog open={open} onClose={() => handleClose()}>
+    <Dialog open={modal} onClose={() => handleCloseModal()}>
       <CloseJobModal
         textPopupTitle={`${isDelete ? 'Delete' : 'Close'}  This Job`}
         textWarning={
@@ -234,7 +248,7 @@ const Close = ({
         }
         textButton={isDelete ? 'Delete Job' : 'Close Job'}
         textJobTitle={job_title.trim()}
-        onClickCloseJob={{ onClick: () => handleClose() }}
+        onClickCloseJob={{ onClick: () => handleCloseModal() }}
         textLocation={''}
         slotInput={
           <UITextField
@@ -249,13 +263,13 @@ const Close = ({
               color={'neutral'}
               textButton='Cancel'
               size={2}
-              onClickButton={{ onClick: () => handleClose() }}
+              onClickButton={{ onClick: () => handleCloseModal() }}
             />
             <ButtonSolid
               textButton={isDelete ? 'Delete Job' : 'Close Job'}
               color={isDelete ? 'error' : 'accent'}
               size={2}
-              onClickButton={{ onClick: handleSubmit }}
+              onClickButton={{ onClick: handleModalSubmit }}
               isDisabled={job_title.trim() !== value.trim()}
             />
           </>
@@ -288,14 +302,12 @@ const Modules = () => {
 };
 
 const WorkflowModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/workflows'),
+      }}
       text={'Workflows'}
       slotIcon={<WorkflowIcon />}
       color={'black'}
@@ -304,19 +316,12 @@ const WorkflowModule = () => {
 };
 
 const HiringTeamModule = () => {
-  const {
-    job,
-    // publishStatus: {
-    //   hiringTeamValidity: { validity },
-    // },
-  } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/hiring-team'),
+      }}
       text={'Hiring Team'}
       slotIcon={<HiringTeamIcon />}
       color={'black'}
@@ -325,19 +330,12 @@ const HiringTeamModule = () => {
 };
 
 const ProfileScoreModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/profile-score`);
-  };
-  // const isAlert = status.jd_json_error && !status.description_error;
-  // const isWarning =
-  //   !isAlert &&
-  //   ((status.description_changed && !status.scoring_criteria_changed) ||
-  //     status.description_error);
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/profile-score'),
+      }}
       text={'Profile Score'}
       slotIcon={<ProfileScoreIcon />}
       color={'black'}
@@ -346,14 +344,12 @@ const ProfileScoreModule = () => {
 };
 
 const JobDetailsModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/job-details'),
+      }}
       text={'Job Details'}
       slotIcon={<JobDetailsIcon />}
       color={'black'}
@@ -362,14 +358,12 @@ const JobDetailsModule = () => {
 };
 
 const AssessmentModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/assessment`);
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/assessment'),
+      }}
       text={'Assessment'}
       slotIcon={<AssessmentIcon />}
       color={'black'}
@@ -378,14 +372,12 @@ const AssessmentModule = () => {
 };
 
 const EmailTemplatesModule = () => {
-  const { job /* emailTemplateValidity */ } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/email-templates`);
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/email-templates'),
+      }}
       text={'Email Templates'}
       slotIcon={<EmailTemplateIcon />}
       color={'black'}
@@ -394,15 +386,12 @@ const EmailTemplatesModule = () => {
 };
 
 const ScreeningModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-
-  const handleClick = () => {
-    push(`/jobs/${job.id}/screening`);
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/screening'),
+      }}
       text={'Screening'}
       slotIcon={<ScreeningIcon />}
       color={'black'}
@@ -411,16 +400,35 @@ const ScreeningModule = () => {
 };
 
 const InterviewModule = () => {
-  const { job } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/interview-plan`);
-  };
+  const { handlePush } = useSettings();
   return (
     <FilterOption
-      onClickCancelInvite={{ onClick: () => handleClick() }}
+      onClickCancelInvite={{
+        onClick: () => handlePush('/jobs/[id]/interview-plan'),
+      }}
       text={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
+      color={'black'}
+    />
+  );
+};
+
+const CloseJob = () => {
+  const { setAnchorEl, setModal } = useSettings();
+  const { job } = useJob();
+  const isDelete = job?.status !== 'published';
+  return (
+    <FilterOption
+      onClickCancelInvite={{
+        onClick: () => {
+          setModal(true);
+          setAnchorEl(null);
+        },
+      }}
+      text={`${isDelete ? 'Delete' : 'Close'} Job`}
+      slotIcon={
+        <GlobalIcon size={4} iconName={isDelete ? 'delete' : 'close'} />
+      }
       color={'black'}
     />
   );

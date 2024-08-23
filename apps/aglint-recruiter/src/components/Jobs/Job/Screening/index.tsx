@@ -22,6 +22,8 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { Settings } from '../Common/SharedTopNav/actions';
+
 const ScreeningDashboardComp = () => {
   const { recruiter_id, recruiterUser } = useAuthDetails();
   const { job } = useJob();
@@ -311,6 +313,7 @@ const ScreeningDashboardComp = () => {
             </Stack>
           }
           slotTopbarLeft={<JobScreeningDashboardBreadCrumbs />}
+          slotTopbarRight={<Settings />}
         />
       )}
     </>

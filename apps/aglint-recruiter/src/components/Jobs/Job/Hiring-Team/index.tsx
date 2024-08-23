@@ -20,6 +20,7 @@ import {
   useJobForms,
 } from '../../Create/form';
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 
 const JobHiringTeamDashboard = () => {
   const { jobLoad, job } = useJob();
@@ -99,6 +100,7 @@ const JobEdit = () => {
           setSaving={setSaving}
         />
       }
+      slotTopbarRight={<Settings />}
       slotSaving={
         <Stack style={{ opacity: show ? 1 : 0, transition: '0.3s' }}>
           <SavedChanges

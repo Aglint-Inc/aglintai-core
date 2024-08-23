@@ -13,6 +13,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize } from '@/src/utils/text/textUtils';
 
+import { Settings } from '../Common/SharedTopNav/actions';
 import JobAssessment from './list';
 
 const JobAssessmentDashboard = () => {
@@ -26,7 +27,7 @@ const JobAssessmentDashboard = () => {
         <AssessmentResetWrapper>
           <PageLayout
             slotTopbarLeft={<JobAssessmentDashboardBreadCrumbs />}
-            slotTopbarRight={<></>}
+            slotTopbarRight={<Settings />}
             slotBody={
               job?.assessment ? <JobAssessment /> : <EnableAssessment />
             }

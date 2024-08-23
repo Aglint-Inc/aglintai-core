@@ -25,6 +25,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import { Settings } from '../Common/SharedTopNav/actions';
+
 const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',
   'applicantReject_email_applicant',
@@ -40,7 +42,7 @@ const JobEmailTemplatesDashboard = () => {
       ) : (
         <PageLayout
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
-          slotTopbarRight={<></>}
+          slotTopbarRight={<Settings />}
           slotSaving={<SyncStatus status={saving} />}
           slotBody={<JobEmailTemplates setSaving={setSaving} />}
         />
