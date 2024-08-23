@@ -3,6 +3,7 @@ import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
+  memo,
   PropsWithChildren,
   useCallback,
   useContext,
@@ -34,15 +35,22 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
+import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
+import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
+import { PATHS } from '@/src/constant/allPaths';
 
 export const SharedActions = () => {
+  const value = useSettingsActions();
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={2}>
-      <Score />
-      <Add />
-      <Publish />
-      <Settings />
-    </Stack>
+    <SettingsContext.Provider value={value}>
+      <Stack direction={'row'} alignItems={'center'} gap={2}>
+        <Score />
+        <Add />
+        <Publish />
+        <Switcher />
+        <Dropdown />
+      </Stack>
+    </SettingsContext.Provider>
   );
 };
 
@@ -101,8 +109,31 @@ const Publish = () => {
   );
 };
 
+const Switcher = () => {
+  const { handlePush, currentPath } = useSettings();
+  const router = useRouter();
+  return (
+    <GlobalSwitch
+      slotGlobalSwitchPill={
+        <>
+          <GlobalSwitchPill
+            textPill={'Applications'}
+            isActive={currentPath === '/jobs/[id]'}
+            onClickPill={{ onClick: () => handlePush('/jobs/[id]') }}
+          />
+          <GlobalSwitchPill
+            textPill={'Metrics'}
+            isActive={currentPath === '/jobs/[id]/metrics'}
+            onClickPill={{ onClick: () => handlePush('/jobs/[id]/metrics') }}
+          />
+        </>
+      }
+    />
+  );
+};
+
 const useSettingsActions = () => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const { handleJobDelete } = useJobs();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -157,6 +188,7 @@ const useSettingsActions = () => {
     handleCloseModal,
     handleModalSubmit,
     handlePush,
+    currentPath: pathname as Extract<keyof typeof ROUTES, `/jobs/${string}`>,
   };
 };
 
@@ -165,27 +197,28 @@ const SettingsContext =
 
 const useSettings = () => useContext(SettingsContext);
 
-export const Settings = () => {
+export const Settings = memo(() => {
   const value = useSettingsActions();
   return (
     <SettingsContext.Provider value={value}>
+      <Dropdown />
+    </SettingsContext.Provider>
+  );
+});
+Settings.displayName = 'Settings';
+
+const Dropdown = () => {
+  const { modal, setAnchorEl } = useSettings();
+  return (
+    <>
       <IconButtonGhost
         color={'neutral'}
         iconSize={6}
         iconName='more_vert'
         onClickButton={{
-          onClick: (e) => value.setAnchorEl(e.currentTarget),
+          onClick: (e) => setAnchorEl(e.currentTarget),
         }}
       />
-      <Dropdown />
-    </SettingsContext.Provider>
-  );
-};
-
-const Dropdown = () => {
-  const { modal } = useSettings();
-  return (
-    <>
       <Pop>
         <Modules />
         <CloseJob />
@@ -281,22 +314,37 @@ const Close = () => {
 
 const Modules = () => {
   const { manageJob } = useJob();
+  const { currentPath } = useSettings();
   const {
     isAssessmentEnabled,
     isScreeningEnabled,
     isSchedulingEnabled,
     isScoringEnabled,
   } = useRolesAndPermissions();
+  if (!manageJob)
+    return (
+      <>
+        <WorkflowModule />
+      </>
+    );
   return (
     <>
-      {manageJob && <JobDetailsModule />}
-      {manageJob && isScoringEnabled && <ProfileScoreModule />}
-      {isSchedulingEnabled && <InterviewModule />}
-      {isAssessmentEnabled && manageJob && <AssessmentModule />}
-      {isScreeningEnabled && manageJob && <ScreeningModule />}
-      {manageJob && <HiringTeamModule />}
-      {manageJob && <EmailTemplatesModule />}
-      <WorkflowModule />
+      {currentPath !== '/jobs/[id]/job-details' && <JobDetailsModule />}
+      {currentPath !== '/jobs/[id]/profile-score' && isScoringEnabled && (
+        <ProfileScoreModule />
+      )}
+      {currentPath !== '/jobs/[id]/interview-plan' && isSchedulingEnabled && (
+        <InterviewModule />
+      )}
+      {currentPath !== '/jobs/[id]/assessment' && isAssessmentEnabled && (
+        <AssessmentModule />
+      )}
+      {currentPath !== '/jobs/[id]/screening' && isScreeningEnabled && (
+        <ScreeningModule />
+      )}
+      {currentPath !== '/jobs/[id]/hiring-team' && <HiringTeamModule />}
+      {currentPath !== '/jobs/[id]/email-templates' && <EmailTemplatesModule />}
+      {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
     </>
   );
 };
