@@ -301,29 +301,28 @@ function ViewRequestDetails() {
                   }
                   slotRequestTypeEdit={<></>}
                   textDueDate={
-                    <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                      <Text
-                        content={
-                          dayjsLocal(
-                            selectedRequest?.schedule_start_date,
-                          ).format('DD MMM, YYYY') +
-                          ' - ' +
-                          dayjsLocal(selectedRequest?.schedule_end_date).format(
-                            'DD MMM, YYYY',
-                          )
-                        }
+                    <Text
+                      content={
+                        dayjsLocal(selectedRequest?.schedule_start_date).format(
+                          'DD MMM, YYYY',
+                        ) +
+                        ' - ' +
+                        dayjsLocal(selectedRequest?.schedule_end_date).format(
+                          'DD MMM, YYYY',
+                        )
+                      }
+                    />
+                  }
+                  slotInterviewDate={
+                    selectedRequest?.status === 'to_do' &&
+                    selectedRequest?.assigner_id === recruiterUser?.user_id && (
+                      <InterviewDateList
+                        selectedFilter={{
+                          startDate: selectedRequest?.schedule_start_date,
+                          endDate: selectedRequest?.schedule_end_date,
+                        }}
                       />
-                      {selectedRequest?.status === 'to_do' &&
-                        selectedRequest?.assigner_id ===
-                          recruiterUser?.user_id && (
-                          <InterviewDateList
-                            selectedFilter={{
-                              startDate: selectedRequest?.schedule_start_date,
-                              endDate: selectedRequest?.schedule_end_date,
-                            }}
-                          />
-                        )}
-                    </Stack>
+                    )
                   }
                   slotAssignedTo={
                     <MemberList
