@@ -7,6 +7,7 @@ import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type'
 export const useAllMembers = () => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
+
   const query = useQuery({
     queryKey: ['members'],
     queryFn: () => getMembers(),
@@ -24,7 +25,12 @@ export const useAllMembers = () => {
   const allMembers = query?.data || [];
   const members = query.data?.filter((member) => member.status === 'active');
 
-  return { allMembers, refetchMembers, members, isLoading: query.isLoading };
+  return {
+    allMembers,
+    refetchMembers,
+    members,
+    isLoading: query.isLoading,
+  };
 };
 
 const getMembers = () => {
