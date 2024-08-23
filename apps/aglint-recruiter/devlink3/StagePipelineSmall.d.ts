@@ -8,4 +8,6 @@ declare function StagePipelineSmall(props: {
   color?: Types.Builtin.Text;
   isLeft?: Types.Visibility.VisibilityConditions;
   isRight?: Types.Visibility.VisibilityConditions;
+  textStageName?: React.ReactNode;
+  iconName?: React.ReactNode;
 }): React.JSX.Element;
