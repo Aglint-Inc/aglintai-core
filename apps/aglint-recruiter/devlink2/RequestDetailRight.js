@@ -24,6 +24,7 @@ export function RequestDetailRight({
   slotRequestTypeEdit,
   slotPriorityEdit,
   slotStatusEdit,
+  slotInterviewDate,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -90,7 +91,7 @@ export function RequestDetailRight({
         </_Builtin.Block>
         <Text content={textDueDate} size="2" color="neutral" />
         <_Builtin.Block className={_utils.cx(_styles, "edit-button")} tag="div">
-          {slotRequestTypeEdit ?? <IconButtonSoft color="neutral" size="1" />}
+          {slotInterviewDate ?? <IconButtonSoft color="neutral" size="1" />}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
