@@ -164,7 +164,6 @@ export const PATHS = [
 '/api/roleAndPermission',
 '/api/save_interview_feedback',
 '/api/scheduling/application/cancelschedule',
-'/api/scheduling/application/candidatecancelreschedule',
 '/api/scheduling/application/debrief-add-users',
 '/api/scheduling/application/fetchInterviewSessionByRequest',
 '/api/scheduling/application/fetchcandidatedetails',
