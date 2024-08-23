@@ -13,6 +13,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 import JobWorkflow from './list';
 
 const JobWorkflowDashboard = () => {
@@ -44,11 +45,9 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(ROUTES['/jobs']() + `?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
@@ -84,6 +83,7 @@ const Actions = () => {
           onClickButton={{ onClick: () => setPopup({ open: true }) }}
         />
       )}
+      <Settings />
     </>
   );
 };

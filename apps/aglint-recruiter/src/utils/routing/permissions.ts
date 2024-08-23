@@ -35,7 +35,7 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]': ['job_module'],
   '/jobs/[id]/application/[application_id]': ['job_module'],
   '/jobs/[id]/assessment': ['job_module'],
-  '/jobs/[id]/candidate-list': ['job_module'],
+  '/jobs/[id]/metrics': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
   '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
   '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
