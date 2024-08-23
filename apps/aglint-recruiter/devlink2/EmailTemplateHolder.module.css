@@ -1,0 +1,39 @@
+.req-avail-email-header {
+  display: flex;
+  padding: var(--space-2);
+  justify-content: space-between;
+  align-items: center;
+
+  border-style: solid solid none;
+  border-width: 1px;
+  border-color: var(--neutral-6);
+  border-top-left-radius: var(--radius-3);
+  border-top-right-radius: var(--radius-3);
+
+  background-color: var(--neutral-3);
+}
+
+.button-email-req-avail {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.text-btn-email-req {
+  transition: color 200ms ease;
+  color: var(--accent-11);
+  cursor: pointer;
+}
+
+.text-btn-email-req:hover {
+  color: var(--accent-12);
+}
+
+.req-avail-email-body {
+  border: 1px solid var(--neutral-6);
+  border-bottom-left-radius: var(--radius-3);
+  border-bottom-right-radius: var(--radius-3);
+  background-color: var(--neutral-2);
+}

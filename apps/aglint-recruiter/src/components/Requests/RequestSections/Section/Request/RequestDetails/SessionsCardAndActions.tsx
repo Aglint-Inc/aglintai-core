@@ -9,6 +9,7 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 function SessionsCardAndActions({
   request,
   sessions,
+  job_id,
   application_id,
 }: {
   request: PropsWithChildren<RequestType>;
@@ -16,6 +17,7 @@ function SessionsCardAndActions({
     id: string;
     name: string;
   }[];
+  job_id: string;
   application_id: string;
 }) {
   return (
@@ -33,7 +35,10 @@ function SessionsCardAndActions({
                 iconName={'north_east'}
                 onClickButton={{
                   onClick: () => {
-                    window.open(`/scheduling/application/${application_id}`);
+                    window.open(
+                      `${process.env.NEXT_PUBLIC_HOST_NAME}/jobs/${job_id}/application/${application_id}?tab=interview`,
+                      '_blank',
+                    );
                   },
                 }}
               />

@@ -27,7 +27,8 @@ const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
     .from('workflow_view')
     .select()
     .order('created_at')
-    .eq('recruiter_id', recruiter_id);
+    .eq('recruiter_id', recruiter_id)
+    .eq('is_request_workflow', false);
   if (error) throw new Error(error.message);
   return data;
 };

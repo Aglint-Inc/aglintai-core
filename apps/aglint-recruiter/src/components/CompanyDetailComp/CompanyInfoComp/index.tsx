@@ -29,6 +29,7 @@ import ImageUpload from '../../Common/ImageUpload';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
 import CompanyJdComp from '../CompanyJdComp';
+import SchedulingRegions from '../SettingsSchedule/SchedulingReason';
 import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
 import AddLocationDialog from './AddLocationDialog';
@@ -349,6 +350,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       )}
       {router.query?.tab === 'team' && <TeamManagement />}
       {router.query?.tab === 'roles' && <RolesAndPermissions />}
+      {router.query?.tab === 'schedulingReasons' && <SchedulingRegions />}
     </Stack>
   );
 };

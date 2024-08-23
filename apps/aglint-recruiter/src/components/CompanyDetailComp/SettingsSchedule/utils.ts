@@ -9,6 +9,7 @@ export const settingSubNavItem = {
   CALENDERTEMPLATE: 'calenderTemplate',
   REASONS: 'reasons',
   SCHEDULING: 'scheduling',
+  SCHEDULING_REASONS: 'schedulingReasons',
   ROLES: 'roles',
   USERS: 'team',
   EMAILTEMPLATE: 'emailTemplate',
@@ -36,4 +37,8 @@ export const settingsItems: {
   },
   { label: 'Templates', value: settingSubNavItem['EMAILTEMPLATE'] },
   { label: 'Scheduling', value: settingSubNavItem['SCHEDULING'] },
+  {
+    label: 'Reasons',
+    value: settingSubNavItem['SCHEDULING_REASONS'],
+  },
 ];

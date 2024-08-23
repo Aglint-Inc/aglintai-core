@@ -2,13 +2,10 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Grid, Stack, Typography } from '@mui/material';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { Checkbox } from '@/devlink/Checkbox';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 
 function CalendarHeader({
-  setFilter,
-  filter,
   handleMode,
   mode,
   calendarApi,
@@ -34,68 +31,6 @@ function CalendarHeader({
 
   return (
     <Stack>
-      <Stack direction={'row'} gap={2} mb={2}>
-        <Typography
-          display={'flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          gap={1}
-        >
-          <Checkbox
-            isChecked={!!filter?.find((fil) => fil === 'confirmed')}
-            onClickCheck={{
-              onClick: () => {
-                if (filter?.find((fil) => fil === 'confirmed')) {
-                  setFilter((pre) => pre.filter((p) => p !== 'confirmed'));
-                } else {
-                  setFilter((pre) => [...pre, 'confirmed']);
-                }
-              },
-            }}
-          />
-          Confirmed
-        </Typography>
-        <Typography
-          display={'flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          gap={1}
-        >
-          <Checkbox
-            isChecked={!!filter?.find((fil) => fil === 'completed')}
-            onClickCheck={{
-              onClick: () => {
-                if (filter?.find((fil) => fil === 'completed')) {
-                  setFilter((pre) => pre.filter((p) => p !== 'completed'));
-                } else {
-                  setFilter((pre) => [...pre, 'completed']);
-                }
-              },
-            }}
-          />
-          Completed
-        </Typography>
-        <Typography
-          display={'flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          gap={1}
-        >
-          <Checkbox
-            isChecked={!!filter?.find((fil) => fil === 'cancelled')}
-            onClickCheck={{
-              onClick: () => {
-                if (filter?.find((fil) => fil === 'cancelled')) {
-                  setFilter((pre) => pre.filter((p) => p !== 'cancelled'));
-                } else {
-                  setFilter((pre) => [...pre, 'cancelled']);
-                }
-              },
-            }}
-          />
-          Cancelled
-        </Typography>
-      </Stack>
       <Grid
         container
         spacing={2}
