@@ -7,31 +7,21 @@ import React, { Fragment, useMemo, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { BannerLoading } from '@/devlink3/BannerLoading';
 import { DarkPill } from '@/devlink3/DarkPill';
-import { EnableDisable } from '@/devlink3/EnableDisable';
 import { GraphBlock } from '@/devlink3/GraphBlock';
 import { JobDashboard as JobDashboardDev } from '@/devlink3/JobDashboard';
 import { JobRole } from '@/devlink3/JobRole';
 import { JobsBanner } from '@/devlink3/JobsBanner';
-import { ModuleCard } from '@/devlink3/ModuleCard';
 import { NoData } from '@/devlink3/NoData';
 import { PipeLine } from '@/devlink3/PipeLine';
 import { RoleList } from '@/devlink3/RoleList';
 import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
 import Loader from '@/src/components/Common/Loader';
-import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
-import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
 // import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
-import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
-import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
-import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
-import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
-import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
@@ -178,7 +168,7 @@ const Dashboard = () => {
             slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
-            slotModuleCard={job?.status !== 'closed' && <Modules />}
+            slotModuleCard={<></>}
             slotCardWithNumber={<TenureAndExpSummary />}
             isViewScheduleVisible={schedule?.length > 3}
             onClickViewSchedule={{
@@ -683,124 +673,6 @@ const useBanners = () => {
   return banners;
 };
 
-const Modules = () => {
-  const { manageJob } = useJob();
-  const {
-    isAssessmentEnabled,
-    isScreeningEnabled,
-    isSchedulingEnabled,
-    isScoringEnabled,
-  } = useRolesAndPermissions();
-  return (
-    <>
-      {manageJob && <JobDetailsModule />}
-      {manageJob && isScoringEnabled && <ProfileScoreModule />}
-      {isSchedulingEnabled && <InterviewModule />}
-      {isAssessmentEnabled && manageJob && <AssessmentModule />}
-      {isScreeningEnabled && manageJob && <ScreeningModule />}
-      {manageJob && <HiringTeamModule />}
-      {manageJob && <EmailTemplatesModule />}
-      <WorkflowModule />
-    </>
-  );
-};
-
-const WorkflowModule = () => {
-  const { job } = useJobDashboard();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Workflows'}
-      slotIcon={<WorkflowIcon />}
-    />
-  );
-};
-
-const HiringTeamModule = () => {
-  const {
-    job,
-    publishStatus: {
-      hiringTeamValidity: { validity },
-    },
-  } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
-  };
-  return (
-    <ModuleCard
-      isAlert={!validity}
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Hiring Team'}
-      slotIcon={<HiringTeamIcon />}
-    />
-  );
-};
-
-const JobDetailsModule = () => {
-  const {
-    job,
-    publishStatus: {
-      detailsValidity: { validity },
-    },
-  } = useJob();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));
-  };
-  return (
-    <ModuleCard
-      isAlert={!validity}
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Job Details'}
-      slotIcon={
-        <GlobalIcon
-          iconName='edit_square'
-          color={'inherit'}
-          size={6}
-          weight={'regular'}
-        />
-      }
-    />
-  );
-};
-
-const AssessmentModule = () => {
-  const { job } = useJobDashboard();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/assessment`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Assessment'}
-      slotIcon={<AssessmentIcon />}
-      slotEnableDisable={<EnableDisable isEnabled={job.assessment} />}
-    />
-  );
-};
-
-const EmailTemplatesModule = () => {
-  const { job /* emailTemplateValidity */ } = useJobDashboard();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/email-templates`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Email Templates'}
-      slotIcon={<EmailTemplateIcon />}
-      // isWarning={emailTemplateValidity?.length !== 0}
-    />
-  );
-};
-
 export type DashboardGraphOptions<
   T extends keyof Pick<
     ReturnType<typeof useJobDashboard>,
@@ -894,74 +766,6 @@ const Bars = () => {
 
 const getPlural = (count: number, label: string) => {
   return `${count} ${capitalize(label)}${count === 1 ? '' : 's'}`;
-};
-
-const ScreeningModule = () => {
-  const { job } = useJobDashboard();
-  const { push } = useRouter();
-
-  const handleClick = () => {
-    push(`/jobs/${job.id}/screening`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Screening'}
-      slotIcon={<ScreeningIcon />}
-      slotEnableDisable={<EnableDisable isEnabled={job.phone_screen_enabled} />}
-    />
-  );
-};
-
-const InterviewModule = () => {
-  const { job, isInterviewPlanDisabled, isInterviewSessionEmpty } =
-    useJobDashboard();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/interview-plan`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Interview Plan'}
-      slotIcon={<SchedulingIcon />}
-      slotEnableDisable={<></>}
-      isWarning={isInterviewPlanDisabled || isInterviewSessionEmpty}
-    />
-  );
-};
-
-const ProfileScoreModule = () => {
-  const { job, status } = useJobDashboard();
-  const { push } = useRouter();
-  const handleClick = () => {
-    push(`/jobs/${job.id}/profile-score`);
-  };
-  const isAlert = status.jd_json_error && !status.description_error;
-  const isWarning =
-    !isAlert &&
-    ((status.description_changed && !status.scoring_criteria_changed) ||
-      status.description_error);
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      isWarning={isWarning}
-      isAlert={isAlert}
-      textName={'Profile Score'}
-      slotIcon={<ProfileScoreIcon />}
-      slotEnableDisable={
-        <>
-          {status.loading && (
-            <CircularProgress
-              color='inherit'
-              size={'15px'}
-              sx={{ color: 'var(--neutral-6)' }}
-            />
-          )}
-        </>
-      }
-    />
-  );
 };
 
 type BaseBanner = {
