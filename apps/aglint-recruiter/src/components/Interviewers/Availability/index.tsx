@@ -113,12 +113,7 @@ const AvailabilityView = ({
       >
         {allInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
-            return (
-              <Box key={index} minHeight={'36px'}>
-                Calendar is not connected
-                {/* <StatusGlyph isConnected={interviewer.isCalenderConnected} /> */}
-              </Box>
-            );
+            return <Box key={index} minHeight={'36px'}></Box>;
           const timeZoneOffset = dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)
             .utcOffset(); // Time zone offset in minutes
