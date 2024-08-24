@@ -1,13 +1,14 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import { initUser } from '@/src/pages/api/interviewers';
 
 import { useAvailabilty } from '../Hook';
-import { Event, EventFilling } from './utils';
+import { Event, EventFilling, groupByDate } from './utils';
 import dayjs from '@/src/utils/dayjs';
+import Loader from '../../Common/Loader';
 
 const timeToPx = (hours, minutes) => {
   return hours * 60 * 0.133 + minutes * 0.133;
@@ -23,8 +24,18 @@ const TimeLineCalendar = () => {
     endDate: endDate.toISOString(),
   });
 
-  if (isLoading) return <>Loading</>;
-  console.log(allInterviewers);
+  if (isLoading)
+    return (
+      <Stack
+        height={'100%'}
+        width={'100%'}
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Loader />
+      </Stack>
+    );
 
   return (
     <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
@@ -201,20 +212,7 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
                             ? `${192 - event.start.startPx}px`
                             : `${event.end.endPx - event.start.startPx}px`,
                       height: '100%',
-                      backgroundColor:
-                        event.type === 'cal_event'
-                          ? 'orange'
-                          : event.type === 'empty_event'
-                            ? 'var(--success-9)'
-                            : event.type === 'gap_event'
-                              ? 'yellow'
-                              : event.type === 'sleep_event'
-                                ? 'blue'
-                                : event.type === 'morning_sleep'
-                                  ? 'lightblue'
-                                  : event.type === 'night_sleep'
-                                    ? 'yellow'
-                                    : 'blue',
+                      backgroundColor: eventColor(event.type),
                     }}
                   />
                 </>
@@ -227,31 +225,32 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
   );
 };
 
-const groupByDate = (events, dayCount) => {
-  // Step 1: Create a range of dates from today to three days in the future
-  const today = dayjsLocal().startOf('day');
-  const dateRange = Array.from({ length: dayCount }, (_, i) =>
-    today.add(i, 'day').format('YYYY-MM-DD'),
-  );
+const eventColor = (type) => {
+  const calendarEvent = 'red';
+  const Available = 'var(--success-9)';
+  const morningSleep = 'lightblue';
+  const nightSleep = 'lightblue';
 
-  // Step 2: Group the events by date
-  const groupedEvents = events.reduce((acc, event) => {
-    const eventDate = dayjsLocal(event.start.dateTime).format('YYYY-MM-DD');
+  const soft = 'orange';
+  const freeTime = 'var(--success-9)';
+  const outStand = 'yellow';
+  const recruitingBlocks = 'blue';
 
-    if (!acc[eventDate]) {
-      acc[eventDate] = [];
-    }
-
-    acc[eventDate].push(event);
-
-    return acc;
-  }, {});
-
-  // Step 3: Ensure all dates in the range are present, even if they have no events
-  return Object.values(
-    dateRange.reduce((acc, date) => {
-      acc[date] = groupedEvents[date] || [];
-      return acc;
-    }, {}),
-  );
+  return type === 'cal_event'
+    ? calendarEvent
+    : type === 'soft'
+      ? soft
+      : type === 'free_time'
+        ? freeTime
+        : type === 'ooo'
+          ? outStand
+          : type === 'recruiting_blocks'
+            ? recruitingBlocks
+            : type === 'empty_event'
+              ? Available
+              : type === 'morning_sleep'
+                ? morningSleep
+                : type === 'night_sleep'
+                  ? nightSleep
+                  : 'blue';
 };

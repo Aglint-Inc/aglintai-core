@@ -12,6 +12,10 @@ import _styles from "./InterviewerTraining.module.css";
 export function InterviewerTraining({
   as: _Component = _Builtin.Block,
   slotFilter,
+  slotInterviewerTrainnigList,
+  textDateRange = "This is a global text component",
+  onClickLeft = {},
+  onClickRight = {},
 }) {
   return (
     <_Component
@@ -32,9 +36,9 @@ export function InterviewerTraining({
             tag="div"
           >
             <TextWithIcon
+              textContent={textDateRange}
               iconName="calendar_today"
               fontWeight="regular"
-              textContent="This is a global text component"
             />
           </_Builtin.Block>
           <_Builtin.Block
@@ -42,16 +46,16 @@ export function InterviewerTraining({
             tag="div"
           >
             <IconButtonOutlined
+              onClickButton={onClickLeft}
               iconName="chevron_left"
               size="1"
               color="neutral"
-              onClickButton={{}}
             />
             <IconButtonOutlined
+              onClickButton={onClickRight}
               iconName="chevron_right"
               size="1"
               color="neutral"
-              onClickButton={{}}
             />
           </_Builtin.Block>
         </_Builtin.Block>
@@ -99,8 +103,12 @@ export function InterviewerTraining({
             className={_utils.cx(_styles, "bg-interviewer-avail-body")}
             tag="div"
           >
-            <InterviewerTrainingList />
-            <InterviewerNotConnected />
+            {slotInterviewerTrainnigList ?? (
+              <>
+                <InterviewerTrainingList />
+                <InterviewerNotConnected />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

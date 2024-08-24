@@ -1,5 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { Checkbox, Popover, Stack, Typography } from '@mui/material';
+import { Avatar, Checkbox, Popover, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
@@ -87,10 +87,18 @@ function Metrics() {
         textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
         slotInterviewerMetricsList={
           interviewers?.length > 0 ? (
-            interviewers.map((interviewer) => {
+            interviewers.map((interviewer, i) => {
               return (
                 <InterviewerMetricList
                   key={interviewer.user_id}
+                  slotImage={
+                    <Avatar
+                      src={interviewer.profile_image}
+                      alt={interviewer.name}
+                      variant='rounded-medium'
+                    />
+                  }
+                  textCount={i + 1}
                   countHours={interviewer.duration}
                   countInterviews={interviewer.interviews}
                   textName={interviewer.name}
