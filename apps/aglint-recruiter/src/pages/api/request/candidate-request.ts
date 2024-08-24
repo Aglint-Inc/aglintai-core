@@ -1,4 +1,4 @@
-import { DatabaseFunctions } from '@aglint/shared-types';
+import { DatabaseFunctions, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   createCandidateRequestSchema,
   getFullName,
@@ -8,7 +8,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
-import { resetSessionRelations } from '@/src/utils/scheduling/resetSessionRelations';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export default async function handler(
@@ -17,6 +16,7 @@ export default async function handler(
 ) {
   try {
     const parsed = v.parse(createCandidateRequestSchema, req.body);
+
     const organizer_id = await getOrganizerId(
       parsed.application_id,
       supabaseAdmin,
@@ -54,16 +54,49 @@ export default async function handler(
       details.request.type = 'cancel_schedule_request';
     }
 
-    await resetSessionRelations({
-      session_ids: parsed.session_ids,
-      supabase: supabaseAdmin,
-    });
     const { data } = await supabaseAdmin
       .rpc('create_session_request', details)
       .throwOnError();
+
+    const request_id = data as string;
+
+    const cancels: {
+      session_id: string;
+      reason: string;
+      other_details: DatabaseTableInsert['interview_session_cancel']['other_details'];
+      type: DatabaseTableInsert['interview_session_cancel']['type'];
+      application_id: string;
+      request_id: string;
+    }[] = parsed.session_ids.map((session_id) => ({
+      session_id,
+      reason: parsed.reason,
+      other_details: parsed.other_details,
+      type: parsed.type,
+      application_id: parsed.application_id,
+      request_id,
+    }));
+
+    await saveCancelReschedule({
+      details: cancels,
+    });
+
     return res.status(201).send(data);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send(err.message);
   }
 }
+
+const saveCancelReschedule = async ({
+  details,
+}: {
+  details: DatabaseTableInsert['interview_session_cancel'][];
+}) => {
+  (
+    await supabaseAdmin
+      .from('interview_session_cancel')
+      .upsert(details)
+      .throwOnError()
+      .select()
+  ).data;
+};

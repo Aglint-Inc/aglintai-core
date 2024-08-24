@@ -133,7 +133,10 @@ export function ScheduleSettings({
             color="neutral"
           />
         </_Builtin.Block>
-        <_Builtin.Grid className={_utils.cx(_styles, "load_grid")} tag="div">
+        <_Builtin.Grid
+          className={_utils.cx(_styles, "ss-radio-input")}
+          tag="div"
+        >
           <Text content="Daily Limit" />
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_hr_input")}
@@ -145,7 +148,16 @@ export function ScheduleSettings({
           >
             {slotDailyLimit}
           </_Builtin.Block>
-          <Text content="Weekly Limit" />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "ss-weekly-head")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_60fccf2a-ae7f-6bd4-0c5c-194bc4c83f2f-0d30d7a9"
+            )}
+            tag="div"
+          >
+            <Text content="Weekly Limit" />
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_hr_input")}
             id={_utils.cx(

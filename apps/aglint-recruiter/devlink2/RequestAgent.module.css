@@ -8,6 +8,23 @@
   flex: 0 0 auto;
 }
 
+@media screen and (max-width: 991px) {
+  .slot-agent-chat {
+    display: none;
+  }
+}
+
 .slot_request_right {
   width: 100%;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }

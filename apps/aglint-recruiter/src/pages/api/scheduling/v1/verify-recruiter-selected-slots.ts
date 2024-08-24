@@ -48,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await cand_schedule.fetchDetails({
       req_user_tz: candidate_tz,
       end_date_str: end_date_str,
-      company_id: filter_json_data.interview_schedule.recruiter_id,
+      company_id: filter_json_data.applications.public_jobs.recruiter_id,
       session_ids: filter_json_data.session_ids,
       start_date_str: start_date_str,
     });
@@ -83,7 +83,7 @@ const fetch_details_from_db = async (
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
-      .select('*,interview_schedule(recruiter_id)')
+      .select('*, applications(public_jobs(id,recruiter_id))')
       .eq('id', req_body.filter_json_id),
   );
   if (!filter_json_data) throw new Error('invalid filter_json_id');

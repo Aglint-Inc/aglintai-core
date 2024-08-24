@@ -11,15 +11,17 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { updateMember } from '@/src/context/AuthContext/utils';
 import { useAllMembers } from '@/src/queries/members';
+import { useRoleAndPermissionsHook } from '@/src/queries/RolesSettings';
 
 function RoleEditMember({
   role,
   close,
 }: {
-  role: { role: string; id: string };
+  role: { role: string; id: string; assignedTo: string[] };
   close: () => void;
 }) {
   const { members } = useAllMembers();
+  const { refetch } = useRoleAndPermissionsHook();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
     (typeof members)[number] | null
@@ -29,9 +31,9 @@ function RoleEditMember({
   const filteredMember = members
     .filter(
       (member) =>
-        member.role_id !== role.id && member.user_id !== member.created_by,
+        member.role_id !== role.id &&
+        !(role.assignedTo || []).includes(member.user_id),
     )
-
     .filter(
       (member) =>
         `${member.first_name || ''} ${member.last_name || ''}`
@@ -75,6 +77,7 @@ function RoleEditMember({
                       role_id: role.id,
                     },
                   });
+                  refetch();
                   setIsLoading(false);
                   close();
                 },

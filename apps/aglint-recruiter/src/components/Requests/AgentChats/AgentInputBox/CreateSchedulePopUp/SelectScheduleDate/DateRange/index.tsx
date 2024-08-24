@@ -27,6 +27,9 @@ function DateRange({
           display: 'none',
           p: '0px',
         },
+        '.MuiDayCalendar-slideTransition': {
+          minHeight: 220,
+        },
         // '& .MuiDayCalendar-weekContainer': {
         //   margin: '0px',
         // },

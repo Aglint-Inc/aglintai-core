@@ -29,11 +29,11 @@ export const bookCandidateSelectedOption = async (
 ) => {
   const db_details: ScheduleDBDetails = {
     application: {
-      id: fetched_cand_details.application.id,
+      id: fetched_cand_details.application_id,
     },
     candidate: {
-      first_name: fetched_cand_details.application.candidates.first_name,
-      last_name: fetched_cand_details.application.candidates.last_name,
+      first_name: fetched_cand_details.candidate.first_name,
+      last_name: fetched_cand_details.candidate.last_name,
     },
     company: {
       id: fetched_cand_details.company.id,
@@ -58,12 +58,10 @@ export const bookCandidateSelectedOption = async (
   const payload: APICandScheduleMailThankYou = {
     cand_tz: parsed_body.cand_tz,
     filter_id: parsed_body.filter_id,
-    task_id: parsed_body.task_id,
-    application_id: fetched_cand_details.application.id,
+    application_id: fetched_cand_details.application_id,
     session_ids: fetched_cand_details.filter_json_data.session_ids,
     availability_request_id: null,
     is_debreif: false,
-    schedule_id: fetched_cand_details.filter_json_data.schedule_id,
   };
   await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,

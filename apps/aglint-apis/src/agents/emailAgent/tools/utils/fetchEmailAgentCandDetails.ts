@@ -20,12 +20,11 @@ export const fetchEmailAgentCandDetails = async (
     await supabaseAdmin
       .from('scheduling_agent_chat_history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)), candidates(id,email,first_name,last_name,timezone))))'
+        '*, interview_filter_json(* ,applications(*,public_jobs(id,recruiter_id,job_title,description,company:recruiter!public_jobs_recruiter_id_fkey(id,name,logo),recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)), candidates(id,email,first_name,last_name,timezone)))'
       )
       .eq('thread_id', thread_id)
   );
-  const job =
-    cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
+  const job = cand_rec.interview_filter_json.applications.public_jobs;
   const [agent_email_temp] = supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -56,8 +55,7 @@ export const fetchEmailAgentCandDetails = async (
     return null;
   }
 
-  const candidate =
-    cand_rec.interview_filter_json.interview_schedule.applications.candidates;
+  const candidate = cand_rec.interview_filter_json.applications.candidates;
 
   const filter_json = cand_rec.interview_filter_json.filter_json;
 
@@ -99,7 +97,7 @@ export const fetchEmailAgentCandDetails = async (
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {
       candidateFirstName: candidate.first_name,
-      companyName: job.company,
+      companyName: job.company.name,
       jobRole: job.job_title,
       OrganizerTimeZone: meeting_organizer.scheduling_settings.timeZone.tzCode,
       selfScheduleLink: '',
@@ -130,10 +128,9 @@ export const fetchEmailAgentCandDetails = async (
     history: cand_rec.chat_history,
     payload: {
       candidate_email:
-        cand_rec.interview_filter_json.interview_schedule.applications
-          .candidates.email,
+        cand_rec.interview_filter_json.applications.candidates.email,
       candidate_name: getFullName(candidate.first_name, candidate.last_name),
-      company_name: job.company,
+      company_name: job.company.name,
       start_date: ScheduleUtils.convertDateFormatToDayjs(
         filter_json.start_date,
         meeting_organizer.scheduling_settings.timeZone.tzCode
@@ -143,10 +140,9 @@ export const fetchEmailAgentCandDetails = async (
         meeting_organizer.scheduling_settings.timeZone.tzCode
       ).format(DAYJS_FORMATS.DATE_FORMATZ),
       job_role: job.job_title,
-      company_logo: job.logo,
+      company_logo: job.company.logo,
       company_id: job.recruiter_id,
       job_id: job.id,
-      schedule_id: cand_rec.interview_filter_json.schedule_id,
       cand_application_status: sessions[0].interview_meeting.status,
       candidate_time_zone: candidate.timezone,
       interv_plan_summary: plan_summary,
@@ -154,9 +150,7 @@ export const fetchEmailAgentCandDetails = async (
       new_cand_msg: cand_email_body,
       interview_sessions: sessions.filter(s => s.session_type !== 'debrief'),
       task_id: cand_rec.task_id,
-      candidate_id:
-        cand_rec.interview_filter_json.interview_schedule.applications
-          .candidates.id,
+      candidate_id: cand_rec.interview_filter_json.applications.candidates.id,
       organizer_name: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name

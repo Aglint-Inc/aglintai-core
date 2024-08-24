@@ -59,7 +59,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .select()
         .in('session_id', session_ids),
     );
-    let schedule_id = meeting_details[0].interview_schedule_id;
     if (meeting_details.length === 0) {
       throw new ApiError('SERVER_ERROR', 'invalid session id');
     }
@@ -88,12 +87,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         candidateSelfSchedule,
         {
           cloned_sessn_ids: session_ids,
-          schedule_id: schedule_id,
           start_date_str: date_range.start_date_str,
           end_date_str: date_range.end_date_str,
           organizer_id,
           plans,
           request_id,
+          application_id,
         },
         reqProgressLogger,
         { event_type: null }, //TODO: mention
@@ -108,9 +107,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           agent_assigned_user_id: organizer_id,
           agent_type: 'phone',
           cloned_sessn_ids: session_ids,
-          schedule_id: schedule_id,
           start_date_str: date_range.start_date_str,
           end_date_str: date_range.end_date_str,
+          application_id,
         },
         reqProgressLogger,
         { event_type: null }, //TODO: mention
@@ -125,9 +124,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           agent_assigned_user_id: organizer_id,
           agent_type: 'email',
           cloned_sessn_ids: session_ids,
-          schedule_id: schedule_id,
           start_date_str: date_range.start_date_str,
           end_date_str: date_range.end_date_str,
+          application_id,
         },
         reqProgressLogger,
         { event_type: null }, //TODO: mention

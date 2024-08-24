@@ -44,7 +44,7 @@ function SlotBody() {
             ) : tab === 'resume' ? (
               <Stack
                 padding={'var(--space-4)'}
-                height={'1000px'}
+                // height={'1000px'}
                 maxWidth={'900px'}
               >
                 <Resume />

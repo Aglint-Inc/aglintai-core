@@ -21,6 +21,8 @@ function FilterAndSorting() {
       title,
       jobs,
       applications,
+      assigneeList,
+      assignerList,
       ...filters
     },
     setFilters,
@@ -90,6 +92,8 @@ function FilterAndSorting() {
     );
 
   const jobFilter = {
+    filterSearch: true,
+    searchPlaceholder: 'Search Jobs',
     active: jobs.length,
     name: 'Jobs',
     value: jobs ?? [],
@@ -110,6 +114,8 @@ function FilterAndSorting() {
   } as (typeof safeFilters)[number];
 
   const candidateFilter = {
+    filterSearch: true,
+    searchPlaceholder: 'Search Candidates',
     active: applications.length,
     name: 'Candidates',
     value: applications ?? [],
@@ -130,11 +136,64 @@ function FilterAndSorting() {
         )
       : [],
   } as (typeof safeFilters)[number];
+  const assignerFilter = {
+    filterSearch: true,
+    searchPlaceholder: 'Search Creators',
+    active: assignerList.length,
+    name: 'Creators',
+    value: assignerList ?? [],
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue) => {
+      setFilters((prev) => ({ ...prev, assignerList: newValue }));
+    },
+    options: candidateAndJobs
+      ? candidateAndJobs?.assignerlist.map(
+          (ele: { name: string; id: string }) => {
+            return {
+              id: ele.id,
+              label: ele.name,
+            };
+          },
+        )
+      : [],
+  } as (typeof safeFilters)[number];
+
+  const assigneeFilter = {
+    filterSearch: true,
+    searchPlaceholder: 'Search Assignees',
+    active: assigneeList.length,
+    name: 'Assignees',
+    value: assigneeList ?? [],
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue) => {
+      setFilters((prev) => ({ ...prev, assigneeList: newValue }));
+    },
+    options: candidateAndJobs
+      ? candidateAndJobs?.assigneelist.map(
+          (ele: { name: string; id: string }) => {
+            return {
+              id: ele.id,
+              label: ele.name,
+            };
+          },
+        )
+      : [],
+  } as (typeof safeFilters)[number];
 
   return (
     <FilterHeader
       layoutMode='left-align'
-      filters={[...safeFilters, jobFilter, candidateFilter]}
+      filters={[
+        ...safeFilters,
+        assigneeFilter,
+        assignerFilter,
+        jobFilter,
+        candidateFilter,
+      ]}
       search={{
         value: title,
         setValue: (newValue: typeof title) => {

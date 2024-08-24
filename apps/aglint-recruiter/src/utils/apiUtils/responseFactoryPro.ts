@@ -152,7 +152,7 @@ export function routeHandlerFactory<T extends ApiInterface>(
         logger,
       });
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return getResponse({ error: e.message, logger }, 500);
     }
   }

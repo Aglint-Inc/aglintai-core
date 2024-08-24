@@ -28,7 +28,7 @@ const filterParams = [
   'type',
   'order',
   'section',
-  'schedule_status',
+  // 'schedule_status',
 ] as const;
 
 type FilterKeys = (typeof filterParams)[number];
@@ -39,7 +39,7 @@ type FilterValues = {
   search: Application['name'];
   badges: (keyof Application['badges'])[];
   resume_match: Application['application_match'][];
-  schedule_status: Application['meeting_details'][number]['status'][];
+  // schedule_status: Application['meeting_details'][number]['status'][];
   type:
     | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
     | 'location'
@@ -54,7 +54,7 @@ const filterDefaults: Filters = {
   badges: [],
   bookmarked: false,
   resume_match: [],
-  schedule_status: [],
+  // schedule_status: [],
   search: '',
   section: 'new',
   type: 'latest_activity',
@@ -125,7 +125,7 @@ export const useApplicationsParams = () => {
       .join('&');
     if (safeFilters['section']) resetChecklist();
     router.push(
-      `${ROUTES['/jobs/[id]/candidate-list']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
+      `${ROUTES['/jobs/[id]']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
     );
   };
 
@@ -202,7 +202,7 @@ export const useApplicationsActions = () => {
       status: 'new',
       count: job?.section_count?.new ?? 0,
       ...queryParams,
-      schedule_status: [],
+      // schedule_status: [],
     }),
   );
   const screeningApplications = useInfiniteQuery(
