@@ -29,20 +29,19 @@ export async function getGreenhouseKey(
   ).data.greenhouse_key;
 }
 
-export async function getLastSync(
+export async function getSyncDetails(
   supabaseAdmin: SupabaseClientType,
   recruiter_id: string,
 ) {
-  const last_sync =
-    (
-      await supabaseAdmin
-        .from('integrations')
-        .select('greenhouse_metadata')
-        .eq('recruiter_id', recruiter_id)
-        .single()
-        .throwOnError()
-    ).data?.greenhouse_metadata?.last_sync || {};
-  return last_sync;
+  const sync = (
+    await supabaseAdmin
+      .from('integrations')
+      .select('greenhouse_metadata')
+      .eq('recruiter_id', recruiter_id)
+      .single()
+      .throwOnError()
+  ).data?.greenhouse_metadata || { options: {}, last_sync: {} };
+  return sync;
 }
 
 export async function setLastSync(

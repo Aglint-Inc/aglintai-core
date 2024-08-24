@@ -18,6 +18,12 @@
   user-select: none;
 }
 
+.display-icons-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .disabled_state {
   position: absolute;
   left: 0%;

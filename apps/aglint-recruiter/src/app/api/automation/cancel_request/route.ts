@@ -38,15 +38,14 @@ const cancelReschdule = async (setting, supabase) => {
     type: 'declined',
   };
 
-  try {
-    await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/request/create`, {
+  await fetch(
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/request/candidate-request`,
+    {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-    }).catch((e) => {
-      throw new Error(e.message);
-    });
-  } catch (e) {
+    },
+  ).catch((e) => {
     throw new Error(e.message);
-  }
+  });
 };

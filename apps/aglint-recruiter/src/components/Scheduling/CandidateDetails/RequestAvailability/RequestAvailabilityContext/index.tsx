@@ -28,7 +28,13 @@ import toast from '@/src/utils/toast';
 export type candidateRequestAvailabilityType =
   DatabaseTable['candidate_request_availability'] & {
     applications: DatabaseTable['applications'] & {
-      candidates: DatabaseTable['candidates'];
+      candidates: DatabaseTable['candidates'] & {
+        recruiter: {
+          id: string;
+          name: string;
+          logo: string;
+        };
+      };
     };
     recruiter: {
       id: string;

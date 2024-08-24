@@ -142,14 +142,14 @@ export const scheduleDebrief = async ({
 
 export const createFilterJson = async ({
   sessions_ids,
-  schedule_id,
+  application_id,
   organizer_name,
   dateRange,
   supabase,
   rec_user_id,
 }: {
   sessions_ids: string[];
-  schedule_id: string;
+  application_id: string;
   organizer_name: string;
   dateRange: {
     start_date: string;
@@ -167,8 +167,8 @@ export const createFilterJson = async ({
         organizer_name: organizer_name,
       },
       session_ids: sessions_ids,
-      schedule_id: schedule_id,
       created_by: rec_user_id,
+      application_id,
     })
     .select();
 

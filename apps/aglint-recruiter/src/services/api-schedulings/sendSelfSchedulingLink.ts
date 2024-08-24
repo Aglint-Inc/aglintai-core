@@ -9,12 +9,12 @@ export const sendSelfSchedulingLinkFunc = async ({
   end_date_str,
   organizer_id,
   request_id,
-  schedule_id,
+  application_id,
   session_ids,
   start_date_str,
 }: {
   cand_picked_slots: PlanCombinationRespType[];
-  schedule_id: string;
+  application_id: string;
   organizer_id: string;
   start_date_str: string;
   end_date_str: string;
@@ -25,7 +25,7 @@ export const sendSelfSchedulingLinkFunc = async ({
     await supabaseAdmin
       .from('interview_filter_json')
       .insert({
-        schedule_id,
+        application_id,
         filter_json: {
           start_date: start_date_str,
           end_date: end_date_str,

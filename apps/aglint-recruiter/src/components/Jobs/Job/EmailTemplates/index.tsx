@@ -20,9 +20,12 @@ import { SyncStatus } from '@/src/components/NewScreening/PhoneScreenTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
+
+import { Settings } from '../Common/SharedTopNav/actions';
 
 const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicationRecieved_email_applicant',
@@ -39,7 +42,7 @@ const JobEmailTemplatesDashboard = () => {
       ) : (
         <PageLayout
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
-          slotTopbarRight={<></>}
+          slotTopbarRight={<Settings />}
           slotSaving={<SyncStatus status={saving} />}
           slotBody={<JobEmailTemplates setSaving={setSaving} />}
         />
@@ -57,11 +60,9 @@ const JobEmailTemplatesDashboardBreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
@@ -127,7 +128,7 @@ const JobEmailTemplates = ({ setSaving }) => {
 
   return (
     <EmailTemplatesStart
-    isSearchFilterVisible={false}
+      isSearchFilterVisible={false}
       showTabs={false}
       // isSearchFilterVisible={false}// build is failing
       isWarningVisible={true}

@@ -38,7 +38,7 @@ export const settingsItems: {
   { label: 'Templates', value: settingSubNavItem['EMAILTEMPLATE'] },
   { label: 'Scheduling', value: settingSubNavItem['SCHEDULING'] },
   {
-    label: 'Scheduling Reasons',
+    label: 'Reasons',
     value: settingSubNavItem['SCHEDULING_REASONS'],
   },
 ];

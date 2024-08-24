@@ -277,3 +277,25 @@
 }
 
 /* ------------------------------------------------------- */
+
+.custom-pdf-viewer-container {
+  height: auto; /* Adjust as needed */
+  width: 100%;
+}
+
+.pdf-viewer-container {
+  height: auto; /* Adjust as needed */
+  width: 100%;
+}
+/* .rpv-core__viewer.rpv-core__viewer--light {
+  height: 2000px !important;
+  background: yellow;
+}
+
+.rpv-core__inner-container {
+  height: 2000px !important;
+}
+
+.rpv-core__page-layer--single {
+  margin: none;
+} */

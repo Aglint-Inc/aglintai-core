@@ -7,7 +7,7 @@ export const getOrganizerId = async (
   const { data: app, error: errApp } = await supabase
     .from('applications')
     .select(
-      'public_jobs(interview_coordinator,recruiter,recruiting_coordinator,hiring_manager,sourcer,recruiter_id)',
+      'public_jobs(recruiter,recruiting_coordinator,hiring_manager,sourcer,recruiter_id)',
     )
     .eq('id', application_id)
     .single();

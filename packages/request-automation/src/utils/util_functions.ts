@@ -123,18 +123,18 @@ export const updateRequest = async ({
         createLocalStorage(data, type);
         setConsoleMessage((pre) => [
           ...pre,
-          `${data.length} Request successfully Process.`,
+          `${data.length} Requests processed successfully.`,
         ]);
       } else {
         setConsoleMessage((pre) => [
           ...pre,
-          `No New ${fullForm(type)} request found`,
+          `No new ${fullForm(type)} request found.`,
         ]);
       }
     })
     .catch((e) => {
       console.log(e.message);
-      setConsoleMessage((pre) => [...pre, `Something went wrong`]);
+      setConsoleMessage((pre) => [...pre, `Something went wrong.`]);
     });
 };
 
@@ -157,7 +157,7 @@ export const submitAvailability = async ({
   if (!(filteredSettings?.length > 0)) {
     setConsoleMessage((pre) => [
       ...pre,
-      `No ${fullForm(type)} request found for submit Availability`,
+      `No ${fullForm(type)} requests found to submit availabilit.y`,
     ]);
 
     return;
@@ -170,7 +170,7 @@ export const submitAvailability = async ({
 
   setConsoleMessage((pre) => [
     ...pre,
-    `${settingsForSubmitAva.length} for Submit availability \n${settingsForSendRemainder.length} for send reminder`,
+    `${settingsForSubmitAva.length} to submit availability \n${settingsForSendRemainder.length} to send reminder.`,
   ]);
 
   if (settingsForSendRemainder?.length > 0) {
@@ -222,14 +222,14 @@ export const sendAvailabilityReminder = async ({
         });
         setConsoleMessage((pre) => [
           ...pre,
-          `Availability Reminder sent succesfully`,
+          `Availability reminder sent succesfully.`,
         ]);
       })
 
       .catch((e) => {
         setConsoleMessage((pre) => [
           ...pre,
-          `Availability Reminder sending failed ${e.message}`,
+          `Failed to send availability reminder. ${e.message}`,
         ]);
       });
   });
@@ -278,12 +278,12 @@ const bookSchedule = async ({
         });
         setConsoleMessage((pre) => [
           ...pre,
-          "self schudle succesfully submitted",
+          "Interviews booked successfully.",
         ]);
       })
 
       .catch((e) => {
-        setConsoleMessage((pre) => [...pre, "self schudle booking failed"]);
+        setConsoleMessage((pre) => [...pre, "Interviews booking failed."]);
       });
   });
 };
@@ -305,7 +305,7 @@ export const bookSelfSchedule = async ({
   if (!(filteredSettings?.length > 0)) {
     setConsoleMessage((pre) => [
       ...pre,
-      `No ${fullForm(type)} request found for booking`,
+      `No ${fullForm(type)} requests found for booking.`,
     ]);
     return;
   }
@@ -315,7 +315,7 @@ export const bookSelfSchedule = async ({
 
   setConsoleMessage((pre) => [
     ...pre,
-    `${settingsForBookSchedule.length} for booking self schedule | ${settingsForSendScheduleReminder.length} for send reminder`,
+    `${settingsForBookSchedule.length} to book interview | ${settingsForSendScheduleReminder.length} to send reminder.`,
   ]);
 
   await bookSchedule({ settingsForBookSchedule, type, setConsoleMessage });
@@ -366,13 +366,13 @@ export const sendReminderSelfSchedule = async ({
         });
         setConsoleMessage((pre) => [
           ...pre,
-          " Self schedule Reminder sent succesfully",
+          "Self Schedule reminder sent succesfully.",
         ]);
       })
       .catch((e) => {
         setConsoleMessage((pre) => [
           ...pre,
-          `Self schedule Reminder sending failed ${e.message}`,
+          `Self Schedule reminder failed. ${e.message}`,
         ]);
       });
   });
@@ -400,7 +400,7 @@ export const requestForReschedule = async ({
   );
 
   if (!(filteredSettings?.length > 0)) {
-    setConsoleMessage((pre) => [...pre, "No request found for Reschedule"]);
+    setConsoleMessage((pre) => [...pre, "No requests found for Reschedule."]);
     return;
   }
 
@@ -408,7 +408,7 @@ export const requestForReschedule = async ({
 
   setConsoleMessage((pre) => [
     ...pre,
-    `${settingsForreSchedule.length} requests from Reschedule `,
+    `${settingsForreSchedule.length} requests from Reschedule.`,
   ]);
 
   settingsForreSchedule.map(async (setting, i) => {
@@ -444,7 +444,7 @@ export const requestForReschedule = async ({
       .catch((e) => {
         setConsoleMessage((pre) => [
           ...pre,
-          `Reschedule requesting failed ${e.message}`,
+          `Reschedule request failed. ${e.message}`,
         ]);
       });
   });
@@ -469,7 +469,7 @@ export const requestForCancel = async ({
   );
 
   if (!(filteredSettings?.length > 0)) {
-    setConsoleMessage((pre) => [...pre, "No request found for cancel"]);
+    setConsoleMessage((pre) => [...pre, "No request found to cancel."]);
     return;
   }
 
@@ -508,13 +508,13 @@ export const requestForCancel = async ({
           type: type,
           value: true,
         });
-        setConsoleMessage((pre) => [...pre, "Cancel request succesfully"]);
+        setConsoleMessage((pre) => [...pre, "Raised cancel requests  succesfully."]);
       })
       .catch((e) => {
         setConsoleMessage((pre) => [
           ...pre,
 
-          `Cancel requesting failed ${e.message}`,
+          `Failed to raise cancel requests  ${e.message}`,
         ]);
       });
   });

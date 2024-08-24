@@ -113,11 +113,11 @@ export const fetchSessionDetailsFromSchedule = async ({
               created_at: cancel.created_at,
               cancel_user_id: cancel.cancel_user_id,
               other_details: cancel.other_details,
-              schedule_id: cancel.schedule_id,
               session_id: cancel.session_id,
               session_relation_id: cancel.session_relation_id,
               type: cancel.type,
               request_id: undefined,
+              application_id: cancel.application_id,
             };
           return {
             interview_session_cancel: interview_session_cancel,

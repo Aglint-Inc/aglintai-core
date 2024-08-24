@@ -10,7 +10,11 @@ export function GET(request: NextRequest) {
   return method(async ({ requesterDetails }) => {
     const { recruiter_id } = requesterDetails;
     const temp = await getGreenhouseMeta(recruiter_id);
-    return { options: temp.options || {}, last_sync: temp.last_sync || {} };
+    return {
+      options: temp.options || {},
+      last_sync: temp.last_sync || {},
+      key: temp.key,
+    };
   });
 }
 

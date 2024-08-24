@@ -12,5 +12,10 @@ export type CustomRecruiterUser = TableType<
       refresh_token: string;
     } | null;
     status: "invited" | "active" | "suspended";
+    calendar_sync: {
+      syncToken: string | null;
+      resourceId: string;
+      channelId: string;
+    } | null;
   }
 >;

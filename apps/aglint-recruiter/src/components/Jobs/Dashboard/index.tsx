@@ -93,15 +93,7 @@ const DashboardComp = () => {
                 }
                 slotAllJobs={<JobsList jobs={jobs} />}
                 slotSearchInputJob={manageJob && <AddJob />}
-                textJobsHeader={
-                  router.query.status == 'published'
-                    ? 'Published Jobs'
-                    : router.query.status == 'draft'
-                      ? 'Draft Jobs'
-                      : router.query.status == 'closed'
-                        ? 'Closed Jobs'
-                        : 'All Jobs'
-                }
+                textJobsHeader={'Jobs'}
               />
             </Stack>
           )}

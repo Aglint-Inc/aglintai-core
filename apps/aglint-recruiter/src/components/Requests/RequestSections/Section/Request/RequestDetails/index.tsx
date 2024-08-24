@@ -17,6 +17,7 @@ import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
+
 function RequestDetails({
   request,
 }: {
@@ -38,7 +39,8 @@ function RequestDetails({
                 name: relation.interview_session.name,
               };
             })}
-            application_id={request.applications.id}
+            job_id={request.applications.public_jobs.id}
+            application_id={request.application_id}
           />
           <CandidateDetails
             candidateDetails={{

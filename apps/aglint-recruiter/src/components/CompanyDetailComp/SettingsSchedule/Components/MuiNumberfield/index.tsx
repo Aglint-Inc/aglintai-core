@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 function MuiNumberfield({
   value,
   handleSelect,
-  width = '160px',
-  height = '36px',
+  width = '70px',
+  height = '28px',
   isDebounceEnable = true,
   isDisable = false,
   isMarginTop = true,

@@ -24,6 +24,7 @@ import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 import { WarningSvg } from '../Interview-Plan/sessionForms';
 
 const JobDetailsDashboard = () => {
@@ -123,6 +124,7 @@ const JobEdit = () => {
   return (
     <PageLayout
       slotTopbarLeft={<BreadCrumbs job={job} />}
+      slotTopbarRight={<Settings />}
       slotBody={
         <JobEditForm
           fields={fields}
@@ -155,11 +157,9 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
