@@ -115,10 +115,13 @@ export const groupByDate = (events, dayCount) => {
   const groupedEvents = events.reduce((acc, event) => {
     const eventDate = dayjsLocal(event.start.dateTime).format('YYYY-MM-DD');
 
+    // eslint-disable-next-line security/detect-object-injection
     if (!acc[eventDate]) {
+      // eslint-disable-next-line security/detect-object-injection
       acc[eventDate] = [];
     }
 
+    // eslint-disable-next-line security/detect-object-injection
     acc[eventDate].push(event);
 
     return acc;
@@ -127,6 +130,7 @@ export const groupByDate = (events, dayCount) => {
   // Step 3: Ensure all dates in the range are present, even if they have no events
   return Object.values(
     dateRange.reduce((acc, date) => {
+      // eslint-disable-next-line security/detect-object-injection
       acc[date] = groupedEvents[date] || [];
       return acc;
     }, {}),
