@@ -147,6 +147,7 @@ const AvailabilityView = ({
 };
 
 const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
+  console.log(interviewerEvent);
   return (
     // whole box
     <Box
@@ -176,7 +177,7 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
               fontWeight: 'bold',
             }}
           >
-            {dayjsLocal(events[0].start.dateTime).format('DD MMMM')}
+            {dayjsLocal().add(i, 'day').format('DD MMMM')}
           </Typography>
           <Box
             sx={{

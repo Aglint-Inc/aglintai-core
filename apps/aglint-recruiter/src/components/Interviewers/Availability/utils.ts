@@ -15,7 +15,7 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
     return startTime.hour() >= sleepEnd;
   });
 
-  const date = dayjs().add(index, 'day').format('YYYY-MM-DD');
+  const date = dayjs().add(index, 'day');
   const tz = tzCode;
   const gm = dayjsLocal().add(index, 'day').tz(tzCode).toISOString().split('+');
   const utc = gm?.length > 0 ? gm[1] : '';
@@ -32,24 +32,22 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
 
   res.unshift({
     start: {
-      dateTime: `${date}T00:00:00+${utc}`,
+      dateTime: date.hour(0).minute(0).toISOString(),
+      // dateTime: `${date}T00:00:00+${utc}`,
       timeZone: tz,
       startPx: timeToPx(
-        dayjs(`${date}T00:00:00+${utc}`).format('H'),
-        dayjs(`${date}T00:00:00+${utc}`).format('m'),
+        date.hour(0).minute(0).format('H'),
+        date.hour(0).minute(0).format('m'),
       ),
     },
 
     end: {
-      dateTime: `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
+      dateTime: date.hour(sleepEnd).minute(0).toISOString(),
+      // dateTime: `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
       timeZone: tz,
       endPx: timeToPx(
-        dayjs(
-          `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
-        ).format('H'),
-        dayjs(
-          `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
-        ).format('m'),
+        date.hour(sleepEnd).minute(0).format('H'),
+        date.hour(sleepEnd).minute(0).format('m'),
       ),
     },
     type: 'morning_sleep',
@@ -57,20 +55,22 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
 
   res.push({
     start: {
-      dateTime: `${date}T${sleepStart}:00:00+${utc}`,
+      dateTime: date.hour(sleepStart).minute(0).toISOString(),
+      // dateTime: `${date}T${sleepStart}:00:00+${utc}`,
       timeZone: tz,
       startPx: timeToPx(
-        dayjs(`${date}T${sleepStart}:00:00+${utc}`).format('H'),
-        dayjs(`${date}T${sleepStart}:00:00+${utc}`).format('m'),
+        date.hour(sleepStart).minute(0).format('H'),
+        date.hour(sleepStart).minute(0).format('m'),
       ),
     },
 
     end: {
-      dateTime: `${date}T24:00:00+${utc}`,
+      // dateTime: `${date}T24:00:00+${utc}`,
+      dateTime: date.hour(24).minute(0).toISOString(),
       timeZone: tz,
       endPx: timeToPx(
-        dayjs(`${date}T24:00:00+${utc}`).format('H'),
-        dayjs(`${date}T24:00:00+${utc}`).format('m'),
+        date.hour(24).minute(0).format('H'),
+        date.hour(24).minute(0).format('m'),
       ),
     },
     type: 'night_sleep',
@@ -135,183 +135,3 @@ export interface Event {
   };
   type: string;
 }
-
-// const events: Event[] = [
-//   {
-//     start: {
-//       dateTime: '2024-08-23T05:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-
-//     end: {
-//       dateTime: '2024-08-23T07:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T10:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T10:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T11:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T11:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T11:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T11:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T12:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T12:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T13:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T13:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T14:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T14:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T15:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T15:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-//   {
-//     start: {
-//       dateTime: '2024-08-23T16:00:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     end: {
-//       dateTime: '2024-08-23T22:30:00+05:30',
-//       timeZone: 'Asia/Kolkata',
-//     },
-//     type: 'cal_event',
-//   },
-// ];
