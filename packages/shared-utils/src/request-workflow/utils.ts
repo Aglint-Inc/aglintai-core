@@ -2,26 +2,31 @@ import {
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
+  SupabaseType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { v4 as uuidv4 } from 'uuid';
-
-import { ApiError } from '@/src/utils/customApiError';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import { CApiError } from '../customApiError';
 
 export type ProgressLoggerType = ReturnType<typeof createRequestProgressLogger>;
 
-export const createRequestProgressLogger = (
-  request_id: string,
-  event_run_id: number,
-  target_api: DatabaseEnums['email_slack_types'],
-) => {
+export const createRequestProgressLogger = ({
+  event_run_id,
+  request_id,
+  supabaseAdmin,
+  target_api,
+}: {
+  supabaseAdmin: SupabaseType;
+  request_id: string;
+  event_run_id?: number;
+  target_api?: DatabaseEnums['email_slack_types'];
+}) => {
   const logger = async (
     payload: Pick<
       DatabaseTableInsert['request_progress'],
       'log' | 'event_type' | 'status' | 'id' | 'is_progress_step'
-    >,
+    >
   ) => {
     if (!payload.id) {
       payload.id = uuidv4();
@@ -38,19 +43,19 @@ export const createRequestProgressLogger = (
           },
           target_api,
         })
-        .select(),
+        .select()
     );
     return rec;
   };
   logger.resetEventProgress = async (
-    type: DatabaseTable['request_progress']['event_type'],
+    type: DatabaseTable['request_progress']['event_type']
   ) => {
     supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
         .delete()
         .eq('event_type', type)
-        .eq('request_id', request_id),
+        .eq('request_id', request_id)
     );
   };
   return logger;
@@ -59,7 +64,7 @@ export const createRequestProgressLogger = (
 // Define a generic type for the async callback function
 type AsyncCallbackFunction<T extends any, U extends unknown> = (
   // eslint-disable-next-line no-unused-vars
-  args: T,
+  args: T
 ) => Promise<U>;
 
 export async function executeWorkflowAction<T1 extends any, U extends unknown>(
@@ -69,7 +74,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   logger_args: Pick<
     DatabaseTableInsert['request_progress'],
     'log' | 'event_type' | 'status' | 'meta'
-  >,
+  >
 ): Promise<U> {
   let progress_id = uuidv4();
   try {
@@ -88,9 +93,9 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       is_progress_step: false,
     });
     return res;
-  } catch (err) {
+  } catch (err: any) {
     let err_log = 'Something wrong happenned';
-    if (err instanceof ApiError && err.type === 'CLIENT') {
+    if (err instanceof CApiError && err.type === 'CLIENT') {
       err_log = err.message;
     }
     await logger({
@@ -100,6 +105,6 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       log: err_log,
       is_progress_step: false,
     });
-    throw new ApiError('WORKFLOW_ACTION', err.message, 500);
+    throw new CApiError('WORKFLOW_ACTION', err.message, 500);
   }
 }

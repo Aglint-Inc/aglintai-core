@@ -194,7 +194,7 @@ export const sendSelfScheduleRequest_email_applicant = v.object({
   organizer_id: v.string(),
   filter_json_id: v.optional(v.string()),
   application_id: v.optional(v.string()),
-  task_id: v.optional(v.string(), undefined),
+  request_id: v.optional(v.string(), undefined),
   payload: v.optional(
     v.object({
       subject: v.string(),

@@ -3,6 +3,12 @@ import {
   candidate_new_schedule_schema,
   supabaseWrap,
 } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import {
+  createRequestProgressLogger,
+  executeWorkflowAction,
+  ProgressLoggerType,
+} from '@aglint/shared-utils/src/request-workflow/utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
@@ -12,21 +18,16 @@ import { candidateAvailReRequest } from '@/src/services/api-schedulings/candidat
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
 import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAgent';
-import {
-  createRequestProgressLogger,
-  executeWorkflowAction,
-  ProgressLoggerType,
-} from '@/src/services/api-schedulings/utils';
-import { ApiError } from '@/src/utils/customApiError';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const TIME_ZONE = 'Asia/Colombo';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
-    req.body.request_id,
-    req.body.event_run_id,
-    req.body.target_api,
-  );
+  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    request_id: req.body.request_id,
+    supabaseAdmin,
+    event_run_id: req.body.event_run_id,
+    target_api: req.body.target_api,
+  });
 
   try {
     const {
@@ -62,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     let schedule_id = meeting_details[0].interview_schedule_id;
     if (meeting_details.length === 0) {
-      throw new ApiError('SERVER_ERROR', 'invalid session id');
+      throw new CApiError('SERVER_ERROR', 'invalid session id');
     }
     const plans = await executeWorkflowAction(
       findPlanCombs,
@@ -171,7 +172,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
       meeting_flow = 'candidate_request';
     } else {
-      throw new ApiError('SERVER_ERROR', 'new-schedule not found');
+      throw new CApiError('SERVER_ERROR', 'new-schedule not found');
     }
 
     supabaseWrap(
@@ -192,7 +193,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (err: any) {
     console.error(err);
 
-    if (err instanceof ApiError) {
+    if (err instanceof CApiError) {
       return res.status(500).json({
         type: err.type,
         message: err.message,
