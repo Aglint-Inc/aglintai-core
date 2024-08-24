@@ -248,8 +248,8 @@ function SlotBodyComp({
                   {currentTab === 'instructions' && (
                     <>
                       <Instructions
-                      isWidth={true}
-                      isMinWidth={false}
+                        isWidth={true}
+                        isMinWidth={false}
                         instruction={editModule?.instructions}
                         setTextValue={setTextValue}
                         showEditButton={true}
@@ -388,7 +388,7 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
                     color={
                       job.status === 'published'
                         ? 'success'
-                        : status === 'closed'
+                        : job.status === 'closed'
                           ? 'error'
                           : 'warning'
                     }
@@ -398,7 +398,9 @@ const ConnectedJobs = ({ module_id }: { module_id: string }) => {
               }
               onClickJob={{
                 onClick: () =>
-                  router.push(ROUTES['/jobs/[id]']({ id: job.id })),
+                  router.push(
+                    ROUTES['/jobs/[id]']({ id: job.id }) + '/interview-plan',
+                  ),
               }}
             />
           ))

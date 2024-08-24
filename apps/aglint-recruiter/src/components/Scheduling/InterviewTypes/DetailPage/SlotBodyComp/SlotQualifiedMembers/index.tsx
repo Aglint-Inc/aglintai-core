@@ -72,8 +72,8 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
             onClickCard={{
               onClick: () => {
                 router.push(
-                  ROUTES['/scheduling/interviewer/[member_id]']({
-                    member_id: user.user_id,
+                  ROUTES['/user/profile/[user_id]']({
+                    user_id: user.recruiter_user.user_id,
                   }),
                 );
               },
