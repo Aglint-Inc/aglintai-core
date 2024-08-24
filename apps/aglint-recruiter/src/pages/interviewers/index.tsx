@@ -22,7 +22,6 @@ function InterviewersPage() {
         slotTopbarRight={<InterviewersTabs />}
         slotBody={<Interviewers />}
       />
-      ;
     </>
   );
 }

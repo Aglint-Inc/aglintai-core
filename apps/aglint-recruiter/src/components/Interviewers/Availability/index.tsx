@@ -174,6 +174,7 @@ const StatusGlyph = ({ isConnected }) => (
   >
     <Stack>
       <GlobalIcon
+        size={4}
         color={isConnected ? 'success' : 'error'}
         iconName={isConnected ? 'check_circle' : 'cancel'}
       />
@@ -249,15 +250,15 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
 };
 
 const eventColor = (type) => {
-  const calendarEvent = 'red';
-  const Available = 'var(--success-9)';
-  const morningSleep = 'lightblue';
-  const nightSleep = 'lightblue';
+  const calendarEvent = 'var(--neutral-4)';
+  const Available = 'var(--success-a6)';
+  const morningSleep = 'var(--neutral-4)';
+  const nightSleep = 'var(--neutral-4)';
 
-  const soft = 'orange';
-  const freeTime = 'var(--success-9)';
-  const outStand = 'yellow';
-  const recruitingBlocks = 'blue';
+  const soft = 'var(--warning-a6)';
+  const freeTime = 'var(--success-a6)';
+  const outStand = 'var(--error-a6)';
+  const recruitingBlocks = 'var(--success-a6)';
 
   return type === 'cal_event'
     ? calendarEvent
@@ -275,5 +276,5 @@ const eventColor = (type) => {
                 ? morningSleep
                 : type === 'night_sleep'
                   ? nightSleep
-                  : 'blue';
+                  : 'var(--neutral-11)';
 };
