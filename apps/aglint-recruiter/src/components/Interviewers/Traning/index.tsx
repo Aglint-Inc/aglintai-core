@@ -1,14 +1,14 @@
 import { Avatar, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { HistoryPill } from '@/devlink3/HistoryPill';
+import { InterviewerTraining } from '@/devlink3/InterviewerTraining';
 import { InterviewerTrainingList } from '@/devlink3/InterviewerTrainingList';
 import { SchedulingAnalyticsContextType } from '@/src/context/SchedulingAnalytics';
 
 import Loader from '../../Common/Loader';
 import { useTrainingProgress } from '../Hook';
-import { InterviewerTraining } from '@/devlink3/InterviewerTraining';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 function TrainingProgress() {
   const { data, isLoading } = useTrainingProgress();

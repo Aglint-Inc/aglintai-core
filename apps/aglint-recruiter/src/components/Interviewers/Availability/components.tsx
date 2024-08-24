@@ -1,6 +1,6 @@
 const officeHours = [9, 17]; // 9 AM to 5 PM
 const extendedHours = [7, 20]; // 7 AM to 8 PM
-const sleepTimes = [0, 6]; // 12 AM to 6 AM
+// const sleepTimes = [0, 6]; // 12 AM to 6 AM
 
 const radixColors = {
   officeHoursBg: 'hsl(190, 70%, 40%)', // Darker Cyan

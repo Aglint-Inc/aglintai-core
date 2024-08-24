@@ -1,5 +1,6 @@
-import dayjs from '@/src/utils/dayjs';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+
+import dayjs from '@/src/utils/dayjs';
 
 const sleepStart = 22;
 const sleepEnd = 6;
@@ -11,14 +12,11 @@ const timeToPx = (hours, minutes) => {
 export function EventFilling(events: Event[], tzCode: string, index: number) {
   const res = events.filter((event) => {
     const startTime = dayjs(event.start.dateTime);
-    const endTime = dayjs(event.end.dateTime);
     return startTime.hour() >= sleepEnd;
   });
 
   const date = dayjs().add(index, 'day');
   const tz = tzCode;
-  const gm = dayjsLocal().add(index, 'day').tz(tzCode).toISOString().split('+');
-  // const utc = gm?.length > 0 ? gm[1] : '';
 
   res.unshift({
     start: {

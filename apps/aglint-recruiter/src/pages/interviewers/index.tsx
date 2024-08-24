@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { PageLayout } from '@/devlink2/PageLayout';
 import Seo from '@/src/components/Common/Seo';
 import Interviewers from '@/src/components/Interviewers';
 import InterviewersTabs from '@/src/components/Interviewers/Tab';
-import { useRouter } from 'next/router';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 function InterviewersPage() {

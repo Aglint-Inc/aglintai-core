@@ -1,22 +1,22 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
+import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { initUser } from '@/src/pages/api/interviewers';
+import dayjs from '@/src/utils/dayjs';
 
+import Loader from '../../Common/Loader';
 import { useAvailabilty } from '../Hook';
 import { Event, EventFilling, groupByDate } from './utils';
-import dayjs from '@/src/utils/dayjs';
-import Loader from '../../Common/Loader';
-import { GlobalIcon } from '@/devlink';
 
 const timeToPx = (hours, minutes) => {
   return hours * 60 * 0.133 + minutes * 0.133;
 };
 
 const TimeLineCalendar = () => {
-  const [dayCount, setDayCount] = useState<number>(10);
+  const dayCount = 10;
 
   const startDate = dayjsLocal().startOf('day').add(0, 'day');
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
@@ -159,7 +159,6 @@ const AvailabilityView = ({
               index,
             ),
           );
-          console.log(interviewerEvent);
 
           return (
             <TimeLineList
@@ -188,7 +187,6 @@ const StatusGlyph = ({ isConnected }) => (
 );
 
 const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
-  console.log(interviewerEvent);
   return (
     // whole box
     <Box
