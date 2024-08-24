@@ -2,10 +2,6 @@
   overflow: hidden;
   max-width: 600px;
   min-width: 200px;
-
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-
   background-color: var(--white);
 }
 

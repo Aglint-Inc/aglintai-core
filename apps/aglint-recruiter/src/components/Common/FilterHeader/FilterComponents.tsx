@@ -581,6 +581,7 @@ function NestedFilterComponent({
             return (
               <FilterItem
                 key={section}
+                borderRight={i < sectionsArray.length-1 ? '' : 'none'}
                 textFilterHeading={capitalizeFirstLetter(section)}
                 textCount={isSectionsActive[String(section)]}
                 isCountVisible={Boolean(isSectionsActive[String(section)])}
