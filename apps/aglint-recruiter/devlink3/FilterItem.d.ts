@@ -9,4 +9,5 @@ declare function FilterItem(props: {
   onClickSearch?: Types.Devlink.RuntimeProps;
   slotItems?: Types.Devlink.Slot;
   isCountVisible?: Types.Visibility.VisibilityConditions;
+  borderRight?: Types.Builtin.Text;
 }): React.JSX.Element;

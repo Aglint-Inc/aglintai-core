@@ -41,7 +41,6 @@
 
 .slot-interview-plan-card {
   display: flex;
-  margin-top: var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-2);
