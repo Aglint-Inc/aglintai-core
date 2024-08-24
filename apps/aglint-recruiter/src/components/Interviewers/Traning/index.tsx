@@ -29,6 +29,7 @@ function TrainingProgress() {
   return (
     <>
       <InterviewerTraining
+        textDateRange={<></>}
         slotInterviewerTrainnigList={
           data?.length ? (
             data.map((interviewer) => (
