@@ -1,8 +1,8 @@
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import axios from 'axios';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export const selfScheduleAgent = async ({
@@ -54,7 +54,7 @@ export const selfScheduleAgent = async ({
       ),
   );
   if (!agent_assigned_user.phone) {
-    throw new ApiError('CLIENT', 'phone number not set', 400);
+    throw new CApiError('CLIENT', 'phone number not set', 400);
   }
   if (agent_type === 'phone') {
     const job_details = filter_json.interview_schedule.applications.public_jobs;

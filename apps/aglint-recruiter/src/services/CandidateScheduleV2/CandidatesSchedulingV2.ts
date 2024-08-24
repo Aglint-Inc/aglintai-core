@@ -20,12 +20,11 @@ import {
   scheduling_options_schema,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import { Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
-
-import { ApiError } from '@/src/utils/customApiError';
 
 import {
   IntervsWorkHrsEventMapType,
@@ -222,7 +221,7 @@ export class CandidatesSchedulingV2 {
           (int) => int.session_relation_id === reln_id,
         )
       ) {
-        throw new ApiError('SERVER_ERROR', `${reln_id} does not exist`);
+        throw new CApiError('SERVER_ERROR', `${reln_id} does not exist`);
       }
     });
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({

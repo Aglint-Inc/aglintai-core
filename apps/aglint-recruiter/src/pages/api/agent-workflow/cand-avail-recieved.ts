@@ -1,13 +1,13 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  executeWorkflowAction,
+} from '@aglint/shared-utils/src/request-workflow/utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
 import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendSelfSchedulingLink';
-import {
-  createRequestProgressLogger,
-  executeWorkflowAction,
-} from '@/src/services/api-schedulings/utils';
 import { addErrorHandlerWrap } from '@/src/utils/errorHandlerWrap';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
@@ -22,10 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     event_run_id,
     payload,
   } = req.body;
-  const reqProgressLogger = createRequestProgressLogger(
+  const reqProgressLogger = createRequestProgressLogger({
     request_id,
     event_run_id,
-  );
+    supabaseAdmin,
+  });
 
   const ai_response = payload.ai_response;
   const [avail_record] = supabaseWrap(
