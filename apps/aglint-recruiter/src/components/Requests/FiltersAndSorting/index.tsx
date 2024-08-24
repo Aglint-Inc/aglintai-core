@@ -138,9 +138,9 @@ function FilterAndSorting() {
   } as (typeof safeFilters)[number];
   const assignerFilter = {
     filterSearch: true,
-    searchPlaceholder: 'Search Creators',
+    searchPlaceholder: 'Search created by',
     active: assignerList.length,
-    name: 'Creators',
+    name: 'Created by',
     value: assignerList ?? [],
     type: 'filter',
     iconname: '',
@@ -164,7 +164,7 @@ function FilterAndSorting() {
     filterSearch: true,
     searchPlaceholder: 'Search Assignees',
     active: assigneeList.length,
-    name: 'Assignees',
+    name: 'Assignee',
     value: assigneeList ?? [],
     type: 'filter',
     iconname: '',
