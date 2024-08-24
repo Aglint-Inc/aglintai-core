@@ -18,12 +18,11 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
   const date = dayjs().add(index, 'day');
   const tz = tzCode;
   const gm = dayjsLocal().add(index, 'day').tz(tzCode).toISOString().split('+');
-  const utc = gm?.length > 0 ? gm[1] : '';
+  // const utc = gm?.length > 0 ? gm[1] : '';
 
   res.unshift({
     start: {
       dateTime: date.hour(0).minute(0).toISOString(),
-      // dateTime: `${date}T00:00:00+${utc}`,
       timeZone: tz,
       startPx: timeToPx(
         date.hour(0).minute(0).format('H'),
@@ -33,7 +32,6 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
 
     end: {
       dateTime: date.hour(sleepEnd).minute(0).toISOString(),
-      // dateTime: `${date}T${sleepEnd < 10 ? '0' + sleepEnd : sleepEnd}:00:00+${utc}`,
       timeZone: tz,
       endPx: timeToPx(
         date.hour(sleepEnd).minute(0).format('H'),
@@ -46,7 +44,6 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
   res.push({
     start: {
       dateTime: date.hour(sleepStart).minute(0).toISOString(),
-      // dateTime: `${date}T${sleepStart}:00:00+${utc}`,
       timeZone: tz,
       startPx: timeToPx(
         date.hour(sleepStart).minute(0).format('H'),
@@ -55,7 +52,6 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
     },
 
     end: {
-      // dateTime: `${date}T24:00:00+${utc}`,
       dateTime: date.hour(24).minute(0).toISOString(),
       timeZone: tz,
       endPx: timeToPx(
@@ -65,8 +61,6 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
     },
     type: 'night_sleep',
   });
-
-  // console.log('res : ', res);
 
   return fillingGap(res);
 }

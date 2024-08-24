@@ -1,6 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 import { initUser } from '@/src/pages/api/interviewers';
@@ -9,6 +9,7 @@ import { useAvailabilty } from '../Hook';
 import { Event, EventFilling, groupByDate } from './utils';
 import dayjs from '@/src/utils/dayjs';
 import Loader from '../../Common/Loader';
+import { GlobalIcon } from '@/devlink';
 
 const timeToPx = (hours, minutes) => {
   return hours * 60 * 0.133 + minutes * 0.133;
@@ -38,7 +39,9 @@ const TimeLineCalendar = () => {
     );
 
   return (
-    <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
+    <Stack mt={2}>
+      <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
+    </Stack>
   );
 };
 
@@ -69,20 +72,31 @@ const AvailabilityView = ({
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               padding: 1,
+              gap: 1,
             }}
           >
-            <Typography variant='body1'>
-              {getFullName(interviewer.first_name, interviewer.last_name)}
-            </Typography>
-            <Typography variant='caption'>
-              (
-              {dayjsLocal()
-                .tz(interviewer.scheduling_settings.timeZone.tzCode)
-                .format('z')}
-              )
-            </Typography>
+            <Stack
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 1,
+              }}
+            >
+              <Typography variant='body1'>
+                {getFullName(interviewer.first_name, interviewer.last_name)}
+              </Typography>
+              <Typography variant='caption'>
+                (
+                {dayjsLocal()
+                  .tz(interviewer.scheduling_settings.timeZone.tzCode)
+                  .format('z')}
+                )
+              </Typography>
+            </Stack>
+            <StatusGlyph isConnected={interviewer.isCalenderConnected} />
           </Box>
         ))}
       </Box>
@@ -100,9 +114,10 @@ const AvailabilityView = ({
         {allInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
             return (
-              <Typography key={index} minHeight={'36px'}>
+              <Box key={index} minHeight={'36px'}>
                 Calendar is not connected
-              </Typography>
+                {/* <StatusGlyph isConnected={interviewer.isCalenderConnected} /> */}
+              </Box>
             );
           const timeZoneOffset = dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)
@@ -159,6 +174,19 @@ const AvailabilityView = ({
   );
 };
 
+const StatusGlyph = ({ isConnected }) => (
+  <Tooltip
+    title={isConnected ? 'Calendar Connected' : 'Calendar Not Connected'}
+  >
+    <Stack>
+      <GlobalIcon
+        color={isConnected ? 'success' : 'error'}
+        iconName={isConnected ? 'check_circle' : 'cancel'}
+      />
+    </Stack>
+  </Tooltip>
+);
+
 const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
   console.log(interviewerEvent);
   return (
@@ -186,7 +214,7 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
             variant='body2'
             sx={{
               position: 'absolute',
-              top: '-20px',
+              top: '-10px',
               fontWeight: 'bold',
             }}
           >
