@@ -58,7 +58,9 @@ export const getFutureProgress = ({
         progress: [],
         status: 'not_started',
       });
-      nextTriggers = ['candidateBook'];
+      if (!Object.keys(triggerMap).includes('candidateBook')) {
+        nextTriggers = ['candidateBook'];
+      }
     }
 
     if (currTrigger === 'onRequestSchedule') {
@@ -122,13 +124,11 @@ export const getFutureProgress = ({
       ...nextTriggers,
       ...nextPossibleTrigger[currTrigger].filter((t) => triggerMap[t]),
     ];
-    console.log(nextTriggers);
 
     for (let trig of nextTriggers) {
       const trigEventActions = getSchedulingUpcomingTriggers(trig, triggerMap);
       eventActions = [...eventActions, ...trigEventActions];
     }
-    console.log(eventActions);
     return eventActions;
   };
   let prog: RequestLogsActionType[] = [];
