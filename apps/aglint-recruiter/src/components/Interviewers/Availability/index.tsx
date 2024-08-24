@@ -15,7 +15,7 @@ const timeToPx = (hours, minutes) => {
 };
 
 const TimeLineCalendar = () => {
-  const [dayCount, setDayCount] = useState<number>(6);
+  const [dayCount, setDayCount] = useState<number>(10);
 
   const startDate = dayjsLocal().startOf('day').add(0, 'day');
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
@@ -100,7 +100,9 @@ const AvailabilityView = ({
         {allInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
             return (
-              <Typography key={index}>Calendar is not connected</Typography>
+              <Typography key={index} minHeight={'36px'}>
+                Calendar is not connected
+              </Typography>
             );
           const timeZoneOffset = dayjsLocal()
             .tz(interviewer.scheduling_settings.timeZone.tzCode)

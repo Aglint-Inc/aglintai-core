@@ -20,16 +20,6 @@ export function EventFilling(events: Event[], tzCode: string, index: number) {
   const gm = dayjsLocal().add(index, 'day').tz(tzCode).toISOString().split('+');
   const utc = gm?.length > 0 ? gm[1] : '';
 
-  // const date = dayjs(events[0]?.start.dateTime).format('YYYY-MM-DD');
-  // const tz = events[0]?.start.timeZone;
-  // const gm = events[0]?.start.dateTime.split('+');
-  // const utc = gm?.length > 0 ? gm[1] : '';
-
-  // startTime.hour() >= sleepEnd &&
-  // startTime.hour() <= sleepStart &&
-  // startTime.isBefore(dayjs().hour(sleepStart).minute(0)) &&
-  // endTime.isBefore(dayjs().hour(sleepStart).minute(0))
-
   res.unshift({
     start: {
       dateTime: date.hour(0).minute(0).toISOString(),
