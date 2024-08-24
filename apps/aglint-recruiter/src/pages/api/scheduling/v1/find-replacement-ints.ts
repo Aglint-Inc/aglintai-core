@@ -4,10 +4,10 @@ import {
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
+  CApiError,
   schema_find_alternative_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 

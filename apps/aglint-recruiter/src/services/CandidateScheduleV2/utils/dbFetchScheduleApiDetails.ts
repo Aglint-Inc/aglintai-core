@@ -9,8 +9,7 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

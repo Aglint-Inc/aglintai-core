@@ -1,5 +1,5 @@
 import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import { CApiError } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
 
 export const mailSender = async <T extends DatabaseEnums['email_slack_types']>({

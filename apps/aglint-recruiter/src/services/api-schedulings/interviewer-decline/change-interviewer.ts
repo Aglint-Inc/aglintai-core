@@ -3,8 +3,7 @@ import {
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
-import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 

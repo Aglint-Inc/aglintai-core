@@ -1,5 +1,4 @@
-import { candidate_new_schedule_schema } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import { candidate_new_schedule_schema, CApiError } from '@aglint/shared-utils';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,

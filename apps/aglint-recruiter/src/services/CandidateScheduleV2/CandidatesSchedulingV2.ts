@@ -15,12 +15,12 @@ import {
   SessionsCombType,
 } from '@aglint/shared-types';
 import {
+  CApiError,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import { Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';

@@ -1,9 +1,9 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
-} from '@aglint/shared-utils/src/request-workflow/utils';
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';

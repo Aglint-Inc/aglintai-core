@@ -3,11 +3,11 @@ import {
   PlanCombinationRespType,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
-} from '@aglint/shared-utils/src/request-workflow/utils';
+  getFullName,
+} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 

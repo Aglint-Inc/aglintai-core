@@ -1,5 +1,4 @@
-import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';

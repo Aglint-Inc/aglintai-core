@@ -3,8 +3,11 @@ import {
   CalendarEvent,
   ScheduleAuthType,
 } from '@aglint/shared-types';
-import { schema_update_meeting_ints, supabaseWrap } from '@aglint/shared-utils';
-import { CApiError } from '@aglint/shared-utils/src/customApiError';
+import {
+  CApiError,
+  schema_update_meeting_ints,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
