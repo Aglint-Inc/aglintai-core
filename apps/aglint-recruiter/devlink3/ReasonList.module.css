@@ -16,6 +16,10 @@
   background-color: var(--neutral-2);
 }
 
+.rl-edit-wrap {
+  height: 27px;
+}
+
 .edit_delete_button {
   display: none;
   justify-content: flex-start;

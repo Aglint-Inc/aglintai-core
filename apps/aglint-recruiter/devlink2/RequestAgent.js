@@ -43,6 +43,10 @@ export function RequestAgent({
           </>
         )}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%40media%20screen%20and%20(max-width%3A%20991px)%20%7B%0A%20%20.slot-agent-chat%20%7B%0A%20%20%20%20display%3A%20none%3B%0A%20%20%7D%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }
