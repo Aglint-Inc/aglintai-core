@@ -7,10 +7,15 @@ import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/src/context/RequestContext';
 
 import CheckCircleFilled from '../CheckCircleFilled';
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import {
+  EventTargetMapType,
+  ProgressTenseType,
+  RequestProgressMapType,
+} from '../types';
 import { workflowCopy } from '../utils/copy';
 import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents, eventToTrigger } from '../utils/progressMaps';
+import { progressStatusToTense } from '../utils/progressStatusToTense';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewSchedule = ({
@@ -41,7 +46,7 @@ const InterviewSchedule = ({
     tense = 'future';
   }
   return (
-    <Stack rowGap={1}>
+    <Stack rowGap={1.5}>
       <TextWithIcon
         textContent={<>EVENT : On Inteview is Scheduled</>}
         iconSize={3}
@@ -49,7 +54,6 @@ const InterviewSchedule = ({
         color={getProgressColor(tense)}
       />
       <Stack ml={4}>
-        <p>Actions : </p>
         {eventWActions
           .map((eA) => {
             return apiTargetToEvents[eA];
@@ -57,15 +61,10 @@ const InterviewSchedule = ({
           .flat()
           .map((ev) => {
             const eventProg = reqProgressMap[ev];
-            let tense: TenseType;
-            if (!eventProg) {
-              tense = 'future';
-            } else if (eventProg[0].status === 'completed') {
-              tense = 'past';
-            } else if (eventProg[0].status === 'not_started') {
-              tense = 'future';
-            } else if (eventProg[0].status === 'in_progress') {
-              tense = 'present';
+            let tense: ProgressTenseType = 'future';
+
+            if (eventProg) {
+              tense = progressStatusToTense(eventProg[0].status);
             }
 
             return (

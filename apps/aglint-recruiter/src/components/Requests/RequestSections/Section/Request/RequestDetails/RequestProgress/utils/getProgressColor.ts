@@ -1,6 +1,6 @@
-type TenseType = 'past' | 'present' | 'future' | 'error';
+import { ProgressTenseType } from '../types';
 
-export function getProgressColor(tense: TenseType) {
+export function getProgressColor(tense: ProgressTenseType) {
   if (tense === 'error') {
     return 'error';
   } else if (tense === 'future') {

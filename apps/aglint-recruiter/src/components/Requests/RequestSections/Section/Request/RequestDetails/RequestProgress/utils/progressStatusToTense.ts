@@ -14,5 +14,5 @@ export const progressStatusToTense = (
   } else {
     tense = 'future';
   }
-  return tense;
+  return tense as ProgressTenseType;
 };
