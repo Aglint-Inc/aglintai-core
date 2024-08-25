@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 import type { Request as RequestType } from '@/src/queries/requests/types';
 
@@ -24,9 +25,12 @@ export const traverseProgress = ({
   request_type: DatabaseTable['request']['type'];
   eventActions: TriggerActionsType[];
 }) => {
+  const sorted_request_progress = request_progress.sort((p1, p2) => {
+    return dayjsLocal(p1.created_at).unix() - dayjsLocal(p2.created_at).unix();
+  });
   const pastProgress = getPastProgressToTrigActions(request_progress);
   const futureProgress = getFutureProgress({
-    sorted_request_progress: request_progress,
+    sorted_request_progress,
     request_type,
     eventActions,
   });
@@ -112,8 +116,8 @@ export const getFutureProgress = ({
         .map((ev) => apiTargetToEvents[ev])
         .flat()
         .map((ev) => ({
-          type: ev,
           status: 'not_started',
+          type: ev,
           action: null,
           progress: [],
         }));
@@ -124,6 +128,7 @@ export const getFutureProgress = ({
       ...nextTriggers,
       ...nextPossibleTrigger[currTrigger].filter((t) => triggerMap[t]),
     ];
+    console.log(nextTriggers);
 
     for (let trig of nextTriggers) {
       const trigEventActions = getSchedulingUpcomingTriggers(trig, triggerMap);
@@ -138,11 +143,33 @@ export const getFutureProgress = ({
       (act) => act.target_api,
     );
   });
+  let nextTrigger: DatabaseEnums['workflow_trigger'];
+  if (request_type === 'schedule_request') {
+    nextTrigger = getNextTriggerNewSchedule(sorted_request_progress);
+  }
+  prog = getSchedulingUpcomingTriggers(nextTrigger, triggerMap);
 
-  if (sorted_request_progress.length === 0) {
-    if (request_type === 'schedule_request') {
-      prog = getSchedulingUpcomingTriggers('onRequestSchedule', triggerMap);
+  return prog;
+};
+
+export const getNextTriggerNewSchedule = (
+  request_progress: DatabaseTable['request_progress'][],
+): DatabaseEnums['workflow_trigger'] => {
+  let nextTrigger: DatabaseEnums['workflow_trigger'];
+  if (request_progress.length === 0) {
+    return 'onRequestSchedule';
+  }
+  const lastEvent = request_progress[request_progress.length - 1].event_type;
+  let target_api: DatabaseEnums['email_slack_types'];
+  Object.keys(apiTargetToEvents).forEach((key) => {
+    if (apiTargetToEvents[key].includes(lastEvent)) {
+      target_api = key as any;
+    }
+  });
+  if (target_api.startsWith('onRequestSchedule')) {
+    if (target_api === 'onRequestSchedule_emailLink_getCandidateAvailability') {
+      nextTrigger = 'onReceivingAvailReq';
     }
   }
-  return prog;
+  return nextTrigger;
 };

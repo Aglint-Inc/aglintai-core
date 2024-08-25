@@ -50,6 +50,8 @@ export const apiTargetToEvents: Partial<
     'SEND_INTERVIEWER_ATTENDANCE_RSVP',
   ],
 };
+
+//
 export const eventToTrigger: Partial<
   Record<
     DatabaseTable['request_progress']['event_type'],
