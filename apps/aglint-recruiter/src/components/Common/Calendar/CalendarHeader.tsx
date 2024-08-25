@@ -40,20 +40,20 @@ function CalendarHeader({
         <Grid item xs={4}>
           <TaskSwitchButton
             isIconVisible={false}
-            isJobCandActive={mode === 'list'}
-            isListActive={mode === 'calendar'}
+            isJobCandActive={mode === 'calendar'}
+            isListActive={mode === 'list'}
             onClickJobCand={{
-              onClick: () => {
-                if (mode !== 'list') handleMode('list');
-              },
-            }}
-            onClickList={{
               onClick: () => {
                 if (mode !== 'calendar') handleMode('calendar');
               },
             }}
-            textFirst={'List'}
-            textSecond={'Calendar'}
+            onClickList={{
+              onClick: () => {
+                if (mode !== 'list') handleMode('list');
+              },
+            }}
+            textFirst={'Calendar'}
+            textSecond={'List'}
           />
         </Grid>
         <Grid item xs={4} container justifyContent='center'>
