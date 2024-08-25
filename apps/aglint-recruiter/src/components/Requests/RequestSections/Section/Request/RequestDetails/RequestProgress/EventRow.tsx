@@ -1,27 +1,19 @@
-import { ButtonSoft } from '@/devlink';
-import { TextWithIcon } from '@/devlink2';
+import React from 'react';
+
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { workflowCopy } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/copy';
-import { RequestLogsActionType } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/types';
-import { Box } from '@mui/material';
+
+import { progressActionMap } from './utils/ProgressActionMap';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
-const EventRow = ({ requestLog }: { requestLog: RequestLogsActionType }) => {
-  let tense: TenseType;
-  if (requestLog.status === 'not_started') {
-    tense = 'future';
-  } else if (requestLog.status === 'in_progress') {
-    tense = 'present';
-  } else if (requestLog.status === 'completed') {
-    tense = 'past';
-  } else if (requestLog.status === 'failed') {
-    tense = 'error';
-  }
+const EventRow = ({ sorted_progress }) => {
+  let tense: TenseType = 'future';
 
   return (
     <>
+      <CheckCircleFilled />
       <TextWithIcon
-        textContent={<>{workflowCopy[requestLog.type][tense]}</>}
+        // textContent={<>{workflowCopy[requestLog.type][tense]}</>}
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}
@@ -35,35 +27,7 @@ const EventRow = ({ requestLog }: { requestLog: RequestLogsActionType }) => {
           )
         }
       />
-      <Box pl={2.5}>
-        {requestLog.progress.map((prog) => {
-          return (
-            <p key={prog.id} style={{ display: 'flex', alignItems: 'center' }}>
-              <p
-                style={{
-                  color: 'grey',
-                  fontSize: '13px',
-                }}
-              >
-                {prog.log}
-              </p>
-              {requestLog.status === 'failed' && (
-                <ButtonSoft
-                  size={1}
-                  color={'primary'}
-                  textButton='Click to retry'
-                  onClickButton={
-                    {
-                      // onClick: () => handleRetry(prog.meta.event_run_id),
-                    }
-                  }
-                />
-              )}
-            </p>
-          );
-        })}
-      </Box>
-      <>{requestLog.action && <requestLog.action />}</>
+      <progressActionMap.CHOOSE_SCHEDULE_FLOW_not_started />
     </>
   );
 };
