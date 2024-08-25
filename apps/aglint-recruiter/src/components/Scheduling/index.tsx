@@ -87,9 +87,7 @@ function SchedulingMainComp() {
                       textPill={'Metrics'}
                       onClickPill={{
                         onClick: () => {
-                          router.push(
-                            `${ROUTES['/scheduling']()}?tab=dashboard`,
-                          );
+                          router.push(`${ROUTES['/scheduling']()}?tab=metrics`);
                         },
                       }}
                     />
