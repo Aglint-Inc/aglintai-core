@@ -6,17 +6,11 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/src/context/RequestContext';
 
-import CheckCircleFilled from '../RequestProgress/CheckCircleFilled';
-import {
-  EventTargetMapType,
-  RequestProgressMapType,
-} from '../RequestProgress/types';
-import { workflowCopy } from '../RequestProgress/utils/copy';
-import { getProgressColor } from '../RequestProgress/utils/getProgressColor';
-import {
-  apiTargetToEvents,
-  eventToTrigger,
-} from '../RequestProgress/utils/progressMaps';
+import CheckCircleFilled from '../CheckCircleFilled';
+import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { workflowCopy } from '../utils/copy';
+import { getProgressColor } from '../utils/getProgressColor';
+import { apiTargetToEvents, eventToTrigger } from '../utils/progressMaps';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewSchedule = ({
@@ -39,6 +33,7 @@ const InterviewSchedule = ({
   const event_status = request_progress.data.find(
     (d) => d.event_type === 'CAND_CONFIRM_SLOT',
   );
+
   let tense: TenseType = 'past';
   if (event_status && event_status.status === 'completed') {
     tense = 'past';
@@ -46,21 +41,12 @@ const InterviewSchedule = ({
     tense = 'future';
   }
   return (
-    <>
+    <Stack rowGap={1}>
       <TextWithIcon
         textContent={<>EVENT : On Inteview is Scheduled</>}
         iconSize={3}
         fontSize={1}
         color={getProgressColor(tense)}
-        iconName={
-          tense === 'past' ? (
-            <CheckCircleFilled />
-          ) : tense === 'future' ? (
-            'circle'
-          ) : (
-            <LottieAnimations animation='loading_spinner' size={1.2} />
-          )
-        }
       />
       <Stack ml={4}>
         <p>Actions : </p>
@@ -106,7 +92,7 @@ const InterviewSchedule = ({
             );
           })}
       </Stack>
-    </>
+    </Stack>
   );
 };
 

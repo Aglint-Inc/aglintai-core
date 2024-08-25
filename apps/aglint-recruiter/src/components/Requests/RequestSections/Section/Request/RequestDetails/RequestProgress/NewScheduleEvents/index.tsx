@@ -6,8 +6,10 @@ import {
   EventTargetMapType,
   RequestProgressMapType,
   TriggerActionsType,
-} from '../RequestProgress/types';
+} from '../types';
 import InterviewSchedule from './InterviewSchedule';
+import SelectScheduleFlow from './SelectScheduleFlow';
+import { Stack } from '@mui/material';
 
 const NewScheduleEvents = ({
   eventActions,
@@ -44,12 +46,17 @@ const NewScheduleEvents = ({
   //   }
   return (
     <>
-      <p>schedule flow</p>
-      <p>middlw steps</p>
-      <InterviewSchedule
-        eventTargetMap={eventTargetMap}
-        reqProgressMap={reqProgressMap}
-      />
+      <Stack rowGap={2}>
+        <SelectScheduleFlow
+          eventTargetMap={eventTargetMap}
+          reqProgressMap={reqProgressMap}
+        />
+        <p>middlw steps</p>
+        <InterviewSchedule
+          eventTargetMap={eventTargetMap}
+          reqProgressMap={reqProgressMap}
+        />
+      </Stack>
     </>
   );
 };

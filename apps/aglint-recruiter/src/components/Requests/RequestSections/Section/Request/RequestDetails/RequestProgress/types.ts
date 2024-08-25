@@ -18,3 +18,5 @@ export type RequestProgressMapType = Partial<
     DatabaseTable['request_progress'][]
   >
 >;
+
+export type ProgressTenseType = 'past' | 'present' | 'future' | 'error';

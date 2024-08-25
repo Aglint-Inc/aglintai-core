@@ -5,7 +5,7 @@ import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import NewScheduleEvents from '../NewScheduleEvents';
+import NewScheduleEvents from './NewScheduleEvents';
 import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
