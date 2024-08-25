@@ -99,7 +99,7 @@ function Metrics() {
                     />
                   }
                   textCount={i + 1}
-                  countHours={interviewer.duration}
+                  countHours={(interviewer.duration / 60).toFixed(1)}
                   countInterviews={interviewer.interviews}
                   textName={interviewer.name}
                   textRole={interviewer.position}

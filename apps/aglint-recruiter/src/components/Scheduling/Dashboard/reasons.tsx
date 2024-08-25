@@ -11,27 +11,31 @@ import {
 import { memo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+import { DarkPill } from '@/devlink3/DarkPill';
 import { Reason } from '@/devlink3/Reason';
 import { useSchedulingAnalytics } from '@/src/context/SchedulingAnalytics';
 
 import Loader from '../../Common/Loader';
 import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 import { Empty } from './common';
-import { FilterDropDownDash } from './FilterDropDownDash';
 
 export const Reasons = memo(() => {
   const { reasonsType, setReasonsType } = useSchedulingAnalytics();
   return (
     <Reason
       slotReasonDropdown={
-        <FilterDropDownDash
-          itemList={[
-            { label: 'Reschedule', value: 'reschedule' },
-            { label: 'Declined', value: 'declined' },
-          ]}
-          value={reasonsType}
-          onChange={setReasonsType}
-        />
+        <Stack gap={1} direction={'row'}>
+          <DarkPill
+            textPill='Reschedule'
+            isActive={reasonsType === 'reschedule'}
+            onClickPill={{ onClick: () => setReasonsType('reschedule') }}
+          />
+          <DarkPill
+            textPill='Declined'
+            isActive={reasonsType === 'declined'}
+            onClickPill={{ onClick: () => setReasonsType('declined') }}
+          />
+        </Stack>
       }
       slotReasonGraph={<Container />}
     />

@@ -1,4 +1,1 @@
-export type SchedulingTab =
-  | 'myschedules'
-  | 'dashboard'
-  | 'schedules';
+export type SchedulingTab = 'myschedules' | 'metrics' | 'interviews';
