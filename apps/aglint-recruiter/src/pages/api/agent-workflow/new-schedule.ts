@@ -15,7 +15,6 @@ import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateA
 import { candidateAvailReRequest } from '@/src/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
-import { selfScheduleAgent } from '@/src/services/api-schedulings/selfScheduleAgent';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const TIME_ZONE = 'Asia/Colombo';
@@ -82,7 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'self_scheduling';
 
     // fix lint
-    if (api_target === 'onSelfScheduleReqAgent_EmailLink_SelfSchedule') {
+    if (api_target === 'onRequestSchedule_emailLink_sendSelfSchedulingLink') {
       meeting_flow = 'self_scheduling';
       await executeWorkflowAction(
         candidateSelfSchedule,
@@ -96,41 +95,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           request_id,
         },
         reqProgressLogger,
-        { event_type: null }, //TODO: mention
-      );
-    } else if (
-      api_target === 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule'
-    ) {
-      await executeWorkflowAction(
-        selfScheduleAgent,
-        {
-          req_body: req.body,
-          agent_assigned_user_id: organizer_id,
-          agent_type: 'phone',
-          cloned_sessn_ids: session_ids,
-          schedule_id: schedule_id,
-          start_date_str: date_range.start_date_str,
-          end_date_str: date_range.end_date_str,
-        },
-        reqProgressLogger,
-        { event_type: null }, //TODO: mention
-      );
-    } else if (
-      api_target === 'onRequestSchedule_emailLink_sendSelfSchedulingLink'
-    ) {
-      await executeWorkflowAction(
-        selfScheduleAgent,
-        {
-          req_body: req.body,
-          agent_assigned_user_id: organizer_id,
-          agent_type: 'email',
-          cloned_sessn_ids: session_ids,
-          schedule_id: schedule_id,
-          start_date_str: date_range.start_date_str,
-          end_date_str: date_range.end_date_str,
-        },
-        reqProgressLogger,
-        { event_type: null }, //TODO: mention
+        { event_type: 'SELF_SCHEDULE_LINK' }, //TODO: mention
       );
     } else if (
       api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'

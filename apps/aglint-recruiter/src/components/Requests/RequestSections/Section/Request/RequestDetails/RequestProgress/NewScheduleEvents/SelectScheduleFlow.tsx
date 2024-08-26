@@ -55,7 +55,11 @@ const SelectScheduleFlow = ({
         </ShowCode.When>
 
         <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-          <>ta da</>
+          <SelfScheduleFlowMenus
+            isManualSchedule={isManualSchedule}
+            eventTargetMap={eventTargetMap}
+            scheduleReqProgressMap={scheduleReqProgressMap}
+          />
         </ShowCode.When>
         <ShowCode.When isTrue={scheduleFlow === 'availability'}>
           <AvailabilityFlowMenus
@@ -168,6 +172,75 @@ const AvailabilityFlowMenus = ({
         }
       >
         <Button>Re Request Availability</Button>
+      </ShowCode.When>
+    </>
+  );
+};
+
+const SelfScheduleFlowMenus = ({
+  isManualSchedule,
+  scheduleReqProgressMap,
+  eventTargetMap,
+}: {
+  eventTargetMap: EventTargetMapType;
+  isManualSchedule: boolean;
+  scheduleReqProgressMap: RequestProgressMapType;
+}) => {
+  const { request_progress } = useRequest();
+
+  let scheduleFlowProg = useMemo(() => {
+    let progres: DatabaseTable['request_progress'][] = [];
+    if (request_progress.data.length === 0) {
+      return progres;
+    }
+    request_progress.data.forEach((prog) => {
+      if (prog.event_type !== 'CAND_CONFIRM_SLOT') {
+        progres.push({
+          ...prog,
+        });
+      }
+    });
+    return progres;
+  }, [request_progress.data]);
+  const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
+  return (
+    <>
+      <ShowCode.When isTrue={isManualSchedule}>
+        {scheduleFlowProg.map((prog) => {
+          return (
+            <EventNode
+              key={prog.id}
+              eventNode={prog.event_type}
+              reqProgressMap={scheduleReqProgressMap}
+            />
+          );
+        })}
+      </ShowCode.When>
+      <ShowCode.When isTrue={!isManualSchedule}>
+        {eventWActions
+          .map((eA) => {
+            return apiTargetToEvents[eA];
+          })
+          .flat()
+          .map((ev) => {
+            return (
+              <EventNode
+                key={ev}
+                eventNode={ev}
+                reqProgressMap={scheduleReqProgressMap}
+              />
+            );
+          })}
+        <ShowCode.When
+          isTrue={Boolean(
+            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
+          )}
+        >
+          <EventNode
+            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
+            reqProgressMap={scheduleReqProgressMap}
+          />
+        </ShowCode.When>
       </ShowCode.When>
     </>
   );

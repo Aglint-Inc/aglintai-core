@@ -53,6 +53,7 @@ export const onInsertInterviewFilterJson = async ({
             is_progress_step: false,
             request_id: new_data.request_id,
             event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+            status: 'completed',
             meta: {
               event_run_id,
               workflow_action_id: j_l_a.id,
