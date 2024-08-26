@@ -7,20 +7,12 @@ import { getCalEventType } from '@/src/services/CandidateScheduleV2/utils/fetchI
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-type user = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  position: string;
-  email: string;
-  profile_image: string;
-  scheduling_settings: CustomSchedulingSettings;
-};
+type allInterviewerType = Awaited<ReturnType<typeof getAllInterviewers>>;
 
 export type initUser = {
   isCalenderConnected: boolean;
   all_events: (CalendarEvent & { type: string })[];
-} & user;
+} & allInterviewerType[number];
 
 const payload_schema = v.object({
   recruiter_id: v.string(),
@@ -38,12 +30,7 @@ export default async function handler(
       req.body,
     );
 
-    const { data: users, error } = await supabaseAdmin
-      .from('all_interviewers')
-      .select(
-        'user_id,first_name,last_name,position,email,profile_image,scheduling_settings',
-      )
-      .eq('recruiter_id', recruiter_id);
+    const users = await getAllInterviewers(recruiter_id);
 
     const {
       data: { scheduling_settings },
@@ -53,8 +40,6 @@ export default async function handler(
       .eq('id', recruiter_id)
       .single()
       .throwOnError();
-
-    if (error) throw new Error(error.message);
 
     const promise = users.map((user) =>
       fetchIntsCalEvents(user, scheduling_settings, startDate, endDate),
@@ -69,8 +54,19 @@ export default async function handler(
   }
 }
 
+const getAllInterviewers = async (recruiter_id) => {
+  return (
+    await supabaseAdmin
+      .from('all_interviewers')
+      .select(
+        'user_id,first_name,last_name,position,email,profile_image,scheduling_settings,office_location_id,department_id,job_ids',
+      )
+      .eq('recruiter_id', recruiter_id)
+      .throwOnError()
+  ).data;
+};
 const fetchIntsCalEvents = async (
-  user: user,
+  user: allInterviewerType[number],
   scheduling_setting: CustomSchedulingSettings,
   startDate: string,
   endDate: string,
@@ -93,15 +89,8 @@ const fetchIntsCalEvents = async (
       ...fetched_event,
       type: getCalEventType(fetched_event.summary, scheduling_setting),
     })) as initUser['all_events'];
-
     updated_user_details.isCalenderConnected = true;
     updated_user_details.all_events = fetched_events_with_type;
-    updated_user_details.first_name = user.first_name;
-    updated_user_details.last_name = user.last_name;
-    updated_user_details.email = user.email;
-    updated_user_details.position = user.position;
-    updated_user_details.user_id = user.user_id;
-    updated_user_details.profile_image = user.profile_image;
   } catch (error) {
     updated_user_details.isCalenderConnected = false;
   }

@@ -6,4 +6,5 @@ declare function InterviewerMetrics(props: {
   slotFilter?: Types.Devlink.Slot;
   textDescription?: React.ReactNode;
   slotInterviewerMetricsList?: Types.Devlink.Slot;
+  slotMetrics?: Types.Devlink.Slot;
 }): React.JSX.Element;

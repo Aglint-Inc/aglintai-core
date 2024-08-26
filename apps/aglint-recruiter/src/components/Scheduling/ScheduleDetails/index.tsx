@@ -47,13 +47,13 @@ function SchedulingViewComp() {
           name: 'Scheduling',
           route: checkPermissions(['scheduling_settings_and_reports'])
             ? ROUTES['/scheduling']() + `?tab=matrics`
-            : ROUTES['/scheduling']() + `?tab=myschedules`,
+            : ROUTES['/scheduling']() + `?tab=my_interviews`,
         },
         {
           name: 'Schedules',
           route: checkPermissions(['scheduling_actions'])
             ? ROUTES['/scheduling']() + `?tab=schedules`
-            : ROUTES['/scheduling']() + `?tab=myschedules`,
+            : ROUTES['/scheduling']() + `?tab=my_interviews`,
         },
         {
           name: `${schedule.interview_session.name}`.trim(),

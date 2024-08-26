@@ -5,9 +5,9 @@ import Seo from '../../Common/Seo';
 export default function SeoSettings({ tab }) {
   return (
     <>
-      {tab === 'dashboard' && (
+      {tab === 'metrics' && (
         <Seo
-          title='Scheduling Dashboard - Scheduler | Aglint AI'
+          title='Metrics - Scheduler | Aglint AI'
           description='AI for People Products'
         />
       )}
@@ -17,15 +17,15 @@ export default function SeoSettings({ tab }) {
           description='AI for People Products'
         />
       )}
-      {tab === 'schedules' && (
+      {tab === 'interviews' && (
         <Seo
-          title='Schedules - Scheduler | Aglint AI'
+          title='Interviews - Scheduler | Aglint AI'
           description='AI for People Products'
         />
       )}
-      {tab === 'myschedules' && (
+      {tab === 'my_interviews' && (
         <Seo
-          title='Schedules - Scheduler | Aglint AI'
+          title='My Interviews - Scheduler | Aglint AI'
           description='AI for People Products'
         />
       )}

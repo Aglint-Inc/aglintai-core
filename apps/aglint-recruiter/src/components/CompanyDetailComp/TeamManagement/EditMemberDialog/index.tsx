@@ -30,7 +30,7 @@ const EditMember = ({
   onClose,
 }: {
   open: boolean;
-  refetch: () => void;
+  refetch: () => Promise<void>;
   member: ApiResponseGetMember;
   memberList: { id: string; name: string }[];
   onClose: () => void;
@@ -217,7 +217,7 @@ const EditMember = ({
         })
         .then((res) => res.data);
       onClose();
-      refetch();
+      await refetch();
     } catch (e) {
       //
     } finally {

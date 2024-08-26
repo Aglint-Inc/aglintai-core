@@ -4407,6 +4407,7 @@ export type Database = {
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null
+          job_ids: string[] | null
           last_name: string | null
           office_location_id: number | null
           position: string | null

@@ -1,13 +1,18 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
+import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { useJobs } from '@/src/context/JobsContext';
 import { initUser } from '@/src/pages/api/interviewers';
+import { useAllDepartments } from '@/src/queries/departments';
+import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
+import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
 import { Event, EventFilling, groupByDate } from './utils';
 
@@ -25,6 +30,63 @@ const TimeLineCalendar = () => {
     endDate: endDate.toISOString(),
   });
 
+  const {
+    jobs: { data: Jobs },
+  } = useJobs();
+  const { data: departments } = useAllDepartments();
+  const { data: locations } = useAllOfficeLocations();
+
+  const [selectedJobs, setJobs] = useState<string[]>([]);
+  const [selectedDepartments, setDepartments] = useState<number[]>([]);
+  const [selectedLocations, setLocations] = useState<number[]>([]);
+
+  //Location filter List
+  const locationList = locations?.length
+    ? locations.map((loc) => ({
+        name: loc.city + ', ' + loc.region + ', ' + loc.country,
+        value: loc.id,
+      }))
+    : [];
+
+  //Department filter list
+  const departmentList = departments?.length
+    ? departments.map((dep) => ({ name: dep.name, value: dep.id }))
+    : [];
+
+  //Job filter List
+  const JobsList = Jobs?.length
+    ? Jobs.map((job) => ({
+        name: job.job_title,
+        value: job.id,
+      }))
+    : [];
+
+  // Filtering interviewers
+  const isFilterApplied =
+    !!selectedDepartments.length ||
+    !!selectedJobs.length ||
+    !!selectedLocations.length;
+
+  const filteredInterviewers = isFilterApplied
+    ? allInterviewers.filter((interviewer) => {
+        const isDepartment = selectedDepartments?.length
+          ? selectedDepartments.includes(interviewer.department_id)
+          : true;
+
+        const isJobs = selectedJobs?.length
+          ? selectedJobs.some((job_id) =>
+              interviewer?.job_ids?.includes(job_id),
+            )
+          : true;
+
+        const isLocation = selectedLocations.length
+          ? selectedLocations.includes(interviewer.office_location_id)
+          : true;
+
+        return isDepartment && isLocation && isJobs;
+      })
+    : allInterviewers;
+
   if (isLoading)
     return (
       <Stack
@@ -39,8 +101,50 @@ const TimeLineCalendar = () => {
     );
 
   return (
-    <Stack mt={2}>
-      <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
+    <Stack>
+      <Stack p={2}>
+        <Stack direction={'row'} gap={1} alignItems={'center'}>
+          <Filter
+            itemList={JobsList?.length ? JobsList : []}
+            title='Jobs'
+            setSelectedItems={setJobs}
+            selectedItems={selectedJobs}
+          />
+          <Filter
+            itemList={departmentList?.length ? departmentList : []}
+            title='Departments'
+            setSelectedItems={setDepartments}
+            selectedItems={selectedDepartments}
+          />
+          <Filter
+            itemList={locationList?.length ? locationList : []}
+            title='Locations'
+            setSelectedItems={setLocations}
+            selectedItems={selectedLocations}
+          />
+
+          {isFilterApplied && (
+            <ButtonSoft
+              size={1}
+              color={'neutral'}
+              iconName={'refresh'}
+              isLeftIcon
+              textButton={'Reset All'}
+              onClickButton={{
+                onClick: () => {
+                  setLocations([]);
+                  setDepartments([]);
+                  setJobs([]);
+                },
+              }}
+            />
+          )}
+        </Stack>
+      </Stack>
+      <AvailabilityView
+        allInterviewers={filteredInterviewers}
+        dayCount={dayCount}
+      />
     </Stack>
   );
 };
@@ -85,6 +189,7 @@ const AvailabilityView = ({
                 gap: 1,
               }}
             >
+              <Checkbox />
               <Typography variant='body1'>
                 {getFullName(interviewer.first_name, interviewer.last_name)}
               </Typography>
@@ -104,11 +209,12 @@ const AvailabilityView = ({
       {/* Scrollable View for Time Blocks */}
       <Box
         sx={{
-          position: 'relative',
+          // position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           overflowX: 'auto',
           gap: 2,
+          marginRight: '20px',
         }}
       >
         {allInterviewers.map((interviewer, index) => {

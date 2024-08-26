@@ -1,1 +1,1 @@
-export type SchedulingTab = 'myschedules' | 'metrics' | 'interviews';
+export type SchedulingTab = 'my_interviews' | 'metrics' | 'interviews';
