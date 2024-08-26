@@ -23,7 +23,6 @@ const EventNode = ({
   if (eventProg) {
     tense = progressStatusToTense(eventProg[0].status);
   }
-
   return (
     <p>
       <TextWithIcon

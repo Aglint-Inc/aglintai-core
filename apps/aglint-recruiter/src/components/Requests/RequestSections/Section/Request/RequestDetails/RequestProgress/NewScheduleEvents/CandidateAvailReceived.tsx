@@ -68,13 +68,8 @@ const CandidateAvailReceived = ({
       >
         <>manual flow</>
       </ShowCode.When>
-      <ShowCode.When
-        isTrue={
-          lastEvent.event_type === 'CAND_AVAIL_REC' &&
-          Boolean(eventTargetMap['onReceivingAvailReq'])
-        }
-      >
-        <Stack rowGap={1} ml={4}>
+      <ShowCode.When isTrue={true}>
+        <Stack ml={4}>
           {eventTargetMap['onReceivingAvailReq']
             .map((target_api) => {
               return apiTargetToEvents[target_api];
@@ -83,7 +78,7 @@ const CandidateAvailReceived = ({
             .map((ev) => {
               return (
                 <>
-                  <EventNode eventNode={ev} reqProgressMap={{}} />
+                  <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
                 </>
               );
             })}

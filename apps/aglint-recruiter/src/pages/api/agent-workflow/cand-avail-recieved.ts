@@ -8,7 +8,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
 import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendSelfSchedulingLink';
-import { addErrorHandlerWrap } from '@/src/utils/errorHandlerWrap';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -99,4 +98,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).end();
 };
 
-export default addErrorHandlerWrap(handler);
+export default handler;
