@@ -134,6 +134,7 @@ export const useApplicationsParams = () => {
     if (safeFilters['section']) resetChecklist();
     router.push(
       `${ROUTES['/jobs/[id]']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
+      `${ROUTES['/jobs/[id]']({ id: router.query.id as string })}${params ? `?${params}` : ''}`,
     );
   };
 
