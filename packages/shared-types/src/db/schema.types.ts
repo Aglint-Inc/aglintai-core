@@ -1065,24 +1065,15 @@ export type Database = {
           },
         ]
       }
-      env: {
+      host: {
         Row: {
-          created_at: string
-          id: number
-          name: string | null
-          value: string | null
+          decrypted_secret: string | null
         }
         Insert: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
+          decrypted_secret?: string | null
         }
         Update: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
+          decrypted_secret?: string | null
         }
         Relationships: []
       }
@@ -4411,10 +4402,13 @@ export type Database = {
       all_interviewers: {
         Row: {
           completed_meeting_count: number | null
+          completed_meeting_last_month: Json | null
+          department_id: number | null
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null
           last_name: string | null
+          office_location_id: number | null
           position: string | null
           profile_image: string | null
           qualified_module_names: string[] | null
@@ -4436,6 +4430,20 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_office_location_id_fkey"
+            columns: ["office_location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
             referencedColumns: ["id"]
           },
           {
@@ -4543,6 +4551,7 @@ export type Database = {
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
           resume_score: number | null
+          session_names: string[] | null
           state: string | null
           status: Database["public"]["Enums"]["application_status"] | null
           task_count: number | null
@@ -6053,10 +6062,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      greenhousecandidatesync: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
       insert_debrief_session: {
         Args: {
           interview_plan_id: string
@@ -6172,6 +6177,10 @@ export type Database = {
         Args: {
           user_email: string
         }
+        Returns: undefined
+      }
+      resync_calendar: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       retrybatchcalcresumejdscore: {

@@ -2,8 +2,8 @@ import { create, StateCreator } from 'zustand';
 
 import { ActionPopupSlice, createActionPopupSlice } from './actionPopup';
 import { ChecklistSlice, createChecklistSlice } from './checklist';
-import { createLocationsSlice, LocationsSlice } from './filters';
 import { createImportPopupSlice, ImportPopupSlice } from './importPopup';
+import { createLocationsSlice, LocationsSlice } from './locations';
 type SlicesType = ImportPopupSlice &
   ChecklistSlice &
   LocationsSlice &

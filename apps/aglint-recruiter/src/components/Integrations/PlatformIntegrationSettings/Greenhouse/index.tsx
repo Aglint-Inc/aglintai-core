@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Checkbox, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 // import relativeTime from 'dayjs/plugin/relativeTime';
