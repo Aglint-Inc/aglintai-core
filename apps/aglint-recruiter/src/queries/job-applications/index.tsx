@@ -210,6 +210,7 @@ const getApplications = async ({
   if ((stages?.[1] ?? []).length)
     query.or(
       stages[1]
+        // eslint-disable-next-line no-useless-escape
         .map(({ label }) => `session_names.cs.\{"${label}"\}`)
         .join(', '),
     );
