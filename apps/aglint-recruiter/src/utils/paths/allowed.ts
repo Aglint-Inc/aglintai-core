@@ -138,6 +138,7 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/v1/event_attendee_status',
   '/api/scheduling/v1/check_calendar_status',
   '/api/scheduling/calendar_check_recruiter',
+  '/api/interviewers',
   '/api/scheduling/application/candidatecancelreschedule',
   '/api/google-calender/stop-channel',
   '/api/google-calender/resync',

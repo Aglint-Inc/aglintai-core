@@ -6,22 +6,14 @@ export type CustomApplicationView = ViewType<
   "application_view",
   {
     badges: CustomApplicationBadges;
-    meeting_details: (Pick<
-      Database["public"]["Views"]["meeting_details"]["Row"],
-      | "session_duration"
-      | "session_name"
-      | "session_order"
-      | "schedule_type"
-      | "session_type"
-      | "status"
-      | "session_id"
-      | "meeting_flow"
+    interview_plans: (Pick<
+      Database["public"]["Tables"]["interview_plan"]["Row"],
+      "id" | "name" | "plan_order"
     > & {
-      date?: Pick<
-        Database["public"]["Views"]["meeting_details"]["Row"],
-        "start_time" | "end_time"
+      status: Record<
+        Database["public"]["Tables"]["interview_meeting"]["Row"]["status"],
+        number
       >;
-      meeting_id: string;
     })[];
   }
 >;

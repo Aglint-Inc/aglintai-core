@@ -22,16 +22,15 @@ const Filters = () => {
       locations,
       type,
       order,
-      // eslint-disable-next-line no-unused-vars
-      section,
+      // section,
       badges,
       resume_match,
-      schedule_status,
+      // schedule_status,
     },
     setFilters,
   } = useApplications();
 
-  const { isScoringEnabled, isSchedulingEnabled } = useRolesAndPermissions();
+  const { isScoringEnabled } = useRolesAndPermissions();
 
   const badgesOptions = useMemo(
     () =>
@@ -51,10 +50,10 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  const schedule_statusOptions = useMemo(
-    () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
-    [scheduleStatus, capitalize],
-  );
+  // const schedule_statusOptions = useMemo(
+  //   () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
+  //   [scheduleStatus, capitalize],
+  // );
 
   const resumeMatchFilter: Parameters<
     typeof FilterHeader
@@ -69,18 +68,18 @@ const Filters = () => {
     options: resume_matchOptions,
   };
 
-  const scheduleStatusFilter: Parameters<
-    typeof FilterHeader
-  >[0]['filters'][number] = isSchedulingEnabled && {
-    name: 'Schedule Status',
-    value: schedule_status,
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue: typeof schedule_status) =>
-      setFilters({ ['schedule_status']: newValue }),
-    options: schedule_statusOptions,
-  };
+  // const scheduleStatusFilter: Parameters<
+  //   typeof FilterHeader
+  // >[0]['filters'][number] = isSchedulingEnabled && {
+  //   name: 'Schedule Status',
+  //   value: schedule_status,
+  //   type: 'filter',
+  //   iconname: '',
+  //   icon: <></>,
+  //   setValue: (newValue: typeof schedule_status) =>
+  //     setFilters({ ['schedule_status']: newValue }),
+  //   options: schedule_statusOptions,
+  // };
 
   const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
     isScoringEnabled && {
@@ -149,7 +148,7 @@ const Filters = () => {
         bookmarkedButton,
         badgesFilter,
         resumeMatchFilter,
-        scheduleStatusFilter,
+        // scheduleStatusFilter,
         Locations,
       ].filter(Boolean)}
       sort={safeSort}
@@ -203,14 +202,14 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'unknown_match',
 ];
 
-const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
-  'cancelled',
-  'completed',
-  'confirmed',
-  'not_scheduled',
-  'reschedule',
-  'waiting',
-];
+// const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+//   'cancelled',
+//   'completed',
+//   'confirmed',
+//   'not_scheduled',
+//   'reschedule',
+//   'waiting',
+// ];
 
 const sortTypes: ApplicationsParams['filters']['type'][] = [
   'latest_activity',

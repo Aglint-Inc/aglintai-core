@@ -14,9 +14,14 @@ export function FilterItem({
   onClickSearch = {},
   slotItems,
   isCountVisible = true,
+  borderRight,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "mfl-items-wrap")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "mfl-items-wrap")}
+      tag="div"
+      border-right={borderRight}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "mfl-item-top")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "mfl-item-top-left")}
@@ -55,6 +60,7 @@ export function FilterItem({
       <_Builtin.Block className={_utils.cx(_styles, "mfl-item-body")} tag="div">
         {slotItems}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bborder-right%3D'none'%5D%7B%0Aborder%3Anone%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

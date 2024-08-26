@@ -38,8 +38,8 @@ function CalendarComp({
   >;
 }) {
   const [currentDate, setCurrentDate] = useState(null);
-  const [viewMode, setViewMode] = useState<Modes>('list');
-  const [viewType, setViewType] = useState<Types>('day');
+  const [viewMode, setViewMode] = useState<Modes>('calendar');
+  const [viewType, setViewType] = useState<Types>('month');
   const [events, setEvents] = useState<event[]>([]);
 
   const calendarRef = useRef(null);

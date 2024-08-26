@@ -24,7 +24,7 @@ const useActions = () => {
   >([]);
 
   const [completedInterviewType, setCompletedInterviewType] =
-    useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('day');
+    useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('month');
 
   const [interviewersType, setInterviewersType] =
     useState<SchedulingAnalysisSchema<'interviewers'>['type']>('qualified');
@@ -34,11 +34,6 @@ const useActions = () => {
 
   const [reasonsType, setReasonsType] =
     useState<SchedulingAnalysisSchema<'reasons'>['type']>('reschedule');
-
-  const [trainingProgressType, setTrainingProgressType] =
-    useState<SchedulingAnalysisSchema<'training_progress'>['type']>(
-      'qualified',
-    );
 
   const enabled = useMemo(() => !!recruiter_id, [recruiter_id]);
 
@@ -104,7 +99,7 @@ const useActions = () => {
 
   const training_progress = useQuery(
     schedulingAnalyticsQueries.training_progress(
-      { recruiter_id, departments, jobs, type: trainingProgressType },
+      { recruiter_id, departments, jobs },
       enabled,
     ),
   );
@@ -129,8 +124,6 @@ const useActions = () => {
     setLeaderboardType,
     reasonsType,
     setReasonsType,
-    trainingProgressType,
-    setTrainingProgressType,
     jobs,
     setJobs,
     departments,

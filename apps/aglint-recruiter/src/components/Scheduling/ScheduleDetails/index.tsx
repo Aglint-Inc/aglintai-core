@@ -46,7 +46,7 @@ function SchedulingViewComp() {
         {
           name: 'Scheduling',
           route: checkPermissions(['scheduling_settings_and_reports'])
-            ? ROUTES['/scheduling']() + `?tab=dashboard`
+            ? ROUTES['/scheduling']() + `?tab=matrics`
             : ROUTES['/scheduling']() + `?tab=myschedules`,
         },
         {
