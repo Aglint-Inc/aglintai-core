@@ -143,5 +143,6 @@ export const allowedPaths = new Set<t>([
   '/api/interviewers',
   '/api/scheduling/application/candidatecancelreschedule',
   '/api/google-calender/stop-channel',
+  '/api/get_member',
   ...cronPaths,
 ] as t[]);

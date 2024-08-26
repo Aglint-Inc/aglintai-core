@@ -13,6 +13,7 @@ import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
+import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children }) {
@@ -23,7 +24,10 @@ export default function AppLayout({ children }) {
   const router = useRouter();
   const { windowSize } = useResizeWindow();
   const logo = recruiter?.logo;
-  const profileImage = recruiterUser?.profile_image;
+
+  const user_id = router.query.user_id as string;
+
+  const { data: userDetails } = useImrQuery({ user_id });
 
   const handleSignOut = () => {
     queryClient.removeQueries();
@@ -93,7 +97,7 @@ export default function AppLayout({ children }) {
               }}
               slotProfile={
                 <Avatar
-                  src={profileImage}
+                  src={userDetails?.profile_image}
                   variant='rounded'
                   sx={{
                     width: '100%',
