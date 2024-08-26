@@ -148,7 +148,13 @@ export const useTrainingProgress = ({
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_scheduling_analytics_training_progress', recruiter_id],
+    queryKey: [
+      'get_scheduling_analytics_training_progress',
+      recruiter_id,
+      departments,
+      jobs,
+      locations,
+    ],
     refetchOnMount: true,
     queryFn: () =>
       fetchTrainingProgressAnalytics({

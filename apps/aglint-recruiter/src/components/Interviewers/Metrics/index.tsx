@@ -1,6 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerMetricList } from '@/devlink3/InterviewerMetricList';
@@ -9,6 +10,7 @@ import { useAllDepartments } from '@/src/queries/departments';
 
 import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
+import { TrainingProgress } from '../components/MatricsTrainingProgress';
 import { useLeaderBoard } from '../Hook';
 import { LeaderAnalyticsFilterType } from '../types';
 
@@ -20,6 +22,7 @@ function Metrics() {
     DatabaseTable['departments']['id'][]
   >([]);
 
+  const router = useRouter();
   const { data: interviewers, isLoading } = useLeaderBoard({
     departments,
     type: leaderboardType,
@@ -84,6 +87,12 @@ function Metrics() {
             interviewers.map((interviewer, i) => {
               return (
                 <InterviewerMetricList
+                  onClickCard={{
+                    onClick: () =>
+                      router.push(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
+                      ),
+                  }}
                   key={interviewer.user_id}
                   slotImage={
                     <Avatar
@@ -113,7 +122,11 @@ function Metrics() {
             />
           )
         }
-        slotMetrics={<>hellow</>}
+        slotMetrics={
+          <>
+            <TrainingProgress />
+          </>
+        }
       />
     </>
   );
