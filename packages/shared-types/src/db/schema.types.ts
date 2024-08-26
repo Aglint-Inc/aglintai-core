@@ -3115,6 +3115,7 @@ export type Database = {
       recruiter_user: {
         Row: {
           calendar_sync: Json | null
+          calendar_sync_token: string | null
           created_at: string
           department_id: number | null
           email: string | null
@@ -3138,6 +3139,7 @@ export type Database = {
         }
         Insert: {
           calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -3161,6 +3163,7 @@ export type Database = {
         }
         Update: {
           calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -4525,12 +4528,12 @@ export type Database = {
           email: string | null
           file_url: string | null
           id: string | null
+          interview_plans: Json[] | null
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
           latest_activity: string | null
           linkedin: string | null
-          meeting_details: Json | null
           name: string | null
           phone: string | null
           processing_status:
@@ -5075,6 +5078,8 @@ export type Database = {
           module_id: string | null
           position: string | null
           profile_image: string | null
+          schedule_auth: Json | null
+          scheduling_settings: Json | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
@@ -6304,7 +6309,7 @@ export type Database = {
           recruiter_id: string
           departments?: number[]
           jobs?: string[]
-          type?: Database["public"]["Enums"]["status_training"]
+          locations?: number[]
         }
         Returns: {
           number_of_shadow: number
