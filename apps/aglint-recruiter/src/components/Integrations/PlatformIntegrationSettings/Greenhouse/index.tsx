@@ -1,5 +1,4 @@
-/* eslint-disable security/detect-object-injection */
-import { Divider, Stack, Typography } from '@mui/material';
+import { Checkbox, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
@@ -38,8 +37,9 @@ function GreenhouseSettings() {
                       key={key}
                       checked={data.options[key]}
                       text={subOptions.name}
-                      onClick={async () => {
-                        data.options[key] = !data.options?.[key];
+                      onClick={() => {
+                        data.options[String(key)] =
+                          !data.options?.[String(key)];
                         setOptions(data);
                         // setSyncData((pre) => ({
                         //   ...pre,
@@ -58,7 +58,12 @@ function GreenhouseSettings() {
                   ),
                 )}
               </Stack>
-              <Stack height={'1px'} width={'100%'} bgcolor={'var(--neutral-6)'} margin={'12px 0px'}></Stack>
+              <Stack
+                height={'1px'}
+                width={'100%'}
+                bgcolor={'var(--neutral-6)'}
+                margin={'12px 0px'}
+              ></Stack>
               <Divider sx={{ borderColor: 'var(--neutral-6)' }} />
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack direction={'row'} alignItems={'center'}>
@@ -97,6 +102,15 @@ function GreenhouseSettings() {
               minRows={2}
               maxRows={5}
               defaultValue='Enter your Instructions'
+            />
+          }
+          slotCheckbox={
+            <Checkbox
+              checked={data.options['task_sync']}
+              onClick={() => {
+                data.options['task_sync'] = !data.options?.['task_sync'];
+                setOptions(data);
+              }}
             />
           }
         />

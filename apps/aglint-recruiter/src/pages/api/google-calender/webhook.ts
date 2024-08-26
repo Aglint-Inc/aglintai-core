@@ -130,7 +130,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     // updating old request status to completed if there is any
     //--------------------------------------------------------------------------------
-    // update interview session cancel  if he acc
+    // update interview session cancel if he first declined and then accepted
     const dbInterviewSessionCancel = updateRelations
       ?.filter(
         (ses) => ses.status === 'accepted' && ses.cancel_reasons.length > 0,
@@ -148,7 +148,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             .throwOnError();
         }),
     );
-    // update interview session cancel
+    // update interview session cancel if he first declined and then accepted
     //--------------------------------------------------------------------------------
     //creating new request for the declined interview
     const cancelSessions: DatabaseTableInsert['interview_session_cancel'][] =
