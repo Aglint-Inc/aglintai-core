@@ -57,7 +57,7 @@ function CreateSchedulePopUp({
             assigner_id: recruiterUser.user_id,
             assignee_id: recruiterUser.user_id,
             title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
-            status: 'to_do',
+            status: 'in_progress',
             type: 'schedule_request',
             schedule_start_date: selectedDateRange.start_date,
             schedule_end_date: selectedDateRange.end_date,

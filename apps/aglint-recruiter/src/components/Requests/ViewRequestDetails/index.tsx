@@ -181,6 +181,10 @@ function ViewRequestDetails() {
                         return (
                           <>
                             <ScheduleIndividualCard
+                              hideDateAndTime={
+                                session.interview_meeting?.status ===
+                                'completed'
+                              }
                               session={session}
                               key={session.interview_session.id}
                               selectedSessionIds={[]}

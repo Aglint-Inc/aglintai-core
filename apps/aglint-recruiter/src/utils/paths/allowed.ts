@@ -135,8 +135,6 @@ export const allowedPaths = new Set<t>([
   '/api/google-calender/watch-changes',
   '/api/google-calender/webhook',
   '/api/scheduling/v1/event_attendee_status',
-  '/api/google-calender/watch-changes',
-  '/api/google-calender/webhook',
   '/api/scheduling/v1/event_attendee_status',
   '/api/scheduling/v1/check_calendar_status',
   '/api/scheduling/calendar_check_recruiter',
@@ -144,5 +142,8 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/application/candidatecancelreschedule',
   '/api/google-calender/stop-channel',
   '/api/get_member',
+  '/api/google-calender/resync',
+  '/api/google-calender/watch-changes',
+  '/api/google-calender/webhook',
   ...cronPaths,
 ] as t[]);
