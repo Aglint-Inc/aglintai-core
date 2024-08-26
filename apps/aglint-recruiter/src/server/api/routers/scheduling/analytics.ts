@@ -12,7 +12,7 @@ const common_schema = z.object({
 });
 
 const completed_interviews_type = z.object({
-  type: z.enum(['day', 'month']).optional(),
+  type: z.enum(['month', 'quarter', 'year']).optional(),
 });
 
 const interviewers_type = z.object({

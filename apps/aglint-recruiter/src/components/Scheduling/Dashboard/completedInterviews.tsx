@@ -24,11 +24,16 @@ export const CompletedInterviews = memo(() => {
     useSchedulingAnalytics();
   return (
     <CompletedInterviewsDev
-      isLastDaysActive={completedInterviewType === 'day'}
-      isLastMonthsActive={completedInterviewType === 'month'}
-      onClickLastDays={{ onClick: () => setCompletedInterviewType('day') }}
-      onClickLastMonth={{ onClick: () => setCompletedInterviewType('month') }}
+      isLastDaysActive={completedInterviewType === 'month'}
+      isLastQuarterActive={completedInterviewType === 'quarter'}
+      isLastMonthsActive={completedInterviewType === 'year'}
+      onClickLastDays={{ onClick: () => setCompletedInterviewType('month') }}
+      onClickLastQuarter={{
+        onClick: () => setCompletedInterviewType('quarter'),
+      }}
+      onClickLastMonth={{ onClick: () => setCompletedInterviewType('year') }}
       textLastDays={'Last month'}
+      textLastQuarter={'Last quarter'}
       textMonth={'Last year'}
       slotGraph={<Container />}
     />
@@ -77,8 +82,10 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const BarChart = memo(({ data, completedInterviewType }: Props) => {
   const getLabel = useCallback(
     (label: string) => {
-      if (completedInterviewType === 'day')
+      if (completedInterviewType === 'month')
         return dayjsLocal(label ?? '').format('DD MMM');
+      if (completedInterviewType === 'quarter')
+        return `Week ${dayjsLocal(label ?? '').week()}`;
       return dayjsLocal(label ?? '').format('MMM YY');
     },
     [completedInterviewType],
