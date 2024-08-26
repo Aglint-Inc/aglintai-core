@@ -184,9 +184,8 @@ export class GoogleCalender {
       requestBody: {
         id: `${process.env.NEXT_PUBLIC_ENV}-${organizer_id}`,
         type: 'web_hook',
-        // address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
-        address:
-          process.env.NEXT_PUBLIC_HOST_NAME + '/api/google-calender/webhook',
+        address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
+        // address: 'https://dev.aglinthq.com' + '/api/google-calender/webhook',
         // params: {
         //   ttl: '3600',
         // },
