@@ -33,7 +33,9 @@ const SelectScheduleFlow = ({
     });
     return mp;
   }, [request_progress]);
+  let isAvailabilityRecieved = false;
   let lastEvent: DatabaseTable['request_progress'];
+
   let scheduleFlowProg = useMemo(() => {
     let progres: DatabaseTable['request_progress'][] = [];
     if (request_progress.data.length === 0) {
@@ -48,10 +50,18 @@ const SelectScheduleFlow = ({
     });
     return progres;
   }, [request_progress.data]);
+
   let scheduleFlow: ScheduleFlow = getSchedulFlow({
     eventTargetMap,
     request_progress: request_progress.data,
   });
+  if (scheduleFlowProg.length > 0) {
+    lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
+  }
+  if (request_progress.data.find((p) => p.event_type === 'CAND_AVAIL_REC')) {
+    isAvailabilityRecieved = false;
+  }
+
   return (
     <Stack>
       <TextWithIcon
@@ -124,7 +134,10 @@ const SelectScheduleFlow = ({
             ) && !eventTargetMap['sendAvailReqReminder']
           }
         >
-          <Button>manual reminder</Button>
+          <Button>Resend Link</Button>
+        </ShowCode.When>
+        <ShowCode.When isTrue={!isAvailabilityRecieved}>
+          <Button>Re Request Availability</Button>
         </ShowCode.When>
       </Stack>
     </Stack>
