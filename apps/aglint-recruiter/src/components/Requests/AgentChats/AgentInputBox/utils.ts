@@ -3,19 +3,19 @@ import axios from 'axios';
 
 export const scheduleTypes = [
   {
-    id: 'schedule',
-    display: 'Schedule' as ScheduleType,
+    id: 'schedule' as ScheduleType,
+    display: 'Schedule',
   },
   {
-    id: 're_schedule',
-    display: 'Reschedule' as ScheduleType,
+    id: 're_schedule' as ScheduleType,
+    display: 'Reschedule',
   },
   {
-    id: 'cancel',
-    display: 'Cancel' as ScheduleType,
+    id: 'cancel' as ScheduleType,
+    display: 'Cancel',
   },
 ];
-export type ScheduleType = 'schedule' | 'availability' | 'self-schedule';
+export type ScheduleType = 'schedule' | 'cancel' | 're_schedule';
 
 type DateRange = {
   start_date: string;
@@ -68,11 +68,10 @@ export async function extractDataFromText(text: string) {
   return JSON.parse(data);
 }
 
-
 export type selectedItemsType = {
-  schedule_type: { id: string; name: string }[];
-  job_title: { id: string; name: string }[];
-  applicant_name: { id: string; name: string }[];
-  interview_name: { id: string; name: string }[];
-  request_name: { id: string; name: string }[];
+  schedule_type: { id: ScheduleType; name: string }[];
+  job_title: { id: ScheduleType; name: string }[];
+  applicant_name: { id: ScheduleType; name: string }[];
+  interview_name: { id: ScheduleType; name: string }[];
+  request_name: { id: ScheduleType; name: string }[];
 };
