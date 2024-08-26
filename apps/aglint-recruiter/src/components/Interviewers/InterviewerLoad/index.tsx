@@ -11,6 +11,7 @@ import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
+import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAllInterviewer, useAllInterviewerType } from '../Hook';
 import LineGraph from './LineGraph';
@@ -22,8 +23,9 @@ function InterviewerLoad() {
   const { data: locations } = useAllOfficeLocations();
   const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
   const [selectedJobs, setJobs] = useState<string[]>([]);
-  const [selectedDepartments, setDepartments] = useState<string[]>([]);
-  const [selectedLocations, setLocations] = useState<string[]>([]);
+  const [selectedDepartments, setDepartments] = useState<number[]>([]);
+  const [selectedLocations, setLocations] = useState<number[]>([]);
+  const { data: InterivewTypes } = useAllInterviewModules();
 
   const {
     jobs: { data: Jobs },
@@ -51,43 +53,49 @@ function InterviewerLoad() {
     : [];
 
   // Interview Type filter list
-  const allInterviewTypes = interviewers?.length
-    ? [
-        ...new Set(
-          interviewers
-            .map((interviewer) => [
-              ...interviewer.qualified_module_names,
-              ...interviewer.training_module_names,
-            ])
-            .flat()
-            .filter((interviewType) => interviewType),
-        ),
-      ]
+  const InterviewTypeOptions = InterivewTypes?.length
+    ? InterivewTypes.map((type) => ({
+        name: type.name,
+        value: type.id,
+      }))
     : [];
 
-  const InterviewTypeOptions = allInterviewTypes.map((type) => ({
-    name: type,
-    value: type.replace(/\s+/g, '').toLowerCase(),
-  }));
-
   // filtering the interviewers
-  const filteredInters = interviewers?.filter((interviewer) => {
-    const qualifedType = interviewer.qualified_module_names.some((interType) =>
-      selectedInterviewTypes.includes(
-        interType?.replace(/\s+/g, '').toLowerCase(),
-      ),
-    );
-    const trainingType = interviewer.training_module_names.some((interType) =>
-      selectedInterviewTypes.includes(
-        interType?.replace(/\s+/g, '').toLowerCase(),
-      ),
-    );
+  const selectedInterviewTypeUserIds = [
+    ...new Set(
+      InterivewTypes?.filter((interType) =>
+        selectedInterviewTypes.includes(interType.id),
+      )
+        .map((interviewType) => interviewType.users.map((user) => user.user_id))
+        .flat(),
+    ),
+  ];
 
-    return qualifedType || trainingType;
-  });
+  const isFilterApplied =
+    !!selectedDepartments.length ||
+    !!selectedJobs.length ||
+    !!selectedLocations.length ||
+    !!selectedInterviewTypes.length;
 
-  const filteredInterviewers =
-    filteredInters?.length === 0 ? interviewers : filteredInters;
+  const filteredInterviewers = isFilterApplied
+    ? interviewers?.filter((interviewer) => {
+        const isInterviewType = selectedInterviewTypes?.length
+          ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
+          : true;
+
+        console.log('isInterviewType :', isInterviewType);
+        const isLocation = selectedLocations.length
+          ? selectedLocations.includes(interviewer.office_location_id)
+          : true;
+
+        const isDepartment = selectedDepartments.length
+          ? selectedDepartments.includes(interviewer.department_id)
+          : true;
+
+        console.log(isDepartment, isLocation, isInterviewType);
+        return isDepartment && isLocation && isInterviewType;
+      })
+    : interviewers;
 
   // calculate max count for height of the graph
   let maxCount = 5;
