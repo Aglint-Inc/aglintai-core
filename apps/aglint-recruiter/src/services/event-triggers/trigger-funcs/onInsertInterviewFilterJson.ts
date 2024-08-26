@@ -31,7 +31,7 @@ export const onInsertInterviewFilterJson = async ({
   const promises = request_workflows
     .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
     .map(async (j_l_a) => {
-      supabaseWrap(
+      const event_run_id = supabaseWrap(
         await supabaseAdmin.rpc('create_new_workflow_action_log', {
           triggered_table: 'interview_filter_json',
           base_time: dayjsLocal().toISOString(),
@@ -47,6 +47,22 @@ export const onInsertInterviewFilterJson = async ({
           phase: j_l_a.workflow.phase,
         }),
       );
+      if (j_l_a.target_api === 'selfScheduleReminder_email_applicant') {
+        supabaseWrap(
+          await supabaseAdmin.from('request_progress').insert({
+            is_progress_step: false,
+            request_id: new_data.request_id,
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+            meta: {
+              event_run_id,
+              workflow_action_id: j_l_a.id,
+              scheduled_time: dayjsLocal()
+                .add(j_l_a.workflow.interval, 'minutes')
+                .toISOString(),
+            },
+          }),
+        );
+      }
     });
 
   await Promise.allSettled(promises);

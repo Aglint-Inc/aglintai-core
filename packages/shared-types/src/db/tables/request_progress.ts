@@ -9,6 +9,7 @@ export type CustomRequestProgress = TableType<
     meta: {
       event_run_id: number;
       workflow_action_id?: string;
+      scheduled_time?: string;
       [key: string]: any;
     };
   }

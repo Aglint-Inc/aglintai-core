@@ -49,13 +49,16 @@ export const onInsertCandidateRequestAvailability = async ({
         supabaseWrap(
           await supabaseAdmin.from('request_progress').insert({
             is_progress_step: false,
-            event_type: 'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
             status: 'completed',
             request_id: new_data.request_id,
-            created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(),
+            created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(), // NOTE: workaround
             meta: {
               workflow_action_id: j_l_a.id,
               event_run_id: run_id,
+              scheduled_time: dayjsLocal()
+                .add(j_l_a.workflow.interval, 'minutes')
+                .toISOString(),
             },
           }),
         );

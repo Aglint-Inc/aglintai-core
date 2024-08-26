@@ -18,4 +18,5 @@ export const apiTargetToEvents: Partial<
     'SEND_INTERVIEWER_ATTENDANCE_RSVP',
   ],
   sendAvailReqReminder_email_applicant: ['REQ_AVAIL_FIRST_FOLLOWUP'],
+  onRequestSchedule_emailLink_sendSelfSchedulingLink: ['SELF_SCHEDULE_LINK'],
 };
