@@ -53,39 +53,41 @@ const CandidateAvailReceive = ({
     lastEvent = availRecivedProgress[availRecivedProgress.length - 1];
   }
 
+  console.log(eventTargetMap['onReceivingAvailReq']);
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
         textContent={<>EVENT : Candidate submits Availability</>}
         iconSize={3}
         fontSize={1}
-        // color={getProgressColor('past')}
+        color={getProgressColor('past')}
       />
-      <ShowCode.When
-        isTrue={
-          lastEvent &&
-          lastEvent.event_type === 'CAND_AVAIL_REC' &&
-          Boolean(!eventTargetMap['onReceivingAvailReq'])
-        }
-      >
-        <>manual flow</>
-      </ShowCode.When>
-      {/* <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}> */}
-      {/* <Stack ml={4}>
-          {eventTargetMap['onReceivingAvailReq']
-            .map((target_api) => {
-              return apiTargetToEvents[target_api];
-            })
-            .flat()
-            .map((ev) => {
-              return (
-                <>
-                  <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
-                </>
-              );
-            })}
-        </Stack> */}
-      {/* </ShowCode.When> */}
+      <Stack ml={4}>
+        <ShowCode.When
+          isTrue={
+            lastEvent &&
+            lastEvent.event_type === 'CAND_AVAIL_REC' &&
+            Boolean(!eventTargetMap['onReceivingAvailReq'])
+          }
+        >
+          <>manual flow</>
+        </ShowCode.When>
+        <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
+          {Boolean(eventTargetMap['onReceivingAvailReq']) &&
+            eventTargetMap['onReceivingAvailReq']
+              .map((target_api) => {
+                return apiTargetToEvents[target_api];
+              })
+              .flat()
+              .map((ev) => {
+                return (
+                  <>
+                    <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
+                  </>
+                );
+              })}
+        </ShowCode.When>
+      </Stack>
     </Stack>
   );
 };
