@@ -33,8 +33,56 @@ const SelectScheduleFlow = ({
     });
     return mp;
   }, [request_progress]);
-  let isAvailabilityRecieved = false;
+
+  let scheduleFlow = getSchedulFlow({
+    eventTargetMap,
+    requestTargetMp: scheduleReqProgressMap,
+  });
+
+  return (
+    <Stack>
+      <TextWithIcon
+        textContent={<>EVENT : Candidate Schedule</>}
+        iconSize={3}
+        fontSize={1}
+        // color={getProgressColor(tense)}
+      />
+      <Stack ml={4} mt={1} rowGap={1.5}>
+        <ShowCode.When
+          isTrue={isManualSchedule && request_progress.data.length === 0}
+        >
+          <ScheduleFlows />
+        </ShowCode.When>
+
+        <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
+          <>ta da</>
+        </ShowCode.When>
+        <ShowCode.When isTrue={scheduleFlow === 'availability'}>
+          <AvailabilityFlowMenus
+            isManualSchedule={isManualSchedule}
+            eventTargetMap={eventTargetMap}
+            scheduleReqProgressMap={scheduleReqProgressMap}
+          />
+        </ShowCode.When>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default SelectScheduleFlow;
+
+const AvailabilityFlowMenus = ({
+  isManualSchedule,
+  scheduleReqProgressMap,
+  eventTargetMap,
+}: {
+  eventTargetMap: EventTargetMapType;
+  isManualSchedule: boolean;
+  scheduleReqProgressMap: RequestProgressMapType;
+}) => {
+  const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
+  const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
 
   let scheduleFlowProg = useMemo(() => {
     let progres: DatabaseTable['request_progress'][] = [];
@@ -51,102 +99,76 @@ const SelectScheduleFlow = ({
     return progres;
   }, [request_progress.data]);
 
-  let scheduleFlow = getSchedulFlow({
-    eventTargetMap,
-    requestTargetMp: scheduleReqProgressMap,
-  });
   if (scheduleFlowProg.length > 0) {
     lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
   }
+
+  let isAvailabilityRecieved = false;
   if (request_progress.data.find((p) => p.event_type === 'CAND_AVAIL_REC')) {
     isAvailabilityRecieved = true;
   }
-  return (
-    <Stack>
-      <TextWithIcon
-        textContent={<>EVENT : Candidate Schedule</>}
-        iconSize={3}
-        fontSize={1}
-        // color={getProgressColor(tense)}
-      />
-      <Stack ml={4} mt={1} rowGap={1.5}>
-        <ShowCode.When
-          isTrue={isManualSchedule && scheduleFlowProg.length === 0}
-        >
-          <ScheduleFlows />
-        </ShowCode.When>
 
-        <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-          {/* <AvailabilityFlow
-            eventTargetMap={eventTargetMap}
-            reqProgressMap={reqProgressMap}
-          /> */}
-          <></>
-        </ShowCode.When>
-        <ShowCode.When isTrue={isManualSchedule}>
-          {scheduleFlowProg.map((prog) => {
+  return (
+    <>
+      <ShowCode.When isTrue={isManualSchedule}>
+        {scheduleFlowProg.map((prog) => {
+          return (
+            <EventNode
+              key={prog.id}
+              eventNode={prog.event_type}
+              reqProgressMap={scheduleReqProgressMap}
+            />
+          );
+        })}
+      </ShowCode.When>
+      <ShowCode.When isTrue={!isManualSchedule}>
+        {eventWActions
+          .map((eA) => {
+            return apiTargetToEvents[eA];
+          })
+          .flat()
+          .map((ev) => {
             return (
               <EventNode
-                key={prog.id}
-                eventNode={prog.event_type}
+                key={ev}
+                eventNode={ev}
                 reqProgressMap={scheduleReqProgressMap}
               />
             );
           })}
-        </ShowCode.When>
-        <ShowCode.When isTrue={!isManualSchedule}>
-          {eventWActions
-            .map((eA) => {
-              return apiTargetToEvents[eA];
-            })
-            .flat()
-            .map((ev) => {
-              return (
-                <EventNode
-                  key={ev}
-                  eventNode={ev}
-                  reqProgressMap={scheduleReqProgressMap}
-                />
-              );
-            })}
-          <ShowCode.When
-            isTrue={Boolean(
-              scheduleReqProgressMap[
-                'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-              ],
-            )}
-          >
-            <EventNode
-              eventNode='SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-              reqProgressMap={scheduleReqProgressMap}
-            />
-          </ShowCode.When>
-        </ShowCode.When>
         <ShowCode.When
-          isTrue={
-            Boolean(
-              !isAvailabilityRecieved &&
-                lastEvent &&
-                lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
-                !scheduleReqProgressMap[
-                  'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-                ],
-            ) && !eventTargetMap['sendAvailReqReminder']
-          }
+          isTrue={Boolean(
+            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'],
+          )}
         >
-          <Button>Resend Link</Button>
+          <EventNode
+            eventNode='SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
+            reqProgressMap={scheduleReqProgressMap}
+          />
         </ShowCode.When>
-        <ShowCode.When
-          isTrue={
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={
+          Boolean(
             !isAvailabilityRecieved &&
-            Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
-          }
-        >
-          <Button>Re Request Availability</Button>
-        </ShowCode.When>
-      </Stack>
-    </Stack>
+              lastEvent &&
+              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
+              !scheduleReqProgressMap[
+                'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
+              ],
+          ) && !eventTargetMap['sendAvailReqReminder']
+        }
+      >
+        <Button>Resend Link</Button>
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={
+          !isAvailabilityRecieved &&
+          Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
+        }
+      >
+        <Button>Re Request Availability</Button>
+      </ShowCode.When>
+    </>
   );
 };
-
-export default SelectScheduleFlow;

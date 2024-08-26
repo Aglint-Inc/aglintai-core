@@ -8,9 +8,10 @@ export const getSchedulFlow = ({
   requestTargetMp: RequestProgressMapType;
 }) => {
   let scheduleFlow: ScheduleFlow;
-
   if (requestTargetMp['REQ_CAND_AVAIL_EMAIL_LINK']) {
     scheduleFlow = 'availability';
+  } else if (requestTargetMp['SELF_SCHEDULE_LINK']) {
+    scheduleFlow = 'selfSchedule';
   } else if (
     eventTargetMap['onRequestSchedule'] &&
     eventTargetMap['onRequestSchedule'].length > 0
@@ -20,9 +21,13 @@ export const getSchedulFlow = ({
       'onRequestSchedule_emailLink_getCandidateAvailability'
     ) {
       scheduleFlow = 'availability';
-    } else {
+    } else if (
+      eventTargetMap['onRequestSchedule'][0] ===
+      'onRequestSchedule_emailLink_sendSelfSchedulingLink'
+    ) {
       scheduleFlow = 'selfSchedule';
     }
   }
+
   return scheduleFlow;
 };

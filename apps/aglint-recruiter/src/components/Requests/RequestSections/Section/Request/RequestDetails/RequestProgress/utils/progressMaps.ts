@@ -19,4 +19,7 @@ export const apiTargetToEvents: Partial<
   ],
   sendAvailReqReminder_email_applicant: ['REQ_AVAIL_FIRST_FOLLOWUP'],
   onRequestSchedule_emailLink_sendSelfSchedulingLink: ['SELF_SCHEDULE_LINK'],
+  selfScheduleReminder_email_applicant: [
+    'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+  ],
 };
