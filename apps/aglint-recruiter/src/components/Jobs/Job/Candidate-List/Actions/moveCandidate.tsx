@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseEnums } from '@aglint/shared-types';
-import { Checkbox, Collapse, Dialog, Stack } from '@mui/material';
+import { Checkbox, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -193,35 +193,32 @@ const MoveCandidateInterview = () => {
     }),
   );
 
-  const [taskCheck, setTaskCheck] = useState(true);
   const [task, setTask] = useState<TaskType>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
-  const buttonText = taskCheck ? 'Request and Move' : null;
+  const buttonText = 'Request and Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
-      requests: taskCheck
-        ? checklist.map((application_id) => {
-            const name =
-              (data?.pages ?? [])
-                .flatMap((list) => list)
-                .find(({ id }) => id === application_id)?.name ??
-              `{{candidateName}}`;
-            return {
-              assignee_id: (task?.assignee ?? []).find(Boolean),
-              assigner_id: recruiterUser?.user_id ?? null,
-              title:
-                task?.name ??
-                `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for ${name}`,
-              type: 'schedule_request',
-              priority: priority,
-              status: 'to_do',
-              schedule_end_date: task.schedule_date_range.end_date,
-              schedule_start_date: task.schedule_date_range.start_date,
-              application_id,
-            };
-          })
-        : [],
-      sessions: taskCheck ? (task?.session_ids ?? []).map(({ id }) => id) : [],
+      requests: checklist.map((application_id) => {
+        const name =
+          (data?.pages ?? [])
+            .flatMap((list) => list)
+            .find(({ id }) => id === application_id)?.name ??
+          `{{candidateName}}`;
+        return {
+          assignee_id: task.assignee[0] ?? null,
+          assigner_id: recruiterUser?.user_id ?? null,
+          title:
+            task?.name ??
+            `Schedule ${formatSessions(task.session_ids.map(({ name }) => name))} for ${name}`,
+          type: 'schedule_request',
+          priority: priority,
+          status: 'to_do',
+          schedule_end_date: task.schedule_date_range.end_date,
+          schedule_start_date: task.schedule_date_range.start_date,
+          application_id,
+        };
+      }),
+      sessions: (task?.session_ids ?? []).map(({ id }) => id),
     });
     resetActionPopup();
   }, buttonText);
@@ -233,22 +230,13 @@ const MoveCandidateInterview = () => {
         slotBody={
           <Stack gap={2}>
             {capitalize(description)}
-            <Stack direction={'row'} alignItems={'center'} gap={1}>
-              <Checkbox
-                checked={taskCheck}
-                onClick={() => setTaskCheck((prev) => !prev)}
-              />
-              {'Create scheduling request'}
-            </Stack>
-            <Collapse in={taskCheck}>
-              <CreateTask
-                applications={checklist}
-                setTask={setTask}
-                job_id={job?.id}
-                setPriority={setPriority}
-                priority={priority}
-              />
-            </Collapse>
+            <CreateTask
+              applications={checklist}
+              setTask={setTask}
+              job_id={job?.id}
+              setPriority={setPriority}
+              priority={priority}
+            />
           </Stack>
         }
         onClickClosePopup={{ onClick: () => resetActionPopup() }}
