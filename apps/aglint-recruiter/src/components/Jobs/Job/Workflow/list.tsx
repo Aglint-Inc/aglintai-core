@@ -36,7 +36,7 @@ import toast from '@/src/utils/toast';
 const JobWorkflowComp = () => {
   return (
     <Stack>
-      <Stack gap={1} ml={'20px'} mt={'20px'}>
+      <Stack gap={'1px'} bgcolor={'var(--neutral-6)'}>
         <JobWorkflows />
       </Stack>
       <WorkflowBrowser />
@@ -60,7 +60,9 @@ const JobWorkflows = () => {
     return (
       <>
         {[...Array(3)].map((e, i) => (
-          <AssessmentListCardLoader key={i} />
+          <Stack bgcolor={'white'}>
+            <AssessmentListCardLoader key={i} border={'none'} />
+          </Stack>
         ))}
       </>
     );

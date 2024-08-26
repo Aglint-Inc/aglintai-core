@@ -30,7 +30,7 @@
 
 .srs-input-item {
   display: flex;
-  width: 520px;
+  width: 600px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: var(--space-2);

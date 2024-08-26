@@ -19,7 +19,7 @@ function GreenhouseSettings() {
   const timeStamp = data && data.last_sync['full_sync'];
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
   return (
-    <Stack p={2}>
+    <Stack>
       {isPending ? (
         <DynamicLoader />
       ) : (

@@ -345,8 +345,9 @@ function Scheduling({ allIntegrations }) {
                 alignItems={'center'}
                 direction={'row'}
                 spacing={2}
+                width={'100%'}
               >
-                {/* <Typography variant='body1'>Show keys</Typography> */}
+                <Typography variant='body1'>Show keys</Typography>
                 <ToggleButton
                   onclickToggle={{
                     onClick: () => {
@@ -377,9 +378,9 @@ function Scheduling({ allIntegrations }) {
                 <UITextField
                   type={hideApiKey ? 'password' : 'text'}
                   fullWidth
-                  label='Client Secrete'
+                  label='Client Secret'
                   required
-                  placeholder='Enter Client Secrete'
+                  placeholder='Enter Client Secret'
                   ref={clientSecretRef}
                 />
               </Stack>
