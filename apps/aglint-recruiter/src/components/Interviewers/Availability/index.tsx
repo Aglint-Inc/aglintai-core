@@ -208,8 +208,8 @@ const TimeLineList = ({ timeZoneLeftOffset, interviewerEvent }) => {
             variant='body2'
             sx={{
               position: 'absolute',
-              top: '-10px',
-              fontWeight: 'bold',
+              top: '-8px',
+              color: 'var(--neutral-9)',
             }}
           >
             {dayjsLocal().add(i, 'day').format('DD MMMM')}
