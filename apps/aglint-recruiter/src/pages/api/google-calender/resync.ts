@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
@@ -9,14 +10,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
     const user = await getUser(user_id);
-    const resp = await google_cal.stopWatch(
-      user.calendar_sync.channelId,
-      user.calendar_sync.resourceId,
+    if (user.calendar_sync?.channelId) {
+      await google_cal.stopWatch(
+        user.calendar_sync.channelId,
+        user.calendar_sync.resourceId,
+      );
+      await updateUser({
+        user_id,
+      });
+    }
+    axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/google-calender/watch-changes`,
+      {
+        user_id: user_id,
+      },
     );
-    await updateUser({
-      user_id,
-    });
-    return res.status(200).json(resp);
+    return res.status(200).json('Resynced');
   } catch (err) {
     return res.status(500).json(err.message);
   }

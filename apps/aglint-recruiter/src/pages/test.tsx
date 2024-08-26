@@ -1,3 +1,4 @@
+
 import { ChatApp } from '../components/ChatApp/ChatApp';
 
 function Page() {
