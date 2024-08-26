@@ -28,4 +28,5 @@ declare function NewScheduleDetail(props: {
   isMeetingLinkVisible?: Types.Visibility.VisibilityConditions;
   isTimingVisible?: Types.Visibility.VisibilityConditions;
   isDateCardVisible?: Types.Visibility.VisibilityConditions;
+  textInterviewer?: React.ReactNode;
 }): React.JSX.Element;

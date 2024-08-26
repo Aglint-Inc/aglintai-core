@@ -87,6 +87,10 @@ function Metrics() {
                   key={interviewer.user_id}
                   slotImage={
                     <Avatar
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                      }}
                       src={interviewer.profile_image}
                       alt={interviewer.name}
                       variant='rounded-medium'
@@ -109,6 +113,7 @@ function Metrics() {
             />
           )
         }
+        slotMetrics={<>hellow</>}
       />
     </>
   );

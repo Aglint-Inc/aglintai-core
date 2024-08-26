@@ -33,6 +33,7 @@ export function NewScheduleDetail({
   isMeetingLinkVisible = true,
   isTimingVisible = true,
   isDateCardVisible = true,
+  textInterviewer = "Interviewers",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interview_plan_wrap")} tag="div">
@@ -162,7 +163,11 @@ export function NewScheduleDetail({
               className={_utils.cx(_styles, "nsd-header-wrap")}
               tag="div"
             >
-              <Text content="Interviewers" color="neutral" weight="regular" />
+              <Text
+                content={textInterviewer}
+                color="neutral"
+                weight="regular"
+              />
               <Text
                 content={textInterviewerCount}
                 color="neutral"

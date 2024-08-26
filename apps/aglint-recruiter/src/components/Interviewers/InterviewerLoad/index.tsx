@@ -195,13 +195,16 @@ const InterviewerCard = ({
           src={interviewer.profile_image}
           variant='rounded'
           alt={interviewer.first_name}
-          sx={{ height: '24px', width: '24px' }}
+          style={{
+            width: '32px',
+            height: '32px',
+          }}
         />
       }
       slotWorkloadGraph={
         <LineGraph lineData={resultArray} maxMeetingCount={maxMeetingCount} />
       }
-      textRole={interviewer.position}
+      textRole={interviewer.position || '--'}
       textName={getFullName(interviewer.first_name, interviewer.last_name)}
     />
   );

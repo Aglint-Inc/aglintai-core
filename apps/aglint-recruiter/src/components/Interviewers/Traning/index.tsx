@@ -109,11 +109,13 @@ function TrainingProgress() {
               />
             ))
           ) : (
-            <GlobalEmptyState
-              iconName={'monitoring'}
-              size={9}
-              textDesc={'No Data Available'}
-            />
+            <Stack p={'16px'} bgcolor={'white'}>
+              <GlobalEmptyState
+                iconName={'monitoring'}
+                size={9}
+                textDesc={'No Data Available'}
+              />
+            </Stack>
           )
         }
       />

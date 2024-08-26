@@ -12,6 +12,7 @@ export function InterviewerMetrics({
   slotFilter,
   textDescription = "Metrics showing for the date range aug 24-28 for sales department ",
   slotInterviewerMetricsList,
+  slotMetrics,
 }) {
   return (
     <_Component
@@ -51,6 +52,12 @@ export function InterviewerMetrics({
           >
             {slotInterviewerMetricsList ?? <InterviewerMetricList />}
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-extra-metrics")}
+          tag="div"
+        >
+          {slotMetrics}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
