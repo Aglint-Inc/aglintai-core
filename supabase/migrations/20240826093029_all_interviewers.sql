@@ -1,3 +1,5 @@
+drop view if exists all_interviewers;
+
 create or replace view "public"."all_interviewers" as  SELECT ru.user_id,
     ru.first_name,
     ru.last_name,
@@ -7,6 +9,8 @@ create or replace view "public"."all_interviewers" as  SELECT ru.user_id,
     ru.schedule_auth,
     ru.scheduling_settings,
     ru.status,
+    ru.department_id,
+    ru.office_location_id,
     recrel.recruiter_id,
     COALESCE(array_agg(DISTINCT
         CASE
@@ -69,6 +73,3 @@ create or replace view "public"."all_interviewers" as  SELECT ru.user_id,
      LEFT JOIN interview_module_relation intmodrel ON ((intmodrel.user_id = ru.user_id)))
      LEFT JOIN interview_module intmod ON ((intmod.id = intmodrel.module_id)))
   GROUP BY ru.user_id, recrel.recruiter_id;
-
-
-
