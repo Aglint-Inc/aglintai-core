@@ -37,6 +37,8 @@ import InterviewDateList from './Components/InterviewDateList';
 import MemberList, { useMemberList } from './Components/MemberList';
 import PriorityList from './Components/PriorityList';
 import StatusList from './Components/StatusList';
+import ConfirmAvailability from './ConfirmAvailability';
+import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
@@ -110,6 +112,9 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <AvailabilityProvider>
+        <ConfirmAvailability />
+      </AvailabilityProvider>
       <CandidateAvailability selectedRequest={selectedRequest} />
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
