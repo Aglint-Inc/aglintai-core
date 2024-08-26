@@ -5,19 +5,20 @@ import { Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AiChatSuggest } from '@/devlink2/AiChatSuggest';
 import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
-import { ScheduleType } from '../utils';
+import { ScheduleType, selectedItemsType } from '../utils';
 import { MentionComponentProps, MentionInputProps, MentionType } from './utils';
 
 interface AgentEditorProps {
   applicationsList?: { id: string; display: string }[];
   jobList?: { id: string; display: string }[];
-  scheduleTypes?: { id: string; display: ScheduleType }[];
+  scheduleTypes?: { id: ScheduleType; display: string }[];
   sessionList?: { id: string; display: string }[];
   requestList?: { id: string; display: string }[];
 
@@ -60,6 +61,11 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     '@' | '#' | '$' | '%' | '/' | null
   >(null);
 
+  const [selectedItems, setSelectedItems] = useState<selectedItemsType>(null);
+
+  const filteredSessions = sessionList.filter(
+    (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
+  );
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -94,12 +100,15 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
       switch (event.key) {
         case '1':
           taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
+          setTriggerType('@');
           break;
         case '2':
-          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] `;
+          taskType = `schedule_type[${scheduleTypes[1]?.id}]:[${scheduleTypes[1]?.display}] /`;
+          setTriggerType('/');
           break;
         case '3':
-          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] `;
+          taskType = `schedule_type[${scheduleTypes[2]?.id}]:[${scheduleTypes[2]?.display}] /`;
+          setTriggerType('/');
           break;
         default:
           break;
@@ -155,7 +164,6 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         break;
       case '$':
         setTimeout(() => {
-          setText((prev) => prev + '$');
           setTriggerType('$');
         }, 10);
         break;
@@ -207,6 +215,27 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     },
     value: text,
     onChange: (e, newValue, newPlainTextValue, mentions) => {
+      function extractIdsAndNames(input: string) {
+        const regex = /(\w+)\[([^[\]]+)\]:\[([^[\]]+)\]/g;
+        let match;
+        const result = {
+          schedule_type: [],
+          job_title: [],
+          applicant_name: [],
+          interview_name: [],
+          request_name: [],
+        };
+
+        while ((match = regex.exec(input)) !== null) {
+          result[match[1]].push({ id: match[2], name: match[3] });
+        }
+
+        return result;
+      }
+
+      const items = extractIdsAndNames(newValue);
+
+      setSelectedItems(items);
       setInputText({
         planText: newPlainTextValue,
         mentions: mentions.map((mention) => ({
@@ -224,7 +253,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     customSuggestionsContainer: (children) => (
       <div>
         <AiChatSuggest
-          textHeader='Type or choose jobs from the list'
+          textHeader={`Type or choose ${triggerType === '#' ? 'job' : triggerType === '@' ? 'candidate' : triggerType === '/' ? 'request' : triggerType === '$' ? 'sessions' : 'schedule type'} from the list`}
           slotKbd={
             <>
               <Kbd
@@ -245,15 +274,34 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
               }}
             >
               <ShowCode>
+                <ShowCode
+                  isTrue={triggerType === '$' && filteredSessions.length === 0}
+                >
+                  {selectedItems?.applicant_name[0]?.name ? (
+                    <>
+                      <GlobalEmptyState
+                        iconName={''}
+                        textDesc={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
+                      />
+                    </>
+                  ) : (
+                    <GlobalEmptyState
+                      iconName={''}
+                      textDesc={`Please select an application first`}
+                    />
+                  )}
+                </ShowCode>
                 <ShowCode.When
                   isTrue={
                     (triggerType === '@' && applicationsList.length === 0) ||
                     (triggerType === '#' && jobList.length === 0) ||
-                    (triggerType === '$' && sessionList.length === 0) ||
                     (triggerType === '/' && requestList.length === 0)
                   }
                 >
-                  <>No results</>
+                  <GlobalEmptyState
+                    iconName={''}
+                    textDesc={`Results not found`}
+                  />
                 </ShowCode.When>
               </ShowCode>
               {children}
@@ -326,9 +374,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   );
   const mentionSessionList = createMentionComponent(
     '$',
-    sessionList.filter(
-      (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
-    ),
+    filteredSessions,
     '#F1F0EF',
     'interview_name[__id__]:[__display__]',
   );

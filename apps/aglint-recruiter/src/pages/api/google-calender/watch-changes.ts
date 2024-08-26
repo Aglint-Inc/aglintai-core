@@ -30,20 +30,10 @@ const updateUser = async ({
   resourceId: string;
   channelId: string;
 }) => {
-  const user = (
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('calendar_sync')
-      .eq('user_id', user_id)
-      .single()
-      .throwOnError()
-  ).data;
-
   await supabaseAdmin
     .from('recruiter_user')
     .update({
       calendar_sync: {
-        syncToken: user.calendar_sync?.syncToken,
         resourceId,
         channelId,
       },

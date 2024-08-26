@@ -131,6 +131,12 @@ function AgentInputBox() {
             requests.status === 'success'
               ? (SafeObject.values(requests?.data) ?? [])
                   .flatMap((ele) => ele)
+                  .filter((ele) =>
+                    selectedItems?.schedule_type[0]?.id === 're_schedule' ||
+                    selectedItems?.schedule_type[0]?.id === 'cancel'
+                      ? ele.status === 'completed'
+                      : ele,
+                  )
                   .map((ele) => ({
                     id: ele.id,
                     display: getRequestTitle({
@@ -207,7 +213,7 @@ export const useAllJobsAndApplications = ({
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
-    refetchInterval: schedule_type ? 500 : 10000,
+    refetchInterval: schedule_type ? 5000 : 30000,
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_All_job_List'] });
@@ -267,10 +273,22 @@ async function getJobsAndApplications({
           .map((meeting) => meeting.interview_session)
           .flat()
       : [];
-
     return { ...ele, applicantSessions };
   });
-  return { jobs, applications };
+  const jobsWithoutApplicationSessions = jobs
+    .filter((ele) =>
+      applications
+        .filter((ele) => ele.applicantSessions.length === 0)
+        .map((ele) => ele.job_id)
+        .includes(ele.id),
+    )
+    .map((ele) => ele.id);
+  return {
+    jobs: jobs
+      .filter((ele) => ele.applications.length)
+      .filter((ele) => !jobsWithoutApplicationSessions.includes(ele.id)),
+    applications: applications.filter((ele) => ele.applicantSessions.length),
+  };
 }
 
 // async function getApplicationWithName(name: string, sessions_name: string[]) {

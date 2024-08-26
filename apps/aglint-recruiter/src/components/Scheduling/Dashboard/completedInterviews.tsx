@@ -32,9 +32,9 @@ export const CompletedInterviews = memo(() => {
         onClick: () => setCompletedInterviewType('quarter'),
       }}
       onClickLastMonth={{ onClick: () => setCompletedInterviewType('year') }}
-      textLastDays={'Last month'}
-      textLastQuarter={'Last quarter'}
-      textMonth={'Last year'}
+      textLastDays={'Last Month'}
+      textLastQuarter={'Last Quarter'}
+      textMonth={'Last Year'}
       slotGraph={<Container />}
     />
   );
