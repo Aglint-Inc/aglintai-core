@@ -43,11 +43,20 @@ const Content = ({ url }: { url: string }) => {
         <Worker
           workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
         >
-          <Viewer fileUrl={url} />
+          <Viewer
+            fileUrl={url}
+            renderLoader={() => (
+              <Stack
+                position={'absolute'}
+                zIndex={0}
+                width={'100%'}
+                height={'100%'}
+              >
+                <Skeleton />
+              </Stack>
+            )}
+          />
         </Worker>
-      </Stack>
-      <Stack position={'absolute'} zIndex={0} width={'100%'} height={'100%'}>
-        <Skeleton />
       </Stack>
     </ResumeLayout>
   );
