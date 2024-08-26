@@ -332,6 +332,7 @@ const Modules = () => {
       {currentPath !== '/jobs/[id]/profile-score' && isScoringEnabled && (
         <ProfileScoreModule />
       )}
+      {currentPath !== '/jobs/[id]/hiring-team' && <HiringTeamModule />}
       {currentPath !== '/jobs/[id]/interview-plan' && isSchedulingEnabled && (
         <InterviewModule />
       )}
@@ -341,7 +342,6 @@ const Modules = () => {
       {currentPath !== '/jobs/[id]/screening' && isScreeningEnabled && (
         <ScreeningModule />
       )}
-      {currentPath !== '/jobs/[id]/hiring-team' && <HiringTeamModule />}
       {/* {currentPath !== '/jobs/[id]/email-templates' && <EmailTemplatesModule />} */}
       {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
     </>
