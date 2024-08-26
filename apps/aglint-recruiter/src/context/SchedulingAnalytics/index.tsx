@@ -24,7 +24,7 @@ const useActions = () => {
   >([]);
 
   const [completedInterviewType, setCompletedInterviewType] =
-    useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('day');
+    useState<SchedulingAnalysisSchema<'completed_interviews'>['type']>('month');
 
   const [interviewersType, setInterviewersType] =
     useState<SchedulingAnalysisSchema<'interviewers'>['type']>('qualified');
