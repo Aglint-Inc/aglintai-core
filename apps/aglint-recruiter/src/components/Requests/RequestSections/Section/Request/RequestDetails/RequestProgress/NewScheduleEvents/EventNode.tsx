@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { EventNodeType } from '@aglint/shared-types/src/workflow';
+import { Stack } from '@mui/material';
 import React from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
@@ -21,12 +22,20 @@ const EventNode = ({
 }) => {
   const eventProg = reqProgressMap[eventNode];
   let tense: ProgressTenseType = 'future';
+  let CustomComp;
+  let headingMeta;
   if (eventProg) {
     const headingEvent = eventProg.find(
       (prg) => prg.is_progress_step === false,
     );
     tense = progressStatusToTense(headingEvent.status);
+    CustomComp =
+      progressActionMap[`${headingEvent.event_type}_${headingEvent.status}`];
+    headingMeta = headingEvent.meta;
   }
+  const eventSubProgress = (eventProg ?? []).filter(
+    (prg) => prg.is_progress_step === true,
+  );
   return (
     <>
       <TextWithIcon
@@ -44,15 +53,16 @@ const EventNode = ({
           )
         }
       />
-      <>
-        {eventProg &&
-          eventProg
+      {(eventSubProgress.length > 0 || CustomComp) && (
+        <Stack ml={1}>
+          {CustomComp && <CustomComp {...(headingMeta ?? {})} />}
+          {eventProg
             .filter((prg) => prg.is_progress_step === true)
             .map((prg) => {
               if (progressActionMap[`${prg.event_type}_${prg.status}`]) {
                 let key = `${prg.event_type}_${prg.status}`;
                 let Comp = progressActionMap[key];
-                return <>{<Comp />}</>;
+                return <>{<Comp {...prg.meta} />}</>;
               }
               return (
                 <>
@@ -64,7 +74,8 @@ const EventNode = ({
                 </>
               );
             })}
-      </>
+        </Stack>
+      )}
     </>
   );
 };

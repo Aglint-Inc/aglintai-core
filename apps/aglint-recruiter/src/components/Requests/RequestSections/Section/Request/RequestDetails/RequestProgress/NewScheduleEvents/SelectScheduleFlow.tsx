@@ -215,6 +215,7 @@ const SelfScheduleFlowMenus = ({
       ...eventTargetMap['selfScheduleReminder'],
     ];
   }
+
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
@@ -245,6 +246,12 @@ const SelfScheduleFlowMenus = ({
               />
             );
           })}
+        {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
+          <EventNode
+            eventNode='SELF_SCHEDULE_FIRST_FOLLOWUP'
+            reqProgressMap={scheduleReqProgressMap}
+          />
+        )}
       </ShowCode.When>
     </>
   );

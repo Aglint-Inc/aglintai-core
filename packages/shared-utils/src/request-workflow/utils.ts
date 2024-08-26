@@ -25,7 +25,7 @@ export const createRequestProgressLogger = ({
   const logger = async (
     payload: Pick<
       DatabaseTableInsert['request_progress'],
-      'log' | 'event_type' | 'status' | 'id' | 'is_progress_step'
+      'log' | 'event_type' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
     if (!payload.id) {
@@ -39,6 +39,7 @@ export const createRequestProgressLogger = ({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
+            ...(payload.meta ?? {}),
             event_run_id,
           },
           target_api,

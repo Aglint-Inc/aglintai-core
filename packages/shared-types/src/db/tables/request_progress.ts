@@ -11,6 +11,11 @@ export type CustomRequestProgress = TableType<
       workflow_action_id?: string;
       scheduled_time?: string;
       [key: string]: any;
+      self_schedule_date?: {
+        start: string;
+        end: string;
+        user_tz: string;
+      };
     };
   }
 >;
