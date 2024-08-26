@@ -116,7 +116,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         { event_type: null }, //TODO: mention
       );
     } else if (
-      api_target === 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule'
+      api_target === 'onRequestSchedule_emailLink_sendSelfSchedulingLink'
     ) {
       await executeWorkflowAction(
         selfScheduleAgent,

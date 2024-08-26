@@ -6529,7 +6529,7 @@ export type Database = {
         | "onRequestSchedule_emailLink_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
         | "onReceivingAvailReq_agent_confirmSlot"
-        | "onSelfScheduleReqAgent_EmailAgent_SelfSchedule"
+        | "onRequestSchedule_emailLink_sendSelfSchedulingLink"
         | "onSelfScheduleReqAgent_PhoneAgent_SelfSchedule"
         | "onSelfScheduleReqAgent_EmailLink_SelfSchedule"
         | "onRequestReschedule_emailLink_resendAvailRequest"
