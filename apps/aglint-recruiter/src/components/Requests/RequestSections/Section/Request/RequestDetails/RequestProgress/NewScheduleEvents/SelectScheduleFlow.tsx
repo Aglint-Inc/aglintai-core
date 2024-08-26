@@ -8,8 +8,8 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import ScheduleFlows from '../Actions/Schedule';
-import { getSchedulFlow } from '../getScheduleFlow';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { getSchedulFlow } from '../utils/getScheduleFlow';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
 
@@ -53,7 +53,7 @@ const SelectScheduleFlow = ({
 
   let scheduleFlow = getSchedulFlow({
     eventTargetMap,
-    request_progress: request_progress.data,
+    requestTargetMp: scheduleReqProgressMap,
   });
   if (scheduleFlowProg.length > 0) {
     lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];

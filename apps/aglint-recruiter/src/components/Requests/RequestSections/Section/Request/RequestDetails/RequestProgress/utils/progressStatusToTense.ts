@@ -1,4 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
+
 import { ProgressTenseType } from '../types';
 
 export const progressStatusToTense = (

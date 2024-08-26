@@ -9,6 +9,7 @@ import {
   RequestProgressMapType,
   TriggerActionsType,
 } from '../types';
+import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
@@ -40,12 +41,27 @@ const NewScheduleEvents = ({
     });
     return mp;
   }, [request_progress]);
+  const requestTargetMp = useMemo(() => {
+    let mp: RequestProgressMapType = {};
+    request_progress.data.forEach((row) => {
+      if (!mp[row.event_type]) {
+        mp[row.event_type] = [];
+      }
+      mp[row.event_type].push({ ...row });
+    });
+    return mp;
+    //
+  }, [request_progress.data]);
 
+  let scheduleFlow = getSchedulFlow({
+    eventTargetMap: eventTargetMap,
+    requestTargetMp: requestTargetMp,
+  });
   return (
     <>
       <Stack rowGap={2}>
         <SelectScheduleFlow eventTargetMap={eventTargetMap} />
-        <ShowCode.When isTrue={Boolean(reqProgressMap['CAND_AVAIL_REC'])}>
+        <ShowCode.When isTrue={scheduleFlow === 'availability'}>
           <CandidateAvailReceived eventTargetMap={eventTargetMap} />
         </ShowCode.When>
         <InterviewSchedule

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { DatabaseTable } from '@aglint/shared-types';
 
 export type RequestLogsActionType = {
