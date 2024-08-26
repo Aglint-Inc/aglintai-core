@@ -60,8 +60,8 @@ const JobWorkflows = () => {
     return (
       <>
         {[...Array(3)].map((e, i) => (
-          <Stack bgcolor={'white'}>
-            <AssessmentListCardLoader key={i} border={'none'} />
+          <Stack bgcolor={'white'} key={i}>
+            <AssessmentListCardLoader  border={'none'} />
           </Stack>
         ))}
       </>
