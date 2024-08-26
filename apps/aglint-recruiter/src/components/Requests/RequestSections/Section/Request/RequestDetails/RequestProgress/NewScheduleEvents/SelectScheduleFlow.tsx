@@ -59,9 +59,8 @@ const SelectScheduleFlow = ({
     lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
   }
   if (request_progress.data.find((p) => p.event_type === 'CAND_AVAIL_REC')) {
-    isAvailabilityRecieved = false;
+    isAvailabilityRecieved = true;
   }
-
   return (
     <Stack>
       <TextWithIcon
@@ -126,7 +125,8 @@ const SelectScheduleFlow = ({
         <ShowCode.When
           isTrue={
             Boolean(
-              lastEvent &&
+              !isAvailabilityRecieved &&
+                lastEvent &&
                 lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
                 !scheduleReqProgressMap[
                   'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
