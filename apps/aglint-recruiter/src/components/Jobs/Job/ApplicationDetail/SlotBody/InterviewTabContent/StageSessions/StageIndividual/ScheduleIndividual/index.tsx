@@ -29,6 +29,7 @@ function ScheduleIndividualCard({
   isEditIconVisible = false,
   isViewDetailVisible = false,
   isStatusVisible = true,
+  hideDateAndTime = false,
 }: {
   session: StageWithSessions[0]['sessions'][0];
   selectedSessionIds: string[];
@@ -43,6 +44,7 @@ function ScheduleIndividualCard({
   isEditIconVisible?: boolean;
   isViewDetailVisible?: boolean;
   isStatusVisible?: boolean;
+  hideDateAndTime?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const { data: allIntegrations } = useAllIntegrations();
@@ -100,14 +102,6 @@ function ScheduleIndividualCard({
       }
       isSelectedVisible={selectedSessionIds.includes(interview_session.id)}
       isDropdownIconVisible={true}
-      isDateVisible={
-        interview_meeting?.status === 'confirmed' ||
-        interview_meeting?.status === 'completed'
-      }
-      isTimeVisible={
-        interview_meeting?.status === 'confirmed' ||
-        interview_meeting?.status === 'completed'
-      }
       iconPanel={<IconSessionType type={interview_session.session_type} />}
       iconMeetingPlatform={
         <IconScheduleType type={interview_session.schedule_type} />
@@ -134,6 +128,16 @@ function ScheduleIndividualCard({
             isCompletedVisible={false}
           />
         ))
+      }
+      isDateVisible={
+        !hideDateAndTime &&
+        (interview_meeting?.status === 'confirmed' ||
+          interview_meeting?.status === 'completed')
+      }
+      isTimeVisible={
+        !hideDateAndTime &&
+        (interview_meeting?.status === 'confirmed' ||
+          interview_meeting?.status === 'completed')
       }
       textDate={
         interview_meeting?.end_time
@@ -176,7 +180,9 @@ function ScheduleIndividualCard({
       }
       styleGrid={{
         style: {
-          gridTemplateColumns: '1fr 1.8fr 0.8fr',
+          gridTemplateColumns: hideDateAndTime
+            ? '0fr 1.8fr 0.8fr'
+            : '1fr 1.8fr 0.8fr',
         },
       }}
       slotRequestStatus={
