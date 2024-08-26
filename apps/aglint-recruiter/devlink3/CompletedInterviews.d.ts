@@ -10,4 +10,7 @@ declare function CompletedInterviews(props: {
   onClickLastDays?: Types.Devlink.RuntimeProps;
   isLastMonthsActive?: Types.Visibility.VisibilityConditions;
   isLastDaysActive?: Types.Visibility.VisibilityConditions;
+  textLastQuarter?: React.ReactNode;
+  onClickLastQuarter?: Types.Devlink.RuntimeProps;
+  isLastQuarterActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
