@@ -1,6 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { Checkbox, Dialog, Stack } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { useRouter } from 'next/router';
@@ -10,11 +10,10 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { Text } from '@/devlink/Text';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
-import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
 import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightPanel/IconSessionType';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -34,7 +33,6 @@ function DialogSchedule() {
   const selectedStageId = router.query.stage as string;
   const { recruiterUser } = useAuthDetails();
 
-  const [isCreateRequest, setIsCreateRequest] = React.useState(false);
   const [selectedInterviewer, setSelectedInterviewer] = React.useState('');
   const [requestType, setRequestType] =
     React.useState<DatabaseTable['request']['priority']>('standard');
@@ -96,7 +94,6 @@ function DialogSchedule() {
     setIsSaving(true);
     await handleCreateRequest({
       sel_user_id: selectedInterviewer,
-      isCreateRequest,
       assigned_user_id: recruiterUser.user_id,
       requestType,
       dateRange,
@@ -178,26 +175,15 @@ function DialogSchedule() {
                   })}
                 </>
               }
-              slotCheckBox={
-                <Stack direction={'row'} spacing={'var(--space-2)'}>
-                  <Checkbox
-                    checked={isCreateRequest}
-                    onChange={() => {
-                      setIsCreateRequest(!isCreateRequest);
-                    }}
-                  />
-                  <Text content={'Create a Scheduling Request'} />
-                </Stack>
-              }
               slotAssignedInput={
                 <>
-                  <AvatarSelectDropDown
-                    menuOptions={optionsInterviewers}
-                    onChange={(e) => {
-                      setSelectedInterviewer(e.target.value);
+                  <MemberList
+                    onChange={(user_id) => {
+                      setSelectedInterviewer(user_id);
                     }}
-                    value={selectedInterviewer}
-                    showMenuIcons={true}
+                    selectedMemberId={selectedInterviewer}
+                    members={members}
+                    width='430px'
                   />
                 </>
               }
@@ -207,7 +193,7 @@ function DialogSchedule() {
                   setRequestType={setRequestType}
                 />
               }
-              isRequestTypeVisible={isCreateRequest}
+              isRequestTypeVisible={true}
               textSelectedSchedule={`Selected Schedules from stage ${selectedStage?.interview_plan.name} `}
               slotPickDateInput={
                 <RangePicker
@@ -233,7 +219,7 @@ function DialogSchedule() {
             <ButtonSolid
               size={2}
               isLoading={isSaving}
-              textButton={isCreateRequest ? 'Create Request' : 'Proceed'}
+              textButton={'Proceed'}
               onClickButton={{
                 onClick: async () => {
                   if (isSaving) return;

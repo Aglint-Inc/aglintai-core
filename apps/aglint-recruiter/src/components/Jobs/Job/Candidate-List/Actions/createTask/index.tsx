@@ -1,34 +1,22 @@
-import { DatabaseEnums, DB } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import {
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-} from '@mui/material';
-import axios from 'axios';
+import { DB } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { MoveAssessment } from '@/devlink2/MoveAssessment';
+import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import { Skeleton } from '@/devlink2/Skeleton';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-import {
-  CallIcon,
-  EmailIcon,
-} from '@/src/components/Tasks/TaskBody/AddNewTask';
-import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/SelectScheduleDate';
-import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
+import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
-import { assigneeType } from '@/src/components/Tasks/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { useAllMembers } from '@/src/queries/members';
 
-import SelectDateTime from './SelectDateTime';
-import TaskOwners from './TaskOwners';
+import {
+  RangePicker,
+  RequestOption,
+} from '../../../ApplicationDetail/SlotBody/InterviewTabContent/ScheduleDialog';
+import SessionList from './SessionsList';
 
 export type TaskType = {
   assignee: string[];
@@ -55,264 +43,132 @@ function CreateTask({
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
 }) {
-  const [assignerList, setAssignerList] = useState<MemberType[]>([]);
-  const { recruiterUser, recruiter_id } = useAuthDetails();
+  const { members } = useAllMembers();
+
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useApplications();
-
-  const [scheduleDate, setScheduleDate] = useState<{
-    start_date: string;
-    end_date: string;
-  }>({
-    start_date: dayjs().add(1, 'day').toString(),
-    end_date: dayjs().add(7, 'day').toString(),
-  });
+  const { recruiterUser } = useAuthDetails();
 
   const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
-  const [selectedAssignee, setSelectedAssignee] = useState<MemberType | null>(
+  const [selectedInterviewer, setSelectedInterviewer] = useState<string | null>(
     null,
   );
 
-  const [selectCallDate, setSelectCallDate] = useState(
-    dayjs().add(5, 'minute').toString(),
-  );
+  const [dateRange, setDateRange] = useState({
+    start: dayjs().toString(),
+    end: dayjs().add(14, 'day').toString(),
+  });
   const {
     interviewPlans: { data, status },
   } = useJob();
+
   useEffect(() => {
-    if (status === 'success' && assignerList.length) {
+    if (status === 'success') {
       const interview_session = data?.flatMap((item) => item.interview_session);
       setSelectedSession(
         interview_session
           .slice(0, 2)
           .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
       );
-      if (hiring_manager || recruiting_coordinator) {
-        const id = recruiting_coordinator
-          ? recruiting_coordinator
-          : hiring_manager;
-        setSelectedAssignee(assignerList.find((ele) => ele.user_id === id));
-      }
+
       setTask((pre) => {
         const preTask = { ...pre };
         return {
           ...preTask,
           session_ids: interview_session.slice(0, 2),
           schedule_date_range: {
-            start_date: dayjs().add(1, 'day').toString(),
-            end_date: dayjs().add(7, 'day').toString(),
+            start_date: dateRange.start,
+            end_date: dateRange.end,
           },
           start_date: dayjs().add(5, 'minute').toString(),
           due_date: dayjs().add(1, 'day').toString(),
           assignee: [
-            assignerList.find((ele) =>
-              ele.user_id === recruiting_coordinator
-                ? recruiting_coordinator
-                : recruiterUser.user_id,
-            )?.user_id ?? null,
+            selectedInterviewer ||
+              recruiting_coordinator ||
+              hiring_manager ||
+              sourcer ||
+              recruiter,
           ],
-          task_owner: assignerList.find(
-            (ele) => ele.user_id === recruiterUser.user_id,
-          )?.user_id,
+          task_owner: recruiterUser.user_id,
         };
       });
     }
-  }, [assignerList, status]);
+  }, [status]);
 
-  async function getMemberList({ recruiter_id }: { recruiter_id: string }) {
-    const bodyParams: BodyParamsFetchUserDetails = {
-      recruiter_id: recruiter_id,
-      includeSupended: true,
-    };
-    const resMem = (await axios.post(
-      '/api/scheduling/fetchUserDetails',
-      bodyParams,
-    )) as { data: MemberType[] };
-    const members = resMem.data;
-    setAssignerList(members);
-  }
   useEffect(() => {
-    if (recruiter_id) getMemberList({ recruiter_id });
-  }, [recruiter_id]);
+    if (priority) {
+      //@ts-ignore
+      setTask((pre) => {
+        const preTask = { ...pre };
+        return {
+          ...preTask,
+          priority,
+        };
+      });
+    }
+  }, [priority]);
+
   return (
     <>
-      <Stack mb={'10px'}>
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby='demo-row-radio-buttons-group-label'
-            name='row-radio-buttons-group'
-            value={priority}
-            onChange={(e) =>
-              setPriority(e.target.value as 'urgent' | 'standard')
-            }
-          >
-            <FormControlLabel
-              defaultValue={'standard'}
-              value={'standard'}
-              control={<Radio />}
-              label='Standard'
-              sx={{
-                display: 'flex !important',
-                gap: '3px',
-                marginLeft: '0px',
-                '& .MuiRadio-root': {
-                  marginRight: 'var(--space-1)',
-                },
-              }}
-            />
-
-            <FormControlLabel
-              value='urgent'
-              control={<Radio />}
-              label='Urgent'
-              sx={{
-                display: 'flex !important',
-                gap: '3px',
-                marginLeft: '0px',
-                '& .MuiRadio-root': {
-                  marginRight: 'var(--space-1)',
-                },
-              }}
-            />
-          </RadioGroup>
-        </FormControl>
-      </Stack>
-
-      <MoveAssessment
-        slotPriority={<>asd</>}
-        slotStatus={<>sdx</>}
-        slotInterviewDate={
-          <SelectScheduleDate
-            scheduleDate={scheduleDate}
-            onChange={(e: any) => {
-              if (e[1]) {
-                setScheduleDate({
-                  start_date: dayjs(e[0]).toString(),
-                  end_date: dayjs(e[1]).toString(),
-                });
+      <ScheduleInterviewPop
+        isCandidateVisible={false}
+        slotStagePill={
+          <>
+            <SessionList
+              selectedSession={selectedSession}
+              setSelectedSession={setSelectedSession}
+              application_id={applications[0]}
+              job_id={job_id}
+              onChange={({ sessions }) => {
                 setTask((pre) => {
                   const preTask = { ...pre };
                   return {
                     ...preTask,
-                    schedule_date_range: {
-                      start_date: dayjs(e[0]).toString(),
-                      end_date: dayjs(e[1]).toString(),
-                    },
-                    due_date: dayjs(e[0]).toString(),
+                    session_ids: sessions,
                   };
                 });
-              } else {
-                setScheduleDate({
-                  start_date: dayjs(e[0]).toString(),
-                  end_date: null,
-                });
-                setTask((pre) => {
-                  const preTask = { ...pre };
-                  return {
-                    ...preTask,
-                    schedule_date_range: {
-                      start_date: dayjs(e[0]).toString(),
-                      end_date: null,
-                    },
-                    due_date: dayjs(e[0]).toString(),
-                  };
-                });
-              }
-            }}
-          />
+              }}
+            />
+          </>
         }
-        slotInterview={
-          <SessionList
-            selectedSession={selectedSession}
-            setSelectedSession={setSelectedSession}
-            application_id={applications[0]}
-            job_id={job_id}
-            onChange={({ sessions }) => {
-              setTask((pre) => {
-                const preTask = { ...pre };
-                return {
-                  ...preTask,
-                  session_ids: sessions,
-                };
-              });
-            }}
-          />
-        }
-        slotAssignedTo={
-          !assignerList?.length ? (
-            <Stack position={'relative'} width={'100px'} height={'20px'}>
+        slotAssignedInput={
+          !members.length ? (
+            <Stack position={'relative'} width={'100%'} height={'40px'}>
               <Skeleton />
             </Stack>
           ) : (
-            <TaskOwners
-              hiringTeamIds={[
-                hiring_manager,
-                recruiting_coordinator,
-                sourcer,
-                recruiter,
-              ]}
-              hideAgents={false}
-              assignerList={assignerList}
-              selectedAssignee={selectedAssignee}
-              setSelectedAssignee={setSelectedAssignee}
-              isOptionList={false}
-              onChange={(owner: assigneeType) => {
+            <MemberList
+              selectedMemberId={
+                selectedInterviewer ||
+                recruiting_coordinator ||
+                hiring_manager ||
+                sourcer ||
+                recruiter
+              }
+              members={members}
+              width='436px'
+              onChange={(user_id) => {
+                setSelectedInterviewer(user_id);
                 setTask((pre) => {
-                  const status =
-                    owner.user_id === EmailAgentId ||
-                    owner.user_id === PhoneAgentId
-                      ? ('scheduled' as DatabaseEnums['task_status'])
-                      : ('not_started' as DatabaseEnums['task_status']);
-
                   const preTask = { ...pre };
                   return {
                     ...preTask,
-                    task_owner: owner.user_id,
-                    assignee: [owner.user_id],
-                    status: status,
+                    assignee: [user_id],
+                    status: 'not_started',
                   };
                 });
               }}
             />
           )
         }
-        slotWhentoCall={
-          <SelectDateTime
-            selectCallDate={selectCallDate}
-            setSelectCallDate={setSelectCallDate}
-            onChange={(e: any) => {
-              setTask((pre) => {
-                const preTask = { ...pre };
-                return {
-                  ...preTask,
-                  start_date: dayjs(e).toString(),
-                };
-              });
-            }}
-          />
+        slotRequestOption={
+          <RequestOption requestType={priority} setRequestType={setPriority} />
         }
-        isPriorityVisible={false}
-        isAssignedToVisible={true}
-        isInterviewDateVisible={true}
-        isInterviewVisible={true}
-        isStatusVisible={false}
-        isWhentoCallVisible={
-          selectedAssignee?.user_id === EmailAgentId ||
-          selectedAssignee?.user_id === PhoneAgentId
-        }
-        textWhenToCall={
-          selectedAssignee?.user_id === EmailAgentId
-            ? 'When to mail'
-            : 'When to call'
-        }
-        slotWhentoCallIcon={
-          selectedAssignee?.user_id === EmailAgentId ? (
-            <EmailIcon />
-          ) : (
-            <CallIcon />
-          )
+        isRequestTypeVisible={true}
+        textSelectedSchedule={`Selected Schedules`}
+        slotPickDateInput={
+          <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
         }
       />
     </>
