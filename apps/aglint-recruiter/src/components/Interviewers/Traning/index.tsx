@@ -1,17 +1,56 @@
 import { Avatar, Stack } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { InterviewerTraining } from '@/devlink3/InterviewerTraining';
 import { InterviewerTrainingList } from '@/devlink3/InterviewerTrainingList';
+import { useJobs } from '@/src/context/JobsContext';
 import { SchedulingAnalyticsContextType } from '@/src/context/SchedulingAnalytics';
+import { useAllDepartments } from '@/src/queries/departments';
+import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 
 import Loader from '../../Common/Loader';
+import { Filter } from '../components/Filter';
 import { useTrainingProgress } from '../Hook';
 
 function TrainingProgress() {
-  const { data, isLoading } = useTrainingProgress();
+  const {
+    jobs: { data: Jobs },
+  } = useJobs();
+  const { data: departments } = useAllDepartments();
+  const { data: locations } = useAllOfficeLocations();
+
+  const [selectedJobs, setJobs] = useState<string[]>([]);
+  const [selectedDepartments, setDepartments] = useState<number[]>([]);
+  const [selectedLocations, setLocations] = useState<number[]>([]);
+
+  const { data, isLoading } = useTrainingProgress({
+    departments: selectedDepartments,
+    jobs: selectedJobs,
+    locations: selectedLocations,
+  });
+
+  //Location filter List
+  const locationList = locations?.length
+    ? locations.map((loc) => ({
+        name: loc.city + ', ' + loc.region + ', ' + loc.country,
+        value: loc.id,
+      }))
+    : [];
+
+  //Department filter list
+  const departmentList = departments?.length
+    ? departments.map((dep) => ({ name: dep.name, value: dep.id }))
+    : [];
+
+  //Job filter List
+  const JobsList = Jobs?.length
+    ? Jobs.map((job) => ({
+        name: job.job_title,
+        value: job.id,
+      }))
+    : [];
 
   if (isLoading)
     return (
@@ -29,6 +68,28 @@ function TrainingProgress() {
   return (
     <>
       <InterviewerTraining
+        slotFilter={
+          <Stack direction={'row'} gap={1}>
+            <Filter
+              itemList={JobsList?.length ? JobsList : []}
+              title='Jobs'
+              setSelectedItems={setJobs}
+              selectedItems={selectedJobs}
+            />
+            <Filter
+              itemList={departmentList?.length ? departmentList : []}
+              title='Departments'
+              setSelectedItems={setDepartments}
+              selectedItems={selectedDepartments}
+            />
+            <Filter
+              itemList={locationList?.length ? locationList : []}
+              title='Locations'
+              setSelectedItems={setLocations}
+              selectedItems={selectedLocations}
+            />
+          </Stack>
+        }
         textDateRange={<></>}
         slotInterviewerTrainnigList={
           data?.length ? (

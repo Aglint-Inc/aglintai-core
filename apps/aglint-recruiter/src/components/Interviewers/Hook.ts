@@ -136,13 +136,27 @@ export type useTrainingProgressType = Awaited<
   ReturnType<typeof fetchTrainingProgressAnalytics>
 >;
 
-export const useTrainingProgress = () => {
+export const useTrainingProgress = ({
+  departments,
+  jobs,
+  locations,
+}: {
+  departments?: number[];
+  jobs?: string[];
+  locations?: number[];
+}) => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_scheduling_analytics_training_progress', recruiter_id],
     refetchOnMount: true,
-    queryFn: () => fetchTrainingProgressAnalytics({ recruiter_id }),
+    queryFn: () =>
+      fetchTrainingProgressAnalytics({
+        recruiter_id,
+        departments,
+        jobs,
+        locations,
+      }),
     gcTime: 20000,
     enabled: !!recruiter_id,
   });
@@ -155,13 +169,22 @@ export const useTrainingProgress = () => {
 
 const fetchTrainingProgressAnalytics = async ({
   recruiter_id,
+  departments,
+  jobs,
+  locations,
 }: {
   recruiter_id: string;
+  departments?: number[];
+  jobs?: string[];
+  locations?: number[];
 }) => {
   return (
     await supabase
       .rpc('scheduling_analytics_training_progress', {
         recruiter_id,
+        departments,
+        jobs,
+        locations,
       })
       .throwOnError()
   ).data;
