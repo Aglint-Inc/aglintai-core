@@ -207,6 +207,7 @@ const SelfScheduleFlowMenus = ({
     });
     return progres;
   }, [request_progress.data]);
+  //
   let eventWActions: DatabaseEnums['email_slack_types'][] = [];
   if (eventTargetMap['onRequestSchedule']) {
     eventWActions = [
@@ -220,7 +221,6 @@ const SelfScheduleFlowMenus = ({
         {scheduleFlowProg.map((prog) => {
           return (
             <>
-              <p>{prog.event_type}</p>
               <EventNode
                 key={prog.id}
                 eventNode={prog.event_type}
