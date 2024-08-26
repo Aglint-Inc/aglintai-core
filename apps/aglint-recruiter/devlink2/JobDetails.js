@@ -1,11 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { Breadcrum } from "./Breadcrum";
-import { RefreshButton } from "./RefreshButton";
-import { ButtonSolid } from "./ButtonSolid";
 import { SlotComp } from "./SlotComp";
-import { ShowFilterButton } from "./ShowFilterButton";
 import { SelectActionBar } from "./SelectActionBar";
 import { JobDetailsFilterBlock } from "./JobDetailsFilterBlock";
 import { ApplicantsTable } from "./ApplicantsTable";
@@ -33,81 +29,6 @@ export function JobDetails({
   return (
     <_Component className={_utils.cx(_styles, "job-details-wrapper")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "job-details-header")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "job-details-header-block")}
-          tag="div"
-        >
-          <_Builtin.Block className={_utils.cx(_styles, "jdet-main")} tag="div">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "slot_breadcrum")}
-              tag="div"
-            >
-              {slotBreadcrumb ?? (
-                <>
-                  <Breadcrum textName="Published Jobs" isLink={true} />
-                  <Breadcrum
-                    textName="Senior Software Engineer"
-                    showArrow={true}
-                    isLink={true}
-                  />
-                  <Breadcrum
-                    textName="Candidates"
-                    showArrow={true}
-                    isLink={false}
-                  />
-                </>
-              )}
-            </_Builtin.Block>
-            {isFetchingPillVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fetching-pill")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-410")}
-                  tag="div"
-                >
-                  {slotLoadingLottie}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "text-kale-800")}
-                  tag="div"
-                >
-                  {"Syncing Candidates"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jdet-main-action-menu")}
-            tag="div"
-          >
-            {slotButtons ?? (
-              <>
-                <_Builtin.Block tag="div">
-                  {slotRefresh ?? <RefreshButton />}
-                </_Builtin.Block>
-                {isImportCandidates ? (
-                  <_Builtin.Block tag="div">
-                    <ButtonSolid
-                      onClickButton={onclickAddCandidates}
-                      size="1"
-                      iconName="account_circle"
-                      isLeftIcon={true}
-                      textButton="Add Candidates"
-                      iconSize="3"
-                    />
-                  </_Builtin.Block>
-                ) : null}
-              </>
-            )}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
         className={_utils.cx(_styles, "candidates-view-wrapper")}
         tag="div"
       >
@@ -121,12 +42,6 @@ export function JobDetails({
               tag="div"
             >
               {slotTabs ?? <SlotComp componentName="Tabs Component" />}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "show_filter_button")}
-              tag="div"
-            >
-              {slotShowFilterButton ?? <ShowFilterButton />}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

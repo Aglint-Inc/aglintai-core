@@ -4,11 +4,13 @@ import utc from "dayjs/plugin/utc";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import isToday from "dayjs/plugin/isToday";
+import weekOfYear from "dayjs/plugin/weekOfYear";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);
 dayjs.extend(isToday);
+dayjs.extend(weekOfYear);
 
 export const dayjsLocal = dayjs;

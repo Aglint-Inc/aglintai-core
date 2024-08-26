@@ -1,27 +1,27 @@
 import Seo from '@components/Common/Seo';
 
-import JobDashboard from '@/src/components/Jobs/Job/Dashboard';
+import ApplicationsDashboard from '@/src/components/Jobs/Job/Candidate-List';
+import { ApplicationsProvider } from '@/src/context/ApplicationsContext';
 import { JobProvider } from '@/src/context/JobContext';
-import JobDashboardProvider from '@/src/context/JobDashboard';
 
-const JobPage = () => {
+const JobCandidateListPage = () => {
   return (
     <>
       <Seo
-        title={`Job Dashboard - Job | Aglint AI`}
+        title='Candidate List - Job | Aglint AI'
         description='AI for People Products'
       />
-      <JobDashboard />
+      <ApplicationsDashboard />
     </>
   );
 };
 
-JobPage.privateProvider = function privateProvider(page) {
+JobCandidateListPage.privateProvider = function privateProvider(page) {
   return (
     <JobProvider>
-      <JobDashboardProvider>{page}</JobDashboardProvider>
+      <ApplicationsProvider>{page}</ApplicationsProvider>
     </JobProvider>
   );
 };
 
-export default JobPage;
+export default JobCandidateListPage;

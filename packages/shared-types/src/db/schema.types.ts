@@ -3114,6 +3114,7 @@ export type Database = {
       }
       recruiter_user: {
         Row: {
+          calendar_sync: Json | null
           created_at: string
           department_id: number | null
           email: string | null
@@ -3136,6 +3137,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          calendar_sync?: Json | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -3158,6 +3160,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          calendar_sync?: Json | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -4522,12 +4525,12 @@ export type Database = {
           email: string | null
           file_url: string | null
           id: string | null
+          interview_plans: Json[] | null
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
           latest_activity: string | null
           linkedin: string | null
-          meeting_details: Json | null
           name: string | null
           phone: string | null
           processing_status:

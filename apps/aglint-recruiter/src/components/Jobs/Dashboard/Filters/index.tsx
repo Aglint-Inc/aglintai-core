@@ -127,6 +127,7 @@ function FilterJobDashboard({
         search={{
           value: searchText,
           setValue: (value) => handlerFilter(value),
+          placeholder: 'Search jobs',
         }}
       />
     </Stack>
@@ -155,7 +156,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
-    status: [] as string[],
+    status: ['published'] as string[],
     location: [] as string[],
     type: [] as string[],
     hiringManager: [] as string[],

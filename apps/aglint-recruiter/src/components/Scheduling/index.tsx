@@ -21,10 +21,11 @@ import { SchedulingTab } from './types';
 function SchedulingMainComp() {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
+
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${ROUTES['/scheduling']()}?tab=${'dashboard' as SchedulingTab}`,
+        `${ROUTES['/scheduling']()}?tab=${'metrics' as SchedulingTab}`,
         undefined,
         {
           shallow: true,
@@ -40,8 +41,8 @@ function SchedulingMainComp() {
   useEffect(() => {
     setBreadcrum([
       {
-        name: 'Scheduler Dashboard',
-        route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        name: tab,
+        route: ROUTES['/scheduling']() + `?tab=metrics`,
       },
     ]);
   }, [tab]);
@@ -59,12 +60,12 @@ function SchedulingMainComp() {
                 slotGlobalSwitchPill={
                   <>
                     <GlobalSwitchPill
-                      isActive={tab === 'schedules'}
-                      textPill={'All Schedules'}
+                      isActive={tab === 'interviews'}
+                      textPill={'Interviews'}
                       onClickPill={{
                         onClick: () => {
                           router.push(
-                            `${ROUTES['/scheduling']()}?tab=schedules`,
+                            `${ROUTES['/scheduling']()}?tab=interviews`,
                           );
                         },
                       }}
@@ -82,13 +83,11 @@ function SchedulingMainComp() {
                     />
 
                     <GlobalSwitchPill
-                      isActive={tab === 'dashboard' || !tab}
-                      textPill={'Dashboard'}
+                      isActive={tab === 'metrics' || !tab}
+                      textPill={'Metrics'}
                       onClickPill={{
                         onClick: () => {
-                          router.push(
-                            `${ROUTES['/scheduling']()}?tab=dashboard`,
-                          );
+                          router.push(`${ROUTES['/scheduling']()}?tab=metrics`);
                         },
                       }}
                     />
@@ -114,7 +113,7 @@ const BodyComp = () => {
   return (
     <>
       <ShowCode>
-        <ShowCode.When isTrue={tab === 'schedules'}>
+        <ShowCode.When isTrue={tab === 'interviews'}>
           {checkPermissions(['scheduling_actions']) && <Schedules />}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'myschedules'}>

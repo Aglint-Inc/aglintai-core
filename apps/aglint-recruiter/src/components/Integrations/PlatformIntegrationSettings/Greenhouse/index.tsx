@@ -58,6 +58,7 @@ function GreenhouseSettings() {
                   ),
                 )}
               </Stack>
+              <Stack height={'1px'} width={'100%'} bgcolor={'var(--neutral-6)'} margin={'12px 0px'}></Stack>
               <Divider sx={{ borderColor: 'var(--neutral-6)' }} />
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack direction={'row'} alignItems={'center'}>

@@ -145,7 +145,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
               },
             }}
             isHeaderIconVisible={false}
-            textDrawertitle='Company Working Hour Update'
+            textDrawertitle='Update Working Hours'
             drawerSize={'medium'}
             slotButtons={
               <>

@@ -179,10 +179,12 @@ const Requests = () => {
               opacity: openChat ? 1 : 0,
               transform: openChat ? 'translateX(0)' : 'translateX(-450px)',
               transition: openChat ? 'all 0.3s ease-in' : 'all 0.3s ease-out',
+              display: { xs: 'none', md: 'flex' },
             }}
             direction={'row'}
             justifyContent={'start'}
             alignItems={'end'}
+           
           >
             <AgentChats />
           </Stack>

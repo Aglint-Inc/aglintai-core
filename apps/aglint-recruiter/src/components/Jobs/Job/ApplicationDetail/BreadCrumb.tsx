@@ -16,7 +16,7 @@ function BreadCrumb() {
   useEffect(() => {
     setBreadcrum([
       {
-        name: 'Published Jobs',
+        name: 'Jobs',
         route: ROUTES['/jobs'](),
       },
       {
@@ -26,13 +26,7 @@ function BreadCrumb() {
         }),
       },
       {
-        name: 'Application',
-        route: ROUTES['/jobs/[id]/candidate-list']({
-          id: job_id,
-        }),
-      },
-      {
-        name: detail?.name || 'Application Details',
+        name: detail?.name || '',
       },
     ]);
   }, [detail?.name]);

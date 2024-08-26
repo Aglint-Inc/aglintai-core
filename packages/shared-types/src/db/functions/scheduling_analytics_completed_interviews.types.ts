@@ -6,7 +6,7 @@ export type CustomSchedulingAnalyticsCompletedInterviews = FunctionType<
   "scheduling_analytics_completed_interviews",
   Custom<
     Database["public"]["Functions"]["scheduling_analytics_completed_interviews"]["Args"],
-    { type?: "day" | "month" }
+    { type?: "year" | "quarter" | "month" }
   >,
   Database["public"]["Functions"]["scheduling_analytics_completed_interviews"]["Returns"][number]
 >;

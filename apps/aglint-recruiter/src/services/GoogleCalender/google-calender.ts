@@ -1,5 +1,6 @@
 import { CalendarEvent, NewCalenderEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { google } from 'googleapis';
 
 import {
   CalEventAttendeesAuthDetails,
@@ -9,8 +10,6 @@ import {
 } from '../../utils/event_book/book_session';
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '../../utils/supabase/supabaseAdmin';
-
-const { google } = require('googleapis');
 
 export class GoogleCalender {
   private recruiter_user_id;
@@ -119,21 +118,25 @@ export class GoogleCalender {
 
   public async createCalenderEvent(new_cal_event: NewCalenderEvent) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    //@ts-ignore
     const response = await calendar.events.insert({
-      calendarId: 'primary', // 'primary' refers to the user's primary calendar
+      calendarId: 'primary',
       resource: new_cal_event,
       conferenceDataVersion: 1,
       sendNotifications: true,
     });
+    //@ts-ignore
     return response.data as CalendarEvent;
   }
   public async importEvent(event, attendeeEmail) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    //@ts-ignore
     const response = await calendar.events.import({
       calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
       resource: event,
       sendNotifications: true,
     });
+    //@ts-ignore
     return response.data;
   }
   public async updateEventStatus(event_id: string, status: 'cancelled') {
@@ -176,12 +179,17 @@ export class GoogleCalender {
   }
   public async watchEvents(organizer_id: string) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+
     const watchResponse = await calendar.events.watch({
-      resource: {
-        id: organizer_id,
+      requestBody: {
+        id: `${process.env.NEXT_PUBLIC_ENV}-${organizer_id}`,
         type: 'web_hook',
-        address: `https://rested-logically-lynx.ngrok-free.app/api/google-calender/webhook`, // Expose localhost using a secure tunnel
-        // token: webhookToken,
+        // address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
+        address:
+          process.env.NEXT_PUBLIC_HOST_NAME + '/api/google-calender/webhook',
+        // params: {
+        //   ttl: '3600',
+        // },
       },
       calendarId: 'primary',
     });
@@ -196,5 +204,35 @@ export class GoogleCalender {
       },
     });
     return response.data;
+  }
+  public async fullCalendarSync(sync_token: string | null) {
+    let events: CalendarEvent[] = [];
+    let pageToken = null;
+    let syncToken = sync_token; // Initially, this will be null for the first sync
+
+    do {
+      const requestParams = {
+        calendarId: 'primary',
+        singleEvents: true,
+        showDeleted: true,
+        maxResults: 2500,
+        pageToken: pageToken,
+        syncToken,
+      };
+
+      if (syncToken) {
+        delete requestParams.pageToken;
+      }
+      const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+      const response = await calendar.events.list(requestParams);
+      if (response.data.items && response.data.items.length > 0) {
+        events = events.concat(response.data.items as CalendarEvent[]);
+      }
+      pageToken = response.data.nextPageToken;
+
+      syncToken = response.data.nextSyncToken;
+    } while (pageToken);
+
+    return { events, syncToken };
   }
 }
