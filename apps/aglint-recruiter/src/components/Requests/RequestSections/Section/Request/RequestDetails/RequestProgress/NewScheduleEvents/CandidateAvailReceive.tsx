@@ -12,7 +12,7 @@ import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
 
-const CandidateAvailReceived = ({
+const CandidateAvailReceive = ({
   eventTargetMap,
 }: {
   eventTargetMap: EventTargetMapType;
@@ -88,6 +88,4 @@ const CandidateAvailReceived = ({
   );
 };
 
-export default CandidateAvailReceived;
-// workflow
-// manual
+export default CandidateAvailReceive;

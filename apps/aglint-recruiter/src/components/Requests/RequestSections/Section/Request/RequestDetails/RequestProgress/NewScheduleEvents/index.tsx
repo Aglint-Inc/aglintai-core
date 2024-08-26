@@ -9,7 +9,7 @@ import {
   RequestProgressMapType,
   TriggerActionsType,
 } from '../types';
-import CandidateAvailReceived from './CandidateAvailReceived';
+import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
 
