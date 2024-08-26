@@ -12,6 +12,7 @@ import { workflowCopy } from '../utils/copy';
 import { getProgressColor } from '../utils/getProgressColor';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
+import { DatabaseTable } from '@aglint/shared-types';
 
 const EventNode = ({
   eventNode,
@@ -23,15 +24,12 @@ const EventNode = ({
   const eventProg = reqProgressMap[eventNode];
   let tense: ProgressTenseType = 'future';
   let CustomComp;
-  let headingMeta;
+  let headingEvent: DatabaseTable['request_progress'];
   if (eventProg) {
-    const headingEvent = eventProg.find(
-      (prg) => prg.is_progress_step === false,
-    );
+    headingEvent = eventProg.find((prg) => prg.is_progress_step === false);
     tense = progressStatusToTense(headingEvent.status);
     CustomComp =
       progressActionMap[`${headingEvent.event_type}_${headingEvent.status}`];
-    headingMeta = headingEvent.meta;
   }
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
@@ -55,7 +53,7 @@ const EventNode = ({
       />
       {(eventSubProgress.length > 0 || CustomComp) && (
         <Stack ml={1}>
-          {CustomComp && <CustomComp {...(headingMeta ?? {})} />}
+          {CustomComp && <CustomComp {...(headingEvent ?? {})} />}
           {eventProg
             .filter((prg) => prg.is_progress_step === true)
             .map((prg) => {
