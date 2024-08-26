@@ -37,6 +37,12 @@ import InterviewDateList from './Components/InterviewDateList';
 import MemberList, { useMemberList } from './Components/MemberList';
 import PriorityList from './Components/PriorityList';
 import StatusList from './Components/StatusList';
+import ConfirmAvailability from './ConfirmAvailability';
+import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
+import {
+  setApplicationIdForConfirmAvailability,
+  setCandidateAvailabilityId,
+} from './ConfirmAvailability/store';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
@@ -110,6 +116,19 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <ButtonSoft
+        onClickButton={{
+          onClick: () => {
+            setCandidateAvailabilityId('39f9b070-b2cc-4945-909b-d5dc80250088');
+            setApplicationIdForConfirmAvailability(
+              'd091db0c-bcec-4a34-b753-d18d6143213c',
+            );
+          },
+        }}
+      />
+      <AvailabilityProvider>
+        <ConfirmAvailability />
+      </AvailabilityProvider>
       <CandidateAvailability selectedRequest={selectedRequest} />
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
