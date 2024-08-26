@@ -60,11 +60,25 @@ const TimeLineCalendar = () => {
       }))
     : [];
 
-  //Filtering interviewers
-  // const filteredInterviewers = allInterviewers.filter(interviewer=>{
+  // Filtering interviewers
+  const isFilterApplied =
+    !!selectedDepartments.length ||
+    !!selectedJobs.length ||
+    !!selectedLocations.length;
 
-  //   return interviewer.
-  // })
+  const filteredInterviewers = isFilterApplied
+    ? allInterviewers.filter((interviewer) => {
+        const isDepartment = selectedDepartments.length
+          ? selectedDepartments.includes(interviewer.department_id)
+          : true;
+
+        const isLocation = selectedLocations.length
+          ? selectedLocations.includes(interviewer.office_location_id)
+          : true;
+
+        return isDepartment && isLocation;
+      })
+    : allInterviewers;
 
   if (isLoading)
     return (
@@ -103,7 +117,10 @@ const TimeLineCalendar = () => {
           />
         </Stack>
       </Stack>
-      <AvailabilityView allInterviewers={allInterviewers} dayCount={dayCount} />
+      <AvailabilityView
+        allInterviewers={filteredInterviewers}
+        dayCount={dayCount}
+      />
     </Stack>
   );
 };

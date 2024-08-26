@@ -1086,6 +1086,18 @@ export type Database = {
         }
         Relationships: []
       }
+      host: {
+        Row: {
+          decrypted_secret: string | null
+        }
+        Insert: {
+          decrypted_secret?: string | null
+        }
+        Update: {
+          decrypted_secret?: string | null
+        }
+        Relationships: []
+      }
       integrations: {
         Row: {
           ashby_key: string | null
@@ -4411,10 +4423,13 @@ export type Database = {
       all_interviewers: {
         Row: {
           completed_meeting_count: number | null
+          completed_meeting_last_month: Json | null
+          department_id: number | null
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null
           last_name: string | null
+          office_location_id: number | null
           position: string | null
           profile_image: string | null
           qualified_module_names: string[] | null
@@ -4436,6 +4451,20 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_office_location_id_fkey"
+            columns: ["office_location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
             referencedColumns: ["id"]
           },
           {
@@ -6172,6 +6201,10 @@ export type Database = {
         Args: {
           user_email: string
         }
+        Returns: undefined
+      }
+      resync_calendar: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       retrybatchcalcresumejdscore: {
