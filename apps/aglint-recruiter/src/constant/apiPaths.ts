@@ -181,7 +181,6 @@ export const API_PATHS = [
 '/api/scheduling/auth/outlook-req-tokens',
 '/api/scheduling/calendar_check_recruiter',
 '/api/scheduling/candidate/schedule-email-agent',
-'/api/scheduling/cron/trigger',
 '/api/scheduling/debrief/auto-debrief.md',
 '/api/scheduling/debrief/schedule_individual',
 '/api/scheduling/debrief/task_create',

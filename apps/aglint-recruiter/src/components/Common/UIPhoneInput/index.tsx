@@ -82,7 +82,6 @@ const UIPhoneInput = ({
       <PhoneInput
         autoFormat={true}
         onlyCountries={countries.map((c) => c.code)}
-        enableLongNumbers
         copyNumbersOnly={false}
         country={defaultCountry ? defaultCountry.toLowerCase() : null}
         value={value}
