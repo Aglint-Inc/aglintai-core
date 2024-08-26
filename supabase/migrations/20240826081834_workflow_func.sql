@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION public.create_new_workflow_action_log(triggered_table
 AS $function$
 DECLARE
     execute_at TIMESTAMP with time zone;
-    inserted_id uuid;
+    inserted_id numeric;
 BEGIN
     IF base_time IS NULL THEN
         base_time := NOW();
