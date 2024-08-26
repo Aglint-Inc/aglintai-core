@@ -195,3 +195,50 @@ const fetchTrainingProgressAnalytics = async ({
       .throwOnError()
   ).data;
 };
+// -------------------------------------------------------- Training
+
+export type useMatricsInterviewersType = Awaited<
+  ReturnType<typeof fetchMetricsInterviewers>
+>;
+
+export const useMatricsInterviewers = ({
+  type,
+}: {
+  type?: 'training' | 'qualified';
+}) => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['metrics_interviewers', recruiter_id, type],
+    refetchOnMount: true,
+    queryFn: () =>
+      fetchMetricsInterviewers({
+        recruiter_id,
+        type,
+      }),
+    gcTime: 20000,
+    enabled: !!recruiter_id,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['metrics_interviewers', recruiter_id, type],
+    });
+  return { ...query, refetch };
+};
+
+const fetchMetricsInterviewers = async ({
+  recruiter_id,
+  type,
+}: {
+  recruiter_id: string;
+  type?: 'training' | 'qualified';
+}) => {
+  return (
+    await supabase
+      .rpc('scheduling_analytics_interviewers', {
+        recruiter_id,
+        type,
+      })
+      .throwOnError()
+  ).data;
+};

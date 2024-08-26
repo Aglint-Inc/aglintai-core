@@ -10,6 +10,7 @@ import { useAllDepartments } from '@/src/queries/departments';
 
 import Loader from '../../Common/Loader';
 import { Filter } from '../components/Filter';
+import { Interviewers } from '../components/Interviewers';
 import { TrainingProgress } from '../components/MatricsTrainingProgress';
 import { useLeaderBoard } from '../Hook';
 import { LeaderAnalyticsFilterType } from '../types';
@@ -125,6 +126,7 @@ function Metrics() {
         slotMetrics={
           <>
             <TrainingProgress />
+            <Interviewers />
           </>
         }
       />

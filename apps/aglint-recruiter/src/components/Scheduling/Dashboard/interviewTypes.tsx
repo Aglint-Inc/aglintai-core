@@ -23,13 +23,15 @@ export const InterviewTypes = memo(() => {
     interview_types: { data },
   } = useSchedulingAnalytics();
   return (
-    <InterviewModuleStats
-      onClickViewAllModules={{
-        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
-      }}
-      isViewAllVisible={(data ?? []).length > LIMIT}
-      slotInterviewModuleStatsCard={<Container />}
-    />
+    <>
+      <InterviewModuleStats
+        onClickViewAllModules={{
+          onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
+        }}
+        isViewAllVisible={(data ?? []).length > LIMIT}
+        slotInterviewModuleStatsCard={<Container />}
+      />
+    </>
   );
 });
 InterviewTypes.displayName = 'InterviewTypes';
