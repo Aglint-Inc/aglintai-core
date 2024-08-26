@@ -8,11 +8,11 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import ScheduleFlows from '../Actions/Schedule';
+import { getSchedulFlow } from '../getScheduleFlow';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
 
-type ScheduleFlow = 'availability' | 'selfSchedule';
 const SelectScheduleFlow = ({
   eventTargetMap,
 }: {
@@ -51,7 +51,7 @@ const SelectScheduleFlow = ({
     return progres;
   }, [request_progress.data]);
 
-  let scheduleFlow: ScheduleFlow = getSchedulFlow({
+  let scheduleFlow = getSchedulFlow({
     eventTargetMap,
     request_progress: request_progress.data,
   });
@@ -136,7 +136,12 @@ const SelectScheduleFlow = ({
         >
           <Button>Resend Link</Button>
         </ShowCode.When>
-        <ShowCode.When isTrue={!isAvailabilityRecieved}>
+        <ShowCode.When
+          isTrue={
+            !isAvailabilityRecieved &&
+            Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
+          }
+        >
           <Button>Re Request Availability</Button>
         </ShowCode.When>
       </Stack>
@@ -145,43 +150,3 @@ const SelectScheduleFlow = ({
 };
 
 export default SelectScheduleFlow;
-
-const getSchedulFlow = ({
-  eventTargetMap,
-  request_progress,
-}: {
-  eventTargetMap: EventTargetMapType;
-  request_progress: DatabaseTable['request_progress'][];
-}) => {
-  let scheduleFlow: ScheduleFlow;
-
-  let progrEndIdx = request_progress.findIndex(
-    (prog) => prog.event_type === 'CAND_AVAIL_REC',
-  );
-
-  if (progrEndIdx !== -1) {
-    if (
-      request_progress[progrEndIdx].event_type === 'REQ_CAND_AVAIL_EMAIL_LINK'
-    ) {
-      scheduleFlow = 'availability';
-    } else if (
-      request_progress[progrEndIdx].event_type === 'SELF_SCHEDULE_LINK'
-    ) {
-      scheduleFlow = 'selfSchedule';
-    }
-  }
-  if (
-    eventTargetMap['onRequestSchedule'] &&
-    eventTargetMap['onRequestSchedule'].length > 0
-  ) {
-    if (
-      eventTargetMap['onRequestSchedule'][0] ===
-      'onRequestSchedule_emailLink_getCandidateAvailability'
-    ) {
-      scheduleFlow = 'availability';
-    } else {
-      scheduleFlow = 'selfSchedule';
-    }
-  }
-  return scheduleFlow;
-};

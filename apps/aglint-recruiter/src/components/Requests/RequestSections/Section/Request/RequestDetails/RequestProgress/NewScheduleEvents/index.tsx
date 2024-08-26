@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import {
@@ -8,6 +9,7 @@ import {
   RequestProgressMapType,
   TriggerActionsType,
 } from '../types';
+import CandidateAvailReceived from './CandidateAvailReceived';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
 
@@ -38,17 +40,14 @@ const NewScheduleEvents = ({
     });
     return mp;
   }, [request_progress]);
-  //   let scheduleFlow: DatabaseEnums['email_slack_types'];
-  //   if (eventTargetMap['onRequestSchedule']) {
-  //     scheduleFlow = eventTargetMap['onRequestSchedule'][0];
-  //   } else {
-  //     //
-  //   }
+
   return (
     <>
       <Stack rowGap={2}>
         <SelectScheduleFlow eventTargetMap={eventTargetMap} />
-        <p>middlw steps</p>
+        <ShowCode.When isTrue={Boolean(reqProgressMap['CAND_AVAIL_REC'])}>
+          <CandidateAvailReceived eventTargetMap={eventTargetMap} />
+        </ShowCode.When>
         <InterviewSchedule
           eventTargetMap={eventTargetMap}
           reqProgressMap={reqProgressMap}
