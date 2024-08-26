@@ -14,7 +14,7 @@ import {
 } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { getProgressColor } from '../utils/getProgressColor';
-import { apiTargetToEvents, eventToTrigger } from '../utils/progressMaps';
+import { apiTargetToEvents } from '../utils/progressMaps';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 

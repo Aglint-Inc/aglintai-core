@@ -5424,7 +5424,7 @@ export type Database = {
           meta: Json
           base_time?: string
         }
-        Returns: undefined
+        Returns: number
       }
       create_session_request: {
         Args: {

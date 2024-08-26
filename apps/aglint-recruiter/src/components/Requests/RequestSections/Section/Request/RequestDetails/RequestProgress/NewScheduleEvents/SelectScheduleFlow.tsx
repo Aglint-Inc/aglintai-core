@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { Button, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -33,10 +34,9 @@ const SelectScheduleFlow = ({
     return mp;
   }, [request_progress]);
   let scheduleFlow: ScheduleFlow;
+  let lastEvent: DatabaseTable['request_progress'];
   let progrEndIdx = request_progress.data.findIndex(
-    (prog) =>
-      prog.event_type === 'SELF_SCHEDULE_LINK' ||
-      prog.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK',
+    (prog) => prog.event_type === 'CAND_AVAIL_REC',
   );
 
   if (progrEndIdx !== -1) {
@@ -66,6 +66,9 @@ const SelectScheduleFlow = ({
     } else {
       scheduleFlow = 'selfSchedule';
     }
+  }
+  if (scheduleFlowProg) {
+    lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
   }
 
   return (
@@ -106,37 +109,30 @@ const SelectScheduleFlow = ({
               );
             })}
           <ShowCode.When
-            isTrue={Boolean(scheduleReqProgressMap['REQ_AVAIL_FIRST_FOLLOWUP'])}
+            isTrue={Boolean(
+              scheduleReqProgressMap[
+                'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
+              ],
+            )}
           >
             <EventNode
-              eventNode='REQ_AVAIL_FIRST_FOLLOWUP'
+              eventNode='SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
               reqProgressMap={scheduleReqProgressMap}
             />
           </ShowCode.When>
         </ShowCode.When>
         <ShowCode.When
           isTrue={
-            Boolean(!scheduleReqProgressMap['REQ_AVAIL_FIRST_FOLLOWUP']) &&
-            !eventTargetMap['sendAvailReqReminder']
+            Boolean(
+              lastEvent &&
+                lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
+                !scheduleReqProgressMap[
+                  'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK'
+                ],
+            ) && !eventTargetMap['sendAvailReqReminder']
           }
         >
           <Button>manual reminder</Button>
-        </ShowCode.When>
-
-        <ShowCode.When
-          isTrue={Boolean(scheduleReqProgressMap['REQ_AVAIL_FIRST_FOLLOWUP'])}
-        >
-          {scheduleFlowProg.map((prog) => {
-            return (
-              <>
-                <EventNode
-                  eventNode={prog.event_type}
-                  reqProgressMap={scheduleReqProgressMap}
-                  key={prog.id}
-                />
-              </>
-            );
-          })}
         </ShowCode.When>
       </Stack>
     </Stack>
