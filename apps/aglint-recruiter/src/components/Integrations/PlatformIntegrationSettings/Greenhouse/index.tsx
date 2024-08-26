@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Checkbox, Divider, Stack, Typography } from '@mui/material';
+import { Checkbox, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
@@ -19,7 +19,7 @@ function GreenhouseSettings() {
   const timeStamp = data && data.last_sync['full_sync'];
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
   return (
-    <Stack p={2}>
+    <Stack>
       {isPending ? (
         <DynamicLoader />
       ) : (
@@ -65,7 +65,6 @@ function GreenhouseSettings() {
                 bgcolor={'var(--neutral-6)'}
                 margin={'12px 0px'}
               ></Stack>
-              <Divider sx={{ borderColor: 'var(--neutral-6)' }} />
               <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack direction={'row'} alignItems={'center'}>
                   <Typography variant='subtitle2'>{`Last Sync: ${last_sync}`}</Typography>

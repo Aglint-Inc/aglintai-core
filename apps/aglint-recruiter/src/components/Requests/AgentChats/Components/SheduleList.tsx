@@ -72,7 +72,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
                 <ButtonSolid
                   color='neutral'
                   size={1}
-                  textButton={'View Schedule'}
+                  textButton={'View Details'}
                   isRightIcon={true}
                   iconName='arrow_outward'
                 />

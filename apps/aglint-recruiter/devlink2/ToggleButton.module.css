@@ -7,14 +7,14 @@
 
   border-radius: 7.5px;
 
-  background-color: var(--gray-500\<deleted\|variable-6a03db6f-fc4b-caa8-8e71-0b1e2d847ef1\>);
+  background-color: var(--neutral-3);
 
   cursor: pointer;
 }
 
 .toggle-button.active {
   justify-content: flex-end;
-  background-color: var(--blue-600\<deleted\|variable-52e70a4f-6629-4974-4598-e3ba75f3461c\>);
+  background-color: var(--accent-9);
 }
 
 .toggle-dot {
@@ -25,5 +25,5 @@
 
   border-radius: 50px;
 
-  background-color: var(--white\<deleted\|variable-c31c6fe9\>);
+  background-color: var(--white);
 }

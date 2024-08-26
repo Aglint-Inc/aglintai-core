@@ -143,7 +143,7 @@ export default function FilterHeader({
                     <ButtonGhost
                       isDisabled={!isFiltersActive}
                       textButton='Reset All'
-                      size={2}
+                      size={1}
                       iconName='refresh'
                       color={'neutral'}
                       isLeftIcon

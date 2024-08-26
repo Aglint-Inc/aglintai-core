@@ -18,13 +18,13 @@ function UserRequests({
       status: request.status,
       color:
         request.status === 'to_do'
-          ? 'info'
+          ? 'purple'
           : request.status === 'completed'
             ? 'success'
             : request.status === 'blocked'
               ? 'error'
               : request.status === 'in_progress'
-                ? 'warning'
+                ? 'info'
                 : 'neutral',
       link: '',
     };

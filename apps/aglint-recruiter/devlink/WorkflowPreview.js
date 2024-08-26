@@ -1094,8 +1094,8 @@ export function WorkflowPreview({ as: _Component = _Builtin.Block }) {
         </_Builtin.TabsContent>
       </_Builtin.TabsWrapper>
       <_Builtin.Block className={_utils.cx(_styles, "h-flex-8")} tag="div">
-        <GlobalIcon size="4" iconName="bolt" weight="regular" />
-        <Text size="2" content="Preview" />
+        <GlobalIcon size="6" iconName="bolt" weight="medium" />
+        <Text size="3" content="Preview" weight="medium" />
       </_Builtin.Block>
       <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5Bdata-scrollbar%3D%22none%22%5D%3A%3A-webkit-scrollbar%20%7B%0A%20%20%20%20display%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E" />
     </_Component>

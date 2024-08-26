@@ -48,23 +48,3 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.pointer {
-  cursor: pointer;
-}
