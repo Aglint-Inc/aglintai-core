@@ -22,7 +22,6 @@ const SelectScheduleFlow = ({
   const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
   const isManualSchedule = eventWActions.length === 0;
 
-  console.log(request_progress.data);
   const scheduleReqProgressMap: RequestProgressMapType = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -41,7 +40,6 @@ const SelectScheduleFlow = ({
       return progres;
     }
     request_progress.data.forEach((prog) => {
-      console.log(prog);
       if (prog.event_type !== 'CAND_AVAIL_REC') {
         progres.push({
           ...prog,

@@ -8,6 +8,7 @@ export type CustomRequestProgress = TableType<
     event_type: EventNodeType;
     meta: {
       event_run_id: number;
+      workflow_action_id?: string;
       [key: string]: any;
     };
   }

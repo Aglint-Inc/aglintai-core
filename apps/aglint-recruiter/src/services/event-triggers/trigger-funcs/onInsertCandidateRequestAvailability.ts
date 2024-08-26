@@ -26,7 +26,6 @@ export const onInsertCandidateRequestAvailability = async ({
     company_id: application.public_jobs.recruiter_id,
     request_id: new_data.request_id,
   });
-  let event_run_id: number;
   const promises = [...request_workflows]
     .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
     .map(async (j_l_a) => {
@@ -47,21 +46,21 @@ export const onInsertCandidateRequestAvailability = async ({
         }),
       );
       if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
-        event_run_id = run_id;
+        supabaseWrap(
+          await supabaseAdmin.from('request_progress').insert({
+            is_progress_step: false,
+            event_type: 'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+            status: 'completed',
+            request_id: new_data.request_id,
+            created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(),
+            meta: {
+              workflow_action_id: j_l_a.id,
+              event_run_id: run_id,
+            },
+          }),
+        );
       }
     });
 
   await Promise.allSettled(promises);
-  supabaseWrap(
-    await supabaseAdmin.from('request_progress').insert({
-      is_progress_step: false,
-      event_type: 'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK',
-      status: 'completed',
-      request_id: new_data.request_id,
-      created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(),
-      meta: {
-        event_run_id,
-      },
-    }),
-  );
 };
