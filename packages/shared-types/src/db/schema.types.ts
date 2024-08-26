@@ -5075,6 +5075,8 @@ export type Database = {
           module_id: string | null
           position: string | null
           profile_image: string | null
+          schedule_auth: Json | null
+          scheduling_settings: Json | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
@@ -6304,7 +6306,7 @@ export type Database = {
           recruiter_id: string
           departments?: number[]
           jobs?: string[]
-          type?: Database["public"]["Enums"]["status_training"]
+          locations?: number[]
         }
         Returns: {
           number_of_shadow: number
