@@ -2,8 +2,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, Popover, Stack, TextField } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
@@ -12,20 +11,20 @@ import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import axios from '@/src/client/axios';
 import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function MemberList({
   members,
   selectedMemberId,
+  width,
+  onChange,
 }: {
-  members: MemberType[];
+  members: any;
   selectedMemberId: string;
+  width?: string;
+  onChange?: Dispatch<string>;
 }) {
-  const { handleAsyncUpdateRequest } = useRequests();
-  const { query } = useRouter();
-
   const selectedMembers =
     members && members.find((member) => member.user_id === selectedMemberId);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -57,7 +56,7 @@ function MemberList({
               selectedMembers?.first_name,
               selectedMembers?.last_name,
             )}
-            textRole={selectedMembers?.position}
+            textRole={capitalizeFirstLetter(selectedMembers?.role)}
             slotImage={
               <Avatar variant='rounded' src={selectedMembers?.profile_image} />
             }
@@ -98,7 +97,7 @@ function MemberList({
         {filteredMembers.length === 0 && (
           <GlobalEmptyState iconName={'Search'} textDesc={'No members found'} />
         )}
-        <Stack maxHeight={'300px'} overflow={'auto'} width={'375px'}>
+        <Stack maxHeight={'250px'} overflow={'auto'} width={width}>
           {filteredMembers
             .filter(({ user_id }) => user_id !== selectedMemberId)
             .map((member) => (
@@ -107,16 +106,7 @@ function MemberList({
                 onClickCard={{
                   onClick: async () => {
                     setAnchorEl(null);
-                    await handleAsyncUpdateRequest({
-                      payload: {
-                        requestId: String(query?.id),
-                        requestPayload: {
-                          assignee_id: member.user_id,
-                        },
-                      },
-                      loading: false,
-                      toast: false,
-                    });
+                    onChange(member.user_id);
                   },
                 }}
                 textName={getFullName(member.first_name, member.last_name)}
