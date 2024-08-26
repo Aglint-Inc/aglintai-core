@@ -137,7 +137,6 @@ export const useApplicationContext = (
 
   const handleCreateRequest = async ({
     sel_user_id,
-    isCreateRequest,
     assigned_user_id,
     requestType,
     dateRange,
@@ -145,7 +144,6 @@ export const useApplicationContext = (
     sessionNames,
   }: {
     sel_user_id: string;
-    isCreateRequest: boolean;
     assigned_user_id: string;
     requestType: 'standard' | 'urgent';
     dateRange: { start: string; end: string };
@@ -162,7 +160,7 @@ export const useApplicationContext = (
           start: dateRange.start,
           end: dateRange.end,
         },
-        assignee_id: isCreateRequest ? sel_user_id : assigned_user_id,
+        assignee_id: sel_user_id,
         priority: requestType,
         assigner_id: assigned_user_id,
         session_names: sessionNames,
@@ -174,21 +172,12 @@ export const useApplicationContext = (
       );
 
       if (res.status === 201 || res.status === 200) {
-        if (isCreateRequest) {
-          toast.success('Request Created Successfully');
-          router.push(
-            ROUTES['/jobs/[id]/application/[application_id]']({
-              application_id: props.application_id,
-              id: props.job_id,
-            }) + '?tab=requests',
-          );
-        } else {
-          router.push(
-            ROUTES['/requests/[id]']({
-              id: res.data,
-            }),
-          );
-        }
+        router.push(
+          ROUTES['/requests/[id]']({
+            id: res.data,
+          }),
+        );
+
         queryClient.invalidateQueries({
           queryKey: applicationQuery.requests({
             application_id: props.application_id,

@@ -332,6 +332,19 @@ function ViewRequestDetails() {
                     <MemberList
                       selectedMemberId={selectedRequest?.assignee.user_id}
                       members={members}
+                      onChange={async (id) => {
+                        await handleAsyncUpdateRequest({
+                          payload: {
+                            requestId: String(query?.id),
+                            requestPayload: {
+                              assignee_id: id,
+                            },
+                          },
+                          loading: false,
+                          toast: false,
+                        });
+                      }}
+                      width={'375px'}
                     />
                   }
                   slotCandidate={

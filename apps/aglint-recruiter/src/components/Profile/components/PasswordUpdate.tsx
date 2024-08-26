@@ -36,7 +36,7 @@ export const PasswordUpdate = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Create New Password',
+      label: 'Create new Password',
       placeholder: 'Enter a new password.',
     },
     confirmPassword: {
@@ -45,7 +45,7 @@ export const PasswordUpdate = () => {
       validation: 'password',
       type: 'password',
       required: true,
-      label: 'Re-enter New Password',
+      label: 'Re-enter new password',
       placeholder: 'Re-enter the new password for confirmation.',
     },
   };

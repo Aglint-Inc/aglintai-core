@@ -8,6 +8,7 @@ import MuiAvatar from '../MuiAvatar';
 import UITypography from '../UITypography';
 
 type MenuOption = {
+  
   name: string;
   value: string | number;
   start_icon_url?:
@@ -166,6 +167,7 @@ const AvatarSelectDropDown = ({
                           />
                         </Stack>
                       )}
+
                     </Stack>
                   ) : !menu.start_icon_url ||
                     typeof menu.start_icon_url === 'string' ? (

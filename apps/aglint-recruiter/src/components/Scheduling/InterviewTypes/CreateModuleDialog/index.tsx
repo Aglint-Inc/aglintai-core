@@ -105,7 +105,7 @@ function CreateModuleDialog() {
                 label='Name'
                 required
                 error={nameError}
-                helperText={`Name cannot be empty`}
+                helperText={`Name cannot be empty.`}
                 placeholder='Ex: Initial Screening'
                 fullWidth
                 value={name}

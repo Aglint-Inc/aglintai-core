@@ -3140,6 +3140,7 @@ export type Database = {
       recruiter_user: {
         Row: {
           calendar_sync: Json | null
+          calendar_sync_token: string | null
           created_at: string
           department_id: number | null
           email: string | null
@@ -3163,6 +3164,7 @@ export type Database = {
         }
         Insert: {
           calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -3186,6 +3188,7 @@ export type Database = {
         }
         Update: {
           calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null

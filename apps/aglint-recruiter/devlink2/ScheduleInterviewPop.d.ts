@@ -6,9 +6,9 @@ declare function ScheduleInterviewPop(props: {
   textName?: React.ReactNode;
   textSelectedSchedule?: React.ReactNode;
   slotStagePill?: Types.Devlink.Slot;
-  slotCheckBox?: Types.Devlink.Slot;
   slotRequestOption?: Types.Devlink.Slot;
   slotAssignedInput?: Types.Devlink.Slot;
   slotPickDateInput?: Types.Devlink.Slot;
   isRequestTypeVisible?: Types.Visibility.VisibilityConditions;
+  isCandidateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
