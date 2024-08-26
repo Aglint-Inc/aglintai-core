@@ -2,7 +2,7 @@
   z-index: 1;
 
   display: flex;
-  padding-top: 20px;
+  padding-top: 15px;
   padding-right: 20px;
   padding-bottom: 20px;
   padding-left: 20px;
@@ -29,8 +29,6 @@
   border-top-right-radius: 8px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-
-  background-color: var(--neutral-2);
 
   min-height: calc(100vh - 70px);
 }
@@ -245,7 +243,7 @@
 .h-flex-8 {
   position: absolute;
   left: 40px;
-  top: 48px;
+  top: 34px;
   right: auto;
   bottom: auto;
 

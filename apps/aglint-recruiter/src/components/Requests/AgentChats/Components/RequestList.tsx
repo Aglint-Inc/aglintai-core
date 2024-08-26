@@ -12,7 +12,7 @@ export type RequestListProps = {
   type: DatabaseTable['request']['type'];
   title: string;
   status: DatabaseTable['request']['status'];
-  color: 'info' | 'warning' | 'success' | 'error' | 'neutral' | 'indigo';
+  color: 'info' | 'warning' | 'success' | 'error' | 'neutral' | 'purple';
   link: string;
 };
 
@@ -148,7 +148,7 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
               <ButtonSolid
                 color='neutral'
                 size={1}
-                textButton={'View'}
+                textButton={'View Details'}
                 isRightIcon={true}
                 iconName='open_in_new'
               />

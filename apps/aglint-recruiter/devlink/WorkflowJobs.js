@@ -16,7 +16,12 @@ export function WorkflowJobs({
         className={_utils.cx(_styles, "slot-workflow-cards")}
         tag="div"
       >
-        {slotWorkflowCards}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "workflow-job-wrap-slot")}
+          tag="div"
+        >
+          {slotWorkflowCards}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-workflowpreview")}
