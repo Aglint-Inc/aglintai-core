@@ -49,6 +49,7 @@ export const apiTargetToEvents: Partial<
   candidateBook_slack_interviewerForConfirmation: [
     'SEND_INTERVIEWER_ATTENDANCE_RSVP',
   ],
+  sendAvailReqReminder_email_applicant: ['FIRST_FOLLOWUP_AVAILABILITY_LINK'],
 };
 
 //

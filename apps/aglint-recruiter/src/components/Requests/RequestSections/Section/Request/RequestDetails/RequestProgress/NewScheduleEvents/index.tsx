@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
 import { useRequest } from '@/src/context/RequestContext';
@@ -9,7 +10,6 @@ import {
 } from '../types';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
-import { Stack } from '@mui/material';
 
 const NewScheduleEvents = ({
   eventActions,
@@ -47,10 +47,7 @@ const NewScheduleEvents = ({
   return (
     <>
       <Stack rowGap={2}>
-        <SelectScheduleFlow
-          eventTargetMap={eventTargetMap}
-          reqProgressMap={reqProgressMap}
-        />
+        <SelectScheduleFlow eventTargetMap={eventTargetMap} />
         <p>middlw steps</p>
         <InterviewSchedule
           eventTargetMap={eventTargetMap}

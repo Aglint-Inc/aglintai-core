@@ -126,4 +126,10 @@ export const workflowCopy: WorkflowCopyType = {
     error:
       "There was an error sending the Slack RSVP for the interviewer's attendance.",
   },
+  FIRST_FOLLOWUP_AVAILABILITY_LINK: {
+    past: 'The first follow-up availability link was sent.',
+    present: 'Sending the first follow-up availability link.',
+    future: 'The first follow-up availability link will be sent.',
+    error: 'There was an error sending the first follow-up availability link.',
+  },
 };
