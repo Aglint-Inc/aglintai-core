@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Application } from '@/src/context/ApplicationContext';
 
-import { Settings } from '../Common/SharedTopNav/actions';
 import BreadCrumb from './BreadCrumb';
 import SlotBody from './SlotBody';
 
@@ -18,7 +17,7 @@ function ApplicationDetailComp() {
         <PageLayout
           slotTopbarLeft={<BreadCrumb />}
           slotBody={<SlotBody />}
-          slotTopbarRight={<Settings />}
+          slotTopbarRight={<></>}
         />
       </Application>
     </>
