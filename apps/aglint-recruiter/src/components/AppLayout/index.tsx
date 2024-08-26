@@ -25,9 +25,7 @@ export default function AppLayout({ children }) {
   const { windowSize } = useResizeWindow();
   const logo = recruiter?.logo;
 
-  const user_id = router.query.user_id as string;
-
-  const { data: userDetails } = useImrQuery({ user_id });
+  const { data: userDetails } = useImrQuery({ user_id: recruiterUser.user_id });
 
   const handleSignOut = () => {
     queryClient.removeQueries();
