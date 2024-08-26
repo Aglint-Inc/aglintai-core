@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
+import type { nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
 import {
   applicationsQueries,
   useDeleteApplication,
@@ -28,7 +29,6 @@ const filterParams = [
   'type',
   'order',
   'section',
-  // 'schedule_status',
 ] as const;
 
 type FilterKeys = (typeof filterParams)[number];
@@ -39,7 +39,6 @@ type FilterValues = {
   search: Application['name'];
   badges: (keyof Application['badges'])[];
   resume_match: Application['application_match'][];
-  // schedule_status: Application['meeting_details'][number]['status'][];
   type:
     | keyof Pick<Application, 'applied_at' | 'name' | 'latest_activity'>
     | 'location'
@@ -50,25 +49,32 @@ type FilterValues = {
 // eslint-disable-next-line no-unused-vars
 type Filters = { [id in FilterKeys]: FilterValues[id] };
 
+type Locations = ReturnType<typeof nestedObjectToArray>;
+
+type Stages = ReturnType<typeof nestedObjectToArray>;
+
 const filterDefaults: Filters = {
   badges: [],
   bookmarked: false,
   resume_match: [],
-  // schedule_status: [],
   search: '',
   section: 'new',
   type: 'latest_activity',
   order: 'desc',
 };
 
+const locationDefaults: Locations = [];
+
+const stagesDefaults: Stages = [];
+
 export const useApplicationsParams = () => {
-  const { locations, setLocations, resetChecklist } = useApplicationsStore(
-    ({ locations, setLocations, resetChecklist }) => ({
-      locations,
-      setLocations,
-      resetChecklist,
-    }),
-  );
+  const { resetChecklist } = useApplicationsStore(({ resetChecklist }) => ({
+    resetChecklist,
+  }));
+
+  const [locations, setLocations] = useState<Locations>(locationDefaults);
+
+  const [stages, setStages] = useState<Locations>(stagesDefaults);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,10 +92,11 @@ export const useApplicationsParams = () => {
     return acc;
   }, {}) as Filters;
 
-  const safeFilters = { ...filters, locations };
+  const safeFilters = { ...filters, locations, stages };
 
   const getParams = (newParams: Partial<typeof filters>) => {
     if (locations) setLocations(locations);
+    if (stages) setStages(stages);
     return Object.entries(newParams ?? {})
       .reduce((acc, [key, value]) => {
         if (JSON.stringify(value) === JSON.stringify(filterDefaults[key]))
@@ -104,10 +111,11 @@ export const useApplicationsParams = () => {
   };
 
   const setFilters = (newFilters: Partial<typeof safeFilters>) => {
-    const { locations, ...rest } = newFilters;
+    const { locations, stages, ...rest } = newFilters;
     // eslint-disable-next-line no-unused-vars
     const { search, ...safeFilters } = filters;
     if (locations) setLocations(locations);
+    if (stages) setStages(stages);
     const params = Object.entries({ ...(safeFilters ?? {}), ...(rest ?? {}) })
       .reduce((acc, [key, value]) => {
         if (JSON.stringify(value) === JSON.stringify(filterDefaults[key]))
@@ -202,7 +210,6 @@ export const useApplicationsActions = () => {
       status: 'new',
       count: job?.section_count?.new ?? 0,
       ...queryParams,
-      // schedule_status: [],
     }),
   );
   const screeningApplications = useInfiniteQuery(

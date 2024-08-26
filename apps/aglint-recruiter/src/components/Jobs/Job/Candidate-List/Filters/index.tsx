@@ -8,10 +8,14 @@ import {
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
+import { useJob } from '@/src/context/JobContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
+  const {
+    interviewPlans: { data: interviewPlans },
+  } = useJob();
   const {
     job: { application_match },
     locationFilterOptions,
@@ -22,10 +26,9 @@ const Filters = () => {
       locations,
       type,
       order,
-      // section,
       badges,
       resume_match,
-      // schedule_status,
+      stages,
     },
     setFilters,
   } = useApplications();
@@ -50,10 +53,14 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  // const schedule_statusOptions = useMemo(
-  //   () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
-  //   [scheduleStatus, capitalize],
-  // );
+  const interviewPlanOptions = useMemo(
+    () =>
+      (interviewPlans ?? []).reduce((acc, { name, interview_session }) => {
+        acc[name] = (interview_session ?? []).map(({ name }) => name);
+        return acc;
+      }, {}),
+    [interviewPlans, capitalize],
+  );
 
   const resumeMatchFilter: Parameters<
     typeof FilterHeader
@@ -67,19 +74,6 @@ const Filters = () => {
       setFilters({ ['resume_match']: newValue }),
     options: resume_matchOptions,
   };
-
-  // const scheduleStatusFilter: Parameters<
-  //   typeof FilterHeader
-  // >[0]['filters'][number] = isSchedulingEnabled && {
-  //   name: 'Schedule Status',
-  //   value: schedule_status,
-  //   type: 'filter',
-  //   iconname: '',
-  //   icon: <></>,
-  //   setValue: (newValue: typeof schedule_status) =>
-  //     setFilters({ ['schedule_status']: newValue }),
-  //   options: schedule_statusOptions,
-  // };
 
   const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
     isScoringEnabled && {
@@ -120,6 +114,21 @@ const Filters = () => {
       });
     },
   };
+  const InterviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+    type: 'nested-filter',
+    name: 'Interview Plan',
+    options: interviewPlanOptions ?? {},
+    sectionHeaders: ['Stage', 'Session'],
+    value: arrayToNestedObject(stages?.[stages.length - 1] ?? []),
+    setValue: (value) => {
+      const stages = nestedObjectToArray(interviewPlanOptions ?? {}, value).map(
+        (item) => item.filter(({ status }) => status !== 'inactive'),
+      );
+      setFilters({
+        stages: stages.flatMap((section) => section).length ? stages : [],
+      });
+    },
+  };
 
   const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = {
     sortOptions: {
@@ -148,8 +157,8 @@ const Filters = () => {
         bookmarkedButton,
         badgesFilter,
         resumeMatchFilter,
-        // scheduleStatusFilter,
         Locations,
+        InterviewPlan,
       ].filter(Boolean)}
       sort={safeSort}
       isResetAll={true}

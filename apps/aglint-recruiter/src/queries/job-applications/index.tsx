@@ -132,7 +132,7 @@ const getApplications = async ({
     resume_match,
     search,
     type,
-    // schedule_status,
+    stages,
   },
 }: {
   pageParam: Params & { index: number };
@@ -157,19 +157,6 @@ const getApplications = async ({
       `application_match.in.(${resume_match.map((match) => match).join(',')})`,
     );
   }
-
-  // if (schedule_status?.length) {
-  //   query.or(
-  //     [
-  //       ...schedule_status.map(
-  //         (status) => `meeting_details.cs.[{"status":"${status}"}]`,
-  //       ),
-  //       schedule_status.includes('not_scheduled') && 'meeting_details.eq.[]',
-  //     ]
-  //       .filter(Boolean)
-  //       .join(','),
-  //   );
-  // }
 
   if (badges?.length) {
     query.or(
@@ -218,6 +205,13 @@ const getApplications = async ({
       ]
         .filter(Boolean)
         .join(','),
+    );
+
+  if ((stages?.[1] ?? []).length)
+    query.or(
+      stages[1]
+        .map(({ label }) => `session_names.cs.\{"${label}"\}`)
+        .join(', '),
     );
 
   if (type || order) {
