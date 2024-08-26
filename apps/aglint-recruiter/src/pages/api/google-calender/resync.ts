@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
     const user = await getUser(user_id);
-    if (user.calendar_sync.channelId) {
+    if (user.calendar_sync?.channelId) {
       await google_cal.stopWatch(
         user.calendar_sync.channelId,
         user.calendar_sync.resourceId,
