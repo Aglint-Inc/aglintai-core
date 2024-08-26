@@ -22,6 +22,7 @@ const SelectScheduleFlow = ({
   const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
   const isManualSchedule = eventWActions.length === 0;
 
+  console.log(request_progress.data);
   const scheduleReqProgressMap: RequestProgressMapType = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -33,44 +34,26 @@ const SelectScheduleFlow = ({
     });
     return mp;
   }, [request_progress]);
-  let scheduleFlow: ScheduleFlow;
   let lastEvent: DatabaseTable['request_progress'];
-  let progrEndIdx = request_progress.data.findIndex(
-    (prog) => prog.event_type === 'CAND_AVAIL_REC',
-  );
-
-  if (progrEndIdx !== -1) {
-    if (
-      request_progress.data[progrEndIdx].event_type ===
-      'REQ_CAND_AVAIL_EMAIL_LINK'
-    ) {
-      scheduleFlow = 'availability';
-    } else if (
-      request_progress.data[progrEndIdx].event_type === 'SELF_SCHEDULE_LINK'
-    ) {
-      scheduleFlow = 'selfSchedule';
+  let scheduleFlowProg = useMemo(() => {
+    let progres: DatabaseTable['request_progress'][] = [];
+    if (request_progress.data.length === 0) {
+      return progres;
     }
-  }
-
-  let scheduleFlowProg = request_progress.data.slice(0, progrEndIdx);
-
-  if (
-    eventTargetMap['onRequestSchedule'] &&
-    eventTargetMap['onRequestSchedule'].length > 0
-  ) {
-    if (
-      eventTargetMap['onRequestSchedule'][0] ===
-      'onRequestSchedule_emailLink_getCandidateAvailability'
-    ) {
-      scheduleFlow = 'availability';
-    } else {
-      scheduleFlow = 'selfSchedule';
-    }
-  }
-  if (scheduleFlowProg) {
-    lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
-  }
-
+    request_progress.data.forEach((prog) => {
+      console.log(prog);
+      if (prog.event_type !== 'CAND_AVAIL_REC') {
+        progres.push({
+          ...prog,
+        });
+      }
+    });
+    return progres;
+  }, [request_progress.data]);
+  let scheduleFlow: ScheduleFlow = getSchedulFlow({
+    eventTargetMap,
+    request_progress: request_progress.data,
+  });
   return (
     <Stack>
       <TextWithIcon
@@ -92,6 +75,17 @@ const SelectScheduleFlow = ({
             reqProgressMap={reqProgressMap}
           /> */}
           <></>
+        </ShowCode.When>
+        <ShowCode.When isTrue={isManualSchedule}>
+          {scheduleFlowProg.map((prog) => {
+            return (
+              <EventNode
+                key={prog.id}
+                eventNode={prog.event_type}
+                reqProgressMap={scheduleReqProgressMap}
+              />
+            );
+          })}
         </ShowCode.When>
         <ShowCode.When isTrue={!isManualSchedule}>
           {eventWActions
@@ -140,3 +134,43 @@ const SelectScheduleFlow = ({
 };
 
 export default SelectScheduleFlow;
+
+const getSchedulFlow = ({
+  eventTargetMap,
+  request_progress,
+}: {
+  eventTargetMap: EventTargetMapType;
+  request_progress: DatabaseTable['request_progress'][];
+}) => {
+  let scheduleFlow: ScheduleFlow;
+
+  let progrEndIdx = request_progress.findIndex(
+    (prog) => prog.event_type === 'CAND_AVAIL_REC',
+  );
+
+  if (progrEndIdx !== -1) {
+    if (
+      request_progress[progrEndIdx].event_type === 'REQ_CAND_AVAIL_EMAIL_LINK'
+    ) {
+      scheduleFlow = 'availability';
+    } else if (
+      request_progress[progrEndIdx].event_type === 'SELF_SCHEDULE_LINK'
+    ) {
+      scheduleFlow = 'selfSchedule';
+    }
+  }
+  if (
+    eventTargetMap['onRequestSchedule'] &&
+    eventTargetMap['onRequestSchedule'].length > 0
+  ) {
+    if (
+      eventTargetMap['onRequestSchedule'][0] ===
+      'onRequestSchedule_emailLink_getCandidateAvailability'
+    ) {
+      scheduleFlow = 'availability';
+    } else {
+      scheduleFlow = 'selfSchedule';
+    }
+  }
+  return scheduleFlow;
+};

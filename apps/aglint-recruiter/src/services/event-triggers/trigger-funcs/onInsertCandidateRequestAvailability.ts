@@ -58,6 +58,7 @@ export const onInsertCandidateRequestAvailability = async ({
       event_type: 'SCHEDULED_FIRST_FOLLOWUP_AVAILABILITY_LINK',
       status: 'completed',
       request_id: new_data.request_id,
+      created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(),
       meta: {
         event_run_id,
       },

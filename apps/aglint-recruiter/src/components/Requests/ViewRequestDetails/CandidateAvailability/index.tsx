@@ -82,6 +82,7 @@ function CandidateAvailability({
       number_of_days: selectedDays.value,
       number_of_slots: selectedSlots.value,
       total_slots: null,
+      request_id: selectedRequest.id,
     });
     // setRequestDetails(result);
     await supabase.from('request_session_relation').insert(
