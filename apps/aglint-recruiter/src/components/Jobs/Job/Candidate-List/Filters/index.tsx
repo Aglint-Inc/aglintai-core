@@ -56,7 +56,8 @@ const Filters = () => {
   const interviewPlanOptions = useMemo(
     () =>
       (interviewPlans ?? []).reduce((acc, { name, interview_session }) => {
-        acc[name] = (interview_session ?? []).map(({ name }) => name);
+        if ((interview_session ?? []).length)
+          acc[name] = (interview_session ?? []).map(({ name }) => name);
         return acc;
       }, {}),
     [interviewPlans, capitalize],
