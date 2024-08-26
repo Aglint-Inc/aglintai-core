@@ -24,23 +24,21 @@ const EventNode = ({
     tense = progressStatusToTense(eventProg[0].status);
   }
   return (
-    <p>
-      <TextWithIcon
-        textContent={workflowCopy[eventNode][tense]}
-        iconSize={3}
-        fontSize={1}
-        color={getProgressColor(tense)}
-        iconName={
-          tense === 'past' ? (
-            <CheckCircleFilled />
-          ) : tense === 'future' ? (
-            'circle'
-          ) : (
-            <LottieAnimations animation='loading_spinner' size={1.2} />
-          )
-        }
-      />
-    </p>
+    <TextWithIcon
+      textContent={workflowCopy[eventNode][tense]}
+      iconSize={3}
+      fontSize={1}
+      color={getProgressColor(tense)}
+      iconName={
+        tense === 'past' ? (
+          <CheckCircleFilled />
+        ) : tense === 'future' ? (
+          'circle'
+        ) : (
+          <LottieAnimations animation='loading_spinner' size={1.2} />
+        )
+      }
+    />
   );
 };
 

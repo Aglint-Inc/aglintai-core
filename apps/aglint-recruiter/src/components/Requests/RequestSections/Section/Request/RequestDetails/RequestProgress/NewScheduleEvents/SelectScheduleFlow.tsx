@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Button, Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -86,8 +86,13 @@ const AvailabilityFlowMenus = ({
 }) => {
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
-  const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
-
+  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
+  if (eventTargetMap['onRequestSchedule']) {
+    eventWActions = [
+      ...eventTargetMap['onRequestSchedule'],
+      ...eventTargetMap['sendAvailReqReminder'],
+    ];
+  }
   let scheduleFlowProg = useMemo(() => {
     let progres: DatabaseTable['request_progress'][] = [];
     if (request_progress.data.length === 0) {
@@ -202,17 +207,26 @@ const SelfScheduleFlowMenus = ({
     });
     return progres;
   }, [request_progress.data]);
-  const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
+  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
+  if (eventTargetMap['onRequestSchedule']) {
+    eventWActions = [
+      ...eventTargetMap['onRequestSchedule'],
+      ...eventTargetMap['selfScheduleReminder'],
+    ];
+  }
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg.map((prog) => {
           return (
-            <EventNode
-              key={prog.id}
-              eventNode={prog.event_type}
-              reqProgressMap={scheduleReqProgressMap}
-            />
+            <>
+              <p>{prog.event_type}</p>
+              <EventNode
+                key={prog.id}
+                eventNode={prog.event_type}
+                reqProgressMap={scheduleReqProgressMap}
+              />
+            </>
           );
         })}
       </ShowCode.When>
@@ -231,16 +245,6 @@ const SelfScheduleFlowMenus = ({
               />
             );
           })}
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
       </ShowCode.When>
     </>
   );
