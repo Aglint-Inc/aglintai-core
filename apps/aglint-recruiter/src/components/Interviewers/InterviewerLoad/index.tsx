@@ -2,6 +2,8 @@ import { getFullName } from '@aglint/shared-utils';
 import { Avatar, Stack } from '@mui/material';
 import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerWorkload } from '@/devlink3/InterviewerWorkload';
 import { InterviewWorkloadList } from '@/devlink3/InterviewWorkloadList';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -83,7 +85,10 @@ function InterviewerLoad() {
           ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
           : true;
 
-        console.log('isInterviewType :', isInterviewType);
+        const isJobs = selectedJobs?.length
+          ? selectedJobs.some((job_id) => interviewer.job_ids.includes(job_id))
+          : true;
+
         const isLocation = selectedLocations.length
           ? selectedLocations.includes(interviewer.office_location_id)
           : true;
@@ -92,8 +97,7 @@ function InterviewerLoad() {
           ? selectedDepartments.includes(interviewer.department_id)
           : true;
 
-        console.log(isDepartment, isLocation, isInterviewType);
-        return isDepartment && isLocation && isInterviewType;
+        return isDepartment && isLocation && isInterviewType && isJobs;
       })
     : interviewers;
 
@@ -155,15 +159,44 @@ function InterviewerLoad() {
               setSelectedItems={setLocations}
               selectedItems={selectedLocations}
             />
+            {isFilterApplied && (
+              <ButtonSoft
+                size={1}
+                color={'neutral'}
+                iconName={'refresh'}
+                isLeftIcon
+                textButton={'Reset All'}
+                onClickButton={{
+                  onClick: () => {
+                    setInterviewTypes([]);
+                    setLocations([]);
+                    setDepartments([]);
+                    setJobs([]);
+                  },
+                }}
+              />
+            )}
           </Stack>
         }
-        slotInterviewWorkloadList={filteredInterviewers.map((interviewer) => (
-          <InterviewerCard
-            key={interviewer.user_id}
-            interviewer={interviewer}
-            maxMeetingCount={maxCount}
-          />
-        ))}
+        slotInterviewWorkloadList={
+          filteredInterviewers?.length ? (
+            filteredInterviewers.map((interviewer) => (
+              <InterviewerCard
+                key={interviewer.user_id}
+                interviewer={interviewer}
+                maxMeetingCount={maxCount}
+              />
+            ))
+          ) : (
+            <Stack padding={'16px'} bgcolor={'white'}>
+              <GlobalEmptyState
+                iconName={'monitoring'}
+                size={9}
+                textDesc={'No Data Available'}
+              />
+            </Stack>
+          )
+        }
       />
     </>
   );

@@ -59,7 +59,7 @@ const getAllInterviewers = async (recruiter_id) => {
     await supabaseAdmin
       .from('all_interviewers')
       .select(
-        'user_id,first_name,last_name,position,email,profile_image,scheduling_settings,office_location_id,department_id',
+        'user_id,first_name,last_name,position,email,profile_image,scheduling_settings,office_location_id,department_id,job_ids',
       )
       .eq('recruiter_id', recruiter_id)
       .throwOnError()

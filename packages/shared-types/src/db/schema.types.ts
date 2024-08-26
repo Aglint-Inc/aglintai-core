@@ -1065,27 +1065,6 @@ export type Database = {
           },
         ]
       }
-      env: {
-        Row: {
-          created_at: string
-          id: number
-          name: string | null
-          value: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
-        }
-        Relationships: []
-      }
       host: {
         Row: {
           decrypted_secret: string | null
@@ -4428,6 +4407,7 @@ export type Database = {
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null
+          job_ids: string[] | null
           last_name: string | null
           office_location_id: number | null
           position: string | null
@@ -4572,6 +4552,7 @@ export type Database = {
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
           resume_score: number | null
+          session_names: string[] | null
           state: string | null
           status: Database["public"]["Enums"]["application_status"] | null
           task_count: number | null
@@ -6081,10 +6062,6 @@ export type Database = {
       greenhouse_sync: {
         Args: Record<PropertyKey, never>
         Returns: undefined
-      }
-      greenhousecandidatesync: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
       }
       insert_debrief_session: {
         Args: {

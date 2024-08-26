@@ -1,8 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Box, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { useJobs } from '@/src/context/JobsContext';
 import { initUser } from '@/src/pages/api/interviewers';
@@ -68,15 +69,21 @@ const TimeLineCalendar = () => {
 
   const filteredInterviewers = isFilterApplied
     ? allInterviewers.filter((interviewer) => {
-        const isDepartment = selectedDepartments.length
+        const isDepartment = selectedDepartments?.length
           ? selectedDepartments.includes(interviewer.department_id)
+          : true;
+
+        const isJobs = selectedJobs?.length
+          ? selectedJobs.some((job_id) =>
+              interviewer?.job_ids?.includes(job_id),
+            )
           : true;
 
         const isLocation = selectedLocations.length
           ? selectedLocations.includes(interviewer.office_location_id)
           : true;
 
-        return isDepartment && isLocation;
+        return isDepartment && isLocation && isJobs;
       })
     : allInterviewers;
 
@@ -96,7 +103,7 @@ const TimeLineCalendar = () => {
   return (
     <Stack>
       <Stack p={2}>
-        <Stack direction={'row'} gap={1}>
+        <Stack direction={'row'} gap={1} alignItems={'center'}>
           <Filter
             itemList={JobsList?.length ? JobsList : []}
             title='Jobs'
@@ -115,6 +122,23 @@ const TimeLineCalendar = () => {
             setSelectedItems={setLocations}
             selectedItems={selectedLocations}
           />
+
+          {isFilterApplied && (
+            <ButtonSoft
+              size={1}
+              color={'neutral'}
+              iconName={'refresh'}
+              isLeftIcon
+              textButton={'Reset All'}
+              onClickButton={{
+                onClick: () => {
+                  setLocations([]);
+                  setDepartments([]);
+                  setJobs([]);
+                },
+              }}
+            />
+          )}
         </Stack>
       </Stack>
       <AvailabilityView
