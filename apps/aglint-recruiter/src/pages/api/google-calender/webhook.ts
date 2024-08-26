@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const meetings = await fetchMeetings(user_id);
     const calendarIds = [...new Set(meetings.map((meet) => meet.cal_event_id))];
-    const calendarEvents = results.events.filter((event) =>
+    const calendarEvents = results.events?.filter((event) =>
       calendarIds.includes(event.id),
     );
     await updateUser({
@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const event = calendarEvents?.find((e) => e.id === meet.cal_event_id);
         if (!event) return null;
         const interviewers = meet.meeting_interviewers
-          .filter((int) => int.is_confirmed)
+          ?.filter((int) => int.is_confirmed)
           .map((interviewer) => {
             let email = interviewer.email;
 
@@ -61,9 +61,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             if (!calendarstatus) return null;
 
-            const cancelReasons = interviewer.cancel_reasons.filter(
-              (reason) => !reason.is_resolved && reason.type === 'declined',
-            );
+            const cancelReasons =
+              interviewer.cancel_reasons?.filter(
+                (reason) => !reason.is_resolved && reason.type === 'declined',
+              ) || [];
 
             return {
               session_relation_id: interviewer.session_relation_id,
@@ -110,7 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const dbRequests = updateRelations
       .filter(
         (ses) =>
-          ses.cancel_reasons.filter(
+          ses.cancel_reasons?.filter(
             (reason) => !reason.is_resolved && reason.type === 'declined',
           ).length > 0,
       )
@@ -131,7 +132,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //--------------------------------------------------------------------------------
     // update interview session cancel  if he acc
     const dbInterviewSessionCancel = updateRelations
-      .filter(
+      ?.filter(
         (ses) => ses.status === 'accepted' && ses.cancel_reasons.length > 0,
       )
       .flatMap((ses) => ses.cancel_reasons);

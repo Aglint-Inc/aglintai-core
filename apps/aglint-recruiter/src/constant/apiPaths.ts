@@ -118,7 +118,6 @@ export const API_PATHS = [
 '/api/get_member',
 '/api/get_scheduling_reason',
 '/api/get_users_by_ids',
-'/api/google-calender/stop-channel',
 '/api/google-calender/resync',
 '/api/google-calender/stop-channel',
 '/api/google-calender/watch-changes',
