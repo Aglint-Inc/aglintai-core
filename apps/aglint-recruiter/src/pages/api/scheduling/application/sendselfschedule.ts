@@ -79,7 +79,7 @@ const sendToCandidate = async ({
     await supabaseAdmin
       .from('applications')
       .select('id,candidates(*)')
-      .eq('application_id', application_id)
+      .eq('id', application_id)
       .single()
       .throwOnError()
   ).data;
