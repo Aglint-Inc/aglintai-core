@@ -581,7 +581,7 @@ function NestedFilterComponent({
             return (
               <FilterItem
                 key={section}
-                borderRight={i < sectionsArray.length-1 ? '' : 'none'}
+                borderRight={i < sectionsArray.length - 1 ? '' : 'none'}
                 textFilterHeading={capitalizeFirstLetter(section)}
                 textCount={isSectionsActive[String(section)]}
                 isCountVisible={Boolean(isSectionsActive[String(section)])}
@@ -729,6 +729,7 @@ function FilterOptionsList({
     <Stack maxHeight={'280px'}>
       {Boolean(searchFilter) && (
         <UITextField
+          height={26}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={searchPlaceholder}
