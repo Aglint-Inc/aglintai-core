@@ -51,8 +51,12 @@ export default async function handler(
         assignee_id: organizer_id,
         assigner_id: organizer_id,
         priority: 'urgent',
-        schedule_start_date: int_sesn_cancel.other_details.dateRange?.start,
-        schedule_end_date: int_sesn_cancel.other_details.dateRange?.end,
+        schedule_start_date:
+          int_sesn_cancel.other_details?.dateRange?.start ||
+          new Date().toISOString(),
+        schedule_end_date:
+          int_sesn_cancel.other_details?.dateRange?.end ||
+          new Date().toISOString(),
         status: 'to_do',
         title: `${getFullName(interviewer.first_name, interviewer.last_name)} Declined ${meeting_details.session_name} with candidate ${getFullName(application.candidates.first_name, application.candidates.last_name)}  Request`,
         type: 'decline_request',

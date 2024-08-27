@@ -22,8 +22,8 @@ export const RoleUserWidget = ({
   return (
     <>
       {role.assignedTo.length ? (
-        role.assignedTo.map((user_id) => (
-          <UserCard members={members} user_id={user_id} key={user_id} />
+        members.map((member) => (
+          <UserCard member={member} key={member.user_id} />
         ))
       ) : (
         <GlobalEmptyState
@@ -40,34 +40,29 @@ export const RoleUserWidget = ({
   );
 };
 
-const UserCard = ({ members, user_id }) => {
-  const user = members.find(
-    (member) =>
-      member.user_id === user_id && member.user_id !== member.created_by,
-  );
-  if (!user) return;
+const UserCard = ({ member }) => {
+  if (!member) return;
   return (
-    <Stack key={user_id}>
+    <Stack>
       <UserWithRole
         textName={
-          <Link href={`/user/profile/${user.user_id}`}>
-            {`${user.first_name || ''} ${user.last_name || ''}`.trim()}
+          <Link href={`/user/profile/${member.user_id}`}>
+            {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
           </Link>
         }
-        textRole={user.position}
+        textRole={member.position}
         slotBadge={
           <GlobalBadge
-            color={user.is_suspended ? 'error' : 'success'}
-            textBadge={user.is_suspended ? 'Suspended' : 'Active'}
+            color={member.is_suspended ? 'error' : 'success'}
+            textBadge={member.is_suspended ? 'Suspended' : 'Active'}
           />
         }
         slotButton={<></>}
         slotAvatar={
           <Avatar
-            key={user_id}
-            src={user.profile_image}
+            src={member.profile_image}
             variant='rounded'
-            alt={user.first_name}
+            alt={member.first_name}
             sx={{ height: '100%', width: '100%' }}
           />
         }

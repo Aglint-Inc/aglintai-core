@@ -18,6 +18,8 @@ export function StagePipelineSmall({
   color = "success",
   isLeft = true,
   isRight = true,
+  textStageName = "This is a global text component",
+  iconName = "workspaces",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -28,7 +30,10 @@ export function StagePipelineSmall({
       data-embed-color={color}
     >
       {isLeft ? (
-        <_Builtin.Block className={_utils.cx(_styles, "arrow_left")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "arrow_left-copy")}
+          tag="div"
+        >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}
             value="%3Csvg%20width%3D%2218%22%20height%3D%2224%22%20viewBox%3D%220%200%2018%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12%2012L0.760914%200L17.5%200L17.5%2024L0%2024L12%2012Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
@@ -40,7 +45,7 @@ export function StagePipelineSmall({
           _styles,
           "text_bloxk",
           "change_on_hover",
-          "auto_width"
+          "auto_width-copy"
         )}
         tag="div"
         data-bg-color={color}
@@ -54,14 +59,14 @@ export function StagePipelineSmall({
             className={_utils.cx(_styles, "slot_icon_20")}
             tag="div"
           >
-            {slotIcon ?? <GlobalIcon iconName="workspaces" size="2" />}
+            {slotIcon ?? <GlobalIcon iconName={iconName} size="2" />}
           </_Builtin.Block>
           {showText ? (
             <_Builtin.Block tag="div">
               <Text
+                content={textStageName}
                 color="inherit"
                 weight="regular"
-                content="This is a global text component"
                 size="1"
               />
             </_Builtin.Block>
@@ -83,7 +88,10 @@ export function StagePipelineSmall({
         ) : null}
       </_Builtin.Block>
       {isRight ? (
-        <_Builtin.Block className={_utils.cx(_styles, "arrow_right")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "arrow_right-copy")}
+          tag="div"
+        >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}
             value="%3Csvg%20width%3D%2213%22%20height%3D%2224%22%20viewBox%3D%220%200%2013%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.542969%200L12.543%2012L0.542969%2024V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"

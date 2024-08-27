@@ -27,7 +27,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/jobs',
   '/jobs/[id]',
   '/jobs/create',
-  '/jobs/[id]/candidate-list',
+  '/jobs/[id]/metrics',
   '/jobs/[id]/job-details',
   '/jobs/[id]/profile-score',
   '/jobs/[id]/hiring-team',
@@ -43,6 +43,7 @@ const reactQueryPageRoute: (keyof Pages)[] = [
   '/workflows',
   '/workflows/[id]',
   '/requests',
+  '/interviewers',
 ];
 
 export const appKey = 'app';

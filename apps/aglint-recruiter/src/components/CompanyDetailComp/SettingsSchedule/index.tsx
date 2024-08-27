@@ -357,7 +357,7 @@ function SchedulingSettings({
               slotAddButton={
                 <ButtonSolid
                   textButton='Add Day Off'
-                  size={2}
+                  size={1}
                   iconName='add'
                   isLeftIcon
                   onClickButton={{

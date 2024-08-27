@@ -1090,24 +1090,15 @@ export type Database = {
           },
         ]
       }
-      env: {
+      host: {
         Row: {
-          created_at: string
-          id: number
-          name: string | null
-          value: string | null
+          decrypted_secret: string | null
         }
         Insert: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
+          decrypted_secret?: string | null
         }
         Update: {
-          created_at?: string
-          id?: number
-          name?: string | null
-          value?: string | null
+          decrypted_secret?: string | null
         }
         Relationships: []
       }
@@ -1175,6 +1166,7 @@ export type Database = {
       }
       interview_filter_json: {
         Row: {
+          application_id: string
           confirmed_on: string | null
           created_at: string
           created_by: string | null
@@ -1182,13 +1174,13 @@ export type Database = {
           id: string
           is_flow_agent: boolean
           request_id: string | null
-          schedule_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
           viewed_on: string | null
         }
         Insert: {
+          application_id: string
           confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
@@ -1196,13 +1188,13 @@ export type Database = {
           id?: string
           is_flow_agent?: boolean
           request_id?: string | null
-          schedule_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
         }
         Update: {
+          application_id?: string
           confirmed_on?: string | null
           created_at?: string
           created_by?: string | null
@@ -1210,13 +1202,40 @@ export type Database = {
           id?: string
           is_flow_agent?: boolean
           request_id?: string | null
-          schedule_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
           viewed_on?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_filter_json_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "public_interview_filter_json_created_by_fkey"
             columns: ["created_by"]
@@ -1243,13 +1262,6 @@ export type Database = {
             columns: ["request_id"]
             isOneToOne: false
             referencedRelation: "request"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
-            columns: ["schedule_id"]
-            isOneToOne: false
-            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
         ]
@@ -1845,6 +1857,7 @@ export type Database = {
       }
       interview_session_cancel: {
         Row: {
+          application_id: string | null
           cancel_user_id: string | null
           created_at: string
           id: string
@@ -1853,12 +1866,12 @@ export type Database = {
           other_details: Json | null
           reason: string
           request_id: string | null
-          schedule_id: string | null
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
         }
         Insert: {
+          application_id?: string | null
           cancel_user_id?: string | null
           created_at?: string
           id?: string
@@ -1867,12 +1880,12 @@ export type Database = {
           other_details?: Json | null
           reason: string
           request_id?: string | null
-          schedule_id?: string | null
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
         }
         Update: {
+          application_id?: string | null
           cancel_user_id?: string | null
           created_at?: string
           id?: string
@@ -1881,12 +1894,39 @@ export type Database = {
           other_details?: Json | null
           reason?: string
           request_id?: string | null
-          schedule_id?: string | null
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_session_cancel_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "interview_session_cancel_cancel_user_id_fkey"
             columns: ["cancel_user_id"]
@@ -1913,13 +1953,6 @@ export type Database = {
             columns: ["request_id"]
             isOneToOne: false
             referencedRelation: "request"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "interview_session_cancel_schedule_id_fkey"
-            columns: ["schedule_id"]
-            isOneToOne: false
-            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
           {
@@ -3097,6 +3130,8 @@ export type Database = {
       }
       recruiter_user: {
         Row: {
+          calendar_sync: Json | null
+          calendar_sync_token: string | null
           created_at: string
           department_id: number | null
           email: string | null
@@ -3119,6 +3154,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -3141,6 +3178,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          calendar_sync?: Json | null
+          calendar_sync_token?: string | null
           created_at?: string
           department_id?: number | null
           email?: string | null
@@ -4391,10 +4430,14 @@ export type Database = {
       all_interviewers: {
         Row: {
           completed_meeting_count: number | null
+          completed_meeting_last_month: Json | null
+          department_id: number | null
           email: string | null
           first_name: string | null
           is_calendar_connected: boolean | null
+          job_ids: string[] | null
           last_name: string | null
+          office_location_id: number | null
           position: string | null
           profile_image: string | null
           qualified_module_names: string[] | null
@@ -4416,6 +4459,20 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_office_location_id_fkey"
+            columns: ["office_location_id"]
+            isOneToOne: false
+            referencedRelation: "office_locations"
             referencedColumns: ["id"]
           },
           {
@@ -4508,12 +4565,12 @@ export type Database = {
           email: string | null
           file_url: string | null
           id: string | null
+          interview_plans: Json[] | null
           interview_score: number | null
           is_new: boolean | null
           job_id: string | null
           latest_activity: string | null
           linkedin: string | null
-          meeting_details: Json | null
           name: string | null
           phone: string | null
           processing_status:
@@ -4523,6 +4580,7 @@ export type Database = {
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
           resume_score: number | null
+          session_names: string[] | null
           state: string | null
           status: Database["public"]["Enums"]["application_status"] | null
           task_count: number | null
@@ -5058,6 +5116,8 @@ export type Database = {
           module_id: string | null
           position: string | null
           profile_image: string | null
+          schedule_auth: Json | null
+          scheduling_settings: Json | null
           session_id: string | null
           session_relation_id: string | null
           session_type: Database["public"]["Enums"]["session_type"] | null
@@ -5838,6 +5898,8 @@ export type Database = {
         Returns: {
           applications: Json[]
           jobs: Json[]
+          assignerlist: Json[]
+          assigneelist: Json[]
         }[]
       }
       get_screening_candidates: {
@@ -6029,10 +6091,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
-      greenhousecandidatesync: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
       insert_debrief_session: {
         Args: {
           interview_plan_id: string
@@ -6148,6 +6206,10 @@ export type Database = {
         Args: {
           user_email: string
         }
+        Returns: undefined
+      }
+      resync_calendar: {
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       retrybatchcalcresumejdscore: {
@@ -6285,7 +6347,7 @@ export type Database = {
           recruiter_id: string
           departments?: number[]
           jobs?: string[]
-          type?: Database["public"]["Enums"]["status_training"]
+          locations?: number[]
         }
         Returns: {
           number_of_shadow: number

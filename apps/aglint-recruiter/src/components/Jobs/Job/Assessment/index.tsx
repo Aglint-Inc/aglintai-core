@@ -10,8 +10,10 @@ import Loader from '@/src/components/Common/Loader';
 import AssessmentResetWrapper from '@/src/components/NewAssessment/Common/wrapper/resetWrapper';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalize } from '@/src/utils/text/textUtils';
 
+import { Settings } from '../Common/SharedTopNav/actions';
 import JobAssessment from './list';
 
 const JobAssessmentDashboard = () => {
@@ -25,7 +27,7 @@ const JobAssessmentDashboard = () => {
         <AssessmentResetWrapper>
           <PageLayout
             slotTopbarLeft={<JobAssessmentDashboardBreadCrumbs />}
-            slotTopbarRight={<></>}
+            slotTopbarRight={<Settings />}
             slotBody={
               job?.assessment ? <JobAssessment /> : <EnableAssessment />
             }
@@ -45,11 +47,9 @@ const JobAssessmentDashboardBreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />

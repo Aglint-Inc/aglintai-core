@@ -52,9 +52,16 @@ export function NavLink({
           className={_utils.cx(_styles, "navlink_tooltip")}
           tag="div"
         >
-          <_Builtin.Block className={_utils.cx(_styles, "no_wrap")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "no_wrap", "nav-link-tool")}
+            tag="div"
+          >
             {texttooltip}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "navlink-tooltip")}
+            tag="div"
+          />
         </_Builtin.Block>
       ) : null}
     </_Component>

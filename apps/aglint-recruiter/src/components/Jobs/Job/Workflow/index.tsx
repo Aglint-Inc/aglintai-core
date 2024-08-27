@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import { WorkflowJobs } from '@/devlink/WorkflowJobs';
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -12,6 +13,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 import JobWorkflow from './list';
 
 const JobWorkflowDashboard = () => {
@@ -22,7 +24,7 @@ const JobWorkflowDashboard = () => {
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Actions />}
-        slotBody={<JobWorkflow />}
+        slotBody={<WorkflowJobs slotWorkflowCards={<JobWorkflow />} />}
       />
     ) : (
       <JobNotFound />
@@ -43,11 +45,9 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(ROUTES['/jobs']() + `?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
@@ -83,6 +83,7 @@ const Actions = () => {
           onClickButton={{ onClick: () => setPopup({ open: true }) }}
         />
       )}
+      <Settings />
     </>
   );
 };

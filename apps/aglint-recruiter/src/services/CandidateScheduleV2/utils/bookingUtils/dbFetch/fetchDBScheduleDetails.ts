@@ -13,7 +13,7 @@ export const fetchDBScheduleDetails = async (
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule(recruiter_id, id,recruiter(id,name),applications(id,candidate_id,candidates(email,first_name,last_name),public_jobs(job_title)))',
+        '*,applications(id,candidate_id,candidates(email,first_name,last_name,recruiter(id,name)),public_jobs(job_title))',
       )
       .eq('id', parsed_body.filter_id),
   );
@@ -21,7 +21,10 @@ export const fetchDBScheduleDetails = async (
     await supabaseAdmin
       .from('company_email_template')
       .select()
-      .eq('recruiter_id', filter_json_data.interview_schedule.recruiter_id),
+      .eq(
+        'recruiter_id',
+        filter_json_data.applications.candidates.recruiter.id,
+      ),
   );
   if (!filter_json_data) {
     throw new Error('invalid filter id');
@@ -49,11 +52,11 @@ export const fetchDBScheduleDetails = async (
   return {
     filered_selected_options,
     filter_json_data,
-    candidate: filter_json_data.interview_schedule.applications.candidates,
-    application: filter_json_data.interview_schedule.applications,
+    candidate: filter_json_data.applications.candidates,
+    application_id: filter_json_data.application_id,
     email_templates,
-    company: filter_json_data.interview_schedule.recruiter,
-    job: filter_json_data.interview_schedule.applications.public_jobs,
+    company: filter_json_data.applications.candidates.recruiter,
+    job: filter_json_data.applications.public_jobs,
     start_date_str,
     end_date_str,
   };

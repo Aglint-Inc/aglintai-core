@@ -1,0 +1,52 @@
+.workflow-jobs {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 390px 1fr;
+  grid-template-rows: auto;
+  height: calc(100vh - 48px);
+}
+
+.slot-workflow-cards {
+  display: flex;
+  overflow: auto;
+  padding-bottom: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: var(--neutral-6);
+
+  height: calc(100vh - 48px);
+}
+
+.workflow-job-wrap-slot {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+}
+
+.slot-workflowpreview {
+  position: relative;
+  z-index: 1;
+
+  overflow: auto;
+  padding-top: 15px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+
+  background-image: linear-gradient(to bottom, hsla(0, 0.00%, 100.00%, 0.85),hsla(0, 0.00%, 100.00%, 0.85)), url("https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/66cc8002da04bb07f87b4e5d_487749e87bf088a258d8871c364d0135.png");
+  background-position: 0px 0px, 0px 0px;
+  background-size: auto, 10px 10px;
+  background-repeat: repeat, repeat;
+
+  height: calc(100vh - 48px);
+}
+
+#w-node-_463e6d3e-a507-7c54-d345-80e0014fdf69-014fdf67 {
+}

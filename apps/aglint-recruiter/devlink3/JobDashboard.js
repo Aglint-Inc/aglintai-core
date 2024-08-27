@@ -7,8 +7,6 @@ import { PipeLine } from "./PipeLine";
 import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
 import { CardWithNumber } from "./CardWithNumber";
-import { JobRole } from "./JobRole";
-import { ModuleCard } from "./ModuleCard";
 import * as _utils from "./utils";
 import _styles from "./JobDashboard.module.css";
 
@@ -495,59 +493,6 @@ export function JobDashboard({
           )}
           value="%3Cstyle%3E%0A.jobdadhboard_left%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A.hide-scrollbar%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A%3C%2Fstyle%3E"
         />
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "jobdadhboard_right")}
-        id={_utils.cx(
-          _styles,
-          "w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b690d3-06b69083"
-        )}
-        tag="div"
-      >
-        {isJobRoleVisible ? (
-          <_Builtin.Block
-            id={_utils.cx(
-              _styles,
-              "w-node-aa7b022e-09a1-5735-d7ae-9984900320f8-06b69083"
-            )}
-            tag="div"
-          >
-            {slotJobRole ?? <JobRole />}
-          </_Builtin.Block>
-        ) : null}
-        <_Builtin.Block
-          id={_utils.cx(
-            _styles,
-            "w-node-cdf60b6e-005f-30d1-1695-854c7b1d7df3-06b69083"
-          )}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd-setting-wrap")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "jd-setting-header")}
-              tag="div"
-            >
-              <Text content="Settings" color="neutral" size="1" weight="" />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "module_card_wrapper")}
-              tag="div"
-            >
-              {slotModuleCard ?? (
-                <>
-                  <ModuleCard textName="Profile Score" />
-                  <ModuleCard textName="Profile Score" />
-                  <ModuleCard textName="Profile Score" />
-                  <ModuleCard textName="Profile Score" />
-                  <ModuleCard textName="Profile Score" />
-                </>
-              )}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

@@ -10,6 +10,8 @@ export const createCandidateRequestSchema = v.object({
       end: v.nullish(v.string()),
     })
   ),
+  reason: v.string(),
+  other_details: v.any(),
 });
 
 export const createInterviewerRequestSchema = v.object({

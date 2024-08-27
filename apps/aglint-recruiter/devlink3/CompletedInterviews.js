@@ -15,6 +15,9 @@ export function CompletedInterviews({
   onClickLastDays = {},
   isLastMonthsActive = false,
   isLastDaysActive = false,
+  textLastQuarter = "Last 8 months",
+  onClickLastQuarter = {},
+  isLastQuarterActive = false,
 }) {
   return (
     <_Component
@@ -38,6 +41,11 @@ export function CompletedInterviews({
             textPill={textMonth}
             onClickPill={onClickLastMonth}
             isActive={isLastMonthsActive}
+          />
+          <DarkPill
+            textPill={textLastQuarter}
+            onClickPill={onClickLastQuarter}
+            isActive={isLastQuarterActive}
           />
           <DarkPill
             textPill={textLastDays}

@@ -13,4 +13,5 @@ declare function AtsSettings(props: {
   slotAiInstructionsTextArea?: Types.Devlink.Slot;
   onClickEditApi?: Types.Devlink.RuntimeProps;
   onClickDisconnect?: Types.Devlink.RuntimeProps;
+  slotCheckbox?: Types.Devlink.Slot;
 }): React.JSX.Element;

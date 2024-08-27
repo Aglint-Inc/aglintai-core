@@ -110,8 +110,6 @@ const scheduleWithAgentWithoutTaskId = async ({
       supabaseCaller: supabase,
     });
 
-    const checkSch = resApplicationDetails.interview_schedule;
-
     console.log('fetchInterviewDataSchedule');
 
     const sessionsWithPlan = await fetchSessionDetailsFromSchedule({
@@ -127,9 +125,9 @@ const scheduleWithAgentWithoutTaskId = async ({
       dateRange,
       organizer_name: recruiter_user_name,
       sessions_ids: session_ids,
-      schedule_id: checkSch.id,
       supabase,
       rec_user_id,
+      application_id,
     });
 
     const task = await createTask({

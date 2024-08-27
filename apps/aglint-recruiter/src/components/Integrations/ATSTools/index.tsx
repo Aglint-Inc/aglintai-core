@@ -65,6 +65,7 @@ function ATSTools({ integrations, refetch }) {
               responseRec.data[0]?.greenhouse_key
             ) {
               posthog.capture('Green House Data Fetched');
+              router.push('/integrations/greenhouse');
             }
           } else {
             toast.error('API is invalid!');
@@ -258,7 +259,7 @@ function ATSTools({ integrations, refetch }) {
       logo: <GreenHouseLogo />,
       buttons: (
         <CardButtons
-          primaryText={integrations?.greenhouse_key ? 'Manage' : 'Connect'}
+          primaryText={integrations?.greenhouse_key ? 'Settings' : 'Connect'}
           secondaryText={
             integrations?.greenhouse_key ? 'Disconnect' : 'Learn How'
           }
@@ -283,7 +284,7 @@ function ATSTools({ integrations, refetch }) {
       logo: <LeverLogo />,
       buttons: (
         <CardButtons
-          primaryText={integrations?.lever_key ? 'Manage' : 'Connect'}
+          primaryText={integrations?.lever_key ? 'Settings' : 'Connect'}
           secondaryText={integrations?.lever_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -305,7 +306,7 @@ function ATSTools({ integrations, refetch }) {
       logo: <AshbyLogo />,
       buttons: (
         <CardButtons
-          primaryText={integrations?.ashby_key ? 'Manage' : 'Connect'}
+          primaryText={integrations?.ashby_key ? 'Settings' : 'Connect'}
           secondaryText={integrations?.ashby_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);

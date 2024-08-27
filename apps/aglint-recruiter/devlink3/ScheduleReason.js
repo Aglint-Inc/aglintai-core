@@ -25,35 +25,43 @@ export function ScheduleReason({
         className={_utils.cx(_styles, "schedule_reasons")}
         tag="div"
       >
-        {isMainHeadingVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "schedule_reasons_subwrap")}
+          tag="div"
+        >
+          {isMainHeadingVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "scheduling_reason_header")}
+              tag="div"
+            >
+              <Text content={textMainHeading} weight="medium" size="2" />
+              <Text content={textMainHelperText} weight="" color="neutral" />
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "scheduling_reason_header")}
+            className={_utils.cx(_styles, "rr-wrapper")}
             tag="div"
           >
-            <Text content={textMainHeading} weight="medium" size="2" />
-            <Text content={textMainHelperText} weight="" color="neutral" />
+            {slotScheduleReasonSection ?? (
+              <>
+                <ScheduleReasonSection
+                  slotReasonList={slotReasonList}
+                  textDesc="Add reasons for rescheduling. These options will be available when either the interviewer or the candidate reschedules:"
+                  textHeading="Reschedule Reason"
+                />
+                <ScheduleReasonSection
+                  slotReasonList={slotReasonList}
+                  textHeading="Cancel Reason"
+                  textDesc="Add reasons for cancelling. These options will be available when either the interviewer or the candidate cancels:"
+                />
+                <ScheduleReasonSection
+                  slotReasonList={slotReasonList}
+                  textHeading="Decline Reason"
+                  textDesc="Add reasons for declining. These options will be available when either the interviewer or the candidate declines:"
+                />
+              </>
+            )}
           </_Builtin.Block>
-        ) : null}
-        <_Builtin.Block className={_utils.cx(_styles, "rr-wrapper")} tag="div">
-          {slotScheduleReasonSection ?? (
-            <>
-              <ScheduleReasonSection
-                slotReasonList={slotReasonList}
-                textDesc="Add reasons for rescheduling. These options will be available when either the interviewer or the candidate reschedules:"
-                textHeading="Reschedule Reason"
-              />
-              <ScheduleReasonSection
-                slotReasonList={slotReasonList}
-                textHeading="Cancel Reason"
-                textDesc="Add reasons for cancelling. These options will be available when either the interviewer or the candidate cancels:"
-              />
-              <ScheduleReasonSection
-                slotReasonList={slotReasonList}
-                textHeading="Decline Reason"
-                textDesc="Add reasons for declining. These options will be available when either the interviewer or the candidate declines:"
-              />
-            </>
-          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

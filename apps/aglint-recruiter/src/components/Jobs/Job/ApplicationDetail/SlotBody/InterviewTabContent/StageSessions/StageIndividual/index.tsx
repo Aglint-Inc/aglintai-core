@@ -21,7 +21,7 @@ function StageIndividual({
   index: number;
 }) {
   const router = useRouter();
-  const selectedStageId= router.query.stage as string;
+  const selectedStageId = router.query.stage as string;
   const { selectedSessionIds } = useApplicationDetailStore((state) => ({
     selectedSessionIds: state.selectedSessionIds,
   }));
@@ -52,7 +52,7 @@ function StageIndividual({
     <>
       <ApplicantDetailStage
         textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
-        textInterviewCount={`${sessions.length} interviews`}
+        textInterviewCount={`${sessions.length} Interview${sessions.length > 1 ? 's' : ''}`}
         slotInterviewStageDetail={
           <Stack spacing={'var(--space-2)'}>
             {sessions.map((session) => {

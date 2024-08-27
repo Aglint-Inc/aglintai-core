@@ -55,7 +55,6 @@ export const confInterviewEmailOrganizerSchema = v.object({
 export const confirmInterviewEmailApplicantSchema = v.object({
   application_id: v.string(),
   session_ids: v.array(v.string()),
-  schedule_id: v.nullish(v.string()),
   filter_id: v.nullish(v.string()),
   availability_req_id: v.nullish(v.string()),
   preview_details: v.optional(

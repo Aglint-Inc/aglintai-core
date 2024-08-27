@@ -120,6 +120,7 @@ function TabInterviewModules({ type }: { type: 'qualified' | 'training' }) {
                   textDesc='No Interview type found.'
                   size={6}
                   iconName='school'
+                  styleEmpty={{style:{backgroundColor:'var(--neutral-2)'}}}
                 />
               )}
               <Stack direction={'row'} pt={'var(--space-2)'}>

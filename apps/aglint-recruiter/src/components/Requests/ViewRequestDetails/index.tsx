@@ -18,6 +18,7 @@ import { SkeletonScheduleCard } from '@/devlink2/SkeletonScheduleCard';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -32,7 +33,12 @@ import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import CandidateAvailability from './CandidateAvailability';
+import InterviewDateList from './Components/InterviewDateList';
 import MemberList, { useMemberList } from './Components/MemberList';
+import PriorityList from './Components/PriorityList';
+import StatusList from './Components/StatusList';
+import ConfirmAvailability from './ConfirmAvailability';
+import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
@@ -40,6 +46,8 @@ import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
   const { query } = useRouter();
+
+  const { recruiterUser } = useAuthDetails();
 
   const {
     requests: { data: requestList, isPlaceholderData },
@@ -104,6 +112,9 @@ function ViewRequestDetails() {
 
   return (
     <>
+      <AvailabilityProvider>
+        <ConfirmAvailability />
+      </AvailabilityProvider>
       <CandidateAvailability selectedRequest={selectedRequest} />
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
@@ -175,6 +186,10 @@ function ViewRequestDetails() {
                         return (
                           <>
                             <ScheduleIndividualCard
+                              hideDateAndTime={
+                                session.interview_meeting?.status ===
+                                'completed'
+                              }
                               session={session}
                               key={session.interview_session.id}
                               selectedSessionIds={[]}
@@ -268,6 +283,9 @@ function ViewRequestDetails() {
                       }
                     />
                   }
+                  slotStatusEdit={
+                    <StatusList selectedFilter={selectedRequest?.status} />
+                  }
                   slotPriority={
                     <GlobalBadge
                       showIcon={true}
@@ -285,6 +303,9 @@ function ViewRequestDetails() {
                       )}
                     />
                   }
+                  slotPriorityEdit={
+                    <PriorityList selectedFilter={selectedRequest?.priority} />
+                  }
                   slotRequestType={
                     <GlobalBadge
                       showIcon={true}
@@ -294,19 +315,48 @@ function ViewRequestDetails() {
                       textBadge={capitalizeFirstLetter(selectedRequest?.type)}
                     />
                   }
+                  slotRequestTypeEdit={<></>}
                   textDueDate={
-                    dayjsLocal(selectedRequest?.schedule_start_date).format(
-                      'DD MMMM, YYYY',
-                    ) +
-                    ' - ' +
-                    dayjsLocal(selectedRequest?.schedule_end_date).format(
-                      'DD MMMM, YYYY',
+                    <Text
+                      content={
+                        dayjsLocal(selectedRequest?.schedule_start_date).format(
+                          'DD MMM, YYYY',
+                        ) +
+                        ' - ' +
+                        dayjsLocal(selectedRequest?.schedule_end_date).format(
+                          'DD MMM, YYYY',
+                        )
+                      }
+                    />
+                  }
+                  slotInterviewDate={
+                    selectedRequest?.status === 'to_do' &&
+                    selectedRequest?.assigner_id === recruiterUser?.user_id && (
+                      <InterviewDateList
+                        selectedFilter={{
+                          startDate: selectedRequest?.schedule_start_date,
+                          endDate: selectedRequest?.schedule_end_date,
+                        }}
+                      />
                     )
                   }
                   slotAssignedTo={
                     <MemberList
                       selectedMemberId={selectedRequest?.assignee.user_id}
                       members={members}
+                      onChange={async (id) => {
+                        await handleAsyncUpdateRequest({
+                          payload: {
+                            requestId: String(query?.id),
+                            requestPayload: {
+                              assignee_id: id,
+                            },
+                          },
+                          loading: false,
+                          toast: false,
+                        });
+                      }}
+                      width={'375px'}
                     />
                   }
                   slotCandidate={
@@ -404,7 +454,7 @@ function ViewRequestDetails() {
                         onClickJob={{
                           onClick: () => {
                             window.open(
-                              `/jobs/${jobDetails.id}/candidate-list?section=interview`,
+                              `/jobs/${jobDetails.id}?section=interview`,
                               '_blank',
                             );
                           },

@@ -5,14 +5,14 @@ import { SchedulingAnalyticsFunctions } from '@/src/queries/scheduling-analytics
 
 import { createTRPCRouter, privateProcedure } from '../../trpc';
 
-const common_schema = z.object({
+const completed_interviews_type = z.object({
+  type: z.enum(['month', 'quarter', 'year']).optional(),
+});
+
+const filters_type = z.object({
   recruiter_id: z.string().uuid(),
   departments: z.array(z.number()).optional(),
   jobs: z.array(z.string()).optional(),
-});
-
-const completed_interviews_type = z.object({
-  type: z.enum(['day', 'month']).optional(),
 });
 
 const interviewers_type = z.object({
@@ -28,7 +28,7 @@ const reasons_type = z.object({
 });
 
 const training_progress_type = z.object({
-  type: z.enum(['training', 'qualified']).optional(),
+  locations: z.array(z.number()).optional(),
 });
 
 const schedulingAnalyticsSchema: AnalysisProcedures = {
@@ -38,39 +38,39 @@ const schedulingAnalyticsSchema: AnalysisProcedures = {
   },
   completed_interviews: {
     rpc: 'scheduling_analytics_completed_interviews',
-    schema: common_schema.merge(completed_interviews_type),
+    schema: filters_type.merge(completed_interviews_type),
   },
   decline_requests: {
     rpc: 'scheduling_analytics_decline_requests',
-    schema: common_schema,
+    schema: filters_type,
   },
   interview_types: {
     rpc: 'scheduling_analytics_interview_types',
-    schema: common_schema,
+    schema: filters_type,
   },
   interviewers: {
     rpc: 'scheduling_analytics_interviewers',
-    schema: common_schema.merge(interviewers_type),
+    schema: filters_type.merge(interviewers_type),
   },
   leaderboard: {
     rpc: 'scheduling_analytics_leaderboard',
-    schema: common_schema.merge(leaderboard_type),
+    schema: filters_type.merge(leaderboard_type),
   },
   reasons: {
     rpc: 'scheduling_analytics_reasons',
-    schema: common_schema.merge(reasons_type),
+    schema: filters_type.merge(reasons_type),
   },
   recent_decline_reschedule: {
     rpc: 'scheduling_analytics_recent_decline_reschedule',
-    schema: common_schema,
+    schema: filters_type,
   },
   tabs: {
     rpc: 'scheduling_analytics_tabs',
-    schema: common_schema,
+    schema: filters_type,
   },
   training_progress: {
     rpc: 'scheduling_analytics_training_progress',
-    schema: common_schema.merge(training_progress_type),
+    schema: filters_type.merge(training_progress_type),
   },
 };
 
@@ -220,7 +220,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     .mutation(
       async ({
         ctx: { db },
-        input: { recruiter_id, departments, jobs, type },
+        input: { recruiter_id, departments, jobs, locations },
       }) =>
         (
           await db
@@ -228,7 +228,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
               recruiter_id,
               departments,
               jobs,
-              type,
+              locations,
             })
             .throwOnError()
         ).data,

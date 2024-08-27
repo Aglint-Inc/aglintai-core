@@ -40,7 +40,7 @@ export interface ApiBodyParamsSendToCandidate {
 }
 
 export interface ApiResponseSendToCandidate {
-  data: { filter_id: string; task_id: string; schedule_id: string } | null;
+  data: { filter_id: string; application_id: string } | null;
   error: string | null;
 }
 
@@ -146,9 +146,9 @@ const sendToCandidate = async ({
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
       },
       session_ids: selectedSessionIds,
-      schedule_id,
       selected_options: selectedSlots,
       created_by: recruiterUser.user_id,
+      application_id: selectedApplication.id,
     })
     .select();
 
@@ -327,8 +327,7 @@ const sendToCandidate = async ({
   const res: ApiResponseSendToCandidate = {
     data: {
       filter_id,
-      task_id: update_task_id,
-      schedule_id,
+      application_id: selectedApplication.id,
     },
     error: null,
   };

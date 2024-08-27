@@ -1,13 +1,13 @@
-import * as v from 'valibot';
-import { RecruiterUserType } from '../data.types';
+import * as v from "valibot";
+import { RecruiterUserType } from "../data.types";
 import {
   PlanCombinationRespType,
   SessionCombinationRespType,
-} from '../scheduleTypes';
+} from "../scheduleTypes";
 import {
   schema_candidate_direct_booking,
   schema_confirm_slot_no_conflict,
-} from './valibotSchema/candidate-self-schedule';
+} from "./valibotSchema/candidate-self-schedule";
 import {
   candidate_avail_request_schema,
   candidate_new_schedule_schema,
@@ -23,7 +23,7 @@ import {
   schema_find_slots_date_range,
   schema_send_avail_req_link,
   schema_update_meeting_ints,
-} from '@aglint/shared-utils';
+} from "@aglint/shared-utils";
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
@@ -42,13 +42,11 @@ export type APIFindAltenativeTimeSlot = v.InferInput<
 export type APICandScheduleMailThankYou = {
   availability_request_id?: string;
   cand_tz: string;
-  task_id: string;
   session_ids: string[];
   application_id: string;
   is_debreif: boolean;
-  schedule_id?: string;
   filter_id?: string;
-  booking_request_from?: 'phone_agent' | 'email_agent' | 'candidate';
+  booking_request_from?: "phone_agent" | "email_agent" | "candidate";
 };
 
 export type APIOptions = v.InferInput<typeof scheduling_options_schema>;
@@ -127,7 +125,7 @@ export type APICandidateConfirmSlot = {
   schedule_id: string;
   filter_id?: string;
   //  if tasks id is present
-  agent_type: 'email' | 'phone' | 'self';
+  agent_type: "email" | "phone" | "self";
   task_id: string | null;
   candidate_email?: string;
   candidate_name?: string;

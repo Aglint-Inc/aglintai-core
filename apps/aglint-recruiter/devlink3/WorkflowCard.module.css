@@ -4,6 +4,8 @@
   align-items: flex-start;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  background-color: var(--white);
 }
 
 .workflow_card_wrap {
@@ -18,8 +20,10 @@
   justify-content: flex-start;
   flex-wrap: nowrap;
 
-  border: 1px solid var(--neutral-a6);
-  border-radius: 10px;
+  border-width: 1px;
+  border-color: var(--neutral-a6);
+  border-right-style: none;
+  border-left-style: none;
 
   background-color: var(--white);
 
@@ -43,6 +47,7 @@
 
 .embed_flex {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -78,6 +83,10 @@
 
 .embed_flex.fixedd {
   width: 23px;
+}
+
+.embed_flex.is_on_left {
+  margin-left: -25px;
 }
 
 .wc_card_content {

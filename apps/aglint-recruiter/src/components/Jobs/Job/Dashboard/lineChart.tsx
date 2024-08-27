@@ -33,6 +33,7 @@ const LineChart: React.FC<{
     },
     { names: [], counts: [], pointBackgroundColor: [] },
   );
+
   const dataLines = {
     labels: names,
     datasets: [

@@ -9,6 +9,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../Common/ShowCode';
 import SchedulingDashboard from './Dashboard';
@@ -21,10 +22,11 @@ import { SchedulingTab } from './types';
 function SchedulingMainComp() {
   const router = useRouter();
   const { checkPermissions } = useRolesAndPermissions();
+
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${ROUTES['/scheduling']()}?tab=${'dashboard' as SchedulingTab}`,
+        `${ROUTES['/scheduling']()}?tab=${'metrics' as SchedulingTab}`,
         undefined,
         {
           shallow: true,
@@ -40,8 +42,8 @@ function SchedulingMainComp() {
   useEffect(() => {
     setBreadcrum([
       {
-        name: 'Scheduler Dashboard',
-        route: ROUTES['/scheduling']() + `?tab=dashboard`,
+        name: capitalizeAll(tab),
+        route: ROUTES['/scheduling']() + `?tab=metrics`,
       },
     ]);
   }, [tab]);
@@ -59,36 +61,34 @@ function SchedulingMainComp() {
                 slotGlobalSwitchPill={
                   <>
                     <GlobalSwitchPill
-                      isActive={tab === 'schedules'}
-                      textPill={'All Schedules'}
+                      isActive={tab === 'interviews'}
+                      textPill={'Interviews'}
                       onClickPill={{
                         onClick: () => {
                           router.push(
-                            `${ROUTES['/scheduling']()}?tab=schedules`,
+                            `${ROUTES['/scheduling']()}?tab=interviews`,
                           );
                         },
                       }}
                     />
                     <GlobalSwitchPill
-                      isActive={tab === 'myschedules'}
-                      textPill={'My Schedules'}
+                      isActive={tab === 'my_interviews'}
+                      textPill={'My Interviews'}
                       onClickPill={{
                         onClick: () => {
                           router.push(
-                            `${ROUTES['/scheduling']()}?tab=myschedules`,
+                            `${ROUTES['/scheduling']()}?tab=my_interviews`,
                           );
                         },
                       }}
                     />
 
                     <GlobalSwitchPill
-                      isActive={tab === 'dashboard' || !tab}
-                      textPill={'Dashboard'}
+                      isActive={tab === 'metrics' || !tab}
+                      textPill={'Metrics'}
                       onClickPill={{
                         onClick: () => {
-                          router.push(
-                            `${ROUTES['/scheduling']()}?tab=dashboard`,
-                          );
+                          router.push(`${ROUTES['/scheduling']()}?tab=metrics`);
                         },
                       }}
                     />
@@ -114,10 +114,10 @@ const BodyComp = () => {
   return (
     <>
       <ShowCode>
-        <ShowCode.When isTrue={tab === 'schedules'}>
+        <ShowCode.When isTrue={tab === 'interviews'}>
           {checkPermissions(['scheduling_actions']) && <Schedules />}
         </ShowCode.When>
-        <ShowCode.When isTrue={tab === 'myschedules'}>
+        <ShowCode.When isTrue={tab === 'my_interviews'}>
           <MySchedule />
         </ShowCode.When>
         <ShowCode.Else>

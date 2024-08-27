@@ -24,7 +24,7 @@ function Requests({ session_id }) {
   const schedule = data?.schedule_data;
   return (
     <Stack spacing={'var(--space-4)'}>
-      <Text weight={'bold'} content={'Requests'} />
+      <Text weight={'medium'} content={'Request History'} />
       {isLoading ? (
         <Loader />
       ) : (

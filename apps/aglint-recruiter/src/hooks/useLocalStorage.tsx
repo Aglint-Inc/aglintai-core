@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { useState } from 'react';
+import { useState /*useSyncExternalStore*/ } from 'react';
 
 import { initialFilterState } from '../components/Scheduling/Schedules/ScheduleStatesContext';
 
@@ -27,3 +27,20 @@ export const useLocalStorage = <T extends keyof LocalStorage>(key: T) => {
 
   return [state, set, initialLocalState[key]] as const;
 };
+
+// const subscribers = new Set<() => void>();
+
+// export const useLocalStorage = (item: string) => {
+//   const data = useSyncExternalStore(
+//     (event) => () => {
+//       subscribers.add(event);
+//     },
+//     () => Number(localStorage.getItem(item)),
+//   );
+//   const setData = (value: number) => {
+//     localStorage.setItem(item, String(value));
+//     subscribers.forEach((event) => event());
+//   };
+//   console.log(subscribers, '🔥');
+//   return [data, setData] as const;
+// };

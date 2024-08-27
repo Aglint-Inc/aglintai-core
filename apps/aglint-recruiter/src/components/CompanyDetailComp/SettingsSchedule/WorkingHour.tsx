@@ -145,7 +145,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
               },
             }}
             isHeaderIconVisible={false}
-            textDrawertitle='Company Working Hour Update'
+            textDrawertitle='Update Working Hours'
             drawerSize={'medium'}
             slotButtons={
               <>
@@ -264,12 +264,8 @@ export default function WorkingHour({ updateSettings, initialData }) {
                           Define standard break times for the company.
                         </Typography>
                       </Stack>
-                      <Stack spacing={1} direction={'column'}>
-                        <Stack
-                          direction={'row'}
-                          alignItems={'center'}
-                          spacing={1}
-                        >
+                      <Stack spacing={1} direction={'row'}>
+                        <Stack direction={'column'} spacing={1}>
                           <Typography width={120} fontSize={'14px'}>
                             Break Start Time
                           </Typography>
@@ -277,6 +273,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
                           {selectedHourBreak?.start_time &&
                             workingHours[1]?.timeRange?.startTime && (
                               <SelectTime
+                                // width='130px'
                                 disableIgnoringDatePartForTimeValidation={true}
                                 value={dayjs()
                                   .set(
@@ -305,11 +302,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
                               />
                             )}
                         </Stack>
-                        <Stack
-                          spacing={1}
-                          direction={'row'}
-                          alignItems={'center'}
-                        >
+                        <Stack spacing={1} direction={'column'}>
                           <Typography width={120} fontSize={'14px'}>
                             Break End Time
                           </Typography>
@@ -317,6 +310,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
                           {workingHours[1]?.timeRange?.endTime &&
                             selectedHourBreak?.end_time && (
                               <SelectTime
+                                // width='130px'
                                 disableIgnoringDatePartForTimeValidation={true}
                                 value={dayjs()
                                   .set(
@@ -470,16 +464,14 @@ const Debreif = ({ breaktime }) => {
             .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
             .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
             .format('hh:mm A')}
-        </span>
-      </Typography>
-      <Typography>
-        <span style={{ fontWeight: '500' }}>Break End Time</span>{' '}
-        <span style={{ marginLeft: '24px' }}> </span>
+        </span>{' '}
+        -{' '}
         {dayjs()
           .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
           .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
           .format('hh:mm A')}
       </Typography>
+      <Typography></Typography>
     </Stack>
   );
 };

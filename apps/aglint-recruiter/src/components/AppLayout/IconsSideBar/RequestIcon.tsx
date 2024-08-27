@@ -6,7 +6,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 function RequestIcon() {
   return (
     <Stack direction={'row'}>
-      <GlobalIcon iconName='task_alt' size={6} weight={'regular'}/>
+      <GlobalIcon iconName='view_object_track' size={6} weight={'regular'}/>
       {/* <svg
         width='24'
         height='24'

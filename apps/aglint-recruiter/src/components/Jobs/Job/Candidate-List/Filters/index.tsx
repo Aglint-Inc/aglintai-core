@@ -8,10 +8,14 @@ import {
 } from '@/src/components/Common/FilterHeader/utils';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
+import { useJob } from '@/src/context/JobContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 const Filters = () => {
+  const {
+    interviewPlans: { data: interviewPlans },
+  } = useJob();
   const {
     job: { application_match },
     locationFilterOptions,
@@ -22,16 +26,14 @@ const Filters = () => {
       locations,
       type,
       order,
-      // eslint-disable-next-line no-unused-vars
-      section,
       badges,
       resume_match,
-      schedule_status,
+      stages,
     },
     setFilters,
   } = useApplications();
 
-  const { isScoringEnabled, isSchedulingEnabled } = useRolesAndPermissions();
+  const { isScoringEnabled } = useRolesAndPermissions();
 
   const badgesOptions = useMemo(
     () =>
@@ -51,9 +53,14 @@ const Filters = () => {
     [resumeScoreTypes, capitalize, application_match],
   );
 
-  const schedule_statusOptions = useMemo(
-    () => scheduleStatus.map((id) => ({ id, label: capitalize(id) })),
-    [scheduleStatus, capitalize],
+  const interviewPlanOptions = useMemo(
+    () =>
+      (interviewPlans ?? []).reduce((acc, { name, interview_session }) => {
+        if ((interview_session ?? []).length)
+          acc[name] = (interview_session ?? []).map(({ name }) => name);
+        return acc;
+      }, {}),
+    [interviewPlans, capitalize],
   );
 
   const resumeMatchFilter: Parameters<
@@ -67,19 +74,6 @@ const Filters = () => {
     setValue: (newValue: typeof resume_match) =>
       setFilters({ ['resume_match']: newValue }),
     options: resume_matchOptions,
-  };
-
-  const scheduleStatusFilter: Parameters<
-    typeof FilterHeader
-  >[0]['filters'][number] = isSchedulingEnabled && {
-    name: 'Schedule Status',
-    value: schedule_status,
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue: typeof schedule_status) =>
-      setFilters({ ['schedule_status']: newValue }),
-    options: schedule_statusOptions,
   };
 
   const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
@@ -121,6 +115,21 @@ const Filters = () => {
       });
     },
   };
+  const InterviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+    type: 'nested-filter',
+    name: 'Interview Plan',
+    options: interviewPlanOptions ?? {},
+    sectionHeaders: ['Stage', 'Session'],
+    value: arrayToNestedObject(stages?.[stages.length - 1] ?? []),
+    setValue: (value) => {
+      const stages = nestedObjectToArray(interviewPlanOptions ?? {}, value).map(
+        (item) => item.filter(({ status }) => status !== 'inactive'),
+      );
+      setFilters({
+        stages: stages.flatMap((section) => section).length ? stages : [],
+      });
+    },
+  };
 
   const safeSort: Parameters<typeof FilterHeader>[0]['sort'] = {
     sortOptions: {
@@ -149,8 +158,8 @@ const Filters = () => {
         bookmarkedButton,
         badgesFilter,
         resumeMatchFilter,
-        scheduleStatusFilter,
         Locations,
+        InterviewPlan,
       ].filter(Boolean)}
       sort={safeSort}
       isResetAll={true}
@@ -203,14 +212,14 @@ const resumeScoreTypes: ApplicationsParams['filters']['resume_match'] = [
   'unknown_match',
 ];
 
-const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
-  'cancelled',
-  'completed',
-  'confirmed',
-  'not_scheduled',
-  'reschedule',
-  'waiting',
-];
+// const scheduleStatus: ApplicationsParams['filters']['schedule_status'] = [
+//   'cancelled',
+//   'completed',
+//   'confirmed',
+//   'not_scheduled',
+//   'reschedule',
+//   'waiting',
+// ];
 
 const sortTypes: ApplicationsParams['filters']['type'][] = [
   'latest_activity',

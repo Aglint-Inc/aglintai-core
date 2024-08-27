@@ -1,10 +1,14 @@
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
 import { Stack } from '@mui/material';
-import type { PropsWithChildren } from 'react';
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { type PropsWithChildren } from 'react';
 
 import { Skeleton } from '@/devlink2/Skeleton';
 import { useApplication } from '@/src/context/ApplicationContext';
 
-import { ResumeEmbed } from '../../Candidate-List/Common/ResumePreviewer';
+// import { ResumeEmbed } from '../../Candidate-List/Common/ResumePreviewer';
 import { EmptyState } from './Common/EmptyState';
 
 export const Resume = () => {
@@ -24,14 +28,35 @@ export const Resume = () => {
   return <Content key={data?.file_url} url={data?.file_url} />;
 };
 
-const Content = (props: { url: string }) => {
+const Content = ({ url }: { url: string }) => {
   return (
     <ResumeLayout>
-      <Stack position={'absolute'} zIndex={1} width={'100%'} height={'100%'}>
-        <ResumeEmbed url={`${props.url}#toolbar=0&navpanes=0&scrollbar=0`} />
-      </Stack>
-      <Stack position={'absolute'} zIndex={0} width={'100%'} height={'100%'}>
-        <Skeleton />
+      <Stack
+        position={'absolute'}
+        zIndex={1}
+        top={'10px'}
+        left={'-30px'}
+        width={'100%'}
+        height={'1120px'}
+      >
+        {/* <ResumeEmbed url={`${props.url}#toolbar=0&navpanes=0&scrollbar=0`} /> */}
+        <Worker
+          workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+        >
+          <Viewer
+            fileUrl={url}
+            renderLoader={() => (
+              <Stack
+                position={'absolute'}
+                zIndex={0}
+                width={'100%'}
+                height={'100%'}
+              >
+                <Skeleton />
+              </Stack>
+            )}
+          />
+        </Worker>
       </Stack>
     </ResumeLayout>
   );

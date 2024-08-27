@@ -25,6 +25,7 @@ export const Leaderboard = memo(() => {
     />
   );
 });
+
 Leaderboard.displayName = 'Leaderboard';
 
 const Dropdown = memo(() => {

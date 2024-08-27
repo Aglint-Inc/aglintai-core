@@ -49,11 +49,15 @@ export const createRequest = async ({
   new_dates,
   session_ids,
   type,
+  other_details,
+  reason,
 }: {
   session_ids: string[];
   application_id: string;
   new_dates: { start_date: string; end_date: string };
   type: DatabaseTable['interview_session_cancel']['type'];
+  other_details: DatabaseTable['interview_session_cancel']['other_details'];
+  reason: DatabaseTable['interview_session_cancel']['reason'];
 }) => {
   const creatReqPayload: APICreateCandidateRequest = {
     application_id,
@@ -63,6 +67,8 @@ export const createRequest = async ({
       start: new_dates.start_date,
       end: new_dates.end_date,
     },
+    other_details,
+    reason,
   };
   await axios.post('/api/request/candidate-request', creatReqPayload);
 };

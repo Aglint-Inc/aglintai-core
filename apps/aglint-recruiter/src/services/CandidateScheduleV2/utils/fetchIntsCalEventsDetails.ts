@@ -85,6 +85,7 @@ type FetchCalEventsParams = {
   start_time: string;
   end_time: string;
 };
+
 const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
   const promisedInts = params.inter_details.map(async (int) => {
     const updated_int_details = { ...int };
@@ -129,7 +130,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
   return ints_events_map;
 };
 
-const getCalEventType = (
+export const getCalEventType = (
   cal_event_summary: string,
   comp_schedule_setting: schedulingSettingType,
 ): CalConflictType => {

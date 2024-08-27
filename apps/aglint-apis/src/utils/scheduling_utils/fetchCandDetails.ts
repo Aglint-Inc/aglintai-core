@@ -29,7 +29,7 @@ export const fetchCandidateDetails = async (
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,overview,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)), candidates(*)))'
+        '* ,applications(*, candidates(*),public_jobs(id,recruiter_id,job_title,description,company:recruiter!public_jobs_recruiter_id_fkey(id,name,logo),recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)))'
       )
       .eq('id', req_payload.filter_json_id)
   );
@@ -37,11 +37,10 @@ export const fetchCandidateDetails = async (
   if (!cand_rec) {
     throw new Error('invalid filter id');
   }
-  const cand_basic_info = cand_rec.interview_schedule.applications.candidates;
-  const job = cand_rec.interview_schedule.applications.public_jobs;
+  const cand_basic_info = cand_rec.applications.candidates;
+  const job = cand_rec.applications.public_jobs;
   const filter_json = cand_rec.filter_json;
-  const company_id =
-    cand_rec.interview_schedule.applications.public_jobs.recruiter_id;
+  const company_id = cand_rec.applications.public_jobs.recruiter_id;
   const promises = [
     (async () => {
       const sessions = supabaseWrap(
@@ -78,7 +77,7 @@ export const fetchCandidateDetails = async (
       getFullName(cand_basic_info.first_name, cand_basic_info.last_name)
     )
     .replace('{recruiter_user_name}', req_payload.interviewer_name)
-    .replace('{company_name}', job.company)
+    .replace('{company_name}', job.company.name)
     .replace('{job_role}', job.job_title);
   if (!interview_meetings || interview_meetings.length === 0) {
     throw new Error('meeting not found');
@@ -97,22 +96,21 @@ export const fetchCandidateDetails = async (
 
   const cand_info: CandidateInfoType = {
     begin_message,
-    application_id: cand_rec.interview_schedule.application_id,
-    candidate_id: cand_rec.interview_schedule.applications.candidates.id,
+    application_id: cand_rec.application_id,
+    candidate_id: cand_rec.applications.candidates.id,
     filter_json: {
       end_date: cand_rec.filter_json.end_date,
       start_date: cand_rec.filter_json.end_date,
       session_ids: cand_rec.session_ids,
       recruiter_id: company_id,
     },
-    schedule_id: cand_rec.interview_schedule.id,
     candidate_name: getFullName(
       cand_basic_info.first_name,
       cand_basic_info.last_name
     ),
     company_id: job.recruiter_id,
-    company_logo: job.logo,
-    company_name: job.company,
+    company_logo: job.company.logo,
+    company_name: job.company.name,
     job_title: job.job_title,
     req_payload: req_payload,
     job_id: job.id,
@@ -121,7 +119,7 @@ export const fetchCandidateDetails = async (
     schedule_status: book_status as CandidateInfoType['schedule_status'],
     interview_meetings,
     tool_invocations: [],
-    job_description: job.overview,
+    job_description: job.description,
     comp_scheduling_setting: job.recruiter
       .scheduling_settings as schedulingSettingType,
     all_slots,

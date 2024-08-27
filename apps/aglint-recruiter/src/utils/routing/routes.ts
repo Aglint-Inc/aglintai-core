@@ -1,6 +1,7 @@
 const pageRouteBuilder = (routes: string[]): string => {
   return routes.join('/');
 };
+
 const agentJobs = {
   '/agent/jobs': () => pageRouteBuilder([agent['/agent'](), 'jobs']),
   '/agent/jobs/[id]': ({ id }: { id: string }) =>
@@ -123,8 +124,8 @@ const jobsById = {
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'agent']),
   '/jobs/[id]/assessment': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'assessment']),
-  '/jobs/[id]/candidate-list': ({ id }: { id: string }) =>
-    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'candidate-list']),
+  '/jobs/[id]/metrics': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'metrics']),
   '/jobs/[id]/email-templates': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'email-templates']),
   '/jobs/[id]/interview-plan': ({ id }: { id: string }) =>
@@ -258,15 +259,22 @@ const workflowsById = {
   '/workflows/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([workflows['/workflows'](), id]),
 } as const;
+
 const workflows = {
   '/workflows': () => pageRouteBuilder([ROUTES.app(), 'workflows']),
   ...workflowsById,
 } as const;
+
 const requests = {
   '/requests': () => pageRouteBuilder([ROUTES.app(), 'requests']),
   '/requests/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([requests['/requests'](), id]),
 } as const;
+
+const interviewers = {
+  '/interviewers': () => pageRouteBuilder([ROUTES.app(), 'interviewers']),
+} as const;
+
 const ROUTES = {
   app: () => '',
   ...agent,
@@ -305,5 +313,6 @@ const ROUTES = {
   ...user,
   ...workflows,
   ...requests,
+  ...interviewers,
 } as const;
 export default ROUTES;

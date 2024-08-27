@@ -49,6 +49,7 @@ function Overview() {
           schedule.interview_meeting.status === 'confirmed' ||
           schedule.interview_meeting.status === 'completed'
         }
+        textInterviewer={`Interviewer${confirmedUsers?.length > 1 ? 's' : ''}`}
         textInterviewerCount={
           confirmedUsers?.length > 0 && `(${confirmedUsers?.length})`
         }

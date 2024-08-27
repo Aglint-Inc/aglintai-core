@@ -1,0 +1,6 @@
+.interviewer-slot-div {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-1);
+  background-color: var(--neutral-3);
+}

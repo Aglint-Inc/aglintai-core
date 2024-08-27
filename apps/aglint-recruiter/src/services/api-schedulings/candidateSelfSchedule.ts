@@ -10,12 +10,12 @@ export const candidateSelfSchedule = async ({
   organizer_id,
   plans,
   request_id,
-  schedule_id,
+  application_id,
   start_date_str,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;
-  schedule_id: string;
+  application_id: string;
   plans: PlanCombinationRespType[];
   start_date_str: string;
   end_date_str: string;
@@ -27,13 +27,13 @@ export const candidateSelfSchedule = async ({
       .from('interview_filter_json')
       .insert({
         session_ids: cloned_sessn_ids,
-        schedule_id: schedule_id,
         filter_json: {
           start_date: start_date_str,
           end_date: end_date_str,
         },
         selected_options: [...plans],
         request_id: request_id,
+        application_id,
       })
       .select(),
   );

@@ -14,7 +14,11 @@ function ApplicationDetailComp() {
   return (
     <>
       <Application application_id={application_id} job_id={job_id}>
-        <PageLayout slotTopbarLeft={<BreadCrumb />} slotBody={<SlotBody />} />
+        <PageLayout
+          slotTopbarLeft={<BreadCrumb />}
+          slotBody={<SlotBody />}
+          slotTopbarRight={<></>}
+        />
       </Application>
     </>
   );

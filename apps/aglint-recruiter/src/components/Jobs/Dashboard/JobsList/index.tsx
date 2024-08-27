@@ -44,7 +44,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   const handlClick = (id: string, section: Application['status']) => {
     const params = getParams({ section });
-    push(`/jobs/${id}/candidate-list${params ? `?${params}` : ''}`);
+    push(`/jobs/${id}${params ? `?${params}` : ''}`);
   };
 
   return (

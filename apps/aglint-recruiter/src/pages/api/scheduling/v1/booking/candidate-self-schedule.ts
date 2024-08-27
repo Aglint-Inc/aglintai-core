@@ -18,7 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsed = v.parse(schema_candidate_direct_booking, req.body);
     const schedule_db_details = await fetchDBScheduleDetails(parsed);
-    const { filter_json_data, filered_selected_options } = schedule_db_details;
+
+    const { filered_selected_options, company } = schedule_db_details;
     const interviewer_selected_options = filered_selected_options;
 
     const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
@@ -40,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_user_tz: parsed.cand_tz,
       start_date_str: schedule_db_details.start_date_str,
       end_date_str: schedule_db_details.end_date_str,
-      company_id: filter_json_data.interview_schedule.recruiter_id,
+      company_id: company.id,
       session_ids: interviewer_selected_options[0].sessions.map(
         (s) => s.session_id,
       ),
@@ -51,6 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (verified_plans.length === 0) {
       throw new Error('Requested plan does not exist');
     }
+
     await bookCandidateSelectedOption(
       parsed,
       cand_schedule,

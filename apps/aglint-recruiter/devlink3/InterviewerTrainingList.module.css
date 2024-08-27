@@ -1,0 +1,38 @@
+.interviewer-trainer-body-list {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 300px 257px 1fr;
+  grid-template-rows: auto;
+  background-color: var(--white);
+}
+
+.interviewer-avail-body-item {
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.ia-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-3);
+}
+
+.slot-itl-body-item {
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+#w-node-_8ecc5917-f26d-9769-6310-27e4f1f413e5-f1f413e4 {
+}
+#w-node-_8ecc5917-f26d-9769-6310-27e4f1f413ec-f1f413e4 {
+}
+#w-node-bd95e31f-9bd6-745d-80b2-014bafd37755-f1f413e4 {
+}

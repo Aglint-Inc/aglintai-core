@@ -25,6 +25,8 @@ const defaultFilter = {
   end_at: '',
   jobs: [],
   applications: [],
+  assigneeList: [],
+  assignerList: [],
 };
 
 // eslint-disable-next-line no-unused-vars

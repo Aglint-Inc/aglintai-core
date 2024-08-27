@@ -32,6 +32,10 @@
   height: calc(100vh - 85px);
 }
 
+.schedule_reasons_subwrap {
+  max-width: 600px;
+}
+
 .scheduling_reason_header {
   display: flex;
   max-width: 800px;

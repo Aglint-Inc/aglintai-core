@@ -19,7 +19,7 @@
 }
 
 .candidate-list-item-wrap:hover {
-  background-color: var(--neutral-3);
+  background-color: var(--neutral-2);
 }
 
 .candidate-list-item-wrap.skeleton_height {

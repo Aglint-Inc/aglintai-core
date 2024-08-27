@@ -45,7 +45,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ),
   );
   let session_ids = meeting_details.map((m) => m.session_id);
-  let schedule_id = meeting_details[0].interview_schedule_id;
   const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
   const cand_picked_slots = await executeWorkflowAction(
@@ -86,8 +85,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         end_date_str: avail_record.date_range[1],
         organizer_id,
         request_id,
-        schedule_id,
         session_ids,
+        application_id,
       },
       reqProgressLogger,
       {

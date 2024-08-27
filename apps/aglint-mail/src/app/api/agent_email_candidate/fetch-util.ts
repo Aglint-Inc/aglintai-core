@@ -15,7 +15,7 @@ export async function fetchUtil(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        'filter_json,interview_schedule(id,applications(public_jobs(job_title),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name,id))))',
+        '*,applications(public_jobs(job_title),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name,id)))',
       )
       .eq('id', req_body.filter_id),
   );
@@ -30,17 +30,15 @@ export async function fetchUtil(
 
   const { end_date, start_date } = filterJson.filter_json;
   const {
-    interview_schedule: {
-      applications: {
-        candidates: {
-          email: cand_email,
-          recruiter_id,
-          first_name,
-          last_name,
-          recruiter: { name: companyName },
-        },
-        public_jobs: { job_title },
+    applications: {
+      candidates: {
+        email: cand_email,
+        recruiter_id,
+        first_name,
+        last_name,
+        recruiter: { name: companyName },
       },
+      public_jobs: { job_title },
     },
   } = filterJson;
 
@@ -49,7 +47,7 @@ export async function fetchUtil(
     'agent_email_candidate',
   );
 
-  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.interview_schedule.id}?filter_id=${req_body.filter_id}`;
+  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
 
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {

@@ -23,7 +23,7 @@ function Requests() {
   } = useApplication();
 
   return (
-    <Stack padding={'var(--space-4)'} spacing={'var(--space-2)'}>
+    <Stack padding={'var(--space-4)'} spacing={'var(--space-2)'} width={'850px'}>
       {!isLoading &&
         requests?.map((req) => {
           return (

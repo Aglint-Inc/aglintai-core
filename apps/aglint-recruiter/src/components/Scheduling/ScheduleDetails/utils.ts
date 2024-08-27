@@ -77,21 +77,17 @@ export const removeSessionsFromRequestAvailability = async ({
 };
 
 export const onClickCopyLink = async ({
-  schedule_id,
+  application_id,
   filter_id,
   request_id,
-  task_id,
 }: {
-  schedule_id: string;
+  application_id: string;
   filter_id: string | null;
   request_id: string | null;
-  task_id: string | null;
 }) => {
   if (filter_id) {
     navigator.clipboard.writeText(
-      task_id
-        ? `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}&task_id=${task_id}`
-        : `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${filter_id}`,
     );
   } else if (request_id) {
     navigator.clipboard.writeText(
@@ -131,20 +127,5 @@ export const onClickAccept = async (session_relation_id: string) => {
     if (error) throw new Error(error.message);
   } catch {
     toast.error('Failed to accept the interview');
-  }
-};
-
-export const fetchFilterJson = async (session_ids: string[]) => {
-  try {
-    const { data } = await supabase
-      .from('interview_filter_json')
-      .select('*,new_tasks(id)')
-      .contains('session_ids', session_ids)
-      .single()
-      .throwOnError();
-
-    return data;
-  } catch (e) {
-    //
   }
 };

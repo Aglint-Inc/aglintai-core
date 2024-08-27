@@ -85,3 +85,14 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}

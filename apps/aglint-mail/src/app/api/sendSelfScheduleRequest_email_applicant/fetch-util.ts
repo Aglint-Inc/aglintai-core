@@ -10,18 +10,19 @@ export async function dbUtil(
       await supabaseAdmin
         .from('interview_filter_json')
         .select(
-          'interview_schedule(id,applications(public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name))))',
+          'applications(id,public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name)))',
         )
         .eq('id', req_body.filter_json_id),
     );
-    return filterJson.interview_schedule;
+
+    return filterJson;
   };
   const fetchCandDetailsFromApplication = async () => {
     const [filterJson] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
         .select(
-          'public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name))',
+          'id,public_jobs(job_title,recruiter_id),candidates(first_name,last_name,email,recruiter(logo,name))',
         )
         .eq('id', req_body.application_id),
     );
@@ -58,10 +59,10 @@ export async function dbUtil(
 
   const task_id = req_body.task_id;
   let scheduleLink = '';
-  if (filterJson.id && req_body.filter_json_id) {
+  if (filterJson.applications.id && req_body.filter_json_id) {
     scheduleLink = task_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
-      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.id}?filter_id=${req_body.filter_json_id}`;
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.applications.id}?filter_id=${req_body.filter_json_id}&task_id=${task_id}`
+      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.applications.id}?filter_id=${req_body.filter_json_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {

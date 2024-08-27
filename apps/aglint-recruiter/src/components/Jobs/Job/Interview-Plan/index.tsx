@@ -43,6 +43,7 @@ import {
 } from '@/src/queries/interview-plans/types';
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
+import ROUTES from '@/src/utils/routing/routes';
 import { breakDurations } from '@/src/utils/scheduling/const';
 import {
   capitalizeAll,
@@ -52,6 +53,7 @@ import {
 import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
+import { Settings } from '../Common/SharedTopNav/actions';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
@@ -114,6 +116,7 @@ const InterviewPlanPage = () => {
     <>
       <PageLayout
         slotTopbarLeft={<BreadCrumbs />}
+        slotTopbarRight={<Settings />}
         slotBody={
           <Stack gap={1} margin={2} width={'800px'}>
             {data?.length ? (
@@ -207,11 +210,9 @@ const BreadCrumbs = () => {
     <>
       <Breadcrum
         isLink
-        textName={`${capitalizeSentence(job?.status ?? 'all')} jobs`}
+        textName={`Jobs`}
         onClickLink={{
-          onClick: () => {
-            push(`/jobs?status=${job?.status ?? 'all'}`);
-          },
+          onClick: () => push(ROUTES['/jobs']()),
           style: { cursor: 'pointer' },
         }}
       />
@@ -332,7 +333,7 @@ const InterviewPlan = ({
   return (
     <>
       <InterviewPlanWrap
-        textStageName={`Stage ${data.plan_order} ${capitalizeFirstLetter(data.name)}`}
+        textStageName={`${capitalizeFirstLetter(data.name)}`}
         textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
         isInputVisible={editPlan}
         onClickEdit={{ onClick: handleEditPlan }}

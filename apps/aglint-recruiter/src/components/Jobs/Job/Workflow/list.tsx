@@ -36,7 +36,7 @@ import toast from '@/src/utils/toast';
 const JobWorkflowComp = () => {
   return (
     <Stack>
-      <Stack gap={1} margin={2} width={'800px'}>
+      <Stack gap={'1px'} bgcolor={'var(--neutral-6)'}>
         <JobWorkflows />
       </Stack>
       <WorkflowBrowser />
@@ -60,7 +60,9 @@ const JobWorkflows = () => {
     return (
       <>
         {[...Array(3)].map((e, i) => (
-          <AssessmentListCardLoader key={i} />
+          <Stack bgcolor={'white'} key={i}>
+            <AssessmentListCardLoader  border={'none'} />
+          </Stack>
         ))}
       </>
     );
@@ -99,7 +101,7 @@ const JobWorkflows = () => {
             onClick: () => push(ROUTES['/workflows/[id]']({ id: workflow.id })),
           }}
           textJobs={<></>}
-          textWorkflowName={workflow.title}
+          textWorkflowName={<Stack maxWidth={'420px'}>{workflow.title}</Stack>}
           textWorkflowTrigger={getTriggerOption(
             workflow.trigger,
             workflow.phase,
