@@ -17,7 +17,6 @@ import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import { useGreenhouseDetails } from '@/src/queries/greenhouse';
 import { useAllMembers } from '@/src/queries/members';
 import dayjs from '@/src/utils/dayjs';
-import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
@@ -34,7 +33,6 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser } = useAuthDetails();
   const {
     data: members,
     activeMembers,
@@ -278,25 +276,8 @@ const TeamManagement = () => {
                 <Member
                   key={member.user_id}
                   member={member}
-                  removeMember={async () => {
-                    if (recruiterUser?.user_id === member.user_id) {
-                      toast.error(
-                        "Can't remove admin account; it's the primary one.",
-                      );
-                    } else {
-                      try {
-                        await axios.post('/api/supabase/deleteuser', {
-                          user_id: member.user_id,
-                        });
-                      } catch (error) {
-                        toast.error(
-                          "This member is tied to an active schedule, so removal is unavailable until it's finished.",
-                        );
-                        return null;
-                      }
-                    }
-                  }}
-                  canSuspend={member.role !== 'admin'}
+                  // removeMember={}
+                  // canSuspend={member.role !== 'admin'}
                 />
               ))}
             </ShowCode.When>
