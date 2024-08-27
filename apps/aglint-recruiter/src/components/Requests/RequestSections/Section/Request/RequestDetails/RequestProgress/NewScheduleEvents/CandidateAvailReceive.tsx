@@ -1,11 +1,24 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import React, { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
+import {
+  setApplicationIdForConfirmAvailability,
+  setCandidateAvailabilityId,
+} from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
@@ -17,60 +30,138 @@ const CandidateAvailReceive = ({
 }: {
   eventTargetMap: EventTargetMapType;
 }) => {
+  const { query } = useRouter();
+  const requestId = query.id as string;
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
-  const { availRecivedProgress: availReceivedProgress, reqProgresMp } =
-    useMemo(() => {
-      let progres: DatabaseTable['request_progress'][] = [];
-      let mp: RequestProgressMapType = {};
+  const {
+    availRecivedProgress: availReceivedProgress,
+    reqProgresMp,
+    isSlotConfirmed,
+  } = useMemo(() => {
+    let progres: DatabaseTable['request_progress'][] = [];
+    let mp: RequestProgressMapType = {};
+    let isSlotConfirmed = false;
 
-      if (request_progress.data.length === 0) {
-        return { availRecivedProgress: progres, reqProgresMp: mp };
-      }
-      request_progress.data.forEach((prog) => {
-        if (prog.event_type === 'CAND_AVAIL_REC') {
-          progres.push({
-            ...prog,
-          });
-        } else if (
-          progres.length > 0 &&
-          prog.event_type !== 'CAND_CONFIRM_SLOT'
-        ) {
-          progres.push({
-            ...prog,
-          });
-        }
-      });
-
-      progres.forEach((row) => {
-        if (!mp[row.event_type]) {
-          mp[row.event_type] = [];
-        }
-        mp[row.event_type].push({ ...row });
-      });
+    if (request_progress.data.length === 0) {
       return { availRecivedProgress: progres, reqProgresMp: mp };
-    }, [request_progress.data]);
+    }
+    request_progress.data.forEach((prog) => {
+      if (prog.event_type === 'CAND_AVAIL_REC') {
+        progres.push({
+          ...prog,
+        });
+      } else if (
+        progres.length > 0 &&
+        prog.event_type !== 'CAND_CONFIRM_SLOT'
+      ) {
+        progres.push({
+          ...prog,
+        });
+      }
+      if (prog.event_type == 'CAND_CONFIRM_SLOT') {
+        isSlotConfirmed = true;
+      }
+    });
+
+    progres.forEach((row) => {
+      if (!mp[row.event_type]) {
+        mp[row.event_type] = [];
+      }
+      mp[row.event_type].push({ ...row });
+    });
+    return {
+      availRecivedProgress: progres,
+      reqProgresMp: mp,
+      isSlotConfirmed,
+    };
+  }, [request_progress.data]);
   if (availReceivedProgress.length > 0) {
     lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
+  }
+  // eslint-disable-next-line no-unused-vars
+  const handleConfirmSlot = async () => {
+    try {
+      const [candReq] = supabaseWrap(
+        await supabase
+          .from('candidate_request_availability')
+          .select()
+          .eq('request_id', requestId),
+      );
+      setCandidateAvailabilityId(candReq.id);
+      setApplicationIdForConfirmAvailability(candReq.application_id);
+    } catch (err) {
+      //
+    }
+  };
+
+  let isManual = true;
+  if (
+    eventTargetMap['onReceivingAvailReq'] &&
+    eventTargetMap['onReceivingAvailReq'].length > 0
+  ) {
+    isManual = false;
   }
 
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
-        textContent={<>EVENT : Candidate submits Availability</>}
-        iconSize={3}
+        iconName='expand_circle_right'
+        textContent={`Candidate submits Availability`}
+        iconSize={4}
         fontSize={1}
         color={getProgressColor('past')}
       />
       <Stack ml={4}>
+        <ShowCode.When isTrue={isManual}>
+          {availReceivedProgress.map((av) => {
+            return (
+              <>
+                <EventNode
+                  eventNode={av.event_type}
+                  reqProgressMap={reqProgresMp}
+                />
+              </>
+            );
+          })}
+        </ShowCode.When>
         <ShowCode.When
           isTrue={
             lastEvent &&
+            !isSlotConfirmed &&
             lastEvent.event_type === 'CAND_AVAIL_REC' &&
             Boolean(!eventTargetMap['onReceivingAvailReq'])
           }
         >
-          <>manual flow</>
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            justifyContent={'flex-end'}
+            gap={1}
+          >
+            <ButtonSoft
+              size={1}
+              color={'accent'}
+              textButton='Schedule Interview'
+              onClickButton={{
+                onClick: handleConfirmSlot,
+              }}
+            />
+            <ButtonSoft
+              size={1}
+              color='accent'
+              onClickButton={{
+                onClick: () => {
+                  setCandidateAvailabilityDrawerOpen(true);
+                  setReRequestAvailability(true);
+                  setCandidateAvailabilityIdForReRequest(
+                    '6b7657ba-cc3f-4789-a44f-5be74d234f84',
+                  );
+                },
+              }}
+              textButton='Re Request Availability'
+            />
+          </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
           {Boolean(eventTargetMap['onReceivingAvailReq']) &&

@@ -1,8 +1,15 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseView } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
-import { useJobCreate, useJobDelete, useJobsRead } from '@/src/queries/jobs';
+import {
+  useJobCreate,
+  useJobDelete,
+  useJobsRead,
+  useJobsSync,
+  useJobUpdate,
+} from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { ApplicationStore } from '../ApplicationContext/store';
@@ -33,7 +40,7 @@ export const getActiveSection = ({
 });
 
 const useJobActions = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiter_id } = useAuthDetails();
 
   const {
     checkPermissions,
@@ -49,6 +56,28 @@ const useJobActions = () => {
   );
 
   const jobs = useJobsRead(manageJob);
+
+  const { mutateAsync: handleSync } = useJobsSync();
+
+  const { mutate: jobUpdate } = useJobUpdate();
+
+  const handleJobPin = (
+    args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
+  ) => {
+    try {
+      jobUpdate({ recruiter_id, ...args });
+    } catch {
+      //
+    }
+  };
+
+  const handleJobsSync = async () => {
+    try {
+      await handleSync();
+    } catch {
+      //
+    }
+  };
 
   const customJobs = useMemo(
     () => ({
@@ -106,6 +135,8 @@ const useJobActions = () => {
     handleJobCreate,
     handleJobsRefresh: jobs.refetch,
     handleJobDelete,
+    handleJobsSync,
+    handleJobPin,
     initialLoad,
     manageJob,
     devlinkProps,

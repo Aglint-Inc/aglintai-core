@@ -7,12 +7,17 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
+import { AiBookingInstruction } from '@/devlink3/AiBookingInstruction';
+import { InterviewTypeToken } from '@/devlink3/InterviewTypeToken';
 import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { TokenItem } from '@/devlink3/TokenItem';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import Loader from '@/src/components/Common/Loader';
+import UITextField from '@/src/components/Common/UITextField';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { useAllDepartments } from '@/src/queries/departments';
@@ -140,6 +145,13 @@ function SlotBodyComp({
 
   const queryClient = useQueryClient();
 
+  const [value, setValue] =
+    useState(`Rotate interviewers to ensure diverse perspectives across interview stages.
+Allocate more technical interviews to senior team members with specialized skills.
+Ensure interviewers have at least a 30-minute buffer between sessions for debriefing.
+Assign panel interviews to teams with complementary expertise to cover all evaluation angles.
+Balance interview load across the team, avoiding back-to-back slots when possible.`);
+
   return (
     <>
       <SettingsDialog editModule={editModule} />
@@ -264,6 +276,67 @@ function SlotBodyComp({
                     <ModuleSettingComp
                       editModule={editModule}
                       refetch={refetch}
+                    />
+                  )}
+
+                  {currentTab === 'aglintaitoken' && (
+                    <InterviewTypeToken
+                      slotTokenItem={
+                        <>
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
+                        </>
+                      }
+                      slotAddToken={
+                        <ButtonGhost
+                          textButton='Add Token'
+                          iconName='add'
+                          size={2}
+                          isLeftIcon={true}
+                        />
+                      }
+                    />
+                  )}
+
+                  {currentTab === 'aglintaiinstruction' && (
+                    <AiBookingInstruction
+                    textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
+                    textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
+                      slotTextArea={
+                        <UITextField
+                          multiline
+                          minRows={6}
+                          maxRows={10}
+                          height={150}
+                          value={value}
+                          onChange={(e) => setValue(e.target.value)}
+                        />
+                      }
                     />
                   )}
                 </>

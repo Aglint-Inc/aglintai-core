@@ -10,6 +10,7 @@ type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
   return (
     <PageLayout
+    isHeaderDividerVisible={false}
       slotTopbarLeft={<BreadCrumbs />}
       slotTopbarRight={<Actions />}
       slotBody={props.children}

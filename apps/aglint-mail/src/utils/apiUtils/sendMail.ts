@@ -51,6 +51,7 @@ export const sendMailFun = async <
       api_target,
     );
   }
+
   if (payload) {
     fetched_temp.subject = payload.subject;
     fetched_temp.body = payload.body;

@@ -28,4 +28,6 @@ declare function JobsListingCard(props: {
   onClickInterview?: Types.Devlink.RuntimeProps;
   onClickQualified?: Types.Devlink.RuntimeProps;
   onClickDisqualified?: Types.Devlink.RuntimeProps;
+  isPinned?: Types.Visibility.VisibilityConditions;
+  onClickPin?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

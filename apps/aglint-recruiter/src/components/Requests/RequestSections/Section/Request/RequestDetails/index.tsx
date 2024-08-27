@@ -17,7 +17,6 @@ import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
-
 function RequestDetails({
   request,
 }: {
@@ -112,19 +111,18 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          {request.applications.public_jobs.workflow_job_relation.length > 0 ? (
-            <RequestProgress
-              request_type={request.type}
-              job_workflow={
-                request.applications.public_jobs.workflow_job_relation?.map(
-                  (j) => j.workflow,
-                ) ?? []
-              }
-            />
-          ) : null}
+          <RequestProgress
+            request_type={request.type}
+            job_workflow={
+              request.applications.public_jobs.workflow_job_relation?.map(
+                (j) => j.workflow,
+              ) ?? []
+            }
+          />
 
           {Boolean(
             request.status === 'to_do' &&
+              request.type === 'schedule_request' &&
               request.applications.public_jobs.workflow_job_relation.length > 0,
           ) && (
             <Stack

@@ -23,7 +23,7 @@ export function InterviewMemberList({
   return (
     <_Component className={_utils.cx(_styles, "iml-wrappers")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "interview-member-list-wrap")}
+        className={_utils.cx(_styles, "interview-member-list-wrapper")}
         tag="div"
       >
         <_Builtin.Block

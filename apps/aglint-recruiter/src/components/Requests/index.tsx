@@ -14,6 +14,8 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { ShowCode } from '../Common/ShowCode';
 import AgentChats from './AgentChats';
 import { AgentIEditorProvider } from './AgentChats/AgentEditorContext';
+import CompletedRequests from './CompletedRequests';
+import { useCompletedRequestsStore } from './CompletedRequests/store';
 import Dashboard from './Dashboard';
 import FilterAndSorting from './FiltersAndSorting';
 import RequestSections, { sectionDefaultsData } from './RequestSections';
@@ -144,6 +146,8 @@ const Requests = () => {
   useEffect(() => {
     setOpenChat(localStorage.getItem('openChat') === 'true' ? true : false);
   }, [localStorage.getItem('openChat')]);
+
+  const { completedMode } = useCompletedRequestsStore();
   return (
     <>
       <Stack
@@ -184,7 +188,6 @@ const Requests = () => {
             direction={'row'}
             justifyContent={'start'}
             alignItems={'end'}
-           
           >
             <AgentChats />
           </Stack>
@@ -199,6 +202,9 @@ const Requests = () => {
           <ShowCode>
             <ShowCode.When isTrue={showEmptyPage && isNotApplied}>
               <RequestAgentEmpty />
+            </ShowCode.When>
+            <ShowCode.When isTrue={completedMode}>
+              <CompletedRequests />
             </ShowCode.When>
             <ShowCode.When isTrue={queryParams.tab === 'requests'}>
               <RequestsWrapper

@@ -24,6 +24,20 @@ export const onUpdateCandidateRequestAvailability = async ({
     await pauseCandAvailabilityReminder(new_data.id);
     await triggerActions(new_data);
   }
+  //
+  if (
+    old_data.booking_confirmed === false &&
+    new_data.booking_confirmed === true
+  ) {
+    supabaseWrap(
+      await supabaseAdmin.from('request_progress').insert({
+        event_type: 'CAND_CONFIRM_SLOT',
+        request_id: new_data.request_id,
+        status: 'completed',
+        is_progress_step: false,
+      }),
+    );
+  }
 };
 
 const triggerActions = async (
@@ -97,7 +111,6 @@ const updateRequestProgress = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
   try {
-    if (!new_data.request_id) return;
     supabaseWrap(
       await supabaseAdmin.from('request_progress').insert({
         event_type: 'CAND_AVAIL_REC',
@@ -105,6 +118,14 @@ const updateRequestProgress = async (
         status: 'completed',
         is_progress_step: false,
       }),
+    );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'completed',
+        })
+        .eq('id', new_data.request_id),
     );
   } catch (err) {
     //

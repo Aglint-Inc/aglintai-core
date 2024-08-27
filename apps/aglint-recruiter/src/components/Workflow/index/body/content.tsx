@@ -75,6 +75,7 @@ const Cards = (props: {
         <OptimisticWrapper key={id} loading={loading}>
           <WorkflowCard
             key={id}
+            border={'visible'}
             isCheckboxVisible={false}
             textWorkflowName={capitalizeSentence(title ?? '---')}
             textWorkflowTrigger={getTriggerOption(trigger, phase)}

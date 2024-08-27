@@ -3,31 +3,86 @@ import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { initUser } from '@/src/pages/api/interviewers';
+import { allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { LeaderAnalyticsFilterType } from './types';
 
 // -------------------------------------------------------- InterviewerLoad
-export type useAllInterviewerType = Awaited<
-  ReturnType<typeof useAllInterviewer>
->;
 
-export function useAllInterviewer(recruiter_id: string) {
+export function useAllInterviewer({
+  start_time_param,
+  end_time_param,
+  department_ids_params = [],
+  office_location_ids_params = [],
+  job_ids_params = [],
+  module_ids_params = [],
+}: {
+  start_time_param: string;
+  end_time_param: string;
+  department_ids_params: number[];
+  office_location_ids_params: number[];
+  job_ids_params: string[];
+  module_ids_params: string[];
+}) {
+  const {
+    recruiter: { id: recruiter_id },
+  } = useAuthDetails();
   return useQuery({
-    queryKey: ['recruiter_id', recruiter_id],
-    queryFn: () => fetchAllInterviewer(recruiter_id),
+    queryKey: [
+      'recruiter_id',
+      recruiter_id,
+      start_time_param,
+      end_time_param,
+      department_ids_params,
+      office_location_ids_params,
+      job_ids_params,
+      module_ids_params,
+    ],
+    queryFn: () =>
+      fetchAllInterviewer({
+        recruiter_id,
+        start_time_param,
+        end_time_param,
+        department_ids_params,
+        office_location_ids_params,
+        job_ids_params,
+        module_ids_params,
+      }),
     enabled: Boolean(recruiter_id),
   });
 }
 
-const fetchAllInterviewer = async (recruiter_id: string) => {
-  const { data, error } = await supabase
-    .from('all_interviewers')
-    .select()
-    .eq('recruiter_id', recruiter_id);
-  if (error) throw new Error(error.message);
-
-  return data;
+const fetchAllInterviewer = async ({
+  recruiter_id,
+  start_time_param,
+  end_time_param,
+  department_ids_params = [],
+  office_location_ids_params = [],
+  job_ids_params = [],
+  module_ids_params = [],
+}: {
+  recruiter_id: string;
+  start_time_param: string;
+  end_time_param: string;
+  department_ids_params: number[];
+  office_location_ids_params: number[];
+  job_ids_params: string[];
+  module_ids_params: string[];
+}) => {
+  return axios
+    .post('/api/interviewers/getAllInterviewers', {
+      recruiter_id,
+      start_time_param,
+      end_time_param,
+      department_ids_params,
+      office_location_ids_params,
+      job_ids_params,
+      module_ids_params,
+    })
+    .then((data) => {
+      return data.data.data as allInterviewerType;
+    });
 };
 
 //------------------------------------------------------------- Availability

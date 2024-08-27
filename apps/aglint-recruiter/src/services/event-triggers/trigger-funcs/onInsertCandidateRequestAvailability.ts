@@ -11,59 +11,74 @@ export const onInsertCandidateRequestAvailability = async ({
 }: {
   new_data: DatabaseTable['candidate_request_availability'];
 }) => {
-  const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
-    'sendAvailReqReminder_email_applicant',
-  ];
-
-  const [application] = supabaseWrap(
-    await supabaseAdmin
-      .from('applications')
-      .select('*,public_jobs(*)')
-      .eq('id', new_data.application_id),
-  );
-
-  const { request_workflows } = await getWActions({
-    company_id: application.public_jobs.recruiter_id,
-    request_id: new_data.request_id,
+  await trigger({
+    new_data,
   });
-  const promises = [...request_workflows]
-    .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
-    .map(async (j_l_a) => {
-      let run_id = supabaseWrap(
-        await supabaseAdmin.rpc('create_new_workflow_action_log', {
-          triggered_table: 'candidate_request_availability',
-          base_time: dayjsLocal().toISOString(),
-          workflow_action_id: j_l_a.id,
-          workflow_id: j_l_a.workflow_id,
-          triggered_table_pkey: new_data.id,
-          interval_minutes: j_l_a.workflow.interval,
-          meta: {
-            target_api: j_l_a.target_api,
-            avail_req_id: new_data.id,
-            payload: j_l_a.payload,
-          },
-          phase: j_l_a.workflow.phase,
-        }),
-      );
-      if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
-        supabaseWrap(
-          await supabaseAdmin.from('request_progress').insert({
-            is_progress_step: false,
-            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
-            status: 'completed',
-            request_id: new_data.request_id,
-            created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(), // NOTE: workaround
+};
+
+export const trigger = async ({
+  new_data,
+}: {
+  new_data: DatabaseTable['candidate_request_availability'];
+}) => {
+  try {
+    const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
+      'sendAvailReqReminder_email_applicant',
+    ];
+
+    const [application] = supabaseWrap(
+      await supabaseAdmin
+        .from('applications')
+        .select('*,public_jobs(*)')
+        .eq('id', new_data.application_id),
+    );
+
+    const { request_workflows } = await getWActions({
+      company_id: application.public_jobs.recruiter_id,
+      request_id: new_data.request_id,
+    });
+    const promises = [...request_workflows]
+      .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
+      .map(async (j_l_a) => {
+        let run_id = supabaseWrap(
+          await supabaseAdmin.rpc('create_new_workflow_action_log', {
+            triggered_table: 'candidate_request_availability',
+            base_time: dayjsLocal().toISOString(),
+            workflow_action_id: j_l_a.id,
+            workflow_id: j_l_a.workflow_id,
+            triggered_table_pkey: new_data.id,
+            interval_minutes: j_l_a.workflow.interval,
             meta: {
-              workflow_action_id: j_l_a.id,
-              event_run_id: run_id,
-              scheduled_time: dayjsLocal()
-                .add(j_l_a.workflow.interval, 'minutes')
-                .toISOString(),
+              target_api: j_l_a.target_api,
+              avail_req_id: new_data.id,
+              payload: j_l_a.payload,
             },
+            phase: j_l_a.workflow.phase,
           }),
         );
-      }
-    });
+        if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
+          supabaseWrap(
+            await supabaseAdmin.from('request_progress').insert({
+              is_progress_step: false,
+              event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+              status: 'completed',
+              request_id: new_data.request_id,
+              created_at: dayjsLocal().add(3000, 'milliseconds').toISOString(), // NOTE: workaround
+              meta: {
+                workflow_action_id: j_l_a.id,
+                event_run_id: run_id,
+                scheduled_time: dayjsLocal()
+                  .add(j_l_a.workflow.interval, 'minutes')
+                  .toISOString(),
+              },
+            }),
+          );
+        }
+      });
 
-  await Promise.allSettled(promises);
+    await Promise.allSettled(promises);
+  } catch (err) {
+    console.error('Failed onInsertCandidateRequestAvailability', err);
+    console.error(new_data);
+  }
 };

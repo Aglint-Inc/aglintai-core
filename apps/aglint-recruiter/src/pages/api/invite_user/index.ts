@@ -1,24 +1,20 @@
-import { DB, RecruiterUserType } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
+import { RecruiterUserType, SupabaseType } from '@aglint/shared-types';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 import { companyType } from '@/src/utils/userRoles';
 
 import { server_getUserRoleAndId } from '../reset_password';
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
-);
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const supabaseAdmin = getSupabaseServer();
   const requestHandler = apiRequestHandlerFactory<InviteUserAPIType>(req, res);
   requestHandler(
     'POST',
@@ -34,10 +30,15 @@ export default async function handler(
       let user_id: string = null;
       try {
         for (let user of users) {
-          const recUser = await registerMember(user, recruiter_id, id);
+          const recUser = await registerMember(
+            supabaseAdmin,
+            user,
+            recruiter_id,
+            id,
+          );
           checkCalendarStatus(recUser.user_id);
           const { error: resetEmail } =
-            await supabase.auth.resetPasswordForEmail(recUser.email, {
+            await supabaseAdmin.auth.resetPasswordForEmail(recUser.email, {
               redirectTo,
             });
           if (resetEmail) {
@@ -49,7 +50,7 @@ export default async function handler(
           };
         }
       } catch (error: any) {
-        user_id && (await supabase.auth.admin.deleteUser(user_id));
+        user_id && (await supabaseAdmin.auth.admin.deleteUser(user_id));
         return { error: String(error.message) };
       }
       // }
@@ -67,6 +68,7 @@ const checkCalendarStatus = async (user_id: string) => {
 };
 
 export async function registerMember(
+  supabaseAdmin: SupabaseType,
   user: Omit<InviteUserAPIType['request']['users'][number], 'manager_id'> & {
     manager_id?: string;
     remote_id?: string;
@@ -74,7 +76,7 @@ export async function registerMember(
   recruiter_id: string,
   create_id: string,
 ) {
-  const { data, error } = await supabase.auth.admin.createUser({
+  const { data, error } = await supabaseAdmin.auth.admin.createUser({
     email: user.email,
     password: 'Welcome@123',
     user_metadata: {
@@ -89,7 +91,7 @@ export async function registerMember(
   if (error) throw new Error(error.message);
   const email = data.user.email;
   const userId = data.user.id;
-  const { data: recUser } = await supabase
+  const { data: recUser } = await supabaseAdmin
     .from('recruiter_user')
     .insert({
       user_id: userId,
@@ -110,7 +112,7 @@ export async function registerMember(
     .single()
     .throwOnError();
 
-  const { data: relation, error: relationError } = await supabase
+  const { data: relation, error: relationError } = await supabaseAdmin
     .from('recruiter_relation')
     .insert({
       recruiter_id,

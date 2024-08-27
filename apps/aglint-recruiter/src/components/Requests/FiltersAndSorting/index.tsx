@@ -104,12 +104,14 @@ function FilterAndSorting() {
       setFilters((prev) => ({ ...prev, jobs: newValue }));
     },
     options: candidateAndJobs
-      ? candidateAndJobs.jobs.map((ele: { id: string; job_title: string }) => {
-          return {
-            id: ele.id,
-            label: ele.job_title,
-          };
-        })
+      ? candidateAndJobs.jobs.map(
+          (ele: { job_id: string; job_title: string }) => {
+            return {
+              id: ele.job_id,
+              label: ele.job_title,
+            };
+          },
+        )
       : [],
   } as (typeof safeFilters)[number];
 

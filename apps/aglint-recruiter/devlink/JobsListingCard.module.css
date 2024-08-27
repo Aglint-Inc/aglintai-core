@@ -1,4 +1,6 @@
 .rd-job-list-item {
+  position: relative;
+
   display: grid;
   padding-right: var(--space-4);
   padding-left: var(--space-4);
@@ -45,14 +47,17 @@
 }
 
 .rd-job-info-wrapper {
-  display: flex;
+  display: grid;
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   flex: 1;
-  grid-column-gap: var(--space-2);
-  grid-row-gap: var(--space-2);
+  grid-auto-columns: 1fr;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: auto;
 
   cursor: pointer;
 }
@@ -60,6 +65,8 @@
 .rd-company-info-block {
   display: flex;
   width: 100%;
+  height: 100%;
+  padding-bottom: 8px;
   justify-content: flex-start;
   align-items: flex-start;
   grid-column-gap: var(--space-2);
@@ -299,9 +306,54 @@
   text-transform: capitalize;
 }
 
+.radix-button {
+  position: relative;
+  z-index: 1;
+
+  overflow: visible;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  user-select: none;
+}
+
+.default_state {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.is_pinned {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
 .applicants-number-wrapper {
   display: grid;
-  padding-top: 8px;
   justify-content: space-between;
   align-items: center;
   flex: 1;
@@ -373,7 +425,22 @@
   cursor: pointer;
 }
 
+.pinned_bg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: var(--radius-4);
+
+  box-shadow: 0 0 0 1.5px #d5ae39;
+}
+
 #w-node-_461ea21c-dff4-f2e0-3807-df801cb5bccb-e4f6dd07 {
+}
+#w-node-_4c8f5e59-2551-ecd2-b94c-afc3e4f6dd09-e4f6dd07 {
+  align-self: stretch;
 }
 #w-node-a59fdab3-4a41-7f67-5475-8f76c5678d29-e4f6dd07 {
 }
@@ -382,4 +449,6 @@
 #w-node-fd801a9c-fafd-cb7f-ee44-ae19a9fdb141-e4f6dd07 {
 }
 #w-node-f1d789ae-0dc9-e05d-864a-d3bce827e58c-e4f6dd07 {
+}
+#w-node-eaab7862-bbf7-4d43-4ed0-c20f4aec9c62-e4f6dd07 {
 }

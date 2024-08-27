@@ -65,6 +65,7 @@ const EventNode = ({
               return (
                 <>
                   <TextWithIcon
+                    iconName='check'
                     textContent={prg.log}
                     fontSize={1}
                     color={'grey'}

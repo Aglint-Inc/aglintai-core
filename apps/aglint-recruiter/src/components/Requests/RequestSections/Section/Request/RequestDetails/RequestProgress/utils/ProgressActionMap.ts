@@ -10,7 +10,6 @@ export const progressActionMap: Partial<
   >
 > = {
   CHOOSE_SCHEDULE_FLOW_not_started: ScheduleFlows,
-  REQ_CAND_AVAIL_EMAIL_LINK_failed: ScheduleFlows,
-  CAND_AVAIL_REC_completed: ScheduleFlows,
   SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE_completed: SelfScheduleFollowUp,
+  SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK_completed: SelfScheduleFollowUp,
 };

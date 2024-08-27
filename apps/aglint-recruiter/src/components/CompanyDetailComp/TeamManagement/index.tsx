@@ -194,59 +194,61 @@ const TeamManagement = () => {
         }
         slotSearchAndFilter={
           <>
-            <Stack marginRight={5}>
-              <SearchField
-                value={searchText}
-                onChange={handleTextChange}
-                onClear={handleTextClear}
-                placeholder='Search users'
-              />
-            </Stack>
-            <Stack
-              display={'flex'}
-              flexDirection={'row'}
-              gap={'var(--space-2)'}
-            >
-              {isResetAllVisible && (
-                <ButtonGhost
-                  textButton='Reset All'
-                  color={'neutral'}
-                  size={2}
-                  iconName='refresh'
-                  isLeftIcon
-                  onClickButton={{
-                    onClick: resetAllFilter,
-                  }}
+            <Stack flexDirection={'row'} alignItems={'center'}>
+              <Stack marginRight={2}>
+                <SearchField
+                  value={searchText}
+                  onChange={handleTextChange}
+                  onClear={handleTextClear}
+                  placeholder='Search users'
                 />
-              )}
-              <FilterDropDown
-                icon={<StatusIcon />}
-                title={'Status'}
-                itemList={uniqueStatus}
-                selectedItems={selectedStatus}
-                setSelectedItems={setSelectedStatus}
-              />
-              <FilterDropDown
-                icon={<UserRoleIcon />}
-                title={'Role'}
-                itemList={uniqueRoles}
-                selectedItems={selectedRoles}
-                setSelectedItems={setSelectedRoles}
-              />
-              <FilterDropDown
-                title={'Department'}
-                itemList={uniqueDepartments}
-                selectedItems={selectedDepartments}
-                setSelectedItems={setSelectedDepartments}
-                icon={<DepartmentIcon />}
-              />
-              <FilterDropDown
-                icon={<LocationIcon />}
-                title={'Location'}
-                itemList={uniqueLocations}
-                selectedItems={selectedLocations}
-                setSelectedItems={setSelectedLocations}
-              />
+              </Stack>
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                gap={'var(--space-2)'}
+              >
+                {isResetAllVisible && (
+                  <ButtonGhost
+                    textButton='Reset All'
+                    color={'neutral'}
+                    size={2}
+                    iconName='refresh'
+                    isLeftIcon
+                    onClickButton={{
+                      onClick: resetAllFilter,
+                    }}
+                  />
+                )}
+                <FilterDropDown
+                  icon={<StatusIcon />}
+                  title={'Status'}
+                  itemList={uniqueStatus}
+                  selectedItems={selectedStatus}
+                  setSelectedItems={setSelectedStatus}
+                />
+                <FilterDropDown
+                  icon={<UserRoleIcon />}
+                  title={'Role'}
+                  itemList={uniqueRoles}
+                  selectedItems={selectedRoles}
+                  setSelectedItems={setSelectedRoles}
+                />
+                <FilterDropDown
+                  title={'Department'}
+                  itemList={uniqueDepartments}
+                  selectedItems={selectedDepartments}
+                  setSelectedItems={setSelectedDepartments}
+                  icon={<DepartmentIcon />}
+                />
+                <FilterDropDown
+                  icon={<LocationIcon />}
+                  title={'Location'}
+                  itemList={uniqueLocations}
+                  selectedItems={selectedLocations}
+                  setSelectedItems={setSelectedLocations}
+                />
+              </Stack>
             </Stack>
           </>
         }

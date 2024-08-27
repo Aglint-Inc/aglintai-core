@@ -4,6 +4,7 @@ import React from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import CheckCircleFilled from '../CheckCircleFilled';
@@ -41,11 +42,16 @@ const InterviewSchedule = ({
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
-        textContent={<>EVENT : On Inteview is Scheduled</>}
-        iconSize={3}
+        iconName='expand_circle_right'
+        textContent={`On Inteview is Scheduled`}
+        iconSize={4}
         fontSize={1}
         color={getProgressColor(tense)}
       />
+      <ShowCode.When isTrue={true}>
+        <></>
+      </ShowCode.When>
+      <Stack></Stack>
       <Stack ml={4}>
         {eventWActions
           .map((eA) => {
