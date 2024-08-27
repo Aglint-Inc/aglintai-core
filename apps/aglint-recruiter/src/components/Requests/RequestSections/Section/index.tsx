@@ -85,6 +85,7 @@ function Section({
       {sectionName === 'completed_request' && (
         <Stack width={'100%'} direction={'row'} justifyContent={'start'}>
           <ButtonGhost
+            size={2}
             color={'accent'}
             textButton={'View all completed requests'}
             isRightIcon={true}
