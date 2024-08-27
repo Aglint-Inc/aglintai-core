@@ -117,7 +117,7 @@ export async function POST(req) {
     const create_id = adminIds[Math.floor(Math.random() * adminIds.length)];
 
     const requests = users.map((user) =>
-      registerMember(user, recruiter_id, create_id),
+      registerMember(supabaseAdmin, user, recruiter_id, create_id),
     );
 
     const results = await Promise.allSettled(requests);
