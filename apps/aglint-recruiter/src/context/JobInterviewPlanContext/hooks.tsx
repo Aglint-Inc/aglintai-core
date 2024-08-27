@@ -12,6 +12,7 @@ import {
   useDeleteInterviewSession,
   useEditDebriefSession,
   useEditInterviewSession,
+  useInterviewPlanMutation,
   useReorderInterviewSessions,
   useSwapInterviewPlan,
   useUpdateInterviewPlan,
@@ -29,6 +30,7 @@ const useJobInterviewPlanActions = () => {
   const { mutateAsync: updatePlan } = useUpdateInterviewPlan();
   const { mutateAsync: deletePlan } = useDeleteInterviewPlan();
   const { mutateAsync: swapPlans } = useSwapInterviewPlan();
+  const { swap, update, remove } = useInterviewPlanMutation();
   const { mutateAsync: createSession } = useAddInterviewSession();
   const { mutate: handleUpdateSession } = useUpdateInterviewSession();
   const { mutate: handleEditSession } = useEditInterviewSession();
@@ -97,6 +99,16 @@ const useJobInterviewPlanActions = () => {
     }
   };
 
+  const isPlanMutating = (id: string) => {
+    return (
+      !!swap.find(
+        ({ plan_id_1, plan_id_2 }) => plan_id_1 === id || plan_id_2 === id,
+      ) ||
+      !!update.find((payload) => id === payload.id) ||
+      !!remove.find((payload) => id === payload.id)
+    );
+  };
+
   const value = {
     job,
     initialLoad,
@@ -114,6 +126,7 @@ const useJobInterviewPlanActions = () => {
     updatePlan,
     deletePlan,
     handleReorderSessions,
+    isPlanMutating,
     interviewPlans,
     manageJob,
   };
