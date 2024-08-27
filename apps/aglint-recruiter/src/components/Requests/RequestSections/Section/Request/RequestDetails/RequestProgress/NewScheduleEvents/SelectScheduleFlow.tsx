@@ -185,6 +185,16 @@ const AvailabilityFlowMenus = ({
             reqProgressMap={scheduleReqProgressMap}
           />
         </ShowCode.When>
+        <ShowCode.When
+          isTrue={Boolean(
+            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
+          )}
+        >
+          <EventNode
+            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
+            reqProgressMap={scheduleReqProgressMap}
+          />
+        </ShowCode.When>
       </ShowCode.When>
       <ShowCode.When
         isTrue={
