@@ -112,16 +112,14 @@ function RequestDetails({
       isBodyVisible={true}
       slotBody={
         <>
-          {request.applications.public_jobs.workflow_job_relation.length > 0 ? (
-            <RequestProgress
-              request_type={request.type}
-              job_workflow={
-                request.applications.public_jobs.workflow_job_relation?.map(
-                  (j) => j.workflow,
-                ) ?? []
-              }
-            />
-          ) : null}
+          <RequestProgress
+            request_type={request.type}
+            job_workflow={
+              request.applications.public_jobs.workflow_job_relation?.map(
+                (j) => j.workflow,
+              ) ?? []
+            }
+          />
 
           {Boolean(
             request.status === 'to_do' &&
