@@ -8,6 +8,7 @@ import { AtsBadge } from '@/devlink/AtsBadge';
 import { JobEmptyState } from '@/devlink/JobEmptyState';
 import { JobsListingCard } from '@/devlink/JobsListingCard';
 import { useApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
+import { useJobs } from '@/src/context/JobsContext';
 import { Job } from '@/src/queries/jobs/types';
 import { Application } from '@/src/types/applications.types';
 import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
@@ -30,7 +31,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
-
+  const { handleJobPin } = useJobs();
   const { getParams } = useApplicationsParams();
   const router = useRouter();
   const { push } = useRouter();
@@ -54,6 +55,11 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <>
             <ScrollList key={ind} uniqueKey={job.id}>
               <JobsListingCard
+                isPinned={job.is_pinned}
+                onClickPin={{
+                  onClick: () =>
+                    handleJobPin({ id: job.id, is_pinned: !job.is_pinned }),
+                }}
                 onClickNew={{ onClick: () => handlClick(job.id, 'new') }}
                 onClickAssessment={{
                   onClick: () => handlClick(job.id, 'assessment'),
