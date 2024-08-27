@@ -6,9 +6,9 @@ CREATE OR REPLACE FUNCTION public.swap_stage_order(plan_id_1 uuid, plan_id_2 uui
 AS $function$
 DECLARE
   job_id_1 uuid;
-  plan_order_1 uuid;
+  plan_order_1 numeric;
   job_id_2 uuid;
-  plan_order_2 uuid;
+  plan_order_2 numeric;
 BEGIN
   SELECT job_id, plan_order INTO job_id_1, plan_order_1
   FROM interview_plan
