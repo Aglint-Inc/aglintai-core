@@ -1,4 +1,4 @@
-import { Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack, TextareaAutosize, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
+import { AiBookingInstruction } from '@/devlink3/AiBookingInstruction';
 import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
@@ -43,6 +44,9 @@ import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
+import { InterviewTypeToken, TokenItem } from '@/devlink3';
+import UITextField from '@/src/components/Common/UITextField';
+import { ButtonGhost } from '@/devlink2';
 
 interface SlotBodyCompProps {
   editModule: ModuleType;
@@ -139,6 +143,12 @@ function SlotBodyComp({
   const id = open ? 'simple-popover' : undefined;
 
   const queryClient = useQueryClient();
+
+  const [value, setValue] = useState(`Rotate interviewers to ensure diverse perspectives across interview stages.
+Allocate more technical interviews to senior team members with specialized skills.
+Ensure interviewers have at least a 30-minute buffer between sessions for debriefing.
+Assign panel interviews to teams with complementary expertise to cover all evaluation angles.
+Balance interview load across the team, avoiding back-to-back slots when possible.`);
 
   return (
     <>
@@ -264,6 +274,56 @@ function SlotBodyComp({
                     <ModuleSettingComp
                       editModule={editModule}
                       refetch={refetch}
+                    />
+                  )}
+
+                  {currentTab === 'aglinttoken' && (
+                    <InterviewTypeToken
+                      slotTokenItem={
+                        <>
+                        <TokenItem
+                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                          slotBadge={
+                            <GlobalBadge textBadge='Token1' color={'purple'} />
+                          }
+                        />
+                        <TokenItem
+                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                          slotBadge={
+                            <GlobalBadge textBadge='Token1' color={'purple'} />
+                          }
+                        />
+                        <TokenItem
+                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                          slotBadge={
+                            <GlobalBadge textBadge='Token1' color={'purple'} />
+                          }
+                        />
+                        </>
+                      }
+                      slotAddToken={
+                        <ButtonGhost
+                          textButton='Add Token'
+                          iconName='add'
+                          size={2}
+                          isLeftIcon={true}
+                        />
+                      }
+                    />
+                  )}
+
+                  {currentTab === 'aglintinstruction' && (
+                    <AiBookingInstruction
+                      slotTextArea={
+                        <UITextField
+                          multiline
+                          minRows={6}
+                          maxRows={10}
+                          height={150}
+                          value={value}
+                          onChange={(e) => setValue(e.target.value)}
+                        />
+                      }
                     />
                   )}
                 </>
