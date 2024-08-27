@@ -1,4 +1,4 @@
-import { Popover, Stack, TextareaAutosize, Typography } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -7,13 +7,17 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
 import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { AiBookingInstruction } from '@/devlink3/AiBookingInstruction';
+import { InterviewTypeToken } from '@/devlink3/InterviewTypeToken';
 import { MoreMenu } from '@/devlink3/MoreMenu';
 import { NewTabPill } from '@/devlink3/NewTabPill';
+import { TokenItem } from '@/devlink3/TokenItem';
 import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import Loader from '@/src/components/Common/Loader';
+import UITextField from '@/src/components/Common/UITextField';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import { useAllDepartments } from '@/src/queries/departments';
@@ -44,9 +48,6 @@ import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
-import { InterviewTypeToken, TokenItem } from '@/devlink3';
-import UITextField from '@/src/components/Common/UITextField';
-import { ButtonGhost } from '@/devlink2';
 
 interface SlotBodyCompProps {
   editModule: ModuleType;
@@ -144,7 +145,8 @@ function SlotBodyComp({
 
   const queryClient = useQueryClient();
 
-  const [value, setValue] = useState(`Rotate interviewers to ensure diverse perspectives across interview stages.
+  const [value, setValue] =
+    useState(`Rotate interviewers to ensure diverse perspectives across interview stages.
 Allocate more technical interviews to senior team members with specialized skills.
 Ensure interviewers have at least a 30-minute buffer between sessions for debriefing.
 Assign panel interviews to teams with complementary expertise to cover all evaluation angles.
@@ -281,24 +283,33 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     <InterviewTypeToken
                       slotTokenItem={
                         <>
-                        <TokenItem
-                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                          slotBadge={
-                            <GlobalBadge textBadge='Token1' color={'purple'} />
-                          }
-                        />
-                        <TokenItem
-                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                          slotBadge={
-                            <GlobalBadge textBadge='Token1' color={'purple'} />
-                          }
-                        />
-                        <TokenItem
-                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                          slotBadge={
-                            <GlobalBadge textBadge='Token1' color={'purple'} />
-                          }
-                        />
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
+                          <TokenItem
+                            textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                            slotBadge={
+                              <GlobalBadge
+                                textBadge='Token1'
+                                color={'purple'}
+                              />
+                            }
+                          />
                         </>
                       }
                       slotAddToken={
