@@ -1,23 +1,12 @@
 import { Stack } from '@mui/material';
-import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { CreateJob } from '@/devlink/CreateJob';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { JobsDashboard } from '@/devlink/JobsDashboard';
-import { AshbyModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby';
-import { GreenhouseModal } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal';
-import LeverModalComp from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
-import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import {
-  STATE_ASHBY_DIALOG,
-  STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
-} from '@/src/context/IntegrationProvider/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
@@ -107,21 +96,22 @@ export default DashboardComp;
 
 export function AddJob() {
   const router = useRouter();
-  const { setIntegration } = useIntegration();
-  const { data: int, isLoading } = useAllIntegrations();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { recruiter } = useAuthDetails();
+  // const { setIntegration } = useIntegration();
+  // const { data: int, isLoading } = useAllIntegrations();
+  // const [anchorEl, setAnchorEl] = useState(null);
 
   //popover Add Job
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClosePop = () => {
-    setAnchorEl(null);
-  };
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClosePop = () => {
+  //   setAnchorEl(null);
+  // };
   return (
     <>
-      <Popover
+      {/* <Popover
         id='add-job'
         open={open}
         anchorEl={anchorEl}
@@ -193,19 +183,28 @@ export function AddJob() {
             }}
           />
         )}
-      </Popover>
+      </Popover> */}
 
-      <LeverModalComp />
+      {/* <LeverModalComp />
       <GreenhouseModal />
-      <AshbyModalComp />
-      <ButtonSoft
-        size={2}
-        color={'neutral'}
-        textButton={'Add job'}
-        isRightIcon
-        iconName={'keyboard_arrow_down'}
-        onClickButton={{ onClick: handleClick }}
-      />
+      <AshbyModalComp /> */}
+      {recruiter?.recruiter_preferences?.greenhouse ? (
+        <ButtonGhost
+          isLeftIcon
+          iconName={'sync'}
+          color={'accent'}
+          textButton={'Sync jobs'}
+        />
+      ) : (
+        <ButtonSolid
+          size={2}
+          color={'accent'}
+          textButton={'Add job'}
+          onClickButton={{
+            onClick: () => router.push(ROUTES['/jobs/create']()),
+          }}
+        />
+      )}
     </>
   );
 }
