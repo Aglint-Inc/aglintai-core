@@ -1,9 +1,10 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
-import { Button } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { supabase } from '@/src/utils/supabase/client';
@@ -47,28 +48,35 @@ const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
     copy = `Follow Up Sent at ${dayjsLocal(scheduledDate).format(DAYJS_FORMATS.DATE_TIME_FORMAT)}`;
   }
   return (
-    <>
-      <TextWithIcon textContent={copy} fontSize={1} color={'grey'} />
-
+    <Stack gap={1}>
+      <TextWithIcon
+        iconName={'check'}
+        textContent={copy}
+        fontSize={1}
+        color={'grey'}
+      />
       <ShowCode.When isTrue={!isTimePast}>
-        <span>
-          <Button
-            onClick={() => {
-              //
+        <Stack
+          width={'100%'}
+          direction={'row'}
+          justifyContent={'start'}
+          gap={1}
+        >
+          <ButtonSoft size={1} color={'accent'} textButton={'Edit Email'} />
+
+          <ButtonSoft
+            size={1}
+            color={'accent'}
+            onClickButton={{
+              onClick: () => {
+                handleSubmit();
+              },
             }}
-          >
-            Edit Email
-          </Button>
-          <Button
-            onClick={() => {
-              handleSubmit();
-            }}
-          >
-            {isLoading ? <>loading...</> : <>Send now</>}
-          </Button>
-        </span>
+            textButton={isLoading ? <>loading...</> : <>Send now</>}
+          />
+        </Stack>
       </ShowCode.When>
-    </>
+    </Stack>
   );
 };
 

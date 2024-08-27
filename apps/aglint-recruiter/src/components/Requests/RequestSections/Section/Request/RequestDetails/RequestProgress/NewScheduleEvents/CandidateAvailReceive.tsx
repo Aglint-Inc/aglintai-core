@@ -18,6 +18,12 @@ import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import { ButtonSoft } from '@/devlink2';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 
 const CandidateAvailReceive = ({
   eventTargetMap,
@@ -126,16 +132,32 @@ const CandidateAvailReceive = ({
             Boolean(!eventTargetMap['onReceivingAvailReq'])
           }
         >
-          <span>
-            <Button onClick={handleConfirmSlot}>Schedule Interview</Button>
-            <Button
-              onClick={() => {
-                //
+          <Stack
+            width={'100%'}
+            direction={'row'}
+            justifyContent={'flex-end'}
+            gap={1}
+          >
+            <ButtonSoft
+              size={1}
+              color={'accent'}
+              textButton='Schedule Interview'
+            />
+            <ButtonSoft
+              size={1}
+              color='accent'
+              onClickButton={{
+                onClick: () => {
+                  setCandidateAvailabilityDrawerOpen(true);
+                  setReRequestAvailability(true);
+                  setCandidateAvailabilityIdForReRequest(
+                    '6b7657ba-cc3f-4789-a44f-5be74d234f84',
+                  );
+                },
               }}
-            >
-              Re Request Availability
-            </Button>
-          </span>
+              textButton='Re Request Availability'
+            />
+          </Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
           {Boolean(eventTargetMap['onReceivingAvailReq']) &&
