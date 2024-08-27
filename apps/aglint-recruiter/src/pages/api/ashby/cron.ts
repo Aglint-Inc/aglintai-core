@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from('recruiter')
       .select('*,integrations(*)')
-      .not('ashby_key', 'is', null);
+      .not('integrations.ashby_key', 'is', null);
     if (error) {
       throw new Error(error.message);
     } else {
