@@ -1,5 +1,5 @@
-import type { DatabaseTable } from "..";
-import type { Database } from "./schema.types";
+import type { DatabaseTable } from '..';
+import type { Database } from './schema.types';
 
 export type Custom<
   T extends Record<any, any>[] | Record<any, any>,
@@ -14,17 +14,17 @@ export type Custom<
     ? Omit<T, keyof U> & U
     : U;
 
-export type CustomizableTypes<T extends "Array" | "Object"> = T extends "Array"
+export type CustomizableTypes<T extends 'Array' | 'Object'> = T extends 'Array'
   ? Record<any, any>[]
   : Record<any, any>;
 
 export type Type<
-  T extends CustomizableTypes<"Array"> | CustomizableTypes<"Object">,
-  U extends T extends CustomizableTypes<"Array">
+  T extends CustomizableTypes<'Array'> | CustomizableTypes<'Object'>,
+  U extends T extends CustomizableTypes<'Array'>
     ? Partial<{ [id in keyof T[number]]: any }>
     : Partial<{ [id in keyof T]: any }>,
 > =
-  T extends CustomizableTypes<"Array">
+  T extends CustomizableTypes<'Array'>
     ? (Omit<T[number], keyof U> &
         Required<Pick<U, Extract<keyof RequiredOnly<T[number]>, keyof U>>> &
         Partial<Pick<U, Extract<keyof PartialOnly<T[number]>, keyof U>>>)[]
@@ -32,23 +32,23 @@ export type Type<
         Required<Pick<U, Extract<keyof RequiredOnly<T>, keyof U>>> &
         Partial<Pick<U, Extract<keyof PartialOnly<T>, keyof U>>>;
 
-export type RequiredOnly<T extends CustomizableTypes<"Object">> = Pick<
+export type RequiredOnly<T extends CustomizableTypes<'Object'>> = Pick<
   T,
   {
     [id in keyof T]-?: undefined extends T[id] ? never : id;
   }[keyof T]
 >;
 
-export type PartialOnly<T extends CustomizableTypes<"Object">> = Omit<
+export type PartialOnly<T extends CustomizableTypes<'Object'>> = Omit<
   T,
   keyof RequiredOnly<T>
 >;
 
-type CustomActionType = "slack" | "email" | "end_point" | "agent_instruction";
+type CustomActionType = 'slack' | 'email' | 'end_point' | 'agent_instruction';
 
 type CustomEmailPayload = Pick<
-  Database["public"]["Tables"]["company_email_template"]["Row"],
-  "subject" | "body"
+  Database['public']['Tables']['company_email_template']['Row'],
+  'subject' | 'body'
 >;
 
 type CustomSlackPayload = null | undefined;
@@ -61,7 +61,7 @@ type TimeRange = { startTime: Timestamp; endTime: Timestamp }[];
 
 export type CustomAgentInstructionPayload = {
   instruction: string;
-  ai_response_status: "not_started" | "processing" | "success" | "failed";
+  ai_response_status: 'not_started' | 'processing' | 'success' | 'failed';
   ai_response: {
     scheduleWithinNumDays: number;
     schedulewithMaxNumDays: number;
@@ -76,45 +76,45 @@ export type CustomAgentInstructionPayload = {
 
 export type ValidWorkflowActionEntries<
   T extends
-    Database["public"]["Enums"]["workflow_trigger"] = Database["public"]["Enums"]["workflow_trigger"],
+    Database['public']['Enums']['workflow_trigger'] = Database['public']['Enums']['workflow_trigger'],
 > =
   | {
-      action_type: Extract<CustomActionType, "email">;
+      action_type: Extract<CustomActionType, 'email'>;
       payload?: CustomEmailPayload;
       target_api: Extract<
-        Database["public"]["Enums"]["email_slack_types"],
-        `${T}_${"email"}_${string}`
+        Database['public']['Enums']['email_slack_types'],
+        `${T}_${'email' | 'emailLink'}_${string}`
       >;
     }
   | {
-      action_type: Extract<CustomActionType, "slack">;
+      action_type: Extract<CustomActionType, 'slack'>;
       payload?: CustomSlackPayload;
       target_api: Extract<
-        Database["public"]["Enums"]["email_slack_types"],
-        `${T}_${"slack"}_${string}`
+        Database['public']['Enums']['email_slack_types'],
+        `${T}_${'slack'}_${string}`
       >;
     }
   | {
-      action_type: Extract<CustomActionType, "end_point">;
+      action_type: Extract<CustomActionType, 'end_point'>;
       payload?: CustomEndPointPayload;
       target_api: Extract<
-        Database["public"]["Enums"]["email_slack_types"],
+        Database['public']['Enums']['email_slack_types'],
         `${T}_${
-          | "end_point"
-          | "slack"
-          | "agent"
-          | "EmailLink"
-          | "EmailAgent"
-          | "emailAgent"
-          | "PhoneAgent"}_${string}`
+          | 'end_point'
+          | 'slack'
+          | 'agent'
+          | 'EmailLink'
+          | 'EmailAgent'
+          | 'emailAgent'
+          | 'PhoneAgent'}_${string}`
       >;
     }
   | {
-      action_type: Extract<CustomActionType, "agent_instruction">;
+      action_type: Extract<CustomActionType, 'agent_instruction'>;
       payload?: CustomAgentInstructionPayload;
       target_api: Extract<
-        Database["public"]["Enums"]["email_slack_types"],
-        `${T}_${"agent_instruction" | "emailLink" | "agent"}_${string}`
+        Database['public']['Enums']['email_slack_types'],
+        `${T}_${'agent_instruction' | 'emailLink' | 'agent' | 'emailAgent' | 'phoneAgent'}_${string}`
       >;
     } extends infer S
   ? S extends { target_api: never }
@@ -124,7 +124,7 @@ export type ValidWorkflowActionEntries<
 
 export type Trigger_API_Action_Mapper<
   T extends
-    DatabaseTable["workflow"]["trigger"] = DatabaseTable["workflow"]["trigger"],
+    DatabaseTable['workflow']['trigger'] = DatabaseTable['workflow']['trigger'],
 > = {
   [Trigger in T]: {
     name: string;

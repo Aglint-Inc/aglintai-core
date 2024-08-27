@@ -306,11 +306,6 @@ export const seed_workflow_actions: {
         target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink',
         action_type: 'end_point',
       },
-      {
-        order: 0,
-        target_api: 'onRequestSchedule_emailAgent_getCandidateAvailability',
-        action_type: 'end_point',
-      },
     ],
   },
   {
