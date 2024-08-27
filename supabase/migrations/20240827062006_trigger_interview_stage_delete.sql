@@ -8,7 +8,7 @@ BEGIN
   WITH ordered_stages AS (
     select
       interview_plan.id,
-      row_number() over(order by interview_plan.plan_order, interview_plan.name, interview_plan.id) as plan_order
+      row_number() over(order by interview_plan.plan_order, interview_plan.name, interview_plan.id ) as plan_order
     from
       interview_plan
     where
