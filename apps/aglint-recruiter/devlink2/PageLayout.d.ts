@@ -9,4 +9,5 @@ declare function PageLayout(props: {
   isBackButton?: Types.Visibility.VisibilityConditions;
   onClickBack?: Types.Devlink.RuntimeProps;
   slotSaving?: Types.Devlink.Slot;
+  isHeaderDividerVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

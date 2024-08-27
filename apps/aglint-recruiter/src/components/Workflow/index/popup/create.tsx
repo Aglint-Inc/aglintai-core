@@ -51,7 +51,7 @@ const Create = () => {
 
   return (
     <>
-      <ButtonSoft
+      <ButtonSolid
         size={'1'}
         iconName={'bolt'}
         isLeftIcon={true}

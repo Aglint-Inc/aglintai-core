@@ -24,6 +24,7 @@ export function WorkflowCard({
   isChecked = false,
   isEditButton = true,
   showButtons = false,
+  border,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -40,6 +41,7 @@ export function WorkflowCard({
         <_Builtin.Block
           className={_utils.cx(_styles, "workflow_card")}
           tag="div"
+          borders={border}
         >
           {isCheckboxVisible ? (
             <_Builtin.Block
@@ -136,6 +138,10 @@ export function WorkflowCard({
           />
         ) : null}
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%5Bborders%3D'visible'%5D%7B%0Aborder%3A%201px%20solid%20var(--neutral-6)%3B%0Aborder-radius%3A%206px%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

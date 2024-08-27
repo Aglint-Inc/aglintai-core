@@ -279,7 +279,7 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     />
                   )}
 
-                  {currentTab === 'aglinttoken' && (
+                  {currentTab === 'aglintaitoken' && (
                     <InterviewTypeToken
                       slotTokenItem={
                         <>
@@ -323,8 +323,10 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     />
                   )}
 
-                  {currentTab === 'aglintinstruction' && (
+                  {currentTab === 'aglintaiinstruction' && (
                     <AiBookingInstruction
+                    textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
+                    textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
                       slotTextArea={
                         <UITextField
                           multiline

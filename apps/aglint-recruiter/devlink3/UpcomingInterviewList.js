@@ -28,8 +28,14 @@ export function UpcomingInterviewList({
           textContent={textDate}
           iconName="calendar_today"
           iconSize="4"
+          fontWeight="regular"
         />
-        <TextWithIcon textContent={textTime} iconName="schedule" iconSize="4" />
+        <TextWithIcon
+          textContent={textTime}
+          iconName="schedule"
+          iconSize="4"
+          fontWeight="regular"
+        />
       </_Builtin.Block>
     </_Component>
   );

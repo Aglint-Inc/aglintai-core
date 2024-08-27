@@ -13,7 +13,9 @@ export type TabInterviewerDetail =
   | 'availibility'
   | 'keywords'
   | 'qualified'
-  | 'training';
+  | 'training'
+  | 'aglintaitoken'
+  | 'aglintaiinstruction';
 
 function Interviewer() {
   const router = useRouter();

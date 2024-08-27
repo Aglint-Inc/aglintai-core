@@ -13,4 +13,5 @@ declare function WorkflowCard(props: {
   isChecked?: Types.Visibility.VisibilityConditions;
   isEditButton?: Types.Visibility.VisibilityConditions;
   showButtons?: Types.Visibility.VisibilityConditions;
+  border?: Types.Builtin.Text;
 }): React.JSX.Element;

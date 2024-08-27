@@ -11,13 +11,19 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
+import { AiBookingInstruction } from '@/devlink3/AiBookingInstruction';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
+import { InterviewTypeToken } from '@/devlink3/InterviewTypeToken';
+import { TokenItem } from '@/devlink3/TokenItem';
 import { UpcomingInterviewList } from '@/devlink3/UpcomingInterviewList';
 import CalendarComp from '@/src/components/Common/Calendar/Calendar';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import UITextField from '@/src/components/Common/UITextField';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
 import { UserListThreeDot } from '@/src/components/CompanyDetailComp/TeamManagement/MemberList/ThreeDot';
@@ -103,7 +109,10 @@ function BodyComp() {
     const now = dayjs();
     return itemDateTime.isAfter(now);
   });
-
+ const [value, setValue] = useState(`Prefer to take interviews on Tuesday and Friday afternoons.
+Cannot take interviews on Sundays.
+Available on Monday mornings before 10 AM.
+Unavailable for interviews on Tuesdays.`)
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
@@ -390,6 +399,50 @@ function BodyComp() {
                 )}
                 {tab === 'qualified' && (
                   <TabInterviewModules type='qualified' />
+                )}
+                {tab === 'aglintaitoken' && (
+                  <InterviewTypeToken
+                    slotAddToken={
+                      <ButtonGhost
+                        textButton='Add Token'
+                        size={2}
+                        iconName='add'
+                        isLeftIcon={true}
+                      />
+                    }
+                    slotTokenItem={
+                      <>
+                        <TokenItem
+                          slotBadge={
+                            <GlobalBadge textBadge='Token 1' color={'purple'} />
+                          }
+                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                        />
+                        <TokenItem
+                          slotBadge={
+                            <GlobalBadge textBadge='Token 1' color={'purple'} />
+                          }
+                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
+                        />
+                      </>
+                    }
+                  />
+                )}
+                {tab === 'aglintaiinstruction' && (
+                  <AiBookingInstruction
+                  textHowTo='Set availability and preferences to optimize the interview scheduling process.'
+                  textExample='Prefer to take interviews on Tuesday and Friday afternoons. Unavailable for interviews on Sundays.'
+                    slotTextArea={
+                      <UITextField
+                        multiline
+                        minRows={6}
+                        maxRows={10}
+                        height={150}
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                      />
+                    }
+                  />
                 )}
                 {tab === 'training' && <TabInterviewModules type='training' />}
                 {/* {tab === 'interviewtypes' && <TabInterviewModules />} */}
