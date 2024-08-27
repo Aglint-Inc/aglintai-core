@@ -4,6 +4,7 @@ import React from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import CheckCircleFilled from '../CheckCircleFilled';
@@ -46,6 +47,10 @@ const InterviewSchedule = ({
         fontSize={1}
         color={getProgressColor(tense)}
       />
+      <ShowCode.When isTrue={1}>
+        <></>
+      </ShowCode.When>
+      <Stack></Stack>
       <Stack ml={4}>
         {eventWActions
           .map((eA) => {

@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       verified_plans[0],
       fetched_details,
     );
-
+    //
     return res.status(200).send('OK');
   } catch (error) {
     console.error(error);
