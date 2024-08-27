@@ -132,8 +132,8 @@ function Metrics() {
           <>
             <MetricsLeaderboard
               slotInterviewerMetricsList={
-                interviewers?.length > 0 ? (
-                  interviewers.map((interviewer, i) => {
+                filteredInterviewers?.length > 0 ? (
+                  filteredInterviewers.map((interviewer, i) => {
                     return (
                       <InterviewerMetricList
                         onClickCard={{
@@ -172,54 +172,14 @@ function Metrics() {
                 )
               }
             />
-        textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
-        slotInterviewerMetricsList={
-          filteredInterviewers?.length > 0 ? (
-            filteredInterviewers.map((interviewer, i) => {
-              return (
-                <InterviewerMetricList
-                  onClickCard={{
-                    onClick: () =>
-                      router.push(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
-                      ),
-                  }}
-                  key={interviewer.user_id}
-                  slotImage={
-                    <Avatar
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                      }}
-                      src={interviewer.profile_image}
-                      alt={interviewer.name}
-                      variant='rounded-medium'
-                    />
-                  }
-                  textCount={i + 1}
-                  countHours={(interviewer.duration / 60).toFixed(1)}
-                  countInterviews={interviewer.interviews}
-                  textName={interviewer.name}
-                  textRole={interviewer.position}
-                  countDeclines={0}
-                />
-              );
-            })
-          ) : (
-            <GlobalEmptyState
-              iconName={'monitoring'}
-              size={9}
-              textDesc={'No Data Available'}
-            />
-          )
+            <Interviewers />
+          </>
         }
         slotMetrics={
           <>
             <TrainingProgress />
-            <Interviewers />
           </>
         }
-        slotMetrics={<TrainingProgress />}
       />
     </>
   );
