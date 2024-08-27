@@ -165,7 +165,7 @@ export function getTriggerOption(
   return `${preMessage} ${message}`;
 }
 
-export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
+export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
   sendAvailReqReminder: [
     {
       value: {
