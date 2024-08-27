@@ -1,5 +1,5 @@
-set check_function_bodies = off;
 drop function create_new_workflow_action_log;
+set check_function_bodies = off;
 CREATE OR REPLACE FUNCTION public.create_new_workflow_action_log(triggered_table workflow_cron_trigger_tables, triggered_table_pkey uuid, workflow_id uuid, workflow_action_id uuid, interval_minutes numeric, phase text, meta json, base_time timestamp with time zone DEFAULT now())
  RETURNS numeric
  LANGUAGE plpgsql
