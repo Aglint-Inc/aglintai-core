@@ -161,7 +161,7 @@ from
       inner join interview_plan on interview_plan.id = interview_session.interview_plan_id
     where
       interview_plan.application_id is null
-      and interview_plan.job_id is not null
+      and interview_plan.job_id is null
   ) as temp
 where
   interview_plan.id = temp.interview_plan_id;
@@ -174,7 +174,6 @@ from
     select distinct
       interview_plan.id,
       interview_plan.job_id,
-      interview_plan.plan_order,
       row_number() over (
         partition by
           interview_plan.job_id
@@ -182,7 +181,7 @@ from
           interview_plan.plan_order,
           interview_plan.name,
           interview_plan.id
-      ) as plan_orde
+      ) as plan_order
     from
       interview_plan
     where
@@ -200,7 +199,6 @@ from
     select distinct
       interview_plan.id,
       interview_plan.job_id,
-      interview_plan.plan_order,
       row_number() over (
         partition by
           interview_plan.application_id
@@ -208,7 +206,7 @@ from
           interview_plan.plan_order,
           interview_plan.name,
           interview_plan.id
-      ) as plan_orde
+      ) as plan_order
     from
       interview_plan
     where
