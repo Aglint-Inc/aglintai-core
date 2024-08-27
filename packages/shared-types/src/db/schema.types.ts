@@ -1065,18 +1065,6 @@ export type Database = {
           },
         ]
       }
-      host: {
-        Row: {
-          decrypted_secret: string | null
-        }
-        Insert: {
-          decrypted_secret?: string | null
-        }
-        Update: {
-          decrypted_secret?: string | null
-        }
-        Relationships: []
-      }
       integrations: {
         Row: {
           ashby_key: string | null
@@ -5605,6 +5593,35 @@ export type Database = {
         }
         Returns: Json
       }
+      get_all_interviewers: {
+        Args: {
+          recruiter_id_param: string
+          start_time_param: string
+          end_time_param: string
+          department_ids_params: number[]
+          office_location_ids_params: number[]
+          job_ids_params: string[]
+          module_ids_params: string[]
+        }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          email: string
+          profile_image: string
+          position: string
+          schedule_auth: Json
+          scheduling_settings: Json
+          status: string
+          department_id: number
+          office_location_id: number
+          recruiter_id: string
+          is_calendar_connected: boolean
+          upcoming_meeting_count: number
+          completed_meeting_count: number
+          completed_meetings: Json
+        }[]
+      }
       get_applicant_badges: {
         Args: {
           job_id: string
@@ -5638,6 +5655,17 @@ export type Database = {
           parameter_weights: Json
         }
         Returns: number
+      }
+      get_completed_requests_candidate_list: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          applications: Json[]
+          jobs: Json[]
+          assignerlist: Json[]
+          assigneelist: Json[]
+        }[]
       }
       get_conversion_count: {
         Args: {
