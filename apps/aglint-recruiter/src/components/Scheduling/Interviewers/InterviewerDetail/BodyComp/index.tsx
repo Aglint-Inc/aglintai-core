@@ -11,14 +11,10 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { AiBookingInstruction } from '@/devlink3/AiBookingInstruction';
 import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
-import { InterviewTypeToken } from '@/devlink3/InterviewTypeToken';
-import { TokenItem } from '@/devlink3/TokenItem';
 import { UpcomingInterviewList } from '@/devlink3/UpcomingInterviewList';
 import CalendarComp from '@/src/components/Common/Calendar/Calendar';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -399,34 +395,6 @@ Unavailable for interviews on Tuesdays.`)
                 )}
                 {tab === 'qualified' && (
                   <TabInterviewModules type='qualified' />
-                )}
-                {tab === 'aglintaitoken' && (
-                  <InterviewTypeToken
-                    slotAddToken={
-                      <ButtonGhost
-                        textButton='Add Token'
-                        size={2}
-                        iconName='add'
-                        isLeftIcon={true}
-                      />
-                    }
-                    slotTokenItem={
-                      <>
-                        <TokenItem
-                          slotBadge={
-                            <GlobalBadge textBadge='Token 1' color={'purple'} />
-                          }
-                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                        />
-                        <TokenItem
-                          slotBadge={
-                            <GlobalBadge textBadge='Token 1' color={'purple'} />
-                          }
-                          textTokenDetail='Korem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.'
-                        />
-                      </>
-                    }
-                  />
                 )}
                 {tab === 'aglintaiinstruction' && (
                   <AiBookingInstruction

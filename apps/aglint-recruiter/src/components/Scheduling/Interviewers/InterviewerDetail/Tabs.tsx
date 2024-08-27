@@ -30,10 +30,6 @@ function Tabs() {
       queryParam: 'availibility',
     },
     {
-      name: 'Aglint AI Token',
-      queryParam: 'aglintaitoken',
-    },
-    {
       name: 'Aglint AI Instruction',
       queryParam: 'aglintaiinstruction',
     },
