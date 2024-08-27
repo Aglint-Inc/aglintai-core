@@ -1,6 +1,10 @@
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import { SupabaseType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
-export default async function rejection(application_id: string) {
+export default async function rejection(
+  supabaseAdmin: SupabaseType,
+  application_id: string,
+) {
   const [candidateJob] = supabaseWrap(
     await supabaseAdmin
       .from('applications')

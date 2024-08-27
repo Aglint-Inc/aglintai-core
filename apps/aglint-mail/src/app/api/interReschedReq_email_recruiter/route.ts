@@ -3,10 +3,11 @@ import * as v from 'valibot';
 import { interReschedReqEmailRecruiterSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
-
+  const supabaseAdmin = getSupabaseServer();
   try {
     const parsed_body = v.parse(interReschedReqEmailRecruiterSchema, req_body);
     const {
@@ -14,9 +15,10 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
-    } = await fetchUtil(parsed_body);
+    } = await fetchUtil(supabaseAdmin, parsed_body);
 
     await sendMailFun({
+      supabaseAdmin,
       comp_email_placeholder,
       company_id,
       react_email_placeholders,

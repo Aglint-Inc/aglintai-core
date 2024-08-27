@@ -1,6 +1,7 @@
+import { onQualifiedEmailTraineeSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
-import { onQualifiedEmailTraineeSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 import {
   ClientError,
   MailArgValidationError,
@@ -11,6 +12,8 @@ import { fetchUtil } from './fetch-util';
 export async function POST(req: Request) {
   const req_body = await req.json();
 
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const parsed_body = v.parse(onQualifiedEmailTraineeSchema, req_body);
     const {
@@ -18,9 +21,10 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
-    } = await fetchUtil(parsed_body);
+    } = await fetchUtil(supabaseAdmin, parsed_body);
 
     await sendMailFun({
+      supabaseAdmin,
       comp_email_placeholder,
       company_id,
       react_email_placeholders,

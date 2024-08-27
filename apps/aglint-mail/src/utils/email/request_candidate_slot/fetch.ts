@@ -1,6 +1,8 @@
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { SupabaseType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 export default async function requestCandidateSlot(
+  supabaseAdmin: SupabaseType,
   application_id: string,
   request_id: string,
 ) {

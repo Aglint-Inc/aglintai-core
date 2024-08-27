@@ -1,14 +1,15 @@
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import {
   DAYJS_FORMATS,
   ScheduleUtils,
   fillCompEmailTemplate,
   getFullName,
+  supabaseWrap,
 } from '@aglint/shared-utils';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import { fetchCompEmailTemp } from '../../../utils/apiUtils/fetchCompEmailTemp';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'agent_email_candidate'>['api_payload'],
 ) {
   const [filterJson] = supabaseWrap(
@@ -43,6 +44,7 @@ export async function fetchUtil(
   } = filterJson;
 
   const comp_email_temp = await fetchCompEmailTemp(
+    supabaseAdmin,
     recruiter_id,
     'agent_email_candidate',
   );

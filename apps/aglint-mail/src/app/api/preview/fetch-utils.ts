@@ -1,10 +1,13 @@
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import { SupabaseType } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 export async function fetchUtil({
   recruiter_id,
   mail_type,
   job_id,
+  supabaseAdmin,
 }: {
+  supabaseAdmin: SupabaseType;
   recruiter_id: string;
   mail_type: string;
   job_id: string;
