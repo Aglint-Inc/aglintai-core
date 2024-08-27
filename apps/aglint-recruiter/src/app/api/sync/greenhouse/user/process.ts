@@ -1,14 +1,14 @@
+import { SupabaseType } from '@aglint/shared-types';
+
 import { registerMember } from '@/src/pages/api/invite_user';
-import {
-  supabaseAdmin,
-  SupabaseClientType,
-} from '@/src/utils/supabase/supabaseAdmin';
+import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';
 import { setLastSync } from '../util';
 
 export async function syncUsers(
+  supabaseAdmin: SupabaseType,
   recruiter_id: string,
   decryptKey: string,
   last_sync: string,
@@ -29,11 +29,13 @@ export async function filterMapUser(
   users: Awaited<ReturnType<typeof getGreenhouseUsers>>,
   recruiter_id: string,
 ) {
-  const curr_email = await getCurrentUserEmail();
+  const curr_email = await getCurrentUserEmail(supabaseAdmin);
   const curr_departments = await getDepartment(supabaseAdmin, recruiter_id);
-  const curr_role = await getRole(recruiter_id);
-  const { scheduling_settings, primary_admin } =
-    await getScheduleSetting(recruiter_id);
+  const curr_role = await getRole(supabaseAdmin, recruiter_id);
+  const { scheduling_settings, primary_admin } = await getScheduleSetting(
+    supabaseAdmin,
+    recruiter_id,
+  );
   const curr_office_locations = await getOfficeLocations(
     supabaseAdmin,
     recruiter_id,
@@ -45,6 +47,7 @@ export async function filterMapUser(
   for (let user of filtered_user) {
     temp_user.push(
       await registerMember(
+        supabaseAdmin,
         {
           first_name: user.first_name,
           last_name: user.last_name,
@@ -79,7 +82,7 @@ export async function filterMapUser(
 
 export type filterMapUserType = Awaited<ReturnType<typeof filterMapUser>>;
 
-async function getCurrentUserEmail() {
+async function getCurrentUserEmail(supabaseAdmin: SupabaseClientType) {
   return (
     await supabaseAdmin.from('recruiter_user').select('email').throwOnError()
   ).data.map((item) => item.email);
@@ -246,7 +249,10 @@ const dummyData: GreenhouseUserApi = [
     ],
   },
 ];
-export async function getRole(recruiter_id: string) {
+export async function getRole(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   return (
     await supabaseAdmin
       .from('roles')
@@ -257,7 +263,10 @@ export async function getRole(recruiter_id: string) {
       .throwOnError()
   ).data.id;
 }
-async function getScheduleSetting(recruiter_id: string) {
+async function getScheduleSetting(
+  supabaseAdmin: SupabaseClientType,
+  recruiter_id: string,
+) {
   return (
     await supabaseAdmin
       .from('recruiter')
