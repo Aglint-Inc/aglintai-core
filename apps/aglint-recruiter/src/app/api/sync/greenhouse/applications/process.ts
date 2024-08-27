@@ -3,7 +3,11 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { GreenhouseJobStagesAPI } from '../types';
-import { getGreenhouseCandidates, getGreenhouseJobPlan } from '../util';
+import {
+  chunkArray,
+  getGreenhouseCandidates,
+  getGreenhouseJobPlan,
+} from '../util';
 
 const MAX_EMAILS_PER_BATCH = 100;
 
@@ -112,13 +116,54 @@ export async function syncJobApplications(
     })
     .filter(Boolean);
 
-  await supabaseAdmin
-    .from('applications')
-    .upsert(dbApplications, { onConflict: 'remote_id' })
-    .throwOnError();
+  const chunks = chunkArray(dbApplications, 100);
+  for (let applications of chunks) {
+    const userToUpdate = await checkUpdate(
+      supabaseAdmin,
+      post.job_id,
+      applications.map((c) => c.remote_id),
+    );
+    const upsertData = applications.map((app) => {
+      const temp = {
+        ...app,
+      };
+      if (userToUpdate[app.remote_id]) {
+        temp.id = userToUpdate[app.remote_id];
+      }
+      return temp;
+    });
+    await supabaseAdmin
+      .from('applications')
+      .upsert(upsertData, {
+        onConflict: 'remote_id',
+        ignoreDuplicates: true,
+      })
+      .throwOnError();
+  }
 
   await setJobLastSync(supabaseAdmin, post.job_id);
   //new candidates insert flow
+}
+
+async function checkUpdate(
+  supabaseAdmin: SupabaseClientType,
+  job_id: string,
+  ids: string[],
+) {
+  return (
+    await supabaseAdmin
+      .from('applications')
+      .select('id, remote_id')
+      .eq('job_id', job_id)
+      .in('remote_id', ids)
+      .throwOnError()
+  ).data.reduce(
+    (acc, curr) => {
+      acc[curr.remote_id] = curr.id;
+      return acc;
+    },
+    {} as { [key: string]: string },
+  );
 }
 
 async function fetchAllCandidates(
