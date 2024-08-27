@@ -27,7 +27,7 @@ const useActionsContext = () => {
   const globalOptions = useMemo(
     () =>
       ACTION_TRIGGER_MAP[trigger].filter(
-        ({ value }) =>
+        ({ value }: any) =>
           !(actions ?? []).find(
             ({ target_api }) => target_api === value.target_api,
           ),
