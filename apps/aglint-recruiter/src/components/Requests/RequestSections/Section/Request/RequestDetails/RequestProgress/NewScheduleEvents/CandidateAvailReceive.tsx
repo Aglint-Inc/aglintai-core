@@ -1,11 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { Button, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import {
+  setApplicationIdForConfirmAvailability,
+  setCandidateAvailabilityId,
+} from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
@@ -17,6 +24,8 @@ const CandidateAvailReceive = ({
 }: {
   eventTargetMap: EventTargetMapType;
 }) => {
+  const { query } = useRouter();
+  const requestId = query.id as string;
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
   const { availRecivedProgress: availReceivedProgress, reqProgresMp } =
@@ -53,7 +62,28 @@ const CandidateAvailReceive = ({
   if (availReceivedProgress.length > 0) {
     lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
   }
+  const handleConfirmSlot = async () => {
+    try {
+      const [candReq] = supabaseWrap(
+        await supabase
+          .from('candidate_request_availability')
+          .select()
+          .eq('request_id', requestId),
+      );
+      setCandidateAvailabilityId(candReq.id);
+      setApplicationIdForConfirmAvailability(candReq.application_id);
+    } catch (err) {
+      //
+    }
+  };
 
+  let isManual = true;
+  if (
+    eventTargetMap['onReceivingAvailReq'] &&
+    eventTargetMap['onReceivingAvailReq'].length > 0
+  ) {
+    isManual = false;
+  }
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
@@ -63,6 +93,18 @@ const CandidateAvailReceive = ({
         color={getProgressColor('past')}
       />
       <Stack ml={4}>
+        <ShowCode.When isTrue={isManual}>
+          {availReceivedProgress.map((av) => {
+            return (
+              <>
+                <EventNode
+                  eventNode={av.event_type}
+                  reqProgressMap={reqProgresMp}
+                />
+              </>
+            );
+          })}
+        </ShowCode.When>
         <ShowCode.When
           isTrue={
             lastEvent &&
@@ -70,7 +112,16 @@ const CandidateAvailReceive = ({
             Boolean(!eventTargetMap['onReceivingAvailReq'])
           }
         >
-          <>manual flow</>
+          <span>
+            <Button onClick={handleConfirmSlot}>Schedule Interview</Button>
+            <Button
+              onClick={() => {
+                //
+              }}
+            >
+              Re Request Availability
+            </Button>
+          </span>
         </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
           {Boolean(eventTargetMap['onReceivingAvailReq']) &&

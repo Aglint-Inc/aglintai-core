@@ -35,6 +35,7 @@ export const sendMailFun = async <
   payload?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
 }) => {
+  console.log('newjknk');
   let fetched_temp: Pick<
     DatabaseTable['company_email_template'],
     'body' | 'from_name' | 'subject'
@@ -44,6 +45,7 @@ export const sendMailFun = async <
   } else {
     fetched_temp = await fetchCompEmailTemp(company_id, api_target);
   }
+  console.log('newjknk');
   if (payload) {
     fetched_temp.subject = payload.subject;
     fetched_temp.body = payload.body;
