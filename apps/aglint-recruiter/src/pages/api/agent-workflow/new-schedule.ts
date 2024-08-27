@@ -92,6 +92,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           plans,
           request_id,
           reqProgressLogger,
+          application_id,
         },
         reqProgressLogger,
         { event_type: 'SELF_SCHEDULE_LINK' }, //TODO: mention
