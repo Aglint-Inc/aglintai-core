@@ -1,9 +1,9 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interviewEnd_email_rShadowTraineeForMeetingAttendence'>['api_payload'],
 ) {
   const training_ints = supabaseWrap(

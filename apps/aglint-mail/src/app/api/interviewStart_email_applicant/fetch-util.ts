@@ -1,10 +1,10 @@
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
+  SupabaseType,
 } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   durationCalculator,
   platformRemoveUnderscore,
@@ -13,6 +13,7 @@ import {
 } from '../../../utils/email/common/functions';
 
 export async function dbFetch(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interviewStart_email_applicant'>['api_payload'],
 ) {
   const [candidateJob] = supabaseWrap(

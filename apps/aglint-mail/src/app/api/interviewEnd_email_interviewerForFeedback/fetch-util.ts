@@ -1,8 +1,8 @@
-import { getFullName } from '@aglint/shared-utils';
-import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['api_payload'],
 ) {
   const [candidateJob] = supabaseWrap(

@@ -4,13 +4,18 @@ import * as v from 'valibot';
 import { debriefEmailInterviewerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
+  const supabaseAdmin = getSupabaseServer();
 
   try {
     const parsed_body = v.parse(debriefEmailInterviewerSchema, req_body);
-    const { interviewers_mail_data } = await fetchUtil(parsed_body);
+    const { interviewers_mail_data } = await fetchUtil(
+      supabaseAdmin,
+      parsed_body,
+    );
 
     for (const {
       company_id,
@@ -19,6 +24,7 @@ export async function POST(req: Request) {
       recipient_email,
     } of interviewers_mail_data) {
       await sendMailFun({
+        supabaseAdmin,
         comp_email_placeholder,
         company_id,
         react_email_placeholders,

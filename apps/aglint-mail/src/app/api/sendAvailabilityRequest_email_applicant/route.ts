@@ -3,9 +3,12 @@ import * as v from 'valibot';
 import { sendAvailabilityRequestEmailApplicantSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbUtil } from './fetch-util';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
   const body = await req.json();
+
+  const supabaseAdmin = getSupabaseServer();
 
   try {
     const req_body = v.parse(sendAvailabilityRequestEmailApplicantSchema, body);
@@ -17,10 +20,11 @@ export async function POST(req: Request) {
       company_id,
       react_email_placeholders,
       recipient_email,
-    } = await dbUtil(req_body);
+    } = await dbUtil(supabaseAdmin, req_body);
 
     const is_preview = req_body.preview_details;
     const htmlSub = await sendMailFun({
+      supabaseAdmin,
       api_target: 'sendAvailabilityRequest_email_applicant',
       comp_email_placeholder,
       company_id,

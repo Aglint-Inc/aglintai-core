@@ -7,13 +7,14 @@ import {
 } from '../../../utils/apiUtils/customErrors';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
-
+  const supabaseAdmin = getSupabaseServer();
   try {
     const parsed_body = v.parse(onShadowCompleteEmailTraineeSchema, req_body);
-    const mail_details = await fetchUtil(parsed_body);
+    const mail_details = await fetchUtil(supabaseAdmin, parsed_body);
 
     for (const {
       comp_email_placeholder,
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
     } of mail_details) {
       // eslint-disable-next-line no-await-in-loop
       await sendMailFun({
+        supabaseAdmin,
         comp_email_placeholder,
         company_id,
         react_email_placeholders,

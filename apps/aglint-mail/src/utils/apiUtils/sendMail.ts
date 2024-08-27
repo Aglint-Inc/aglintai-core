@@ -2,6 +2,7 @@ import type {
   DatabaseEnums,
   DatabaseTable,
   EmailTemplateAPi,
+  SupabaseType,
 } from '@aglint/shared-types';
 import { fillCompEmailTemplate } from '@aglint/shared-utils';
 import sendMail from '../../config/sendgrid';
@@ -24,6 +25,7 @@ export const sendMailFun = async <
   company_id,
   job_id,
   payload,
+  supabaseAdmin,
 }: {
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
   recipient_email: string;
@@ -34,15 +36,20 @@ export const sendMailFun = async <
   job_id?: string;
   payload?: MailPayloadType;
   comp_email_placeholder: Record<string, string>;
+  supabaseAdmin: SupabaseType;
 }) => {
   let fetched_temp: Pick<
     DatabaseTable['company_email_template'],
     'body' | 'from_name' | 'subject'
   >;
   if (job_id) {
-    fetched_temp = await fetchJobEmailTemp(job_id, api_target);
+    fetched_temp = await fetchJobEmailTemp(supabaseAdmin, job_id, api_target);
   } else {
-    fetched_temp = await fetchCompEmailTemp(company_id, api_target);
+    fetched_temp = await fetchCompEmailTemp(
+      supabaseAdmin,
+      company_id,
+      api_target,
+    );
   }
   if (payload) {
     fetched_temp.subject = payload.subject;
