@@ -2,7 +2,12 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
-import { useJobCreate, useJobDelete, useJobsRead } from '@/src/queries/jobs';
+import {
+  useJobCreate,
+  useJobDelete,
+  useJobsRead,
+  useJobsSync,
+} from '@/src/queries/jobs';
 import { Job } from '@/src/queries/jobs/types';
 
 import { ApplicationStore } from '../ApplicationContext/store';
@@ -49,6 +54,16 @@ const useJobActions = () => {
   );
 
   const jobs = useJobsRead(manageJob);
+
+  const { mutateAsync: handleSync } = useJobsSync();
+
+  const handleJobsSync = async () => {
+    try {
+      await handleSync();
+    } catch {
+      //
+    }
+  };
 
   const customJobs = useMemo(
     () => ({
@@ -106,6 +121,7 @@ const useJobActions = () => {
     handleJobCreate,
     handleJobsRefresh: jobs.refetch,
     handleJobDelete,
+    handleJobsSync,
     initialLoad,
     manageJob,
     devlinkProps,

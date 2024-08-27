@@ -24,6 +24,7 @@ import AddMember from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import Filters from './Filters';
 
 const InterviewTab = () => {
+  const { recruiter } = useAuthDetails();
   const router = useRouter();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
   const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
@@ -33,17 +34,21 @@ const InterviewTab = () => {
   return (
     <PageLayout
       slotTopbarRight={
-        <ButtonSoft
-          textButton='Add Interviewer'
-          iconName='add'
-          isLeftIcon
-          size={1}
-          onClickButton={{
-            onClick: () => {
-              setOpenDrawer(true);
-            },
-          }}
-        />
+        recruiter?.recruiter_preferences?.greenhouse ? (
+          <></>
+        ) : (
+          <ButtonSoft
+            textButton='Add Interviewer'
+            iconName='add'
+            isLeftIcon
+            size={1}
+            onClickButton={{
+              onClick: () => {
+                setOpenDrawer(true);
+              },
+            }}
+          />
+        )
       }
       slotTopbarLeft={<Breadcrum textName={'Interviewers'} />}
       slotBody={
