@@ -4,6 +4,7 @@ import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
@@ -26,6 +27,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
+import { ShowCode } from '../../Common/ShowCode';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
@@ -42,8 +44,6 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
-import { ShowCode } from '../../Common/ShowCode';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();

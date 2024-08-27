@@ -1,12 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
@@ -18,12 +24,6 @@ import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
-import { ButtonSoft } from '@/devlink2';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 
 const CandidateAvailReceive = ({
   eventTargetMap,
@@ -142,6 +142,9 @@ const CandidateAvailReceive = ({
               size={1}
               color={'accent'}
               textButton='Schedule Interview'
+              onClickButton={{
+                onClick: handleConfirmSlot,
+              }}
             />
             <ButtonSoft
               size={1}
