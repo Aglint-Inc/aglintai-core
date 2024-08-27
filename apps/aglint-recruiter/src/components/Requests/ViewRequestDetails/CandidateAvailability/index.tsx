@@ -3,7 +3,7 @@ import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
@@ -12,12 +12,12 @@ import { RequestCandidate } from '@/devlink2/RequestCandidate';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import axios from '@/src/client/axios';
 import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
-import { insertCandidateRequestAvailability } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/RequestAvailabilityContext';
 import {
   requestDaysListOptions,
   slotsListOptions,
 } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequests } from '@/src/context/RequestsContext';
 import { Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import dayjs from '@/src/utils/dayjs';
@@ -27,18 +27,29 @@ import toast from '@/src/utils/toast';
 
 import { useMeetingList } from '../hooks';
 import EmailTemplate from './Components/EmailTemplate';
+import { useCandidateAvailability } from './hooks';
 import {
   setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
 } from './store';
+import {
+  insertCandidateRequestAvailability,
+  updateCandidateRequestAvailability,
+} from './utils';
 function CandidateAvailability({
   selectedRequest,
 }: {
   selectedRequest: RequestType;
 }) {
-  const { candidateAvailabilityDrawerOpen } =
-    useCandidateAvailabilitySchedulingFlowStore();
+  const {
+    candidateAvailabilityDrawerOpen,
+    reRequestAvailability,
+    candidateAvailabilityIdForReRequest,
+  } = useCandidateAvailabilitySchedulingFlowStore();
   const { recruiter, recruiterUser } = useAuthDetails();
+  const { handleAsyncUpdateRequest } = useRequests();
   const selectedSessions = selectedRequest.request_relation;
 
   // states
@@ -53,8 +64,51 @@ function CandidateAvailability({
   });
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();
+
+  const { data: candidateAvailability } = useCandidateAvailability({
+    candidateAvailabilityId: candidateAvailabilityIdForReRequest,
+  });
+
+  useEffect(() => {
+    if (candidateAvailability?.id) {
+      const startDate = `${candidateAvailability?.date_range[0].split('/')[1]}-${candidateAvailability?.date_range[0].split('/')[0]}-${candidateAvailability?.date_range[0].split('/')[2]}`;
+      const endDate = `${candidateAvailability?.date_range[1].split('/')[1]}-${candidateAvailability?.date_range[1].split('/')[0]}-${candidateAvailability?.date_range[1].split('/')[2]}`;
+      setSelectedDays({
+        value: candidateAvailability.number_of_days,
+        label: `${candidateAvailability.number_of_days} Days`,
+      });
+      setSelectedSlots({
+        value: candidateAvailability.number_of_slots,
+        label: `${candidateAvailability.number_of_slots} Slots`,
+      });
+      setSelectedDate({
+        start_date: dayjs(startDate),
+        end_date: dayjs(endDate),
+      });
+    }
+  }, [candidateAvailability]);
   async function handleSubmit() {
     setSubmitting(true);
+    if (reRequestAvailability) {
+      await updateCandidateRequestAvailability({
+        data: {
+          slots: null,
+          visited: false,
+          number_of_days: selectedDays.value,
+          number_of_slots: selectedSlots.value,
+          date_range: [
+            selectedDate.start_date.format('DD/MM/YYYY'),
+            selectedDate.end_date.format('DD/MM/YYYY'),
+          ],
+        },
+        id: candidateAvailabilityIdForReRequest,
+      });
+
+      toast.success('Request availability has been re-requested successfully');
+      setSubmitting(false);
+      setCandidateAvailabilityDrawerOpen(false);
+      return;
+    }
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
       meeting_flow: 'candidate_request',
@@ -84,7 +138,6 @@ function CandidateAvailability({
       total_slots: null,
       request_id: selectedRequest.id,
     });
-    // setRequestDetails(result);
     await supabase.from('request_session_relation').insert(
       sessions.map((ele) => ({
         session_id: ele.interview_session.id,
@@ -113,6 +166,16 @@ function CandidateAvailability({
     } catch (error) {
       toast.message('Failed to send email');
     }
+    await handleAsyncUpdateRequest({
+      payload: {
+        requestId: String(selectedRequest?.id),
+        requestPayload: {
+          status: 'in_progress',
+        },
+      },
+      loading: false,
+      toast: false,
+    });
     toast.success('Request availability created successfully');
     setSubmitting(false);
     setCandidateAvailabilityDrawerOpen(false);
@@ -133,26 +196,34 @@ function CandidateAvailability({
       selectedDate.end_date.format('DD/MM/YYYY'),
     ) -
     (meetingsRound.length - 1);
+  function closeDrawer() {
+    setCandidateAvailabilityDrawerOpen(false);
+    setReRequestAvailability(false);
+    setCandidateAvailabilityIdForReRequest('');
+  }
   return (
     <>
       <Drawer
         anchor={'right'}
         open={candidateAvailabilityDrawerOpen}
-        onClose={() => {
-          setCandidateAvailabilityDrawerOpen(false);
-        }}
+        onClose={closeDrawer}
       >
         <SideDrawerLarge
           isHeaderIconVisible={true}
           slotHeaderIcon={<GlobalIcon iconName={'exit_to_app'} size={4} />}
           textDrawertitle={`Request Availability`}
+          onClickCancel={{
+            onClick: () => {
+              closeDrawer();
+            },
+          }}
           slotSideDrawerbody={
             <RequestCandidate
               slotStartDateInput={
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label='Basic date picker'
-                    defaultValue={dayjs(selectedRequest.schedule_start_date)}
+                    value={selectedDate.start_date}
                     format='DD MMMM YYYY'
                     onAccept={(value) => {
                       setSelectedDate({
@@ -169,7 +240,7 @@ function CandidateAvailability({
               slotEndDateInput={
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    defaultValue={selectedDate?.end_date}
+                    value={selectedDate?.end_date}
                     label='Basic date picker'
                     format='DD MMMM YYYY'
                     onAccept={(value) => {
@@ -246,7 +317,11 @@ function CandidateAvailability({
                 size={2}
                 isDisabled={submitting}
                 isLoading={submitting}
-                textButton={'Send to Candidate'}
+                textButton={
+                  reRequestAvailability
+                    ? 'Re-Request Availability'
+                    : 'Send to Candidate'
+                }
                 onClickButton={{
                   onClick: () => {
                     handleSubmit();

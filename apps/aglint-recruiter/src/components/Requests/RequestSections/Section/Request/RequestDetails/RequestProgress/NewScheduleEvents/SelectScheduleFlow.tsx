@@ -5,6 +5,11 @@ import React, { useMemo } from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
 
 import ScheduleFlows from '../Actions/Schedule';
@@ -176,7 +181,17 @@ const AvailabilityFlowMenus = ({
           Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
         }
       >
-        <Button>Re Request Availability</Button>
+        <Button
+          onClick={() => {
+            setCandidateAvailabilityDrawerOpen(true);
+            setReRequestAvailability(true);
+            setCandidateAvailabilityIdForReRequest(
+              '6b7657ba-cc3f-4789-a44f-5be74d234f84',
+            );
+          }}
+        >
+          Re Request Availability
+        </Button>
       </ShowCode.When>
     </>
   );
