@@ -126,10 +126,10 @@ export async function getGreenhouseCandidates(
   }
   const data1 = await getGreenhouseCandidatesAPI(key, url);
   let data2 = [] as typeof data1;
-  if (data.last_sync) {
-    url = temp_url + `?updated_after=${data.last_sync}`;
-    data2 = await getGreenhouseCandidatesAPI(key, url);
-  }
+  // if (data.last_sync) {
+  //   url = temp_url + `?updated_after=${data.last_sync}`;
+  //   data2 = await getGreenhouseCandidatesAPI(key, url);
+  // }
   return [...data1, ...data2];
 }
 
