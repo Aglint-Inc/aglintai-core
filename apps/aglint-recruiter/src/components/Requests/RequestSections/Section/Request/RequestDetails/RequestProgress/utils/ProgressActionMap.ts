@@ -11,4 +11,5 @@ export const progressActionMap: Partial<
 > = {
   CHOOSE_SCHEDULE_FLOW_not_started: ScheduleFlows,
   SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE_completed: SelfScheduleFollowUp,
+  SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK_completed: SelfScheduleFollowUp,
 };
