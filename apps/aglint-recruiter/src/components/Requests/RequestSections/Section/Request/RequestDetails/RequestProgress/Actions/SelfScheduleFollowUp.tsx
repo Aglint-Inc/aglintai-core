@@ -1,13 +1,13 @@
-import { TextWithIcon } from '@/devlink2';
-import { ShowCode } from '@/src/components/Common/ShowCode';
-import { supabase } from '@/src/utils/supabase/client';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import toast from '@/src/utils/toast';
 import { DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
+
+import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { ShowCode } from '@/src/components/Common/ShowCode';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
   const [isLoading, setLoading] = useState(false);
@@ -16,6 +16,7 @@ const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
   );
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       await axios.post('/api/workflow-cron/execute', {
         action_id: rowData.meta.event_run_id,
       });
@@ -33,6 +34,8 @@ const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
       setScheduledDate(dayjsLocal().toISOString());
     } catch (err) {
       toast.error('Failed to Execute');
+    } finally {
+      setLoading(false);
     }
   };
   const isTimePast = dayjsLocal(scheduledDate).isBefore(

@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { EventNodeType } from '@aglint/shared-types/src/workflow';
 import { Stack } from '@mui/material';
 import React from 'react';
@@ -12,7 +13,6 @@ import { workflowCopy } from '../utils/copy';
 import { getProgressColor } from '../utils/getProgressColor';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
-import { DatabaseTable } from '@aglint/shared-types';
 
 const EventNode = ({
   eventNode,

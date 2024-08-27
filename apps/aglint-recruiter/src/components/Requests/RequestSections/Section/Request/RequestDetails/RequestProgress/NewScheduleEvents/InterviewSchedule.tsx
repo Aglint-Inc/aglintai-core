@@ -27,13 +27,6 @@ const InterviewSchedule = ({
 }) => {
   const { request_progress } = useRequest();
   const eventWActions = eventTargetMap['candidateBook'] ?? [];
-  const candScheduleIdx = request_progress.data.findIndex(
-    (prog) => prog.event_type === 'CAND_CONFIRM_SLOT',
-  );
-  let interviewScheduleProgress: typeof request_progress.data = [];
-  if (candScheduleIdx !== -1) {
-    interviewScheduleProgress = request_progress.data.slice(candScheduleIdx);
-  }
 
   const event_status = request_progress.data.find(
     (d) => d.event_type === 'CAND_CONFIRM_SLOT',

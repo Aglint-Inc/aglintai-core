@@ -6,8 +6,8 @@ import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { progressActionMap } from './utils/ProgressActionMap';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
-const EventRow = ({ sorted_progress }) => {
-  let tense: TenseType = 'future';
+const EventRow = () => {
+  let tense: TenseType;
 
   return (
     <>

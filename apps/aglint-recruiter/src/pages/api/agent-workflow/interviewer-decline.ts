@@ -1,19 +1,22 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
-
-import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
   ProgressLoggerType,
-} from '@/src/services/api-schedulings/utils';
+} from '@aglint/shared-utils';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
-  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
-    req.body.request_id,
-    req.body.event_run_id,
-  );
+  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    request_id: req.body.request_id,
+    supabaseAdmin: supabaseAdmin,
+    event_run_id: req.body.event_run_id,
+    target_api,
+  });
   const {
     request_id,
     session_ids,
