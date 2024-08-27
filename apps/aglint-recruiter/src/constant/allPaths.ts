@@ -135,6 +135,7 @@ export const PATHS = [
 '/api/interviewChatOpenAi',
 '/api/interview_feedback',
 '/api/interviewers',
+'/api/interviewers/getAllInterviewers',
 '/api/invite_user',
 '/api/invite_user/resend',
 '/api/job-assistant/cluoud-functions/assistant',
