@@ -42,6 +42,8 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
+import { ShowCode } from '../../Common/ShowCode';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -233,23 +235,36 @@ function ViewRequestDetails() {
               }
               slotNewTask={
                 <>
-                  {Boolean(selectedRequest?.status === 'to_do') && (
-                    <Stack width={'60%'}>
-                      <AiTaskBanner
-                        slotButton={
-                          <ButtonSolid
-                            onClickButton={{
-                              onClick: () => {
-                                handleProceed(selectedRequest.id);
-                              },
-                            }}
-                            size={1}
-                            textButton='Proceed'
-                          />
-                        }
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={Boolean(
+                        selectedRequest?.type !== 'schedule_request',
+                      )}
+                    >
+                      <GlobalEmptyState
+                        iconName={'view_object_track'}
+                        textDesc={`Request type: ${capitalizeFirstLetter(selectedRequest?.type) ?? ''}`}
                       />
-                    </Stack>
-                  )}
+                    </ShowCode.When>
+                  </ShowCode>
+                  {Boolean(selectedRequest?.status === 'to_do') &&
+                    selectedRequest?.type === 'schedule_request' && (
+                      <Stack width={'60%'}>
+                        <AiTaskBanner
+                          slotButton={
+                            <ButtonSolid
+                              onClickButton={{
+                                onClick: () => {
+                                  handleProceed(selectedRequest.id);
+                                },
+                              }}
+                              size={1}
+                              textButton='Proceed'
+                            />
+                          }
+                        />
+                      </Stack>
+                    )}
                   {selectedRequest?.type ? (
                     <RequestProgress
                       job_workflow={
