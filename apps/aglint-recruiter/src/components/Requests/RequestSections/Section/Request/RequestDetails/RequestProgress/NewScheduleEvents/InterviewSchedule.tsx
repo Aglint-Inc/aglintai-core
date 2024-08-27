@@ -42,8 +42,9 @@ const InterviewSchedule = ({
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
-        textContent={<>EVENT : On Inteview is Scheduled</>}
-        iconSize={3}
+        iconName='expand_circle_right'
+        textContent={`On Inteview is Scheduled`}
+        iconSize={4}
         fontSize={1}
         color={getProgressColor(tense)}
       />
