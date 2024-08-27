@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { dayjsLocal } from '@aglint/shared-utils';
 import { CircularProgress, Dialog, Popover } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useRouter } from 'next/router';
@@ -17,7 +18,9 @@ import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
+import { Text } from '@/devlink/Text';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { ButtonGhost } from '@/devlink3/ButtonGhost';
 import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
 import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
@@ -31,6 +34,7 @@ import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
 import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -38,10 +42,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
-import { Text } from '@/devlink/Text';
-import { dayjsLocal } from '@aglint/shared-utils';
-import { ButtonGhost } from '@/devlink3/ButtonGhost';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
@@ -60,13 +60,20 @@ export const SharedActions = () => {
 };
 
 const Sync = () => {
-  const { recruiter } = useAuthDetails();
-  const { job } = useJob();
-  if (!recruiter?.recruiter_preferences?.greenhouse) return <></>;
+  const { job, handleJobSync } = useJob();
+  const [load, setLoad] = useState(false);
+  if (job?.posted_by !== 'Greenhouse') return <></>;
   const time = dayjsLocal(job?.remote_sync_time ?? new Date()).diff(
     dayjsLocal(),
     'minutes',
   );
+  const handleSync = async () => {
+    if (load) return;
+    setLoad(true);
+    await handleJobSync();
+    setLoad(false);
+  };
+
   return (
     <>
       <Text
@@ -76,13 +83,16 @@ const Sync = () => {
         size={1}
         color={'neutral'}
       />
-      <ButtonGhost
-        size={2}
-        isLeftIcon
-        iconName={'sync'}
-        color={'accent'}
-        textButton={'Sync job'}
-      />
+      <OptimisticWrapper loading={load}>
+        <ButtonGhost
+          size={2}
+          isLeftIcon
+          iconName={'sync'}
+          color={'accent'}
+          textButton={'Sync job'}
+          onClickButton={{ onClick: async () => await handleSync() }}
+        />
+      </OptimisticWrapper>
     </>
   );
 };

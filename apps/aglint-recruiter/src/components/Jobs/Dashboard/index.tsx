@@ -12,6 +12,7 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
+import OptimisticWrapper from '../../NewAssessment/Common/wrapper/loadingWapper';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
@@ -98,7 +99,6 @@ export default DashboardComp;
 
 export function AddJob() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   // const { data: int, isLoading } = useAllIntegrations();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -185,15 +185,7 @@ export function AddJob() {
           />
         }
       </Popover>
-      {recruiter?.recruiter_preferences?.greenhouse && (
-        <ButtonGhost
-          isLeftIcon
-          size={2}
-          iconName={'sync'}
-          color={'accent'}
-          textButton={'Sync jobs'}
-        />
-      )}
+      <Sync />
       <IconButtonGhost
         size={2}
         iconName={'more_vert'}
@@ -206,3 +198,28 @@ export function AddJob() {
     </Stack>
   );
 }
+
+const Sync = () => {
+  const { recruiter } = useAuthDetails();
+  const { handleJobsSync } = useJobs();
+  const [load, setLoad] = useState(false);
+  if (!recruiter?.recruiter_preferences?.greenhouse) return <></>;
+  const handleSync = async () => {
+    if (load) return;
+    setLoad(true);
+    await handleJobsSync();
+    setLoad(false);
+  };
+  return (
+    <OptimisticWrapper loading={load}>
+      <ButtonGhost
+        size={2}
+        isLeftIcon
+        iconName={'sync'}
+        color={'accent'}
+        textButton={'Sync jobs'}
+        onClickButton={{ onClick: async () => await handleSync() }}
+      />
+    </OptimisticWrapper>
+  );
+};
