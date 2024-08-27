@@ -12,6 +12,7 @@ import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';
 
 import Loader from '../../Common/Loader';
+import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
 import { Event, EventFilling, groupByDate } from './utils';
@@ -39,6 +40,8 @@ const TimeLineCalendar = () => {
   const [selectedJobs, setJobs] = useState<string[]>([]);
   const [selectedDepartments, setDepartments] = useState<number[]>([]);
   const [selectedLocations, setLocations] = useState<number[]>([]);
+  const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
+  const { data: InterivewTypes } = useAllInterviewModules();
 
   //Location filter List
   const locationList = locations?.length
@@ -61,14 +64,37 @@ const TimeLineCalendar = () => {
       }))
     : [];
 
+  // Interview Type filter list
+  const InterviewTypeOptions = InterivewTypes?.length
+    ? InterivewTypes.map((type) => ({
+        name: type.name,
+        value: type.id,
+      }))
+    : [];
+
   // Filtering interviewers
+  const selectedInterviewTypeUserIds = [
+    ...new Set(
+      InterivewTypes?.filter((interType) =>
+        selectedInterviewTypes.includes(interType.id),
+      )
+        .map((interviewType) => interviewType.users.map((user) => user.user_id))
+        .flat(),
+    ),
+  ];
+
   const isFilterApplied =
     !!selectedDepartments.length ||
     !!selectedJobs.length ||
-    !!selectedLocations.length;
+    !!selectedLocations.length ||
+    !!selectedInterviewTypes.length;
 
   const filteredInterviewers = isFilterApplied
     ? allInterviewers.filter((interviewer) => {
+        const isInterviewType = selectedInterviewTypes?.length
+          ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
+          : true;
+
         const isDepartment = selectedDepartments?.length
           ? selectedDepartments.includes(interviewer.department_id)
           : true;
@@ -83,7 +109,7 @@ const TimeLineCalendar = () => {
           ? selectedLocations.includes(interviewer.office_location_id)
           : true;
 
-        return isDepartment && isLocation && isJobs;
+        return isDepartment && isLocation && isJobs && isInterviewType;
       })
     : allInterviewers;
 
@@ -121,6 +147,13 @@ const TimeLineCalendar = () => {
             title='Locations'
             setSelectedItems={setLocations}
             selectedItems={selectedLocations}
+          />
+
+          <Filter
+            itemList={InterviewTypeOptions?.length ? InterviewTypeOptions : []}
+            title='Interview Types'
+            setSelectedItems={setInterviewTypes}
+            selectedItems={selectedInterviewTypes}
           />
 
           {isFilterApplied && (
