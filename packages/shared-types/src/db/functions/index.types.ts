@@ -2,6 +2,7 @@ import type { Database } from "../schema.types";
 import type { CustomizableTypes, Custom } from "../utils.types";
 import { CustomCreateSessionRequest } from "./create_session_request.types";
 import { CustomCreateSessionRequests } from "./create_session_requests.types";
+import { CustomGetAllInterviewers } from "./get_all_interviewers";
 import { CustomGetApplicantBadges } from "./get_applicant_badges.types";
 import { CustomGetApplicantLocations } from "./get_applicant_locations.types";
 import { CustomGetRequestCountStats } from "./get_request_count_stats.types";
@@ -65,5 +66,6 @@ export type Functions = Custom<
     scheduling_analytics_interviewers: CustomSchedulingAnalyticsInterviewers;
     scheduling_analytics_leaderboard: CustomSchedulingAnalyticsLeaderboard;
     scheduling_analytics_reasons: CustomSchedulingAnalyticsReasons;
+    get_all_interviewers: CustomGetAllInterviewers;
   }
 >;
