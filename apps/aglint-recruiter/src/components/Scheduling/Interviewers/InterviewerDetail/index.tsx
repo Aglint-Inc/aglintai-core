@@ -14,7 +14,6 @@ export type TabInterviewerDetail =
   | 'keywords'
   | 'qualified'
   | 'training'
-  | 'aglintaitoken'
   | 'aglintaiinstruction';
 
 function Interviewer() {
