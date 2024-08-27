@@ -38,6 +38,7 @@ export const sendMailFun = async <
   comp_email_placeholder: Record<string, string>;
   supabaseAdmin: SupabaseType;
 }) => {
+  console.log('newjknk');
   let fetched_temp: Pick<
     DatabaseTable['company_email_template'],
     'body' | 'from_name' | 'subject'
@@ -51,6 +52,7 @@ export const sendMailFun = async <
       api_target,
     );
   }
+  console.log('newjknk');
   if (payload) {
     fetched_temp.subject = payload.subject;
     fetched_temp.body = payload.body;

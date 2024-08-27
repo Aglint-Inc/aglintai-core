@@ -68,7 +68,6 @@ export async function dbUtil(
       companyLogo: logo,
       availabilityReqLink: candidate_link,
     };
-
   return {
     company_id: recruiter_id,
     comp_email_placeholder,
