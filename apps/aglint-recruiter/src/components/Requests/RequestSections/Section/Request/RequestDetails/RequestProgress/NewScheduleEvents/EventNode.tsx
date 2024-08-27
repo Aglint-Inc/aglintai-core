@@ -34,7 +34,6 @@ const EventNode = ({
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
-  console.log(headingEvent);
   return (
     <>
       <TextWithIcon
@@ -58,9 +57,7 @@ const EventNode = ({
           {eventProg
             .filter((prg) => prg.is_progress_step === true)
             .map((prg) => {
-              console.log(prg);
               if (progressActionMap[`${prg.event_type}_${prg.status}`]) {
-                console.log(prg.meta);
                 let key = `${prg.event_type}_${prg.status}`;
                 let Comp = progressActionMap[key];
                 return <>{<Comp {...prg.meta} />}</>;
