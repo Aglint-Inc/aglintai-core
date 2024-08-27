@@ -13,13 +13,7 @@ import {
 } from '../../../../store';
 import ScheduleIndividualCard from './ScheduleIndividual';
 
-function StageIndividual({
-  stage,
-  index,
-}: {
-  stage: StageWithSessions[0];
-  index: number;
-}) {
+function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
   const router = useRouter();
   const selectedStageId = router.query.stage as string;
   const { selectedSessionIds } = useApplicationDetailStore((state) => ({
@@ -51,7 +45,7 @@ function StageIndividual({
   return (
     <>
       <ApplicantDetailStage
-        textName={`Stage ${index + 1} ${stage.interview_plan.name}`}
+        textName={`Stage ${stage.interview_plan.plan_order} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} Interview${sessions.length > 1 ? 's' : ''}`}
         slotInterviewStageDetail={
           <Stack spacing={'var(--space-2)'}>

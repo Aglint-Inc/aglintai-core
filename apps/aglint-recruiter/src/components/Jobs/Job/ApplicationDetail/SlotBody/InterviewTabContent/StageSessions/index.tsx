@@ -55,13 +55,9 @@ function StageSessions() {
   return (
     <>
       <>
-        {filteredStages.map((stage, index) => {
+        {filteredStages.map((stage) => {
           return (
-            <StageIndividual
-              key={stage.interview_plan.id}
-              stage={stage}
-              index={index}
-            />
+            <StageIndividual key={stage.interview_plan.id} stage={stage} />
           );
         })}
       </>
