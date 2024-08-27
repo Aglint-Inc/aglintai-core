@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./JobsListingCard.module.css";
 
@@ -38,6 +39,8 @@ export function JobsListingCard({
   onClickInterview = {},
   onClickQualified = {},
   onClickDisqualified = {},
+  isPinned = false,
+  onClickPin = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -55,11 +58,15 @@ export function JobsListingCard({
       <_Builtin.Block
         className={_utils.cx(_styles, "rd-job-info-wrapper")}
         tag="div"
-        {...onClickCard}
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "rd-company-info-block")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_4c8f5e59-2551-ecd2-b94c-afc3e4f6dd09-e4f6dd07"
+          )}
           tag="div"
+          {...onClickCard}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "job-details")}
@@ -113,6 +120,37 @@ export function JobsListingCard({
             {...bgColorProps}
           >
             <Text content={textJobsStatus} size="1" weight="medium" color="" />
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "radix-button")}
+            tag="div"
+            {...onClickPin}
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "default_state")}
+              tag="div"
+              icon-button-size-ghost="1"
+              button-color-ghost="neutral"
+              button-high-contrast-ghost="false"
+            >
+              <GlobalIcon
+                size="4"
+                weight="medium"
+                color="inherit"
+                iconName="keep"
+              />
+            </_Builtin.Block>
+            {isPinned ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "is_pinned")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex")}
+                  value="%3Csvg%20width%3D%2222%22%20height%3D%2222%22%20viewBox%3D%220%200%2022%2022%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cmask%20id%3D%22mask0_7069_239352%22%20style%3D%22mask-type%3Aalpha%22%20maskUnits%3D%22userSpaceOnUse%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2222%22%20height%3D%2222%22%3E%0A%3Crect%20width%3D%2222%22%20height%3D%2222%22%20fill%3D%22%23D9D9D9%22%2F%3E%0A%3C%2Fmask%3E%0A%3Cg%20mask%3D%22url(%23mask0_7069_239352)%22%3E%0A%3Cpath%20d%3D%22M14.2085%204.58325V11.1938L15.6433%2012.6288C15.7114%2012.697%2015.7626%2012.7737%2015.7968%2012.8589C15.8309%2012.944%2015.8479%2013.032%2015.8479%2013.1229V13.5148C15.8479%2013.7079%2015.7812%2013.8718%2015.6476%2014.0064C15.5143%2014.141%2015.3489%2014.2083%2015.1515%2014.2083H11.6876V19.1477C11.6876%2019.3425%2011.6217%2019.5057%2011.4899%2019.6374C11.358%2019.7691%2011.1947%2019.835%2010.9999%2019.835C10.805%2019.835%2010.6417%2019.7691%2010.5102%2019.6374C10.3785%2019.5057%2010.3126%2019.3425%2010.3126%2019.1477V14.2083H6.84878C6.65139%2014.2083%206.48601%2014.141%206.35264%2014.0064C6.21911%2013.8718%206.15234%2013.7079%206.15234%2013.5148V13.1229C6.15234%2013.032%206.16938%2012.944%206.20345%2012.8589C6.23767%2012.7737%206.28885%2012.697%206.35699%2012.6288L7.7918%2011.1938V4.58325H7.56264C7.36784%204.58325%207.2046%204.51733%207.07291%204.38548C6.94106%204.25363%206.87514%204.09031%206.87514%203.89552C6.87514%203.70058%206.94106%203.53734%207.07291%203.40579C7.2046%203.2741%207.36784%203.20825%207.56264%203.20825H14.4376C14.6324%203.20825%2014.7957%203.27418%2014.9274%203.40602C15.0592%203.53787%2015.1251%203.70119%2015.1251%203.89598C15.1251%204.09093%2015.0592%204.25417%2014.9274%204.38571C14.7957%204.5174%2014.6324%204.58325%2014.4376%204.58325H14.2085Z%22%20fill%3D%22%23FFBA18%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -290,6 +328,16 @@ export function JobsListingCard({
         tag="div"
         {...onClickCard}
       />
+      {isPinned ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "pinned_bg")}
+          id={_utils.cx(
+            _styles,
+            "w-node-eaab7862-bbf7-4d43-4ed0-c20f4aec9c62-e4f6dd07"
+          )}
+          tag="div"
+        />
+      ) : null}
     </_Component>
   );
 }
