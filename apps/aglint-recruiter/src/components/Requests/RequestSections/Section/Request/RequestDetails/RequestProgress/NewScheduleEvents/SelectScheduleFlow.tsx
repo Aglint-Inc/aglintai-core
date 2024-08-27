@@ -12,7 +12,6 @@ import React, { useMemo } from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -94,7 +93,6 @@ const AvailabilityFlowMenus = ({
   isManualSchedule: boolean;
   scheduleReqProgressMap: RequestProgressMapType;
 }) => {
-  const { recruiterUser } = useAuthDetails();
   const { query } = useRouter();
   const requestId = query.id as string;
   const { request_progress } = useRequest();
