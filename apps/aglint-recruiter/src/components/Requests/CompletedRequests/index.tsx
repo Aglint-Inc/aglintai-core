@@ -16,7 +16,6 @@ function CompletedRequests({ openChat = false }: { openChat?: boolean }) {
   const { data: completedRequests, status } = useCompletedRequests({
     completedFilters,
   });
-  console.log(completedRequests);
   return (
     <RequestsWrapper
       slotFilter={

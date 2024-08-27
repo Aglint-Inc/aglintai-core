@@ -1,24 +1,23 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { REQUEST_SELECT } from '@/src/queries/requests';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { CompletedRequests, useCompletedRequestsStore } from './store';
-import { dayjsLocal } from '@aglint/shared-utils';
-import { REQUEST_SELECT } from '@/src/queries/requests';
+import { CompletedRequests } from './store';
 
 export const useCompletedRequests = ({
   completedFilters,
 }: {
   completedFilters: CompletedRequests['completedFilters'];
 }) => {
-  console.log('completedFilters', completedFilters);
   const {
     recruiterUser: { user_id },
   } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_requests_Count', user_id, completedFilters],
+    queryKey: ['get_Completed_Requests', user_id, completedFilters],
     refetchInterval: 30000,
     refetchOnMount: true,
     queryFn: () =>
@@ -31,7 +30,7 @@ export const useCompletedRequests = ({
   });
   const refetch = () =>
     queryClient.invalidateQueries({
-      queryKey: ['get_requests_Count', user_id, completedFilters],
+      queryKey: ['get_Completed_Requests', user_id, completedFilters],
     });
   return { ...query, refetch };
 };
@@ -99,6 +98,5 @@ export const getCompletedRequests = async ({
       );
     }
   }
-  console.log((await query).data.map((ele) => ele.completed_at));
   return (await query).data ?? [];
 };

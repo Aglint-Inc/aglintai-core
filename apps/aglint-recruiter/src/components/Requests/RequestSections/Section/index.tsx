@@ -1,5 +1,7 @@
 import { Stack } from '@mui/material';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { Text } from '@/devlink2/Text';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
@@ -12,10 +14,8 @@ import {
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../../../Common/ShowCode';
-import { Request } from './Request';
-import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { ButtonGhost, ButtonSoft, ButtonSurface } from '@/devlink2';
 import { setCompletedMode } from '../../CompletedRequests/store';
+import { Request } from './Request';
 
 function Section({
   requests,

@@ -25,7 +25,6 @@ function FilterAndSorting() {
       })
       .single();
     setCandidateAndJobs(data);
-    console.log(data);
     return data;
   }
 
@@ -180,7 +179,6 @@ function FilterAndSorting() {
           options: dateRange,
           multiSelect: false,
           setValue: (newValue) => {
-            console.log(newValue);
             setCompletedFilters({
               ...completedFilters,
               date: newValue,
