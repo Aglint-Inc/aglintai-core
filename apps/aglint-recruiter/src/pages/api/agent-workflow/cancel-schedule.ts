@@ -1,9 +1,10 @@
-import { candidate_new_schedule_schema, CApiError } from '@aglint/shared-utils';
 import {
+  candidate_new_schedule_schema,
+  CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
   ProgressLoggerType,
-} from '@aglint/shared-utils/src/request-workflow/utils';
+} from '@aglint/shared-utils';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
