@@ -4,7 +4,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { getShortTimeZone } from '@aglint/shared-utils';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -20,6 +20,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useTeamMembers } from '@/src/components/CompanyDetailComp/TeamManagement';
 import EditMember from '@/src/components/CompanyDetailComp/TeamManagement/EditMemberDialog';
+import { UserListThreeDot } from '@/src/components/CompanyDetailComp/TeamManagement/MemberList/ThreeDot';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateMember } from '@/src/context/AuthContext/utils';
 import { useAllIntegrations } from '@/src/queries/intergrations';
@@ -76,6 +77,12 @@ function BodyComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
+
+  const isEditOpen = router.query.edit_enable;
+
+  useEffect(() => {
+    setIsOpen(isEditOpen);
+  }, [isEditOpen]);
 
   const open = Boolean(anchorEl);
 
@@ -337,16 +344,17 @@ function BodyComp() {
                 interviewerDetails.recruiter_relation[0].roles.name !==
                   'admin') ||
               recruiter.primary_admin === recruiterUser.user_id ? (
-                <ButtonSoft
-                  textButton={'Edit'}
-                  size={2}
-                  color={'neutral'}
-                  onClickButton={{
-                    onClick: () => {
-                      setIsOpen(true);
-                    },
-                  }}
-                />
+                // <ButtonSoft
+                //   textButton={'Edit'}
+                //   size={2}
+                //   color={'neutral'}
+                //   onClickButton={{
+                //     onClick: () => {
+                //       setIsOpen(true);
+                //     },
+                //   }}
+                // />
+                <UserListThreeDot member={interviewerDetails} />
               ) : (
                 <></>
               )
