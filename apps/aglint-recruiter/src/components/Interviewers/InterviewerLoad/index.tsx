@@ -6,8 +6,8 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerWorkload } from '@/devlink3/InterviewerWorkload';
 import { InterviewWorkloadList } from '@/devlink3/InterviewWorkloadList';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
+import { allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';
@@ -15,19 +15,35 @@ import dayjs from '@/src/utils/dayjs';
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
-import { useAllInterviewer, useAllInterviewerType } from '../Hook';
+import { useAllInterviewer } from '../Hook';
 import LineGraph from './LineGraph';
 
 function InterviewerLoad() {
-  const { recruiter } = useAuthDetails();
-  const { data: interviewers, isLoading } = useAllInterviewer(recruiter.id);
   const { data: departments } = useAllDepartments();
+  const { data: InterivewTypes } = useAllInterviewModules();
   const { data: locations } = useAllOfficeLocations();
+
   const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
   const [selectedJobs, setJobs] = useState<string[]>([]);
   const [selectedDepartments, setDepartments] = useState<number[]>([]);
   const [selectedLocations, setLocations] = useState<number[]>([]);
-  const { data: InterivewTypes } = useAllInterviewModules();
+
+  const [dayCount, setDayCount] = useState<number>(0);
+
+  const endDay = dayjs().startOf('day').subtract(dayCount, 'month');
+
+  const startDay = dayjs()
+    .startOf('day')
+    .subtract(1 + dayCount, 'month');
+
+  const { data: interviewers, isLoading } = useAllInterviewer({
+    department_ids_params: selectedDepartments,
+    end_time_param: endDay.toISOString(),
+    start_time_param: startDay.toISOString(),
+    job_ids_params: selectedJobs,
+    module_ids_params: selectedInterviewTypes,
+    office_location_ids_params: selectedLocations,
+  });
 
   const {
     jobs: { data: Jobs },
@@ -62,47 +78,14 @@ function InterviewerLoad() {
       }))
     : [];
 
-  // filtering the interviewers
-  const selectedInterviewTypeUserIds = [
-    ...new Set(
-      InterivewTypes?.filter((interType) =>
-        selectedInterviewTypes.includes(interType.id),
-      )
-        .map((interviewType) => interviewType.users.map((user) => user.user_id))
-        .flat(),
-    ),
-  ];
-
   const isFilterApplied =
     !!selectedDepartments.length ||
     !!selectedJobs.length ||
     !!selectedLocations.length ||
     !!selectedInterviewTypes.length;
 
-  const filteredInterviewers = isFilterApplied
-    ? interviewers?.filter((interviewer) => {
-        const isInterviewType = selectedInterviewTypes?.length
-          ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
-          : true;
-
-        const isJobs = selectedJobs?.length
-          ? selectedJobs.some((job_id) => interviewer.job_ids.includes(job_id))
-          : true;
-
-        const isLocation = selectedLocations.length
-          ? selectedLocations.includes(interviewer.office_location_id)
-          : true;
-
-        const isDepartment = selectedDepartments.length
-          ? selectedDepartments.includes(interviewer.department_id)
-          : true;
-
-        return isDepartment && isLocation && isInterviewType && isJobs;
-      })
-    : interviewers;
-
   // calculate max count for height of the graph
-  let maxCount = 5;
+  let maxCount = 10;
 
   if (interviewers?.length)
     interviewers.map((interviewer) => {
@@ -130,7 +113,17 @@ function InterviewerLoad() {
   return (
     <>
       <InterviewerWorkload
-        textDateRange={`${dayjs().subtract(1, 'month').format('DD MMM YYYY')} - ${dayjs().format('DD MMM YYYY')}`}
+        textDateRange={`${startDay.format('DD MMM YYYY')} - ${endDay.format('DD MMM YYYY')}`}
+        onClickRight={{
+          onClick: () => {
+            setDayCount((pre) => (pre > 0 ? pre - 1 : 0));
+          },
+        }}
+        onClickLeft={{
+          onClick: () => {
+            setDayCount((pre) => pre + 1);
+          },
+        }}
         slotFilter={
           <Stack direction={'row'} gap={1}>
             <Filter
@@ -179,8 +172,8 @@ function InterviewerLoad() {
           </Stack>
         }
         slotInterviewWorkloadList={
-          filteredInterviewers?.length ? (
-            filteredInterviewers.map((interviewer) => (
+          interviewers?.length ? (
+            interviewers.map((interviewer) => (
               <InterviewerCard
                 key={interviewer.user_id}
                 interviewer={interviewer}
@@ -208,17 +201,25 @@ const InterviewerCard = ({
   interviewer,
   maxMeetingCount,
 }: {
-  interviewer: useAllInterviewerType['data'][number];
+  interviewer: allInterviewerType[number];
   maxMeetingCount: number;
 }) => {
   const pastMonthDates = Array.from({ length: 30 }, (_, i) =>
-    dayjs().subtract(i, 'day').toISOString(),
+    dayjs().subtract(i, 'day').format('D-M-YYYY'),
   );
+  const pastMontCount = interviewer.completed_meetings || {};
 
-  const pastMontCount = interviewer.completed_meeting_last_month || {};
+  const transformedObject = Object.keys(pastMontCount).reduce((acc, key) => {
+    const formattedKey = dayjs(key).format('D-M-YYYY');
+    // eslint-disable-next-line security/detect-object-injection
+    acc[formattedKey] = pastMontCount[key];
+    return acc;
+  }, {});
 
-  // eslint-disable-next-line security/detect-object-injection
-  const resultArray = pastMonthDates.map((date) => pastMontCount[date] || 0);
+  const resultArray = pastMonthDates.map((date) => {
+    // eslint-disable-next-line security/detect-object-injection
+    return transformedObject[date] || 0;
+  });
 
   return (
     <InterviewWorkloadList

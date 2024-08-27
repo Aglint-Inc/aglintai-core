@@ -1,11 +1,8 @@
-.interview-member-list-wrap {
+.interview-member-list-wrapper {
   display: flex;
   overflow: auto;
   width: 100%;
   flex-direction: column;
-
-  background-color: var(--neutral-2);
-
   height: calc(100vh - 48px);
 }
 

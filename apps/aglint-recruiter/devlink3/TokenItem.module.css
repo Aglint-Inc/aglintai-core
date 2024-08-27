@@ -1,0 +1,21 @@
+.token-table-body-item {
+  display: grid;
+  height: 62px;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 260px 570px;
+  grid-template-rows: auto;
+
+  border-bottom: 1px solid var(--neutral-6);
+}
+
+.token-sttus-badge-wrap {
+  display: flex;
+  padding: var(--space-1) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#w-node-_09a3954e-9934-f0de-f9b4-8b522528b8d1-2528b8d0 {
+}
+#w-node-_09a3954e-9934-f0de-f9b4-8b522528b8d3-2528b8d0 {
+}

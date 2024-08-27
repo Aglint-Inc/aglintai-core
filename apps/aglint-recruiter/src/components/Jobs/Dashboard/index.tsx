@@ -1,26 +1,18 @@
-import { Stack } from '@mui/material';
-import Popover from '@mui/material/Popover';
+import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { CreateJob } from '@/devlink/CreateJob';
+import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { JobsDashboard } from '@/devlink/JobsDashboard';
-import { AshbyModalComp } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby';
-import { GreenhouseModal } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal';
-import LeverModalComp from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal';
-import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
-import {
-  STATE_ASHBY_DIALOG,
-  STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
-} from '@/src/context/IntegrationProvider/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useAllIntegrations } from '@/src/queries/intergrations';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
+import OptimisticWrapper from '../../NewAssessment/Common/wrapper/loadingWapper';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
@@ -107,20 +99,18 @@ export default DashboardComp;
 
 export function AddJob() {
   const router = useRouter();
-  const { setIntegration } = useIntegration();
-  const { data: int, isLoading } = useAllIntegrations();
+  // const { data: int, isLoading } = useAllIntegrations();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  //popover Add Job
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
   const handleClosePop = () => {
     setAnchorEl(null);
   };
   return (
-    <>
+    <Stack direction={'row'} gap={1}>
       <Popover
         id='add-job'
         open={open}
@@ -141,71 +131,95 @@ export function AddJob() {
           },
         }}
       >
-        {!isLoading && (
+        {
           <CreateJob
-            isAshbyVisible={!!int.ashby_key}
-            isGreenhouseVisible={!!int.greenhouse_key}
-            isLeverVisible={!!int.lever_key}
-            isEmpty={!(int.ashby_key || int.greenhouse_key || int.lever_key)}
-            onClickLinktoIntegration={{
-              onClick: () => {
-                router.push(ROUTES['/integrations']());
-              },
-            }}
-            onClickAshby={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  ashby: {
-                    open: true,
-                    step: STATE_ASHBY_DIALOG.LISTJOBS,
-                  },
-                }));
-                setAnchorEl(null);
-              },
-            }}
-            onClickGreenhouse={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  greenhouse: {
-                    open: true,
-                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-                  },
-                }));
-                setAnchorEl(null);
-              },
-            }}
+            isAshbyVisible={false}
+            isGreenhouseVisible={false}
+            isLeverVisible={false}
+            isEmpty={false}
             onClickCreateNewJob={{
               onClick: () => {
                 setAnchorEl(null);
                 router.push(ROUTES['/jobs/create']());
               },
             }}
-            onClickLeverImport={{
-              onClick: () => {
-                setIntegration((prev) => ({
-                  ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
-                }));
-                setAnchorEl(null);
-              },
-            }}
-          />
-        )}
-      </Popover>
+            // onClickLinktoIntegration={{
+            //   onClick: () => {
+            //     router.push(ROUTES['/integrations']());
+            //   },
+            // }}
+            // onClickAshby={{
+            //   onClick: () => {
+            //     setIntegration((prev) => ({
+            //       ...prev,
+            //       ashby: {
+            //         open: true,
+            //         step: STATE_ASHBY_DIALOG.LISTJOBS,
+            //       },
+            //     }));
+            //     setAnchorEl(null);
+            //   },
+            // }}
+            // onClickGreenhouse={{
+            //   onClick: () => {
+            //     setIntegration((prev) => ({
+            //       ...prev,
+            //       greenhouse: {
+            //         open: true,
+            //         step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
+            //       },
+            //     }));
+            //     setAnchorEl(null);
+            //   },
+            // }}
 
-      <LeverModalComp />
-      <GreenhouseModal />
-      <AshbyModalComp />
-      <ButtonSoft
+            // onClickLeverImport={{
+            //   onClick: () => {
+            //     setIntegration((prev) => ({
+            //       ...prev,
+            //       lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+            //     }));
+            //     setAnchorEl(null);
+            //   },
+            // }}
+          />
+        }
+      </Popover>
+      <Sync />
+      <IconButtonGhost
         size={2}
+        iconName={'more_vert'}
         color={'neutral'}
-        textButton={'Add job'}
-        isRightIcon
-        iconName={'keyboard_arrow_down'}
-        onClickButton={{ onClick: handleClick }}
+        onClickButton={{ onClick: (e) => setAnchorEl(e.currentTarget) }}
       />
-    </>
+      {/* <LeverModalComp />
+      <GreenhouseModal />
+      <AshbyModalComp /> */}
+    </Stack>
   );
 }
+
+const Sync = () => {
+  const { recruiter } = useAuthDetails();
+  const { handleJobsSync } = useJobs();
+  const [load, setLoad] = useState(false);
+  if (!recruiter?.recruiter_preferences?.greenhouse) return <></>;
+  const handleSync = async () => {
+    if (load) return;
+    setLoad(true);
+    await handleJobsSync();
+    setLoad(false);
+  };
+  return (
+    <OptimisticWrapper loading={load}>
+      <ButtonGhost
+        size={2}
+        isLeftIcon
+        iconName={'sync'}
+        color={'accent'}
+        textButton={'Sync jobs'}
+        onClickButton={{ onClick: async () => await handleSync() }}
+      />
+    </OptimisticWrapper>
+  );
+};

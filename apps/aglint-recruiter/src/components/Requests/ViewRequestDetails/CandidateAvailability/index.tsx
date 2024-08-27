@@ -211,7 +211,11 @@ function CandidateAvailability({
         <SideDrawerLarge
           isHeaderIconVisible={true}
           slotHeaderIcon={<GlobalIcon iconName={'exit_to_app'} size={4} />}
-          textDrawertitle={`Request Availability`}
+          textDrawertitle={
+            reRequestAvailability
+              ? 'Re-request Availability'
+              : `Request Availability`
+          }
           onClickCancel={{
             onClick: () => {
               closeDrawer();

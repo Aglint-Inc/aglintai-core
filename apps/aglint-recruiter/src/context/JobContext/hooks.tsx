@@ -4,7 +4,11 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 
 import { handleJobApi } from '@/src/apiUtils/job/utils';
-import { jobQueries, useInvalidateJobQueries } from '@/src/queries/job';
+import {
+  jobQueries,
+  useInvalidateJobQueries,
+  useJobSync,
+} from '@/src/queries/job';
 import {
   useUploadApplication,
   useUploadCsv,
@@ -34,6 +38,7 @@ const useJobContext = () => {
 
   const { recruiter_id, recruiter } = useAuthDetails();
   const { isScoringEnabled } = useRolesAndPermissions();
+  const { mutateAsync: syncJob } = useJobSync();
 
   const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 
@@ -135,6 +140,14 @@ const useJobContext = () => {
       } catch {
         //
       }
+    }
+  };
+
+  const handleJobSync = async () => {
+    try {
+      await syncJob({ id: job_id });
+    } catch {
+      //
     }
   };
 
@@ -261,6 +274,7 @@ const useJobContext = () => {
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,
+    handleJobSync,
     canPublish,
     handlePublish,
     publishStatus,
