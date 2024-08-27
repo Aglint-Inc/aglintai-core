@@ -55,7 +55,13 @@ type Props = Pick<SchedulingAnalyticsContextType['tabs'], 'data'>;
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
 const BarChart = memo(({ data }: Props) => {
-  const { labels, counts } = SafeObject.entries(data ?? {}).reduce(
+  const dataa: Omit<Props['data'], 'not_scheduled'> = {
+    cancelled: data.cancelled,
+    completed: data.completed,
+    confirmed: data.completed,
+    waiting: data.waiting,
+  };
+  const { labels, counts } = SafeObject.entries(dataa ?? {}).reduce(
     (acc, [key, value]) => {
       acc.labels.push(capitalizeAll(key ?? '--'));
       acc.counts.push(value);

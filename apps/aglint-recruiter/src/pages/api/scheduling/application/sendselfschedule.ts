@@ -79,7 +79,7 @@ const sendToCandidate = async ({
     await supabaseAdmin
       .from('applications')
       .select('id,candidates(*)')
-      .eq('application_id', application_id)
+      .eq('id', application_id)
       .single()
       .throwOnError()
   ).data;
@@ -98,7 +98,13 @@ const sendToCandidate = async ({
     meeting_flow: 'self_scheduling',
   });
 
-  console.log('updated meetings');
+  await supabaseAdmin
+    .from('request')
+    .update({
+      status: 'in_progress',
+    })
+    .eq('id', request_id)
+    .throwOnError();
 
   const { data: filterJson, error: errorFilterJson } = await supabaseAdmin
     .from('interview_filter_json')
@@ -135,8 +141,6 @@ const sendToCandidate = async ({
     filter_id: filterJson[0].id,
     organizer_id,
   });
-
-  console.log('filterJson success');
 
   const res: ApiResponseSelfSchedule = {
     data: {

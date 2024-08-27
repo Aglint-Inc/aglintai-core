@@ -1065,18 +1065,6 @@ export type Database = {
           },
         ]
       }
-      host: {
-        Row: {
-          decrypted_secret: string | null
-        }
-        Insert: {
-          decrypted_secret?: string | null
-        }
-        Update: {
-          decrypted_secret?: string | null
-        }
-        Relationships: []
-      }
       integrations: {
         Row: {
           ashby_key: string | null
@@ -1558,6 +1546,7 @@ export type Database = {
       }
       interview_plan: {
         Row: {
+          application_id: string | null
           created_at: string
           id: string
           job_id: string | null
@@ -1565,6 +1554,7 @@ export type Database = {
           plan_order: number
         }
         Insert: {
+          application_id?: string | null
           created_at?: string
           id?: string
           job_id?: string | null
@@ -1572,6 +1562,7 @@ export type Database = {
           plan_order?: number
         }
         Update: {
+          application_id?: string | null
           created_at?: string
           id?: string
           job_id?: string | null
@@ -1579,6 +1570,34 @@ export type Database = {
           plan_order?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
@@ -5610,8 +5629,10 @@ export type Database = {
           recruiter_id_param: string
           start_time_param: string
           end_time_param: string
-          department_ids: number[]
-          office_location_ids: number[]
+          department_ids_params: number[]
+          office_location_ids_params: number[]
+          job_ids_params: string[]
+          module_ids_params: string[]
         }
         Returns: {
           user_id: string

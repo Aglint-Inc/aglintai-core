@@ -1,6 +1,13 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  EmailTemplateAPi,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Button, Stack } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
@@ -11,6 +18,8 @@ import {
   setReRequestAvailability,
 } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import ScheduleFlows from '../Actions/Schedule';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
@@ -89,6 +98,8 @@ const AvailabilityFlowMenus = ({
   isManualSchedule: boolean;
   scheduleReqProgressMap: RequestProgressMapType;
 }) => {
+  const { query } = useRouter();
+  const requestId = query.id as string;
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
   let eventWActions: DatabaseEnums['email_slack_types'][] = [];
@@ -122,6 +133,25 @@ const AvailabilityFlowMenus = ({
     isAvailabilityRecieved = true;
   }
 
+  const handleFollowup = async () => {
+    try {
+      const [cand_req] = supabaseWrap(
+        await supabase
+          .from('candidate_request_availability')
+          .select()
+          .eq('request_id', requestId),
+      );
+      const payload: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['api_payload'] =
+        {
+          avail_req_id: cand_req.id,
+        };
+      await axios.post('/api/emails/sendAvailReqReminder_email_applicant', {
+        ...payload,
+      });
+    } catch (err) {
+      toast.error('Some wrong happenned please try again');
+    }
+  };
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
@@ -160,6 +190,16 @@ const AvailabilityFlowMenus = ({
             reqProgressMap={scheduleReqProgressMap}
           />
         </ShowCode.When>
+        <ShowCode.When
+          isTrue={Boolean(
+            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
+          )}
+        >
+          <EventNode
+            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
+            reqProgressMap={scheduleReqProgressMap}
+          />
+        </ShowCode.When>
       </ShowCode.When>
       <ShowCode.When
         isTrue={
@@ -173,7 +213,9 @@ const AvailabilityFlowMenus = ({
           ) && !eventTargetMap['sendAvailReqReminder']
         }
       >
-        <Button>Resend Link</Button>
+        <span>
+          <Button onClick={handleFollowup}>Resend Link</Button>
+        </span>
       </ShowCode.When>
       <ShowCode.When
         isTrue={
@@ -181,17 +223,19 @@ const AvailabilityFlowMenus = ({
           Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
         }
       >
-        <Button
-          onClick={() => {
-            setCandidateAvailabilityDrawerOpen(true);
-            setReRequestAvailability(true);
-            setCandidateAvailabilityIdForReRequest(
-              '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-            );
-          }}
-        >
-          Re Request Availability
-        </Button>
+        <span>
+          <Button
+            onClick={() => {
+              setCandidateAvailabilityDrawerOpen(true);
+              setReRequestAvailability(true);
+              setCandidateAvailabilityIdForReRequest(
+                '6b7657ba-cc3f-4789-a44f-5be74d234f84',
+              );
+            }}
+          >
+            Re Request Availability
+          </Button>
+        </span>
       </ShowCode.When>
     </>
   );
