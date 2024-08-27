@@ -6,6 +6,7 @@ import { type allTempvariables } from '@aglint/shared-utils';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { fetchUtil } from './fetch-utils';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 interface ReqPayload {
   mail_type: string;
@@ -65,11 +66,14 @@ const all_possible_dynamic_values: {
 export async function POST(req: Request) {
   const { mail_type, recruiter_id, job_id }: ReqPayload = await req.json();
 
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     if (!mail_type) {
       throw new ClientError('attribute application_id missing', 400);
     }
     const { body, companyName } = await fetchUtil({
+      supabaseAdmin,
       recruiter_id,
       mail_type,
       job_id,

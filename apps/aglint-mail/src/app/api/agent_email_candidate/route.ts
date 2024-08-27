@@ -4,14 +4,19 @@ import { agentEmailCandidateSchema } from '@aglint/shared-types/src/aglint-mail/
 import type { APISendgridPayload } from '@aglint/shared-types';
 import sendMail from '../../../config/sendgrid';
 import { fetchUtil } from './fetch-util';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
 
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const parsed_body = v.parse(agentEmailCandidateSchema, req_body);
-    const { filled_comp_template, recipient_email } =
-      await fetchUtil(parsed_body);
+    const { filled_comp_template, recipient_email } = await fetchUtil(
+      supabaseAdmin,
+      parsed_body,
+    );
 
     const sendgrid_payload: APISendgridPayload = {
       fromEmail: parsed_body.agent_email,

@@ -1,12 +1,13 @@
+import { interviewerResumedEmailAdminSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
 import { NextResponse } from 'next/server';
 import * as v from 'valibot';
-import { interviewerResumedEmailAdminSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { dbFetch } from './fetch-util';
 
 export async function POST(req: Request) {
   const body = await req.json();
-
+  const supabaseAdmin = getSupabaseServer();
   try {
     const req_body = v.parse(interviewerResumedEmailAdminSchema, body);
 
@@ -15,8 +16,9 @@ export async function POST(req: Request) {
       company_id,
       recipient_email,
       react_email_placeholders,
-    } = await dbFetch(req_body);
+    } = await dbFetch(supabaseAdmin, req_body);
     await sendMailFun({
+      supabaseAdmin,
       comp_email_placeholder,
       react_email_placeholders,
       company_id,

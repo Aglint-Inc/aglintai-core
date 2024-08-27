@@ -1,8 +1,8 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { supabaseAdmin } from '../../../supabase/supabaseAdmin';
 
 export async function dbUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['api_payload'],
 ) {
   const [filterJson] = supabaseWrap(
@@ -14,7 +14,7 @@ export async function dbUtil(
       .eq('id', req_body.filter_id),
   );
   if (filterJson.request_id) {
-    await updateReminderInRequest(filterJson.request_id);
+    await updateReminderInRequest(supabaseAdmin, filterJson.request_id);
   }
   const [meetingDetails] = supabaseWrap(
     await supabaseAdmin
@@ -74,7 +74,10 @@ export async function dbUtil(
   };
 }
 
-const updateReminderInRequest = async (request_id: string) => {
+const updateReminderInRequest = async (
+  supabaseAdmin: SupabaseType,
+  request_id: string,
+) => {
   supabaseWrap(
     await supabaseAdmin.from('request_progress').insert({
       request_id,
