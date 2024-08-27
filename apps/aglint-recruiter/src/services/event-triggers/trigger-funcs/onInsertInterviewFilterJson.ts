@@ -65,6 +65,7 @@ const eventTrigger = async ({
               request_id: new_data.request_id,
               event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
               status: 'completed',
+              created_at: dayjsLocal().add(3000, 'millisecond').toISOString(),
               meta: {
                 event_run_id,
                 workflow_action_id: j_l_a.id,
