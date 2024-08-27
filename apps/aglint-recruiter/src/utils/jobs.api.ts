@@ -2,6 +2,7 @@ import { GreenHouseApplicationsAPI } from '../app/api/sync/greenhouse/applicatio
 import { GreenHouseJobsSyncAPI } from '../app/api/sync/greenhouse/jobs/type';
 import axios from '../client/axios';
 import { supabase } from './supabase/client';
+
 export async function syncGreenhouseJob(job_id: string, recruiter_id: string) {
   const tempJobP = supabase
     .from('public_jobs')
@@ -20,7 +21,7 @@ export async function syncGreenhouseJob(job_id: string, recruiter_id: string) {
     tempKeyP,
   ]);
   return axios.call<GreenHouseApplicationsAPI>(
-    'GET',
+    'POST',
     '/api/sync/greenhouse/applications',
     {
       job_id: job_id,
@@ -41,9 +42,13 @@ export async function syncGreenhouseJobs(recruiter_id: string) {
       .single()
       .throwOnError()
   ).data;
-  return axios.call<GreenHouseJobsSyncAPI>('GET', '/api/sync/greenhouse/jobs', {
-    recruiter_id: recruiter_id,
-    key: greenhouse_key,
-    last_sync: greenhouse_metadata.last_sync['jobs'] || null,
-  });
+  return axios.call<GreenHouseJobsSyncAPI>(
+    'POST',
+    '/api/sync/greenhouse/jobs',
+    {
+      recruiter_id: recruiter_id,
+      key: greenhouse_key,
+      last_sync: greenhouse_metadata.last_sync['jobs'] || null,
+    },
+  );
 }

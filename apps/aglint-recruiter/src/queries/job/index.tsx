@@ -3,12 +3,16 @@ import {
   QueryClient,
   QueryFilters,
   queryOptions,
+  useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
 import { useCallback } from 'react';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { syncGreenhouseJob } from '@/src/utils/jobs.api';
+import toast from '@/src/utils/toast';
 
 import { GC_TIME, noPollingKey } from '..';
 import { readJob } from '../jobs';
@@ -61,16 +65,32 @@ const jobQueries = {
       refetchInterval: enabled ? 5000 : false,
       queryKey: ['job_polling', { id }],
       queryFn: async () => {
-        queryClient.invalidateQueries({
-          predicate: (query) =>
-            query.queryKey.includes(jobKey) &&
-            query.queryKey.find((key) => (key as any)?.id === id) &&
-            !query.queryKey.includes(noPollingKey),
-        });
+        await jobQueries.refresh({ id, queryClient });
         return true;
       },
     });
   },
+  refresh: async ({ id, queryClient }: Pollers) => {
+    await queryClient.invalidateQueries({
+      predicate: (query) =>
+        query.queryKey.includes(jobKey) &&
+        query.queryKey.find((key) => (key as any)?.id === id) &&
+        !query.queryKey.includes(noPollingKey),
+    });
+  },
+};
+
+export const useJobSync = () => {
+  const { recruiter_id } = useAuthDetails();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id }: { id: string }) => {
+      await syncGreenhouseJob(id, recruiter_id);
+      await jobQueries.refresh({ id, queryClient });
+    },
+    onSuccess: () => toast.success('Synced successfully'),
+    onError: () => toast.error('Synced failed'),
+  });
 };
 
 export const useInvalidateJobQueries = () => {

@@ -1,9 +1,13 @@
 import {
   DatabaseTable,
+  DatabaseTableInsert,
+  DatabaseTableUpdate,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 
 import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 export function filterSchedulingOptionsArray({
   schedulingOptions,
@@ -49,4 +53,43 @@ export function filterSchedulingOptionsArray({
   }
 
   return day_filtered_slots;
+}
+
+export async function insertCandidateRequestAvailability(
+  data: DatabaseTableInsert['candidate_request_availability'],
+) {
+  try {
+    const { error, data: result } = await supabase
+      .from('candidate_request_availability')
+      .insert({ ...data })
+      .select()
+      .single();
+
+    if (error) throw new Error(error.message);
+    return result;
+  } catch (error) {
+    toast.error(error.message);
+  }
+}
+
+export async function updateCandidateRequestAvailability({
+  data,
+  id,
+}: {
+  data: DatabaseTableUpdate['candidate_request_availability'];
+  id: string;
+}) {
+  try {
+    const { error, data: result } = await supabase
+      .from('candidate_request_availability')
+      .update({ ...data })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw new Error(error.message);
+    return result;
+  } catch (error) {
+    toast.error(error.message);
+  }
 }
