@@ -3,17 +3,17 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
+import { syncJobApplications } from '../applications/process';
 import { getOfficeLocations } from '../office_locations/process';
 import { GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
-  getGreenhouseCandidates,
   getGreenhouseJobPlan,
   getGreenhouseJobs,
   setLastSync,
 } from '../util';
-import { syncJobApplications } from '../applications/process';
 
+// eslint-disable-next-line no-unused-vars
 const MAX_EMAILS_PER_BATCH = 100;
 
 export async function syncGreenhouseJob(
