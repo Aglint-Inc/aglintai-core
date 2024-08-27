@@ -1,15 +1,15 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  platformRemoveUnderscore,
   durationCalculator,
-  sessionTypeIcon,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
+  sessionTypeIcon,
 } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interviewStart_email_interviewers'>['api_payload'],
 ) {
   const sessions = supabaseWrap(

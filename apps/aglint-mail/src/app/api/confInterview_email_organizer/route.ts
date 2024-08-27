@@ -1,15 +1,16 @@
-import { NextResponse } from 'next/server';
 import { confInterviewEmailOrganizerSchema } from '@aglint/shared-types/src/aglint-mail/api_schema';
+import { NextResponse } from 'next/server';
 import * as v from 'valibot';
+import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
 import { sendMailFun } from '../../../utils/apiUtils/sendMail';
 import { fetchUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const req_body = await req.json();
-
+  const supabaseAdmin = getSupabaseServer();
   try {
     const parsed_body = v.parse(confInterviewEmailOrganizerSchema, req_body);
-    const fetch_details = await fetchUtil(parsed_body);
+    const fetch_details = await fetchUtil(supabaseAdmin, parsed_body);
 
     for (const {
       comp_email_placeholder,
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
     } of fetch_details) {
       // eslint-disable-next-line no-await-in-loop
       await sendMailFun({
+        supabaseAdmin,
         comp_email_placeholder,
         company_id,
         react_email_placeholders,

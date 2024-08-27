@@ -154,7 +154,7 @@ const UITextField = React.forwardRef(
           type={type}
           sx={{
             '& .MuiOutlinedInput-root': {
-              height: height ? `${height}px !important` : '26px',
+              height: height ? `${height}px !important` : '32px',
             },
             width: width,
             '& input:-webkit-autofill': {
