@@ -99,8 +99,9 @@ const CandidateAvailReceive = ({
   return (
     <Stack rowGap={1.5}>
       <TextWithIcon
-        textContent={<>EVENT : Candidate submits Availability</>}
-        iconSize={3}
+        iconName='expand_circle_right'
+        textContent={`Candidate submits Availability`}
+        iconSize={4}
         fontSize={1}
         color={getProgressColor('past')}
       />

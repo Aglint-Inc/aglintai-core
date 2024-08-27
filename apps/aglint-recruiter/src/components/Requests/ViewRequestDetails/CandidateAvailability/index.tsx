@@ -109,6 +109,16 @@ function CandidateAvailability({
       setCandidateAvailabilityDrawerOpen(false);
       return;
     }
+    await handleAsyncUpdateRequest({
+      payload: {
+        requestId: String(selectedRequest?.id),
+        requestPayload: {
+          status: 'in_progress',
+        },
+      },
+      loading: false,
+      toast: false,
+    });
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
       meeting_flow: 'candidate_request',
@@ -166,16 +176,7 @@ function CandidateAvailability({
     } catch (error) {
       toast.message('Failed to send email');
     }
-    await handleAsyncUpdateRequest({
-      payload: {
-        requestId: String(selectedRequest?.id),
-        requestPayload: {
-          status: 'in_progress',
-        },
-      },
-      loading: false,
-      toast: false,
-    });
+
     toast.success('Request availability created successfully');
     setSubmitting(false);
     setCandidateAvailabilityDrawerOpen(false);

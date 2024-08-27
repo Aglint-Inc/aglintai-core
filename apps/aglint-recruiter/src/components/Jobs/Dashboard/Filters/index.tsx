@@ -344,6 +344,16 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
       }
     });
   }, [filteredJobs, sort.order, sort.option]);
+
+  const pinSortedJobs = sortedJobs
+    .reduce(
+      (acc, curr) => {
+        acc[curr.is_pinned ? 0 : 1].push(curr);
+        return acc;
+      },
+      [[], []] satisfies (typeof jobs)[][],
+    )
+    .flatMap((jobs) => jobs);
   let filterOptions = getFilterOptions(jobs);
 
   const safeOptions = useMemo(
@@ -366,6 +376,6 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     filterOptions,
     filterValues,
     setFilterValues,
-    jobs: sortedJobs,
+    jobs: pinSortedJobs,
   };
 };
