@@ -1,41 +1,31 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable security/detect-object-injection */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import FilterHeader from '@/src/components/Common/FilterHeader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import { GetRequestParams } from '@/src/queries/requests';
 import { supabase } from '@/src/utils/supabase/client';
 
-import FilterHeader from '../../Common/FilterHeader';
+import { setCompletedFilters, useCompletedRequestsStore } from '../store';
 
 function FilterAndSorting() {
   const [candidateAndJobs, setCandidateAndJobs] =
     useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
-  const {
-    filters: {
-      created_at,
-      end_at,
-      is_new,
-      title,
-      jobs,
-      applications,
-      assigneeList,
-      assignerList,
-      ...filters
-    },
-    setFilters,
-  } = useRequests();
+  const { completedFilters } = useCompletedRequestsStore();
+  const { applications, assigneeList, jobs, assignerList, title, type, date } =
+    completedFilters;
   const { recruiter_id } = useAuthDetails();
 
   async function getCandidateList() {
     const { data } = await supabase
-      .rpc('get_requests_candidate_list', {
+      .rpc('get_completed_requests_candidate_list', {
         rec_id: recruiter_id,
       })
       .single();
     setCandidateAndJobs(data);
+    console.log(data);
     return data;
   }
 
@@ -53,57 +43,22 @@ function FilterAndSorting() {
     ],
   };
 
-  const safeOptions = useMemo(
-    () =>
-      Object.keys(filters).reduce(
-        (acc, curr) => {
-          const safeKey = curr as keyof typeof filters;
-          let value;
-          switch (safeKey) {
-            case 'status':
-              value = options.status;
-              break;
-            case 'type':
-              value = options.type;
-              break;
-          }
-          acc[safeKey] = value;
-          return acc;
-        },
-        {} as typeof filters,
-      ),
-    [options, filters],
-  );
-
-  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
-    Object.entries(filters).map(
-      ([key, value]) =>
-        ({
-          active: value.length,
-          name: key,
-          value: value ?? [],
-          type: 'filter',
-          iconname: '',
-          icon: <></>,
-          setValue: (newValue: typeof value) =>
-            setFilters((prev) => ({ ...prev, [key]: newValue })),
-          options: safeOptions[key] ?? [],
-        }) as (typeof safeFilters)[number],
-    );
-
   const jobFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search Jobs',
-    active: jobs.length,
+    active: jobs && jobs.length,
     name: 'Jobs',
     value: jobs ?? [],
     type: 'filter',
     iconname: '',
     icon: <></>,
     setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, jobs: newValue }));
+      setCompletedFilters({
+        ...completedFilters,
+        jobs: newValue,
+      });
     },
-    options: candidateAndJobs
+    options: candidateAndJobs?.jobs
       ? candidateAndJobs.jobs.map(
           (ele: { job_id: string; job_title: string }) => {
             return {
@@ -113,21 +68,24 @@ function FilterAndSorting() {
           },
         )
       : [],
-  } as (typeof safeFilters)[number];
+  } as Parameters<typeof FilterHeader>[0]['filters'][number];
 
   const candidateFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search Candidates',
-    active: applications.length,
+    active: applications && applications.length,
     name: 'Candidates',
     value: applications ?? [],
     type: 'filter',
     iconname: '',
     icon: <></>,
     setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, applications: newValue }));
+      setCompletedFilters({
+        ...completedFilters,
+        applications: newValue,
+      });
     },
-    options: candidateAndJobs
+    options: candidateAndJobs?.applications
       ? candidateAndJobs?.applications.map(
           (ele: { candidate_name: string; application_id: string }) => {
             return {
@@ -137,20 +95,23 @@ function FilterAndSorting() {
           },
         )
       : [],
-  } as (typeof safeFilters)[number];
+  } as Parameters<typeof FilterHeader>[0]['filters'][number];
   const assignerFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search created by',
-    active: assignerList.length,
+    active: assignerList && assignerList.length,
     name: 'Created by',
     value: assignerList ?? [],
     type: 'filter',
     iconname: '',
     icon: <></>,
     setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, assignerList: newValue }));
+      setCompletedFilters({
+        ...completedFilters,
+        assignerList: newValue,
+      });
     },
-    options: candidateAndJobs
+    options: candidateAndJobs?.assignerlist
       ? candidateAndJobs?.assignerlist.map(
           (ele: { name: string; id: string }) => {
             return {
@@ -160,21 +121,24 @@ function FilterAndSorting() {
           },
         )
       : [],
-  } as (typeof safeFilters)[number];
+  } as Parameters<typeof FilterHeader>[0]['filters'][number];
 
   const assigneeFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search Assignees',
-    active: assigneeList.length,
+    active: assigneeList && assigneeList.length,
     name: 'Assignee',
     value: assigneeList ?? [],
     type: 'filter',
     iconname: '',
     icon: <></>,
     setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, assigneeList: newValue }));
+      setCompletedFilters({
+        ...completedFilters,
+        assigneeList: newValue,
+      });
     },
-    options: candidateAndJobs
+    options: candidateAndJobs?.assigneelist
       ? candidateAndJobs?.assigneelist.map(
           (ele: { name: string; id: string }) => {
             return {
@@ -184,13 +148,48 @@ function FilterAndSorting() {
           },
         )
       : [],
-  } as (typeof safeFilters)[number];
+  } as Parameters<typeof FilterHeader>[0]['filters'][number];
+  const typeFilter = {
+    active: type && type.length,
+    name: 'Type',
+    value: type ?? [],
+    type: 'filter',
+    iconname: '',
+    icon: <></>,
+    setValue: (newValue) => {
+      setCompletedFilters({
+        ...completedFilters,
+        type: newValue,
+      });
+    },
+    options: options.type.map((ele: string) => {
+      return {
+        id: ele,
+        label: ele,
+      };
+    }),
+  } as Parameters<typeof FilterHeader>[0]['filters'][number];
 
   return (
     <FilterHeader
       layoutMode='left-align'
       filters={[
-        ...safeFilters,
+        {
+          type: 'filter',
+          name: 'Date',
+          options: dateRange,
+          multiSelect: false,
+          setValue: (newValue) => {
+            console.log(newValue);
+            setCompletedFilters({
+              ...completedFilters,
+              date: newValue,
+            });
+          },
+          value: date,
+          iconname: '',
+        },
+        typeFilter,
         assigneeFilter,
         assignerFilter,
         jobFilter,
@@ -199,7 +198,10 @@ function FilterAndSorting() {
       search={{
         value: title,
         setValue: (newValue: typeof title) => {
-          setFilters((prev) => ({ ...prev, title: newValue }));
+          setCompletedFilters({
+            ...completedFilters,
+            title: newValue,
+          });
         },
         placeholder: 'Search Requests',
       }}
@@ -208,3 +210,22 @@ function FilterAndSorting() {
 }
 
 export default FilterAndSorting;
+
+const dateRange = [
+  {
+    id: 'today',
+    label: 'today',
+  },
+  {
+    id: 'yesterday',
+    label: 'Yesterday',
+  },
+  {
+    id: 'last_7_days',
+    label: 'Last 7 days',
+  },
+  {
+    id: 'last_30_days',
+    label: 'Last 30 days',
+  },
+];

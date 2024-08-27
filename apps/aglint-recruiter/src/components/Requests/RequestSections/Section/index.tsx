@@ -13,6 +13,9 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { ShowCode } from '../../../Common/ShowCode';
 import { Request } from './Request';
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
+import { ButtonGhost, ButtonSoft, ButtonSurface } from '@/devlink2';
+import { setCompletedMode } from '../../CompletedRequests/store';
 
 function Section({
   requests,
@@ -20,12 +23,14 @@ function Section({
   sectionIconName,
   color,
   isLoadingRequests,
+  showEmptyMessage = false,
 }: {
   requests: RequestType[];
-  sectionName: keyof RequestResponse;
+  sectionName: keyof RequestResponse | 'all_completed_requests';
   sectionIconName: string;
   color: string;
   isLoadingRequests: boolean;
+  showEmptyMessage?: boolean;
 }) {
   const {
     requests: { status },
@@ -54,6 +59,12 @@ function Section({
         }}
       >
         <ShowCode>
+          <ShowCode.When isTrue={!isLoadingRequests && showEmptyMessage}>
+            <GlobalEmptyState
+              iconName={'task_alt'}
+              textDesc={'No results found'}
+            />
+          </ShowCode.When>
           <ShowCode.When
             isTrue={Boolean(status === 'success' && requests.length)}
           >
@@ -71,6 +82,19 @@ function Section({
           </ShowCode.When>
         </ShowCode>
       </Stack>
+      {sectionName === 'completed_request' && (
+        <Stack width={'100%'} direction={'row'} justifyContent={'start'}>
+          <ButtonGhost
+            color={'accent'}
+            textButton={'View all completed requests'}
+            isRightIcon={true}
+            iconName={'north_east'}
+            onClickButton={{
+              onClick: () => setCompletedMode(true),
+            }}
+          />
+        </Stack>
+      )}
     </Stack>
   );
 }
