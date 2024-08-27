@@ -251,7 +251,14 @@ function ViewRequestDetails() {
                     </Stack>
                   )}
                   {selectedRequest?.type ? (
-                    <RequestProgress request_type={selectedRequest?.type} />
+                    <RequestProgress
+                      job_workflow={
+                        selectedRequest.applications.public_jobs.workflow_job_relation?.map(
+                          (j) => j.workflow,
+                        ) ?? []
+                      }
+                      request_type={selectedRequest?.type}
+                    />
                   ) : (
                     <RequestProgressSkeleton />
                   )}

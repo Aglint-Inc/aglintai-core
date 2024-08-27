@@ -10,6 +10,7 @@ import {
   PlanCombinationRespType,
   SupabaseType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -266,9 +267,9 @@ export const onClickResendInvite = async ({
   session_name: string;
   rec_user_id: string;
   application_id: string;
+  task_id: string;
   filter_id: string | null;
   request_id: string | null;
-  task_id: string;
 }) => {
   try {
     if (filter_id) {
@@ -300,6 +301,14 @@ export const onClickResendInvite = async ({
         {
           ...bodyParams,
         },
+      );
+      supabaseWrap(
+        await supabase.from('request_progress').insert({
+          request_id,
+          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+          is_progress_step: false,
+          status: 'completed',
+        }),
       );
     }
   } catch (e) {

@@ -8,7 +8,14 @@ export type CustomRequestProgress = TableType<
     event_type: EventNodeType;
     meta: {
       event_run_id: number;
+      workflow_action_id?: string;
+      scheduled_time?: string;
       [key: string]: any;
+      self_schedule_date?: {
+        start: string;
+        end: string;
+        user_tz: string;
+      };
     };
   }
 >;

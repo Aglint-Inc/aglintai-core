@@ -1,76 +1,31 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { useMemo, useRef } from 'react';
 
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
-import {
-  createCancelWorkflowGraph,
-  createInterviewerDeclineRequest,
-  createReqAvailWorkflowGraph,
-  createRescheduleWorkflowGraph,
-  updateEventProgress,
-} from '@/src/services/workflow/graphUtils';
 
-import { EventHeading } from './EventHeading';
-
+import NewScheduleEvents from './NewScheduleEvents';
+import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
+  job_workflow,
 }: {
   request_type: DatabaseTable['request']['type'];
+  job_workflow: TriggerActionsType;
 }) {
-  const { request_progress } = useRequest();
+  const { request_progress, request_workflow } = useRequest();
 
-  const graphRef = useRef(createWorkflowGraph(request_type));
-  const orderedEvents = useMemo(() => {
-    if (request_progress.data) {
-      graphRef.current = updateEventProgress(
-        graphRef.current,
-        request_progress.data,
-      );
-    }
-    const traverseGraphNodes = () => {
-      if (
-        request_type === 'schedule_request' ||
-        request_type === 'reschedule_request'
-      ) {
-        let events = graphRef.current.traverseGraph(
-          'FIND_CURR_AVAIL_SLOTS',
-          new Set(),
-        );
-        events = [graphRef.current.getNode('FIND_CURR_AVAIL_SLOTS'), ...events];
-
-        return events;
-      } else if (request_type === 'cancel_schedule_request') {
-        let events = graphRef.current.traverseGraph(
-          'CANCEL_INTERVIEW_MEETINGS',
-          new Set(),
-        );
-        events = [
-          graphRef.current.getNode('CANCEL_INTERVIEW_MEETINGS'),
-          ...events,
-        ];
-
-        return events;
-      } else if (request_type === 'decline_request') {
-        let events = graphRef.current.traverseGraph(
-          'REPLACE_ALTERNATIVE_INTERVIEWER',
-          new Set(),
-        );
-        events = [
-          graphRef.current.getNode('REPLACE_ALTERNATIVE_INTERVIEWER'),
-          ...events,
-        ];
-
-        return events;
-      }
-      return [];
-    };
-    return traverseGraphNodes();
-  }, [request_progress.data]);
+  let eventActions: TriggerActionsType = [];
+  if (request_workflow.data?.length > 0) {
+    eventActions = request_workflow.data.map((r) => r.workflow);
+  } else {
+    eventActions = [...job_workflow];
+  }
 
   //
+  //
+
   return (
     <Stack gap={1}>
       <ShowCode>
@@ -81,9 +36,9 @@ function RequestProgress({
           <>Error</>
         </ShowCode.When>
         <ShowCode.Else>
-          {orderedEvents.map((event, idx) => {
-            return <EventHeading event={event} key={idx} />;
-          })}
+          <ShowCode.When isTrue={request_type === 'schedule_request'}>
+            <NewScheduleEvents eventActions={eventActions} />
+          </ShowCode.When>
         </ShowCode.Else>
       </ShowCode>
     </Stack>
@@ -101,18 +56,3 @@ export function RequestProgressSkeleton() {
     </Stack>
   );
 }
-
-const createWorkflowGraph = (
-  request_type: DatabaseTable['request']['type'],
-) => {
-  if (request_type === 'reschedule_request') {
-    return createRescheduleWorkflowGraph();
-  }
-  if (request_type === 'schedule_request') {
-    return createReqAvailWorkflowGraph();
-  } else if (request_type === 'cancel_schedule_request') {
-    return createCancelWorkflowGraph();
-  } else {
-    return createInterviewerDeclineRequest();
-  }
-};

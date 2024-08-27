@@ -5,12 +5,11 @@ import {
   PlanCombinationRespType,
   TimeDurationDayjsType,
 } from '@aglint/shared-types';
+import { CApiError } from '@aglint/shared-utils';
+import { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { ApiError } from '@/src/utils/customApiError';
-
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
-import { ProgressLoggerType } from './utils';
 
 const TIME_ZONE = 'Asia/Colombo';
 export const findCandSelectedSlots = async ({
@@ -51,7 +50,7 @@ export const findCandSelectedSlots = async ({
     const all_conflict_reasons = flatted_plans
       .map((plan) => plan.no_slot_reasons)
       .flat();
-    throw new ApiError(
+    throw new CApiError(
       'CLIENT',
       `resolve these conflicts,  ${all_conflict_reasons.join(',')}`,
     );
@@ -69,7 +68,7 @@ export const findCandSelectedSlots = async ({
     return plan_date.isSameOrBefore(max_specified_day, 'date');
   });
   if (filtered_plans.length === 0) {
-    throw new ApiError(
+    throw new CApiError(
       'CLIENT',
       `Not found any slots from the specified ${ai_response.schedulewithMaxNumDays} days`,
     );
@@ -106,7 +105,7 @@ export const findCandSelectedSlots = async ({
   });
 
   if (filtered_plans.length === 0) {
-    throw new ApiError(
+    throw new CApiError(
       'CLIENT',
       `Slots does not match the specified preffered times`,
     );

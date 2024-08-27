@@ -165,7 +165,7 @@ export function getTriggerOption(
   return `${preMessage} ${message}`;
 }
 
-export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
+export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
   sendAvailReqReminder: [
     {
       value: {
@@ -344,9 +344,9 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   ],
   onRequestSchedule: [
     {
-      name: 'Request Availability through Agent via Email',
+      name: 'Send Self-Scheduling Link to Candidate',
       value: {
-        target_api: 'onRequestSchedule_emailAgent_getCandidateAvailability',
+        target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink' as any,
         action_type: 'end_point',
       },
     },
@@ -374,29 +374,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
     },
   ],
-  onSelfScheduleReqAgent: [
-    {
-      name: 'Self Schedule Interview with Email Agent',
-      value: {
-        target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
-        action_type: 'end_point',
-      },
-    },
-    {
-      name: 'Self Schedule Interview with Email Link',
-      value: {
-        target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
-        action_type: 'end_point',
-      },
-    },
-    {
-      name: 'Self Schedule Interview with Phone Agent',
-      value: {
-        target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
-        action_type: 'end_point',
-      },
-    },
-  ],
+
   onRequestCancel: [
     {
       name: 'Cancel Calender Invites',
@@ -430,7 +408,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         target_api: 'onRequestInterviewerDecline_agent_changeInterviewer',
       },
     },
-  ], //fix needed causing lint
+  ],
 } as const;
 
 export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response'] =

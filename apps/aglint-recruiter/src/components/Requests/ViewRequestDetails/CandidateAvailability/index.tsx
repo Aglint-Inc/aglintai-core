@@ -1,8 +1,5 @@
-import {
-  EmailTemplateAPi,
-  InterviewSessionTypeDB
-} from '@aglint/shared-types';
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { EmailTemplateAPi, InterviewSessionTypeDB } from '@aglint/shared-types';
+import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -85,6 +82,7 @@ function CandidateAvailability({
       number_of_days: selectedDays.value,
       number_of_slots: selectedSlots.value,
       total_slots: null,
+      request_id: selectedRequest.id,
     });
     // setRequestDetails(result);
     await supabase.from('request_session_relation').insert(
@@ -104,6 +102,14 @@ function CandidateAvailability({
       await axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
         ...payload,
       });
+      supabaseWrap(
+        await supabase.from('request_progress').insert({
+          request_id: selectedRequest.id,
+          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+          is_progress_step: false,
+          status: 'completed',
+        }),
+      );
     } catch (error) {
       toast.message('Failed to send email');
     }

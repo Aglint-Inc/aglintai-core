@@ -1,5 +1,5 @@
 import { PlanCombinationRespType } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 
 import { mailSender } from '@/src/utils/mailSender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
@@ -20,6 +20,7 @@ export const candidateSelfSchedule = async ({
   start_date_str: string;
   end_date_str: string;
   request_id: string;
+  reqProgressLogger: ProgressLoggerType;
 }) => {
   const [filter_json] = supabaseWrap(
     await supabaseAdmin

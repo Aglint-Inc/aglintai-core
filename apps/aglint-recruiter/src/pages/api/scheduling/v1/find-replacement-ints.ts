@@ -4,6 +4,7 @@ import {
   SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
+  CApiError,
   schema_find_alternative_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -12,7 +13,6 @@ import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -48,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           int.session_relation_id === parsed_body.declined_int_sesn_reln_id,
       )
     ) {
-      throw new ApiError(
+      throw new CApiError(
         'SERVER_ERROR',
         `${parsed_body.declined_int_sesn_reln_id} is not confirmed interviwer`,
       );

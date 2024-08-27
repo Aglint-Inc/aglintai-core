@@ -1,20 +1,21 @@
-import { candidate_new_schedule_schema } from '@aglint/shared-utils';
-import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
-import * as v from 'valibot';
-
+import { candidate_new_schedule_schema, CApiError } from '@aglint/shared-utils';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
   ProgressLoggerType,
-} from '@/src/services/api-schedulings/utils';
-import { ApiError } from '@/src/utils/customApiError';
+} from '@aglint/shared-utils/src/request-workflow/utils';
+import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
+
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
-    req.body.request_id,
-    req.body.event_run_id,
-  );
+  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+    request_id: req.body.request_id,
+    event_run_id: req.body.event_run_id,
+    supabaseAdmin: supabaseAdmin,
+  });
   try {
     const { session_ids, target_api } = v.parse(
       candidate_new_schedule_schema,
@@ -32,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err) {
-    if (err instanceof ApiError) {
+    if (err instanceof CApiError) {
       return res.status(500).json({
         type: err.type,
         message: err.message,

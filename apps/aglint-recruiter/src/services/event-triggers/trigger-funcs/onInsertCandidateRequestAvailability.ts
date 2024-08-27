@@ -26,11 +26,10 @@ export const onInsertCandidateRequestAvailability = async ({
     company_id: application.public_jobs.recruiter_id,
     request_id: new_data.request_id,
   });
-
   const promises = [...request_workflows]
     .filter((j_l_a) => allowed_end_points.find((e) => e === j_l_a.target_api))
     .map(async (j_l_a) => {
-      supabaseWrap(
+      let run_id = supabaseWrap(
         await supabaseAdmin.rpc('create_new_workflow_action_log', {
           triggered_table: 'candidate_request_availability',
           base_time: dayjsLocal().toISOString(),
@@ -46,6 +45,24 @@ export const onInsertCandidateRequestAvailability = async ({
           phase: j_l_a.workflow.phase,
         }),
       );
+      if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
+        supabaseWrap(
+          await supabaseAdmin.from('request_progress').insert({
+            is_progress_step: false,
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+            status: 'completed',
+            request_id: new_data.request_id,
+            created_at: dayjsLocal().add(1000, 'milliseconds').toISOString(), // NOTE: workaround
+            meta: {
+              workflow_action_id: j_l_a.id,
+              event_run_id: run_id,
+              scheduled_time: dayjsLocal()
+                .add(j_l_a.workflow.interval, 'minutes')
+                .toISOString(),
+            },
+          }),
+        );
+      }
     });
 
   await Promise.allSettled(promises);

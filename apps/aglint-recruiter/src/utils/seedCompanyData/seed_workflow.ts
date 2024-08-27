@@ -303,6 +303,11 @@ export const seed_workflow_actions: {
     actions: [
       {
         order: 0,
+        target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink',
+        action_type: 'end_point',
+      },
+      {
+        order: 0,
         target_api: 'onRequestSchedule_emailAgent_getCandidateAvailability',
         action_type: 'end_point',
       },
@@ -314,7 +319,7 @@ export const seed_workflow_actions: {
       description: '',
       interval: 0,
       phase: 'after',
-      title: '1. Get Candidate Availability',
+      title: '1. Schedule Interview with Candidate',
       trigger: 'onRequestSchedule',
       workflow_type: 'job',
     },
@@ -400,60 +405,7 @@ export const seed_workflow_actions: {
       },
     ],
   },
-  {
-    workflow: {
-      title: 'Send Self schedulink link using Aglint Agent via Email',
-      auto_connect: false,
-      description: '',
-      interval: 0,
-      phase: 'after',
-      trigger: 'onSelfScheduleReqAgent',
-      workflow_type: 'job',
-    },
-    actions: [
-      {
-        order: 0,
-        target_api: 'onSelfScheduleReqAgent_EmailAgent_SelfSchedule',
-        action_type: 'end_point',
-      },
-    ],
-  },
-  {
-    workflow: {
-      title: 'Self Schedulink using Aglint Agent via Phone',
-      auto_connect: false,
-      description: '',
-      interval: 0,
-      phase: 'after',
-      trigger: 'onSelfScheduleReqAgent',
-      workflow_type: 'system',
-    },
-    actions: [
-      {
-        order: 0,
-        target_api: 'onSelfScheduleReqAgent_PhoneAgent_SelfSchedule',
-        action_type: 'end_point',
-      },
-    ],
-  },
-  {
-    workflow: {
-      title: 'Send Self schedulink link To Candidate via Email',
-      auto_connect: false,
-      description: '',
-      interval: 0,
-      phase: 'after',
-      trigger: 'onSelfScheduleReqAgent',
-      workflow_type: 'system',
-    },
-    actions: [
-      {
-        order: 0,
-        target_api: 'onSelfScheduleReqAgent_EmailLink_SelfSchedule',
-        action_type: 'end_point',
-      },
-    ],
-  },
+
   {
     workflow: {
       auto_connect: false,

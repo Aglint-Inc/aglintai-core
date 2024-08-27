@@ -102,6 +102,8 @@ export const requestQueries = {
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       refetchOnMount: true,
+      refetchInterval:
+        process.env.NODE_ENV === 'development' ? 1000 : undefined,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (
@@ -432,7 +434,7 @@ export type GetRequestParams = {
 };
 
 const REQUEST_SELECT =
-  '*, request_relation(*,interview_session(id,name,session_duration,session_type)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name,position,profile_image), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title,departments(name),office_locations(city,country),workflow_job_relation(*)), candidates(id,first_name, last_name,current_job_title,city,state,country,email,phone,linkedin,avatar,timezone))';
+  '*, request_relation(*,interview_session(id,name,session_duration,session_type)), assignee:recruiter_user!request_assignee_id_fkey(user_id, first_name, last_name,position,profile_image), assigner:recruiter_user!request_assigner_id_fkey(user_id, first_name, last_name), applications(id,public_jobs(id,job_title,departments(name),office_locations(city,country),workflow_job_relation(*,workflow(*,workflow_action(*)))), candidates(id,first_name, last_name,current_job_title,city,state,country,email,phone,linkedin,avatar,timezone))';
 
 export const getUnfilteredRequests = async ({
   payload: { assigner_id },

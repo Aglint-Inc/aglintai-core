@@ -3,7 +3,11 @@ import {
   PlanCombinationRespType,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  executeWorkflowAction,
+  getFullName,
+} from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -32,12 +36,21 @@ export interface ApiResponseSelfSchedule {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const bodyParams: ApiBodyParamsSelfSchedule = req.body;
+  const reqProgressLogger = createRequestProgressLogger({
+    supabaseAdmin,
+    request_id: bodyParams.request_id,
+  });
+
   try {
-    const bodyParams: ApiBodyParamsSelfSchedule = req.body;
-
-    const resSendToCandidate = await sendToCandidate(bodyParams);
-
-    console.log('resSendToCandidate', resSendToCandidate);
+    const resSendToCandidate = await executeWorkflowAction(
+      sendToCandidate,
+      bodyParams,
+      reqProgressLogger,
+      {
+        event_type: 'SELF_SCHEDULE_LINK',
+      },
+    );
 
     res.status(200).send(resSendToCandidate);
   } catch (error) {

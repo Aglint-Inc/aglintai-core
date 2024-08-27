@@ -9,9 +9,8 @@ import {
   SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
-import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';
@@ -180,12 +179,12 @@ export const fetchAndVerifyDb = async (
   };
 
   if (db_resp.interview_sessions.length === 0) {
-    throw new ApiError('CLIENT', 'Interview Plan not set or invalid sessions');
+    throw new CApiError('CLIENT', 'Interview Plan not set or invalid sessions');
   }
   let all_ints = db_resp.inter_data.filter((i) => Boolean(i)).flat();
   for (let int_sess of db_resp.interview_sessions) {
     if (!all_ints.find((int) => int.session_id === int_sess.id)) {
-      throw new ApiError(
+      throw new CApiError(
         'CLIENT',
         `${int_sess.name} does not contain interviewers`,
       );

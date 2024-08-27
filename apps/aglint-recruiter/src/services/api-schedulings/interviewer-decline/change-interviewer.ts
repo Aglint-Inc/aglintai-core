@@ -3,13 +3,11 @@ import {
   APIRespFindReplaceMentInts,
   APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
-import { getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
+import { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 
-import { ApiError } from '@/src/utils/customApiError';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-
-import { ProgressLoggerType } from '../utils';
 type FuncParams = {
   request_id: string;
   session_id: string;
@@ -35,7 +33,7 @@ export const changeInterviewer = async (payload: FuncParams) => {
 
   const alternate_slots: APIRespFindReplaceMentInts = data;
   if (alternate_slots.length === 0) {
-    throw new ApiError(
+    throw new CApiError(
       'SERVER_ERROR',
       'No alternative interviewers are found in the interview plan.',
     );

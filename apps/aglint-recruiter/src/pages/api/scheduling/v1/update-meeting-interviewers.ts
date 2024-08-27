@@ -3,12 +3,15 @@ import {
   CalendarEvent,
   ScheduleAuthType,
 } from '@aglint/shared-types';
-import { schema_update_meeting_ints, supabaseWrap } from '@aglint/shared-utils';
+import {
+  CApiError,
+  schema_update_meeting_ints,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { ApiError } from '@/src/utils/customApiError';
 import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -166,7 +169,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         int.session_relation_id === payload.curr_declined_int_sesn_reln_id,
     )
   ) {
-    throw new ApiError(
+    throw new CApiError(
       'SERVER_ERROR',
       `${payload.curr_declined_int_sesn_reln_id} not exist in meeting_interviewers`,
     );
@@ -177,7 +180,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
       (int) => int.session_relation_id === payload.new_int_sesn_reln_id,
     )
   ) {
-    throw new ApiError(
+    throw new CApiError(
       'SERVER_ERROR',
       `${payload.new_int_sesn_reln_id} not exist in meeting_interviewers`,
     );

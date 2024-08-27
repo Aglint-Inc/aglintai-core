@@ -17,9 +17,8 @@ type EmailTemplatType = {
   heading: string;
   description: string;
 };
-type CompanyEmailType = Record<
-  DatabaseEnums['email_slack_types'],
-  EmailTemplatType
+type CompanyEmailType = Partial<
+  Record<DatabaseEnums['email_slack_types'], EmailTemplatType>
 >;
 
 export const emailTemplateCopy: CompanyEmailType = {
@@ -205,15 +204,4 @@ export const emailTemplateCopy: CompanyEmailType = {
     heading: 'Reverse Shadow Trainee Meeting Attendence',
     description: '',
   },
-  onRequestSchedule_emailAgent_getCandidateAvailability: null,
-  onRequestSchedule_emailLink_getCandidateAvailability: null,
-  onReceivingAvailReq_agent_sendSelfScheduleRequest: null,
-  onReceivingAvailReq_agent_confirmSlot: null,
-  onSelfScheduleReqAgent_EmailAgent_SelfSchedule: null,
-  onSelfScheduleReqAgent_PhoneAgent_SelfSchedule: null,
-  onSelfScheduleReqAgent_EmailLink_SelfSchedule: null,
-  onRequestReschedule_emailLink_resendAvailRequest: null,
-  onRequestCancel_agent_cancelEvents: null,
-  onRequestCancel_slack_interviewersOrganizer: null,
-  onRequestInterviewerDecline_agent_changeInterviewer: null,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { Children, ReactNode } from 'react';
 
 export const ShowCode = (props: any) => {
@@ -15,10 +16,11 @@ export const ShowCode = (props: any) => {
 
 ShowCode.When = ({
   isTrue,
-  children
+  children,
 }: {
   isTrue: boolean;
   children: ReactNode;
-}): any => isTrue && children;
+}): any => (isTrue ? <>{children}</> : <></>);
+
 ShowCode.Else = ({ render, children }: { render?: any; children: ReactNode }) =>
   render || children;
