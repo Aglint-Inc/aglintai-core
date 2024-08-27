@@ -17,7 +17,8 @@ function LineGraph({
   maxMeetingCount: number;
 }) {
   const data: ChartData<'line'> = {
-    labels: Array(maxMeetingCount).fill(''),
+    labels: Array(30).fill(''),
+    // labels: Array(maxMeetingCount).fill(''),
     datasets: [
       {
         data: lineData,
@@ -51,6 +52,7 @@ function LineGraph({
     maintainAspectRatio: false,
     scales: {
       y: {
+        max: maxMeetingCount,
         beginAtZero: true,
         border: {
           display: false,
@@ -60,6 +62,7 @@ function LineGraph({
         },
         ticks: {
           display: false,
+          stepSize: 2,
         },
         title: {
           display: false,
