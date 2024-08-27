@@ -1,10 +1,10 @@
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
+  SupabaseType,
 } from '@aglint/shared-types';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
+import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
   platformRemoveUnderscore,
   durationCalculator,
@@ -13,6 +13,7 @@ import {
 } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'debrief_email_interviewer'>['api_payload'],
 ) {
   const [session] = supabaseWrap(

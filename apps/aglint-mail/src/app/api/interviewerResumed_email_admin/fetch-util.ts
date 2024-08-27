@@ -1,8 +1,8 @@
-import type { DatabaseTable, EmailTemplateAPi } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { DatabaseTable, EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 
 export async function dbFetch(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interviewerResumed_email_admin'>['api_payload'],
 ) {
   const [interview_module] = supabaseWrap(

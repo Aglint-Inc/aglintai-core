@@ -1,8 +1,8 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import type { EmailTemplateAPi, SupabaseType } from '@aglint/shared-types';
+import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 
 export async function dbUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'],
 ) {
   const fetchCandDetailsFromAvailability = async () => {

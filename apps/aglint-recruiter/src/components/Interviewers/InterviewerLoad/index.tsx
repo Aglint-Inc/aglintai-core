@@ -134,14 +134,6 @@ function InterviewerLoad() {
         slotFilter={
           <Stack direction={'row'} gap={1}>
             <Filter
-              itemList={
-                InterviewTypeOptions?.length ? InterviewTypeOptions : []
-              }
-              title='Interview Types'
-              setSelectedItems={setInterviewTypes}
-              selectedItems={selectedInterviewTypes}
-            />
-            <Filter
               itemList={JobsList?.length ? JobsList : []}
               title='Jobs'
               setSelectedItems={setJobs}
@@ -158,6 +150,14 @@ function InterviewerLoad() {
               title='Locations'
               setSelectedItems={setLocations}
               selectedItems={selectedLocations}
+            />
+            <Filter
+              itemList={
+                InterviewTypeOptions?.length ? InterviewTypeOptions : []
+              }
+              title='Interview Types'
+              setSelectedItems={setInterviewTypes}
+              selectedItems={selectedInterviewTypes}
             />
             {isFilterApplied && (
               <ButtonSoft

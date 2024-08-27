@@ -12,7 +12,9 @@ import {
   useDeleteInterviewSession,
   useEditDebriefSession,
   useEditInterviewSession,
+  useInterviewPlanMutation,
   useReorderInterviewSessions,
+  useSwapInterviewPlan,
   useUpdateInterviewPlan,
   useUpdateInterviewSession,
 } from '@/src/queries/interview-plans';
@@ -27,6 +29,8 @@ const useJobInterviewPlanActions = () => {
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
   const { mutateAsync: updatePlan } = useUpdateInterviewPlan();
   const { mutateAsync: deletePlan } = useDeleteInterviewPlan();
+  const { mutateAsync: swapPlans } = useSwapInterviewPlan();
+  const { swap, update, remove } = useInterviewPlanMutation();
   const { mutateAsync: createSession } = useAddInterviewSession();
   const { mutate: handleUpdateSession } = useUpdateInterviewSession();
   const { mutate: handleEditSession } = useEditInterviewSession();
@@ -71,6 +75,14 @@ const useJobInterviewPlanActions = () => {
     }
   };
 
+  const handleSwapPlan = async (args: Parameters<typeof swapPlans>[0]) => {
+    try {
+      await swapPlans(args);
+    } catch {
+      //toast.error('Unable to create interview plan');
+    }
+  };
+
   const handleCreateSession = async (args: CreateInterviewSession) => {
     try {
       await createSession(args);
@@ -87,6 +99,16 @@ const useJobInterviewPlanActions = () => {
     }
   };
 
+  const isPlanMutating = (id: string) => {
+    return (
+      !!swap.find(
+        ({ plan_id_1, plan_id_2 }) => plan_id_1 === id || plan_id_2 === id,
+      ) ||
+      !!update.find((payload) => id === payload.id) ||
+      !!remove.find((payload) => id === payload.id)
+    );
+  };
+
   const value = {
     job,
     initialLoad,
@@ -100,9 +122,11 @@ const useJobInterviewPlanActions = () => {
     handleDeleteSession,
     getLoadingState,
     handleCreatePlan,
+    handleSwapPlan,
     updatePlan,
     deletePlan,
     handleReorderSessions,
+    isPlanMutating,
     interviewPlans,
     manageJob,
   };

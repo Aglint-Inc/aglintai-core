@@ -1,5 +1,9 @@
 import { DB } from '@aglint/shared-types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useMutationState,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { useJob } from '@/src/context/JobContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -30,22 +34,43 @@ export const useCreateInterviewPlan = () => {
   return mutation;
 };
 
+const mutationKey = ['interview-plan'];
+const mutationKeySwap = [...mutationKey, 'SWAP'];
+const mutationKeyUpdate = [...mutationKey, 'UPDATE'];
+const mutationKeyDelete = [...mutationKey, 'DELETE'];
+
+export const useInterviewPlanMutation = () => {
+  const swap = useMutationState({
+    filters: { mutationKey: mutationKeySwap, status: 'pending' },
+    select: (mutation) => mutation.state.variables as SwapPayload,
+  });
+  const update = useMutationState({
+    filters: { mutationKey: mutationKeyUpdate },
+    select: (mutation) => mutation.state.variables as UpdatePayload,
+  });
+  const remove = useMutationState({
+    filters: { mutationKey: mutationKeyDelete },
+    select: (mutation) => mutation.state.variables as DeletePayload,
+  });
+  return { swap, update, remove };
+};
+
+type UpdatePayload = {
+  id: string;
+  data: {
+    name?: string;
+    order?: number;
+  };
+};
+
 export const useUpdateInterviewPlan = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: {
-        name?: string;
-        order?: number;
-      };
-    }) => {
+    mutationKey: mutationKeyUpdate,
+    mutationFn: async ({ id, data }: UpdatePayload) => {
       await updateInterviewPlan(id, data);
       await queryClient.invalidateQueries({ queryKey });
     },
@@ -56,13 +81,42 @@ export const useUpdateInterviewPlan = () => {
   return mutation;
 };
 
+type SwapPayload = {
+  plan_id_1: string;
+  plan_id_2: string;
+};
+
+export const useSwapInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const { queryKey } = jobQueries.interview_plans({ id: job_id });
+  const mutation = useMutation({
+    mutationKey: mutationKeySwap,
+    mutationFn: async ({ plan_id_1, plan_id_2 }: SwapPayload) => {
+      await supabase
+        .rpc('swap_stage_order', { plan_id_1, plan_id_2 })
+        .throwOnError();
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to move interview stage.');
+    },
+  });
+  return mutation;
+};
+
+type DeletePayload = {
+  id: string;
+};
+
 export const useDeleteInterviewPlan = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationKey: mutationKeyDelete,
+    mutationFn: async ({ id }: DeletePayload) => {
       await deleteInterviewPlan(id);
       await queryClient.invalidateQueries({ queryKey });
     },

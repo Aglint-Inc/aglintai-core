@@ -1,18 +1,19 @@
 import type {
   EmailTemplateAPi,
   MeetingDetailCardType,
+  SupabaseType,
 } from '@aglint/shared-types';
+import { DAYJS_FORMATS, getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { DAYJS_FORMATS, getFullName } from '@aglint/shared-utils';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 import {
-  platformRemoveUnderscore,
   durationCalculator,
-  sessionTypeIcon,
+  platformRemoveUnderscore,
   scheduleTypeIcon,
+  sessionTypeIcon,
 } from '../../../utils/email/common/functions';
 
 export async function fetchUtil(
+  supabaseAdmin: SupabaseType,
   req_body: EmailTemplateAPi<'interReschedReq_email_recruiter'>['api_payload'],
 ) {
   const int_sessions = supabaseWrap(
