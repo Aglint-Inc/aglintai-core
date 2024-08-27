@@ -20,6 +20,15 @@ export const tabsModuleMembers: TabsModuleMembers[] = [
     name: 'Instructions',
     queryParams: 'instructions',
   },
+  {
+    name: 'Aglint Token',
+    queryParams: 'aglinttoken',
+  },
+  {
+    name: 'Aglint Instruction',
+    queryParams: 'aglintinstruction',
+  },
+ 
 ];
 
 export const getPauseMemberText = (

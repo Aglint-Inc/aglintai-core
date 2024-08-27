@@ -1,0 +1,40 @@
+.token-interview-type {
+  display: flex;
+  max-width: 880px;
+  padding: var(--space-4);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.token-table-wrappers {
+  overflow: hidden;
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-3);
+}
+
+.token-table-header-wrap {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 260px 570px;
+  grid-template-rows: auto;
+  background-color: var(--neutral-2);
+}
+
+.token-table-header-item {
+  padding: var(--space-1) var(--space-3);
+}
+
+.token-table-footer-wrap {
+  display: flex;
+  height: 62px;
+  padding: var(--space-1) var(--space-3);
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#w-node-_78745ec5-c86b-f1da-03af-d49d22dbce1b-22dbce16 {
+}
+#w-node-_78745ec5-c86b-f1da-03af-d49d22dbce1e-22dbce16 {
+}
