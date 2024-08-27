@@ -62,7 +62,7 @@ export const listForInteractions = async (req: Request, res: Response) => {
 
     return res.status(200).send('ok');
   } catch (error: any) {
-    console.error('error : ', error.message);
+    return res.status(400).send(error.message);
   }
 };
 
@@ -77,7 +77,7 @@ const meeting_status_organizer_accept = async (interaction_data: any) => {
       .update({status: 'completed'})
       .eq('id', meeting_id)
   );
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -102,12 +102,15 @@ const meeting_status_organizer_accept = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 const meeting_status_organizer_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
   const metadata = interaction_data.message.metadata;
   const meeting_id = metadata.event_payload.meeting_id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -122,6 +125,9 @@ const meeting_status_organizer_decline = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const candidate_interview_accept = async (interaction_data: any) => {
@@ -133,7 +139,7 @@ const candidate_interview_accept = async (interaction_data: any) => {
       .update({accepted_status: 'accepted'})
       .eq('id', metadata.event_payload.session_relation_id)
   );
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -163,6 +169,9 @@ const candidate_interview_accept = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const candidate_interview_decline = async (interaction_data: any) => {
@@ -174,7 +183,7 @@ const candidate_interview_decline = async (interaction_data: any) => {
       .update({accepted_status: 'declined'})
       .eq('id', metadata.event_payload.session_relation_id)
   );
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -204,6 +213,9 @@ const candidate_interview_decline = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const interview_feedback_submit = async (interaction_data: any) => {
@@ -237,7 +249,7 @@ const interview_feedback_submit = async (interaction_data: any) => {
         })
         .eq('id', metadata.event_payload.session_relation_id)
     );
-    await slackWeb.chat.update({
+    const response = await slackWeb.chat.update({
       channel: channel_id,
       ts: interaction_data.message.ts,
       text: 'Thanks for confirmation',
@@ -271,6 +283,9 @@ const interview_feedback_submit = async (interaction_data: any) => {
         },
       ],
     });
+    if (!response.ok) {
+      throw new Error(response.error);
+    }
   } else {
     if (typeof interaction_data.message.blocks[4]?.text?.text === 'string') {
       // eslint-disable-next-line prettier/prettier
@@ -284,7 +299,7 @@ const interview_feedback_submit = async (interaction_data: any) => {
         if (rating) err_msg = 'Please fill feedback';
         else if (!rating) err_msg = 'Please fill the all column';
       }
-      await slackWeb.chat.update({
+      const response = await slackWeb.chat.update({
         channel: channel_id,
         ts: interaction_data.message.ts,
         text: 'Thanks for confirmation',
@@ -317,8 +332,11 @@ const interview_feedback_submit = async (interaction_data: any) => {
           },
         ],
       });
+      if (!response.ok) {
+        throw new Error(response.error);
+      }
     } else {
-      await slackWeb.chat.update({
+      const response = await slackWeb.chat.update({
         channel: channel_id,
         ts: interaction_data.message.ts,
         text: 'Thanks for confirmation',
@@ -337,6 +355,9 @@ const interview_feedback_submit = async (interaction_data: any) => {
           interaction_data.message.blocks[4],
         ],
       });
+      if (!response.ok) {
+        throw new Error(response.error);
+      }
     }
   }
 };
@@ -352,7 +373,7 @@ const shadow_complete_trainee_accept = async (interaction_data: any) => {
       .update({is_attended: true})
       .eq('session_relation_id', session_relation_id)
   );
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -377,11 +398,14 @@ const shadow_complete_trainee_accept = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const shadow_complete_trainee_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -406,6 +430,9 @@ const shadow_complete_trainee_decline = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const reverse_shadow_trainee_accept = async (interaction_data: any) => {
@@ -420,7 +447,7 @@ const reverse_shadow_trainee_accept = async (interaction_data: any) => {
       .eq('session_relation_id', session_relation_id)
   );
 
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -445,11 +472,14 @@ const reverse_shadow_trainee_accept = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const reverse_shadow_trainee_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -474,11 +504,14 @@ const reverse_shadow_trainee_decline = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const interview_attent_confirmation_accept = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -504,11 +537,14 @@ const interview_attent_confirmation_accept = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const interview_attent_confirmation_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -534,13 +570,16 @@ const interview_attent_confirmation_decline = async (interaction_data: any) => {
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const qualified_approver_confirmation_accept = async (
   interaction_data: any
 ) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -565,13 +604,16 @@ const qualified_approver_confirmation_accept = async (
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
 const qualified_approver_confirmation_decline = async (
   interaction_data: any
 ) => {
   const channel_id = interaction_data.channel.id;
-  await slackWeb.chat.update({
+  const response = await slackWeb.chat.update({
     channel: channel_id,
     ts: interaction_data.message.ts,
     text: 'Thanks for confirmation',
@@ -596,4 +638,7 @@ const qualified_approver_confirmation_decline = async (
       },
     ],
   });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
