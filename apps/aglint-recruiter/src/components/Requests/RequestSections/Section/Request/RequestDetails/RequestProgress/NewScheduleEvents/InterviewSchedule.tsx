@@ -47,7 +47,7 @@ const InterviewSchedule = ({
         fontSize={1}
         color={getProgressColor(tense)}
       />
-      <ShowCode.When isTrue={1}>
+      <ShowCode.When isTrue={true}>
         <></>
       </ShowCode.When>
       <Stack></Stack>
