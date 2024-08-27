@@ -82,7 +82,7 @@ function Section({
           </ShowCode.When>
         </ShowCode>
       </Stack>
-      {sectionName === 'completed_request' && (
+      {sectionName === 'completed_request' && requests.length > 0 && (
         <Stack width={'100%'} direction={'row'} justifyContent={'start'}>
           <ButtonGhost
             size={2}

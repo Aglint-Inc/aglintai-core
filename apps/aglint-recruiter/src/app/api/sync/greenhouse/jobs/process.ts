@@ -3,16 +3,17 @@ import { DatabaseTableInsert } from '@aglint/shared-types';
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
+import { syncJobApplications } from '../applications/process';
 import { getOfficeLocations } from '../office_locations/process';
 import { GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
-  getGreenhouseCandidates,
   getGreenhouseJobPlan,
   getGreenhouseJobs,
   setLastSync,
 } from '../util';
 
+// eslint-disable-next-line no-unused-vars
 const MAX_EMAILS_PER_BATCH = 100;
 
 export async function syncGreenhouseJob(
@@ -42,7 +43,7 @@ export async function mapSaveJobs(
     await supabaseAdmin
       .from('public_jobs')
       .upsert(temp_public_jobs, { onConflict: 'remote_id' })
-      .select('id,remote_id')
+      .select('id,remote_id, remote_sync_time')
       .throwOnError()
   ).data;
   await setLastSync(supabaseAdmin, recruiter_id, {
@@ -60,9 +61,10 @@ export async function mapSaveJobs(
               syncJobApplications(
                 supabaseAdmin,
                 {
-                  job_id: Number(job.remote_id),
-                  public_job_id: job.id,
+                  job_id: job.id,
                   recruiter_id,
+                  remote_id: Number(job.remote_id),
+                  last_sync: job.remote_sync_time,
                 },
                 key,
               ),
@@ -91,7 +93,7 @@ function createJobObject(
   recruiter_id: string,
   post: Awaited<ReturnType<typeof getGreenhouseJobs>>[number],
   officeLocations: Awaited<ReturnType<typeof getOfficeLocations>>,
-): DatabaseTableInsert['public_jobs'] {
+) {
   const location_id = officeLocations[post.location.id];
   return {
     draft: {
@@ -111,7 +113,7 @@ function createJobObject(
     },
     location_id,
     job_title: post.title,
-    status: 'draft',
+    status: 'published',
     scoring_criteria_loading: true,
     posted_by: POSTED_BY.GREENHOUSE,
     recruiter_id,
@@ -125,159 +127,7 @@ function createJobObject(
     },
     remote_id: String(post.job_id),
     remote_sync_time: new Date().toISOString(),
-  };
-}
-
-export async function syncJobApplications(
-  supabaseAdmin: SupabaseClientType,
-  post: { job_id: number; public_job_id: string; recruiter_id: string },
-  apiKey: string,
-) {
-  const refCandidates = await fetchAllCandidates(post, apiKey);
-
-  const emails = [
-    ...new Set(
-      refCandidates.map((candidate) => {
-        return candidate.email;
-      }),
-    ),
-  ];
-  const checkCandidates = await processEmailsInBatches(
-    supabaseAdmin,
-    emails,
-    post.recruiter_id,
-  );
-
-  //new candidates insert flow
-  const uniqueRefCandidates = refCandidates.filter((candidate) => {
-    return !checkCandidates.some((checkCand) => {
-      return checkCand.email === candidate.email;
-    });
-  });
-
-  //email which are not their in candidates table we are inserting them
-  const insertableCandidates = uniqueRefCandidates.map((candidate) => {
-    return {
-      first_name: candidate.first_name,
-      last_name: candidate.last_name,
-      email: candidate.email,
-      linkedin: candidate.linkedin,
-      phone: candidate.phone,
-      id: crypto.randomUUID(),
-      recruiter_id: post.recruiter_id,
-    };
-  });
-
-  //in that check duplicate email are their or not
-  const dbCandidates = insertableCandidates.filter((candidate, index, self) => {
-    // Use the Array.findIndex() method to check if the current email address
-    // exists in the array at a previous index.
-    const isUnique =
-      candidate.email &&
-      self.findIndex((c) => c.email === candidate.email) === index;
-
-    // Return true if the email is unique and not null, otherwise false.
-    return isUnique;
-  });
-
-  const { data: newCandidates, error: errorCandidates } = await supabaseAdmin
-    .from('candidates')
-    .insert(dbCandidates)
-    .select();
-
-  if (!errorCandidates) {
-    const allCandidates = [...newCandidates, ...checkCandidates];
-
-    const dbApplications = refCandidates
-      .map((ref) => {
-        const matchingCandidate = allCandidates.find(
-          (candidate) => candidate.email === ref.email,
-        );
-
-        if (matchingCandidate && matchingCandidate.id) {
-          return {
-            applied_at: ref.created_at,
-            candidate_id: matchingCandidate.id,
-            job_id: post.public_job_id,
-            id: ref.application_id,
-            is_resume_fetching: true,
-            source: 'greenhouse',
-            remote_id: ref.remote_id, //greenhouse candidate id
-            remote_data: ref,
-          } as DatabaseTableInsert['applications'];
-        } else {
-          return null;
-        }
-      })
-      .filter(Boolean);
-
-    await supabaseAdmin
-      .from('applications')
-      .upsert(dbApplications, { onConflict: 'remote_id' })
-      .throwOnError();
-  }
-  //new candidates insert flow
-}
-
-async function fetchAllCandidates(
-  post: { job_id: number; public_job_id: string; recruiter_id: string },
-  apiKey: string,
-) {
-  let allCandidates = [];
-  let hasMore = true;
-  let page = 1;
-  while (hasMore) {
-    try {
-      const response = await getGreenhouseCandidates(apiKey, {
-        ats_job_id: post.job_id,
-        page: page,
-      });
-      if (response) {
-        allCandidates = allCandidates.concat(response);
-        if (response.length > 0) {
-          hasMore = true;
-          page = page + 1;
-        } else {
-          hasMore = false;
-        }
-      } else {
-        hasMore = false; // Exit the loop if there are no more records
-      }
-    } catch (error) {
-      hasMore = false; // Exit the loop in case of an error
-    }
-  }
-
-  return allCandidates
-    .map((candidate) => {
-      if (candidate.email_addresses[0]?.value) {
-        return {
-          created_at: candidate.created_at,
-          first_name: candidate.first_name,
-          last_name: candidate.last_name,
-          email: candidate.email_addresses[0]?.value,
-          job_title: candidate.title,
-          company: candidate.company,
-          profile_image: candidate.photo_url,
-          linkedin: extractLinkedInURLGreenhouse(
-            candidate.website_addresses[0]?.value || '',
-          ),
-          phone: candidate.phone_numbers[0]?.value,
-          resume:
-            candidate.attachments?.filter((res) => res.type == 'resume')
-              ?.length != 0
-              ? candidate.attachments.filter((res) => res.type == 'resume')[0]
-                  ?.url
-              : candidate.attachments[0]?.url,
-          job_id: post.public_job_id,
-          application_id: crypto.randomUUID(), //our job application id
-          remote_id: candidate.id, //greenhouse candidate id
-        };
-      } else {
-        return null;
-      }
-    })
-    .filter(Boolean);
+  } as DatabaseTableInsert['public_jobs'];
 }
 
 export function extractLinkedInURLGreenhouse(item: string): string {
@@ -288,42 +138,6 @@ export function extractLinkedInURLGreenhouse(item: string): string {
     return item; // Return the LinkedIn URL
   } else {
     return '';
-  }
-}
-
-async function processEmailsInBatches(
-  supabaseAdmin: SupabaseClientType,
-  emails: string[],
-  recruiter_id: string,
-) {
-  let allCandidates = [];
-  for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
-    const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
-    const candidate = await processBatch(
-      supabaseAdmin,
-      emailBatch,
-      recruiter_id,
-    );
-    allCandidates = [...allCandidates, ...candidate];
-  }
-  return allCandidates;
-}
-
-async function processBatch(
-  supabaseAdmin: SupabaseClientType,
-  emailBatch: string[],
-  recruiter_id: string,
-) {
-  const { data: checkCandidates, error: errorCheck } = await supabaseAdmin
-    .from('candidates')
-    .select()
-    .in('email', emailBatch)
-    .eq('recruiter_id', recruiter_id);
-
-  if (!errorCheck) {
-    return checkCandidates;
-  } else {
-    return [];
   }
 }
 

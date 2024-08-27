@@ -21,12 +21,12 @@ export const tabsModuleMembers: TabsModuleMembers[] = [
     queryParams: 'instructions',
   },
   {
-    name: 'Aglint Token',
-    queryParams: 'aglinttoken',
+    name: 'Aglint AI Token',
+    queryParams: 'aglintaitoken',
   },
   {
-    name: 'Aglint Instruction',
-    queryParams: 'aglintinstruction',
+    name: 'Aglint AI Instruction',
+    queryParams: 'aglintaiinstruction',
   },
  
 ];

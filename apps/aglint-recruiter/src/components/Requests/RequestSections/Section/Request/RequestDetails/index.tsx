@@ -17,7 +17,6 @@ import CandidateDetails from './CandidateDetails';
 import RequestProgress from './RequestProgress';
 import SessionsCardAndActions from './SessionsCardAndActions';
 
-
 function RequestDetails({
   request,
 }: {
@@ -123,6 +122,7 @@ function RequestDetails({
 
           {Boolean(
             request.status === 'to_do' &&
+              request.type === 'schedule_request' &&
               request.applications.public_jobs.workflow_job_relation.length > 0,
           ) && (
             <Stack
