@@ -1090,18 +1090,6 @@ export type Database = {
           },
         ]
       }
-      host: {
-        Row: {
-          decrypted_secret: string | null
-        }
-        Insert: {
-          decrypted_secret?: string | null
-        }
-        Update: {
-          decrypted_secret?: string | null
-        }
-        Relationships: []
-      }
       integrations: {
         Row: {
           ashby_key: string | null
