@@ -3,7 +3,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
@@ -143,7 +143,9 @@ const CandidateAvailReceive = ({
               size={1}
               color={'accent'}
               textButton='Schedule Interview'
-              onClickButton={handleConfirmSlot}
+              onClickButton={{
+                onClick: handleConfirmSlot,
+              }}
             />
             <ButtonSoft
               size={1}

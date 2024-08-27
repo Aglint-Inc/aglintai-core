@@ -4,6 +4,7 @@ import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
@@ -26,6 +27,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
+import { ShowCode } from '../../Common/ShowCode';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
@@ -233,23 +235,36 @@ function ViewRequestDetails() {
               }
               slotNewTask={
                 <>
-                  {Boolean(selectedRequest?.status === 'to_do') && (
-                    <Stack width={'60%'}>
-                      <AiTaskBanner
-                        slotButton={
-                          <ButtonSolid
-                            onClickButton={{
-                              onClick: () => {
-                                handleProceed(selectedRequest.id);
-                              },
-                            }}
-                            size={1}
-                            textButton='Proceed'
-                          />
-                        }
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={Boolean(
+                        selectedRequest?.type !== 'schedule_request',
+                      )}
+                    >
+                      <GlobalEmptyState
+                        iconName={'view_object_track'}
+                        textDesc={`Request type: ${capitalizeFirstLetter(selectedRequest?.type) ?? ''}`}
                       />
-                    </Stack>
-                  )}
+                    </ShowCode.When>
+                  </ShowCode>
+                  {Boolean(selectedRequest?.status === 'to_do') &&
+                    selectedRequest?.type === 'schedule_request' && (
+                      <Stack width={'60%'}>
+                        <AiTaskBanner
+                          slotButton={
+                            <ButtonSolid
+                              onClickButton={{
+                                onClick: () => {
+                                  handleProceed(selectedRequest.id);
+                                },
+                              }}
+                              size={1}
+                              textButton='Proceed'
+                            />
+                          }
+                        />
+                      </Stack>
+                    )}
                   {selectedRequest?.type ? (
                     <RequestProgress
                       job_workflow={
