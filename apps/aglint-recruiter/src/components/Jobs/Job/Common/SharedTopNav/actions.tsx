@@ -38,6 +38,10 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
+import { Text } from '@/devlink/Text';
+import { dayjsLocal } from '@aglint/shared-utils';
+import { ButtonGhost } from '@/devlink3/ButtonGhost';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
@@ -45,12 +49,41 @@ export const SharedActions = () => {
     <SettingsContext.Provider value={value}>
       <Stack direction={'row'} alignItems={'center'} gap={2}>
         <Score />
+        <Sync />
         <Add />
         <Publish />
         <Switcher />
         <Dropdown />
       </Stack>
     </SettingsContext.Provider>
+  );
+};
+
+const Sync = () => {
+  const { recruiter } = useAuthDetails();
+  const { job } = useJob();
+  if (!recruiter?.recruiter_preferences?.greenhouse) return <></>;
+  const time = dayjsLocal(job?.remote_sync_time ?? new Date()).diff(
+    dayjsLocal(),
+    'minutes',
+  );
+  return (
+    <>
+      <Text
+        content={
+          time ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago` : ''
+        }
+        size={1}
+        color={'neutral'}
+      />
+      <ButtonGhost
+        size={2}
+        isLeftIcon
+        iconName={'sync'}
+        color={'accent'}
+        textButton={'Sync job'}
+      />
+    </>
   );
 };
 
