@@ -186,6 +186,7 @@ export * from "./ListPop";
 export * from "./MemberDetail";
 export * from "./MemberRow";
 export * from "./MembersList";
+export * from "./MetricsLeaderboard";
 export * from "./ModuleCard";
 export * from "./MoreButton";
 export * from "./MoreMenu";

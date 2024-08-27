@@ -43,7 +43,7 @@ function SchedulingMainComp() {
     setBreadcrum([
       {
         name: capitalizeAll(tab),
-        route: ROUTES['/scheduling']() + `?tab=metrics`,
+        route: ROUTES['/scheduling']() + `?tab=interviews`,
       },
     ]);
   }, [tab]);
@@ -88,7 +88,9 @@ function SchedulingMainComp() {
                       textPill={'Metrics'}
                       onClickPill={{
                         onClick: () => {
-                          router.push(`${ROUTES['/scheduling']()}?tab=metrics`);
+                          router.push(
+                            `${ROUTES['/scheduling']()}?tab=interviews`,
+                          );
                         },
                       }}
                     />

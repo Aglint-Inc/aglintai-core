@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerMetricList } from '@/devlink3/InterviewerMetricList';
 import { InterviewerMetrics } from '@/devlink3/InterviewerMetrics';
+import { MetricsLeaderboard } from '@/devlink3/MetricsLeaderboard';
 import { useAllDepartments } from '@/src/queries/departments';
 
 import Loader from '../../Common/Loader';
@@ -49,9 +50,9 @@ function Metrics() {
     value: dep.id,
   }));
 
-  const departmentForDes = departmentFilterList
-    .filter((dep) => departments.includes(dep.value))
-    .map((dep) => dep.name);
+  // const departmentForDes = departmentFilterList
+  //   .filter((dep) => departments.includes(dep.value))
+  //   .map((dep) => dep.name);
 
   // Interview Type filter list
   const InterviewTypeOptions = InterivewTypes?.length
@@ -126,51 +127,57 @@ function Metrics() {
             />
           </Stack>
         }
-        textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
-        slotInterviewerMetricsList={
-          filteredInterviewers?.length > 0 ? (
-            filteredInterviewers.map((interviewer, i) => {
-              return (
-                <InterviewerMetricList
-                  onClickCard={{
-                    onClick: () =>
-                      router.push(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
-                      ),
-                  }}
-                  key={interviewer.user_id}
-                  slotImage={
-                    <Avatar
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                      }}
-                      src={interviewer.profile_image}
-                      alt={interviewer.name}
-                      variant='rounded-medium'
-                    />
-                  }
-                  textCount={i + 1}
-                  countHours={(interviewer.duration / 60).toFixed(1)}
-                  countInterviews={interviewer.interviews}
-                  textName={interviewer.name}
-                  textRole={interviewer.position}
-                  countDeclines={0}
-                />
-              );
-            })
-          ) : (
-            <GlobalEmptyState
-              iconName={'monitoring'}
-              size={9}
-              textDesc={'No Data Available'}
+        // textDescription={`Metrics showing for the ${leaderTypeFilterList.find((item) => item.value === leaderboardType).name}  ${departmentForDes.length ? 'for ' + departmentForDes.join(', ') : ''} `}
+        slotFirstGrid={
+          <>
+            <MetricsLeaderboard
+              slotInterviewerMetricsList={
+                filteredInterviewers?.length > 0 ? (
+                  filteredInterviewers.map((interviewer, i) => {
+                    return (
+                      <InterviewerMetricList
+                        onClickCard={{
+                          onClick: () =>
+                            router.push(
+                              `${process.env.NEXT_PUBLIC_HOST_NAME}/user/profile/${interviewer.user_id}`,
+                            ),
+                        }}
+                        key={interviewer.user_id}
+                        slotImage={
+                          <Avatar
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                            }}
+                            src={interviewer.profile_image}
+                            alt={interviewer.name}
+                            variant='rounded-medium'
+                          />
+                        }
+                        textCount={i + 1}
+                        countHours={(interviewer.duration / 60).toFixed(1)}
+                        countInterviews={interviewer.interviews}
+                        textName={interviewer.name}
+                        textRole={interviewer.position}
+                        countDeclines={0}
+                      />
+                    );
+                  })
+                ) : (
+                  <GlobalEmptyState
+                    iconName={'monitoring'}
+                    size={9}
+                    textDesc={'No Data Available'}
+                  />
+                )
+              }
             />
-          )
+            <Interviewers />
+          </>
         }
         slotMetrics={
           <>
             <TrainingProgress />
-            <Interviewers />
           </>
         }
       />
