@@ -56,6 +56,30 @@ export const useUpdateInterviewPlan = () => {
   return mutation;
 };
 
+export const useSwapInterviewPlan = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useJob();
+  const { queryKey } = jobQueries.interview_plans({ id: job_id });
+  const mutation = useMutation({
+    mutationFn: async ({
+      plan_id_1,
+      plan_id_2,
+    }: {
+      plan_id_1: string;
+      plan_id_2: string;
+    }) => {
+      await supabase
+        .rpc('swap_stage_order', { plan_id_1, plan_id_2 })
+        .throwOnError();
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onError: () => {
+      toast.error('Unable to move interview stage.');
+    },
+  });
+  return mutation;
+};
+
 export const useDeleteInterviewPlan = () => {
   const queryClient = useQueryClient();
   const { job_id } = useJob();
