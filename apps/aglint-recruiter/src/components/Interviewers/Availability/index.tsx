@@ -41,6 +41,7 @@ const TimeLineCalendar = () => {
   const [selectedDepartments, setDepartments] = useState<number[]>([]);
   const [selectedLocations, setLocations] = useState<number[]>([]);
   const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
+
   const { data: InterivewTypes } = useAllInterviewModules();
 
   //Location filter List
@@ -191,6 +192,22 @@ const AvailabilityView = ({
   allInterviewers: initUser[];
   dayCount: number;
 }) => {
+  const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
+  const sortedData = allInterviewers.sort((a, b) => {
+    const indexA = checkedInterviewers.indexOf(a.user_id);
+    const indexB = checkedInterviewers.indexOf(b.user_id);
+
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    } else if (indexA !== -1) {
+      return -1;
+    } else if (indexB !== -1) {
+      return 1;
+    } else {
+      return a.first_name.localeCompare(b.first_name);
+    }
+  });
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
       {/* Left Column for Interviewer Names and Timezones */}
@@ -222,7 +239,17 @@ const AvailabilityView = ({
                 gap: 1,
               }}
             >
-              <Checkbox />
+              <Checkbox
+                onClick={() => {
+                  setCheckedInterviewers((pre) => {
+                    if (pre.includes(interviewer.user_id)) {
+                      return pre.filter((p) => p !== interviewer.user_id);
+                    } else {
+                      return [...pre, interviewer.user_id];
+                    }
+                  });
+                }}
+              />
               <Typography variant='body1'>
                 {getFullName(interviewer.first_name, interviewer.last_name)}
               </Typography>
@@ -250,7 +277,7 @@ const AvailabilityView = ({
           marginRight: '20px',
         }}
       >
-        {allInterviewers.map((interviewer, index) => {
+        {sortedData.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
             return <Box key={index} minHeight={'36px'}></Box>;
           const timeZoneOffset = dayjsLocal()
