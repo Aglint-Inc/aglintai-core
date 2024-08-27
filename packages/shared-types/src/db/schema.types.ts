@@ -1546,6 +1546,7 @@ export type Database = {
       }
       interview_plan: {
         Row: {
+          application_id: string | null
           created_at: string
           id: string
           job_id: string | null
@@ -1553,6 +1554,7 @@ export type Database = {
           plan_order: number
         }
         Insert: {
+          application_id?: string | null
           created_at?: string
           id?: string
           job_id?: string | null
@@ -1560,6 +1562,7 @@ export type Database = {
           plan_order?: number
         }
         Update: {
+          application_id?: string | null
           created_at?: string
           id?: string
           job_id?: string | null
@@ -1567,6 +1570,34 @@ export type Database = {
           plan_order?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
