@@ -5,11 +5,12 @@ import {
   EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -56,8 +57,9 @@ const SelectScheduleFlow = ({
   return (
     <Stack>
       <TextWithIcon
-        textContent={<>EVENT : Candidate Schedule</>}
-        iconSize={3}
+        iconName='expand_circle_right'
+        textContent={`Candidate Schedule`}
+        iconSize={4}
         fontSize={1}
         // color={getProgressColor(tense)}
       />
@@ -213,9 +215,16 @@ const AvailabilityFlowMenus = ({
           ) && !eventTargetMap['sendAvailReqReminder']
         }
       >
-        <span>
-          <Button onClick={handleFollowup}>Resend Link</Button>
-        </span>
+        <Stack width={'100%'} direction={'row'} justifyContent={'end'}>
+          <ButtonSoft
+            size={1}
+            color={'accent'}
+            onClickButton={{
+              onClick: handleFollowup,
+            }}
+            textButton={'Resend Link'}
+          />
+        </Stack>
       </ShowCode.When>
       <ShowCode.When
         isTrue={
@@ -223,19 +232,22 @@ const AvailabilityFlowMenus = ({
           Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
         }
       >
-        <span>
-          <Button
-            onClick={() => {
-              setCandidateAvailabilityDrawerOpen(true);
-              setReRequestAvailability(true);
-              setCandidateAvailabilityIdForReRequest(
-                '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-              );
+        <Stack width={'100%'} direction={'row'} justifyContent={'flex-end'}>
+          <ButtonSoft
+            size={1}
+            color='accent'
+            onClickButton={{
+              onClick: () => {
+                setCandidateAvailabilityDrawerOpen(true);
+                setReRequestAvailability(true);
+                setCandidateAvailabilityIdForReRequest(
+                  '6b7657ba-cc3f-4789-a44f-5be74d234f84',
+                );
+              },
             }}
-          >
-            Re Request Availability
-          </Button>
-        </span>
+            textButton='Re Request Availability'
+          />
+        </Stack>
       </ShowCode.When>
     </>
   );
