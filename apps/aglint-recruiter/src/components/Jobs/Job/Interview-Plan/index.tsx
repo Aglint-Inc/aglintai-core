@@ -275,9 +275,13 @@ const InterviewPlan = ({
     getLoadingState,
     updatePlan,
     deletePlan,
+    handleSwapPlan,
     // handleUpdateSession,
   } = useJobInterviewPlan();
-  const data = interviewPlans.data.find((plan) => plan.id === plan_id);
+  const index = interviewPlans.data.findIndex((plan) => plan.id === plan_id);
+  const prevData = interviewPlans?.data?.[index - 1] ?? null;
+  const data = interviewPlans?.data?.[index] ?? null;
+  const nextData = interviewPlans?.data?.[index + 1] ?? null;
   const [expanded, setExpanded] = React.useState(true);
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -333,6 +337,22 @@ const InterviewPlan = ({
   return (
     <>
       <InterviewPlanWrap
+        isTopArrowVisible={!!prevData}
+        onClickUp={{
+          onClick: () =>
+            handleSwapPlan({
+              plan_id_1: prevData.id,
+              plan_id_2: data.id,
+            }),
+        }}
+        isBottomArrowVisible={!!nextData}
+        onClickDown={{
+          onClick: () =>
+            handleSwapPlan({
+              plan_id_1: nextData.id,
+              plan_id_2: data.id,
+            }),
+        }}
         textStageName={`${capitalizeFirstLetter(data.name)}`}
         textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
         isInputVisible={editPlan}
