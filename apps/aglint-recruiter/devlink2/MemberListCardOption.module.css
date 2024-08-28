@@ -1,13 +1,8 @@
 .mlc-three-dot-content {
   z-index: 2;
-
   display: block;
   width: 200px;
   padding: var(--space-1);
-
-  border: 1px solid var(--neutral-6);
-  border-radius: var(--radius-4);
-
   background-color: var(--white);
 }
 

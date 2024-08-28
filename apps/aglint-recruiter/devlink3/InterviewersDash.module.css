@@ -100,6 +100,18 @@
   grid-row-gap: 8px;
 }
 
+.info-global-icon {
+  color: var(--info-11);
+}
+
+.success-global-icon {
+  color: var(--success-11);
+}
+
+.error-global-icon {
+  color: var(--error-11);
+}
+
 .sd_table_body {
   overflow: auto;
   height: 347px;

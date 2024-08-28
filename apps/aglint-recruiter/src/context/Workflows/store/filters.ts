@@ -1,8 +1,11 @@
+import { DatabaseView } from '@aglint/shared-types';
+
 import { CreateSlice } from '.';
 
 type Filters = {
   search: string;
   job: string[];
+  tags: DatabaseView['workflow_view']['tags'];
 };
 
 export type FiltersSlice = {
@@ -16,6 +19,7 @@ export type FiltersSlice = {
 const initialFilters: Filters = {
   search: '',
   job: [],
+  tags: [],
 };
 
 export const createFiltersSlice: CreateSlice<FiltersSlice> = (set) => ({
