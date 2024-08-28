@@ -2,33 +2,30 @@
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { memo, useMemo } from 'react';
 
+import { GlobalBadge } from '@/devlink3/GlobalBadge';
 import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useWorkflows } from '@/src/context/Workflows';
+import { Workflow } from '@/src/types/workflow.types';
+import { SafeObject } from '@/src/utils/safeObject';
 
 import {
   useWorkflowStore,
   WorkflowStore,
 } from '../../../../context/Workflows/store';
+import { TAG_OPTIONS } from '../../constants';
 
 const Filters = memo(() => {
-  const { workflowJobFilter } = useWorkflows();
   const {
     filters: { search, ...filters },
     setFilters,
   } = useWorkflowStore(({ filters, setFilters }) => ({ filters, setFilters }));
 
-  const jobOptions = useMemo(
-    () =>
-      (workflowJobFilter.data ?? []).map(
-        ({ id, job_title, workflow_count }) => ({
-          id,
-          label: `${job_title} (${workflow_count})`,
-        }),
-      ),
-    [workflowJobFilter.data],
-  );
+  const { tagOptions, jobOptions } = useWorkflowFilterOptions();
 
-  const options = useMemo(() => ({ job: jobOptions }), [jobOptions]);
+  const options = useMemo(
+    () => ({ job: jobOptions, tags: tagOptions }),
+    [jobOptions, tagOptions],
+  );
 
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
@@ -71,5 +68,79 @@ const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
       return <JobIcon />;
+    case 'tags':
+      return <></>;
   }
+};
+
+export const useWorkflowFilterOptions = () => {
+  const { workflowJobFilter } = useWorkflows();
+
+  const jobOptions = useMemo(
+    () =>
+      (workflowJobFilter.data ?? []).map(
+        ({ id, job_title, workflow_count }) => ({
+          id,
+          label: `${job_title} (${workflow_count})`,
+        }),
+      ),
+    [workflowJobFilter.data],
+  );
+  const tagOptions = useMemo(
+    () =>
+      SafeObject.values(TAG_OPTIONS)
+        .toReversed()
+        .map((option) => ({
+          id: option.value,
+          label: (
+            <GlobalBadge
+              key={option.value}
+              textBadge={option.name}
+              size={1}
+              showIcon={!!option.iconName || !!option.icon}
+              color={option.color}
+              iconName={option.iconName}
+              slotIcon={option.icon}
+            />
+          ),
+        })),
+    [],
+  );
+  return { tagOptions, jobOptions };
+};
+
+export const getFilteredWorkflows = (
+  filters: WorkflowStore['filters'],
+  data: Workflow[],
+) => {
+  return data.filter(({ title, jobs, tags }) => {
+    return Object.entries(filters).reduce((acc, [key, value]) => {
+      if (!acc) return acc;
+      switch (key as keyof WorkflowStore['filters']) {
+        case 'search':
+          return title.toLowerCase().includes((value as string).toLowerCase());
+        case 'job':
+          return (
+            value.length === 0 ||
+            !!jobs.reduce((acc, curr) => {
+              if ((value as string[]).includes(curr.id)) acc.push(curr);
+              return acc;
+            }, []).length
+          );
+        case 'tags':
+          return (
+            value.length === 0 ||
+            !!tags.reduce((acc, curr) => {
+              if (
+                (value as WorkflowStore['filters']['tags']).find((tag) =>
+                  curr.includes(tag),
+                )
+              )
+                acc.push(curr);
+              return acc;
+            }, []).length
+          );
+      }
+    }, true);
+  });
 };
