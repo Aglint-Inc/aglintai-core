@@ -17,6 +17,7 @@ export type CustomRequestProgress = TableType<
         user_tz: string;
       };
       filter_json_id?: string;
+      avail_req_id?: string;
     };
   }
 >;

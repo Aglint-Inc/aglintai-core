@@ -1,5 +1,9 @@
 import { EmailTemplateAPi, InterviewSessionTypeDB } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  ProgressLoggerType,
+  ScheduleUtils,
+} from '@aglint/shared-utils';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -145,22 +149,33 @@ function CandidateAvailability({
 
     // send request availability email to candidate
     try {
+      let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+        request_id: selectedRequest.id,
+        supabaseAdmin: supabase,
+      });
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
           organizer_user_id: recruiterUser.user_id,
           avail_req_id: result.id,
         };
+
       await axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
         ...payload,
       });
-      supabaseWrap(
-        await supabase.from('request_progress').insert({
-          request_id: selectedRequest.id,
-          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-          is_progress_step: false,
-          status: 'completed',
-        }),
-      );
+      await reqProgressLogger({
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        is_progress_step: false,
+        status: 'completed',
+      });
+      await reqProgressLogger({
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        is_progress_step: true,
+        status: 'completed',
+        meta: {
+          event_run_id: null,
+          avail_req_id: result.id,
+        },
+      });
     } catch (error) {
       toast.message('Failed to send email');
     }

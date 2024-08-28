@@ -1,5 +1,9 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
@@ -23,6 +27,10 @@ export const trigger = async ({
   new_data: DatabaseTable['candidate_request_availability'];
 }) => {
   try {
+    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: new_data.request_id,
+      supabaseAdmin,
+    });
     supabaseWrap(
       await supabaseAdmin
         .from('request')
@@ -69,21 +77,23 @@ export const trigger = async ({
           }),
         );
         if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
-          supabaseWrap(
-            await supabaseAdmin.from('request_progress').insert({
-              is_progress_step: false,
-              event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
-              status: 'completed',
-              request_id: new_data.request_id,
-              meta: {
-                workflow_action_id: j_l_a.id,
-                event_run_id: run_id,
-                scheduled_time: dayjsLocal()
-                  .add(j_l_a.workflow.interval, 'minutes')
-                  .toISOString(),
-              },
-            }),
-          );
+          await reqProgressLogger({
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+            is_progress_step: false,
+            status: 'completed',
+          });
+          await reqProgressLogger({
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
+            is_progress_step: true,
+            status: 'completed',
+            meta: {
+              workflow_action_id: j_l_a.id,
+              event_run_id: run_id,
+              scheduled_time: dayjsLocal()
+                .add(j_l_a.workflow.interval, 'minutes')
+                .toISOString(),
+            },
+          });
         }
       });
 
