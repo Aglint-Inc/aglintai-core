@@ -14,6 +14,11 @@ export type initUser = {
   all_events: (CalendarEvent & { type: string })[];
 } & allInterviewerType[number];
 
+export type initUserUIGroupedByDate = {
+  isCalenderConnected: boolean;
+  all_events: (CalendarEvent & { type: string })[][];
+} & allInterviewerType[number];
+
 const payload_schema = v.object({
   recruiter_id: v.string(),
   startDate: v.string(),

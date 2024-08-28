@@ -14,6 +14,7 @@ export function PageLayout({
   isBackButton = false,
   onClickBack = {},
   slotSaving,
+  isHeaderDividerVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "page_layout")} tag="div">
@@ -59,7 +60,12 @@ export function PageLayout({
         >
           {slotSaving}
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "divider-x")} tag="div" />
+        {isHeaderDividerVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "divider-x")}
+            tag="div"
+          />
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-body-global")}

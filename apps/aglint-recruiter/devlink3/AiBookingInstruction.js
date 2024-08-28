@@ -8,6 +8,8 @@ import _styles from "./AiBookingInstruction.module.css";
 export function AiBookingInstruction({
   as: _Component = _Builtin.Block,
   slotTextArea,
+  textHowTo = "Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.",
+  textExample = "Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "ai-booking-inst")} tag="div">
@@ -41,11 +43,7 @@ export function AiBookingInstruction({
               tag="ul"
               unstyled={false}
             >
-              <_Builtin.ListItem>
-                {
-                  "Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts."
-                }
-              </_Builtin.ListItem>
+              <_Builtin.ListItem>{textHowTo}</_Builtin.ListItem>
             </_Builtin.List>
           </_Builtin.Block>
           <_Builtin.Block
@@ -72,9 +70,7 @@ export function AiBookingInstruction({
               font-color="neutral-12"
               high-contrast="false"
             >
-              {
-                "Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members."
-              }
+              {textExample}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

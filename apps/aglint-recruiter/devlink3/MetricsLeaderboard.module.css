@@ -1,0 +1,23 @@
+.metrics-interview-leader {
+  height: 420px;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  border: 1px solid var(--neutral-6);
+  border-radius: var(--radius-4);
+}
+
+.metrics-table-header {
+  padding-right: var(--space-4);
+  padding-left: var(--space-4);
+}
+
+.metrics-table-body-wrap {
+  display: flex;
+  overflow: auto;
+  height: 380px;
+  margin-top: var(--space-1);
+  padding-right: var(--space-1);
+  padding-left: var(--space-1);
+  flex-direction: column;
+  flex-wrap: nowrap;
+}

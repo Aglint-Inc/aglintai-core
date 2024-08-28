@@ -79,6 +79,7 @@ const CandidateAvailReceive = ({
   if (availReceivedProgress.length > 0) {
     lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
   }
+  // eslint-disable-next-line no-unused-vars
   const handleConfirmSlot = async () => {
     try {
       const [candReq] = supabaseWrap(

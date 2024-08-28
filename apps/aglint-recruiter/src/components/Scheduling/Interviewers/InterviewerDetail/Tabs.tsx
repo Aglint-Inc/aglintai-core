@@ -29,6 +29,10 @@ function Tabs() {
       name: 'Availability',
       queryParam: 'availibility',
     },
+    {
+      name: 'Aglint AI Instruction',
+      queryParam: 'aglintaiinstruction',
+    },
   ];
 
   const tab = (router.query.tab || 'overview') as TabInterviewerDetail;

@@ -149,6 +149,9 @@ export function getTriggerOption(
     case 'onRequestReschedule':
       message = 'Candiate requests a reschedule';
       break;
+    case 'onRequestInterviewerDecline':
+      message = 'Interviewer declines a meeting';
+      break;
   }
   let preMessage = '';
   switch (phase) {
@@ -346,8 +349,8 @@ export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
     {
       name: 'Send Self-Scheduling Link to Candidate',
       value: {
-        target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink' as any,
-        action_type: 'end_point',
+        target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink',
+        action_type: 'email',
       },
     },
     {
@@ -355,6 +358,20 @@ export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
       value: {
         target_api: 'onRequestSchedule_emailLink_getCandidateAvailability',
         action_type: 'agent_instruction',
+      },
+    },
+    {
+      name: 'Self Schedule with Agent via mail',
+      value: {
+        target_api: 'onRequestSchedule_emailAgent_selfSchedule',
+        action_type: 'agent_instruction',
+      },
+    },
+    {
+      name: 'Self Schedule with Agent via Phone',
+      value: {
+        action_type: 'agent_instruction',
+        target_api: 'onRequestSchedule_phoneAgent_selfSchedule',
       },
     },
   ],
