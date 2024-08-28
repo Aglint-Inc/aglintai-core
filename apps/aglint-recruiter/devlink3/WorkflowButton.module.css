@@ -1,0 +1,30 @@
+.button-workflow {
+  display: flex;
+  height: 32px;
+  padding-right: var(--space-3);
+  padding-left: var(--space-3);
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+
+  border: 1px dashed var(--neutral-6);
+  border-radius: var(--radius-2);
+
+  transition: all 200ms ease;
+
+  color: var(--neutral-10);
+
+  cursor: pointer;
+}
+
+.button-workflow:hover {
+  border-color: var(--accent-6);
+  color: var(--accent-10);
+}
+
+.slot-icon-workflow-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
