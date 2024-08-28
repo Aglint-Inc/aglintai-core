@@ -1,11 +1,11 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { TeamSync } from '@/devlink/TeamSync';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
@@ -285,12 +285,16 @@ const TeamManagement = () => {
             </ShowCode.When>
           </>
         }
-        slotInviteBtn={
+        slotFilterRight={
           <>
             {canManage &&
               (remote_sync.isEnabled ? (
                 <Stack>
-                  <ButtonSolid
+                  <TeamSync
+                    textSync={last_sync}
+                    onClickSync={{ onClick: remote_sync.sync }}
+                  />
+                  {/* <ButtonGhost
                     isRightIcon={false}
                     isLeftIcon={true}
                     size={'2'}
@@ -300,15 +304,15 @@ const TeamManagement = () => {
                       onClick: remote_sync.sync,
                     }}
                   />
-                  <Typography>{`* ${last_sync}`}</Typography>
+                  <Typography>{`* ${last_sync}`}</Typography> */}
                 </Stack>
               ) : (
-                <ButtonSolid
+                <ButtonGhost
                   isRightIcon={false}
                   isLeftIcon={true}
-                  size={'1'}
-                  textButton={'Invite'}
-                  iconName={'send'}
+                  size={'2'}
+                  textButton={'Invite Member'}
+                  iconName={'person_add'}
                   onClickButton={{
                     onClick: () => {
                       setOpenDrawer({ open: true, window: 'addMember' });
@@ -318,6 +322,7 @@ const TeamManagement = () => {
               ))}
           </>
         }
+        slotInviteBtn={<></>}
         pendInvitesVisibility={Boolean(inviteUser)}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
@@ -387,7 +392,6 @@ export const useTeamMembers = () => {
       query.refetch();
     }
   }, [allMembers.length, query.refetch]);
-
   return {
     activeMembers,
     ...query,

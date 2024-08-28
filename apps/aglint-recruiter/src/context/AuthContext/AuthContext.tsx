@@ -1,20 +1,14 @@
 /* eslint-disable no-unused-vars */
 import {
-  DatabaseEnums,
   DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
+  RecruiterUserType,
+  SocialsType,
 } from '@aglint/shared-types';
-import { RecruiterUserType, SocialsType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import {
   createContext,
   Dispatch,
-  ReactNode,
   SetStateAction,
   useContext,
   useEffect,
@@ -22,12 +16,8 @@ import {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import axios from '@/src/client/axios';
-import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
-import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
-import { emailTemplateQueries } from '@/src/queries/email-templates';
-import { featureFlag } from '@/src/utils/Constants';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -74,7 +64,7 @@ const defaultProvider: ContextValue = {
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
-  const router = useRouter();
+  const router = useRouterPro();
   const [recruiter, setRecruiter] = useState<ContextValue['recruiter']>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
@@ -103,7 +93,7 @@ const AuthProvider = ({ children }) => {
         return;
       }
 
-      if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
+      if (router.pathName !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
@@ -162,13 +152,11 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (router.isReady) {
-      const redirect = window.location.href;
-      if (isRoutePublic(router.route)) return;
-      else if (!loading && !recruiterUser?.user_id)
-        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-    }
-  }, [router.isReady, loading]);
+    const redirect = window.location.href;
+    if (isRoutePublic(router.pathName)) return;
+    else if (!loading && !recruiterUser?.user_id)
+      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+  }, [loading]);
 
   return (
     <AuthContext.Provider

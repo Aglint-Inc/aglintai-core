@@ -1,13 +1,22 @@
 'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
-// import { useAuthContext } from '@/src/context/AuthContextPro/AuthContext';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 
 function ProfilePage() {
-  // const { user_id, recruiter_id } = useAuthContext();
-  // console.log({ user_id, recruiter_id });
-
-  return <div>ProfilePage</div>;
+  const { push } = useRouter();
+  return (
+    <>
+      Profile pro page
+      <Link href={'/kkk'}>KKK link</Link>
+      <ButtonSoft
+        onClickButton={{ onClick: () => push('/kkk') }}
+        textButton={'KKK button'}
+      />
+    </>
+  );
 }
 
 export default ProfilePage;

@@ -1,12 +1,12 @@
 import { Avatar, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 
 import { NavBottom } from '@/devlink/NavBottom';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import NotFoundPage from '@/src/pages/404';
 import { isEnvProd } from '@/src/utils/isEnvProd';
 import PERMISSIONS from '@/src/utils/routing/permissions';
@@ -16,12 +16,12 @@ import Icon from '../Common/Icons/Icon';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
 
-export default function AppLayout({ children }) {
+export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
   const { handleLogout } = useAuthDetails();
   const { recruiter, recruiterUser } = useAuthDetails();
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const router = useRouterPro();
   const { windowSize } = useResizeWindow();
   const logo = recruiter?.logo;
 
@@ -112,7 +112,7 @@ export default function AppLayout({ children }) {
       </Stack>
 
       <Stack width={'100%'} height={'100vh'} overflow={'auto'}>
-        {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
+        {appRouter || checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
           children
         ) : (
           <NotFoundPage />
