@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -6,13 +7,10 @@ import { NotesRequestDetail } from '@/devlink2/NotesRequestDetail';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { Text } from '@/devlink2/Text';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-
-import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
-import { debounce } from 'lodash';
+
 import { useRequestNotes } from './hooks';
 import { upsertRequestNotes } from './utils';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
 
 function RequestNotes() {
   const { query } = useRouter();
@@ -20,7 +18,6 @@ function RequestNotes() {
     data: requestNotes,
     isFetched,
     refetch,
-    isFetching,
   } = useRequestNotes({
     request_id: String(query?.id),
   });
@@ -37,7 +34,6 @@ function RequestNotes() {
 
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (noteValue, request_id) => {
-      console.log('id', request_id);
       await upsertRequestNotes({
         id: request_id as string,
         note: noteValue,
@@ -50,7 +46,6 @@ function RequestNotes() {
     [],
   );
 
-  console.log(requestNotes?.[0]?.id);
   return (
     <Stack>
       <NotesRequestDetail
@@ -74,7 +69,6 @@ function RequestNotes() {
                     <textarea
                       value={note || ''}
                       onChange={async (e) => {
-                        console.log(e.target.value);
                         setNote(e.target.value);
                         setSaving(true);
                         debouncedUpsertRequestNotes(

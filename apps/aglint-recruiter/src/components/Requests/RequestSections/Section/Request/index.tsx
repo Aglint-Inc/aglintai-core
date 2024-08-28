@@ -5,6 +5,7 @@ import { type PropsWithChildren, useState } from 'react';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -14,8 +15,6 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
-import { Text } from '@/devlink2';
 
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },

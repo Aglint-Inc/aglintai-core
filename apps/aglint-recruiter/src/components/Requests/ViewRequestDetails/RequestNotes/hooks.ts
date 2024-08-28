@@ -28,6 +28,5 @@ export async function getRequestNotes(request_id: string) {
     .eq('request_id', request_id)
     .throwOnError();
 
-  console.log(data);
   return data;
 }
