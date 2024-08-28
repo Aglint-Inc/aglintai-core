@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { NavLink } from '@/devlink/NavLink';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
 
 import AllCandidates from '../IconsSideBar/AllCandidates';
@@ -21,8 +21,8 @@ import { LinkProps } from './type';
 import { navList } from './utils';
 
 function SideNavbar() {
-  const router = useRouter();
-  const pathName = router.pathname;
+  const router = useRouterPro();
+  const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const LinkIcon = ({
           slotIcon={<RequestIcon />}
         />
       );
-      //return <AssistantLogo isActive={active} />;
+    //return <AssistantLogo isActive={active} />;
     case 'Jobs':
       return (
         <NavLink
@@ -175,10 +175,10 @@ const LinkComp = ({
   path: LinkProps['path'] | string;
   active: string[];
 }) => {
-  const router = useRouter();
+  const router = useRouterPro();
   return (
     <Link href={path}>
-      <LinkIcon module={module} active={active.includes(router.pathname)} />
+      <LinkIcon module={module} active={active.includes(router.pathName)} />
     </Link>
   );
 };

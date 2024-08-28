@@ -1,31 +1,15 @@
 /* eslint-disable @next/next/no-page-custom-font */
-/* eslint-disable @next/next/no-head-element */
 'use client';
-// eslint-disable-next-line simple-import-sort/imports
-import { DevlinkMainProvider } from '@context/DevlinkContext';
 import '@styles/globals.scss';
 import 'regenerator-runtime/runtime';
 
-import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
-// import { SupportProvider } from '../context/SupportContext/SupportContext';
-import Theme from '../context/Theme/Theme';
-import { QueryProvider } from '../queries';
-import { ReactNode, Suspense } from 'react';
 import { Inter } from 'next/font/google';
+import { ReactNode } from 'react';
 
-// If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 });
-
-// export const metadata = {
-//   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
-//   site_name: 'Aglint Inc',
-//   description:
-//     'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
-//   icon: '/images/favicon.ico',
-// };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -36,18 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel='stylesheet'
         />
       </head>
-      <body>
-        <DevlinkMainProvider>
-          <Theme>
-            <ScreenSizeProvider>
-              <Suspense>
-                {/* remove the suspense boundary */}
-                <QueryProvider>{children}</QueryProvider>
-              </Suspense>
-            </ScreenSizeProvider>
-          </Theme>
-        </DevlinkMainProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
