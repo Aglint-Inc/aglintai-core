@@ -1,7 +1,5 @@
 import dayjs from '@/src/utils/dayjs';
 
-import { Event, GroupedEvents } from './types';
-
 export const getDatesArray = (count: number, format: string) => {
   const dates = [];
 
@@ -79,7 +77,7 @@ export function groupByDateAndHour(events) {
     return { date, events: filledEvents.slice(0, 8) };
   });
 
-  return finalEvents as GroupedEvents[];
+  return finalEvents;
 }
 
 export const getColor = (value: Event['type']) => {
