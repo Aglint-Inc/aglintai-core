@@ -27,7 +27,7 @@ const useActionsContext = () => {
   const globalOptions = useMemo(
     () =>
       ACTION_TRIGGER_MAP[trigger].filter(
-        ({ value }: any) =>
+        ({ value }) =>
           !(actions ?? []).find(
             ({ target_api }) => target_api === value.target_api,
           ),
@@ -107,28 +107,30 @@ const useActionsContext = () => {
     [all_company_email_template],
   );
 
-  const createAction = useCallback(() => {
-    if (canCreateAction) {
-      const {
-        value: { action_type, target_api },
-      } = globalOptions[0];
-      const order = (actions ?? []).length
-        ? actions[actions.length - 1].order + 1
-        : 1;
-      handleCreateSelectAction(handleCreateAction, {
-        action_type,
-        target_api,
-        order,
-      } as WorkflowAction);
-    } else toast.error('No other action available');
-  }, [
-    handleCreateSelectAction,
-    handleCreateAction,
-    globalOptions,
-    actions,
-    canCreateAction,
-    AI_RESPONSE_PLACEHOLDER,
-  ]);
+  const createAction = useCallback(
+    ({
+      value: { action_type, target_api },
+    }: (typeof globalOptions)[number]) => {
+      if (canCreateAction) {
+        const order = (actions ?? []).length
+          ? actions[actions.length - 1].order + 1
+          : 1;
+        handleCreateSelectAction(handleCreateAction, {
+          action_type,
+          target_api,
+          order,
+        } as WorkflowAction);
+      } else toast.error('No other action available');
+    },
+    [
+      handleCreateSelectAction,
+      handleCreateAction,
+      globalOptions,
+      actions,
+      canCreateAction,
+      AI_RESPONSE_PLACEHOLDER,
+    ],
+  );
 
   const selectAction = useCallback(
     (action: WorkflowAction) =>

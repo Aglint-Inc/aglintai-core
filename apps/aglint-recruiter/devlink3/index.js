@@ -304,6 +304,8 @@ export * from "./WidgetPanelCard";
 export * from "./WidgetUserCard";
 export * from "./WidgetUserCardWithCompany";
 export * from "./WorkflowAdd";
+export * from "./WorkflowAddAction";
+export * from "./WorkflowButton";
 export * from "./WorkflowCard";
 export * from "./WorkflowConnectedCard";
 export * from "./WorkflowConnector";
