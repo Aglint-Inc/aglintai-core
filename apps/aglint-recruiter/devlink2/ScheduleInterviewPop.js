@@ -15,6 +15,7 @@ export function ScheduleInterviewPop({
   slotPickDateInput,
   isRequestTypeVisible = true,
   isCandidateVisible = true,
+  slotNotes,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scehdule-inter-pop")} tag="div">
@@ -77,6 +78,7 @@ export function ScheduleInterviewPop({
           <_Builtin.Block tag="div">{slotPickDateInput}</_Builtin.Block>
         </_Builtin.Block>
       ) : null}
+      <_Builtin.Block tag="div">{slotNotes}</_Builtin.Block>
     </_Component>
   );
 }
