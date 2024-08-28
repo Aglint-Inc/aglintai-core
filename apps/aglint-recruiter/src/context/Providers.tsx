@@ -1,5 +1,4 @@
 // eslint-disable-next-line simple-import-sort/imports
-import ErrorBoundary from '@components/Common/ErrorBoundary';
 import { DevlinkMainProvider } from '@context/DevlinkContext';
 import { PHProvider } from '../components/PostHog/postHog';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
@@ -11,28 +10,39 @@ import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/Role
 import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
+import { PropsWithChildren } from 'react';
 
-const BuildProviderTree = (providers) => {
-  return ({ children }) => {
-    return providers.reduceRight((tree: any, Provider: any) => {
-      return <Provider>{tree}</Provider>;
-    }, children);
-  };
+export const PrivateProviders = ({
+  children,
+  appRouter = false,
+}: PropsWithChildren<{ appRouter?: boolean }>) => {
+  return (
+    <PublicProviders>
+      <PHProvider>
+        <AuthProvider>
+          <RolesAndPermissionsProvider>
+            <BreadcrumProvider>
+              <TourProvider>
+                <JobsProvider>
+                  <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                </JobsProvider>
+              </TourProvider>
+            </BreadcrumProvider>
+          </RolesAndPermissionsProvider>
+        </AuthProvider>
+      </PHProvider>
+    </PublicProviders>
+  );
 };
 
-const Providers = BuildProviderTree([
-  PHProvider,
-  ErrorBoundary,
-  DevlinkMainProvider,
-  Theme,
-  ScreenSizeProvider,
-  QueryProvider,
-  AuthProvider,
-  RolesAndPermissionsProvider,
-  BreadcrumProvider,
-  TourProvider,
-  JobsProvider,
-  AppLayout,
-]);
-
-export default Providers;
+export const PublicProviders = ({ children }: PropsWithChildren) => {
+  return (
+    <DevlinkMainProvider>
+      <Theme>
+        <ScreenSizeProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ScreenSizeProvider>
+      </Theme>
+    </DevlinkMainProvider>
+  );
+};
