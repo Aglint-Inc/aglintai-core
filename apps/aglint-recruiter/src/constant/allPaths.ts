@@ -283,6 +283,7 @@ export const PATHS = [
 '/jobs/[id]/screening',
 '/jobs/[id]/workflows',
 '/jobs/create',
+'/kkk',
 '/loading',
 '/login',
 '/mui-styleguide',

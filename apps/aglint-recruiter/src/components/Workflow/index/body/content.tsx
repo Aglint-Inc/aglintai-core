@@ -14,7 +14,8 @@ import {
   useWorkflowStore,
   WorkflowStore,
 } from '../../../../context/Workflows/store';
-import { getTriggerOption } from '../../constants';
+import { getTriggerOption, TAG_OPTIONS } from '../../constants';
+import { GlobalBadge } from '@/devlink3/GlobalBadge';
 
 const Content = memo(() => {
   const {
@@ -77,16 +78,20 @@ const Cards = (props: {
             key={id}
             border={'visible'}
             isCheckboxVisible={false}
-            textWorkflowName={
-              <Stack>
-                <>{capitalizeSentence(title ?? '---')}</>
-                {(tags ?? []).map((tag) => (
-                  <Stack key={tag} color={'red'}>
-                    {tag}
-                  </Stack>
-                ))}
-              </Stack>
-            }
+            textWorkflowName={capitalizeSentence(title ?? '---')}
+            slotBadge={(tags ?? []).map((tag) => {
+              const option = TAG_OPTIONS[tag];
+              return (
+                <GlobalBadge
+                  textBadge={option.name}
+                  size={1}
+                  showIcon={!!option.iconName || !!option.icon}
+                  color={option.color}
+                  iconName={option.iconName}
+                  slotIcon={option.icon}
+                />
+              );
+            })}
             textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{

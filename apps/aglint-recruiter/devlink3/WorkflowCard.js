@@ -25,6 +25,7 @@ export function WorkflowCard({
   isEditButton = true,
   showButtons = false,
   border,
+  slotBadge,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -101,19 +102,30 @@ export function WorkflowCard({
               {...onClickEdit}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "wc_bottom_left")}
+                className={_utils.cx(_styles, "wc-badge-wrapper")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "wc_trigger_block")}
+                  className={_utils.cx(_styles, "wc-badge-sub-wrap")}
                   tag="div"
                 >
-                  <GlobalIcon iconName="bolt" weight="thin" />
-                  <Text
-                    content={textWorkflowTrigger}
-                    weight=""
-                    color="neutral"
-                  />
+                  {slotBadge}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "wc_bottom_left")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "wc_trigger_block")}
+                    tag="div"
+                  >
+                    <GlobalIcon iconName="bolt" weight="thin" />
+                    <Text
+                      content={textWorkflowTrigger}
+                      weight=""
+                      color="neutral"
+                    />
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block

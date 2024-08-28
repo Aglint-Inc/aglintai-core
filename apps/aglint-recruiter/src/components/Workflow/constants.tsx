@@ -4,6 +4,8 @@ import type {
 } from '@aglint/shared-types';
 
 import type { Workflow } from '@/src/types/workflow.types';
+import { SafeObject } from '@/src/utils/safeObject';
+import { ReactNode } from 'react';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
@@ -439,3 +441,112 @@ export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['ai_response
     scheduleOutsideOfficeHoursForTimezoneDifferences: true,
     preferredInterviewer: [],
   } as const;
+
+type WorkflowTagOptionsType<
+  T extends Workflow['tags'][number] = Workflow['tags'][number],
+  // eslint-disable-next-line no-unused-vars
+> = {
+  [id in T]: string;
+};
+
+const TAG_MAP: WorkflowTagOptionsType = {
+  candidateBook: 'Candidate book',
+  interviewEnd: 'Interview End',
+  interviewerConfirmation: 'Interviewer Confirmation',
+  interviewStart: 'Interview Start',
+  meetingAccepted: 'Meeting Accepted',
+  meetingDeclined: 'Meeting Declined',
+  onQualified: 'On Qualification',
+  onReceivingAvailReq: 'Receiving Availability Request',
+  onRequestCancel: 'Cancel Request',
+  onRequestInterviewerDecline: 'Decline Request',
+  onRequestReschedule: 'Reschedule Request',
+  onRequestSchedule: 'Schedule Request',
+  onSelfScheduleReqAgent: 'Self Schedule Request',
+  onTrainingComplete: 'Training Completion',
+  selfScheduleReminder: 'Self Schedule Reminder',
+  sendAvailReqReminder: 'Availiability Request Reminder',
+  email: 'Email',
+  slack: 'Slack',
+  system: 'Aglint AI',
+};
+
+export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
+  (acc, [key, value]) => {
+    const payload: (typeof acc)[typeof key] = {
+      name: value,
+      value: key,
+      color: 'neutral',
+      iconName: null,
+      icon: null,
+    };
+    switch (key) {
+      case 'email':
+        {
+          payload['color'] = 'blue';
+          payload['iconName'] = 'forward_to_inbox';
+        }
+        break;
+      case 'slack':
+        {
+          payload['color'] = 'pink';
+          payload['icon'] = <SlackIcon />;
+        }
+        break;
+      case 'system':
+        {
+          payload['color'] = 'accent';
+          payload['icon'] = <AIIcon />;
+        }
+        break;
+    }
+    acc[key] = payload as any;
+    return acc;
+  },
+  {} as {
+    [T in keyof WorkflowTagOptionsType]: {
+      name: string;
+      iconName: string | null;
+      icon: ReactNode | null;
+      color: string;
+      value: T;
+    };
+  },
+);
+
+function SlackIcon() {
+  return (
+    <svg
+      width='10'
+      height='10'
+      viewBox='0 0 10 10'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M2.10045 6.3192C2.10045 6.89732 1.62723 7.37054 1.04911 7.37054C0.470982 7.37054 0 6.89732 0 6.3192C0 5.74107 0.473214 5.26786 1.05134 5.26786H2.10268V6.3192H2.10045ZM2.62946 6.3192C2.62946 5.74107 3.10268 5.26786 3.6808 5.26786C4.25893 5.26786 4.73214 5.74107 4.73214 6.3192V8.94866C4.73214 9.52679 4.25893 10 3.6808 10C3.10268 10 2.62946 9.52679 2.62946 8.94866V6.3192ZM3.6808 2.10045C3.10268 2.10045 2.62946 1.62723 2.62946 1.04911C2.62946 0.470982 3.10268 0 3.6808 0C4.25893 0 4.73214 0.473214 4.73214 1.05134V2.10268H3.6808V2.10045ZM3.6808 2.62946C4.25893 2.62946 4.73214 3.10268 4.73214 3.6808C4.73214 4.25893 4.25893 4.73214 3.6808 4.73214H1.05134C0.473214 4.73214 0 4.25893 0 3.6808C0 3.10268 0.473214 2.62946 1.05134 2.62946H3.6808ZM7.89955 3.6808C7.89955 3.10268 8.37277 2.62946 8.95089 2.62946C9.52902 2.62946 10.0022 3.10268 10.0022 3.6808C10.0022 4.25893 9.52902 4.73214 8.95089 4.73214H7.89955V3.6808ZM7.37054 3.6808C7.37054 4.25893 6.89732 4.73214 6.3192 4.73214C5.74107 4.73214 5.26786 4.25893 5.26786 3.6808V1.05134C5.26786 0.473214 5.74107 0 6.3192 0C6.89732 0 7.37054 0.473214 7.37054 1.05134V3.6808ZM6.3192 7.89955C6.89732 7.89955 7.37054 8.37277 7.37054 8.95089C7.37054 9.52902 6.89732 10.0022 6.3192 10.0022C5.74107 10.0022 5.26786 9.52902 5.26786 8.95089V7.89955H6.3192ZM6.3192 7.37054C5.74107 7.37054 5.26786 6.89732 5.26786 6.3192C5.26786 5.74107 5.74107 5.26786 6.3192 5.26786H8.94866C9.52679 5.26786 10 5.74107 10 6.3192C10 6.89732 9.52679 7.37054 8.94866 7.37054H6.3192Z'
+        fill='#B60074'
+        fill-opacity='0.839216'
+      />
+    </svg>
+  );
+}
+
+function AIIcon() {
+  return (
+    <svg
+      width='10'
+      height='10'
+      viewBox='0 0 10 10'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        fill-rule='evenodd'
+        clip-rule='evenodd'
+        d='M2.6001 0.600098C1.49553 0.600098 0.600098 1.49553 0.600098 2.6001C0.600098 3.70467 1.49553 4.6001 2.6001 4.6001C3.70467 4.6001 4.6001 3.70467 4.6001 2.6001C4.6001 1.49553 3.70467 0.600098 2.6001 0.600098ZM1.4001 2.6001C1.4001 1.93735 1.93735 1.4001 2.6001 1.4001C3.26284 1.4001 3.8001 1.93735 3.8001 2.6001C3.8001 3.26284 3.26284 3.8001 2.6001 3.8001C1.93735 3.8001 1.4001 3.26284 1.4001 2.6001ZM7.4001 0.600098C6.29553 0.600098 5.4001 1.49553 5.4001 2.6001C5.4001 3.70467 6.29553 4.6001 7.4001 4.6001C8.50466 4.6001 9.4001 3.70467 9.4001 2.6001C9.4001 1.49553 8.50466 0.600098 7.4001 0.600098ZM6.2001 2.6001C6.2001 1.93735 6.73735 1.4001 7.4001 1.4001C8.06282 1.4001 8.6001 1.93735 8.6001 2.6001C8.6001 3.26284 8.06282 3.8001 7.4001 3.8001C6.73735 3.8001 6.2001 3.26284 6.2001 2.6001ZM0.600098 7.4001C0.600098 6.29553 1.49553 5.4001 2.6001 5.4001C3.70467 5.4001 4.6001 6.29553 4.6001 7.4001C4.6001 8.50466 3.70467 9.4001 2.6001 9.4001C1.49553 9.4001 0.600098 8.50466 0.600098 7.4001ZM2.6001 6.2001C1.93735 6.2001 1.4001 6.73735 1.4001 7.4001C1.4001 8.06282 1.93735 8.6001 2.6001 8.6001C3.26284 8.6001 3.8001 8.06282 3.8001 7.4001C3.8001 6.73735 3.26284 6.2001 2.6001 6.2001ZM7.4001 5.4001C6.29553 5.4001 5.4001 6.29553 5.4001 7.4001C5.4001 8.50466 6.29553 9.4001 7.4001 9.4001C8.50466 9.4001 9.4001 8.50466 9.4001 7.4001C9.4001 6.29553 8.50466 5.4001 7.4001 5.4001ZM6.2001 7.4001C6.2001 6.73735 6.73735 6.2001 7.4001 6.2001C8.06282 6.2001 8.6001 6.73735 8.6001 7.4001C8.6001 8.06282 8.06282 8.6001 7.4001 8.6001C6.73735 8.6001 6.2001 8.06282 6.2001 7.4001Z'
+        fill='#CC4E00'
+      />
+    </svg>
+  );
+}

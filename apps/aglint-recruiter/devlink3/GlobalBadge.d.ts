@@ -13,4 +13,5 @@ declare function GlobalBadge(props: {
   iconColor?: Types.Builtin.Text;
   iconName?: React.ReactNode;
   showText?: Types.Visibility.VisibilityConditions;
+  slotIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;
