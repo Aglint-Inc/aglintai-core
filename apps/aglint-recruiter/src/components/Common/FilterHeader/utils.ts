@@ -211,10 +211,10 @@ export function nestedObjectToArray(
     if (isArray) {
       temp_options = (optionList as any[]).map((item) => {
         let id = item as string;
-        let label = item as string;
+        // let label = item as string;
         if (typeof item !== 'string') {
           id = item.id;
-          label = item.label;
+          // label = item.label;
         }
         const status = (selectedOptions as string[]).includes(id)
           ? 'active'
