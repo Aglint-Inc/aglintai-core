@@ -12,13 +12,9 @@ function RequestProgress({
 }: {
   request_type: DatabaseTable['request']['type'];
 }) {
-  const { request_progress, request_workflow } = useRequest();
+  const { request_progress } = useRequest();
 
   let eventActions: TriggerActionsType = [];
-  // console.log(request_workflow.data);
-  // if (request_workflow.data) {
-  //   eventActions = request_workflow.data.map((r) => r.workflow);
-  // }
 
   return (
     <Stack gap={1}>

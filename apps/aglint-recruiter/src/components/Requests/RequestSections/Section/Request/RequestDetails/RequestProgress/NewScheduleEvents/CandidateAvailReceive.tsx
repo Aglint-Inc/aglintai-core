@@ -1,24 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import {
-  setApplicationIdForConfirmAvailability,
-  setCandidateAvailabilityId,
-} from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
-import { supabase } from '@/src/utils/supabase/client';
 
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
@@ -30,8 +18,6 @@ const CandidateAvailReceive = ({
 }: {
   eventTargetMap: EventTargetMapType;
 }) => {
-  const { query } = useRouter();
-  const requestId = query.id as string;
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress'];
   const {
@@ -80,20 +66,6 @@ const CandidateAvailReceive = ({
     lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
   }
   // eslint-disable-next-line no-unused-vars
-  const handleConfirmSlot = async () => {
-    try {
-      const [candReq] = supabaseWrap(
-        await supabase
-          .from('candidate_request_availability')
-          .select()
-          .eq('request_id', requestId),
-      );
-      setCandidateAvailabilityId(candReq.id);
-      setApplicationIdForConfirmAvailability(candReq.application_id);
-    } catch (err) {
-      //
-    }
-  };
 
   let isManual = true;
   if (
@@ -114,16 +86,23 @@ const CandidateAvailReceive = ({
       />
       <Stack ml={4}>
         <ShowCode.When isTrue={isManual}>
-          {availReceivedProgress.map((av) => {
-            return (
-              <>
-                <EventNode
-                  eventNode={av.event_type}
-                  reqProgressMap={reqProgresMp}
-                />
-              </>
-            );
-          })}
+          {availReceivedProgress
+            .filter((pg) => pg.is_progress_step === false)
+            .sort(
+              (p1, p2) =>
+                dayjsLocal(p1.created_at).unix() -
+                dayjsLocal(p2.created_at).unix(),
+            )
+            .map((av) => {
+              return (
+                <>
+                  <EventNode
+                    eventNode={av.event_type}
+                    reqProgressMap={reqProgresMp}
+                  />
+                </>
+              );
+            })}
         </ShowCode.When>
         <ShowCode.When
           isTrue={
@@ -138,30 +117,7 @@ const CandidateAvailReceive = ({
             direction={'row'}
             justifyContent={'flex-end'}
             gap={1}
-          >
-            <ButtonSoft
-              size={1}
-              color={'accent'}
-              textButton='Schedule Interview'
-              onClickButton={{
-                onClick: handleConfirmSlot,
-              }}
-            />
-            <ButtonSoft
-              size={1}
-              color='accent'
-              onClickButton={{
-                onClick: () => {
-                  setCandidateAvailabilityDrawerOpen(true);
-                  setReRequestAvailability(true);
-                  setCandidateAvailabilityIdForReRequest(
-                    '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-                  );
-                },
-              }}
-              textButton='Re Request Availability'
-            />
-          </Stack>
+          ></Stack>
         </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
           {Boolean(eventTargetMap['onReceivingAvailReq']) &&

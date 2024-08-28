@@ -1,5 +1,9 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { isArray } from 'lodash';
 
@@ -36,6 +40,14 @@ export const onUpdateCandidateRequestAvailability = async ({
         status: 'completed',
         is_progress_step: false,
       }),
+    );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'completed',
+        })
+        .eq('id', new_data.request_id),
     );
   }
 };
@@ -111,23 +123,25 @@ const updateRequestProgress = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
   try {
-    supabaseWrap(
-      await supabaseAdmin.from('request_progress').insert({
-        event_type: 'CAND_AVAIL_REC',
-        request_id: new_data.request_id,
-        status: 'completed',
-        is_progress_step: false,
-      }),
-    );
-    supabaseWrap(
-      await supabaseAdmin
-        .from('request')
-        .update({
-          status: 'completed',
-        })
-        .eq('id', new_data.request_id),
-    );
+    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: new_data.request_id,
+      supabaseAdmin,
+    });
+    await reqProgressLogger({
+      event_type: 'CAND_AVAIL_REC',
+      is_progress_step: false,
+      status: 'completed',
+    });
+    await reqProgressLogger({
+      event_type: 'CAND_AVAIL_REC',
+      is_progress_step: true,
+      status: 'completed',
+      meta: {
+        event_run_id: null,
+        candidate_submitted_slots: new_data.slots,
+      },
+    });
   } catch (err) {
-    //
+    console.error(err);
   }
 };

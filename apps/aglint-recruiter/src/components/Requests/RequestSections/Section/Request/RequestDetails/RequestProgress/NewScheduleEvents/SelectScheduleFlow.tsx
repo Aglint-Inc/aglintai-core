@@ -50,9 +50,7 @@ const SelectScheduleFlow = ({
         // color={getProgressColor(tense)}
       />
       <Stack ml={4} mt={1} rowGap={1.5}>
-        <ShowCode.When
-          isTrue={isManualSchedule && request_progress.data.length === 0}
-        >
+        <ShowCode.When isTrue={scheduleFlow === null}>
           <ScheduleFlows />
         </ShowCode.When>
 
@@ -207,7 +205,6 @@ const SelfScheduleFlowMenus = ({
     <>
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
-
           .filter((s) => s.is_progress_step === false)
           .sort(
             (p1, p2) =>

@@ -10,12 +10,6 @@ type WorkflowCopyType = {
   };
 };
 export const workflowCopy: WorkflowCopyType = {
-  CHOOSE_SCHEDULE_FLOW: {
-    present: '',
-    error: '',
-    past: '',
-    future: 'Select Schedule Flow',
-  },
   CANCEL_AVAIL_REQ: {
     past: 'The availability request was cancelled.',
     present: 'The availability request is being cancelled.',
