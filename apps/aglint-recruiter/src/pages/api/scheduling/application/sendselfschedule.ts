@@ -7,6 +7,7 @@ import {
   createRequestProgressLogger,
   executeWorkflowAction,
   getFullName,
+  ProgressLoggerType,
 } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -45,7 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const resSendToCandidate = await executeWorkflowAction(
       sendToCandidate,
-      bodyParams,
+      {
+        ...bodyParams,
+        reqProgressLogger,
+      },
       reqProgressLogger,
       {
         event_type: 'SELF_SCHEDULE_LINK',
@@ -71,7 +75,10 @@ const sendToCandidate = async ({
   allSessions,
   application_id,
   request_id,
-}: ApiBodyParamsSelfSchedule) => {
+  reqProgressLogger,
+}: ApiBodyParamsSelfSchedule & {
+  reqProgressLogger: ProgressLoggerType;
+}) => {
   let filter_id;
   const selectedSessionIds = allSessions.map((ses) => ses.interview_session.id);
 
@@ -132,6 +139,15 @@ const sendToCandidate = async ({
   selfScheduleMailToCandidate({
     filter_id: filterJson[0].id,
     organizer_id,
+  });
+  await reqProgressLogger({
+    status: 'completed',
+    is_progress_step: true,
+    event_type: 'SELF_SCHEDULE_LINK',
+    meta: {
+      event_run_id: null,
+      filter_json_id: filterJson[0].id,
+    },
   });
 
   const res: ApiResponseSelfSchedule = {

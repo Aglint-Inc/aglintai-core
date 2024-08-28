@@ -75,7 +75,6 @@ export const trigger = async ({
               event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
               status: 'completed',
               request_id: new_data.request_id,
-              created_at: dayjsLocal().add(3000, 'milliseconds').toISOString(), // NOTE: workaround
               meta: {
                 workflow_action_id: j_l_a.id,
                 event_run_id: run_id,

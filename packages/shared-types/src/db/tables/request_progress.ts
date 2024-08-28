@@ -16,6 +16,7 @@ export type CustomRequestProgress = TableType<
         end: string;
         user_tz: string;
       };
+      filter_json_id?: string;
     };
   }
 >;

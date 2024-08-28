@@ -1,5 +1,9 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
@@ -23,6 +27,12 @@ const eventTrigger = async ({
   new_data: DatabaseTable['interview_filter_json'];
 }) => {
   try {
+    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: new_data.request_id,
+      supabaseAdmin,
+      event_run_id: null,
+      target_api: null,
+    });
     supabaseWrap(
       await supabaseAdmin
         .from('request')
@@ -72,22 +82,23 @@ const eventTrigger = async ({
           }),
         );
         if (j_l_a.target_api === 'selfScheduleReminder_email_applicant') {
-          supabaseWrap(
-            await supabaseAdmin.from('request_progress').insert({
-              is_progress_step: false,
-              request_id: new_data.request_id,
-              event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
-              status: 'completed',
-              created_at: dayjsLocal().add(3000, 'millisecond').toISOString(),
-              meta: {
-                event_run_id,
-                workflow_action_id: j_l_a.id,
-                scheduled_time: dayjsLocal()
-                  .add(j_l_a.workflow.interval, 'minutes')
-                  .toISOString(),
-              },
-            }),
-          );
+          await reqProgressLogger({
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+            is_progress_step: false,
+            status: 'completed',
+          });
+          await reqProgressLogger({
+            event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+            is_progress_step: true,
+            status: 'completed',
+            meta: {
+              event_run_id,
+              workflow_action_id: j_l_a.id,
+              scheduled_time: dayjsLocal()
+                .add(j_l_a.workflow.interval, 'minutes')
+                .toISOString(),
+            },
+          });
         }
       });
 

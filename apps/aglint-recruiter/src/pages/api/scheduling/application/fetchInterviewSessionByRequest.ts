@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res,
     );
 
-    requestHandler(
+    return requestHandler(
       'POST',
       async ({ body }) => {
         const { request_id } = body;

@@ -157,15 +157,18 @@ const AvailabilityFlowMenus = ({
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg.map((prog) => {
-          return (
-            <EventNode
-              key={prog.id}
-              eventNode={prog.event_type}
-              reqProgressMap={scheduleReqProgressMap}
-            />
-          );
-        })}
+        {scheduleFlowProg
+
+          .filter((s) => s.is_progress_step === false)
+          .map((prog) => {
+            return (
+              <EventNode
+                key={prog.id}
+                eventNode={prog.event_type}
+                reqProgressMap={scheduleReqProgressMap}
+              />
+            );
+          })}
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
         {eventWActions
@@ -294,17 +297,19 @@ const SelfScheduleFlowMenus = ({
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg.map((prog) => {
-          return (
-            <>
-              <EventNode
-                key={prog.id}
-                eventNode={prog.event_type}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            </>
-          );
-        })}
+        {scheduleFlowProg
+          .filter((s) => s.is_progress_step === false)
+          .map((prog) => {
+            return (
+              <>
+                <EventNode
+                  key={prog.id}
+                  eventNode={prog.event_type}
+                  reqProgressMap={scheduleReqProgressMap}
+                />
+              </>
+            );
+          })}
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
         {eventWActions
