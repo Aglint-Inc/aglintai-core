@@ -1,26 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  DatabaseEnums,
-  DatabaseTable,
-  EmailTemplateAPi,
-} from '@aglint/shared-types';
-import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import axios from 'axios';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import ScheduleFlows from '../Actions/Schedule';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
@@ -100,10 +86,7 @@ const AvailabilityFlowMenus = ({
   isManualSchedule: boolean;
   scheduleReqProgressMap: RequestProgressMapType;
 }) => {
-  const { query } = useRouter();
-  const requestId = query.id as string;
   const { request_progress } = useRequest();
-  let lastEvent: DatabaseTable['request_progress'];
   let eventWActions: DatabaseEnums['email_slack_types'][] = [];
   if (eventTargetMap['onRequestSchedule']) {
     eventWActions = [
@@ -126,34 +109,6 @@ const AvailabilityFlowMenus = ({
     return progres;
   }, [request_progress.data]);
 
-  if (scheduleFlowProg.length > 0) {
-    lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
-  }
-
-  let isAvailabilityRecieved = false;
-  if (request_progress.data.find((p) => p.event_type === 'CAND_AVAIL_REC')) {
-    isAvailabilityRecieved = true;
-  }
-
-  const handleFollowup = async () => {
-    try {
-      const [cand_req] = supabaseWrap(
-        await supabase
-          .from('candidate_request_availability')
-          .select()
-          .eq('request_id', requestId),
-      );
-      const payload: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['api_payload'] =
-        {
-          avail_req_id: cand_req.id,
-        };
-      await axios.post('/api/emails/sendAvailReqReminder_email_applicant', {
-        ...payload,
-      });
-    } catch (err) {
-      toast.error('Some wrong happenned please try again');
-    }
-  };
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
@@ -210,56 +165,6 @@ const AvailabilityFlowMenus = ({
           />
         </ShowCode.When>
       </ShowCode.When>
-      <ShowCode.When
-        isTrue={
-          Boolean(
-            !isAvailabilityRecieved &&
-              lastEvent &&
-              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
-              !scheduleReqProgressMap[
-                'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-              ],
-          ) && !eventTargetMap['sendAvailReqReminder']
-        }
-      >
-        <Stack width={'100%'} direction={'row'} justifyContent={'end'}>
-          <ButtonSoft
-            size={1}
-            color={'accent'}
-            onClickButton={{
-              onClick: handleFollowup,
-            }}
-            textButton={'Resend Link'}
-          />
-        </Stack>
-      </ShowCode.When>
-      <ShowCode.When
-        isTrue={
-          !isAvailabilityRecieved &&
-          Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
-        }
-      >
-        <Stack width={'100%'} direction={'row'} justifyContent={'flex-end'}>
-          <ButtonSoft
-            size={1}
-            color='accent'
-            onClickButton={{
-              onClick: async () => {
-                const [cand_req] = supabaseWrap(
-                  await supabase
-                    .from('candidate_request_availability')
-                    .select()
-                    .eq('request_id', query.id),
-                );
-                setCandidateAvailabilityDrawerOpen(true);
-                setReRequestAvailability(true);
-                setCandidateAvailabilityIdForReRequest(cand_req.id);
-              },
-            }}
-            textButton='Re Request Availability'
-          />
-        </Stack>
-      </ShowCode.When>
     </>
   );
 };
@@ -294,7 +199,7 @@ const SelfScheduleFlowMenus = ({
   if (eventTargetMap['onRequestSchedule']) {
     eventWActions = [
       ...eventTargetMap['onRequestSchedule'],
-      ...eventTargetMap['selfScheduleReminder'],
+      ...(eventTargetMap['selfScheduleReminder'] ?? []),
     ];
   }
 
@@ -302,6 +207,7 @@ const SelfScheduleFlowMenus = ({
     <>
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
+
           .filter((s) => s.is_progress_step === false)
           .sort(
             (p1, p2) =>

@@ -9,22 +9,16 @@ import NewScheduleEvents from './NewScheduleEvents';
 import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
-  job_workflow,
 }: {
   request_type: DatabaseTable['request']['type'];
-  job_workflow: TriggerActionsType;
 }) {
   const { request_progress, request_workflow } = useRequest();
 
   let eventActions: TriggerActionsType = [];
-  if (request_workflow.data?.length > 0) {
-    eventActions = request_workflow.data.map((r) => r.workflow);
-  } else {
-    eventActions = [...job_workflow];
-  }
-
-  //
-  //
+  // console.log(request_workflow.data);
+  // if (request_workflow.data) {
+  //   eventActions = request_workflow.data.map((r) => r.workflow);
+  // }
 
   return (
     <Stack gap={1}>
