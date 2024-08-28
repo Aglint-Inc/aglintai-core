@@ -2,10 +2,10 @@ import type {
   CustomAgentInstructionPayload,
   Trigger_API_Action_Mapper,
 } from '@aglint/shared-types';
+import { ReactNode } from 'react';
 
 import type { Workflow } from '@/src/types/workflow.types';
 import { SafeObject } from '@/src/utils/safeObject';
-import { ReactNode } from 'react';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
@@ -446,6 +446,7 @@ type WorkflowTagOptionsType<
   T extends Workflow['tags'][number] = Workflow['tags'][number],
   // eslint-disable-next-line no-unused-vars
 > = {
+  // eslint-disable-next-line no-unused-vars
   [id in T]: string;
 };
 
@@ -500,6 +501,7 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
         }
         break;
     }
+    // eslint-disable-next-line security/detect-object-injection
     acc[key] = payload as any;
     return acc;
   },

@@ -11,6 +11,7 @@ import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { PropsWithChildren } from 'react';
+import WorkflowsProvider from './Workflows';
 
 export const PrivateProviders = ({
   children,
@@ -24,7 +25,9 @@ export const PrivateProviders = ({
             <BreadcrumProvider>
               <TourProvider>
                 <JobsProvider>
-                  <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                  <WorkflowsProvider>
+                    <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                  </WorkflowsProvider>
                 </JobsProvider>
               </TourProvider>
             </BreadcrumProvider>

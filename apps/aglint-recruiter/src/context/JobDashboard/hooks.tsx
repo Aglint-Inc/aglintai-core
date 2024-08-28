@@ -11,7 +11,6 @@ import {
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
-import { useJobWorkflow } from '@/src/queries/job-workflow';
 
 import { useJob } from '../JobContext';
 
@@ -51,7 +50,6 @@ const useProviderJobDashboardActions = () => {
   const locations = useJobLocations(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
   const schedules = useJobSchedules(job);
-  const workflows = useJobWorkflow({ id: job?.id });
 
   const isInterviewPlanDisabled =
     interviewPlans.status !== 'pending' &&
@@ -66,7 +64,6 @@ const useProviderJobDashboardActions = () => {
   const value = {
     job,
     jobLoad,
-    workflows,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
     schedules,
