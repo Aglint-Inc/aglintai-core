@@ -1,7 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Box, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Box,
+  Checkbox,
+  keyframes,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -32,18 +40,42 @@ import {
 } from './utils';
 
 const TimeLineCalendar = () => {
-  const dayCount = 10;
+  // const dayCount = 10;
+  const [dayCount, setDayCount] = useState(10);
+  const [allInter, setAllInter] = useState<initUser[]>([]);
 
-  const startDate = dayjsLocal().startOf('day').add(0, 'day');
+  const startDate = dayjsLocal()
+    .startOf('day')
+    .add(dayCount - 10, 'day');
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
   const { data: allInterviewers, isLoading } = useAvailabilty({
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });
 
+  useEffect(() => {
+    if (allInterviewers?.length && dayCount === 10)
+      setAllInter(allInterviewers);
+    else if (allInterviewers?.length && dayCount > 10) {
+      const oldInterviewerEvent = allInter.sort((a, b) =>
+        a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
+      );
+      const newInterviewerEvent = allInter.sort((a, b) =>
+        a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
+      );
+
+      const InterviewerAddedEvents = oldInterviewerEvent.map((ini, i) => ({
+        ...ini,
+        all_events: [...ini.all_events, ...newInterviewerEvent[i].all_events],
+      }));
+      setAllInter(InterviewerAddedEvents);
+    }
+  }, [allInterviewers]);
+
   const {
     jobs: { data: Jobs },
   } = useJobs();
+
   const { data: departments } = useAllDepartments();
   const { data: locations } = useAllOfficeLocations();
 
@@ -101,7 +133,7 @@ const TimeLineCalendar = () => {
     !!selectedInterviewTypes.length;
 
   const filteredInterviewers = isFilterApplied
-    ? allInterviewers.filter((interviewer) => {
+    ? allInter.filter((interviewer) => {
         const isInterviewType = selectedInterviewTypes?.length
           ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
           : true;
@@ -122,9 +154,9 @@ const TimeLineCalendar = () => {
 
         return isDepartment && isLocation && isJobs && isInterviewType;
       })
-    : allInterviewers;
+    : allInter;
 
-  if (isLoading)
+  if (isLoading && dayCount === 10)
     return (
       <Stack
         height={'100%'}
@@ -153,6 +185,7 @@ const TimeLineCalendar = () => {
           justifyContent={'space-between'}
         >
           <Stack direction={'row'} gap={1} alignItems={'center'}>
+            {isLoading && <p>loading </p>}
             <Filter
               itemList={JobsList?.length ? JobsList : []}
               title='Jobs'
@@ -207,6 +240,7 @@ const TimeLineCalendar = () => {
                       width: '8px',
                       height: '8px',
                       borderRadius: '8px',
+                      // eslint-disable-next-line security/detect-object-injection
                       bgcolor: color[name],
                     }}
                   ></Box>
@@ -220,6 +254,7 @@ const TimeLineCalendar = () => {
       <AvailabilityView
         allInterviewers={calconnectedInterviewers}
         dayCount={dayCount}
+        setDayCount={setDayCount}
       />
       <Typography fontWeight={500} pl={2} mt={3} mb={2}>
         Calendar Not Connect Interviewers
@@ -237,9 +272,11 @@ export default TimeLineCalendar;
 const AvailabilityView = ({
   allInterviewers,
   dayCount,
+  setDayCount,
 }: {
   allInterviewers: initUser[];
   dayCount: number;
+  setDayCount?: Dispatch<SetStateAction<number>>;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
 
@@ -249,6 +286,19 @@ const AvailabilityView = ({
     const ids = getLocalSortedInterviewerIds();
     setCheckedInterviewers(ids);
   }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+
+    if (scrollLeft + clientWidth >= scrollWidth - 100) {
+      // Close to the end of the scroll, load more items
+      setDayCount((prev) => prev + 10);
+      // console.log('hit ..');
+    }
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -274,6 +324,8 @@ const AvailabilityView = ({
 
       {/* Scrollable View for Time Blocks */}
       <Box
+        ref={containerRef}
+        onScroll={handleScroll}
         sx={{
           // position: 'relative',
           display: 'flex',
@@ -281,6 +333,7 @@ const AvailabilityView = ({
           overflowX: 'auto',
           gap: 2,
           marginRight: '20px',
+          // bgcolor: 'red',
         }}
       >
         {sortedInterviewers.map((interviewer, index) => {
@@ -419,6 +472,17 @@ const TimeLineList = ({
     timeToPx(breakEndHour, breakEndMinute) -
     timeToPx(breakStartHour, breakStartMinute);
 
+  const pulse = keyframes`
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #c0c0c0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+`;
   return (
     // whole box
     <Box
@@ -659,6 +723,28 @@ const TimeLineList = ({
           </Box>
         );
       })}
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          position: 'relative',
+        }}
+      >
+        <Stack>
+          <Skeleton
+            variant='rectangular'
+            width={192}
+            height={20}
+            sx={{
+              borderRadius: 10,
+              animation: `${pulse} 1.5s infinite`, // Adjust the speed here
+              backgroundColor: '#c0c0c0', // Change the color here
+            }}
+          />
+        </Stack>
+      </Box>
     </Box>
   );
 };
