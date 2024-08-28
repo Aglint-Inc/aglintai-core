@@ -442,7 +442,7 @@ const TimeLineList = ({
                 lineHeight: 0,
               }}
             >
-              {dayjsLocal().add(i, 'day').format('DD MMMM')}
+              {dayjsLocal().add(i, 'day').format('ddd DD MMM')}
             </Typography>
             <Box
               sx={{
@@ -458,9 +458,18 @@ const TimeLineList = ({
               {/* working hour */}
               <Tooltip
                 title={
-                  <Typography>
-                    {isHoliday ? 'Holiday ' : 'Working Hour'}
-                  </Typography>
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'Working Hour'}
+                    index={i}
+                    start_time={{
+                      hour: workingstartHour,
+                      min: workingstartMinute,
+                    }}
+                    end_time={{
+                      hour: workingendHour,
+                      min: workingendMinute,
+                    }}
+                  />
                 }
               >
                 <Box
@@ -479,9 +488,90 @@ const TimeLineList = ({
                   }}
                 />
               </Tooltip>
+              {/* Early morning */}
+              <Tooltip
+                title={
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'Early Morning'}
+                    index={i}
+                    start_time={{
+                      hour: 6,
+                      min: 0,
+                    }}
+                    end_time={{
+                      hour: workingstartHour,
+                      min: workingstartMinute,
+                    }}
+                  />
+                }
+              >
+                <Box
+                  sx={{
+                    width:
+                      timeToPx(workingstartHour, workingstartMinute) -
+                      timeToPx(6, 0),
+                    height: '20px',
+                    bgcolor: eventColor(
+                      isHoliday ? 'company_off' : 'early_morning',
+                    ),
+                    position: 'absolute',
+                    top: 0,
+                    left: timeToPx(6, 0),
+                    zIndex: 2,
+                  }}
+                />
+              </Tooltip>
+              {/* After working */}
+              <Tooltip
+                title={
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'After Working'}
+                    index={i}
+                    start_time={{
+                      hour: workingendHour,
+                      min: workingendMinute,
+                    }}
+                    end_time={{
+                      hour: 20,
+                      min: 0,
+                    }}
+                  />
+                }
+              >
+                <Box
+                  sx={{
+                    width:
+                      timeToPx(20, 0) -
+                      timeToPx(workingendHour, workingendMinute),
+                    height: '20px',
+                    bgcolor: eventColor(
+                      isHoliday ? 'company_off' : 'after_work',
+                    ),
+                    position: 'absolute',
+                    top: 0,
+                    left: timeToPx(workingendHour, workingendMinute),
+                    zIndex: 2,
+                  }}
+                />
+              </Tooltip>
               {/* Break time */}
               {breakWidth && !isHoliday ? (
-                <Tooltip title={<Typography>Break</Typography>}>
+                <Tooltip
+                  title={
+                    <TimeHoverCard
+                      title={isHoliday ? 'Holiday' : 'Break'}
+                      index={i}
+                      start_time={{
+                        hour: breakStartHour,
+                        min: breakStartMinute,
+                      }}
+                      end_time={{
+                        hour: breakEndHour,
+                        min: breakEndMinute,
+                      }}
+                    />
+                  }
+                >
                   <Box
                     sx={{
                       width: breakWidth,
@@ -490,7 +580,7 @@ const TimeLineList = ({
                       position: 'absolute',
                       top: 0,
                       left: timeToPx(breakStartHour, breakStartMinute),
-                      zIndex: 2,
+                      zIndex: 3,
                     }}
                   />
                 </Tooltip>
@@ -529,7 +619,7 @@ const TimeLineList = ({
                           position: 'absolute',
                           top: 0,
                           left: timeToPx(eventStartHour, eventStartMinute),
-                          zIndex: 3,
+                          zIndex: 4,
                         }}
                       />
                     </Tooltip>
@@ -558,6 +648,9 @@ const eventColor = (type) => {
 
   const bg = 'var(--neutral-3)';
 
+  const earlyMorning = '#efefa8'; //light yellow
+  const afterWork = '#dfcddf'; // light purple
+
   return type === 'cal_event'
     ? calendarEvent
     : type === 'soft'
@@ -576,7 +669,11 @@ const eventColor = (type) => {
                   ? bg
                   : type === 'company_off'
                     ? dayOff
-                    : 'red';
+                    : type === 'early_morning'
+                      ? earlyMorning
+                      : type === 'after_work'
+                        ? afterWork
+                        : 'red';
 };
 
 type eventsType =
@@ -649,6 +746,37 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
           />
         }
       />
+    </Stack>
+  );
+};
+
+const TimeHoverCard = ({
+  title,
+  index,
+  start_time,
+  end_time,
+}: {
+  title: string;
+  index: number;
+  start_time: { hour: number; min: number };
+  end_time: { hour: number; min: number };
+}) => {
+  return (
+    <Stack>
+      <Typography>{title}</Typography>
+      <Typography>
+        {dayjsLocal()
+          .add(index, 'day')
+          .hour(start_time.hour)
+          .minute(start_time.min)
+          .format('ddd DD MMM, YYYY hh:mm A')}{' '}
+        -
+        {dayjsLocal()
+          .add(index, 'day')
+          .hour(end_time.hour)
+          .minute(end_time.min)
+          .format(' hh:mm A')}
+      </Typography>
     </Stack>
   );
 };
