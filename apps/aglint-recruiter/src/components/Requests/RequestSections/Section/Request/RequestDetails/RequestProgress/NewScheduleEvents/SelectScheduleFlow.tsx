@@ -4,7 +4,7 @@ import {
   DatabaseTable,
   EmailTemplateAPi,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -159,6 +159,11 @@ const AvailabilityFlowMenus = ({
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
           .filter((s) => s.is_progress_step === false)
+          .sort(
+            (p1, p2) =>
+              dayjsLocal(p1.created_at).unix() -
+              dayjsLocal(p2.created_at).unix(),
+          )
           .map((prog) => {
             return (
               <EventNode
@@ -298,6 +303,11 @@ const SelfScheduleFlowMenus = ({
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
           .filter((s) => s.is_progress_step === false)
+          .sort(
+            (p1, p2) =>
+              dayjsLocal(p1.created_at).unix() -
+              dayjsLocal(p2.created_at).unix(),
+          )
           .map((prog) => {
             return (
               <>
