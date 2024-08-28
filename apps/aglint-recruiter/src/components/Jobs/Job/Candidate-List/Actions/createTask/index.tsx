@@ -1,5 +1,5 @@
 import { DB } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -36,12 +36,16 @@ function CreateTask({
   job_id,
   priority,
   setPriority,
+  note,
+  setNote,
 }: {
   setTask: Dispatch<SetStateAction<TaskType>>;
   applications: string[];
   job_id: string;
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
+  note: string;
+  setNote: Dispatch<SetStateAction<string>>;
 }) {
   const { members } = useAllMembers();
 
@@ -169,6 +173,20 @@ function CreateTask({
         textSelectedSchedule={`Selected Schedules`}
         slotPickDateInput={
           <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
+        }
+        slotNotes={
+          <TextField
+            value={note || ''}
+            onChange={(e) => {
+              setNote(e.target.value);
+            }}
+            placeholder='Add note'
+            multiline // Enables textarea behavior
+            minRows={2} // Minimum number of rows
+            maxRows={4} // Maximum number of rows
+            variant='outlined' // Uses the outlined variant
+            fullWidth // Takes full width of the container
+          />
         }
       />
     </>

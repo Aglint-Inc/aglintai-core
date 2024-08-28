@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -66,7 +66,7 @@ function RequestNotes() {
                       setTimeout(() => inputRef.current?.focus(), 300);
                     }}
                   >
-                    <textarea
+                    <TextField
                       value={note || ''}
                       onChange={async (e) => {
                         setNote(e.target.value);
@@ -76,24 +76,43 @@ function RequestNotes() {
                           requestNotes?.[0]?.id,
                         );
                       }}
-                      placeholder='Add a note and press `Enter` to save'
-                      style={{
-                        border: 'none',
-                        width: '100%',
-                        borderRadius: '0.2rem',
-                        outline: 'none',
-                        backgroundColor: 'transparent',
-                        whiteSpace: 'pre-wrap',
-                        wordWrap: 'break-word',
-                        wordBreak: 'break-all',
-                        resize: 'none',
+                      placeholder='Add note'
+                      multiline // Enables textarea behavior
+                      minRows={1} // Minimum number of rows
+                      maxRows={2} // Maximum number of rows
+                      variant='outlined' // Uses the outlined variant
+                      fullWidth // Takes full width of the container
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          padding: 0, // Remove padding
+                          borderRadius: '0.2rem', // Custom border-radius
+                          backgroundColor: 'transparent', // Transparent background
+                          '& fieldset': {
+                            border: 'none', // Remove the default border
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'transparent', // Ensure no border color change on hover
+                          },
+                          '&.Mui-focused': {
+                            boxShadow: 'none', // Remove the box shadow on focus
+                            '& fieldset': {
+                              borderColor: 'transparent', // Ensure no border color change on focus
+                            },
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          whiteSpace: 'pre-wrap',
+                          wordWrap: 'break-word',
+                          wordBreak: 'break-all',
+                          resize: 'none', // Disable resizing
+                          outline: 'none', // Disable outline
+                          padding: 0, // Remove padding
+                        },
                       }}
-                      rows={1}
-                      // multiple={true}
-                      ref={inputRef}
                       onBlur={() => {
                         setEditorEnabled(false);
                       }}
+                      inputRef={inputRef}
                     />
                   </Stack>
                 </ShowCode.When>
