@@ -68,8 +68,8 @@ const Cards = (props: {
         }
       }, true);
     })
-    .map(({ id, title, trigger, phase, jobs }) => {
-      const loading = !!mutations.find((mutation) => mutation.id === id);
+    .map(({ id, title, trigger, phase, jobs, tags }) => {
+      const loading = !!mutations.find((mutationId) => mutationId === id);
       const jobCount = (jobs ?? []).length;
       return (
         <OptimisticWrapper key={id} loading={loading}>
@@ -77,7 +77,16 @@ const Cards = (props: {
             key={id}
             border={'visible'}
             isCheckboxVisible={false}
-            textWorkflowName={capitalizeSentence(title ?? '---')}
+            textWorkflowName={
+              <Stack>
+                <>{capitalizeSentence(title ?? '---')}</>
+                {(tags ?? []).map((tag) => (
+                  <Stack key={tag} color={'red'}>
+                    {tag}
+                  </Stack>
+                ))}
+              </Stack>
+            }
             textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{

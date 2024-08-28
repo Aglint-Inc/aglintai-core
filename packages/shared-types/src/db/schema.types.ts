@@ -3401,6 +3401,41 @@ export type Database = {
           },
         ]
       }
+      request_note: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          pinned: boolean | null
+          request_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          pinned?: boolean | null
+          request_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          pinned?: boolean | null
+          request_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_note_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       request_progress: {
         Row: {
           created_at: string
@@ -5365,6 +5400,7 @@ export type Database = {
           jobs: Json | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
+          tags: string[] | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
           workflow_type: Database["public"]["Enums"]["workflow_type"] | null
