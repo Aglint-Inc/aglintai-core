@@ -26,3 +26,20 @@ export const apiTargetToEvents: Partial<
     'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
   ],
 };
+
+type GroupeTriggerEvent =
+  | 'beforeAvailabilityReceive'
+  | 'availReceived'
+  | 'onInterviewSchedules';
+
+export const groupedTriggerEventMap: Partial<
+  Record<GroupeTriggerEvent, DatabaseTable['request_progress']['event_type'][]>
+> = {
+  availReceived: [
+    'CANDIDATE_AVAILABILITY_RE_REQUESTED',
+    'CAND_AVAIL_REC',
+    'SELF_SCHEDULE_LINK',
+    'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+    'SELF_SCHEDULE_LINK',
+  ],
+};

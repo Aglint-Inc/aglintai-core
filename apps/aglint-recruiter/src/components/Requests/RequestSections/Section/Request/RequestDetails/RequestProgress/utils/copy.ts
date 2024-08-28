@@ -134,4 +134,11 @@ export const workflowCopy: WorkflowCopyType = {
     error:
       'An error occurred while scheduling the follow-up email for self-scheduling.',
   },
+  CANDIDATE_AVAILABILITY_RE_REQUESTED: {
+    past: "The candidate's availability has been re-requested.",
+    present: "Re-requesting the candidate's availability.",
+    future: "The candidate's availability will be re-requested.",
+    error:
+      "An error occurred while re-requesting the candidate's availability.",
+  },
 };

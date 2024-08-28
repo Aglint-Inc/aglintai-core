@@ -50,6 +50,14 @@ export const onUpdateCandidateRequestAvailability = async ({
         .eq('id', new_data.request_id),
     );
   }
+  if (
+    old_data.visited &&
+    !new_data.visited &&
+    old_data?.slots.length > 0 &&
+    new_data.slots === null
+  ) {
+    reRequestingAvailability(new_data);
+  }
 };
 
 const triggerActions = async (
@@ -143,5 +151,35 @@ const updateRequestProgress = async (
     });
   } catch (err) {
     console.error(err);
+  }
+};
+
+const reRequestingAvailability = async (
+  new_data: DatabaseTable['candidate_request_availability'],
+) => {
+  try {
+    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: new_data.request_id,
+      supabaseAdmin,
+    });
+    await reqProgressLogger({
+      event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
+      is_progress_step: false,
+      status: 'completed',
+    });
+    await reqProgressLogger({
+      event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
+      meta: {
+        re_requested_date: {
+          start_date: new_data.date_range[0],
+          end_date: new_data.date_range[1],
+        },
+        avail_req_id: new_data.id,
+      },
+      is_progress_step: true,
+      status: 'completed',
+    });
+  } catch (err) {
+    console.error(`reRequestingAvailability`, err);
   }
 };

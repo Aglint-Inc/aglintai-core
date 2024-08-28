@@ -26,6 +26,7 @@ const AvailabilityFlowMenus = ({
       ...eventTargetMap['sendAvailReqReminder'],
     ];
   }
+
   let scheduleFlowProg = useMemo(() => {
     let progres: DatabaseTable['request_progress'][] = [];
     if (request_progress.data.length === 0) {

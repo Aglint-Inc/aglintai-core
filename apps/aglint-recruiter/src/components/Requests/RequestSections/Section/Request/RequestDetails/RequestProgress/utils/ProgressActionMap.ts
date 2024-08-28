@@ -16,4 +16,5 @@ export const progressActionMap: Partial<
   SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK_completed: FirstFollowUp,
   SELF_SCHEDULE_LINK_completed: SelfScheduleLinkSent,
   REQ_CAND_AVAIL_EMAIL_LINK_completed: AvailabilityLinkSent,
+  CANDIDATE_AVAILABILITY_RE_REQUESTED_completed: AvailabilityLinkSent,
 };

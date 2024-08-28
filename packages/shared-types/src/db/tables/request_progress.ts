@@ -20,6 +20,10 @@ export type CustomRequestProgress = TableType<
       filter_json_id?: string;
       avail_req_id?: string;
       candidate_submitted_slots?: DatabaseTable['candidate_request_availability']['slots'];
+      re_requested_date?: {
+        start_date: string;
+        end_date: string;
+      };
     };
   }
 >;
