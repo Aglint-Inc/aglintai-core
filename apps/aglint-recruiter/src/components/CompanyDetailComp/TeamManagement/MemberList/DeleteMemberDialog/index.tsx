@@ -134,7 +134,7 @@ function DeleteMemberDialog({
             }
             textDescription={
               <Typography variant='body1'>
-                By clicking cancel invitation will be cancelled and removed from
+                By clicking cancel invitation will be canceled and removed from
                 the members list.
               </Typography>
             }
