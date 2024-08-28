@@ -1,7 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Box, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -21,11 +21,13 @@ import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
-import { groupByDate } from './utils';
-
-const timeToPx = (hours, minutes) => {
-  return hours * 60 * 0.133 + minutes * 0.133;
-};
+import { CalendarEventWithType } from '../types';
+import {
+  getLocalSortedInterviewerIds,
+  groupByDate,
+  setLocalSortedInterviewerIds,
+  timeToPx,
+} from './utils';
 
 const TimeLineCalendar = () => {
   const dayCount = 10;
@@ -199,6 +201,12 @@ const AvailabilityView = ({
   dayCount: number;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
+
+  useEffect(() => {
+    const ids = getLocalSortedInterviewerIds();
+    setCheckedInterviewers(ids);
+  }, []);
+
   const sortedData = allInterviewers.sort((a, b) => {
     const indexA = checkedInterviewers.indexOf(a.user_id);
     const indexB = checkedInterviewers.indexOf(b.user_id);
@@ -226,50 +234,13 @@ const AvailabilityView = ({
           gap: 2,
         }}
       >
-        {allInterviewers.map((interviewer) => (
-          <Box
-            key={getFullName(interviewer.first_name, interviewer.last_name)}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: 1,
-              gap: 1,
-            }}
-          >
-            <Stack
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 1,
-              }}
-              onClick={() => {
-                setCheckedInterviewers((pre) => {
-                  if (pre.includes(interviewer.user_id)) {
-                    return pre.filter((p) => p !== interviewer.user_id);
-                  } else {
-                    return [...pre, interviewer.user_id];
-                  }
-                });
-              }}
-            >
-              <Checkbox
-                checked={checkedInterviewers.includes(interviewer.user_id)}
-              />
-              <Typography variant='body1'>
-                {getFullName(interviewer.first_name, interviewer.last_name)}
-              </Typography>
-              <Typography variant='caption'>
-                (
-                {dayjsLocal()
-                  .tz(interviewer.scheduling_settings.timeZone.tzCode)
-                  .format('z')}
-                )
-              </Typography>
-            </Stack>
-            <StatusGlyph isConnected={interviewer.isCalenderConnected} />
-          </Box>
+        {sortedData.map((interviewer) => (
+          <MemberList
+            key={interviewer.user_id}
+            interviewer={interviewer}
+            checkedInterviewers={checkedInterviewers}
+            setCheckedInterviewers={setCheckedInterviewers}
+          />
         ))}
       </Box>
 
@@ -298,13 +269,13 @@ const AvailabilityView = ({
 
           const intervierEvents = interviewer.all_events.filter(
             (event) => event.start.dateTime,
-          );
+          ) as CalendarEventWithType;
 
           //filter only start time is present
 
           const interviewerWithFilteredEvent = {
             ...interviewer,
-            all_events: groupByDate(intervierEvents, dayCount),
+            all_events: groupByDate({ events: intervierEvents, dayCount }),
           } as initUserUIGroupedByDate;
 
           return (
@@ -316,6 +287,77 @@ const AvailabilityView = ({
           );
         })}
       </Box>
+    </Box>
+  );
+};
+
+const MemberList = ({
+  interviewer,
+  setCheckedInterviewers,
+  checkedInterviewers,
+}: {
+  interviewer: initUser;
+  setCheckedInterviewers: Dispatch<SetStateAction<string[]>>;
+  checkedInterviewers: string[];
+}) => {
+  const [isHover, setIsHover] = useState(false);
+
+  const isCheckBoxVisible =
+    checkedInterviewers.includes(interviewer.user_id) || isHover;
+
+  const checkHandle = () => {
+    const newIds = checkedInterviewers.includes(interviewer.user_id)
+      ? checkedInterviewers.filter((p) => p !== interviewer.user_id)
+      : [...checkedInterviewers, interviewer.user_id];
+
+    setCheckedInterviewers(newIds);
+    setLocalSortedInterviewerIds(newIds);
+  };
+  return (
+    <Box
+      key={getFullName(interviewer.first_name, interviewer.last_name)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 1,
+        gap: 1,
+      }}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+    >
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
+        }}
+        onClick={checkHandle}
+      >
+        <Stack width={20}>
+          {isCheckBoxVisible && (
+            <Checkbox
+              checked={checkedInterviewers.includes(interviewer.user_id)}
+            />
+          )}
+        </Stack>
+        <Typography variant='body1'>
+          {getFullName(interviewer.first_name, interviewer.last_name)}
+        </Typography>
+        <Typography variant='caption'>
+          (
+          {dayjsLocal()
+            .tz(interviewer.scheduling_settings.timeZone.tzCode)
+            .format('z')}
+          )
+        </Typography>
+      </Stack>
+      <StatusGlyph isConnected={interviewer.isCalenderConnected} />
     </Box>
   );
 };
@@ -607,31 +649,6 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
           />
         }
       />
-      {/* <Stack sx={{ padding: '0 16px 16px 16px' }} spacing={1}>
-        <Typography>
-          Candidate :{' '}
-          {getFullName(
-            data.applications.candidates.first_name,
-            data.applications.candidates.last_name,
-          )}
-        </Typography>
-        <ButtonSoft
-          color={'neutral'}
-          size={1}
-          textButton='View Details'
-          iconName='north_east'
-          iconSize={2}
-          isRightIcon
-          onClickButton={{
-            onClick: () =>
-              router.push(
-                `/scheduling/view?meeting_id=${
-                  data.meeting_interviewers[0].meeting_id
-                }&tab=candidate_details`,
-              ),
-          }}
-        />
-      </Stack> */}
     </Stack>
   );
 };
