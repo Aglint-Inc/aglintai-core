@@ -158,7 +158,6 @@ const AvailabilityFlowMenus = ({
     <>
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
-
           .filter((s) => s.is_progress_step === false)
           .map((prog) => {
             return (

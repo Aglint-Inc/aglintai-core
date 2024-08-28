@@ -1,12 +1,10 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { Text } from '@/devlink2/Text';
-import { useRequests } from '@/src/context/RequestsContext';
 
 const AvailabilityLinkSent = (
   progress_row: DatabaseTable['request_progress'],
