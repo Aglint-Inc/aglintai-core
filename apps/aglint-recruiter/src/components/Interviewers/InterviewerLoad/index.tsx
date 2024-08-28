@@ -1,5 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, Stack } from '@mui/material';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -11,6 +12,7 @@ import { allInterviewerType } from '@/src/pages/api/interviewers/getAllInterview
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
@@ -110,6 +112,14 @@ function InterviewerLoad() {
       </Stack>
     );
 
+  const sortedByCount = interviewers?.length
+    ? interviewers.sort((a, b) => {
+        const aa = a.completed_meetings || {};
+        const bb = b.completed_meetings || {};
+        return Object.values(bb).length - Object.values(aa).length;
+      })
+    : [];
+
   return (
     <>
       <InterviewerWorkload
@@ -172,8 +182,8 @@ function InterviewerLoad() {
           </Stack>
         }
         slotInterviewWorkloadList={
-          interviewers?.length ? (
-            interviewers.map((interviewer) => (
+          sortedByCount?.length ? (
+            sortedByCount.map((interviewer) => (
               <InterviewerCard
                 key={interviewer.user_id}
                 interviewer={interviewer}
@@ -222,24 +232,28 @@ const InterviewerCard = ({
   });
 
   return (
-    <InterviewWorkloadList
-      key={interviewer.user_id}
-      slotImage={
-        <Avatar
-          src={interviewer.profile_image}
-          variant='rounded'
-          alt={interviewer.first_name}
-          style={{
-            width: '32px',
-            height: '32px',
-          }}
-        />
-      }
-      slotWorkloadGraph={
-        <LineGraph lineData={resultArray} maxMeetingCount={maxMeetingCount} />
-      }
-      textRole={interviewer.position || '--'}
-      textName={getFullName(interviewer.first_name, interviewer.last_name)}
-    />
+    <Link
+      href={ROUTES['/user/profile/[user_id]']({ user_id: interviewer.user_id })}
+    >
+      <InterviewWorkloadList
+        key={interviewer.user_id}
+        slotImage={
+          <Avatar
+            src={interviewer.profile_image}
+            variant='rounded'
+            alt={interviewer.first_name}
+            style={{
+              width: '32px',
+              height: '32px',
+            }}
+          />
+        }
+        slotWorkloadGraph={
+          <LineGraph lineData={resultArray} maxMeetingCount={maxMeetingCount} />
+        }
+        textRole={interviewer.position || '--'}
+        textName={getFullName(interviewer.first_name, interviewer.last_name)}
+      />
+    </Link>
   );
 };
