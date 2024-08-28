@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { InterviewerListRd } from "./InterviewerListRd";
+import { NotesRequestDetail } from "./NotesRequestDetail";
 import { AiTaskBanner } from "./AiTaskBanner";
 import { RequestDetailRight } from "./RequestDetailRight";
 import * as _utils from "./utils";
@@ -15,6 +16,7 @@ export function RequestDetail({
   slotRequestDetailRight,
   slotBannerReq,
   isBannerVisible = false,
+  slotNotes,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "request-detail-wrap")} tag="div">
@@ -41,6 +43,9 @@ export function RequestDetail({
           >
             {slotInterview ?? <InterviewerListRd />}
           </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotNotes ?? <NotesRequestDetail />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "req-detail-left-card")}
