@@ -82,12 +82,12 @@ export const Request = (
                     <CustomTooltip
                       enterDelay={500}
                       arrow
-                      title={<Stack p={1}>Notes</Stack>}
+                      title={<Stack p={1}>{props?.request_note[0].note}</Stack>}
                     >
                       <Stack>
                         <GlobalBadge
                           showIcon={true}
-                          textBadge={props?.request_note.length}
+                          textBadge={''}
                           iconName={'note_stack'}
                         />
                       </Stack>

@@ -108,7 +108,11 @@ function RequestDetails({
           </Stack>
         </>
       }
-      isBodyVisible={true}
+      isBodyVisible={Boolean(
+        request.status === 'to_do' &&
+          request.type === 'schedule_request' &&
+          request.applications.public_jobs.workflow_job_relation.length > 0,
+      )}
       slotBody={
         <>
           <RequestProgress

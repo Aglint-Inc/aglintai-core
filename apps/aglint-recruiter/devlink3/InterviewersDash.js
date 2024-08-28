@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { DarkPill } from "./DarkPill";
+import { GlobalIcon } from "./GlobalIcon";
 import { SlotComp } from "./SlotComp";
 import * as _utils from "./utils";
 import _styles from "./InterviewersDash.module.css";
@@ -70,7 +71,12 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <Text weight="" size="1" color="neutral" content="Upcoming" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "info-global-icon")}
+              tag="div"
+            >
+              <GlobalIcon iconName="event_upcoming" />
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "sd_table_header_cell")}
@@ -80,7 +86,12 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <Text weight="" size="1" color="neutral" content="Completed" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "success-global-icon")}
+              tag="div"
+            >
+              <GlobalIcon iconName="event_available" />
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "sd_table_header_cell")}
@@ -90,7 +101,12 @@ export function InterviewersDash({
             )}
             tag="div"
           >
-            <Text weight="" size="1" color="neutral" content="Declined" />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "error-global-icon")}
+              tag="div"
+            >
+              <GlobalIcon iconName="event_busy" />
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

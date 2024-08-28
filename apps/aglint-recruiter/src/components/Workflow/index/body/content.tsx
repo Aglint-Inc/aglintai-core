@@ -12,11 +12,9 @@ import { Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
-import {
-  useWorkflowStore,
-  WorkflowStore,
-} from '../../../../context/Workflows/store';
+import { useWorkflowStore } from '../../../../context/Workflows/store';
 import { getTriggerOption, TAG_OPTIONS } from '../../constants';
+import { getFilteredWorkflows } from './filters';
 
 const Content = memo(() => {
   const {
@@ -50,27 +48,8 @@ const Cards = (props: {
     ({ filters, setDeletion }) => ({ filters, setDeletion }),
   );
   const { workflowMutations: mutations } = useWorkflows();
-  const cards = props.data
-    .filter(({ title, jobs }) => {
-      return Object.entries(filters).reduce((acc, [key, value]) => {
-        if (!acc) return acc;
-        switch (key as keyof WorkflowStore['filters']) {
-          case 'search':
-            return title
-              .toLowerCase()
-              .includes((value as string).toLowerCase());
-          case 'job':
-            return (
-              filters.job.length === 0 ||
-              !!jobs.reduce((acc, curr) => {
-                if ((value as string[]).includes(curr.id)) acc.push(curr);
-                return acc;
-              }, []).length
-            );
-        }
-      }, true);
-    })
-    .map(({ id, title, trigger, phase, jobs, tags }) => {
+  const cards = getFilteredWorkflows(filters, props.data).map(
+    ({ id, title, trigger, phase, jobs, tags }) => {
       const loading = !!mutations.find((mutationId) => mutationId === id);
       const jobCount = (jobs ?? []).length;
       return (
@@ -94,7 +73,8 @@ const Cards = (props: {
           />
         </OptimisticWrapper>
       );
-    });
+    },
+  );
   if (cards.length === 0) return <WorkflowEmpty />;
   return <>{cards}</>;
 };
