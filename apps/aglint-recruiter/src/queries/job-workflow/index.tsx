@@ -1,99 +1,47 @@
 import {
   useMutation,
   useMutationState,
-  useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Workflow } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { GC_TIME } from '..';
 import { JobRequisite } from '../job';
 import { workflowQueryKeys } from '../workflow/keys';
-import { jobWorkflowMutationKeys, jobWorkflowQueryKeys } from './keys';
+import { jobWorkflowMutationKeys } from './keys';
 
-export const useJobWorkflow = (args: JobRequisite) => {
-  const { id } = args;
-  const { queryKey } = jobWorkflowQueryKeys.workflow(args);
-  return useQuery({
-    queryKey,
-    enabled: !!id,
-    queryFn: () => getJobWorkflow(args),
-    gcTime: id ? GC_TIME : 0,
+export const useJobWorkflowMutations = ({ id }: JobRequisite) => {
+  const { mutationKey: updateKey } = jobWorkflowMutationKeys.update({
+    id,
   });
-};
-export type JobWorkflow = Awaited<ReturnType<typeof getJobWorkflow>>[number];
-const getJobWorkflow = async ({ id }: JobRequisite) => {
-  const { data, error } = await supabase
-    .from('workflow_job_relation')
-    .select('workflow(*)')
-    .eq('job_id', id);
-  if (error) throw new Error(error.message);
-  return (data ?? [])
-    .map(({ workflow }) => workflow)
-    .toSorted((a, b) =>
-      a?.title > b?.title ? 1 : b?.title > a?.title ? -1 : 0,
-    );
-};
-
-export const useJobWorkflowUpdateMutations = (args: JobRequisite) => {
-  const { mutationKey } = jobWorkflowMutationKeys.update(args);
-  return useMutationState({
-    filters: { mutationKey, status: 'pending' },
+  const { mutationKey: deleteKey } = jobWorkflowMutationKeys.delete({
+    id,
+  });
+  const update = useMutationState({
+    filters: { mutationKey: updateKey, status: 'pending' },
     select: (mutation) => mutation.state.variables as ConnectJobWorkflow,
   });
-};
-
-export const useJobWorkflowDeleteMutations = (args: JobRequisite) => {
-  const { mutationKey } = jobWorkflowMutationKeys.delete(args);
-  return useMutationState({
-    filters: { mutationKey, status: 'pending' },
+  const remove = useMutationState({
+    filters: { mutationKey: deleteKey, status: 'pending' },
     select: (mutation) => mutation.state.variables as DisconnectJobWorkflow,
   });
+  return { update, remove };
 };
 
-export const useJobWorkflowConnect = (args: JobRequisite) => {
-  const { recruiter_id } = useAuthDetails();
-  const { mutationKey } = jobWorkflowMutationKeys.update(args);
-  const { queryKey } = jobWorkflowQueryKeys.workflow(args);
-  const { queryKey: workflowQueryKey } = workflowQueryKeys.workflow({
-    recruiter_id,
+export const useJobWorkflowConnect = ({ id }: JobRequisite) => {
+  const { mutationKey } = jobWorkflowMutationKeys.update({
+    id,
   });
+  const { queryKey } = workflowQueryKeys.workflows();
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey,
     mutationFn: connectJobWorkflow,
-    onMutate: ({ workflow_ids }) => {
-      const previousJobWorkflows =
-        queryClient.getQueryData<JobWorkflow[]>(queryKey);
-
-      const workflows = queryClient
-        .getQueryData<Workflow[]>(workflowQueryKey)
-        .filter(({ id }) => workflow_ids.includes(id))
-        // eslint-disable-next-line no-unused-vars
-        .map(({ jobs, ...workflow }) => workflow);
-      const newJobWorkflows = structuredClone(previousJobWorkflows);
-      newJobWorkflows.push(...structuredClone(workflows));
-      queryClient.setQueryData<JobWorkflow[]>(queryKey, newJobWorkflows);
-    },
-    onError: (_error, variables) => {
-      toast.error('Unable to connect workflow');
-      const previousJobWorkflows =
-        queryClient.getQueryData<JobWorkflow[]>(queryKey);
-      const newJobWorkflows = structuredClone(previousJobWorkflows).reduce(
-        (acc, curr) => {
-          if (!variables.workflow_ids.includes(curr.id)) acc.push(curr);
-          return acc;
-        },
-        [] as JobWorkflow[],
-      );
-      queryClient.setQueryData<JobWorkflow[]>(queryKey, newJobWorkflows);
-    },
+    onError: () => toast.error('Unable to connect workflow'),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: workflowQueryKey });
+      await queryClient.refetchQueries({ queryKey });
+      toast.success('Workflow connected successfully');
     },
   });
 };
@@ -112,43 +60,19 @@ const connectJobWorkflow = async ({
   if (error) throw new Error(error.message);
 };
 
-export const useJobWorkflowDisconnect = (args: JobRequisite) => {
-  const { recruiter_id } = useAuthDetails();
-  const { mutationKey } = jobWorkflowMutationKeys.delete(args);
-  const { queryKey } = jobWorkflowQueryKeys.workflow(args);
-  const { queryKey: workflowQueryKey } = workflowQueryKeys.workflow({
-    recruiter_id,
+export const useJobWorkflowDisconnect = ({ id }: JobRequisite) => {
+  const { mutationKey } = jobWorkflowMutationKeys.delete({
+    id,
   });
+  const { queryKey } = workflowQueryKeys.workflows();
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey,
     mutationFn: disconnectJobWorkflow,
-    onSuccess: async (_data, variables) => {
-      const prevJobWorkflows =
-        queryClient.getQueryData<JobWorkflow[]>(queryKey);
-      if (prevJobWorkflows) {
-        const newJobWorkflows = prevJobWorkflows.reduce((acc, curr) => {
-          if (curr.id !== variables.workflow_id) acc.push(curr);
-          return acc;
-        }, [] as JobWorkflow[]);
-        queryClient.setQueryData<JobWorkflow[]>(queryKey, newJobWorkflows);
-      }
-      const prevWorkflows =
-        queryClient.getQueryData<Workflow[]>(workflowQueryKey);
-      if (prevWorkflows) {
-        const newWorkflows = prevWorkflows.reduce((acc, curr) => {
-          if (curr.id === variables.workflow_id)
-            acc.push({
-              ...curr,
-              jobs: (curr.jobs ?? []).filter(
-                ({ id }) => id !== variables.job_id,
-              ),
-            });
-          else acc.push(curr);
-          return acc;
-        }, [] as Workflow[]);
-        queryClient.setQueryData<Workflow[]>(workflowQueryKey, newWorkflows);
-      }
+    onError: () => toast.error('Unable to disconnect workflow'),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey });
+      toast.success('Workflow disconnected successfully');
     },
   });
 };

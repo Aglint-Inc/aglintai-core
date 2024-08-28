@@ -152,11 +152,13 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const redirect = window.location.href;
-    if (isRoutePublic(router.pathName)) return;
-    else if (!loading && !recruiterUser?.user_id)
-      router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-  }, [loading]);
+    if (router.isReady) {
+      const redirect = window.location.href;
+      if (isRoutePublic(router.pathName)) return;
+      else if (!loading && !recruiterUser?.user_id)
+        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+    }
+  }, [router.isReady, loading]);
 
   return (
     <AuthContext.Provider

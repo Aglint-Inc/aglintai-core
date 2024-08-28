@@ -1,7 +1,6 @@
 import React from 'react';
 
 import RealTimeCrons from '@/src/components/Workflow/RealTimeCrons';
-import WorkflowsProvider from '@/src/context/Workflows';
 import WorkflowProvider from '@/src/context/Workflows/[id]';
 
 const Page = () => {
@@ -15,9 +14,5 @@ const Page = () => {
 export default Page;
 
 Page.privateProvider = (page) => {
-  return (
-    <WorkflowsProvider>
-      <WorkflowProvider>{page}</WorkflowProvider>
-    </WorkflowsProvider>
-  );
+  return <WorkflowProvider>{page}</WorkflowProvider>;
 };

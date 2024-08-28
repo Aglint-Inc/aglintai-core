@@ -17,6 +17,7 @@ export function GlobalBadge({
   iconColor = "inherit",
   iconName = "shapes",
   showText = true,
+  slotIcon,
 }) {
   return (
     <_Component
@@ -28,12 +29,14 @@ export function GlobalBadge({
     >
       {showIcon ? (
         <_Builtin.Block className={_utils.cx(_styles, "iconstart")} tag="div">
-          <GlobalIcon
-            size={iconSize}
-            weight={iconWeight}
-            color={iconColor}
-            iconName={iconName}
-          />
+          {slotIcon ?? (
+            <GlobalIcon
+              size={iconSize}
+              weight={iconWeight}
+              color={iconColor}
+              iconName={iconName}
+            />
+          )}
         </_Builtin.Block>
       ) : null}
       {showText ? <_Builtin.Block tag="div">{textBadge}</_Builtin.Block> : null}

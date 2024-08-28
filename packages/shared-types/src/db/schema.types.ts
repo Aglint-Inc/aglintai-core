@@ -5372,9 +5372,10 @@ export type Database = {
           interval: number | null
           is_paused: boolean | null
           is_request_workflow: boolean | null
-          jobs: Json | null
+          jobs: Json[] | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
+          tags: string[] | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
           workflow_type: Database["public"]["Enums"]["workflow_type"] | null

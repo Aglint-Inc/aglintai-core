@@ -44,5 +44,6 @@ export function useRouterPro<T extends Record<string, string | number>>() {
     asPath,
     queryParams,
     setQueryParams,
+    isReady: Boolean(url),
   };
 }
