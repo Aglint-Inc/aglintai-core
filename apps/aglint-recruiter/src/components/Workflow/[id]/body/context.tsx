@@ -9,7 +9,7 @@ import { emailTemplateQueries } from '@/src/queries/email-templates';
 import type { WorkflowAction } from '@/src/types/workflow.types';
 import toast from '@/src/utils/toast';
 
-import { ACTION_TRIGGER_MAP, AI_RESPONSE_PLACEHOLDER } from './constants';
+import { ACTION_TRIGGER_MAP, AI_RESPONSE_PLACEHOLDER } from '../../constants';
 
 const useActionsContext = () => {
   const { recruiter } = useAuthDetails();

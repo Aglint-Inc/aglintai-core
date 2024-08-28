@@ -2,10 +2,9 @@
 import { Dialog, Stack } from '@mui/material';
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo } from 'react';
+import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { AssessmentError } from '@/devlink2/AssessmentError';
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
@@ -13,62 +12,107 @@ import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { getTriggerOption } from '@/src/components/Workflow/[id]/body/constants';
+import { getTriggerOption } from '@/src/components/Workflow/constants';
+import { WorkflowTags } from '@/src/components/Workflow/index/body/content';
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJob } from '@/src/context/JobContext';
 import {
   JobDashboardStore,
   useJobDashboardStore,
 } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
+import { useWorkflows } from '@/src/context/Workflows';
 import {
   useJobWorkflowConnect,
-  useJobWorkflowDeleteMutations,
   useJobWorkflowDisconnect,
-  useJobWorkflowUpdateMutations,
+  useJobWorkflowMutations,
 } from '@/src/queries/job-workflow';
 import { useWorkflowQuery } from '@/src/queries/workflow';
 import { Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
+const useJobWorkflowActions = () => {
+  const { job_id, devlinkProps } = useJob();
+  const {
+    workflows: { data, status },
+  } = useWorkflows();
+
+  const { update, remove } = useJobWorkflowMutations({ id: job_id });
+
+  const mutations = [
+    ...update.flatMap(({ workflow_ids }) => workflow_ids),
+    ...remove.map(({ workflow_id }) => workflow_id),
+  ];
+
+  const getLoadingState = (id: string) => {
+    return !!mutations.find((workflow_id) => workflow_id === id);
+  };
+
+  const workflows = (data ?? []).filter(
+    ({ jobs, id }) =>
+      getLoadingState(id) || !!jobs.find(({ id }) => id === job_id),
+  );
+
+  const { mutate: connect } = useJobWorkflowConnect({ id: job_id });
+  const { mutate: disconnect } = useJobWorkflowDisconnect({ id: job_id });
+
+  const handleConnect = (
+    workflow_ids: Parameters<typeof connect>[0]['workflow_ids'],
+  ) => connect({ job_id, workflow_ids });
+
+  const handleDisconnect = (
+    workflow_id: Parameters<typeof disconnect>[0]['workflow_id'],
+  ) => disconnect({ job_id, workflow_id });
+
+  return {
+    job_id,
+    devlinkProps,
+    workflows,
+    status,
+    getLoadingState,
+    handleConnect,
+    handleDisconnect,
+  };
+};
+
+const JobWorkflowContext =
+  createContext<ReturnType<typeof useJobWorkflowActions>>(undefined);
+
+const useJobWorkflows = () => useContext(JobWorkflowContext);
+
 const JobWorkflowComp = () => {
+  const value = useJobWorkflowActions();
   return (
-    <Stack>
-      <Stack gap={'1px'} bgcolor={'var(--neutral-6)'}>
-        <JobWorkflows />
+    <JobWorkflowContext.Provider value={value}>
+      <Stack>
+        <Stack gap={'1px'} bgcolor={'var(--neutral-6)'}>
+          <JobWorkflows />
+        </Stack>
+        <WorkflowBrowser />
       </Stack>
-      <WorkflowBrowser />
-    </Stack>
+    </JobWorkflowContext.Provider>
   );
 };
 
 export default JobWorkflowComp;
 
 const JobWorkflows = () => {
-  const {
-    job,
-    devlinkProps,
-    workflows: { data: jobWorkflows, status, refetch },
-  } = useJobDashboard();
+  const { devlinkProps, workflows, status, getLoadingState, handleDisconnect } =
+    useJobWorkflows();
   const { push } = useRouter();
-  const updateMutations = useJobWorkflowUpdateMutations({ id: job?.id });
-  const deleteMutations = useJobWorkflowDeleteMutations({ id: job?.id });
-  const { mutate } = useJobWorkflowDisconnect({ id: job?.id });
   if (status === 'pending')
     return (
       <>
         {[...Array(3)].map((e, i) => (
           <Stack bgcolor={'white'} key={i}>
-            <AssessmentListCardLoader  border={'none'} />
+            <AssessmentListCardLoader border={'none'} />
           </Stack>
         ))}
       </>
     );
-  else if (status === 'error')
-    return <AssessmentError onClickRetry={{ onClick: () => refetch() }} />;
-  if (jobWorkflows.length === 0)
+  else if (status === 'error') return <>Error</>;
+  if (workflows.length === 0)
     return (
       <GlobalEmptyState
         iconName={'lan'}
@@ -76,12 +120,8 @@ const JobWorkflows = () => {
         textDesc={'No workflows connected'}
       />
     );
-  const cards = jobWorkflows.map((workflow) => {
-    const loading =
-      !!updateMutations.find(({ workflow_ids }) =>
-        (workflow_ids ?? []).includes(workflow.id),
-      ) ||
-      !!deleteMutations.find(({ workflow_id }) => workflow_id === workflow.id);
+  const cards = workflows.map((workflow) => {
+    const loading = getLoadingState(workflow.id);
     return (
       <OptimisticWrapper key={workflow.id} loading={loading}>
         <WorkflowCard
@@ -89,11 +129,7 @@ const JobWorkflows = () => {
           showButtons={true}
           isCheckboxVisible={false}
           onClickDelete={{
-            onClick: () =>
-              mutate({
-                job_id: job?.id,
-                workflow_id: workflow.id,
-              }),
+            onClick: () => handleDisconnect(workflow.id),
             ...devlinkProps,
           }}
           isEditButton={false}
@@ -106,6 +142,8 @@ const JobWorkflows = () => {
             workflow.trigger,
             workflow.phase,
           )}
+          slotBadge={<WorkflowTags tags={workflow.tags} />}
+          smallCard={'true'}
         />
       </OptimisticWrapper>
     );
@@ -114,12 +152,8 @@ const JobWorkflows = () => {
 };
 
 const WorkflowBrowser = () => {
-  const { recruiter_id } = useAuthDetails();
-  const {
-    job,
-    workflows: { data: workflows },
-  } = useJobDashboard();
-  const { data, status } = useWorkflowQuery({ recruiter_id });
+  const { workflows, handleConnect } = useJobWorkflows();
+  const { data, status } = useWorkflowQuery();
   const {
     popup: { open },
     filters,
@@ -135,7 +169,6 @@ const WorkflowBrowser = () => {
       setSelections,
     }),
   );
-  const { mutate } = useJobWorkflowConnect({ id: job?.id });
   const workflowIds = (workflows ?? []).map(({ id }) => id);
 
   const handleClose = useCallback(() => {
@@ -215,7 +248,7 @@ const WorkflowBrowser = () => {
       toast.error('Please add one or more templates');
       return;
     }
-    mutate({ job_id: job?.id, workflow_ids: selections });
+    handleConnect(selections);
     handleClose();
   };
   return (

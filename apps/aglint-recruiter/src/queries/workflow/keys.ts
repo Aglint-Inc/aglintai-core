@@ -1,23 +1,18 @@
-import { appKey, argsToKeys } from '..';
-import { GetWorkflow } from '.';
+import { appKey } from '..';
 
 export const workflowQueryKeys = {
   all: { queryKey: [appKey, 'workflow'] as string[] },
-  workflow: (args: GetWorkflow) => ({
-    queryKey: [...workflowQueryKeys.all.queryKey, ...argsToKeys(args)],
+  workflows: () => ({
+    queryKey: [...workflowQueryKeys.all.queryKey],
   }),
-  workflow_job_filter: (args: GetWorkflow) => ({
-    queryKey: [
-      ...workflowQueryKeys.all.queryKey,
-      ...argsToKeys(args),
-      'workflow_job_filter',
-    ],
+  workflow_job_filter: () => ({
+    queryKey: [...workflowQueryKeys.all.queryKey, 'workflow_job_filter'],
   }),
 } as const;
 
 export const workflowMutationKeys = {
   all: { mutationKey: [appKey, 'workflow'] as string[] },
-  workflow: (args: GetWorkflow) => ({
-    mutationKey: [...workflowMutationKeys.all.mutationKey, ...argsToKeys(args)],
+  workflows: (type: 'CREATE' | 'UPDATE' | 'DELETE' | 'REFRESH') => ({
+    mutationKey: [...workflowMutationKeys.all.mutationKey, type],
   }),
 } as const;
