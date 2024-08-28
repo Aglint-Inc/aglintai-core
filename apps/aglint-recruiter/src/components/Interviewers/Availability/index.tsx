@@ -23,9 +23,11 @@ import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
 import { CalendarEventWithType } from '../types';
 import {
+  color,
   getLocalSortedInterviewerIds,
   groupByDate,
   setLocalSortedInterviewerIds,
+  sortedData,
   timeToPx,
 } from './utils';
 
@@ -135,56 +137,95 @@ const TimeLineCalendar = () => {
       </Stack>
     );
 
+  const calconnectedInterviewers = filteredInterviewers.filter(
+    (interviewer) => interviewer?.isCalenderConnected,
+  );
+  const NotCalconnectedInterviewers = filteredInterviewers.filter(
+    (interviewer) => !interviewer?.isCalenderConnected,
+  );
   return (
     <Stack>
       <Stack p={2}>
-        <Stack direction={'row'} gap={1} alignItems={'center'}>
-          <Filter
-            itemList={JobsList?.length ? JobsList : []}
-            title='Jobs'
-            setSelectedItems={setJobs}
-            selectedItems={selectedJobs}
-          />
-          <Filter
-            itemList={departmentList?.length ? departmentList : []}
-            title='Departments'
-            setSelectedItems={setDepartments}
-            selectedItems={selectedDepartments}
-          />
-          <Filter
-            itemList={locationList?.length ? locationList : []}
-            title='Locations'
-            setSelectedItems={setLocations}
-            selectedItems={selectedLocations}
-          />
-
-          <Filter
-            itemList={InterviewTypeOptions?.length ? InterviewTypeOptions : []}
-            title='Interview Types'
-            setSelectedItems={setInterviewTypes}
-            selectedItems={selectedInterviewTypes}
-          />
-
-          {isFilterApplied && (
-            <ButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'refresh'}
-              isLeftIcon
-              textButton={'Reset All'}
-              onClickButton={{
-                onClick: () => {
-                  setLocations([]);
-                  setDepartments([]);
-                  setJobs([]);
-                },
-              }}
+        <Stack
+          direction={'row'}
+          gap={1}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+        >
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
+            <Filter
+              itemList={JobsList?.length ? JobsList : []}
+              title='Jobs'
+              setSelectedItems={setJobs}
+              selectedItems={selectedJobs}
             />
-          )}
+            <Filter
+              itemList={departmentList?.length ? departmentList : []}
+              title='Departments'
+              setSelectedItems={setDepartments}
+              selectedItems={selectedDepartments}
+            />
+            <Filter
+              itemList={locationList?.length ? locationList : []}
+              title='Locations'
+              setSelectedItems={setLocations}
+              selectedItems={selectedLocations}
+            />
+
+            <Filter
+              itemList={
+                InterviewTypeOptions?.length ? InterviewTypeOptions : []
+              }
+              title='Interview Types'
+              setSelectedItems={setInterviewTypes}
+              selectedItems={selectedInterviewTypes}
+            />
+
+            {isFilterApplied && (
+              <ButtonSoft
+                size={1}
+                color={'neutral'}
+                iconName={'refresh'}
+                isLeftIcon
+                textButton={'Reset All'}
+                onClickButton={{
+                  onClick: () => {
+                    setLocations([]);
+                    setDepartments([]);
+                    setJobs([]);
+                  },
+                }}
+              />
+            )}
+          </Stack>
+          <Stack direction={'row'} gap={1}>
+            {Object.keys(color).map((name, i) => {
+              return (
+                <Stack key={i} direction={'row'} gap={1} alignItems={'center'}>
+                  <Box
+                    sx={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '8px',
+                      bgcolor: color[name],
+                    }}
+                  ></Box>
+                  <Typography>{capitalizeAll(name)}</Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
         </Stack>
       </Stack>
       <AvailabilityView
-        allInterviewers={filteredInterviewers}
+        allInterviewers={calconnectedInterviewers}
+        dayCount={dayCount}
+      />
+      <Typography fontWeight={500} pl={2} mt={3} mb={2}>
+        Calendar Not Connect Interviewers
+      </Typography>
+      <AvailabilityView
+        allInterviewers={NotCalconnectedInterviewers}
         dayCount={dayCount}
       />
     </Stack>
@@ -202,25 +243,12 @@ const AvailabilityView = ({
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
 
+  const sortedInterviewers = sortedData(allInterviewers);
+
   useEffect(() => {
     const ids = getLocalSortedInterviewerIds();
     setCheckedInterviewers(ids);
   }, []);
-
-  const sortedData = allInterviewers.sort((a, b) => {
-    const indexA = checkedInterviewers.indexOf(a.user_id);
-    const indexB = checkedInterviewers.indexOf(b.user_id);
-
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB;
-    } else if (indexA !== -1) {
-      return -1;
-    } else if (indexB !== -1) {
-      return 1;
-    } else {
-      return a.first_name.localeCompare(b.first_name);
-    }
-  });
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -234,7 +262,7 @@ const AvailabilityView = ({
           gap: 2,
         }}
       >
-        {sortedData.map((interviewer) => (
+        {sortedInterviewers.map((interviewer) => (
           <MemberList
             key={interviewer.user_id}
             interviewer={interviewer}
@@ -255,7 +283,7 @@ const AvailabilityView = ({
           marginRight: '20px',
         }}
       >
-        {sortedData.map((interviewer, index) => {
+        {sortedInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
             return <Box key={index} minHeight={'36px'}></Box>;
 
@@ -321,6 +349,7 @@ const MemberList = ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        minWidth: 290,
         padding: 1,
         gap: 1,
       }}
@@ -615,7 +644,7 @@ const TimeLineList = ({
                             timeToPx(eventEndHour, eventEndMinute) -
                             timeToPx(eventStartHour, eventStartMinute),
                           height: '20px',
-                          bgcolor: eventColor(event.type),
+                          bgcolor: eventColor(event.type as EventType),
                           position: 'absolute',
                           top: 0,
                           left: timeToPx(eventStartHour, eventStartMinute),
@@ -634,46 +663,49 @@ const TimeLineList = ({
   );
 };
 
-const eventColor = (type) => {
-  const calendarEvent = 'var(--error-9)';
+type EventType =
+  | 'cal_event'
+  | 'soft'
+  | 'break'
+  | 'free_time'
+  | 'ooo'
+  | 'recruiting_blocks'
+  | 'working_hour'
+  | 'bg'
+  | 'company_off'
+  | 'early_morning'
+  | 'after_work';
 
-  const soft = 'var(--warning-7)';
-  const freeTime = 'var(--success-7)';
-  const outStand = 'var(--info-7)';
-  const recruitingBlocks = 'var(--error-7)';
-
-  const workingHour = 'var(--success-6)';
-  const breakTime = 'var(--neutral-4)';
-  const dayOff = 'var(--neutral-5)';
-
+const eventColor = (type: EventType) => {
   const bg = 'var(--neutral-3)';
 
-  const earlyMorning = '#efefa8'; //light yellow
-  const afterWork = '#dfcddf'; // light purple
-
-  return type === 'cal_event'
-    ? calendarEvent
-    : type === 'soft'
-      ? soft
-      : type === 'break'
-        ? breakTime
-        : type === 'free_time'
-          ? freeTime
-          : type === 'ooo'
-            ? outStand
-            : type === 'recruiting_blocks'
-              ? recruitingBlocks
-              : type === 'working_hour'
-                ? workingHour
-                : type === 'bg'
-                  ? bg
-                  : type === 'company_off'
-                    ? dayOff
-                    : type === 'early_morning'
-                      ? earlyMorning
-                      : type === 'after_work'
-                        ? afterWork
-                        : 'red';
+  const colors = color;
+  switch (type) {
+    case 'cal_event':
+      return colors['calendar_event'];
+    case 'soft':
+      return colors['soft_conflict'];
+    case 'break':
+      return colors['break_time'];
+    case 'free_time':
+      return colors['free_time'];
+    case 'ooo':
+      return colors['out_standnig'];
+    case 'recruiting_blocks':
+      return colors['recruiting_block'];
+    case 'working_hour':
+      return colors['working_hour'];
+    case 'bg':
+      return bg;
+    case 'company_off':
+      return colors['company_off'];
+    case 'early_morning':
+      return colors['early_morning'];
+    case 'after_work':
+      return colors['after_work'];
+    default:
+      return 'red';
+  }
 };
 
 type eventsType =

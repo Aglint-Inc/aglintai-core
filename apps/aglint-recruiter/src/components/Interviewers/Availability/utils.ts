@@ -1,5 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
+import { initUser } from '@/src/pages/api/interviewers';
+
 import { CalendarEventWithType } from '../types';
 
 export const timeToPx = (hours, minutes) => {
@@ -53,4 +55,38 @@ export const getLocalSortedInterviewerIds = () => {
 
 export const setLocalSortedInterviewerIds = (ids: string[]) => {
   localStorage.setItem('availabilityInterviewerSortList', JSON.stringify(ids));
+};
+
+export const color = {
+  soft_conflict: 'var(--warning-7)',
+  out_standnig: 'var(--info-7)',
+  calendar_event: 'var(--error-9)',
+  recruiting_block: 'var(--error-7)',
+  free_time: 'var(--success-7)',
+
+  working_hour: 'var(--success-6)',
+  company_off: 'var(--neutral-5)',
+  break_time: 'var(--neutral-4)',
+
+  early_morning: '#efefa8',
+  after_work: '#dfcddf',
+};
+
+export const sortedData = (data: initUser[]) => {
+  const checkedInterviewers = getLocalSortedInterviewerIds();
+
+  return data.sort((a, b) => {
+    const indexA = checkedInterviewers.indexOf(a.user_id);
+    const indexB = checkedInterviewers.indexOf(b.user_id);
+
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    } else if (indexA !== -1) {
+      return -1;
+    } else if (indexB !== -1) {
+      return 1;
+    } else {
+      return a.first_name.localeCompare(b.first_name);
+    }
+  }) as initUser[];
 };
