@@ -60,6 +60,15 @@ const CandidateAvailReceive = ({
 
   return (
     <Stack rowGap={2}>
+      {availaRecivedProgEvents.length === 0 && (
+        <TextWithIcon
+          iconName='expand_circle_right'
+          textContent={`Candidate submits Availability`}
+          iconSize={4}
+          fontSize={1}
+          color={getProgressColor('future')}
+        />
+      )}
       {availaRecivedProgEvents.map((eventPgs) => {
         return (
           <RequestEvents

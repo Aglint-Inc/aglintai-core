@@ -50,7 +50,6 @@ const NewScheduleEvents = ({
       mp[row.event_type].push({ ...row });
     });
     return mp;
-    //
   }, [request_progress.data]);
 
   let scheduleFlow = getSchedulFlow({
