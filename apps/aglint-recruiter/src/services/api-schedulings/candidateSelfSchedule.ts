@@ -39,15 +39,6 @@ export const candidateSelfSchedule = async ({
       .select(),
   );
 
-  await reqProgressLogger({
-    event_type: 'SELF_SCHEDULE_LINK',
-    is_progress_step: false,
-    status: 'completed',
-    meta: {
-      event_run_id: null,
-      filter_json_id: filter_json.id,
-    },
-  });
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {

@@ -20,6 +20,7 @@ export const onUpdateRequest = async ({
 
 const triggerActions = async (new_data: DatabaseTable['request']) => {
   try {
+   
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')

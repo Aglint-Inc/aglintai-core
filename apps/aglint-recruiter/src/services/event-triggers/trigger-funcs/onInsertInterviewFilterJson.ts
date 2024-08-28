@@ -6,7 +6,6 @@ import {
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
@@ -41,9 +40,6 @@ const eventTrigger = async ({
         })
         .eq('id', new_data.request_id),
     );
-    await cloneWorkflows({
-      request_id: new_data.request_id,
-    });
 
     const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
       'selfScheduleReminder_email_applicant',
@@ -82,6 +78,7 @@ const eventTrigger = async ({
           }),
         );
         if (j_l_a.target_api === 'selfScheduleReminder_email_applicant') {
+          console.log(j_l_a.id);
           await reqProgressLogger({
             event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
             is_progress_step: false,

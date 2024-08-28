@@ -134,6 +134,9 @@ export const getCalEventType = (
   cal_event_summary: string,
   comp_schedule_setting: schedulingSettingType,
 ): CalConflictType => {
+  if (!cal_event_summary) {
+    return 'cal_event';
+  }
   const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
   const is_soft_conflict = scheduling_keywords.SoftConflicts.some((key_word) =>
     cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
