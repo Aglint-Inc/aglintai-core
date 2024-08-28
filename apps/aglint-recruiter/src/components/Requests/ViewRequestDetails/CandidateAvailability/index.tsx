@@ -17,7 +17,6 @@ import {
   slotsListOptions,
 } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import { Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import dayjs from '@/src/utils/dayjs';
@@ -49,7 +48,6 @@ function CandidateAvailability({
     candidateAvailabilityIdForReRequest,
   } = useCandidateAvailabilitySchedulingFlowStore();
   const { recruiter, recruiterUser } = useAuthDetails();
-  const { handleAsyncUpdateRequest } = useRequests();
   const selectedSessions = selectedRequest.request_relation;
 
   // states
@@ -109,16 +107,6 @@ function CandidateAvailability({
       setCandidateAvailabilityDrawerOpen(false);
       return;
     }
-    await handleAsyncUpdateRequest({
-      payload: {
-        requestId: String(selectedRequest?.id),
-        requestPayload: {
-          status: 'in_progress',
-        },
-      },
-      loading: false,
-      toast: false,
-    });
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
       meeting_flow: 'candidate_request',

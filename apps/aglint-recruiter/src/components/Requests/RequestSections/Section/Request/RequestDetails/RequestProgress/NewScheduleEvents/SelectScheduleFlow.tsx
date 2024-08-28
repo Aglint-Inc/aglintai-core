@@ -237,12 +237,16 @@ const AvailabilityFlowMenus = ({
             size={1}
             color='accent'
             onClickButton={{
-              onClick: () => {
+              onClick: async () => {
+                const [cand_req] = supabaseWrap(
+                  await supabase
+                    .from('candidate_request_availability')
+                    .select()
+                    .eq('request_id', query.id),
+                );
                 setCandidateAvailabilityDrawerOpen(true);
                 setReRequestAvailability(true);
-                setCandidateAvailabilityIdForReRequest(
-                  '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-                );
+                setCandidateAvailabilityIdForReRequest(cand_req.id);
               },
             }}
             textButton='Re Request Availability'

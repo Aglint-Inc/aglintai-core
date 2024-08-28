@@ -2,7 +2,6 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
@@ -21,9 +20,6 @@ export const onUpdateRequest = async ({
 
 const triggerActions = async (new_data: DatabaseTable['request']) => {
   try {
-    await cloneWorkflows({
-      request_id: new_data.id,
-    });
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')

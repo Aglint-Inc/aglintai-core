@@ -98,14 +98,6 @@ const sendToCandidate = async ({
     meeting_flow: 'self_scheduling',
   });
 
-  await supabaseAdmin
-    .from('request')
-    .update({
-      status: 'in_progress',
-    })
-    .eq('id', request_id)
-    .throwOnError();
-
   const { data: filterJson, error: errorFilterJson } = await supabaseAdmin
     .from('interview_filter_json')
     .insert({

@@ -2,6 +2,7 @@ import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
+import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
@@ -22,6 +23,17 @@ export const trigger = async ({
   new_data: DatabaseTable['candidate_request_availability'];
 }) => {
   try {
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'in_progress',
+        })
+        .eq('id', new_data.request_id),
+    );
+    await cloneWorkflows({
+      request_id: new_data.request_id,
+    });
     const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
       'sendAvailReqReminder_email_applicant',
     ];
