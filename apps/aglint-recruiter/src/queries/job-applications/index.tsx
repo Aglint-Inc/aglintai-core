@@ -181,9 +181,7 @@ const getApplications = async ({
           break;
       }
       acc[type].push(
-        curr
-          .filter(({ status }) => status === 'active')
-          .map(({ label }) => label),
+        curr.filter(({ status }) => status === 'active').map(({ id }) => id),
       );
       return acc;
     },
@@ -211,7 +209,7 @@ const getApplications = async ({
     query.or(
       stages[1]
         // eslint-disable-next-line no-useless-escape
-        .map(({ label }) => `session_names.cs.\{"${label}"\}`)
+        .map(({ id }) => `session_names.cs.\{"${id}"\}`)
         .join(', '),
     );
 
