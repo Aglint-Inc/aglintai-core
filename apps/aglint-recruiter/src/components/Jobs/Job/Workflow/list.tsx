@@ -14,13 +14,16 @@ import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { getTriggerOption } from '@/src/components/Workflow/constants';
 import { WorkflowTags } from '@/src/components/Workflow/index/body/content';
+import {
+  getFilteredWorkflows,
+  useWorkflowFilterOptions,
+} from '@/src/components/Workflow/index/body/filters';
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
 import { useJob } from '@/src/context/JobContext';
 import {
   JobDashboardStore,
   useJobDashboardStore,
 } from '@/src/context/JobDashboard/store';
-import { useJobs } from '@/src/context/JobsContext';
 import { useWorkflows } from '@/src/context/Workflows';
 import {
   useJobWorkflowConnect,
@@ -120,34 +123,39 @@ const JobWorkflows = () => {
         textDesc={'No workflows connected'}
       />
     );
-  const cards = workflows.map((workflow) => {
-    const loading = getLoadingState(workflow.id);
-    return (
-      <OptimisticWrapper key={workflow.id} loading={loading}>
-        <WorkflowCard
-          key={workflow.id}
-          showButtons={true}
-          isCheckboxVisible={false}
-          onClickDelete={{
-            onClick: () => handleDisconnect(workflow.id),
-            ...devlinkProps,
-          }}
-          isEditButton={false}
-          onClickEdit={{
-            onClick: () => push(ROUTES['/workflows/[id]']({ id: workflow.id })),
-          }}
-          textJobs={<></>}
-          textWorkflowName={<Stack maxWidth={'420px'}>{workflow.title}</Stack>}
-          textWorkflowTrigger={getTriggerOption(
-            workflow.trigger,
-            workflow.phase,
-          )}
-          slotBadge={<WorkflowTags tags={workflow.tags} />}
-          smallCard={'true'}
-        />
-      </OptimisticWrapper>
-    );
-  });
+  const cards = workflows
+    .toSorted((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+    .map((workflow) => {
+      const loading = getLoadingState(workflow.id);
+      return (
+        <OptimisticWrapper key={workflow.id} loading={loading}>
+          <WorkflowCard
+            key={workflow.id}
+            showButtons={true}
+            isCheckboxVisible={false}
+            onClickDelete={{
+              onClick: () => handleDisconnect(workflow.id),
+              ...devlinkProps,
+            }}
+            isEditButton={false}
+            onClickEdit={{
+              onClick: () =>
+                push(ROUTES['/workflows/[id]']({ id: workflow.id })),
+            }}
+            textJobs={<></>}
+            textWorkflowName={
+              <Stack maxWidth={'420px'}>{workflow.title}</Stack>
+            }
+            textWorkflowTrigger={getTriggerOption(
+              workflow.trigger,
+              workflow.phase,
+            )}
+            slotBadge={<WorkflowTags tags={workflow.tags} />}
+            smallCard={'true'}
+          />
+        </OptimisticWrapper>
+      );
+    });
   return <>{cards}</>;
 };
 
@@ -193,28 +201,11 @@ const WorkflowBrowser = () => {
     }
   };
 
-  const cards = data
-    .filter(({ id }) => !workflowIds.includes(id))
-    .filter(({ title, jobs }) => {
-      return Object.entries(filters).reduce((acc, [key, value]) => {
-        if (!acc) return acc;
-        switch (key as keyof JobDashboardStore['filters']) {
-          case 'search':
-            return title
-              .toLowerCase()
-              .includes((value as string).toLowerCase());
-          case 'job':
-            return (
-              filters.job.length === 0 ||
-              !!jobs.reduce((acc, curr) => {
-                if ((value as string[]).includes(curr.id)) acc.push(curr);
-                return acc;
-              }, []).length
-            );
-        }
-      }, true);
-    })
-    .map(({ id, title, trigger, phase, jobs }) => {
+  const filteredWorkflows = (data ?? []).filter(
+    ({ id }) => !workflowIds.includes(id),
+  );
+  const cards = getFilteredWorkflows(filters, filteredWorkflows).map(
+    ({ id, title, trigger, phase, jobs }) => {
       const checked = selections.includes(id);
       const jobCount = (jobs ?? []).length;
       return (
@@ -241,7 +232,8 @@ const WorkflowBrowser = () => {
           }}
         />
       );
-    });
+    },
+  );
 
   const handleSubmit = () => {
     if (selections.length === 0) {
@@ -311,7 +303,13 @@ const Filters = () => {
     filters,
     setFilters,
   }));
-  const options = useFilterOptions();
+  const { jobOptions, tagOptions } = useWorkflowFilterOptions();
+
+  const options = useMemo(
+    () => ({ job: jobOptions, tags: tagOptions }),
+    [jobOptions, tagOptions],
+  );
+
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
     () =>
       Object.entries(filters).map(([key, value]) => ({
@@ -352,19 +350,4 @@ const FilterIcon = ({ filter }: FilterIconProps) => {
     case 'job':
       return <JobIcon />;
   }
-};
-
-type FilterOptions = {
-  // eslint-disable-next-line no-unused-vars
-  [id in FilterIconProps['filter']]: { id: string; label: string }[];
-};
-const useFilterOptions = (): FilterOptions => {
-  const {
-    jobs: { data },
-  } = useJobs();
-  const job = (data ?? []).map((job) => ({
-    id: job.id,
-    label: job.job_title,
-  }));
-  return { job };
 };
