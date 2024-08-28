@@ -349,6 +349,7 @@ export * from "./TeamInvitesBlock";
 export * from "./TeamListItem";
 export * from "./TeamOptionList";
 export * from "./TeamPendingInvites";
+export * from "./TeamSync";
 export * from "./TeamUsersList";
 export * from "./TemplateAddSentence";
 export * from "./Text";

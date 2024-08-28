@@ -3,6 +3,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { SlotComp } from "./SlotComp";
+import { TeamSync } from "./TeamSync";
 import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./TeamUsersList.module.css";
@@ -18,6 +19,7 @@ export function TeamUsersList({
   textPending = "You currently have two pending invites awaiting your response.",
   slotSearchAndFilter,
   slotBanner,
+  slotFilterRight,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "manage-team-wrap")} tag="div">
@@ -58,7 +60,10 @@ export function TeamUsersList({
           className={_utils.cx(_styles, "team-slot-filter")}
           tag="div"
         >
-          {slotSearchAndFilter ?? <SlotComp componentName="slot for Filter" />}
+          <_Builtin.Block tag="div">{slotSearchAndFilter}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotFilterRight ?? <TeamSync />}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "team-table-wrap")}

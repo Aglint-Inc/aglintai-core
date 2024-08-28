@@ -28,6 +28,7 @@ import LocationIcon from './Icons/LocationIcon';
 import StatusIcon from './Icons/StatusIcon';
 import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
+import { TeamSync } from '@/devlink/TeamSync';
 
 type ItemType = string;
 
@@ -285,12 +286,16 @@ const TeamManagement = () => {
             </ShowCode.When>
           </>
         }
-        slotInviteBtn={
+        slotFilterRight={
           <>
             {canManage &&
               (remote_sync.isEnabled ? (
                 <Stack>
-                  <ButtonSolid
+                  <TeamSync
+                    textSync={last_sync}
+                    onClickSync={{ onClick: remote_sync.sync }}
+                  />
+                  {/* <ButtonGhost
                     isRightIcon={false}
                     isLeftIcon={true}
                     size={'2'}
@@ -300,15 +305,15 @@ const TeamManagement = () => {
                       onClick: remote_sync.sync,
                     }}
                   />
-                  <Typography>{`* ${last_sync}`}</Typography>
+                  <Typography>{`* ${last_sync}`}</Typography> */}
                 </Stack>
               ) : (
-                <ButtonSolid
+                <ButtonGhost
                   isRightIcon={false}
                   isLeftIcon={true}
-                  size={'1'}
-                  textButton={'Invite'}
-                  iconName={'send'}
+                  size={'2'}
+                  textButton={'Invite Member'}
+                  iconName={'person_add'}
                   onClickButton={{
                     onClick: () => {
                       setOpenDrawer({ open: true, window: 'addMember' });
@@ -318,6 +323,7 @@ const TeamManagement = () => {
               ))}
           </>
         }
+        slotInviteBtn={<></>}
         pendInvitesVisibility={Boolean(inviteUser)}
         textPending={`You currently have ${converter.toWords(
           pendingList?.length,
@@ -387,7 +393,7 @@ export const useTeamMembers = () => {
       query.refetch();
     }
   }, [allMembers.length, query.refetch]);
-
+  console.log(syncData);
   return {
     activeMembers,
     ...query,
