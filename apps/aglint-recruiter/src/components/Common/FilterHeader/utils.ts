@@ -1,6 +1,8 @@
 export type nestedType<T> = { [key: string]: nestedType<T> } | T;
 
-type nestedOptionMapperType = nestedType<string[]>;
+type nestedOptionMapperType = nestedType<
+  string[] | { id: string; label: string }[]
+>;
 
 /**
  * Maps the nested options to a flattened array of objects containing the header, path, and options.
@@ -10,9 +12,11 @@ type nestedOptionMapperType = nestedType<string[]>;
  * @param {nestedType<string[]>} selectedOptions - The selected options.
  * @return {Array<[string, {header: string; path: string[]; options: {id: string; status: 'active' | 'partial' | 'inactive'; label: string;}[];}, number]>} - The flattened array of objects containing the header, path, and options.
  */
-export function nestedOptionMapper(
+export function nestedOptionMapper<
+  T extends string[] | { id: string; label: string }[],
+>(
   headers: string[],
-  options: nestedOptionMapperType,
+  options: nestedType<T>,
   selectedOptions: nestedType<string[]>,
   showCount: boolean,
 ) {
@@ -40,7 +44,7 @@ export function nestedOptionMapper(
     index,
   }: {
     header?: string;
-    optionList: nestedOptionMapperType;
+    optionList: typeof options;
     selectedOptions: nestedType<string[]>;
     isArray?: boolean;
     path?: string[];
@@ -49,15 +53,26 @@ export function nestedOptionMapper(
     const tempItem = res[Number(index)]?.[1] || [];
     let temp_options: {
       status: 'active' | 'partial' | 'inactive';
+      id: string;
       label: string;
     }[] = [];
     if (isArray) {
-      temp_options = (optionList as string[]).map((item) => {
+      temp_options = (optionList as T).map((item) => {
+        let id = item as string;
+        let label = item as string;
+        if (typeof item !== 'string') {
+          id = item.id;
+          label = item.label;
+        }
+        const status: (typeof temp_options)[number]['status'] = (
+          selectedOptions as string[]
+        ).includes(id)
+          ? 'active'
+          : 'inactive';
         return {
-          status: (selectedOptions as string[]).includes(item)
-            ? 'active'
-            : 'inactive',
-          label: item,
+          status,
+          id,
+          label,
         };
       });
     } else {
@@ -78,13 +93,7 @@ export function nestedOptionMapper(
     const curr_op: (typeof res)[number][1][number] = {
       header,
       path,
-      options: temp_options.map(({ status, label: item }) => {
-        return {
-          id: item,
-          status: status,
-          label: item,
-        };
-      }),
+      options: temp_options,
     };
     tempItem.push(curr_op);
 
@@ -107,6 +116,7 @@ export function nestedOptionMapper(
     ];
     return {
       status,
+      id: showCount ? `${header} (${tempItem.length})` : header,
       label: showCount ? `${header} (${tempItem.length})` : header,
     };
   }
@@ -133,7 +143,13 @@ export function setValueInNestedObject(
   selectedObj: nestedType<string[]> | string[],
   keys: string[],
   val,
-  optionsObj: nestedType<string[]> | string[],
+  optionsObj: nestedType<
+    | string[]
+    | {
+        id: string;
+        label: string;
+      }[]
+  >,
   leaf?: boolean,
 ) {
   if (keys.length == 0)
@@ -147,7 +163,6 @@ export function setValueInNestedObject(
     const [currentKey, ...remainingKeys] = keys;
     const leaf =
       !remainingKeys.length && Array.isArray(optionsObj[String(currentKey)]);
-
     selectedObj[String(currentKey)] = setValueInNestedObject(
       selectedObj[String(currentKey)] || (leaf ? [] : {}),
       remainingKeys,
@@ -165,11 +180,11 @@ export function nestedObjectToArray(
 ) {
   if (!options) return [];
   const res: {
+    id_path: string;
     id: string;
     status: 'active' | 'partial' | 'inactive';
-    label: string;
+    // label: string;
   }[][] = [];
-
   function mapOption(
     {
       optionList,
@@ -189,16 +204,25 @@ export function nestedObjectToArray(
   ) {
     const tempItem = res[Number(index)] || [];
     let temp_options: {
+      id: string;
       status: 'active' | 'partial' | 'inactive';
-      label: string;
+      // label: string;
     }[] = [];
     if (isArray) {
-      temp_options = (optionList as string[]).map((item) => {
+      temp_options = (optionList as any[]).map((item) => {
+        let id = item as string;
+        // let label = item as string;
+        if (typeof item !== 'string') {
+          id = item.id;
+          // label = item.label;
+        }
+        const status = (selectedOptions as string[]).includes(id)
+          ? 'active'
+          : 'inactive';
         return {
-          status: (selectedOptions as string[]).includes(item)
-            ? 'active'
-            : 'inactive',
-          label: item,
+          id,
+          status,
+          // label,
         };
       });
     } else {
@@ -218,17 +242,16 @@ export function nestedObjectToArray(
         );
       });
     }
-
     tempItem.push(
-      ...temp_options.map(({ status, label: item }) => {
+      ...temp_options.map(({ id, status }) => {
         return {
-          id: [...pathArr, item].join('.'),
+          id_path: [...pathArr, id].join('.'),
+          id,
           status: status,
-          label: item,
+          // label,
         };
       }),
     );
-
     res[Number(index)] = tempItem;
     const status = temp_options
       .map((item) => item.status)
@@ -239,8 +262,9 @@ export function nestedObjectToArray(
         return acc;
       }, temp_options[0].status);
     return {
+      id: header,
       status: status || 'inactive',
-      label: header,
+      // label: header,
     };
   }
 
@@ -250,15 +274,15 @@ export function nestedObjectToArray(
     selectedOptions,
     isArray: false,
   });
-
   return res;
 }
 
 export function arrayToNestedObject(
   res: {
+    id_path: string;
     id: string;
     status: 'active' | 'partial' | 'inactive';
-    label: string;
+    // label: string;
   }[],
 ) {
   let obj: nestedType<string[]> = {};
@@ -276,7 +300,7 @@ export function arrayToNestedObject(
   }
   res.forEach((item) => {
     if (!item.id?.length) return;
-    obj = setVal(obj, item.id?.split('.'), item.label);
+    obj = setVal(obj, item.id_path?.split('.'), item.id);
   });
   return obj;
 }

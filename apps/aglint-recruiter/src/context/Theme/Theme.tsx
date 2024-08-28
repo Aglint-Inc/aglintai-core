@@ -3,16 +3,16 @@
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import * as radixColors from '@radix-ui/colors';
-import { useState } from 'react';
 
+// import { useState } from 'react';
 import CheckboxIcon from '@/src/components/Common/Icons/CheckboxIcon';
 import RadioButtonIcon from '@/src/components/Common/Icons/RadioButtonIcon';
 
-import AppContext from './context';
+// import AppContext from './context';
 import { ExtendedTypographyOptions } from './types';
 
 function Theme({ children }) {
-  const [color, setColor] = useState('#1976d2');
+  // const [color, setColor] = useState('#1976d2');
 
   const theme = createTheme({
     breakpoints: {
@@ -1037,11 +1037,7 @@ function Theme({ children }) {
     },
   });
 
-  return (
-    <AppContext.Provider value={{ color, setColor }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </AppContext.Provider>
-  );
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 export default Theme;
 

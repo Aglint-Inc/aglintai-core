@@ -1,11 +1,11 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import converter from 'number-to-words';
 import { useEffect, useState, useTransition } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { TeamSync } from '@/devlink/TeamSync';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { TeamEmpty } from '@/devlink3/TeamEmpty';
@@ -28,7 +28,6 @@ import LocationIcon from './Icons/LocationIcon';
 import StatusIcon from './Icons/StatusIcon';
 import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
-import { TeamSync } from '@/devlink/TeamSync';
 
 type ItemType = string;
 
@@ -393,7 +392,6 @@ export const useTeamMembers = () => {
       query.refetch();
     }
   }, [allMembers.length, query.refetch]);
-  console.log(syncData);
   return {
     activeMembers,
     ...query,
