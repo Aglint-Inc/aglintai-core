@@ -14,6 +14,8 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
+import { Text } from '@/devlink2';
 
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
@@ -77,6 +79,21 @@ export const Request = (
                       )}
                     </Stack>
                   </div>
+                  {props?.request_note.length > 0 && (
+                    <CustomTooltip
+                      enterDelay={500}
+                      arrow
+                      title={<Stack p={1}>Notes</Stack>}
+                    >
+                      <Stack>
+                        <GlobalBadge
+                          showIcon={true}
+                          textBadge={props?.request_note.length}
+                          iconName={'note_stack'}
+                        />
+                      </Stack>
+                    </CustomTooltip>
+                  )}
                   <GlobalBadge
                     size={1}
                     textBadge={capitalizeFirstLetter(props.status)}

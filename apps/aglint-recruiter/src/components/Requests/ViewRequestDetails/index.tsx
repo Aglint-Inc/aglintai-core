@@ -42,6 +42,7 @@ import StatusList from './Components/StatusList';
 import ConfirmAvailability from './ConfirmAvailability';
 import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityContext';
 import { useMeetingList } from './hooks';
+import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
 import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
@@ -233,6 +234,7 @@ function ViewRequestDetails() {
                   )}
                 </>
               }
+              slotNotes={<RequestNotes />}
               slotNewTask={
                 <>
                   <ShowCode>
