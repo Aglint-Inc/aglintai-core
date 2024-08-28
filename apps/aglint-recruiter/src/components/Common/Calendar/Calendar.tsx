@@ -9,7 +9,6 @@ import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -23,6 +22,7 @@ import { SchedulesSupabase } from '../../Scheduling/schedules-query';
 import CalendarHeader from './CalendarHeader';
 import { colorType, event, Modes, Types } from './calendarTypes';
 import CalendarFilter from './Filter';
+import { useRouter } from 'next/navigation';
 
 function CalendarComp({
   allSchedules,

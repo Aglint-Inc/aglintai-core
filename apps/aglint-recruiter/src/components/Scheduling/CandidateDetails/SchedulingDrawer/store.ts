@@ -13,7 +13,7 @@ export interface SchedulingFlow {
     start_date: string;
     end_date: string;
   };
-  schedulingOptions: ApiResponseFindAvailability;
+  schedulingOptions: ApiResponseFindAvailability['slots'];
   stepScheduling:
     | 'pick_date'
     | 'preference'
@@ -62,6 +62,7 @@ export interface SchedulingFlow {
   updateRequestAvailibityId: string | null;
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
+  availabilities: ApiResponseFindAvailability['availabilities'];
 }
 
 const initialState: SchedulingFlow = {
@@ -94,6 +95,7 @@ const initialState: SchedulingFlow = {
   updateRequestAvailibityId: null,
   noSlotReasons: [],
   errorNoSlotFilter: false,
+  availabilities: null,
 };
 
 export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
@@ -102,6 +104,10 @@ export const useSchedulingFlowStore = create<SchedulingFlow>()(() => ({
 
 export const setErrorNoSlotFilter = (errorNoSlotFilter: boolean) =>
   useSchedulingFlowStore.setState({ errorNoSlotFilter });
+
+export const setAvailabilities = (
+  availabilities: ApiResponseFindAvailability['availabilities'],
+) => useSchedulingFlowStore.setState({ availabilities });
 
 export const setNoSlotReasons = (
   noSlotReasons: SchedulingFlow['noSlotReasons'],
@@ -153,7 +159,7 @@ export const setNoOptions = (noOptions: boolean) =>
   useSchedulingFlowStore.setState({ noOptions });
 
 export const setSchedulingOptions = (
-  schedulingOptions: ApiResponseFindAvailability,
+  schedulingOptions: ApiResponseFindAvailability['slots'],
 ) => useSchedulingFlowStore.setState({ schedulingOptions });
 
 export const setFetchingPlan = (fetchingPlan: boolean) =>

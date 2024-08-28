@@ -49,6 +49,9 @@ export class CandidatesSchedulingV2 {
   public db_details: ScheduleApiDetails;
   private api_options: APIOptions;
   public intervs_details_map: IntervsWorkHrsEventMapType;
+  public calendar_events: Awaited<
+    ReturnType<typeof fetchIntsCalEventsDetails>
+  >['ints_events_map'];
 
   constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
     // scheduling_options_schema;
@@ -72,6 +75,14 @@ export class CandidatesSchedulingV2 {
     this.db_details = { ..._api_details };
   }
 
+  public setCalenderEvents(
+    _calender_events: Awaited<
+      ReturnType<typeof fetchIntsCalEventsDetails>
+    >['ints_events_map'],
+  ) {
+    this.calendar_events = { ..._calender_events };
+  }
+
   //NOTE: publicly exposed apis
   /**
    * find calender events for each interviewer
@@ -80,8 +91,10 @@ export class CandidatesSchedulingV2 {
     const db_details = await dbFetchScheduleApiDetails(params);
     const int_with_events = await fetchIntsCalEventsDetails(db_details);
 
+    this.setCalenderEvents(Object.assign({}, int_with_events.ints_events_map));
+
     const inter_details = calcEachIntsAPIDetails(
-      int_with_events,
+      int_with_events.ints_cal_details,
       this.api_options,
       db_details,
     );

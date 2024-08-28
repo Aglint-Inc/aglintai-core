@@ -20,6 +20,8 @@ export const fetchIntsCalEventsDetails = async (
       interviewer_id: i.user_id,
       isCalenderConnected: false,
       tokens: i.schedule_auth,
+      name: getFullName(i.first_name, i.last_name),
+      profile_image: i.profile_image,
     })),
     company_cred_hash_str: db_details.company_cred_hash_str,
     start_time: db_details.schedule_dates.user_start_date_js.format(),
@@ -73,14 +75,17 @@ export const fetchIntsCalEventsDetails = async (
     },
   );
 
-  return ints_cal_details;
+  return { ints_cal_details, ints_events_map };
 };
 
 type FetchCalEventsParams = {
-  inter_details: Pick<
+  inter_details: (Pick<
     InterDetailsType,
     'email' | 'tokens' | 'interviewer_id' | 'isCalenderConnected' | 'all_events'
-  >[];
+  > & {
+    name: string;
+    profile_image: string;
+  })[];
   company_cred_hash_str: string | null;
   start_time: string;
   end_time: string;
@@ -120,7 +125,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
       | 'interviewer_id'
       | 'isCalenderConnected'
       | 'all_events'
-    >
+    > & { name: string; profile_image: string }
   > = {};
   ints_events.forEach((i) => {
     ints_events_map[i.interviewer_id] = {

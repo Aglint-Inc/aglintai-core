@@ -13,6 +13,7 @@ import toast from '@/src/utils/toast';
 import { useMeetingList } from '../hooks';
 import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 import {
+  setAvailabilities,
   setErrorNoSlotFilter,
   setFetchingPlan,
   setFilteredSchedulingOptions,
@@ -73,14 +74,15 @@ export const useSelfSchedulingDrawer = ({
         rec_id: recruiter.id,
       });
       // if api return empty array if user select same date and break duration is more than 1 day
-      if (resOptions.length === 0) {
+      if (resOptions?.slots?.length === 0) {
         setNoOptions(true);
         return;
       }
-      setSchedulingOptions(resOptions); // this is global state which we dont alter in self scheduling flow
+      setAvailabilities(resOptions.availabilities);
+      setSchedulingOptions(resOptions.slots); // this is global state which we dont alter in self scheduling flow
 
       const filterSlots = filterSchedulingOptionsArray({
-        schedulingOptions: resOptions,
+        schedulingOptions: resOptions?.slots,
         filters: {
           isNoConflicts: true,
           isSoftConflicts: true,
@@ -209,18 +211,15 @@ export const useSelfSchedulingDrawer = ({
       );
 
       if (res.status === 200) {
-        const slots = res.data as ApiResponseFindAvailability;
-        if (slots.length === 0) {
-          return [];
-        }
-        return slots;
+        const resAvail = res.data as ApiResponseFindAvailability;
+        return resAvail;
       } else {
         toast.error('Error retrieving availability.');
-        return [];
+        return null;
       }
     } catch (error) {
       toast.error('Error retrieving availability.');
-      return [];
+      return null;
     } finally {
       setFetchingPlan(false);
     }

@@ -11,9 +11,6 @@ import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type'
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
-
-
-
 export const fetchUserLocation = async () => {
   try {
     const res = await fetch('https://ipinfo.io/json', {
@@ -32,7 +29,7 @@ export const fetchUserLocation = async () => {
 export const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [ROUTES['/login'](), ROUTES['/signup']()];
   for (const route of whiteListedRoutes) {
-    if (path.startsWith(route)) {
+    if (path?.startsWith(route)) {
       return true;
     }
   }

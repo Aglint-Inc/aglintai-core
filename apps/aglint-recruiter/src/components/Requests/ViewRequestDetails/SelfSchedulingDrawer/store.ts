@@ -13,7 +13,7 @@ export interface SelfSchedulingFlow {
     start_date: string;
     end_date: string;
   };
-  schedulingOptions: ApiResponseFindAvailability;
+  schedulingOptions: ApiResponseFindAvailability['slots'];
   stepScheduling:
     | 'pick_date'
     | 'preference'
@@ -48,6 +48,7 @@ export interface SelfSchedulingFlow {
   resSendToCandidate: ApiResponseSendToCandidate['data'];
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
+  availabilities: ApiResponseFindAvailability['availabilities'];
 }
 
 const initialState: SelfSchedulingFlow = {
@@ -76,6 +77,7 @@ const initialState: SelfSchedulingFlow = {
   resSendToCandidate: null, //used only in self scheduling flow last step copy link which contains ids
   noSlotReasons: [],
   errorNoSlotFilter: false,
+  availabilities: null,
 };
 
 export const useSelfSchedulingFlowStore = create<SelfSchedulingFlow>()(() => ({
@@ -84,6 +86,10 @@ export const useSelfSchedulingFlowStore = create<SelfSchedulingFlow>()(() => ({
 
 export const setEmailData = (emailData: SelfSchedulingFlow['emailData']) =>
   useSelfSchedulingFlowStore.setState({ emailData });
+
+export const setAvailabilities = (
+  availabilities: ApiResponseFindAvailability['availabilities'],
+) => useSelfSchedulingFlowStore.setState({ availabilities });
 
 export const setFilteredSchedulingOptions = (
   schedulingOptions: MultiDayPlanType[],
@@ -112,7 +118,7 @@ export const setNoOptions = (noOptions: boolean) =>
   useSelfSchedulingFlowStore.setState({ noOptions });
 
 export const setSchedulingOptions = (
-  schedulingOptions: ApiResponseFindAvailability,
+  schedulingOptions: ApiResponseFindAvailability['slots'],
 ) => useSelfSchedulingFlowStore.setState({ schedulingOptions });
 
 export const setFetchingPlan = (fetchingPlan: boolean) =>

@@ -45,7 +45,7 @@ const colors = [
   { bg: radixColors.yellow.yellow3, text: radixColors.yellow.yellow11 },
 ];
 
-const getStringColor = (index: number) => colors[index % colors.length];
+export const getStringColor = (index: number) => colors[index % colors.length];
 
 export default function MuiAvatar({
   level,
