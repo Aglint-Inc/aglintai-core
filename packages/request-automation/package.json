@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev": "npx webpack serve --port 3010"
+  },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
