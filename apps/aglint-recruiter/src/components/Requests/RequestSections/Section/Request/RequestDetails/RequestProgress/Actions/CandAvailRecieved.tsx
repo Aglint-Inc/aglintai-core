@@ -1,20 +1,8 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import {
-  setApplicationIdForConfirmAvailability,
-  setCandidateAvailabilityId,
-} from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
-import { supabase } from '@/src/utils/supabase/client';
-
+// eslint-disable-next-line no-unused-vars
 const CandAvailRecieved = (progress: DatabaseTable['request_progress']) => {
   return (
     <>

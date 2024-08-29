@@ -78,7 +78,6 @@ const eventTrigger = async ({
           }),
         );
         if (j_l_a.target_api === 'selfScheduleReminder_email_applicant') {
-          console.log(j_l_a.id);
           await reqProgressLogger({
             event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
             is_progress_step: false,

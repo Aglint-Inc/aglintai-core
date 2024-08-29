@@ -12,7 +12,6 @@ export const candidateSelfSchedule = async ({
   request_id,
   application_id,
   start_date_str,
-  reqProgressLogger,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;

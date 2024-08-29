@@ -1,7 +1,5 @@
 import { DatabaseTable } from '@aglint/shared-types';
 
-import { cloneWorkflows } from '@/src/utils/request/cloneWorkflows';
-
 export const onInsertRequest = async ({
   new_data,
 }: {
@@ -13,6 +11,7 @@ export const onInsertRequest = async ({
 };
 
 const createRequestWorkflows = async ({
+  // eslint-disable-next-line no-unused-vars
   new_data,
 }: {
   new_data: DatabaseTable['request'];
