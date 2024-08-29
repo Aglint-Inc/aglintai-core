@@ -11,4 +11,5 @@ declare function ScheduleInterviewPop(props: {
   slotPickDateInput?: Types.Devlink.Slot;
   isRequestTypeVisible?: Types.Visibility.VisibilityConditions;
   isCandidateVisible?: Types.Visibility.VisibilityConditions;
+  slotNotes?: Types.Devlink.Slot;
 }): React.JSX.Element;

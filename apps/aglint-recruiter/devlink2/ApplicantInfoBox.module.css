@@ -1,7 +1,6 @@
 .app-details-box-wrap {
   display: flex;
   max-width: 870px;
-  padding: 16px;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;

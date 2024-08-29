@@ -195,6 +195,7 @@ const MoveCandidateInterview = () => {
 
   const [task, setTask] = useState<TaskType>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
+  const [note, setNote] = useState<string>('');
   const buttonText = 'Request and Move';
   const { buttons, title, description } = useMeta(() => {
     handleMoveApplicationToInterview({
@@ -236,6 +237,8 @@ const MoveCandidateInterview = () => {
               job_id={job?.id}
               setPriority={setPriority}
               priority={priority}
+              note={note}
+              setNote={setNote}
             />
           </Stack>
         }

@@ -161,6 +161,7 @@ function CreateModuleDialog() {
               </Stack>
 
               <UITextField
+              minRows={1}
                 required
                 label='Objective'
                 multiline

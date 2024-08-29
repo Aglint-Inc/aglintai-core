@@ -114,7 +114,9 @@ function SettingsDialog({ editModule }: { editModule: ModuleType }) {
               />
             </Stack>
             <UITextField
+            height={32}
               label='Objective'
+              minRows={1}
               multiline
               placeholder='Add a brief description of the interview'
               fullWidth
