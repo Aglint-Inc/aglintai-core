@@ -2,10 +2,9 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -19,10 +18,14 @@ import {
 } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getProgressColor } from '../utils/getProgressColor';
-import { apiTargetToEvents } from '../utils/progressMaps';
+import {
+  apiTargetToEvents,
+  groupedTriggerEventMap,
+} from '../utils/progressMaps';
 import EventNode from './EventNode';
 
 const CandidateAvailReceive = ({
@@ -30,81 +33,143 @@ const CandidateAvailReceive = ({
 }: {
   eventTargetMap: EventTargetMapType;
 }) => {
-  const { query } = useRouter();
-  const requestId = query.id as string;
   const { request_progress } = useRequest();
-  let lastEvent: DatabaseTable['request_progress'];
-  const {
-    availRecivedProgress: availReceivedProgress,
-    reqProgresMp,
-    isSlotConfirmed,
-  } = useMemo(() => {
-    let progres: DatabaseTable['request_progress'][] = [];
-    let mp: RequestProgressMapType = {};
-    let isSlotConfirmed = false;
-
+  let lastEvent: DatabaseTable['request_progress']['event_type'];
+  let { availRecivedProgEvents, isScheduled } = useMemo(() => {
+    let isScheduled = false;
+    let availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
     if (request_progress.data.length === 0) {
-      return { availRecivedProgress: progres, reqProgresMp: mp };
+      return { availRecivedProgEvents, isScheduled };
     }
-    request_progress.data.forEach((prog) => {
-      if (prog.event_type === 'CAND_AVAIL_REC') {
-        progres.push({
-          ...prog,
-        });
-      } else if (
-        progres.length > 0 &&
-        prog.event_type !== 'CAND_CONFIRM_SLOT'
+    const filteredProg = request_progress.data.filter((prg) =>
+      groupedTriggerEventMap['availReceived'].includes(prg.event_type),
+    );
+    let idx = -1;
+    filteredProg.forEach((prg) => {
+      if (
+        prg.is_progress_step === false &&
+        prg.event_type === 'CAND_AVAIL_REC'
       ) {
-        progres.push({
-          ...prog,
+        availRecivedProgEvents.push([{ ...prg }]);
+        idx += 1;
+      } else if (idx !== -1 && availRecivedProgEvents[idx].length > 0) {
+        availRecivedProgEvents[idx].push({
+          ...prg,
         });
-      }
-      if (prog.event_type == 'CAND_CONFIRM_SLOT') {
-        isSlotConfirmed = true;
       }
     });
+    if (
+      request_progress.data.find(
+        (prg) => prg.event_type === 'CAND_CONFIRM_SLOT',
+      )
+    ) {
+      isScheduled = true;
+    }
+    return { availRecivedProgEvents, isScheduled };
+  }, [request_progress.data]);
+  if (request_progress.data.length > 0) {
+    lastEvent =
+      request_progress.data[request_progress.data.length - 1].event_type;
+  }
+  return (
+    <Stack rowGap={2}>
+      <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
+        <TextWithIcon
+          iconName='expand_circle_right'
+          textContent={`Candidate submits Availability`}
+          iconSize={4}
+          fontSize={1}
+          color={getProgressColor('future')}
+        />
+      </ShowCode.When>
+      {availRecivedProgEvents.map((eventPgs, idx) => {
+        return (
+          <RequestEvents
+            currProgress={eventPgs}
+            eventTargetMap={eventTargetMap}
+            key={idx}
+            isScheduled={isScheduled}
+          />
+        );
+      })}
+      <ShowCode.When
+        isTrue={lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED'}
+      >
+        <TextWithIcon
+          iconName='expand_circle_right'
+          textContent={`Candidate submits Availability`}
+          iconSize={4}
+          fontSize={1}
+          color={getProgressColor('future')}
+        />
+      </ShowCode.When>
+    </Stack>
+  );
+};
 
-    progres.forEach((row) => {
+export default CandidateAvailReceive;
+
+const RequestEvents = ({
+  currProgress,
+  eventTargetMap,
+  isScheduled,
+}: {
+  currProgress: DatabaseTable['request_progress'][];
+  eventTargetMap: EventTargetMapType;
+  isScheduled: boolean;
+}) => {
+  const { reqProgresMp } = useMemo(() => {
+    let mp: RequestProgressMapType = {};
+
+    currProgress.forEach((row) => {
       if (!mp[row.event_type]) {
         mp[row.event_type] = [];
       }
       mp[row.event_type].push({ ...row });
     });
     return {
-      availRecivedProgress: progres,
       reqProgresMp: mp,
-      isSlotConfirmed,
     };
-  }, [request_progress.data]);
-  if (availReceivedProgress.length > 0) {
-    lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
+  }, [currProgress]);
+
+  let lastEvent: DatabaseTable['request_progress'];
+
+  let isManual = true;
+  if (eventTargetMap['onReceivingAvailReq']) {
+    isManual = false;
   }
-  // eslint-disable-next-line no-unused-vars
-  const handleConfirmSlot = async () => {
+  if (currProgress.length > 0) {
+    lastEvent = currProgress[currProgress.length - 1];
+  }
+  const handleConfirmSlot = async (request_id: string) => {
     try {
       const [candReq] = supabaseWrap(
         await supabase
           .from('candidate_request_availability')
           .select()
-          .eq('request_id', requestId),
+          .eq('request_id', request_id),
       );
       setCandidateAvailabilityId(candReq.id);
       setApplicationIdForConfirmAvailability(candReq.application_id);
     } catch (err) {
-      //
+      toast.error('Some thing went wrong');
     }
   };
 
-  let isManual = true;
-  if (
-    eventTargetMap['onReceivingAvailReq'] &&
-    eventTargetMap['onReceivingAvailReq'].length > 0
-  ) {
-    isManual = false;
-  }
+  const handleReReq = async (request_id: string) => {
+    const [avail_req] = supabaseWrap(
+      await supabase
+        .from('candidate_request_availability')
+        .select()
+        .eq('request_id', request_id),
+    );
+    setCandidateAvailabilityDrawerOpen(true);
+    setReRequestAvailability(true);
+    setCandidateAvailabilityIdForReRequest(avail_req.id);
+  };
 
   return (
-    <Stack rowGap={1.5}>
+    <Stack>
       <TextWithIcon
         iconName='expand_circle_right'
         textContent={`Candidate submits Availability`}
@@ -114,73 +179,65 @@ const CandidateAvailReceive = ({
       />
       <Stack ml={4}>
         <ShowCode.When isTrue={isManual}>
-          {availReceivedProgress.map((av) => {
-            return (
-              <>
-                <EventNode
-                  eventNode={av.event_type}
-                  reqProgressMap={reqProgresMp}
-                />
-              </>
-            );
-          })}
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={
-            lastEvent &&
-            !isSlotConfirmed &&
-            lastEvent.event_type === 'CAND_AVAIL_REC' &&
-            Boolean(!eventTargetMap['onReceivingAvailReq'])
-          }
-        >
-          <Stack
-            width={'100%'}
-            direction={'row'}
-            justifyContent={'flex-end'}
-            gap={1}
-          >
-            <ButtonSoft
-              size={1}
-              color={'accent'}
-              textButton='Schedule Interview'
-              onClickButton={{
-                onClick: handleConfirmSlot,
-              }}
-            />
-            <ButtonSoft
-              size={1}
-              color='accent'
-              onClickButton={{
-                onClick: () => {
-                  setCandidateAvailabilityDrawerOpen(true);
-                  setReRequestAvailability(true);
-                  setCandidateAvailabilityIdForReRequest(
-                    '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-                  );
-                },
-              }}
-              textButton='Re Request Availability'
-            />
-          </Stack>
+          {currProgress
+            .filter((pg) => pg.is_progress_step === false)
+            .map((av) => {
+              return (
+                <>
+                  <EventNode
+                    eventNode={av.event_type}
+                    reqProgressMap={reqProgresMp}
+                  />
+                </>
+              );
+            })}
         </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
-          {Boolean(eventTargetMap['onReceivingAvailReq']) &&
-            eventTargetMap['onReceivingAvailReq']
-              .map((target_api) => {
-                return apiTargetToEvents[target_api];
-              })
-              .flat()
-              .map((ev) => {
-                return (
-                  <>
-                    <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
-                  </>
-                );
-              })}
+          <>
+            {eventTargetMap['onReceivingAvailReq'] &&
+              eventTargetMap['onReceivingAvailReq']
+                .map((target_api) => {
+                  return apiTargetToEvents[target_api];
+                })
+                .flat()
+                .map((ev) => {
+                  return (
+                    <>
+                      <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
+                    </>
+                  );
+                })}
+          </>
         </ShowCode.When>
       </Stack>
+      <ShowCode.When
+        isTrue={
+          !isScheduled && lastEvent && lastEvent.event_type === 'CAND_AVAIL_REC'
+        }
+      >
+        <Stack direction={'row'} gap={1}>
+          <ButtonSoft
+            size={1}
+            color={'accent'}
+            textButton='Schedule Interview'
+            onClickButton={{
+              onClick: () => {
+                handleConfirmSlot(lastEvent.request_id);
+              },
+            }}
+          />
+          <ButtonSoft
+            size={1}
+            color='accent'
+            onClickButton={{
+              onClick: () => {
+                handleReReq(lastEvent.request_id);
+              },
+            }}
+            textButton='Re Request Availability'
+          />
+        </Stack>
+      </ShowCode.When>
     </Stack>
   );
 };
-
-export default CandidateAvailReceive;

@@ -1,5 +1,9 @@
 import { EmailTemplateAPi, InterviewSessionTypeDB } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  ProgressLoggerType,
+  ScheduleUtils,
+} from '@aglint/shared-utils';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -17,7 +21,6 @@ import {
   slotsListOptions,
 } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useRequests } from '@/src/context/RequestsContext';
 import { Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import dayjs from '@/src/utils/dayjs';
@@ -49,7 +52,6 @@ function CandidateAvailability({
     candidateAvailabilityIdForReRequest,
   } = useCandidateAvailabilitySchedulingFlowStore();
   const { recruiter, recruiterUser } = useAuthDetails();
-  const { handleAsyncUpdateRequest } = useRequests();
   const selectedSessions = selectedRequest.request_relation;
 
   // states
@@ -109,16 +111,6 @@ function CandidateAvailability({
       setCandidateAvailabilityDrawerOpen(false);
       return;
     }
-    await handleAsyncUpdateRequest({
-      payload: {
-        requestId: String(selectedRequest?.id),
-        requestPayload: {
-          status: 'in_progress',
-        },
-      },
-      loading: false,
-      toast: false,
-    });
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
       meeting_flow: 'candidate_request',
@@ -157,22 +149,33 @@ function CandidateAvailability({
 
     // send request availability email to candidate
     try {
+      let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+        request_id: selectedRequest.id,
+        supabaseAdmin: supabase,
+      });
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
           organizer_user_id: recruiterUser.user_id,
           avail_req_id: result.id,
         };
+
       await axios.post(`/api/emails/sendAvailabilityRequest_email_applicant`, {
         ...payload,
       });
-      supabaseWrap(
-        await supabase.from('request_progress').insert({
-          request_id: selectedRequest.id,
-          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-          is_progress_step: false,
-          status: 'completed',
-        }),
-      );
+      await reqProgressLogger({
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        is_progress_step: false,
+        status: 'completed',
+      });
+      await reqProgressLogger({
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+        is_progress_step: true,
+        status: 'completed',
+        meta: {
+          event_run_id: null,
+          avail_req_id: result.id,
+        },
+      });
     } catch (error) {
       toast.message('Failed to send email');
     }

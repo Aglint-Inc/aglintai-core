@@ -51,18 +51,16 @@ const useActionsContext = () => {
             const emailTemplate = (all_company_email_template ?? []).find(
               ({ type }) => type === target_api,
             );
-            if (emailTemplate)
-              fn({
-                id,
-                action_type,
-                target_api,
-                order,
-                payload: {
-                  body: emailTemplate.body,
-                  subject: emailTemplate.subject,
-                },
-              });
-            else toast.error('Email template for this action is not available');
+            fn({
+              id,
+              action_type,
+              target_api,
+              order,
+              payload: {
+                body: emailTemplate?.body ?? '',
+                subject: emailTemplate?.subject ?? '',
+              },
+            });
           }
           break;
         case 'slack':
