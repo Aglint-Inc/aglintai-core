@@ -38,6 +38,13 @@ const SelectScheduleFlow = ({
     requestTargetMp: scheduleReqProgressMap,
   });
 
+  let isSelectScheduleFlowComplete = false;
+  if (
+    scheduleReqProgressMap['CAND_AVAIL_REC'] ||
+    scheduleReqProgressMap['CAND_CONFIRM_SLOT']
+  ) {
+    isSelectScheduleFlowComplete = true;
+  }
   return (
     <Stack>
       <TextWithIcon
@@ -45,7 +52,7 @@ const SelectScheduleFlow = ({
         textContent={`Candidate Schedule`}
         iconSize={4}
         fontSize={1}
-        // color={getProgressColor(tense)}
+        color={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
       />
       <Stack ml={4} mt={1} rowGap={1.5}>
         <ShowCode.When isTrue={scheduleFlow === null}>
