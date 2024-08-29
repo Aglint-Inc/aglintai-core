@@ -7,7 +7,7 @@ export const getSchedulFlow = ({
   eventTargetMap: EventTargetMapType;
   requestTargetMp: RequestProgressMapType;
 }) => {
-  let scheduleFlow: ScheduleFlow;
+  let scheduleFlow: ScheduleFlow = null;
   if (requestTargetMp['REQ_CAND_AVAIL_EMAIL_LINK']) {
     scheduleFlow = 'availability';
   } else if (requestTargetMp['SELF_SCHEDULE_LINK']) {

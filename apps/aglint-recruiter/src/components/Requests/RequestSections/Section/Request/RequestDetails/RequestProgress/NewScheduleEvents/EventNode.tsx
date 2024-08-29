@@ -34,6 +34,7 @@ const EventNode = ({
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
+
   return (
     <>
       <TextWithIcon
@@ -53,14 +54,14 @@ const EventNode = ({
       />
       {(eventSubProgress.length > 0 || CustomComp) && (
         <Stack ml={1}>
-          {CustomComp && <CustomComp {...(headingEvent ?? {})} />}
+          {/* {CustomComp && <CustomComp {...(headingEvent ?? {})} />} */}
           {eventProg
             .filter((prg) => prg.is_progress_step === true)
             .map((prg) => {
               if (progressActionMap[`${prg.event_type}_${prg.status}`]) {
                 let key = `${prg.event_type}_${prg.status}`;
                 let Comp = progressActionMap[key];
-                return <>{<Comp {...prg.meta} />}</>;
+                return <>{<Comp {...prg} />}</>;
               }
               return (
                 <>

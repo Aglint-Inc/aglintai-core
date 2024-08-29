@@ -10,12 +10,6 @@ type WorkflowCopyType = {
   };
 };
 export const workflowCopy: WorkflowCopyType = {
-  CHOOSE_SCHEDULE_FLOW: {
-    present: '',
-    error: '',
-    past: '',
-    future: 'Select Schedule Flow',
-  },
   CANCEL_AVAIL_REQ: {
     past: 'The availability request was cancelled.',
     present: 'The availability request is being cancelled.',
@@ -139,5 +133,12 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The follow-up email for self-scheduling will be scheduled.',
     error:
       'An error occurred while scheduling the follow-up email for self-scheduling.',
+  },
+  CANDIDATE_AVAILABILITY_RE_REQUESTED: {
+    past: "The candidate's availability has been re-requested.",
+    present: "Re-requesting the candidate's availability.",
+    future: "The candidate's availability will be re-requested.",
+    error:
+      "An error occurred while re-requesting the candidate's availability.",
   },
 };

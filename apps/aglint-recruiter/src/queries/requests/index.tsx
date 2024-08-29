@@ -26,6 +26,12 @@ import { Request, RequestProgress, RequestResponse } from './types';
 export const requestQueries = {
   requests_key: () => 'requests' as const,
   requests_queryKey: () => [appKey, requestQueries.requests_key()] as const,
+  request_workflow_key: () => 'request_workflow' as const,
+  requests_workflow_queryKey: () =>
+    [
+      ...requestQueries.requests_queryKey(),
+      requestQueries.request_workflow_key(),
+    ] as const,
   requests_mutationKey: (method: 'create' | 'update' | 'delete') =>
     [appKey, requestQueries.requests_key(), method] as const,
   requests: ({ filters, sort, payload }: GetRequestParams) =>
@@ -64,8 +70,9 @@ export const requestQueries = {
   requests_invalidate: () => ({
     predicate: ((query) =>
       query.queryKey.includes(requestQueries.requests_key()) &&
+      !query.queryKey.includes(requestQueries.request_progress_key()) &&
       !query.queryKey.includes(
-        requestQueries.request_progress_key(),
+        requestQueries.request_workflow_key(),
       )) as QueryFilters['predicate'],
     removeQueries: () =>
       ({

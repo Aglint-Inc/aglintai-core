@@ -10,11 +10,12 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
+const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
   const [isLoading, setLoading] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(
     rowData.meta.scheduled_time,
   );
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -80,4 +81,4 @@ const SelfScheduleFollowUp = (rowData: DatabaseTable['request_progress']) => {
   );
 };
 
-export default SelfScheduleFollowUp;
+export default FirstFollowUp;

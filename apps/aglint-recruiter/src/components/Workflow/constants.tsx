@@ -345,7 +345,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       name: 'Send Self-Scheduling Link to Candidate',
       value: {
         target_api: 'onRequestSchedule_emailLink_sendSelfSchedulingLink',
-        action_type: 'email',
+        action_type: 'agent_instruction',
       },
     },
     {
