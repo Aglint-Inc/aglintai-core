@@ -1,9 +1,8 @@
+import { WorkflowStore } from '@/src/context/Workflows/store';
+
 import { CreateSlice } from '.';
 
-type Filters = {
-  search: string;
-  job: string[];
-};
+type Filters = WorkflowStore['filters'];
 
 export type FiltersSlice = {
   filters: Filters;
@@ -15,6 +14,7 @@ export type FiltersSlice = {
 const initialFilters: Filters = {
   search: '',
   job: [],
+  tags: [],
 };
 
 export const createFiltersSlice: CreateSlice<FiltersSlice> = (set) => ({

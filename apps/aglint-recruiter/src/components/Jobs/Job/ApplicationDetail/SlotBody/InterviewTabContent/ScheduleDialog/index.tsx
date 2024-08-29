@@ -1,10 +1,10 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { Dialog, Stack } from '@mui/material';
+import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -34,6 +34,7 @@ function DialogSchedule() {
   const { recruiterUser } = useAuthDetails();
 
   const [selectedInterviewer, setSelectedInterviewer] = React.useState('');
+  const [note, setNote] = useState('');
   const [requestType, setRequestType] =
     React.useState<DatabaseTable['request']['priority']>('standard');
   const [dateRange, setDateRange] = React.useState({
@@ -99,7 +100,9 @@ function DialogSchedule() {
       dateRange,
       selectedSessionIds,
       sessionNames: sessions.map((session) => session.interview_session.name),
+      note,
     });
+
     setIsSaving(false);
     setSelectedSessionIds([]);
     setIsScheduleOpen(false);
@@ -174,6 +177,20 @@ function DialogSchedule() {
                     );
                   })}
                 </>
+              }
+              slotNotes={
+                <TextField
+                  value={note || ''}
+                  onChange={(e) => {
+                    setNote(e.target.value);
+                  }}
+                  placeholder='Add note'
+                  multiline // Enables textarea behavior
+                  minRows={2} // Minimum number of rows
+                  maxRows={4} // Maximum number of rows
+                  variant='outlined' // Uses the outlined variant
+                  fullWidth // Takes full width of the container
+                />
               }
               slotAssignedInput={
                 <>

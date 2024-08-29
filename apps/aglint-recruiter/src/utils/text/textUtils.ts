@@ -80,6 +80,7 @@ export const getRandomColor = (): string => {
 export const capitalizeFirstLetter = (text: string) => {
   if (!text) return '';
 
+  if (typeof text !== 'string') return text;
   return text
     .replaceAll('_', ' ')
     .split(' ')

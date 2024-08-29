@@ -50,7 +50,7 @@ type FilterMultiSectionFilterType = {
 type FilterNestedType = {
   name: string;
   icon?: ReactNode;
-  options: nestedType<string[]>;
+  options: nestedType<string[] | { id: string; label: string }[]>;
   value: nestedType<string[]>;
   sectionHeaders: string[];
   setValue: (value: nestedType<string[]>) => void;
@@ -609,10 +609,6 @@ function NestedFilterComponent({
                       selectedItems={[]}
                       searchFilter={searchEnabled}
                       setSelectedItems={(val, path) => {
-                        // console.log(
-                        //   structuredClone(selectedItems),
-                        //   'selectedItems',
-                        // );
                         const temp = setValueInNestedObject(
                           structuredClone(selectedItems),
                           path,
@@ -702,10 +698,12 @@ function FilterOptionsList({
           return {
             header,
             path: path || [],
-            options: options.map((item) => ({
-              ...item,
-              label: capitalizeFirstLetter(item.label),
-            })),
+            options: options.map((item) => {
+              return {
+                ...item,
+                label: capitalizeFirstLetter(item.label || ''),
+              };
+            }),
           };
         })
     : [];

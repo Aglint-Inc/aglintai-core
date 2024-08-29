@@ -5,6 +5,7 @@ import { type PropsWithChildren, useState } from 'react';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -77,6 +78,24 @@ export const Request = (
                       )}
                     </Stack>
                   </div>
+                  {props?.request_note[0]?.note && (
+                    <CustomTooltip
+                      enterDelay={500}
+                      arrow
+                      placement='bottom-start'
+                      title={
+                        <Stack p={0.5}>{props?.request_note[0].note}</Stack>
+                      }
+                    >
+                      <Stack>
+                        <GlobalBadge
+                          showIcon={true}
+                          textBadge={''}
+                          iconName={'note_stack'}
+                        />
+                      </Stack>
+                    </CustomTooltip>
+                  )}
                   <GlobalBadge
                     size={1}
                     textBadge={capitalizeFirstLetter(props.status)}

@@ -42,7 +42,7 @@ export const cancelInterviewSlot = (
             .sucessessfull_cancel,
           {}
         );
-        return 'cancelled interview sucessfully';
+        return 'canceled interview sucessfully';
       } catch (error: any) {
         candLogger(
           agent_activities.email_agent.tools['cancel-interiew-slot']

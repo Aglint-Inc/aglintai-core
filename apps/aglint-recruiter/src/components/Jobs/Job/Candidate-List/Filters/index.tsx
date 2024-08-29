@@ -57,7 +57,10 @@ const Filters = () => {
     () =>
       (interviewPlans ?? []).reduce((acc, { name, interview_session }) => {
         if ((interview_session ?? []).length)
-          acc[name] = (interview_session ?? []).map(({ name }) => name);
+          acc[name] = (interview_session ?? []).map(({ name: label, id }) => ({
+            id,
+            label,
+          }));
         return acc;
       }, {}),
     [interviewPlans, capitalize],
@@ -115,6 +118,7 @@ const Filters = () => {
       });
     },
   };
+
   const InterviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Interview Plan',

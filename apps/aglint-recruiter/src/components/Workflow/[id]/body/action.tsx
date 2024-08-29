@@ -7,7 +7,8 @@ import { Stack } from '@mui/material';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
-import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
+import { WorkflowAddAction } from '@/devlink3/WorkflowAddAction';
+import { WorkflowButton } from '@/devlink3/WorkflowButton';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import Loader from '@/src/components/Common/Loader';
@@ -24,10 +25,7 @@ const Actions = () => {
   const {
     actions: { data, status },
     actionMutations: mutations,
-    manageWorkflow,
-    devlinkProps,
   } = useWorkflow();
-  const { createAction, canCreateAction } = useActions();
 
   if (status === 'error') return <>Error</>;
   if (status === 'pending') return <Loader />;
@@ -43,22 +41,34 @@ const Actions = () => {
   return (
     <>
       {actions}
-      {canCreateAction && manageWorkflow && (
-        <>
-          <WorkflowConnector />
-          <WorkflowAdd
-            onClickAdd={{
-              onClick: () => createAction(),
-              ...devlinkProps,
-            }}
-          />
-        </>
-      )}
+      <ActionRecommendations />
     </>
   );
 };
 
 export default Actions;
+
+const ActionRecommendations = memo(() => {
+  const { manageWorkflow, devlinkProps } = useWorkflow();
+  const { createAction, canCreateAction, globalOptions } = useActions();
+  if (!(canCreateAction && manageWorkflow)) return <></>;
+  const options = globalOptions.map((option) => {
+    return (
+      <WorkflowButton
+        key={option.value.target_api}
+        textButton={option.name}
+        onClickButton={{ onClick: () => createAction(option), ...devlinkProps }}
+      />
+    );
+  });
+  return (
+    <>
+      <WorkflowConnector />
+      <WorkflowAddAction slotWorkflowButton={options} />
+    </>
+  );
+});
+ActionRecommendations.displayName = 'ActionRecommendations';
 
 type ActionProps = {
   action: ReturnType<typeof useWorkflow>['actions']['data'][number];

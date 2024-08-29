@@ -2,14 +2,17 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
+import { upsertRequestNotes } from '@/src/components/Requests/ViewRequestDetails/RequestNotes/utils';
 import { APICreateScheduleRequest } from '@/src/pages/api/request/schedule-request';
 import {
   applicationQuery,
   useUpdateApplication,
 } from '@/src/queries/application';
 import { diffApplication } from '@/src/queries/job-applications';
+import dayjs from '@/src/utils/dayjs';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -142,6 +145,7 @@ export const useApplicationContext = (
     dateRange,
     selectedSessionIds,
     sessionNames,
+    note,
   }: {
     sel_user_id: string;
     assigned_user_id: string;
@@ -149,6 +153,7 @@ export const useApplicationContext = (
     dateRange: { start: string; end: string };
     selectedSessionIds: string[];
     sessionNames: string[];
+    note: string;
   }) => {
     try {
       if (!sel_user_id) return;
@@ -170,8 +175,28 @@ export const useApplicationContext = (
         '/api/request/schedule-request',
         creatReqPayload,
       );
+      const request_id = res.data;
 
-      if (res.status === 201 || res.status === 200) {
+      if (note && (res.status === 201 || res.status === 200)) {
+        await upsertRequestNotes({
+          id: uuidv4(),
+          request_id,
+          note,
+          updated_at: dayjs().toISOString(),
+        });
+        router.push(
+          ROUTES['/requests/[id]']({
+            id: res.data,
+          }),
+        );
+        queryClient.invalidateQueries({
+          queryKey: applicationQuery.requests({
+            application_id: props.application_id,
+            job_id: props.job_id,
+            enabled: true,
+          }).queryKey,
+        });
+      } else if (res.status === 201 || res.status === 200) {
         router.push(
           ROUTES['/requests/[id]']({
             id: res.data,

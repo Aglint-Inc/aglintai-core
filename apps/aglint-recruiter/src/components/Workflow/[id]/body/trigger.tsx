@@ -10,7 +10,7 @@ import {
   DURATION_OPTIONS,
   getTriggerOption,
   TRIGGER_PAYLOAD,
-} from './constants';
+} from '../../constants';
 
 const Trigger = () => {
   return (
@@ -89,7 +89,7 @@ const TriggerInfo = () => {
   return (
     <GlobalBannerInline
       slotButton={<></>}
-      textContent={`Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : option.name ?? '' + ' ') : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`}
+      textContent={`Any subsequent actions will be triggered ${phase ? (option.value === 0 ? 'with no delay' : (option.name ?? '' + ' ')) : ''} ${getTriggerOption(trigger, phase).toLowerCase()}.`}
     />
   );
 };

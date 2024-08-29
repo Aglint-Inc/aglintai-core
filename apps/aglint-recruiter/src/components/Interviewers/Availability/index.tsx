@@ -1,7 +1,16 @@
+/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Box, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
-import { useState } from 'react';
+import {
+  Box,
+  Checkbox,
+  keyframes,
+  Skeleton,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -21,25 +30,58 @@ import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
-import { groupByDate } from './utils';
-
-const timeToPx = (hours, minutes) => {
-  return hours * 60 * 0.133 + minutes * 0.133;
-};
+import { CalendarEventWithType } from '../types';
+import {
+  color,
+  getLocalSortedInterviewerIds,
+  groupByDate,
+  setLocalSortedInterviewerIds,
+  sortedData,
+  timeToPx,
+} from './utils';
 
 const TimeLineCalendar = () => {
-  const dayCount = 10;
+  // const dayCount = 10;
+  const [dayCount, setDayCount] = useState(10);
+  const [daysCountUI, setDaysCountUI] = useState(10);
+  const [allInter, setAllInter] = useState<initUser[]>([]);
+  const startDate = dayjsLocal()
+    .startOf('day')
+    .add(dayCount - 10, 'day');
 
-  const startDate = dayjsLocal().startOf('day').add(0, 'day');
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
+
   const { data: allInterviewers, isLoading } = useAvailabilty({
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });
 
+  useEffect(() => {
+    if (allInterviewers?.length && dayCount === 10) {
+      setAllInter(allInterviewers);
+    } else if (allInterviewers?.length && dayCount > 10 && !isLoading) {
+      const oldInterviewerEvent = allInter.sort((a, b) =>
+        a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
+      );
+      const newInterviewerEvent = allInterviewers.sort((a, b) =>
+        a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
+      );
+
+      const InterviewerAddedEvents = oldInterviewerEvent.map((ini, i) => ({
+        ...ini,
+        // eslint-disable-next-line security/detect-object-injection
+        all_events: [...ini.all_events, ...newInterviewerEvent[i].all_events],
+      }));
+
+      setDaysCountUI(dayCount);
+      setAllInter(InterviewerAddedEvents);
+    }
+  }, [allInterviewers]);
+
   const {
     jobs: { data: Jobs },
   } = useJobs();
+
   const { data: departments } = useAllDepartments();
   const { data: locations } = useAllOfficeLocations();
 
@@ -97,7 +139,7 @@ const TimeLineCalendar = () => {
     !!selectedInterviewTypes.length;
 
   const filteredInterviewers = isFilterApplied
-    ? allInterviewers.filter((interviewer) => {
+    ? allInter.filter((interviewer) => {
         const isInterviewType = selectedInterviewTypes?.length
           ? selectedInterviewTypeUserIds.includes(interviewer.user_id)
           : true;
@@ -118,9 +160,9 @@ const TimeLineCalendar = () => {
 
         return isDepartment && isLocation && isJobs && isInterviewType;
       })
-    : allInterviewers;
+    : allInter;
 
-  if (isLoading)
+  if (isLoading && dayCount === 10)
     return (
       <Stack
         height={'100%'}
@@ -133,58 +175,99 @@ const TimeLineCalendar = () => {
       </Stack>
     );
 
+  const calconnectedInterviewers = filteredInterviewers.filter(
+    (interviewer) => interviewer?.isCalenderConnected,
+  );
+  const NotCalconnectedInterviewers = filteredInterviewers.filter(
+    (interviewer) => !interviewer?.isCalenderConnected,
+  );
+
   return (
     <Stack>
       <Stack p={2}>
-        <Stack direction={'row'} gap={1} alignItems={'center'}>
-          <Filter
-            itemList={JobsList?.length ? JobsList : []}
-            title='Jobs'
-            setSelectedItems={setJobs}
-            selectedItems={selectedJobs}
-          />
-          <Filter
-            itemList={departmentList?.length ? departmentList : []}
-            title='Departments'
-            setSelectedItems={setDepartments}
-            selectedItems={selectedDepartments}
-          />
-          <Filter
-            itemList={locationList?.length ? locationList : []}
-            title='Locations'
-            setSelectedItems={setLocations}
-            selectedItems={selectedLocations}
-          />
-
-          <Filter
-            itemList={InterviewTypeOptions?.length ? InterviewTypeOptions : []}
-            title='Interview Types'
-            setSelectedItems={setInterviewTypes}
-            selectedItems={selectedInterviewTypes}
-          />
-
-          {isFilterApplied && (
-            <ButtonSoft
-              size={1}
-              color={'neutral'}
-              iconName={'refresh'}
-              isLeftIcon
-              textButton={'Reset All'}
-              onClickButton={{
-                onClick: () => {
-                  setLocations([]);
-                  setDepartments([]);
-                  setJobs([]);
-                },
-              }}
+        <Stack
+          direction={'row'}
+          gap={1}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+        >
+          <Stack direction={'row'} gap={1} alignItems={'center'}>
+            {isLoading && <p>loading </p>}
+            <Filter
+              itemList={JobsList?.length ? JobsList : []}
+              title='Jobs'
+              setSelectedItems={setJobs}
+              selectedItems={selectedJobs}
             />
-          )}
+            <Filter
+              itemList={departmentList?.length ? departmentList : []}
+              title='Departments'
+              setSelectedItems={setDepartments}
+              selectedItems={selectedDepartments}
+            />
+            <Filter
+              itemList={locationList?.length ? locationList : []}
+              title='Locations'
+              setSelectedItems={setLocations}
+              selectedItems={selectedLocations}
+            />
+
+            <Filter
+              itemList={
+                InterviewTypeOptions?.length ? InterviewTypeOptions : []
+              }
+              title='Interview Types'
+              setSelectedItems={setInterviewTypes}
+              selectedItems={selectedInterviewTypes}
+            />
+
+            {isFilterApplied && (
+              <ButtonSoft
+                size={1}
+                color={'neutral'}
+                iconName={'refresh'}
+                isLeftIcon
+                textButton={'Reset All'}
+                onClickButton={{
+                  onClick: () => {
+                    setLocations([]);
+                    setDepartments([]);
+                    setJobs([]);
+                  },
+                }}
+              />
+            )}
+          </Stack>
+          <Stack direction={'row'} gap={1}>
+            {Object.keys(color).map((name, i) => {
+              return (
+                <Stack key={i} direction={'row'} gap={1} alignItems={'center'}>
+                  <Box
+                    sx={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '8px',
+                      // eslint-disable-next-line security/detect-object-injection
+                      bgcolor: color[name],
+                    }}
+                  ></Box>
+                  <Typography>{capitalizeAll(name)}</Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
         </Stack>
       </Stack>
       <AvailabilityView
-        allInterviewers={filteredInterviewers}
-        dayCount={dayCount}
+        allInterviewers={calconnectedInterviewers}
+        setDayCount={setDayCount}
+        daysCountUI={daysCountUI}
+        isLoading={isLoading}
       />
+      <Typography fontWeight={500} pl={2} mt={3} mb={2}>
+        Calendar Not Connect Interviewers
+      </Typography>
+      <AvailabilityView allInterviewers={NotCalconnectedInterviewers} />
     </Stack>
   );
 };
@@ -193,26 +276,34 @@ export default TimeLineCalendar;
 
 const AvailabilityView = ({
   allInterviewers,
-  dayCount,
+  setDayCount,
+  daysCountUI,
+  isLoading,
 }: {
   allInterviewers: initUser[];
-  dayCount: number;
+  daysCountUI?: number;
+  setDayCount?: Dispatch<SetStateAction<number>>;
+  isLoading?: boolean;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
-  const sortedData = allInterviewers.sort((a, b) => {
-    const indexA = checkedInterviewers.indexOf(a.user_id);
-    const indexB = checkedInterviewers.indexOf(b.user_id);
 
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB;
-    } else if (indexA !== -1) {
-      return -1;
-    } else if (indexB !== -1) {
-      return 1;
-    } else {
-      return a.first_name.localeCompare(b.first_name);
+  const sortedInterviewers = sortedData(allInterviewers);
+
+  useEffect(() => {
+    const ids = getLocalSortedInterviewerIds();
+    setCheckedInterviewers(ids);
+  }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+
+    if (scrollLeft + clientWidth >= scrollWidth - 100 && !isLoading) {
+      setDayCount((prev) => prev + 10);
     }
-  });
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -226,55 +317,20 @@ const AvailabilityView = ({
           gap: 2,
         }}
       >
-        {allInterviewers.map((interviewer) => (
-          <Box
-            key={getFullName(interviewer.first_name, interviewer.last_name)}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: 1,
-              gap: 1,
-            }}
-          >
-            <Stack
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 1,
-              }}
-              onClick={() => {
-                setCheckedInterviewers((pre) => {
-                  if (pre.includes(interviewer.user_id)) {
-                    return pre.filter((p) => p !== interviewer.user_id);
-                  } else {
-                    return [...pre, interviewer.user_id];
-                  }
-                });
-              }}
-            >
-              <Checkbox
-                checked={checkedInterviewers.includes(interviewer.user_id)}
-              />
-              <Typography variant='body1'>
-                {getFullName(interviewer.first_name, interviewer.last_name)}
-              </Typography>
-              <Typography variant='caption'>
-                (
-                {dayjsLocal()
-                  .tz(interviewer.scheduling_settings.timeZone.tzCode)
-                  .format('z')}
-                )
-              </Typography>
-            </Stack>
-            <StatusGlyph isConnected={interviewer.isCalenderConnected} />
-          </Box>
+        {sortedInterviewers.map((interviewer) => (
+          <MemberList
+            key={interviewer.user_id}
+            interviewer={interviewer}
+            checkedInterviewers={checkedInterviewers}
+            setCheckedInterviewers={setCheckedInterviewers}
+          />
         ))}
       </Box>
 
       {/* Scrollable View for Time Blocks */}
       <Box
+        ref={containerRef}
+        onScroll={handleScroll}
         sx={{
           // position: 'relative',
           display: 'flex',
@@ -282,9 +338,10 @@ const AvailabilityView = ({
           overflowX: 'auto',
           gap: 2,
           marginRight: '20px',
+          // bgcolor: 'red',
         }}
       >
-        {sortedData.map((interviewer, index) => {
+        {sortedInterviewers.map((interviewer, index) => {
           if (!interviewer.isCalenderConnected)
             return <Box key={index} minHeight={'36px'}></Box>;
 
@@ -298,13 +355,16 @@ const AvailabilityView = ({
 
           const intervierEvents = interviewer.all_events.filter(
             (event) => event.start.dateTime,
-          );
+          ) as CalendarEventWithType;
 
           //filter only start time is present
 
           const interviewerWithFilteredEvent = {
             ...interviewer,
-            all_events: groupByDate(intervierEvents, dayCount),
+            all_events: groupByDate({
+              events: intervierEvents,
+              dayCount: daysCountUI,
+            }),
           } as initUserUIGroupedByDate;
 
           return (
@@ -316,6 +376,78 @@ const AvailabilityView = ({
           );
         })}
       </Box>
+    </Box>
+  );
+};
+
+const MemberList = ({
+  interviewer,
+  setCheckedInterviewers,
+  checkedInterviewers,
+}: {
+  interviewer: initUser;
+  setCheckedInterviewers: Dispatch<SetStateAction<string[]>>;
+  checkedInterviewers: string[];
+}) => {
+  const [isHover, setIsHover] = useState(false);
+
+  const isCheckBoxVisible =
+    checkedInterviewers.includes(interviewer.user_id) || isHover;
+
+  const checkHandle = () => {
+    const newIds = checkedInterviewers.includes(interviewer.user_id)
+      ? checkedInterviewers.filter((p) => p !== interviewer.user_id)
+      : [...checkedInterviewers, interviewer.user_id];
+
+    setCheckedInterviewers(newIds);
+    setLocalSortedInterviewerIds(newIds);
+  };
+  return (
+    <Box
+      key={getFullName(interviewer.first_name, interviewer.last_name)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        minWidth: 290,
+        padding: 1,
+        gap: 1,
+      }}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+    >
+      <Stack
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
+        }}
+        onClick={checkHandle}
+      >
+        <Stack width={20}>
+          {isCheckBoxVisible && (
+            <Checkbox
+              checked={checkedInterviewers.includes(interviewer.user_id)}
+            />
+          )}
+        </Stack>
+        <Typography variant='body1'>
+          {getFullName(interviewer.first_name, interviewer.last_name)}
+        </Typography>
+        <Typography variant='caption'>
+          (
+          {dayjsLocal()
+            .tz(interviewer.scheduling_settings.timeZone.tzCode)
+            .format('z')}
+          )
+        </Typography>
+      </Stack>
+      <StatusGlyph isConnected={interviewer.isCalenderConnected} />
     </Box>
   );
 };
@@ -348,6 +480,17 @@ const TimeLineList = ({
     timeToPx(breakEndHour, breakEndMinute) -
     timeToPx(breakStartHour, breakStartMinute);
 
+  const pulse = keyframes`
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #c0c0c0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+`;
   return (
     // whole box
     <Box
@@ -400,7 +543,7 @@ const TimeLineList = ({
                 lineHeight: 0,
               }}
             >
-              {dayjsLocal().add(i, 'day').format('DD MMMM')}
+              {dayjsLocal().add(i, 'day').format('ddd DD MMM')}
             </Typography>
             <Box
               sx={{
@@ -416,9 +559,18 @@ const TimeLineList = ({
               {/* working hour */}
               <Tooltip
                 title={
-                  <Typography>
-                    {isHoliday ? 'Holiday ' : 'Working Hour'}
-                  </Typography>
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'Working Hour'}
+                    index={i}
+                    start_time={{
+                      hour: workingstartHour,
+                      min: workingstartMinute,
+                    }}
+                    end_time={{
+                      hour: workingendHour,
+                      min: workingendMinute,
+                    }}
+                  />
                 }
               >
                 <Box
@@ -437,9 +589,90 @@ const TimeLineList = ({
                   }}
                 />
               </Tooltip>
+              {/* Early morning */}
+              <Tooltip
+                title={
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'Early Morning'}
+                    index={i}
+                    start_time={{
+                      hour: 6,
+                      min: 0,
+                    }}
+                    end_time={{
+                      hour: workingstartHour,
+                      min: workingstartMinute,
+                    }}
+                  />
+                }
+              >
+                <Box
+                  sx={{
+                    width:
+                      timeToPx(workingstartHour, workingstartMinute) -
+                      timeToPx(6, 0),
+                    height: '20px',
+                    bgcolor: eventColor(
+                      isHoliday ? 'company_off' : 'early_morning',
+                    ),
+                    position: 'absolute',
+                    top: 0,
+                    left: timeToPx(6, 0),
+                    zIndex: 2,
+                  }}
+                />
+              </Tooltip>
+              {/* After working */}
+              <Tooltip
+                title={
+                  <TimeHoverCard
+                    title={isHoliday ? 'Holiday' : 'After Working'}
+                    index={i}
+                    start_time={{
+                      hour: workingendHour,
+                      min: workingendMinute,
+                    }}
+                    end_time={{
+                      hour: 20,
+                      min: 0,
+                    }}
+                  />
+                }
+              >
+                <Box
+                  sx={{
+                    width:
+                      timeToPx(20, 0) -
+                      timeToPx(workingendHour, workingendMinute),
+                    height: '20px',
+                    bgcolor: eventColor(
+                      isHoliday ? 'company_off' : 'after_work',
+                    ),
+                    position: 'absolute',
+                    top: 0,
+                    left: timeToPx(workingendHour, workingendMinute),
+                    zIndex: 2,
+                  }}
+                />
+              </Tooltip>
               {/* Break time */}
               {breakWidth && !isHoliday ? (
-                <Tooltip title={<Typography>Break</Typography>}>
+                <Tooltip
+                  title={
+                    <TimeHoverCard
+                      title={isHoliday ? 'Holiday' : 'Break'}
+                      index={i}
+                      start_time={{
+                        hour: breakStartHour,
+                        min: breakStartMinute,
+                      }}
+                      end_time={{
+                        hour: breakEndHour,
+                        min: breakEndMinute,
+                      }}
+                    />
+                  }
+                >
                   <Box
                     sx={{
                       width: breakWidth,
@@ -448,7 +681,7 @@ const TimeLineList = ({
                       position: 'absolute',
                       top: 0,
                       left: timeToPx(breakStartHour, breakStartMinute),
-                      zIndex: 2,
+                      zIndex: 3,
                     }}
                   />
                 </Tooltip>
@@ -483,11 +716,11 @@ const TimeLineList = ({
                             timeToPx(eventEndHour, eventEndMinute) -
                             timeToPx(eventStartHour, eventStartMinute),
                           height: '20px',
-                          bgcolor: eventColor(event.type),
+                          bgcolor: eventColor(event.type as EventType),
                           position: 'absolute',
                           top: 0,
                           left: timeToPx(eventStartHour, eventStartMinute),
-                          zIndex: 3,
+                          zIndex: 4,
                         }}
                       />
                     </Tooltip>
@@ -498,43 +731,75 @@ const TimeLineList = ({
           </Box>
         );
       })}
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          position: 'relative',
+        }}
+      >
+        <Stack>
+          <Skeleton
+            variant='rectangular'
+            width={192}
+            height={20}
+            sx={{
+              borderRadius: 10,
+              animation: `${pulse} 1.5s infinite`, // Adjust the speed here
+              backgroundColor: '#c0c0c0', // Change the color here
+            }}
+          />
+        </Stack>
+      </Box>
     </Box>
   );
 };
 
-const eventColor = (type) => {
-  const calendarEvent = 'var(--error-9)';
+type EventType =
+  | 'cal_event'
+  | 'soft'
+  | 'break'
+  | 'free_time'
+  | 'ooo'
+  | 'recruiting_blocks'
+  | 'working_hour'
+  | 'bg'
+  | 'company_off'
+  | 'early_morning'
+  | 'after_work';
 
-  const soft = 'var(--warning-7)';
-  const freeTime = 'var(--success-7)';
-  const outStand = 'var(--info-7)';
-  const recruitingBlocks = 'var(--error-7)';
-
-  const workingHour = 'var(--success-6)';
-  const breakTime = 'var(--neutral-4)';
-  const dayOff = 'var(--neutral-5)';
-
+const eventColor = (type: EventType) => {
   const bg = 'var(--neutral-3)';
 
-  return type === 'cal_event'
-    ? calendarEvent
-    : type === 'soft'
-      ? soft
-      : type === 'break'
-        ? breakTime
-        : type === 'free_time'
-          ? freeTime
-          : type === 'ooo'
-            ? outStand
-            : type === 'recruiting_blocks'
-              ? recruitingBlocks
-              : type === 'working_hour'
-                ? workingHour
-                : type === 'bg'
-                  ? bg
-                  : type === 'company_off'
-                    ? dayOff
-                    : 'red';
+  const colors = color;
+  switch (type) {
+    case 'cal_event':
+      return colors['calendar_event'];
+    case 'soft':
+      return colors['soft_conflict'];
+    case 'break':
+      return colors['break_time'];
+    case 'free_time':
+      return colors['free_time'];
+    case 'ooo':
+      return colors['out_standnig'];
+    case 'recruiting_blocks':
+      return colors['recruiting_block'];
+    case 'working_hour':
+      return colors['working_hour'];
+    case 'bg':
+      return bg;
+    case 'company_off':
+      return colors['company_off'];
+    case 'early_morning':
+      return colors['early_morning'];
+    case 'after_work':
+      return colors['after_work'];
+    default:
+      return 'red';
+  }
 };
 
 type eventsType =
@@ -607,31 +872,37 @@ const TooltipComp = ({ title, start_time, end_time, status }) => {
           />
         }
       />
-      {/* <Stack sx={{ padding: '0 16px 16px 16px' }} spacing={1}>
-        <Typography>
-          Candidate :{' '}
-          {getFullName(
-            data.applications.candidates.first_name,
-            data.applications.candidates.last_name,
-          )}
-        </Typography>
-        <ButtonSoft
-          color={'neutral'}
-          size={1}
-          textButton='View Details'
-          iconName='north_east'
-          iconSize={2}
-          isRightIcon
-          onClickButton={{
-            onClick: () =>
-              router.push(
-                `/scheduling/view?meeting_id=${
-                  data.meeting_interviewers[0].meeting_id
-                }&tab=candidate_details`,
-              ),
-          }}
-        />
-      </Stack> */}
+    </Stack>
+  );
+};
+
+const TimeHoverCard = ({
+  title,
+  index,
+  start_time,
+  end_time,
+}: {
+  title: string;
+  index: number;
+  start_time: { hour: number; min: number };
+  end_time: { hour: number; min: number };
+}) => {
+  return (
+    <Stack>
+      <Typography>{title}</Typography>
+      <Typography>
+        {dayjsLocal()
+          .add(index, 'day')
+          .hour(start_time.hour)
+          .minute(start_time.min)
+          .format('ddd DD MMM, YYYY hh:mm A')}{' '}
+        -
+        {dayjsLocal()
+          .add(index, 'day')
+          .hour(end_time.hour)
+          .minute(end_time.min)
+          .format(' hh:mm A')}
+      </Typography>
     </Stack>
   );
 };

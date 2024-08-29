@@ -10,39 +10,46 @@ import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/Role
 import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
+import WorkflowsProvider from './Workflows';
 
 export const PrivateProviders = ({
   children,
   appRouter = false,
 }: PropsWithChildren<{ appRouter?: boolean }>) => {
   return (
-    <PublicProviders>
-      <PHProvider>
-        <AuthProvider>
-          <RolesAndPermissionsProvider>
-            <BreadcrumProvider>
-              <TourProvider>
-                <JobsProvider>
-                  <AppLayout appRouter={appRouter}>{children}</AppLayout>
-                </JobsProvider>
-              </TourProvider>
-            </BreadcrumProvider>
-          </RolesAndPermissionsProvider>
-        </AuthProvider>
-      </PHProvider>
-    </PublicProviders>
+    <Suspense>
+      <PublicProviders>
+        <PHProvider>
+          <AuthProvider>
+            <RolesAndPermissionsProvider>
+              <BreadcrumProvider>
+                <TourProvider>
+                  <JobsProvider>
+                    <WorkflowsProvider>
+                      <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                    </WorkflowsProvider>
+                  </JobsProvider>
+                </TourProvider>
+              </BreadcrumProvider>
+            </RolesAndPermissionsProvider>
+          </AuthProvider>
+        </PHProvider>
+      </PublicProviders>
+    </Suspense>
   );
 };
 
 export const PublicProviders = ({ children }: PropsWithChildren) => {
   return (
-    <DevlinkMainProvider>
-      <Theme>
-        <ScreenSizeProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </ScreenSizeProvider>
-      </Theme>
-    </DevlinkMainProvider>
+    <Suspense>
+      <DevlinkMainProvider>
+        <Theme>
+          <ScreenSizeProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </ScreenSizeProvider>
+        </Theme>
+      </DevlinkMainProvider>
+    </Suspense>
   );
 };

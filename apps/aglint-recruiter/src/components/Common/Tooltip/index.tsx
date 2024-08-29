@@ -4,7 +4,7 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    maxWidth: 'none',
+    // maxWidth: '300px',
     background: 'var(--white)',
     padding: '0px',
     boxShadow: 'var(--shadow-3)',

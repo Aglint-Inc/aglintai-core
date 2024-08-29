@@ -179,7 +179,7 @@ const colorPick = (status): colorType => {
     ? { bg: 'var(--info-3)', pri: 'var(--info-11)' }
     : status === 'completed'
       ? { bg: 'var(--success-3)', pri: 'var(--success-11)' }
-      : status === 'cancelled'
+      : status === 'canceled'
         ? { bg: 'var(--error-3)', pri: 'var(--error-11)' }
         : null;
 };
@@ -200,7 +200,7 @@ const TooltipComp = ({ data }) => {
             color={
               data?.status === 'completed'
                 ? 'success'
-                : data?.status === 'cancelled'
+                : data?.status === 'canceled'
                   ? 'error'
                   : data?.status === 'confirmed'
                     ? 'info'

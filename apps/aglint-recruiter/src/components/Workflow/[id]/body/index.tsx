@@ -16,8 +16,8 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import {
-  useJobWorkflowDeleteMutations,
   useJobWorkflowDisconnect,
+  useJobWorkflowMutations,
 } from '@/src/queries/job-workflow';
 import { Workflow } from '@/src/types/workflow.types';
 import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
@@ -94,8 +94,8 @@ const WorkflowJob = ({
 }) => {
   const { push } = useRouter();
   const { mutateAsync } = useJobWorkflowDisconnect({ id });
-  const mutationState = useJobWorkflowDeleteMutations({ id });
-  const loading = !!(mutationState ?? []).find(
+  const mutationState = useJobWorkflowMutations({ id });
+  const loading = !!(mutationState?.remove ?? []).find(
     ({ job_id, workflow_id: wf_id }) => job_id === id && wf_id == workflow_id,
   );
 

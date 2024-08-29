@@ -45,7 +45,7 @@ export function ApplicantInfoBox({
                 height="auto"
                 loading="lazy"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/66bece06d995802dc685ccec_you.jpg"
+                src="https://cdn.prod.website-files.com/651419e73ebbb12148f96ccc/66bece06d995802dc685ccec_you.jpg"
               />
             )}
           </_Builtin.Block>

@@ -9,22 +9,19 @@ import {
   useWorkflowQuery,
   useWorkflowUpdate,
 } from '@/src/queries/workflow';
+import { SafeObject } from '@/src/utils/safeObject';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 
 const useWorkflowsContext = () => {
   const { recruiter_id } = useAuthDetails();
-  const workflows = useWorkflowQuery({ recruiter_id });
-  const { mutate: createWorkflowMutation } = useWorkflowCreate({
-    recruiter_id,
-  });
-  const workflowJobFilter = useWorkflowJobFilter({ recruiter_id });
-  const { mutate: deleteWorkflowMutation } = useWorkflowDelete({
-    recruiter_id,
-  });
-  const workflowUpdate = useWorkflowUpdate({ recruiter_id });
-  const workflowMutations = useWorkflowMutations({ recruiter_id });
+  const workflows = useWorkflowQuery();
+  const { mutate: createWorkflowMutation } = useWorkflowCreate();
+  const workflowJobFilter = useWorkflowJobFilter();
+  const { mutate: deleteWorkflowMutation } = useWorkflowDelete();
+  const workflowUpdate = useWorkflowUpdate();
+  const workflowMutations = useWorkflowMutations();
 
   const handleCreateWorkflow = useCallback(
     (
@@ -63,10 +60,14 @@ const useWorkflowsContext = () => {
     [getDevlinkProps],
   );
 
+  const mutations = SafeObject.values(workflowMutations)
+    .flatMap((values) => values)
+    .map(({ id }) => id);
+
   return {
     workflows,
     workflowUpdate,
-    workflowMutations,
+    workflowMutations: mutations,
     workflowJobFilter,
     handleCreateWorkflow,
     handleDeleteWorkflow,

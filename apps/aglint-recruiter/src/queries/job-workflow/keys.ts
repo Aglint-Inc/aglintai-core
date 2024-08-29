@@ -13,9 +13,9 @@ export const jobWorkflowMutationKeys = {
     mutationKey: [appKey, 'jobs', args] as string[],
   }),
   update: (args: JobRequisite) => ({
-    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey],
+    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey, 'UPDATE'],
   }),
   delete: (args: JobRequisite) => ({
-    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey],
+    mutationKey: [...jobWorkflowMutationKeys.job(args).mutationKey, 'DELETE'],
   }),
 } as const;
