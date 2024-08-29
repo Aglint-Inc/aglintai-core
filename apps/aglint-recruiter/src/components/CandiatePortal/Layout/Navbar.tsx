@@ -9,6 +9,7 @@ import { Calendar, Home, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { Logout } from './Logout';
 export default function Navbar() {
   return (
     <nav className='flex items-center justify-between px-4 py-2 bg-white shadow-sm'>
@@ -54,7 +55,7 @@ export default function Navbar() {
             <DropdownMenuItem asChild>
               <Link href='/candidate/profile'>Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <Logout />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
