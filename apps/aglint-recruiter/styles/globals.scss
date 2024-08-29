@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url(normalize.css);
 @import url(devlink-base.css);
 @import url(devlink.css);
@@ -371,4 +375,3 @@ textarea::placeholder {
   border-radius: 5px;
   text-transform: capitalize;
 }
-
