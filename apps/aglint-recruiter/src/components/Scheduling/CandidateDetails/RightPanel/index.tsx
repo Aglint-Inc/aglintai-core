@@ -16,7 +16,7 @@ import {
   setMultipleCancelOpen,
   useSchedulingApplicationStore,
 } from '../store';
-import IconApplicationLogs from './IconApplicationLogs';
+import IconApplicationLogs from '../../../Common/Icons/IconApplicationLogs';
 import SlotContent from './SlotWidgets';
 
 function RightPanel({

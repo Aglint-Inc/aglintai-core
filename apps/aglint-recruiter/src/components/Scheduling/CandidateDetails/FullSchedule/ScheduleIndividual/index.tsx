@@ -13,7 +13,7 @@ import { useAllIntegrations } from '@/src/queries/intergrations';
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
-import IconSessionType from '../../RightPanel/IconSessionType';
+import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';

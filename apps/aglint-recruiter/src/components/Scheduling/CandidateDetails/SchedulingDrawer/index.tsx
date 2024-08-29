@@ -1,10 +1,10 @@
 import { Drawer, Stack } from '@mui/material';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
+import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
 
 import BodyDrawer from './BodyDrawer';
 import ButtonMain from './ButtonGroup';
-import Calendar from './Calendar';
 import HeaderIcon from './HeaderIcon';
 import { useSchedulingDrawer } from './hooks';
 import { useSchedulingFlowStore } from './store';
@@ -23,8 +23,6 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     refetch,
   });
 
-  
-
   return (
     <>
       <Drawer
@@ -35,8 +33,6 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         }}
       >
         <Stack direction={'row'}>
-          {availabilities && <Calendar />}
-
           <SideDrawerLarge
             onClickCancel={{
               onClick: () => {

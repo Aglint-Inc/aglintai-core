@@ -213,25 +213,6 @@ function ViewRequestDetails() {
                       })}
                     </>
                   )}
-
-                  {selectedRequest.status === 'to_do' && (
-                    <Stack
-                      direction={'row'}
-                      sx={{
-                        display: 'none',
-                      }}
-                    >
-                      <ButtonSoft
-                        size={1}
-                        textButton={'Self Schedule'}
-                        onClickButton={{
-                          onClick: () => {
-                            setIsSelfScheduleDrawerOpen(true);
-                          },
-                        }}
-                      />
-                    </Stack>
-                  )}
                 </>
               }
               slotNotes={<RequestNotes />}

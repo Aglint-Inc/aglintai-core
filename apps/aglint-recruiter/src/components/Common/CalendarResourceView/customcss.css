@@ -1,0 +1,88 @@
+/* FullCalendar Theming */
+:root {
+  --fc-small-font-size: 12px;
+  --fc-page-bg-color: var(--neutral-2);
+  --fc-neutral-bg-color: var(--neutral-2);
+  --fc-neutral-text-color: var(--neutral-11);
+  --fc-border-color: var(--neutral-6);
+  --fc-button-text-color: var(--neutral-12);
+  --fc-button-bg-color: var(--accent-9);
+  --fc-button-border-color: var(--accent-9);
+  --fc-button-hover-bg-color: var(--accent-1);
+  --fc-button-hover-border-color: var(--accent-1);
+  --fc-button-active-bg-color: var(--accent-1);
+  --fc-button-active-border-color: var(--accent-1);
+  --fc-event-bg-color: transparent;
+  --fc-event-border-color: none;
+  --fc-event-text-color: var(--neutral-12);
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+  --fc-more-link-bg-color: var(--neutral-6);
+  --fc-more-link-text-color: inherit;
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+  --fc-non-business-color: var(--neutral-9);
+  --fc-bg-event-color: var(--neutral-8);
+  --fc-bg-event-opacity: 0.3;
+  --fc-highlight-color: rgba(188, 232, 241, 0.3);
+  --fc-today-bg-color: var(--accent-9);
+  --fc-now-indicator-color: var(--error-9);
+}
+
+/* hidden a license */
+.fc-license-message,
+.fc-header-toolbar {
+  display: none !important;
+}
+
+/* ----------------------------------------------- */
+
+
+
+/* Optionally, hide the vertical and horizontal scrollbars */
+.fc .fc-scroller {
+  scrollbar-width: none; /* For Firefox */
+}
+.fc .fc-scroller::-webkit-scrollbar {
+  display: none; /* For WebKit browsers like Chrome, Safari, etc. */
+}
+
+.fc .fc-timegrid-body .fc-timegrid-slot,
+.fc .fc-timegrid-body .fc-timegrid-slot-lane {
+  background-color: white !important; /* Ensures all rows are white */
+}
+
+.fc-theme-standard .fc-list-day-cushion {
+  /* background-color: red; */
+  padding: 20px;
+}
+
+.fc th {
+  background: var(--neutral-2) !important;
+}
+
+.fc tr {
+  background-color: var(--neutral-1);
+}
+
+
+.fc-timegrid-slot,
+.fc-timegrid-slot-label {
+  height: 60px !important; /* Ensure this overrides any other styles */
+}
+
+
+
+.fc tr:hover {
+  background-color: var(--neutral-2);
+}
+
+
+.fc-toolbar.fc-header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+

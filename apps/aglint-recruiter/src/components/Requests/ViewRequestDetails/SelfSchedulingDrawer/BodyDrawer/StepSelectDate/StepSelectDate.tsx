@@ -5,7 +5,7 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightPanel/IconSessionType';
+import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 
 import { useMeetingList } from '../../../hooks';

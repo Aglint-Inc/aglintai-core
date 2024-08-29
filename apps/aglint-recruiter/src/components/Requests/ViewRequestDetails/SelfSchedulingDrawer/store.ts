@@ -5,6 +5,10 @@ import { ApiResponseFindAvailability } from '@/src/components/Scheduling/Candida
 import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import dayjs from '@/src/utils/dayjs';
 
+import {
+  Event,
+  Resource
+} from '../../../Common/CalendarResourceView/types';
 import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 
 export interface SelfSchedulingFlow {
@@ -48,7 +52,10 @@ export interface SelfSchedulingFlow {
   resSendToCandidate: ApiResponseSendToCandidate['data'];
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
-  availabilities: ApiResponseFindAvailability['availabilities'];
+  availabilities: {
+    events: Event[];
+    resources: Resource[];
+  };
 }
 
 const initialState: SelfSchedulingFlow = {
@@ -88,7 +95,7 @@ export const setEmailData = (emailData: SelfSchedulingFlow['emailData']) =>
   useSelfSchedulingFlowStore.setState({ emailData });
 
 export const setAvailabilities = (
-  availabilities: ApiResponseFindAvailability['availabilities'],
+  availabilities: SelfSchedulingFlow['availabilities'],
 ) => useSelfSchedulingFlowStore.setState({ availabilities });
 
 export const setFilteredSchedulingOptions = (

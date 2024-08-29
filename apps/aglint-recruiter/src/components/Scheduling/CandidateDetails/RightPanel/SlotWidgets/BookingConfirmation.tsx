@@ -27,7 +27,7 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
-import IconSessionType from '../IconSessionType';
+import IconSessionType from '../../../../Common/Icons/IconSessionType';
 
 function BookingConfirmation({
   act,

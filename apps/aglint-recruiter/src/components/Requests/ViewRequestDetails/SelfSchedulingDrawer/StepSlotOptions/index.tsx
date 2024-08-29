@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 
@@ -15,6 +14,7 @@ import {
   setSelectedCombIds,
   useSelfSchedulingFlowStore,
 } from '../store';
+import DayCardWrapper from './DayCardWrapper';
 import { groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;

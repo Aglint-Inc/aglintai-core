@@ -14,7 +14,7 @@ import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightPanel/IconSessionType';
+import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllMembers } from '@/src/queries/members';

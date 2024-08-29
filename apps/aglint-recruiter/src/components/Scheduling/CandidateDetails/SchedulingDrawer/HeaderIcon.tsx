@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 
-import IconSessionType from '../RightPanel/IconSessionType';
+import IconSessionType from '../../../Common/Icons/IconSessionType';
 import { useSchedulingFlowStore } from './store';
 
 function HeaderIcon() {
