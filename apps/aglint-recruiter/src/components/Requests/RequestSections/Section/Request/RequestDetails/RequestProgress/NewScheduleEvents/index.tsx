@@ -14,8 +14,7 @@ const NewScheduleEvents = () => {
   const { request_progress, request_workflow } = useRequest();
   const eventTargetMap = useMemo(() => {
     let mp: EventTargetMapType = {};
-    request_workflow.data.forEach((wf) => {
-      let eA = wf.workflow;
+    request_workflow.data.forEach((eA) => {
       mp[eA.trigger] = eA.workflow_action.map((wA) => {
         return wA.target_api;
       });
