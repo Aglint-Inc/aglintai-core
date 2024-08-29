@@ -57,11 +57,11 @@ export const navList: {
   {
     text: 'Interviewers',
     SubComponents: null,
-    route: ROUTES['/scheduling/interviewer'](),
+    route: ROUTES['/interviewers'](),
     comingSoon: false,
     isVisible: true,
     permission: ['manage_interviewers'],
-    active: ['/scheduling/interviewer', '/user/profile/[user_id]'],
+    active: ['/interviewers', '/user/profile/[user_id]'],
   },
   {
     text: 'Interview Types',

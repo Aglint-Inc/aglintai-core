@@ -227,6 +227,13 @@ export const useTrainingProgress = ({
     });
   return { ...query, refetch };
 };
+// const fetch = async ({ recruiter_id }) => {
+//   const { data } = await supabase
+//     .from('interview_module_relation')
+//     .select('interview_module(*),recruiter_user(*)')
+//     .eq('interview_module.recruiter_id', recruiter_id)
+//     .eq('training_status', 'training');
+// };
 
 const fetchTrainingProgressAnalytics = async ({
   recruiter_id,

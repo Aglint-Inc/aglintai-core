@@ -10,13 +10,17 @@ import { interviewersTab } from './types';
 
 function InterviewersTabs() {
   const router = useRouter();
-  const tab = (router.query.tab as interviewersTab) || 'availability';
+  const tab = (router.query.tab as interviewersTab) || 'interview_load';
 
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
-      router.push(`${ROUTES['/interviewers']()}?tab=availability`, undefined, {
-        shallow: true,
-      });
+      router.replace(
+        `${ROUTES['/interviewers']()}?tab=interview_load`,
+        undefined,
+        {
+          shallow: true,
+        },
+      );
     }
   }, [router]);
 
@@ -25,15 +29,6 @@ function InterviewersTabs() {
       <GlobalSwitch
         slotGlobalSwitchPill={
           <>
-            <GlobalSwitchPill
-              isActive={tab === 'availability'}
-              textPill={'Availability'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(`${ROUTES['/interviewers']()}?tab=availability`);
-                },
-              }}
-            />
             <GlobalSwitchPill
               isActive={tab === 'interview_load'}
               textPill={'Interview Load'}
@@ -45,7 +40,15 @@ function InterviewersTabs() {
                 },
               }}
             />
-
+            <GlobalSwitchPill
+              isActive={tab === 'availability'}
+              textPill={'Availability'}
+              onClickPill={{
+                onClick: () => {
+                  router.push(`${ROUTES['/interviewers']()}?tab=availability`);
+                },
+              }}
+            />
             <GlobalSwitchPill
               isActive={tab === 'training' || !tab}
               textPill={'Training'}

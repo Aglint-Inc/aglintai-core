@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
@@ -42,32 +43,37 @@ import {
 const TimeLineCalendar = () => {
   // const dayCount = 10;
   const [dayCount, setDayCount] = useState(10);
+  const [daysCountUI, setDaysCountUI] = useState(10);
   const [allInter, setAllInter] = useState<initUser[]>([]);
-
   const startDate = dayjsLocal()
     .startOf('day')
     .add(dayCount - 10, 'day');
+
   const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
+
   const { data: allInterviewers, isLoading } = useAvailabilty({
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   });
 
   useEffect(() => {
-    if (allInterviewers?.length && dayCount === 10)
+    if (allInterviewers?.length && dayCount === 10) {
       setAllInter(allInterviewers);
-    else if (allInterviewers?.length && dayCount > 10) {
+    } else if (allInterviewers?.length && dayCount > 10 && !isLoading) {
       const oldInterviewerEvent = allInter.sort((a, b) =>
         a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
       );
-      const newInterviewerEvent = allInter.sort((a, b) =>
+      const newInterviewerEvent = allInterviewers.sort((a, b) =>
         a.user_id.toLowerCase().localeCompare(b.user_id.toLowerCase()),
       );
 
       const InterviewerAddedEvents = oldInterviewerEvent.map((ini, i) => ({
         ...ini,
+        // eslint-disable-next-line security/detect-object-injection
         all_events: [...ini.all_events, ...newInterviewerEvent[i].all_events],
       }));
+
+      setDaysCountUI(dayCount);
       setAllInter(InterviewerAddedEvents);
     }
   }, [allInterviewers]);
@@ -175,6 +181,7 @@ const TimeLineCalendar = () => {
   const NotCalconnectedInterviewers = filteredInterviewers.filter(
     (interviewer) => !interviewer?.isCalenderConnected,
   );
+
   return (
     <Stack>
       <Stack p={2}>
@@ -253,16 +260,14 @@ const TimeLineCalendar = () => {
       </Stack>
       <AvailabilityView
         allInterviewers={calconnectedInterviewers}
-        dayCount={dayCount}
         setDayCount={setDayCount}
+        daysCountUI={daysCountUI}
+        isLoading={isLoading}
       />
       <Typography fontWeight={500} pl={2} mt={3} mb={2}>
         Calendar Not Connect Interviewers
       </Typography>
-      <AvailabilityView
-        allInterviewers={NotCalconnectedInterviewers}
-        dayCount={dayCount}
-      />
+      <AvailabilityView allInterviewers={NotCalconnectedInterviewers} />
     </Stack>
   );
 };
@@ -271,12 +276,14 @@ export default TimeLineCalendar;
 
 const AvailabilityView = ({
   allInterviewers,
-  dayCount,
   setDayCount,
+  daysCountUI,
+  isLoading,
 }: {
   allInterviewers: initUser[];
-  dayCount: number;
+  daysCountUI?: number;
   setDayCount?: Dispatch<SetStateAction<number>>;
+  isLoading?: boolean;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
 
@@ -293,10 +300,8 @@ const AvailabilityView = ({
 
     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
 
-    if (scrollLeft + clientWidth >= scrollWidth - 100) {
-      // Close to the end of the scroll, load more items
+    if (scrollLeft + clientWidth >= scrollWidth - 100 && !isLoading) {
       setDayCount((prev) => prev + 10);
-      // console.log('hit ..');
     }
   };
 
@@ -356,7 +361,10 @@ const AvailabilityView = ({
 
           const interviewerWithFilteredEvent = {
             ...interviewer,
-            all_events: groupByDate({ events: intervierEvents, dayCount }),
+            all_events: groupByDate({
+              events: intervierEvents,
+              dayCount: daysCountUI,
+            }),
           } as initUserUIGroupedByDate;
 
           return (

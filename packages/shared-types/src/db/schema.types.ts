@@ -6894,7 +6894,6 @@ export type Database = {
         | "onTrainingComplete"
         | "onReceivingAvailReq"
         | "onRequestSchedule"
-        | "onSelfScheduleReqAgent"
         | "onRequestCancel"
         | "onRequestReschedule"
         | "onRequestInterviewerDecline"
