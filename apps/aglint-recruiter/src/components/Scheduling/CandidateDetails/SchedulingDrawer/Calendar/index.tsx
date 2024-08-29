@@ -1,13 +1,16 @@
+import './customcss.css';
+
+import { dayjsLocal } from '@aglint/shared-utils';
+import { DatesSetArg } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { Stack, Typography } from '@mui/material';
-import { useSchedulingFlowStore } from '../store';
-import './customcss.css';
-import { dayjsLocal } from '@aglint/shared-utils';
-import MuiAvatar, { getStringColor } from '@/src/components/Common/MuiAvatar';
 import { useRef, useState } from 'react';
+
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { DatesSetArg } from '@fullcalendar/core';
+import MuiAvatar, { getStringColor } from '@/src/components/Common/MuiAvatar';
+
+import { useSchedulingFlowStore } from '../store';
 
 type Event = {
   start: string;
