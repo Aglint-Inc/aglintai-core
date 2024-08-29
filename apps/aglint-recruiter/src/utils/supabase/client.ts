@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-if (SUPABASE_URL && SUPABASE_URL.includes('.supabase.co')) {
+if (SUPABASE_URL && SUPABASE_URL.length > 0) {
   if (typeof window !== 'undefined') {
     window.supabase = supabase;
   }
