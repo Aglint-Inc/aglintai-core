@@ -1,32 +1,16 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  DatabaseEnums,
-  DatabaseTable,
-  EmailTemplateAPi,
-} from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import axios from 'axios';
-import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import ScheduleFlows from '../Actions/Schedule';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
-import { apiTargetToEvents } from '../utils/progressMaps';
-import EventNode from './EventNode';
+import AvailabilityFlowMenus from './AvailabilityFlowMenus';
+import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
 
 const SelectScheduleFlow = ({
   eventTargetMap,
@@ -54,6 +38,13 @@ const SelectScheduleFlow = ({
     requestTargetMp: scheduleReqProgressMap,
   });
 
+  let isSelectScheduleFlowComplete = false;
+  if (
+    scheduleReqProgressMap['CAND_AVAIL_REC'] ||
+    scheduleReqProgressMap['CAND_CONFIRM_SLOT']
+  ) {
+    isSelectScheduleFlowComplete = true;
+  }
   return (
     <Stack>
       <TextWithIcon
@@ -61,12 +52,10 @@ const SelectScheduleFlow = ({
         textContent={`Candidate Schedule`}
         iconSize={4}
         fontSize={1}
-        // color={getProgressColor(tense)}
+        color={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
       />
       <Stack ml={4} mt={1} rowGap={1.5}>
-        <ShowCode.When
-          isTrue={isManualSchedule && request_progress.data.length === 0}
-        >
+        <ShowCode.When isTrue={scheduleFlow === null}>
           <ScheduleFlows />
         </ShowCode.When>
 
@@ -90,240 +79,3 @@ const SelectScheduleFlow = ({
 };
 
 export default SelectScheduleFlow;
-
-const AvailabilityFlowMenus = ({
-  isManualSchedule,
-  scheduleReqProgressMap,
-  eventTargetMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-  isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
-}) => {
-  const { query } = useRouter();
-  const requestId = query.id as string;
-  const { request_progress } = useRequest();
-  let lastEvent: DatabaseTable['request_progress'];
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
-    eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...eventTargetMap['sendAvailReqReminder'],
-    ];
-  }
-  let scheduleFlowProg = useMemo(() => {
-    let progres: DatabaseTable['request_progress'][] = [];
-    if (request_progress.data.length === 0) {
-      return progres;
-    }
-    request_progress.data.forEach((prog) => {
-      if (prog.event_type !== 'CAND_AVAIL_REC') {
-        progres.push({
-          ...prog,
-        });
-      }
-    });
-    return progres;
-  }, [request_progress.data]);
-
-  if (scheduleFlowProg.length > 0) {
-    lastEvent = scheduleFlowProg[scheduleFlowProg.length - 1];
-  }
-
-  let isAvailabilityRecieved = false;
-  if (request_progress.data.find((p) => p.event_type === 'CAND_AVAIL_REC')) {
-    isAvailabilityRecieved = true;
-  }
-
-  const handleFollowup = async () => {
-    try {
-      const [cand_req] = supabaseWrap(
-        await supabase
-          .from('candidate_request_availability')
-          .select()
-          .eq('request_id', requestId),
-      );
-      const payload: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['api_payload'] =
-        {
-          avail_req_id: cand_req.id,
-        };
-      await axios.post('/api/emails/sendAvailReqReminder_email_applicant', {
-        ...payload,
-      });
-    } catch (err) {
-      toast.error('Some wrong happenned please try again');
-    }
-  };
-  return (
-    <>
-      <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg.map((prog) => {
-          return (
-            <EventNode
-              key={prog.id}
-              eventNode={prog.event_type}
-              reqProgressMap={scheduleReqProgressMap}
-            />
-          );
-        })}
-      </ShowCode.When>
-      <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
-          .map((eA) => {
-            return apiTargetToEvents[eA];
-          })
-          .flat()
-          .map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
-          })}
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
-      </ShowCode.When>
-      <ShowCode.When
-        isTrue={
-          Boolean(
-            !isAvailabilityRecieved &&
-              lastEvent &&
-              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
-              !scheduleReqProgressMap[
-                'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-              ],
-          ) && !eventTargetMap['sendAvailReqReminder']
-        }
-      >
-        <Stack width={'100%'} direction={'row'} justifyContent={'end'}>
-          <ButtonSoft
-            size={1}
-            color={'accent'}
-            onClickButton={{
-              onClick: handleFollowup,
-            }}
-            textButton={'Resend Link'}
-          />
-        </Stack>
-      </ShowCode.When>
-      <ShowCode.When
-        isTrue={
-          !isAvailabilityRecieved &&
-          Boolean(scheduleReqProgressMap['REQ_CAND_AVAIL_EMAIL_LINK'])
-        }
-      >
-        <Stack width={'100%'} direction={'row'} justifyContent={'flex-end'}>
-          <ButtonSoft
-            size={1}
-            color='accent'
-            onClickButton={{
-              onClick: () => {
-                setCandidateAvailabilityDrawerOpen(true);
-                setReRequestAvailability(true);
-                setCandidateAvailabilityIdForReRequest(
-                  '6b7657ba-cc3f-4789-a44f-5be74d234f84',
-                );
-              },
-            }}
-            textButton='Re Request Availability'
-          />
-        </Stack>
-      </ShowCode.When>
-    </>
-  );
-};
-
-const SelfScheduleFlowMenus = ({
-  isManualSchedule,
-  scheduleReqProgressMap,
-  eventTargetMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-  isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
-}) => {
-  const { request_progress } = useRequest();
-
-  let scheduleFlowProg = useMemo(() => {
-    let progres: DatabaseTable['request_progress'][] = [];
-    if (request_progress.data.length === 0) {
-      return progres;
-    }
-    request_progress.data.forEach((prog) => {
-      if (prog.event_type !== 'CAND_CONFIRM_SLOT') {
-        progres.push({
-          ...prog,
-        });
-      }
-    });
-    return progres;
-  }, [request_progress.data]);
-  //
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
-    eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...eventTargetMap['selfScheduleReminder'],
-    ];
-  }
-
-  return (
-    <>
-      <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg.map((prog) => {
-          return (
-            <>
-              <EventNode
-                key={prog.id}
-                eventNode={prog.event_type}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            </>
-          );
-        })}
-      </ShowCode.When>
-      <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
-          .map((eA) => {
-            return apiTargetToEvents[eA];
-          })
-          .flat()
-          .map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
-          })}
-        {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
-          <EventNode
-            eventNode='SELF_SCHEDULE_FIRST_FOLLOWUP'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        )}
-      </ShowCode.When>
-    </>
-  );
-};

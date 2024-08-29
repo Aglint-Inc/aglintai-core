@@ -217,6 +217,7 @@ const MoveCandidateInterview = () => {
           schedule_end_date: task.schedule_date_range.end_date,
           schedule_start_date: task.schedule_date_range.start_date,
           application_id,
+          note,
         };
       }),
       sessions: (task?.session_ids ?? []).map(({ id }) => id),

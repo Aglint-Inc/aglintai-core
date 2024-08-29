@@ -54,6 +54,7 @@ export default async function handler(
         status: 'to_do',
         title: `Schedule ${parsed.session_names.map((ses) => ses).join(' and ')} for ${candidate_name}`,
         type: 'schedule_request',
+        note: null,
       },
       sessions: parsed.session_ids,
     };

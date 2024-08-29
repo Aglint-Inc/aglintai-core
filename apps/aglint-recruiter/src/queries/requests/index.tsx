@@ -26,6 +26,12 @@ import { Request, RequestProgress, RequestResponse } from './types';
 export const requestQueries = {
   requests_key: () => 'requests' as const,
   requests_queryKey: () => [appKey, requestQueries.requests_key()] as const,
+  request_workflow_key: () => 'request_workflow' as const,
+  requests_workflow_queryKey: () =>
+    [
+      ...requestQueries.requests_queryKey(),
+      requestQueries.request_workflow_key(),
+    ] as const,
   requests_mutationKey: (method: 'create' | 'update' | 'delete') =>
     [appKey, requestQueries.requests_key(), method] as const,
   requests: ({ filters, sort, payload }: GetRequestParams) =>
@@ -64,8 +70,9 @@ export const requestQueries = {
   requests_invalidate: () => ({
     predicate: ((query) =>
       query.queryKey.includes(requestQueries.requests_key()) &&
+      !query.queryKey.includes(requestQueries.request_progress_key()) &&
       !query.queryKey.includes(
-        requestQueries.request_progress_key(),
+        requestQueries.request_workflow_key(),
       )) as QueryFilters['predicate'],
     removeQueries: () =>
       ({
@@ -122,6 +129,7 @@ export const requestQueries = {
     enabled?: boolean;
   }) =>
     queryOptions({
+      initialData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       queryKey: [
@@ -129,14 +137,16 @@ export const requestQueries = {
         'workflow',
         { request_id },
       ],
-      queryFn: async () =>
-        (
+      queryFn: async () => {
+        const d = (
           await supabase
             .from('workflow_request_relation')
             .select('*, workflow(*, workflow_action(*))')
             .eq('request_id', request_id)
             .throwOnError()
-        ).data,
+        ).data;
+        return d;
+      },
     }),
 } as const;
 

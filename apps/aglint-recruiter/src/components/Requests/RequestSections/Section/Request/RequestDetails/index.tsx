@@ -115,14 +115,7 @@ function RequestDetails({
       )}
       slotBody={
         <>
-          <RequestProgress
-            request_type={request.type}
-            job_workflow={
-              request.applications.public_jobs.workflow_job_relation?.map(
-                (j) => j.workflow,
-              ) ?? []
-            }
-          />
+          <RequestProgress request_type={request.type} />
 
           {Boolean(
             request.status === 'to_do' &&

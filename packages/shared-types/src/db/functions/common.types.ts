@@ -1,4 +1,5 @@
 import { CustomRequestType } from "../common.types";
+import { Database } from "../schema.types";
 
 export type CustomRequestPayload = Required<
   Pick<
@@ -11,5 +12,6 @@ export type CustomRequestPayload = Required<
     | "priority"
     | "schedule_end_date"
     | "schedule_start_date"
-  >
+  > &
+    Pick<Database["public"]["Tables"]["request_note"]["Row"], "note">
 >;
