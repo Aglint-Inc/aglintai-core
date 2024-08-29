@@ -129,6 +129,7 @@ export const requestQueries = {
     enabled?: boolean;
   }) =>
     queryOptions({
+      initialData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       queryKey: [
@@ -136,14 +137,16 @@ export const requestQueries = {
         'workflow',
         { request_id },
       ],
-      queryFn: async () =>
-        (
+      queryFn: async () => {
+        const d = (
           await supabase
             .from('workflow_request_relation')
             .select('*, workflow(*, workflow_action(*))')
             .eq('request_id', request_id)
             .throwOnError()
-        ).data,
+        ).data;
+        return d;
+      },
     }),
 } as const;
 

@@ -1,4 +1,9 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { dayjsLocal } from '@aglint/shared-utils';
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -91,34 +96,37 @@ export type useAvailabiltyWithCalType = Awaited<
   ReturnType<typeof useAvailabilty>
 >;
 
-export const useAvailabilty = ({
-  startDate,
-  endDate,
-}: {
-  startDate: string;
-  endDate: string;
-}) => {
+export const useAvailabilty = () => {
   const { recruiter_id } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['get_fetchAvailabiltyWithCal', startDate, endDate],
-    refetchOnMount: true,
-    queryFn: () => fetchAvailabiltyWithCal(recruiter_id, startDate, endDate),
-    gcTime: 20000,
-    enabled: !!recruiter_id,
+  const query = useInfiniteQuery({
+    queryKey: ['get_fetchAvailabiltyWithCal'],
+    queryFn: (param) => fetchAvailabiltyWithCal(param, recruiter_id),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      return allPages.length + 1 <= 20 ? allPages.length + 1 : undefined;
+    },
   });
-  const refetch = () =>
-    queryClient.invalidateQueries({
-      queryKey: ['get_fetchAvailabiltyWithCal', startDate, endDate],
-    });
-  return { ...query, refetch };
+
+  return { ...query };
 };
 
 const fetchAvailabiltyWithCal = async (
+  {
+    pageParam,
+  }: {
+    pageParam: number;
+  },
   recruiter_id: string,
-  startDate: string,
-  endDate: string,
 ) => {
+  const startCount = pageParam === 1 ? 0 : pageParam * 10 - 9;
+  const endCount = pageParam * 10;
+
+  const startDate = dayjsLocal()
+    .startOf('day')
+    .add(startCount, 'day')
+    .toISOString();
+  const endDate = dayjsLocal().endOf('day').add(endCount, 'day').toISOString();
+
   return axios
     .post('/api/interviewers', {
       recruiter_id,
@@ -129,7 +137,6 @@ const fetchAvailabiltyWithCal = async (
       return data.data.data as initUser[];
     });
 };
-
 // -------------------------------------------------------- leader board
 
 export type useLeaderBoardType = Awaited<

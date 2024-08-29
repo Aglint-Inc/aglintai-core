@@ -7,7 +7,6 @@ import { dbUtil } from './fetch-util';
 
 export async function POST(req: Request) {
   const body = await req.json();
-
   const supabaseAdmin = getSupabaseServer();
 
   try {
@@ -19,15 +18,27 @@ export async function POST(req: Request) {
       recipient_email,
     } = await dbUtil(supabaseAdmin, req_body);
 
-    await sendMailFun({
+    const is_preview = Boolean(req_body.is_preview);
+
+    const resp = await sendMailFun({
       supabaseAdmin,
       comp_email_placeholder,
       company_id,
       react_email_placeholders,
       recipient_email,
+      is_preview,
       api_target: 'availabilityReqResend_email_candidate',
       payload: req_body.payload,
     });
+
+    if (is_preview) {
+      return NextResponse.json(
+        { html: resp.html, subject: resp.subject },
+        {
+          status: 200,
+        },
+      );
+    }
 
     return NextResponse.json('success', {
       status: 200,
