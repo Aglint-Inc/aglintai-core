@@ -5366,6 +5366,7 @@ export type Database = {
           jobs: Json[] | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
+          request_id: string | null
           tags: string[] | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
@@ -5377,6 +5378,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
