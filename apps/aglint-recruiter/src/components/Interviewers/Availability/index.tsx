@@ -34,12 +34,14 @@ import {
   afterWorkingEndTime,
   color,
   earlyMorningstartTime,
+  oneDayPx,
+} from './constant';
+import {
   eventAbbrivation,
   eventColor,
   getLocalSortedInterviewerIds,
   groupByDate,
   joinUsersEvents,
-  oneDayPx,
   pulse,
   setLocalSortedInterviewerIds,
   sortedUserByChecked,
