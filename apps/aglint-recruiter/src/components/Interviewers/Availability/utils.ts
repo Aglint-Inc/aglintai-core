@@ -167,3 +167,36 @@ export const eventAbbrivation = (type: EventType) => {
           ? 'Calendar Event'
           : '';
 };
+
+export const joinUsersEvents = (data) => {
+  if (data?.length) {
+    const mergedData = new Map();
+
+    data.forEach((array) => {
+      array.forEach((obj) => {
+        const { user_id, all_events, ...rest } = obj;
+
+        if (mergedData.has(user_id)) {
+          // Merge events and retain unique ones
+          const existing = mergedData.get(user_id);
+          mergedData.set(user_id, {
+            ...existing,
+            all_events: [...new Set([...existing.all_events, ...all_events])],
+          });
+        } else {
+          // Add the object for the first time
+          mergedData.set(user_id, {
+            user_id,
+            all_events: [...new Set(all_events)],
+            ...rest,
+          });
+        }
+      });
+    });
+
+    const result = Array.from(mergedData.values());
+
+    return result as initUser[];
+  }
+  return [];
+};

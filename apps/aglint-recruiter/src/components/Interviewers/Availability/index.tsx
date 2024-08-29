@@ -38,6 +38,7 @@ import {
   eventColor,
   getLocalSortedInterviewerIds,
   groupByDate,
+  joinUsersEvents,
   oneDayPx,
   pulse,
   setLocalSortedInterviewerIds,
@@ -47,20 +48,21 @@ import {
 } from './utils';
 
 const TimeLineCalendar = () => {
-  // const dayCount = 10;
-  const [dayCount, setDayCount] = useState(10);
-  const [daysCountUI, setDaysCountUI] = useState(10);
-  const [allInter, setAllInter] = useState<initUser[]>([]);
-  const startDate = dayjsLocal()
-    .startOf('day')
-    .add(dayCount - 10, 'day');
+  const {
+    data: allInterviewerPages,
+    isLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useAvailabilty();
 
-  const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
+  const Interviewers = allInterviewerPages?.pages;
 
-  const { data: allInterviewers, isLoading } = useAvailabilty({
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  });
+  const allInterviewers = Interviewers?.length
+    ? joinUsersEvents(Interviewers)
+    : [];
+
+  const dayCount = allInterviewerPages?.pageParams.length * 10;
+  const [allInter, setAllInter] = useState<initUser[]>(allInterviewers);
 
   useEffect(() => {
     if (allInterviewers?.length && dayCount === 10) {
@@ -79,10 +81,9 @@ const TimeLineCalendar = () => {
         all_events: [...ini.all_events, ...newInterviewerEvent[i].all_events],
       }));
 
-      setDaysCountUI(dayCount);
       setAllInter(InterviewerAddedEvents);
     }
-  }, [allInterviewers]);
+  }, [allInterviewerPages]);
 
   const {
     jobs: { data: Jobs },
@@ -267,8 +268,9 @@ const TimeLineCalendar = () => {
       </Stack>
       <AvailabilityView
         allInterviewers={calconnectedInterviewers}
-        setDayCount={setDayCount}
-        daysCountUI={daysCountUI}
+        fetchNextPage={fetchNextPage}
+        daysCountUI={dayCount}
+        isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
       />
       <Typography fontWeight={500} pl={2} mt={3} mb={2}>
@@ -283,13 +285,15 @@ export default TimeLineCalendar;
 
 const AvailabilityView = ({
   allInterviewers,
-  setDayCount,
   daysCountUI,
+  fetchNextPage,
+  isFetchingNextPage,
   isLoading,
 }: {
   allInterviewers: initUser[];
   daysCountUI?: number;
-  setDayCount?: Dispatch<SetStateAction<number>>;
+  fetchNextPage?: any;
+  isFetchingNextPage?: boolean;
   isLoading?: boolean;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
@@ -307,8 +311,12 @@ const AvailabilityView = ({
 
     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
 
-    if (scrollLeft + clientWidth >= scrollWidth - 100 && !isLoading) {
-      setDayCount((prev) => prev + 10);
+    if (
+      scrollLeft + clientWidth >= scrollWidth - 100 &&
+      !isLoading &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
     }
   };
 
