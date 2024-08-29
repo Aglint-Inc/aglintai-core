@@ -34,33 +34,38 @@ const CandidateAvailReceive = ({
   eventTargetMap: EventTargetMapType;
 }) => {
   const { request_progress } = useRequest();
-  let availaRecivedProgEvents = useMemo(() => {
+  let lastEvent: DatabaseTable['request_progress']['event_type'];
+  let availRecivedProgEvents = useMemo(() => {
     let availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
     if (request_progress.data.length === 0) {
       return availRecivedProgEvents;
     }
-    const filteredProg = request_progress.data.filter(
-      (prg) =>
-        prg.is_progress_step === false &&
-        groupedTriggerEventMap['availReceived'].includes(prg.event_type),
+    const filteredProg = request_progress.data.filter((prg) =>
+      groupedTriggerEventMap['availReceived'].includes(prg.event_type),
     );
     let idx = -1;
     filteredProg.forEach((prg) => {
-      if (idx >= 0 && availRecivedProgEvents[idx].length >= 1) {
-        availRecivedProgEvents[idx].push({ ...prg });
-      }
-
-      if (prg.event_type === 'CAND_AVAIL_REC') {
+      if (
+        prg.is_progress_step === false &&
+        prg.event_type === 'CAND_AVAIL_REC'
+      ) {
         availRecivedProgEvents.push([{ ...prg }]);
         idx += 1;
+      } else if (idx !== -1 && availRecivedProgEvents[idx].length > 0) {
+        availRecivedProgEvents[idx].push({
+          ...prg,
+        });
       }
     });
     return availRecivedProgEvents;
   }, [request_progress.data]);
-
+  if (request_progress.data.length > 0) {
+    lastEvent =
+      request_progress.data[request_progress.data.length - 1].event_type;
+  }
   return (
     <Stack rowGap={2}>
-      {availaRecivedProgEvents.length === 0 && (
+      <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
         <TextWithIcon
           iconName='expand_circle_right'
           textContent={`Candidate submits Availability`}
@@ -68,15 +73,27 @@ const CandidateAvailReceive = ({
           fontSize={1}
           color={getProgressColor('future')}
         />
-      )}
-      {availaRecivedProgEvents.map((eventPgs) => {
+      </ShowCode.When>
+      {availRecivedProgEvents.map((eventPgs, idx) => {
         return (
           <RequestEvents
             currProgress={eventPgs}
             eventTargetMap={eventTargetMap}
+            key={idx}
           />
         );
       })}
+      <ShowCode.When
+        isTrue={lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED'}
+      >
+        <TextWithIcon
+          iconName='expand_circle_right'
+          textContent={`Candidate submits Availability`}
+          iconSize={4}
+          fontSize={1}
+          color={getProgressColor('future')}
+        />
+      </ShowCode.When>
     </Stack>
   );
 };
@@ -90,63 +107,28 @@ const RequestEvents = ({
   currProgress: DatabaseTable['request_progress'][];
   eventTargetMap: EventTargetMapType;
 }) => {
-  const { request_progress } = useRequest();
-
-  const {
-    availRecivedProgress: availReceivedProgress,
-    reqProgresMp,
-    isSlotConfirmed,
-  } = useMemo(() => {
-    let progres: DatabaseTable['request_progress'][] = [];
+  const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
-    let isSlotConfirmed = false;
 
-    if (currProgress.length === 0) {
-      return { availRecivedProgress: progres, reqProgresMp: mp };
-    }
-    currProgress.forEach((prog) => {
-      if (prog.event_type === 'CAND_AVAIL_REC') {
-        progres.push({
-          ...prog,
-        });
-      } else if (
-        progres.length > 0 &&
-        prog.event_type !== 'CAND_CONFIRM_SLOT'
-      ) {
-        progres.push({
-          ...prog,
-        });
-      }
-      if (prog.event_type == 'CAND_CONFIRM_SLOT') {
-        isSlotConfirmed = true;
-      }
-    });
-
-    progres.forEach((row) => {
+    currProgress.forEach((row) => {
       if (!mp[row.event_type]) {
         mp[row.event_type] = [];
       }
       mp[row.event_type].push({ ...row });
     });
     return {
-      availRecivedProgress: progres,
       reqProgresMp: mp,
-      isSlotConfirmed,
     };
-  }, [request_progress.data]);
+  }, [currProgress]);
 
   let lastEvent: DatabaseTable['request_progress'];
 
-  if (availReceivedProgress.length > 0) {
-    lastEvent = availReceivedProgress[availReceivedProgress.length - 1];
-  }
-  // eslint-disable-next-line no-unused-vars
   let isManual = true;
-  if (
-    eventTargetMap['onReceivingAvailReq'] &&
-    eventTargetMap['onReceivingAvailReq'].length > 0
-  ) {
+  if (eventTargetMap['onReceivingAvailReq']) {
     isManual = false;
+  }
+  if (currProgress.length > 0) {
+    lastEvent = currProgress[currProgress.length - 1];
   }
   const handleConfirmSlot = async (request_id: string) => {
     try {
@@ -174,6 +156,7 @@ const RequestEvents = ({
     setReRequestAvailability(true);
     setCandidateAvailabilityIdForReRequest(avail_req.id);
   };
+
   return (
     <Stack>
       <TextWithIcon
@@ -185,7 +168,7 @@ const RequestEvents = ({
       />
       <Stack ml={4}>
         <ShowCode.When isTrue={isManual}>
-          {availReceivedProgress
+          {currProgress
             .filter((pg) => pg.is_progress_step === false)
             .sort(
               (p1, p2) =>
@@ -203,35 +186,22 @@ const RequestEvents = ({
               );
             })}
         </ShowCode.When>
-        <ShowCode.When
-          isTrue={
-            lastEvent &&
-            !isSlotConfirmed &&
-            lastEvent.event_type === 'CAND_AVAIL_REC' &&
-            Boolean(!eventTargetMap['onReceivingAvailReq'])
-          }
-        >
-          <Stack
-            width={'100%'}
-            direction={'row'}
-            justifyContent={'flex-end'}
-            gap={1}
-          ></Stack>
-        </ShowCode.When>
         <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
-          {Boolean(eventTargetMap['onReceivingAvailReq']) &&
-            eventTargetMap['onReceivingAvailReq']
-              .map((target_api) => {
-                return apiTargetToEvents[target_api];
-              })
-              .flat()
-              .map((ev) => {
-                return (
-                  <>
-                    <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
-                  </>
-                );
-              })}
+          <>
+            {eventTargetMap['onReceivingAvailReq'] &&
+              eventTargetMap['onReceivingAvailReq']
+                .map((target_api) => {
+                  return apiTargetToEvents[target_api];
+                })
+                .flat()
+                .map((ev) => {
+                  return (
+                    <>
+                      <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
+                    </>
+                  );
+                })}
+          </>
         </ShowCode.When>
       </Stack>
       <ShowCode.When
