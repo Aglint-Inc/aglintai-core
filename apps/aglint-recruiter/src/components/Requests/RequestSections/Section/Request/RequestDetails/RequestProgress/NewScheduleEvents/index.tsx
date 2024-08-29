@@ -14,22 +14,18 @@ import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
 
-const NewScheduleEvents = ({
-  eventActions,
-}: {
-  eventActions: TriggerActionsType;
-}) => {
-  const { request_progress } = useRequest();
+const NewScheduleEvents = () => {
+  const { request_progress, request_workflow } = useRequest();
   const eventTargetMap = useMemo(() => {
     let mp: EventTargetMapType = {};
-
-    eventActions.forEach((eA) => {
+    request_workflow.data.forEach((wf) => {
+      let eA = wf.workflow;
       mp[eA.trigger] = eA.workflow_action.map((wA) => {
         return wA.target_api;
       });
     });
     return mp;
-  }, [eventActions]);
+  }, [request_workflow.data]);
   const reqProgressMap: RequestProgressMapType = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -56,6 +52,7 @@ const NewScheduleEvents = ({
     eventTargetMap: eventTargetMap,
     requestTargetMp: requestTargetMp,
   });
+
   return (
     <>
       <Stack rowGap={2}>

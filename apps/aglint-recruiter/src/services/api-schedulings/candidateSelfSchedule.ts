@@ -12,6 +12,7 @@ export const candidateSelfSchedule = async ({
   request_id,
   application_id,
   start_date_str,
+  reqProgressLogger,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;
@@ -43,6 +44,15 @@ export const candidateSelfSchedule = async ({
     payload: {
       filter_json_id: filter_json.id,
       organizer_id,
+    },
+  });
+
+  await reqProgressLogger({
+    event_type: 'CAND_AVAIL_REC',
+    is_progress_step: false,
+    status: 'completed',
+    meta: {
+      filter_json_id: filter_json.id,
     },
   });
 };

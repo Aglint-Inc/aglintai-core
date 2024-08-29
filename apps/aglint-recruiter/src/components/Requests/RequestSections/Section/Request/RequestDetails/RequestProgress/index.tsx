@@ -1,5 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import { useMemo } from 'react';
 
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -14,8 +15,6 @@ function RequestProgress({
 }) {
   const { request_progress } = useRequest();
 
-  let eventActions: TriggerActionsType = [];
-
   return (
     <Stack gap={1}>
       <ShowCode>
@@ -27,7 +26,7 @@ function RequestProgress({
         </ShowCode.When>
         <ShowCode.Else>
           <ShowCode.When isTrue={request_type === 'schedule_request'}>
-            <NewScheduleEvents eventActions={eventActions} />
+            <NewScheduleEvents />
           </ShowCode.When>
         </ShowCode.Else>
       </ShowCode>
