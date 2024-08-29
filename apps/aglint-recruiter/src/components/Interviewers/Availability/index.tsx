@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {

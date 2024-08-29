@@ -83,10 +83,6 @@ export const TRIGGER_PAYLOAD: {
     phase: ['after'],
   },
   {
-    trigger: 'onSelfScheduleReqAgent',
-    phase: ['after'],
-  },
-  {
     phase: ['after'],
     trigger: 'onRequestCancel',
   },
@@ -142,9 +138,6 @@ export function getTriggerOption(
     case 'onReceivingAvailReq':
       message = 'Receiving a candidate availability';
       break;
-    case 'onSelfScheduleReqAgent':
-      message = 'Candidate submits a self-schedule';
-      break;
     case 'onRequestCancel':
       message = 'Candidate cancels a request';
       break;
@@ -170,7 +163,7 @@ export function getTriggerOption(
   return `${preMessage} ${message}`;
 }
 
-export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
+export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   sendAvailReqReminder: [
     {
       value: {
@@ -387,13 +380,12 @@ export const ACTION_TRIGGER_MAP: Partial<Trigger_API_Action_Mapper> = {
     },
     {
       value: {
-        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest' as any, //TODO: fix lint
+        target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
         action_type: 'agent_instruction',
       },
       name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
     },
   ],
-
   onRequestCancel: [
     {
       name: 'Cancel Calender Invites',
@@ -463,7 +455,6 @@ const TAG_MAP: WorkflowTagOptionsType = {
   onRequestInterviewerDecline: 'Decline Request',
   onRequestReschedule: 'Reschedule Request',
   onRequestSchedule: 'Schedule Request',
-  onSelfScheduleReqAgent: 'Self Schedule Request',
   onTrainingComplete: 'Training Completion',
   selfScheduleReminder: 'Self Schedule Reminder',
   sendAvailReqReminder: 'Availiability Request Reminder',
