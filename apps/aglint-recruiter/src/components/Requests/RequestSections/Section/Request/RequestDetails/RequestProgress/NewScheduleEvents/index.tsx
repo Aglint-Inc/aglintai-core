@@ -4,11 +4,7 @@ import React, { useMemo } from 'react';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import {
-  EventTargetMapType,
-  RequestProgressMapType,
-  TriggerActionsType,
-} from '../types';
+import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';

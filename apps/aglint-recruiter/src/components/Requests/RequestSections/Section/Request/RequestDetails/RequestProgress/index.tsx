@@ -1,20 +1,17 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { useMemo } from 'react';
 
 import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import NewScheduleEvents from './NewScheduleEvents';
-import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
 }: {
   request_type: DatabaseTable['request']['type'];
 }) {
   const { request_progress } = useRequest();
-
   return (
     <Stack gap={1}>
       <ShowCode>
