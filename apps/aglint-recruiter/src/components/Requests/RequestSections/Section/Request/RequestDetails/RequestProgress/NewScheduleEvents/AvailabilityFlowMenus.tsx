@@ -31,13 +31,15 @@ const AvailabilityFlowMenus = ({
     if (request_progress.data.length === 0) {
       return progres;
     }
-    request_progress.data.forEach((prog) => {
-      if (prog.event_type !== 'CAND_AVAIL_REC') {
-        progres.push({
-          ...prog,
-        });
+    for (let prog of request_progress.data) {
+      if (prog.event_type === 'CAND_AVAIL_REC') {
+        break;
       }
-    });
+      progres.push({
+        ...prog,
+      });
+    }
+
     return progres;
   }, [request_progress.data]);
 
