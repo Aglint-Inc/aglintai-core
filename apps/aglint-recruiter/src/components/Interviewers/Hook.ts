@@ -103,7 +103,7 @@ export const useAvailabilty = () => {
     queryFn: (param) => fetchAvailabiltyWithCal(param, recruiter_id),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
-      return allPages.length + 1;
+      return allPages.length + 1 <= 20 ? allPages.length + 1 : undefined;
     },
   });
 
@@ -137,49 +137,6 @@ const fetchAvailabiltyWithCal = async (
       return data.data.data as initUser[];
     });
 };
-// export type useAvailabiltyWithCalType = Awaited<
-//   ReturnType<typeof useAvailabilty>
-// >;
-
-// export const useAvailabilty = ({
-//   startDate,
-//   endDate,
-// }: {
-//   startDate: string;
-//   endDate: string;
-// }) => {
-//   const { recruiter_id } = useAuthDetails();
-//   const queryClient = useQueryClient();
-//   const query = useQuery({
-//     queryKey: ['get_fetchAvailabiltyWithCal', startDate, endDate],
-//     refetchOnMount: true,
-//     queryFn: () => fetchAvailabiltyWithCal(recruiter_id, startDate, endDate),
-//     gcTime: 20000,
-//     enabled: !!recruiter_id,
-//   });
-//   const refetch = () =>
-//     queryClient.invalidateQueries({
-//       queryKey: ['get_fetchAvailabiltyWithCal', startDate, endDate],
-//     });
-//   return { ...query, refetch };
-// };
-
-// const fetchAvailabiltyWithCal = async (
-//   recruiter_id: string,
-//   startDate: string,
-//   endDate: string,
-// ) => {
-//   return axios
-//     .post('/api/interviewers', {
-//       recruiter_id,
-//       startDate,
-//       endDate,
-//     })
-//     .then((data) => {
-//       return data.data.data as initUser[];
-//     });
-// };
-
 // -------------------------------------------------------- leader board
 
 export type useLeaderBoardType = Awaited<

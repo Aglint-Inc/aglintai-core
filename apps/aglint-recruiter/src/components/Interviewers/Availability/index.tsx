@@ -51,6 +51,7 @@ const TimeLineCalendar = () => {
   const {
     data: allInterviewerPages,
     isLoading,
+    hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
   } = useAvailabilty();
@@ -169,7 +170,7 @@ const TimeLineCalendar = () => {
       })
     : allInter;
 
-  if (isLoading && dayCount === 10)
+  if (isLoading)
     return (
       <Stack
         height={'100%'}
@@ -270,6 +271,7 @@ const TimeLineCalendar = () => {
         allInterviewers={calconnectedInterviewers}
         fetchNextPage={fetchNextPage}
         daysCountUI={dayCount}
+        hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
       />
@@ -287,12 +289,14 @@ const AvailabilityView = ({
   allInterviewers,
   daysCountUI,
   fetchNextPage,
+  hasNextPage,
   isFetchingNextPage,
   isLoading,
 }: {
   allInterviewers: initUser[];
   daysCountUI?: number;
   fetchNextPage?: any;
+  hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   isLoading?: boolean;
 }) => {
@@ -386,6 +390,7 @@ const AvailabilityView = ({
               key={index}
               timeZoneLeftOffset={timeZoneLeftOffset}
               interviewer={interviewerWithFilteredEvent}
+              hasNextPage={hasNextPage}
             />
           );
         })}
@@ -469,8 +474,10 @@ const MemberList = ({
 const TimeLineList = ({
   timeZoneLeftOffset,
   interviewer,
+  hasNextPage,
 }: {
   timeZoneLeftOffset: number;
+  hasNextPage?: boolean;
   interviewer: initUserUIGroupedByDate;
 }) => {
   const [breakStartHour, breakStartMinute, breakEndHour, breakEndMinute] =
@@ -729,27 +736,29 @@ const TimeLineList = ({
         );
       })}
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          position: 'relative',
-        }}
-      >
-        <Stack>
-          <Skeleton
-            variant='rectangular'
-            width={oneDayPx}
-            height={20}
-            sx={{
-              borderRadius: 10,
-              animation: `${pulse} 1.5s infinite`, // Adjust the speed here
-              backgroundColor: '#c0c0c0', // Change the color here
-            }}
-          />
-        </Stack>
-      </Box>
+      {hasNextPage && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+        >
+          <Stack>
+            <Skeleton
+              variant='rectangular'
+              width={oneDayPx}
+              height={20}
+              sx={{
+                borderRadius: 10,
+                animation: `${pulse} 1.5s infinite`, // Adjust the speed here
+                backgroundColor: '#c0c0c0', // Change the color here
+              }}
+            />
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
 };
