@@ -20,6 +20,7 @@ import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
 
 import { useActions } from './context';
+import { getWorkflowTagIcon, TAG_OPTIONS } from '../../constants';
 
 const Actions = () => {
   const {
@@ -57,6 +58,7 @@ const ActionRecommendations = memo(() => {
       <WorkflowButton
         key={option.value.target_api}
         textButton={option.name}
+        slotIcon={getWorkflowTagIcon(option.value.action_type)}
         onClickButton={{ onClick: () => createAction(option), ...devlinkProps }}
       />
     );
