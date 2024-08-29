@@ -1,8 +1,8 @@
-# ShadCN UI
+# ShadCN UI / v0
 
 ## Overview
 
-This directory holds the [ShadCN UI](https://ui.shadcn.com/) components. All ShadCN components are structured under the `/src/components/shadcn` directory. To ensure consistency and maintainability, we have specific guidelines for working with these components.
+This directory holds the [ShadCN UI](https://ui.shadcn.com/) / [v0](https://v0.dev/) components. All ShadCN components are structured under the `/src/components/shadcn` directory. To ensure consistency and maintainability, we have specific guidelines for working with these components.
 
 ## Directory Structure
 
