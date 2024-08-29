@@ -6,16 +6,12 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import NewScheduleEvents from './NewScheduleEvents';
-import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
 }: {
   request_type: DatabaseTable['request']['type'];
 }) {
   const { request_progress } = useRequest();
-
-  let eventActions: TriggerActionsType = [];
-
   return (
     <Stack gap={1}>
       <ShowCode>
@@ -27,7 +23,7 @@ function RequestProgress({
         </ShowCode.When>
         <ShowCode.Else>
           <ShowCode.When isTrue={request_type === 'schedule_request'}>
-            <NewScheduleEvents eventActions={eventActions} />
+            <NewScheduleEvents />
           </ShowCode.When>
         </ShowCode.Else>
       </ShowCode>
