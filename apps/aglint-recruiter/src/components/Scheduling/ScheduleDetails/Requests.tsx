@@ -24,7 +24,7 @@ function Requests({ session_id }) {
 
   const schedule = data?.schedule_data;
   return (
-    <Stack spacing={'var(--space-4)'}>
+    <Stack spacing={'var(--space-2)'}>
       <Text
         weight={'medium'}
         color='neutral'
