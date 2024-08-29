@@ -54,13 +54,7 @@ export default function Navbar() {
             <DropdownMenuItem asChild>
               <Link href='/candidate/profile'>Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {
-                /* Implement logout logic */
-              }}
-            >
-              Logout
-            </DropdownMenuItem>
+            <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

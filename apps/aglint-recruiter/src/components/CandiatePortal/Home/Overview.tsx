@@ -26,13 +26,13 @@ export function Overview() {
           and enjoyable food & lifestyle choices.
         </p>
         <div className='relative aspect-video'>
-          <Image
+          {/* <Image
             src='https://hebbkx1anhila5yf.public.blob.vercel-storage.com/good-health-video-thumbnail-zNGIvTmIUuI7PNaVuPPTQOmkHq5Nw3.png'
             alt="A greeting from Petra, Good Health's Founder & CEO"
             layout='fill'
             objectFit='cover'
             className='rounded-lg'
-          />
+          /> */}
           <div className='absolute inset-0 flex items-center justify-center'>
             <Button variant='secondary' size='sm'>
               Play Video

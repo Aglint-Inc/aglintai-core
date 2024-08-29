@@ -164,42 +164,37 @@ function InterviewCard({ interview }: { interview: Interview }) {
 
 export default function InterviewsPage() {
   return (
-    <div className='flex flex-col min-h-screen'>
-      <Navbar />
-      <PageHeader />
-      <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
-        <main className='lg:w-[70%] space-y-6'>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-2xl font-bold'>
-                Upcoming interviews
-              </CardTitle>
-              <Button variant='outline'>Make changes</Button>
-            </CardHeader>
-            <CardContent>
-              {upcomingInterviews.map((interview, index) => (
-                <InterviewCard key={index} interview={interview} />
-              ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-2xl font-bold'>
-                Past interviews
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {pastInterviews.map((interview, index) => (
-                <InterviewCard key={index} interview={interview} />
-              ))}
-            </CardContent>
-          </Card>
-        </main>
-        <aside className='lg:w-[30%] space-y-6'>
-          {/* You can add additional content or widgets here */}
-        </aside>
-      </div>
-      <Footer />
+    <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
+      <main className='lg:w-[70%] space-y-6'>
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-2xl font-bold'>
+              Upcoming interviews
+            </CardTitle>
+            <Button variant='outline'>Make changes</Button>
+          </CardHeader>
+          <CardContent>
+            {upcomingInterviews.map((interview, index) => (
+              <InterviewCard key={index} interview={interview} />
+            ))}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className='text-2xl font-bold'>
+              Past interviews
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {pastInterviews.map((interview, index) => (
+              <InterviewCard key={index} interview={interview} />
+            ))}
+          </CardContent>
+        </Card>
+      </main>
+      <aside className='lg:w-[30%] space-y-6'>
+        {/* You can add additional content or widgets here */}
+      </aside>
     </div>
   );
 }
