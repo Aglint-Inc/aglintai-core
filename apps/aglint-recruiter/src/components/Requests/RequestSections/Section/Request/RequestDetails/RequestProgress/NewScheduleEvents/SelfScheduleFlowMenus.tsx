@@ -1,5 +1,4 @@
 import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -48,11 +47,6 @@ const SelfScheduleFlowMenus = ({
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
           .filter((s) => s.is_progress_step === false)
-          .sort(
-            (p1, p2) =>
-              dayjsLocal(p1.created_at).unix() -
-              dayjsLocal(p2.created_at).unix(),
-          )
           .map((prog) => {
             return (
               <>

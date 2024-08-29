@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -35,10 +35,11 @@ const CandidateAvailReceive = ({
 }) => {
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress']['event_type'];
-  let availRecivedProgEvents = useMemo(() => {
+  let { availRecivedProgEvents, isScheduled } = useMemo(() => {
+    let isScheduled = false;
     let availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
     if (request_progress.data.length === 0) {
-      return availRecivedProgEvents;
+      return { availRecivedProgEvents, isScheduled };
     }
     const filteredProg = request_progress.data.filter((prg) =>
       groupedTriggerEventMap['availReceived'].includes(prg.event_type),
@@ -57,7 +58,14 @@ const CandidateAvailReceive = ({
         });
       }
     });
-    return availRecivedProgEvents;
+    if (
+      request_progress.data.find(
+        (prg) => prg.event_type === 'CAND_CONFIRM_SLOT',
+      )
+    ) {
+      isScheduled = true;
+    }
+    return { availRecivedProgEvents, isScheduled };
   }, [request_progress.data]);
   if (request_progress.data.length > 0) {
     lastEvent =
@@ -80,6 +88,7 @@ const CandidateAvailReceive = ({
             currProgress={eventPgs}
             eventTargetMap={eventTargetMap}
             key={idx}
+            isScheduled={isScheduled}
           />
         );
       })}
@@ -103,9 +112,11 @@ export default CandidateAvailReceive;
 const RequestEvents = ({
   currProgress,
   eventTargetMap,
+  isScheduled,
 }: {
   currProgress: DatabaseTable['request_progress'][];
   eventTargetMap: EventTargetMapType;
+  isScheduled: boolean;
 }) => {
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
@@ -170,11 +181,6 @@ const RequestEvents = ({
         <ShowCode.When isTrue={isManual}>
           {currProgress
             .filter((pg) => pg.is_progress_step === false)
-            .sort(
-              (p1, p2) =>
-                dayjsLocal(p1.created_at).unix() -
-                dayjsLocal(p2.created_at).unix(),
-            )
             .map((av) => {
               return (
                 <>
@@ -205,7 +211,9 @@ const RequestEvents = ({
         </ShowCode.When>
       </Stack>
       <ShowCode.When
-        isTrue={lastEvent && lastEvent.event_type === 'CAND_AVAIL_REC'}
+        isTrue={
+          !isScheduled && lastEvent && lastEvent.event_type === 'CAND_AVAIL_REC'
+        }
       >
         <Stack direction={'row'} gap={1}>
           <ButtonSoft
