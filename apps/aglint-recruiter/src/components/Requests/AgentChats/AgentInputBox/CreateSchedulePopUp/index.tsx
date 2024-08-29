@@ -61,6 +61,7 @@ function CreateSchedulePopUp({
             type: 'schedule_request',
             schedule_start_date: selectedDateRange.start_date,
             schedule_end_date: selectedDateRange.end_date,
+            note: null,
           },
           applications: [selectedItems.applicant_name[0].id],
           sessions: selectedItems.interview_name.map((ele) => ele.id),
