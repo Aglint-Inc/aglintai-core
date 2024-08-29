@@ -3422,6 +3422,7 @@ export type Database = {
           request_id: string
           status: string
           target_api: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -3433,6 +3434,7 @@ export type Database = {
           request_id: string
           status: string
           target_api?: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -3444,6 +3446,7 @@ export type Database = {
           request_id?: string
           status?: string
           target_api?: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at?: string
         }
         Relationships: [
           {
