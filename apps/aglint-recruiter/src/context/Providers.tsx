@@ -12,31 +12,30 @@ import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
+import { ThemeProvider } from '@components/shadcn/theme-provider';
 
 export const PrivateProviders = ({
   children,
   appRouter = false,
 }: PropsWithChildren<{ appRouter?: boolean }>) => {
   return (
-    <Suspense>
-      <PublicProviders>
-        <PHProvider>
-          <AuthProvider>
-            <RolesAndPermissionsProvider>
-              <BreadcrumProvider>
-                <TourProvider>
-                  <JobsProvider>
-                    <WorkflowsProvider>
-                      <AppLayout appRouter={appRouter}>{children}</AppLayout>
-                    </WorkflowsProvider>
-                  </JobsProvider>
-                </TourProvider>
-              </BreadcrumProvider>
-            </RolesAndPermissionsProvider>
-          </AuthProvider>
-        </PHProvider>
-      </PublicProviders>
-    </Suspense>
+    <PublicProviders>
+      <PHProvider>
+        <AuthProvider>
+          <RolesAndPermissionsProvider>
+            <BreadcrumProvider>
+              <TourProvider>
+                <JobsProvider>
+                  <WorkflowsProvider>
+                    <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                  </WorkflowsProvider>
+                </JobsProvider>
+              </TourProvider>
+            </BreadcrumProvider>
+          </RolesAndPermissionsProvider>
+        </AuthProvider>
+      </PHProvider>
+    </PublicProviders>
   );
 };
 
@@ -45,9 +44,16 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
     <Suspense>
       <DevlinkMainProvider>
         <Theme>
-          <ScreenSizeProvider>
-            <QueryProvider>{children}</QueryProvider>
-          </ScreenSizeProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='light'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ScreenSizeProvider>
+              <QueryProvider>{children}</QueryProvider>
+            </ScreenSizeProvider>
+          </ThemeProvider>
         </Theme>
       </DevlinkMainProvider>
     </Suspense>

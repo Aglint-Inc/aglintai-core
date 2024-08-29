@@ -35,6 +35,8 @@ import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import { ModeToggle } from '@/src/components/shadcn/mode-toggle';
+import { Button } from '@/src/components/shadcn/ui/button';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -48,6 +50,8 @@ export const SharedActions = () => {
   return (
     <SettingsContext.Provider value={value}>
       <Stack direction={'row'} alignItems={'center'} gap={2}>
+        <Button>Click me!</Button>
+        <ModeToggle />
         <Score />
         <Sync />
         <Add />
