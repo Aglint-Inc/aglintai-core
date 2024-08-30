@@ -9,6 +9,7 @@ import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 import axios from '@/src/client/axios';
 import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { SlackIcon } from '../../Components/SlackIcon';
 import { EventTargetMapType, RequestProgressMapType } from '../types';
@@ -122,12 +123,16 @@ function CandidateCancelled() {
         event_run_id: null,
         target_api: api,
       };
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
-        {
-          ...meta,
-        },
-      );
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/${meta.target_api}`,
+          {
+            ...meta,
+          },
+        );
+      } catch (error) {
+        toast.error('Slack server not started');
+      }
       // send slack message
     } else if (api === 'onRequestCancel_agent_cancelEvents') {
       await supabase
