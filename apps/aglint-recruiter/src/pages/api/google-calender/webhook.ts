@@ -9,8 +9,6 @@ import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import dayjs from '@/src/utils/dayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-type MeetingStatus = 'accepted' | 'declined' | 'tentative' | 'needsAction';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const resource_id = req.headers['x-goog-resource-id'] as string;
@@ -57,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const calendarstatus = event.attendees?.find(
               (attendee) => attendee.email === email,
-            )?.responseStatus as MeetingStatus;
+            )?.responseStatus;
 
             if (!calendarstatus) return null;
 

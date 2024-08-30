@@ -6,6 +6,7 @@ import {
   JobApplcationDB,
 } from '@aglint/shared-types';
 
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { supabase } from '@/src/utils/supabase/client';
 
 export async function getApplicationSchedule({
@@ -120,4 +121,8 @@ export type ApplicationDataResponseType = {
   };
   candidate: Candidate;
 };
-export type ApiResponseFindAvailability = DateRangePlansType[];
+
+export type ApiResponseFindAvailability = {
+  slots: DateRangePlansType[];
+  availabilities: CandidatesSchedulingV2['calendar_events'];
+};

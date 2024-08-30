@@ -1,20 +1,21 @@
 import { EmailTemplateAPi } from '@aglint/shared-types';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
-import { Text } from '@/devlink/Text';
 import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 
 import {
+  setCalendarDate,
   setEmailData,
   setSelectedCombIds,
   useSelfSchedulingFlowStore,
-} from '../store';
+} from '../../store';
+import DayCardWrapper from './DayCardWrapper';
+import FilterButton from './FilterButton';
 import { groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
@@ -70,16 +71,15 @@ function StepSlotOptions() {
     <Stack height={'calc(100vh - 97px)'}>
       <ScheduleOptionsList
         slotDescription={
-          <>
-            <Text
-              content={`Showing available options between ${dayjs(dateRange.start_date).format('DD MMM YYYY')} - ${dayjs(dateRange.end_date).format('DD MMM YYYY')}`}
-              weight={'medium'}
-            />
-
-            <Text
-              content={`Select atleast 5 available time slots and then click 'Continue' to forward them to the candidate for selection.`}
-            />
-          </>
+          <Stack justifyContent={'space-between'} direction={'row'}>
+            <Typography fontWeight={600} variant='body1'>
+              Showing available options between{' '}
+              {dayjs(dateRange.start_date).format('MMM DD')}
+              {' - '}
+              {dayjs(dateRange.end_date).format('MMM DD')}
+            </Typography>
+            <FilterButton />
+          </Stack>
         }
         slotDateOption={
           <>
@@ -98,6 +98,7 @@ function StepSlotOptions() {
                   isSlotCollapseNeeded={true}
                   index={index}
                   setSelectedCombIds={setSelectedCombIds}
+                  setCalendarDate={setCalendarDate}
                 />
               );
             })}

@@ -50,10 +50,10 @@ export function filterSchedulingOptionsArray({
   schedulingOptions,
   filters,
 }: {
-  schedulingOptions: ApiResponseFindAvailability;
+  schedulingOptions: ApiResponseFindAvailability['slots'];
   filters: SelfSchedulingFlow['filters'];
 }) {
-  const allFilteredOptions: ApiResponseFindAvailability = schedulingOptions.map(
+  const allFilteredOptions: ApiResponseFindAvailability['slots'] = schedulingOptions.map(
     (option) => ({
       ...option,
       interview_rounds: option.interview_rounds.map((items) => {
