@@ -2,23 +2,20 @@
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import ScheduleFlows from '../Actions/Schedule';
-import { EventTargetMapType, RequestProgressMapType } from '../types';
-import { getSchedulFlow } from '../utils/getScheduleFlow';
+import { RequestProgressMapType } from '../types';
+import { useNewScheduleRequestPr } from '.';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
 import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
 
-const SelectScheduleFlow = ({
-  eventTargetMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-}) => {
+const SelectScheduleFlow = () => {
   const { request_progress } = useRequest();
-  const eventWActions = eventTargetMap['onRequestSchedule'] ?? [];
+  const { reqTriggerActionsMap, scheduleFlow } = useNewScheduleRequestPr();
+  const eventWActions = reqTriggerActionsMap['onRequestSchedule'] ?? [];
   const isManualSchedule = eventWActions.length === 0;
 
   const scheduleReqProgressMap: RequestProgressMapType = useMemo(() => {
@@ -33,11 +30,6 @@ const SelectScheduleFlow = ({
     return mp;
   }, [request_progress]);
 
-  let scheduleFlow = getSchedulFlow({
-    eventTargetMap,
-    requestTargetMp: scheduleReqProgressMap,
-  });
-
   let isSelectScheduleFlowComplete = false;
   if (
     scheduleReqProgressMap['CAND_AVAIL_REC'] ||
@@ -47,33 +39,32 @@ const SelectScheduleFlow = ({
   }
   return (
     <Stack>
-      <TextWithIcon
-        iconName='expand_circle_right'
-        textContent={`Candidate Schedule`}
-        iconSize={4}
-        fontSize={1}
-        color={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
-      />
-      <Stack ml={4} mt={1} rowGap={1.5}>
-        <ShowCode.When isTrue={scheduleFlow === null}>
-          <ScheduleFlows />
-        </ShowCode.When>
+      <RequestProgress
+        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
+        slotProgress={
+          <>
+            <ShowCode.When isTrue={scheduleFlow === null}>
+              <ScheduleFlows />
+            </ShowCode.When>
 
-        <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-          <SelfScheduleFlowMenus
-            isManualSchedule={isManualSchedule}
-            eventTargetMap={eventTargetMap}
-            scheduleReqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
-        <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-          <AvailabilityFlowMenus
-            isManualSchedule={isManualSchedule}
-            eventTargetMap={eventTargetMap}
-            scheduleReqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
-      </Stack>
+            <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
+              <SelfScheduleFlowMenus
+                isManualSchedule={isManualSchedule}
+                eventTargetMap={{}}
+                scheduleReqProgressMap={scheduleReqProgressMap}
+              />
+            </ShowCode.When>
+            <ShowCode.When isTrue={scheduleFlow === 'availability'}>
+              <AvailabilityFlowMenus
+                isManualSchedule={isManualSchedule}
+                eventTargetMap={{}}
+                scheduleReqProgressMap={scheduleReqProgressMap}
+              />
+            </ShowCode.When>
+          </>
+        }
+        textRequestProgress={'Scheduling Request Recieved'}
+      />
     </Stack>
   );
 };

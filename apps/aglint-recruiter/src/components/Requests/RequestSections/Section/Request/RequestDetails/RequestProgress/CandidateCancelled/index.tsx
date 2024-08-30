@@ -1,10 +1,11 @@
+import { Stack, TextField } from '@mui/material';
+
 import { ActiveCircleIndicator } from '@/devlink2/ActiveCircleIndicator';
 import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import { Stack, TextField } from '@mui/material';
 
 function CandidateCancelled() {
   const requestProgressData = [

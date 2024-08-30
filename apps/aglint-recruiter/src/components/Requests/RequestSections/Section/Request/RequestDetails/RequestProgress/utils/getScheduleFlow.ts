@@ -1,10 +1,10 @@
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { RequestProgressMapType, TriggerActionMapType } from '../types';
 type ScheduleFlow = 'availability' | 'selfSchedule';
 export const getSchedulFlow = ({
   eventTargetMap,
   requestTargetMp,
 }: {
-  eventTargetMap: EventTargetMapType;
+  eventTargetMap: TriggerActionMapType;
   requestTargetMp: RequestProgressMapType;
 }) => {
   let scheduleFlow: ScheduleFlow = null;
@@ -17,12 +17,12 @@ export const getSchedulFlow = ({
     eventTargetMap['onRequestSchedule'].length > 0
   ) {
     if (
-      eventTargetMap['onRequestSchedule'][0] ===
+      eventTargetMap['onRequestSchedule'][0].target_api ===
       'onRequestSchedule_emailLink_getCandidateAvailability'
     ) {
       scheduleFlow = 'availability';
     } else if (
-      eventTargetMap['onRequestSchedule'][0] ===
+      eventTargetMap['onRequestSchedule'][0].target_api ===
       'onRequestSchedule_emailLink_sendSelfSchedulingLink'
     ) {
       scheduleFlow = 'selfSchedule';
