@@ -8,4 +8,5 @@ declare function RequestProgress(props: {
   slotIndicator?: Types.Devlink.Slot;
   slotProgress?: Types.Devlink.Slot;
   textRequestProgress?: React.ReactNode;
+  isDividerVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
