@@ -15,20 +15,23 @@
   grid-row-gap: var(--space-4);
 }
 
-.nmsc-date-wrap {
-  position: sticky;
-  top: 0px;
-}
-
 .nmsc-date-sub-wrap {
   position: relative;
   height: 100%;
 }
 
+.nmsc-date-wrapper {
+  height: 100%;
+  border-radius: var(--radius-4);
+  background-color: var(--neutral-a3);
+}
+
 .nmsc-date {
+  position: sticky;
+  top: 0px;
+
   display: flex;
   width: 120px;
-  height: 100%;
   padding: var(--space-3) var(--space-5);
   flex-direction: column;
   justify-content: flex-start;
@@ -36,10 +39,6 @@
   align-items: center;
   grid-column-gap: var(--space-2);
   grid-row-gap: var(--space-2);
-
-  border-radius: var(--radius-4);
-
-  background-color: var(--neutral-a3);
 }
 
 .nmsc-date.not-schedule {

@@ -117,11 +117,14 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <GlobalEmptyState
+  <Stack bgcolor={'white'} padding={'12px'}>
+        <GlobalEmptyState
         iconName={'lan'}
         styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
         textDesc={'No workflows connected'}
       />
+
+  </Stack>
     );
   const cards = workflows
     .toSorted((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
@@ -210,6 +213,8 @@ const WorkflowBrowser = () => {
       const jobCount = (jobs ?? []).length;
       return (
         <WorkflowCard
+        widthText={'small'}
+        border={'visible'}
           key={id}
           isCheckboxVisible={true}
           // isChecked={checked}
