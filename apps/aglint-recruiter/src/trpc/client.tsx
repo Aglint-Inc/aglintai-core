@@ -33,7 +33,7 @@ const getQueryClient = () => {
 // export const api = createTRPCClient<AppRouter>({
 // links: [
 // splitLink({
-//   condition: (op) => op.context.skipBatch === true,
+//   condition: (op) => op.context.disableBatch === true,
 //   true: httpLink({
 //     url: `${getBaseUrl()}/api/trpc`,
 //     transformer: superjson as any,
@@ -83,14 +83,16 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
         splitLink({
-          condition: (op) => op.context.skipBatch === true,
+          condition: (op) => op.context.disableBatch === true,
           true: httpLink({
             url: `${url}/api/trpc`,
             transformer: superjson as any,
+            methodOverride: 'POST',
           }),
           false: unstable_httpBatchStreamLink({
             transformer: superjson as any,
             url: `${url}/api/trpc`,
+            methodOverride: 'POST',
             headers: () => {
               const headers = new Headers();
               headers.set('x-trpc-source', 'nextjs-react');
@@ -119,3 +121,9 @@ function getBaseUrl() {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
+
+export const TRPC_CLIENT_CONTEXT = {
+  context: {
+    disableBatch: true,
+  },
+} as const;

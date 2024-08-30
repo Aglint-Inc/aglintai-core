@@ -9,7 +9,7 @@ import {
 } from 'react';
 
 import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
-import { api } from '@/src/trpc/client';
+import { api, TRPC_CLIENT_CONTEXT } from '@/src/trpc/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
@@ -40,11 +40,7 @@ const useActions = () => {
     { recruiter_id },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -53,11 +49,7 @@ const useActions = () => {
       { recruiter_id, departments, jobs, type: completedInterviewType },
       {
         enabled,
-        trpc: {
-          context: {
-            skipBatch: true,
-          },
-        },
+        trpc: TRPC_CLIENT_CONTEXT,
       },
     );
 
@@ -65,11 +57,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -77,11 +65,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -89,11 +73,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs, type: interviewersType },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -101,11 +81,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs, type: leaderboardType },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -113,11 +89,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs, type: reasonsType },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -126,11 +98,7 @@ const useActions = () => {
       { recruiter_id, departments, jobs },
       {
         enabled,
-        trpc: {
-          context: {
-            skipBatch: true,
-          },
-        },
+        trpc: TRPC_CLIENT_CONTEXT,
       },
     );
 
@@ -138,11 +106,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -150,11 +114,7 @@ const useActions = () => {
     { recruiter_id, departments, jobs },
     {
       enabled,
-      trpc: {
-        context: {
-          skipBatch: true,
-        },
-      },
+      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 

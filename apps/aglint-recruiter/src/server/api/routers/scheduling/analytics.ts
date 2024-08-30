@@ -1,8 +1,6 @@
 import { DatabaseFunctions } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { SchedulingAnalyticsFunctions } from '@/src/queries/scheduling-analytics/types';
-
 import { createTRPCRouter, privateProcedure } from '../../trpc';
 
 const completed_interviews_type = z.object({
@@ -249,3 +247,11 @@ type AnalysisProcedures<
 
 export type SchedulingAnalysisSchema<T extends SchedulingAnalyticsFunctions> =
   AnalysisProcedures[T]['schema'] extends z.ZodSchema<infer R> ? R : never;
+
+type SchedulingAnalyticsFunctions =
+  Extract<
+    keyof DatabaseFunctions,
+    `scheduling_analytics_${string}`
+  > extends `scheduling_analytics_${infer R}`
+    ? R
+    : never;
