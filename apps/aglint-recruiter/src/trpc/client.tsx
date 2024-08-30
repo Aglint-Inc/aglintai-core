@@ -51,8 +51,6 @@ const getQueryClient = () => {
 // ],
 // });
 
-export const api = createTRPCReact<AppRouter>();
-
 /**
  * Inference helper for inputs.
  *
@@ -127,3 +125,5 @@ export const TRPC_CLIENT_CONTEXT = {
     disableBatch: true,
   },
 } as const;
+
+export const api = createTRPCReact<AppRouter>();

@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
+import type { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics/types';
 import { api, TRPC_CLIENT_CONTEXT } from '@/src/trpc/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';

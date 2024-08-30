@@ -12,8 +12,9 @@ import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
-import { createClient } from '../db';
-import { UNAUTHENTICATED } from './enums';
+import { createPrivateClient, createPublicClient } from '../db';
+import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
+import { authorize } from '../utils';
 
 type CreateContextOptions = {
   headers: Headers;
@@ -32,24 +33,7 @@ type CreateContextOptions = {
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: CreateContextOptions) => {
-  const db = createClient({
-    cookies: {
-      getAll: () => opts.cookies.getAll(),
-      setAll: (cookiesToSet) => {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            opts.cookies.set(name, value, options as unknown as ResponseCookie),
-          );
-        } catch {
-          //
-        }
-      },
-    },
-  });
-  return {
-    ...opts,
-    db,
-  };
+  return opts;
 };
 
 /**
@@ -117,16 +101,31 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
-const authMiddleware = t.middleware(async ({ next, ctx }) => {
+const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
+  const db = createPrivateClient({
+    cookies: {
+      getAll: () => ctx.cookies.getAll(),
+      setAll: (cookiesToSet) => {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            ctx.cookies.set(name, value, options as unknown as ResponseCookie),
+          );
+        } catch {
+          //
+        }
+      },
+    },
+  });
+
   const {
     data: { user },
-  } = await ctx.db.auth.getUser();
+  } = await db.auth.getUser();
 
   if (!user) {
     throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
   }
 
-  const { data } = await ctx.db
+  const { data } = await db
     .from('recruiter_relation')
     .select(
       'recruiter_id, roles(name, role_permissions(permissions(name, is_enable)))',
@@ -152,13 +151,27 @@ const authMiddleware = t.middleware(async ({ next, ctx }) => {
     [] as (typeof role_permissions)[number]['permissions']['name'][],
   );
 
+  if (!authorize(path, permissions))
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: UNAUTHORIZED });
+
   return await next({
     ctx: {
       ...ctx,
+      db,
       user,
       recruiter_id,
       role,
       permissions,
+    },
+  });
+});
+
+const adminClientMiddleware = t.middleware(async ({ ctx, next }) => {
+  const db = createPublicClient();
+  return await next({
+    ctx: {
+      ...ctx,
+      db,
     },
   });
 });
@@ -170,7 +183,9 @@ const authMiddleware = t.middleware(async ({ next, ctx }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(adminClientMiddleware);
 
 /**
  * Private (authenticated) procedure
