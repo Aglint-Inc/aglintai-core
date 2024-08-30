@@ -19,8 +19,8 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
 
+import { getWorkflowTagIcon } from '../../constants';
 import { useActions } from './context';
-import { getWorkflowTagIcon, TAG_OPTIONS } from '../../constants';
 
 const Actions = () => {
   const {
