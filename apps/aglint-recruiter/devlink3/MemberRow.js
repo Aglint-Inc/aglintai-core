@@ -14,10 +14,7 @@ export function MemberRow({
   textName = "Maximillion Colbe",
   textRole = "Operations Manager",
   slotInterviewerImage,
-  textTime = "11:30PM - 12:30PM PST",
   slotConflicts,
-  isInterviewerTime = true,
-  textStandardTime = "IST",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "member_row")} tag="div">
@@ -37,7 +34,7 @@ export function MemberRow({
                 width="auto"
                 height="auto"
                 alt=""
-                src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
+                src="https://cdn.prod.website-files.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
               />
             )}
           </_Builtin.Block>
@@ -66,29 +63,6 @@ export function MemberRow({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      {isInterviewerTime ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "timezone_block")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">
-            <TextWithIcon
-              textContent={textTime}
-              fontSize="1"
-              iconName="pace"
-              color="neutral"
-              fontWeight="regular"
-            />
-            <TextWithIcon
-              textContent={textStandardTime}
-              fontSize="1"
-              iconName="language"
-              color="neutral"
-              fontWeight="regular"
-            />
-          </_Builtin.Block>
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "slot_conflicts_block")}
         tag="div"

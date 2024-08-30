@@ -153,8 +153,8 @@ function EmailPreviewSelfSchedule() {
             </Stack>
             <Stack sx={{ py: 'var(--space-4)' }}>
               <iframe
-                width={'600px'}
-                height={'650px'}
+                width={'510px'}
+                height={'750px'}
                 color='white'
                 srcDoc={emailData?.html}
                 title='Previw Email'

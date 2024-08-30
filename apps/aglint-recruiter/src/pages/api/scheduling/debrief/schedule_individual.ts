@@ -69,11 +69,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dateRange,
     });
 
-    const firstSlot = availabilities
+    const firstSlot = availabilities.slots
       ?.flatMap((item) => item?.interview_rounds)
       ?.flatMap((item) => item?.plans);
 
-    if (availabilities?.length > 0 && firstSlot?.length > 0) {
+    if (availabilities.slots?.length > 0 && firstSlot?.length > 0) {
       await confirmSlot({
         schedule_id: schedule.id,
         task_id,

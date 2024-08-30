@@ -9,6 +9,7 @@ import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
 
+import IconApplicationLogs from '../../../Common/Icons/IconApplicationLogs';
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
 import { useAllActivities, useGetScheduleApplication } from '../queries/hooks';
 import {
@@ -16,7 +17,6 @@ import {
   setMultipleCancelOpen,
   useSchedulingApplicationStore,
 } from '../store';
-import IconApplicationLogs from './IconApplicationLogs';
 import SlotContent from './SlotWidgets';
 
 function RightPanel({
