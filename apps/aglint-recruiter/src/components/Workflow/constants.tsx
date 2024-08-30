@@ -5,9 +5,9 @@ import type {
 } from '@aglint/shared-types';
 import { ReactNode } from 'react';
 
-import type { Workflow, WorkflowAction } from '@/src/types/workflow.types';
-import { SafeObject } from '@/src/utils/safeObject';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
+import type { Workflow } from '@/src/types/workflow.types';
+import { SafeObject } from '@/src/utils/safeObject';
 
 export const DURATION_OPTIONS: { name: string; value: number }[] = [
   {
