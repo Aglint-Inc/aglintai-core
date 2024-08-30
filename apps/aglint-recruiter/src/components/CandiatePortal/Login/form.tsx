@@ -19,6 +19,7 @@ export const Form = () => {
 
   const handleCodeChange = (index: number, value: string) => {
     const newCode = [...verificationCode];
+    // eslint-disable-next-line security/detect-object-injection
     newCode[index] = value;
     setVerificationCode(newCode);
 
