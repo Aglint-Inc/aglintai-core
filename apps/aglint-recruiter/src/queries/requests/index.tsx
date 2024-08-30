@@ -140,8 +140,8 @@ export const requestQueries = {
       queryFn: async () => {
         const d = (
           await supabase
-            .from('workflow_request_relation')
-            .select('*, workflow(*, workflow_action(*))')
+            .from('workflow')
+            .select('*, workflow_action(*)')
             .eq('request_id', request_id)
             .throwOnError()
         ).data;

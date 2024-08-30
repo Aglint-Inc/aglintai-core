@@ -5,6 +5,7 @@ import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
+import CandidateCancelled from './CandidateCancelled';
 import NewScheduleEvents from './NewScheduleEvents';
 function RequestProgress({
   request_type,
@@ -22,9 +23,14 @@ function RequestProgress({
           <>Error</>
         </ShowCode.When>
         <ShowCode.Else>
-          <ShowCode.When isTrue={request_type === 'schedule_request'}>
-            <NewScheduleEvents />
-          </ShowCode.When>
+          <ShowCode>
+            <ShowCode.When isTrue={request_type === 'schedule_request'}>
+              <NewScheduleEvents />
+            </ShowCode.When>
+            <ShowCode.When isTrue={request_type === 'cancel_schedule_request'}>
+              <CandidateCancelled />
+            </ShowCode.When>
+          </ShowCode>
         </ShowCode.Else>
       </ShowCode>
     </Stack>
