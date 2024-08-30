@@ -1,8 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
-import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
@@ -11,6 +9,7 @@ import { RequestProgressMapType } from '../types';
 import { useNewScheduleRequestPr } from '.';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
 import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
+import { RequestProgress } from '@/devlink2';
 
 const SelectScheduleFlow = () => {
   const { request_progress } = useRequest();
@@ -30,23 +29,17 @@ const SelectScheduleFlow = () => {
     return mp;
   }, [request_progress]);
 
-  let isSelectScheduleFlowComplete = false;
-  if (
-    scheduleReqProgressMap['CAND_AVAIL_REC'] ||
-    scheduleReqProgressMap['CAND_CONFIRM_SLOT']
-  ) {
-    isSelectScheduleFlowComplete = true;
-  }
   return (
-    <Stack>
+    <>
       <RequestProgress
-        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
+        // circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
+        circleIndicator={'neutral'}
+        textRequestProgress={'Scheduling Request Recieved'}
         slotProgress={
           <>
             <ShowCode.When isTrue={scheduleFlow === null}>
               <ScheduleFlows />
             </ShowCode.When>
-
             <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
               <SelfScheduleFlowMenus isManualSchedule={isManualSchedule} />
             </ShowCode.When>
@@ -59,9 +52,8 @@ const SelectScheduleFlow = () => {
             </ShowCode.When>
           </>
         }
-        textRequestProgress={'Scheduling Request Recieved'}
       />
-    </Stack>
+    </>
   );
 };
 

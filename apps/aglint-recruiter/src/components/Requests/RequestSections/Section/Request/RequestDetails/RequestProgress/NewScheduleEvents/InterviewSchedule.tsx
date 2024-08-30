@@ -2,9 +2,9 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
-import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import CheckCircleFilled from '../CheckCircleFilled';
@@ -14,6 +14,7 @@ import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
 import { useNewScheduleRequestPr } from '.';
+import { RequestProgress } from '@/devlink2';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewSchedule = () => {
@@ -33,56 +34,51 @@ const InterviewSchedule = () => {
     tense = 'future';
   }
   return (
-    <Stack rowGap={1.5}>
-      <TextWithIcon
-        iconName='expand_circle_right'
-        textContent={`On Inteview is Scheduled`}
-        iconSize={4}
-        fontSize={1}
-        color={getProgressColor(tense)}
-      />
-      <ShowCode.When isTrue={true}>
-        <></>
-      </ShowCode.When>
-      <Stack></Stack>
-      <Stack ml={4}>
-        {eventWActions
-          .map((eA) => {
-            return apiTargetToEvents[eA.target_api];
-          })
-          .flat()
-          .map((ev) => {
-            const eventProg = reqProgressMap[ev];
-            let tense: ProgressTenseType = 'future';
+    <RequestProgress
+      circleIndicator={tense === 'past' ? 'success' : 'neutral'}
+      textRequestProgress={'On Inteview is Scheduled'}
+      slotProgress={
+        <>
+          <Stack ml={4}>
+            {eventWActions
+              .map((eA) => {
+                return apiTargetToEvents[eA.target_api];
+              })
+              .flat()
+              .map((ev) => {
+                const eventProg = reqProgressMap[ev];
+                let tense: ProgressTenseType = 'future';
 
-            if (eventProg) {
-              tense = progressStatusToTense(eventProg[0].status);
-            }
-            return (
-              <p key={ev}>
-                <TextWithIcon
-                  textContent={workflowCopy[ev][tense]}
-                  iconSize={3}
-                  fontSize={1}
-                  color={getProgressColor(tense)}
-                  iconName={
-                    tense === 'past' ? (
-                      <CheckCircleFilled />
-                    ) : tense === 'future' ? (
-                      'circle'
-                    ) : (
-                      <LottieAnimations
-                        animation='loading_spinner'
-                        size={1.2}
-                      />
-                    )
-                  }
-                />
-              </p>
-            );
-          })}
-      </Stack>
-    </Stack>
+                if (eventProg) {
+                  tense = progressStatusToTense(eventProg[0].status);
+                }
+                return (
+                  <p key={ev}>
+                    <TextWithIcon
+                      textContent={workflowCopy[ev][tense]}
+                      iconSize={3}
+                      fontSize={1}
+                      color={getProgressColor(tense)}
+                      iconName={
+                        tense === 'past' ? (
+                          <CheckCircleFilled />
+                        ) : tense === 'future' ? (
+                          'circle'
+                        ) : (
+                          <LottieAnimations
+                            animation='loading_spinner'
+                            size={1.2}
+                          />
+                        )
+                      }
+                    />
+                  </p>
+                );
+              })}
+          </Stack>
+        </>
+      }
+    />
   );
 };
 

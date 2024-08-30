@@ -3,6 +3,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -82,6 +83,15 @@ const NewScheduleEvents = ({
     eventTargetMap: reqTriggerActionsMap,
     requestTargetMp: reqProgressMap,
   });
+
+  let isSelectScheduleFlowComplete = false;
+  if (
+    reqTriggerActionsMap['CAND_AVAIL_REC'] ||
+    reqTriggerActionsMap['CAND_CONFIRM_SLOT']
+  ) {
+    isSelectScheduleFlowComplete = true;
+  }
+
   return (
     <>
       <RequestContext.Provider
@@ -97,16 +107,16 @@ const NewScheduleEvents = ({
           setShowEditDialog,
         }}
       >
-        <Stack rowGap={2}>
+        <>
           <SelectScheduleFlow />
-          <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-            <CandidateAvailReceived eventTargetMap={{}} />
-          </ShowCode.When>
           <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
             <InterviewSchedule />
           </ShowCode.When>
           <WorkflowActionDialog />
-        </Stack>
+          <ShowCode.When isTrue={scheduleFlow === 'availability'}>
+            <CandidateAvailReceived eventTargetMap={{}} />
+          </ShowCode.When>
+        </>
       </RequestContext.Provider>
     </>
   );

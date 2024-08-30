@@ -11,7 +11,6 @@ import { useNewScheduleRequestPr } from '../NewScheduleEvents';
 
 const ScheduleFlows = () => {
   const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
-
   return (
     <>
       <Stack rowGap={2}>
