@@ -14,7 +14,8 @@ function CandidateCancelled() {
   const { request_progress, request_workflow } = useRequest();
   const eventTargetMap = useMemo(() => {
     let mp: EventTargetMapType = {};
-    request_workflow.data.forEach((eA) => {
+    const workFlow = request_workflow.data;
+    workFlow.forEach((eA) => {
       mp[eA.trigger] = eA.workflow_action.map((wA) => {
         return wA.target_api;
       });
