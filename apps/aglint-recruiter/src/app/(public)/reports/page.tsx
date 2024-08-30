@@ -1,9 +1,11 @@
 'use client';
+import ConfirmationVsCompletion from '@/src/components/Charts/ConfirmationVsCompletiont';
+import InterviewTypeDistribution from '@/src/components/Charts/InterviewTypeDistribution';
 import MonthlyRequestWorkloadChart from '@/src/components/Charts/MonthlyRequestWorkloadByType';
 import RequestHandlingOverQuartersChart from '@/src/components/Charts/RequestHandlingOverQuarters';
 import { RequestTrend } from '@/src/components/Charts/RequestTrend';
 import RequestTypesDelaysChart from '@/src/components/Charts/RequestTypesDelaysChart';
-import UrgentVsStandard from '@/src/components/Charts/UrgentvsStandard';
+import UrgentVsStandard from '@/src/components/Charts/UrgentVsStandard';
 
 export default function ReportsPage() {
   return (
@@ -15,11 +17,8 @@ export default function ReportsPage() {
         <RequestTypesDelaysChart />
         <MonthlyRequestWorkloadChart />
         <RequestHandlingOverQuartersChart />
-        <div className="bg-gray-200 h-24"></div>
-        <div className="bg-gray-200 h-24"></div>
-        <div className="bg-gray-200 h-24"></div>
-        <div className="bg-gray-200 h-24"></div>
-        <div className="bg-gray-200 h-24"></div>
+        <InterviewTypeDistribution />
+        <ConfirmationVsCompletion />
       </div>
     </div>
   );

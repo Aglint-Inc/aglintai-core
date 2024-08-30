@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@components/shadcn/ui/
 import React from 'react'
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
+
 export default function UrgentVsStandard() {
   const data = [
     { type: 'Scheduling', Urgent: 30, Standard: 70 },

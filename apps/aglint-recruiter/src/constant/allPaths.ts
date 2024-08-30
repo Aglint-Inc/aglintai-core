@@ -299,6 +299,7 @@ export const PATHS = [
 '/profile',
 '/profile-pro',
 '/profile/[id]',
+'/reports',
 '/requests',
 '/requests/[id]',
 '/reset-password',

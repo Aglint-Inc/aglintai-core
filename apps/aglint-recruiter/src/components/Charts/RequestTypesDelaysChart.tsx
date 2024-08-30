@@ -23,7 +23,7 @@ export default function RequestTypesDelaysChart() {
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="type" 
               stroke="hsl(var(--foreground))"
