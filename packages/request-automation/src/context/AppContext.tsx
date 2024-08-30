@@ -4,7 +4,7 @@ import React, {
   useEffect,
   ReactNode,
   useContext,
-} from "react";
+} from 'react';
 
 // Define types for the context values
 interface AppContextType {
@@ -34,17 +34,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [requestIds, setRequestIds] = useState<number[]>([]);
   const [session, setSession] = useState<any>(null); // State to hold the Supabase session
   const [companyName, setCompanyName] = useState<string | null>(null); // State to hold the company name
-  const [recruiterId, setRecruiterId] = useState<string>("");
+  const [recruiterId, setRecruiterId] = useState<string>('');
   const [userId, setUserId] = useState<string | null>(null); // State to hold the user_id
   const supabase = window.supabase;
-
   useEffect(() => {
     async function getSupabaseSession() {
       const { data, error } = await supabase.auth.getSession();
 
       if (error) {
         console.error(
-          "Unable to login. Please try again later:",
+          'Unable to login. Please try again later:',
           error.message
         );
       } else if (data?.session) {
@@ -53,16 +52,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setUserId(currentUserId);
         fetchRecruiterInfo(currentUserId);
       } else {
-        console.error("Session not found");
+        console.error('Session not found');
       }
     }
 
     async function fetchRecruiterInfo(user_id: string) {
       try {
         const { data: relationData, error: relationError } = await supabase
-          .from("recruiter_relation")
-          .select("recruiter_id")
-          .eq("user_id", user_id)
+          .from('recruiter_relation')
+          .select('recruiter_id')
+          .eq('user_id', user_id)
           .single();
 
         if (relationError) {
@@ -74,9 +73,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           setRecruiterId(recruiter_id);
 
           const { data: recruiterData, error: recruiterError } = await supabase
-            .from("recruiter")
-            .select("name")
-            .eq("id", recruiter_id)
+            .from('recruiter')
+            .select('name')
+            .eq('id', recruiter_id)
             .single(); // Assuming recruiter_id is unique
 
           if (recruiterError) {
@@ -93,13 +92,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         }
       } catch (error) {
         console.error(
-          "Error fetching recruiter info:",
+          'Error fetching recruiter info:',
           (error as Error).message
         );
       }
     }
-    getSupabaseSession();
-  }, []);
+    if (supabase) {
+      getSupabaseSession();
+    }
+  }, [supabase]);
 
   return (
     <AppContext.Provider
@@ -121,7 +122,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
 export const useAppContext = () => {
   const value = useContext(AppContext);
-  if (!value) throw new Error("Tour Provider not found");
+  if (!value) throw new Error('Tour Provider not found');
   return value;
 };
 

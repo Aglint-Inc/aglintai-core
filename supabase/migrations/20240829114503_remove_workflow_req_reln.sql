@@ -43,7 +43,8 @@ create or replace view "public"."workflow_view" as  WITH job_cte AS (
     COALESCE(job_cte.jobs, ARRAY[]::json[]) AS jobs,
     workflow.workflow_type,
     workflow.is_paused,
-    array_append(action_cte.tags, (workflow.trigger)::text) AS tags
+    array_append(action_cte.tags, (workflow.trigger)::text) AS tags,
+    workflow.request_id
    FROM ((workflow
      LEFT JOIN job_cte ON ((job_cte.workflow_id = workflow.id)))
      LEFT JOIN action_cte ON ((action_cte.workflow_id = workflow.id)));
