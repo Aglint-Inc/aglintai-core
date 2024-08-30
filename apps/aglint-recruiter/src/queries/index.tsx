@@ -9,7 +9,7 @@ import type React from 'react';
 import { useState } from 'react';
 
 import { useRouterPro } from '../hooks/useRouterPro';
-import { UNAUTHENTICATED } from '../server/api/enums';
+import { UNAUTHENTICATED } from '../server/enums';
 import ROUTES from '../utils/routing/routes';
 import toast from '../utils/toast';
 
@@ -79,7 +79,6 @@ export const QueryProvider: React.FC<{ children: React.ReactNode }> = ({
       }),
     }),
   );
-
   return (
     <QueryClientProvider client={queryClient}>
       <>
