@@ -117,17 +117,48 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
-const refreshMiddleware = t.middleware(async ({ next, ctx }) => {
+const authMiddleware = t.middleware(async ({ next, ctx }) => {
   const {
     data: { user },
   } = await ctx.db.auth.getUser();
+
   if (!user) {
     throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
   }
+
+  const { data } = await ctx.db
+    .from('recruiter_relation')
+    .select(
+      'recruiter_id, roles(name, role_permissions(permissions(name, is_enable)))',
+    )
+    .eq('user_id', user.id)
+    .single()
+    .throwOnError();
+
+  if (!data) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
+  }
+
+  const {
+    recruiter_id,
+    roles: { name: role, role_permissions },
+  } = data;
+
+  const permissions = role_permissions.reduce(
+    (acc, { permissions: { is_enable, name } }) => {
+      if (is_enable) acc.push(name);
+      return acc;
+    },
+    [] as (typeof role_permissions)[number]['permissions']['name'][],
+  );
+
   return await next({
     ctx: {
       ...ctx,
       user,
+      recruiter_id,
+      role,
+      permissions,
     },
   });
 });
@@ -150,4 +181,4 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const privateProcedure = t.procedure
   .use(timingMiddleware)
-  .use(refreshMiddleware);
+  .use(authMiddleware);
