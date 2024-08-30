@@ -18,9 +18,14 @@ export function WorkflowConnectedCard({
   slotBadges,
   textRoleCategory = "This is a global text component",
   textLocation = "This is a global text component",
-  onClickJob = {},
   onClickLinkOff = {},
   isLinkOffVisible = true,
+
+  jobLink = {
+    href: "#",
+  },
+
+  onClickJob = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -59,12 +64,19 @@ export function WorkflowConnectedCard({
           className={_utils.cx(_styles, "cjc-icon-btn-wrap")}
           tag="div"
         >
-          <IconButtonSoft
-            onClickButton={onClickJob}
-            iconName="arrow_outward"
-            color="neutral"
-            size="1"
-          />
+          <_Builtin.Link
+            className={_utils.cx(_styles, "workflow-btn-wrap")}
+            button={false}
+            block="inline"
+            options={jobLink}
+          >
+            <IconButtonSoft
+              onClickButton={onClickJob}
+              iconName="arrow_outward"
+              color="neutral"
+              size="1"
+            />
+          </_Builtin.Link>
           {isLinkOffVisible ? (
             <_Builtin.Block tag="div">
               <IconButtonSoft
