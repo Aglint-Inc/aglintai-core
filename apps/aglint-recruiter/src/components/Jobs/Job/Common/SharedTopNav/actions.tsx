@@ -75,16 +75,19 @@ const Sync = () => {
   };
 
   return (
-    <Stack direction={'row'}>
-      <Text
-        content={
-          time
-            ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
-            : 'Last synced few seconds ago'
-        }
-        size={1}
-        color={'neutral'}
-      />
+    <Stack direction={'row'} gap={'4px'}>
+      <Stack flexShrink={0} justifyContent={'center'}>
+        <Text
+          content={
+            time
+              ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
+              : 'Last synced few seconds ago'
+          }
+          size={1}
+          color={'neutral'}
+        />
+      </Stack>
+
       <OptimisticWrapper loading={load}>
         <ButtonGhost
           size={2}

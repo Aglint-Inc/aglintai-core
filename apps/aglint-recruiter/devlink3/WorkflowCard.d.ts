@@ -16,4 +16,5 @@ declare function WorkflowCard(props: {
   border?: Types.Builtin.Text;
   slotBadge?: Types.Devlink.Slot;
   smallCard?: Types.Builtin.Text;
+  widthText?: Types.Builtin.Text;
 }): React.JSX.Element;
