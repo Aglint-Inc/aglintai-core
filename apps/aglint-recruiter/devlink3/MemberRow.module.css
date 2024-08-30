@@ -60,10 +60,6 @@
   flex-wrap: nowrap;
 }
 
-.timezone_block {
-  width: 180px;
-}
-
 .slot_conflicts_block {
   display: flex;
   justify-content: flex-start;

@@ -1,28 +1,31 @@
-import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useSelfSchedulingFlowStore } from './store';
-import { Event } from '@/src/components/Common/CalendarResourceView/types';
 import { getFullName } from '@aglint/shared-utils';
+import { useMemo } from 'react';
+
+import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
+import { Event } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
+
+import { setCalendarDate, useSelfSchedulingFlowStore } from './store';
 
 function Calendar() {
   const {
-    schedulingOptions,
+    filteredSchedulingOptions,
     selectedCombIds,
     availabilities,
     dateRange,
     fetchingPlan,
+    calendarDate,
   } = useSelfSchedulingFlowStore((state) => ({
     availabilities: state.availabilities,
     dateRange: state.dateRange,
     selectedCombIds: state.selectedCombIds,
-    schedulingOptions: state.schedulingOptions,
+    filteredSchedulingOptions: state.filteredSchedulingOptions,
     fetchingPlan: state.fetchingPlan,
+    calendarDate: state.calendarDate,
   }));
 
   const memoizedSelectedEvents = useMemo(() => {
-    const selectedSessions = schedulingOptions
-      .flatMap((option) => option.interview_rounds)
+    const selectedSessions = filteredSchedulingOptions
       .flatMap((round) => round.plans)
       .filter((plan) => selectedCombIds.includes(plan.plan_comb_id))
       .flatMap((plan) => plan.sessions);
@@ -48,6 +51,9 @@ function Calendar() {
                   organizer: false,
                   responseStatus: 'needsAction',
                 })),
+                isSelected: true,
+                session_id:
+                  session.session_id + session.qualifiedIntervs[0].user_id,
               },
             }) as Event,
         );
@@ -61,15 +67,9 @@ function Calendar() {
     return availabilities?.events || [];
   }, [availabilities?.events]);
 
-  console.log(
-    availabilities?.events.filter(
-      (event) => event.resourceId === '10ee2995-f932-4a85-960b-f666ddea3d97',
-    ),
-  );
-
   return (
     <>
-      {!fetchingPlan && availabilities && (
+      {availabilities && (
         <CalendarResourceView
           events={[...memoisedEvents, ...memoizedSelectedEvents]}
           resources={availabilities.resources}
@@ -77,6 +77,9 @@ function Calendar() {
             start: dateRange.start_date,
             end: dateRange.end_date,
           }}
+          currentDate={calendarDate}
+          setCurrentDate={setCalendarDate}
+          isLoading={fetchingPlan}
         />
       )}
     </>

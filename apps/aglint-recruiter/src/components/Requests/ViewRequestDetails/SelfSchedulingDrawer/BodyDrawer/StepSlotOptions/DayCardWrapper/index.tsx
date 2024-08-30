@@ -9,11 +9,9 @@ import { Text } from '@/devlink/Text';
 import { DateOption } from '@/devlink3/DateOption';
 import { EmptySlotReason } from '@/devlink3/EmptySlotReason';
 import { ScheduleOption } from '@/devlink3/ScheduleOption';
-import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
-import { Event } from '@/src/components/Common/CalendarResourceView/types';
 
 const NUMBER_OF_SLOTS_TO_DISPLAY = 10;
 
@@ -30,7 +28,7 @@ function DayCardWrapper({
   index,
   setSelectedCombIds,
   isAutoCollapse = true,
-  isSelectedOptionsTextVisible = true,
+  setCalendarDate,
 }: {
   isRadioNeeded: boolean;
   item: MultiDayPlanType;
@@ -45,7 +43,7 @@ function DayCardWrapper({
   index: number;
   setSelectedCombIds: Dispatch<React.SetStateAction<string[]>>;
   isAutoCollapse?: boolean;
-  isSelectedOptionsTextVisible?: boolean;
+  setCalendarDate?: Dispatch<React.SetStateAction<string>>;
 }) {
   const dates = item?.date_range || [];
   const header = dates
@@ -116,25 +114,21 @@ function DayCardWrapper({
     <>
       <DateOption
         slotLeftBlock={
-          <TextWithIcon
-            iconName={'today'}
-            textContent={header}
-            iconSize={4}
-            fontWeight={'medium'}
-            iconWeight={'medium'}
+          <Text
+            content={header}
+            weight={'medium'}
             color={isSelected ? 'accent' : 'neutral'}
           />
         }
+        onClickDateOption={{
+          onClick: () => {
+            setCollapse(!collapse);
+          },
+        }}
         slotRightBlock={
           <>
             {!noSlotReasons.length && (
               <>
-                {isSelectedOptionsTextVisible && (
-                  <Text
-                    content={`${noOfTotalSlots} options, ${noOfSelectedSlots} selected`}
-                    color={isSelected ? 'accent' : 'neutral'}
-                  />
-                )}
                 <DayCardConflicts slotsWithDaySessions={slotsWithDaySessions} />
               </>
             )}
@@ -174,6 +168,7 @@ function DayCardWrapper({
                       ...slotsWithDaySessions.map((slot) => slot.plan_comb_id),
                     ],
               );
+              setCalendarDate(dayjs(dates[0]).toISOString());
             }}
           />
         }
@@ -188,7 +183,11 @@ function DayCardWrapper({
         slotScheduleOption={
           !isDisabled && (
             <Collapse in={isDayCollapseNeeded ? collapse : true}>
-              <Stack spacing={'var(--space-2)'} pt={'var(--space-2)'}>
+              <Stack
+                gap={'var(--space-2)'}
+                pt={'var(--space-2)'}
+                width={'100%'}
+              >
                 {noSlotReasons.length === 0 ? (
                   <>
                     {slotsWithDaySessions
@@ -203,9 +202,26 @@ function DayCardWrapper({
                                     checked={selectedCombIds.includes(
                                       slot.plan_comb_id,
                                     )}
-                                    onClick={() =>
-                                      onClickSelect(slot.plan_comb_id)
-                                    }
+                                    onClick={() => {
+                                      onClickSelect(slot.plan_comb_id);
+                                      setCalendarDate(
+                                        dayjs(dates[0]).toISOString(),
+                                      );
+                                      setTimeout(() => {
+                                        const element = document.getElementById(
+                                          slot.daySessions[0].sessions[0]
+                                            .session_id +
+                                            slot.daySessions[0].sessions[0]
+                                              .qualifiedIntervs[0].user_id,
+                                        );
+                                        if (element) {
+                                          element.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'center',
+                                          });
+                                        }
+                                      }, 1000);
+                                    }}
                                   />
                                 )}
                                 {isRadioNeeded && (

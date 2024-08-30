@@ -1,8 +1,6 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Dialog, Stack, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -26,6 +24,8 @@ import {
   useApplicationDetailStore,
 } from '../../../store';
 import { Interviewer } from '../StageSessions/EditDrawer/types';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
@@ -258,25 +258,24 @@ export const RangePicker = ({
   setDateRange,
 }: {
   dateRange: { start: string; end: string };
-  setDateRange: React.Dispatch<
-    React.SetStateAction<{ start: string; end: string }>
-  >;
+  setDateRange: (date: { start: string; end: string }) => void;
 }) => {
   return (
-    <Stack spacing={2} direction={'row'}>
+    <Stack spacing={2} direction={'row'} width={'100%'}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           value={dayjs(dateRange.start)}
           onChange={(newValue) => {
-            setDateRange((pre) => {
-              pre.start = dayjs(newValue).toISOString();
-              return pre;
+            setDateRange({
+              start: dayjs(newValue).toISOString(),
+              end: dateRange.end,
             });
           }}
           minDate={dayjs()}
           slots={{
             openPickerIcon: DateIcon,
           }}
+          slotProps={{ textField: { fullWidth: true } }}
         />
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -285,13 +284,16 @@ export const RangePicker = ({
           minDate={dayjs(dateRange.start)}
           maxDate={dayjs(dateRange.start).add(1, 'month')}
           onChange={(newValue) => {
-            setDateRange((pre) => {
-              pre.end = dayjs(newValue).toISOString();
-              return pre;
+            setDateRange({
+              start: dateRange.start,
+              end: dayjs(newValue).toISOString(),
             });
           }}
           slots={{
             openPickerIcon: DateIcon,
+          }}
+          slotProps={{
+            textField: { fullWidth: true },
           }}
         />
       </LocalizationProvider>

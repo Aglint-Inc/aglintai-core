@@ -254,7 +254,6 @@ export const PATHS = [
 '/assessment-thanks/[assessment_id]',
 '/auth-cal/google',
 '/auth-email/google',
-'/calendar',
 '/candidate-assessment/[application_id]',
 '/candidate-assessment/[application_id]/[assessment_id]',
 '/candidate-phone-screening',

@@ -23,10 +23,11 @@
   --fc-event-resizer-dot-border-width: 1px;
   --fc-non-business-color: var(--neutral-9);
   --fc-bg-event-color: var(--neutral-8);
-  --fc-bg-event-opacity: 0.3;
+  --fc-bg-event-opacity: 0.9;
   --fc-highlight-color: rgba(188, 232, 241, 0.3);
   --fc-today-bg-color: var(--accent-9);
   --fc-now-indicator-color: var(--error-9);
+  --fc-non-business-color:#ebebeb80;
 }
 
 /* hidden a license */
@@ -52,17 +53,9 @@
   background-color: white !important; /* Ensures all rows are white */
 }
 
-.fc-theme-standard .fc-list-day-cushion {
-  /* background-color: red; */
-  padding: 20px;
-}
 
 .fc th {
   background: var(--neutral-2) !important;
-}
-
-.fc tr {
-  background-color: var(--neutral-1);
 }
 
 
@@ -73,16 +66,13 @@
 
 
 
-.fc tr:hover {
-  background-color: var(--neutral-2);
-}
 
 
 .fc-toolbar.fc-header-toolbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: white;
+  background-color: var(--neutral-2);
   border-bottom: 1px solid #ddd;
 }
 

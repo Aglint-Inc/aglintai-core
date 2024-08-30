@@ -13,6 +13,9 @@ export type Event = {
       organizer: boolean;
     }[];
     color: string;
+    isSelected?: boolean;
+    isLoading?: boolean;
+    session_id?: string;
   };
   start: string;
   end: string;

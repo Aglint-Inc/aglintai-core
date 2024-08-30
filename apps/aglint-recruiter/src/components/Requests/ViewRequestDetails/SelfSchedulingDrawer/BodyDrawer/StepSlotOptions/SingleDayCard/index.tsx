@@ -8,11 +8,11 @@ import React, { useEffect } from 'react';
 
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
+import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import ConflictWithHover from './SessionIndividual/ConflictWithHover';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
-import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 
 function SingleDayCard({
   item,

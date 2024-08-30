@@ -44,6 +44,7 @@
 
 .embed_flex {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -79,6 +80,10 @@
 
 .embed_flex.fixedd {
   width: 23px;
+}
+
+.embed_flex.is_on_left {
+  margin-left: -25px;
 }
 
 .flex_hr_10 {

@@ -1,5 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -12,10 +12,12 @@ import { TimeRangeSelector } from '@/devlink3/TimeRangeSelector';
 import { ClockIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
 import toast from '@/src/utils/toast';
 
-import { setFilters, useSelfSchedulingFlowStore } from '../../store';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store';
 
 function DateRangeField() {
-  const filters = useSelfSchedulingFlowStore((state) => state.filters);
+  const localFilters = useSelfSchedulingFlowStore(
+    (state) => state.localFilters,
+  );
 
   const [value, setValue] = React.useState<{
     startTime: Date;
@@ -23,7 +25,10 @@ function DateRangeField() {
   }>(null);
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={0.5}>
+      <Typography variant='body1'> 
+        Preferred Date Ranges
+      </Typography>
       <TimeRangeSelector
         slotButton={
           <ButtonSoft
@@ -47,9 +52,9 @@ function DateRangeField() {
                 }
 
                 if (!value?.startTime || !value?.endTime) return;
-                setFilters({
+                setLocalFilters({
                   preferredDateRanges: [
-                    ...filters.preferredDateRanges,
+                    ...localFilters.preferredDateRanges,
                     {
                       startTime: dayjs(value.startTime)?.toISOString(),
                       endTime: dayjs(value.endTime)?.toISOString(),
@@ -65,18 +70,18 @@ function DateRangeField() {
           />
         }
         slotSelectedTime={
-          filters.preferredDateRanges.length > 0 && (
+          localFilters.preferredDateRanges.length > 0 && (
             <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
-              {filters.preferredDateRanges.map((dateRange, index) => {
+              {localFilters.preferredDateRanges.map((dateRange, index) => {
                 return (
                   <RolesPill
                     textRoles={`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
                     key={index}
                     onClickRemoveRoles={{
                       onClick: () => {
-                        setFilters({
+                        setLocalFilters({
                           preferredDateRanges:
-                            filters.preferredDateRanges.filter(
+                            localFilters.preferredDateRanges.filter(
                               (range) =>
                                 range.startTime !== dateRange.startTime,
                             ),
