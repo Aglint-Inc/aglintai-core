@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
@@ -12,6 +13,7 @@ import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
+import WorkflowActionDialog from './WorkflowActionDialog';
 
 // Define the types for the context values
 interface RequestContextType {
@@ -20,6 +22,10 @@ interface RequestContextType {
   scheduleFlow: ReturnType<typeof getSchedulFlow>;
   companyEmailTemplates: DatabaseTable['company_email_template'][];
   currentRequest: DatabaseTable['request'];
+  editTrigger: DatabaseTable['workflow']['trigger'];
+  setEditTrigger: (trigger: DatabaseTable['workflow']['trigger']) => void;
+  showEditDialog: boolean;
+  setShowEditDialog: (show: boolean) => void;
 }
 // Define the context with the proper type
 const RequestContext = createContext<RequestContextType | undefined>(undefined);
@@ -38,6 +44,9 @@ const NewScheduleEvents = ({
   requestDetails: DatabaseTable['request'];
 }) => {
   const { request_progress, request_workflow } = useRequest();
+  const [editTrigger, setEditTrigger] =
+    React.useState<DatabaseTable['workflow']['trigger']>('onRequestSchedule');
+  const [showEditDialog, setShowEditDialog] = React.useState(false);
   const { recruiter } = useAuthDetails();
   const [companyEmailTemplates, setCompanyEmailTemplates] = React.useState<
     DatabaseTable['company_email_template'][]
@@ -82,6 +91,10 @@ const NewScheduleEvents = ({
           scheduleFlow,
           companyEmailTemplates,
           currentRequest: requestDetails,
+          editTrigger,
+          setEditTrigger,
+          showEditDialog,
+          setShowEditDialog,
         }}
       >
         <Stack rowGap={2}>
@@ -92,6 +105,7 @@ const NewScheduleEvents = ({
           <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
             <InterviewSchedule />
           </ShowCode.When>
+          <WorkflowActionDialog />
         </Stack>
       </RequestContext.Provider>
     </>
