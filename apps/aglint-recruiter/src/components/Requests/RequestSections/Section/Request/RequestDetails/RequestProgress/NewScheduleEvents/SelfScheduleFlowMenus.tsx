@@ -4,19 +4,16 @@ import React, { useMemo } from 'react';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
+import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
-  scheduleReqProgressMap,
-  eventTargetMap,
 }: {
-  eventTargetMap: EventTargetMapType;
   isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
 }) => {
+  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
   let scheduleFlowProg = useMemo(() => {
@@ -35,10 +32,12 @@ const SelfScheduleFlowMenus = ({
   }, [request_progress.data]);
   //
   let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
+  if (reqTriggerActionsMap['onRequestSchedule']) {
     eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...(eventTargetMap['selfScheduleReminder'] ?? []),
+      ...reqTriggerActionsMap['onRequestSchedule'].map((e) => e.target_api),
+      ...(reqTriggerActionsMap['selfScheduleReminder']?.map(
+        (e) => e.target_api,
+      ) ?? []),
     ];
   }
 
@@ -53,7 +52,7 @@ const SelfScheduleFlowMenus = ({
                 <EventNode
                   key={prog.id}
                   eventNode={prog.event_type}
-                  reqProgressMap={scheduleReqProgressMap}
+                  reqProgressMap={{}}
                 />
               </>
             );
@@ -66,20 +65,14 @@ const SelfScheduleFlowMenus = ({
           })
           .flat()
           .map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
+            return <EventNode key={ev} eventNode={ev} reqProgressMap={{}} />;
           })}
-        {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
+        {/* {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
           <EventNode
             eventNode='SELF_SCHEDULE_FIRST_FOLLOWUP'
             reqProgressMap={scheduleReqProgressMap}
           />
-        )}
+        )} */}
       </ShowCode.When>
     </>
   );

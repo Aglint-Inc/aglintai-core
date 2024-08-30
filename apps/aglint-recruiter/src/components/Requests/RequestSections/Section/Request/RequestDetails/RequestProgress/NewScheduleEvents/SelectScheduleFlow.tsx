@@ -48,11 +48,7 @@ const SelectScheduleFlow = () => {
             </ShowCode.When>
 
             <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-              <SelfScheduleFlowMenus
-                isManualSchedule={isManualSchedule}
-                eventTargetMap={{}}
-                scheduleReqProgressMap={scheduleReqProgressMap}
-              />
+              <SelfScheduleFlowMenus isManualSchedule={isManualSchedule} />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'availability'}>
               <AvailabilityFlowMenus

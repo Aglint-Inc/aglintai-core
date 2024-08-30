@@ -1,8 +1,4 @@
-import {
-  DatabaseEnums,
-  DatabaseTable,
-  DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -18,9 +14,11 @@ import { setCandidateAvailabilityDrawerOpen } from '@/src/components/Requests/Vi
 import { setIsSelfScheduleDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { useRequest } from '@/src/context/RequestContext';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+import toast from '@/src/utils/toast';
 
+import { createRequestWorkflow } from '../../utils';
 import { useNewScheduleRequestPr } from '../NewScheduleEvents';
 import { TargetAPIBody, WActionProps } from '../WorkflowComps/TargetAPIBody';
 
@@ -28,8 +26,10 @@ const ScheduleFlows = () => {
   const { recruiter } = useAuthDetails();
   const { reqTriggerActionsMap, companyEmailTemplates, currentRequest } =
     useNewScheduleRequestPr();
+  const { request_workflow } = useRequest();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAddingAction, setIsAddingAction] = useState(false);
   const [selectedAction, setSelectedAction] = useState<
     DatabaseEnums['email_slack_types']
   >(
@@ -38,50 +38,24 @@ const ScheduleFlows = () => {
       : (ACTION_TRIGGER_MAP['onRequestSchedule'][0].value.target_api as any),
   );
 
+  createRequestWorkflow;
+
   const handleSaveScheduleFlow = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
-      let wTrigger: DatabaseTable['workflow'];
-      [wTrigger] = supabaseWrap(
-        await supabase
-          .from('workflow')
-          .select()
-          .eq('request_id', currentRequest.id)
-          .eq('trigger', 'onRequestSchedule'),
-        false,
-      );
-      if (!wTrigger) {
-        [wTrigger] = supabaseWrap(
-          await supabase
-            .from('workflow')
-            .insert({
-              request_id: currentRequest.id,
-              trigger: 'onRequestSchedule',
-              phase: 'after',
-              recruiter_id: recruiter.id,
-              interval: 0,
-              workflow_type: 'job',
-            })
-            .select(),
-        );
-      }
-
-      supabaseWrap(
-        await supabase
-          .from('workflow_action')
-          .insert([
-            {
-              ...wAction,
-              workflow_id: wTrigger.id,
-            },
-          ])
-          .select(),
-      );
-
-      supabaseWrap(await supabaseAdmin.from('workflow_action').insert([]));
+      setIsAddingAction(true);
+      await createRequestWorkflow({
+        wAction,
+        request_id: currentRequest.id,
+        recruiter_id: recruiter.id,
+      });
+      request_workflow.refetch();
     } catch (err) {
-      //
+      toast.error('Failed to add action');
+    } finally {
+      setIsAddingAction(false);
+      setIsDrawerOpen(false);
     }
   };
 
@@ -200,7 +174,7 @@ const ScheduleFlows = () => {
                   />
                   <TargetAPIBody action={selectedActionsDetails} />
                   <ButtonSolid
-                    textButton='Add Action'
+                    textButton={isAddingAction ? 'Adding...' : 'Add Action'}
                     onClickButton={{
                       onClick: () => {
                         handleSaveScheduleFlow({
