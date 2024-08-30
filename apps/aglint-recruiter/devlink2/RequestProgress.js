@@ -63,8 +63,16 @@ export function RequestProgress({
               value="%3Cstyle%3E%0A%5Bindicator%3D'info'%5D%7B%0Aborder%3A%201px%20solid%20var(--info-6)%3B%0Abackground-color%3A%20var(--info-2)%3B%0Acolor%3A%20var(--info-11)%3B%0A%7D%0A%5Bindicator%3D'success'%5D%7B%0Aborder%3A%201px%20solid%20%23018B0F6B%3B%0Abackground-color%3A%20%23F5FBF5%3B%0Acolor%3A%23006514D5%3B%0A%7D%0A%5Bindicator%3D'error'%5D%7B%0Aborder%3A%201px%20solid%20var(--error-6)%3B%0Abackground-color%3A%20var(--error-2)%3B%0Acolor%3Avar(--error-11)%3B%0A%7D%0A%0A%3C%2Fstyle%3E"
             />
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotProgress ?? <ScheduleProgress />}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-schedule-progres")}
+            tag="div"
+          >
+            {slotProgress ?? (
+              <>
+                <ScheduleProgress />
+                <ScheduleProgress />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
