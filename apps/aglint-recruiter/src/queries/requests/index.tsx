@@ -27,10 +27,11 @@ export const requestQueries = {
   requests_key: () => 'requests' as const,
   requests_queryKey: () => [appKey, requestQueries.requests_key()] as const,
   request_workflow_key: () => 'request_workflow' as const,
-  requests_workflow_queryKey: () =>
+  requests_workflow_queryKey: ({ request_id }: GetRequestProgress) =>
     [
       ...requestQueries.requests_queryKey(),
       requestQueries.request_workflow_key(),
+      { request_id },
     ] as const,
   requests_mutationKey: (method: 'create' | 'update' | 'delete') =>
     [appKey, requestQueries.requests_key(), method] as const,
@@ -132,11 +133,7 @@ export const requestQueries = {
       initialData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
-      queryKey: [
-        ...requestQueries.requests_queryKey(),
-        'workflow',
-        { request_id },
-      ],
+      queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
         const d = (
           await supabase
