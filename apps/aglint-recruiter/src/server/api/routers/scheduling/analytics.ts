@@ -77,7 +77,7 @@ const schedulingAnalyticsSchema: AnalysisProcedures = {
 export const schedulingAnalyticsRouter = createTRPCRouter({
   filters: privateProcedure
     .input(schedulingAnalyticsSchema.filters.schema)
-    .mutation(
+    .query(
       async ({ ctx: { db }, input: { recruiter_id } }) =>
         (
           await db
@@ -90,7 +90,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   completed_interviews: privateProcedure
     .input(schedulingAnalyticsSchema.completed_interviews.schema)
-    .mutation(
+    .query(
       async ({
         ctx: { db },
         input: { recruiter_id, departments, jobs, type },
@@ -108,7 +108,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   decline_requests: privateProcedure
     .input(schedulingAnalyticsSchema.decline_requests.schema)
-    .mutation(
+    .query(
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
@@ -122,7 +122,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   interview_types: privateProcedure
     .input(schedulingAnalyticsSchema.interview_types.schema)
-    .mutation(
+    .query(
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
@@ -136,7 +136,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   interviewers: privateProcedure
     .input(schedulingAnalyticsSchema.interviewers.schema)
-    .mutation(
+    .query(
       async ({
         ctx: { db },
         input: { recruiter_id, departments, jobs, type },
@@ -154,7 +154,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   leaderboard: privateProcedure
     .input(schedulingAnalyticsSchema.leaderboard.schema)
-    .mutation(
+    .query(
       async ({
         ctx: { db },
         input: { recruiter_id, departments, jobs, type },
@@ -172,7 +172,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   reasons: privateProcedure
     .input(schedulingAnalyticsSchema.reasons.schema)
-    .mutation(
+    .query(
       async ({
         ctx: { db },
         input: { recruiter_id, departments, jobs, type },
@@ -190,7 +190,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
     ),
   recent_decline_reschedule: privateProcedure
     .input(schedulingAnalyticsSchema.recent_decline_reschedule.schema)
-    .mutation(
+    .query(
       async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
         (
           await db
@@ -202,7 +202,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
             .throwOnError()
         ).data,
     ),
-  tabs: privateProcedure.input(schedulingAnalyticsSchema.tabs.schema).mutation(
+  tabs: privateProcedure.input(schedulingAnalyticsSchema.tabs.schema).query(
     async ({ ctx: { db }, input: { recruiter_id, departments, jobs } }) =>
       (
         await db
@@ -217,7 +217,7 @@ export const schedulingAnalyticsRouter = createTRPCRouter({
   ),
   training_progress: privateProcedure
     .input(schedulingAnalyticsSchema.training_progress.schema)
-    .mutation(
+    .query(
       async ({
         ctx: { db },
         input: { recruiter_id, departments, jobs, locations },

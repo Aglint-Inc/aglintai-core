@@ -13,7 +13,7 @@ export type SchedulingAnalyticsFunctions =
 export type SchedulingAnalyticsProcedureArgs<
   T extends SchedulingAnalyticsFunctions,
 > = Parameters<
-  (typeof api)['scheduling']['analytics'][T]['mutate']
+  (typeof api)['scheduling']['analytics'][T]['useQuery']
 >[0] extends infer K
   ? K extends void
     ? never

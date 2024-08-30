@@ -1,5 +1,4 @@
 import { DatabaseTable } from '@aglint/shared-types';
-import { useQuery } from '@tanstack/react-query';
 import {
   type PropsWithChildren,
   createContext,
@@ -9,8 +8,8 @@ import {
   useState,
 } from 'react';
 
-import { schedulingAnalyticsQueries } from '@/src/queries/scheduling-analytics';
 import { SchedulingAnalysisSchema } from '@/src/server/api/routers/scheduling/analytics';
+import { api } from '@/src/trpc/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
@@ -37,71 +36,126 @@ const useActions = () => {
 
   const enabled = useMemo(() => !!recruiter_id, [recruiter_id]);
 
-  const filters = useQuery(
-    schedulingAnalyticsQueries.filters({ recruiter_id }, enabled),
+  const filters = api.scheduling.analytics.filters.useQuery(
+    { recruiter_id },
+    {
+      enabled,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
   );
 
-  const completed_interviews = useQuery(
-    schedulingAnalyticsQueries.completed_interviews(
+  const completed_interviews =
+    api.scheduling.analytics.completed_interviews.useQuery(
       { recruiter_id, departments, jobs, type: completedInterviewType },
+      {
+        enabled,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    );
+
+  const decline_requests = api.scheduling.analytics.decline_requests.useQuery(
+    { recruiter_id, departments, jobs },
+    {
       enabled,
-    ),
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
   );
 
-  const decline_requests = useQuery(
-    schedulingAnalyticsQueries.decline_requests(
+  const interview_types = api.scheduling.analytics.interview_types.useQuery(
+    { recruiter_id, departments, jobs },
+    {
+      enabled,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
+  );
+
+  const interviewers = api.scheduling.analytics.interviewers.useQuery(
+    { recruiter_id, departments, jobs, type: interviewersType },
+    {
+      enabled,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
+  );
+
+  const leaderboard = api.scheduling.analytics.leaderboard.useQuery(
+    { recruiter_id, departments, jobs, type: leaderboardType },
+    {
+      enabled,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
+  );
+
+  const reasons = api.scheduling.analytics.reasons.useQuery(
+    { recruiter_id, departments, jobs, type: reasonsType },
+    {
+      enabled,
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
+  );
+
+  const recent_decline_reschedule =
+    api.scheduling.analytics.recent_decline_reschedule.useQuery(
       { recruiter_id, departments, jobs },
+      {
+        enabled,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    );
+
+  const tabs = api.scheduling.analytics.tabs.useQuery(
+    { recruiter_id, departments, jobs },
+    {
       enabled,
-    ),
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
   );
 
-  const interview_types = useQuery(
-    schedulingAnalyticsQueries.interview_types(
-      { recruiter_id, departments, jobs },
+  const training_progress = api.scheduling.analytics.training_progress.useQuery(
+    { recruiter_id, departments, jobs },
+    {
       enabled,
-    ),
-  );
-
-  const interviewers = useQuery(
-    schedulingAnalyticsQueries.interviewers(
-      { recruiter_id, departments, jobs, type: interviewersType },
-      enabled,
-    ),
-  );
-
-  const leaderboard = useQuery(
-    schedulingAnalyticsQueries.leaderboard(
-      { recruiter_id, departments, jobs, type: leaderboardType },
-      enabled,
-    ),
-  );
-
-  const reasons = useQuery(
-    schedulingAnalyticsQueries.reasons(
-      { recruiter_id, departments, jobs, type: reasonsType },
-      enabled,
-    ),
-  );
-
-  const recent_decline_reschedule = useQuery(
-    schedulingAnalyticsQueries.recent_decline_reschedule(
-      { recruiter_id, departments, jobs },
-      enabled,
-    ),
-  );
-
-  const tabs = useQuery(
-    schedulingAnalyticsQueries.tabs(
-      { recruiter_id, departments, jobs },
-      enabled,
-    ),
-  );
-
-  const training_progress = useQuery(
-    schedulingAnalyticsQueries.training_progress(
-      { recruiter_id, departments, jobs },
-      enabled,
-    ),
+      trpc: {
+        context: {
+          skipBatch: true,
+        },
+      },
+    },
   );
 
   return {
