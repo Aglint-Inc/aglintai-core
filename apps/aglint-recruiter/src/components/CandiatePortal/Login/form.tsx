@@ -1,9 +1,9 @@
 'use client';
-import Link from 'next/link';
+import { Button } from '@components/shadcn/ui/button';
 import { Checkbox } from '@components/shadcn/ui/checkbox';
 import { Input } from '@components/shadcn/ui/input';
 import { Label } from '@components/shadcn/ui/label';
-import { Button } from '@components/shadcn/ui/button';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export const Form = () => {

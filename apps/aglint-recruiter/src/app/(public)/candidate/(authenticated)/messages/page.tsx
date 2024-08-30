@@ -8,9 +8,6 @@ import { Button } from '@components/shadcn/ui/button';
 import { Card, CardContent } from '@components/shadcn/ui/card';
 import { useState } from 'react';
 
-import { Footer } from '@/src/components/CandiatePortal/Layout/Footer';
-import Navbar from '@/src/components/CandiatePortal/Layout/Navbar';
-import { PageHeader } from '@/src/components/CandiatePortal/Layout/PageHeader';
 
 interface Message {
   id: number;

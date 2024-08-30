@@ -6,7 +6,6 @@ import {
   CardTitle,
 } from '@components/shadcn/ui/card';
 import { Pencil } from 'lucide-react';
-import Image from 'next/image';
 
 export function Overview() {
   return (
