@@ -105,6 +105,18 @@ function CandidateAvailability({
         },
         id: candidateAvailabilityIdForReRequest,
       });
+      try {
+        const payload: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+          {
+            recruiter_user_id: recruiterUser.user_id,
+            avail_req_id: candidateAvailabilityIdForReRequest,
+          };
+        await axios.post(`/api/emails/availabilityReqResend_email_candidate`, {
+          ...payload,
+        });
+      } catch (error) {
+        toast.message('Failed to send email');
+      }
 
       toast.success('Request availability has been re-requested successfully');
       setSubmitting(false);
