@@ -42,7 +42,6 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();

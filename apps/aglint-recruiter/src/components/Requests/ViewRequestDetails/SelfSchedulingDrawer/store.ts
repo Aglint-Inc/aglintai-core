@@ -7,7 +7,6 @@ import dayjs from '@/src/utils/dayjs';
 
 import { Event, Resource } from '../../../Common/CalendarResourceView/types';
 import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
-import { use } from 'react';
 
 type PrefferedInterviewer = {
   user_id: string;

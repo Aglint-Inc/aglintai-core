@@ -31,13 +31,7 @@ import {
   setStepScheduling,
   useSelfSchedulingFlowStore,
 } from './store';
-import { getStringColor } from '@/src/components/Common/MuiAvatar';
-import {
-  Event,
-  Resource,
-} from '@/src/components/Common/CalendarResourceView/types';
 import { transformAvailability } from './utils';
-import { setDate } from 'date-fns';
 
 export const useSelfSchedulingDrawer = ({
   refetch,
@@ -59,7 +53,6 @@ export const useSelfSchedulingDrawer = ({
     filteredSchedulingOptions,
     stepScheduling,
     selectedCombIds,
-    filters,
     schedulingOptions,
     fetchingPlan,
     isSendingToCandidate,
@@ -68,7 +61,6 @@ export const useSelfSchedulingDrawer = ({
     dateRange: state.dateRange,
     filteredSchedulingOptions: state.filteredSchedulingOptions,
     stepScheduling: state.stepScheduling,
-    filters: state.filters,
     selectedCombIds: state.selectedCombIds,
     schedulingOptions: state.schedulingOptions,
     fetchingPlan: state.fetchingPlan,
@@ -132,7 +124,6 @@ export const useSelfSchedulingDrawer = ({
 
   const filterSlots = async () => {
     setFilterLoading(true);
-    console.log(localFilters);
 
     const newFilters = {
       isNoConflicts: localFilters.isNoConflicts,

@@ -1,6 +1,8 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Dialog, Stack, TextField } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -10,9 +12,9 @@ import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
+import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllMembers } from '@/src/queries/members';
@@ -24,8 +26,6 @@ import {
   useApplicationDetailStore,
 } from '../../../store';
 import { Interviewer } from '../StageSessions/EditDrawer/types';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();
@@ -258,7 +258,8 @@ export const RangePicker = ({
   setDateRange,
 }: {
   dateRange: { start: string; end: string };
-  setDateRange: (date: { start: string; end: string }) => void;
+  // eslint-disable-next-line no-unused-vars
+  setDateRange: (x: { start: string; end: string }) => void;
 }) => {
   return (
     <Stack spacing={2} direction={'row'} width={'100%'}>

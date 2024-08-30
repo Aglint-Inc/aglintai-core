@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Calendar, LayoutGrid, LayoutList, LibraryBig, ListTodo, Search, Settings, Users, UsersRound, Workflow } from 'lucide-react';
+import { BriefcaseBusiness, Calendar, LayoutGrid, LayoutList, LibraryBig, ListTodo, Search, Settings, Users, Workflow } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -7,17 +7,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
 
-import AllCandidates from '../IconsSideBar/AllCandidates';
-import CompanySettingsIcon from '../IconsSideBar/CompanySettingsIcon';
-import IntegrationIcon from '../IconsSideBar/IntegrationIcon';
-import Interviewers from '../IconsSideBar/Interviewers';
-import InterviewTypeIcon from '../IconsSideBar/InterviewType';
-import JobsIcon from '../IconsSideBar/JobsIcon';
-import RequestIcon from '../IconsSideBar/RequestIcon';
-import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
-import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
-import TaskIcon from '../IconsSideBar/TaskIcon';
-import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 import { LinkProps } from './type';
 import { navList } from './utils';
 

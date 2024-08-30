@@ -1,7 +1,6 @@
 import { Drawer, Stack } from '@mui/material';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
 
 import BodyDrawer from './BodyDrawer';
 import ButtonMain from './ButtonGroup';
@@ -11,12 +10,11 @@ import { useSchedulingFlowStore } from './store';
 import TextDrawerTitle from './TextDrawerTitle';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const { isScheduleNowOpen, stepScheduling, fetchingPlan, availabilities } =
+  const { isScheduleNowOpen, stepScheduling, fetchingPlan } =
     useSchedulingFlowStore((state) => ({
       isScheduleNowOpen: state.isScheduleNowOpen,
       stepScheduling: state.stepScheduling,
       fetchingPlan: state.fetchingPlan,
-      availabilities: state.availabilities,
     }));
 
   const { resetStateSelfScheduling } = useSchedulingDrawer({

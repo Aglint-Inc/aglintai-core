@@ -10,10 +10,10 @@ import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/Intervie
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
+import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
-import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';

@@ -10,6 +10,7 @@ import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../../utils';
@@ -27,7 +28,6 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
-import IconSessionType from '../../../../Common/Icons/IconSessionType';
 
 function BookingConfirmation({
   act,

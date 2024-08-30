@@ -1,6 +1,7 @@
-import { Skeleton } from '@/devlink2/Skeleton';
 import { Stack } from '@mui/material';
 import React from 'react';
+
+import { Skeleton } from '@/devlink2/Skeleton';
 
 function LoaderSlots() {
   return (

@@ -3,7 +3,6 @@ import { Stack, Typography } from '@mui/material';
 import MembersAutoComplete from '@/src/components/Scheduling/Common/MembersTextField';
 
 import {
-  setFilters,
   setLocalFilters,
   useSelfSchedulingFlowStore,
 } from '../../store';
