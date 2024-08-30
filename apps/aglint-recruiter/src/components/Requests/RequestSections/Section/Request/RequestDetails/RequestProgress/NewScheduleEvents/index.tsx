@@ -73,7 +73,6 @@ const NewScheduleEvents = ({
     eventTargetMap: reqTriggerActionsMap,
     requestTargetMp: reqProgressMap,
   });
-
   return (
     <>
       <RequestContext.Provider
@@ -90,10 +89,9 @@ const NewScheduleEvents = ({
           <ShowCode.When isTrue={scheduleFlow === 'availability'}>
             <CandidateAvailReceived eventTargetMap={{}} />
           </ShowCode.When>
-          <InterviewSchedule
-            eventTargetMap={{}}
-            reqProgressMap={reqProgressMap}
-          />
+          <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
+            <InterviewSchedule />
+          </ShowCode.When>
         </Stack>
       </RequestContext.Provider>
     </>

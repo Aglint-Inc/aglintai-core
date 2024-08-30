@@ -8,26 +8,19 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
 import CheckCircleFilled from '../CheckCircleFilled';
-import {
-  EventTargetMapType,
-  ProgressTenseType,
-  RequestProgressMapType,
-} from '../types';
+import { ProgressTenseType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
+import { useNewScheduleRequestPr } from '.';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
-const InterviewSchedule = ({
-  eventTargetMap,
-  reqProgressMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-  reqProgressMap: RequestProgressMapType;
-}) => {
+const InterviewSchedule = () => {
+  const { reqProgressMap, reqTriggerActionsMap: triggerActionMp } =
+    useNewScheduleRequestPr();
   const { request_progress } = useRequest();
-  const eventWActions = eventTargetMap['candidateBook'] ?? [];
+  const eventWActions = triggerActionMp['candidateBook'] ?? [];
 
   const event_status = request_progress.data.find(
     (d) => d.event_type === 'CAND_CONFIRM_SLOT',
@@ -55,7 +48,7 @@ const InterviewSchedule = ({
       <Stack ml={4}>
         {eventWActions
           .map((eA) => {
-            return apiTargetToEvents[eA];
+            return apiTargetToEvents[eA.target_api];
           })
           .flat()
           .map((ev) => {
@@ -65,7 +58,6 @@ const InterviewSchedule = ({
             if (eventProg) {
               tense = progressStatusToTense(eventProg[0].status);
             }
-
             return (
               <p key={ev}>
                 <TextWithIcon
