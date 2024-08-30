@@ -24,5 +24,10 @@
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lucide-react": "^0.436.0",
+    "react-chartjs-2": "^5.2.0",
+    "recharts": "^2.12.7",
+    "tailwindcss-animate": "^1.0.7"
+  }
 }
