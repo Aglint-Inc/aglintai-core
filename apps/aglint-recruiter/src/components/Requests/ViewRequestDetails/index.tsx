@@ -461,14 +461,18 @@ function ViewRequestDetails() {
                             ? '--'
                             : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
                         }
-                        onClickJob={{
-                          onClick: () => {
-                            window.open(
-                              `/jobs/${jobDetails.id}?section=interview`,
-                              '_blank',
-                            );
-                          },
+                        jobLink={{
+                          href: `/jobs/${jobDetails.id}?section=interview`,
+                          target: '_blank',
                         }}
+                        // onClickJob={{
+                        //   onClick: () => {
+                        //     window.open(
+                        //       `/jobs/${jobDetails.id}?section=interview`,
+                        //       '_blank',
+                        //     );
+                        //   },
+                        // }}
                       />
                     </Stack>
                   }
