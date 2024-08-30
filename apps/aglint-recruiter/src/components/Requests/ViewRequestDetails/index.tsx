@@ -268,7 +268,7 @@ function ViewRequestDetails() {
                       </Stack>
                     )}
                   {selectedRequest?.type ? (
-                    <RequestProgress request_type={selectedRequest?.type} />
+                    <RequestProgress requestDetails={selectedRequest} />
                   ) : (
                     <RequestProgressSkeleton />
                   )}

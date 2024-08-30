@@ -1,18 +1,21 @@
+import {
+  CustomAgentInstructionPayload,
+  DatabaseTable,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import React from 'react';
 
-import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { CustomAgentInstructionPayload, DatabaseTable } from '@aglint/shared-types';
-import { WorkflowAction } from '@/src/types/workflow.types';
-import UITypography from '@/src/components/Common/UITypography';
+import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import { GlobalBannerInline } from '@/devlink2';
-import { memo, useState, useRef, useEffect } from 'react';
+import UITypography from '@/src/components/Common/UITypography';
+import { useWorkflow } from '@/src/context/Workflows/[id]';
+import { WorkflowAction } from '@/src/types/workflow.types';
 
-type ActionProps = {
+export type WActionProps = {
   action: ReturnType<typeof useWorkflow>['actions']['data'][number];
 };
 
-export const TargetAPIBody = (props: ActionProps) => {
+export const TargetAPIBody = (props: WActionProps) => {
   switch (props.action.action_type) {
     case 'email':
       return <EmailTemplate key={props.action.target_api} {...props} />;
@@ -27,7 +30,7 @@ export const TargetAPIBody = (props: ActionProps) => {
   }
 };
 
-const EmailTemplate = ({ action: { payload, action_type } }: ActionProps) => {
+const EmailTemplate = ({ action: { payload, action_type } }: WActionProps) => {
   if (action_type !== 'email') return <></>;
 
   const email_subject = <EmailSubject name='subject' value={payload} />;
@@ -56,64 +59,65 @@ type FormsType = {
   disabled?: boolean;
 };
 
-const EmailSubject: React.FC<FormsType> = (({ name, value, disabled = true }) => {
-    return (
-      <Stack>
-        <UITypography type='small'>Email Subject</UITypography>
-        <Stack
-          sx={{
-            mt: '8px',
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: 'var(--radius-2)',
-          }}
-        >
-          <TipTapAIEditor
-            singleLine={true}
-            padding={1}
-            toolbar={false}
-            disabled={disabled}
-            editor_type='email'
-            initialValue={value?.[name]}
-            handleChange={null}
-            placeholder=''
-          />
-        </Stack>
+const EmailSubject: React.FC<FormsType> = ({
+  name,
+  value,
+  disabled = true,
+}) => {
+  return (
+    <Stack>
+      <UITypography type='small'>Email Subject</UITypography>
+      <Stack
+        sx={{
+          mt: '8px',
+          border: '1px solid',
+          borderColor: 'var(--neutral-6)',
+          borderRadius: 'var(--radius-2)',
+        }}
+      >
+        <TipTapAIEditor
+          singleLine={true}
+          padding={1}
+          toolbar={false}
+          disabled={disabled}
+          editor_type='email'
+          initialValue={value?.[name]}
+          handleChange={null}
+          placeholder=''
+        />
       </Stack>
-    );
-  },
-);
+    </Stack>
+  );
+};
 EmailSubject.displayName = 'EmailSubject';
 
-const EmailBody: React.FC<FormsType> = (
-  ({ name, value, disabled = true }) => {
-    return (
-      <Stack>
-        <UITypography type='small'>Email Body</UITypography>
-        <Stack
-          sx={{
-            mt: '8px',
-            border: '1px solid',
-            borderColor: 'var(--neutral-6)',
-            borderRadius: 'var(--radius-2)',
-          }}
-        >
-          <TipTapAIEditor
-            toolbar={false}
-            disabled={disabled}
-            editor_type='email'
-            initialValue={value?.[name]}
-            handleChange={null}
-            placeholder=''
-          />
-        </Stack>
+const EmailBody: React.FC<FormsType> = ({ name, value, disabled = true }) => {
+  return (
+    <Stack>
+      <UITypography type='small'>Email Body</UITypography>
+      <Stack
+        sx={{
+          mt: '8px',
+          border: '1px solid',
+          borderColor: 'var(--neutral-6)',
+          borderRadius: 'var(--radius-2)',
+        }}
+      >
+        <TipTapAIEditor
+          toolbar={false}
+          disabled={disabled}
+          editor_type='email'
+          initialValue={value?.[name]}
+          handleChange={null}
+          placeholder=''
+        />
       </Stack>
-    );
-  },
-);
+    </Stack>
+  );
+};
 EmailBody.displayName = 'EmailBody';
 
-const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
+const SlackTemplate = ({ action: { action_type } }: WActionProps) => {
   if (action_type !== 'slack') return <></>;
 
   return (
@@ -124,7 +128,7 @@ const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
   );
 };
 
-const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
+const EndPointTemplate = ({ action: { action_type } }: WActionProps) => {
   if (action_type !== 'end_point') return <></>;
 
   return (
@@ -135,26 +139,19 @@ const EndPointTemplate = ({ action: { action_type } }: ActionProps) => {
   );
 };
 
-const AgentInstructionTemplate = ({ action }: ActionProps) => {
+const AgentInstructionTemplate = ({ action }: WActionProps) => {
   if (action.action_type !== 'agent_instruction') return <></>;
-
   const email_body = <AgentInstructionBody {...action} />;
 
   const forms = <Stack spacing={'var(--space-5)'}>{email_body}</Stack>;
   return forms;
 };
 
-
 const AgentInstructionBody: React.FC<
-  ActionProps['action'] & { disabled?: boolean }
-> = (({ id, action_type, payload, disabled = false }) => {
-
+  WActionProps['action'] & { disabled?: boolean }
+> = ({ id, action_type, payload, disabled = false }) => {
   const safePayload = payload as CustomAgentInstructionPayload;
-  const [instruction, setInstruction] = useState(
-    safePayload?.instruction ?? '',
-  );
-  const initialRef = useRef(true);
-  if (action_type !== 'agent_instruction') return <></>;
+
   return (
     <Stack>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
@@ -170,12 +167,13 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.instruction}
-          handleChange={(newInstruction) => setInstruction(newInstruction)}
+          handleChange={(newInstruction) => {
+            //
+          }}
           placeholder='Provide the instructions to guide the agent through this action.'
         />
       </Stack>
     </Stack>
   );
-});
+};
 AgentInstructionBody.displayName = 'AgentInstructionBody';

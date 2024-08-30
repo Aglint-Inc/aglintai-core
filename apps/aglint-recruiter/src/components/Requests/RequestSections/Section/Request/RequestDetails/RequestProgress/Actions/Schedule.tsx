@@ -1,6 +1,11 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -12,14 +17,19 @@ import UISelect from '@/src/components/Common/Uiselect';
 import { setCandidateAvailabilityDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { setIsSelfScheduleDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { useNewScheduleRequestPr } from '../NewScheduleEvents';
-import { TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
+import { TargetAPIBody, WActionProps } from '../WorkflowComps/TargetAPIBody';
 
 const ScheduleFlows = () => {
-  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { recruiter } = useAuthDetails();
+  const { reqTriggerActionsMap, companyEmailTemplates, currentRequest } =
+    useNewScheduleRequestPr();
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<
     DatabaseEnums['email_slack_types']
   >(
@@ -28,9 +38,84 @@ const ScheduleFlows = () => {
       : (ACTION_TRIGGER_MAP['onRequestSchedule'][0].value.target_api as any),
   );
 
-  const handleSaveScheduleFlow = async () => {
-    //
+  const handleSaveScheduleFlow = async (
+    wAction: DatabaseTableInsert['workflow_action'],
+  ) => {
+    try {
+      let wTrigger: DatabaseTable['workflow'];
+      [wTrigger] = supabaseWrap(
+        await supabase
+          .from('workflow')
+          .select()
+          .eq('request_id', currentRequest.id)
+          .eq('trigger', 'onRequestSchedule'),
+        false,
+      );
+      if (!wTrigger) {
+        [wTrigger] = supabaseWrap(
+          await supabase
+            .from('workflow')
+            .insert({
+              request_id: currentRequest.id,
+              trigger: 'onRequestSchedule',
+              phase: 'after',
+              recruiter_id: recruiter.id,
+              interval: 0,
+              workflow_type: 'job',
+            })
+            .select(),
+        );
+      }
+
+      supabaseWrap(
+        await supabase
+          .from('workflow_action')
+          .insert([
+            {
+              ...wAction,
+              workflow_id: wTrigger.id,
+            },
+          ])
+          .select(),
+      );
+
+      supabaseWrap(await supabaseAdmin.from('workflow_action').insert([]));
+    } catch (err) {
+      //
+    }
   };
+
+  const selectedActionsDetails = useMemo(() => {
+    let details: WActionProps['action'];
+    let existing_workflow_action = reqTriggerActionsMap['onRequestSchedule']
+      ? reqTriggerActionsMap['onRequestSchedule'][0]
+      : null;
+    if (existing_workflow_action) {
+      details = existing_workflow_action;
+    } else {
+      const emailSlackTemplate = companyEmailTemplates.find(
+        (temp) =>
+          temp.type ===
+          ACTION_TRIGGER_MAP['onRequestSchedule'][0].value.target_api,
+      );
+      details = {
+        action_type: ACTION_TRIGGER_MAP['onRequestSchedule'][0].value
+          .action_type as any,
+        created_at: '',
+        id: '',
+        order: 0,
+        target_api: ACTION_TRIGGER_MAP['onRequestSchedule'][0].value
+          .target_api as any,
+        workflow_id: '',
+        payload: {
+          body: emailSlackTemplate?.body || '',
+          subject: emailSlackTemplate?.subject || '',
+        },
+      };
+    }
+
+    return details;
+  }, [reqTriggerActionsMap, selectedAction, companyEmailTemplates]);
 
   return (
     <>
@@ -96,7 +181,7 @@ const ScheduleFlows = () => {
               slotWorkflowIcon={<ActionIcon />}
               isDeleteVisible={false}
               onClickDelete={() => {
-                console.log('nwejknefwkjn');
+                //
               }}
               slotInputFields={
                 <>
@@ -113,21 +198,19 @@ const ScheduleFlows = () => {
                       }),
                     )}
                   />
-                  <TargetAPIBody
-                    action={{
-                      action_type: 'agent_instruction',
-                      created_at: '',
-                      id: '',
-                      order: 0,
-                      target_api: 'onReceivingAvailReq_agent_confirmSlot',
-                      workflow_id: '',
-                      payload: {},
-                    }}
-                  />
+                  <TargetAPIBody action={selectedActionsDetails} />
                   <ButtonSolid
-                    textButton='Save'
-                    onClickButton={() => {
-                      handleSaveScheduleFlow();
+                    textButton='Add Action'
+                    onClickButton={{
+                      onClick: () => {
+                        handleSaveScheduleFlow({
+                          action_type:
+                            selectedActionsDetails.action_type as any,
+                          target_api: selectedActionsDetails.target_api as any,
+                          payload: selectedActionsDetails.payload as any,
+                          order: 0,
+                        });
+                      },
                     }}
                   />
                 </>

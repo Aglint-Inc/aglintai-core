@@ -115,8 +115,7 @@ function RequestDetails({
       )}
       slotBody={
         <>
-          <RequestProgress request_type={request.type} />
-
+          <RequestProgress requestDetails={request} />
           {Boolean(
             request.status === 'to_do' &&
               request.type === 'schedule_request' &&
