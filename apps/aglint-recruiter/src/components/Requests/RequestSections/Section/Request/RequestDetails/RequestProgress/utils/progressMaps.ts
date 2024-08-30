@@ -25,6 +25,10 @@ export const apiTargetToEvents: Partial<
   selfScheduleReminder_email_applicant: [
     'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
   ],
+  onRequestCancel_agent_cancelEvents: ['CANCEL_INTERVIEW_MEETINGS'],
+  onRequestCancel_slack_interviewersOrganizer: [
+    'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
+  ],
 };
 
 type GroupeTriggerEvent =

@@ -8,8 +8,5 @@ declare function MemberRow(props: {
   textName?: React.ReactNode;
   textRole?: React.ReactNode;
   slotInterviewerImage?: Types.Devlink.Slot;
-  textTime?: React.ReactNode;
   slotConflicts?: Types.Devlink.Slot;
-  isInterviewerTime?: Types.Visibility.VisibilityConditions;
-  textStandardTime?: React.ReactNode;
 }): React.JSX.Element;

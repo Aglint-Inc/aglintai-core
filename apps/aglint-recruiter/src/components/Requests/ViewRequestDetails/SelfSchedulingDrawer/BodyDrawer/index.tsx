@@ -1,13 +1,8 @@
-import { Stack } from '@mui/material';
-
-import CandidateSlotLoad from '@/public/lottie/CandidateSlotLoad';
-
 import SelfScheduleSuccess from '../SelfScheduleSuccess';
-import StepSlotOptions from '../StepSlotOptions';
 import { useSelfSchedulingFlowStore } from '../store';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
-import StepScheduleFilter from './StepScheduleFilter';
-import SelectDateRange from './StepSelectDate/StepSelectDate';
+import LoaderSlots from './Loader';
+import StepSlotOptions from './StepSlotOptions';
 
 function BodyDrawer() {
   const { stepScheduling, fetchingPlan } = useSelfSchedulingFlowStore(
@@ -18,14 +13,10 @@ function BodyDrawer() {
   );
 
   return (
-    <div>
+    <>
       {!fetchingPlan ? (
         <>
-          {stepScheduling === 'pick_date' ? (
-            <SelectDateRange />
-          ) : stepScheduling === 'preference' ? (
-            <StepScheduleFilter />
-          ) : stepScheduling === 'slot_options' ? (
+          {stepScheduling === 'slot_options' ? (
             <StepSlotOptions />
           ) : stepScheduling === 'self_scheduling_email_preview' ? (
             <EmailPreviewSelfSchedule />
@@ -36,20 +27,9 @@ function BodyDrawer() {
           )}
         </>
       ) : (
-        <Stack height={'calc(100vh - 96px)'}>
-          <Stack
-            direction={'row'}
-            justifyContent={'center'}
-            height={'100%'}
-            alignItems={'center'}
-          >
-            <Stack height={'150px'} width={'150px'}>
-              <CandidateSlotLoad />
-            </Stack>
-          </Stack>
-        </Stack>
+        <LoaderSlots />
       )}
-    </div>
+    </>
   );
 }
 
