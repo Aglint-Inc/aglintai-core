@@ -1,46 +1,80 @@
-import { ActiveCircleIndicator } from '@/devlink2/ActiveCircleIndicator';
-import { ButtonGhost } from '@/devlink2/ButtonGhost';
-import { ButtonSolid } from '@/devlink2/ButtonSolid';
-import { GlobalIcon } from '@/devlink2/GlobalIcon';
+import { useMemo } from 'react';
+
 import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import { Stack, TextField } from '@mui/material';
+import { useRequest } from '@/src/context/RequestContext';
+
+import { SlackIcon } from '../../Components/SlackIcon';
+import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { workflowCopy } from '../utils/copy';
+import { apiTargetToEvents } from '../utils/progressMaps';
+import { getWorkflowText } from './utils';
 
 function CandidateCancelled() {
+  const { request_progress, request_workflow } = useRequest();
+  const eventTargetMap = useMemo(() => {
+    let mp: EventTargetMapType = {};
+    request_workflow.data.forEach((eA) => {
+      mp[eA.trigger] = eA.workflow_action.map((wA) => {
+        return wA.target_api;
+      });
+    });
+    return mp;
+  }, [request_workflow.data]);
+
+  const reqProgressMap: RequestProgressMapType = useMemo(() => {
+    let mp: RequestProgressMapType = {};
+
+    request_progress.data.forEach((row) => {
+      if (!mp[row.event_type]) {
+        mp[row.event_type] = [];
+      }
+      mp[row.event_type].push({ ...row });
+    });
+    return mp;
+  }, [request_progress]);
+
+  const EventProgress = eventTargetMap.onRequestCancel
+    .map((api) => {
+      return { api: api, eventType: apiTargetToEvents[api][0] };
+    })
+    .flat()
+    .map(({ eventType, api }) => {
+      const requestProgress =
+        reqProgressMap[eventType] &&
+        reqProgressMap[eventType].find((row) => {
+          return !row.is_progress_step;
+        });
+      const workflow = workflowCopy[eventType];
+      return {
+        eventType: eventType,
+        slotInput: '', // ai instructions
+        slotRequestIcon:
+          api === 'onRequestCancel_slack_interviewersOrganizer' ? (
+            <SlackIcon />
+          ) : (
+            ''
+          ), // left icon
+        slotHoverIcon: '', //right icon
+        status: requestProgress?.status ?? null, // status
+        textProgress: getWorkflowText({
+          workflow,
+          status: requestProgress?.status,
+        }),
+        slotButton: null,
+      };
+    })
+    .flat();
+
   const requestProgressData = [
     {
       id: 'cancel_request',
+      isDividerVisible: false,
       textRequestProgress: 'Cancel request received from the candidate',
-      indicator: 'success',
-      circleIndicator: 'success',
+      indicator: 'error',
+      circleIndicator: 'error',
       slotIndicator: null,
-      eventProgress: [
-        {
-          slotInput: '', // ai instructions
-          slotRequestIcon: null, // left icon
-          slotHoverIcon: '', //right icon
-          status: '', // status
-          textProgress: 'Cancel the schedule and remove calendar invites.',
-          slotButton: null,
-        },
-        {
-          slotInput: '', // ai instructions
-          slotRequestIcon: null, // left icon
-          slotHoverIcon: '', //right icon
-          status: '', // status
-          textProgress:
-            'Send a cancellation confirmation email to the candidate.',
-          slotButton: null,
-        },
-        {
-          slotInput: '', // ai instructions
-          slotRequestIcon: null, // left icon
-          slotHoverIcon: '', //right icon
-          status: '', // status
-          textProgress: 'Update interviewers about the cancellation on Slack.',
-          slotButton: null,
-        },
-      ],
+      eventProgress: [...EventProgress],
       addActionButton: null,
     },
   ];
@@ -56,11 +90,13 @@ function CandidateCancelled() {
             textRequestProgress,
             eventProgress,
             addActionButton,
+            isDividerVisible,
           },
           index,
         ) => (
           <RequestProgress
             key={index}
+            isDividerVisible={isDividerVisible}
             indicator={indicator}
             circleIndicator={circleIndicator}
             slotIndicator={slotIndicator}
@@ -103,49 +139,3 @@ function CandidateCancelled() {
 }
 
 export default CandidateCancelled;
-
-function InputBox() {
-  return (
-    <TextField
-      // value={note || ''}
-      // onChange={async (e) => {
-      //   setNote(e.target.value);
-      //   setSaving(true);
-      //   debouncedUpsertRequestNotes(e.target.value, requestNotes?.[0]?.id);
-      // }}
-      placeholder='Instructions'
-      multiline // Enables textarea behavior
-      minRows={1} // Minimum number of rows
-      maxRows={2} // Maximum number of rows
-      variant='outlined' // Uses the outlined variant
-      fullWidth // Takes full width of the container
-      sx={{
-        '& .MuiOutlinedInput-root': {
-          padding: 0, // Remove padding
-          borderRadius: '0.2rem', // Custom border-radius
-          backgroundColor: 'transparent', // Transparent background
-          '& fieldset': {
-            border: 'none', // Remove the default border
-          },
-          '&:hover fieldset': {
-            borderColor: 'transparent', // Ensure no border color change on hover
-          },
-          '&.Mui-focused': {
-            boxShadow: 'none', // Remove the box shadow on focus
-            '& fieldset': {
-              borderColor: 'transparent', // Ensure no border color change on focus
-            },
-          },
-        },
-        '& .MuiInputBase-input': {
-          whiteSpace: 'pre-wrap',
-          wordWrap: 'break-word',
-          wordBreak: 'break-all',
-          resize: 'none', // Disable resizing
-          outline: 'none', // Disable outline
-          padding: 0, // Remove padding
-        },
-      }}
-    />
-  );
-}
