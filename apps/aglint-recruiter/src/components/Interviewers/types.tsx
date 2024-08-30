@@ -1,6 +1,6 @@
 import { CalendarEvent } from '@aglint/shared-types';
 
-import { SchedulingAnalyticsProcedureArgs } from '@/src/queries/scheduling-analytics/types';
+import { RouterHelper, RouterInputs } from '@/src/trpc/client';
 
 export type interviewersTab =
   | 'availability'
@@ -12,12 +12,13 @@ export type CalendarEventWithType = (CalendarEvent & {
   type: string;
 })[];
 
-export type LeaderAnalyticsFilterType =
-  SchedulingAnalyticsProcedureArgs<'leaderboard'>;
+export type LeaderAnalyticsFilterType = RouterHelper<
+  RouterInputs['scheduling']['analytics']['leaderboard']
+>;
 
-export type TrainingProgressType =
-  SchedulingAnalyticsProcedureArgs<'training_progress'>;
-
+export type TrainingProgressType = RouterHelper<
+  RouterInputs['scheduling']['analytics']['training_progress']
+>;
 export type EventType =
   | 'cal_event'
   | 'soft'

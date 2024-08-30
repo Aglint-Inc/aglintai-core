@@ -5,13 +5,13 @@ import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 import Theme from '../context/Theme/Theme';
-import { QueryProvider } from '../queries';
 import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 import AppLayout from '../components/AppLayout';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
+import { TRPCReactProvider } from '../trpc/client';
 
 export const PrivateProviders = ({
   children,
@@ -46,7 +46,7 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
       <DevlinkMainProvider>
         <Theme>
           <ScreenSizeProvider>
-            <QueryProvider>{children}</QueryProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
           </ScreenSizeProvider>
         </Theme>
       </DevlinkMainProvider>
