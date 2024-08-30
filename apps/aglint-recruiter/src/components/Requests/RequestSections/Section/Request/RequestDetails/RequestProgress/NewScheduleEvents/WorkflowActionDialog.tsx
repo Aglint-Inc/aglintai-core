@@ -41,6 +41,7 @@ const WorkflowActionDialog = () => {
     if (existing_workflow_action) {
       details = existing_workflow_action;
     } else {
+      console.log('companyEmailTemplates', companyEmailTemplates);
       const emailSlackTemplate = companyEmailTemplates.find(
         (temp) =>
           temp.type === ACTION_TRIGGER_MAP[editTrigger][0].value.target_api,
