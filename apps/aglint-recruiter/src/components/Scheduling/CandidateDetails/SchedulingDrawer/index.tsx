@@ -1,4 +1,4 @@
-import { Drawer } from '@mui/material';
+import { Drawer, Stack } from '@mui/material';
 
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 
@@ -10,10 +10,9 @@ import { useSchedulingFlowStore } from './store';
 import TextDrawerTitle from './TextDrawerTitle';
 
 function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
-  const { isScheduleNowOpen,  stepScheduling, fetchingPlan } =
+  const { isScheduleNowOpen, stepScheduling, fetchingPlan } =
     useSchedulingFlowStore((state) => ({
       isScheduleNowOpen: state.isScheduleNowOpen,
-      scheduleFlow: state.scheduleFlow,
       stepScheduling: state.stepScheduling,
       fetchingPlan: state.fetchingPlan,
     }));
@@ -31,23 +30,25 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
           resetStateSelfScheduling();
         }}
       >
-        <SideDrawerLarge
-          onClickCancel={{
-            onClick: () => {
-              resetStateSelfScheduling();
-            },
-          }}
-          slotHeaderIcon={<HeaderIcon />}
-          textDrawertitle={<TextDrawerTitle />}
-          slotButtons={<ButtonMain refetch={refetch} />}
-          slotSideDrawerbody={<BodyDrawer />}
-          isBottomBar={
-            !fetchingPlan &&
-            stepScheduling !== 'request_availibility' &&
-            stepScheduling !== 'success_screen' &&
-            stepScheduling !== 'agents_final_screen_cta'
-          }
-        />
+        <Stack direction={'row'}>
+          <SideDrawerLarge
+            onClickCancel={{
+              onClick: () => {
+                resetStateSelfScheduling();
+              },
+            }}
+            slotHeaderIcon={<HeaderIcon />}
+            textDrawertitle={<TextDrawerTitle />}
+            slotButtons={<ButtonMain refetch={refetch} />}
+            slotSideDrawerbody={<BodyDrawer />}
+            isBottomBar={
+              !fetchingPlan &&
+              stepScheduling !== 'request_availibility' &&
+              stepScheduling !== 'success_screen' &&
+              stepScheduling !== 'agents_final_screen_cta'
+            }
+          />
+        </Stack>
       </Drawer>
     </>
   );

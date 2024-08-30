@@ -42,7 +42,6 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { setIsSelfScheduleDrawerOpen } from './SelfSchedulingDrawer/store';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -210,25 +209,6 @@ function ViewRequestDetails() {
                         );
                       })}
                     </>
-                  )}
-
-                  {selectedRequest.status === 'to_do' && (
-                    <Stack
-                      direction={'row'}
-                      sx={{
-                        display: 'none',
-                      }}
-                    >
-                      <ButtonSoft
-                        size={1}
-                        textButton={'Self Schedule'}
-                        onClickButton={{
-                          onClick: () => {
-                            setIsSelfScheduleDrawerOpen(true);
-                          },
-                        }}
-                      />
-                    </Stack>
                   )}
                 </>
               }

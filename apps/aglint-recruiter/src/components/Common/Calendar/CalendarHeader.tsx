@@ -72,8 +72,6 @@ function CalendarHeader({
               onClickButton={{ onClick: () => calendarApi.prev() }}
             />
             <Typography fontWeight={500}>
-              {/* {currentViewType === 'listWeek' ||
-        currentViewType === 'dayGridWeek' */}
               {currentViewType === 'listWeek' ||
               currentViewType === 'timeGridWeek'
                 ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`

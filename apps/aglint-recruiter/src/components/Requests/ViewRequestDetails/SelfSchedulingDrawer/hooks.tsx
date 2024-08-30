@@ -11,11 +11,18 @@ import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/applicati
 import toast from '@/src/utils/toast';
 
 import { useMeetingList } from '../hooks';
-import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 import {
+  SelfSchedulingFlow,
+  setAnchorEl,
+  setAvailabilities,
+  setCalendarDate,
+  setDateRange,
   setErrorNoSlotFilter,
   setFetchingPlan,
   setFilteredSchedulingOptions,
+  setFilterLoading,
+  setFilters,
   setIsSelfScheduleDrawerOpen,
   setIsSendingToCandidate,
   setNoOptions,
@@ -24,6 +31,7 @@ import {
   setStepScheduling,
   useSelfSchedulingFlowStore,
 } from './store';
+import { transformAvailability } from './utils';
 
 export const useSelfSchedulingDrawer = ({
   refetch,
@@ -34,7 +42,7 @@ export const useSelfSchedulingDrawer = ({
   const { recruiter, recruiterUser } = useAuthDetails();
   const request_id = router.query.id as string;
   const { data } = useMeetingList();
-  const allSessions = data;
+  const allSessions = data || [];
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
@@ -45,69 +53,102 @@ export const useSelfSchedulingDrawer = ({
     filteredSchedulingOptions,
     stepScheduling,
     selectedCombIds,
-    filters,
     schedulingOptions,
     fetchingPlan,
     isSendingToCandidate,
+    localFilters,
   } = useSelfSchedulingFlowStore((state) => ({
     dateRange: state.dateRange,
     filteredSchedulingOptions: state.filteredSchedulingOptions,
     stepScheduling: state.stepScheduling,
-    filters: state.filters,
     selectedCombIds: state.selectedCombIds,
     schedulingOptions: state.schedulingOptions,
     fetchingPlan: state.fetchingPlan,
     isSendingToCandidate: state.isSendingToCandidate,
+    localFilters: state.localFilters,
   }));
 
   const onClickPrimary = async () => {
     await selfSchedulingOrDebriefFlow();
   };
 
-  const selfSchedulingOrDebriefFlow = async () => {
-    if (stepScheduling === 'pick_date') {
+  const findAvailibility = async ({
+    filters,
+    dateRange,
+  }: {
+    filters: SelfSchedulingFlow['filters'];
+    dateRange: SelfSchedulingFlow['dateRange'];
+  }) => {
+    setNoOptions(false);
+    const resOptions = await findScheduleOptions({
+      dateRange: dateRange,
+      session_ids: selectedSessionIds,
+      rec_id: recruiter.id,
+    });
+    // if api return empty array if user select same date and break duration is more than 1 day
+    if (resOptions?.slots?.length === 0) {
+      setNoOptions(true);
+      return;
+    }
+    setSchedulingOptions(resOptions?.slots); // this is global state which we dont alter in self scheduling flow
+
+    const filterSlots = filterSchedulingOptionsArray({
+      schedulingOptions: resOptions?.slots,
+      filters,
+    }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
+
+    // numberTotal is the total number of slots available (including conflicts)
+    if (filterSlots.numberTotal < 5) {
+      setNoSlotReasons(
+        filterSlots.combs.filter((comb) =>
+          comb.plans.some((plan) => plan.no_slot_reasons.length > 0),
+        ),
+      );
+      setNoOptions(true);
+      return;
+    } else {
       setNoOptions(false);
-      const resOptions = await findScheduleOptions({
-        dateRange: dateRange,
-        session_ids: selectedSessionIds,
-        rec_id: recruiter.id,
-      });
-      // if api return empty array if user select same date and break duration is more than 1 day
-      if (resOptions.length === 0) {
-        setNoOptions(true);
-        return;
-      }
-      setSchedulingOptions(resOptions); // this is global state which we dont alter in self scheduling flow
+      setNoSlotReasons([]);
+      setFilteredSchedulingOptions(filterSlots.combs);
+    }
 
-      const filterSlots = filterSchedulingOptionsArray({
-        schedulingOptions: resOptions,
-        filters: {
-          isNoConflicts: true,
-          isSoftConflicts: true,
-          isHardConflicts: true,
-          isOutSideWorkHours: true,
-          preferredInterviewers: [],
-          preferredDateRanges: [],
-          isWorkLoad: false,
-        },
-      }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
+    const { events, resources } = transformAvailability(
+      resOptions.availabilities,
+    );
+    setAvailabilities({
+      events,
+      resources,
+    });
+    setCalendarDate(dateRange.start_date);
+  };
 
-      // numberTotal is the total number of slots available (including conflicts)
-      if (filterSlots.numberTotal < 5) {
-        setNoSlotReasons(
-          filterSlots.combs.filter((comb) =>
-            comb.plans.some((plan) => plan.no_slot_reasons.length > 0),
-          ),
-        );
-        setNoOptions(true);
-        return;
-      }
-      setStepScheduling('preference');
-    } else if (stepScheduling === 'preference') {
-      // here we put user selected filters and generate combinations
+  const filterSlots = async () => {
+    setFilterLoading(true);
+
+    const newFilters = {
+      isNoConflicts: localFilters.isNoConflicts,
+      isSoftConflicts: localFilters.isSoftConflicts,
+      isHardConflicts: localFilters.isHardConflicts,
+      isOutSideWorkHours: localFilters.isOutSideWorkHours,
+      preferredInterviewers: localFilters.preferredInterviewers,
+      preferredDateRanges: localFilters.preferredDateRanges,
+      isWorkLoad: localFilters.isWorkLoad,
+    };
+    setFilters(newFilters);
+    setDateRange({
+      start_date: localFilters.dateRange.start,
+      end_date: localFilters.dateRange.end,
+    });
+    if (
+      dayjs(localFilters.dateRange.start).isSame(
+        dayjs(dateRange.start_date),
+        'day',
+      ) &&
+      dayjs(localFilters.dateRange.end).isSame(dayjs(dateRange.end_date), 'day')
+    ) {
       const filterSlots = filterSchedulingOptionsArray({
         schedulingOptions,
-        filters,
+        filters: newFilters,
       });
 
       if (filterSlots.numberTotal < 5) {
@@ -116,10 +157,22 @@ export const useSelfSchedulingDrawer = ({
       } else {
         setErrorNoSlotFilter(false);
       }
+      setFilteredSchedulingOptions(filterSlots.combs);
+    } else {
+      await findAvailibility({
+        filters: newFilters,
+        dateRange: {
+          start_date: localFilters.dateRange.start,
+          end_date: localFilters.dateRange.end,
+        },
+      });
+    }
+    setFilterLoading(false);
+    setAnchorEl(null);
+  };
 
-      setFilteredSchedulingOptions(filterSlots.combs); // this is used for rendering combinations in slot options step
-      setStepScheduling('slot_options');
-    } else if (stepScheduling === 'slot_options') {
+  const selfSchedulingOrDebriefFlow = async () => {
+    if (stepScheduling === 'slot_options') {
       // if it normal session then user has to select atleast 5 combinations
       if (selectedCombIds.length < 5) {
         toast.warning('Please select at least 5 time slots to schedule.');
@@ -209,18 +262,14 @@ export const useSelfSchedulingDrawer = ({
       );
 
       if (res.status === 200) {
-        const slots = res.data as ApiResponseFindAvailability;
-        if (slots.length === 0) {
-          return [];
-        }
-        return slots;
+        const resAvail = res.data as ApiResponseFindAvailability;
+        return resAvail;
       } else {
-        toast.error('Error retrieving availability.');
-        return [];
+        throw new Error();
       }
     } catch (error) {
       toast.error('Error retrieving availability.');
-      return [];
+      return null;
     } finally {
       setFetchingPlan(false);
     }
@@ -232,7 +281,7 @@ export const useSelfSchedulingDrawer = ({
       setIsSelfScheduleDrawerOpen(false);
       setSchedulingOptions([]);
       setFilteredSchedulingOptions([]);
-      setStepScheduling('pick_date');
+      setStepScheduling('slot_options');
       setErrorNoSlotFilter(false);
     }
   };
@@ -240,6 +289,7 @@ export const useSelfSchedulingDrawer = ({
   return {
     onClickPrimary,
     resetStateSelfScheduling,
-    findScheduleOptions,
+    findAvailibility,
+    filterSlots,
   };
 };
