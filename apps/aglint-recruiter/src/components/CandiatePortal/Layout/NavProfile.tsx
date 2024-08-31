@@ -14,7 +14,7 @@ export default function NavProfile() {
           <AvatarFallback className="bg-primary text-primary-foreground">FU</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" side="bottom">
+      <DropdownMenuContent className="w-56 border-none" align="end" side="bottom">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
