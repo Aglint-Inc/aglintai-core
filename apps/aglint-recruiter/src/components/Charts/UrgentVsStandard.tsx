@@ -7,18 +7,18 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 
 export default function UrgentVsStandard() {
   const data = [
-    { type: 'Scheduling', Urgent: 30, Standard: 70 },
-    { type: 'Rescheduling', Urgent: 20, Standard: 50 },
-    { type: 'Decline', Urgent: 15, Standard: 35 },
-    { type: 'Cancel', Urgent: 10, Standard: 25 },
-    { type: 'Debrief', Urgent: 5, Standard: 15 },
+    { type: 'Scheduling', Standard: 70, Urgent: 30 },
+    { type: 'Rescheduling', Standard: 50, Urgent: 20 },
+    { type: 'Decline', Standard: 35, Urgent: 15 },
+    { type: 'Cancel', Standard: 25, Urgent: 10 },
+    { type: 'Debrief', Standard: 15, Urgent: 5 },
   ]
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto border border-border">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">
-          Request Type Distribution: Urgent vs. Standard
+          Request Type Distribution: Standard vs. Urgent
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -29,8 +29,8 @@ export default function UrgentVsStandard() {
             <YAxis label={{ value: 'Number of Requests', angle: -90, position: 'insideLeft' }} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="Urgent" stackId="a" fill="#ffa500" /> {/* Orange color for Urgent */}
             <Bar dataKey="Standard" stackId="a" fill="#87CEEB" /> {/* Light blue color for Standard */}
+            <Bar dataKey="Urgent" stackId="a" fill="#ffa500" /> {/* Orange color for Urgent */}
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

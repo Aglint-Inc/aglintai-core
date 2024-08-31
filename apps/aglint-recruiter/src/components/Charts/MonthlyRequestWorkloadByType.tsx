@@ -23,9 +23,9 @@ export default function MonthlyRequestWorkloadChart() {
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto border border-border">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Monthly Request Workload by Type</CardTitle>
+        <CardTitle className="text-md font-bold text-center">Monthly Request Workload by Type</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>

@@ -87,9 +87,9 @@ const CompletedInterviewsOverTime = () => {
   };
 
   return (
-    <Card className='max-w-lg mx-auto mt-6'>
+    <Card className='max-w-lg mx-auto mt-6 border border-border'>
       <CardHeader>
-        <CardTitle>Completed Interviews Over Time</CardTitle>
+        <CardTitle className='text-md font-bold text-center'>Completed Interviews Over Time</CardTitle>
       </CardHeader>
       <CardContent>
         <Line data={chartData} options={options} />

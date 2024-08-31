@@ -35,7 +35,7 @@ export default function InterviewTypeDistribution() {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto border border-border">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Distribution of Interview Types</CardTitle>
       </CardHeader>
