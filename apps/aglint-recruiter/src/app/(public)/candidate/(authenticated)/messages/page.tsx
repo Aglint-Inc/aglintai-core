@@ -7,6 +7,7 @@ import {
 import { Button } from '@components/shadcn/ui/button';
 import { Card, CardContent } from '@components/shadcn/ui/card';
 import { useState } from 'react';
+import { Upload, MoreHorizontal, Clock, Check } from 'lucide-react';
 
 
 interface Message {
@@ -28,7 +29,33 @@ const messages: Message[] = [
       "Hey Allison 👋\n\nThanks for your interest in the position at Good Health. We're excited to move forward with the interview process.\n\nTo help us schedule your following interview, please let us know when you're available by sharing a few time windows over the next seven days that work for you.\n\nWe're looking forward to speaking with you.",
     unread: false,
   },
-  // Add more messages as needed
+  {
+    id: 2,
+    title: "Interview Scheduled: Next Steps",
+    sender: 'Mark R.',
+    date: 'Feb 12 at 2:15pm',
+    content:
+      "Hello Allison,\n\nGreat news! We've scheduled your interview for next Tuesday at 3:00 PM PT. You'll be meeting with our senior software engineer, Jim Halpert.\n\nPlease find the Zoom link attached to this message. If you need to reschedule or have any questions, don't hesitate to reach out.\n\nBest regards,\nMark",
+    unread: true,
+  },
+  {
+    id: 3,
+    title: "Pre-interview Information",
+    sender: 'Sarah K.',
+    date: 'Feb 14 at 9:22am',
+    content:
+      "Hi Allison,\n\nI hope this message finds you well. As your interview is coming up, I wanted to provide you with some additional information that might be helpful.\n\nWe've attached a brief overview of our company culture and the team you'd be working with. Also, please be prepared to discuss your experience with agile methodologies and any recent projects you've worked on.\n\nIf you have any questions before the interview, feel free to ask.\n\nGood luck!\nSarah",
+    unread: true,
+  },
+  {
+    id: 4,
+    title: "Thank You for Your Interview",
+    sender: 'Jim H.',
+    date: 'Feb 16 at 5:45pm',
+    content:
+      "Dear Allison,\n\nThank you for taking the time to speak with me today. I enjoyed our conversation about your experiences and your approach to problem-solving.\n\nYour insights on improving our current systems were particularly interesting. We'll be in touch soon with next steps.\n\nBest regards,\nJim Halpert",
+    unread: false,
+  },
 ];
 
 export default function MessagesPage() {
@@ -42,7 +69,7 @@ export default function MessagesPage() {
         {messages.map((message) => (
           <Card
             key={message.id}
-            className={`cursor-pointer ${selectedMessage?.id === message.id ? 'border-primary' : ''}`}
+            className={`cursor-pointer ${selectedMessage?.id === message.id ? 'border-primary border' : 'border border-border'}`}
             onClick={() => setSelectedMessage(message)}
           >
             <CardContent className='p-4'>
@@ -74,38 +101,10 @@ export default function MessagesPage() {
               <h2 className='text-2xl font-bold'>{selectedMessage.title}</h2>
               <div className='flex space-x-2'>
                 <Button variant='outline' size='icon'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <path d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8' />
-                    <polyline points='16 6 12 2 8 6' />
-                    <line x1='12' y1='2' x2='12' y2='15' />
-                  </svg>
+                  <Upload className="h-4 w-4" />
                 </Button>
                 <Button variant='outline' size='icon'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <circle cx='12' cy='12' r='1' />
-                    <circle cx='19' cy='12' r='1' />
-                    <circle cx='5' cy='12' r='1' />
-                  </svg>
+                  <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -128,38 +127,11 @@ export default function MessagesPage() {
             <div className='mt-6'>
               <h3 className='font-semibold mb-2'>Meeting with Good Health</h3>
               <div className='flex items-center text-sm text-gray-500'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  className='mr-2'
-                >
-                  <circle cx='12' cy='12' r='10' />
-                  <polyline points='12 6 12 12 16 14' />
-                </svg>
+                <Clock className="mr-2 h-4 w-4" />
                 <span>45 minutes</span>
               </div>
               <Button className='mt-2' variant='secondary'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  className='mr-2'
-                >
-                  <polyline points='20 6 9 17 4 12' />
-                </svg>
+                <Check className="mr-2 h-4 w-4" />
                 Availability shared
               </Button>
             </div>

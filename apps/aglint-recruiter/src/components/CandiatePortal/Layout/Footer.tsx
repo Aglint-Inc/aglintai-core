@@ -18,17 +18,17 @@ export function Footer() {
             <React.Fragment key={link.href}>
               <Link
                 href={link.href}
-                className='text-gray-600 hover:text-gray-900 transition-colors duration-200'
+                className='text-gray-600 hover:text-gray-900 transition-colors duration-200 text-xs'
               >
                 {link.label}
               </Link>
               {index < footerLinks.length - 1 && (
-                <span className='mx-2 text-gray-400'>|</span>
+                <span className='mx-2 text-gray-400 text-xs'>|</span>
               )}
             </React.Fragment>
           ))}
         </div>
-        <div className='text-center text-sm text-gray-500'>
+        <div className='text-center text-xs text-gray-500'>
           © {currentYear} Powered by Aglint AI. All rights reserved.
         </div>
       </div>

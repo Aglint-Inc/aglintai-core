@@ -15,7 +15,6 @@ import { Input } from '@components/shadcn/ui/input';
 import { Label } from '@components/shadcn/ui/label';
 import { Textarea } from '@components/shadcn/ui/textarea';
 import React, { useState } from 'react';
-import { ThemeSelector } from './ThemeSelector';
 
 export default function CandidateForm() {
   const [name, setName] = useState('John Doe');
@@ -45,8 +44,7 @@ export default function CandidateForm() {
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-100 p-4'>
-      <ThemeSelector />
-      <Card className='w-full max-w-2xl'>
+      <Card className='w-full max-w-2xl border-none'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold text-center'>
             Candidate Profile
@@ -174,6 +172,7 @@ function FileUploader({ children, accept, onFileSelect, className }) {
           file:text-sm file:font-semibold
           file:bg-blue-50 file:text-blue-700
           hover:file:bg-blue-100
+          border border-gray-300 rounded-md
         '
         />
       </label>
