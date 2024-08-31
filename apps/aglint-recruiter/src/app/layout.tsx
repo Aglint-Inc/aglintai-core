@@ -1,27 +1,34 @@
-/* eslint-disable @next/next/no-page-custom-font */
-'use client';
-import '@styles/globals.scss';
-import 'regenerator-runtime/runtime';
+import { ThemeProvider } from '@components/shadcn//theme-provider';
+import { ThemeSwitcher } from '@components/CandiatePortal/components/ThemeSwitcher';
+import '@/styles/globals.css';
 
-import { Inter } from 'next/font/google';
-import { ReactNode } from 'react';
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
+export const metadata = {
+  metadataBase: new URL(defaultUrl),
+  title: 'Next.js and Supabase Starter Kit',
+  description: 'The fastest way to build apps with Next.js and Supabase',
+};
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang='en' className={inter.className}>
-      {/*eslint-disable-next-line @next/next/no-head-element */}
-      <head>
-        <link
-          href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
-          rel='stylesheet'
-        />
-      </head>
-      <body>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -15,6 +15,7 @@ import { Input } from '@components/shadcn/ui/input';
 import { Label } from '@components/shadcn/ui/label';
 import { Textarea } from '@components/shadcn/ui/textarea';
 import React, { useState } from 'react';
+import { ThemeSelector } from './ThemeSelector';
 
 export default function CandidateForm() {
   const [name, setName] = useState('John Doe');
@@ -44,6 +45,7 @@ export default function CandidateForm() {
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-100 p-4'>
+      <ThemeSelector />
       <Card className='w-full max-w-2xl'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold text-center'>
