@@ -186,10 +186,10 @@ export function RequestTrend() {
   );
 
   return (
-    <Card>
-      <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
+    <Card className='border border-border'>
+      <CardHeader className='flex flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row'>
         <div className='flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6'>
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle className='text-md font-semibold'>Bar Chart - Interactive</CardTitle>
           <CardDescription>
             Showing total visitors for the last 3 months
           </CardDescription>
@@ -201,7 +201,7 @@ export function RequestTrend() {
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className='relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6'
+                className='relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l border-border data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6'
                 onClick={() => setActiveChart(chart)}
               >
                 <span className='text-xs text-muted-foreground'>
@@ -259,7 +259,7 @@ export function RequestTrend() {
                 />
               }
             />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+            <Bar dataKey={activeChart} fill={`hsl(var(--${activeChart === 'desktop' ? 'chart-1' : 'chart-2'}))`} />
           </BarChart>
         </ChartContainer>
       </CardContent>

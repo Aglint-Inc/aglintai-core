@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import CandidateForm from '@/src/components/CandiatePortal/Profile/CandidateForm';
+import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
 import Loader from '@/src/components/Common/Loader';
 
 export default function ProfilePage() {

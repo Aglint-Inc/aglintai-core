@@ -12,14 +12,14 @@ function CompanyImage({ imageSrc, altText = "Company Name", coverSrc }: { imageS
       }}
     >
       <div className="absolute -bottom-16 left-8">
-        <div className="w-32 h-32 bg-white rounded-md border-gray-200 border-2 flex items-center justify-center ">
+        <div className="w-32 h-32 bg-white rounded-md flex items-center justify-center ">
           {imageSrc ? (
             <Image 
               src={imageSrc} 
               alt={altText} 
               width={128} 
               height={128} 
-              className="rounded-md object-contain"
+              className="rounded-md object-contain border border-border"
             />
           ) : (
             <span className="text-white text-4xl font-bold">{altText}</span>

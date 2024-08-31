@@ -2,21 +2,21 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@components/shadcn/ui/card"
 import React from 'react'
-import { Bar, CartesianGrid, Cell,ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, CartesianGrid, Cell, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 export default function RequestTypesDelaysChart() {
   const data = [
-    { type: 'Scheduling', avgTime: 3, completionRate: 85, color: 'hsl(var(--primary))' },
-    { type: 'Rescheduling', avgTime: 4.5, completionRate: 90, color: 'hsl(var(--secondary))' },
-    { type: 'Decline', avgTime: 2, completionRate: 75, color: 'hsl(var(--accent))' },
-    { type: 'Cancel', avgTime: 1.5, completionRate: 95, color: 'hsl(var(--destructive))' },
-    { type: 'Debrief', avgTime: 5, completionRate: 80, color: 'hsl(var(--muted))' },
+    { type: 'Scheduling', avgTime: 3, completionRate: 85, color: 'hsl(var(--chart-1))' },
+    { type: 'Rescheduling', avgTime: 4.5, completionRate: 90, color: 'hsl(var(--chart-2))' },
+    { type: 'Decline', avgTime: 2, completionRate: 75, color: 'hsl(var(--chart-3))' },
+    { type: 'Cancel', avgTime: 1.5, completionRate: 95, color: 'hsl(var(--chart-4))' },
+    { type: 'Debrief', avgTime: 5, completionRate: 80, color: 'hsl(var(--chart-5))' },
   ]
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto border border-border">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-center">
+        <CardTitle className="text-md font-semibold text-center">
           Request Types Causing Most Delays: Avg. Time to Completion vs Completion Rate
         </CardTitle>
       </CardHeader>
@@ -71,10 +71,10 @@ export default function RequestTypesDelaysChart() {
               yAxisId="right" 
               type="monotone" 
               dataKey="completionRate" 
-              stroke="hsl(var(--info))" 
+              stroke="hsl(var(--primary))" 
               name="Completion Rate (%)" 
               strokeWidth={2}
-              dot={{ fill: 'hsl(var(--info))', strokeWidth: 2 }}
+              dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2 }}
             />
           </ComposedChart>
         </ResponsiveContainer>

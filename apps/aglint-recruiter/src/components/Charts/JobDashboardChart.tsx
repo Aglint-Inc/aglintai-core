@@ -24,9 +24,9 @@ const data = [
 
 export default function JobDashboardChart() {
   return (
-    <Card className='w-full max-w-4xl mx-auto'>
+    <Card className='w-full max-w-4xl mx-auto border border-border'>
       <CardHeader>
-        <CardTitle className='text-2xl font-bold text-center'>
+        <CardTitle className='text-md font-semibold text-center'>
           Job Dashboard - Candidates in Each Stage
         </CardTitle>
       </CardHeader>
@@ -43,7 +43,7 @@ export default function JobDashboardChart() {
               <Tooltip />
               <Bar
                 dataKey='candidates'
-                fill='#60a5fa'
+                fill='hsl(var(--chart-1))'
                 label={{ position: 'right' }}
               />
             </BarChart>
