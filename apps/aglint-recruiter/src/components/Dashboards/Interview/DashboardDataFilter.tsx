@@ -4,15 +4,67 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@components/shadcn/ui/popover"
 import { Calendar } from "@components/shadcn/ui/calendar"
 import { CalendarIcon, X, Briefcase, Building2, MapPin, Clock } from "lucide-react"
-import { format } from "date-fns"
+import { format, startOfDay, endOfDay, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfQuarter, endOfQuarter, startOfYear, endOfYear } from "date-fns"
 
 export default function Component() {
   const [job, setJob] = useState("")
   const [department, setDepartment] = useState("")
   const [location, setLocation] = useState("")
-  const [dateRange, setDateRange] = useState("")
+  const [dateRange, setDateRange] = useState<{ from: Date; to: Date } | null>(null)
   const [startDate, setStartDate] = useState<Date | undefined>()
   const [endDate, setEndDate] = useState<Date | undefined>()
+  const [dateOption, setDateOption] = useState<string>("")
+
+  const dateOptions = [
+    { value: "today", label: "Today" },
+    { value: "yesterday", label: "Yesterday" },
+    { value: "thisWeek", label: "This Week" },
+    { value: "thisMonth", label: "This Month" },
+    { value: "thisQuarter", label: "This Quarter" },
+    { value: "thisYear", label: "This Year" },
+    { value: "yearToDate", label: "Year to Date" },
+    { value: "custom", label: "Custom Range" },
+  ]
+
+  const handleDateOptionChange = (value: string) => {
+    setDateOption(value)
+    const today = new Date()
+    let from: Date, to: Date
+    switch (value) {
+      case "today":
+        from = to = today
+        break
+      case "yesterday":
+        from = to = subDays(today, 1)
+        break
+      case "thisWeek":
+        from = startOfWeek(today)
+        to = endOfWeek(today)
+        break
+      case "thisMonth":
+        from = startOfMonth(today)
+        to = endOfMonth(today)
+        break
+      case "thisQuarter":
+        from = startOfQuarter(today)
+        to = endOfQuarter(today)
+        break
+      case "thisYear":
+        from = startOfYear(today)
+        to = endOfYear(today)
+        break
+      case "yearToDate":
+        from = startOfYear(today)
+        to = today
+        break
+      case "custom":
+        // Don't set dates for custom, let the user pick
+        return
+      default:
+        return
+    }
+    setDateRange({ from: startOfDay(from), to: endOfDay(to) })
+  }
 
   const clearFilter = (filter: string) => {
     switch (filter) {
@@ -26,17 +78,19 @@ export default function Component() {
         setLocation("")
         break
       case 'dateRange':
-        setDateRange("")
+        setDateRange(null)
         setStartDate(undefined)
         setEndDate(undefined)
+        setDateOption("")
         break
       default:
         setJob("")
         setDepartment("")
         setLocation("")
-        setDateRange("")
+        setDateRange(null)
         setStartDate(undefined)
         setEndDate(undefined)
+        setDateOption("")
     }
   }
 
@@ -51,23 +105,27 @@ export default function Component() {
     options: { value: string, label: string }[], 
     icon: React.ReactNode
   ) => (
-    <div className="relative">
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="pl-8">
-          {icon}
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map(option => (
-            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div className="relative flex items-center space-x-2">
+      <div className="flex-grow">
+        <Select value={value} onValueChange={onChange}>
+          <SelectTrigger className="min-w-[120px] w-auto h-9">
+            <div className="flex items-center space-x-2">
+              {icon}
+              <SelectValue placeholder={placeholder} className="ml-2" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            {options.map(option => (
+              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       {value && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-0 top-0 h-full"
+          className="flex-shrink-0 h-9 w-9"
           onClick={() => clearFilter(placeholder.toLowerCase())}
         >
           <X className="h-4 w-4" />
@@ -77,102 +135,63 @@ export default function Component() {
   )
 
   return (
-    <div className="space-y-2 p-4 bg-background rounded-lg shadow">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold">Filters</h2>
-        <Button variant="ghost" size="sm" onClick={() => clearFilter('all')}>Clear All</Button>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-        {renderSelect(
-          job,
-          setJob,
-          "Job",
-          [
+    <div className="">
+      <div className="flex items-center space-x-2 justify-between">
+        <div className="flex items-center space-x-2">
+          {renderSelect(job, setJob, "Job", [
             { value: "engineer", label: "Software Engineer" },
             { value: "designer", label: "UX Designer" },
             { value: "manager", label: "Product Manager" }
-          ],
-          <Briefcase className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-        )}
+          ], <Briefcase className="h-4 w-4" />)}
 
-        {renderSelect(
-          department,
-          setDepartment,
-          "Department",
-          [
+          {renderSelect(department, setDepartment, "Department", [
             { value: "engineering", label: "Engineering" },
             { value: "design", label: "Design" },
             { value: "product", label: "Product" }
-          ],
-          <Building2 className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-        )}
+          ], <Building2 className="h-4 w-4" />)}
 
-        {renderSelect(
-          location,
-          setLocation,
-          "Location",
-          [
+          {renderSelect(location, setLocation, "Location", [
             { value: "newyork", label: "New York" },
             { value: "sanfrancisco", label: "San Francisco" },
             { value: "london", label: "London" }
-          ],
-          <MapPin className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-        )}
+          ], <MapPin className="h-4 w-4" />)}
 
-        {renderSelect(
-          dateRange,
-          setDateRange,
-          "Date Range",
-          [
-            { value: "week", label: "This Week" },
-            { value: "month", label: "This Month" },
-            { value: "quarter", label: "This Quarter" },
-            { value: "year", label: "This Year" },
-            { value: "6months", label: "Last 6 Months" },
-            { value: "custom", label: "Custom Range" }
-          ],
-          <Clock className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-        )}
-      </div>
-
-      {dateRange === 'custom' && (
-        <div className="flex space-x-2 mt-2">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="w-[140px] justify-start text-left font-normal">
+              <Button variant="outline" size="sm" className="min-w-[120px] h-9">
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {startDate ? format(startDate, "PP") : <span>Start date</span>}
+                {dateRange ? `${format(dateRange.from, "PP")} - ${format(dateRange.to, "PP")}` : "Date Range"}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={startDate}
-                onSelect={setStartDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="w-[140px] justify-start text-left font-normal">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {endDate ? format(endDate, "PP") : <span>End date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={endDate}
-                onSelect={setEndDate}
-                initialFocus
-              />
+            <PopoverContent className="w-auto p-4" align="start">
+              <div className="space-y-4">
+                <Select value={dateOption} onValueChange={handleDateOptionChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select date range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {dateOptions.map(option => (
+                      <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {dateOption === "custom" && (
+                  <Calendar
+                    mode="range"
+                    selected={dateRange}
+                    onSelect={setDateRange}
+                    initialFocus
+                  />
+                )}
+              </div>
             </PopoverContent>
           </Popover>
         </div>
-      )}
-
-      <Button onClick={handleFilter} size="sm" className="mt-2">Apply Filters</Button>
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" className="min-w-[120px] h-9" onClick={() => clearFilter('all')}>Clear All</Button>
+          <Button onClick={handleFilter} size="sm" className="min-w-[120px] h-9">Apply Filters</Button>
+        </div>
+      </div>
     </div>
   )
 }

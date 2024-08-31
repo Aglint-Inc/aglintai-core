@@ -37,20 +37,10 @@ export default function CandidateDropoutFunnelReport() {
   const maxCount = Math.max(...stageCounts.map(s => s.count))
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto border-none">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-2xl font-bold">Candidate Dropout Funnel Report</CardTitle>
-          <Select value={timeFrame} onValueChange={setTimeFrame}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select time frame" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Time</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-            </SelectContent>
-          </Select>
+          <CardTitle className="text-md font-semibold">Candidate Dropout Funnel Report</CardTitle>
         </div>
       </CardHeader>
       <CardContent>

@@ -7,6 +7,7 @@ import InterviewerLeaderboard from '@/src/components/Dashboards/Interview/Interv
 import InterviewCount from '@/src/components/Dashboards/Interview/InterviewCount';
 import Checklist from '@/src/components/Dashboards/Interview/Checklist';
 import CandidateMetrics from '@/src/components/Dashboards/Interview/CandidateMetrics';
+import JobMetrics from '@/src/components/Dashboards/Jobs/JobMetrics';
 
 export default function InterviewDashboard() {
   const [activeTab, setActiveTab] = useState('default_tab');
@@ -29,7 +30,7 @@ export default function InterviewDashboard() {
           {activeTab === 'trainingMetrics' && <TrainingDashboard />}
           {activeTab === 'candidateMetrics' && <CandidateMetrics />}
           {activeTab === 'requestMetrics' && <Checklist />}
-          {activeTab === 'jobMetrics' && <Checklist />}
+          {activeTab === 'jobMetrics' && <JobMetrics />}
         </div>
       </div>
     </div>
