@@ -11,7 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/shadcn/ui/card';
-
+import { FileText, LogIn, ExternalLink } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
+import Link from 'next/link';
 
 interface Interview {
   date: Date;
@@ -77,15 +79,15 @@ const pastInterviews: Interview[] = [
 
 function InterviewCard({ interview }: { interview: Interview }) {
   return (
-    <Card className='mb-4'>
+    <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
       <CardContent className='pt-4'>
-        <div className='flex justify-between items-center mb-2'>
+        <div className='flex justify-between items-center mb-4'>
           <div className='flex items-center'>
-            <div className='bg-gray-200 rounded-md p-2 mr-3'>
-              <span className='text-xs font-semibold'>
+            <div className='bg-primary/10 text-primary rounded-md p-2 mr-3 text-center w-16 h-16 flex flex-col justify-center'>
+              <span className='text-lg font-semibold'>
                 {interview.date.getDate()}
               </span>
-              <span className='text-xs block'>
+              <span className='text-xs'>
                 {interview.date.toLocaleString('default', { month: 'short' })}
               </span>
             </div>
@@ -99,58 +101,28 @@ function InterviewCard({ interview }: { interview: Interview }) {
         </div>
         {interview.participants.map((participant, index) => (
           <div key={index} className='flex items-center mb-2'>
-            <Avatar className='w-6 h-6 mr-2'>
+            <Avatar className='w-8 h-8 mr-3'>
               <AvatarImage
                 src={`https://ui-avatars.com/api/?name=${participant.name}`}
               />
               <AvatarFallback>{participant.name[0]}</AvatarFallback>
             </Avatar>
-            <div>
-              <p className='text-sm font-semibold'>{participant.name}</p>
+            <div className='flex-grow'>
+              <div className='flex items-center'>
+                <p className='text-sm font-semibold'>{participant.name}</p>
+                <Linkedin className='w-4 h-4 ml-2 text-blue-500 cursor-pointer' />
+              </div>
               {participant.role && (
                 <p className='text-xs text-gray-500'>{participant.role}</p>
               )}
             </div>
           </div>
         ))}
-        <div className='mt-4'>
-          <Button variant='outline' className='mr-2 text-xs'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='16'
-              height='16'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              className='mr-1'
-            >
-              <path d='M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z' />
-              <polyline points='14 2 14 8 20 8' />
-              <line x1='16' y1='13' x2='8' y2='13' />
-              <line x1='16' y1='17' x2='8' y2='17' />
-              <line x1='10' y1='9' x2='8' y2='9' />
-            </svg>
+        <div className='mt-4 flex space-x-2'>
+          <Button variant='link' size="sm" className='text-xs p-0'>
             Open coding link
           </Button>
-          <Button variant='outline' className='text-xs'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='16'
-              height='16'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              className='mr-1'
-            >
-              <path d='M15 10l5 5-5 5' />
-              <path d='M4 4v7a4 4 0 0 0 4 4h12' />
-            </svg>
+          <Button variant='link' size="sm" className='text-xs p-0'>
             Join meeting
           </Button>
         </div>
@@ -163,31 +135,18 @@ export default function InterviewsPage() {
   return (
     <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
       <main className='lg:w-[70%] space-y-6'>
-        <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-2xl font-bold'>
-              Upcoming interviews
-            </CardTitle>
-            <Button variant='outline'>Make changes</Button>
-          </CardHeader>
-          <CardContent>
-            {upcomingInterviews.map((interview, index) => (
-              <InterviewCard key={index} interview={interview} />
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-2xl font-bold'>
-              Past interviews
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {pastInterviews.map((interview, index) => (
-              <InterviewCard key={index} interview={interview} />
-            ))}
-          </CardContent>
-        </Card>
+        <div>
+          <h2 className='text-xl font-bold mb-4'>Upcoming interviews</h2>
+          {upcomingInterviews.map((interview, index) => (
+            <InterviewCard key={index} interview={interview} />
+          ))}
+        </div>
+        <div>
+          <h2 className='text-xl font-bold mb-4'>Past interviews</h2>
+          {pastInterviews.map((interview, index) => (
+            <InterviewCard key={index} interview={interview} />
+          ))}
+        </div>
       </main>
       <aside className='lg:w-[30%] space-y-6'>
         {/* You can add additional content or widgets here */}

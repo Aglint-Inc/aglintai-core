@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 export default function NextInterviewBlock() {
   return (
-    <Card className='mb-4'>
+    <Card className='mb-4 bg-background/80 backdrop-blur-sm shadow-sm border border-border'>
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>
           Your next interview

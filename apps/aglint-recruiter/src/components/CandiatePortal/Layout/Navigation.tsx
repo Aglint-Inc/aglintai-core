@@ -17,10 +17,9 @@ export default function Navigation() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <div className='fixed w-full top-3 z-50 flex items-center justify-center'>
+    <div className='sticky w-full top-3 z-50 flex items-center justify-center'>
       <header
-        className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border'
-        style={{ width: '900px' }}
+        className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl mx-auto'
       >
         <div className='container mx-auto px-4 py-2 flex items-center justify-between'>
           <div className='flex items-center justify-center'>

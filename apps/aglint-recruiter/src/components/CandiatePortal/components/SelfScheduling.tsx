@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from '../../shadcn/ui/card';
 function SelfScheduling() {
   return (
     <div>
-      <Card>
+      <Card className="bg-background/80 backdrop-blur-sm shadow-sm border border-border">
         <CardHeader>
           <h2 className='font-semibold'>
             Self scheduling request for Coding Round

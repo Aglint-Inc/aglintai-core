@@ -9,7 +9,7 @@ import { PenIcon } from 'lucide-react';
 
 export function AvailabilityBlock() {
   return (
-    <Card className='mb-4'>
+    <Card className='mb-4 border border-border'>
       <CardHeader>
         <CardTitle className='text-lg font-semibold'>
           Please add your availability for your next round of interview

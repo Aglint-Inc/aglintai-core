@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../shadcn/ui/avatar';
 import { Button } from '../../shadcn/ui/button';
 import { Card, CardContent, CardHeader } from '../../shadcn/ui/card';
 
-
 const interviewData = {
   "date": "August 24 Sunday ",
   "time": "09:00 AM - 09:45 AM PT",
@@ -26,7 +25,7 @@ const interviewData = {
 function UpcomingInterview() {
   return (
     <div>
-      <Card>
+      <Card className="bg-background/80 backdrop-blur-sm shadow-sm border border-border">
         <CardHeader>
           <h3 className='text-xl font-semibold'>Upcoming Interview</h3>
         </CardHeader>
@@ -40,15 +39,10 @@ function UpcomingInterview() {
           </div>
           {interviewData.interviewers.map((interviewer, index) => (
             <div className="flex items-center gap-2 mt-4" key={index}>
-              {/* <img
-                src={interviewer.image}
-                alt={interviewer.name}
-                className="w-8 h-8 bg-gray-200 rounded-full mr-4"
-              /> */}
               <Avatar className='w-10 h-10 rounded-md overflow-hidden'>
-      <AvatarImage src={interviewer.image} alt={interviewer.name} />
-      <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+                <AvatarImage src={interviewer.image} alt={interviewer.name} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <div>
                 <div className="font-medium">{interviewer.name}</div>
                 <div className="text-sm text-gray-600">{interviewer.role}</div>
@@ -56,15 +50,13 @@ function UpcomingInterview() {
             </div>
           ))}
           <div className="flex w-full gap-2">
-          <Button className="w-full mt-4">
-            Schedule Info
-          </Button>
+            <Button className="w-full mt-4">
+              Schedule Info
+            </Button>
             <Button className="w-full mt-4" variant="outline">
-            Join meeting
-          </Button>
-         
+              Join meeting
+            </Button>
           </div>
-          
         </CardContent>
       </Card>
     </div>
