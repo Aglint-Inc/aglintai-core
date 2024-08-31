@@ -50,10 +50,10 @@ export function ThemeSelector() {
             id={pageTheme.value}
             className="sr-only"
           />
-          <Card className={`${theme === pageTheme.value ? 'border-primary' : ''}`}>
+          <Card className={`transition-colors duration-200 ${theme === pageTheme.value ? `bg-${pageTheme.value}-100 border-${pageTheme.value}-500` : 'bg-white border-gray-200'}`}>
             <CardContent className="flex flex-col items-center justify-between p-4">
-              <pageTheme.icon className="h-6 w-6 mb-2" />
-              <span className="text-sm font-medium">{pageTheme.name}</span>
+              <Palette className={`h-6 w-6 mb-2 ${theme === pageTheme.value ? `text-${pageTheme.value}-500` : 'text-gray-500'}`} />
+              <span className={`text-sm font-medium ${theme === pageTheme.value ? `text-${pageTheme.value}-700` : 'text-gray-700'}`}>{pageTheme.name}</span>
             </CardContent>
           </Card>
         </Label>

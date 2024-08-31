@@ -10,8 +10,6 @@ const Layout = ({ children }: PropsWithChildren) => {
       <div className='w-full container mx-auto mt-20'>
       {children}
       </div>
-
-    
       <Footer />
     </div>
   );

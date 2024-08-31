@@ -11,9 +11,6 @@ export const Login = () => {
             <Form />
           </FormLayout>
         </div>
-        <div className="sticky bottom-0">
-          <Footer />
-        </div>
       </div>
     </>
   );

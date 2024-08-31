@@ -10,17 +10,17 @@ import UpcomingInterview from "@/src/components/CandiatePortal/components/Upcomi
 
 
 export default function Component() {
- const companyCover = "/images/discord-cover.webp";
+ const companyCover = "https://aglintai-seed-data.vercel.app/cover/discord.jpg";
 
-const logoImage = "/images/user-4.jpg";
+const logoImage = "https://aglintai-seed-data.vercel.app/logo/discord.jpg";
 
   const greetingMessage =
-    "Welcome to our portal! We’re here to keep you connected every step of the way, whether you’re preparing for interviews or exploring new opportunities. Dive into detailed company profiles, discover comprehensive job descriptions, and don't hesitate to reach out with any questions you may have. We're committed to helping you find the right fit and making your job search experience as smooth as possible.";
+    "Welcome to our portal! We're here to keep you connected every step of the way, whether you're preparing for interviews or exploring new opportunities. Dive into detailed company profiles, discover comprehensive job descriptions, and don't hesitate to reach out with any questions you may have. We're committed to helping you find the right fit and making your job search experience as smooth as possible.";
 
   const companyImages = [
-    "/images/annie-spratt-g9KFpAfQ5bc-unsplash.jpg",
-    "/images/austin-distel-wD1LRb9OeEo-unsplash.jpg",
-    "/images/brooke-cagle-g1Kr4Ozfoac-unsplash.jpg",
+    "https://picsum.photos/800/600?random=1",
+    "https://picsum.photos/800/600?random=2",
+    "https://picsum.photos/800/600?random=3",
   ];
   const aboutContent = `
     <p>We deliver a great experience</p>
