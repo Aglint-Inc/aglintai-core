@@ -13,17 +13,17 @@ export default function RequestHandlingOverQuartersChart() {
   ]
 
   const colors = {
-    Scheduling: 'hsl(190, 80%, 70%)',
-    Rescheduling: 'hsl(35, 100%, 60%)',
-    Decline: 'hsl(120, 60%, 40%)',
-    Cancel: 'hsl(0, 100%, 50%)',
-    Debrief: 'hsl(280, 80%, 50%)'
+    Scheduling: 'hsl(var(--chart-1))',
+    Rescheduling: 'hsl(var(--chart-2))',
+    Decline: 'hsl(var(--chart-3))',
+    Cancel: 'hsl(var(--chart-4))',
+    Debrief: 'hsl(var(--chart-5))'
   }
 
   return (
     <Card className="w-full max-w-4xl mx-auto border border-border">
       <CardHeader>
-        <CardTitle className="text-md font-bold text-center">Request Handling Over Quarters</CardTitle>
+        <CardTitle className="text-md font-semibold text-center">Request Handling Over Quarters</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>

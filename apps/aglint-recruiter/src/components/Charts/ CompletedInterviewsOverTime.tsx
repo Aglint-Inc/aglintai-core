@@ -1,98 +1,73 @@
-// CompletedInterviewsOverTime.js
+"use client"
+
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@components/shadcn/ui/card';
+import React from 'react';
 import {
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
+  Line,
+  LineChart,
+  ResponsiveContainer,
   Tooltip,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-
-ChartJS.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 const CompletedInterviewsOverTime = () => {
   // Sample data for Completed Interviews Over Time
-  const labels = [
-    '2024-08-01',
-    '2024-08-02',
-    '2024-08-03',
-    '2024-08-04',
-    '2024-08-05',
-    '2024-08-06',
-    '2024-08-07',
-    '2024-08-08',
-    '2024-08-09',
-    '2024-08-10',
+  const data = [
+    { date: '2024-08-01', interviews: 5 },
+    { date: '2024-08-02', interviews: 7 },
+    { date: '2024-08-03', interviews: 6 },
+    { date: '2024-08-04', interviews: 8 },
+    { date: '2024-08-05', interviews: 4 },
+    { date: '2024-08-06', interviews: 9 },
+    { date: '2024-08-07', interviews: 10 },
+    { date: '2024-08-08', interviews: 6 },
+    { date: '2024-08-09', interviews: 5 },
+    { date: '2024-08-10', interviews: 7 },
   ];
-  const data = [5, 7, 6, 8, 4, 9, 10, 6, 5, 7];
-
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        label: 'Completed Interviews',
-        data,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-        tension: 0.4,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      tooltip: {
-        enabled: true,
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Date',
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Number of Interviews',
-        },
-        beginAtZero: true,
-      },
-    },
-  };
 
   return (
-    <Card className='max-w-lg mx-auto mt-6 border border-border'>
+    <Card className='w-full max-w-4xl mx-auto border border-border'>
       <CardHeader>
-        <CardTitle className='text-md font-bold text-center'>Completed Interviews Over Time</CardTitle>
+        <CardTitle className='text-md font-semibold text-center'>
+          Completed Interviews Over Time
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <Line data={chartData} options={options} />
+        <div className='h-[400px] w-full'>
+          <ResponsiveContainer width='100%' height='100%'>
+            <LineChart
+              data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis
+                dataKey='date'
+                label={{ value: 'Date', position: 'insideBottom', offset: -10 }}
+              />
+              <YAxis
+                label={{
+                  value: 'Number of Interviews',
+                  angle: -90,
+                  position: 'insideLeft',
+                }}
+              />
+              <Tooltip />
+              <Line
+                type='monotone'
+                dataKey='interviews'
+                stroke='hsl(var(--chart-1))'
+                strokeWidth={2}
+                dot={{ r: 5 }}
+                activeDot={{ r: 7 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );

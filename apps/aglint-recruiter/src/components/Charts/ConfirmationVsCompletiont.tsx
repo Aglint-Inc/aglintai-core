@@ -34,12 +34,12 @@ export default function ConfirmationVsCompletion() {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
-            <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--primary))" />
-            <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--primary))" />
+            <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--chart-1))" />
+            <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--chart-2))" />
             <Tooltip />
             <Legend />
-            <Bar yAxisId="left" dataKey="confirmationRate" fill="hsl(45, 100%, 70%)" name="Confirmation Rate (%)" />
-            <Line yAxisId="right" type="monotone" dataKey="completionRate" stroke="hsl(220, 100%, 50%)" strokeWidth={2} name="Completion Rate (%)" />
+            <Bar yAxisId="left" dataKey="confirmationRate" fill="hsl(var(--chart-1))" name="Confirmation Rate (%)" />
+            <Line yAxisId="right" type="monotone" dataKey="completionRate" stroke="hsl(var(--chart-2))" strokeWidth={2} name="Completion Rate (%)" />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
