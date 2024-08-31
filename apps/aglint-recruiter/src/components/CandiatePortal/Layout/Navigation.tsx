@@ -37,13 +37,13 @@ export default function Navigation() {
                 {companyName}
               </span>
             )}
-          </div>
-
-          <nav className='flex space-x-4'>
-            <Link href='/candidate/home' passHref>
-              <Button
-                variant='ghost'
-                className={isActive('/candidate/home') ? 'text-primary' : ''}
+          </div>  
+          
+          <nav className="flex space-x-4">
+            <Link href="/candidate/home" passHref>
+              <Button 
+                variant="ghost" 
+                className={isActive('/candidate/home') ? 'text-blue-600' : ''}
               >
                 Home
               </Button>
