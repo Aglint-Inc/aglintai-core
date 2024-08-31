@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       aglint_candidates: {
@@ -753,6 +778,215 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidate_portal_job: {
+        Row: {
+          application_id: string | null
+          banner: string | null
+          created_at: string
+          greetings: string | null
+          id: string
+          images: string[] | null
+          job_id: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          banner?: string | null
+          created_at?: string
+          greetings?: string | null
+          id?: string
+          images?: string[] | null
+          job_id?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          banner?: string | null
+          created_at?: string
+          greetings?: string | null
+          id?: string
+          images?: string[] | null
+          job_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidate_portal_message: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          id: string
+          is_readed: boolean | null
+          message: string | null
+          sender_id: string | null
+          title: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_readed?: boolean | null
+          message?: string | null
+          sender_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_readed?: boolean | null
+          message?: string | null
+          sender_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      candidate_portal_plan: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          id: string
+          is_completed: boolean | null
+          stage: number | null
+          stage_name: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          stage?: number | null
+          stage_name?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          stage?: number | null
+          stage_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
           },
         ]
       }
@@ -3422,6 +3656,7 @@ export type Database = {
           request_id: string
           status: string
           target_api: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -3433,6 +3668,7 @@ export type Database = {
           request_id: string
           status: string
           target_api?: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -3444,6 +3680,7 @@ export type Database = {
           request_id?: string
           status?: string
           target_api?: Database["public"]["Enums"]["email_slack_types"] | null
+          updated_at?: string
         }
         Relationships: [
           {
@@ -4207,9 +4444,9 @@ export type Database = {
           id: string
           interval: number
           is_paused: boolean
-          is_request_workflow: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
+          request_id: string | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type: Database["public"]["Enums"]["workflow_type"]
@@ -4221,9 +4458,9 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
-          is_request_workflow?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
+          request_id?: string | null
           title?: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type?: Database["public"]["Enums"]["workflow_type"]
@@ -4235,9 +4472,9 @@ export type Database = {
           id?: string
           interval?: number
           is_paused?: boolean
-          is_request_workflow?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
+          request_id?: string | null
           title?: string | null
           trigger?: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type?: Database["public"]["Enums"]["workflow_type"]
@@ -4248,6 +4485,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -4407,49 +4651,6 @@ export type Database = {
           },
           {
             foreignKeyName: "workflow_job_relation_workflow_id_fkey"
-            columns: ["workflow_id"]
-            isOneToOne: false
-            referencedRelation: "workflow_view"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      workflow_request_relation: {
-        Row: {
-          created_at: string
-          id: string
-          request_id: string
-          workflow_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          request_id: string
-          workflow_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          request_id?: string
-          workflow_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "workflow_request_relation_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
-            columns: ["workflow_id"]
-            isOneToOne: false
-            referencedRelation: "workflow"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "workflow_request_relation_workflow_id_fkey"
             columns: ["workflow_id"]
             isOneToOne: false
             referencedRelation: "workflow_view"
@@ -5371,10 +5572,10 @@ export type Database = {
           id: string | null
           interval: number | null
           is_paused: boolean | null
-          is_request_workflow: boolean | null
           jobs: Json[] | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
+          request_id: string | null
           tags: string[] | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
@@ -5386,6 +5587,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -6995,3 +7203,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+

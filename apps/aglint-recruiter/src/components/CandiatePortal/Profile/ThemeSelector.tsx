@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent } from "@components/shadcn/ui/card";
-import { Label } from "@components/shadcn/ui/label";
-import { RadioGroup, RadioGroupItem } from "@components/shadcn/ui/radio-group";
+import { Card, CardContent } from '@components/shadcn/ui/card';
+import { Label } from '@components/shadcn/ui/label';
+import { RadioGroup, RadioGroupItem } from '@components/shadcn/ui/radio-group';
 import { Palette } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const pageThemes = [
   { name: 'Default', value: 'default', icon: Palette },
@@ -37,23 +37,25 @@ export function ThemeSelector() {
     <RadioGroup
       defaultValue={theme}
       onValueChange={handleThemeChange}
-      className="grid grid-cols-3 gap-4"
+      className='grid grid-cols-3 gap-4'
     >
       {pageThemes.map((pageTheme) => (
         <Label
           key={pageTheme.value}
           htmlFor={pageTheme.value}
-          className="cursor-pointer"
+          className='cursor-pointer'
         >
           <RadioGroupItem
             value={pageTheme.value}
             id={pageTheme.value}
-            className="sr-only"
+            className='sr-only'
           />
-          <Card className={`${theme === pageTheme.value ? 'border-primary' : ''}`}>
-            <CardContent className="flex flex-col items-center justify-between p-4">
-              <pageTheme.icon className="h-6 w-6 mb-2" />
-              <span className="text-sm font-medium">{pageTheme.name}</span>
+          <Card
+            className={`${theme === pageTheme.value ? 'border-primary' : ''}`}
+          >
+            <CardContent className='flex flex-col items-center justify-between p-4'>
+              <pageTheme.icon className='h-6 w-6 mb-2' />
+              <span className='text-sm font-medium'>{pageTheme.name}</span>
             </CardContent>
           </Card>
         </Label>

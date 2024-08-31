@@ -13,16 +13,29 @@ import {
 } from '@components/shadcn/ui/card';
 import { Input } from '@components/shadcn/ui/input';
 import { Label } from '@components/shadcn/ui/label';
-import { Textarea } from '@components/shadcn/ui/textarea';
+import axios from 'axios';
 import React, { useState } from 'react';
 
-export default function CandidateForm() {
-  const [name, setName] = useState('John Doe');
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [phone, setPhone] = useState('(123) 456-7890');
-  const [bio, setBio] = useState(
-    'A passionate developer with 5 years of experience...',
-  );
+import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import timeZone from '@/src/utils/timeZone';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../shadcn/ui/select';
+
+export default function CandidateForm({
+  formData,
+  application_id,
+}: {
+  formData: candidatePortalProfileType;
+  application_id: string;
+}) {
+  const [form, setForm] = useState<candidatePortalProfileType>(formData);
+  const [loading, setLoading] = useState(false);
   const [photo, setPhoto] = useState('/placeholder.svg?height=128&width=128');
   const [resume, setResume] = useState(null);
 
@@ -38,8 +51,42 @@ export default function CandidateForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    // console.log('Form submitted:', { name, email, phone, bio, photo, resume })
+  };
+
+  console.log(photo);
+  console.log(resume);
+
+  const handleUpdateProfile = async () => {
+    try {
+      setLoading(true);
+
+      const payload = {
+        application_id,
+        details: {
+          first_name: form.first_name,
+          last_name: form.last_name,
+          email: form.email,
+          timezone: form.timezone,
+          phone: form.phone,
+          linkedin: form.linkedin,
+          avatar: form.avatar,
+        },
+      };
+
+      const { status } = await axios.post(
+        '/api/candidate_portal/update_profile',
+        payload,
+      );
+
+      if (status !== 200) {
+        throw new Error('Profile update failed');
+      }
+    } catch (e) {
+      console.error(e.message);
+      //
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,13 +101,8 @@ export default function CandidateForm() {
           <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='flex flex-col items-center space-y-4'>
               <Avatar className='w-32 h-32'>
-                <AvatarImage src={photo} alt={name} />
-                <AvatarFallback>
-                  {name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')}
-                </AvatarFallback>
+                <AvatarImage src={form.avatar} alt={form.first_name} />
+                <AvatarFallback>{form.first_name}</AvatarFallback>
               </Avatar>
               <FileUploader
                 accept='image/*'
@@ -72,12 +114,26 @@ export default function CandidateForm() {
             </div>
 
             <div className='space-y-2'>
-              <Label htmlFor='name'>Name</Label>
+              <Label htmlFor='name'>First Name</Label>
               <Input
                 id='name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder='Enter your full name'
+                value={form.first_name}
+                onChange={(e) =>
+                  setForm((pre) => ({ ...pre, first_name: e.target.value }))
+                }
+                placeholder='Enter your first name'
+              />
+            </div>
+
+            <div className='space-y-2'>
+              <Label htmlFor='name'>Last Name</Label>
+              <Input
+                id='name'
+                value={form.last_name}
+                onChange={(e) =>
+                  setForm((pre) => ({ ...pre, last_name: e.target.value }))
+                }
+                placeholder='Enter your last name'
               />
             </div>
 
@@ -86,8 +142,10 @@ export default function CandidateForm() {
               <Input
                 id='email'
                 type='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={form.email}
+                onChange={(e) =>
+                  setForm((pre) => ({ ...pre, email: e.target.value }))
+                }
                 placeholder='Enter your email address'
               />
             </div>
@@ -97,21 +155,45 @@ export default function CandidateForm() {
               <Input
                 id='phone'
                 type='tel'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={form.phone}
+                onChange={(e) =>
+                  setForm((pre) => ({ ...pre, phone: e.target.value }))
+                }
                 placeholder='Enter your phone number'
+              />
+            </div>
+            <div className='space-y-2'>
+              <Label htmlFor='phone'>Linked In</Label>
+              <Input
+                id='phone'
+                type='tel'
+                value={form.linkedin}
+                onChange={(e) =>
+                  setForm((pre) => ({ ...pre, linkedin: e.target.value }))
+                }
+                placeholder='Enter your Linked in'
               />
             </div>
 
             <div className='space-y-2'>
-              <Label htmlFor='bio'>Bio</Label>
-              <Textarea
-                id='bio'
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                placeholder='Tell us about yourself'
-                rows={4}
-              />
+              <Label htmlFor='phone'>Time Zone</Label>
+              <Select
+                onValueChange={(value) => {
+                  setForm((pre) => ({ ...pre, timezone: value }));
+                }}
+                defaultValue={form.timezone}
+              >
+                <SelectTrigger className='w-full'>
+                  <SelectValue placeholder={form.timezone || 'Time zone'} />
+                </SelectTrigger>
+                <SelectContent>
+                  {timeZone.map((tz) => (
+                    <SelectItem value={tz.tzCode} key={tz.tzCode}>
+                      {tz.tzCode}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className='space-y-2'>
@@ -139,8 +221,15 @@ export default function CandidateForm() {
               )}
             </div>
 
-            <Button type='submit' className='w-full'>
-              Update Profile
+            <Button
+              type='submit'
+              className='w-full'
+              disabled={loading}
+              onClick={() => {
+                handleUpdateProfile();
+              }}
+            >
+              {loading ? 'Updating...' : 'Update Profile'}
             </Button>
           </form>
         </CardContent>
