@@ -44,6 +44,7 @@ const EventNode = ({
   );
   const handleDeleteScheduleAction = async () => {
     try {
+      console.log(currWAction);
       await deleteRequestWorkflowAction(currWAction.id);
       await request_workflow.refetch();
     } catch (err) {
@@ -65,7 +66,6 @@ const EventNode = ({
             tense === 'past' ? 'completed' : tense === 'future' ? 'circle' : ''
           }
           textProgress={workflowCopy[eventType][tense]}
-          slotLeftIcon={<>mfkewmnewkjn</>}
           slotRightIcon={
             <Stack
               direction={'row'}

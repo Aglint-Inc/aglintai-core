@@ -34,7 +34,8 @@ const WorkflowActionDialog = () => {
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
     WActionProps['action']
   >(
-    reqTriggerActionsMap[editTrigger]
+    reqTriggerActionsMap[editTrigger] &&
+      reqTriggerActionsMap[editTrigger].length > 0
       ? reqTriggerActionsMap[editTrigger][0]
       : {
           action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
@@ -49,11 +50,11 @@ const WorkflowActionDialog = () => {
             body:
               companyEmailTemplatesMp[
                 ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
-              ].body ?? '',
+              ]?.body ?? '',
             subject:
               companyEmailTemplatesMp[
                 ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
-              ].subject ?? '',
+              ]?.subject ?? '',
           },
         },
   );
@@ -134,6 +135,7 @@ const WorkflowActionDialog = () => {
                   target_api: selectedActionsDetails.target_api as any,
                   payload: selectedActionsDetails.payload as any,
                   order: 0,
+                  workflow_id: selectedActionsDetails.workflow_id,
                 });
               },
             }}

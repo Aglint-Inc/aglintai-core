@@ -86,7 +86,15 @@ const AvailabilityFlowMenus = ({
           });
         })}
       </ShowCode.When>
-      <ShowCode.When isTrue={!reqTriggerActionsMap.sendAvailReqReminder}>
+      <ShowCode.When
+        isTrue={
+          Boolean(!reqTriggerActionsMap['sendAvailReqReminder']) ||
+          Boolean(
+            reqTriggerActionsMap['sendAvailReqReminder'] &&
+              reqTriggerActionsMap['sendAvailReqReminder'].length === 0,
+          )
+        }
+      >
         <Stack direction={'row'}>
           <ButtonSoft
             size={1}
@@ -99,25 +107,28 @@ const AvailabilityFlowMenus = ({
             }}
           />
         </Stack>
-        <ShowCode.When
-          isTrue={Boolean(reqTriggerActionsMap['sendAvailReqReminder'])}
-        >
-          {reqTriggerActionsMap['sendAvailReqReminder'] &&
-            apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
-              (ev) => {
-                const action = reqTriggerActionsMap.sendAvailReqReminder[0];
-                return (
-                  <EventNode
-                    key={ev}
-                    eventType={ev}
-                    reqProgresMap={currEventMap}
-                    currEventTrigger={'sendAvailReqReminder'}
-                    currWAction={action}
-                  />
-                );
-              },
-            )}
-        </ShowCode.When>
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={Boolean(
+          reqTriggerActionsMap['sendAvailReqReminder'] &&
+            reqTriggerActionsMap['sendAvailReqReminder'].length > 0,
+        )}
+      >
+        {reqTriggerActionsMap['sendAvailReqReminder'].length > 0 &&
+          apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
+            (ev) => {
+              const action = reqTriggerActionsMap.sendAvailReqReminder[0];
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={currEventMap}
+                  currEventTrigger={'sendAvailReqReminder'}
+                  currWAction={action}
+                />
+              );
+            },
+          )}
       </ShowCode.When>
     </>
   );

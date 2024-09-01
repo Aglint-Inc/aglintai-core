@@ -13,13 +13,14 @@ export const createRequestWorkflowAction = async ({
   request_id: string;
   recruiter_id: string;
 }) => {
+  const trigger = wAction.target_api.split('_')[0] as any;
   let wTrigger: DatabaseTable['workflow'];
   [wTrigger] = supabaseWrap(
     await supabase
       .from('workflow')
       .select()
       .eq('request_id', request_id)
-      .eq('trigger', 'onRequestSchedule'),
+      .eq('trigger', trigger),
     false,
   );
   if (!wTrigger) {
@@ -28,7 +29,7 @@ export const createRequestWorkflowAction = async ({
         .from('workflow')
         .insert({
           request_id: request_id,
-          trigger: 'onRequestSchedule',
+          trigger: trigger,
           phase: 'after',
           recruiter_id: recruiter_id,
           interval: 0,
