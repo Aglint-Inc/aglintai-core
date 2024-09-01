@@ -4,59 +4,73 @@ import React, { useMemo } from 'react';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import { useNewScheduleRequestPr } from '.';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
   scheduleReqProgressMap,
-  eventTargetMap,
 }: {
-  eventTargetMap: EventTargetMapType;
   isManualSchedule: boolean;
   scheduleReqProgressMap: RequestProgressMapType;
 }) => {
+  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { request_progress } = useRequest();
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
-    eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...eventTargetMap['sendAvailReqReminder'],
-    ];
-  }
 
-  let scheduleFlowProg = useMemo(() => {
+  let { progres: availFlowProg, currEventMap } = useMemo(() => {
+    let currEventMap: RequestProgressMapType = {};
     let progres: DatabaseTable['request_progress'][] = [];
+
     if (request_progress.data.length === 0) {
-      return progres;
+      return {
+        progres,
+        currEventMap,
+      };
     }
+
     for (let prog of request_progress.data) {
       if (prog.event_type === 'CAND_AVAIL_REC') {
         break;
       }
+      if (!currEventMap[prog.event_type]) {
+        currEventMap[prog.event_type] = [];
+      }
+      currEventMap[prog.event_type].push(prog);
       progres.push({
         ...prog,
       });
     }
-
-    return progres;
+    return { progres, currEventMap };
   }, [request_progress.data]);
 
+  //
+  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
+  if (reqTriggerActionsMap['onRequestSchedule']) {
+    eventWActions = [
+      ...reqTriggerActionsMap['onRequestSchedule'].map((e) => e.target_api),
+    ];
+  }
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg
-          .filter((s) => s.is_progress_step === false)
-          .map((prog) => {
-            return (
-              <EventNode
-                key={prog.id}
-                eventNode={prog.event_type}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
-          })}
+        <>
+          {availFlowProg
+            .filter((s) => s.is_progress_step === false)
+            .map((prog) => {
+              return (
+                <>
+                  <EventNode
+                    key={prog.id}
+                    eventType={prog.event_type}
+                    currEventMap={currEventMap}
+                    currEventTrigger={'onRequestSchedule'}
+                  />
+                </>
+              );
+            })}
+        </>
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
         {eventWActions
@@ -68,31 +82,12 @@ const AvailabilityFlowMenus = ({
             return (
               <EventNode
                 key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
+                eventType={ev}
+                currEventMap={currEventMap}
+                currEventTrigger={'onRequestSchedule'}
               />
             );
           })}
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
       </ShowCode.When>
     </>
   );

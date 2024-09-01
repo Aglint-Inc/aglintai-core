@@ -7,7 +7,6 @@ export const apiTargetToEvents: Partial<
   >
 > = {
   onRequestSchedule_emailLink_getCandidateAvailability: [
-    'FIND_CURR_AVAIL_SLOTS',
     'REQ_CAND_AVAIL_EMAIL_LINK',
   ],
   onReceivingAvailReq_agent_sendSelfScheduleRequest: ['SELF_SCHEDULE_LINK'],

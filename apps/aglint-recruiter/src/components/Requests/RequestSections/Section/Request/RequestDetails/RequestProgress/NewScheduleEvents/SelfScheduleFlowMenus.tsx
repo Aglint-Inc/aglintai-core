@@ -47,9 +47,6 @@ const SelfScheduleFlowMenus = ({
   if (reqTriggerActionsMap['onRequestSchedule']) {
     eventWActions = [
       ...reqTriggerActionsMap['onRequestSchedule'].map((e) => e.target_api),
-      ...(reqTriggerActionsMap['selfScheduleReminder']?.map(
-        (e) => e.target_api,
-      ) ?? []),
     ];
   }
 
@@ -87,12 +84,6 @@ const SelfScheduleFlowMenus = ({
               />
             );
           })}
-        {/* {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
-          <EventNode
-            eventNode='SELF_SCHEDULE_FIRST_FOLLOWUP'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        )} */}
       </ShowCode.When>
     </>
   );

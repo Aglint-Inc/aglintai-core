@@ -14,8 +14,8 @@ import { RequestProgress } from '@/devlink2';
 const SelectScheduleFlow = () => {
   const { request_progress } = useRequest();
   const { reqTriggerActionsMap, scheduleFlow } = useNewScheduleRequestPr();
-  const eventWActions = reqTriggerActionsMap['onRequestSchedule'] ?? [];
-  const isManualSchedule = eventWActions.length === 0;
+
+  const isManualSchedule = !reqTriggerActionsMap['onRequestSchedule'];
 
   const scheduleReqProgressMap: RequestProgressMapType = useMemo(() => {
     let mp: RequestProgressMapType = {};
@@ -46,7 +46,6 @@ const SelectScheduleFlow = () => {
             <ShowCode.When isTrue={scheduleFlow === 'availability'}>
               <AvailabilityFlowMenus
                 isManualSchedule={isManualSchedule}
-                eventTargetMap={{}}
                 scheduleReqProgressMap={scheduleReqProgressMap}
               />
             </ShowCode.When>

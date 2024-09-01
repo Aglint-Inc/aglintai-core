@@ -1,5 +1,9 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
-import React, { useMemo, useState } from 'react';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+} from '@aglint/shared-types';
+import React, { act, useMemo, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
@@ -25,44 +29,57 @@ const WorkflowActionDialog = () => {
     setShowEditDialog,
     showEditDialog,
   } = useNewScheduleRequestPr();
-  const [selectedAction, setSelectedAction] = useState(
+
+  const [selectedActionsDetails, setSelectedActionsDetails] = useState<
+    WActionProps['action']
+  >(
     reqTriggerActionsMap[editTrigger]
-      ? reqTriggerActionsMap[editTrigger][0].target_api
-      : ACTION_TRIGGER_MAP[editTrigger][0].value.target_api,
+      ? reqTriggerActionsMap[editTrigger][0]
+      : {
+          action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
+            .action_type as any,
+          created_at: '',
+          id: '',
+          order: 0,
+          target_api: ACTION_TRIGGER_MAP[editTrigger][0].value
+            .target_api as any,
+          workflow_id: '',
+          payload: {
+            body: '',
+            subject: '',
+          },
+        },
   );
 
   const [isAddingAction, setIsAddingAction] = useState(false);
-
-  const selectedActionsDetails = useMemo(() => {
-    let details: WActionProps['action'];
-    let existing_workflow_action = reqTriggerActionsMap[editTrigger]
-      ? reqTriggerActionsMap[editTrigger][0]
-      : null;
-    if (existing_workflow_action) {
-      details = existing_workflow_action;
+  const handleChangeSelectedAction = (
+    target_api: DatabaseEnums['email_slack_types'],
+  ) => {
+    if (
+      reqTriggerActionsMap[editTrigger] &&
+      reqTriggerActionsMap[editTrigger][0].target_api === target_api
+    ) {
+      const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
+      setSelectedActionsDetails(existing_workflow_action);
     } else {
-      console.log('companyEmailTemplates', companyEmailTemplates);
       const emailSlackTemplate = companyEmailTemplates.find(
-        (temp) =>
-          temp.type === ACTION_TRIGGER_MAP[editTrigger][0].value.target_api,
+        (temp) => temp.type === target_api,
       );
-      details = {
+      setSelectedActionsDetails({
         action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
           .action_type as any,
         created_at: '',
         id: '',
         order: 0,
-        target_api: ACTION_TRIGGER_MAP[editTrigger][0].value.target_api as any,
+        target_api: target_api as any,
         workflow_id: '',
         payload: {
           body: emailSlackTemplate?.body || '',
           subject: emailSlackTemplate?.subject || '',
         },
-      };
+      });
     }
-
-    return details;
-  }, [reqTriggerActionsMap, selectedAction, companyEmailTemplates]);
+  };
 
   const handleSaveScheduleFlow = async (
     wAction: DatabaseTableInsert['workflow_action'],
@@ -82,6 +99,8 @@ const WorkflowActionDialog = () => {
       setShowEditDialog(false);
     }
   };
+
+  console.log(selectedActionsDetails.target_api);
   return (
     <MuiPopup
       props={{
@@ -103,9 +122,9 @@ const WorkflowActionDialog = () => {
             <UISelect
               label='Do this'
               onChange={(e) => {
-                setSelectedAction(e.target.value as any);
+                handleChangeSelectedAction(e.target.value as any);
               }}
-              value={selectedAction}
+              value={selectedActionsDetails.target_api}
               menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({
                 name: action.name,
                 value: action.value.target_api,
