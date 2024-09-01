@@ -10,7 +10,7 @@ export function ScheduleProgress({
   status,
   slotLeftIcon,
   textProgress = "This is a global text component",
-  slotRightIcon,
+  slotHoverIcon,
   slotAiText,
   slotButton,
   slotLoader,

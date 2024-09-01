@@ -4,6 +4,7 @@ import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
 import { IconButtonSoft } from "./IconButtonSoft";
 import { SlotComp } from "./SlotComp";
+import { ScheduleOptionsList } from "./ScheduleOptionsList";
 import { ButtonSoft } from "./ButtonSoft";
 import { ButtonSolid } from "./ButtonSolid";
 import * as _utils from "./utils";
@@ -55,7 +56,12 @@ export function SideDrawerLarge({
         tag="div"
         {...dynamicHeight}
       >
-        {slotSideDrawerbody ?? <SlotComp componentNeme="ScheduleOptionList" />}
+        {slotSideDrawerbody ?? (
+          <>
+            <SlotComp componentNeme="ScheduleOptionList" />
+            <ScheduleOptionsList />
+          </>
+        )}
       </_Builtin.Block>
       {isBottomBar ? (
         <_Builtin.Block
@@ -81,7 +87,7 @@ export function SideDrawerLarge({
           )}
         </_Builtin.Block>
       ) : null}
-      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5BdrawerSize%3D%22small%22%5D%7B%0Awidth%3A450px%3B%0A%7D%0A%5BdrawerSize%3D%22medium%22%5D%7B%0Awidth%3A460px%3B%0A%7D%0A%0A%3C%2Fstyle%3E" />
+      <_Builtin.HtmlEmbed value="%3Cstyle%3E%0A%5BdrawerSize%3D%22small%22%5D%7B%0Awidth%3A450px%3B%0A%7D%0A%5BdrawerSize%3D%22medium%22%5D%7B%0Awidth%3A550px%3B%0A%7D%0A%0A%3C%2Fstyle%3E" />
     </_Component>
   );
 }

@@ -30,7 +30,7 @@ import dayjs from '@/src/utils/dayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import IconSessionType from '../../../CandidateDetails/RightPanel/IconSessionType';
+import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import DynamicLoader from '../../DynamicLoader';
 import { TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
@@ -105,10 +105,11 @@ function BodyComp() {
     const now = dayjs();
     return itemDateTime.isAfter(now);
   });
- const [value, setValue] = useState(`Prefer to take interviews on Tuesday and Friday afternoons.
+  const [value, setValue] =
+    useState(`Prefer to take interviews on Tuesday and Friday afternoons.
 Cannot take interviews on Sundays.
 Available on Monday mornings before 10 AM.
-Unavailable for interviews on Tuesdays.`)
+Unavailable for interviews on Tuesdays.`);
   return (
     <>
       {isLoadingInterviewer || isLoading ? (
@@ -398,8 +399,8 @@ Unavailable for interviews on Tuesdays.`)
                 )}
                 {tab === 'aglintaiinstruction' && (
                   <AiBookingInstruction
-                  textHowTo='Set availability and preferences to optimize the interview scheduling process.'
-                  textExample='Prefer to take interviews on Tuesday and Friday afternoons. Unavailable for interviews on Sundays.'
+                    textHowTo='Set availability and preferences to optimize the interview scheduling process.'
+                    textExample='Prefer to take interviews on Tuesday and Friday afternoons. Unavailable for interviews on Sundays.'
                     slotTextArea={
                       <UITextField
                         multiline

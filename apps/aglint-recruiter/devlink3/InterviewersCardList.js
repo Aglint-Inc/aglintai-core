@@ -27,7 +27,7 @@ export function InterviewersCardList({
         <_Builtin.Block tag="div">{textName}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "sd_table_header_cell")}
+        className={_utils.cx(_styles, "icl_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_78095933-805f-6577-6118-8958f555d8d2-f555d8ce"
@@ -37,7 +37,7 @@ export function InterviewersCardList({
         <_Builtin.Block tag="div">{textUpcoming}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "sd_table_header_cell")}
+        className={_utils.cx(_styles, "icl_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_78095933-805f-6577-6118-8958f555d8d5-f555d8ce"
@@ -47,7 +47,7 @@ export function InterviewersCardList({
         <_Builtin.Block tag="div">{textCompleted}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "sd_table_header_cell")}
+        className={_utils.cx(_styles, "icl_table_header_cell")}
         id={_utils.cx(
           _styles,
           "w-node-_78095933-805f-6577-6118-8958f555d8d8-f555d8ce"

@@ -29,12 +29,17 @@ export function NewMyScheduleCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "nmsc-date")}
+              className={_utils.cx(_styles, "nmsc-date-wrapper")}
               tag="div"
             >
-              <Text content={textMonth} weight="" color="neutral" />
-              <Text content={textDate} size="8" weight="mdium" />
-              <Text content={textDay} color="neutral" weight="" />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "nmsc-date")}
+                tag="div"
+              >
+                <Text content={textMonth} weight="" color="neutral" />
+                <Text content={textDate} size="8" weight="mdium" />
+                <Text content={textDay} color="neutral" weight="" />
+              </_Builtin.Block>
             </_Builtin.Block>
             {isNotScheduledIconVisible ? (
               <_Builtin.Block

@@ -74,7 +74,7 @@ export type CalendarEvent = {
   sequence: number;
   attendees: {
     email: string;
-    responseStatus?: string;
+    responseStatus?: "accepted" | "declined" | "tentative" | "needsAction";
     organizer: boolean;
   }[];
   eventType: string;

@@ -53,7 +53,6 @@ function CandidateAvailability({
   } = useCandidateAvailabilitySchedulingFlowStore();
   const { recruiter, recruiterUser } = useAuthDetails();
   const selectedSessions = selectedRequest.request_relation;
-
   // states
   const [selectedDays, setSelectedDays] = useState(requestDaysListOptions[1]);
   const [selectedSlots, setSelectedSlots] = useState(slotsListOptions[1]);
@@ -61,8 +60,10 @@ function CandidateAvailability({
     start_date: dayjs.Dayjs;
     end_date: dayjs.Dayjs;
   } | null>({
-    start_date: dayjs(selectedRequest.schedule_start_date),
-    end_date: dayjs(selectedRequest.schedule_end_date),
+    start_date: dayjs(
+      selectedRequest.schedule_start_date || dayjs().toISOString(),
+    ),
+    end_date: dayjs(selectedRequest.schedule_end_date || dayjs().toISOString()),
   });
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();

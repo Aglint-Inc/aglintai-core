@@ -7,8 +7,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { formatTimeWithTimeZone } from '../../../../../utils';
-import IconSessionType from '../../../../RightPanel/IconSessionType';
+import IconSessionType from '../../../../../../Common/Icons/IconSessionType';
 import ConflictWithHover from './ConflictWithHover';
 
 function SessionIndividual({
@@ -69,14 +68,6 @@ function SessionIndividual({
               isReverseShadow={member.training_type === 'reverse_shadow'}
               textName={`${getFullName(member.first_name, member.last_name)} 
                  ${member.interviewer_type === 'training' ? '(Training)' : ''}`}
-              textTime={formatTimeWithTimeZone({
-                start_time: session.start_time,
-                end_time: session.end_time,
-                timeZone: member.int_tz,
-              })}
-              textStandardTime={dayjsLocal(session.start_time)
-                .tz(member.int_tz)
-                .format('zzz')}
               slotConflicts={
                 <>
                   {allUserConflicts.length === 0 && (

@@ -3,7 +3,6 @@
 
   display: flex;
   overflow: hidden;
-  width: 295px;
   padding: var(--space-2) var(--space-4);
   flex-direction: column;
   flex-wrap: nowrap;
@@ -30,10 +29,6 @@
   grid-row-gap: var(--space-1);
 }
 
-.nc-icomn-wrap {
-  color: var(--success-11);
-}
-
 .sf-bottom-block {
   display: flex;
   justify-content: space-between;
@@ -43,10 +38,6 @@
 .relative-1 {
   position: relative;
   z-index: 1;
-}
-
-.sf-info-wrap {
-  color: var(--neutral-11);
 }
 
 .conflict_block_active {

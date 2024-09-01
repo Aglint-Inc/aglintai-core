@@ -5366,7 +5366,6 @@ export type Database = {
           jobs: Json[] | null
           phase: Database["public"]["Enums"]["workflow_phase"] | null
           recruiter_id: string | null
-          request_id: string | null
           tags: string[] | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
@@ -5378,13 +5377,6 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "workflow_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
             referencedColumns: ["id"]
           },
         ]
@@ -6985,7 +6977,6 @@ export type Database = {
           owner_id: string | null
           path_tokens: string[] | null
           updated_at: string | null
-          user_metadata: Json | null
           version: string | null
         }
         Insert: {
@@ -6999,7 +6990,6 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
-          user_metadata?: Json | null
           version?: string | null
         }
         Update: {
@@ -7013,7 +7003,6 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
-          user_metadata?: Json | null
           version?: string | null
         }
         Relationships: [
@@ -7035,7 +7024,6 @@ export type Database = {
           key: string
           owner_id: string | null
           upload_signature: string
-          user_metadata: Json | null
           version: string
         }
         Insert: {
@@ -7046,7 +7034,6 @@ export type Database = {
           key: string
           owner_id?: string | null
           upload_signature: string
-          user_metadata?: Json | null
           version: string
         }
         Update: {
@@ -7057,7 +7044,6 @@ export type Database = {
           key?: string
           owner_id?: string | null
           upload_signature?: string
-          user_metadata?: Json | null
           version?: string
         }
         Relationships: [

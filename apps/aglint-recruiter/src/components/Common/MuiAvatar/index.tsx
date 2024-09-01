@@ -32,8 +32,8 @@ const colors = [
   { bg: radixColors.mint.mint3, text: radixColors.mint.mint11 },
   { bg: radixColors.orange.orange3, text: radixColors.orange.orange11 },
   { bg: radixColors.pink.pink3, text: radixColors.pink.pink11 },
-  { bg: radixColors.plum.plum3, text: radixColors.plum.plum11 },
   { bg: radixColors.purple.purple3, text: radixColors.purple.purple11 },
+  { bg: radixColors.plum.plum3, text: radixColors.plum.plum11 },
   { bg: radixColors.red.red3, text: radixColors.red.red11 },
   { bg: radixColors.sage.sage3, text: radixColors.sage.sage11 },
   { bg: radixColors.sand.sand3, text: radixColors.sand.sand11 },
@@ -45,7 +45,7 @@ const colors = [
   { bg: radixColors.yellow.yellow3, text: radixColors.yellow.yellow11 },
 ];
 
-const getStringColor = (index: number) => colors[index % colors.length];
+export const getStringColor = (index: number) => colors[index % colors.length];
 
 export default function MuiAvatar({
   level,
