@@ -8,13 +8,20 @@ import { apiTargetToEvents } from '../utils/progressMaps';
 import { useNewScheduleRequestPr } from '.';
 import { RequestProgressMapType } from '../types';
 import EventNode from './EventNode';
+import { ButtonSoft } from '@/devlink';
+import { Stack } from '@mui/material';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
 }: {
   isManualSchedule: boolean;
 }) => {
-  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
+  const {
+    reqTriggerActionsMap,
+    setEditTrigger,
+    setShowEditDialog,
+    reqProgressMap,
+  } = useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
   let { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
@@ -79,6 +86,51 @@ const SelfScheduleFlowMenus = ({
             });
           })
           .flat()}
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={
+          Boolean(!reqTriggerActionsMap['selfScheduleReminder']) ||
+          Boolean(
+            reqTriggerActionsMap['selfScheduleReminder'] &&
+              reqTriggerActionsMap['selfScheduleReminder'].length === 0,
+          )
+        }
+      >
+        <Stack direction={'row'}>
+          <ButtonSoft
+            size={1}
+            textButton={'Schedule Reminder'}
+            onClickButton={{
+              onClick: () => {
+                setEditTrigger('selfScheduleReminder');
+                setShowEditDialog(true);
+              },
+            }}
+          />
+        </Stack>
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={Boolean(
+          reqTriggerActionsMap['selfScheduleReminder'] &&
+            reqTriggerActionsMap['selfScheduleReminder'].length > 0,
+        )}
+      >
+        {reqTriggerActionsMap['selfScheduleReminder'] &&
+          reqTriggerActionsMap['selfScheduleReminder'].length > 0 &&
+          apiTargetToEvents['selfScheduleReminder_email_applicant'].map(
+            (ev) => {
+              const action = reqTriggerActionsMap.selfScheduleReminder[0];
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={reqProgresMap}
+                  currEventTrigger={'selfScheduleReminder'}
+                  currWAction={action}
+                />
+              );
+            },
+          )}
       </ShowCode.When>
     </>
   );
