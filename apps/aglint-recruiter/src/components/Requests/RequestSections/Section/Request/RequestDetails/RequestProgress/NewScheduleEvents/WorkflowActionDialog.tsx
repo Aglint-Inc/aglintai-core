@@ -14,20 +14,21 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 import toast from '@/src/utils/toast';
 
-import { createRequestWorkflow } from '../../utils';
+import { createRequestWorkflowAction } from '../../utils';
 import { TargetAPIBody, WActionProps } from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
+import { get } from 'lodash';
+import { TriggerActionMapType } from '../types';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();
   const { request_workflow } = useRequest();
   const {
     reqTriggerActionsMap,
-    companyEmailTemplates,
+    companyEmailTemplatesMp,
     currentRequest,
     editTrigger,
     setShowEditDialog,
-    showEditDialog,
   } = useNewScheduleRequestPr();
 
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
@@ -45,8 +46,14 @@ const WorkflowActionDialog = () => {
             .target_api as any,
           workflow_id: '',
           payload: {
-            body: '',
-            subject: '',
+            body:
+              companyEmailTemplatesMp[
+                ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
+              ].body ?? '',
+            subject:
+              companyEmailTemplatesMp[
+                ACTION_TRIGGER_MAP[editTrigger][0].value.target_api
+              ].subject ?? '',
           },
         },
   );
@@ -56,15 +63,13 @@ const WorkflowActionDialog = () => {
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
     if (
-      reqTriggerActionsMap[editTrigger] &&
+      get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
       reqTriggerActionsMap[editTrigger][0].target_api === target_api
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
       setSelectedActionsDetails(existing_workflow_action);
     } else {
-      const emailSlackTemplate = companyEmailTemplates.find(
-        (temp) => temp.type === target_api,
-      );
+      const emailSlackTemplate = companyEmailTemplatesMp[target_api];
       setSelectedActionsDetails({
         action_type: ACTION_TRIGGER_MAP[editTrigger][0].value
           .action_type as any,
@@ -81,12 +86,12 @@ const WorkflowActionDialog = () => {
     }
   };
 
-  const handleSaveScheduleFlow = async (
+  const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
     try {
       setIsAddingAction(true);
-      await createRequestWorkflow({
+      await createRequestWorkflowAction({
         wAction,
         request_id: currentRequest.id,
         recruiter_id: recruiter.id,
@@ -100,54 +105,42 @@ const WorkflowActionDialog = () => {
     }
   };
 
-  console.log(selectedActionsDetails.target_api);
   return (
-    <MuiPopup
-      props={{
-        open: showEditDialog,
-        maxWidth: 'sm',
-        fullWidth: true,
-        onClose: () => {
-          setShowEditDialog(false);
-        },
-      }}
-    >
-      <WorkflowItem
-        textWorkflowType={'Action'}
-        textTypeDescription={'An action to be performed'}
-        slotWorkflowIcon={<ActionIcon />}
-        isDeleteVisible={false}
-        slotInputFields={
-          <>
-            <UISelect
-              label='Do this'
-              onChange={(e) => {
-                handleChangeSelectedAction(e.target.value as any);
-              }}
-              value={selectedActionsDetails.target_api}
-              menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({
-                name: action.name,
-                value: action.value.target_api,
-              }))}
-            />
-            <TargetAPIBody action={selectedActionsDetails} />
-            <ButtonSolid
-              textButton={isAddingAction ? 'Adding...' : 'Add Action'}
-              onClickButton={{
-                onClick: () => {
-                  handleSaveScheduleFlow({
-                    action_type: selectedActionsDetails.action_type as any,
-                    target_api: selectedActionsDetails.target_api as any,
-                    payload: selectedActionsDetails.payload as any,
-                    order: 0,
-                  });
-                },
-              }}
-            />
-          </>
-        }
-      />
-    </MuiPopup>
+    <WorkflowItem
+      textWorkflowType={'Action'}
+      textTypeDescription={'An action to be performed'}
+      slotWorkflowIcon={<ActionIcon />}
+      isDeleteVisible={false}
+      slotInputFields={
+        <>
+          <UISelect
+            label='Do this'
+            onChange={(e) => {
+              handleChangeSelectedAction(e.target.value as any);
+            }}
+            value={selectedActionsDetails.target_api}
+            menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({
+              name: action.name,
+              value: action.value.target_api,
+            }))}
+          />
+          <TargetAPIBody action={selectedActionsDetails} />
+          <ButtonSolid
+            textButton={isAddingAction ? 'Adding...' : 'Add Action'}
+            onClickButton={{
+              onClick: () => {
+                handleSaveScheduleAction({
+                  action_type: selectedActionsDetails.action_type as any,
+                  target_api: selectedActionsDetails.target_api as any,
+                  payload: selectedActionsDetails.payload as any,
+                  order: 0,
+                });
+              },
+            }}
+          />
+        </>
+      }
+    />
   );
 };
 

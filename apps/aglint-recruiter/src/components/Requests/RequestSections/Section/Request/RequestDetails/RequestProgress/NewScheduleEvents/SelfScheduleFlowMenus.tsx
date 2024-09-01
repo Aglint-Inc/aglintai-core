@@ -6,8 +6,8 @@ import { useRequest } from '@/src/context/RequestContext';
 
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { useNewScheduleRequestPr } from '.';
-import EventNode from './EventNode';
 import { RequestProgressMapType } from '../types';
+import EventNode from './EventNode';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
@@ -17,14 +17,14 @@ const SelfScheduleFlowMenus = ({
   const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
-  let { progres: scheduleFlowProg, currEventMap } = useMemo(() => {
-    let currEventMap: RequestProgressMapType = {};
+  let { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
+    let reqProgresMap: RequestProgressMapType = {};
     let progres: DatabaseTable['request_progress'][] = [];
 
     if (request_progress.data.length === 0) {
       return {
         progres,
-        currEventMap,
+        reqProgresMap,
       };
     }
 
@@ -32,23 +32,18 @@ const SelfScheduleFlowMenus = ({
       if (prog.event_type === 'CAND_CONFIRM_SLOT') {
         break;
       }
-      if (!currEventMap[prog.event_type]) {
-        currEventMap[prog.event_type] = [];
+      if (!reqProgresMap[prog.event_type]) {
+        reqProgresMap[prog.event_type] = [];
       }
-      currEventMap[prog.event_type].push(prog);
+      reqProgresMap[prog.event_type].push(prog);
       progres.push({
         ...prog,
       });
     }
-    return { progres, currEventMap };
+    return { progres, reqProgresMap };
   }, [request_progress.data]);
   //
   let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (reqTriggerActionsMap['onRequestSchedule']) {
-    eventWActions = [
-      ...reqTriggerActionsMap['onRequestSchedule'].map((e) => e.target_api),
-    ];
-  }
 
   return (
     <>
@@ -60,8 +55,8 @@ const SelfScheduleFlowMenus = ({
               <>
                 <EventNode
                   key={prog.id}
+                  reqProgresMap={reqProgresMap}
                   eventType={prog.event_type}
-                  currEventMap={currEventMap}
                   currEventTrigger={'onRequestSchedule'}
                 />
               </>
@@ -69,21 +64,21 @@ const SelfScheduleFlowMenus = ({
           })}
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
+        {(reqTriggerActionsMap['onRequestSchedule'] ?? [])
           .map((eA) => {
-            return apiTargetToEvents[eA];
+            return apiTargetToEvents[eA.target_api].map((ev) => {
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={reqProgresMap}
+                  currEventTrigger={'onRequestSchedule'}
+                  currWAction={eA}
+                />
+              );
+            });
           })
-          .flat()
-          .map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventType={ev}
-                currEventMap={currEventMap}
-                currEventTrigger={'onRequestSchedule'}
-              />
-            );
-          })}
+          .flat()}
       </ShowCode.When>
     </>
   );

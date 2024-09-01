@@ -4,12 +4,12 @@ import { useMemo } from 'react';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import ScheduleFlows from '../Actions/Schedule';
 import { RequestProgressMapType } from '../types';
 import { useNewScheduleRequestPr } from '.';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
 import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
 import { RequestProgress } from '@/devlink2';
+import ChooseScheduleMode from './ChooseScheduleMode';
 
 const SelectScheduleFlow = () => {
   const { request_progress } = useRequest();
@@ -38,16 +38,13 @@ const SelectScheduleFlow = () => {
         slotProgress={
           <>
             <ShowCode.When isTrue={scheduleFlow === null}>
-              <ScheduleFlows />
+              <ChooseScheduleMode />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
               <SelfScheduleFlowMenus isManualSchedule={isManualSchedule} />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-              <AvailabilityFlowMenus
-                isManualSchedule={isManualSchedule}
-                scheduleReqProgressMap={scheduleReqProgressMap}
-              />
+              <AvailabilityFlowMenus isManualSchedule={isManualSchedule} />
             </ShowCode.When>
           </>
         }

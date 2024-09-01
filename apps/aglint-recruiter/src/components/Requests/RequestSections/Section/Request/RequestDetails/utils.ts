@@ -4,7 +4,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { supabase } from '@/src/utils/supabase/client';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const createRequestWorkflow = async ({
+export const createRequestWorkflowAction = async ({
   wAction,
   request_id,
   recruiter_id,
@@ -53,5 +53,11 @@ export const createRequestWorkflow = async ({
         },
       ])
       .select(),
+  );
+};
+
+export const deleteRequestWorkflowAction = async (workflowActionId: string) => {
+  supabaseWrap(
+    await supabase.from('workflow_action').delete().eq('id', workflowActionId),
   );
 };

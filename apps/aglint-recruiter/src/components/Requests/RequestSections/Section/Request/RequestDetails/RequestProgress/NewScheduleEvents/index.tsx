@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseTable } from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
@@ -15,13 +15,19 @@ import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewSchedule from './InterviewSchedule';
 import SelectScheduleFlow from './SelectScheduleFlow';
 import WorkflowActionDialog from './WorkflowActionDialog';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 
 // Define the types for the context values
 interface RequestContextType {
   reqTriggerActionsMap: TriggerActionMapType;
   reqProgressMap: RequestProgressMapType;
   scheduleFlow: ReturnType<typeof getSchedulFlow>;
-  companyEmailTemplates: DatabaseTable['company_email_template'][];
+  companyEmailTemplatesMp: Partial<
+    Record<
+      DatabaseEnums['email_slack_types'],
+      DatabaseTable['company_email_template']
+    >
+  >;
   currentRequest: DatabaseTable['request'];
   editTrigger: DatabaseTable['workflow']['trigger'];
   setEditTrigger: (trigger: DatabaseTable['workflow']['trigger']) => void;
@@ -79,11 +85,23 @@ const NewScheduleEvents = ({
     return mp;
   }, [request_progress]);
 
+  const companyEmailTemplatesMp = useMemo(() => {
+    let mp: Partial<
+      Record<
+        DatabaseEnums['email_slack_types'],
+        DatabaseTable['company_email_template']
+      >
+    > = {};
+    companyEmailTemplates.forEach((row) => {
+      mp[row.type] = row;
+    });
+    return mp;
+  }, [companyEmailTemplates]);
+  //
   let scheduleFlow = getSchedulFlow({
     eventTargetMap: reqTriggerActionsMap,
     requestTargetMp: reqProgressMap,
   });
-
   let isSelectScheduleFlowComplete = false;
   if (
     reqTriggerActionsMap['CAND_AVAIL_REC'] ||
@@ -99,7 +117,7 @@ const NewScheduleEvents = ({
           reqTriggerActionsMap,
           reqProgressMap,
           scheduleFlow,
-          companyEmailTemplates,
+          companyEmailTemplatesMp: companyEmailTemplatesMp,
           currentRequest: requestDetails,
           editTrigger,
           setEditTrigger,
@@ -109,13 +127,25 @@ const NewScheduleEvents = ({
       >
         <>
           <SelectScheduleFlow />
-          <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
+          {/* <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
             <InterviewSchedule />
-          </ShowCode.When>
-          <WorkflowActionDialog />
+          </ShowCode.When> */}
           <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-            <CandidateAvailReceived eventTargetMap={{}} />
+            <></>
+            {/* <CandidateAvailReceived eventTargetMap={{}} /> */}
           </ShowCode.When>
+          <MuiPopup
+            props={{
+              open: showEditDialog,
+              maxWidth: 'sm',
+              fullWidth: true,
+              onClose: () => {
+                setShowEditDialog(false);
+              },
+            }}
+          >
+            <WorkflowActionDialog />
+          </MuiPopup>
         </>
       </RequestContext.Provider>
     </>

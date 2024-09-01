@@ -8,15 +8,16 @@ import { RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
 import { useNewScheduleRequestPr } from '.';
+import { ButtonSoft } from '@/devlink';
+import { Stack } from '@mui/material';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
-  scheduleReqProgressMap,
 }: {
   isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
 }) => {
-  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
+  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+    useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
   let { progres: availFlowProg, currEventMap } = useMemo(() => {
@@ -45,13 +46,11 @@ const AvailabilityFlowMenus = ({
     return { progres, currEventMap };
   }, [request_progress.data]);
 
-  //
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
+  let eventWActions: DatabaseTable['workflow_action'][] = [];
   if (reqTriggerActionsMap['onRequestSchedule']) {
-    eventWActions = [
-      ...reqTriggerActionsMap['onRequestSchedule'].map((e) => e.target_api),
-    ];
+    eventWActions = [...reqTriggerActionsMap['onRequestSchedule']];
   }
+
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
@@ -64,8 +63,8 @@ const AvailabilityFlowMenus = ({
                   <EventNode
                     key={prog.id}
                     eventType={prog.event_type}
-                    currEventMap={currEventMap}
                     currEventTrigger={'onRequestSchedule'}
+                    reqProgresMap={currEventMap}
                   />
                 </>
               );
@@ -73,21 +72,52 @@ const AvailabilityFlowMenus = ({
         </>
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
-          .map((eA) => {
-            return apiTargetToEvents[eA];
-          })
-          .flat()
-          .map((ev) => {
+        {eventWActions.map((eA) => {
+          return apiTargetToEvents[eA.target_api].map((ev) => {
             return (
               <EventNode
                 key={ev}
                 eventType={ev}
-                currEventMap={currEventMap}
+                reqProgresMap={currEventMap}
                 currEventTrigger={'onRequestSchedule'}
+                currWAction={eA}
               />
             );
-          })}
+          });
+        })}
+      </ShowCode.When>
+      <ShowCode.When isTrue={!reqTriggerActionsMap.sendAvailReqReminder}>
+        <Stack direction={'row'}>
+          <ButtonSoft
+            size={1}
+            textButton={'Schedule Reminder'}
+            onClickButton={{
+              onClick: () => {
+                setEditTrigger('sendAvailReqReminder');
+                setShowEditDialog(true);
+              },
+            }}
+          />
+        </Stack>
+        <ShowCode.When
+          isTrue={Boolean(reqTriggerActionsMap['sendAvailReqReminder'])}
+        >
+          {reqTriggerActionsMap['sendAvailReqReminder'] &&
+            apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
+              (ev) => {
+                const action = reqTriggerActionsMap.sendAvailReqReminder[0];
+                return (
+                  <EventNode
+                    key={ev}
+                    eventType={ev}
+                    reqProgresMap={currEventMap}
+                    currEventTrigger={'sendAvailReqReminder'}
+                    currWAction={action}
+                  />
+                );
+              },
+            )}
+        </ShowCode.When>
       </ShowCode.When>
     </>
   );

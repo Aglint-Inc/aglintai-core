@@ -13,32 +13,43 @@ import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
 import { IconButtonSoft } from '@/devlink';
 import { useNewScheduleRequestPr } from '.';
+import { deleteRequestWorkflowAction } from '../../utils';
+import toast from '@/src/utils/toast';
+import { useRequest } from '@/src/context/RequestContext';
 
 const EventNode = ({
   eventType,
-  currEventMap,
+  reqProgresMap,
   currEventTrigger,
+  currWAction,
 }: {
   eventType: DatabaseTable['request_progress']['event_type'];
-  currEventMap: RequestProgressMapType;
+  reqProgresMap: RequestProgressMapType;
   currEventTrigger: DatabaseTable['workflow']['trigger'];
+  currWAction?: DatabaseTable['workflow_action'];
 }) => {
+  const { request_workflow } = useRequest();
   const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
   const [onHover, setOnHover] = React.useState(false);
-  const eventProg = currEventMap[eventType];
+  const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
-  let CustomComp;
-  let headingEvent: DatabaseTable['request_progress'];
   if (eventProg) {
-    headingEvent = eventProg.find((prg) => prg.is_progress_step === false);
+    let headingEvent: DatabaseTable['request_progress'] = eventProg.find(
+      (prg) => prg.is_progress_step === false,
+    );
     tense = progressStatusToTense(headingEvent.status);
-    CustomComp =
-      progressActionMap[`${headingEvent.event_type}_${headingEvent.status}`];
   }
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
-
+  const handleDeleteScheduleAction = async () => {
+    try {
+      await deleteRequestWorkflowAction(currWAction.id);
+      await request_workflow.refetch();
+    } catch (err) {
+      toast.error('Failed to remove action');
+    }
+  };
   return (
     <>
       <Stack
@@ -78,9 +89,10 @@ const EventNode = ({
                 iconName={'delete'}
                 size={1}
                 color={'error'}
-                onClickButton={() => {
-                  // setEditTrigger('')
-                  // setShowEditDialog()
+                onClickButton={{
+                  onClick: () => {
+                    handleDeleteScheduleAction();
+                  },
                 }}
               />
             </Stack>
@@ -93,7 +105,7 @@ const EventNode = ({
         />
       </Stack>
 
-      {(eventSubProgress.length > 0 || CustomComp) && (
+      {eventSubProgress.length > 0 && (
         <Stack ml={1}>
           {eventProg
             .filter((prg) => prg.is_progress_step === true)

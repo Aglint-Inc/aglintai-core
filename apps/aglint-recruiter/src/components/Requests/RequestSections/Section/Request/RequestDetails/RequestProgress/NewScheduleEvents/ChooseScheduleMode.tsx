@@ -7,9 +7,9 @@ import { NoWorkflow } from '@/devlink2/NoWorkflow';
 import { setCandidateAvailabilityDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
 import { setIsSelfScheduleDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
-import { useNewScheduleRequestPr } from '../NewScheduleEvents';
+import { useNewScheduleRequestPr } from '.';
 
-const ScheduleFlows = () => {
+const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
   return (
     <>
@@ -64,4 +64,4 @@ const ScheduleFlows = () => {
   );
 };
 
-export default ScheduleFlows;
+export default ChooseScheduleMode;
