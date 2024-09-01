@@ -132,7 +132,6 @@ const NewScheduleEvents = ({
           </ShowCode.When> */}
           <ShowCode.When isTrue={scheduleFlow === 'availability'}>
             <></>
-            {/* <CandidateAvailReceived eventTargetMap={{}} /> */}
           </ShowCode.When>
           <MuiPopup
             props={{

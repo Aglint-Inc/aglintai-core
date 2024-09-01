@@ -46,7 +46,6 @@ const SelfScheduleFlowMenus = ({
     return { progres, reqProgresMap };
   }, [request_progress.data]);
   //
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
 
   return (
     <>
