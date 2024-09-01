@@ -16,12 +16,8 @@ const SelfScheduleFlowMenus = ({
 }: {
   isManualSchedule: boolean;
 }) => {
-  const {
-    reqTriggerActionsMap,
-    setEditTrigger,
-    setShowEditDialog,
-    reqProgressMap,
-  } = useNewScheduleRequestPr();
+  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+    useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
   let { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
