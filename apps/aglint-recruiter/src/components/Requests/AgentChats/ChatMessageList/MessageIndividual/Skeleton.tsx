@@ -1,33 +1,30 @@
-import { Stack } from '@mui/material';
+import React from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import { Skeleton } from '@/devlink2/Skeleton';
+const MessageSkeleton: React.FC<{ isUser?: boolean }> = ({
+  isUser = false,
+}) => (
+  <div className='flex justify-start mb-4'>
+    <div className='flex flex-row items-start'>
+      <Skeleton
+        className={`h-8 w-8 rounded-full ${isUser ? 'bg-secondary' : 'bg-secondary'}`}
+      />
+      <div className='mx-2 rounded-tr-xl rounded-br-xl rounded-bl-sm'>
+        <Skeleton
+          className={`h-16 w-80 rounded-tr-xl rounded-br-xl rounded-bl-sm ${isUser ? 'bg-secondary' : 'bg-secondary'}`}
+        />
+      </div>
+    </div>
+  </div>
+);
 
-function SkeletonMessage() {
+export default function SkeletonMessage() {
   return (
-    <Stack direction={'row'} spacing={'var(--space-2)'} position={'relative'}>
-      <Stack width={'24px'} height={'24px'} position={'relative'}>
-        <Skeleton />
-      </Stack>
-
-      <Stack spacing={'var(--space-1)'} width={'100%'} position={'relative'}>
-        <Stack
-          direction={'row'}
-          spacing={'var(--space-2)'}
-          position={'relative'}
-        >
-          <Stack width={'70px'} height={'16px'} position={'relative'}>
-            <Skeleton />
-          </Stack>
-          <Stack width={'50px'} height={'16px'} position={'relative'}>
-            <Skeleton />
-          </Stack>
-        </Stack>
-        <Stack width={'200px'} height={'16px'} position={'relative'}>
-          <Skeleton />
-        </Stack>
-      </Stack>
-    </Stack>
+    <div className='space-y-12'>
+      <MessageSkeleton isUser />
+      <MessageSkeleton />
+      <MessageSkeleton isUser />
+      <MessageSkeleton />
+    </div>
   );
 }
-
-export default SkeletonMessage;
