@@ -117,10 +117,8 @@ const LinkComp = ({
 }) => {
   const router = useRouterPro();
   return (
-    <Link href={path} legacyBehavior>
-      <>
-        <LinkIcon module={module} active={active.includes(router.pathName)} />
-      </>
+    <Link href={path} passHref>
+      <LinkIcon module={module} active={active.includes(router.pathName)} />
     </Link>
   );
 };
