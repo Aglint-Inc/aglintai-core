@@ -13,6 +13,8 @@ import UpcomingInterview from '@/src/components/CandiatePortal/components/Upcomi
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 
+import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+
 export default function Component({ params }) {
   const application_id = params.application_id;
   const { isLoading, data } = usePortalHomePage({ application_id });
@@ -20,7 +22,7 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <MessageCard />;
+  if (!data) return <ReorderableInterviewPlan />;
 
   const {
     availability,

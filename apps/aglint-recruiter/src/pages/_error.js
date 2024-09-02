@@ -1,5 +1,4 @@
 import React from 'react';
-import Error from 'next/error';
 
 class CustomError extends React.Component {
   static getInitialProps({ res, err }) {

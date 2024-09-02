@@ -1,22 +1,19 @@
 /* eslint-disable security/detect-object-injection */
-import React from 'react';
 import dayjs from 'dayjs';
-// import relativeTime from 'dayjs/plugin/relativeTime';
+import React from 'react';
 
+import GreenhouseIcon from '@/components/icons/GreenhouseIcon.svg';
+import GreenInCircle from '@/components/icons/GreenInCircle.svg';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+// import relativeTime from 'dayjs/plugin/relativeTime';
 import { AtsSettings } from '@/devlink/AtsSettings';
-import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { type GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
 import axios from '@/src/client/axios';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
-import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';
-import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useGreenhouseDetails } from '@/src/queries/greenhouse';
-import GreenhouseIcon from '@/components/icons/GreenhouseIcon.svg';
-import GreenInCircle from '@/components/icons/GreenInCircle.svg';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 function GreenhouseSettings() {
   const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
@@ -38,10 +35,9 @@ function GreenhouseSettings() {
               <div className='flex flex-col gap-1'>
                 {Object.entries(GreenhouseSync.options).map(
                   ([key, subOptions]) => (
-                    <div className='flex items-center space-x-2'>
+                    <div key={key} className='flex items-center space-x-2'>
                       <Checkbox
                         id={subOptions?.name}
-                        key={key}
                         checked={data.options[key]}
                         onCheckedChange={() => {
                           data.options[String(key)] =
@@ -88,14 +84,7 @@ function GreenhouseSettings() {
               ]}
             />
           }
-          slotAiInstructionsTextArea={
-            <Input
-              as='textarea'
-              rows={2}
-              maxRows={5}
-              defaultValue='Enter your Instructions'
-            />
-          }
+          slotAiInstructionsTextArea={<Input />}
           slotCheckbox={
             <Checkbox
               checked={data.options['task_sync']}
