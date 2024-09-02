@@ -1,6 +1,7 @@
-import { ThemeProvider } from '@components/shadcn//theme-provider';
-import { ThemeSwitcher } from '@components/CandiatePortal/components/ThemeSwitcher';
 import '@/styles/globals.css';
+
+import { ThemeProvider } from '@components/shadcn//theme-provider';
+import React from 'react';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

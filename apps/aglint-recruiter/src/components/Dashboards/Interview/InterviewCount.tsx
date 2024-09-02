@@ -1,7 +1,22 @@
+import { Card, CardContent } from '@components/shadcn/ui/card';
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@components/shadcn/ui/toggle-group';
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@components/shadcn/ui/card";
-import { ToggleGroup, ToggleGroupItem } from "@components/shadcn/ui/toggle-group";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
 import DeclineLeadTimeChart from './DeclineLeadTimeChart';
 // Mock data - replace with actual data fetching logic
 const currentData = [
@@ -49,84 +64,125 @@ const COLORS = [
 ];
 
 const InterviewCount: React.FC = () => {
-  const [timeFrame, setTimeFrame] = useState<'today' | 'day' | 'week' | 'month'>('day');
+  const [timeFrame, setTimeFrame] = useState<
+    'today' | 'day' | 'week' | 'month'
+  >('day');
 
   return (
     <>
-      <div className="flex flex-col space-y-6">
-        <Card className="w-full border-none shadow-none">
+      <div className='flex flex-col space-y-6'>
+        <Card className='w-full border-none shadow-none'>
           <CardContent>
-            <div className="space-y-8">
+            <div className='space-y-8'>
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-md font-semibold">Interview Count</h2>
-                  <ToggleGroup type="single" value={timeFrame} onValueChange={(value) => value && setTimeFrame(value as 'today' | 'day' | 'week' | 'month')}>
-                    <ToggleGroupItem value="today">Today</ToggleGroupItem>
-                    <ToggleGroupItem value="day">Day</ToggleGroupItem>
-                    <ToggleGroupItem value="week">Week</ToggleGroupItem>
-                    <ToggleGroupItem value="month">Month</ToggleGroupItem>
+                <div className='flex justify-between items-center mb-4'>
+                  <h2 className='text-md font-semibold'>Interview Count</h2>
+                  <ToggleGroup
+                    type='single'
+                    value={timeFrame}
+                    onValueChange={(value) =>
+                      value &&
+                      setTimeFrame(value as 'today' | 'day' | 'week' | 'month')
+                    }
+                  >
+                    <ToggleGroupItem value='today'>Today</ToggleGroupItem>
+                    <ToggleGroupItem value='day'>Day</ToggleGroupItem>
+                    <ToggleGroupItem value='week'>Week</ToggleGroupItem>
+                    <ToggleGroupItem value='month'>Month</ToggleGroupItem>
                   </ToggleGroup>
                 </div>
-                <div className="flex justify-between">
+                <div className='flex justify-between'>
                   {currentData.map((data, index) => (
-                    <div key={data.name} className="w-1/4">
-                      <ResponsiveContainer width="100%" height={200}>
+                    <div key={data.name} className='w-1/4'>
+                      <ResponsiveContainer width='100%' height={200}>
                         <PieChart>
                           <Pie
-                            data={[data, { name: 'Remaining', value: 100 - data.value }]}
-                            cx="50%"
-                            cy="50%"
+                            data={[
+                              data,
+                              { name: 'Remaining', value: 100 - data.value },
+                            ]}
+                            cx='50%'
+                            cy='50%'
                             startAngle={90}
                             endAngle={450}
                             innerRadius={70}
                             outerRadius={80}
-                            dataKey="value"
+                            dataKey='value'
                           >
                             <Cell fill={COLORS[index % COLORS.length]} />
-                            <Cell fill="#f3f4f6" />
+                            <Cell fill='#f3f4f6' />
                           </Pie>
-                          <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="text-2xl font-bold">
-                            {timeFrame === 'today' ? data.value :
-                            timeFrame === 'day' ? Math.round(data.value * 1.5) : 
-                            timeFrame === 'week' ? Math.round(data.value * 7) : 
-                            Math.round(data.value * 30)}
+                          <text
+                            x='50%'
+                            y='50%'
+                            textAnchor='middle'
+                            dominantBaseline='middle'
+                            className='text-2xl font-bold'
+                          >
+                            {timeFrame === 'today'
+                              ? data.value
+                              : timeFrame === 'day'
+                                ? Math.round(data.value * 1.5)
+                                : timeFrame === 'week'
+                                  ? Math.round(data.value * 7)
+                                  : Math.round(data.value * 30)}
                           </text>
-                          <text x="50%" y="65%" textAnchor="middle" dominantBaseline="middle" className="text-sm">
+                          <text
+                            x='50%'
+                            y='65%'
+                            textAnchor='middle'
+                            dominantBaseline='middle'
+                            className='text-sm'
+                          >
                             {data.name}
                           </text>
                         </PieChart>
                       </ResponsiveContainer>
-                      <p className="text-center mt-2">{data.name}</p>
-                      <p className="text-center text-sm text-muted-foreground">
-                        {timeFrame === 'today' ? 'Today' :
-                        timeFrame === 'day' ? 'Daily' : 
-                        timeFrame === 'week' ? 'Weekly' : 'Monthly'} Average
+                      <p className='text-center mt-2'>{data.name}</p>
+                      <p className='text-center text-sm text-muted-foreground'>
+                        {timeFrame === 'today'
+                          ? 'Today'
+                          : timeFrame === 'day'
+                            ? 'Daily'
+                            : timeFrame === 'week'
+                              ? 'Weekly'
+                              : 'Monthly'}{' '}
+                        Average
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
-              
+
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-md font-semibold">Historic</h2>
-                  <div className="mb-4">
-                    <ToggleGroup type="single" value={timeFrame} onValueChange={(value) => value && setTimeFrame(value as 'today' | 'day' | 'week' | 'month')}>
-                      <ToggleGroupItem value="day">Day</ToggleGroupItem>
-                      <ToggleGroupItem value="week">Week</ToggleGroupItem>
-                      <ToggleGroupItem value="month">Month</ToggleGroupItem>
+                <div className='flex justify-between items-center mb-4'>
+                  <h2 className='text-md font-semibold'>Historic</h2>
+                  <div className='mb-4'>
+                    <ToggleGroup
+                      type='single'
+                      value={timeFrame}
+                      onValueChange={(value) =>
+                        value &&
+                        setTimeFrame(
+                          value as 'today' | 'day' | 'week' | 'month',
+                        )
+                      }
+                    >
+                      <ToggleGroupItem value='day'>Day</ToggleGroupItem>
+                      <ToggleGroupItem value='week'>Week</ToggleGroupItem>
+                      <ToggleGroupItem value='month'>Month</ToggleGroupItem>
                     </ToggleGroup>
                   </div>
                 </div>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width='100%' height={300}>
                   <BarChart data={historicData}>
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey='date' />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="Completed" stackId="a" fill={COLORS[0]} />
-                    <Bar dataKey="Confirmed" stackId="a" fill={COLORS[1]} />
-                    <Bar dataKey="Waiting" stackId="a" fill={COLORS[2]} />
+                    <Bar dataKey='Completed' stackId='a' fill={COLORS[0]} />
+                    <Bar dataKey='Confirmed' stackId='a' fill={COLORS[1]} />
+                    <Bar dataKey='Waiting' stackId='a' fill={COLORS[2]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

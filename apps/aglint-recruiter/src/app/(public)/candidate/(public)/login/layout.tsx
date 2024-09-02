@@ -1,5 +1,6 @@
-import { Footer } from '@/src/components/CandiatePortal/Layout/Footer';
 import { PropsWithChildren } from 'react';
+
+import { Footer } from '@/src/components/CandiatePortal/Layout/Footer';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
@@ -7,7 +8,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       <div className='flex-grow flex justify-center items-center'>
         {children}
       </div>
-      <div className="mt-auto">
+      <div className='mt-auto'>
         <Footer />
       </div>
     </div>

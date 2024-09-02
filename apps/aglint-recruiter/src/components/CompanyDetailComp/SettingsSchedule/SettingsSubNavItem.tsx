@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+// Import Shadcn components
+import { Button } from '@/src/components/shadcn/ui/button';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+} from '@/src/components/shadcn/ui/navigation-menu';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
 import ROUTES from '@/src/utils/routing/routes';
-import { settingsItems, settingSubNavItem } from './utils';
-import { emailTempKeys } from './SchedulingEmailTemplates/utils';
 
-// Import Shadcn components
-import { Button } from "@/src/components/shadcn/ui/button"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/src/components/shadcn/ui/navigation-menu"
+import { emailTempKeys } from './SchedulingEmailTemplates/utils';
+import { settingsItems, settingSubNavItem } from './utils';
 
 const SettingsSubNavItem: React.FC = () => {
   const router = useRouter();
@@ -44,14 +42,16 @@ const SettingsSubNavItem: React.FC = () => {
   }, [router, emailTemplates.isFetched, emailTemplates.data]);
 
   return (
-    <NavigationMenu orientation="vertical" className="max-w-[200px]">
-      <NavigationMenuList className="flex-col items-start space-y-1">
+    <NavigationMenu orientation='vertical' className='max-w-[200px]'>
+      <NavigationMenuList className='flex-col items-start space-y-1'>
         {settingsItems.map((item, i) => {
           const navItem = (
             <NavigationMenuItem key={i}>
               <Button
-                variant={router.query.tab === item.value ? "secondary" : "ghost"}
-                className="w-full justify-start"
+                variant={
+                  router.query.tab === item.value ? 'secondary' : 'ghost'
+                }
+                className='w-full justify-start'
                 onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   if (item.value === settingSubNavItem['EMAILTEMPLATE']) {
@@ -68,7 +68,9 @@ const SettingsSubNavItem: React.FC = () => {
             </NavigationMenuItem>
           );
 
-          return item?.permission ? ifAllowed(navItem, [item.permission]) : navItem;
+          return item?.permission
+            ? ifAllowed(navItem, [item.permission])
+            : navItem;
         })}
       </NavigationMenuList>
     </NavigationMenu>

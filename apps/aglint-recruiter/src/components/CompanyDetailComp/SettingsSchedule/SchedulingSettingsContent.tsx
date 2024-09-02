@@ -1,28 +1,16 @@
-import React from 'react';
-import {
-  Alert,
-  Chip,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { capitalize } from 'lodash';
+import { Stack } from '@mui/material';
 
-import { InterviewLoad } from '@/devlink2/InterviewLoad';
-import { Keywords } from '@/devlink2/Keywords';
-import { KeywordCard } from '@/devlink2/KeywordCard';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { InterviewLoad } from '@/devlink2/InterviewLoad';
+import { KeywordCard } from '@/devlink2/KeywordCard';
+import { Keywords } from '@/devlink2/Keywords';
+import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
 import { HelperDropdown } from '@/devlink3/HelperDropdown';
+import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
+import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
 
 import MuiNumberfield from './Components/MuiNumberfield';
-import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import DebriefDefaults from './DebriefDefaults';
-import { InterviewLoadHelper } from '@/devlink3/InterviewLoadHelper';
-import { DebreifHelperText } from '@/devlink3/DebreifHelperText';
-import { KeywordsHelper } from '@/devlink3/KeywordsHelper';
 
 // Add necessary imports and types
 
@@ -31,7 +19,7 @@ const SchedulingSettingsContent = ({
   weeklyLmit,
   handleDailyValue,
   handleWeeklyValue,
-  handleType,
+  // handleType,
   debriefDefaults,
   setDebriefDefaults,
   freeKeyWords,
@@ -66,10 +54,7 @@ const SchedulingSettingsContent = ({
         <InterviewLoad
           borderStyle={'false'}
           slotDailyLimit={
-            <MuiNumberfield
-              value={dailyLmit}
-              handleSelect={handleDailyValue}
-            />
+            <MuiNumberfield value={dailyLmit} handleSelect={handleDailyValue} />
           }
           slotWeeklyLimit={
             <MuiNumberfield

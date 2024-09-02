@@ -1,28 +1,17 @@
 'use client';
-import CompletedInterviewsOverTime from '@/src/components/Charts/ CompletedInterviewsOverTime';
-import ConfirmationVsCompletion from '@/src/components/Charts/ConfirmationVsCompletiont';
-import { ConversionRateRadialChart } from '@/src/components/Charts/ConversionRateRadialChart';
-import InterviewTypeDistribution from '@/src/components/Charts/InterviewTypeDistribution';
-import JobDashboardChart from '@/src/components/Charts/JobDashboardChart';
-import MonthlyRequestWorkloadChart from '@/src/components/Charts/MonthlyRequestWorkloadByType';
-import RequestHandlingOverQuartersChart from '@/src/components/Charts/RequestHandlingOverQuarters';
-import { RequestTrend } from '@/src/components/Charts/RequestTrend';
-import RequestTypesDelaysChart from '@/src/components/Charts/RequestTypesDelaysChart';
-import UrgentVsStandard from '@/src/components/Charts/UrgentVsStandard';
-import InterviewersTrainingReport from '@/src/components/Reports/InterviewersTrainingReport';
-import TrainingCompletionRates from '@/src/components/Reports/TrainingCompletionRates';
+
 import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';
 
 export default function ReportsPage() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6'>
       {/* <div className="col-span-1 md:col-span-2 lg:col-span-3">
         <InterviewersTrainingReport />
       </div>
       <div className="col-span-1 md:col-span-2 lg:col-span-3">
         <TrainingCompletionRates />
       </div> */}
-      <div className="col-span-1 md:col-span-2 lg:col-span-3">
+      <div className='col-span-1 md:col-span-2 lg:col-span-3'>
         <TrainingDashboard />
       </div>
       {/* <div className="col-span-1 md:col-span-2 lg:col-span-3">

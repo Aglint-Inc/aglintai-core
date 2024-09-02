@@ -24,7 +24,7 @@ const getCandidateDetails = async (application_id: string[]) => {
   const { data } = await supabaseAdmin
     .from('applications')
     .select(
-      'candidate_files(file_url),candidates(first_name,last_name,linkedin,phone,avatar,timezone,email)',
+      'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
     )
     .eq('id', application_id)
     .single()

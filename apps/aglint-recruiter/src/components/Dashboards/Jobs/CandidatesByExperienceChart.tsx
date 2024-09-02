@@ -1,7 +1,20 @@
-import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@components/shadcn/ui/card"
-import { Button } from "@components/shadcn/ui/button"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { Button } from '@components/shadcn/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@components/shadcn/ui/card';
+import React, { useState } from 'react';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 const data = [
   { years: 3, candidates: 2 },
@@ -32,23 +45,23 @@ const data = [
   { years: 28, candidates: 0 },
   { years: 29, candidates: 0 },
   { years: 30, candidates: 1 },
-]
+];
 
 export default function CandidatesByExperienceChart() {
-  const [view, setView] = useState('Experience')
+  const [view, setView] = useState('Experience');
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-2xl font-bold">Candidates By</CardTitle>
-        <div className="flex space-x-2">
-          <Button 
+    <Card className='w-full max-w-4xl mx-auto'>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+        <CardTitle className='text-2xl font-bold'>Candidates By</CardTitle>
+        <div className='flex space-x-2'>
+          <Button
             variant={view === 'Experience' ? 'default' : 'outline'}
             onClick={() => setView('Experience')}
           >
             Experience
           </Button>
-          <Button 
+          <Button
             variant={view === 'Tenure' ? 'default' : 'outline'}
             onClick={() => setView('Tenure')}
           >
@@ -57,8 +70,8 @@ export default function CandidatesByExperienceChart() {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px]">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className='h-[400px]'>
+          <ResponsiveContainer width='100%' height='100%'>
             <LineChart
               data={data}
               margin={{
@@ -68,19 +81,27 @@ export default function CandidatesByExperienceChart() {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="years" 
-                label={{ value: 'Years', position: 'insideBottomRight', offset: -10 }}
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis
+                dataKey='years'
+                label={{
+                  value: 'Years',
+                  position: 'insideBottomRight',
+                  offset: -10,
+                }}
               />
-              <YAxis 
-                label={{ value: 'Candidates', angle: -90, position: 'insideLeft' }}
+              <YAxis
+                label={{
+                  value: 'Candidates',
+                  angle: -90,
+                  position: 'insideLeft',
+                }}
               />
               <Tooltip />
-              <Line 
-                type="monotone" 
-                dataKey="candidates" 
-                stroke="#8884d8" 
+              <Line
+                type='monotone'
+                dataKey='candidates'
+                stroke='#8884d8'
                 strokeWidth={2}
                 dot={{ r: 4 }}
                 activeDot={{ r: 8 }}
@@ -90,5 +111,5 @@ export default function CandidatesByExperienceChart() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

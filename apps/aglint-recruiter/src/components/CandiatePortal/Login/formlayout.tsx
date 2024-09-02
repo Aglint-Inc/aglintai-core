@@ -1,7 +1,12 @@
 import Image from 'next/image';
-import { PropsWithChildren} from 'react';
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '../../shadcn/ui/input-otp';
+import { PropsWithChildren } from 'react';
 
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '../../shadcn/ui/input-otp';
 
 export const FormLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -40,7 +45,7 @@ export const FormLayout = ({ children }: PropsWithChildren) => {
               </InputOTPGroup>
             </InputOTP>
           </div>
-            {children}
+          {children}
         </div>
       </div>
     </div>

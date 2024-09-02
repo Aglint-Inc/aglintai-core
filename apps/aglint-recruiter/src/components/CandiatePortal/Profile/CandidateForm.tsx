@@ -14,11 +14,13 @@ import {
 import { Input } from '@components/shadcn/ui/input';
 import { Label } from '@components/shadcn/ui/label';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
 
+import ImageUploadManual from '../../Common/ImageUpload/ImageUploadManual';
 import {
   Select,
   SelectContent,
@@ -36,29 +38,31 @@ export default function CandidateForm({
 }) {
   const [form, setForm] = useState<candidatePortalProfileType>(formData);
   const [loading, setLoading] = useState(false);
-  const [photo, setPhoto] = useState('/placeholder.svg?height=128&width=128');
-  const [resume, setResume] = useState(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const imageFile = useRef(null);
 
-  const handlePhotoUpload = (file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => setPhoto(e?.target?.result as any);
-    reader.readAsDataURL(file);
-  };
-
-  const handleResumeUpload = (file) => {
-    setResume(file);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  console.log(photo);
-  console.log(resume);
+  // console.log('imageFile :', imageFile.current);
 
   const handleUpdateProfile = async () => {
     try {
       setLoading(true);
+
+      let profile_image = form.avatar;
+      if (isImageChanged) {
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${form.id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+
+        if (data?.path && imageFile?.current?.size) {
+          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
+        } else {
+          profile_image = null;
+        }
+        setIsImageChanged(false);
+      }
 
       const payload = {
         application_id,
@@ -69,7 +73,7 @@ export default function CandidateForm({
           timezone: form.timezone,
           phone: form.phone,
           linkedin: form.linkedin,
-          avatar: form.avatar,
+          avatar: profile_image,
         },
       };
 
@@ -98,19 +102,27 @@ export default function CandidateForm({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className='space-y-6'>
+          <form className='space-y-6'>
             <div className='flex flex-col items-center space-y-4'>
               <Avatar className='w-32 h-32'>
                 <AvatarImage src={form.avatar} alt={form.first_name} />
                 <AvatarFallback>{form.first_name}</AvatarFallback>
               </Avatar>
-              <FileUploader
+              {/* <FileUploader
                 accept='image/*'
                 onFileSelect={handlePhotoUpload}
                 className='w-full max-w-xs'
               >
                 Upload Photo
-              </FileUploader>
+              </FileUploader> */}
+              <ImageUploadManual
+                image={form.avatar}
+                imageFile={imageFile}
+                size={64}
+                setChanges={() => {
+                  setIsImageChanged(true);
+                }}
+              />
             </div>
 
             <div className='space-y-2'>
@@ -196,7 +208,7 @@ export default function CandidateForm({
               </Select>
             </div>
 
-            <div className='space-y-2'>
+            {/* <div className='space-y-2'>
               <Label>Resume</Label>
               <FileUploader
                 accept='.pdf,.doc,.docx'
@@ -219,7 +231,7 @@ export default function CandidateForm({
                   </Button>
                 </div>
               )}
-            </div>
+            </div> */}
 
             <Button
               type='submit'
@@ -234,38 +246,6 @@ export default function CandidateForm({
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-// FileUploader component (you may need to implement this or use a library)
-function FileUploader({ children, accept, onFileSelect, className }) {
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      onFileSelect(file);
-    }
-  };
-
-  return (
-    <div className={className}>
-      <label className='block'>
-        <span className='sr-only'>Choose file</span>
-        <input
-          type='file'
-          accept={accept}
-          onChange={handleFileChange}
-          className='block w-full text-sm text-gray-500
-          file:mr-4 file:py-2 file:px-4
-          file:rounded-full file:border-0
-          file:text-sm file:font-semibold
-          file:bg-blue-50 file:text-blue-700
-          hover:file:bg-blue-100
-          border border-gray-300 rounded-md
-        '
-        />
-      </label>
-      {children}
     </div>
   );
 }

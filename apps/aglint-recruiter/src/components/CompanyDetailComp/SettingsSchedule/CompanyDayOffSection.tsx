@@ -1,42 +1,49 @@
-import React, { useRef } from 'react';
 import {
+  Autocomplete,
   Dialog,
-  Stack,
-  Typography,
   FormControl,
-  RadioGroup,
   FormControlLabel,
   Radio,
-  Autocomplete,
+  RadioGroup,
+  Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import React, { useRef } from 'react';
+
 import { ButtonGhost } from '@/devlink/ButtonGhost';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
+import { DcPopup } from '@/devlink/DcPopup';
 import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
 import { DayoffList } from '@/devlink2/DayoffList';
 import { TextWithBg } from '@/devlink2/TextWithBg';
-import { DcPopup } from '@/devlink/DcPopup';
 import { DayOffHelper } from '@/devlink3/DayOffHelper';
-import UITextField from '../../Common/UITextField';
-import DateSelect from './Components/DateSelector';
-import { ShowCode } from '../../Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
+import { ShowCode } from '../../Common/ShowCode';
+import UITextField from '../../Common/UITextField';
+import DateSelect from './Components/DateSelector';
+
 interface CompanyDayOffSectionProps {
   daysOff: any[];
+  // eslint-disable-next-line no-unused-vars
   compareDates: (a: any, b: any) => number;
+  // eslint-disable-next-line no-unused-vars
   removeDayOff: (date: string) => void;
   openCompany: () => void;
+  // eslint-disable-next-line no-unused-vars
   openAddCompany: (event: React.MouseEvent<HTMLButtonElement>) => void;
   open: boolean;
   handleClose: () => void;
   specificLocationOn: string;
+  // eslint-disable-next-line no-unused-vars
   setSpecificLocationOn: (value: string) => void;
   selectedDate: string;
+  // eslint-disable-next-line no-unused-vars
   setSelectedDate: (date: string) => void;
   setDaysOff: React.Dispatch<React.SetStateAction<any[]>>;
   openDialog: boolean;
@@ -62,7 +69,9 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
   const eventRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const { recruiter } = useAuthDetails();
-  const [selectedLocations, setSelectedLocations] = React.useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = React.useState<string[]>(
+    [],
+  );
 
   const getDate = (e: any) => {
     setSelectedDate(dayjs(e).format('DD MMM YYYY'));

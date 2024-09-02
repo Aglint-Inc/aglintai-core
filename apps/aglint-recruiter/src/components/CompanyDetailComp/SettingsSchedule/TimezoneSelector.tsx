@@ -1,7 +1,9 @@
+import { Autocomplete, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { Stack, Autocomplete, Typography } from '@mui/material';
-import UITextField from '../../Common/UITextField';
+
 import timeZones from '@/src/utils/timeZone';
+
+import UITextField from '../../Common/UITextField';
 
 type TZ = (typeof timeZones)[number];
 
@@ -11,7 +13,8 @@ export type TimezoneObj = {
 
 type TimezoneSelectorProps = {
   value: TimezoneObj;
-  setValue: (value: TimezoneObj) => void;
+  setValue: any;
+  // setValue: (value: TimezoneObj) => void;
   disabled: boolean;
 };
 
