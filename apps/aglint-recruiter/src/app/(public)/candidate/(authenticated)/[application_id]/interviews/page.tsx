@@ -1,11 +1,13 @@
 'use client';
 import { getFullName } from '@aglint/shared-utils';
 import { Linkedin } from 'lucide-react';
+import { Calendar } from 'lucide-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
+import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
+import EmptyState from '@/src/components/CandiatePortal/components/EmptyState';
 import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
@@ -31,23 +33,26 @@ export default function InterviewsPage({ params }) {
       <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
         <main className='lg:w-[70%] space-y-6'>
           <div>
-            <h2 className='text-xl font-bold mb-4'>Upcoming interviews</h2>
+            <h2 className='text-lg font-semibold mb-4'>Upcoming interviews</h2>
             {upcomingInterviews.length > 0 ? (
               upcomingInterviews.map((interview, index) => (
                 <InterviewCard key={index} interview={interview} />
               ))
             ) : (
-              <p>No Upcoming interviews</p>
+              <>
+               <EmptyState icon={Calendar} text="No upcoming interviews" />
+              </>
+             
             )}
           </div>
           <div>
-            <h2 className='text-xl font-bold mb-4'>Past interviews</h2>
+            <h2 className='text-lg font-semibold mb-4'>Past interviews</h2>
             {pastInterviews.length > 0 ? (
               pastInterviews.map((interview, index) => (
                 <InterviewCard key={index} interview={interview} />
               ))
             ) : (
-              <p>No Past Interviews available</p>
+              <EmptyState icon={Calendar} text="No Past interviews" />
             )}
           </div>
         </main>
