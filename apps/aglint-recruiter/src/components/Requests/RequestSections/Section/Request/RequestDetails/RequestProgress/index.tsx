@@ -8,9 +8,9 @@ import { useRequest } from '@/src/context/RequestContext';
 import CandidateCancelled from './CandidateCancelled';
 import NewScheduleEvents from './NewScheduleEvents';
 function RequestProgress({
-  request_type,
+  requestDetails,
 }: {
-  request_type: DatabaseTable['request']['type'];
+  requestDetails: DatabaseTable['request'];
 }) {
   const { request_progress } = useRequest();
   return (
@@ -24,10 +24,12 @@ function RequestProgress({
         </ShowCode.When>
         <ShowCode.Else>
           <ShowCode>
-            <ShowCode.When isTrue={request_type === 'schedule_request'}>
-              <NewScheduleEvents />
+            <ShowCode.When isTrue={requestDetails.type === 'schedule_request'}>
+              <NewScheduleEvents requestDetails={requestDetails} />
             </ShowCode.When>
-            <ShowCode.When isTrue={request_type === 'cancel_schedule_request'}>
+            <ShowCode.When
+              isTrue={requestDetails.type === 'cancel_schedule_request'}
+            >
               <CandidateCancelled />
             </ShowCode.When>
           </ShowCode>
