@@ -14,56 +14,9 @@ import { apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_mes
 import { usePortalMessage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 
-// interface Message {
-//   id: number;
-//   title: string;
-//   sender: string;
-//   date: string;
-//   content: string;
-//   unread: boolean;
-// }
-
-// const messages: Message[] = [
-//   {
-//     id: 1,
-//     title: "Let's get to know each other",
-//     sender: 'Jenny L.',
-//     date: 'Feb 10 at 10:38am',
-//     content:
-//       "Hey Allison 👋\n\nThanks for your interest in the position at Good Health. We're excited to move forward with the interview process.\n\nTo help us schedule your following interview, please let us know when you're available by sharing a few time windows over the next seven days that work for you.\n\nWe're looking forward to speaking with you.",
-//     unread: false,
-//   },
-//   {
-//     id: 2,
-//     title: 'Interview Scheduled: Next Steps',
-//     sender: 'Mark R.',
-//     date: 'Feb 12 at 2:15pm',
-//     content:
-//       "Hello Allison,\n\nGreat news! We've scheduled your interview for next Tuesday at 3:00 PM PT. You'll be meeting with our senior software engineer, Jim Halpert.\n\nPlease find the Zoom link attached to this message. If you need to reschedule or have any questions, don't hesitate to reach out.\n\nBest regards,\nMark",
-//     unread: true,
-//   },
-//   {
-//     id: 3,
-//     title: 'Pre-interview Information',
-//     sender: 'Sarah K.',
-//     date: 'Feb 14 at 9:22am',
-//     content:
-//       "Hi Allison,\n\nI hope this message finds you well. As your interview is coming up, I wanted to provide you with some additional information that might be helpful.\n\nWe've attached a brief overview of our company culture and the team you'd be working with. Also, please be prepared to discuss your experience with agile methodologies and any recent projects you've worked on.\n\nIf you have any questions before the interview, feel free to ask.\n\nGood luck!\nSarah",
-//     unread: true,
-//   },
-//   {
-//     id: 4,
-//     title: 'Thank You for Your Interview',
-//     sender: 'Jim H.',
-//     date: 'Feb 16 at 5:45pm',
-//     content:
-//       "Dear Allison,\n\nThank you for taking the time to speak with me today. I enjoyed our conversation about your experiences and your approach to problem-solving.\n\nYour insights on improving our current systems were particularly interesting. We'll be in touch soon with next steps.\n\nBest regards,\nJim Halpert",
-//     unread: false,
-//   },
-// ];
-
-export default function MessagesPage() {
-  const application_id = '4bbaf6ec-775f-4cfe-8627-553b327bffa9';
+export default function MessagesPage({ params }) {
+  const application_id = params.application_id;
+  // const application_id = '4bbaf6ec-775f-4cfe-8627-553b327bffa9';
   const { isLoading, data } = usePortalMessage({ application_id });
 
   const [selectedMessage, setSelectedMessage] =
@@ -176,3 +129,51 @@ export default function MessagesPage() {
       </div>
     );
 }
+
+// interface Message {
+//   id: number;
+//   title: string;
+//   sender: string;
+//   date: string;
+//   content: string;
+//   unread: boolean;
+// }
+
+// const messages: Message[] = [
+//   {
+//     id: 1,
+//     title: "Let's get to know each other",
+//     sender: 'Jenny L.',
+//     date: 'Feb 10 at 10:38am',
+//     content:
+//       "Hey Allison 👋\n\nThanks for your interest in the position at Good Health. We're excited to move forward with the interview process.\n\nTo help us schedule your following interview, please let us know when you're available by sharing a few time windows over the next seven days that work for you.\n\nWe're looking forward to speaking with you.",
+//     unread: false,
+//   },
+//   {
+//     id: 2,
+//     title: 'Interview Scheduled: Next Steps',
+//     sender: 'Mark R.',
+//     date: 'Feb 12 at 2:15pm',
+//     content:
+//       "Hello Allison,\n\nGreat news! We've scheduled your interview for next Tuesday at 3:00 PM PT. You'll be meeting with our senior software engineer, Jim Halpert.\n\nPlease find the Zoom link attached to this message. If you need to reschedule or have any questions, don't hesitate to reach out.\n\nBest regards,\nMark",
+//     unread: true,
+//   },
+//   {
+//     id: 3,
+//     title: 'Pre-interview Information',
+//     sender: 'Sarah K.',
+//     date: 'Feb 14 at 9:22am',
+//     content:
+//       "Hi Allison,\n\nI hope this message finds you well. As your interview is coming up, I wanted to provide you with some additional information that might be helpful.\n\nWe've attached a brief overview of our company culture and the team you'd be working with. Also, please be prepared to discuss your experience with agile methodologies and any recent projects you've worked on.\n\nIf you have any questions before the interview, feel free to ask.\n\nGood luck!\nSarah",
+//     unread: true,
+//   },
+//   {
+//     id: 4,
+//     title: 'Thank You for Your Interview',
+//     sender: 'Jim H.',
+//     date: 'Feb 16 at 5:45pm',
+//     content:
+//       "Dear Allison,\n\nThank you for taking the time to speak with me today. I enjoyed our conversation about your experiences and your approach to problem-solving.\n\nYour insights on improving our current systems were particularly interesting. We'll be in touch soon with next steps.\n\nBest regards,\nJim Halpert",
+//     unread: false,
+//   },
+// ];

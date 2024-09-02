@@ -6,11 +6,11 @@ import CompanySlider from './companySlider';
 export default function CompanyTabs({
   companyImages,
   aboutContent,
-  jobDescriptionContent,
+  job,
 }: {
   companyImages: any;
   aboutContent: any;
-  jobDescriptionContent: any;
+  job: any;
 }) {
   return (
     <Tabs defaultValue='about' className='p-8'>
@@ -24,15 +24,17 @@ export default function CompanyTabs({
           className='rich-text-content'
           dangerouslySetInnerHTML={{ __html: aboutContent }}
         />
-        <div className='relative mt-8'>
-          <CompanySlider slides={companyImages} />
-        </div>
+        {companyImages.length > 0 && (
+          <div className='relative mt-8'>
+            <CompanySlider slides={companyImages} />
+          </div>
+        )}
       </TabsContent>
       <TabsContent value='job-description'>
-        <h2 className='text-xl font-semibold mb-4'>Software Engineer</h2>
+        <h2 className='text-xl font-semibold mb-4'>{job.name}</h2>
         <div
           className='rich-text-content'
-          dangerouslySetInnerHTML={{ __html: jobDescriptionContent }}
+          dangerouslySetInnerHTML={{ __html: job.description }}
         />
       </TabsContent>
     </Tabs>

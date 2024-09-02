@@ -3,14 +3,15 @@ import { useEffect, useState } from 'react';
 
 import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import CandidateForm from '@/src/components/CandiatePortal/Profile/CandidateForm';
-import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
+// import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
 import Loader from '@/src/components/Common/Loader';
 
-export default function ProfilePage() {
+export default function ProfilePage({ params }) {
   const [data, setData] = useState<candidatePortalProfileType>(null);
 
   const [isLoading, setIsLoading] = useState(true);
-  const application_id = '4bbaf6ec-775f-4cfe-8627-553b327bffa9';
+  const application_id = params.application_id;
+  // const application_id = '4bbaf6ec-775f-4cfe-8627-553b327bffa9';
 
   const getProfile = async () => {
     try {

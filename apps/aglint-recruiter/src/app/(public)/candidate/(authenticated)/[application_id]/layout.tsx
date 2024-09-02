@@ -7,9 +7,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <Navigation />
-      <div className='w-full container mx-auto mt-20'>
-      {children}
-      </div>
+      <div className='w-full container mx-auto mt-20'>{children}</div>
       <Footer />
     </div>
   );

@@ -14,7 +14,8 @@ export default function Navigation() {
   const companyName = 'Discord';
   const imageSrc = 'https://aglintai-seed-data.vercel.app/logo/discord.jpg';
 
-  const isActive = (path: string) => pathname === path;
+  const application_id = pathname.split('/').filter((a) => a)[1];
+  const currentTab = pathname.split('/').filter((a) => a)[2];
 
   return (
     <div className='sticky w-full top-3 z-50 flex items-center justify-center'>
@@ -37,30 +38,26 @@ export default function Navigation() {
           </div>
 
           <nav className='flex space-x-4'>
-            <Link href='/candidate/home'>
+            <Link href={`/candidate/${application_id}/home`}>
               <Button
                 variant='ghost'
-                className={isActive('/candidate/home') ? 'text-blue-600' : ''}
+                className={currentTab === 'home' ? 'text-primary' : ''}
               >
                 Home
               </Button>
             </Link>
-            <Link href='/candidate/interviews'>
+            <Link href={`/candidate/${application_id}/interviews`}>
               <Button
                 variant='ghost'
-                className={
-                  isActive('/candidate/interviews') ? 'text-primary' : ''
-                }
+                className={currentTab === 'interviews' ? 'text-primary' : ''}
               >
                 Interviews
               </Button>
             </Link>
-            <Link href='/candidate/messages' passHref>
+            <Link href={`/candidate/${application_id}/messages`}>
               <Button
                 variant='ghost'
-                className={
-                  isActive('/candidate/messages') ? 'text-primary' : ''
-                }
+                className={currentTab === 'messages' ? 'text-primary' : ''}
               >
                 Messages
               </Button>
@@ -69,7 +66,7 @@ export default function Navigation() {
 
           <div className='flex items-center space-x-2'>
             <ThemeSwitcher />
-            <NavProfile />
+            <NavProfile application_id={application_id} />
           </div>
         </div>
       </header>

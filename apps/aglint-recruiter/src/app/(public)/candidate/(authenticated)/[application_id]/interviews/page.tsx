@@ -14,70 +14,8 @@ import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
 
-// interface Interview {
-//   date: Date;
-//   startTime: string;
-//   endTime: string;
-//   timeZone: string;
-//   platform: string;
-//   participants: {
-//     name: string;
-//     role: string;
-//   }[];
-// }
-
-// const upcomingInterviews: Interview[] = [
-//   {
-//     date: new Date(2023, 3, 13),
-//     startTime: '9:00am',
-//     endTime: '9:45am',
-//     timeZone: 'PT',
-//     platform: 'Zoom call',
-//     participants: [
-//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
-//     ],
-//   },
-//   {
-//     date: new Date(2023, 3, 13),
-//     startTime: '9:00am',
-//     endTime: '9:45am',
-//     timeZone: 'PT',
-//     platform: 'Zoom call',
-//     participants: [
-//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
-//       { name: 'Jane M.', role: '' },
-//       { name: 'Lydia Han', role: '' },
-//     ],
-//   },
-//   {
-//     date: new Date(2023, 3, 14),
-//     startTime: '9:00am',
-//     endTime: '9:45am',
-//     timeZone: 'PT',
-//     platform: 'Zoom call',
-//     participants: [
-//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
-//       { name: 'Jane M.', role: '' },
-//       { name: 'Lydia Han', role: '' },
-//     ],
-//   },
-// ];
-
-// const pastInterview: Interview[] = [
-//   {
-//     date: new Date(2023, 3, 5),
-//     startTime: '9:00am',
-//     endTime: '9:45am',
-//     timeZone: 'PT',
-//     platform: 'Zoom call',
-//     participants: [
-//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
-//     ],
-//   },
-// ];
-
-export default function InterviewsPage() {
-  const application_id = '4bbaf6ec-775f-4cfe-8627-553b327bffa9';
+export default function InterviewsPage({ params }) {
+  const application_id = params.application_id;
   const { isLoading, data } = usePortalInterviews({ application_id });
 
   if (isLoading) {
@@ -198,3 +136,65 @@ function InterviewCard({
     </Card>
   );
 }
+
+// interface Interview {
+//   date: Date;
+//   startTime: string;
+//   endTime: string;
+//   timeZone: string;
+//   platform: string;
+//   participants: {
+//     name: string;
+//     role: string;
+//   }[];
+// }
+
+// const upcomingInterviews: Interview[] = [
+//   {
+//     date: new Date(2023, 3, 13),
+//     startTime: '9:00am',
+//     endTime: '9:45am',
+//     timeZone: 'PT',
+//     platform: 'Zoom call',
+//     participants: [
+//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
+//     ],
+//   },
+//   {
+//     date: new Date(2023, 3, 13),
+//     startTime: '9:00am',
+//     endTime: '9:45am',
+//     timeZone: 'PT',
+//     platform: 'Zoom call',
+//     participants: [
+//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
+//       { name: 'Jane M.', role: '' },
+//       { name: 'Lydia Han', role: '' },
+//     ],
+//   },
+//   {
+//     date: new Date(2023, 3, 14),
+//     startTime: '9:00am',
+//     endTime: '9:45am',
+//     timeZone: 'PT',
+//     platform: 'Zoom call',
+//     participants: [
+//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
+//       { name: 'Jane M.', role: '' },
+//       { name: 'Lydia Han', role: '' },
+//     ],
+//   },
+// ];
+
+// const pastInterview: Interview[] = [
+//   {
+//     date: new Date(2023, 3, 5),
+//     startTime: '9:00am',
+//     endTime: '9:45am',
+//     timeZone: 'PT',
+//     platform: 'Zoom call',
+//     participants: [
+//       { name: 'Jim Halpert', role: 'Senior infra software engineer' },
+//     ],
+//   },
+// ];
