@@ -149,7 +149,7 @@ function SchedulingViewComp() {
 
                 {checkPermissions(['scheduling_actions']) && (
                   <Stack
-                    height={'100vh'}
+                    height={'calc(100vh - 48px)'}
                     minWidth={'400px'}
                     overflow={'auto'}
                     p={'var(--space-4)'}

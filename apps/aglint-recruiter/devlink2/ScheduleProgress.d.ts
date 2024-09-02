@@ -7,6 +7,8 @@ declare function ScheduleProgress(props: {
   slotRequestIcon?: Types.Devlink.Slot;
   textProgress?: React.ReactNode;
   slotHoverIcon?: Types.Devlink.Slot;
-  slotInput?: Types.Devlink.Slot;
+  slotAiText?: Types.Devlink.Slot;
   slotButton?: Types.Devlink.Slot;
+  slotLoader?: Types.Devlink.Slot;
+  isAiTextVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

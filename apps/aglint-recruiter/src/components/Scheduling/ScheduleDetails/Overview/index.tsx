@@ -13,7 +13,7 @@ import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import IconSessionType from '../../CandidateDetails/RightPanel/IconSessionType';
+import IconSessionType from '../../../Common/Icons/IconSessionType';
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../Candidates/utils';
 import { formatTimeWithTimeZone } from '../../utils';

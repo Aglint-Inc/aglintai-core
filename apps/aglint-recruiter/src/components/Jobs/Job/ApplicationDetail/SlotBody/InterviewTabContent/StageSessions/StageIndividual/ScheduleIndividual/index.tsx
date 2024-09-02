@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
 import { GlobalScheduleCard } from '@/devlink3/GlobalScheduleCard';
+import IconSessionType from '@/src/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/src/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import IconSessionType from '@/src/components/Scheduling/CandidateDetails/RightPanel/IconSessionType';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';

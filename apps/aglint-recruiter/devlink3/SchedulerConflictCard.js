@@ -2,7 +2,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Text } from "./Text";
-import { GlobalIcon } from "./GlobalIcon";
 import * as _utils from "./utils";
 import _styles from "./SchedulerConflictCard.module.css";
 
@@ -33,12 +32,6 @@ export function SchedulerConflictCard({
             </>
           )}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "nc-icomn-wrap")}
-          tag="div"
-        >
-          {slotIcon ?? <GlobalIcon iconName="check_circle" />}
-        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "sf-bottom-block")}
@@ -46,12 +39,6 @@ export function SchedulerConflictCard({
       >
         <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
           {slotToggleWithText}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "sf-info-wrap")}
-          tag="div"
-        >
-          {slotInfoIcon ?? <GlobalIcon iconName="info" />}
         </_Builtin.Block>
       </_Builtin.Block>
       {isNoConflictActive ? (

@@ -66,6 +66,21 @@
   grid-row-gap: 8px;
 }
 
+.icl_table_header_cell {
+  display: flex;
+  padding: var(--space-2) var(--space-4);
+  justify-content: center;
+  align-items: center;
+}
+
+.icl_table_header_cell.progress {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
 #w-node-_78095933-805f-6577-6118-8958f555d8d2-f555d8ce {
 }
 #w-node-_78095933-805f-6577-6118-8958f555d8d5-f555d8ce {

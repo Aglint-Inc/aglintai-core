@@ -16,6 +16,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     handleDeleteRequest: deleteRequest,
     handleAsyncDeleteRequest: asyncDeleteRequest,
     mutationQueue,
+    requests: { data: requests },
   } = useRequests();
 
   const request_progress = useQuery(
@@ -25,6 +26,12 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   const request_workflow = useQuery(
     requestQueries.request_workflow({ request_id, enabled: collapse }),
   );
+
+  const requestDetails = useMemo(() => {
+    return Object.values(requests)
+      .flat()
+      ?.find((request) => request.id === request_id);
+  }, [requests, request_id]);
 
   const handleUpdateRequest = useCallback(
     (
@@ -37,6 +44,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
       }),
     [request_id, updateRequest],
   );
+  
   const handleAsyncUpdateRequest = useCallback(
     async (
       requestPayload: Parameters<
@@ -78,5 +86,6 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     isMutating,
     collapse,
     setCollapse,
+    requestDetails,
   };
 };

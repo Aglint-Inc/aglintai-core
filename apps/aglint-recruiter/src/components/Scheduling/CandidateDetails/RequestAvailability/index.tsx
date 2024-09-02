@@ -489,7 +489,7 @@ function RequestAvailability() {
                               {(
                                 selectedAvailabilitySlots &&
                                 (selectedAvailabilitySlots[Number(ele.day - 1)]
-                                  .slots as ApiResponseFindAvailability)
+                                  .slots as ApiResponseFindAvailability['slots'])
                               )
                                 .map((ele) => ele?.interview_rounds)
                                 .flat()
