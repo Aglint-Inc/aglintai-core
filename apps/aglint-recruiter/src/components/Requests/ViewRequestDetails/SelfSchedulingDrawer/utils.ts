@@ -8,9 +8,11 @@ import { ApiResponseFindAvailability } from '@/src/components/Scheduling/Candida
 export const transformAvailability = (
   availabilities: ApiResponseFindAvailability['availabilities'],
 ) => {
-  const intArray = Object.entries(availabilities).map(([, value]) => ({
-    ...value,
-  }));
+  const intArray = availabilities
+    ? Object?.entries(availabilities)?.map(([, value]) => ({
+        ...value,
+      }))
+    : [];
 
   const events: Event[] = intArray.flatMap((cal) =>
     cal.all_events.flatMap((event) => {
