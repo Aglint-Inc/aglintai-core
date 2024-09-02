@@ -96,16 +96,11 @@ export default function CandidateForm({
         </CardHeader>
         <CardContent>
           <form className='space-y-6'>
-            <div className='flex flex-col items-center space-y-4'>
-              {/* <Avatar className='w-32 h-32'>
-                <AvatarImage src={form.avatar} alt={form.first_name} />
-                <AvatarFallback>{form.first_name}</AvatarFallback>
-              </Avatar> */}
-
+            <div className='flex flex-col space-y-4 rounded-lg '>
               <ImageUploadManual
                 image={form.avatar}
                 imageFile={imageFile}
-                size={64}
+                size={100}
                 setChanges={() => {
                   setIsImageChanged(true);
                 }}
