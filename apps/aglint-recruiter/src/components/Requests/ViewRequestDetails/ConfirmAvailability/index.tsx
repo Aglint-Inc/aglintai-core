@@ -145,12 +145,6 @@ function ConfirmAvailability() {
           onClickCancel={{
             onClick: closeDrawer,
           }}
-          isDisabled={
-            !selectedDateSlots.find(
-              (ele) => ele.current_round === selectedIndex + 1,
-            ) && selectedIndex !== availableSlots?.slots.length
-          }
-          isLoading={loading}
           textPrimaryButton={
             selectedIndex !== availableSlots?.slots.length
               ? 'Continue'
@@ -159,10 +153,21 @@ function ConfirmAvailability() {
           slotButtons={
             <>
               <ButtonSoft
-                onClickButton={{ onClick: closeDrawer }}
-                textButton={selectedIndex === 0 ? 'close' : 'back'}
+                onClickButton={{
+                  onClick: () => {
+                    if (selectedIndex !== 0) setSelectedIndex((pre) => pre - 1);
+                    else closeDrawer();
+                  },
+                }}
+                textButton={selectedIndex === 0 ? 'Close' : 'Back'}
               />
               <ButtonSolid
+                isDisabled={
+                  !selectedDateSlots.find(
+                    (ele) => ele.current_round === selectedIndex + 1,
+                  ) && selectedIndex !== availableSlots?.slots.length
+                }
+                isLoading={loading}
                 onClickButton={{ onClick: handleContinue }}
                 textButton={
                   selectedIndex !== availableSlots?.slots.length
