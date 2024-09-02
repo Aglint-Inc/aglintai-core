@@ -1,7 +1,14 @@
 import React from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import ROUTES from '@/src/utils/routing/routes';
@@ -21,16 +28,24 @@ function PlatformIntegrationSettingsComponent() {
       <PageLayout
         slotTopbarLeft={
           <>
-            <Breadcrum
-              textName='Integrations'
-              isLink={true}
-              onClickLink={{ onClick: () => push(ROUTES['/integrations']()) }}
-            />
-            <Breadcrum
-              textName={`${capitalizeFirstLetter(params.platform)} Setting`}
-              showArrow={true}
-              isLink={false}
-            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href='#'
+                    onClick={() => push(ROUTES['/integrations']())}
+                  >
+                    Integrations
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {`${capitalizeFirstLetter(params.platform)} Setting`}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </>
         }
         slotBody={switchToPlatform(params.platform)}

@@ -1,13 +1,21 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
@@ -120,52 +128,47 @@ function ViewRequestDetails() {
       <PageLayout
         slotTopbarLeft={
           <>
-            <Breadcrum
-              onClickLink={{
-                onClick: () => {
-                  replace('/requests?tab=requests');
-                },
-              }}
-              isLink={true}
-              textName={'Requests'}
-            />
-            <Breadcrum
-              showArrow={true}
-              textName={
-                <Stack
-                  direction={'row'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  spacing={0.5}
-                >
-                  <Text
-                    size={2}
-                    content={`Schedule ${formatSessions(selectedRequest.request_relation.map(({ interview_session }) => interview_session.name))} interview with `}
-                  />
-                  <Text
-                    color={'accent'}
-                    highContrast={true}
-                    size={2}
-                    content={getFullName(
-                      candidateDetails.first_name,
-                      candidateDetails.last_name,
-                    )}
-                    styleProps={{
-                      onClick: () => {
-                        window.open(
-                          ROUTES['/jobs/[id]/application/[application_id]']({
-                            id: jobDetails.id,
-                            application_id: selectedRequest.application_id,
-                          }) + '?tab=interview',
-                          '_blank',
-                        );
-                      },
-                      style: { cursor: 'pointer' },
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href='#'
+                    onClick={() => {
+                      replace('/requests?tab=requests');
                     }}
-                  />
-                </Stack>
-              }
-            />
+                  >
+                    Requests
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    <div className='flex flex-row justify-center items-center space-x-2'>
+                      <span className='text-sm'>
+                        {`Schedule ${formatSessions(selectedRequest.request_relation.map(({ interview_session }) => interview_session.name))} interview with `}
+                      </span>
+                      <span
+                        className='text-sm text-accent-900 cursor-pointer'
+                        onClick={() => {
+                          window.open(
+                            ROUTES['/jobs/[id]/application/[application_id]']({
+                              id: jobDetails.id,
+                              application_id: selectedRequest.application_id,
+                            }) + '?tab=interview',
+                            '_blank',
+                          );
+                        }}
+                      >
+                        {getFullName(
+                          candidateDetails.first_name,
+                          candidateDetails.last_name,
+                        )}
+                      </span>
+                    </div>
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </>
         }
         slotBody={

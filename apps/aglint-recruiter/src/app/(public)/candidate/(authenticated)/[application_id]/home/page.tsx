@@ -3,6 +3,7 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
+import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
@@ -15,24 +16,6 @@ import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 
 import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
-
-const interviews = [
-  {
-    name: 'Personality and Cultural fit',
-    date: '11 December 2021, 09:30 AM',
-    status: 'Completed' as const,
-  },
-  {
-    name: 'Technical Interview',
-    date: '',
-    status: 'Not Scheduled' as const,
-  },
-  {
-    name: 'HR Interview',
-    date: '',
-    status: 'Not Scheduled' as const,
-  },
-];
 
 export default function Component({ params }) {
   const application_id = params.application_id;
