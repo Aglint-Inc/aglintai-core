@@ -28,7 +28,10 @@ const SelectScheduleFlow = () => {
               <ChooseScheduleMode />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-              <SelfScheduleFlowMenus isManualSchedule={isManualSchedule} />
+              <SelfScheduleFlowMenus
+                isManualSchedule={isManualSchedule}
+                isSelectScheduleFlowComplete={isSelectScheduleFlowComplete}
+              />
             </ShowCode.When>
             <ShowCode.When isTrue={scheduleFlow === 'availability'}>
               <AvailabilityFlowMenus isManualSchedule={isManualSchedule} />

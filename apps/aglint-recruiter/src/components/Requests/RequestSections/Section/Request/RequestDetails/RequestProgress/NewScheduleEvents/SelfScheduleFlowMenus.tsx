@@ -13,8 +13,10 @@ import EventNode from './EventNode';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
+  isSelectScheduleFlowComplete,
 }: {
   isManualSchedule: boolean;
+  isSelectScheduleFlowComplete: boolean;
 }) => {
   const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
     useNewScheduleRequestPr();
@@ -84,11 +86,12 @@ const SelfScheduleFlowMenus = ({
       </ShowCode.When>
       <ShowCode.When
         isTrue={
-          Boolean(!reqTriggerActionsMap['selfScheduleReminder']) ||
-          Boolean(
-            reqTriggerActionsMap['selfScheduleReminder'] &&
-              reqTriggerActionsMap['selfScheduleReminder'].length === 0,
-          )
+          !isSelectScheduleFlowComplete &&
+          (Boolean(!reqTriggerActionsMap['selfScheduleReminder']) ||
+            Boolean(
+              reqTriggerActionsMap['selfScheduleReminder'] &&
+                reqTriggerActionsMap['selfScheduleReminder'].length === 0,
+            ))
         }
       >
         <Stack direction={'row'}>

@@ -54,7 +54,9 @@ const EventNode = ({
     <>
       <Stack
         onMouseEnter={() => {
-          setOnHover(true);
+          if (tense === 'future') {
+            setOnHover(true);
+          }
         }}
         onMouseLeave={() => {
           setOnHover(false);
@@ -71,6 +73,7 @@ const EventNode = ({
               columnGap={1}
               sx={{
                 opacity: onHover ? 1 : 0,
+                cursor: onHover ? 'pointer' : 'none',
               }}
             >
               <IconButtonSoft
