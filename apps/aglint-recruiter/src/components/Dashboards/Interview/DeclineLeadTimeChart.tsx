@@ -43,7 +43,7 @@ export default function DeclineLeadTimeChart() {
     <Card className='w-full max-w-2xl mx-auto'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <div>
-          <CardTitle className='text-2xl font-bold'>
+          <CardTitle className='text-md font-semibold'>
             Decline lead time
           </CardTitle>
           <p className='text-sm text-muted-foreground'>

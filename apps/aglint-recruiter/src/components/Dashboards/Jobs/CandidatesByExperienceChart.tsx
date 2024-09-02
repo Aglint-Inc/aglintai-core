@@ -53,7 +53,7 @@ export default function CandidatesByExperienceChart() {
   return (
     <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Candidates By</CardTitle>
+        <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
         <div className='flex space-x-2'>
           <Button
             variant={view === 'Experience' ? 'default' : 'outline'}

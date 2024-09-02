@@ -1,8 +1,8 @@
 'use client';
 import { getFullName } from '@aglint/shared-utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@components//ui/avatar';
-import { Button } from '@components//ui/button';
-import { Card, CardContent } from '@components//ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Linkedin } from 'lucide-react';
 
 import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';

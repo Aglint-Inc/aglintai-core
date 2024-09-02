@@ -5,8 +5,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@components//ui/card';
-import { Checkbox } from '@components//ui/checkbox';
+} from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 
 import { Button } from '@/src/components//ui/button';

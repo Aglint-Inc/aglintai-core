@@ -17,22 +17,13 @@ const data = [
   { name: 'Others', value: 59 },
 ];
 
-const COLORS = [
-  '#AED8E6',
-  '#B0E0E6',
-  '#ADD8E6',
-  '#A9A9A9',
-  '#90EE90',
-  '#D3D3D3',
-];
-
 export default function CandidatesByLocationChart() {
   const [view, setView] = useState('City');
 
   return (
     <Card className='w-full max-w-3xl mx-auto'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Candidates By</CardTitle>
+        <CardTitle className='text-md font-semibold'>Candidates By</CardTitle>
         <div className='flex space-x-2'>
           <Button
             variant={view === 'City' ? 'default' : 'outline'}
@@ -64,14 +55,14 @@ export default function CandidatesByLocationChart() {
                 cy='50%'
                 innerRadius={60}
                 outerRadius={80}
-                fill='#8884d8'
+                fill='hsl(var(--chart-1))'
                 paddingAngle={5}
                 dataKey='value'
               >
                 {data.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
+                    fill={`hsl(var(--chart-${(index % 10) + 1}))`}
                   />
                 ))}
               </Pie>
