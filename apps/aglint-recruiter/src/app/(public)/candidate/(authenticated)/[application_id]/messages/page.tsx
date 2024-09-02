@@ -6,6 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Check, Clock, MoreHorizontal, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
 import { usePortalMessage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';

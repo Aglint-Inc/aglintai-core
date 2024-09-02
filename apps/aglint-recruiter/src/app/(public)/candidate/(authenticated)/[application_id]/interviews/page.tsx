@@ -9,6 +9,7 @@ import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_
 import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
+import { getFullName } from '@/src/utils/jsonResume';
 
 export default function InterviewsPage({ params }) {
   const application_id = params.application_id;

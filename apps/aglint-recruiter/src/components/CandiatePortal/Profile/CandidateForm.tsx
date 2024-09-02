@@ -1,25 +1,11 @@
 'use client';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
+import axios from 'axios';
+import { useRef, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import axios from 'axios';
-import React, { useRef, useState } from 'react';
-
-import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
-import { supabase } from '@/src/utils/supabase/client';
-import timeZone from '@/src/utils/timeZone';
-
 import {
   Select,
   SelectContent,
@@ -27,7 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { supabase } from '@/src/utils/supabase/client';
+import timeZone from '@/src/utils/timeZone';
+
 import ImageUploadManual from './ImageUpload';
+import { ThemeSelector } from './ThemeSelector';
 
 export default function CandidateForm({
   formData,
@@ -93,6 +84,7 @@ export default function CandidateForm({
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-100 p-4'>
+      <ThemeSelector />
       <Card className='w-full max-w-2xl border-none'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold text-center'>
@@ -101,22 +93,11 @@ export default function CandidateForm({
         </CardHeader>
         <CardContent>
           <form className='space-y-6'>
-            <div className='flex flex-col items-center space-y-4'>
-              <Avatar className='w-32 h-32'>
-                <AvatarImage src={form.avatar} alt={form.first_name} />
-                <AvatarFallback>{form.first_name}</AvatarFallback>
-              </Avatar>
-              {/* <FileUploader
-                accept='image/*'
-                onFileSelect={handlePhotoUpload}
-                className='w-full max-w-xs'
-              >
-                Upload Photo
-              </FileUploader> */}
+            <div className='flex flex-col space-y-4 rounded-lg '>
               <ImageUploadManual
                 image={form.avatar}
                 imageFile={imageFile}
-                size={64}
+                size={100}
                 setChanges={() => {
                   setIsImageChanged(true);
                 }}
@@ -205,31 +186,6 @@ export default function CandidateForm({
                 </SelectContent>
               </Select>
             </div>
-
-            {/* <div className='space-y-2'>
-              <Label>Resume</Label>
-              <FileUploader
-                accept='.pdf,.doc,.docx'
-                onFileSelect={handleResumeUpload}
-                className='w-full'
-              >
-                {resume ? 'Update Resume' : 'Upload Resume'}
-              </FileUploader>
-              {resume && (
-                <div className='flex items-center space-x-2 mt-2'>
-                  <span className='text-sm text-gray-600'>{resume.name}</span>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      window.open(URL.createObjectURL(resume), '_blank')
-                    }
-                  >
-                    View
-                  </Button>
-                </div>
-              )}
-            </div> */}
 
             <Button
               type='submit'
