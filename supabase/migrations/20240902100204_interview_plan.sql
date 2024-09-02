@@ -27,4 +27,7 @@ set recruiter_id = interview_plan_cte.recruiter_id
 from interview_plan_cte
 where interview_plan.id = interview_plan_cte.id;
 
+delete from interview_plan
+where interview_plan.job_id is null and interview_plan.application_id is null;
+
 alter table "public"."interview_plan" alter column "recruiter_id" set not null;

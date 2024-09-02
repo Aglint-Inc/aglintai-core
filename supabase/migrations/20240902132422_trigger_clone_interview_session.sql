@@ -6,8 +6,8 @@ CREATE OR REPLACE FUNCTION public.trigger_clone_interview_session()
 AS $function$
 DECLARE
     company_id uuid;
-    appl_job_id uuid;
-    int_schedule_id uuid := gen_random_uuid();  -- Assuming this is to generate a new UUID
+    -- appl_job_id uuid;
+    -- int_schedule_id uuid := gen_random_uuid();  -- Assuming this is to generate a new UUID
     session_rec record;
     sesn_reln_record record;
     inserted_sesn_id uuid;
@@ -16,17 +16,17 @@ DECLARE
     int_plan_loop record;
 BEGIN
     -- Delete any existing interview schedules for this application
-    DELETE FROM interview_schedule WHERE interview_schedule.application_id = NEW.id;
+    -- DELETE FROM interview_schedule WHERE interview_schedule.application_id = NEW.id;
 
     -- Insert a new interview schedule record
-    INSERT INTO interview_schedule(id, application_id, recruiter_id) 
-    VALUES (int_schedule_id, NEW.id, NEW.recruiter_id);
+    -- INSERT INTO interview_schedule(id, application_id, recruiter_id) 
+    -- VALUES (int_schedule_id, NEW.id, NEW.recruiter_id);
 
     -- Fetch the job ID for the application
-    SELECT job_id 
-    INTO appl_job_id 
-    FROM applications 
-    WHERE id = NEW.id;
+    -- SELECT job_id 
+    -- INTO appl_job_id 
+    -- FROM applications 
+    -- WHERE id = NEW.id;
 
     -- Loop through each interview plan related to the job
     FOR int_plan_loop IN 
@@ -35,7 +35,7 @@ BEGIN
             interview_plan.name,
             interview_plan.plan_order
         FROM interview_plan 
-        WHERE interview_plan.job_id = appl_job_id
+        WHERE interview_plan.job_id = NEW.job_id
     LOOP
         -- Insert into interview_plan and get the inserted plan_id
         INSERT INTO interview_plan (name, plan_order, recruiter_id, application_id)
@@ -53,14 +53,15 @@ BEGIN
                 interview_session.schedule_type,
                 interview_session.session_duration,
                 interview_session.session_order,
-                interview_session.session_type
+                interview_session.session_type,
+                interview_session.recruiter_id
             FROM interview_session
             WHERE interview_session.interview_plan_id = int_plan_loop.plan_id
         LOOP
             -- Insert interview meeting and session within a single SQL command using CTEs
             WITH inserted_meeting_cte AS (
-                INSERT INTO interview_meeting (interview_schedule_id, status, application_id, recruiter_id)
-                VALUES (int_schedule_id, 'not_scheduled', NEW.id, NEW.recruiter_id)
+                INSERT INTO interview_meeting (status, application_id, recruiter_id)
+                VALUES ('not_scheduled', NEW.id, NEW.recruiter_id)
                 RETURNING id
             ),
             inserted_session_cte AS (
