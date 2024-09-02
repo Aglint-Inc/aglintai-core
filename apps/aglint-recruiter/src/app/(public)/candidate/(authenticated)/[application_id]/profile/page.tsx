@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import CandidateForm from '@/src/components/CandiatePortal/Profile/CandidateForm';
+import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
 // import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
 import Loader from '@/src/components/Common/Loader';
 
@@ -43,13 +44,14 @@ export default function ProfilePage({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return 'No data';
+  if (!data) return <ThemeSelector />;
 
   if (data)
     return (
       <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8'>
         <main className='lg:w-[70%] space-y-6'>
           <CandidateForm formData={data} application_id={application_id} />
+          
         </main>
         <aside className='lg:w-[30%] space-y-6'></aside>
       </div>
