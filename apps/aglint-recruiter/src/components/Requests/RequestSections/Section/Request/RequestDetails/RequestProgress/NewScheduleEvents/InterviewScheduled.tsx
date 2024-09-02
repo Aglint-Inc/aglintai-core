@@ -41,7 +41,7 @@ const InterviewScheduled = () => {
   const [rsvpSending, setRsvpSending] = React.useState(false);
   const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
 
-  let tense: TenseType = 'past';
+  let tense: TenseType = 'future';
   if (event_status) {
     tense = progressStatusToTense(event_status.status);
   }
