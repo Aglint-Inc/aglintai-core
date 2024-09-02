@@ -5,7 +5,6 @@ import { useMemo } from 'react';
 import axios from '@/src/client/axios';
 import { Request } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { EventTargetMapType, RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';

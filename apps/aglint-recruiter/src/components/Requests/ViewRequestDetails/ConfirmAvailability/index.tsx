@@ -11,14 +11,16 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './Calendar';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import SelectAvailableOption from './SelectAvailableOption';
@@ -28,8 +30,6 @@ import {
   useConfirmAvailabilitySchedulingFlowStore,
 } from './store';
 import { updateCandidateRequestAvailability } from './utils';
-import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
-import { ButtonSolid } from '@/devlink2';
 
 function ConfirmAvailability() {
   const router = useRouter();

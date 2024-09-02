@@ -12,6 +12,7 @@ import {
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
 } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
+import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
@@ -28,7 +29,6 @@ import {
   groupedTriggerEventMap,
 } from '../utils/progressMaps';
 import EventNode from './EventNode';
-import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability';
 
 const CandidateAvailReceive = ({
   eventTargetMap,

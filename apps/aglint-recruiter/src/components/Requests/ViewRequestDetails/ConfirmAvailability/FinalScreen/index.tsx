@@ -12,7 +12,6 @@ import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
-import toast from '@/src/utils/toast';
 
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';

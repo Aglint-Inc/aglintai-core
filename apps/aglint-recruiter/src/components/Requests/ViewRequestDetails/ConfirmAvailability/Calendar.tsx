@@ -1,23 +1,23 @@
 import { getFullName } from '@aglint/shared-utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
+import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
 import { Event } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
+
+import { transformAvailability } from '../SelfSchedulingDrawer/utils';
 import { useRequestAvailabilityDetails } from '.';
+import { useAvailabilityContext } from './RequestAvailabilityContext';
 import {
   setCalendarDate,
   useConfirmAvailabilitySchedulingFlowStore,
 } from './store';
-import { useAvailabilityContext } from './RequestAvailabilityContext';
-import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
-import { transformAvailability } from '../SelfSchedulingDrawer/utils';
 
 function Calendar() {
   const { candidateAvailabilityId, calendarDate } =
     useConfirmAvailabilitySchedulingFlowStore();
   const { selectedDateSlots, selectedDayAvailableBlocks } =
     useAvailabilityContext();
-  console.log({ selectedDateSlots, selectedDayAvailableBlocks });
   const { data: availableSlots, isLoading } = useRequestAvailabilityDetails({
     request_id: candidateAvailabilityId,
   });
@@ -85,8 +85,6 @@ function Calendar() {
     end: selectedDayAvailableBlocks[selectedDayAvailableBlocks.length - 1]
       ?.curr_date,
   };
-
-  console.log(calendarDate);
 
   return (
     <>
