@@ -9,7 +9,7 @@ import CheckboxIcon from '@/src/components/Common/Icons/CheckboxIcon';
 import RadioButtonIcon from '@/src/components/Common/Icons/RadioButtonIcon';
 
 // import AppContext from './context';
-import { ExtendedTypographyOptions } from './types';
+import { type ExtendedTypographyOptions } from './types';
 
 function Theme({ children }) {
   // const [color, setColor] = useState('#1976d2');

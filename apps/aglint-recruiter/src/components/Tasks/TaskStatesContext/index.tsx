@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import {
+  type ReactNode,
   createContext,
-  ReactNode,
   useContext,
   useEffect,
   useState,
@@ -11,8 +11,8 @@ import {
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
+  type TasksAgentContextType,
   agentsDetails,
-  TasksAgentContextType,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import { useInterviewerList } from '../Components/AssigneeChip';

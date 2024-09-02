@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Dialog, Stack, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
@@ -24,7 +24,7 @@ import {
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
+import { type API_request_feedback } from '@/src/pages/api/request_feedback/type';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

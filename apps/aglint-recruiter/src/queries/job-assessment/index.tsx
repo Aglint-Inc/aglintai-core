@@ -8,7 +8,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, generateUUID } from '../assessment/keys';
-import { type Assessment, AssessmentTemplate } from '../assessment/types';
+import { type Assessment, type AssessmentTemplate } from '../assessment/types';
 
 export const useJobAssessmentsConnect = () => {
   const { job_id: id, job } = useJob();

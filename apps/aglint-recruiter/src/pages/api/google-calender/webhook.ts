@@ -1,9 +1,9 @@
 import {
-  DatabaseTable,
-  DatabaseTableInsert,
-  ScheduleAuthType,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type ScheduleAuthType,
 } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import dayjs from '@/src/utils/dayjs';

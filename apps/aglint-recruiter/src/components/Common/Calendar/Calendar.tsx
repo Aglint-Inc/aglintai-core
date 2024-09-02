@@ -1,6 +1,6 @@
 import '@styles/fullcalendar-theme.css';
 
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,7 +10,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -19,9 +19,9 @@ import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import Loading from '@/src/pages/loading';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { SchedulesSupabase } from '../../Scheduling/schedules-query';
+import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
 import CalendarHeader from './CalendarHeader';
-import { colorType, event, Modes, Types } from './calendarTypes';
+import { type colorType, type event, type Modes, type Types } from './calendarTypes';
 import CalendarFilter from './Filter';
 
 function CalendarComp({

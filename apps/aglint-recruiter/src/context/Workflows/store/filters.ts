@@ -1,6 +1,6 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Filters = {
   search: string;

@@ -11,10 +11,10 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import {
-  ApiRequestInterviewSessionTask,
-  ApiResponseInterviewSessionTask,
+  type ApiRequestInterviewSessionTask,
+  type ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
 
 type OnChangeProps = {

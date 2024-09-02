@@ -1,6 +1,6 @@
-import { CalendarEvent } from '@aglint/shared-types';
-import { CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type CalendarEvent } from '@aglint/shared-types';
+import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { getCalEventType } from '@/src/services/CandidateScheduleV2/utils/fetchIntsCalEventsDetails';

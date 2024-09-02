@@ -1,14 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  MultiDayPlanType,
-  PlanCombinationRespType,
+  type MultiDayPlanType,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
 import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
-import { ApiResponseFindAvailability } from '../../../types';
-import { SchedulingFlow } from '../../store';
+import { type ApiResponseFindAvailability } from '../../../types';
+import { type SchedulingFlow } from '../../store';
 
 export const filterByDateRanges = ({
   schedulingOptions,

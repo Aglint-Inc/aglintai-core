@@ -13,7 +13,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
-import { ModuleType } from '../../../types';
+import { type ModuleType } from '../../../types';
 import { deleteModuleById } from '../../../utils';
 
 function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {

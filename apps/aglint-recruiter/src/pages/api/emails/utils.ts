@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { RecruiterOnboardingEmailApi } from './recruiterOnboarding';
+import { type RecruiterOnboardingEmailApi } from './recruiterOnboarding';
 
 type ApiRouteTypes = {
   recruiterOnboarding: RecruiterOnboardingEmailApi;

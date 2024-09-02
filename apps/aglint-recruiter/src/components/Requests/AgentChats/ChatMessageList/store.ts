@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { ChatType } from './hooks/fetch';
+import { type ChatType } from './hooks/fetch';
 
 export interface AgentChat {
   tempLoading: boolean;

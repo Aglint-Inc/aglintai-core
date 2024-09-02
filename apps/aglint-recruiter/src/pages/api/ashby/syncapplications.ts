@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { AshbyApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby/types';
+import { type AshbyApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/Ashby/types';
 
 export const maxDuration = 300;
 

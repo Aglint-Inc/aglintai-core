@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Collapse, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -16,7 +16,7 @@ import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { useProgressModuleUsers } from '../../../../queries/hooks';
+import { type useProgressModuleUsers } from '../../../../queries/hooks';
 
 function CollapseTrainingProgress({
   isCollapseOpen,

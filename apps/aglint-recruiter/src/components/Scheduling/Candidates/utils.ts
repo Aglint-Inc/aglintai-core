@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  DB,
-  InterviewMeetingTypeDb
+  type DB,
+  type InterviewMeetingTypeDb
 } from '@aglint/shared-types';
-import { createServerClient } from '@supabase/ssr';
+import { type createServerClient } from '@supabase/ssr';
 
 
 export interface TimeSlot {

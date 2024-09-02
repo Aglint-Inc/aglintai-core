@@ -1,4 +1,4 @@
-import { InterviewSessionApiRespType } from '@aglint/shared-types';
+import { type InterviewSessionApiRespType } from '@aglint/shared-types';
 
 const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],

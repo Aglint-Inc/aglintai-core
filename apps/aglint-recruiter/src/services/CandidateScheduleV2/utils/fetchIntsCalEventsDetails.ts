@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  CalConflictType,
-  InterDetailsType,
-  schedulingSettingType,
+  type CalConflictType,
+  type InterDetailsType,
+  type schedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
-import { ScheduleApiDetails } from '../types';
+import { type ScheduleApiDetails } from '../types';
 import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (

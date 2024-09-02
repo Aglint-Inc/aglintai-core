@@ -1,6 +1,6 @@
-import { DatabaseTable, SupabaseType } from '@aglint/shared-types';
+import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
 
-import { SessionsType } from '../types';
+import { type SessionsType } from '../types';
 
 export const fetchAllActivities = async ({
   application_id,

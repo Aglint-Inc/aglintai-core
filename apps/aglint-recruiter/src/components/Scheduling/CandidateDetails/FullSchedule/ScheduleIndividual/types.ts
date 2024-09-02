@@ -1,7 +1,7 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { SchedulingApplication } from '../../store';
-import { SessionsType } from '../../types';
+import { type SchedulingApplication } from '../../store';
+import { type SessionsType } from '../../types';
 
 export interface ScheduleIndividualCardType {
   interview_session: Pick<

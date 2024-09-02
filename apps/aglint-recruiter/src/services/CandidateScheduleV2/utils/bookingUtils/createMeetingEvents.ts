@@ -1,14 +1,14 @@
-import { SessionCombinationRespType } from '@aglint/shared-types';
+import { type SessionCombinationRespType } from '@aglint/shared-types';
 
 import {
+  type CalEventAttendeesAuthDetails,
   bookSession,
-  CalEventAttendeesAuthDetails,
 } from '@/src/utils/event_book/book_session';
 import { fetchMeetingsInfo } from '@/src/utils/event_book/fetchMeetingsInfo';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { CandidatesSchedulingV2 } from '../../CandidatesSchedulingV2';
-import { ConfirmInt, ScheduleDBDetails } from './types';
+import { type CandidatesSchedulingV2 } from '../../CandidatesSchedulingV2';
+import { type ConfirmInt, type ScheduleDBDetails } from './types';
 
 export const createMeetingEvents = async (
   cand_schedule: CandidatesSchedulingV2,

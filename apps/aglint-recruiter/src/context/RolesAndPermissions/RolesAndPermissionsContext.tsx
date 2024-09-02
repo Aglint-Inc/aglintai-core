@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 'use client';
 
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { createContext, ReactNode, useContext } from 'react';
+import { type ReactNode, createContext, useContext } from 'react';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 

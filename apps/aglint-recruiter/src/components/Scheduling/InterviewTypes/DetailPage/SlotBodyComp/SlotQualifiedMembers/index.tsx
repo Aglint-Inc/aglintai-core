@@ -20,7 +20,7 @@ import {
   setSelUser,
   setTrainingStatus,
 } from '../../../store';
-import { ModuleType } from '../../../types';
+import { type ModuleType } from '../../../types';
 import { getPauseMemberText } from '../utils';
 
 function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {

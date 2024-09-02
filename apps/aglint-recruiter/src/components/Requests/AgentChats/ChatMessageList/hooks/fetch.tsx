@@ -1,5 +1,5 @@
-import { ApiBodyAgentSupervisor, Message } from '@aglint/shared-types';
-import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
+import { type ApiBodyAgentSupervisor, type Message } from '@aglint/shared-types';
+import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import axios from 'axios';
 
 import {

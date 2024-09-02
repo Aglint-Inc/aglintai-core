@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { useEffect, useMemo } from 'react';
 
 import CalendarResourceView from '@/src/components/Common/CalendarResourceView';
-import { Event } from '@/src/components/Common/CalendarResourceView/types';
+import { type Event } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
 
 import { transformAvailability } from '../SelfSchedulingDrawer/utils';

@@ -1,7 +1,7 @@
 import {
-  DatabaseEnums,
-  DatabaseTable,
-  DatabaseTableInsert,
+  type DatabaseEnums,
+  type DatabaseTable,
+  type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 

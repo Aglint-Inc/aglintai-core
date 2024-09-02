@@ -1,11 +1,11 @@
 import {
-  CandidateType,
-  JobApplcationDB,
-  JobTypeDB,
+  type CandidateType,
+  type JobApplcationDB,
+  type JobTypeDB,
 } from '@aglint/shared-types';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,7 +13,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
+import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

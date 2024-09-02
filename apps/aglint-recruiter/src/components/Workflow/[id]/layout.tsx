@@ -1,6 +1,6 @@
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import type React from 'react';
+import React from 'react';
 import { useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';

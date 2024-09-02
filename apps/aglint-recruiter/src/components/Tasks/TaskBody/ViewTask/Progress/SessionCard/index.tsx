@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 

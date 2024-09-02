@@ -7,7 +7,7 @@ import { NoData } from '@/devlink3/NoData';
 import { useCompletedInterviewDetails } from '@/src/queries/scheduling-dashboard';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
+import { type getOrderedGraphValues } from '../../Jobs/Job/Dashboard/utils';
 
 const CompletedInterviewBarChart = () => {
   const {

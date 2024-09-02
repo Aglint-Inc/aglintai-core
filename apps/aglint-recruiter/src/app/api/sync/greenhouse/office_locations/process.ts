@@ -1,7 +1,7 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 
 import { searchExactLocation } from '@/src/utils/externalApi/google/geoLocation';
-import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function syncOfficeLocations(
   supabaseAdmin: SupabaseClientType,

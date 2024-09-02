@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookRecruiterSelectedOption } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';

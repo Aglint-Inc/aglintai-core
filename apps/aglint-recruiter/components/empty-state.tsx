@@ -1,17 +1,18 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import {
+  type LucideIcon,
   Briefcase,
   CalendarClock,
   FileBarChart,
   FileText,
   LayoutDashboard,
-  LucideIcon,
   PlusCircle,
   Users,
 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface EmptyStateProps {
   module:

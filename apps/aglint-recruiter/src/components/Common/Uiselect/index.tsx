@@ -1,7 +1,7 @@
 import Icon from '@components/Common/Icons/Icon';
 import { Stack, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import React, { useState } from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';

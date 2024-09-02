@@ -6,7 +6,7 @@ import {
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { FilterCandidateState } from '../filter-store';
+import { type FilterCandidateState } from '../filter-store';
 
 const ROWS = 30;
 

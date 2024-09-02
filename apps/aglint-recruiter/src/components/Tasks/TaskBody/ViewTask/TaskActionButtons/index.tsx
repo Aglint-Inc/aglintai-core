@@ -1,4 +1,4 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,

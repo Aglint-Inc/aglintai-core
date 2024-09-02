@@ -1,9 +1,9 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { PATHS } from '@/src/constant/allPaths';
+import { type PATHS } from '@/src/constant/allPaths';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { LinkProps } from './type';
+import { type LinkProps } from './type';
 
 export const navList: {
   text: LinkProps['module'];

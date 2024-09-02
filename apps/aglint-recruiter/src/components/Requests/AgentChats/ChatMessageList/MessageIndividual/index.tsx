@@ -1,4 +1,4 @@
-import { FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
+import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 
@@ -7,7 +7,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { ChatType } from '../hooks/fetch';
+import { type ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';
 import AgentIcon from './AgentIcon';
 import CustomTypographyLink from './CustomTypographyLink';

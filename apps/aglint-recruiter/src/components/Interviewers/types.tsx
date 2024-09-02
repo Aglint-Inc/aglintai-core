@@ -1,6 +1,6 @@
-import { CalendarEvent } from '@aglint/shared-types';
+import { type CalendarEvent } from '@aglint/shared-types';
 
-import { RouterHelper, RouterInputs } from '@/src/trpc/client';
+import { type RouterHelper, type RouterInputs } from '@/src/trpc/client';
 
 export type interviewersTab =
   | 'availability'

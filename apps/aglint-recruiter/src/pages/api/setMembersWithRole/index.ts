@@ -1,10 +1,10 @@
-import { DatabaseTableUpdate } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type DatabaseTableUpdate } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { API_setMembersWithRole } from './type';
+import { type API_setMembersWithRole } from './type';
 
 export default async function handler(
   req: NextApiRequest,

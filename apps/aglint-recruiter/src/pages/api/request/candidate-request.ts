@@ -1,10 +1,10 @@
-import { DatabaseFunctions, DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseFunctions, type DatabaseTableInsert } from '@aglint/shared-types';
 import {
   createCandidateRequestSchema,
   getFullName,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';

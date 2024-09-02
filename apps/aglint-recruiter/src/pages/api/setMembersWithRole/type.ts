@@ -1,6 +1,6 @@
 import {
-  DatabaseTable,
-  DatabaseTableUpdate,
+  type DatabaseTable,
+  type DatabaseTableUpdate,
 } from '@aglint/shared-types';
 
 export type API_setMembersWithRole = {

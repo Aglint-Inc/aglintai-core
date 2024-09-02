@@ -5,7 +5,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { MouseEvent, useEffect, useState } from 'react';
+import { type MouseEvent, useEffect, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { Permissions } from '@/devlink/Permissions';
@@ -20,9 +20,9 @@ import {
 } from '@/src/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
-import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 import { useAllMembers } from '@/src/queries/members';
-import { useRoleAndPermissionsHook } from '@/src/queries/RolesSettings';
+import { type useRoleAndPermissionsHook } from '@/src/queries/RolesSettings';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import RoleEditMember from './RoleEditMember';

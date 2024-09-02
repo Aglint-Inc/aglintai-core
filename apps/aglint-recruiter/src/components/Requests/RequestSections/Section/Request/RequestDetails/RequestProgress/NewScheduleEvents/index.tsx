@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
@@ -10,7 +10,7 @@ import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/Settings
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { RequestProgressMapType, TriggerActionMapType } from '../types';
+import { type RequestProgressMapType, type TriggerActionMapType } from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewScheduled from './InterviewScheduled';

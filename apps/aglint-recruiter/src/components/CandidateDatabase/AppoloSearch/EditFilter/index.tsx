@@ -21,7 +21,7 @@ import {
   setSelectedCandidates,
   useCandidateStore,
 } from '../store';
-import { Candidate, CandidateSearchHistoryType } from '../types';
+import { type Candidate, type CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
 
 function EditFilter() {

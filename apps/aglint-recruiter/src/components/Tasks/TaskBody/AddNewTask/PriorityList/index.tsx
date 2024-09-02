@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';

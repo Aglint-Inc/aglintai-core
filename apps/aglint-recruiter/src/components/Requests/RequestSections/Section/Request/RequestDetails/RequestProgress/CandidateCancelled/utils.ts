@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-possible-timing-attacks */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { useMemo } from 'react';
 
 import axios from '@/src/client/axios';
-import { Request } from '@/src/queries/requests/types';
+import { type Request } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { RequestProgressMapType } from '../types';
-import { workflowCopy } from '../utils/copy';
+import { type RequestProgressMapType } from '../types';
+import { type workflowCopy } from '../utils/copy';
 
 export function getWorkflowText({
   status,

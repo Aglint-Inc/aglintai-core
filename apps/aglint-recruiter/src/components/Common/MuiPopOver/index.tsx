@@ -1,6 +1,6 @@
 import { Button, Popover } from '@mui/material';
 import PopupState, { bindPopover, bindTrigger } from 'material-ui-popup-state';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 function MuiPopOver({ body, button }: { body: ReactNode; button: ReactNode }) {
   return (

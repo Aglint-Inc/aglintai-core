@@ -8,7 +8,7 @@ import { InterviewersDash } from '@/devlink3/InterviewersDash';
 import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { useMatricsInterviewers, useMatricsInterviewersType } from '../Hook';
+import { type useMatricsInterviewersType,useMatricsInterviewers } from '../Hook';
 
 const LIMIT = 4;
 

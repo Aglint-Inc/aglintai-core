@@ -16,13 +16,13 @@ import {
   setStepScheduling,
 } from '../../../SchedulingDrawer/store';
 import {
-  SchedulingApplication,
+  type SchedulingApplication,
   setIndividualCancelOpen,
   setRescheduleSessionIds,
   setSelectedSession,
   setSelectedSessionIds,
 } from '../../../store';
-import { ScheduleIndividualCardType } from '../types';
+import { type ScheduleIndividualCardType } from '../types';
 import CancelBanners from './AdminCancelBanners';
 
 function CollapseContent({

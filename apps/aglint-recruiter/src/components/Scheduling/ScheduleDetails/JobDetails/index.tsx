@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import { ScheduleDetailsType } from '../hooks';
+import { type ScheduleDetailsType } from '../hooks';
 
 function JobDetails({
   schedule,

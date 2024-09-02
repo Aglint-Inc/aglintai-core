@@ -1,6 +1,6 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

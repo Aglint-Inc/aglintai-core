@@ -12,12 +12,18 @@ const SelectScheduleFlow = () => {
   const { reqTriggerActionsMap, scheduleFlow, reqProgressMap } =
     useNewScheduleRequestPr();
 
-  const isManualSchedule =
-    reqTriggerActionsMap['onRequestSchedule']?.length === 0;
+  let isManualSchedule = true;
+  if (
+    reqTriggerActionsMap['onRequestSchedule'] &&
+    reqTriggerActionsMap['onRequestSchedule'].length > 0
+  ) {
+    isManualSchedule = false;
+  }
   let isSelectScheduleFlowComplete = false;
   if (reqProgressMap['CAND_CONFIRM_SLOT'] || reqProgressMap['CAND_AVAIL_REC']) {
     isSelectScheduleFlowComplete = true;
   }
+
   return (
     <>
       <RequestProgress

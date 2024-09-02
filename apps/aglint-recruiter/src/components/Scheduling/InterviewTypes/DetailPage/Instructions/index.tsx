@@ -7,7 +7,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useModuleAndUsers } from '../../queries/hooks';
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 
 function InstructionsComp({ editModule }: { editModule: ModuleType }) {
   const [textValue, setTextValue] = useState(null);

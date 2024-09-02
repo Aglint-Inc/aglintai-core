@@ -1,6 +1,6 @@
 import { RequestProgress } from '@/devlink2/RequestProgress';
 
-import { EventProgressItem, ProgressDataItem } from '../types';
+import { type EventProgressItem, type ProgressDataItem } from '../types';
 import RequestEvent from './RequestEvent';
 
 type EventProgress = EventProgressItem[];

@@ -1,4 +1,4 @@
-import { Dialog, DialogProps, Paper } from '@mui/material';
+import { type DialogProps, Dialog, Paper } from '@mui/material';
 import React from 'react';
 
 function MuiPopup({

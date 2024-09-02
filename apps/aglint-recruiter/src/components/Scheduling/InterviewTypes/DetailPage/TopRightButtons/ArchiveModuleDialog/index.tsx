@@ -10,7 +10,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
-import { ModuleType } from '../../../types';
+import { type ModuleType } from '../../../types';
 
 function ArchiveModuleDialog({
   editModule,

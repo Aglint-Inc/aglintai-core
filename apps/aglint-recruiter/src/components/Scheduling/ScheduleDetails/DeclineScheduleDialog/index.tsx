@@ -1,7 +1,7 @@
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
-import { InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
+import { type InterviewSessionRelationTypeDB } from '@aglint/shared-types';
+import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -9,7 +9,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
-import { ScheduleDetailsType } from '../hooks';
+import { type ScheduleDetailsType } from '../hooks';
 
 function DeclineScheduleDialog({
   isDeclineOpen,

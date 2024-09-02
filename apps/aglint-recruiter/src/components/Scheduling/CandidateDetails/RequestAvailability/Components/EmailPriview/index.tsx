@@ -1,7 +1,7 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';

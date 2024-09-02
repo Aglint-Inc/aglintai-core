@@ -21,7 +21,7 @@ import {
   setSelUser,
   useModulesStore,
 } from '../../store';
-import { PauseType } from '../type';
+import { type PauseType } from '../type';
 
 function PauseDialog() {
   const isPauseDialogOpen = useModulesStore((state) => state.isPauseDialogOpen);

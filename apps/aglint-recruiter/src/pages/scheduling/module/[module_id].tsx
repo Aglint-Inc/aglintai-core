@@ -1,4 +1,4 @@
-import { DatabaseTableUpdate } from '@aglint/shared-types';
+import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -19,14 +19,14 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
+import { type ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
   useProgressModuleUsers,
 } from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
 import {
-  MemberType,
-  ModuleType,
+  type MemberType,
+  type ModuleType,
 } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

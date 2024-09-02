@@ -5,7 +5,7 @@ import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 
 import { SlackIcon } from '../../../Components/SlackIcon';
 import { workflowCopy } from '../../utils/copy';
-import { EventProgressItem } from '../types';
+import { type EventProgressItem } from '../types';
 import { getWorkflowText } from '../utils';
 
 function RequestEvent({

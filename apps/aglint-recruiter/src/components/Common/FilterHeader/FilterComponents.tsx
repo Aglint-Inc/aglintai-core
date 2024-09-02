@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React, { memo, ReactNode } from 'react';
+import React, { type ReactNode,memo } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -22,8 +22,8 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import UITextField from '../UITextField';
 import ToggleBtn from '../UIToggle';
 import {
+  type nestedType,
   nestedOptionMapper,
-  nestedType,
   setValueInNestedObject,
 } from './utils';
 

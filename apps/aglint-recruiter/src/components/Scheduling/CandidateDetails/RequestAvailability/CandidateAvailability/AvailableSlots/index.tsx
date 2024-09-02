@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';

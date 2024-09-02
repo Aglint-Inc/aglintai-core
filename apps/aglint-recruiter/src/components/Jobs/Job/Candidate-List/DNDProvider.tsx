@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { type XYCoord, DndProvider, useDragLayer } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 

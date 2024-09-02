@@ -6,7 +6,7 @@ import Availability from './Availability';
 import InterviewerLoad from './InterviewerLoad';
 import Metrics from './Metrics';
 import Training from './Traning';
-import { interviewersTab } from './types';
+import { type interviewersTab } from './types';
 
 function Interviewers() {
   const router = useRouter();

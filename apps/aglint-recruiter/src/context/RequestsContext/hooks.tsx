@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { subscriptions } from '@/src/hooks/useRealtime';
 import {
-  GetRequestParams,
+  type GetRequestParams,
   requestQueries,
   useRequestRealtime,
   useRequestsCreate,
   useRequestsDelete,
   useRequestsUpdate,
 } from '@/src/queries/requests';
-import { RequestResponse } from '@/src/queries/requests/types';
+import { type RequestResponse } from '@/src/queries/requests/types';
 import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
-import axios from 'axios';
 
 const defaultFilter = {
   is_new: false,

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { CountJobs } from '@/src/context/JobsContext/types';
+import { type CountJobs } from '@/src/context/JobsContext/types';
 
 export const totalCount = (data: CountJobs) =>
   data && Object.values(data).reduce((acc, count) => acc + count, 0);

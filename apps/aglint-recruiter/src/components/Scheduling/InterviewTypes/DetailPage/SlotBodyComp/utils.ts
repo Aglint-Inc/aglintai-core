@@ -1,7 +1,7 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { TabsModuleMembers } from '../type';
+import { type TabsModuleMembers } from '../type';
 
 export const tabsModuleMembers: TabsModuleMembers[] = [
   {

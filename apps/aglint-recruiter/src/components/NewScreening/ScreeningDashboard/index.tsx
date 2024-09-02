@@ -19,7 +19,7 @@ import toast from '@/src/utils/toast';
 
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
-import { QuestionnaireData } from '../types';
+import { type QuestionnaireData } from '../types';
 
 const Screening = () => {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);

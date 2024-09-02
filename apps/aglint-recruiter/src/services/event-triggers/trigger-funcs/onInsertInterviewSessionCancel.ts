@@ -1,6 +1,6 @@
 import {
-  APICreateInterviewerRequest,
-  DatabaseTable,
+  type APICreateInterviewerRequest,
+  type DatabaseTable,
 } from '@aglint/shared-types';
 import axios from 'axios';
 

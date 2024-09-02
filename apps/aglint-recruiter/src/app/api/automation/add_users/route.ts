@@ -1,7 +1,7 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { NextResponse } from 'next/server';
 
-import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
+import { type InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
 import { registerMember } from '@/src/pages/api/invite_user';
 import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 import timeZone from '@/src/utils/timeZone';

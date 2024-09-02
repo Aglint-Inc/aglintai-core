@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { MenuItem, Select, Stack, Typography } from '@mui/material';
 import React from 'react';
 

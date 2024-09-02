@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { schema_confirm_slot_no_conflict } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
 import { scheduling_options_schema } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';

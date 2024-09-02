@@ -1,4 +1,4 @@
-import { ConflictReason as ConflictReasonType } from '@aglint/shared-types';
+import { type ConflictReason as ConflictReasonType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 

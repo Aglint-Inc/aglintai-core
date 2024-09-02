@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Skeleton, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -10,8 +10,8 @@ import { NoData } from '@/devlink3/NoData';
 import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
-  ApiBodyGetUsersByIds,
-  ApiResponseGetUsersByIds,
+  type ApiBodyGetUsersByIds,
+  type ApiResponseGetUsersByIds,
 } from '@/src/pages/api/get_users_by_ids';
 import { schedulingDashboardQueryKeys } from '@/src/queries/scheduling-dashboard/keys';
 import { supabase } from '@/src/utils/supabase/client';

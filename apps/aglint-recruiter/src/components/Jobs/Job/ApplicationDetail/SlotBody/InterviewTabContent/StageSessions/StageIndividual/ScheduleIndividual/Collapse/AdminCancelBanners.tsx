@@ -3,7 +3,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 
 function CancelBanners({
   session,

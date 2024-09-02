@@ -7,14 +7,14 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3/NoData';
 import Loader from '@/src/components/Common/Loader';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
-import { DashboardGraphOptions } from '.';
+import { type DashboardGraphOptions } from '.';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 

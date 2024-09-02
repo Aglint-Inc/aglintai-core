@@ -1,6 +1,6 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 
-import { readJob } from '.';
+import { type readJob } from '.';
 
 export type Job = Awaited<ReturnType<typeof readJob>>;
 

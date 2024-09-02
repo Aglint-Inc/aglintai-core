@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 
-import { TabInterviewerDetail } from '.';
+import { type TabInterviewerDetail } from '.';
 
 function Tabs() {
   const router = useRouter();

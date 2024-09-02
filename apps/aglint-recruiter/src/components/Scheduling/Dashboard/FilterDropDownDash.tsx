@@ -1,5 +1,5 @@
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';

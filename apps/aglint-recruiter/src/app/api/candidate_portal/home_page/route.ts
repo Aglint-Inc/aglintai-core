@@ -1,9 +1,9 @@
-import { SocialsType } from '@aglint/shared-types';
+import { type SocialsType } from '@aglint/shared-types';
 import { NextResponse } from 'next/server';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { apiPortalInterviewsResponse } from '../get_interviews/route';
+import { type apiPortalInterviewsResponse } from '../get_interviews/route';
 
 export type apiHomepageResponse = {
   candidate: {

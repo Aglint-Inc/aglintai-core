@@ -1,5 +1,5 @@
 import { Drawer } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 function SidePanelDrawer({
   openSidePanelDrawer,

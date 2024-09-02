@@ -8,8 +8,8 @@ import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import {
-  Request as RequestType,
-  RequestResponse,
+  type Request as RequestType,
+  type RequestResponse,
 } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 

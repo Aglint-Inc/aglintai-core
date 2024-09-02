@@ -1,5 +1,5 @@
-import { DatabaseEnums } from '@aglint/shared-types';
-import { ReactNode } from 'react';
+import { type DatabaseEnums } from '@aglint/shared-types';
+import { type ReactNode } from 'react';
 
 export type ProgressDataItem = {
   id: string;

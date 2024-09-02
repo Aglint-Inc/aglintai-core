@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Dialog } from '@mui/material';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -9,7 +9,7 @@ import { DeletePopup } from '@/devlink3/DeletePopup';
 
 import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import { SchedulingReasonTypes } from '../types';
+import { type SchedulingReasonTypes } from '../types';
 
 function SchedulingPopUps({
   isOpen,

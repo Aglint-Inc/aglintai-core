@@ -2,9 +2,9 @@
 import { cloneDeep } from 'lodash';
 
 import { initialForm } from '@/src/components/Workflow/common';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Inputs = Pick<Workflow, 'title' | 'auto_connect' | 'description'>;
 

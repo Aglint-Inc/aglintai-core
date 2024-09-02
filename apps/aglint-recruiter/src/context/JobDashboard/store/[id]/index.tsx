@@ -1,8 +1,8 @@
-import { StateCreator } from 'zustand';
+import { type StateCreator } from 'zustand';
 
 import {
+  type PublishButtonSlice,
   createPublishButtonSlice,
-  PublishButtonSlice,
 } from './publishButtonStore';
 
 type Slices = PublishButtonSlice;
