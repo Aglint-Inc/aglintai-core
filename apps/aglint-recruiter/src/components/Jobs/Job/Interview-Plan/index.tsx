@@ -7,6 +7,14 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -19,7 +27,6 @@ import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
@@ -210,29 +217,27 @@ const AddStageComponent = () => {
 const BreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
+
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Interview Plan`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Interview Plan</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

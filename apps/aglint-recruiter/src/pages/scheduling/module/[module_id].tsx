@@ -3,8 +3,15 @@ import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -108,7 +115,17 @@ function ModuleMembersComp() {
         isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={module?.name} />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{module?.name}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </>
         }
         slotBody={

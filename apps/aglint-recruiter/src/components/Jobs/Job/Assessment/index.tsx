@@ -1,10 +1,17 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { EnableAssessment as EnableAssessmentDev } from '@/devlink/EnableAssessment';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Loader from '@/src/components/Common/Loader';
 import AssessmentResetWrapper from '@/src/components/NewAssessment/Common/wrapper/resetWrapper';
@@ -45,26 +52,25 @@ const JobAssessmentDashboardBreadCrumbs = () => {
   const { job } = useJob();
   return (
     <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Assessments`} showArrow />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+              Jobs
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+              {capitalize(job?.job_title ?? 'Job')}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Assessments</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </>
   );
 };

@@ -9,6 +9,14 @@ import {
   useEffect,
   useState,
 } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 export type taskFilterType = {
   Job: string[];
   Status: DatabaseEnums['task_status'][];
@@ -82,29 +90,22 @@ export const useBreadcrumContext = () => {
 
 import { useRouter } from 'next/navigation';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
 export const getBreadcrum = (
   paths: { name: string; onClick?: () => void }[],
   notFirst?: boolean,
 ) => {
   if (!paths?.length) {
-    return;
+    return [];
   }
-  if (paths.length == 1) {
-    return [
-      <Breadcrum key={1} showArrow={notFirst} textName={paths[0].name} />,
-    ];
-  }
-  const [curr, ...rest] = paths;
 
-  return [
-    <Breadcrum
-      key={paths.length}
-      textName={curr.name}
-      showArrow={notFirst}
-      isLink={Boolean(curr.onClick)}
-      onClickLink={{ onClick: () => curr.onClick && curr.onClick() }}
-    />,
-    ...getBreadcrum(rest, true),
-  ];
+  return paths.map((path, index) => (
+    <BreadcrumbItem key={index}>
+      {index > 0 && <BreadcrumbSeparator />}
+      {path.onClick ? (
+        <BreadcrumbLink onClick={path.onClick}>{path.name}</BreadcrumbLink>
+      ) : (
+        <BreadcrumbPage>{path.name}</BreadcrumbPage>
+      )}
+    </BreadcrumbItem>
+  ));
 };

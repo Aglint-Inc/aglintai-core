@@ -1,10 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 import { SavedChanges } from '@/devlink/SavedChanges';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
@@ -32,9 +45,9 @@ const JobHiringTeamDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+    <div className='flex justify-center items-center w-full h-screen'>
       <Loader />
-    </Stack>
+    </div>
   );
 };
 
@@ -102,19 +115,33 @@ const JobEdit = () => {
       }
       slotTopbarRight={<Settings />}
       slotSaving={
-        <Stack style={{ opacity: show ? 1 : 0, transition: '0.3s' }}>
+        <div
+          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
+        >
           <SavedChanges
             isSaving={saving}
             isSaved={!saving}
             slotLoaderIcon={
-              <CircularProgress
-                color='inherit'
-                size={'15px'}
-                sx={{ color: 'var(--neutral-6)' }}
-              />
+              <div className='text-neutral-600'>
+                <svg className='animate-spin h-4 w-4' viewBox='0 0 24 24'>
+                  <circle
+                    className='opacity-25'
+                    cx='12'
+                    cy='12'
+                    r='10'
+                    stroke='currentColor'
+                    strokeWidth='4'
+                  ></circle>
+                  <path
+                    className='opacity-75'
+                    fill='currentColor'
+                    d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z'
+                  ></path>
+                </svg>
+              </div>
             }
           />
-        </Stack>
+        </div>
       }
     />
   );
@@ -122,29 +149,30 @@ const JobEdit = () => {
 
 const BreadCrumbs = ({ job }: { job: Job }) => {
   const { push } = useRouter();
+
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(ROUTES['/jobs/[id]']({ id: job?.id }));
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Hiring Team`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href='#'
+            onClick={() => push(ROUTES['/jobs/[id]']({ id: job?.id }))}
+          >
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Hiring Team</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

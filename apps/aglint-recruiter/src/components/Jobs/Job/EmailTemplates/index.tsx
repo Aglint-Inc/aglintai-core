@@ -8,10 +8,18 @@ import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+
 import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
@@ -56,29 +64,27 @@ export default JobEmailTemplatesDashboard;
 const JobEmailTemplatesDashboardBreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
+
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Email Templates`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+            {capitalize(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Email Templates</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

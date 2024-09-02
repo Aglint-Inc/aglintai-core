@@ -5,12 +5,26 @@ import {
   type JobMetaFormProps,
   useJobForms,
 } from '@components/Jobs/Create/form';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { SavedChanges } from '@/devlink/SavedChanges';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
@@ -154,28 +168,28 @@ const JobEdit = () => {
 const BreadCrumbs = ({ job }: { job: Job }) => {
   const { push } = useRouter();
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(ROUTES['/jobs/[id]']({ id: job?.id }));
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Job Details`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href='#'
+            onClick={() => push(ROUTES['/jobs/[id]']({ id: job?.id }))}
+          >
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Job Details</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

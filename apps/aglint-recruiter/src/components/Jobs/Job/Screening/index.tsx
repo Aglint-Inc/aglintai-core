@@ -2,6 +2,14 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 import { AssessmentSide } from '@/devlink/AssessmentSide';
 import { ButtonOutlined } from '@/devlink/ButtonOutlined';
@@ -327,26 +335,25 @@ const JobScreeningDashboardBreadCrumbs = () => {
   const { job } = useJob();
   return (
     <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Screening`} showArrow />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+              Jobs
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+              {capitalize(job?.job_title ?? 'Job')}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Screening</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </>
   );
 };
