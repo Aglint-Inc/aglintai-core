@@ -1,14 +1,21 @@
 /* eslint-disable security/detect-object-injection */
 import { dayjsLocal } from '@aglint/shared-utils';
 import { CircularProgress, Dialog } from '@mui/material';
+import {
+  BarChart,
+  Calendar,
+  ClipboardList,
+  FileText,
+  MoreHorizontal,
+  PlusCircle,
+  RefreshCw,
+  ShieldCheck,
+  UserPlus,
+  Workflow,
+  XCircle,
+} from 'lucide-react';
 import { useRouter } from 'next/router';
-import React, {
-  createContext,
-  memo,
-  useCallback,
-  useContext,
-  useState,
-} from 'react';
+import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +23,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { ScoreSetting } from '@/devlink3/ScoreSetting';
+import UITextField from '@/src/components/Common/UITextField';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -24,18 +36,12 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { BarChart, Calendar, ClipboardList, FileText, MoreHorizontal, PlusCircle, RefreshCw, ShieldCheck, UserPlus, Workflow, XCircle } from 'lucide-react';
-import { GlobalSwitch, GlobalSwitchPill, ScoreSetting } from '@/devlink3';
-import { CloseJobModal } from '@/devlink';
-import UITextField from '@/src/components/Common/UITextField';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
   return (
     <SettingsContext.Provider value={value}>
-      <div className="flex flex-row items-center gap-2">
+      <div className='flex flex-row items-center gap-2'>
         <Score />
         <Sync />
         <Add />
@@ -63,9 +69,9 @@ const Sync = () => {
   };
 
   return (
-    <div className="flex flex-row gap-1">
-      <div className="flex-shrink-0 flex items-center">
-        <p className="text-neutral-500 text-sm">
+    <div className='flex flex-row gap-1'>
+      <div className='flex-shrink-0 flex items-center'>
+        <p className='text-neutral-500 text-sm'>
           {time
             ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
             : 'Last synced few seconds ago'}
@@ -73,8 +79,8 @@ const Sync = () => {
       </div>
 
       <OptimisticWrapper loading={load}>
-        <Button variant="outline" onClick={handleSync} className="w-auto">
-          <RefreshCw className="w-3 h-5 mr-3" strokeWidth={1.5} />
+        <Button variant='outline' onClick={handleSync} className='w-auto'>
+          <RefreshCw className='w-3 h-5 mr-3' strokeWidth={1.5} />
           Sync job
         </Button>
       </OptimisticWrapper>
@@ -93,11 +99,11 @@ const Score = () => {
         job?.processing_count.unparsable
       }/${total ?? '---'}`}
       slotScoringLoader={
-        <div className="w-3 aspect-square">
+        <div className='w-3 aspect-square'>
           <CircularProgress
             color='inherit'
             size={'100%'}
-            className="text-white"
+            className='text-white'
           />
         </div>
       }
@@ -113,8 +119,12 @@ const Add = () => {
   if (job?.status === 'closed' || !manageJob) return null;
   return (
     <>
-      <Button variant="outline" onClick={() => setImportPopup(true)} className="w-auto">
-        <PlusCircle className="mr-2 h-4 w-4" />
+      <Button
+        variant='outline'
+        onClick={() => setImportPopup(true)}
+        className='w-auto'
+      >
+        <PlusCircle className='mr-2 h-4 w-4' />
         Add candidates
       </Button>
       <UploadApplications />
@@ -126,10 +136,7 @@ const Publish = () => {
   const { handlePublish, canPublish, manageJob, job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return (
-    <Button
-      onClick={async () => await handlePublish()}
-      disabled={!canPublish}
-    >
+    <Button onClick={async () => await handlePublish()} disabled={!canPublish}>
       Publish
     </Button>
   );
@@ -138,12 +145,20 @@ const Publish = () => {
 const Switcher = () => {
   const { handlePush, currentPath } = useSettings();
   return (
-    <Tabs defaultValue={currentPath === '/jobs/[id]' ? 'applications' : 'metrics'}>
+    <Tabs
+      defaultValue={currentPath === '/jobs/[id]' ? 'applications' : 'metrics'}
+    >
       <TabsList>
-        <TabsTrigger value="applications" onClick={() => handlePush('/jobs/[id]')}>
+        <TabsTrigger
+          value='applications'
+          onClick={() => handlePush('/jobs/[id]')}
+        >
           Applications
         </TabsTrigger>
-        <TabsTrigger value="metrics" onClick={() => handlePush('/jobs/[id]/metrics')}>
+        <TabsTrigger
+          value='metrics'
+          onClick={() => handlePush('/jobs/[id]/metrics')}
+        >
           Metrics
         </TabsTrigger>
       </TabsList>
@@ -184,7 +199,10 @@ const useSettingsActions = () => {
     }
   }, [job?.status, handleCloseModal]);
 
-  const handlePush = <T extends Extract<keyof R, `/jobs/${string}`>, R extends typeof ROUTES = typeof ROUTES>(
+  const handlePush = <
+    T extends Extract<keyof R, `/jobs/${string}`>,
+    R extends typeof ROUTES = typeof ROUTES,
+  >(
     type: T,
   ) => {
     setAnchorEl(null);
@@ -206,7 +224,8 @@ const useSettingsActions = () => {
   };
 };
 
-const SettingsContext = createContext<ReturnType<typeof useSettingsActions>>(undefined);
+const SettingsContext =
+  createContext<ReturnType<typeof useSettingsActions>>(undefined);
 
 const useSettings = () => useContext(SettingsContext);
 
@@ -221,17 +240,17 @@ export const Settings = memo(() => {
 Settings.displayName = 'Settings';
 
 const Dropdown = () => {
-  const { modal, setAnchorEl } = useSettings();
+  const { modal } = useSettings();
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="h-8 w-8 rounded-md">
-            <MoreHorizontal className="h-4 w-4" />
-            <span className="sr-only">Open menu</span>
+          <Button variant='outline' size='icon' className='h-8 w-8 rounded-md'>
+            <MoreHorizontal className='h-4 w-4' />
+            <span className='sr-only'>Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent align='end' className='w-56'>
           <Modules />
           <CloseJob />
         </DropdownMenuContent>
@@ -242,7 +261,8 @@ const Dropdown = () => {
 };
 
 const Close = () => {
-  const { job, modal, handleModalSubmit, handleCloseModal, isDelete } = useSettings();
+  const { job, modal, handleModalSubmit, handleCloseModal, isDelete } =
+    useSettings();
   const [value, setValue] = useState('');
   const job_title = job?.job_title ?? '';
   return (
@@ -267,10 +287,18 @@ const Close = () => {
         }
         slotButton={
           <>
-            <Button variant="outline" onClick={() => handleCloseModal()} className="w-auto">
+            <Button
+              variant='outline'
+              onClick={() => handleCloseModal()}
+              className='w-auto'
+            >
               Cancel
             </Button>
-            <Button onClick={handleModalSubmit} className="w-auto" disabled={job_title.trim() !== value.trim()}>
+            <Button
+              onClick={handleModalSubmit}
+              className='w-auto'
+              disabled={job_title.trim() !== value.trim()}
+            >
               {isDelete ? 'Delete Job' : 'Close Job'}
             </Button>
           </>
@@ -320,7 +348,7 @@ const WorkflowModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/workflows')}>
-      <Workflow className="mr-2 h-4 w-4" />
+      <Workflow className='mr-2 h-4 w-4' />
       <span>Workflows</span>
     </DropdownMenuItem>
   );
@@ -330,7 +358,7 @@ const HiringTeamModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/hiring-team')}>
-      <UserPlus className="mr-2 h-4 w-4" />
+      <UserPlus className='mr-2 h-4 w-4' />
       <span>Hiring Team</span>
     </DropdownMenuItem>
   );
@@ -340,7 +368,7 @@ const ProfileScoreModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/profile-score')}>
-      <BarChart className="mr-2 h-4 w-4" />
+      <BarChart className='mr-2 h-4 w-4' />
       <span>Profile Score</span>
     </DropdownMenuItem>
   );
@@ -350,7 +378,7 @@ const JobDetailsModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/job-details')}>
-      <FileText className="mr-2 h-4 w-4" />
+      <FileText className='mr-2 h-4 w-4' />
       <span>Job Details</span>
     </DropdownMenuItem>
   );
@@ -360,7 +388,7 @@ const AssessmentModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/assessment')}>
-      <ClipboardList className="mr-2 h-4 w-4" />
+      <ClipboardList className='mr-2 h-4 w-4' />
       <span>Assessment</span>
     </DropdownMenuItem>
   );
@@ -370,7 +398,7 @@ const ScreeningModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/screening')}>
-      <ShieldCheck className="mr-2 h-4 w-4" />
+      <ShieldCheck className='mr-2 h-4 w-4' />
       <span>Screening</span>
     </DropdownMenuItem>
   );
@@ -380,7 +408,7 @@ const InterviewModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/interview-plan')}>
-      <Calendar className="mr-2 h-4 w-4" />
+      <Calendar className='mr-2 h-4 w-4' />
       <span>Interview Plan</span>
     </DropdownMenuItem>
   );
@@ -391,8 +419,13 @@ const CloseJob = () => {
   const { job } = useJob();
   const isDelete = job?.status !== 'published';
   return (
-    <DropdownMenuItem onSelect={() => { setModal(true); setAnchorEl(null); }}>
-      <XCircle className="mr-2 h-4 w-4" />
+    <DropdownMenuItem
+      onSelect={() => {
+        setModal(true);
+        setAnchorEl(null);
+      }}
+    >
+      <XCircle className='mr-2 h-4 w-4' />
       <span>{isDelete ? 'Delete' : 'Close'} Job</span>
     </DropdownMenuItem>
   );
