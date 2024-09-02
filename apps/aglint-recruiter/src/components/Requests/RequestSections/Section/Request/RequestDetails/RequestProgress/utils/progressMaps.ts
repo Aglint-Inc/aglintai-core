@@ -25,6 +25,7 @@ export const apiTargetToEvents: Partial<
   onRequestCancel_slack_interviewersOrganizer: [
     'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
   ],
+  onReceivingAvailReq_agent_confirmSlot: [],
 };
 
 type GroupeTriggerEvent =
