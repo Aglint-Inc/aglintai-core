@@ -3,36 +3,37 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
+import { useCompany } from '../hook';
 import NavProfile from './NavProfile';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const companyName = 'Discord';
-  const imageSrc = 'https://aglintai-seed-data.vercel.app/logo/discord.jpg';
 
   const application_id = pathname.split('/').filter((a) => a)[1];
   const currentTab = pathname.split('/').filter((a) => a)[2];
+  const { data: company } = useCompany({ application_id });
+
+  console.log(company);
 
   return (
     <div className='sticky w-full top-3 z-50 flex items-center justify-center'>
       <header className='bg-background/80 backdrop-blur-sm shadow-sm rounded-md border border-border w-full max-w-screen-xl mx-auto'>
         <div className='container mx-auto px-4 py-2 flex items-center justify-between'>
           <div className='flex items-center justify-center'>
-            {imageSrc ? (
+            {company?.logo ? (
               <Image
-                src={imageSrc}
-                alt={companyName}
+                src={company.logo}
+                alt={company.name}
                 width={36}
                 height={36}
                 className='rounded-md object-contain'
               />
             ) : (
               <span className='text-foreground text-4xl font-bold'>
-                {companyName}
+                {company?.name}
               </span>
             )}
           </div>

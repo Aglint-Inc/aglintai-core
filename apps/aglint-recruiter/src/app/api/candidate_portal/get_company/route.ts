@@ -1,3 +1,4 @@
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
@@ -22,10 +23,12 @@ const getCompany = async (application_id) => {
     await supabaseAdmin
       .from('applications')
       .select('candidates(recruiter(name,logo))')
-      .eq('application_id', application_id)
+      .eq('id', application_id)
       .single()
       .throwOnError(),
   );
 
   return company.candidates.recruiter;
 };
+
+// candidates(recruiter(name,logo)
