@@ -55,6 +55,8 @@ export const createRequestProgressLogger = ({
           },
           target_api,
           id: progress_id,
+          event_type: payload.event_type,
+          status: payload.status,
         })
         .select()
     );

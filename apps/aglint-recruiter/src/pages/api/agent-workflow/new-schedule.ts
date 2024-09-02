@@ -1,14 +1,14 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
+  type ProgressLoggerType,
   candidate_new_schedule_schema,
   CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
-  ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';

@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { EmailTemplateAPi } from '@aglint/shared-types';
-import { ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
+import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 import axios from 'axios';
 import * as v from 'valibot';
