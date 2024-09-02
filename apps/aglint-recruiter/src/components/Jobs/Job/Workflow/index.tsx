@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-
 import { WorkflowJobs } from '@/devlink/WorkflowJobs';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';

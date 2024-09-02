@@ -9,11 +9,10 @@ import {
   useEffect,
   useState,
 } from 'react';
+
 import {
-  Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
@@ -92,7 +91,6 @@ import { useRouter } from 'next/navigation';
 
 export const getBreadcrum = (
   paths: { name: string; onClick?: () => void }[],
-  notFirst?: boolean,
 ) => {
   if (!paths?.length) {
     return [];

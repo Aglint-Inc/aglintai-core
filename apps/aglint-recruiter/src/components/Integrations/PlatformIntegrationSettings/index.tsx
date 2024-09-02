@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { useRouterPro } from '@/src/hooks/useRouterPro';

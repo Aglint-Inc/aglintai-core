@@ -7,6 +7,13 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,12 +22,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -66,8 +68,6 @@ import InterviewDeletePopup, {
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
