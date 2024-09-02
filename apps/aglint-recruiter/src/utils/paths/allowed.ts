@@ -146,5 +146,6 @@ export const allowedPaths = new Set<t>([
   '/api/google-calender/resync',
   '/api/google-calender/watch-changes',
   '/api/google-calender/webhook',
+  '/api/request/execute-workflow',
   ...cronPaths,
 ] as t[]);

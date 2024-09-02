@@ -15,6 +15,7 @@ import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+import axios from 'axios';
 
 const defaultFilter = {
   is_new: false,
@@ -85,6 +86,9 @@ export const useRequestsActions = () => {
     async (payload: Parameters<typeof asyncUpdateRequest>[0]) => {
       try {
         await asyncUpdateRequest(payload);
+        await axios.post('/api/request/execute-workflow', {
+          request_id: payload.payload.requestId,
+        });
       } catch {
         //
       }
