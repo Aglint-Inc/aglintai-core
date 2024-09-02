@@ -27,7 +27,7 @@ import { apiTargetToEvents } from '../utils/progressMaps';
 import { useNewScheduleRequestPr } from '.';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
-const InterviewSchedule = () => {
+const InterviewScheduled = () => {
   const {
     reqTriggerActionsMap: triggerActionMp,
     currentRequest,
@@ -104,43 +104,6 @@ const InterviewSchedule = () => {
       textRequestProgress={'On Inteview is Scheduled'}
       slotProgress={
         <>
-          <Stack ml={4}>
-            <></>
-            {/* {eventWActions
-              .map((eA) => {
-                return apiTargetToEvents[eA.target_api];
-              })
-              .flat()
-              .map((ev) => {
-                const eventProg = reqProgressMap[ev];
-                let tense: ProgressTenseType = 'future';
-                if (eventProg) {
-                  tense = progressStatusToTense(eventProg[0].status);
-                }
-                return (
-                  <p key={ev}>
-                    <TextWithIcon
-                      textContent={workflowCopy[ev][tense]}
-                      iconSize={3}
-                      fontSize={1}
-                      color={getProgressColor(tense)}
-                      iconName={
-                        tense === 'past' ? (
-                          <CheckCircleFilled />
-                        ) : tense === 'future' ? (
-                          'circle'
-                        ) : (
-                          <LottieAnimations
-                            animation='loading_spinner'
-                            size={1.2}
-                          />
-                        )
-                      }
-                    />
-                  </p>
-                );
-              })} */}
-          </Stack>
           {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
             return apiTargetToEvents[action.value.target_api].map((ev) => {
               const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
@@ -227,4 +190,4 @@ const InterviewSchedule = () => {
   );
 };
 
-export default InterviewSchedule;
+export default InterviewScheduled;

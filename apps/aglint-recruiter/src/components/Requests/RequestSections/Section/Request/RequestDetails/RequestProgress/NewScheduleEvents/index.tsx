@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import React, { createContext, useContext, useEffect, useMemo } from 'react';
 
 import { RequestProgress } from '@/devlink2/RequestProgress';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -12,10 +13,9 @@ import { useRequest } from '@/src/context/RequestContext';
 import { RequestProgressMapType, TriggerActionMapType } from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
-import InterviewSchedule from './InterviewSchedule';
+import InterviewScheduled from './InterviewScheduled';
 import SelectScheduleFlow from './SelectScheduleFlow';
 import WorkflowActionDialog from './WorkflowActionDialog';
-import MuiPopup from '@/src/components/Common/MuiPopup';
 
 // Define the types for the context values
 interface RequestContextType {
@@ -127,12 +127,11 @@ const NewScheduleEvents = ({
       >
         <>
           <SelectScheduleFlow />
-          <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
-            <InterviewSchedule />
-          </ShowCode.When>
           <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-            <></>
+            <>{/* <CandidateAvailReceived /> */}</>
           </ShowCode.When>
+          <InterviewScheduled />
+
           <MuiPopup
             props={{
               open: showEditDialog,
