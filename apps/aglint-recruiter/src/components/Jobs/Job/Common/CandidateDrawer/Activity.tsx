@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
-import IconApplicationLogs from '@/src/components/Scheduling/CandidateDetails/RightPanel/IconApplicationLogs';
+import IconApplicationLogs from '@/src/components/Common/Icons/IconApplicationLogs';
 import SlotContent from '@/src/components/Scheduling/CandidateDetails/RightPanel/SlotWidgets';
 import { useApplication } from '@/src/context/ApplicationContext';
 

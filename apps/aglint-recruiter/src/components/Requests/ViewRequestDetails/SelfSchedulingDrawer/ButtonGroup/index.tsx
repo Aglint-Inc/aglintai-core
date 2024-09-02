@@ -17,11 +17,7 @@ function ButtonMain({ refetch }: { refetch: () => void }) {
   });
 
   const primaryButtonText = () => {
-    if (
-      stepScheduling === 'preference' ||
-      stepScheduling === 'pick_date' ||
-      stepScheduling === 'slot_options'
-    ) {
+    if (stepScheduling === 'slot_options') {
       return 'Continue';
     } else if (stepScheduling === 'self_scheduling_email_preview') {
       return 'Send to Candidate';
@@ -32,15 +28,11 @@ function ButtonMain({ refetch }: { refetch: () => void }) {
       <ButtonSoft
         size={2}
         color={'neutral'}
-        textButton={stepScheduling === 'pick_date' ? 'Close' : 'Back'}
+        textButton={stepScheduling === 'slot_options' ? 'Close' : 'Back'}
         onClickButton={{
           onClick: () => {
-            if (stepScheduling === 'pick_date') {
+            if (stepScheduling === 'slot_options') {
               resetStateSelfScheduling();
-            } else if (stepScheduling === 'slot_options') {
-              setStepScheduling('preference');
-            } else if (stepScheduling === 'preference') {
-              setStepScheduling('pick_date');
             } else if (stepScheduling === 'self_scheduling_email_preview') {
               setStepScheduling('slot_options');
             }

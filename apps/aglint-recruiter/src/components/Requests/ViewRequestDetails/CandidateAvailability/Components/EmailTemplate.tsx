@@ -9,8 +9,12 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
+import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
+
 function EmailTemplate({ application_id }: { application_id?: string }) {
   const { recruiterUser } = useAuthDetails();
+  const { reRequestAvailability, candidateAvailabilityIdForReRequest } =
+    useCandidateAvailabilitySchedulingFlowStore();
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
     null,
   );
@@ -25,18 +29,39 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
 
   function getEmail() {
     setFetching(true);
-    axios
-      .post('/api/emails/sendAvailabilityRequest_email_applicant', {
-        ...payload,
-      })
-      .then(({ data }) => {
-        setEmailData(data);
-        setFetching(false);
-      })
-      .catch(() => {
-        toast.error('Fail to fetch email preview');
-        setFetching(false);
-      });
+    if (reRequestAvailability) {
+      const payload1: EmailTemplateAPi<'availabilityReqResend_email_candidate'>['api_payload'] =
+        {
+          is_preview: true,
+          avail_req_id: candidateAvailabilityIdForReRequest,
+          recruiter_user_id: recruiterUser.user_id,
+        };
+      axios
+        .post('/api/emails/availabilityReqResend_email_candidate', {
+          ...payload1,
+        })
+        .then(({ data }) => {
+          setEmailData(data);
+          setFetching(false);
+        })
+        .catch(() => {
+          toast.error('Fail to fetch email preview');
+          setFetching(false);
+        });
+    } else {
+      axios
+        .post('/api/emails/sendAvailabilityRequest_email_applicant', {
+          ...payload,
+        })
+        .then(({ data }) => {
+          setEmailData(data);
+          setFetching(false);
+        })
+        .catch(() => {
+          toast.error('Fail to fetch email preview');
+          setFetching(false);
+        });
+    }
   }
   useEffect(() => {
     if (!emailData) {

@@ -59,6 +59,6 @@ export const scrollToElementById = ({
 }) => {
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior });
+    element.scrollIntoView({ behavior, });
   }
 };

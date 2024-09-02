@@ -40,7 +40,8 @@
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     // "react-compiler/react-compiler": "warn",
-    "@aglint/linter/enforce-devlink-rules": "error"
+    "@aglint/linter/enforce-devlink-rules": "error",
+    "security/detect-object-injection": "off"
   },
   "overrides": [
     {

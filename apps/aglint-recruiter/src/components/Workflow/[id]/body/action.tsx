@@ -19,6 +19,7 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { WorkflowAction } from '@/src/types/workflow.types';
 
+import { getWorkflowTagIcon } from '../../constants';
 import { useActions } from './context';
 
 const Actions = () => {
@@ -57,6 +58,7 @@ const ActionRecommendations = memo(() => {
       <WorkflowButton
         key={option.value.target_api}
         textButton={option.name}
+        slotIcon={getWorkflowTagIcon(option.value.action_type)}
         onClickButton={{ onClick: () => createAction(option), ...devlinkProps }}
       />
     );

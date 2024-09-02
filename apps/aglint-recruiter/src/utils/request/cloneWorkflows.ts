@@ -40,7 +40,7 @@ export const cloneWorkflows = async ({
           is_paused: j_w.workflow.is_paused,
           title: j_w.workflow.title,
           workflow_type: j_w.workflow.workflow_type,
-          is_request_workflow: true,
+          request_id: request_id,
         })
         .select(),
     );
@@ -59,19 +59,13 @@ export const cloneWorkflows = async ({
         .insert(req_w_actions)
         .select(),
     );
-    supabaseWrap(
-      await supabaseAdmin.from('workflow_request_relation').insert({
-        request_id: request_id,
-        workflow_id: req_workflow.id,
-      }),
-    );
   });
   await Promise.all(new_relations_promises);
 
   const req_w_relns = supabaseWrap(
     await supabaseAdmin
-      .from('workflow_request_relation')
-      .select('*, workflow(*, workflow_action(*))')
+      .from('workflow')
+      .select('*, workflow_action(*)')
       .eq('request_id', request_id),
     false,
   );

@@ -6,7 +6,6 @@ export const useRequestNotes = ({ request_id }: { request_id: string }) => {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    initialData: [],
     queryKey: ['get_request_notes', request_id],
     queryFn: () => getRequestNotes(request_id),
     enabled: !!request_id,

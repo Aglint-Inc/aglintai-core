@@ -9,6 +9,7 @@
 }
 
 .schedule_option_hint {
+  height: 52px;
   padding: var(--space-4);
   border-bottom: 1px solid var(--neutral-6);
 }

@@ -1,16 +1,18 @@
 // import Feedback from './Feedback';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { GlobalBanner } from '@/devlink2/GlobalBanner';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import Loader from '../../Common/Loader';
 import ButtonGroup from './ButtonGroup';
@@ -26,6 +28,7 @@ function SchedulingViewComp() {
   const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   const schedule = data?.schedule_data;
+  const job = schedule?.job;
 
   const viewScheduleTabs = [
     { name: 'Candidate Details', tab: 'candidate_details', hide: false },
@@ -146,7 +149,7 @@ function SchedulingViewComp() {
 
                 {checkPermissions(['scheduling_actions']) && (
                   <Stack
-                    height={'100vh'}
+                    height={'calc(100vh - 48px)'}
                     minWidth={'400px'}
                     overflow={'auto'}
                     p={'var(--space-4)'}
@@ -155,6 +158,31 @@ function SchedulingViewComp() {
                       borderColor: 'var(--neutral-6)',
                     }}
                   >
+                    <Stack mb={2} direction={'column'} spacing={1}>
+                      <Typography fontWeight={500}>Job</Typography>
+                      <WorkflowConnectedCard
+                        isLinkOffVisible={false}
+                        textRoleCategory={
+                          capitalizeFirstLetter(job.departments?.name) || '--'
+                        }
+                        role={job.job_title || '--'}
+                        textLocation={
+                          !job.office_locations?.city ||
+                          !job.office_locations?.country
+                            ? '--'
+                            : `${job.office_locations?.city}, ${job.office_locations?.country}`
+                        }
+                        onClickJob={{
+                          onClick: () => {
+                            window.open(
+                              `/jobs/${job.id}?section=interview`,
+                              '_blank',
+                            );
+                          },
+                        }}
+                        // textRoleCategory={job.}
+                      />
+                    </Stack>
                     <Requests session_id={schedule?.interview_session?.id} />
                   </Stack>
                 )}

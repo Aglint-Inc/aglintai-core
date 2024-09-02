@@ -1,0 +1,63 @@
+.active-circle-wrappers {
+  position: relative;
+
+  display: flex;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+}
+
+.active-circle-fromt {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  z-index: 3;
+
+  width: 10px;
+  height: 10px;
+
+  border-radius: 100px;
+
+  background-color: var(--info-8);
+}
+
+.active-circle-middle {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  z-index: 2;
+
+  display: flex;
+  width: 14px;
+  height: 14px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: var(--info-4);
+}
+
+.active-circle-indi {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  display: flex;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #f1fafd;
+}

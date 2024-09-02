@@ -83,7 +83,7 @@ export function filterSchedulingOptionsArray({
   schedulingOptions,
   filters,
 }: {
-  schedulingOptions: ApiResponseFindAvailability;
+  schedulingOptions: ApiResponseFindAvailability['slots'];
   filters: DatabaseTable['candidate_request_availability']['availability'];
 }) {
   if (schedulingOptions.length === 0) {

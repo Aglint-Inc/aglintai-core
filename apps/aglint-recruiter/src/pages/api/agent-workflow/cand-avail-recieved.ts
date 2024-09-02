@@ -6,8 +6,8 @@ import {
 } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
-import { sendSelfSchedulingLinkFunc } from '@/src/services/api-schedulings/sendSelfSchedulingLink';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -78,15 +78,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
   ) {
     await executeWorkflowAction(
-      sendSelfSchedulingLinkFunc,
+      candidateSelfSchedule,
       {
-        cand_picked_slots,
+        cloned_sessn_ids: session_ids,
         start_date_str: avail_record.date_range[0],
         end_date_str: avail_record.date_range[1],
         organizer_id,
         request_id,
-        session_ids,
         application_id,
+        plans: cand_picked_slots,
+        reqProgressLogger,
       },
       reqProgressLogger,
       {

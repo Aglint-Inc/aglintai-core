@@ -1,3 +1,4 @@
+import { BriefcaseBusiness, Calendar, LayoutGrid, LayoutList, LibraryBig, ListTodo, Search, Settings, Users, Workflow } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -6,17 +7,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
 
-import AllCandidates from '../IconsSideBar/AllCandidates';
-import CompanySettingsIcon from '../IconsSideBar/CompanySettingsIcon';
-import IntegrationIcon from '../IconsSideBar/IntegrationIcon';
-import Interviewers from '../IconsSideBar/Interviewers';
-import InterviewTypeIcon from '../IconsSideBar/InterviewType';
-import JobsIcon from '../IconsSideBar/JobsIcon';
-import RequestIcon from '../IconsSideBar/RequestIcon';
-import SchedulerIcon from '../IconsSideBar/SchedulerIcon';
-import SourcingHubIcon from '../IconsSideBar/SourcingHubIcon';
-import TaskIcon from '../IconsSideBar/TaskIcon';
-import WorkFlowIcon from '../IconsSideBar/WorkFlowIcon';
 import { LinkProps } from './type';
 import { navList } from './utils';
 
@@ -71,7 +61,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<RequestIcon />}
+          slotIcon={<LayoutList strokeWidth={1.5} size={22} />}
         />
       );
     //return <AssistantLogo isActive={active} />;
@@ -80,7 +70,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<JobsIcon />}
+          slotIcon={<BriefcaseBusiness strokeWidth={1.5} size={22} />}
         />
       );
     case 'Interviews':
@@ -88,7 +78,7 @@ const LinkIcon = ({
         <NavLink
           texttooltip={module}
           isActive={active}
-          slotIcon={<SchedulerIcon />}
+          slotIcon={<Calendar strokeWidth={1.5} size={22} />}
         />
       );
     case 'Interview Types':
@@ -96,7 +86,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<InterviewTypeIcon />}
+          slotIcon={<LibraryBig strokeWidth={1.5} size={22} />}
         />
       );
     case 'Candidates':
@@ -104,7 +94,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<AllCandidates />}
+          slotIcon={<Users strokeWidth={1.5} size={22} />}
         />
       );
     case 'Interviewers':
@@ -112,7 +102,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<Interviewers />}
+          slotIcon={<Users strokeWidth={1.5} size={22} />}
         />
       );
     case 'Sourcing Hub':
@@ -120,7 +110,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<SourcingHubIcon />}
+          slotIcon={<Search strokeWidth={1.5} size={22} />}
         />
       );
     case 'Integrations':
@@ -128,7 +118,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<IntegrationIcon />}
+          slotIcon={<LayoutGrid strokeWidth={1.5} size={22} />}
         />
       );
     case 'Company Settings':
@@ -136,7 +126,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<CompanySettingsIcon />}
+          slotIcon={<Settings strokeWidth={1.5} size={22} />}
         />
       );
     case 'Workflows':
@@ -144,7 +134,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<WorkFlowIcon />}
+          slotIcon={<Workflow strokeWidth={1.5} size={22} />}
         />
       );
     case 'Tasks':
@@ -152,7 +142,7 @@ const LinkIcon = ({
         <NavLink
           isActive={active}
           texttooltip={module}
-          slotIcon={<TaskIcon />}
+          slotIcon={<ListTodo strokeWidth={1.5} size={22} />}
         />
       );
     // case 'Requests':
