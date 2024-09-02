@@ -11,6 +11,7 @@ import SelfScheduling from '@/src/components/CandiatePortal/components/SelfSched
 import UpcomingInterview from '@/src/components/CandiatePortal/components/UpcomingInterview';
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
+import MessageCard from '@/src/components/CandiatePortal/components/MassageCard';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
@@ -20,7 +21,7 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return 'No data';
+  if (!data) return <MessageCard />;
 
   const {
     availability,

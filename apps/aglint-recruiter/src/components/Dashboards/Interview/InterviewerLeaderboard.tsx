@@ -107,8 +107,6 @@ const leaderboardData = [
   },
 ];
 
-// const maxHours = Math.max(...leaderboardData.map(interviewer => interviewer.hours))
-
 export default function ComprehensiveInterviewerLeaderboard() {
   const [sortBy, setSortBy] = useState('rank');
 
@@ -125,7 +123,7 @@ export default function ComprehensiveInterviewerLeaderboard() {
 
   return (
     <div className='w-full max-w-6xl mx-auto'>
-      <Card className='w-full mx-auto border-none'>
+      <Card className='w-full mx-auto'>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
           <CardTitle className='text-md font-semibold flex items-center text-primary'>
             <Trophy className='mr-2 h-4 w-4' />
@@ -157,9 +155,6 @@ export default function ComprehensiveInterviewerLeaderboard() {
                 className='flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 bg-muted p-4 rounded-lg'
               >
                 <div className='flex w-[50%] items-center space-x-4'>
-                  {/* <div className="flex-shrink-0 w-10 text-2xl font-bold text-muted-foreground">
-                    {interviewer.rank}
-                  </div> */}
                   <div className='relative'>
                     <Avatar className='h-16 w-16 border-2 border-primary'>
                       <AvatarImage

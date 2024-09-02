@@ -77,9 +77,9 @@ const interviewers = [
 
 export default function InterviewersTable() {
   return (
-    <Card className='w-full max-w-6xl mx-auto'>
+    <Card>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='text-2xl font-bold'>Interviewers</CardTitle>
+        <CardTitle className='text-md font-semibold'>Interviewers</CardTitle>
         <Tabs defaultValue='interviewing'>
           <TabsList>
             <TabsTrigger value='interviewing'>Interviewing</TabsTrigger>

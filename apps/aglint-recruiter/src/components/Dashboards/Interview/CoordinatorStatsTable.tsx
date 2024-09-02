@@ -42,7 +42,7 @@ export default function CoordinatorStatsTable() {
   return (
     <Card className='w-full max-w-4xl mx-auto'>
       <CardHeader>
-        <CardTitle className='text-2xl font-bold'>
+        <CardTitle className='text-md font-semibold'>
           Coordinator Statistics
         </CardTitle>
       </CardHeader>

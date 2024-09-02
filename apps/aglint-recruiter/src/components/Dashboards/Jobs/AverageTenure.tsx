@@ -10,7 +10,7 @@ export default function AverageTenure() {
   return (
     <Card className='w-full max-w-sm mx-auto'>
       <CardHeader>
-        <CardTitle className='text-2xl font-bold'>Average Tenure</CardTitle>
+        <CardTitle className='text-md font-semibold'>Average Tenure</CardTitle>
       </CardHeader>
       <CardContent className='flex flex-col items-center'>
         <div className='text-6xl font-bold mb-2'>1.9</div>

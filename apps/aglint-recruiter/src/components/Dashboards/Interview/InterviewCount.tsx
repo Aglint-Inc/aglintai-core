@@ -71,7 +71,7 @@ const InterviewCount: React.FC = () => {
   return (
     <>
       <div className='flex flex-col space-y-6'>
-        <Card className='w-full border-none shadow-none'>
+        <Card className='w-full  shadow-none'>
           <CardContent>
             <div className='space-y-8'>
               <div>
@@ -109,7 +109,7 @@ const InterviewCount: React.FC = () => {
                             outerRadius={80}
                             dataKey='value'
                           >
-                            <Cell fill={COLORS[index % COLORS.length]} />
+                            <Cell fill={`hsl(var(--chart-${(index % 10) + 1}))`} />
                             <Cell fill='#f3f4f6' />
                           </Pie>
                           <text
@@ -180,9 +180,9 @@ const InterviewCount: React.FC = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey='Completed' stackId='a' fill={COLORS[0]} />
-                    <Bar dataKey='Confirmed' stackId='a' fill={COLORS[1]} />
-                    <Bar dataKey='Waiting' stackId='a' fill={COLORS[2]} />
+                    <Bar dataKey='Completed' stackId='a' fill='hsl(var(--chart-1))' />
+                    <Bar dataKey='Confirmed' stackId='a' fill='hsl(var(--chart-2))' />
+                    <Bar dataKey='Waiting' stackId='a' fill='hsl(var(--chart-3))' />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
