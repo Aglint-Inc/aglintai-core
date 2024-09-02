@@ -12,10 +12,23 @@ import UrgentVsStandard from '@/src/components/Charts/UrgentVsStandard';
 import InterviewersTrainingReport from '@/src/components/Reports/InterviewersTrainingReport';
 import TrainingCompletionRates from '@/src/components/Reports/TrainingCompletionRates';
 import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';
+import { EmptyState } from '@components/shadcn/empty-state';
+import { useRouter } from 'next/navigation';
 
 export default function ReportsPage() {
+  const router = useRouter(); // Add this line
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+      <EmptyState
+        module="interviewPlan"
+        title="No reports found"
+        description="You don't have any reports yet. Please check back later."
+        actionLabel="Go to home"
+        onAction={() => {
+          router.push('/');
+        }}
+      />
       {/* <div className="col-span-1 md:col-span-2 lg:col-span-3">
         <InterviewersTrainingReport />
       </div>

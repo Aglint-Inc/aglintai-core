@@ -273,6 +273,8 @@ export const PATHS = [
 '/candidates/search',
 '/company',
 '/company-postings/[id]',
+'/dashboards',
+'/dashboards/interviewer',
 '/forgot-password',
 '/integrations',
 '/integrations/[platform]',
