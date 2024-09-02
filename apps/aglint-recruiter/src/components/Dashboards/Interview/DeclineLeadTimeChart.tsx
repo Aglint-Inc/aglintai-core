@@ -1,9 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { ArrowDownIcon, DownloadIcon } from 'lucide-react';
 import React from 'react';
 import {
@@ -15,6 +9,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const data = [
   { date: '18 Feb', days: 2.8 },

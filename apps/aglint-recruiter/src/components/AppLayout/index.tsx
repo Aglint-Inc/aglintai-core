@@ -1,7 +1,16 @@
 import '@styles/globals.css';
-import { useQueryClient } from '@tanstack/react-query';
 
-import { NavBottom } from '@/devlink/NavBottom';
+import { useQueryClient } from '@tanstack/react-query';
+import { LogOut } from 'lucide-react';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useResizeWindow } from '@/src/context/ResizeWindow/ResizeWindow';
@@ -11,10 +20,6 @@ import NotFoundPage from '@/src/pages/404';
 import { isEnvProd } from '@/src/utils/isEnvProd';
 import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { LogOut } from 'lucide-react';
 
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
@@ -39,34 +44,47 @@ export default function AppLayout({ children, appRouter = false }) {
     return <ResponsiveBanner />;
   }
   return (
-    <div className="flex h-screen">
-      <nav className="flex flex-col justify-between w-16 border-r bg-white">
-        <div className="flex flex-col items-center py-3 flex-grow">
-          <Button variant="ghost" size="icon" asChild className="rounded-full">
-            <Link href="#">
+    <div className='flex h-screen'>
+      <nav className='flex flex-col justify-between w-16 border-r bg-white'>
+        <div className='flex flex-col items-center py-3 flex-grow'>
+          <Button variant='ghost' size='icon' asChild className='rounded-full'>
+            <Link href='#'>
+              {/*eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logo}
-                alt="Company Logo"
-                className="rounded-full mb-5"
+                alt='Company Logo'
+                className='rounded-full mb-5'
                 style={{ objectFit: 'contain', width: '100%', height: '100%' }}
               />
             </Link>
           </Button>
           <SideNavbar />
         </div>
-        <div className="flex flex-col items-center pb-5 space-y-4">
+        <div className='flex flex-col items-center pb-5 space-y-4'>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Button variant="ghost" size="icon" className="rounded-full" asChild>
-                  <Link href={ROUTES['/user/profile/[user_id]']({ user_id: recruiterUser?.user_id }) + '?profile=true'}>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='rounded-full'
+                  asChild
+                >
+                  <Link
+                    href={
+                      ROUTES['/user/profile/[user_id]']({
+                        user_id: recruiterUser?.user_id,
+                      }) + '?profile=true'
+                    }
+                  >
+                    {/*eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={userDetails?.profile_image}
-                      alt="User Profile"
-                      className="rounded-full w-full h-full"
+                      alt='User Profile'
+                      className='rounded-full w-full h-full'
                       style={{ objectFit: 'cover' }}
                     />
-                    <span className="sr-only">User profile</span>
+                    <span className='sr-only'>User profile</span>
                   </Link>
                 </Button>
               </TooltipTrigger>
@@ -78,8 +96,8 @@ export default function AppLayout({ children, appRouter = false }) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Button variant="outline" size="icon" onClick={handleSignOut}>
-                  <LogOut className="w-6 h-6" strokeWidth={1.5} />
+                <Button variant='outline' size='icon' onClick={handleSignOut}>
+                  <LogOut className='w-6 h-6' strokeWidth={1.5} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent align='center' side='right'>
@@ -90,7 +108,7 @@ export default function AppLayout({ children, appRouter = false }) {
         </div>
       </nav>
 
-      <main className="flex-1 overflow-auto">
+      <main className='flex-1 overflow-auto'>
         {appRouter || checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
           children
         ) : (

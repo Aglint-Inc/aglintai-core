@@ -1,6 +1,7 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import CompanySlider from './companySlider';
 
 export default function CompanyTabs({

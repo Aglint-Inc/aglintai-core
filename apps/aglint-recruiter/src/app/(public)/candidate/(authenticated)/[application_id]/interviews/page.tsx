@@ -1,15 +1,14 @@
 'use client';
 import { getFullName } from '@aglint/shared-utils';
+import { Linkedin } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Linkedin } from 'lucide-react';
-
 import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
 import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';
-import { getFullName } from '@/src/utils/jsonResume';
 
 export default function InterviewsPage({ params }) {
   const application_id = params.application_id;

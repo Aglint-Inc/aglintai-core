@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import { useCompany } from '../hook';
 import NavProfile from './NavProfile';
@@ -15,8 +16,6 @@ export default function Navigation() {
   const application_id = pathname.split('/').filter((a) => a)[1];
   const currentTab = pathname.split('/').filter((a) => a)[2];
   const { data: company } = useCompany({ application_id });
-
-  console.log(company);
 
   return (
     <div className='sticky w-full top-3 z-50 flex items-center justify-center'>

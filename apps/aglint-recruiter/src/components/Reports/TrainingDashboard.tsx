@@ -1,9 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 import {
   Bar,
@@ -18,6 +12,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import TrainingCompletionRates from './TrainingCompletionRates';
 

@@ -12,6 +12,8 @@ import React, {
   useState,
 } from 'react';
 
+import { ModeToggle } from '@/components/mode-toggle';
+import { Button } from '@/components/ui/button';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
@@ -35,9 +37,9 @@ import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
 import PublishButton from '@/src/components/Common/PublishButton';
 import UITextField from '@/src/components/Common/UITextField';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { ModeToggle } from '@/src/components/shadcn/mode-toggle';
-import { Button } from '@/src/components/shadcn/ui/button';
-import V0Button from '@/src/components/shadcn/v0-button';
+// import { ModeToggle } from '@/src/components/shadcn/mode-toggle';
+// import { Button } from '@/src/components/shadcn/ui/button';
+// import V0Button from '@/src/components/shadcn/v0-button';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -53,7 +55,7 @@ export const SharedActions = () => {
       <Stack direction={'row'} alignItems={'center'} gap={2}>
         <Button>Click me!</Button>
         <ModeToggle />
-        <V0Button />
+        {/* <V0Button /> */}
         <Score />
         <Sync />
         <Add />

@@ -1,12 +1,8 @@
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import React, { useState } from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const data = [
   { name: 'Mountain View', value: 12 },
