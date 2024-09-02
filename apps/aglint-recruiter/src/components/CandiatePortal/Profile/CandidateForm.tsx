@@ -1,9 +1,4 @@
 'use client';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@components/shadcn/ui/avatar';
 import { Button } from '@components/shadcn/ui/button';
 import {
   Card,
@@ -102,17 +97,11 @@ export default function CandidateForm({
         <CardContent>
           <form className='space-y-6'>
             <div className='flex flex-col items-center space-y-4'>
-              <Avatar className='w-32 h-32'>
+              {/* <Avatar className='w-32 h-32'>
                 <AvatarImage src={form.avatar} alt={form.first_name} />
                 <AvatarFallback>{form.first_name}</AvatarFallback>
-              </Avatar>
-              {/* <FileUploader
-                accept='image/*'
-                onFileSelect={handlePhotoUpload}
-                className='w-full max-w-xs'
-              >
-                Upload Photo
-              </FileUploader> */}
+              </Avatar> */}
+
               <ImageUploadManual
                 image={form.avatar}
                 imageFile={imageFile}
@@ -205,31 +194,6 @@ export default function CandidateForm({
                 </SelectContent>
               </Select>
             </div>
-
-            {/* <div className='space-y-2'>
-              <Label>Resume</Label>
-              <FileUploader
-                accept='.pdf,.doc,.docx'
-                onFileSelect={handleResumeUpload}
-                className='w-full'
-              >
-                {resume ? 'Update Resume' : 'Upload Resume'}
-              </FileUploader>
-              {resume && (
-                <div className='flex items-center space-x-2 mt-2'>
-                  <span className='text-sm text-gray-600'>{resume.name}</span>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() =>
-                      window.open(URL.createObjectURL(resume), '_blank')
-                    }
-                  >
-                    View
-                  </Button>
-                </div>
-              )}
-            </div> */}
 
             <Button
               type='submit'

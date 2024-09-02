@@ -3,8 +3,6 @@ import { Avatar, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { LoaderSvg } from '@/devlink/LoaderSvg';
 import toast from '@/src/utils/toast';
 
 function ImageUploadManual({
@@ -95,7 +93,8 @@ function ImageUploadManual({
               alignItems={'center'}
               justifyContent={'center'}
             >
-              <LoaderSvg />
+              {/* <LoaderSvg /> */}
+              Loading
             </Stack>
           )}
           <Stack
@@ -129,13 +128,14 @@ function ImageUploadManual({
                   justifyContent={'center'}
                   alignItems={'center'}
                 >
-                  <IconButtonSoft
+                  {/* <IconButtonSoft
                     iconSize={6}
                     color='neutral'
                     iconWeight='thin'
                     iconName='cloud_upload'
                     iconColor='neutral'
-                  />
+                  /> */}
+                  upload
                 </Stack>
               </FileUploader>
             ) : (
