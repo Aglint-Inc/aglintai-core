@@ -1,12 +1,12 @@
-import { MultiDayPlanType } from '@aglint/shared-types';
+import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
-import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import dayjs from '@/src/utils/dayjs';
 
-import { Event, Resource } from '../../../Common/CalendarResourceView/types';
-import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
+import { type Event, type Resource } from '../../../Common/CalendarResourceView/types';
+import { type filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 
 type PrefferedInterviewer = {
   user_id: string;

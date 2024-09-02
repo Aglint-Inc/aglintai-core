@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 

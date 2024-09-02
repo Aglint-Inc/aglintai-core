@@ -1,6 +1,6 @@
 import { appKey, argsToKeys } from '..';
 import { type getInterviewTrainingProgressAPI } from '.';
-import { Functions } from './types';
+import { type Functions } from './types';
 
 export const schedulingDashboardQueryKeys = {
   all: { queryKey: [appKey, 'scheduling_dashboard'] as string[] },

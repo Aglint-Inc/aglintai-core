@@ -1,6 +1,6 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import useJobActions from './hooks';
+import type useJobActions from './hooks';
 
 export type JobContext = ReturnType<typeof useJobActions>;
 export type CountJobs = {

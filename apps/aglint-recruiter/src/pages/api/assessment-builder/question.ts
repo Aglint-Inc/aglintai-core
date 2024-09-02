@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { JobTypeDB } from '@aglint/shared-types';
-import { DB } from '@aglint/shared-types';
+import { type JobTypeDB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
+import { type PostgrestError } from '@supabase/supabase-js';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 export const config = {

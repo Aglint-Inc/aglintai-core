@@ -1,6 +1,6 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 
-import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 export async function syncDepartments(
   supabaseAdmin: SupabaseClientType,

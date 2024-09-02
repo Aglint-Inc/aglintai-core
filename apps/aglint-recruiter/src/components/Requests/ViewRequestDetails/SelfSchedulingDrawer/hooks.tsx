@@ -1,19 +1,19 @@
-import { APIFindAvailability } from '@aglint/shared-types';
+import { type APIFindAvailability } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { setNoSlotReasons } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
-import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { type ApiBodyParamsSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
+import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
 import { useMeetingList } from '../hooks';
 import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 import {
-  SelfSchedulingFlow,
+  type SelfSchedulingFlow,
   setAnchorEl,
   setAvailabilities,
   setCalendarDate,

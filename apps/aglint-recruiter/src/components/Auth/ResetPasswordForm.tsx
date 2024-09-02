@@ -1,7 +1,7 @@
 'use client';
 import { Eye, EyeOff } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { useToast } from '@/components/hooks/use-toast';
 import { Button } from '@/components/ui/button';

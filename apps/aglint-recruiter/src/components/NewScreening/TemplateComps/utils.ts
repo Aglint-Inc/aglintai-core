@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { PhoneScreenQuestion } from '../types';
+import { type PhoneScreenQuestion } from '../types';
 
 export const qnTypeToLabel2 = (type: PhoneScreenQuestion['type']) => {
   if (type === 'shortAnswer') return 'Short answer';

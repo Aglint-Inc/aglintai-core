@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 export type ResumeJson = DatabaseTable['candidate_files']['resume_json'];
 

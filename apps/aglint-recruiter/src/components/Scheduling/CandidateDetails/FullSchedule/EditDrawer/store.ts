@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-import { SessionsType } from '../../types';
-import { Interviewer } from './types';
+import { type SessionsType } from '../../types';
+import { type Interviewer } from './types';
 
 export interface EditSessionDrawer {
   selectedInterviewers: Interviewer[];

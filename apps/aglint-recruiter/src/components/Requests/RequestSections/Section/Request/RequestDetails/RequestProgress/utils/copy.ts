@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 type WorkflowCopyType = {
   // eslint-disable-next-line no-unused-vars

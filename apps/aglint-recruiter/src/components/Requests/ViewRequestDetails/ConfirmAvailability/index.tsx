@@ -1,7 +1,7 @@
 import {
-  APIConfirmRecruiterSelectedOption,
-  CandReqSlotsType,
-  SessionCombinationRespType,
+  type APIConfirmRecruiterSelectedOption,
+  type CandReqSlotsType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';

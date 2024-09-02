@@ -12,7 +12,7 @@ import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
 import BadgesRight from './BadgesRight';

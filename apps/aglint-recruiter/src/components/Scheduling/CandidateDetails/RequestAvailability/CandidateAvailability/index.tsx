@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';

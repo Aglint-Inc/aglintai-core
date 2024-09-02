@@ -9,7 +9,7 @@ import {
   interviewCancelReasons,
   userDetails,
 } from '../CandidateDetails/queries/utils';
-import { MemberType } from '../InterviewTypes/types';
+import { type MemberType } from '../InterviewTypes/types';
 
 export const useScheduleDetails = () => {
   const queryClient = useQueryClient();

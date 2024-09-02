@@ -2,11 +2,11 @@
 import { Stack } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { capitalize } from 'lodash';
-import { Dispatch, SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 
-import { scoreWheelDependencies, ScoreWheelParams } from '.';
+import { type ScoreWheelParams,scoreWheelDependencies } from '.';
 
 const ScoreWheelControls = ({
   weights,

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { APISendgridPayload } from '@aglint/shared-types';
+import { type APISendgridPayload } from '@aglint/shared-types';
 
 import { getOutboundEmail } from '@/src/utils/scheduling_v2/get-outbound-email';
 

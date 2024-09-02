@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -42,7 +42,7 @@ import RequestAvailabilityList from './RequestAvailabilityList';
 import RequestAvailabilityResend from './RequestAvailabilityResend';
 import ScheduleNowCard from './ScheduleNowCard';
 import SelfScheduleResend from './SelfScheduleResend';
-import SessionCard, { meetingCardType } from './SessionCard';
+import SessionCard, { type meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
   const { tasks } = useTasksContext();

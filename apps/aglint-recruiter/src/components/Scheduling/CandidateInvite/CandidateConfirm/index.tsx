@@ -1,5 +1,5 @@
-import { DatabaseTable } from '@aglint/shared-types';
-import { CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
+import { type DatabaseTable } from '@aglint/shared-types';
+import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack, Typography } from '@mui/material';
@@ -12,17 +12,17 @@ import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import axios from '@/src/client/axios';
 import CompanyLogo from '@/src/components/Common/CompanyLogo';
 import Footer from '@/src/components/Common/Footer';
-import { TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
+import { type TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
-import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason';
+import { type useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { type API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
-import { ScheduleCardProps, ScheduleCardsProps } from '../types';
+import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { createRequest, dayJS, getCalenderEventUrl } from '../utils';
 
 export const ConfirmedInvitePage = (

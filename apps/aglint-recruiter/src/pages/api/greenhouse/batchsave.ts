@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { GreenhouseApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
+import { type GreenhouseApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import type { saveResumeAPI } from './saveResume';

@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
 import { tokenMeter } from '@/src/utils/tokenCounter';

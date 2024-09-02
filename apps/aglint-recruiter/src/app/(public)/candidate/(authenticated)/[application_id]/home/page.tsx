@@ -14,23 +14,24 @@ import UpcomingInterview from '@/src/components/CandiatePortal/components/Upcomi
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 
+import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 
 const interviews = [
   {
-    name: "Personality and Cultural fit",
-    date: "11 December 2021, 09:30 AM",
-    status: "Completed" as const
+    name: 'Personality and Cultural fit',
+    date: '11 December 2021, 09:30 AM',
+    status: 'Completed' as const,
   },
   {
-    name: "Technical Interview",
-    date: "",
-    status: "Not Scheduled" as const
+    name: 'Technical Interview',
+    date: '',
+    status: 'Not Scheduled' as const,
   },
   {
-    name: "HR Interview",
-    date: "",
-    status: "Not Scheduled" as const
-  }
+    name: 'HR Interview',
+    date: '',
+    status: 'Not Scheduled' as const,
+  },
 ];
 
 export default function Component({ params }) {
@@ -40,7 +41,7 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <MessageCard />;
+  if (!data) return <ReorderableInterviewPlan />;
 
   const {
     availability,
@@ -95,13 +96,13 @@ export default function Component({ params }) {
               )}
               <div className='flex flex-col space-y-2'>
                 <h4 className='text-md font-semibold'>Interview Progress</h4>
-              {interviews.map((interview, index) => (
-          <InterviewProgressCard
-            key={index}
-            interview={interview}
-            isLast={index === interviews.length - 1} 
-          />
-        ))}
+                {interviews.map((interview, index) => (
+                  <InterviewProgressCard
+                    key={index}
+                    interview={interview}
+                    isLast={index === interviews.length - 1}
+                  />
+                ))}
               </div>
             </div>
           </div>

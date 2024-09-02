@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseView } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseView } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import dayjs from '@/src/utils/dayjs';

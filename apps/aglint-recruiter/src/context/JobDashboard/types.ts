@@ -1,4 +1,4 @@
-import useJobDashboardProvider from './hooks';
+import type useJobDashboardProvider from './hooks';
 
 export type JobDashboardContextType = ReturnType<
   typeof useJobDashboardProvider

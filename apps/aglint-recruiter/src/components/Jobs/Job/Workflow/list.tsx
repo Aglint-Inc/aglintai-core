@@ -21,7 +21,7 @@ import {
 import { JobIcon } from '@/src/components/Workflow/index/body/icons';
 import { useJob } from '@/src/context/JobContext';
 import {
-  JobDashboardStore,
+  type JobDashboardStore,
   useJobDashboardStore,
 } from '@/src/context/JobDashboard/store';
 import { useWorkflows } from '@/src/context/Workflows';
@@ -31,7 +31,7 @@ import {
   useJobWorkflowMutations,
 } from '@/src/queries/job-workflow';
 import { useWorkflowQuery } from '@/src/queries/workflow';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 

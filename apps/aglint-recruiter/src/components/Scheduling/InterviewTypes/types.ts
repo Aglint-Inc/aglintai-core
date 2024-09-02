@@ -1,15 +1,15 @@
 import {
-  DatabaseView,
-  DB,
-  InterviewModuleRelationType,
-  InterviewModuleType,
-  PauseJson
+  type DatabaseView,
+  type DB,
+  type InterviewModuleRelationType,
+  type InterviewModuleType,
+  type PauseJson
 } from '@aglint/shared-types';
 
-import { CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
 
-import { MemberTypeAutoComplete } from '../Common/MembersTextField';
-import { fetchInterviewModules } from './queries/utils';
+import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
+import { type fetchInterviewModules } from './queries/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;

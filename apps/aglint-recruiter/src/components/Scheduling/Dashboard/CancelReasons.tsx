@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { ReactNode, useState } from 'react';
+import React, { type ReactNode, useState } from 'react';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';

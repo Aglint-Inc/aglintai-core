@@ -1,4 +1,4 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3/TaskStatus';

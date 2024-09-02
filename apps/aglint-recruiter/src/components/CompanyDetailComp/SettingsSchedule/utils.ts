@@ -1,4 +1,4 @@
-import { permissionsEnum } from '@aglint/shared-types/src/db/tables/permissions/type';
+import { type permissionsEnum } from '@aglint/shared-types/src/db/tables/permissions/type';
 
 export const hoursList = Array.from({ length: 40 }, (_, index) => index + 1);
 

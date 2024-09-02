@@ -1,7 +1,7 @@
 'use client';
 import { getFullName } from '@aglint/shared-utils';
 import { Linkedin } from 'lucide-react';
-import { Calendar } from 'lucide-react'
+import { Calendar } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -39,10 +39,9 @@ export default function InterviewsPage({ params }) {
                 <InterviewCard key={index} interview={interview} />
               ))
             ) : (
-              <>
-               <EmptyState icon={Calendar} text="No upcoming interviews" />
-              </>
-             
+              <div>
+                <EmptyState icon={Calendar} text='No upcoming interviews' />
+              </div>
             )}
           </div>
           <div>
@@ -52,7 +51,7 @@ export default function InterviewsPage({ params }) {
                 <InterviewCard key={index} interview={interview} />
               ))
             ) : (
-              <EmptyState icon={Calendar} text="No Past interviews" />
+              <EmptyState icon={Calendar} text='No Past interviews' />
             )}
           </div>
         </main>

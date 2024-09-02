@@ -1,4 +1,4 @@
-import { SessionCombinationRespType } from '@aglint/shared-types';
+import { type SessionCombinationRespType } from '@aglint/shared-types';
 import React from 'react';
 
 import ConflictWithHover from '../SingleDayCard/SessionIndividual/ConflictWithHover';

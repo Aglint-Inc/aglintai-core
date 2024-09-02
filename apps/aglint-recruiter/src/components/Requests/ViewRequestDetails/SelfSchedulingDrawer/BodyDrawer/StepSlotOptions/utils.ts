@@ -1,4 +1,4 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
 
 export function extractPlanData(
   sessionsArray: PlanCombinationRespType[],

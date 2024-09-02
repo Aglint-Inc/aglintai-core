@@ -23,7 +23,7 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
 
-import { LinkProps } from './type';
+import { type LinkProps } from './type';
 import { navList } from './utils';
 
 function SideNavbar() {

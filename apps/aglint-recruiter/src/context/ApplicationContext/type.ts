@@ -1,4 +1,4 @@
-import { useApplication } from '.';
+import { type useApplication } from '.';
 
 type UseApplication = typeof useApplication;
 

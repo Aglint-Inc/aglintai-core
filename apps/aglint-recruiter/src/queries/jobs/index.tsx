@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEqual } from 'lodash';
 
@@ -9,7 +9,7 @@ import toast from '@/src/utils/toast';
 
 import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
-import { Job, JobCreate, JobInsert } from './types';
+import { type Job, type JobCreate, type JobInsert } from './types';
 
 export const useJobsRead = (manageJob: boolean = false) => {
   const { recruiter_id } = useAuthDetails();

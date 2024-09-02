@@ -1,10 +1,10 @@
 import {
+  type TooltipProps,
   Checkbox,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -12,7 +12,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
 import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskTableCard } from '@/devlink3/TaskTableCard';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import ROUTES from '@/src/utils/routing/routes';
 import {
   capitalizeAll,

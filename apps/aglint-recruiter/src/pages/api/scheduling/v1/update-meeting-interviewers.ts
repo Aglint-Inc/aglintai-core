@@ -1,18 +1,18 @@
 import {
-  APIUpdateMeetingInterviewers,
-  CalendarEvent,
-  ScheduleAuthType,
+  type APIUpdateMeetingInterviewers,
+  type CalendarEvent,
+  type ScheduleAuthType,
 } from '@aglint/shared-types';
 import {
   CApiError,
   schema_update_meeting_ints,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
+import { type CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

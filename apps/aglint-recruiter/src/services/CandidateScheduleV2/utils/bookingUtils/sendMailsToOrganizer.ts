@@ -1,7 +1,7 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { BookedMeetingDetails, ScheduleDBDetails } from './types';
+import { type BookedMeetingDetails, type ScheduleDBDetails } from './types';
 
 export const sendMailsToOrganizer = async (
   schedule_db_details: ScheduleDBDetails,

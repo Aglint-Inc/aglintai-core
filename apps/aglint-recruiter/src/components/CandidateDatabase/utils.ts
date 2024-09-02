@@ -1,4 +1,4 @@
-import { JsonResume } from '@aglint/shared-types';
+import { type JsonResume } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { isArray } from 'lodash';
@@ -6,8 +6,8 @@ import { isArray } from 'lodash';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {
-  CandidateSearchRes,
-  CandidateSearchState,
+  type CandidateSearchRes,
+  type CandidateSearchState,
 } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 export const getRelevantCndidates = async (

@@ -1,4 +1,4 @@
-import { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import { type holidayType, type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Alert,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { type MouseEvent, useEffect, useRef, useState } from 'react';
 
 import { RolesPill } from '@/devlink/RolesPill';
 import { DayOff } from '@/devlink2/DayOff';

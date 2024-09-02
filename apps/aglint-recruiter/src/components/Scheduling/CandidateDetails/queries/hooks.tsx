@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
 import axios from '@/src/client/axios';
-import { ApiCandidateDetails } from '@/src/pages/api/scheduling/application/fetchcandidatedetails';
-import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
+import { type ApiCandidateDetails } from '@/src/pages/api/scheduling/application/fetchcandidatedetails';
+import { type ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

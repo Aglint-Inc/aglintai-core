@@ -1,8 +1,8 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
@@ -12,7 +12,7 @@ import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Co
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import {
-  SchedulesSupabase,
+  type SchedulesSupabase,
   transformDataSchedules,
 } from '../../schedules-query';
 import { fetchSchedulesCountByUserId } from '../InterviewerDetail/query';

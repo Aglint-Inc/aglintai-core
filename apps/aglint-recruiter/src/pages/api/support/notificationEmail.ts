@@ -1,9 +1,9 @@
 import {
-  getNotificationMailBodyType,
-  NotificationsEmailAPIType,
-  Support_ticketType,
+  type getNotificationMailBodyType,
+  type NotificationsEmailAPIType,
+  type Support_ticketType,
 } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { supabase } from '@/src/utils/supabase/client';
 

@@ -17,7 +17,7 @@ import Loader from '@/src/components/Common/Loader';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
-import { responseType } from '@/src/context/CandidateAssessment/types';
+import { type responseType } from '@/src/context/CandidateAssessment/types';
 
 import Progress from '../Progress';
 import Timer from '../Timer';

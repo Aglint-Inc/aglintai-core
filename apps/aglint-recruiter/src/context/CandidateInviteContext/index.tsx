@@ -1,8 +1,8 @@
 'use client';
-import { createContext, ReactNode, useContext } from 'react';
+import { type ReactNode, createContext, useContext } from 'react';
 
 import useInviteActions from './hooks';
-import { CandidateInviteContextType } from './types';
+import { type CandidateInviteContextType } from './types';
 
 const CandidateInviteContext = createContext(undefined);
 

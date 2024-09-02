@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 

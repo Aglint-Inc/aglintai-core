@@ -18,7 +18,7 @@ import BadgesRight from './BadgesRight';
 import ButtonGroupRight from './ButtonGroupRight';
 import CollapseContent from './Collapse';
 import RequestStatusUnconfirmed from './RequestStatusUnconfirmed';
-import { ScheduleIndividualCardType } from './types';
+import { type ScheduleIndividualCardType } from './types';
 
 function ScheduleIndividualCard({
   interview_session,

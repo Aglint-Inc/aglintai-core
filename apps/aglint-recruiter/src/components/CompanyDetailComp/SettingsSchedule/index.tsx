@@ -15,13 +15,13 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { type MouseEvent, useEffect, useRef, useState } from 'react';
 
 import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-import { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import { type holidayType, type schedulingSettingType } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

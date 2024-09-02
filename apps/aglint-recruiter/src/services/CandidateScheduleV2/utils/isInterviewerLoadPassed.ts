@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  CalConflictType,
-  InterviewSessionApiRespType,
-  schedulingSettingType,
+  type CalConflictType,
+  type InterviewSessionApiRespType,
+  type schedulingSettingType,
 } from '@aglint/shared-types';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
-import { ScheduleApiDetails } from '../types';
+import { type ScheduleApiDetails } from '../types';
 
 type LoadType = {
   total_interview: number;

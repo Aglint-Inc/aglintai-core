@@ -25,12 +25,12 @@ import IconScheduleType from '../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../Candidates/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
-  CandidateInviteCalendarProps,
+  type CandidateInviteCalendarProps,
 } from './calender';
 import { ConfirmedInvitePage } from './CandidateConfirm';
 import MultiDay from './MultiDay';
 import { SingleDayConfirmation } from './SingleDayConfirmation';
-import { ScheduleCardProps, ScheduleCardsProps } from './types';
+import { type ScheduleCardProps, type ScheduleCardsProps } from './types';
 import { getDurationText } from './utils';
 
 const CandidateInviteNew = () => {

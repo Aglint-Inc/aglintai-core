@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
-import { SchedulingApplication, setIsEditOpen } from '../../store';
+import { type SchedulingApplication, setIsEditOpen } from '../../store';
 import {
   setDebriefMembers,
   setEditSession,
@@ -13,7 +13,7 @@ import {
   setTrainingInterviewers,
   setTrainingToggle,
 } from '../EditDrawer/store';
-import { ScheduleIndividualCardType } from './types';
+import { type ScheduleIndividualCardType } from './types';
 
 function ButtonGroupRight({
   interview_meeting,

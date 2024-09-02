@@ -1,10 +1,10 @@
 'use client';
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import {
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
   createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
   useContext,
   useEffect,
   useState,

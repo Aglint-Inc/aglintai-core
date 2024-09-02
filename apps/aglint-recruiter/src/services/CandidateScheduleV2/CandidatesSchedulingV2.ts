@@ -1,18 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APIOptions,
-  CalConflictType,
-  CandReqSlotsType,
-  ConflictReason,
-  CurrRoundCandidateAvailReq,
-  DatabaseTable,
-  DateRangePlansType,
-  InterviewSessionApiRespType,
-  PauseJson,
-  PlanCombinationRespType,
-  SessionCombinationRespType,
-  SessionInterviewerApiRespType,
-  SessionsCombType,
+  type APIOptions,
+  type CalConflictType,
+  type CandReqSlotsType,
+  type ConflictReason,
+  type CurrRoundCandidateAvailReq,
+  type DatabaseTable,
+  type DateRangePlansType,
+  type InterviewSessionApiRespType,
+  type PauseJson,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
+  type SessionInterviewerApiRespType,
+  type SessionsCombType,
 } from '@aglint/shared-types';
 import {
   CApiError,
@@ -21,16 +21,16 @@ import {
   scheduling_options_schema,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';
 
 import {
-  IntervsWorkHrsEventMapType,
-  IntervsWorkHrsEventType,
-  ScheduleApiDetails,
-  ScheduleDBDetailsParams,
+  type IntervsWorkHrsEventMapType,
+  type IntervsWorkHrsEventType,
+  type ScheduleApiDetails,
+  type ScheduleDBDetailsParams,
 } from './types';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';

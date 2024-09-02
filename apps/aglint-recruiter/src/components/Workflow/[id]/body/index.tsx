@@ -19,7 +19,7 @@ import {
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
 } from '@/src/queries/job-workflow';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

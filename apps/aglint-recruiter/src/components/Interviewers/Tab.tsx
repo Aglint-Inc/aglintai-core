@@ -7,7 +7,7 @@ import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
 import { useKeyPress } from '@/src/hooks/useKeyPress';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { interviewersTab } from './types';
+import { type interviewersTab } from './types';
 
 function InterviewersTabs() {
   const router = useRouter();

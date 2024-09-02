@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
 import {
-  DatabaseTable,
-  DB,
-  PlanCombinationRespType,
-  RecruiterUserType,
+  type DatabaseTable,
+  type DB,
+  type PlanCombinationRespType,
+  type RecruiterUserType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { createServerClient } from '@supabase/ssr';
+import { type createServerClient } from '@supabase/ssr';
 import dayjs from 'dayjs';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
-import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { type SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { scheduleDebrief } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { createTask } from '@/src/utils/scheduling/createTask';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';

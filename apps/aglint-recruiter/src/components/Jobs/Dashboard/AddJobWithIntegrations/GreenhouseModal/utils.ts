@@ -1,20 +1,20 @@
 import {
-  CandidateType,
-  DatabaseTableInsert,
-  NewCandidateType,
+  type CandidateType,
+  type DatabaseTableInsert,
+  type NewCandidateType,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { JobInsert } from '@/src/queries/jobs/types';
+import { type useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { type JobInsert } from '@/src/queries/jobs/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { POSTED_BY } from '../utils';
 import {
-  ExtendedJobGreenhouse,
-  GreenhouseApplication,
-  JobGreenhouse,
+  type ExtendedJobGreenhouse,
+  type GreenhouseApplication,
+  type JobGreenhouse,
 } from './types';
 
 export const createJobApplications = async (

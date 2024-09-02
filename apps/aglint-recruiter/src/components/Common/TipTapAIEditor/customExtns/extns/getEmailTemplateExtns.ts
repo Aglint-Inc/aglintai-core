@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';

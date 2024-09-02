@@ -1,5 +1,5 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
-import { ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
+import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 
 import { mailSender } from '@/src/utils/mailSender';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

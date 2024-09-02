@@ -1,4 +1,4 @@
-import { SuggestionProps } from '@tiptap/suggestion';
+import { type SuggestionProps } from '@tiptap/suggestion';
 import React, { Component } from 'react';
 
 import { AiCommand } from '@/devlink/AiCommand';

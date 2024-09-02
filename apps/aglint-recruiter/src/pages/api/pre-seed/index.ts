@@ -1,10 +1,10 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import {
   defaultRolePermissionRelation,
   defaultRoles,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { seed_email_templates } from '@/src/utils/seedCompanyData/seed_email_templates';
 import { seed_workflow_actions } from '@/src/utils/seedCompanyData/seed_workflow';

@@ -1,14 +1,14 @@
 import {
-  DatabaseTable,
-  DatabaseView,
-  InterviewModuleType,
+  type DatabaseTable,
+  type DatabaseView,
+  type InterviewModuleType,
 } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { type InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
-import { fetchApplicationDetails } from './queries/utils';
-import { SessionsType } from './types';
+import { type fetchApplicationDetails } from './queries/utils';
+import { type SessionsType } from './types';
 
 export type TabSchedulingType =
   | 'interview_plan'

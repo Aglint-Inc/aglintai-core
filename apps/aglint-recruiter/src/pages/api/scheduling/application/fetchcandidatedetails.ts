@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import {
   fetchApplicationDetails,
   fetchSessionDetailsFromSchedule,
 } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
-import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import { BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { type BannerType } from '@/src/components/Scheduling/CandidateDetails/types';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

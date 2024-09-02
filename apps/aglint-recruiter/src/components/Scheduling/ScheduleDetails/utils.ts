@@ -1,4 +1,4 @@
-import { APIEventAttendeeStatus, SupabaseType } from '@aglint/shared-types';
+import { type APIEventAttendeeStatus, type SupabaseType } from '@aglint/shared-types';
 import axios from 'axios';
 
 import { supabase } from '@/src/utils/supabase/client';

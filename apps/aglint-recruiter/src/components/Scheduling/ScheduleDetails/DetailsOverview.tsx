@@ -1,8 +1,8 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { NewTabPill } from '@/devlink3/NewTabPill';
@@ -17,7 +17,7 @@ import Banners from './Banners';
 import CancelScheduleDialog from './CancelScheduleDialog';
 import DeclineScheduleDialog from './DeclineScheduleDialog';
 import FeedbackWindow from './Feedback';
-import { useScheduleDetails } from './hooks';
+import { type useScheduleDetails } from './hooks';
 import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';

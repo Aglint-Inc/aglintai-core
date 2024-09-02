@@ -10,7 +10,7 @@ import { TeamOptionList } from '@/devlink/TeamOptionList';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateMember } from '@/src/context/AuthContext/utils';
-import { API_reset_password } from '@/src/pages/api/reset_password/type';
+import { type API_reset_password } from '@/src/pages/api/reset_password/type';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

@@ -6,7 +6,7 @@ import { HistoryPill } from '@/devlink3/HistoryPill';
 import { InterviewerTraining } from '@/devlink3/InterviewerTraining';
 import { InterviewerTrainingList } from '@/devlink3/InterviewerTrainingList';
 import { useJobs } from '@/src/context/JobsContext';
-import { SchedulingAnalyticsContextType } from '@/src/context/SchedulingAnalytics';
+import { type SchedulingAnalyticsContextType } from '@/src/context/SchedulingAnalytics';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 

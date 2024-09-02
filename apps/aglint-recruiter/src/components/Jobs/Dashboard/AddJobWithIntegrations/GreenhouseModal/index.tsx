@@ -14,7 +14,7 @@ import { useAllIntegrations } from '@/src/queries/intergrations';
 import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
-import { JobGreenhouse } from './types';
+import { type JobGreenhouse } from './types';
 import { fetchAllJobs, getGreenhouseStatusColor } from './utils';
 
 export function GreenhouseModal() {

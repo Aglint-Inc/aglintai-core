@@ -1,12 +1,12 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Stack, TextField } from '@mui/material';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import { Skeleton } from '@/devlink2/Skeleton';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';

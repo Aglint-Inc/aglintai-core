@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { CandReqAvailableSlots } from '@aglint/shared-types';
+import { type CandReqAvailableSlots } from '@aglint/shared-types';
 import {
   ScheduleUtils,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';

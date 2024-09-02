@@ -11,7 +11,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
 import { ListPop } from '@/devlink3/ListPop';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import AssigneeChip from '@/src/components/Tasks/Components/AssigneeChip';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 

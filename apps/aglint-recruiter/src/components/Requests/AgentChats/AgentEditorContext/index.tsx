@@ -1,8 +1,8 @@
 import {
+  type Dispatch,
+  type RefObject,
+  type SetStateAction,
   createContext,
-  Dispatch,
-  RefObject,
-  SetStateAction,
   useContext,
   useRef,
   useState,

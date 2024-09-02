@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { GetUserDetailsAPI } from './type';
+import { type GetUserDetailsAPI } from './type';
 
 export default async function handler(
   req: NextApiRequest,

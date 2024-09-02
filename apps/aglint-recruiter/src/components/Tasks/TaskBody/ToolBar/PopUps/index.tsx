@@ -1,6 +1,6 @@
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Dialog, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -10,7 +10,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { ToolPopUpReason } from '../utils';
+import { type ToolPopUpReason } from '../utils';
 
 function PopUps({
   isOpen,

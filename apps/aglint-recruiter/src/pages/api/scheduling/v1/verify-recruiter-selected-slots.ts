@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APIVerifyRecruiterSelectedSlots,
-  DateRangePlansType,
-  PlanCombinationRespType,
-  SessionCombinationRespType,
-  SessionsCombType,
+  type APIVerifyRecruiterSelectedSlots,
+  type DateRangePlansType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
+  type SessionsCombType,
 } from '@aglint/shared-types';
 import {
   ScheduleUtils,
@@ -13,7 +13,7 @@ import {
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { nanoid } from 'nanoid';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
