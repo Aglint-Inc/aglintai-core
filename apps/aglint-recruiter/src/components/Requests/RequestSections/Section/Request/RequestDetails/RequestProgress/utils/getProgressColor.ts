@@ -8,10 +8,9 @@ export const progressStatusToTense = (
     return 'past';
   } else if (status === 'failed') {
     return 'error';
-  } else if (status === 'in_progress') {
+  } else {
     return 'present';
   }
-  return 'future';
 };
 
 export function getProgressCompStatus(

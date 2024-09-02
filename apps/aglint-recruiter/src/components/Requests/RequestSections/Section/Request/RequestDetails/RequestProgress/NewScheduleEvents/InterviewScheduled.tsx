@@ -22,7 +22,10 @@ import {
   deleteRequestWorkflowAction,
 } from '../../utils';
 import { workflowCopy } from '../utils/copy';
-import { getProgressCompStatus } from '../utils/getProgressColor';
+import {
+  getProgressCompStatus,
+  progressStatusToTense,
+} from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { useNewScheduleRequestPr } from '.';
 type TenseType = 'past' | 'present' | 'future' | 'error';
@@ -39,10 +42,8 @@ const InterviewScheduled = () => {
   const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
 
   let tense: TenseType = 'past';
-  if (event_status && event_status.status === 'completed') {
-    tense = 'past';
-  } else {
-    tense = 'future';
+  if (event_status) {
+    tense = progressStatusToTense(event_status.status);
   }
 
   const handleAddAction = async (
@@ -94,8 +95,6 @@ const InterviewScheduled = () => {
     } catch (err) {
       toast.error('Failed to send RSVP reminder');
       setRsvpSending(false);
-    } finally {
-      //
     }
   };
   return (
@@ -104,7 +103,7 @@ const InterviewScheduled = () => {
       textRequestProgress={'On Inteview is Scheduled'}
       slotProgress={
         <>
-          {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
+          {ACTION_TRIGGER_MAP.candidateBook.map((action) => {
             return apiTargetToEvents[action.value.target_api].map((ev) => {
               const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
                 (a) => a.target_api === action.value.target_api,
