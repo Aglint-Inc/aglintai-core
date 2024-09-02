@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
@@ -5,12 +6,25 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { NoWorkflow } from '@/devlink2/NoWorkflow';
 import { setCandidateAvailabilityDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
-import { setIsSelfScheduleDrawerOpen } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
+import { useMeetingList } from '@/src/components/Requests/ViewRequestDetails/hooks';
+import { useSelfSchedulingDrawer } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/hooks';
+import {
+  initialFilters,
+  setIsSelfScheduleDrawerOpen,
+  useSelfSchedulingFlowStore,
+} from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
 import { useNewScheduleRequestPr } from '.';
 
 const ChooseScheduleMode = () => {
   const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
+  const { fetchingPlan } = useSelfSchedulingFlowStore((state) => ({
+    fetchingPlan: state.fetchingPlan,
+  }));
+
+  const { refetch } = useMeetingList();
+
+  const { findAvailibility } = useSelfSchedulingDrawer({ refetch });
   return (
     <>
       <Stack rowGap={2}>
@@ -35,10 +49,19 @@ const ChooseScheduleMode = () => {
                   size={1}
                   color={'accent'}
                   onClickButton={{
-                    onClick: () => {
+                    onClick: async () => {
+                      if (fetchingPlan) return;
+                      await findAvailibility({
+                        filters: initialFilters,
+                        dateRange: {
+                          start_date: dayjsLocal().toISOString(),
+                          end_date: dayjsLocal().add(7, 'day').toISOString(),
+                        },
+                      });
                       setIsSelfScheduleDrawerOpen(true);
                     },
                   }}
+                  isLoading={fetchingPlan}
                   textButton={'Send SelfScheduling Link'}
                 />
               </>
