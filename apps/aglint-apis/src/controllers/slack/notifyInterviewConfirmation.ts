@@ -14,7 +14,14 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
   if (!session_id || !application_id) {
     return res.status(400).json({error: 'Session id, Application id required'});
   }
-
+  const scheduleReq = supabaseWrap(
+    await supabaseAdmin
+      .from('request')
+      .select('*,request_relation(*)')
+      .eq('application_id', application_id)
+      .eq('type', 'schedule_request'),
+    false
+  );
   try {
     const [session_details] = supabaseWrap(
       await supabaseAdmin

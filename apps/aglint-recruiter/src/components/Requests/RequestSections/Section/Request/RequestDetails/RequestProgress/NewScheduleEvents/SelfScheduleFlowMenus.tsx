@@ -1,15 +1,15 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
+import { RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { useNewScheduleRequestPr } from '.';
-import { RequestProgressMapType } from '../types';
 import EventNode from './EventNode';
-import { ButtonSoft } from '@/devlink';
-import { Stack } from '@mui/material';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,

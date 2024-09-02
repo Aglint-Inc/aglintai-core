@@ -3,19 +3,19 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
+import { useRequest } from '@/src/context/RequestContext';
+import toast from '@/src/utils/toast';
 
+import { deleteRequestWorkflowAction } from '../../utils';
 import { ProgressTenseType, RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
-import { IconButtonSoft } from '@/devlink';
 import { useNewScheduleRequestPr } from '.';
-import { deleteRequestWorkflowAction } from '../../utils';
-import toast from '@/src/utils/toast';
-import { useRequest } from '@/src/context/RequestContext';
 
 const EventNode = ({
   eventType,
@@ -44,7 +44,6 @@ const EventNode = ({
   );
   const handleDeleteScheduleAction = async () => {
     try {
-      console.log(currWAction);
       await deleteRequestWorkflowAction(currWAction.id);
       await request_workflow.refetch();
     } catch (err) {

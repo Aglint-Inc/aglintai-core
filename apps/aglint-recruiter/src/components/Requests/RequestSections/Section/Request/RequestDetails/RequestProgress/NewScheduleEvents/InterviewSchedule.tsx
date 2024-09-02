@@ -1,35 +1,42 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseEnums } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import React from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import { useRequest } from '@/src/context/RequestContext';
-
-import { workflowCopy } from '../utils/copy';
-import { apiTargetToEvents } from '../utils/progressMaps';
-import { useNewScheduleRequestPr } from '.';
-import { RequestProgress } from '@/devlink2';
+import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
-import { IconButtonSoft } from '@/devlink';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useRequest } from '@/src/context/RequestContext';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
+
 import {
   createRequestWorkflowAction,
   deleteRequestWorkflowAction,
 } from '../../utils';
-import { DatabaseEnums } from '@aglint/shared-types';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
+import { workflowCopy } from '../utils/copy';
+import { getProgressCompStatus } from '../utils/getProgressColor';
+import { apiTargetToEvents } from '../utils/progressMaps';
+import { useNewScheduleRequestPr } from '.';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewSchedule = () => {
-  const { reqTriggerActionsMap: triggerActionMp, currentRequest } =
-    useNewScheduleRequestPr();
+  const {
+    reqTriggerActionsMap: triggerActionMp,
+    currentRequest,
+    reqProgressMap,
+  } = useNewScheduleRequestPr();
   const { recruiter } = useAuthDetails();
-  const { request_progress, request_workflow } = useRequest();
-
-  const event_status = request_progress.data.find(
-    (d) => d.event_type === 'CAND_CONFIRM_SLOT',
-  );
+  const { request_workflow } = useRequest();
+  const [rsvpSending, setRsvpSending] = React.useState(false);
+  const event_status = reqProgressMap['CAND_CONFIRM_SLOT']?.[0];
 
   let tense: TenseType = 'past';
   if (event_status && event_status.status === 'completed') {
@@ -65,7 +72,32 @@ const InterviewSchedule = () => {
       toast.error('Failed to remove action');
     }
   };
-  console.log(tense);
+  const handleSendRsVpReminder = async () => {
+    try {
+      setRsvpSending(true);
+      const sesn_reln = supabaseWrap(
+        await supabase
+          .from('request_relation')
+          .select()
+          .eq('request_id', currentRequest.id),
+      );
+
+      for (let reln of sesn_reln) {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/candidateBook_slack_interviewerForConfirmation`,
+          {
+            session_id: reln.session_id,
+            application_id: currentRequest.application_id,
+          },
+        );
+      }
+    } catch (err) {
+      toast.error('Failed to send RSVP reminder');
+      setRsvpSending(false);
+    } finally {
+      //
+    }
+  };
   return (
     <RequestProgress
       circleIndicator={tense === 'past' ? 'success' : 'neutral'}
@@ -114,11 +146,14 @@ const InterviewSchedule = () => {
               const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
                 (a) => a.target_api === action.value.target_api,
               );
+              const slack_status =
+                reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']?.[0];
+
               return (
                 <>
                   <ScheduleProgress
-                    textProgress={workflowCopy[ev].future}
-                    status={'circle'}
+                    textProgress={workflowCopy[ev][tense]}
+                    status={getProgressCompStatus(slack_status?.status)}
                     slotRightIcon={
                       <>
                         <ShowCode.When isTrue={tense === 'future'}>
@@ -147,19 +182,39 @@ const InterviewSchedule = () => {
                             />
                           </ShowCode.When>
                         </ShowCode.When>
-                        <ShowCode.When isTrue={tense === 'past'}>
-                          <IconButtonSoft
-                            iconName={'add'}
-                            size={1}
-                            color={'neutral'}
-                            onClickButton={{
-                              onClick: () => {
-                                //
-                              },
-                            }}
-                          />
+                      </>
+                    }
+                    slotAiText={
+                      <>
+                        <ShowCode.When
+                          isTrue={
+                            tense === 'past' &&
+                            !reqProgressMap['SEND_INTERVIEWER_ATTENDANCE_RSVP']
+                          }
+                        >
+                          <Stack direction={'row'}>
+                            <ButtonSoft
+                              size={1}
+                              textButton={
+                                rsvpSending ? 'Sending' : 'Send rsvp reminder'
+                              }
+                              onClickButton={{
+                                onClick: () => {
+                                  handleSendRsVpReminder();
+                                },
+                              }}
+                            />
+                          </Stack>
                         </ShowCode.When>
                       </>
+                    }
+                    slotLoader={
+                      tense === 'present' ? (
+                        <LottieAnimations
+                          animation='loading_spinner'
+                          size={1.5}
+                        />
+                      ) : undefined
                     }
                   />
                 </>
