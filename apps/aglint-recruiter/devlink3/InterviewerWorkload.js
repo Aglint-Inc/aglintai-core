@@ -5,6 +5,7 @@ import { TextWithIcon } from "./TextWithIcon";
 import { IconButtonOutlined } from "./IconButtonOutlined";
 import { Text } from "./Text";
 import { InterviewWorkloadList } from "./InterviewWorkloadList";
+import { InterviewerNotConnected } from "./InterviewerNotConnected";
 import * as _utils from "./utils";
 import _styles from "./InterviewerWorkload.module.css";
 
@@ -71,7 +72,7 @@ export function InterviewerWorkload({
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
             tag="div"
           >
-            <Text weight="regular" size="1" content="Interviewer" />
+            <Text weight="medium" size="1" content="Interviewer" />
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer-avail-head-item")}
@@ -81,7 +82,7 @@ export function InterviewerWorkload({
             )}
             tag="div"
           >
-            <Text weight="regular" size="1" content="Workload" />
+            <Text weight="medium" size="1" content="Workload" />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -92,7 +93,12 @@ export function InterviewerWorkload({
             className={_utils.cx(_styles, "bg-interviewer-avail-body")}
             tag="div"
           >
-            {slotInterviewWorkloadList ?? <InterviewWorkloadList />}
+            {slotInterviewWorkloadList ?? (
+              <>
+                <InterviewWorkloadList />
+                <InterviewerNotConnected />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
