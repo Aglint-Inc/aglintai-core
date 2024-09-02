@@ -56,7 +56,8 @@ function FinalScreen() {
         setFetching(false);
       })
       .catch(() => {
-        toast.error('Fail to fetch email preview');
+        
+        // toast.error('Fail to fetch email preview');
         setFetching(false);
       });
   }

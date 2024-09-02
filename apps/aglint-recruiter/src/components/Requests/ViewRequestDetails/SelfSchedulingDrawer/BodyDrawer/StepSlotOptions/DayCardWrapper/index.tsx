@@ -231,6 +231,23 @@ function DayCardWrapper({
                                     )}
                                     onClick={() => {
                                       onClickSelect(slot.plan_comb_id);
+                                      setCalendarDate(
+                                        dayjs(dates[0]).toISOString(),
+                                      );
+                                      setTimeout(() => {
+                                        const element = document.getElementById(
+                                          slot.daySessions[0].sessions[0]
+                                            .session_id +
+                                            slot.daySessions[0].sessions[0]
+                                              .qualifiedIntervs[0].user_id,
+                                        );
+                                        if (element) {
+                                          element.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'center',
+                                          });
+                                        }
+                                      }, 1000);
                                     }}
                                   />
                                 )}

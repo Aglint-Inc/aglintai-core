@@ -15,6 +15,7 @@ import {
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
+  useConfirmAvailabilitySchedulingFlowStore,
 } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -27,6 +28,7 @@ import {
   groupedTriggerEventMap,
 } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability';
 
 const CandidateAvailReceive = ({
   eventTargetMap,
@@ -34,6 +36,7 @@ const CandidateAvailReceive = ({
   eventTargetMap: EventTargetMapType;
 }) => {
   const { request_progress } = useRequest();
+
   let lastEvent: DatabaseTable['request_progress']['event_type'];
   let { availRecivedProgEvents, isScheduled } = useMemo(() => {
     let isScheduled = false;
@@ -118,6 +121,11 @@ const RequestEvents = ({
   eventTargetMap: EventTargetMapType;
   isScheduled: boolean;
 }) => {
+  const { candidateAvailabilityId } =
+    useConfirmAvailabilitySchedulingFlowStore();
+  const { isFetched } = useRequestAvailabilityDetails({
+    request_id: candidateAvailabilityId,
+  });
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -225,6 +233,7 @@ const RequestEvents = ({
                 handleConfirmSlot(lastEvent.request_id);
               },
             }}
+            isLoading={!isFetched}
           />
           <ButtonSoft
             size={1}

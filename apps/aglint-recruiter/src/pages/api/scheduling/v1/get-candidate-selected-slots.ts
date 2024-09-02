@@ -29,7 +29,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_selected_slots,
     );
 
-    return res.status(200).send(all_combs);
+    return res
+      .status(200)
+      .send({
+        slots: all_combs,
+        availabilities: cand_schedule.calendar_events,
+      });
   } catch (error) {
     console.error(error);
     return res

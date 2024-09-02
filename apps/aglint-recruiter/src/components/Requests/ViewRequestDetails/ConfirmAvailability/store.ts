@@ -1,13 +1,16 @@
+import dayjs from '@/src/utils/dayjs';
 import { create } from 'zustand';
 
 export interface SelfSchedulingFlow {
   candidateAvailabilityId: string;
   applicationIdForConfirmAvailability: string;
+  calendarDate: string;
 }
 
 const initialState: SelfSchedulingFlow = {
   candidateAvailabilityId: '',
   applicationIdForConfirmAvailability: '',
+  calendarDate: dayjs().toISOString(),
 };
 
 export const useConfirmAvailabilitySchedulingFlowStore =
@@ -24,4 +27,9 @@ export const setApplicationIdForConfirmAvailability = (
 export const setCandidateAvailabilityId = (candidateAvailabilityId: string) =>
   useConfirmAvailabilitySchedulingFlowStore.setState({
     candidateAvailabilityId,
+  });
+
+export const setCalendarDate = (calendarDate: string) =>
+  useConfirmAvailabilitySchedulingFlowStore.setState({
+    calendarDate,
   });
