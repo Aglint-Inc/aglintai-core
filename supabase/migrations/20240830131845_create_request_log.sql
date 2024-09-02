@@ -1,7 +1,3 @@
-SELECT string_agg(column_name||' '||data_type, ', ')
-        FROM information_schema.columns 
-        WHERE table_name = 'request'
-
 drop table if exists public.request_log;
 create table
   public.request_log (
@@ -14,6 +10,9 @@ create table
     , priority text
     , delta jsonb NOT NULL
   );
+
+DROP TRIGGER IF EXISTS track_request_changes on request;
+DROP FUNCTION IF EXISTS create_request_meeting_log;
 
 CREATE OR REPLACE FUNCTION create_request_meeting_log() 
 RETURNS TRIGGER 
