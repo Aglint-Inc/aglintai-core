@@ -10,18 +10,29 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
-import Loading from '@/src/pages/loading';
+import Loading from '@/src/pages/loadingX';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
 import CalendarHeader from './CalendarHeader';
-import { type colorType, type event, type Modes, type Types } from './calendarTypes';
+import {
+  type colorType,
+  type event,
+  type Modes,
+  type Types,
+} from './calendarTypes';
 import CalendarFilter from './Filter';
 
 function CalendarComp({

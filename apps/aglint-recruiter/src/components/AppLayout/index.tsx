@@ -23,6 +23,7 @@ import ROUTES from '@/src/utils/routing/routes';
 
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
+import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
@@ -60,7 +61,7 @@ export default function AppLayout({ children, appRouter = false }) {
           </Button>
           <SideNavbar />
         </div>
-        <div className="flex flex-col items-center pb-3 space-y-3">
+        <div className='flex flex-col items-center pb-3 space-y-3'>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -80,8 +81,8 @@ export default function AppLayout({ children, appRouter = false }) {
                     {/*eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={userDetails?.profile_image}
-                      alt="User Profile"
-                      className="rounded-full w-8 h-8"
+                      alt='User Profile'
+                      className='rounded-full w-8 h-8'
                       style={{ objectFit: 'cover' }}
                     />
                     <span className='sr-only'>User profile</span>
@@ -93,11 +94,21 @@ export default function AppLayout({ children, appRouter = false }) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          {/* <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <ThemeSwitcher />
+              </TooltipTrigger>
+              <TooltipContent align='center' side='right'>
+                <p>Toggle theme</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider> */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Button variant="outline" size="icon" onClick={handleSignOut}>
-                  <LogOut className="w-5 h-5" strokeWidth={1.5} />
+                <Button variant='outline' size='icon' onClick={handleSignOut}>
+                  <LogOut className='w-5 h-5' strokeWidth={1.5} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent align='center' side='right'>

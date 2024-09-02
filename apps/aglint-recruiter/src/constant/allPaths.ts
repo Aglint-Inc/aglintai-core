@@ -300,6 +300,7 @@ export const PATHS = [
 '/jobs/create',
 '/kkk',
 '/loading',
+'/loading',
 '/login',
 '/mui-styleguide',
 '/notifications',
