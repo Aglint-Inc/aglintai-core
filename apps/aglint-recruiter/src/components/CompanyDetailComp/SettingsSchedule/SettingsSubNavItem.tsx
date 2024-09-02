@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 // Import Shadcn components
-import { Button } from '@/src/components/shadcn/ui/button';
+import { Button } from '@@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from '@/src/components/shadcn/ui/navigation-menu';
+} from '@@/components/ui/navigation-menu';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { emailTemplateQueries } from '@/src/queries/email-templates';
