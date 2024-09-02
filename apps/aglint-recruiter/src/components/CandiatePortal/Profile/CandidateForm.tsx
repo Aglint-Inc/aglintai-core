@@ -1,16 +1,11 @@
 'use client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import axios from 'axios';
+import { useRef, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import axios from 'axios';
-import React, { useRef, useState } from 'react';
-
-import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
-import { supabase } from '@/src/utils/supabase/client';
-import timeZone from '@/src/utils/timeZone';
-
 import {
   Select,
   SelectContent,
@@ -18,7 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { supabase } from '@/src/utils/supabase/client';
+import timeZone from '@/src/utils/timeZone';
+
 import ImageUploadManual from './ImageUpload';
+import { ThemeSelector } from './ThemeSelector';
 
 export default function CandidateForm({
   formData,
@@ -84,6 +84,7 @@ export default function CandidateForm({
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-100 p-4'>
+      <ThemeSelector />
       <Card className='w-full max-w-2xl border-none'>
         <CardHeader>
           <CardTitle className='text-2xl font-bold text-center'>

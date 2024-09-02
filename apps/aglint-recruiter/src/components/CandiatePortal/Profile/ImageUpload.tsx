@@ -3,7 +3,7 @@ import { Avatar, Stack } from '@mui/material';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { Button } from '../../shadcn/ui/button';
+import { Button } from '@/components/ui/button';
 
 function ImageUploadManual({
   image,

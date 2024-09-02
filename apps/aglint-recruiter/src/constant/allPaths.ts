@@ -56,6 +56,7 @@ export const PATHS = [
 '/api/candidate-assessment/assessment-result-create',
 '/api/candidate-assessment/assessment-result-details',
 '/api/candidate-assessment/assessment-result-update',
+'/api/candidate_portal/get_company',
 '/api/candidate_portal/get_interviews',
 '/api/candidate_portal/get_message',
 '/api/candidate_portal/get_profile',
