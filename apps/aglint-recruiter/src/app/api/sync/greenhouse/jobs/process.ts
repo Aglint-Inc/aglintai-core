@@ -151,7 +151,12 @@ export async function syncGreenhouseJobPlan(
   key?: string,
 ) {
   const plans = await getGreenhouseJobPlan(key, prop.ats_job_id);
-  return mapSaveInterviewPlans(supabaseAdmin, plans, prop.public_job_id);
+  return mapSaveInterviewPlans(
+    supabaseAdmin,
+    plans,
+    prop.public_job_id,
+    prop.recruiter_id,
+  );
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -160,6 +165,7 @@ async function mapSaveInterviewPlans(
   supabaseAdmin: SupabaseClientType,
   data: GreenhouseJobStagesAPI,
   job_id: string,
+  recruiter_id: string,
 ) {
   const temp_plans: DatabaseTableInsert['interview_plan'][] = data.map(
     (item, index) => {
@@ -167,6 +173,7 @@ async function mapSaveInterviewPlans(
         name: item.name,
         job_id: job_id,
         plan_order: index + 1,
+        recruiter_id,
       };
     },
   );

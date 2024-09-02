@@ -199,6 +199,7 @@ const getResume = async (handle: string, key: string): Promise<any> => {
 
 const createJobApplication = async (
   candidate_id: string,
+  recruiter_id: string,
   job_id: string,
   created_at: string,
   fileId?: string,
@@ -212,6 +213,7 @@ const createJobApplication = async (
       is_resume_fetching: false,
       candidate_file_id: fileId,
       source: 'ashby',
+      recruiter_id,
     })
     .select();
 };

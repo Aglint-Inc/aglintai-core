@@ -17,8 +17,12 @@ export const handleMeetingsOrganizerResetRelations = async ({
   supabase,
   selectedSessions,
   meeting_flow,
+  recruiter_id,
+  job_id,
 }: {
   application_id: string;
+  recruiter_id: string;
+  job_id: string;
   supabase: SupabaseType;
   selectedSessions: {
     interview_session_id: string;
@@ -41,6 +45,8 @@ export const handleMeetingsOrganizerResetRelations = async ({
       organizer_id,
       meeting_flow,
       application_id,
+      recruiter_id,
+      job_id,
     }));
 
   // Upsert meetings

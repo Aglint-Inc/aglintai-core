@@ -85,7 +85,7 @@ const sendToCandidate = async ({
   const schedule = (
     await supabaseAdmin
       .from('applications')
-      .select('id,candidates(*)')
+      .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
       .single()
       .throwOnError()
@@ -96,6 +96,8 @@ const sendToCandidate = async ({
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
     application_id,
+    job_id: schedule.job_id,
+    recruiter_id: schedule.recruiter_id,
     selectedSessions: allSessions.map((ses) => ({
       interview_session_id: ses.interview_session.id,
       interview_meeting_id: ses.interview_meeting.id,

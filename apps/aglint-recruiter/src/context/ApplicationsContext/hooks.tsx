@@ -153,8 +153,14 @@ export const useApplicationsParams = () => {
 export type ApplicationsParams = ReturnType<typeof useApplicationsParams>;
 
 export const useApplicationsActions = () => {
-  const { jobLoad, job, job_id, applicationScoringPollEnabled, manageJob } =
-    useJob();
+  const {
+    jobLoad,
+    job,
+    job_id,
+    recruiter_id,
+    applicationScoringPollEnabled,
+    manageJob,
+  } = useJob();
 
   const { checklist, resetChecklist } = useApplicationsStore(
     ({ checklist, resetChecklist }) => ({
@@ -182,6 +188,7 @@ export const useApplicationsActions = () => {
     mutateAsync: handleAsyncUpdateApplication,
   } = useUpdateApplication({
     job_id,
+    recruiter_id,
     polling: applicationScoringPollEnabled,
     status: section,
     ...params,
@@ -190,6 +197,7 @@ export const useApplicationsActions = () => {
   const locationFilterOptions = useQuery(
     applicationsQueries.locationFilters({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
     }),
   );
@@ -197,6 +205,7 @@ export const useApplicationsActions = () => {
   const badgesCount = useQuery(
     applicationsQueries.badgesCount({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
     }),
   );
@@ -207,6 +216,7 @@ export const useApplicationsActions = () => {
   const newApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'new',
       count: job?.section_count?.new ?? 0,
@@ -216,6 +226,7 @@ export const useApplicationsActions = () => {
   const screeningApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'screening',
       count: job?.section_count?.screening ?? 0,
@@ -225,6 +236,7 @@ export const useApplicationsActions = () => {
   const assessmentApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'assessment',
       count: job?.section_count?.assessment ?? 0,
@@ -234,6 +246,7 @@ export const useApplicationsActions = () => {
   const interviewApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'interview',
       count: job?.section_count?.interview ?? 0,
@@ -243,6 +256,7 @@ export const useApplicationsActions = () => {
   const qualifiedApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'qualified',
       count: job?.section_count?.qualified ?? 0,
@@ -252,6 +266,7 @@ export const useApplicationsActions = () => {
   const disqualifiedApplications = useInfiniteQuery(
     applicationsQueries.applications({
       job_id,
+      recruiter_id,
       polling: applicationScoringPollEnabled,
       status: 'disqualified',
       count: job?.section_count?.disqualified ?? 0,
@@ -288,13 +303,21 @@ export const useApplicationsActions = () => {
   const { mutateAsync: moveApplications, mutationQueue: moveMutationQueue } =
     useMoveApplications({
       job_id,
+      recruiter_id,
     });
 
   const handleMoveApplications = async (
-    payload: Omit<Parameters<typeof moveApplications>[0], 'applications'>,
+    payload: Omit<
+      Parameters<typeof moveApplications>[0],
+      'applications' | 'recruiter_id'
+    >,
   ) => {
     try {
-      await moveApplications({ ...payload, applications: checklist });
+      await moveApplications({
+        ...payload,
+        applications: checklist,
+        recruiter_id,
+      });
       resetChecklist();
     } catch {
       //
@@ -304,6 +327,7 @@ export const useApplicationsActions = () => {
   const { mutateAsync: moveApplicationsToInterview } =
     useMoveApplicationsToInterview({
       job_id,
+      recruiter_id,
     });
 
   const handleMoveApplicationToInterview = async (
@@ -324,13 +348,14 @@ export const useApplicationsActions = () => {
   };
 
   const { mutateAsync: reuploadResume, mutationQueue: reuploadMutationQueue } =
-    useReuploadResume({ job_id });
+    useReuploadResume({ job_id, recruiter_id });
 
   const {
     mutateAsync: deleteApplication,
     mutationQueue: deleteApplicationQueue,
   } = useDeleteApplication({
     job_id,
+    recruiter_id,
   });
 
   const handleReuploadResume = async (

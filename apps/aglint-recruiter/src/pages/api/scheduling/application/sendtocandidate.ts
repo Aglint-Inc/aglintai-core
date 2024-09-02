@@ -125,6 +125,8 @@ const sendToCandidate = async ({
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
     application_id: selectedApplication.id,
+    job_id: selectedApplication.job_id,
+    recruiter_id: selectedApplication.recruiter_id,
     selectedSessions: initialSessions
       .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
       .map((ses) => ({

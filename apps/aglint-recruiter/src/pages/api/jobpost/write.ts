@@ -104,6 +104,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             status: 'new',
             candidate_file_id: fileId,
             source: 'apply_link',
+            recruiter_id: recruiter.id,
           })
           .select();
 
@@ -161,6 +162,7 @@ const insertCandidate = async (
         status: 'new',
         candidate_file_id: fileId,
         source: 'apply_link',
+        recruiter_id: recruiterId,
       })
       .select();
 

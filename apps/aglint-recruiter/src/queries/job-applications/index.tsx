@@ -36,6 +36,7 @@ export const applicationsQueries = {
   }),
   locationFilters: ({
     job_id,
+    recruiter_id,
     polling = false,
   }: ApplicationsAllQueryPrerequistes) =>
     queryOptions({
@@ -43,7 +44,7 @@ export const applicationsQueries = {
       gcTime: job_id ? GC_TIME : 0,
       refetchOnMount: polling,
       queryKey: [
-        ...applicationsQueries.all({ job_id }).queryKey,
+        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
         'location_filters',
       ],
       queryFn: async () =>
@@ -52,6 +53,7 @@ export const applicationsQueries = {
     }),
   badgesCount: ({
     job_id,
+    recruiter_id,
     polling = false,
   }: ApplicationsAllQueryPrerequistes) =>
     queryOptions({
@@ -59,7 +61,7 @@ export const applicationsQueries = {
       gcTime: job_id ? GC_TIME : 0,
       refetchOnMount: polling,
       queryKey: [
-        ...applicationsQueries.all({ job_id }).queryKey,
+        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
         'badges_count',
       ],
       queryFn: async () =>
@@ -67,6 +69,7 @@ export const applicationsQueries = {
     }),
   applications: ({
     job_id,
+    recruiter_id,
     count,
     polling = false,
     status,
@@ -74,11 +77,11 @@ export const applicationsQueries = {
   }: Params) =>
     infiniteQueryOptions({
       queryKey: [
-        ...applicationsQueries.all({ job_id }).queryKey,
+        ...applicationsQueries.all({ job_id, recruiter_id }).queryKey,
         { status },
         filters,
       ],
-      initialPageParam: { index: 0, job_id, status, ...filters },
+      initialPageParam: { index: 0, job_id, recruiter_id, status, ...filters },
       enabled: !!job_id,
       refetchOnMount: polling,
       refetchOnWindowFocus: false,
@@ -89,6 +92,7 @@ export const applicationsQueries = {
           ? {
               index: firstPage[0].index,
               job_id,
+              recruiter_id,
               status,
               ...filters,
             }
@@ -101,6 +105,7 @@ export const applicationsQueries = {
         return {
           index,
           job_id,
+          recruiter_id,
           status,
           ...filters,
         };
@@ -110,6 +115,7 @@ export const applicationsQueries = {
 };
 
 type ApplicationsAllQueryPrerequistes = {
+  recruiter_id: DatabaseTable['recruiter']['id'];
   job_id: DatabaseTable['public_jobs']['id'];
   count?: number;
   polling?: boolean;
@@ -477,6 +483,7 @@ export const useMoveApplications = (
       mutationFn: async (args: MoveApplicationArgs) => {
         await moveApplications({
           job_id: payload.job_id,
+          recruiter_id: payload.recruiter_id,
           ...args,
         });
         await revalidateJobQueries(payload.job_id);
@@ -542,12 +549,18 @@ type SectionToEmailGuard = {
 };
 const moveApplications = async ({
   job_id,
+  recruiter_id,
   applications,
   status,
   email,
   callBacks = [],
 }: MoveApplications) => {
-  const safeApplications = applications.map((id) => ({ id, status, job_id }));
+  const safeApplications = applications.map((id) => ({
+    id,
+    status,
+    job_id,
+    recruiter_id,
+  }));
   await Promise.allSettled([
     ...callBacks,
     supabase.from('applications').upsert(safeApplications).throwOnError(),
@@ -570,7 +583,9 @@ type ReuploadResumeArgs = Pick<
   HandleReUploadResume,
   'application_id' | 'candidate_id' | 'files'
 >;
-export const useReuploadResume = (params: Pick<Params, 'job_id'>) => {
+export const useReuploadResume = (
+  params: Pick<Params, 'job_id' | 'recruiter_id'>,
+) => {
   const { revalidateJobQueries } = useInvalidateJobQueries();
   const { mutationKey } = applicationMutationKeys.reupload();
   const mutationQueue = useMutationState({
@@ -585,6 +600,7 @@ export const useReuploadResume = (params: Pick<Params, 'job_id'>) => {
         await handleResumeReUpload({
           ...payload,
           job_id: params.job_id,
+          recruiter_id: params.recruiter_id,
         });
         await revalidateJobQueries(params.job_id);
       },

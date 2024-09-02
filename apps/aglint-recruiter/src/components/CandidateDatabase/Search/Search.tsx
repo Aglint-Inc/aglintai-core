@@ -12,6 +12,7 @@ import { CandidateDetailsCard } from '@/devlink/CandidateDetailsCard';
 import { CandidateEmpty } from '@/devlink/CandidateEmpty';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ViewMoreSkills } from '@/devlink/ViewMoreSkills';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -46,6 +47,7 @@ const CandidatesSearch = () => {
     handleAddCandidatesTojob,
   } = useCandidateSearchCtx();
   const router = useRouter();
+  const { recruiter_id } = useAuthDetails();
   const { jobs } = useJobs();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
   const [activeCandidate, setActiveCandidate] = useState<number>(0);
@@ -140,6 +142,7 @@ const CandidatesSearch = () => {
         checkedJobIds.map((cjob) => ({
           job_id: cjob.id,
           job_title: cjob.title,
+          recruiter_id,
         })),
       );
     } catch (err) {
@@ -409,7 +412,14 @@ const CandidateDetailCard = ({
           {!showMore &&
             get(candidate.json_resume, 'skills', [])
               .slice(0, 10)
-              .map((s, index) => <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/> )}
+              .map((s, index) => (
+                <GlobalBadge
+                  key={index}
+                  textBadge={s}
+                  size={2}
+                  color={'neutral'}
+                />
+              ))}
           {candidate.json_resume.skills.length > 10 && (
             <ViewMoreSkills
               isViewMoreVisible={!showMore}
@@ -425,7 +435,12 @@ const CandidateDetailCard = ({
           {showMore &&
             get(candidate.json_resume, 'skills', []).map((s, index) => (
               // <CandidateSkills key={index} textSkill={s} />
-              <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/>
+              <GlobalBadge
+                key={index}
+                textBadge={s}
+                size={2}
+                color={'neutral'}
+              />
             ))}
         </>
       }

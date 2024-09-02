@@ -13,8 +13,7 @@ import ListItem from '@tiptap/extension-list-item';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle, { TextStyleOptions } from '@tiptap/extension-text-style';
-import { EditorContent, useEditor } from '@tiptap/react';
-import { Editor } from '@tiptap/react/dist/packages/react/src/Editor';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import React, { ReactNode, useCallback, useEffect } from 'react';
 
@@ -31,7 +30,7 @@ const RichTextDividerLine = styled(Stack)({
   // borderRadius: 'var(--radius-2)',
   height: '24px',
   width: '1px',
-  backgroundColor:'var(--neutral-3)',
+  backgroundColor: 'var(--neutral-3)',
   margin: '2px 4px',
 });
 

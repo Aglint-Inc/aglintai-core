@@ -260,6 +260,7 @@ const useJobContext = () => {
 
   return {
     job,
+    recruiter_id,
     total,
     job_id,
     jobLoad,

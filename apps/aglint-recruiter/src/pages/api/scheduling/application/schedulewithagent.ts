@@ -16,6 +16,7 @@ export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
+
   dateRange: {
     start_date: string | null;
     end_date: string | null;
@@ -44,6 +45,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       type,
       candidate_name,
       company_name,
+      job_id,
+      recruiter_id,
     } = req.body as ApiBodyParamsScheduleAgent;
 
     let resAgent = null;
@@ -51,6 +54,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (task_id) {
       resAgent = await scheduleWithAgent({
         application_id,
+        job_id,
+        recruiter_id,
         dateRange,
         recruiter_user_name,
         session_ids,
@@ -88,10 +93,14 @@ export const scheduleWithAgent = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  job_id,
+  recruiter_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
+  job_id: string;
+  recruiter_id: string;
   dateRange: {
     start_date: string | null;
     end_date: string | null;
@@ -124,6 +133,8 @@ export const scheduleWithAgent = async ({
 
     await handleMeetingsOrganizerResetRelations({
       application_id,
+      job_id,
+      recruiter_id,
       selectedSessions: selectedSessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,

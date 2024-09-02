@@ -47,10 +47,7 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
-import {
-  setSelectedSessionIds,
-  useSchedulingApplicationStore
-} from '../store';
+import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { ApiResponseFindAvailability } from '../types';
 import EmailPreview from './Components/EmailPriview';
 import {
@@ -73,11 +70,8 @@ import {
 function RequestAvailability() {
   const { recruiter, recruiterUser } = useAuthDetails();
 
-  const {
-    requestSessionIds,
-    initialSessions,
-    selectedApplication,
-  } = useSchedulingApplicationStore();
+  const { requestSessionIds, initialSessions, selectedApplication } =
+    useSchedulingApplicationStore();
   const { scheduleFlow, updateRequestAvailibityId, selectedTaskId } =
     useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -226,6 +220,8 @@ function RequestAvailability() {
       if (scheduleFlow === 'create_request_availibility') {
         await handleMeetingsOrganizerResetRelations({
           application_id: selectedApplication.id,
+          job_id: selectedApplication.job_id,
+          recruiter_id: selectedApplication.recruiter_id,
           meeting_flow: 'candidate_request',
           selectedSessions: localSessions.map((ses) => ({
             interview_session_id: ses.interview_session.id,

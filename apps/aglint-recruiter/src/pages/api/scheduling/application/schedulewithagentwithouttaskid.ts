@@ -47,6 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_name,
       company_name,
       user_tz,
+      job_id,
     } = req.body as ApiBodyParamsScheduleAgentWithoutTaskId;
 
     const resAgent = await scheduleWithAgentWithoutTaskId({
@@ -62,6 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rec_user_id,
       supabase: supabaseAdmin,
       user_tz,
+      job_id,
     });
 
     return res.status(200).send(resAgent);
@@ -85,10 +87,12 @@ const scheduleWithAgentWithoutTaskId = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  job_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
+  job_id: string;
   dateRange: {
     start_date: string | null;
     end_date: string | null;
@@ -158,6 +162,8 @@ const scheduleWithAgentWithoutTaskId = async ({
 
     await handleMeetingsOrganizerResetRelations({
       application_id,
+      job_id,
+      recruiter_id,
       selectedSessions: selectedSessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,

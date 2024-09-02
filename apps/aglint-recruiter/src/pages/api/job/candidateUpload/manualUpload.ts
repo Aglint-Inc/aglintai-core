@@ -92,6 +92,7 @@ const handler = async (
               createApplication(
                 supabase,
                 job_id,
+                recruiter_id,
                 candidate_id,
                 candidate_file_id,
                 'manual_upload',
