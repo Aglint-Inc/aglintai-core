@@ -1,39 +1,26 @@
 /* eslint-disable security/detect-object-injection */
-import { useMemo } from 'react';
 
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useRequest } from '@/src/context/RequestContext';
 
-import { RequestProgressMapType } from '../types';
 import { useNewScheduleRequestPr } from '.';
 import AvailabilityFlowMenus from './AvailabilityFlowMenus';
-import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
-import { RequestProgress } from '@/devlink2';
 import ChooseScheduleMode from './ChooseScheduleMode';
+import SelfScheduleFlowMenus from './SelfScheduleFlowMenus';
 
 const SelectScheduleFlow = () => {
-  const { request_progress } = useRequest();
-  const { reqTriggerActionsMap, scheduleFlow } = useNewScheduleRequestPr();
+  const { reqTriggerActionsMap, scheduleFlow, reqProgressMap } =
+    useNewScheduleRequestPr();
 
   const isManualSchedule = !reqTriggerActionsMap['onRequestSchedule'];
-
-  const scheduleReqProgressMap: RequestProgressMapType = useMemo(() => {
-    let mp: RequestProgressMapType = {};
-
-    request_progress.data.forEach((row) => {
-      if (!mp[row.event_type]) {
-        mp[row.event_type] = [];
-      }
-      mp[row.event_type].push({ ...row });
-    });
-    return mp;
-  }, [request_progress]);
-
+  let isSelectScheduleFlowComplete = false;
+  if (reqProgressMap['CAND_CONFIRM_SLOT'] || reqProgressMap['CAND_AVAIL_REC']) {
+    isSelectScheduleFlowComplete = true;
+  }
   return (
     <>
       <RequestProgress
-        // circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
-        circleIndicator={'neutral'}
+        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
         textRequestProgress={'Scheduling Request Recieved'}
         slotProgress={
           <>

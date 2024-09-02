@@ -26,6 +26,7 @@ export const candidateSelfSchedule = async ({
   const filterdNoSlots = plans.filter(
     (plan) => plan.no_slot_reasons.length === 0,
   );
+
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -35,7 +36,7 @@ export const candidateSelfSchedule = async ({
           start_date: start_date_str,
           end_date: end_date_str,
         },
-        selected_options: [...filterdNoSlots],
+        selected_options: [...filterdNoSlots.slice(0, 15)], //TODO: fix this later
         request_id: request_id,
         application_id,
       })

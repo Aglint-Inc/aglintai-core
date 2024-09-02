@@ -3,6 +3,7 @@ import {
   DatabaseTable,
   DatabaseTableInsert,
 } from '@aglint/shared-types';
+import { get } from 'lodash';
 import React, { act, useMemo, useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -17,8 +18,6 @@ import toast from '@/src/utils/toast';
 import { createRequestWorkflowAction } from '../../utils';
 import { TargetAPIBody, WActionProps } from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
-import { get } from 'lodash';
-import { TriggerActionMapType } from '../types';
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useAuthDetails();

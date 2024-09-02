@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -20,19 +21,14 @@ import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
-import { getProgressColor } from '../utils/getProgressColor';
+import { RequestProgressMapType } from '../types';
 import {
   apiTargetToEvents,
   groupedTriggerEventMap,
 } from '../utils/progressMaps';
 import EventNode from './EventNode';
 
-const CandidateAvailReceive = ({
-  eventTargetMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-}) => {
+const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress']['event_type'];
   let { availRecivedProgEvents, isScheduled } = useMemo(() => {
@@ -74,6 +70,7 @@ const CandidateAvailReceive = ({
   return (
     <Stack rowGap={2}>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
+        <RequestProgress slotProgress={<></>} />
         <TextWithIcon
           iconName='expand_circle_right'
           textContent={`Candidate submits Availability`}

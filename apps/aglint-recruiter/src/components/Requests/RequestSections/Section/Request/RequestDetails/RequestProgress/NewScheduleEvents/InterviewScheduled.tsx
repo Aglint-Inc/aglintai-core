@@ -89,6 +89,7 @@ const InterviewScheduled = () => {
           {
             session_id: reln.session_id,
             application_id: currentRequest.application_id,
+            request_id: currentRequest.id,
           },
         );
       }

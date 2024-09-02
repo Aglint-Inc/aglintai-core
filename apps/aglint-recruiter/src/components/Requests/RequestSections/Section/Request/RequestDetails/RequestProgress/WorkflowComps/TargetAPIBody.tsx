@@ -62,7 +62,7 @@ type FormsType = {
 const EmailSubject: React.FC<FormsType> = ({
   name,
   value,
-  disabled = true,
+  disabled = false,
 }) => {
   return (
     <Stack>
@@ -82,7 +82,9 @@ const EmailSubject: React.FC<FormsType> = ({
           disabled={disabled}
           editor_type='email'
           initialValue={value?.[name]}
-          handleChange={null}
+          handleChange={() => {
+            //
+          }}
           placeholder=''
         />
       </Stack>
@@ -91,7 +93,7 @@ const EmailSubject: React.FC<FormsType> = ({
 };
 EmailSubject.displayName = 'EmailSubject';
 
-const EmailBody: React.FC<FormsType> = ({ name, value, disabled = true }) => {
+const EmailBody: React.FC<FormsType> = ({ name, value, disabled = false }) => {
   return (
     <Stack>
       <UITypography type='small'>Email Body</UITypography>
@@ -108,8 +110,10 @@ const EmailBody: React.FC<FormsType> = ({ name, value, disabled = true }) => {
           disabled={disabled}
           editor_type='email'
           initialValue={value?.[name]}
-          handleChange={null}
           placeholder=''
+          handleChange={() => {
+            //
+          }}
         />
       </Stack>
     </Stack>
@@ -151,7 +155,6 @@ const AgentInstructionBody: React.FC<
   WActionProps['action'] & { disabled?: boolean }
 > = ({ id, action_type, payload, disabled = false }) => {
   const safePayload = payload as CustomAgentInstructionPayload;
-
   return (
     <Stack>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
