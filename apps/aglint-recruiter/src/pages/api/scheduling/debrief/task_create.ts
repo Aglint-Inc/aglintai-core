@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';

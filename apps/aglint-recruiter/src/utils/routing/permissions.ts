@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 import { PATHS } from '@/src/constant/allPaths';
 

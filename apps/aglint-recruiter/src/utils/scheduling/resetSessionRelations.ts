@@ -1,4 +1,4 @@
-import { SupabaseType } from '@aglint/shared-types';
+import { type SupabaseType } from '@aglint/shared-types';
 
 export const resetSessionRelations = async ({
   session_ids,

@@ -1,4 +1,7 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';

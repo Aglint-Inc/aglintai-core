@@ -1,16 +1,20 @@
-import { SeoPro } from '@/src/components/Common/SeoPro';
-import SignUpComp from '@/src/components/SignUpComp';
+import { Metadata } from 'next';
 
-const SignUpPage = () => {
-  return (
-    <>
-      <SeoPro
-        title='Sign Up | Aglint AI'
-        description='AI for People Products'
-      />
-      <SignUpComp />
-    </>
-  );
+import SignUpForm from '@/src/components/Auth/SignupForm';
+import Footer from '@/src/components/Common/Footer';
+
+export const metadata: Metadata = {
+  title: 'Sign Up | Aglint AI',
+  description: 'AI for People Products',
 };
 
-export default SignUpPage;
+export default function SignUpPage() {
+  return (
+    <div className='min-h-screen flex flex-col justify-between bg-neutral-100'>
+      <div className='flex-1 flex justify-center items-center'>
+        <SignUpForm />
+      </div>
+      <Footer />
+    </div>
+  );
+}

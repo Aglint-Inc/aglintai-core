@@ -1,18 +1,18 @@
 import {
-  DateRangePlansType,
-  PlanCombinationRespType,
-  SessionCombinationRespType,
+  type DateRangePlansType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
-  holidayType,
-  schedulingSettingType,
-  SessionInterviewerApiRespType,
-  SessionInterviewerType,
-  SessionsCombType,
-  SessionSlotType,
+  type holidayType,
+  type schedulingSettingType,
+  type SessionInterviewerApiRespType,
+  type SessionInterviewerType,
+  type SessionsCombType,
+  type SessionSlotType,
 } from '@aglint/shared-types/src';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 import { nanoid } from 'nanoid';
 
 export const combineSlots = (
