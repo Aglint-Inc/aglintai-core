@@ -1,43 +1,22 @@
 /* eslint-disable security/detect-object-injection */
 import { dayjsLocal } from '@aglint/shared-utils';
-import { CircularProgress, Dialog, Popover } from '@mui/material';
-import Stack from '@mui/material/Stack';
+import { CircularProgress, Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, {
   createContext,
   memo,
-  PropsWithChildren,
   useCallback,
   useContext,
   useState,
 } from 'react';
 
-import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { CloseJobModal } from '@/devlink/CloseJobModal';
-import { FilterOption } from '@/devlink/FilterOption';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
-import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { Text } from '@/devlink/Text';
-import { FilterDropdown } from '@/devlink2/FilterDropdown';
-import { ButtonGhost } from '@/devlink3/ButtonGhost';
-import { GlobalSwitch } from '@/devlink3/GlobalSwitch';
-import { GlobalSwitchPill } from '@/devlink3/GlobalSwitchPill';
-import { ScoreSetting } from '@/devlink3/ScoreSetting';
-import AssessmentIcon from '@/src/components/Common/ModuleIcons/assessmentIcon';
-import EmailTemplateIcon from '@/src/components/Common/ModuleIcons/emailTemplateIcon';
-import HiringTeamIcon from '@/src/components/Common/ModuleIcons/hiringTeamIcon';
-import JobDetailsIcon from '@/src/components/Common/ModuleIcons/jobDetailsIcon';
-import ProfileScoreIcon from '@/src/components/Common/ModuleIcons/profileScoreIcon';
-import SchedulingIcon from '@/src/components/Common/ModuleIcons/schedulingIcon';
-import ScreeningIcon from '@/src/components/Common/ModuleIcons/screeningIcon';
-import WorkflowIcon from '@/src/components/Common/ModuleIcons/workflowIcon';
-import PublishButton from '@/src/components/Common/PublishButton';
-import UITextField from '@/src/components/Common/UITextField';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { ModeToggle } from '@/src/components/shadcn/mode-toggle';
-import { Button } from '@/src/components/shadcn/ui/button';
-import V0Button from '@/src/components/shadcn/v0-button';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -45,22 +24,25 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import { BarChart, Calendar, ClipboardList, FileText, MoreHorizontal, PlusCircle, RefreshCw, ShieldCheck, UserPlus, Workflow, XCircle } from 'lucide-react';
+import { GlobalSwitch, GlobalSwitchPill, ScoreSetting } from '@/devlink3';
+import { CloseJobModal } from '@/devlink';
+import UITextField from '@/src/components/Common/UITextField';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
   return (
     <SettingsContext.Provider value={value}>
-      <Stack direction={'row'} alignItems={'center'} gap={2}>
-        <Button>Click me!</Button>
-        <ModeToggle />
-        <V0Button />
+      <div className="flex flex-row items-center gap-2">
         <Score />
         <Sync />
         <Add />
         <Publish />
         <Switcher />
         <Dropdown />
-      </Stack>
+      </div>
     </SettingsContext.Provider>
   );
 };
@@ -68,7 +50,7 @@ export const SharedActions = () => {
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (job?.posted_by !== 'Greenhouse') return <></>;
+  if (job?.posted_by !== 'Greenhouse') return null;
   const time = dayjsLocal().diff(
     dayjsLocal(job?.remote_sync_time ?? new Date()),
     'minutes',
@@ -81,36 +63,28 @@ const Sync = () => {
   };
 
   return (
-    <Stack direction={'row'} gap={'4px'}>
-      <Stack flexShrink={0} justifyContent={'center'}>
-        <Text
-          content={
-            time
-              ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
-              : 'Last synced few seconds ago'
-          }
-          size={1}
-          color={'neutral'}
-        />
-      </Stack>
+    <div className="flex flex-row gap-1">
+      <div className="flex-shrink-0 flex items-center">
+        <p className="text-neutral-500 text-sm">
+          {time
+            ? `Last synced ${time} minute${time === 1 ? '' : 's'} ago`
+            : 'Last synced few seconds ago'}
+        </p>
+      </div>
 
       <OptimisticWrapper loading={load}>
-        <ButtonGhost
-          size={2}
-          isLeftIcon
-          iconName={'sync'}
-          color={'accent'}
-          textButton={'Sync job'}
-          onClickButton={{ onClick: async () => await handleSync() }}
-        />
+        <Button variant="outline" onClick={handleSync} className="w-auto">
+          <RefreshCw className="w-3 h-5 mr-3" strokeWidth={1.5} />
+          Sync job
+        </Button>
       </OptimisticWrapper>
-    </Stack>
+    </div>
   );
 };
 
 const Score = () => {
   const { applicationScoringPollEnabled, job, total } = useJob();
-  if (!applicationScoringPollEnabled) return <></>;
+  if (!applicationScoringPollEnabled) return null;
   return (
     <ScoreSetting
       textScoreCount={`${
@@ -119,13 +93,13 @@ const Score = () => {
         job?.processing_count.unparsable
       }/${total ?? '---'}`}
       slotScoringLoader={
-        <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+        <div className="w-3 aspect-square">
           <CircularProgress
             color='inherit'
             size={'100%'}
-            sx={{ color: 'var(--white)' }}
+            className="text-white"
           />
-        </Stack>
+        </div>
       }
     />
   );
@@ -136,17 +110,13 @@ const Add = () => {
   const { setImportPopup } = useApplicationsStore(({ setImportPopup }) => ({
     setImportPopup,
   }));
-  if (job?.status === 'closed' || !manageJob) return <></>;
+  if (job?.status === 'closed' || !manageJob) return null;
   return (
     <>
-      <ButtonSoft
-        size={2}
-        color='neutral'
-        textButton='Add candidates'
-        onClickButton={{ onClick: () => setImportPopup(true) }}
-        isLeftIcon
-        iconName='person_add'
-      />
+      <Button variant="outline" onClick={() => setImportPopup(true)} className="w-auto">
+        <PlusCircle className="mr-2 h-4 w-4" />
+        Add candidates
+      </Button>
       <UploadApplications />
     </>
   );
@@ -154,34 +124,30 @@ const Add = () => {
 
 const Publish = () => {
   const { handlePublish, canPublish, manageJob, job } = useJob();
-  if (job?.status === 'closed' || !manageJob) return <></>;
+  if (job?.status === 'closed' || !manageJob) return null;
   return (
-    <PublishButton
+    <Button
       onClick={async () => await handlePublish()}
       disabled={!canPublish}
-    />
+    >
+      Publish
+    </Button>
   );
 };
 
 const Switcher = () => {
   const { handlePush, currentPath } = useSettings();
   return (
-    <GlobalSwitch
-      slotGlobalSwitchPill={
-        <>
-          <GlobalSwitchPill
-            textPill={'Applications'}
-            isActive={currentPath === '/jobs/[id]'}
-            onClickPill={{ onClick: () => handlePush('/jobs/[id]') }}
-          />
-          <GlobalSwitchPill
-            textPill={'Metrics'}
-            isActive={currentPath === '/jobs/[id]/metrics'}
-            onClickPill={{ onClick: () => handlePush('/jobs/[id]/metrics') }}
-          />
-        </>
-      }
-    />
+    <Tabs defaultValue={currentPath === '/jobs/[id]' ? 'applications' : 'metrics'}>
+      <TabsList>
+        <TabsTrigger value="applications" onClick={() => handlePush('/jobs/[id]')}>
+          Applications
+        </TabsTrigger>
+        <TabsTrigger value="metrics" onClick={() => handlePush('/jobs/[id]/metrics')}>
+          Metrics
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 };
 
@@ -189,9 +155,7 @@ const useSettingsActions = () => {
   const { push, pathname } = useRouter();
   const { handleJobDelete } = useJobs();
   const { job, handleJobAsyncUpdate } = useJob();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
-  );
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [modal, setModal] = useState(false);
 
   const isDelete = job?.status !== 'published';
@@ -220,10 +184,7 @@ const useSettingsActions = () => {
     }
   }, [job?.status, handleCloseModal]);
 
-  const handlePush = <
-    T extends Extract<keyof R, `/jobs/${string}`>,
-    R extends typeof ROUTES = typeof ROUTES,
-  >(
+  const handlePush = <T extends Extract<keyof R, `/jobs/${string}`>, R extends typeof ROUTES = typeof ROUTES>(
     type: T,
   ) => {
     setAnchorEl(null);
@@ -245,8 +206,7 @@ const useSettingsActions = () => {
   };
 };
 
-const SettingsContext =
-  createContext<ReturnType<typeof useSettingsActions>>(undefined);
+const SettingsContext = createContext<ReturnType<typeof useSettingsActions>>(undefined);
 
 const useSettings = () => useContext(SettingsContext);
 
@@ -264,63 +224,25 @@ const Dropdown = () => {
   const { modal, setAnchorEl } = useSettings();
   return (
     <>
-      <IconButtonGhost
-        color={'neutral'}
-        iconSize={6}
-        iconName='more_vert'
-        onClickButton={{
-          onClick: (e) => setAnchorEl(e.currentTarget),
-        }}
-      />
-      <Pop>
-        <Modules />
-        <CloseJob />
-      </Pop>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" className="h-8 w-8 rounded-md">
+            <MoreHorizontal className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <Modules />
+          <CloseJob />
+        </DropdownMenuContent>
+      </DropdownMenu>
       {modal && <Close />}
     </>
   );
 };
 
-const Pop = ({ children }: PropsWithChildren) => {
-  const { anchorEl, setAnchorEl } = useSettings();
-  return (
-    <>
-      <Popover
-        open={!!anchorEl}
-        anchorEl={anchorEl}
-        onClose={() => setAnchorEl(null)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        sx={{
-          '& .MuiPaper-root': {
-            border: 'none !important',
-            background: 'transparent',
-            overflow: 'visible !important',
-            boxShadow: 'none',
-          },
-        }}
-      >
-        <Stack border={'1px solid var(--neutral-6)'} borderRadius={'8px'}>
-          <FilterDropdown
-            isRemoveVisible={false}
-            isResetVisible={false}
-            slotOption={<>{children}</>}
-          />
-        </Stack>
-      </Popover>
-    </>
-  );
-};
-
 const Close = () => {
-  const { job, modal, handleModalSubmit, handleCloseModal, isDelete } =
-    useSettings();
+  const { job, modal, handleModalSubmit, handleCloseModal, isDelete } = useSettings();
   const [value, setValue] = useState('');
   const job_title = job?.job_title ?? '';
   return (
@@ -345,19 +267,12 @@ const Close = () => {
         }
         slotButton={
           <>
-            <ButtonSoft
-              color={'neutral'}
-              textButton='Cancel'
-              size={2}
-              onClickButton={{ onClick: () => handleCloseModal() }}
-            />
-            <ButtonSolid
-              textButton={isDelete ? 'Delete Job' : 'Close Job'}
-              color={isDelete ? 'error' : 'accent'}
-              size={2}
-              onClickButton={{ onClick: handleModalSubmit }}
-              isDisabled={job_title.trim() !== value.trim()}
-            />
+            <Button variant="outline" onClick={() => handleCloseModal()} className="w-auto">
+              Cancel
+            </Button>
+            <Button onClick={handleModalSubmit} className="w-auto" disabled={job_title.trim() !== value.trim()}>
+              {isDelete ? 'Delete Job' : 'Close Job'}
+            </Button>
           </>
         }
       />
@@ -396,7 +311,6 @@ const Modules = () => {
       {currentPath !== '/jobs/[id]/screening' && isScreeningEnabled && (
         <ScreeningModule />
       )}
-      {/* {currentPath !== '/jobs/[id]/email-templates' && <EmailTemplatesModule />} */}
       {currentPath !== '/jobs/[id]/workflows' && <WorkflowModule />}
     </>
   );
@@ -405,113 +319,70 @@ const Modules = () => {
 const WorkflowModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/workflows'),
-      }}
-      text={'Workflows'}
-      slotIcon={<WorkflowIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/workflows')}>
+      <Workflow className="mr-2 h-4 w-4" />
+      <span>Workflows</span>
+    </DropdownMenuItem>
   );
 };
 
 const HiringTeamModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/hiring-team'),
-      }}
-      text={'Hiring Team'}
-      slotIcon={<HiringTeamIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/hiring-team')}>
+      <UserPlus className="mr-2 h-4 w-4" />
+      <span>Hiring Team</span>
+    </DropdownMenuItem>
   );
 };
 
 const ProfileScoreModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/profile-score'),
-      }}
-      text={'Profile Score'}
-      slotIcon={<ProfileScoreIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/profile-score')}>
+      <BarChart className="mr-2 h-4 w-4" />
+      <span>Profile Score</span>
+    </DropdownMenuItem>
   );
 };
 
 const JobDetailsModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/job-details'),
-      }}
-      text={'Job Details'}
-      slotIcon={<JobDetailsIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/job-details')}>
+      <FileText className="mr-2 h-4 w-4" />
+      <span>Job Details</span>
+    </DropdownMenuItem>
   );
 };
 
 const AssessmentModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/assessment'),
-      }}
-      text={'Assessment'}
-      slotIcon={<AssessmentIcon />}
-      color={'black'}
-    />
-  );
-};
-
-// eslint-disable-next-line no-unused-vars
-const EmailTemplatesModule = () => {
-  const { handlePush } = useSettings();
-  return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/email-templates'),
-      }}
-      text={'Email Templates'}
-      slotIcon={<EmailTemplateIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/assessment')}>
+      <ClipboardList className="mr-2 h-4 w-4" />
+      <span>Assessment</span>
+    </DropdownMenuItem>
   );
 };
 
 const ScreeningModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/screening'),
-      }}
-      text={'Screening'}
-      slotIcon={<ScreeningIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/screening')}>
+      <ShieldCheck className="mr-2 h-4 w-4" />
+      <span>Screening</span>
+    </DropdownMenuItem>
   );
 };
 
 const InterviewModule = () => {
   const { handlePush } = useSettings();
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => handlePush('/jobs/[id]/interview-plan'),
-      }}
-      text={'Interview Plan'}
-      slotIcon={<SchedulingIcon />}
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => handlePush('/jobs/[id]/interview-plan')}>
+      <Calendar className="mr-2 h-4 w-4" />
+      <span>Interview Plan</span>
+    </DropdownMenuItem>
   );
 };
 
@@ -520,18 +391,9 @@ const CloseJob = () => {
   const { job } = useJob();
   const isDelete = job?.status !== 'published';
   return (
-    <FilterOption
-      onClickCancelInvite={{
-        onClick: () => {
-          setModal(true);
-          setAnchorEl(null);
-        },
-      }}
-      text={`${isDelete ? 'Delete' : 'Close'} Job`}
-      slotIcon={
-        <GlobalIcon size={4} iconName={isDelete ? 'delete' : 'close'} />
-      }
-      color={'black'}
-    />
+    <DropdownMenuItem onSelect={() => { setModal(true); setAnchorEl(null); }}>
+      <XCircle className="mr-2 h-4 w-4" />
+      <span>{isDelete ? 'Delete' : 'Close'} Job</span>
+    </DropdownMenuItem>
   );
 };
