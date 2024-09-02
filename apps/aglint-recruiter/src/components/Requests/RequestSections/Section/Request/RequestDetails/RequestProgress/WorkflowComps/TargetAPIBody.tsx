@@ -1,7 +1,4 @@
-import {
-  CustomAgentInstructionPayload,
-  DatabaseTable,
-} from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
@@ -153,8 +150,7 @@ const AgentInstructionTemplate = ({ action }: WActionProps) => {
 
 const AgentInstructionBody: React.FC<
   WActionProps['action'] & { disabled?: boolean }
-> = ({ id, action_type, payload, disabled = false }) => {
-  const safePayload = payload as CustomAgentInstructionPayload;
+> = ({ disabled = false }) => {
   return (
     <Stack>
       <UITypography type='small'>Aglint AI Instruction</UITypography>
@@ -170,7 +166,7 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          handleChange={(newInstruction) => {
+          handleChange={() => {
             //
           }}
           placeholder='Provide the instructions to guide the agent through this action.'

@@ -12,7 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { SlackIcon } from '../../Components/SlackIcon';
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import { getWorkflowText } from './utils';
@@ -26,7 +26,7 @@ function CandidateCancelled() {
   ]);
   const isManualFlow = request_workflow.data.length === 0;
   let eventTargetMap = useMemo(() => {
-    let mp: EventTargetMapType = {};
+    let mp: any = {};
     let workFlow = request_workflow.data;
 
     workFlow.forEach((eA) => {
@@ -182,8 +182,8 @@ function CandidateCancelled() {
                     slotAiText={event.slotInput}
                     isAiTextVisible={event.slotInput}
                     slotLoader={event.slotLoader}
-                    slotRequestIcon={event.slotRequestIcon} // left icon
-                    slotHoverIcon={event.slotHoverIcon} // right icon
+                    slotLeftIcon={event.slotRequestIcon} // left icon
+                    slotRightIcon={event.slotHoverIcon} // right icon
                     status={event.status}
                     textProgress={event.textProgress}
                     slotButton={event.slotButton}
