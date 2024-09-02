@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { DatabaseTable, SupabaseType } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import {
   interviewCancelReasons,

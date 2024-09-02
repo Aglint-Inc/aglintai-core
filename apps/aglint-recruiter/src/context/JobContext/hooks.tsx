@@ -15,7 +15,7 @@ import {
   useUploadResume,
 } from '@/src/queries/job-applications';
 import { useJobUpdate } from '@/src/queries/jobs';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import toast from '@/src/utils/toast';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';

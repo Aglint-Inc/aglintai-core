@@ -1,24 +1,24 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type PostgrestError } from '@supabase/supabase-js';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  CsvUploadApi,
-  Supabase,
+  type CsvUploadApi,
+  type Supabase,
 } from '@/src/apiUtils/job/candidateUpload/types';
 import {
   bulkCreateApplications,
   bulkCreateCandidate,
   bulkCreateFiles,
 } from '@/src/apiUtils/job/candidateUpload/utils';
-import { CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
+import { type CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
 
 const handler = async (
   req: NextApiRequest,

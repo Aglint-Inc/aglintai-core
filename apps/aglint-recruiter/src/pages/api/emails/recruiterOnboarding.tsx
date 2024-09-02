@@ -11,8 +11,8 @@ import {
   Text,
 } from '@react-email/components';
 import { render } from '@react-email/render';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type PostgrestError } from '@supabase/supabase-js';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as React from 'react';
 
 import Footer from './components/footer';

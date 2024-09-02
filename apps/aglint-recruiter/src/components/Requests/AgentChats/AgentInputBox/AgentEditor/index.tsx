@@ -2,7 +2,7 @@
 import './EditorStyle.css'; // We will define some styles here
 
 import { Stack } from '@mui/material';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
@@ -12,8 +12,8 @@ import { Kbd } from '@/devlink3/Kbd';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
-import { ScheduleType, selectedItemsType } from '../utils';
-import { MentionComponentProps, MentionInputProps, MentionType } from './utils';
+import { type ScheduleType, type selectedItemsType } from '../utils';
+import { type MentionComponentProps, type MentionInputProps, type MentionType } from './utils';
 
 interface AgentEditorProps {
   applicationsList?: { id: string; display: string }[];

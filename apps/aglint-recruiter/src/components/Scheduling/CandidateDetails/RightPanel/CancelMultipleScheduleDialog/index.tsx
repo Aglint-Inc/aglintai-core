@@ -1,4 +1,4 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { Dialog } from '@mui/material';
 import axios from 'axios';
 import { useEffect } from 'react';

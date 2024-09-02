@@ -1,4 +1,4 @@
-import { CandidateListTypeDB, SearchHistoryType } from '@aglint/shared-types';
+import { type CandidateListTypeDB, type SearchHistoryType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -28,11 +28,11 @@ import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { type CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
-import { Candidate } from './AppoloSearch/types';
+import { type Candidate } from './AppoloSearch/types';
 import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
 import EmptyState from './Search/EmptyState';
 import { getRelevantCndidates } from './utils';

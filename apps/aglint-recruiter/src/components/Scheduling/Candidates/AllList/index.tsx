@@ -12,7 +12,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { useFilterCandidateStore } from '../filter-store';
 import ListCardInterviewSchedule from '../ListCard';
 import {
-  ApplicationList,
+  type ApplicationList,
   useAllInterviewSchedules,
   useGetCount,
 } from '../queries/hooks';

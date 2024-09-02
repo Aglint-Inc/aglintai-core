@@ -1,4 +1,4 @@
-import { RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';

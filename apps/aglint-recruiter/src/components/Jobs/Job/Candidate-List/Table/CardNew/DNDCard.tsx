@@ -4,7 +4,7 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
-import { Application } from '@/src/types/applications.types';
+import { type Application } from '@/src/types/applications.types';
 
 import ApplicationCard from '.';
 

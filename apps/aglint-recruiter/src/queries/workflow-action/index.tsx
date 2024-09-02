@@ -9,7 +9,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { WorkflowAction } from '@/src/types/workflow.types';
+import { type WorkflowAction } from '@/src/types/workflow.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

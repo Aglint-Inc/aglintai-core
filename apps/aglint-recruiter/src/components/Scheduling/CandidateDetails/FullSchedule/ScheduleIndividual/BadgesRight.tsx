@@ -1,16 +1,16 @@
 import {
+  type TooltipProps,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps,
 } from '@mui/material';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 
-import { SchedulingApplication } from '../../store';
-import { ScheduleIndividualCardType } from './types';
+import { type SchedulingApplication } from '../../store';
+import { type ScheduleIndividualCardType } from './types';
 
 function BadgesRight({
   interview_module,

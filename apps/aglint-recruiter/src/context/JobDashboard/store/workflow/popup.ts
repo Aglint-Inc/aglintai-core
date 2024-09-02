@@ -1,4 +1,4 @@
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Popup = {
   open: boolean;

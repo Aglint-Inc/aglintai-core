@@ -26,7 +26,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import {
-  ApplicationsParams,
+  type ApplicationsParams,
   useApplicationsParams,
 } from '@/src/context/ApplicationsContext/hooks';
 import { useJob } from '@/src/context/JobContext';
@@ -34,8 +34,8 @@ import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useLocalStorage } from '@/src/hooks/useLocalStorage';
 import { useCompanyMembers } from '@/src/queries/company-members';
-import { Job } from '@/src/queries/jobs/types';
-import { Application } from '@/src/types/applications.types';
+import { type Job } from '@/src/queries/jobs/types';
+import { type Application } from '@/src/types/applications.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';

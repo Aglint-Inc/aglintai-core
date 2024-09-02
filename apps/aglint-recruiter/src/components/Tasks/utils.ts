@@ -1,25 +1,25 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 import {
-  CandidateType,
-  DatabaseEnums,
-  DatabaseTable,
-  DB,
-  RecruiterUserType,
+  type CandidateType,
+  type DatabaseEnums,
+  type DatabaseTable,
+  type DB,
+  type RecruiterUserType,
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
-import { createServerClient } from '@supabase/ssr';
+import { type createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { Supabase } from '@/src/apiUtils/job/candidateUpload/types';
-import { ApplicationType } from '@/src/context/CandidateAssessment/types';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type Supabase } from '@/src/apiUtils/job/candidateUpload/types';
+import { type ApplicationType } from '@/src/context/CandidateAssessment/types';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { getIndicator } from './Components/TaskStatusTag/utils';
-import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
-import { groupByTextType } from './TaskStatesContext';
+import { type meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
+import { type groupByTextType } from './TaskStatesContext';
 
 export type assigneeType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';

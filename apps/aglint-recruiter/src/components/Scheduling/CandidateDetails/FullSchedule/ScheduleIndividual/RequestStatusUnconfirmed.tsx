@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 
-import { ScheduleIndividualCardType } from './types';
+import { type ScheduleIndividualCardType } from './types';
 
 function RequestStatusUnconfirmed({
   interview_meeting,

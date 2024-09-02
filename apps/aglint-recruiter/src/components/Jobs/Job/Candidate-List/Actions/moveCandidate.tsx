@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { Checkbox, Dialog, Stack } from '@mui/material';
 import { useState } from 'react';
 

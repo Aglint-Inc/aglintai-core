@@ -17,7 +17,7 @@ import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
 import SeoSettings from './SEO/SeoSettings';
-import { SchedulingTab } from './types';
+import { type SchedulingTab } from './types';
 
 function SchedulingMainComp() {
   const router = useRouter();

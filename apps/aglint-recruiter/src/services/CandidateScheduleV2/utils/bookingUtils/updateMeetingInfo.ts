@@ -1,10 +1,10 @@
-import { CalendarEvent } from '@aglint/shared-types';
+import { type CalendarEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { BookedMeetingDetails } from './types';
+import { type BookedMeetingDetails } from './types';
 
 export const updateMeetingEventDetails = async (
   booked_meeting_details: BookedMeetingDetails,

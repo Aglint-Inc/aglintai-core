@@ -1,4 +1,4 @@
-import { PublicJobsType, SupportTicketType } from '@aglint/shared-types';
+import { type PublicJobsType, type SupportTicketType } from '@aglint/shared-types';
 import { Avatar, IconButton, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';

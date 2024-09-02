@@ -7,7 +7,7 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
-import { fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
+import { type fetchModuleSchedules } from '../../InterviewTypes/queries/utils';
 import ScheduleMeetingList from './ScheduleMeetingList';
 
 type tabs = 'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting';

@@ -1,7 +1,7 @@
 import {
-  ApiInterface,
-  NextApiRequest,
-  NextApiResponse,
+  type ApiInterface,
+  type NextApiRequest,
+  type NextApiResponse,
 } from '@/src/interface/NextApiRequest.interface';
 
 import { AglintLogger } from '../logger/logger';

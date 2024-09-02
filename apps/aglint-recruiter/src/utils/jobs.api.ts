@@ -1,5 +1,5 @@
-import { GreenHouseApplicationsAPI } from '../app/api/sync/greenhouse/applications/type';
-import { GreenHouseJobsSyncAPI } from '../app/api/sync/greenhouse/jobs/type';
+import { type GreenHouseApplicationsAPI } from '../app/api/sync/greenhouse/applications/type';
+import { type GreenHouseJobsSyncAPI } from '../app/api/sync/greenhouse/jobs/type';
 import axios from '../client/axios';
 import { supabase } from './supabase/client';
 

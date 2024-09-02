@@ -1,11 +1,11 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/system';
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 
-import { TipTapAIEditorCtxType, TipTapCtx } from './context';
+import { type TipTapAIEditorCtxType, TipTapCtx } from './context';
 import {
   getEmailTemplateExtns,
   getEmailTemplateExtnsNoHeading,

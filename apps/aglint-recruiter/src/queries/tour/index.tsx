@@ -1,4 +1,4 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
 import {
   queryOptions,
   useMutation,

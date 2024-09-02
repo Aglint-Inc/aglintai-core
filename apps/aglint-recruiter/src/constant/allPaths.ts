@@ -1,6 +1,7 @@
 export const PATHS = [
 '/404',
 '/500',
+'/_error',
 '/api/agent-workflow/cancel-schedule',
 '/api/agent-workflow/cand-avail-recieved',
 '/api/agent-workflow/interviewer-decline',
@@ -165,9 +166,9 @@ export const PATHS = [
 '/api/phone-screening/submit',
 '/api/pre-seed',
 '/api/request/candidate-request',
+'/api/request/execute-workflow',
 '/api/request/interviewer-request',
 '/api/request/schedule-request',
-'/api/request/workflow-clone',
 '/api/request_feedback',
 '/api/reset_password',
 '/api/resumecron/batchscore',

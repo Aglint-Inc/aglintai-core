@@ -1,4 +1,4 @@
-import { EmailTemplateAPi } from "@aglint/shared-types";
+import { type EmailTemplateAPi } from "@aglint/shared-types";
 
 export type API_request_feedback = {
   request: requestFeedbackType;

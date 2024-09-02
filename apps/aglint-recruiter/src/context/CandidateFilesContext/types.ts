@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { supportedTypes } from '@/src/apiUtils/job/candidateUpload/utils';
+import { type supportedTypes } from '@/src/apiUtils/job/candidateUpload/utils';
 
 import {
-  createCandidateResumeDbAction,
-  deleteCandidateResumeDbAction,
+  type createCandidateResumeDbAction,
+  type deleteCandidateResumeDbAction,
 } from './utils';
 
 export type CandidateResumesContext = {

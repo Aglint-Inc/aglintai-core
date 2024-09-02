@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
 import {
-  ApiInterface,
-  NextApiRequest,
+  type ApiInterface,
+  type NextApiRequest,
 } from '@/src/interface/NextRoute.interface';
 
 import { AglintLogger } from '../logger/logger';

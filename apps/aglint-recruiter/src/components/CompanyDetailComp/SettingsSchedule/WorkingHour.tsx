@@ -1,4 +1,4 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { Drawer, Stack, Typography } from '@mui/material';
 import { capitalize, cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ import { WorkingHoursHelper } from '@/devlink3/WorkingHoursHelper';
 import dayjs from '@/src/utils/dayjs';
 import timeZones from '@/src/utils/timeZone';
 
-import { TimezoneObj, TimezoneSelector } from '.';
+import { type TimezoneObj, TimezoneSelector } from '.';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
 

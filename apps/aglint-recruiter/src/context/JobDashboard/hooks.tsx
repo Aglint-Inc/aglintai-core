@@ -4,7 +4,7 @@ import {
   useAllAssessments,
   useAllAssessmentTemplates,
 } from '@/src/queries/assessment';
-import { Assessment } from '@/src/queries/assessment/types';
+import { type Assessment } from '@/src/queries/assessment/types';
 import {
   useJobLocations,
   useJobSchedules,

@@ -15,7 +15,7 @@ import {
   setTrainingStatus,
   useModulesStore,
 } from '../../store';
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 
 function AddMemberDialog({
   editModule,

@@ -3,15 +3,15 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // Extend Day.js with necessary plugins
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { DatabaseTable, DB } from '@aglint/shared-types';
-import { SessionsCombType } from '@aglint/shared-types';
+import { type DatabaseTable, type DB } from '@aglint/shared-types';
+import { type SessionsCombType } from '@aglint/shared-types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

@@ -1,4 +1,4 @@
-import { schedulingSettingType } from '@aglint/shared-types';
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

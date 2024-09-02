@@ -1,10 +1,10 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';

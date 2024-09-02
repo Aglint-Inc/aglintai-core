@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import React from 'react';
 
 import { TextWithIcon } from '@/devlink3/TextWithIcon';

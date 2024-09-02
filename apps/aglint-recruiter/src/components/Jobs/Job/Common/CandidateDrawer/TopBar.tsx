@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { PropsWithChildren, useEffect, useMemo } from 'react';
+import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { CandidateName } from '@/devlink/CandidateName';
 import { CandidateSidedrawerTop } from '@/devlink/CandidateSidedrawerTop';

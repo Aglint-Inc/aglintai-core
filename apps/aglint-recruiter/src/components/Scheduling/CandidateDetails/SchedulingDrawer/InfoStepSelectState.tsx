@@ -1,6 +1,6 @@
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 
-import { SchedulingFlow } from './store';
+import { type SchedulingFlow } from './store';
 
 function InfoStepSelectState({
   scheduleFlow,

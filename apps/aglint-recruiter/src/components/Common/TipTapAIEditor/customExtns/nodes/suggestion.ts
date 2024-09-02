@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { emailVariablePayloads } from '@aglint/shared-utils';
 import { ReactRenderer } from '@tiptap/react';
 import tippy from 'tippy.js';

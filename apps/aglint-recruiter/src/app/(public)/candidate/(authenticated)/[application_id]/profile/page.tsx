@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { type candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import CandidateForm from '@/src/components/CandiatePortal/Profile/CandidateForm';
 import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
 // import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';

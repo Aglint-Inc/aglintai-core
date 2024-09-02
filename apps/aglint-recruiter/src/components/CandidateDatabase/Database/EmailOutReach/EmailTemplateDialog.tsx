@@ -11,7 +11,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
-import { outReachTemplates, TemplateType } from './seedTemplates';
+import { type TemplateType,outReachTemplates } from './seedTemplates';
 
 const EmailTemplateModalComp = ({
   selectedTemplate,

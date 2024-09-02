@@ -1,5 +1,5 @@
 import { Dialog, Stack } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { LoaderSvg } from '@/devlink/LoaderSvg';

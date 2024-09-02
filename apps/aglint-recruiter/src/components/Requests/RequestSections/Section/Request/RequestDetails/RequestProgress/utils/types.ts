@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 export type RequestLogsActionType = {
   type: DatabaseTable['request_progress']['event_type'];

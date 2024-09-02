@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -17,8 +17,8 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
 import { useJobs } from '@/src/context/JobsContext';
 import {
-  initUser,
-  initUserUIGroupedByDate,
+  type initUser,
+  type initUserUIGroupedByDate,
 } from '@/src/pages/api/interviewers';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
@@ -29,7 +29,7 @@ import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
-import { CalendarEventWithType, EventType } from '../types';
+import { type CalendarEventWithType, type EventType } from '../types';
 import {
   afterWorkingEndTime,
   color,

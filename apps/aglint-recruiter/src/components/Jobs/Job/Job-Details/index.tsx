@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  Form,
-  JobDetailsForm,
-  JobMetaFormProps,
+  type Form,
+  type JobDetailsForm,
+  type JobMetaFormProps,
   useJobForms,
 } from '@components/Jobs/Create/form';
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -18,7 +18,7 @@ import {
   validateDescription,
   validateString,
 } from '@/src/context/JobContext/utils';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 

@@ -1,6 +1,6 @@
 import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 import Link from 'next/link';
-import { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';

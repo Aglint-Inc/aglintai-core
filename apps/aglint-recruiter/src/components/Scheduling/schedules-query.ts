@@ -1,4 +1,4 @@
-import { QueryData } from '@supabase/supabase-js';
+import { type QueryData } from '@supabase/supabase-js';
 
 import { supabase } from '@/src/utils/supabase/client';
 

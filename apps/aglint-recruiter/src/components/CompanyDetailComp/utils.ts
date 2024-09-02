@@ -1,8 +1,8 @@
-import { RecruiterDB } from '@aglint/shared-types';
+import { type RecruiterDB } from '@aglint/shared-types';
 
 // import debounce from 'lodash/debounce';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
-import { MessageType } from '@/src/utils/prompts/types';
+import { type MessageType } from '@/src/utils/prompts/types';
 import { requestJson } from '@/src/utils/prompts/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/ToastPro';

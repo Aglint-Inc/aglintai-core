@@ -24,7 +24,7 @@ import {
   setSelectedCandidates,
   useCandidateStore,
 } from '../store';
-import { Candidate, CandidateSearchHistoryType } from '../types';
+import { type Candidate, type CandidateSearchHistoryType } from '../types';
 import { calculateTotalExperience } from '../utils';
 
 function CdTableRecords({ loading }) {

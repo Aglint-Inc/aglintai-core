@@ -1,4 +1,4 @@
-import { create, StateCreator } from 'zustand';
+import { type StateCreator,create } from 'zustand';
 
 type AssessmentDeleteModalSlice = {
   deleteModal: boolean;

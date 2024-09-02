@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 
 import { CardWithNumber } from '@/devlink3/CardWithNumber';
 import { NoData } from '@/devlink3/NoData';

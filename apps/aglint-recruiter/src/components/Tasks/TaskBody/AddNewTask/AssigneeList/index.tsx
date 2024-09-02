@@ -11,7 +11,7 @@ import { ListPop } from '@/devlink3/ListPop';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType } from '../../../utils';
+import { type assigneeType } from '../../../utils';
 
 function AssigneeList({
   selectedAssignee,

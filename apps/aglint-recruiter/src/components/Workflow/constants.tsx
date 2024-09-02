@@ -3,7 +3,7 @@ import type {
   CustomAgentInstructionPayload,
   Trigger_API_Action_Mapper,
 } from '@aglint/shared-types';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import type { Workflow } from '@/src/types/workflow.types';

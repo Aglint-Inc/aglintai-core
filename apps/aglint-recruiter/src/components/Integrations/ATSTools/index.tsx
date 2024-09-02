@@ -13,7 +13,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';
-import { ATSType, PopUpReasonTypes } from '../types';
+import { type ATSType, type PopUpReasonTypes } from '../types';
 import {
   AshbyLogo,
   GreenHouseLogo,

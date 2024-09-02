@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { progressActionMap } from './ProgressActionMap';
-import { RequestLogsActionType } from './types';
+import { type RequestLogsActionType } from './types';
 
 export const getPastProgressToTrigActions = (
   request_progress: DatabaseTable['request_progress'][],

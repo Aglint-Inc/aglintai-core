@@ -1,6 +1,6 @@
-import { SessionsCombType } from '@aglint/shared-types';
+import { type SessionsCombType } from '@aglint/shared-types';
 import { Dialog, Stack, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -22,9 +22,9 @@ import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '../../Candidates/utils';
 import { SessionIcon } from '../../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
-  CandidateInviteCalendarProps,
+  type CandidateInviteCalendarProps,
 } from '../calender';
-import { ScheduleCardProps, ScheduleCardsProps } from '../types';
+import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { dayJS, getDurationText } from '../utils';
 
 const MultiDay = ({ rounds }: ScheduleCardsProps) => {

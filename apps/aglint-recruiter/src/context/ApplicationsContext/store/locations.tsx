@@ -1,6 +1,6 @@
-import { nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
+import { type nestedObjectToArray } from '@/src/components/Common/FilterHeader/utils';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Locations = ReturnType<typeof nestedObjectToArray>;
 

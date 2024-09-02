@@ -1,8 +1,8 @@
-import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { type AuthChangeEvent, type Session } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import {
+  type ReactNode,
   createContext,
-  ReactNode,
   useContext,
   useEffect,
   useState,

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { SavedChanges } from '@/devlink/SavedChanges';
 import { Breadcrum } from '@/devlink2/Breadcrum';
@@ -9,14 +9,14 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJob } from '@/src/context/JobContext';
 import { validateString } from '@/src/context/JobContext/utils';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 
 import Loader from '../../../Common/Loader';
 import {
-  JobHiringTeamForm,
-  JobMetaFormProps,
+  type JobHiringTeamForm,
+  type JobMetaFormProps,
   useJobForms,
 } from '../../Create/form';
 import JobNotFound from '../Common/JobNotFound';

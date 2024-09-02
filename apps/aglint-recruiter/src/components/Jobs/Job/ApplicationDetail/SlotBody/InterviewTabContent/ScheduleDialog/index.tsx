@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -25,7 +25,7 @@ import {
   setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../../store';
-import { Interviewer } from '../StageSessions/EditDrawer/types';
+import { type Interviewer } from '../StageSessions/EditDrawer/types';
 
 function DialogSchedule() {
   const { isScheduleOpen, selectedSessionIds } = useApplicationDetailStore();

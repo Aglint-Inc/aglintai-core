@@ -1,11 +1,11 @@
-import { MultiDayPlanType } from '@aglint/shared-types';
+import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import dayjs from '@/src/utils/dayjs';
 
-import { ApiResponseFindAvailability } from '../types';
-import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
+import { type ApiResponseFindAvailability } from '../types';
+import { type filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 
 export interface SchedulingFlow {
   isScheduleNowOpen: boolean;

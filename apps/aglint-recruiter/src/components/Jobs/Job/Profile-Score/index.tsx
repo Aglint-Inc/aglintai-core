@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
-  ChangeEventHandler,
-  FC,
+  type ChangeEventHandler,
+  type FC,
   useCallback,
   useEffect,
   useMemo,
@@ -35,14 +35,14 @@ import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import Loader from '@/src/components/Common/Loader';
 import ScoreWheel, {
-  ScoreWheelParams,
+  type ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

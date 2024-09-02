@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { cloneDeep, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
@@ -7,9 +7,9 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  ActionType,
-  candDbContextType,
-  CandidateStateType,
+  type ActionType,
+  type candDbContextType,
+  type CandidateStateType,
 } from './candFilter.type';
 
 const initialState: CandidateStateType = {

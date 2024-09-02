@@ -5,13 +5,13 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { APISendgridPayload, EmailTemplateAPi } from '@aglint/shared-types';
+import { type APISendgridPayload, type EmailTemplateAPi } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidV4 } from 'uuid';
 
-import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
+import { type InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import { getFullName } from '@/src/utils/jsonResume';
 import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';

@@ -1,5 +1,5 @@
 import { Checkbox, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 export function CheckBoxWithText({
   children,

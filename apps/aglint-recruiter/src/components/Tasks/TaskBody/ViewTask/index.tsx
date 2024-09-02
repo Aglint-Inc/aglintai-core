@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { ArrowDownward } from '@mui/icons-material';
 import { Drawer, Popover, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { MouseEvent, useEffect, useState } from 'react';
+import { type MouseEvent, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';

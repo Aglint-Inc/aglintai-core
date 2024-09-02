@@ -5,7 +5,7 @@ import { Linkedin } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
+import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
 import { usePortalInterviews } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 import dayjs from '@/src/utils/dayjs';

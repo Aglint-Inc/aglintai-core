@@ -4,8 +4,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import {
-  apiHomepageResponse,
-  availability,
+  type apiHomepageResponse,
+  type availability,
 } from '@/src/app/api/candidate_portal/home_page/route';
 import dayjs from '@/src/utils/dayjs';
 

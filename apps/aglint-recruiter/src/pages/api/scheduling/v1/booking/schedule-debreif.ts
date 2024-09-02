@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { APIScheduleDebreif } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type APIScheduleDebreif } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookRecruiterSelectedDebreif } from '@/src/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedDebreif';

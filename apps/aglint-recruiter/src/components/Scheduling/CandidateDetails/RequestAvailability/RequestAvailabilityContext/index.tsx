@@ -1,19 +1,19 @@
 /* eslint-disable no-unused-vars */
 import {
-  CandReqAvailableSlots,
-  CurrRoundCandidateAvailReq,
-  DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
-  InterviewSessionTypeDB,
+  type CandReqAvailableSlots,
+  type CurrRoundCandidateAvailReq,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type DatabaseTableUpdate,
+  type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import axios from 'axios';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import {
+  type Dispatch,
+  type SetStateAction,
   createContext,
-  Dispatch,
-  SetStateAction,
   useContext,
   useEffect,
   useState,

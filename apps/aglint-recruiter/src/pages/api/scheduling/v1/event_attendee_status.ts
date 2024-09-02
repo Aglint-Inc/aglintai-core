@@ -5,8 +5,8 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { APIEventAttendeeStatus } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type APIEventAttendeeStatus } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 

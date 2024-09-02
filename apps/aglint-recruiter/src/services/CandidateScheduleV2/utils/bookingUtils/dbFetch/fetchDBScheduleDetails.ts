@@ -1,8 +1,8 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
-import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
+import { type schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import * as v from 'valibot';
+import type * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

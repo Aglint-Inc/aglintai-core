@@ -7,11 +7,11 @@ import {
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { initUser } from '@/src/pages/api/interviewers';
-import { allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
+import { type initUser } from '@/src/pages/api/interviewers';
+import { type allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { LeaderAnalyticsFilterType } from './types';
+import { type LeaderAnalyticsFilterType } from './types';
 
 // -------------------------------------------------------- InterviewerLoad
 

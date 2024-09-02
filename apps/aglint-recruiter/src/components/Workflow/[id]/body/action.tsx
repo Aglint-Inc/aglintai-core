@@ -17,7 +17,7 @@ import UISelect from '@/src/components/Common/Uiselect';
 import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { WorkflowAction } from '@/src/types/workflow.types';
+import { type WorkflowAction } from '@/src/types/workflow.types';
 
 import { getWorkflowTagIcon } from '../../constants';
 import { useActions } from './context';

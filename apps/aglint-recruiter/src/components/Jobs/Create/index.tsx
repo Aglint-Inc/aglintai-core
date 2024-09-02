@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
 
 import { PageLayout } from '@/devlink2/PageLayout';
 import { CreateJobLoader } from '@/devlink3/CreateJobLoader';
@@ -14,7 +14,7 @@ import { useCompanyMembers } from '@/src/queries/company-members';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { WarningSvg } from '../Job/Interview-Plan/sessionForms';
-import { Form, JobMetaFormProps, useJobForms } from './form';
+import { type Form, type JobMetaFormProps, useJobForms } from './form';
 
 const JobCreateComponent = () => {
   const { status } = useCompanyMembers();

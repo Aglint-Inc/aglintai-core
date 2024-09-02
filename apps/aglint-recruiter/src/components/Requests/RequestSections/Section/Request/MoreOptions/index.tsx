@@ -19,9 +19,9 @@ import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useMemberList } from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/src/context/RequestsContext';
-import { Request } from '@/src/queries/requests/types';
+import { type Request } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
