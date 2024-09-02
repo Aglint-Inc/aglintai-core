@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card';
 
 interface Interview {
   name: string;
-  time: string;
   date: string;
   status:
     | 'Scheduled'
@@ -24,11 +23,11 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
   interview,
   isLast,
 }) => {
-  const { name, time, date, status } = interview;
+  const { name, date, status } = interview;
 
   const isActive =
     status === 'Scheduled' || status === 'Completed' || status === 'Upcoming';
-  const cardClasses = `w-full mb-6 ${isActive ? '' : 'opacity-50 cursor-not-allowed'}`;
+  const cardClasses = `w-full mb-3 ${isActive ? '' : 'opacity-50 cursor-not-allowed'}`;
 
   return (
     <div className='flex flex-row gap-2'>
@@ -46,7 +45,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
               <Badge variant='outline' className='rounded-sm'>
                 {status}
               </Badge>
-              <span className='text-sm text-muted-foreground'>{`${date}, ${time}`}</span>
+              <span className='text-sm text-muted-foreground'>{`${date}`}</span>
             </div>
           </div>
         </CardContent>

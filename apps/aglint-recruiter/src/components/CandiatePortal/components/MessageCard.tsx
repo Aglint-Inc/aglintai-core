@@ -1,40 +1,59 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import Image from 'next/image';
+import React from 'react';
 
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 
-export default function MessageCard() {
+const MessageCard = () => {
   return (
-    <Card className="w-full rounded-md" >
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div className="flex items-center space-x-4">
-          <Avatar className="h-12 w-12 rounded-lg">
-            <AvatarImage className="rounded-lg" src="/placeholder.svg?height=40&width=40" alt="Profile picture" />
-            <AvatarFallback>BE</AvatarFallback>
-          </Avatar>
-          <div>
-            <h2 className="text-sm font-semibold">Brittany Emmanuel</h2>
-            <p className="text-sm text-muted-foreground">Hiring Manager</p>
+    <Card className='mx-auto rounded-lg overflow-hidden border '>
+      <CardHeader className='flex items-center px-6 py-4'>
+        <div className='flex w-full items-center justify-between'>
+          <div className='flex items-center'>
+            <Image
+              className='block w-10 h-10 rounded-full'
+              src=''
+              alt='Profile'
+            />
+            <div className='ml-2'>
+              <p className='text-sm font-semibold leading-tight'>Brittany Emmanuel</p>
+              <p className='text-sm leading-tight text-gray-600'>
+                Hiring Manager
+              </p>
+            </div>
+          </div>
+          <div className=' text-sm ml-auto text-center sm:text-right'>
+            <p className='text-sm mt-2 text-gray-500'>10 Minutes ago</p>
+            {/* <a href='#' className='text-blue-500 hover:underline'> */}
+            View in email
+            {/* </a> */}
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-muted-foreground">10 Minutes ago</p>
-          <a href="mail.google.com" className="text-sm font-medium text-primary hover:underline">
-            View in email
-          </a>
-        </div>
       </CardHeader>
-      <CardContent className="mt-4">
-        <h3 className="text-md font-semibold mb-4">Avaliability requested for Coding round II</h3>
-        <p className="text-muted-foreground mb-2">Hi Ter Stegen,</p>
-        <p className="text-muted-foreground">
-          Please submit your availability for the interview of coding round II before 24 th august 2024, 05:30
-          AM PST. Upon your submission we will be sending a self scheduling link to confirm the interview
+      <CardContent className='px-6'>
+        <h2 className='text-md font-semibold'>
+          Availability requested for Coding round II
+        </h2>
+        <p className='text-sm font-normal mt-2'>
+          Hi Ter Stegen,
+          <br />
+          Please submit your availability for the interview of coding round II
+          before 24th August 2024, 05:30 AM PST. Upon your submission we will be
+          sending a self scheduling link to confirm the interview.
         </p>
       </CardContent>
-      <CardFooter>
-        <Button variant="outline" className="w-full">Submit Availability</Button>
+      <CardFooter className='px-6 py-4'>
+        <Button variant='outline' className='w-full py-2 px-4 rounded border border-gray-300'>
+          Submit Availability
+        </Button>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
+
+export default MessageCard;
