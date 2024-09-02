@@ -25,14 +25,14 @@ function RequestEvent({
           <CircularProgress size={20} />
         ) : null
       }
-      slotRequestIcon={
+      slotLeftIcon={
         api === 'onRequestCancel_slack_interviewersOrganizer' ? (
           <SlackIcon />
         ) : (
           ''
         )
       }
-      slotHoverIcon={''}
+      slotRightIcon={''}
       status={requestProgress?.status ?? null}
       textProgress={getWorkflowText({
         workflow,
