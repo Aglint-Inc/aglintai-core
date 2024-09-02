@@ -109,6 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_date_str: date_range.end_date_str,
           organizer_id: organizer_id,
           request_id: request_id,
+          reqProgressLogger,
         },
         reqProgressLogger,
         {
