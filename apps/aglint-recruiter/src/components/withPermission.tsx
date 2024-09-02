@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 
 import { useRolesAndPermissions } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
-import { PermissionEnums } from '../utils/routing/permissions';
+import { type PermissionEnums } from '../utils/routing/permissions';
 
 export const WithPermission = (
   props: PropsWithChildren<{ permission: PermissionEnums[] }>,

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
 import React, { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { RecLoginPage } from '@/devlink2/RecLoginPage';

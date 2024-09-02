@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 const { OAuth2Client } = require('google-auth-library');
 
 type BodyParams = {

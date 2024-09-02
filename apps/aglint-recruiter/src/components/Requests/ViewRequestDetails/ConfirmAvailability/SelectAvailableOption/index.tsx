@@ -1,6 +1,6 @@
 import {
-  CandReqSlotsType,
-  PlanCombinationRespType,
+  type CandReqSlotsType,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { Divider, Stack } from '@mui/material';
 

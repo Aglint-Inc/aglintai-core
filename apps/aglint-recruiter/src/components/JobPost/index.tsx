@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  CandidateType,
-  JobApplcationDB,
-  JobTypeDB,
+  type CandidateType,
+  type JobApplcationDB,
+  type JobTypeDB,
 } from '@aglint/shared-types';
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -27,7 +27,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import ThankYou from '@/public/lottie/ThankYouLottie';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
+import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

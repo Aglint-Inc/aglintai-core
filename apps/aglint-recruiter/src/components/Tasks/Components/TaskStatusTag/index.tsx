@@ -1,10 +1,10 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
-import { getIndicator, getIndicatorMessage, indicatorType } from './utils';
+import { type indicatorType,getIndicator, getIndicatorMessage } from './utils';
 
 function TaskStatusTag({ task }: { task: DatabaseView['tasks_view'] }) {
   const progress_type = task?.latest_progress?.progress_type;

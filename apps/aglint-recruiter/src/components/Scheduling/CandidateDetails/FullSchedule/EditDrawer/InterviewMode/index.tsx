@@ -19,7 +19,7 @@ import {
   setTrainingToggle,
   useEditSessionDrawerStore,
 } from '../store';
-import { Interviewer } from '../types';
+import { type Interviewer } from '../types';
 import CountDropDown from './CountDropDown';
 import SelectSessionType from './SelectSessionType';
 

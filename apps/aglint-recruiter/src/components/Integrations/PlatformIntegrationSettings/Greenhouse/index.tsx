@@ -6,7 +6,7 @@ import React from 'react';
 
 import { AtsSettings } from '@/devlink/AtsSettings';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
+import { type GreenHouseFullSyncAPI } from '@/src/app/api/sync/greenhouse/full_sync/type';
 import axios from '@/src/client/axios';
 import AutoCompletePro from '@/src/components/Common/AutoCompletePro';
 import { CheckBoxWithText } from '@/src/components/Common/CheckBoxWithText';

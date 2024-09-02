@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { Meeting, Meetings } from './type';
+import { type Meeting, type Meetings } from './type';
 
 export type useUserSchedulesType = Awaited<ReturnType<typeof useUserSchedules>>;
 

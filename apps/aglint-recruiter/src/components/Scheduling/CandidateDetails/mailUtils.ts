@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
 
 export const selfScheduleMailToCandidate = async ({

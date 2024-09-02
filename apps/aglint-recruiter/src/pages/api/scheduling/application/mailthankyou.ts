@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APICandScheduleMailThankYou,
-  EmailTemplateAPi,
+  type APICandScheduleMailThankYou,
+  type EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { ApiDebriefAddUsers } from './debrief-add-users';
+import { type ApiDebriefAddUsers } from './debrief-add-users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

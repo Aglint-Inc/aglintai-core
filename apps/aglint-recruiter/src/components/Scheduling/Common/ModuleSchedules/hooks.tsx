@@ -1,4 +1,4 @@
-import { DatabaseEnums, schedulingSettingType } from '@aglint/shared-types';
+import { type DatabaseEnums, type schedulingSettingType } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 

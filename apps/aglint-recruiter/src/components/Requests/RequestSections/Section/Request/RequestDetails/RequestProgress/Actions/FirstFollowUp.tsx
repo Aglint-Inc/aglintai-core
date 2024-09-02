@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import axios from 'axios';

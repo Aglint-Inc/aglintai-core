@@ -1,7 +1,7 @@
-import { MultiDayPlanType } from '@aglint/shared-types';
+import { type MultiDayPlanType } from '@aglint/shared-types';
 import { Checkbox, Collapse, Radio, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React, { Dispatch, useEffect, useMemo, useState } from 'react';
+import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';

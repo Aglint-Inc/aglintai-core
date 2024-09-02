@@ -1,17 +1,17 @@
 import {
-  AllSessionIntDetails,
-  InterDetailsType,
-  InterviewerMeetingScheduled,
-  InterviewSessionApiRespType,
-  schedulingSettingType,
-  SessionInterviewerApiRespType,
-  SessionInterviewerType,
-  TimeDurationDayjsType,
-  TimeDurationType,
+  type AllSessionIntDetails,
+  type InterDetailsType,
+  type InterviewerMeetingScheduled,
+  type InterviewSessionApiRespType,
+  type schedulingSettingType,
+  type SessionInterviewerApiRespType,
+  type SessionInterviewerType,
+  type TimeDurationDayjsType,
+  type TimeDurationType,
 } from '@aglint/shared-types';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
-import { UserMeetingDetails } from './utils/dbFetchScheduleApiDetails';
+import { type UserMeetingDetails } from './utils/dbFetchScheduleApiDetails';
 
 export type ScheduleDBDetailsParams = {
   session_ids: string[];

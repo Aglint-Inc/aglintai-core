@@ -3,7 +3,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RequestResponse } from '@/src/queries/requests/types';
+import { type RequestResponse } from '@/src/queries/requests/types';
 import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 

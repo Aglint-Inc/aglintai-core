@@ -1,4 +1,4 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 
 export const formatOfficeLocation = (
   location: DatabaseView['job_view']['location'],

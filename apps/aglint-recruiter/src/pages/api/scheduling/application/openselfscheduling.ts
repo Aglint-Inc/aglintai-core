@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

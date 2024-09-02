@@ -152,5 +152,6 @@ export const allowedPaths = new Set<t>([
   '/api/candidate_portal/home_page',
   '/api/candidate_portal/update_profile',
   '/api/candidate_portal/get_company',
+  '/api/request/execute-workflow',
   ...cronPaths,
 ] as t[]);

@@ -1,4 +1,4 @@
-import { JobRequisite } from '../job';
+import { type JobRequisite } from '../job';
 import { jobQueries } from '../job';
 
 export const jobAssessmentQueryKeys = {

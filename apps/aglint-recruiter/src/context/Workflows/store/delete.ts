@@ -1,6 +1,6 @@
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Deletion = {
   open: boolean;

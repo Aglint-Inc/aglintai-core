@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useBreadcrumContext } from '@/src/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { useImrQuery } from './hooks';
+import { type useImrQuery } from './hooks';
 
 function Breadcrumb({
   interviewerDetails,

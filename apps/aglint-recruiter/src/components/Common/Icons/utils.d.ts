@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
+import type * as React from 'react';
 
-import { CSSModules } from './types';
+import { type CSSModules } from './types';
 /**
  * The cx function takes a css module object and the name of the element classes.
  * It will extract the final class names from the object if the class doesn't exist

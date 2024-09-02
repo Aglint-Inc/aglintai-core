@@ -1,8 +1,8 @@
 import {
-  APIOptions,
-  MinCalEventDetailTypes,
-  schedulingSettingType,
-  TimeDurationDayjsType,
+  type APIOptions,
+  type MinCalEventDetailTypes,
+  type schedulingSettingType,
+  type TimeDurationDayjsType,
 } from '@aglint/shared-types';
 
 import { isTimeChunksEnclosed } from './time_range_utils';

@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import {
-  CandReqSlotsType,
-  DatabaseTable,
+  type CandReqSlotsType,
+  type DatabaseTable,
   PlanCombinationRespType,
 } from '@aglint/shared-types';
 import {
+  type Dispatch,
+  type SetStateAction,
   createContext,
-  Dispatch,
-  SetStateAction,
   useContext,
   useState,
 } from 'react';

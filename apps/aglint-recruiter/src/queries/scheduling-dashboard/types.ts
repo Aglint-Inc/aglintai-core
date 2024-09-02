@@ -1,8 +1,8 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
 import { type useCompanyMembers } from '../company-members';
 import { type InterviewModulesType } from '../interview-modules/types';
-import { getInterviewTrainingProgressAPI } from '.';
+import { type getInterviewTrainingProgressAPI } from '.';
 
 type Enums = DB['public']['Enums'];
 export type Functions = DB['public']['Functions'];

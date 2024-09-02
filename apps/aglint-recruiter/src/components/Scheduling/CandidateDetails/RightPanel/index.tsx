@@ -11,7 +11,7 @@ import Icon from '@/src/components/Common/Icons/Icon';
 
 import IconApplicationLogs from '../../../Common/Icons/IconApplicationLogs';
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
-import { useAllActivities, useGetScheduleApplication } from '../queries/hooks';
+import { type useAllActivities, useGetScheduleApplication } from '../queries/hooks';
 import {
   setCancelSessions,
   setMultipleCancelOpen,

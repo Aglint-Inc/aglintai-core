@@ -6,8 +6,8 @@ import axios from '@/src/client/axios';
 import { app_modules } from '@/src/constant/role_and_permissions';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSearchQuery } from '@/src/hooks/useSearchQuery';
-import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
-import { SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
+import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { type SetRoleAndPermissionAPI } from '@/src/pages/api/setRoleAndPermission/type';
 import toast from '@/src/utils/toast';
 
 export const useRoleAndPermissionsHook = () => {

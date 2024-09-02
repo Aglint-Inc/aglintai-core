@@ -9,7 +9,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
 import dayjs from '@/src/utils/dayjs';
 
-import { selectedItemsType } from '../utils';
+import { type selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
 
 function CreateSchedulePopUp({

@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { InputAdornment, Stack } from '@mui/material';
 import Image from 'next/image';
-import React, { FC, memo } from 'react';
+import React, { type FC, memo } from 'react';
 
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
@@ -10,7 +10,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import { useCompanyMembers } from '@/src/queries/company-members';
-import { JobCreate } from '@/src/queries/jobs/types';
+import { type JobCreate } from '@/src/queries/jobs/types';
 import { formatOfficeLocation } from '@/src/utils/formatOfficeLocation';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

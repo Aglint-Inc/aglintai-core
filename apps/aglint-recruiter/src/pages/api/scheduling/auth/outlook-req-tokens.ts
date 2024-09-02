@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import axios, { AxiosError } from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 type BodyParams = {
   code: string;

@@ -5,7 +5,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { REQUEST_SELECT } from '@/src/queries/requests';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { CompletedRequests } from './store';
+import { type CompletedRequests } from './store';
 
 export const useCompletedRequests = ({
   completedFilters,

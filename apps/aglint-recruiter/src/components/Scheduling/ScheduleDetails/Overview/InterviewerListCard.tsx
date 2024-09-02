@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
 import InterviewerUserDetail from '../../Common/InterviewerUserDetail';
-import { ScheduleDetailsType } from '../hooks';
+import { type ScheduleDetailsType } from '../hooks';
 
 function InterviewerListCard({
   schedule,

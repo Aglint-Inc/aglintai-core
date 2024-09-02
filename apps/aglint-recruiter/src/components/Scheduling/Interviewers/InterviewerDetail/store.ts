@@ -1,7 +1,7 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { useModuleRelations } from './hooks';
+import { type useModuleRelations } from './hooks';
 
 type InterviewerDetailSlice = {
   isPauseDialogOpen: boolean;

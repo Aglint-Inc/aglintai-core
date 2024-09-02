@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import {
-  APIRespFindReplaceMentInts,
-  SessionCombinationRespType,
+  type APIRespFindReplaceMentInts,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
   CApiError,
   schema_find_alternative_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';

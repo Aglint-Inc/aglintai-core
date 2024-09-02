@@ -7,7 +7,7 @@ import { HistoryPill } from '@/devlink3/HistoryPill';
 import dayjs from '@/src/utils/dayjs';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
+import { type PillsTraining } from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard';
 import CollapseTrainingProgress from '../../../InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers/IndividualCard/Collapse';
 import { useModuleRelations, useTrainingProgressUser } from '../hooks';
 import ThreeDot from './ThreeDot';

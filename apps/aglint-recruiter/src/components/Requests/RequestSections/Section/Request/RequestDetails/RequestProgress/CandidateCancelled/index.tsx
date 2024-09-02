@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-possible-timing-attacks */
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { useState } from 'react';
 
 import { useRequest } from '@/src/context/RequestContext';
 
 import { apiTargetToEvents } from '../utils/progressMaps';
 import RequestProgressWrapper from './Components/RequestProgressWrapper';
-import { ProgressDataItem } from './types';
+import { type ProgressDataItem } from './types';
 import { handleClick, useEventTargetMap, useReqProgressMap } from './utils';
 
 function CandidateCancelled() {

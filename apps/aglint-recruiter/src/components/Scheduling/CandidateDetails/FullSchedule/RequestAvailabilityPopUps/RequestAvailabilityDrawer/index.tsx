@@ -1,7 +1,7 @@
 import {
-  APIConfirmRecruiterSelectedOption,
-  CandReqSlotsType,
-  SessionCombinationRespType,
+  type APIConfirmRecruiterSelectedOption,
+  type CandReqSlotsType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

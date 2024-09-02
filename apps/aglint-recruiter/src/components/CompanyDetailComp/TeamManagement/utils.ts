@@ -1,4 +1,4 @@
-import { DatabaseTable, RecruiterUserType } from '@aglint/shared-types';
+import { type DatabaseTable, type RecruiterUserType } from '@aglint/shared-types';
 
 import axios from '@/src/client/axios';
 import { supabase } from '@/src/utils/supabase/client';

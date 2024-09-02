@@ -1,10 +1,10 @@
-import { CandidateListTypeDB } from '@aglint/shared-types';
+import { type CandidateListTypeDB } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import {
-  Candidate,
-  CandidateSearchHistoryType,
-  FetchCandidatesParams,
+  type Candidate,
+  type CandidateSearchHistoryType,
+  type FetchCandidatesParams,
 } from './types';
 import { initialQuery } from './utils';
 

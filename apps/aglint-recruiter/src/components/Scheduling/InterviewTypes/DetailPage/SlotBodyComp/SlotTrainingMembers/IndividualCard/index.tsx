@@ -11,7 +11,7 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { useProgressModuleUsers } from '../../../../queries/hooks';
+import { type useProgressModuleUsers } from '../../../../queries/hooks';
 import {
   setIsDeleteMemberDialogOpen,
   setIsMovedToQualifiedDialogOpen,
@@ -19,7 +19,7 @@ import {
   setIsResumeDialogOpen,
   setSelUser,
 } from '../../../../store';
-import { ModuleType } from '../../../../types';
+import { type ModuleType } from '../../../../types';
 import { getPauseMemberText } from '../../utils';
 import CollapseTrainingProgress from './Collapse';
 

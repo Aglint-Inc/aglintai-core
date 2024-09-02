@@ -24,7 +24,7 @@ import toast from '@/src/utils/toast';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import SideBar from '../SideBar/SideBar';
-import { CandidateScreeningType } from '../types';
+import { type CandidateScreeningType } from '../types';
 
 const CandidateDashboard = () => {
   const { recruiter_id } = useAuthDetails();

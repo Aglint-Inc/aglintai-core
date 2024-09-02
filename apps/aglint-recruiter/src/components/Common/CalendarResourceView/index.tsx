@@ -10,7 +10,7 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
 import RenderEventContent from './RenderEventContent';
 import RenderResourceContent from './RenderResource';
-import { Event, Resource } from './types';
+import { type Event, type Resource } from './types';
 
 function CalendarResourceView({
   events,

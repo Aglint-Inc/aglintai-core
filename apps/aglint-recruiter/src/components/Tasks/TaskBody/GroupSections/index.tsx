@@ -7,7 +7,7 @@ import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskEmpty } from '@/devlink3/TaskEmpty';
 import { TaskTableJobCard } from '@/devlink3/TaskTableJobCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 

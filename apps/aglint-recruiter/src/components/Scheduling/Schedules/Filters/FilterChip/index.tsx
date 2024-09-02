@@ -10,7 +10,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { FilterOptionsType } from '../../types';
+import { type FilterOptionsType } from '../../types';
 
 function FilterChip({
   filterType,

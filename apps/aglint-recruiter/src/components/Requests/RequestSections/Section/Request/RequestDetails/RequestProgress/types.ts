@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 
 import type { Request as RequestType } from '@/src/queries/requests/types';
 

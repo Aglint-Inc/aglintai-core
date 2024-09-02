@@ -1,20 +1,20 @@
 /* eslint-disable no-unused-vars */
 import {
-  Applications,
-  ApplicationsInsert,
-  ApplicationsUpdate,
+  type Applications,
+  type ApplicationsInsert,
+  type ApplicationsUpdate,
 } from '@aglint/shared-types';
 import {
-  CandidateFiles,
-  CandidateFilesInsert,
-  CandidateFilesUpdate,
+  type CandidateFiles,
+  type CandidateFilesInsert,
+  type CandidateFilesUpdate,
 } from '@aglint/shared-types';
 import {
-  Candidate,
-  CandidateInsert,
-  CandidateUpdate,
+  type Candidate,
+  type CandidateInsert,
+  type CandidateUpdate,
 } from '@aglint/shared-types';
-import { PostgrestError } from '@supabase/supabase-js';
+import { type PostgrestError } from '@supabase/supabase-js';
 
 export type CandidateResumeInsert = {
   id: Candidate['id'];

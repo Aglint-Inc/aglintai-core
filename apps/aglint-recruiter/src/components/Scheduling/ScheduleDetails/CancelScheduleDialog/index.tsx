@@ -1,12 +1,12 @@
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
+import { type ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
 import toast from '@/src/utils/toast';
 
 function CancelScheduleDialog({

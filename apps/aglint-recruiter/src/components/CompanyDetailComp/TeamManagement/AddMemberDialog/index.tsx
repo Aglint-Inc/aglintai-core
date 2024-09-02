@@ -1,7 +1,7 @@
 import {
-  employmentTypeEnum,
-  RecruiterUserType,
-  schedulingSettingType,
+  type employmentTypeEnum,
+  type RecruiterUserType,
+  type schedulingSettingType,
 } from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';

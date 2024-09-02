@@ -17,7 +17,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {
-  CandidateSearchRes,
+  type CandidateSearchRes,
   initialState,
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';

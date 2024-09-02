@@ -1,12 +1,12 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITypography from '@/src/components/Common/UITypography';
-import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { WorkflowAction } from '@/src/types/workflow.types';
+import { type useWorkflow } from '@/src/context/Workflows/[id]';
+import { type WorkflowAction } from '@/src/types/workflow.types';
 
 export type WActionProps = {
   action: ReturnType<typeof useWorkflow>['actions']['data'][number];

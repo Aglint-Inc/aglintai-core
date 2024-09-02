@@ -4,7 +4,7 @@ import 'react-phone-input-2/lib/style.css';
 import Icon from '@components/Common/Icons/Icon';
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
-import PhoneInput, { CountryData } from 'react-phone-input-2';
+import PhoneInput, { type CountryData } from 'react-phone-input-2';
 
 import countries from '@/src/utils/CountryUtils';
 

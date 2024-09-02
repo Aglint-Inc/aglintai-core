@@ -9,7 +9,7 @@ import {
   setStepScheduling,
 } from '../../../SchedulingDrawer/store';
 import {
-  SchedulingApplication,
+  type SchedulingApplication,
   setRescheduleSessionIds
 } from '../../../store';
 

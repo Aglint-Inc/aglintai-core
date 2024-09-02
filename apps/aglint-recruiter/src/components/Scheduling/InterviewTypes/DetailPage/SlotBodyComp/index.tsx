@@ -35,7 +35,7 @@ import {
   setIsSettingsDialogOpen,
   setTrainingStatus,
 } from '../../store';
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
@@ -43,7 +43,7 @@ import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import SchedulesModules from '../Schedules';
 import ModuleSettingComp from '../Training';
-import { TabsModuleMembers } from '../type';
+import { type TabsModuleMembers } from '../type';
 import SettingsDialog from './EditModule';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';

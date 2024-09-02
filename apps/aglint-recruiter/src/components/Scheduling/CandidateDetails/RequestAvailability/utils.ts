@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  APIFindAvailability,
-  DatabaseTable,
-  SessionCombinationRespType,
+  type APIFindAvailability,
+  type DatabaseTable,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { ApiResponseFindAvailability } from '../types';
+import { type ApiResponseFindAvailability } from '../types';
 
 const daysList = Array.from({ length: 10 }, (_, index) => {
   const day = index + 1;

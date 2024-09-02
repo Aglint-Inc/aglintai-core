@@ -6,10 +6,10 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 import Heatmap from '@/src/components/Common/Heatmap/HeatmapUser';
 import Loader from '@/src/components/Common/Loader';
-import { ApiResponseGetMember } from '@/src/pages/api/get_member';
+import { type ApiResponseGetMember } from '@/src/pages/api/get_member';
 
 import { useAllInterviewModules } from '../../../InterviewTypes/queries/hooks';
-import { SchedulesSupabase } from '../../../schedules-query';
+import { type SchedulesSupabase } from '../../../schedules-query';
 import { useModuleRelations } from '../hooks';
 import DeleteMemberDialog from '../Popups/DeleteDialog';
 import PauseDialog from '../Popups/PauseDialog';

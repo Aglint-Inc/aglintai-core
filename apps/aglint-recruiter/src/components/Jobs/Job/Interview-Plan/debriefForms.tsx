@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
 import React, {
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
+  type ChangeEventHandler,
+  type Dispatch,
+  type SetStateAction,
   useCallback,
   useMemo,
 } from 'react';
@@ -17,10 +17,10 @@ import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor'
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember } from '@/src/queries/company-members';
-import { CreateDebriefSession } from '@/src/queries/interview-plans';
-import { InterviewSessionType } from '@/src/queries/interview-plans/types';
-import { Job } from '@/src/queries/jobs/types';
+import { type CompanyMember } from '@/src/queries/company-members';
+import { type CreateDebriefSession } from '@/src/queries/interview-plans';
+import { type InterviewSessionType } from '@/src/queries/interview-plans/types';
+import { type Job } from '@/src/queries/jobs/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 

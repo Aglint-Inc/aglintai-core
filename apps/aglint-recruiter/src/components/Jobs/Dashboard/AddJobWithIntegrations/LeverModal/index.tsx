@@ -22,14 +22,14 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
-import { ApiLeverCreateJob } from '@/src/pages/api/lever/createjob';
+import { type ApiLeverCreateJob } from '@/src/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
-import { LeverJob } from './types/job';
+import { type LeverJob } from './types/job';
 import { fetchAllJobs, getLeverStatusColor } from './utils';
 
 export default function LeverModalComp() {

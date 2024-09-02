@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -6,7 +6,7 @@ import React from 'react';
 
 import AssigneeChip from '@/src/components/Tasks/Components/AssigneeChip';
 import StatusChip from '@/src/components/Tasks/Components/StatusChip';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import PriorityList from '../../../AddNewTask/PriorityList';
 

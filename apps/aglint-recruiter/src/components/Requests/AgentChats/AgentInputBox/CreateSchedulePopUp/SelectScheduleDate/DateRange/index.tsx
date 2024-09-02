@@ -5,7 +5,7 @@ import {
   LocalizationProvider,
 } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 
 interface DateRangeProps {
   onChange: (date: [Dayjs, Dayjs]) => void;

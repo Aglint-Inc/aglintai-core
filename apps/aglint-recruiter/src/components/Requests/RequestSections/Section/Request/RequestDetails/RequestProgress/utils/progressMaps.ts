@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 
 export const apiTargetToEvents: Partial<
   Record<

@@ -1,12 +1,12 @@
 // import axios from 'axios';
-import { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
 import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getDecryptKey } from '../util';
 import { syncUsers } from './process';
-import { GreenHouseUserSyncAPI } from './type';
+import { type GreenHouseUserSyncAPI } from './type';
 
 export const dynamic = 'force-dynamic';
 

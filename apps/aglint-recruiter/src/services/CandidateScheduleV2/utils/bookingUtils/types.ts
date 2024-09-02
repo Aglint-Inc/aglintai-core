@@ -1,14 +1,14 @@
 import {
-  DatabaseTable,
-  PublicJobsType,
-  RecruiterDB,
-  SessionInterviewerType,
+  type DatabaseTable,
+  type PublicJobsType,
+  type RecruiterDB,
+  type SessionInterviewerType,
 } from '@aglint/shared-types';
 
-import { createMeetingEvents } from './createMeetingEvents';
-import { fetchCandDetailsForDebreifBooking } from './dbFetch/fetchCandDetailsForDebreifBooking';
-import { fetchCandAvailForBooking } from './dbFetch/fetchCandidateAvailability';
-import { fetchDBScheduleDetails } from './dbFetch/fetchDBScheduleDetails';
+import { type createMeetingEvents } from './createMeetingEvents';
+import { type fetchCandDetailsForDebreifBooking } from './dbFetch/fetchCandDetailsForDebreifBooking';
+import { type fetchCandAvailForBooking } from './dbFetch/fetchCandidateAvailability';
+import { type fetchDBScheduleDetails } from './dbFetch/fetchDBScheduleDetails';
 
 export type BookedMeetingDetails = Awaited<
   ReturnType<typeof createMeetingEvents>

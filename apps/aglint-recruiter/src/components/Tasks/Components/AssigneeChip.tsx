@@ -1,4 +1,4 @@
-import { RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -14,14 +14,14 @@ import { AgentPill } from '@/devlink3/AgentPill';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { ListCard } from '@/devlink3/ListCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-import { MemberType } from '../../Scheduling/InterviewTypes/types';
+import { type MemberType } from '../../Scheduling/InterviewTypes/types';
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import AssigneeDetailsCard, { LightTooltip } from './AssigneeDetailsCard';
 

@@ -1,4 +1,4 @@
-import { DatabaseTable, JsonResume } from '@aglint/shared-types';
+import { type DatabaseTable, type JsonResume } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';

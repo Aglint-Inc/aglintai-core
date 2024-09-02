@@ -14,7 +14,7 @@ import {
   useReuploadResume,
   useUpdateApplication,
 } from '@/src/queries/job-applications';
-import { Application } from '@/src/types/applications.types';
+import { type Application } from '@/src/types/applications.types';
 import ROUTES from '@/src/utils/routing/routes';
 
 import { useApplicationStore } from '../ApplicationContext/store';

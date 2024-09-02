@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';

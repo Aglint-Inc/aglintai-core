@@ -1,54 +1,55 @@
-import { DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { type DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal,supabaseWrap } from '@aglint/shared-utils';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { getWActions } from '@/src/services/event-triggers/utils/w_actions';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { getWActions } from '../utils/w_actions';
-
-export const onUpdateRequest = async ({
-  new_data,
-  old_data,
-}: {
-  old_data: DatabaseTable['request'];
-  new_data: DatabaseTable['request'];
-}) => {
-  if (old_data.status === 'to_do' && new_data.status === 'in_progress') {
-    await triggerActions(new_data);
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const { request_id } = req.body;
+    const [request] = supabaseWrap(
+      await supabaseAdmin.from('request').select().eq('id', request_id),
+    );
+    await triggerActions(request);
+    return res.status(200).json({ message: 'OK' });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
   }
 };
 
-const triggerActions = async (new_data: DatabaseTable['request']) => {
+export default handler;
+
+const triggerActions = async (request_data: DatabaseTable['request']) => {
   try {
-   
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
         .select('*,public_jobs(*)')
-        .eq('id', new_data.application_id),
+        .eq('id', request_data.application_id),
     );
     const req_relns = supabaseWrap(
       await supabaseAdmin
         .from('request_relation')
         .select()
-        .eq('request_id', new_data.id),
+        .eq('request_id', request_data.id),
     );
 
     const { request_workflows } = await getWActions({
       company_id: applications.public_jobs.recruiter_id,
-      request_id: new_data.id,
+      request_id: request_data.id,
     });
 
     const promises = request_workflows
       .filter(
         (j_l_a) =>
-          (new_data.type === 'schedule_request' &&
+          (request_data.type === 'schedule_request' &&
             j_l_a.workflow.trigger === 'onRequestSchedule') ||
-          (new_data.type === 'reschedule_request' &&
+          (request_data.type === 'reschedule_request' &&
             j_l_a.workflow.trigger === 'onRequestReschedule') ||
-          (new_data.type === 'cancel_schedule_request' &&
+          (request_data.type === 'cancel_schedule_request' &&
             j_l_a.workflow.trigger === 'onRequestCancel') ||
-          (new_data.type === 'decline_request' &&
+          (request_data.type === 'decline_request' &&
             j_l_a.workflow.trigger === 'onRequestInterviewerDecline'),
       )
       .map(async (j_l_a) => {
@@ -58,15 +59,15 @@ const triggerActions = async (new_data: DatabaseTable['request']) => {
             base_time: dayjsLocal().toISOString(),
             workflow_action_id: j_l_a.id,
             workflow_id: j_l_a.workflow_id,
-            triggered_table_pkey: new_data.id,
+            triggered_table_pkey: request_data.id,
             interval_minutes: j_l_a.workflow.interval,
             meta: {
               target_api: j_l_a.target_api,
               payload: j_l_a.payload,
-              request_id: new_data.id,
+              request_id: request_data.id,
               session_ids: req_relns.map((reln) => reln.session_id),
               recruiter_id: j_l_a.workflow.recruiter_id,
-              application_id: new_data.application_id,
+              application_id: request_data.application_id,
             },
             phase: j_l_a.workflow.phase,
           }),

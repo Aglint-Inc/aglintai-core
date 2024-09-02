@@ -16,7 +16,7 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import SchedulingPopUps from '../SchedulingToolPopUps';
-import { SchedulingReasonTypes, schedulingToolsType } from '../types';
+import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
 import { GooglLogo, updateIntegrations, ZoomLogo } from '../utils';
 
 function Scheduling({ allIntegrations }) {

@@ -1,4 +1,4 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { MemberRow } from '@/devlink3/MemberRow';

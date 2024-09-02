@@ -13,11 +13,11 @@ import {
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import {
-  ApiRequestInterviewSessionTask,
-  ApiResponseInterviewSessionTask,
+  type ApiRequestInterviewSessionTask,
+  type ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
 
-import { meetingCardType } from '../../ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '../../ViewTask/Progress/SessionCard';
 
 type OnChangeProps = {
   sessions: meetingCardType[];

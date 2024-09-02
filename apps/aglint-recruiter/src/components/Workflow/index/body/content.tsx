@@ -8,7 +8,7 @@ import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflows } from '@/src/context/Workflows';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeSentence } from '@/src/utils/text/textUtils';
 

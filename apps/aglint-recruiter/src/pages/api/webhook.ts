@@ -5,7 +5,7 @@ import {
   serialize,
 } from '@supabase/ssr';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // Add your logic to process the webhook data
 

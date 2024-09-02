@@ -5,7 +5,7 @@ import React from 'react';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ListCard } from '@/devlink3/ListCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
+import { type useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 

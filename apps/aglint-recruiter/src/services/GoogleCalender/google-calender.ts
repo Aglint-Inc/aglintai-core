@@ -1,10 +1,10 @@
-import { CalendarEvent, NewCalenderEvent } from '@aglint/shared-types';
+import { type CalendarEvent, type NewCalenderEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { google } from 'googleapis';
 
 import {
-  CalEventAttendeesAuthDetails,
-  GetAuthParams,
+  type CalEventAttendeesAuthDetails,
+  type GetAuthParams,
   getSuperAdminAuth,
   getUserCalAuth,
 } from '../../utils/event_book/book_session';

@@ -7,7 +7,7 @@ import { Text } from '@/devlink/Text';
 import { UserNameCard } from '@/devlink3/UserNameCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
-import { ChatType } from '../hooks/fetch';
+import { type ChatType } from '../hooks/fetch';
 
 function HiringTeam({
   chat,

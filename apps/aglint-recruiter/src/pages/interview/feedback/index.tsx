@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, TextField } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -10,8 +10,8 @@ import Seo from '@/src/components/Common/Seo';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import toast from '@/src/utils/toast';
 
-import { API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
-import { API_save_interview_feedback } from '../../api/save_interview_feedback/types';
+import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
+import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';
 
 const InterviewFeedbackPage = () => {
   const [form, setForm] = React.useState({ rating: 2, feedback: '' });

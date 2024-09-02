@@ -2,7 +2,7 @@ import { Stack, Tooltip } from '@mui/material';
 
 import { ResumeTag } from '@/devlink2/ResumeTag';
 import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
-import { Application } from '@/src/types/applications.types';
+import { type Application } from '@/src/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
 

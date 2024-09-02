@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  CandidateDirectBookingType,
-  PlanCombinationRespType,
-  SessionCombinationRespType,
+  type CandidateDirectBookingType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
 import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';

@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { type Dispatch } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';

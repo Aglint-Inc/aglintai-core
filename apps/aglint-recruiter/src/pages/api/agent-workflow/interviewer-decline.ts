@@ -1,10 +1,10 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import {
+  type ProgressLoggerType,
   createRequestProgressLogger,
   executeWorkflowAction,
-  ProgressLoggerType,
 } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

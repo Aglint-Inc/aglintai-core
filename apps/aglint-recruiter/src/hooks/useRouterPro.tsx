@@ -5,7 +5,7 @@ import {
   useSearchParams,
 } from 'next/navigation';
 
-import ROUTES from '../utils/routing/routes';
+import type ROUTES from '../utils/routing/routes';
 
 export function useRouterPro<T extends Record<string, string | number>>() {
   const router = useRouter();

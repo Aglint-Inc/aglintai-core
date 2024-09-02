@@ -1,4 +1,4 @@
-import { CandidateListTypeDB } from '@aglint/shared-types';
+import { type CandidateListTypeDB } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

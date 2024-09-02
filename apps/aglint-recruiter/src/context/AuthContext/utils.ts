@@ -1,13 +1,13 @@
 import {
-  DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
-  RecruiterDB,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type DatabaseTableUpdate,
+  type RecruiterDB,
 } from '@aglint/shared-types';
 
 import axios from '@/src/client/axios';
-import { GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
-import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { type GetUserDetailsAPI } from '@/src/pages/api/getUserDetails/type';
+import { type API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 

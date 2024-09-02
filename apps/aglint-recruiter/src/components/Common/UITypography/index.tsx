@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Variant } from '@mui/material/styles/createTypography';
+import { type Variant } from '@mui/material/styles/createTypography';
 import MuiTypography from '@mui/material/Typography';
 import React from 'react';
 

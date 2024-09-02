@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
+import { type CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../../decryptApiKey';

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient<DB>(

@@ -1,5 +1,5 @@
 import { extractJson } from '../addNewJob';
-import { MessageType } from '../types';
+import { type MessageType } from '../types';
 
 export const similarSkills = async (skills: string[]) => {
   const prompt = [
