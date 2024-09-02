@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, CardContent } from '../../shadcn/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 function GreetingCandidate({ sentence }: { sentence: string }) {
   return (

@@ -2,26 +2,26 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@components/shadcn/ui/avatar';
+} from '@/components/ui/avatar';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@components/shadcn/ui/select';
+} from '@/components/ui/select';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@components/shadcn/ui/tooltip';
+} from '@/components/ui/tooltip';
 import { BarChart, Clock, ThumbsUp, Trophy, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
 

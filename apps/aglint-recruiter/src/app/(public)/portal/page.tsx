@@ -5,12 +5,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
-import { Checkbox } from '@components/shadcn/ui/checkbox';
+} from '@components//ui/card';
+import { Checkbox } from '@components//ui/checkbox';
 import Link from 'next/link';
 
-import { Button } from '@/src/components/shadcn/ui/button';
-import { Input } from '@/src/components/shadcn/ui/input';
+import { Button } from '@/src/components//ui/button';
+import { Input } from '@/src/components//ui/input';
 
 const Page = () => {
   return (

@@ -3,16 +3,16 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@components/shadcn/ui/avatar';
-import { Button } from '@components/shadcn/ui/button';
+} from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
-import { Input } from '@components/shadcn/ui/input';
-import { Label } from '@components/shadcn/ui/label';
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 
@@ -26,7 +26,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../shadcn/ui/select';
+} from '@/components/ui/select';
 import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({

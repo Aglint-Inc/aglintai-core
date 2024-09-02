@@ -2,13 +2,13 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@components/shadcn/ui/avatar';
+} from '@/components/ui/avatar';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@components/shadcn/ui/table';
+} from '@/components/ui/table';
 import { ArrowDownIcon } from 'lucide-react';
 
 const coordinators = [

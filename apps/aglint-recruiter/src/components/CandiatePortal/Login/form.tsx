@@ -1,8 +1,8 @@
 'use client';
-import { Button } from '@components/shadcn/ui/button';
-import { Checkbox } from '@components/shadcn/ui/checkbox';
-import { Input } from '@components/shadcn/ui/input';
-import { Label } from '@components/shadcn/ui/label';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useState } from 'react';
 

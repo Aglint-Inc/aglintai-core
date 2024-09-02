@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
-import { ChartConfig, ChartContainer } from '@components/shadcn/ui/chart';
+} from '@/components/ui/card';
+import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 import { TrendingUp } from 'lucide-react';
 import {
   Label,

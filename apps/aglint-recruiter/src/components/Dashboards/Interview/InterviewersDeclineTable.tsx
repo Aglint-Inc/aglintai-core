@@ -2,14 +2,14 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from '@components/shadcn/ui/avatar';
-import { Button } from '@components/shadcn/ui/button';
+} from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -17,8 +17,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@components/shadcn/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@components/shadcn/ui/tabs';
+} from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ClockIcon, DownloadIcon } from 'lucide-react';
 
 const interviewers = [

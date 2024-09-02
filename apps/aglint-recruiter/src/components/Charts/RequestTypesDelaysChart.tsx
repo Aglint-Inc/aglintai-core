@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@components/shadcn/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import React from 'react'
 import { Bar, CartesianGrid, Cell, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 

@@ -1,10 +1,10 @@
-import { Button } from '@components/shadcn/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import React, { useState } from 'react';
 import {
   Bar,

@@ -1,5 +1,5 @@
 'use client';
-import { EmptyState } from '@components/shadcn/empty-state';
+import { EmptyState } from '@/components/empty-state';
 import { useRouter } from 'next/navigation';
 
 import TrainingDashboard from '@/src/components/Reports/TrainingDashboard';

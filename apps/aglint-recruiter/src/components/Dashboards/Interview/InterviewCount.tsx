@@ -1,8 +1,8 @@
-import { Card, CardContent } from '@components/shadcn/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from '@components/shadcn/ui/toggle-group';
+} from '@/components/ui/toggle-group';
 import React, { useState } from 'react';
 import {
   Bar,

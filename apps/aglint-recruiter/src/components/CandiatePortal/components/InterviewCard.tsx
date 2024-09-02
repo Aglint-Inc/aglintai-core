@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../../shadcn/ui/avatar';
-import { Badge } from '../../shadcn/ui/badge';
-import { Button } from '../../shadcn/ui/button';
-import { Card, CardContent } from '../../shadcn/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 function InterviewCard({ interviewData }: { interviewData: any }) {
   return (

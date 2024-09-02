@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
-import { Button } from '../../shadcn/ui/button';
+import { Button } from '@/components/ui/button';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 import NavProfile from './NavProfile';
 

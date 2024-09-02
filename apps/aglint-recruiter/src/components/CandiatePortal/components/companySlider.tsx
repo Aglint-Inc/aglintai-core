@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { Button } from '../../shadcn/ui/button';
+import { Button } from '@/components/ui/button';
 
 function CompanySlider({ slides }: { slides: string[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);

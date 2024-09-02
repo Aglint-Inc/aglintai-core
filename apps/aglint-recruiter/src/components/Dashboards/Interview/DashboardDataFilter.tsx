@@ -1,17 +1,17 @@
-import { Button } from '@components/shadcn/ui/button';
-import { Calendar } from '@components/shadcn/ui/calendar';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@components/shadcn/ui/popover';
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@components/shadcn/ui/select';
+} from '@/components/ui/select';
 import {
   endOfDay,
   endOfMonth,

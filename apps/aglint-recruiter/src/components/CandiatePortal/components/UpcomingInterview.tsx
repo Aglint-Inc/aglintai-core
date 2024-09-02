@@ -3,9 +3,9 @@ import React from 'react';
 
 import { PortalInterviews } from '@/src/app/api/candidate_portal/get_interviews/route';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../../shadcn/ui/avatar';
-import { Button } from '../../shadcn/ui/button';
-import { Card, CardContent, CardHeader } from '../../shadcn/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 // const interviewData = {
 //   date: 'August 24 Sunday ',

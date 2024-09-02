@@ -1,23 +1,23 @@
-import { Button } from '@components/shadcn/ui/button';
-import { Calendar } from '@components/shadcn/ui/calendar';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@components/shadcn/ui/popover';
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@components/shadcn/ui/select';
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@components/shadcn/ui/table';
+} from '@/components/ui/table';
 import { format } from 'date-fns';
 import { ArrowUpDown, CalendarIcon, DownloadIcon } from 'lucide-react';
 import React, { useState } from 'react';

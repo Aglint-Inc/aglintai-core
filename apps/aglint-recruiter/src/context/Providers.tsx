@@ -11,7 +11,7 @@ import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
-import { ThemeProvider } from '@components/shadcn/theme-provider';
+import { ThemeProvider } from '@/components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 
 export const PrivateProviders = ({

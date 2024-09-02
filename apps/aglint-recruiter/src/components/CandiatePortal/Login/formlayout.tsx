@@ -6,7 +6,7 @@ import {
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '../../shadcn/ui/input-otp';
+} from '@/components/ui/input-otp';
 
 export const FormLayout = ({ children }: PropsWithChildren) => {
   return (
