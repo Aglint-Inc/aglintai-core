@@ -1,3 +1,7 @@
+import '@styles/globals.css';
+import 'regenerator-runtime/runtime';
+import { Toaster } from "@/components/ui/toaster";
+import { ReactNode } from 'react';
 import '@/styles/globals.css';
 
 import { ThemeProvider } from '@components/shadcn//theme-provider';
@@ -21,15 +25,16 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main>{children}</main>
+            <Toaster />
+          </ThemeProvider>
+        </body>
     </html>
   );
 }

@@ -5,14 +5,14 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "styles/globals.scss",
+    "css": "styles/globals.css",
     "baseColor": "slate",
     "cssVariables": true,
     "prefix": ""
   },
   "aliases": {
-    "components": "@/src/components/shadcn",
-    "utils": "@/src/utils/shadcn",
-    "ui": "@/src/components/shadcn/ui"
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "hooks": "@/components/hooks"
   }
 }
