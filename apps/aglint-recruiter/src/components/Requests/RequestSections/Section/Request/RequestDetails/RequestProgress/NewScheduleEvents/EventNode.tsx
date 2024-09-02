@@ -102,32 +102,37 @@ const EventNode = ({
               <LottieAnimations animation='loading_spinner' size={1.5} />
             ) : undefined
           }
+          slotAiText={
+            <>
+              {eventSubProgress.length > 0 && (
+                <Stack ml={1}>
+                  {eventProg
+                    .filter((prg) => prg.is_progress_step === true)
+                    .map((prg) => {
+                      if (
+                        progressActionMap[`${prg.event_type}_${prg.status}`]
+                      ) {
+                        let key = `${prg.event_type}_${prg.status}`;
+                        let Comp = progressActionMap[key];
+                        return <>{<Comp {...prg} />}</>;
+                      }
+                      return (
+                        <>
+                          <TextWithIcon
+                            iconName='check'
+                            textContent={prg.log}
+                            fontSize={1}
+                            color={'grey'}
+                          />
+                        </>
+                      );
+                    })}
+                </Stack>
+              )}
+            </>
+          }
         />
       </Stack>
-
-      {eventSubProgress.length > 0 && (
-        <Stack ml={1}>
-          {eventProg
-            .filter((prg) => prg.is_progress_step === true)
-            .map((prg) => {
-              if (progressActionMap[`${prg.event_type}_${prg.status}`]) {
-                let key = `${prg.event_type}_${prg.status}`;
-                let Comp = progressActionMap[key];
-                return <>{<Comp {...prg} />}</>;
-              }
-              return (
-                <>
-                  <TextWithIcon
-                    iconName='check'
-                    textContent={prg.log}
-                    fontSize={1}
-                    color={'grey'}
-                  />
-                </>
-              );
-            })}
-        </Stack>
-      )}
     </>
   );
 };

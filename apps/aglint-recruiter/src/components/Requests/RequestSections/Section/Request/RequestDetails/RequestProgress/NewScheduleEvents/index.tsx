@@ -127,9 +127,9 @@ const NewScheduleEvents = ({
       >
         <>
           <SelectScheduleFlow />
-          {/* <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
+          <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}>
             <InterviewSchedule />
-          </ShowCode.When> */}
+          </ShowCode.When>
           <ShowCode.When isTrue={scheduleFlow === 'availability'}>
             <></>
           </ShowCode.When>

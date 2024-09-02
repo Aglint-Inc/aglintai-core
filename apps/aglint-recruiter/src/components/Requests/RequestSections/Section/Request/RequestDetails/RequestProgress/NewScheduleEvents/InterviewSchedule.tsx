@@ -3,25 +3,29 @@ import { Stack } from '@mui/material';
 import React from 'react';
 
 import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
-import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
 import { useRequest } from '@/src/context/RequestContext';
 
-import CheckCircleFilled from '../CheckCircleFilled';
-import { ProgressTenseType } from '../types';
 import { workflowCopy } from '../utils/copy';
-import { getProgressColor } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
-import { progressStatusToTense } from '../utils/progressStatusToTense';
 import { useNewScheduleRequestPr } from '.';
 import { RequestProgress } from '@/devlink2';
+import { ShowCode } from '@/src/components/Common/ShowCode';
+import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
+import { IconButtonSoft } from '@/devlink';
+import {
+  createRequestWorkflowAction,
+  deleteRequestWorkflowAction,
+} from '../../utils';
+import { DatabaseEnums } from '@aglint/shared-types';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import toast from '@/src/utils/toast';
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
 const InterviewSchedule = () => {
-  const { reqProgressMap, reqTriggerActionsMap: triggerActionMp } =
+  const { reqTriggerActionsMap: triggerActionMp, currentRequest } =
     useNewScheduleRequestPr();
-  const { request_progress } = useRequest();
-  const eventWActions = triggerActionMp['candidateBook'] ?? [];
+  const { recruiter } = useAuthDetails();
+  const { request_progress, request_workflow } = useRequest();
 
   const event_status = request_progress.data.find(
     (d) => d.event_type === 'CAND_CONFIRM_SLOT',
@@ -33,6 +37,34 @@ const InterviewSchedule = () => {
   } else {
     tense = 'future';
   }
+
+  const handleAddAction = async (
+    target_api: DatabaseEnums['email_slack_types'],
+  ) => {
+    try {
+      await createRequestWorkflowAction({
+        wAction: {
+          target_api: target_api as any,
+          order: 0,
+          action_type: 'slack',
+        },
+        recruiter_id: recruiter.id,
+        request_id: currentRequest.id,
+      });
+      await request_workflow.refetch();
+    } catch (err) {
+      toast.error('Failed to add action');
+    }
+  };
+
+  const handleDeleteScheduleAction = async (workflowActionId: string) => {
+    try {
+      await deleteRequestWorkflowAction(workflowActionId);
+      await request_workflow.refetch();
+    } catch (err) {
+      toast.error('Failed to remove action');
+    }
+  };
   return (
     <RequestProgress
       circleIndicator={tense === 'past' ? 'success' : 'neutral'}
@@ -40,7 +72,8 @@ const InterviewSchedule = () => {
       slotProgress={
         <>
           <Stack ml={4}>
-            {eventWActions
+            <></>
+            {/* {eventWActions
               .map((eA) => {
                 return apiTargetToEvents[eA.target_api];
               })
@@ -48,7 +81,6 @@ const InterviewSchedule = () => {
               .map((ev) => {
                 const eventProg = reqProgressMap[ev];
                 let tense: ProgressTenseType = 'future';
-
                 if (eventProg) {
                   tense = progressStatusToTense(eventProg[0].status);
                 }
@@ -74,8 +106,65 @@ const InterviewSchedule = () => {
                     />
                   </p>
                 );
-              })}
+              })} */}
           </Stack>
+          {ACTION_TRIGGER_MAP.candidateBook.map((action, idx) => {
+            return apiTargetToEvents[action.value.target_api].map((ev) => {
+              const addedAction = (triggerActionMp['candidateBook'] ?? []).find(
+                (a) => a.target_api === action.value.target_api,
+              );
+              return (
+                <>
+                  <ScheduleProgress
+                    textProgress={workflowCopy[ev].future}
+                    status={'circle'}
+                    slotRightIcon={
+                      <>
+                        <ShowCode.When isTrue={tense === 'future'}>
+                          <ShowCode.When isTrue={!addedAction}>
+                            <IconButtonSoft
+                              iconName={'add'}
+                              size={1}
+                              color={'neutral'}
+                              onClickButton={{
+                                onClick: () => {
+                                  handleAddAction(action.value.target_api);
+                                },
+                              }}
+                            />
+                          </ShowCode.When>
+                          <ShowCode.When isTrue={Boolean(addedAction)}>
+                            <IconButtonSoft
+                              iconName={'delete'}
+                              size={1}
+                              color={'error'}
+                              onClickButton={{
+                                onClick: () => {
+                                  handleDeleteScheduleAction(addedAction.id);
+                                },
+                              }}
+                            />
+                          </ShowCode.When>
+                        </ShowCode.When>
+                        <ShowCode.When isTrue={tense === 'past'}>
+                          <IconButtonSoft
+                            iconName={'add'}
+                            size={1}
+                            color={'neutral'}
+                            onClickButton={{
+                              onClick: () => {
+                                //
+                              },
+                            }}
+                          />
+                        </ShowCode.When>
+                      </>
+                    }
+                  />
+                </>
+              );
+            });
+          })}
         </>
       }
     />
