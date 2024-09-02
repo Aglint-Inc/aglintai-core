@@ -22,8 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       start_date_str: parsedData.start_date_str,
       end_date_str: parsedData.end_date_str,
     });
+
+    const availabilities = cand_schedule.calendar_events;
+
     const slots = cand_schedule.findAvailabilitySlotsDateRange();
-    return res.status(200).json(slots);
+    return res.status(200).json({ slots, availabilities });
   } catch (error) {
     console.log(error);
     return res

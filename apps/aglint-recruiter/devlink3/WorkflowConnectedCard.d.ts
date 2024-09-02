@@ -7,7 +7,8 @@ declare function WorkflowConnectedCard(props: {
   slotBadges?: Types.Devlink.Slot;
   textRoleCategory?: React.ReactNode;
   textLocation?: React.ReactNode;
-  onClickJob?: Types.Devlink.RuntimeProps;
   onClickLinkOff?: Types.Devlink.RuntimeProps;
   isLinkOffVisible?: Types.Visibility.VisibilityConditions;
+  jobLink?: Types.Basic.Link;
+  onClickJob?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

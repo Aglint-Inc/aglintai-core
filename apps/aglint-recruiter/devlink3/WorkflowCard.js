@@ -27,6 +27,7 @@ export function WorkflowCard({
   border,
   slotBadge,
   smallCard,
+  widthText,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -69,6 +70,7 @@ export function WorkflowCard({
               <_Builtin.Block
                 className={_utils.cx(_styles, "workgflow_text_title")}
                 tag="div"
+                width-text={widthText}
                 {...onClickEdit}
               >
                 <Text content={textWorkflowName} weight="medium" />
@@ -154,7 +156,7 @@ export function WorkflowCard({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "hide")}
-        value="%3Cstyle%3E%0A%5Bborders%3D'visible'%5D%7B%0Aborder%3A%201px%20solid%20var(--neutral-6)%3B%0Aborder-radius%3A%206px%3B%0A%7D%0A%0A%5Bsmall-card%3D'true'%5D%7B%0Adisplay%3Aflex%3B%0Aflex-direction%3A%20column-reverse%3B%0Ajustify-content%3Astart%3B%0Aalign-items%3Astart%3B%0A%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A%5Bborders%3D'visible'%5D%7B%0Aborder%3A%201px%20solid%20var(--neutral-6)%3B%0Aborder-radius%3A%206px%3B%0A%7D%0A%0A%5Bwidth-text%20%3D'small'%5D%7B%0Awidth%3A%2085%25%3B%0A%7D%0A%0A%5Bsmall-card%3D'true'%5D%7B%0Adisplay%3Aflex%3B%0Aflex-direction%3A%20column-reverse%3B%0Ajustify-content%3Astart%3B%0Aalign-items%3Astart%3B%0A%0A%7D%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );

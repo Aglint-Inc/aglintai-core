@@ -39,8 +39,7 @@ export const createRequestProgressLogger = ({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
-            ...(payload.meta ?? {}),
-            event_run_id,
+            ...payload.meta,
           },
           target_api,
         })

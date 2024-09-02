@@ -13,9 +13,9 @@ import { useRequests } from '@/src/context/RequestsContext';
 import type { Request as RequestType } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import CandidateDetails from './CandidateDetails';
+import CandidateDetails from './Components/CandidateDetails';
+import SessionsCardAndActions from './Components/SessionsCardAndActions';
 import RequestProgress from './RequestProgress';
-import SessionsCardAndActions from './SessionsCardAndActions';
 
 function RequestDetails({
   request,
@@ -115,14 +115,7 @@ function RequestDetails({
       )}
       slotBody={
         <>
-          <RequestProgress
-            request_type={request.type}
-            job_workflow={
-              request.applications.public_jobs.workflow_job_relation?.map(
-                (j) => j.workflow,
-              ) ?? []
-            }
-          />
+          <RequestProgress request_type={request.type} />
 
           {Boolean(
             request.status === 'to_do' &&

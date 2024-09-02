@@ -5,27 +5,14 @@ import { TextWithIconSkeleton } from '@/devlink2/TextWithIconSkeleton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
+import CandidateCancelled from './CandidateCancelled';
 import NewScheduleEvents from './NewScheduleEvents';
-import { TriggerActionsType } from './types';
 function RequestProgress({
   request_type,
-  job_workflow,
 }: {
   request_type: DatabaseTable['request']['type'];
-  job_workflow: TriggerActionsType;
 }) {
-  const { request_progress, request_workflow } = useRequest();
-
-  let eventActions: TriggerActionsType = [];
-  if (request_workflow.data?.length > 0) {
-    eventActions = request_workflow.data.map((r) => r.workflow);
-  } else {
-    eventActions = [...job_workflow];
-  }
-
-  //
-  //
-
+  const { request_progress } = useRequest();
   return (
     <Stack gap={1}>
       <ShowCode>
@@ -36,9 +23,14 @@ function RequestProgress({
           <>Error</>
         </ShowCode.When>
         <ShowCode.Else>
-          <ShowCode.When isTrue={request_type === 'schedule_request'}>
-            <NewScheduleEvents eventActions={eventActions} />
-          </ShowCode.When>
+          <ShowCode>
+            <ShowCode.When isTrue={request_type === 'schedule_request'}>
+              <NewScheduleEvents />
+            </ShowCode.When>
+            <ShowCode.When isTrue={request_type === 'cancel_schedule_request'}>
+              <CandidateCancelled />
+            </ShowCode.When>
+          </ShowCode>
         </ShowCode.Else>
       </ShowCode>
     </Stack>

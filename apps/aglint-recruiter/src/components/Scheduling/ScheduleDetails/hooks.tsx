@@ -33,7 +33,7 @@ async function getSchedule(meeting_id: string) {
   const { data: res } = await supabase
     .from('interview_meeting')
     .select(
-      `*,organizer:recruiter_user(*),interview_session(*,${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})),interview_schedule(*),applications(*,public_jobs(id,job_title,description,hir_man:recruiter_user!public_jobs_hiring_manager_fkey(*),rec:recruiter_user!public_jobs_recruiter_fkey(*),rec_cor:recruiter_user!public_jobs_recruiting_coordinator_fkey(*)),candidates(*))`,
+      `*,organizer:recruiter_user(*),interview_session(*,${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})),interview_schedule(*),applications(*,public_jobs(id,job_title,description,departments(name),office_locations(country,city),hir_man:recruiter_user!public_jobs_hiring_manager_fkey(*),rec:recruiter_user!public_jobs_recruiter_fkey(*),rec_cor:recruiter_user!public_jobs_recruiting_coordinator_fkey(*)),candidates(*))`,
     )
     .eq('id', meeting_id)
     .single();

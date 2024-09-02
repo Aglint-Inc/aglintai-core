@@ -1,0 +1,151 @@
+.schedule-req-props-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.sp-circle-wrap {
+  padding-top: 4px;
+}
+
+.completed-progress-wrap {
+  position: relative;
+
+  display: flex;
+  width: 16px;
+  height: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.completd-progress-circle {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--neutral-9);
+  border-radius: var(--radius-full);
+}
+
+.check-icon-progress {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.schedule-wrappers-text {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: var(--space-3);
+  grid-row-gap: var(--space-3);
+}
+
+.schedule-left-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}
+
+.schedule-text-wrapp {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-1);
+  grid-row-gap: var(--space-1);
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.no-trans {
+  transition-property: none;
+}
+
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
+  cursor: pointer;
+}
+
+.icon {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+
+  object-fit: contain;
+}
+
+.slot-button-progress {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: var(--space-2);
+  grid-row-gap: var(--space-2);
+}

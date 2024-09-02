@@ -4,7 +4,6 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Box,
   Checkbox,
-  keyframes,
   Skeleton,
   Stack,
   Tooltip,
@@ -30,31 +29,43 @@ import Loader from '../../Common/Loader';
 import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/hooks';
 import { Filter } from '../components/Filter';
 import { useAvailabilty } from '../Hook';
-import { CalendarEventWithType } from '../types';
+import { CalendarEventWithType, EventType } from '../types';
 import {
+  afterWorkingEndTime,
   color,
+  earlyMorningstartTime,
+  oneDayPx,
+} from './constant';
+import {
+  eventAbbrivation,
+  eventColor,
   getLocalSortedInterviewerIds,
   groupByDate,
+  joinUsersEvents,
+  pulse,
   setLocalSortedInterviewerIds,
-  sortedData,
+  sortedUserByChecked,
+  splitHourAndMin,
   timeToPx,
 } from './utils';
 
 const TimeLineCalendar = () => {
-  // const dayCount = 10;
-  const [dayCount, setDayCount] = useState(10);
-  const [daysCountUI, setDaysCountUI] = useState(10);
-  const [allInter, setAllInter] = useState<initUser[]>([]);
-  const startDate = dayjsLocal()
-    .startOf('day')
-    .add(dayCount - 10, 'day');
+  const {
+    data: allInterviewerPages,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useAvailabilty();
 
-  const endDate = dayjsLocal().endOf('day').add(dayCount, 'day');
+  const Interviewers = allInterviewerPages?.pages;
 
-  const { data: allInterviewers, isLoading } = useAvailabilty({
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-  });
+  const allInterviewers = Interviewers?.length
+    ? joinUsersEvents(Interviewers)
+    : [];
+
+  const dayCount = allInterviewerPages?.pageParams.length * 10;
+  const [allInter, setAllInter] = useState<initUser[]>(allInterviewers);
 
   useEffect(() => {
     if (allInterviewers?.length && dayCount === 10) {
@@ -73,10 +84,9 @@ const TimeLineCalendar = () => {
         all_events: [...ini.all_events, ...newInterviewerEvent[i].all_events],
       }));
 
-      setDaysCountUI(dayCount);
       setAllInter(InterviewerAddedEvents);
     }
-  }, [allInterviewers]);
+  }, [allInterviewerPages]);
 
   const {
     jobs: { data: Jobs },
@@ -162,7 +172,7 @@ const TimeLineCalendar = () => {
       })
     : allInter;
 
-  if (isLoading && dayCount === 10)
+  if (isLoading)
     return (
       <Stack
         height={'100%'}
@@ -238,6 +248,7 @@ const TimeLineCalendar = () => {
               />
             )}
           </Stack>
+          {/* Legent */}
           <Stack direction={'row'} gap={1}>
             {Object.keys(color).map((name, i) => {
               return (
@@ -260,8 +271,10 @@ const TimeLineCalendar = () => {
       </Stack>
       <AvailabilityView
         allInterviewers={calconnectedInterviewers}
-        setDayCount={setDayCount}
-        daysCountUI={daysCountUI}
+        fetchNextPage={fetchNextPage}
+        daysCountUI={dayCount}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
         isLoading={isLoading}
       />
       <Typography fontWeight={500} pl={2} mt={3} mb={2}>
@@ -276,18 +289,22 @@ export default TimeLineCalendar;
 
 const AvailabilityView = ({
   allInterviewers,
-  setDayCount,
   daysCountUI,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
   isLoading,
 }: {
   allInterviewers: initUser[];
   daysCountUI?: number;
-  setDayCount?: Dispatch<SetStateAction<number>>;
+  fetchNextPage?: any;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
   isLoading?: boolean;
 }) => {
   const [checkedInterviewers, setCheckedInterviewers] = useState<string[]>([]);
 
-  const sortedInterviewers = sortedData(allInterviewers);
+  const sortedInterviewers = sortedUserByChecked(allInterviewers);
 
   useEffect(() => {
     const ids = getLocalSortedInterviewerIds();
@@ -300,8 +317,12 @@ const AvailabilityView = ({
 
     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
 
-    if (scrollLeft + clientWidth >= scrollWidth - 100 && !isLoading) {
-      setDayCount((prev) => prev + 10);
+    if (
+      scrollLeft + clientWidth >= scrollWidth - 100 &&
+      !isLoading &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
     }
   };
 
@@ -353,11 +374,10 @@ const AvailabilityView = ({
 
           const timeZoneLeftOffset = (totalOffset / 60) * 8; // Convert offset from minutes to pixels (1 hour = 8px)
 
+          //filter only start time is present
           const intervierEvents = interviewer.all_events.filter(
             (event) => event.start.dateTime,
           ) as CalendarEventWithType;
-
-          //filter only start time is present
 
           const interviewerWithFilteredEvent = {
             ...interviewer,
@@ -372,6 +392,7 @@ const AvailabilityView = ({
               key={index}
               timeZoneLeftOffset={timeZoneLeftOffset}
               interviewer={interviewerWithFilteredEvent}
+              hasNextPage={hasNextPage}
             />
           );
         })}
@@ -455,42 +476,27 @@ const MemberList = ({
 const TimeLineList = ({
   timeZoneLeftOffset,
   interviewer,
+  hasNextPage,
 }: {
   timeZoneLeftOffset: number;
+  hasNextPage?: boolean;
   interviewer: initUserUIGroupedByDate;
 }) => {
-  // cal break time
-  const [breakStartHour, breakStartMinute] = interviewer.scheduling_settings
-    ?.break_hour?.start_time
-    ? // eslint-disable-next-line no-unsafe-optional-chaining
-      interviewer.scheduling_settings?.break_hour?.start_time
-        .split(':')
-        .map(Number)
-    : [0, 0];
-
-  const [breakEndHour, breakEndMinute] = interviewer.scheduling_settings
-    ?.break_hour?.end_time
-    ? // eslint-disable-next-line no-unsafe-optional-chaining
-      interviewer.scheduling_settings?.break_hour?.end_time
-        .split(':')
-        .map(Number)
-    : [0, 0];
+  const [breakStartHour, breakStartMinute, breakEndHour, breakEndMinute] =
+    splitHourAndMin({
+      startTime:
+        interviewer.scheduling_settings?.break_hour?.start_time || '0:0',
+      endTime: interviewer.scheduling_settings?.break_hour?.end_time || '0:0',
+    });
 
   const breakWidth =
     timeToPx(breakEndHour, breakEndMinute) -
     timeToPx(breakStartHour, breakStartMinute);
 
-  const pulse = keyframes`
-  0% {
-    background-color: #e0e0e0;
-  }
-  50% {
-    background-color: #c0c0c0;
-  }
-  100% {
-    background-color: #e0e0e0;
-  }
-`;
+  const [earlyMorningStartHour, earlyMorningStartMinute] =
+    earlyMorningstartTime;
+  const [afterWorkingEndHour, afterWorkingEndMinute] = afterWorkingEndTime;
+
   return (
     // whole box
     <Box
@@ -505,17 +511,14 @@ const TimeLineList = ({
       {interviewer.all_events.map((day, i) => {
         const todayIndex = dayjs().add(i, 'day').day();
 
-        //to cal a working hour start and end
-        const workingHours =
-          // eslint-disable-next-line security/detect-object-injection
-          interviewer.scheduling_settings.workingHours[todayIndex].timeRange;
-
-        const [workingstartHour, workingstartMinute] = workingHours.startTime
-          .split(':')
-          .map(Number);
-        const [workingendHour, workingendMinute] = workingHours.endTime
-          .split(':')
-          .map(Number);
+        const [
+          workingstartHour,
+          workingstartMinute,
+          workingendHour,
+          workingendMinute,
+        ] = splitHourAndMin({
+          ...interviewer.scheduling_settings.workingHours[todayIndex].timeRange,
+        });
 
         const isHoliday =
           // eslint-disable-next-line security/detect-object-injection
@@ -547,7 +550,7 @@ const TimeLineList = ({
             </Typography>
             <Box
               sx={{
-                width: 192,
+                width: oneDayPx,
                 height: 20,
                 borderRadius: 5,
                 display: 'flex',
@@ -596,8 +599,8 @@ const TimeLineList = ({
                     title={isHoliday ? 'Holiday' : 'Early Morning'}
                     index={i}
                     start_time={{
-                      hour: 6,
-                      min: 0,
+                      hour: earlyMorningStartHour,
+                      min: earlyMorningStartMinute,
                     }}
                     end_time={{
                       hour: workingstartHour,
@@ -610,14 +613,17 @@ const TimeLineList = ({
                   sx={{
                     width:
                       timeToPx(workingstartHour, workingstartMinute) -
-                      timeToPx(6, 0),
+                      timeToPx(earlyMorningStartHour, earlyMorningStartMinute),
                     height: '20px',
                     bgcolor: eventColor(
                       isHoliday ? 'company_off' : 'early_morning',
                     ),
                     position: 'absolute',
                     top: 0,
-                    left: timeToPx(6, 0),
+                    left: timeToPx(
+                      earlyMorningStartHour,
+                      earlyMorningStartMinute,
+                    ),
                     zIndex: 2,
                   }}
                 />
@@ -633,8 +639,8 @@ const TimeLineList = ({
                       min: workingendMinute,
                     }}
                     end_time={{
-                      hour: 20,
-                      min: 0,
+                      hour: afterWorkingEndHour,
+                      min: afterWorkingEndMinute,
                     }}
                   />
                 }
@@ -642,7 +648,7 @@ const TimeLineList = ({
                 <Box
                   sx={{
                     width:
-                      timeToPx(20, 0) -
+                      timeToPx(afterWorkingEndHour, afterWorkingEndMinute) -
                       timeToPx(workingendHour, workingendMinute),
                     height: '20px',
                     bgcolor: eventColor(
@@ -705,7 +711,7 @@ const TimeLineList = ({
                         <TooltipComp
                           start_time={event.start.dateTime}
                           end_time={event.end.dateTime}
-                          status={eventAbbrivation(event.type as eventsType)}
+                          status={eventAbbrivation(event.type as EventType)}
                           title={event.summary}
                         />
                       }
@@ -732,93 +738,31 @@ const TimeLineList = ({
         );
       })}
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          position: 'relative',
-        }}
-      >
-        <Stack>
-          <Skeleton
-            variant='rectangular'
-            width={192}
-            height={20}
-            sx={{
-              borderRadius: 10,
-              animation: `${pulse} 1.5s infinite`, // Adjust the speed here
-              backgroundColor: '#c0c0c0', // Change the color here
-            }}
-          />
-        </Stack>
-      </Box>
+      {hasNextPage && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+        >
+          <Stack>
+            <Skeleton
+              variant='rectangular'
+              width={oneDayPx}
+              height={20}
+              sx={{
+                borderRadius: 10,
+                animation: `${pulse} 1.5s infinite`, // Adjust the speed here
+                backgroundColor: '#c0c0c0', // Change the color here
+              }}
+            />
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
-};
-
-type EventType =
-  | 'cal_event'
-  | 'soft'
-  | 'break'
-  | 'free_time'
-  | 'ooo'
-  | 'recruiting_blocks'
-  | 'working_hour'
-  | 'bg'
-  | 'company_off'
-  | 'early_morning'
-  | 'after_work';
-
-const eventColor = (type: EventType) => {
-  const bg = 'var(--neutral-3)';
-
-  const colors = color;
-  switch (type) {
-    case 'cal_event':
-      return colors['calendar_event'];
-    case 'soft':
-      return colors['soft_conflict'];
-    case 'break':
-      return colors['break_time'];
-    case 'free_time':
-      return colors['free_time'];
-    case 'ooo':
-      return colors['out_standnig'];
-    case 'recruiting_blocks':
-      return colors['recruiting_block'];
-    case 'working_hour':
-      return colors['working_hour'];
-    case 'bg':
-      return bg;
-    case 'company_off':
-      return colors['company_off'];
-    case 'early_morning':
-      return colors['early_morning'];
-    case 'after_work':
-      return colors['after_work'];
-    default:
-      return 'red';
-  }
-};
-
-type eventsType =
-  | 'ooo'
-  | 'soft'
-  | 'recruiting_blocks'
-  | 'free_times'
-  | 'cal_event';
-
-const eventAbbrivation = (type: eventsType) => {
-  return type === 'ooo'
-    ? 'Out Standing'
-    : type === 'recruiting_blocks'
-      ? 'Recruiting Block'
-      : type === 'soft'
-        ? 'Soft Conflict'
-        : type === 'cal_event'
-          ? 'Calendar Event'
-          : '';
 };
 
 const StatusGlyph = ({ isConnected }) => (
