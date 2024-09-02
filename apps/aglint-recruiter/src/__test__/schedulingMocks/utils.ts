@@ -1,4 +1,4 @@
-import { fetchAndVerifyDb } from '../../services/CandidateScheduleV2/utils/dbFetchScheduleApiDetails';
+import { type fetchAndVerifyDb } from '../../services/CandidateScheduleV2/utils/dbFetchScheduleApiDetails';
 
 export const mockFetchDBCase1: typeof fetchAndVerifyDb = async () => {
   return {

@@ -29,7 +29,8 @@
     "src/components/Icons",
     "src/components/JobTracker/Activities/devlink",
     "src/types/*",
-    ".github"
+    ".github",
+    "src/components/shadcn/ui"
   ],
   "rules": {
     "no-unused-vars": "error",

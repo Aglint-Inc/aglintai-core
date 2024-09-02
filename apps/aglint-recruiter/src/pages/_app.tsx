@@ -1,10 +1,10 @@
-// eslint-disable-next-line simple-import-sort/imports
 import '@styles/globals.scss';
-import PropTypes from 'prop-types';
 import 'regenerator-runtime/runtime';
 
-import { PrivateProviders, PublicProviders } from '../context/Providers';
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+
+import { PrivateProviders, PublicProviders } from '../context/Providers';
 
 const MyApp = ({ Component, pageProps }) => {
   const provider =

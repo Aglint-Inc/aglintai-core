@@ -11,6 +11,7 @@ import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
 import { TourProvider } from './TourContext';
 import { PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
+import { ThemeProvider } from '@/components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
 
 export const PrivateProviders = ({
@@ -18,25 +19,23 @@ export const PrivateProviders = ({
   appRouter = false,
 }: PropsWithChildren<{ appRouter?: boolean }>) => {
   return (
-    <Suspense>
-      <PublicProviders>
-        <PHProvider>
-          <AuthProvider>
-            <RolesAndPermissionsProvider>
-              <BreadcrumProvider>
-                <TourProvider>
-                  <JobsProvider>
-                    <WorkflowsProvider>
-                      <AppLayout appRouter={appRouter}>{children}</AppLayout>
-                    </WorkflowsProvider>
-                  </JobsProvider>
-                </TourProvider>
-              </BreadcrumProvider>
-            </RolesAndPermissionsProvider>
-          </AuthProvider>
-        </PHProvider>
-      </PublicProviders>
-    </Suspense>
+    <PublicProviders>
+      <PHProvider>
+        <AuthProvider>
+          <RolesAndPermissionsProvider>
+            <BreadcrumProvider>
+              <TourProvider>
+                <JobsProvider>
+                  <WorkflowsProvider>
+                    <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                  </WorkflowsProvider>
+                </JobsProvider>
+              </TourProvider>
+            </BreadcrumProvider>
+          </RolesAndPermissionsProvider>
+        </AuthProvider>
+      </PHProvider>
+    </PublicProviders>
   );
 };
 
@@ -45,9 +44,16 @@ export const PublicProviders = ({ children }: PropsWithChildren) => {
     <Suspense>
       <DevlinkMainProvider>
         <Theme>
-          <ScreenSizeProvider>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </ScreenSizeProvider>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='light'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ScreenSizeProvider>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </ScreenSizeProvider>
+          </ThemeProvider>
         </Theme>
       </DevlinkMainProvider>
     </Suspense>

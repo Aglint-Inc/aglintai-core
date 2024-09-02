@@ -781,6 +781,215 @@ export type Database = {
           },
         ]
       }
+      candidate_portal_job: {
+        Row: {
+          application_id: string | null
+          banner: string | null
+          created_at: string
+          greetings: string | null
+          id: string
+          images: string[] | null
+          job_id: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          banner?: string | null
+          created_at?: string
+          greetings?: string | null
+          id?: string
+          images?: string[] | null
+          job_id?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          banner?: string | null
+          created_at?: string
+          greetings?: string | null
+          id?: string
+          images?: string[] | null
+          job_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_job_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidate_portal_message: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          id: string
+          is_readed: boolean | null
+          message: string | null
+          sender_id: string | null
+          title: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_readed?: boolean | null
+          message?: string | null
+          sender_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_readed?: boolean | null
+          message?: string | null
+          sender_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "candidate_portal_message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      candidate_portal_plan: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          id: string
+          is_completed: boolean | null
+          stage: number | null
+          stage_name: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          stage?: number | null
+          stage_name?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          id?: string
+          is_completed?: boolean | null
+          stage?: number | null
+          stage_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_interview_plan_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+        ]
+      }
       candidate_request_availability: {
         Row: {
           application_id: string

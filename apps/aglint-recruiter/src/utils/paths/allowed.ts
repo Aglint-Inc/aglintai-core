@@ -1,4 +1,4 @@
-import { PATHS } from '@/src/constant/allPaths';
+import { type PATHS } from '@/src/constant/allPaths';
 
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
@@ -146,6 +146,12 @@ export const allowedPaths = new Set<t>([
   '/api/google-calender/resync',
   '/api/google-calender/watch-changes',
   '/api/google-calender/webhook',
+  '/api/candidate_portal/get_interviews',
+  '/api/candidate_portal/get_message',
+  '/api/candidate_portal/get_profile',
+  '/api/candidate_portal/home_page',
+  '/api/candidate_portal/update_profile',
+  '/api/candidate_portal/get_company',
   '/api/request/execute-workflow',
   ...cronPaths,
 ] as t[]);

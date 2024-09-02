@@ -1,10 +1,10 @@
 const { v4: uuidv4 } = require('uuid');
 
 import {
-  CompServiceKeyCred,
-  NewCalenderEvent,
-  RecruiterUserType,
-  SessionCombinationRespType,
+  type CompServiceKeyCred,
+  type NewCalenderEvent,
+  type RecruiterUserType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';

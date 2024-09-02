@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
@@ -12,15 +12,17 @@ import {
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
 } from '@/src/components/Requests/ViewRequestDetails/CandidateAvailability/store';
+import { useRequestAvailabilityDetails } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
+  useConfirmAvailabilitySchedulingFlowStore,
 } from '@/src/components/Requests/ViewRequestDetails/ConfirmAvailability/store';
 import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { RequestProgressMapType } from '../types';
+import { type RequestProgressMapType } from '../types';
 import {
   apiTargetToEvents,
   groupedTriggerEventMap,
@@ -30,6 +32,7 @@ import EventNode from './EventNode';
 
 const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
+
   let lastEvent: DatabaseTable['request_progress']['event_type'];
   let { availRecivedProgEvents, isScheduled } = useMemo(() => {
     let isScheduled = false;
@@ -111,6 +114,12 @@ const RequestEvents = ({
   currProgress: DatabaseTable['request_progress'][];
   isScheduled: boolean;
 }) => {
+  const { candidateAvailabilityId } =
+    useConfirmAvailabilitySchedulingFlowStore();
+  const { isFetched } = useRequestAvailabilityDetails({
+    request_id: candidateAvailabilityId,
+  });
+
   const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
@@ -220,6 +229,7 @@ const RequestEvents = ({
                       handleConfirmSlot(lastEvent.request_id);
                     },
                   }}
+                  isLoading={!isFetched}
                 />
                 <ButtonSoft
                   size={1}
