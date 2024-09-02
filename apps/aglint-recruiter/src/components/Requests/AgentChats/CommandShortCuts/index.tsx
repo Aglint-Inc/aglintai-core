@@ -1,10 +1,43 @@
-import { Stack } from '@mui/material';
-
-import { Text } from '@/devlink/Text';
-import { StartOption } from '@/devlink2/StartOption';
-
 import { useAgentIEditor } from '../AgentEditorContext';
 import { scheduleTypes } from '../AgentInputBox/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar, SendHorizontal } from 'lucide-react';
+import KeyboardShortcut from '@/src/components/Common/KeyboardShortcut';
+
+import React from 'react';
+
+interface ScheduleOptionProps {
+  prefix: string;
+  command: string;
+  suffix: string;
+  onClick: () => void;
+}
+
+const ScheduleOption: React.FC<ScheduleOptionProps> = ({
+  prefix,
+  command,
+  suffix,
+  onClick,
+}) => {
+  const commandKeys = command.split(' '); // Split command into an array of keys
+  return (
+    <Button
+      variant='outline'
+      className='w-full justify-between group'
+      onClick={onClick}
+    >
+      <div className='flex items-center py-2 space-x-2'>
+        <Calendar className='h-4 w-4 text-muted-foreground' />
+        <span className='text-xs flex items-center'>
+          {prefix}
+          <KeyboardShortcut keys={commandKeys} /> {/* Pass the array of keys */}
+          {suffix}
+        </span>
+      </div>
+      <SendHorizontal className='h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
+    </Button>
+  );
+};
 
 function CommandShortCuts() {
   const commandOptions = [
@@ -20,19 +53,9 @@ function CommandShortCuts() {
     },
     {
       prefix: 'Schedule with',
-      command: 'ctrl + 1',
+      command: 'Ctrl 1',
       suffix: '@Candidate',
     },
-    // {
-    //   prefix: 'Reschedule with',
-    //   command: 'ctrl + 2',
-    //   suffix: '! request',
-    // },
-    // {
-    //   prefix: 'Cancel with',
-    //   command: 'ctrl + 3',
-    //   suffix: '! request',
-    // },
   ];
 
   const { setText, inputRef, text } = useAgentIEditor();
@@ -46,7 +69,7 @@ function CommandShortCuts() {
         case '#':
           taskType = `#`;
           break;
-        case 'ctrl + 1':
+        case 'Ctrl 1':
           taskType = `schedule_type[${scheduleTypes[0]?.id}]:[${scheduleTypes[0]?.display}] @`;
           break;
         case 'ctrl + 2':
@@ -77,20 +100,11 @@ function CommandShortCuts() {
     <>
       {commandOptions.map(({ command, prefix, suffix }, i) => {
         return (
-          <StartOption
-            onClickCard={{
-              onClick: () => {
-                handleClick(command);
-              },
-            }}
-            key={i}
-            slotText={
-              <Stack direction={'row'} gap={0.5}>
-                <Text size={1} content={prefix} />
-                <Text color={'accent'} size={1} content={command} />
-                <Text color={'neutral'} size={1} content={suffix} />
-              </Stack>
-            }
+          <ScheduleOption
+            prefix={prefix}
+            command={command}
+            suffix={suffix}
+            onClick={() => handleClick(command)}
           />
         );
       })}
