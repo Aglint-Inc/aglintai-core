@@ -114,10 +114,12 @@ const AvailabilityFlowMenus = ({
             reqTriggerActionsMap['sendAvailReqReminder'].length > 0,
         )}
       >
-        {reqTriggerActionsMap['sendAvailReqReminder'].length > 0 &&
+        {reqTriggerActionsMap['sendAvailReqReminder'] &&
+          reqTriggerActionsMap['sendAvailReqReminder'].length > 0 &&
           apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
             (ev) => {
               const action = reqTriggerActionsMap.sendAvailReqReminder[0];
+              //
               return (
                 <EventNode
                   key={ev}

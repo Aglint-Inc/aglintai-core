@@ -65,6 +65,7 @@ const InterviewSchedule = () => {
       toast.error('Failed to remove action');
     }
   };
+  console.log(tense);
   return (
     <RequestProgress
       circleIndicator={tense === 'past' ? 'success' : 'neutral'}
