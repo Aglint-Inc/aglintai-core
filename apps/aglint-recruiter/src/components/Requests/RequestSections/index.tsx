@@ -3,7 +3,10 @@
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { useRequests } from '@/src/context/RequestsContext';
-import { Request, RequestResponse } from '@/src/queries/requests/types';
+import {
+  type Request,
+  type RequestResponse,
+} from '@/src/queries/requests/types';
 
 import Section from './Section';
 
