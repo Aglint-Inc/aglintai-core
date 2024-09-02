@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DatabaseEnums, DB } from '@aglint/shared-types';
+import { type DatabaseEnums, type DB } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import React from 'react';
 

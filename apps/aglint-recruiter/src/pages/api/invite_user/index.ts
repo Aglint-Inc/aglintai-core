@@ -1,8 +1,8 @@
-import { RecruiterUserType, SupabaseType } from '@aglint/shared-types';
+import { type RecruiterUserType, type SupabaseType } from '@aglint/shared-types';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
+import { type InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 import { companyType } from '@/src/utils/userRoles';

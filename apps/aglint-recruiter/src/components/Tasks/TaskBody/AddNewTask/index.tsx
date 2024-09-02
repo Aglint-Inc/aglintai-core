@@ -1,4 +1,4 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import {
   Box,
@@ -20,14 +20,14 @@ import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TaskOwners from '@/src/components/Jobs/Job/Candidate-List/Actions/createTask/TaskOwners';
-import { useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
+import { type useApplicationsActions } from '@/src/context/ApplicationsContext/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import { type ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import {
-  ApiRequestInterviewSessionTask,
-  ApiResponseInterviewSessionTask,
+  type ApiRequestInterviewSessionTask,
+  type ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -36,11 +36,11 @@ import AssigneeChip from '../../Components/AssigneeChip';
 import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
-  assigneeType,
+  type assigneeType,
+  type JobCandidatesType,
   extractDataFromText,
-  JobCandidatesType,
 } from '../../utils';
-import { meetingCardType } from '../ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '../ViewTask/Progress/SessionCard';
 import CandidateList from './CandidateList';
 import JobList from './JobList';
 import PriorityList from './PriorityList';

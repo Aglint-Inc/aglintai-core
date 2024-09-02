@@ -10,7 +10,7 @@ import {
   setTrainingStatus,
   useModulesStore,
 } from '../../../store';
-import { MemberType, ModuleType } from '../../../types';
+import { type MemberType, type ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
 import IndividualCard from './IndividualCard';
 

@@ -1,7 +1,7 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import {
-  QueryClient,
-  QueryFilters,
+  type QueryClient,
+  type QueryFilters,
   queryOptions,
   useMutation,
   useQueryClient,
@@ -10,14 +10,14 @@ import axios from 'axios';
 import { useCallback } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { type GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { syncGreenhouseJob } from '@/src/utils/jobs.api';
 import toast from '@/src/utils/toast';
 
 import { GC_TIME, noPollingKey } from '..';
 import { readJob } from '../jobs';
 import { jobKey, jobsQueryKeys } from '../jobs/keys';
-import { Job } from '../jobs/types';
+import { type Job } from '../jobs/types';
 
 const jobQueries = {
   job: ({

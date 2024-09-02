@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 // pages/api/apolloSearch.ts
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { handleGenEmail } from '@/src/components/CandidateDatabase/Database/EmailOutReach/OutReachCtx';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';

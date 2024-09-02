@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import { FC } from 'react';
+import { type FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);

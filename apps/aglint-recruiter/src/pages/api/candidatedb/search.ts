@@ -1,13 +1,13 @@
 // pages/api/apolloSearch.ts
-import { Candidate } from '@aglint/shared-types';
-import { AglintCandidatesTypeDB } from '@aglint/shared-types';
+import { type Candidate } from '@aglint/shared-types';
+import { type AglintCandidatesTypeDB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,

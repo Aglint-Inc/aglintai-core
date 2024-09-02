@@ -1,12 +1,12 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { syncDepartments } from '../departments/process';
-import { GreenHouseJobsSyncAPI } from '../jobs/type';
+import { type GreenHouseJobsSyncAPI } from '../jobs/type';
 import { syncOfficeLocations } from '../office_locations/process';
-import { GreenHouseUserSyncAPI } from '../user/type';
+import { type GreenHouseUserSyncAPI } from '../user/type';
 import { getDecryptKey, setLastSync } from '../util';
 
 const baseUrl = process.env.NEXT_PUBLIC_HOST_NAME;

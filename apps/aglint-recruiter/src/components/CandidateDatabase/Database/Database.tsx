@@ -15,7 +15,7 @@ import Loader from '../../Common/Loader';
 import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITypography from '../../Common/UITypography';
-import { newCandJob } from '../Search/Search';
+import { type newCandJob } from '../Search/Search';
 import AddToJobOptions from './CandAddToJobMenu';
 import { useCandFilter } from './CandDbProvider';
 import EmailOutReach from './EmailOutReach/EmailOutReach';

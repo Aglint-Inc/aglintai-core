@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import {
   queryOptions,
   useMutation,
@@ -7,7 +7,7 @@ import {
 
 import axios from '@/src/client/axios';
 import { getActiveSection } from '@/src/context/JobsContext/hooks';
-import { ApiInterviewStages } from '@/src/pages/api/scheduling/application/fetchinterviewstages';
+import { type ApiInterviewStages } from '@/src/pages/api/scheduling/application/fetchinterviewstages';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueries } from '../job';

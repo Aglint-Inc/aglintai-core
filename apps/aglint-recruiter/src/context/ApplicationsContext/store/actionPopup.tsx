@@ -1,6 +1,6 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type ActionPopup = DatabaseEnums['application_status'];
 

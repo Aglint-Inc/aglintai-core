@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
@@ -17,12 +17,12 @@ import toast from '@/src/utils/toast';
 
 import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { assigneeType, createTaskProgress } from '../../utils';
+import { type assigneeType, createTaskProgress } from '../../utils';
 import { CallIcon, EmailIcon } from '../AddNewTask';
 import PriorityList from '../AddNewTask/PriorityList';
 import TriggerTime from '../AddNewTask/TriggerTime';
 import PopUps from './PopUps';
-import { ToolPopUpReason } from './utils';
+import { type ToolPopUpReason } from './utils';
 
 function ToolBar() {
   const {

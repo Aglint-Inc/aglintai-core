@@ -8,7 +8,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import InvalidJobPostLottie from '@/public/lottie/InvalidJobPostLottie';
 import { SeoPro } from '@/src/components/Common/SeoPro';
 import JobPostPublic from '@/src/components/JobPost';
-import { PublicJobAPI } from '@/src/pages/api/jobpost/read';
+import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
 
 function JobPost({
   params: { id },

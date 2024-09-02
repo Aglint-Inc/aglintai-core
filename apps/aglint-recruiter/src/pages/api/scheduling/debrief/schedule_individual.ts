@@ -1,15 +1,15 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  APIFindAvailability,
-  APIScheduleDebreif,
-  PlanCombinationRespType,
+  type APIFindAvailability,
+  type APIScheduleDebreif,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

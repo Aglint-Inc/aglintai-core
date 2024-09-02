@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useApplication } from '@/src/context/ApplicationContext';
 import {
-  ApplicationStore,
+  type ApplicationStore,
   useApplicationStore,
 } from '@/src/context/ApplicationContext/store';
 import { useKeyPress } from '@/src/hooks/useKeyPress';

@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
-import type React from 'react';
+import React from 'react';
 import { useDrag } from 'react-dnd';
 
 import { RecommendedCardLoader } from '@/devlink2/RecommendedCardLoader';

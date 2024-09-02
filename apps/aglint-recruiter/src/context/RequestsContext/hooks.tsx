@@ -1,16 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { subscriptions } from '@/src/hooks/useRealtime';
 import {
-  GetRequestParams,
+  type GetRequestParams,
   requestQueries,
   useRequestRealtime,
   useRequestsCreate,
   useRequestsDelete,
   useRequestsUpdate,
 } from '@/src/queries/requests';
-import { RequestResponse } from '@/src/queries/requests/types';
+import { type RequestResponse } from '@/src/queries/requests/types';
 import { SafeObject } from '@/src/utils/safeObject';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -85,6 +86,9 @@ export const useRequestsActions = () => {
     async (payload: Parameters<typeof asyncUpdateRequest>[0]) => {
       try {
         await asyncUpdateRequest(payload);
+        await axios.post('/api/request/execute-workflow', {
+          request_id: payload.payload.requestId,
+        });
       } catch {
         //
       }

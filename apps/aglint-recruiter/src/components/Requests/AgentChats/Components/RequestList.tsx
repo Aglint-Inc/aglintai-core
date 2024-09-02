@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Box, Stack, Tooltip } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

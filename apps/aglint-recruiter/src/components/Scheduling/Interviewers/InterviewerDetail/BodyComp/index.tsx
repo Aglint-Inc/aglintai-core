@@ -1,6 +1,6 @@
 import '@styles/fullcalendar-theme.css';
 
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { getShortTimeZone } from '@aglint/shared-utils';
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -32,7 +32,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import DynamicLoader from '../../DynamicLoader';
-import { TabInterviewerDetail } from '..';
+import { type TabInterviewerDetail } from '..';
 import { useImrQuery } from '../hooks';
 import Overview from '../Overview';
 import AddInterviewTypeDialog from '../Popups/AddInterviewTypeDialog';

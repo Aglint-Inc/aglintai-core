@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { Badges } from './Badges';
 import { Overview } from './Overview';

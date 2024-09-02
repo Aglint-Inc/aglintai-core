@@ -1,4 +1,4 @@
-import Avatar, { AvatarProps } from '@mui/material/Avatar';
+import Avatar, { type AvatarProps } from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import * as radixColors from '@radix-ui/colors';
 import React from 'react';

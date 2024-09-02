@@ -1,8 +1,8 @@
-import { ChatCompletion, ChatCompletionMessageParam } from 'openai/resources';
+import { type ChatCompletion, type ChatCompletionMessageParam } from 'openai/resources';
 
-import { AssessmentResponse } from '../../../pages/api/assessment-result/result';
+import { type AssessmentResponse } from '../../../pages/api/assessment-result/result';
 import { openai } from '../config';
-import { AssessmentAnalysisResult } from '.';
+import { type AssessmentAnalysisResult } from '.';
 
 const GET_QNA_SYSTEM_PROMPT_HEADER = (expectedAnswer: string) => {
   return expectedAnswer

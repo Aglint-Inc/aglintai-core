@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-import { JobProfileScoreApi } from '../../pages/api/job/profileScore';
+import { type JobProfileScoreApi } from '../../pages/api/job/profileScore';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
+  type ResumeReuploadApi,
   type ResumeUploadApi,
-  ResumeReuploadApi,
   UploadApiFormData,
 } from './candidateUpload/types';
 

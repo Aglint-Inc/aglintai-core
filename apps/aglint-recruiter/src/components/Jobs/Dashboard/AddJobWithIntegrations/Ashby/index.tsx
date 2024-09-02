@@ -31,7 +31,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { POSTED_BY } from '../utils';
-import { JobAshby } from './types';
+import { type JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
 
 export function AshbyModalComp() {

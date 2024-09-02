@@ -16,7 +16,7 @@ import {
   setSelUser,
   useModulesStore,
 } from '../../store';
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 
 function DeleteMemberDialog({ refetch }: { refetch: () => void }) {
   const isDeleteMemberDialogOpen = useModulesStore(

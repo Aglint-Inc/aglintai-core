@@ -1,10 +1,10 @@
-import { RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import {
+  type TooltipProps,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps,
 } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { MemberDetail } from '@/devlink3/MemberDetail';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules/hooks';
+import { type ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules/hooks';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';

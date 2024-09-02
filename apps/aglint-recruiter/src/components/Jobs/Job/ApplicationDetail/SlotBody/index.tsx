@@ -10,7 +10,7 @@ import { Resume } from '../../Common/CandidateDrawer/Resume';
 import CandidateInfo from './CandidateInfo';
 import InterviewTabContent from './InterviewTabContent';
 import Requests from './Requests';
-import Tabs, { TabsType } from './Tabs';
+import Tabs, { type TabsType } from './Tabs';
 
 function SlotBody() {
   const router = useRouter();

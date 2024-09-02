@@ -21,7 +21,7 @@ import {
   setSelectedCandidate,
   useCandidateStore,
 } from '../store';
-import { Candidate } from '../types';
+import { type Candidate } from '../types';
 import { updateCredits } from '../utils';
 
 function CandidateDetail() {

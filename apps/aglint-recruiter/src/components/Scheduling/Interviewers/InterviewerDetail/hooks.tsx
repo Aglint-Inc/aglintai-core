@@ -1,10 +1,10 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import axios from '@/src/client/axios';
 import {
-  ApiBodyGetMember,
-  ApiResponseGetMember,
+  type ApiBodyGetMember,
+  type ApiResponseGetMember,
 } from '@/src/pages/api/get_member';
 import { supabase } from '@/src/utils/supabase/client';
 

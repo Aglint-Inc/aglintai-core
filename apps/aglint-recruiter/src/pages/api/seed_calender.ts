@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import {
-  MeetingLimitsConfig,
+  type MeetingLimitsConfig,
   MeetingTypeEnum,
 } from '@/src/utils/seed_calender/types';
 import { seedCalendersUtil } from '@/src/utils/seed_calender/util';

@@ -3,7 +3,7 @@
 
 import axios from 'axios';
 import formidable from 'formidable';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 

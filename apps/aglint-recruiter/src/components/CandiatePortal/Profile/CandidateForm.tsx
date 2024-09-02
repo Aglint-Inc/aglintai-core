@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { type candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
 import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
 

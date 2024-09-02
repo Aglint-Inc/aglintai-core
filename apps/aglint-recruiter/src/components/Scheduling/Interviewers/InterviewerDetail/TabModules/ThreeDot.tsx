@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { MemberListCardOption } from '@/devlink2/MemberListCardOption';
 
-import { useModuleRelations } from '../hooks';
+import { type useModuleRelations } from '../hooks';
 import {
   setIsPauseDialogOpen,
   setisRemoveModuleDialogOpen,

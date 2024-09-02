@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';

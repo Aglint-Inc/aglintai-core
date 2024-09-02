@@ -1,11 +1,11 @@
-import { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
 import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 import { runFullSync } from '../full_db/process';
 import { getGreenhouseKey } from '../util';
-import { GreenHouseFullSyncAPI } from './type';
+import { type GreenHouseFullSyncAPI } from './type';
 
 export function POST(request: NextRequest) {
   const method = routeHandlerFactory<GreenHouseFullSyncAPI>('POST', request);

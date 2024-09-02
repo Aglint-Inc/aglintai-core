@@ -1,11 +1,11 @@
-import { DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 
 import { POSTED_BY } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
-import { SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
+import { type SupabaseClientType } from '@/src/utils/supabase/supabaseAdmin';
 
 import { syncJobApplications } from '../applications/process';
 import { getOfficeLocations } from '../office_locations/process';
-import { GreenhouseJobStagesAPI } from '../types';
+import { type GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
   getGreenhouseJobPlan,

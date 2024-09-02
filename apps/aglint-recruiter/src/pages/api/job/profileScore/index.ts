@@ -1,15 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 
-import { DatabaseTable, DB } from '@aglint/shared-types';
+import { type DatabaseTable, type DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
 import { nanoid } from 'nanoid';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import OpenAI from 'openai';
-import { ChatCompletionMessageParam } from 'openai/resources';
+import { type ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/src/components/Jobs/Job/Profile-Score';
 

@@ -1,9 +1,9 @@
-import { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
 
 import { getGreenhouseMeta, setGreenhouseMeta } from './process';
-import { GreenhouseAPI } from './type';
+import { type GreenhouseAPI } from './type';
 
 export function GET(request: NextRequest) {
   const method = routeHandlerFactory<GreenhouseAPI['GET']>('GET', request);

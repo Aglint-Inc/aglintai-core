@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';

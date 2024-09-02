@@ -8,10 +8,10 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
-  FieldError,
-  SubmitHandler,
+  type FieldError,
+  type SubmitHandler,
+  type UseFormRegisterReturn,
   useForm,
-  UseFormRegisterReturn,
 } from 'react-hook-form';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';

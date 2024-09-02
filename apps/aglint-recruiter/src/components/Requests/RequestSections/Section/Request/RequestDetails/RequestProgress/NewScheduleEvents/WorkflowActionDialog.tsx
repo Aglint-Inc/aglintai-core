@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTableInsert } from '@aglint/shared-types';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
@@ -11,7 +11,7 @@ import { useRequest } from '@/src/context/RequestContext';
 import toast from '@/src/utils/toast';
 
 import { createRequestWorkflowAction } from '../../utils';
-import { TargetAPIBody, WActionProps } from '../WorkflowComps/TargetAPIBody';
+import { type WActionProps,TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
 
 const WorkflowActionDialog = () => {

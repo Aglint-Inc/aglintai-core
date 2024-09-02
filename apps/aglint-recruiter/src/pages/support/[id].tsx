@@ -1,4 +1,4 @@
-import { PublicJobsType, SupportTicketType } from '@aglint/shared-types';
+import { type PublicJobsType, type SupportTicketType } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';

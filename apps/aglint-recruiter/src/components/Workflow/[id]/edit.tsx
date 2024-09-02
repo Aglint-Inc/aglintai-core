@@ -7,7 +7,7 @@ import { DcPopup } from '@/devlink/DcPopup';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { useWorkflowStore } from '@/src/context/Workflows/store';
 
-import { Form, Forms, validate } from '../common';
+import { type Form, Forms, validate } from '../common';
 
 const Edit = () => {
   const {

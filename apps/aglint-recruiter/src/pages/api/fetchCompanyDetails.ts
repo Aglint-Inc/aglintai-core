@@ -16,7 +16,7 @@
 //   }
 // }
 
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';

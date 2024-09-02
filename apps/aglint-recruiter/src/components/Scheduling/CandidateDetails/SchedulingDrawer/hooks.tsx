@@ -1,14 +1,14 @@
-import { APIFindAvailability } from '@aglint/shared-types';
+import { type APIFindAvailability } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
+import { type ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import { type ApiBodyParamsScheduleAgentWithoutTaskId } from '@/src/pages/api/scheduling/application/schedulewithagentwithouttaskid';
 import {
-  ApiBodyParamsSendToCandidate,
-  ApiResponseSendToCandidate,
+  type ApiBodyParamsSendToCandidate,
+  type ApiResponseSendToCandidate,
 } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
@@ -23,7 +23,7 @@ import {
   setSelectedTasks,
   useSchedulingApplicationStore,
 } from '../store';
-import { ApiResponseFindAvailability } from '../types';
+import { type ApiResponseFindAvailability } from '../types';
 import { getTaskDetails } from '../utils';
 import { filterSchedulingOptionsArray } from './BodyDrawer/StepScheduleFilter/utils';
 import {

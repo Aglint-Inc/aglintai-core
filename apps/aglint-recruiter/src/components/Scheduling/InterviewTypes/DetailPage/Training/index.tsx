@@ -24,10 +24,10 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import MembersAutoComplete, {
-  MemberTypeAutoComplete,
+  type MemberTypeAutoComplete,
 } from '../../../Common/MembersTextField';
 import { setIsModuleSettingsDialogOpen } from '../../store';
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 import SlotTrainingMembers from '../SlotBodyComp/SlotTrainingMembers';
 
 function ModuleSettingComp({

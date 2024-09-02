@@ -1,6 +1,6 @@
 'use client';
 
-import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterType, type RecruiterUserType } from '@aglint/shared-types';
 import axios from 'axios';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
+import { type ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 

@@ -1,4 +1,4 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 

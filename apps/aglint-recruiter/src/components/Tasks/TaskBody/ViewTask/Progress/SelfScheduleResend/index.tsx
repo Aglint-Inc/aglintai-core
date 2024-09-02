@@ -9,7 +9,7 @@ import UITypography from '@/src/components/Common/UITypography';
 import { onClickResendInvite } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { onClickCopyLink } from '@/src/components/Scheduling/ScheduleDetails/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import toast from '@/src/utils/toast';
 
 function SelfScheduleResend({

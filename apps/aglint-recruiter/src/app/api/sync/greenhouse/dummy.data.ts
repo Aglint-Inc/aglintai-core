@@ -1,4 +1,4 @@
-import { GreenhouseJobStagesAPI } from './types';
+import { type GreenhouseJobStagesAPI } from './types';
 
 export const JobStageData: GreenhouseJobStagesAPI = [
   {

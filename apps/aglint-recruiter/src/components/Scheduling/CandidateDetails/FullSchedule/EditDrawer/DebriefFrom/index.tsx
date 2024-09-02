@@ -11,9 +11,9 @@ import {
   ScheduleTypeField,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { getFullName } from '@/src/utils/jsonResume';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 

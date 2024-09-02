@@ -9,7 +9,7 @@ import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
 import Icon from '../../Common/Icons/Icon';
 import UITypography from '../../Common/UITypography';
 import { ProfileForms } from '..';
-import { FormValues, PasswordFormFields, validatePassword } from '../util';
+import { type FormValues, type PasswordFormFields, validatePassword } from '../util';
 
 export const PasswordUpdate = () => {
   const [passwordChange, setPasswordChange] = useState(false);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AssessmentBuilderQuestionApi } from '../../pages/api/assessment-builder/question';
+import { type AssessmentBuilderQuestionApi } from '../../pages/api/assessment-builder/question';
 
 type ApiRouteTypes = {
   question: AssessmentBuilderQuestionApi;

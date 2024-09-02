@@ -1,12 +1,12 @@
 import {
-  Candidate,
-  DatabaseTable,
-  DateRangePlansType,
-  InterviewModuleType,
-  JobApplcationDB,
+  type Candidate,
+  type DatabaseTable,
+  type DateRangePlansType,
+  type InterviewModuleType,
+  type JobApplcationDB,
 } from '@aglint/shared-types';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { type CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { supabase } from '@/src/utils/supabase/client';
 
 export async function getApplicationSchedule({

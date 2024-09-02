@@ -19,7 +19,7 @@ import { UploadApiFormData } from '@/src/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/src/apiUtils/job/utils';
 import type { ApplicationsParams } from '@/src/context/ApplicationsContext/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Application } from '@/src/types/applications.types';
+import { type Application } from '@/src/types/applications.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

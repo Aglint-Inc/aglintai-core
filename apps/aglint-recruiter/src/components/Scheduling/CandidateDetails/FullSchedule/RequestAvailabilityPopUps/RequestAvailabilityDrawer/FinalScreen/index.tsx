@@ -1,6 +1,6 @@
 import {
-  EmailTemplateAPi,
-  SessionCombinationRespType,
+  type EmailTemplateAPi,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';

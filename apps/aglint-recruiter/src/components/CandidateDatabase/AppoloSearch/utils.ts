@@ -1,9 +1,9 @@
-import { AglintCandidatesTypeDB } from '@aglint/shared-types';
+import { type AglintCandidatesTypeDB } from '@aglint/shared-types';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { EmploymentHistory, FetchCandidatesParams, UsedCredits } from './types';
+import { type EmploymentHistory, type FetchCandidatesParams, type UsedCredits } from './types';
 
 export const employeeRange = [
   {

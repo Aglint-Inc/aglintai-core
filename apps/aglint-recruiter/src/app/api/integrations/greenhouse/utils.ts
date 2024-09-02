@@ -1,5 +1,5 @@
-import { DB } from '@aglint/shared-types';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { type DB } from '@aglint/shared-types';
+import { type SupabaseClient } from '@supabase/supabase-js';
 
 import { decrypt } from '@/src/pages/api/decryptApiKey';
 

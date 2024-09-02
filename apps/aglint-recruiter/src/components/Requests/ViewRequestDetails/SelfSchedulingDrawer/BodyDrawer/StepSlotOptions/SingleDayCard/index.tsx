@@ -1,6 +1,6 @@
 import {
-  PlanCombinationRespType,
-  SessionCombinationRespType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Collapse } from '@mui/material';
 import dayjs from 'dayjs';

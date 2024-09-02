@@ -1,23 +1,23 @@
 /* eslint-disable no-console */
 import {
-  PlanCombinationRespType,
-  RecruiterUserType,
+  type PlanCombinationRespType,
+  type RecruiterUserType,
 } from '@aglint/shared-types';
 import {
+  type ProgressLoggerType,
   createRequestProgressLogger,
   executeWorkflowAction,
   getFullName,
-  ProgressLoggerType,
 } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
+import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
 
 export interface ApiBodyParamsSelfSchedule {
   allSessions: ApiInterviewSessionRequest['response']['sessions'];

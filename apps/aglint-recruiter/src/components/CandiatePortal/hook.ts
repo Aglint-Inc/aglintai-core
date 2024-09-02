@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { apiResponsePortalCompany } from '@/src/app/api/candidate_portal/get_company/route';
-import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
-import { apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
-import { apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
+import { type apiResponsePortalCompany } from '@/src/app/api/candidate_portal/get_company/route';
+import { type apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
+import { type apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
+import { type apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
 
 // home page ----------------------------------------------------
 export const usePortalHomePage = ({

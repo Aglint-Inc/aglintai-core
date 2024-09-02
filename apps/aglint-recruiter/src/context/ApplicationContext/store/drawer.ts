@@ -1,6 +1,6 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Drawer = {
   open: boolean;

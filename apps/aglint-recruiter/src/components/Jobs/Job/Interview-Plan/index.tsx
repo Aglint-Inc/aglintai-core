@@ -35,11 +35,11 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
-import { DeleteInterviewSession } from '@/src/queries/interview-plans';
+import { type CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
+import { type DeleteInterviewSession } from '@/src/queries/interview-plans';
 import {
-  InterviewPlansType,
-  InterviewSessionType,
+  type InterviewPlansType,
+  type InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -54,7 +54,7 @@ import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';
-import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
+import InterviewDeletePopup, { type InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
 

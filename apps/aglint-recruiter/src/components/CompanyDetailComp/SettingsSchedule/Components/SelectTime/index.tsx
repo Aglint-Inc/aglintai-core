@@ -1,6 +1,6 @@
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 

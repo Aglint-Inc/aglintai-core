@@ -1,4 +1,4 @@
-import type React from 'react';
+import React from 'react';
 import { createContext, useContext, useEffect } from 'react';
 
 import { useApplicationsStore } from '../ApplicationsContext/store';

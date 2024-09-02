@@ -5,18 +5,18 @@ var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import {
-  APICandidateConfirmSlotNoConflict,
-  APICandScheduleMailThankYou,
-  PlanCombinationRespType,
+  type APICandidateConfirmSlotNoConflict,
+  type APICandScheduleMailThankYou,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { type CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
-import { FetchDBScheduleDetails, ScheduleDBDetails } from './types';
+import { type FetchDBScheduleDetails, type ScheduleDBDetails } from './types';
 import { updateConfirmTime } from './updateConfirmTime';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';

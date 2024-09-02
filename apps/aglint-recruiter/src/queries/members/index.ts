@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { type API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 
 export const useAllMembers = () => {
   const { recruiter_id } = useAuthDetails();

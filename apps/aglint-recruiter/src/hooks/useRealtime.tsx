@@ -1,7 +1,7 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import {
-  RealtimeChannel,
-  RealtimePostgresInsertPayload,
+  type RealtimeChannel,
+  type RealtimePostgresInsertPayload,
 } from '@supabase/supabase-js';
 
 type Event = 'INSERT' | 'UPDATE' | 'DELETE';
