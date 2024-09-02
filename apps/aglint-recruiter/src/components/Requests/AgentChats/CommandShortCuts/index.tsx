@@ -1,10 +1,11 @@
-import { useAgentIEditor } from '../AgentEditorContext';
-import { scheduleTypes } from '../AgentInputBox/utils';
-import { Button } from '@/components/ui/button';
 import { Calendar, SendHorizontal } from 'lucide-react';
+import React from 'react';
+
+import { Button } from '@/components/ui/button';
 import KeyboardShortcut from '@/src/components/Common/KeyboardShortcut';
 
-import React from 'react';
+import { useAgentIEditor } from '../AgentEditorContext';
+import { scheduleTypes } from '../AgentInputBox/utils';
 
 interface ScheduleOptionProps {
   prefix: string;
@@ -101,6 +102,7 @@ function CommandShortCuts() {
       {commandOptions.map(({ command, prefix, suffix }, i) => {
         return (
           <ScheduleOption
+            key={i}
             prefix={prefix}
             command={command}
             suffix={suffix}
