@@ -1,4 +1,4 @@
-import { PATHS } from '@/src/constant/allPaths';
+import { type PATHS } from '@/src/constant/allPaths';
 
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];

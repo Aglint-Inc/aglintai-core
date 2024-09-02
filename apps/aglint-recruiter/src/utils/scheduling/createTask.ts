@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
-import { DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
-import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
+import {
+  type DatabaseTableInsert,
+  type SupabaseType,
+} from '@aglint/shared-types';
+import { type meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import { EmailAgentId, getFullName, PhoneAgentId } from '@aglint/shared-utils';
 
-import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { type SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { agentsDetails } from '@/src/context/TasksContextProvider/TasksContextProvider';
 

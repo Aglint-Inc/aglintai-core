@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId, supabaseWrap } from '@aglint/shared-utils';
 
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';

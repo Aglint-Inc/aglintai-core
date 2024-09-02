@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 export const seed_email_templates: Pick<
   DatabaseTable['company_email_template'],
   'body' | 'from_name' | 'subject' | 'type'

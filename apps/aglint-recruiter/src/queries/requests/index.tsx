@@ -130,7 +130,7 @@ export const requestQueries = {
     enabled?: boolean;
   }) =>
     queryOptions({
-      initialData: [],
+      placeholderData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
@@ -142,7 +142,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .throwOnError()
         ).data;
-        return d;
+        return d ?? [];
       },
     }),
 } as const;

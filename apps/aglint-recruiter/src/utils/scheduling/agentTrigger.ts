@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import axios from 'axios';
 
-import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
+import { type InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 
 export const agentTrigger = async ({
   type,

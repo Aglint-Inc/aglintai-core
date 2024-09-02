@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
-    "dev": "npm run dev:build && tsup --watch --onSuccess \"console-ninja || node dist/index.js\"",
+    "dev": "npm run dev:build && tsup --watch --onSuccess \"node dist/index.js && console-ninja",
     "build": "tsup",
     "lint": "gts lint && npm run build",
     "start": "set NODE_ENV=development&& node dist/index.js",
