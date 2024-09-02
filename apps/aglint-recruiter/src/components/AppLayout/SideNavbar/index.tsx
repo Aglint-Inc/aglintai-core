@@ -1,8 +1,8 @@
 import { BriefcaseBusiness, Calendar, LayoutGrid, LayoutList, LibraryBig, ListTodo, Search, Settings, Users, Workflow } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
-import { NavLink } from '@/devlink/NavLink';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
@@ -26,7 +26,7 @@ function SideNavbar() {
   }, [pathName]);
 
   return (
-    <>
+    <div className="flex flex-col items-center space-y-4 p-4 w-16">
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
@@ -42,7 +42,7 @@ function SideNavbar() {
             />
           );
         })}
-    </>
+    </div>
   );
 }
 
@@ -55,105 +55,38 @@ const LinkIcon = ({
   module: LinkProps['module'];
   active: boolean;
 }) => {
-  switch (module) {
-    case 'Requests':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<LayoutList strokeWidth={1.5} size={22} />}
-        />
-      );
-    //return <AssistantLogo isActive={active} />;
-    case 'Jobs':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<BriefcaseBusiness strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Interviews':
-      return (
-        <NavLink
-          texttooltip={module}
-          isActive={active}
-          slotIcon={<Calendar strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Interview Types':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<LibraryBig strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Candidates':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<Users strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Interviewers':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<Users strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Sourcing Hub':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<Search strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Integrations':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<LayoutGrid strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Company Settings':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<Settings strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Workflows':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<Workflow strokeWidth={1.5} size={22} />}
-        />
-      );
-    case 'Tasks':
-      return (
-        <NavLink
-          isActive={active}
-          texttooltip={module}
-          slotIcon={<ListTodo strokeWidth={1.5} size={22} />}
-        />
-      );
-    // case 'Requests':
-    //   return (
-    //     <NavLink
-    //       isActive={active}
-    //       texttooltip={module}
-    //       slotIcon={<TaskIcon />}
-    //     />
-    //   );
-  }
+  const baseClasses = "flex flex-col items-center space-y-2 p-2 rounded-md transition-colors duration-200";
+  const activeClasses = active ? "bg-gray-200 text-black" : "text-gray-500";
+  const hoverClasses = "hover:bg-gray-200";
+
+  const iconMap = {
+    'Requests': <LayoutList className="w-6 h-6" strokeWidth={1.5}/>,
+    'Jobs': <BriefcaseBusiness className="w-6 h-6" strokeWidth={1.5}/>,
+    'Interviews': <Calendar className="w-6 h-6" strokeWidth={1.5}/>,
+    'Interview Types': <LibraryBig className="w-6 h-6" strokeWidth={1.5}/>,
+    'Candidates': <Users className="w-6 h-6" strokeWidth={1.5}/>,
+    'Interviewers': <Users className="w-6 h-6" strokeWidth={1.5}/>,
+    'Sourcing Hub': <Search className="w-6 h-6" strokeWidth={1.5}/>,
+    'Integrations': <LayoutGrid className="w-6 h-6" strokeWidth={1.5}/>,
+    'Company Settings': <Settings className="w-6 h-6" strokeWidth={1.5}/>,
+    'Workflows': <Workflow className="w-6 h-6" strokeWidth={1.5}/>,
+    'Tasks': <ListTodo className="w-6 h-6" strokeWidth={1.5}/>,
+  };
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <div className={`${baseClasses} ${activeClasses} ${hoverClasses}`}>
+            {iconMap[module]}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent align='center' side='right'>
+          <p>{module}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
 };
 
 const LinkComp = ({
@@ -167,8 +100,10 @@ const LinkComp = ({
 }) => {
   const router = useRouterPro();
   return (
-    <Link href={path}>
-      <LinkIcon module={module} active={active.includes(router.pathName)} />
+    <Link href={path} legacyBehavior>
+      <a>
+        <LinkIcon module={module} active={active.includes(router.pathName)} />
+      </a>
     </Link>
   );
 };
