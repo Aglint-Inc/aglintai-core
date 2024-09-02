@@ -1,6 +1,7 @@
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
+
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type apiResponsePortalCompany = Awaited<ReturnType<typeof getCompany>>;
 

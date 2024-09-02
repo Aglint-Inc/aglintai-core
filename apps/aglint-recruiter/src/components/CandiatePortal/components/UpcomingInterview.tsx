@@ -1,11 +1,10 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import React from 'react';
 
-import { PortalInterviews } from '@/src/app/api/candidate_portal/get_interviews/route';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { apiPortalInterviewsResponse } from '@/src/app/api/candidate_portal/get_interviews/route';
 
 // const interviewData = {
 //   date: 'August 24 Sunday ',
@@ -28,7 +27,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 function UpcomingInterview({
   upcomingData,
 }: {
-  upcomingData: PortalInterviews;
+  upcomingData: apiPortalInterviewsResponse;
 }) {
   const latestUpcoming = upcomingData.sort((a, b) =>
     dayjsLocal(a.start_time).isAfter(dayjsLocal(b.start_time)) ? 1 : -1,

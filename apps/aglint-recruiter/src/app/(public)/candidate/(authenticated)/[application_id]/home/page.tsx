@@ -6,16 +6,15 @@ import { getFullName } from '@aglint/shared-utils';
 import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
+import MessageCard from '@/src/components/CandiatePortal/components/MassageCard';
 import RequestedAvailability from '@/src/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/src/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/src/components/CandiatePortal/components/UpcomingInterview';
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
-import MessageCard from '@/src/components/CandiatePortal/components/MassageCard';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
-  // const application_id = '4ae87269-6467-4773-a29a-f55e7e0560cd';
   const { isLoading, data } = usePortalHomePage({ application_id });
 
   if (isLoading) {

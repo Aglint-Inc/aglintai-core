@@ -1,11 +1,5 @@
-"use client"
+'use client';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import React from 'react';
 import {
   Line,
@@ -15,6 +9,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const CompletedInterviewsOverTime = () => {
   // Sample data for Completed Interviews Over Time

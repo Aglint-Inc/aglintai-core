@@ -28,20 +28,36 @@ export const createRequestProgressLogger = ({
       'log' | 'event_type' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
-    if (!payload.id) {
-      payload.id = uuidv4();
+    let progress_id = uuidv4();
+    if (payload.is_progress_step === false) {
+      const [progress] = supabaseWrap(
+        await supabaseAdmin
+          .from('request_progress')
+          .select()
+          .eq('event_type', payload.event_type)
+          .eq('is_progress_step', false)
+          .eq('request_id', request_id),
+        false
+      );
+      if (progress) {
+        progress_id = progress.id;
+      }
     }
     const [rec] = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
         .upsert({
-          ...payload,
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
             ...payload.meta,
+            event_run_id,
           },
           target_api,
+          id: progress_id,
+          event_type: payload.event_type,
+          status: payload.status,
+          is_progress_step: payload.is_progress_step,
         })
         .select()
     );

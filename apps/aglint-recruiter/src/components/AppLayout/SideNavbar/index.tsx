@@ -1,8 +1,24 @@
-import { BriefcaseBusiness, Calendar, LayoutGrid, LayoutList, LibraryBig, ListTodo, Search, Settings, Users, Workflow } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  Calendar,
+  LayoutGrid,
+  LayoutList,
+  LibraryBig,
+  ListTodo,
+  Search,
+  Settings,
+  Users,
+  Workflow,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import toast from '@/src/utils/toast';
@@ -55,9 +71,10 @@ const LinkIcon = ({
   module: LinkProps['module'];
   active: boolean;
 }) => {
-  const baseClasses = "flex flex-col items-center space-y-2 p-2 rounded-md transition-colors duration-200";
-  const activeClasses = active ? "bg-gray-200 text-black" : "text-gray-500";
-  const hoverClasses = "hover:bg-gray-200";
+  const baseClasses =
+    'flex flex-col items-center space-y-2 p-2 rounded-md transition-colors duration-200';
+  const activeClasses = active ? 'bg-gray-200 text-black' : 'text-gray-500';
+  const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {
     'Requests': <LayoutList className="w-5 h-5" strokeWidth={1.5}/>,
@@ -101,9 +118,9 @@ const LinkComp = ({
   const router = useRouterPro();
   return (
     <Link href={path} legacyBehavior>
-      <a>
+      <>
         <LinkIcon module={module} active={active.includes(router.pathName)} />
-      </a>
+      </>
     </Link>
   );
 };

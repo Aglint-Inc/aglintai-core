@@ -1,9 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { ArrowUpIcon, UserIcon } from 'lucide-react';
+import React from 'react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -12,8 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ArrowUpIcon, UserIcon } from 'lucide-react';
-import React from 'react';
 
 const modules = [
   { name: 'AE Intro call', trained: 5, training: 0, pendingApproval: 0 },

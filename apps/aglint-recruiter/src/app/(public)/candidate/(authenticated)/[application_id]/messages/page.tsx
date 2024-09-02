@@ -1,8 +1,5 @@
 'use client';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Check, Clock, MoreHorizontal, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

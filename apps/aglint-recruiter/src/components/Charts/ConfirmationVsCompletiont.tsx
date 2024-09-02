@@ -1,8 +1,19 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import React from 'react'
-import { Bar, BarChart, CartesianGrid, Legend, Line, ResponsiveContainer,Tooltip, XAxis, YAxis } from 'recharts'
+import React from 'react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function ConfirmationVsCompletion() {
   const data = [
@@ -12,17 +23,17 @@ export default function ConfirmationVsCompletion() {
     { month: 'April', confirmationRate: 90, completionRate: 84 },
     { month: 'May', confirmationRate: 72, completionRate: 90 },
     { month: 'June', confirmationRate: 85, completionRate: 90.5 },
-  ]
+  ];
 
   return (
-    <Card className="w-full max-w-4xl mx-auto border border-border">
+    <Card className='w-full max-w-4xl mx-auto border border-border'>
       <CardHeader>
-        <CardTitle className="text-md font-bold text-center">
+        <CardTitle className='text-md font-bold text-center'>
           Interview Confirmation vs. Completion Rates Over 6 Months
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer width='100%' height={400}>
           <BarChart
             data={data}
             margin={{
@@ -32,17 +43,37 @@ export default function ConfirmationVsCompletion() {
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--chart-1))" />
-            <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--chart-2))" />
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis dataKey='month' />
+            <YAxis
+              yAxisId='left'
+              orientation='left'
+              stroke='hsl(var(--chart-1))'
+            />
+            <YAxis
+              yAxisId='right'
+              orientation='right'
+              stroke='hsl(var(--chart-2))'
+            />
             <Tooltip />
             <Legend />
-            <Bar yAxisId="left" dataKey="confirmationRate" fill="hsl(var(--chart-1))" name="Confirmation Rate (%)" />
-            <Line yAxisId="right" type="monotone" dataKey="completionRate" stroke="hsl(var(--chart-2))" strokeWidth={2} name="Completion Rate (%)" />
+            <Bar
+              yAxisId='left'
+              dataKey='confirmationRate'
+              fill='hsl(var(--chart-1))'
+              name='Confirmation Rate (%)'
+            />
+            <Line
+              yAxisId='right'
+              type='monotone'
+              dataKey='completionRate'
+              stroke='hsl(var(--chart-2))'
+              strokeWidth={2}
+              name='Completion Rate (%)'
+            />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

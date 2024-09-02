@@ -1,9 +1,9 @@
 import { get } from 'lodash';
 
-import { CandidateSearchState } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
+import { type CandidateSearchState } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 
 import { extractJson } from '../addNewJob';
-import { MessageType } from '../types';
+import { type MessageType } from '../types';
 import { similarJobs } from './similarJobs';
 import { similarSkills } from './similarSkills';
 

@@ -1,11 +1,11 @@
 import '@styles/globals.css';
 import 'regenerator-runtime/runtime';
-import { Toaster } from '@/components/ui/toaster';
-import { ReactNode } from 'react';
 import '@/styles/globals.css';
 
-import { ThemeProvider } from '@/components/theme-provider';
 import React from 'react';
+
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

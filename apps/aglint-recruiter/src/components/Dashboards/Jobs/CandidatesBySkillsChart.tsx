@@ -1,10 +1,3 @@
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import React, { useState } from 'react';
 import {
   Bar,
@@ -15,6 +8,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const data = [
   { skill: 'Python', candidates: 21 },
@@ -71,8 +67,9 @@ export default function CandidatesBySkillsChart() {
               <Bar dataKey='candidates' fill='hsl(var(--chart-1))'>
                 {data.map((entry, index) => (
                   <Bar
-                    key={`cell-${index}`}
+                    key={index}
                     fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                    dataKey={entry.candidates}
                   />
                 ))}
               </Bar>

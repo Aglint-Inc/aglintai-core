@@ -6,9 +6,9 @@ import Navigation from '@/src/components/CandiatePortal/Layout/Navigation';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <div>
-      <Navigation />
-      <div className='w-full container mx-auto mt-20'>{children}</div>
-      <Footer />
+      <Navigation/>
+      <div className='w-full container mx-auto mt-20' style={{ minHeight: '70vh' }}>{children}</div>
+      <Footer/>
     </div>
   );
 };

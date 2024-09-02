@@ -1,5 +1,6 @@
-import React from 'react';
 import { Metadata } from 'next';
+import React from 'react';
+
 import ForgotPasswordForm from '@/src/components/Auth/ForgotPasswordForm';
 import Footer from '@/src/components/Common/Footer';
 
@@ -10,8 +11,8 @@ export const metadata: Metadata = {
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-neutral-100">
-      <div className="flex-1 flex justify-center items-center">
+    <div className='min-h-screen flex flex-col justify-between bg-neutral-100'>
+      <div className='flex-1 flex justify-center items-center'>
         <ForgotPasswordForm />
       </div>
       <Footer />

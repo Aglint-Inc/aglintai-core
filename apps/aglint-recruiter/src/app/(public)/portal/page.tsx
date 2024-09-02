@@ -1,3 +1,6 @@
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,10 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import Link from 'next/link';
-
-import { Button } from '@/src/components//ui/button';
-import { Input } from '@/src/components//ui/input';
+import { Input } from '@/components/ui/input';
 
 const Page = () => {
   return (

@@ -1,4 +1,4 @@
-import { RoleType } from '@aglint/shared-types';
+import { type RoleType } from '@aglint/shared-types';
 
 export const roleSample: { [key: string]: RoleType } = {
   admin: {

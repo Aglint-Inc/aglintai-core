@@ -1,5 +1,8 @@
 'use client';
 
+import * as React from 'react';
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+
 import {
   Card,
   CardContent,
@@ -13,8 +16,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import * as React from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 const chartData = [
   { date: '2024-04-01', desktop: 222, mobile: 150, tablet: 80 },
@@ -189,7 +190,9 @@ export function RequestTrend() {
     <Card className='border border-border'>
       <CardHeader className='flex flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row'>
         <div className='flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6'>
-          <CardTitle className='text-md font-semibold'>Bar Chart - Interactive</CardTitle>
+          <CardTitle className='text-md font-semibold'>
+            Bar Chart - Interactive
+          </CardTitle>
           <CardDescription>
             Showing total visitors for the last 3 months
           </CardDescription>
@@ -259,7 +262,10 @@ export function RequestTrend() {
                 />
               }
             />
-            <Bar dataKey={activeChart} fill={`hsl(var(--${activeChart === 'desktop' ? 'chart-1' : 'chart-2'}))`} />
+            <Bar
+              dataKey={activeChart}
+              fill={`hsl(var(--${activeChart === 'desktop' ? 'chart-1' : 'chart-2'}))`}
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>

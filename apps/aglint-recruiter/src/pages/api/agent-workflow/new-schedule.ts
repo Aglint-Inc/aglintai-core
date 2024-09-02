@@ -1,14 +1,14 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
+  type ProgressLoggerType,
   candidate_new_schedule_schema,
   CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
-  ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';
@@ -109,6 +109,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           end_date_str: date_range.end_date_str,
           organizer_id: organizer_id,
           request_id: request_id,
+          reqProgressLogger,
         },
         reqProgressLogger,
         {
@@ -145,6 +146,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           meeting_flow,
           status: 'waiting',
           organizer_id,
+          schedule_request_id: request_id,
         })
         .in(
           'id',

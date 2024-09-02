@@ -1,8 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from '@/components/ui/toggle-group';
 import React, { useState } from 'react';
 import {
   Bar,
@@ -16,6 +11,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Card, CardContent } from '@/components/ui/card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 import DeclineLeadTimeChart from './DeclineLeadTimeChart';
 // Mock data - replace with actual data fetching logic
@@ -52,16 +50,16 @@ const generateRandomData = () => {
 
 const historicData = generateRandomData();
 
-const COLORS = [
-  'hsl(var(--chart-1))',
-  'hsl(var(--chart-2))',
-  'hsl(var(--chart-3))',
-  'hsl(var(--chart-4))',
-  'hsl(var(--chart-5))',
-  'hsl(var(--chart-6))',
-  'hsl(var(--chart-7))',
-  'hsl(var(--chart-8))',
-];
+// const COLORS = [
+//   'hsl(var(--chart-1))',
+//   'hsl(var(--chart-2))',
+//   'hsl(var(--chart-3))',
+//   'hsl(var(--chart-4))',
+//   'hsl(var(--chart-5))',
+//   'hsl(var(--chart-6))',
+//   'hsl(var(--chart-7))',
+//   'hsl(var(--chart-8))',
+// ];
 
 const InterviewCount: React.FC = () => {
   const [timeFrame, setTimeFrame] = useState<
@@ -109,7 +107,9 @@ const InterviewCount: React.FC = () => {
                             outerRadius={80}
                             dataKey='value'
                           >
-                            <Cell fill={`hsl(var(--chart-${(index % 10) + 1}))`} />
+                            <Cell
+                              fill={`hsl(var(--chart-${(index % 10) + 1}))`}
+                            />
                             <Cell fill='#f3f4f6' />
                           </Pie>
                           <text
@@ -180,9 +180,21 @@ const InterviewCount: React.FC = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey='Completed' stackId='a' fill='hsl(var(--chart-1))' />
-                    <Bar dataKey='Confirmed' stackId='a' fill='hsl(var(--chart-2))' />
-                    <Bar dataKey='Waiting' stackId='a' fill='hsl(var(--chart-3))' />
+                    <Bar
+                      dataKey='Completed'
+                      stackId='a'
+                      fill='hsl(var(--chart-1))'
+                    />
+                    <Bar
+                      dataKey='Confirmed'
+                      stackId='a'
+                      fill='hsl(var(--chart-2))'
+                    />
+                    <Bar
+                      dataKey='Waiting'
+                      stackId='a'
+                      fill='hsl(var(--chart-3))'
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

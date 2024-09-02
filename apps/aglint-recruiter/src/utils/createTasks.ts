@@ -1,8 +1,8 @@
 import { getFullName } from '@aglint/shared-utils';
 
-import { TaskType } from '../components/Jobs/Job/Candidate-List/Actions/createTask';
+import { type TaskType } from '../components/Jobs/Job/Candidate-List/Actions/createTask';
 import { addScheduleActivity } from '../components/Scheduling/Candidates/queries/utils';
-import { AssignerType } from '../components/Tasks/TaskStatesContext';
+import { type AssignerType } from '../components/Tasks/TaskStatesContext';
 import { createTaskProgress } from '../components/Tasks/utils';
 import { supabase } from './supabase/client';
 

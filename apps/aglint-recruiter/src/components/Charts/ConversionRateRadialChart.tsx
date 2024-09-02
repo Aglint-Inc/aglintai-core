@@ -1,5 +1,14 @@
 'use client';
 
+import { TrendingUp } from 'lucide-react';
+import {
+  Label,
+  PolarGrid,
+  PolarRadiusAxis,
+  RadialBar,
+  RadialBarChart,
+} from 'recharts';
+
 import {
   Card,
   CardContent,
@@ -9,14 +18,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
-import { TrendingUp } from 'lucide-react';
-import {
-  Label,
-  PolarGrid,
-  PolarRadiusAxis,
-  RadialBar,
-  RadialBarChart,
-} from 'recharts';
 
 const chartData = [
   { browser: 'safari', visitors: 200, fill: 'hsl(var(--chart-2))' },
@@ -36,7 +37,9 @@ export function ConversionRateRadialChart() {
   return (
     <Card className='flex flex-col border border-border'>
       <CardHeader className='items-center pb-0'>
-        <CardTitle className='text-md font-semibold text-center'>Total Interviews Conducted</CardTitle>
+        <CardTitle className='text-md font-semibold text-center'>
+          Total Interviews Conducted
+        </CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className='flex-1 pb-0'>

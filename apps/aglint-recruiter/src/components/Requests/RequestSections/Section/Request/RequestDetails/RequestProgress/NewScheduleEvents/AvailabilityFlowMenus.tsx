@@ -1,98 +1,136 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
+import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
-  scheduleReqProgressMap,
-  eventTargetMap,
 }: {
-  eventTargetMap: EventTargetMapType;
   isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
 }) => {
+  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+    useNewScheduleRequestPr();
   const { request_progress } = useRequest();
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
-    eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...eventTargetMap['sendAvailReqReminder'],
-    ];
-  }
 
-  let scheduleFlowProg = useMemo(() => {
+  let { progres: availFlowProg, currEventMap } = useMemo(() => {
+    let currEventMap: RequestProgressMapType = {};
     let progres: DatabaseTable['request_progress'][] = [];
+
     if (request_progress.data.length === 0) {
-      return progres;
+      return {
+        progres,
+        currEventMap,
+      };
     }
+
     for (let prog of request_progress.data) {
       if (prog.event_type === 'CAND_AVAIL_REC') {
         break;
       }
+      if (!currEventMap[prog.event_type]) {
+        currEventMap[prog.event_type] = [];
+      }
+      currEventMap[prog.event_type].push(prog);
       progres.push({
         ...prog,
       });
     }
-
-    return progres;
+    return { progres, currEventMap };
   }, [request_progress.data]);
+
+  let eventWActions: DatabaseTable['workflow_action'][] = [];
+  if (reqTriggerActionsMap['onRequestSchedule']) {
+    eventWActions = [...reqTriggerActionsMap['onRequestSchedule']];
+  }
 
   return (
     <>
       <ShowCode.When isTrue={isManualSchedule}>
-        {scheduleFlowProg
-          .filter((s) => s.is_progress_step === false)
-          .map((prog) => {
-            return (
-              <EventNode
-                key={prog.id}
-                eventNode={prog.event_type}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
-          })}
+        <>
+          {availFlowProg
+            .filter((s) => s.is_progress_step === false)
+            .map((prog) => {
+              return (
+                <>
+                  <EventNode
+                    key={prog.id}
+                    eventType={prog.event_type}
+                    currEventTrigger={'onRequestSchedule'}
+                    reqProgresMap={currEventMap}
+                  />
+                </>
+              );
+            })}
+        </>
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
-          .map((eA) => {
-            return apiTargetToEvents[eA];
-          })
-          .flat()
-          .map((ev) => {
+        {eventWActions.map((eA) => {
+          return apiTargetToEvents[eA.target_api].map((ev) => {
             return (
               <EventNode
                 key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
+                eventType={ev}
+                reqProgresMap={currEventMap}
+                currEventTrigger={'onRequestSchedule'}
+                currWAction={eA}
               />
             );
-          })}
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'],
-          )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-            reqProgressMap={scheduleReqProgressMap}
+          });
+        })}
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={
+          Boolean(!reqTriggerActionsMap['sendAvailReqReminder']) ||
+          Boolean(
+            reqTriggerActionsMap['sendAvailReqReminder'] &&
+              reqTriggerActionsMap['sendAvailReqReminder'].length === 0,
+          )
+        }
+      >
+        <Stack direction={'row'}>
+          <ButtonSoft
+            size={1}
+            textButton={'Schedule Reminder'}
+            onClickButton={{
+              onClick: () => {
+                setEditTrigger('sendAvailReqReminder');
+                setShowEditDialog(true);
+              },
+            }}
           />
-        </ShowCode.When>
-        <ShowCode.When
-          isTrue={Boolean(
-            scheduleReqProgressMap['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'],
+        </Stack>
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={Boolean(
+          reqTriggerActionsMap['sendAvailReqReminder'] &&
+            reqTriggerActionsMap['sendAvailReqReminder'].length > 0,
+        )}
+      >
+        {reqTriggerActionsMap['sendAvailReqReminder'] &&
+          reqTriggerActionsMap['sendAvailReqReminder'].length > 0 &&
+          apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
+            (ev) => {
+              const action = reqTriggerActionsMap.sendAvailReqReminder[0];
+              //
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={currEventMap}
+                  currEventTrigger={'sendAvailReqReminder'}
+                  currWAction={action}
+                />
+              );
+            },
           )}
-        >
-          <EventNode
-            eventNode='SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE'
-            reqProgressMap={scheduleReqProgressMap}
-          />
-        </ShowCode.When>
       </ShowCode.When>
     </>
   );

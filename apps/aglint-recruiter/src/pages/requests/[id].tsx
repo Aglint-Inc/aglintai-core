@@ -1,15 +1,14 @@
-import { useRouter } from 'next/router';
-
 import ViewRequestDetails from '@/src/components/Requests/ViewRequestDetails';
 import { RequestProvider } from '@/src/context/RequestContext';
 import { RequestsProvider } from '@/src/context/RequestsContext';
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 
 function RequestDetailsPage() {
-  const { query } = useRouter();
+  const { params } = useRouterPro();
   return (
     <div>
       <RequestsProvider>
-        <RequestProvider request_id={String(query?.id)}>
+        <RequestProvider request_id={params.id}>
           <ViewRequestDetails />
         </RequestProvider>
       </RequestsProvider>

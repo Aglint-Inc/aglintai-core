@@ -1,4 +1,4 @@
-import { SupabaseType } from '@aglint/shared-types';
+import { type SupabaseType } from '@aglint/shared-types';
 
 export const getOrganizerId = async (
   application_id: string,

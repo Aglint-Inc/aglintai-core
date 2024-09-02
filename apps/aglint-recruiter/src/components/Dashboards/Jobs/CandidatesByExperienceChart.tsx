@@ -1,10 +1,3 @@
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import React, { useState } from 'react';
 import {
   CartesianGrid,
@@ -15,6 +8,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const data = [
   { years: 3, candidates: 2 },
