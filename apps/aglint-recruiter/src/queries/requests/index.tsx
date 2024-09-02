@@ -130,7 +130,6 @@ export const requestQueries = {
     enabled?: boolean;
   }) =>
     queryOptions({
-      initialData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
