@@ -20,7 +20,6 @@ import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_p
 import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
 
-import ImageUploadManual from '../../Common/ImageUpload/ImageUploadManual';
 import {
   Select,
   SelectContent,
@@ -28,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../shadcn/ui/select';
+import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({
   formData,
@@ -41,8 +41,6 @@ export default function CandidateForm({
   const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef(null);
 
-  // console.log('imageFile :', imageFile.current);
-
   const handleUpdateProfile = async () => {
     try {
       setLoading(true);
@@ -50,8 +48,8 @@ export default function CandidateForm({
       let profile_image = form.avatar;
       if (isImageChanged) {
         const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${form.id}`, imageFile.current, {
+          .from('candidate-files')
+          .upload(`profile/${form.id}`, imageFile.current, {
             cacheControl: '3600',
             upsert: true,
           });
