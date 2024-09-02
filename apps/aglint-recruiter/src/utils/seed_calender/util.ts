@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  CompServiceKeyCred,
-  InterviewModuleType,
-  NewCalenderEvent,
-  schedulingSettingType,
+  type CompServiceKeyCred,
+  type InterviewModuleType,
+  type NewCalenderEvent,
+  type schedulingSettingType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
-import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { type GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import {
-  MeetingLimit,
-  MeetingLimitsConfig,
+  type MeetingLimit,
+  type MeetingLimitsConfig,
+  type RandMeetingType,
   MeetingTypeEnum,
-  RandMeetingType,
 } from './types';
 
 // 4. free times 10% per per month 8

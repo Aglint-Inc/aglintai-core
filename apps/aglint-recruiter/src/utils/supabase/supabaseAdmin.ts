@@ -1,5 +1,5 @@
-import { DB } from '@aglint/shared-types';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { type DB } from '@aglint/shared-types';
+import { type SupabaseClient, createClient } from '@supabase/supabase-js';
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key =

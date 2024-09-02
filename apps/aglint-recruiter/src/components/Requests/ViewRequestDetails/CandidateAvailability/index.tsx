@@ -1,7 +1,10 @@
-import { EmailTemplateAPi, InterviewSessionTypeDB } from '@aglint/shared-types';
 import {
+  type EmailTemplateAPi,
+  type InterviewSessionTypeDB,
+} from '@aglint/shared-types';
+import {
+  type ProgressLoggerType,
   createRequestProgressLogger,
-  ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
 import { Autocomplete, Drawer, TextField } from '@mui/material';
@@ -21,7 +24,7 @@ import {
   slotsListOptions,
 } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Request as RequestType } from '@/src/queries/requests/types';
+import { type Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import dayjs from '@/src/utils/dayjs';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';

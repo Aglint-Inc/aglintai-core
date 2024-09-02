@@ -1,26 +1,40 @@
-/* eslint-disable @next/next/no-page-custom-font */
-'use client';
-import '@styles/globals.scss';
+import '@styles/globals.css';
 import 'regenerator-runtime/runtime';
+import '@/styles/globals.css';
 
-import { Inter } from 'next/font/google';
-import { ReactNode } from 'react';
+import React from 'react';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-});
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
+export const metadata = {
+  metadataBase: new URL(defaultUrl),
+  title: 'Next.js and Supabase Starter Kit',
+  description: 'The fastest way to build apps with Next.js and Supabase',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang='en' className={inter.className}>
-      <head>
-        <link
-          href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
-          rel='stylesheet'
-        />
-      </head>
-      <body>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

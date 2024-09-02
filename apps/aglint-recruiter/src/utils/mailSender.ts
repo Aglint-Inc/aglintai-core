@@ -1,4 +1,7 @@
-import { DatabaseEnums, EmailTemplateAPi } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type EmailTemplateAPi,
+} from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
 import axios, { AxiosError } from 'axios';
 

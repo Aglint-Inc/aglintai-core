@@ -57,6 +57,7 @@ export const createRequestProgressLogger = ({
           id: progress_id,
           event_type: payload.event_type,
           status: payload.status,
+          is_progress_step: payload.is_progress_step,
         })
         .select()
     );
