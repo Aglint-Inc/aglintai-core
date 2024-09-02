@@ -114,6 +114,12 @@ const RequestEvents = ({
   currProgress: DatabaseTable['request_progress'][];
   isScheduled: boolean;
 }) => {
+  const { candidateAvailabilityId } =
+    useConfirmAvailabilitySchedulingFlowStore();
+  const { isFetched } = useRequestAvailabilityDetails({
+    request_id: candidateAvailabilityId,
+  });
+
   const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
@@ -223,6 +229,7 @@ const RequestEvents = ({
                       handleConfirmSlot(lastEvent.request_id);
                     },
                   }}
+                  isLoading={!isFetched}
                 />
                 <ButtonSoft
                   size={1}
