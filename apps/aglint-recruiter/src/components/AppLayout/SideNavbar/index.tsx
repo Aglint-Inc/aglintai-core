@@ -26,7 +26,7 @@ function SideNavbar() {
   }, [pathName]);
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-4 w-16">
+    <div className="flex flex-col items-center space-y-3 p-4 w-14">
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
@@ -60,17 +60,17 @@ const LinkIcon = ({
   const hoverClasses = "hover:bg-gray-200";
 
   const iconMap = {
-    'Requests': <LayoutList className="w-6 h-6" strokeWidth={1.5}/>,
-    'Jobs': <BriefcaseBusiness className="w-6 h-6" strokeWidth={1.5}/>,
-    'Interviews': <Calendar className="w-6 h-6" strokeWidth={1.5}/>,
-    'Interview Types': <LibraryBig className="w-6 h-6" strokeWidth={1.5}/>,
-    'Candidates': <Users className="w-6 h-6" strokeWidth={1.5}/>,
-    'Interviewers': <Users className="w-6 h-6" strokeWidth={1.5}/>,
-    'Sourcing Hub': <Search className="w-6 h-6" strokeWidth={1.5}/>,
-    'Integrations': <LayoutGrid className="w-6 h-6" strokeWidth={1.5}/>,
-    'Company Settings': <Settings className="w-6 h-6" strokeWidth={1.5}/>,
-    'Workflows': <Workflow className="w-6 h-6" strokeWidth={1.5}/>,
-    'Tasks': <ListTodo className="w-6 h-6" strokeWidth={1.5}/>,
+    'Requests': <LayoutList className="w-5 h-5" strokeWidth={1.5}/>,
+    'Jobs': <BriefcaseBusiness className="w-5 h-5" strokeWidth={1.5}/>,
+    'Interviews': <Calendar className="w-5 h-5" strokeWidth={1.5}/>,
+    'Interview Types': <LibraryBig className="w-5 h-5" strokeWidth={1.5}/>,
+    'Candidates': <Users className="w-5 h-5" strokeWidth={1.5}/>,
+    'Interviewers': <Users className="w-5 h-5" strokeWidth={1.5}/>,
+    'Sourcing Hub': <Search className="w-5 h-5" strokeWidth={1.5}/>,
+    'Integrations': <LayoutGrid className="w-5 h-5" strokeWidth={1.5}/>,
+    'Company Settings': <Settings className="w-5 h-5" strokeWidth={1.5}/>,
+    'Workflows': <Workflow className="w-5 h-5" strokeWidth={1.5}/>,
+    'Tasks': <ListTodo className="w-5 h-5" strokeWidth={1.5}/>,
   };
 
   return (

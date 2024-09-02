@@ -40,7 +40,7 @@ export default function AppLayout({ children, appRouter = false }) {
   }
   return (
     <div className="flex h-screen">
-      <nav className="flex flex-col justify-between w-16 border-r bg-white">
+      <nav className="flex flex-col justify-between w-14 border-r bg-white">
         <div className="flex flex-col items-center py-3 flex-grow">
           <Button variant="ghost" size="icon" asChild className="rounded-full">
             <Link href="#">
@@ -54,7 +54,7 @@ export default function AppLayout({ children, appRouter = false }) {
           </Button>
           <SideNavbar />
         </div>
-        <div className="flex flex-col items-center pb-5 space-y-4">
+        <div className="flex flex-col items-center pb-3 space-y-3">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -63,7 +63,7 @@ export default function AppLayout({ children, appRouter = false }) {
                     <img
                       src={userDetails?.profile_image}
                       alt="User Profile"
-                      className="rounded-full w-full h-full"
+                      className="rounded-full w-8 h-8"
                       style={{ objectFit: 'cover' }}
                     />
                     <span className="sr-only">User profile</span>
@@ -79,7 +79,7 @@ export default function AppLayout({ children, appRouter = false }) {
             <Tooltip>
               <TooltipTrigger>
                 <Button variant="outline" size="icon" onClick={handleSignOut}>
-                  <LogOut className="w-6 h-6" strokeWidth={1.5} />
+                  <LogOut className="w-5 h-5" strokeWidth={1.5} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent align='center' side='right'>
