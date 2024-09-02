@@ -1,46 +1,53 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
 import React, { useMemo } from 'react';
 
+import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
+import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
 const SelfScheduleFlowMenus = ({
   isManualSchedule,
-  scheduleReqProgressMap,
-  eventTargetMap,
+  isSelectScheduleFlowComplete,
 }: {
-  eventTargetMap: EventTargetMapType;
   isManualSchedule: boolean;
-  scheduleReqProgressMap: RequestProgressMapType;
+  isSelectScheduleFlowComplete: boolean;
 }) => {
+  const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
+    useNewScheduleRequestPr();
   const { request_progress } = useRequest();
 
-  let scheduleFlowProg = useMemo(() => {
+  let { progres: scheduleFlowProg, reqProgresMap } = useMemo(() => {
+    let reqProgresMap: RequestProgressMapType = {};
     let progres: DatabaseTable['request_progress'][] = [];
+
     if (request_progress.data.length === 0) {
-      return progres;
+      return {
+        progres,
+        reqProgresMap,
+      };
     }
-    request_progress.data.forEach((prog) => {
-      if (prog.event_type !== 'CAND_CONFIRM_SLOT') {
-        progres.push({
-          ...prog,
-        });
+
+    for (let prog of request_progress.data) {
+      if (prog.event_type === 'CAND_CONFIRM_SLOT') {
+        break;
       }
-    });
-    return progres;
+      if (!reqProgresMap[prog.event_type]) {
+        reqProgresMap[prog.event_type] = [];
+      }
+      reqProgresMap[prog.event_type].push(prog);
+      progres.push({
+        ...prog,
+      });
+    }
+    return { progres, reqProgresMap };
   }, [request_progress.data]);
   //
-  let eventWActions: DatabaseEnums['email_slack_types'][] = [];
-  if (eventTargetMap['onRequestSchedule']) {
-    eventWActions = [
-      ...eventTargetMap['onRequestSchedule'],
-      ...(eventTargetMap['selfScheduleReminder'] ?? []),
-    ];
-  }
 
   return (
     <>
@@ -52,34 +59,76 @@ const SelfScheduleFlowMenus = ({
               <>
                 <EventNode
                   key={prog.id}
-                  eventNode={prog.event_type}
-                  reqProgressMap={scheduleReqProgressMap}
+                  reqProgresMap={reqProgresMap}
+                  eventType={prog.event_type}
+                  currEventTrigger={'onRequestSchedule'}
                 />
               </>
             );
           })}
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions
+        {(reqTriggerActionsMap['onRequestSchedule'] ?? [])
           .map((eA) => {
-            return apiTargetToEvents[eA];
+            return apiTargetToEvents[eA.target_api].map((ev) => {
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={reqProgresMap}
+                  currEventTrigger={'onRequestSchedule'}
+                  currWAction={eA}
+                />
+              );
+            });
           })
-          .flat()
-          .map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventNode={ev}
-                reqProgressMap={scheduleReqProgressMap}
-              />
-            );
-          })}
-        {scheduleReqProgressMap['SELF_SCHEDULE_FIRST_FOLLOWUP'] && (
-          <EventNode
-            eventNode='SELF_SCHEDULE_FIRST_FOLLOWUP'
-            reqProgressMap={scheduleReqProgressMap}
+          .flat()}
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={
+          !isSelectScheduleFlowComplete &&
+          (Boolean(!reqTriggerActionsMap['selfScheduleReminder']) ||
+            Boolean(
+              reqTriggerActionsMap['selfScheduleReminder'] &&
+                reqTriggerActionsMap['selfScheduleReminder'].length === 0,
+            ))
+        }
+      >
+        <Stack direction={'row'}>
+          <ButtonSoft
+            size={1}
+            textButton={'Schedule Reminder'}
+            onClickButton={{
+              onClick: () => {
+                setEditTrigger('selfScheduleReminder');
+                setShowEditDialog(true);
+              },
+            }}
           />
+        </Stack>
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={Boolean(
+          reqTriggerActionsMap['selfScheduleReminder'] &&
+            reqTriggerActionsMap['selfScheduleReminder'].length > 0,
         )}
+      >
+        {reqTriggerActionsMap['selfScheduleReminder'] &&
+          reqTriggerActionsMap['selfScheduleReminder'].length > 0 &&
+          apiTargetToEvents['selfScheduleReminder_email_applicant'].map(
+            (ev) => {
+              const action = reqTriggerActionsMap.selfScheduleReminder[0];
+              return (
+                <EventNode
+                  key={ev}
+                  eventType={ev}
+                  reqProgresMap={reqProgresMap}
+                  currEventTrigger={'selfScheduleReminder'}
+                  currWAction={action}
+                />
+              );
+            },
+          )}
       </ShowCode.When>
     </>
   );

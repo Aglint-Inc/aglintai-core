@@ -6,7 +6,7 @@ import axios from '@/src/client/axios';
 import { Request } from '@/src/queries/requests/types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
+import { RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 
 export function getWorkflowText({
@@ -25,7 +25,7 @@ export function getWorkflowText({
 
 export function useEventTargetMap(workflowData) {
   return useMemo(() => {
-    let mp: EventTargetMapType = {};
+    let mp: any = {};
     workflowData.forEach((eA) => {
       mp[eA.trigger] = eA.workflow_action.map((wA) => wA.target_api);
     });

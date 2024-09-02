@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { EmailTemplateAPi } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 import axios from 'axios';
 import * as v from 'valibot';
@@ -14,6 +14,7 @@ export const candidateAvailRequest = async ({
   req_body,
   request_id,
   start_date_str,
+  reqProgressLogger,
 }: {
   req_body: any;
   organizer_id: string;
@@ -21,6 +22,7 @@ export const candidateAvailRequest = async ({
   start_date_str;
   end_date_str;
   request_id: string;
+  reqProgressLogger: ProgressLoggerType;
 }) => {
   const {
     application_id,
@@ -78,4 +80,12 @@ export const candidateAvailRequest = async ({
       ...payload,
     },
   );
+  await reqProgressLogger({
+    event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+    is_progress_step: true,
+    meta: {
+      avail_req_id: avail_req.id,
+    },
+    status: 'completed',
+  });
 };

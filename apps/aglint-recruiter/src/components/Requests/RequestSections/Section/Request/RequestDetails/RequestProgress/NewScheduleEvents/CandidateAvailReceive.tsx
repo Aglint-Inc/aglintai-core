@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
-import { TextWithIcon } from '@/devlink2/TextWithIcon';
+import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   setCandidateAvailabilityDrawerOpen,
@@ -22,19 +22,15 @@ import { useRequest } from '@/src/context/RequestContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { EventTargetMapType, RequestProgressMapType } from '../types';
-import { getProgressColor } from '../utils/getProgressColor';
+import { type RequestProgressMapType } from '../types';
 import {
   apiTargetToEvents,
   groupedTriggerEventMap,
 } from '../utils/progressMaps';
+import { useNewScheduleRequestPr } from '.';
 import EventNode from './EventNode';
 
-const CandidateAvailReceive = ({
-  eventTargetMap,
-}: {
-  eventTargetMap: EventTargetMapType;
-}) => {
+const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
 
   let lastEvent: DatabaseTable['request_progress']['event_type'];
@@ -77,19 +73,16 @@ const CandidateAvailReceive = ({
   return (
     <Stack rowGap={2}>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
-        <TextWithIcon
-          iconName='expand_circle_right'
-          textContent={`Candidate submits Availability`}
-          iconSize={4}
-          fontSize={1}
-          color={getProgressColor('future')}
+        <RequestProgress
+          circleIndicator={'circle'}
+          textRequestProgress={`Candidate submits Availability`}
+          slotProgress={<></>}
         />
       </ShowCode.When>
       {availRecivedProgEvents.map((eventPgs, idx) => {
         return (
           <RequestEvents
             currProgress={eventPgs}
-            eventTargetMap={eventTargetMap}
             key={idx}
             isScheduled={isScheduled}
           />
@@ -98,12 +91,14 @@ const CandidateAvailReceive = ({
       <ShowCode.When
         isTrue={lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED'}
       >
-        <TextWithIcon
-          iconName='expand_circle_right'
-          textContent={`Candidate submits Availability`}
-          iconSize={4}
-          fontSize={1}
-          color={getProgressColor('future')}
+        <RequestProgress
+          circleIndicator={'circle'}
+          textRequestProgress={`Candidate submits Availability`}
+          slotProgress={
+            <>
+              <></>
+            </>
+          }
         />
       </ShowCode.When>
     </Stack>
@@ -114,18 +109,12 @@ export default CandidateAvailReceive;
 
 const RequestEvents = ({
   currProgress,
-  eventTargetMap,
   isScheduled,
 }: {
   currProgress: DatabaseTable['request_progress'][];
-  eventTargetMap: EventTargetMapType;
   isScheduled: boolean;
 }) => {
-  const { candidateAvailabilityId } =
-    useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetched } = useRequestAvailabilityDetails({
-    request_id: candidateAvailabilityId,
-  });
+  const { reqTriggerActionsMap } = useNewScheduleRequestPr();
   const { reqProgresMp } = useMemo(() => {
     let mp: RequestProgressMapType = {};
 
@@ -143,7 +132,7 @@ const RequestEvents = ({
   let lastEvent: DatabaseTable['request_progress'];
 
   let isManual = true;
-  if (eventTargetMap['onReceivingAvailReq']) {
+  if (reqTriggerActionsMap['onReceivingAvailReq']) {
     isManual = false;
   }
   if (currProgress.length > 0) {
@@ -177,76 +166,79 @@ const RequestEvents = ({
   };
 
   return (
-    <Stack>
-      <TextWithIcon
-        iconName='expand_circle_right'
-        textContent={`Candidate submits Availability`}
-        iconSize={4}
-        fontSize={1}
-        color={getProgressColor('past')}
-      />
-      <Stack ml={4}>
-        <ShowCode.When isTrue={isManual}>
-          {currProgress
-            .filter((pg) => pg.is_progress_step === false)
-            .map((av) => {
-              return (
-                <>
-                  <EventNode
-                    eventNode={av.event_type}
-                    reqProgressMap={reqProgresMp}
-                  />
-                </>
-              );
-            })}
-        </ShowCode.When>
-        <ShowCode.When isTrue={Boolean(eventTargetMap['onReceivingAvailReq'])}>
+    <>
+      <RequestProgress
+        circleIndicator={'completed'}
+        textRequestProgress={`Candidate submits Availability`}
+        slotProgress={
           <>
-            {eventTargetMap['onReceivingAvailReq'] &&
-              eventTargetMap['onReceivingAvailReq']
-                .map((target_api) => {
-                  return apiTargetToEvents[target_api];
-                })
-                .flat()
-                .map((ev) => {
+            <ShowCode.When isTrue={isManual}>
+              {currProgress
+                .filter((pg) => pg.is_progress_step === false)
+                .map((av) => {
                   return (
-                    <>
-                      <EventNode eventNode={ev} reqProgressMap={reqProgresMp} />
-                    </>
+                    <EventNode
+                      currEventTrigger='onReceivingAvailReq'
+                      eventType={av.event_type}
+                      reqProgresMap={reqProgresMp}
+                      key={av.id}
+                    />
                   );
                 })}
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={Boolean(reqTriggerActionsMap['onReceivingAvailReq'])}
+            >
+              <>
+                {reqTriggerActionsMap['onReceivingAvailReq'] &&
+                  reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
+                    return apiTargetToEvents[action.target_api].map((ev) => {
+                      return (
+                        <EventNode
+                          currEventTrigger='onReceivingAvailReq'
+                          eventType={ev}
+                          reqProgresMap={reqProgresMp}
+                          key={ev}
+                          currWAction={action}
+                        />
+                      );
+                    });
+                  })}
+              </>
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={
+                !isScheduled &&
+                lastEvent &&
+                lastEvent.event_type === 'CAND_AVAIL_REC'
+              }
+            >
+              <Stack direction={'row'} gap={1}>
+                <ButtonSoft
+                  size={1}
+                  color={'accent'}
+                  textButton='Schedule Interview'
+                  onClickButton={{
+                    onClick: () => {
+                      handleConfirmSlot(lastEvent.request_id);
+                    },
+                  }}
+                />
+                <ButtonSoft
+                  size={1}
+                  color='accent'
+                  onClickButton={{
+                    onClick: () => {
+                      handleReReq(lastEvent.request_id);
+                    },
+                  }}
+                  textButton='Re Request Availability'
+                />
+              </Stack>
+            </ShowCode.When>
           </>
-        </ShowCode.When>
-      </Stack>
-      <ShowCode.When
-        isTrue={
-          !isScheduled && lastEvent && lastEvent.event_type === 'CAND_AVAIL_REC'
         }
-      >
-        <Stack direction={'row'} gap={1}>
-          <ButtonSoft
-            size={1}
-            color={'accent'}
-            textButton='Schedule Interview'
-            onClickButton={{
-              onClick: () => {
-                handleConfirmSlot(lastEvent.request_id);
-              },
-            }}
-            isLoading={!isFetched}
-          />
-          <ButtonSoft
-            size={1}
-            color='accent'
-            onClickButton={{
-              onClick: () => {
-                handleReReq(lastEvent.request_id);
-              },
-            }}
-            textButton='Re Request Availability'
-          />
-        </Stack>
-      </ShowCode.When>
-    </Stack>
+      />
+    </>
   );
 };
