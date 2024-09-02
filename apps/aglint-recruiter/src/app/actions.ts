@@ -1,14 +1,16 @@
 'use server'
 
-import { createAdminClient } from '@/src/utils/supabase/server'
-const supabase = createAdminClient()
-import { cookies } from 'next/headers'
 import { Resend } from 'resend'
+
+// import { createAdminClient } from '@/src/utils/supabase/server'
+
+// const supabase = createAdminClient()
+// import { cookies } from 'next/headers'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function submitErrorReport(errorDescription: string, screenshotUrl: string | null) {
-
+  const data = 'TBD';
   // Insert error report into Supabase table
   // const { data, error } = await supabase
   //   .from('error_reports')

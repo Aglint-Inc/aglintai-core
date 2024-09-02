@@ -21,9 +21,9 @@ import { isEnvProd } from '@/src/utils/isEnvProd';
 import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
 
+// import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 import { useImrQuery } from '../Scheduling/Interviewers/InterviewerDetail/hooks';
 import SideNavbar from './SideNavbar';
-import { ThemeSwitcher } from '../CandiatePortal/components/ThemeSwitcher';
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();

@@ -1,4 +1,5 @@
-import axios from 'axios';
+// import axios from 'axios';
+
 import { type Session } from '@/src/context/AuthContext/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
@@ -16,7 +17,7 @@ export async function handleAuthFlow(router, toast) {
     }
 
     const userDetails = data.session;
-    const redirectUrl = await handleAuthRoute(userDetails, router, toast);
+    const redirectUrl = await handleAuthRoute(userDetails);
     return redirectUrl; // Return the URL instead of redirecting
   } catch (error) {
     toast({
@@ -29,36 +30,36 @@ export async function handleAuthFlow(router, toast) {
   }
 }
 
-async function handleUser(userDetails: Session, router, toast) {
-  if (!userDetails?.user?.id) {
-    throw new Error('Unable to login. Please try again.');
-  }
+// async function handleUser(userDetails: Session, router, toast) {
+//   if (!userDetails?.user?.id) {
+//     throw new Error('Unable to login. Please try again.');
+//   }
 
-  const hasRelation = await checkRelation(userDetails.user.id);
+//   const hasRelation = await checkRelation(userDetails.user.id);
 
-  if (!hasRelation) {
-    await deleteUser(userDetails.user.id);
-    throw new Error('Please reach out to your admin or the Aglint support team.');
-  }
+//   if (!hasRelation) {
+//     await deleteUser(userDetails.user.id);
+//     throw new Error('Please reach out to your admin or the Aglint support team.');
+//   }
 
-  await handleAuthRoute(userDetails, router, toast);
-}
+//   await handleAuthRoute(userDetails, router, toast);
+// }
 
-async function checkRelation(userId: string): Promise<boolean> {
-  const { data, error } = await supabase
-    .from('recruiter_relation')
-    .select('*')
-    .eq('user_id', userId);
+// async function checkRelation(userId: string): Promise<boolean> {
+//   const { data, error } = await supabase
+//     .from('recruiter_relation')
+//     .select('*')
+//     .eq('user_id', userId);
 
-  if (error) throw new Error(error.message);
-  return data.length > 0;
-}
+//   if (error) throw new Error(error.message);
+//   return data.length > 0;
+// }
 
-async function deleteUser(userId: string) {
-  await axios.post('/api/supabase/deleteuser', { user_id: userId });
-}
+// async function deleteUser(userId: string) {
+//   await axios.post('/api/supabase/deleteuser', { user_id: userId });
+// }
 
-async function handleAuthRoute(userDetails: Session, router, toast) {
+async function handleAuthRoute(userDetails: Session) {
   const relationData = await getRelationsDetails(userDetails.user.id);
 
   if (!relationData?.recruiter_user) {

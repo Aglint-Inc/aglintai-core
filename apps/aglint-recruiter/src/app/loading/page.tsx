@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+import { useToast } from '@/components/hooks/use-toast';
+
 import { handleAuthFlow } from './authActions';
-import { useToast } from '@/components/hooks/use-toast'; // Assuming you have a toast component
 
 export default function LoadingPage() {
   const router = useRouter();

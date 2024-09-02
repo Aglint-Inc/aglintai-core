@@ -1,16 +1,16 @@
 'use client';
 
-import { createClient } from '@supabase/supabase-js';
-
 import html2canvas from 'html2canvas';
 import { AlertCircle, Camera, Send } from 'lucide-react';
+import Image from 'next/image';
+import React from 'react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '@/src/utils/supabase/client';
 
-import { submitErrorReport } from '@/src/app/actions';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { submitErrorReport } from '@/src/app/actions';
+import { supabase } from '@/src/utils/supabase/client';
 
 export default function ErrorPage() {
   const [errorDescription, setErrorDescription] = useState('');
@@ -31,7 +31,7 @@ export default function ErrorPage() {
       let screenshotUrl = null;
       if (screenshotData) {
         const fileName = `error-screenshot-${uuidv4()}.png`;
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from('error-screenshots')
           .upload(fileName, base64ToBlob(screenshotData), {
             contentType: 'image/png',
@@ -80,8 +80,8 @@ export default function ErrorPage() {
           </h1>
         </div>
         <p className='text-gray-600 mb-6 text-center'>
-          We're sorry, but it seems that our system has encountered an
-          unexpected error. Please help us improve by reporting this issue.
+          Were sorry, but it seems that our system has encountered an unexpected
+          error. Please help us improve by reporting this issue.
         </p>
         <form onSubmit={handleSubmit} className='space-y-4'>
           <Textarea
@@ -112,9 +112,11 @@ export default function ErrorPage() {
           {screenshotData && (
             <div className='mt-4'>
               <p className='text-sm text-gray-600 mb-2'>Screenshot Preview:</p>
-              <img
+              <Image
                 src={screenshotData}
                 alt='Error Screenshot'
+                width={300}
+                height={200}
                 className='w-full border rounded'
               />
             </div>

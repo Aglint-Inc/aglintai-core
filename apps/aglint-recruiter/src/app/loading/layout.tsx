@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Loading',
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 export default function LoadingLayout({
   children,
 }: {
+  // eslint-disable-next-line no-undef
   children: React.ReactNode;
 }) {
   return <>{children}</>;
