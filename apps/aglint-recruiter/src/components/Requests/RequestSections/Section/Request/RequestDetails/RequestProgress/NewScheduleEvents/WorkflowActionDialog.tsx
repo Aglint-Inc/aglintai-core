@@ -1,14 +1,9 @@
-import {
-  DatabaseEnums,
-  DatabaseTable,
-  DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
 import { get } from 'lodash';
-import React, { act, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
-import MuiPopup from '@/src/components/Common/MuiPopup';
 import UISelect from '@/src/components/Common/Uiselect';
 import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
