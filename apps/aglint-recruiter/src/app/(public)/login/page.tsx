@@ -1,20 +1,20 @@
-'use client';
 import React from 'react';
+import { Metadata } from 'next';
+import LoginForm from '@/src/components/Auth/LoginForm';
+import Footer from '@/src/components/Common/Footer';
 
-import { SeoPro } from '@/src/components/Common/SeoPro';
-import Login from '@/src/components/Login';
+export const metadata: Metadata = {
+  title: 'Login | Aglint AI',
+  description: 'AI for People Products',
+};
 
-// export const metadata = generateMetadata({
-//   params: { title: 'Aglint|Login' },
-// });
-
-function SignInPage() {
+export default function SignInPage() {
   return (
-    <>
-      <SeoPro title='Login | Aglint AI' description='AI for People Products' />
-      <Login />
-    </>
+    <div className="min-h-screen flex flex-col justify-between bg-neutral-100">
+      <div className="flex-1 flex justify-center items-center">
+        <LoginForm />
+      </div>
+      <Footer />
+    </div>
   );
 }
-
-export default SignInPage;

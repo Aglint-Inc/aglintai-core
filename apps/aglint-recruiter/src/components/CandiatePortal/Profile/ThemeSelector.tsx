@@ -1,8 +1,8 @@
 'use client';
 
-import { Card, CardContent } from '@components/shadcn/ui/card';
-import { Label } from '@components/shadcn/ui/label';
-import { RadioGroup, RadioGroupItem } from '@components/shadcn/ui/radio-group';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Palette } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

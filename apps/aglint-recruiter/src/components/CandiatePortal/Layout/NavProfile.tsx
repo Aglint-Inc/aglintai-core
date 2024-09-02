@@ -1,7 +1,7 @@
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../../shadcn/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../shadcn/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 
 export default function NavProfile({ application_id }) {
   return (

@@ -5,8 +5,8 @@ import { schedule } from '@/src/app/api/candidate_portal/home_page/route';
 import dayjs from '@/src/utils/dayjs';
 
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
-import { Button } from '../../shadcn/ui/button';
-import { Card, CardContent, CardHeader } from '../../shadcn/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
   const latestschedule = scheduleData.sort((a, b) =>

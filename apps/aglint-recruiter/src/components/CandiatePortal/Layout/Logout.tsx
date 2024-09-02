@@ -1,5 +1,5 @@
 'use client';
-import { DropdownMenuItem } from '@components/shadcn/ui/dropdown-menu';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
 export const Logout = () => {
   const { push } = useRouter();

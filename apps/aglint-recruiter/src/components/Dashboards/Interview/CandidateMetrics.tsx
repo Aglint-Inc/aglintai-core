@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@components/shadcn/ui/table';
+} from '@/components/ui/table';
 import React, { useMemo } from 'react';
 
 // Mock data

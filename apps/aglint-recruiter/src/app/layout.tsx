@@ -1,6 +1,10 @@
+import '@styles/globals.css';
+import 'regenerator-runtime/runtime';
+import { Toaster } from '@/components/ui/toaster';
+import { ReactNode } from 'react';
 import '@/styles/globals.css';
 
-import { ThemeProvider } from '@components/shadcn//theme-provider';
+import { ThemeProvider } from '@/components/theme-provider';
 import React from 'react';
 
 const defaultUrl = process.env.VERCEL_URL
@@ -27,7 +31,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <main>{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

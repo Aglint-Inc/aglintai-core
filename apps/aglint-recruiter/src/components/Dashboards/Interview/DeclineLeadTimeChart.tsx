@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '@components/shadcn/ui/card';
+} from '@/components/ui/card';
 import { ArrowDownIcon, DownloadIcon } from 'lucide-react';
 import React from 'react';
 import {

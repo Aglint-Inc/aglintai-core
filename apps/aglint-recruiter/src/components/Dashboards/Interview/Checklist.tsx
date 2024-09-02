@@ -1,11 +1,11 @@
-import { Button } from '@components/shadcn/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@components/shadcn/ui/dropdown-menu';
-import { ScrollArea } from '@components/shadcn/ui/scroll-area';
+} from '@/components/ui/dropdown-menu';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@components/shadcn/ui/table';
+} from '@/components/ui/table';
 import { Check, X } from 'lucide-react';
 import { useState } from 'react';
 
