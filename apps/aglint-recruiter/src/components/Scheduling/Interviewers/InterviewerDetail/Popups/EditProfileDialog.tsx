@@ -295,15 +295,11 @@ export const EditProfileDialog = ({
                 renderInput={(params) => {
                   return (
                     <UITextField
-                      rest={{ ...params }}
+                      {...params}
                       labelSize='medium'
                       // fullWidth
                       label={''}
                       placeholder='Ex. Healthcare'
-                      InputProps={{
-                        ...params.InputProps,
-                        autoComplete: 'new-password',
-                      }}
                     />
                   );
                 }}

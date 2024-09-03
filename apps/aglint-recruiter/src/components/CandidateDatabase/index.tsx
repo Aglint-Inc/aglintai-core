@@ -15,7 +15,6 @@ import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
 import { ClearHistory } from '@/devlink/ClearHistory';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedList } from '@/devlink/SavedList';
@@ -405,93 +404,99 @@ function CandidateSearchHistory() {
             {isHistoryLoading ? (
               <Loader />
             ) : (
-              <>
-                {currentTab === 'discover talent' &&
-                  localStorage.getItem('discoverTalent') !== 'true' && (
-                    <WelcomeMatDiscoverTalent
-                      slotSearch={
-                        <UITextField
-                          value={searchQuery}
-                          placeholder={'Software Engineer in San Francisco'}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                          }}
-                          InputProps={{
-                            onKeyDown: async (e) => {
+              <YTransform uniqueKey={router.query.currentTab}>
+                <>
+                  {currentTab === 'discover talent' &&
+                    localStorage.getItem('discoverTalent') !== 'true' && (
+                      <WelcomeMatDiscoverTalent
+                        slotSearch={
+                          <UITextField
+                            value={searchQuery}
+                            placeholder={'Software Engineer in San Francisco'}
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                            }}
+                            onKeyDown={(e) => {
                               if (e.code === 'Enter') {
-                                await getCandsFromApi();
-                                localStorage.setItem('discoverTalent', 'true');
-                              }
-                            },
-                          }}
-                        />
-                      }
-                      slotLoader={
-                        <CircularProgress
-                          color='inherit'
-                          size={'15px'}
-                          sx={{ color: 'var(--neutral-6)' }}
-                        />
-                      }
-                      isLoading={isQrySearching}
-                      onClickSearch={{
-                        onClick: async () => {
-                          await getCandsFromApi();
-                          localStorage.setItem('discoverTalent', 'true');
-                        },
-                      }}
-                    />
-                  )}
-                {currentTab === 'talent rediscovery' &&
-                  localStorage.getItem('talentRediscovery') !== 'true' && (
-                    <WelcomeMatTalentRediscovery
-                      isSearchVisible={isCandidates}
-                      isLoading={isQrySearching}
-                      slotLoader={
-                        <CircularProgress
-                          color='inherit'
-                          size={'15px'}
-                          sx={{ color: 'var(--neutral-6)' }}
-                        />
-                      }
-                      onclickSearch={{
-                        onClick: async () => {
-                          await getMatchingCandsFromQry();
-                          localStorage.setItem('talentRediscovery', 'true');
-                        },
-                      }}
-                      slotSearch={
-                        <UITextField
-                          value={searchQuery}
-                          placeholder={
-                            'Ex: Software engineer with 2 years of experience'
-                          }
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                          }}
-                          InputProps={{
-                            onKeyDown: async (e) => {
-                              if (e.code === 'Enter') {
-                                if (isCandidates) {
-                                  await getMatchingCandsFromQry();
+                                getCandsFromApi().then(() =>
                                   localStorage.setItem(
                                     'talentRediscovery',
                                     'true',
                                   );
-                                } else {
-                                  toast({
-                                    variant: 'destructive',
-                                    title: 'Error',
-                                    description:
-                                      'No candidates are linked to the jobs. Please add candidates.',
-                                  });
                                 }
-                              }
-                            },
-                          }}
-                        />
-                      }
-                    />
+                              },
+                            }}
+                          />
+                        }
+                        slotLoader={
+                          <CircularProgress
+                            color='inherit'
+                            size={'15px'}
+                            sx={{ color: 'var(--neutral-6)' }}
+                          />
+                        }
+                        isLoading={isQrySearching}
+                        onClickSearch={{
+                          onClick: async () => {
+                            await getCandsFromApi();
+                            localStorage.setItem('discoverTalent', 'true');
+                          },
+                        }}
+                      />
+                    )}
+                  {currentTab === 'talent rediscovery' &&
+                    localStorage.getItem('talentRediscovery') !== 'true' && (
+                      <WelcomeMatTalentRediscovery
+                        isSearchVisible={isCandidates}
+                        isLoading={isQrySearching}
+                        slotLoader={
+                          <CircularProgress
+                            color='inherit'
+                            size={'15px'}
+                            sx={{ color: 'var(--neutral-6)' }}
+                          />
+                        }
+                        onclickSearch={{
+                          onClick: async () => {
+                            await getMatchingCandsFromQry();
+                            localStorage.setItem('talentRediscovery', 'true');
+                          },
+                        }}
+                        slotSearch={
+                          <UITextField
+                            value={searchQuery}
+                            placeholder={
+                              'Ex: Software engineer with 2 years of experience'
+                            }
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                            }}
+                            InputProps={{
+                              onKeyDown: async (e) => {
+                                if (e.code === 'Enter') {
+                                  if (isCandidates) {
+                                    await getMatchingCandsFromQry();
+                                    localStorage.setItem(
+                                      'talentRediscovery',
+                                      'true',
+                                    );
+                                  } else {
+                                    toast({
+                                      variant: 'destructive',
+                                      title: 'Error',
+                                      description:
+                                        'No candidates are linked to the jobs. Please add candidates.',
+                                    });
+                                  }
+                                }
+                              },
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  {currentTab === 'talent directory' && !isCandidates && (
+                    <WelcomeMatTalentDirectory />
                   )}
                 {currentTab === 'talent directory' && !isCandidates && (
                   <WelcomeMatTalentDirectory />
@@ -574,51 +579,50 @@ function CandidateSearchHistory() {
                             if (e.key === 'Enter') {
                               submitHandler();
                             }
-                          }}
-                        />
-                      }
-                      onClickSubmit={{
-                        onClick: () => {
-                          submitHandler();
-                        },
-                      }}
-                      onClickCreateNewList={{
-                        onClick: () => {
-                          setIsInputVisible(true);
-                        },
-                      }}
-                      onClickClose={{
-                        onClick: () => {
-                          setText('');
-                          setIsInputVisible(false);
-                        },
-                      }}
-                      slotSavedList={
-                        isHistoryLoading ? (
-                          <>
-                            <SavedListLoader /> <SavedListLoader />
-                            <SavedListLoader />
-                          </>
-                        ) : (
-                          list.map((list) => (
-                            <SavedList
-                              // isInlineEditVisible={editList?.id === list.id}
-
-                              slotInputTextSavedList={
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                            }}
+                            InputProps={{
+                              onKeyDown: (e) => {
+                                if (e.code === 'Enter') {
+                                  if (currentTab === 'talent rediscovery') {
+                                    getMatchingCandsFromQry();
+                                  } else {
+                                    getCandsFromApi();
+                                  }
+                                }
+                              },
+                              endAdornment: searchQuery && (
                                 <Stack
-                                  onClick={(e) => {
-                                    e.stopPropagation();
+                                  onClick={() => setSearchQuery('')}
+                                  sx={{
+                                    p: '3px',
+                                    '&:hover': {
+                                      backgroundColor: 'var(--neutral-3)',
+                                      cursor: 'pointer',
+                                    },
                                   }}
                                 >
-                                  <UITextField
-                                    placeholder='Enter List name'
-                                    ref={multiTextFieldRef}
-                                    value={editListText}
-                                    onChange={(e) => {
-                                      setEditListText(e.target.value);
-                                    }}
-                                  />
+                                  <GlobalIcon iconName='close' size={5} />
                                 </Stack>
+                              ),
+                            }}
+                          />
+                        }
+                        isSavedListEmpty={
+                          !isHistoryLoading && list.length === 0
+                        }
+                        slotInput={
+                          <UITextField
+                            rest={{ autoFocus: true }}
+                            placeholder='Enter List name'
+                            value={text}
+                            onChange={(e) => {
+                              setText(e.target.value);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                submitHandler();
                               }
                               onClickDelete={{
                                 onClick: (e) => {

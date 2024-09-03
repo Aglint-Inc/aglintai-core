@@ -224,10 +224,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                 <UITextField
                   {...params}
                   placeholder='Type or Choose from the list and press enter'
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
-                  }}
+                  type='search'
                   onFocus={() => setInputError(false)}
                   error={inputError}
                   helperText='Make any changes then add the Department'
