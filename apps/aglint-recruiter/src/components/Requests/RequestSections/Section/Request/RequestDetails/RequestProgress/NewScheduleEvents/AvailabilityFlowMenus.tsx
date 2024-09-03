@@ -13,8 +13,10 @@ import EventNode from './EventNode';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
+  isSelectScheduleFlowComplete,
 }: {
   isManualSchedule: boolean;
+  isSelectScheduleFlowComplete: boolean;
 }) => {
   const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
     useNewScheduleRequestPr();
@@ -72,23 +74,23 @@ const AvailabilityFlowMenus = ({
         </>
       </ShowCode.When>
       <ShowCode.When isTrue={!isManualSchedule}>
-        {eventWActions.map((eA) => {
-          return apiTargetToEvents[eA.target_api].map((ev) => {
-            return (
-              <EventNode
-                key={ev}
-                eventType={ev}
-                reqProgresMap={currEventMap}
-                currEventTrigger={'onRequestSchedule'}
-                currWAction={eA}
-              />
-            );
-          });
+        {eventWActions.map((action) => {
+          const eventAction = apiTargetToEvents[action.target_api];
+          return (
+            <EventNode
+              eventType={eventAction}
+              reqProgresMap={currEventMap}
+              currEventTrigger={'onRequestSchedule'}
+              currWAction={action}
+              key={action.id}
+            />
+          );
         })}
       </ShowCode.When>
       <ShowCode.When
         isTrue={
-          Boolean(!reqTriggerActionsMap['sendAvailReqReminder']) ||
+          (!isSelectScheduleFlowComplete &&
+            Boolean(!reqTriggerActionsMap['sendAvailReqReminder'])) ||
           Boolean(
             reqTriggerActionsMap['sendAvailReqReminder'] &&
               reqTriggerActionsMap['sendAvailReqReminder'].length === 0,
@@ -115,21 +117,15 @@ const AvailabilityFlowMenus = ({
         )}
       >
         {reqTriggerActionsMap['sendAvailReqReminder'] &&
-          reqTriggerActionsMap['sendAvailReqReminder'].length > 0 &&
-          apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
-            (ev) => {
-              const action = reqTriggerActionsMap.sendAvailReqReminder[0];
-              //
-              return (
-                <EventNode
-                  key={ev}
-                  eventType={ev}
-                  reqProgresMap={currEventMap}
-                  currEventTrigger={'sendAvailReqReminder'}
-                  currWAction={action}
-                />
-              );
-            },
+          reqTriggerActionsMap['sendAvailReqReminder'].length > 0 && (
+            <EventNode
+              eventType={
+                apiTargetToEvents['sendAvailReqReminder_email_applicant']
+              }
+              reqProgresMap={currEventMap}
+              currEventTrigger={'sendAvailReqReminder'}
+              currWAction={reqTriggerActionsMap.sendAvailReqReminder[0]}
+            />
           )}
       </ShowCode.When>
     </>

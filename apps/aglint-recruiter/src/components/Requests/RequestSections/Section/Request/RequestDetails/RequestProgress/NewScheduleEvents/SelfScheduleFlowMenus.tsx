@@ -70,17 +70,16 @@ const SelfScheduleFlowMenus = ({
       <ShowCode.When isTrue={!isManualSchedule}>
         {(reqTriggerActionsMap['onRequestSchedule'] ?? [])
           .map((eA) => {
-            return apiTargetToEvents[eA.target_api].map((ev) => {
-              return (
-                <EventNode
-                  key={ev}
-                  eventType={ev}
-                  reqProgresMap={reqProgresMap}
-                  currEventTrigger={'onRequestSchedule'}
-                  currWAction={eA}
-                />
-              );
-            });
+            let actionEvent = apiTargetToEvents[eA.target_api];
+            return (
+              <EventNode
+                key={actionEvent}
+                eventType={actionEvent}
+                reqProgresMap={reqProgresMap}
+                currEventTrigger={'onRequestSchedule'}
+                currWAction={eA}
+              />
+            );
           })
           .flat()}
       </ShowCode.When>
@@ -114,20 +113,15 @@ const SelfScheduleFlowMenus = ({
         )}
       >
         {reqTriggerActionsMap['selfScheduleReminder'] &&
-          reqTriggerActionsMap['selfScheduleReminder'].length > 0 &&
-          apiTargetToEvents['selfScheduleReminder_email_applicant'].map(
-            (ev) => {
-              const action = reqTriggerActionsMap.selfScheduleReminder[0];
-              return (
-                <EventNode
-                  key={ev}
-                  eventType={ev}
-                  reqProgresMap={reqProgresMap}
-                  currEventTrigger={'selfScheduleReminder'}
-                  currWAction={action}
-                />
-              );
-            },
+          reqTriggerActionsMap['selfScheduleReminder'].length > 0 && (
+            <EventNode
+              eventType={
+                apiTargetToEvents['selfScheduleReminder_email_applicant']
+              }
+              reqProgresMap={reqProgresMap}
+              currEventTrigger={'selfScheduleReminder'}
+              currWAction={reqTriggerActionsMap.selfScheduleReminder[0]}
+            />
           )}
       </ShowCode.When>
     </>

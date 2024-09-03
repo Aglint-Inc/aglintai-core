@@ -72,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       reqProgressLogger,
       {
-        event_type: 'FIND_CURR_AVAIL_SLOTS',
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
       },
     );
 
