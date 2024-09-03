@@ -115,6 +115,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         job_id: jobId,
         icon: newStep.icon,
         order: order_id,
+        description: newStep.description,
       });
 
       if (error) {
