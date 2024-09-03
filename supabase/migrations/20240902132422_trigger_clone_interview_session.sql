@@ -7,7 +7,7 @@ AS $function$
 DECLARE
     company_id uuid;
     -- appl_job_id uuid;
-    -- int_schedule_id uuid := gen_random_uuid();  -- Assuming this is to generate a new UUID
+    int_schedule_id uuid := gen_random_uuid();  -- Assuming this is to generate a new UUID
     session_rec record;
     sesn_reln_record record;
     inserted_sesn_id uuid;
@@ -16,11 +16,11 @@ DECLARE
     int_plan_loop record;
 BEGIN
     -- Delete any existing interview schedules for this application
-    -- DELETE FROM interview_schedule WHERE interview_schedule.application_id = NEW.id;
+    DELETE FROM interview_schedule WHERE interview_schedule.application_id = NEW.id;
 
     -- Insert a new interview schedule record
-    -- INSERT INTO interview_schedule(id, application_id, recruiter_id) 
-    -- VALUES (int_schedule_id, NEW.id, NEW.recruiter_id);
+    INSERT INTO interview_schedule(id, application_id, recruiter_id) 
+    VALUES (int_schedule_id, NEW.id, NEW.recruiter_id);
 
     -- Fetch the job ID for the application
     -- SELECT job_id 

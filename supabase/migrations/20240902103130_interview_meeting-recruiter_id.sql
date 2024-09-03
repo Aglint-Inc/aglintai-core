@@ -18,8 +18,6 @@ drop view if exists meeting_interviewers;
 
 drop view if exists meeting_details;
 
-alter table "public"."interview_meeting" drop column "interview_schedule_id";
-
 with interview_meeting_cte as (
     select 
         interview_meeting.id,
@@ -345,26 +343,26 @@ from
   left join public_jobs on applications.job_id = public_jobs.id;
 
 
--- create or replace view "public"."interview_data_view" as  SELECT row_to_json(ja.*) AS applications,
---     json_build_object('id', cand.id, 'first_name', cand.first_name, 'last_name', cand.last_name, 'current_job_title', cand.current_job_title, 'timezone', cand.timezone, 'phone', cand.phone, 'email', cand.email) AS candidates,
---     json_build_object('id', pj.id, 'job_title', pj.job_title, 'department_id', pj.department_id, 'recruiting_coordinator', pj.recruiting_coordinator) AS public_jobs,
---     row_to_json(insc.*) AS schedule,
---     ( SELECT jsonb_agg(interview_sessions.interview_session_meeting) AS jsonb_agg
---            FROM ( SELECT jsonb_build_object('interview_session', row_to_json(intses.*), 'interview_meeting', row_to_json(intmeet.*)) AS interview_session_meeting
---                    FROM ((interview_session intses
---                      LEFT JOIN interview_meeting intmeet ON ((intmeet.id = intses.meeting_id)))
---                      LEFT JOIN interview_schedule intsch ON ((intsch.id = intmeet.interview_schedule_id)))
---                   WHERE (insc.id = intsch.id)
---                   ORDER BY intses.session_order) interview_sessions) AS interview_session_meetings,
---     ( SELECT application_logs.created_at
---            FROM application_logs
---           WHERE (application_logs.application_id = ja.id)
---           ORDER BY application_logs.created_at DESC
---          LIMIT 1) AS last_log_time,
---     pj.recruiter_id,
---     (((((cand.first_name)::text || ' '::text) || (cand.last_name)::text) || ' '::text) || cand.current_job_title) AS search_query
---    FROM (((applications ja
---      JOIN candidates cand ON ((ja.candidate_id = cand.id)))
---      LEFT JOIN public_jobs pj ON ((pj.id = ja.job_id)))
---      LEFT JOIN interview_schedule insc ON ((insc.application_id = ja.id)))
---   WHERE ((ja.status = 'interview'::application_status) OR (insc.id IS NOT NULL));
+create or replace view "public"."interview_data_view" as  SELECT row_to_json(ja.*) AS applications,
+    json_build_object('id', cand.id, 'first_name', cand.first_name, 'last_name', cand.last_name, 'current_job_title', cand.current_job_title, 'timezone', cand.timezone, 'phone', cand.phone, 'email', cand.email) AS candidates,
+    json_build_object('id', pj.id, 'job_title', pj.job_title, 'department_id', pj.department_id, 'recruiting_coordinator', pj.recruiting_coordinator) AS public_jobs,
+    row_to_json(insc.*) AS schedule,
+    ( SELECT jsonb_agg(interview_sessions.interview_session_meeting) AS jsonb_agg
+           FROM ( SELECT jsonb_build_object('interview_session', row_to_json(intses.*), 'interview_meeting', row_to_json(intmeet.*)) AS interview_session_meeting
+                   FROM ((interview_session intses
+                     LEFT JOIN interview_meeting intmeet ON ((intmeet.id = intses.meeting_id)))
+                     LEFT JOIN interview_schedule intsch ON ((intsch.id = intmeet.interview_schedule_id)))
+                  WHERE (insc.id = intsch.id)
+                  ORDER BY intses.session_order) interview_sessions) AS interview_session_meetings,
+    ( SELECT application_logs.created_at
+           FROM application_logs
+          WHERE (application_logs.application_id = ja.id)
+          ORDER BY application_logs.created_at DESC
+         LIMIT 1) AS last_log_time,
+    pj.recruiter_id,
+    (((((cand.first_name)::text || ' '::text) || (cand.last_name)::text) || ' '::text) || cand.current_job_title) AS search_query
+   FROM (((applications ja
+     JOIN candidates cand ON ((ja.candidate_id = cand.id)))
+     LEFT JOIN public_jobs pj ON ((pj.id = ja.job_id)))
+     LEFT JOIN interview_schedule insc ON ((insc.application_id = ja.id)))
+  WHERE ((ja.status = 'interview'::application_status) OR (insc.id IS NOT NULL));

@@ -28,4 +28,7 @@ set recruiter_id = interview_session_cte.recruiter_id
 from interview_session_cte
 where interview_session.id = interview_session_cte.id;
 
+delete from interview_session
+where recruiter_id is null;
+
 alter table "public"."interview_session" alter column "recruiter_id" set not null;

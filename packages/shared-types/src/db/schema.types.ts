@@ -1249,6 +1249,7 @@ export type Database = {
           end_time: string | null
           id: string
           instructions: string | null
+          interview_schedule_id: string
           job_id: string
           meeting_flow: Database["public"]["Enums"]["meeting_flow"]
           meeting_json: Json | null
@@ -1267,6 +1268,7 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
+          interview_schedule_id: string
           job_id: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1285,6 +1287,7 @@ export type Database = {
           end_time?: string | null
           id?: string
           instructions?: string | null
+          interview_schedule_id?: string
           job_id?: string
           meeting_flow?: Database["public"]["Enums"]["meeting_flow"]
           meeting_json?: Json | null
@@ -1363,6 +1366,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
+            columns: ["interview_schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
         ]
@@ -4835,6 +4845,27 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_data_view: {
+        Row: {
+          applications: Json | null
+          candidates: Json | null
+          interview_session_meetings: Json | null
+          last_log_time: string | null
+          public_jobs: Json | null
+          recruiter_id: string | null
+          schedule: Json | null
+          search_query: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_jobs_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]
