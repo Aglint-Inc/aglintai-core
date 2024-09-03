@@ -106,6 +106,7 @@ const fetchSessionDetails = async ({
         name: op.name,
         plan_order: op.plan_order,
         application_id: op.application_id,
+        recruiter_id: op.recruiter_id,
       };
       const sessions = op.interview_session
         .sort((a, b) => a.session_order - b.session_order)
