@@ -172,10 +172,11 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
               }
             }}
           >
-            <div className='bg-muted p-2 w-10 h-10 rounded-md'>
+            <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
               {/* <Icon className='h-5 w-5 text-primary' /> */}
               {isNewStep && (steps.length > 0 ? '-' : '')}
             </div>
+
             {/* {step.order} */}
           </div>
           {index < steps.length && (
@@ -184,11 +185,14 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
               style={{ width: '1px' }}
             ></div>
           )}
+
           {index === steps.length - 1 && !isAddOpen && (
             <>
               {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
               <div className={``} onClick={() => setIsAddOpen((pre) => !pre)}>
-                <div className='bg-muted p-2 w-10 h-10 rounded-md'>+</div>
+                <div className='p-2 w-10 h-10 border border-gray-300 flex items-center justify-center rounded-md text-xl'>
+                  +
+                </div>
               </div>
             </>
           )}
@@ -290,7 +294,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   onClick={() => handleDeleteStep(step.id)}
                 >
                   Delete
-                </Button>
+                </Button> 
               </div>
             </div>
           )}
