@@ -118,6 +118,7 @@
     "number-to-words": "^1.2.4",
     "openai": "^4.56.0",
     "posthog-js": "^1.98.2",
+    "posthog-node": "^4.2.0",
     "prop-types": "15.8.1",
     "prosemirror-model": "^1.19.4",
     "prosemirror-schema-basic": "^1.2.2",
