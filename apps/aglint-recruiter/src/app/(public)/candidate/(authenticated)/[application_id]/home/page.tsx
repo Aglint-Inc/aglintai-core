@@ -13,7 +13,7 @@ import UpcomingInterview from '@/src/components/CandiatePortal/components/Upcomi
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
 
-import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
@@ -22,13 +22,15 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <ReorderableInterviewPlan />;
+  // if (!data) return <ReorderableInterviewPlan />;
+
+  if (!data) return <>No data</>;
 
   const {
     availability,
     candidate,
     company,
-    // interviewPlan,
+    interviewPlan,
     job,
     schedule,
     upcoming,
@@ -63,6 +65,9 @@ export default function Component({ params }) {
               </div>
             </div>
             <div className='space-y-8'>
+              {interviewPlan.length > 0 && (
+                <InterviewProgress interviews={interviewPlan} />
+              )}
               {upcoming.length > 0 && (
                 <UpcomingInterview upcomingData={upcoming} />
               )}

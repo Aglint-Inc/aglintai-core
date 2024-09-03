@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
@@ -59,8 +60,7 @@ import InterviewDeletePopup, {
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
@@ -122,27 +122,44 @@ const InterviewPlanPage = () => {
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
-          <Stack gap={1} margin={2} width={'800px'}>
-            {data?.length ? (
-              data.map((plan) => (
-                <InterviewPlan
-                  key={plan.id}
-                  plan_id={plan.id}
-                  handleCreate={handleCreate}
-                  handleEdit={handleEdit}
-                />
-              ))
-            ) : (
-              <Typography>
-                {`Create your interview stages for the job to ensure a structured
+          //cand and inter
+          <Stack>
+            <Tabs>
+              <TabsList>
+                <TabsTrigger defaultValue={'internal'} value='internal'>
+                  Internal
+                </TabsTrigger>
+                <TabsTrigger value='candidate'>Candidate</TabsTrigger>
+              </TabsList>
+              <TabsContent value='internal'>
+                <Stack gap={1} margin={2} width={'800px'}>
+                  {data?.length ? (
+                    data.map((plan) => (
+                      <InterviewPlan
+                        key={plan.id}
+                        plan_id={plan.id}
+                        handleCreate={handleCreate}
+                        handleEdit={handleEdit}
+                      />
+                    ))
+                  ) : (
+                    <Typography>
+                      {`Create your interview stages for the job to ensure a structured
                 evaluation process. Add different interview types such as
                 "Initial Screening" or "Technical Interview." Use this template
                 each time you schedule interviews for candidates to maintain
                 consistency and efficiency.`}
-              </Typography>
-            )}
+                    </Typography>
+                  )}
 
-            <AddStageComponent />
+                  <AddStageComponent />
+                </Stack>
+              </TabsContent>
+              <TabsContent value='candidate'>
+                <ReorderableInterviewPlan jobId={data[0].job_id} />
+                candidate
+              </TabsContent>
+            </Tabs>
           </Stack>
         }
       />
@@ -343,168 +360,98 @@ const InterviewPlan = ({
 
   return (
     <>
-      <Tabs>
-        <TabsList>
-          <TabsTrigger value='internal'>Internal</TabsTrigger>
-          <TabsTrigger value='candidate'>Candidate</TabsTrigger>
-        </TabsList>
-        <TabsContent value='internal'>
-          <OptimisticWrapper loading={loading}>
-            <InterviewPlanWrap
-              isTopArrowVisible={!!prevData}
-              onClickUp={{
-                onClick: () =>
-                  handleSwapPlan({
-                    plan_id_1: prevData.id,
-                    plan_id_2: data.id,
-                  }),
-              }}
-              isBottomArrowVisible={!!nextData}
-              onClickDown={{
-                onClick: () =>
-                  handleSwapPlan({
-                    plan_id_1: nextData.id,
-                    plan_id_2: data.id,
-                  }),
-              }}
-              textStageName={`${capitalizeFirstLetter(data.name)}`}
-              textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
-              isInputVisible={editPlan}
-              onClickEdit={{ onClick: handleEditPlan }}
-              isSlotInterviewPlanVisible={expanded}
-              slotInputButton={
-                <Stack direction={'row'} gap={1} alignItems={'center'}>
-                  <UITextField
-                    ref={planRef}
-                    defaultValue={data.name}
-                    fullWidth
-                  />
-                  <ButtonSolid
-                    size={2}
-                    textButton={'Update'}
-                    onClickButton={{
-                      onClick: () => handleUpdatePlan(planRef.current.value),
-                    }}
-                  />
-                  <ButtonSoft
-                    color={'neutral'}
-                    size={2}
-                    textButton={'Cancel'}
-                    onClickButton={{
-                      onClick: handleEditPlan,
-                    }}
-                  />
-                </Stack>
-              }
-              slotRightIconButton={
-                <Stack direction={'row'} gap={1}>
-                  <IconButtonSoft
-                    iconName='delete'
-                    color={'error'}
-                    onClickButton={{
-                      onClick: () => deletePlan({ id: plan_id }),
-                    }}
-                  />
-                  <IconButtonSoft
-                    iconName='keyboard_double_arrow_down'
-                    color={'neutral'}
-                    onClickButton={{
-                      onClick: handleExpandClick,
-                    }}
-                  />
-                </Stack>
-              }
-              slotInterviewPlanDetail={
-                <Collapse in={expanded} timeout='auto' unmountOnExit>
-                  <Stack pt={2}>
-                    {sessionsCount ? (
-                      <>
-                        <DndProvider backend={HTML5Backend}>
-                          {sessions}
-                        </DndProvider>
-                        {/* <Stack direction={'row'} gap={1}>
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Session'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          handleCreate(
-                            'session',
-                            plan_id,
-                            data.interview_session.length,
-                          );
-                        },
-                      }}
-                    />
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Debrief'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          handleCreate(
-                            'debrief',
-                            plan_id,
-                            data.interview_session.length,
-                          );
-                        },
-                      }}
-                    />
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Break'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          data.interview_session.length > 1 &&
-                            handleUpdateSession({
-                              session: { break_duration: 30 },
-                              session_id:
-                                data.interview_session[
-                                  data.interview_session.length - 2
-                                ]?.id,
-                            });
-                        },
-                      }}
-                    />
-                  </Stack> */}
-                      </>
-                    ) : (
-                      <GlobalEmptyState
-                        iconName={'group'}
-                        textDesc={'No interview plan found'}
-                        slotButton={
-                          <ButtonSoft
-                            iconName='add'
-                            isLeftIcon={true}
-                            color={'neutral'}
-                            size={1}
-                            textButton={'Add Interview'}
-                            onClickButton={{
-                              onClick: () =>
-                                handleCreate('session', plan_id, 0),
-                            }}
-                          />
-                        }
+      <OptimisticWrapper loading={loading}>
+        <InterviewPlanWrap
+          isTopArrowVisible={!!prevData}
+          onClickUp={{
+            onClick: () =>
+              handleSwapPlan({
+                plan_id_1: prevData.id,
+                plan_id_2: data.id,
+              }),
+          }}
+          isBottomArrowVisible={!!nextData}
+          onClickDown={{
+            onClick: () =>
+              handleSwapPlan({
+                plan_id_1: nextData.id,
+                plan_id_2: data.id,
+              }),
+          }}
+          textStageName={`${capitalizeFirstLetter(data.name)}`}
+          textInterviewCount={`${sessions.length} ${sessions.length > 1 ? 'Interviews' : 'Interview'}`}
+          isInputVisible={editPlan}
+          onClickEdit={{ onClick: handleEditPlan }}
+          isSlotInterviewPlanVisible={expanded}
+          slotInputButton={
+            <Stack direction={'row'} gap={1} alignItems={'center'}>
+              <UITextField ref={planRef} defaultValue={data.name} fullWidth />
+              <ButtonSolid
+                size={2}
+                textButton={'Update'}
+                onClickButton={{
+                  onClick: () => handleUpdatePlan(planRef.current.value),
+                }}
+              />
+              <ButtonSoft
+                color={'neutral'}
+                size={2}
+                textButton={'Cancel'}
+                onClickButton={{
+                  onClick: handleEditPlan,
+                }}
+              />
+            </Stack>
+          }
+          slotRightIconButton={
+            <Stack direction={'row'} gap={1}>
+              <IconButtonSoft
+                iconName='delete'
+                color={'error'}
+                onClickButton={{
+                  onClick: () => deletePlan({ id: plan_id }),
+                }}
+              />
+              <IconButtonSoft
+                iconName='keyboard_double_arrow_down'
+                color={'neutral'}
+                onClickButton={{
+                  onClick: handleExpandClick,
+                }}
+              />
+            </Stack>
+          }
+          slotInterviewPlanDetail={
+            <Collapse in={expanded} timeout='auto' unmountOnExit>
+              <Stack pt={2}>
+                {sessionsCount ? (
+                  <>
+                    <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
+                  </>
+                ) : (
+                  <GlobalEmptyState
+                    iconName={'group'}
+                    textDesc={'No interview plan found'}
+                    slotButton={
+                      <ButtonSoft
+                        iconName='add'
+                        isLeftIcon={true}
+                        color={'neutral'}
+                        size={1}
+                        textButton={'Add Interview'}
+                        onClickButton={{
+                          onClick: () => handleCreate('session', plan_id, 0),
+                        }}
                       />
-                    )}
-                  </Stack>
-                </Collapse>
-              }
-            />
-          </OptimisticWrapper>
-        </TabsContent>
-        <TabsContent value='candidate'>
-          <ReorderableInterviewPlan />
-        </TabsContent>
-      </Tabs>
+                    }
+                  />
+                )}
+              </Stack>
+            </Collapse>
+          }
+        />
+      </OptimisticWrapper>
+
       <InterviewDeletePopup
         open={popupModal}
         popup={popup}
