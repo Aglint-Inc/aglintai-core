@@ -1,18 +1,7 @@
 'use client';
 
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useQuery } from '@tanstack/react-query';
-import {
-  Edit,
-  FileText,
-  GripVertical,
-  Phone,
-  Save,
-  Trophy,
-  UserCircle,
-  Users,
-  X,
-} from 'lucide-react';
+import { FileText, Phone, Trophy, UserCircle, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -27,6 +16,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+import { Typography } from '@mui/material';
 
 type Step = Awaited<ReturnType<typeof fetchProgress>>;
 
@@ -36,18 +26,18 @@ const useInterviewPlanProgress = ({ job_id }: { job_id: string }) => {
   const result = useQuery({
     queryKey: ['interview_plan_progress', job_id],
     queryFn: () => fetchProgress({ job_id }),
+    retry: false,
   });
 
   return result;
 };
 
 const fetchProgress = async ({ job_id }: { job_id: string }) => {
-  const data = supabaseWrap(
-    await supabase
-      .from('interview_progress')
-      .select('icon,id,job_id,name,order,icon,description')
-      .eq('job_id', job_id),
-  );
+  const { data, error } = await supabase
+    .from('interview_progress')
+    .select('icon,id,job_id,name,order,icon,description')
+    .eq('job_id', job_id);
+  if (error) throw new Error(error.message);
   return data;
 };
 
@@ -57,6 +47,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   });
 
   const [steps, setSteps] = useState<Step>([]);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [newStep, setNewStep] = useState<Step[number]>({
     icon: '',
@@ -69,15 +60,14 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (data) setSteps(data);
+    if (data) {
+      setSteps(data);
+    }
+    if (data?.length === 0) setIsAddOpen(true);
   }, [data]);
 
   if (isLoading) {
     return <p>Loading...</p>;
-  }
-
-  if (!data) {
-    return <p>No data</p>;
   }
 
   const handleEdit = (id: number) => {
@@ -125,6 +115,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         job_id: jobId,
         icon: newStep.icon,
         order: order_id,
+        description: newStep.description,
       });
 
       if (error) {
@@ -132,7 +123,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
       }
 
       await refetch();
-      toast.error('Added successfully');
+      toast.success('Added successfully');
       setNewStep({
         id: null,
         name: '',
@@ -144,136 +135,195 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
     }
   };
 
+  const handleDeleteStep = async (id: number) => {
+    try {
+      const { error } = await supabase
+        .from('interview_progress')
+        .delete()
+        .eq('id', id);
+
+      const updates = steps
+        .filter((step) => step.id !== id)
+        .map((step, i) => ({ id: step.id, order: i + 1 }));
+
+      const promises = updates.map((item) =>
+        supabase
+          .from('interview_progress')
+          .update({ order: item.order })
+          .eq('id', item.id),
+      );
+      await Promise.all(promises);
+
+      if (error) {
+        toast.error(error.message);
+      }
+
+      await refetch();
+      toast.success('Deleted successfully');
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
   const renderStep = (step: Step[number], index: number) => {
-    const Icon = iconOptions[step.icon];
+    // const Icon = iconOptions[step.icon];
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
 
     return (
-      <div key={step.id} className='flex items-start space-x-4 mb-4'>
-        <div className='flex flex-col items-center cursor-move'>
-          <GripVertical className='w-6 h-6 text-gray-400' />
-        </div>
-        <div className='relative'>
+      <div
+        key={step.id}
+        className='grid gap-4'
+        style={{ gridTemplateColumns: 'max-content 1fr' }}
+      >
+        <div className='flex h-full items-stretch flex-col'>
+          {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div
-            className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer z-10 relative`}
+            className={``}
+            onClick={() => {
+              if (isNewStep) {
+                setIsAddOpen((pre) => !pre);
+              }
+            }}
           >
-            {/* <Icon className='w-4 h-4' /> */}
-            {step.order}
-          </div>
-          {index < steps.length - 1 && (
-            <div className='absolute top-3 left-3 w-0.5 h-full bg-gray-300 -z-10'></div>
-          )}
-        </div>
+            <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
+              {/* <Icon className='h-5 w-5 text-primary' /> */}
+              {isNewStep ? (isAddOpen ? '-' : '+') : ''}
+            </div>
 
-        <div className='flex-grow space-y-2 pb-4'>
-          {isEditing || isNewStep ? (
-            <>
-              <Input
-                value={isNewStep ? newStep.name : step.name}
-                onChange={(e) =>
-                  isNewStep
-                    ? setNewStep({ ...newStep, name: e.target.value })
-                    : handleChange(step.id, 'name', e.target.value)
-                }
-                placeholder='Stage Title'
-                className='font-semibold'
-              />
-              <Textarea
-                value={isNewStep ? newStep.description : step.description}
-                onChange={(e) =>
-                  isNewStep
-                    ? setNewStep({
-                        ...newStep,
-                        description: e.target.value,
-                      })
-                    : handleChange(step.id, 'description', e.target.value)
-                }
-                placeholder='Stage Description'
-                className='text-gray-600'
-              />
-              <Select
-                value={isNewStep ? newStep.icon : step.icon}
-                onValueChange={(value) =>
-                  isNewStep
-                    ? setNewStep({
-                        ...newStep,
-                        icon: value as keyof typeof iconOptions,
-                      })
-                    : handleChange(step.id, 'icon', value)
-                }
-              >
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select an icon' />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(iconOptions).map((iconName) => (
-                    <SelectItem key={iconName} value={iconName}>
-                      {iconName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className='flex space-x-2'>
-                <Button
-                  onClick={() =>
-                    isNewStep ? handleAddStep() : handleSave(step.id)
-                  }
-                  size='sm'
-                >
-                  <Save className='w-4 h-4 mr-2' />
-                  {isNewStep ? 'Add' : 'Save'}
-                </Button>
-                <Button
-                  onClick={() =>
-                    isNewStep
-                      ? setNewStep({
-                          id: null,
-                          name: '',
-                          description: '',
-                          icon: 'FileText',
-                          job_id: jobId,
-                          order: null,
-                        })
-                      : setEditingId(null)
-                  }
-                  variant='outline'
-                  size='sm'
-                >
-                  <X className='w-4 h-4 mr-2' />
-                  Cancel
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <h3 className='font-semibold text-lg'>{step.name}</h3>
-              <p className='text-gray-600'>{step.description}</p>
-              <Button
-                onClick={() => handleEdit(step.id)}
-                variant='ghost'
-                size='sm'
-                className='mt-2'
-              >
-                <Edit className='w-4 h-4 mr-2' />
-                Edit
-              </Button>
-            </>
+            {/* {step.order} */}
+          </div>
+          {index < steps.length && (
+            <div
+              className='h-full mx-auto bg-gray-300'
+              style={{ width: '1px' }}
+            ></div>
           )}
         </div>
+        {
+          <>
+            <div className='flex-grow space-y-2 pb-4'>
+              {(isEditing && !isNewStep) || (isAddOpen && isNewStep) ? (
+                <>
+                  <Input
+                    value={isNewStep ? newStep.name : step.name}
+                    onChange={(e) =>
+                      isNewStep
+                        ? setNewStep({ ...newStep, name: e.target.value })
+                        : handleChange(step.id, 'name', e.target.value)
+                    }
+                    placeholder='Stage Title'
+                  />
+                  <Textarea
+                    value={isNewStep ? newStep.description : step.description}
+                    onChange={(e) =>
+                      isNewStep
+                        ? setNewStep({
+                            ...newStep,
+                            description: e.target.value,
+                          })
+                        : handleChange(step.id, 'description', e.target.value)
+                    }
+                    placeholder='Stage Description'
+                    className='text-gray-600'
+                  />
+                  <Select
+                    value={isNewStep ? newStep.icon : step.icon}
+                    onValueChange={(value) =>
+                      isNewStep
+                        ? setNewStep({
+                            ...newStep,
+                            icon: value as keyof typeof iconOptions,
+                          })
+                        : handleChange(step.id, 'icon', value)
+                    }
+                  >
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Select an icon' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(iconOptions).map((iconName) => (
+                        <SelectItem key={iconName} value={iconName}>
+                          {iconName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className='flex space-x-2'>
+                    <Button
+                      onClick={() =>
+                        isNewStep ? handleAddStep() : handleSave(step.id)
+                      }
+                      size='sm'
+                    >
+                      {/* <Save className='w-4 h-4 mr-2' /> */}
+                      {isNewStep ? 'Add' : 'Save'}
+                    </Button>
+
+                    {steps.length > 0 && (
+                      <Button
+                        onClick={() => {
+                          if (isNewStep)
+                            setNewStep({
+                              id: null,
+                              name: '',
+                              description: '',
+                              icon: 'FileText',
+                              job_id: jobId,
+                              order: null,
+                            });
+                          else setEditingId(null);
+
+                          if (isAddOpen && isNewStep) setIsAddOpen(false);
+                        }}
+                        variant='outline'
+                        size='sm'
+                      >
+                        {/* <X className='w-4 h-4 mr-2' /> */}
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                </>
+              ) : !isNewStep ? (
+                <div className='flex flex-col mb-4 gap-2'>
+                  <h3 className='font-semibold text-md'>{step.name}</h3>
+                  <p className='text-sm'>{step.description}</p>
+                  <div className='flex space-x-2'>
+                    <Button
+                      variant='secondary'
+                      onClick={() => handleEdit(step.id)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant='outline'
+                      onClick={() => handleDeleteStep(step.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Typography p={1}>Click here to add the stage</Typography>
+              )}
+            </div>
+          </>
+        }
       </div>
     );
   };
 
-  if (data?.length)
-    return (
-      <div className='max-w-2xl mx-auto p-4'>
-        <h1 className='text-2xl font-bold mb-6'>Reorderable Interview Plan</h1>
+  const interviewStages = steps?.length
+    ? steps.sort((a, b) => a.order - b.order)
+    : [];
 
-        <div className='relative' ref={timelineRef}>
-          {steps.map((step, index) => renderStep(step, index))}
-          {renderStep(newStep, steps.length)}
-        </div>
+  return (
+    <div className='max-w-2xl mt-8'>
+      <div className='relative' ref={timelineRef}>
+        {interviewStages.map((step, index) => renderStep(step, index))}
+        {renderStep(newStep, steps.length)}
       </div>
-    );
+    </div>
+  );
 }
