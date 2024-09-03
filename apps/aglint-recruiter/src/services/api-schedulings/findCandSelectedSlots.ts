@@ -31,7 +31,7 @@ export const findCandSelectedSlots = async ({
   req_user_tz: string;
   cand_avail: DatabaseTable['candidate_request_availability']['slots'];
   reqProgressLogger: ProgressLoggerType;
-  ai_response: CustomAgentInstructionPayload['ai_response'];
+  ai_response: CustomAgentInstructionPayload['agent']['ai_response'];
   request_assigner_tz: string;
 }) => {
   const cand_schedule = new CandidatesSchedulingV2(api_options);

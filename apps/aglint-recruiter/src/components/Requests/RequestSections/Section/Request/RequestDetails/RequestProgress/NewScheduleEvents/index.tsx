@@ -198,7 +198,8 @@ const getInitialActionDetails = ({
       template =
         companyEmailTemplatesMp['selfScheduleInterview_email_applicant'];
     }
-    return {
+
+    let wAction: DatabaseTable['workflow_action'] = {
       action_type: ACTION_TRIGGER_MAP[editTrigger][0].value.action_type as any,
       created_at: '',
       id: '',
@@ -206,9 +207,12 @@ const getInitialActionDetails = ({
       target_api: ACTION_TRIGGER_MAP[editTrigger][0].value.target_api as any,
       workflow_id: '',
       payload: {
-        body: template?.body ?? '',
-        subject: template?.subject ?? '',
+        email: {
+          body: template?.body ?? '',
+          subject: template?.subject ?? '',
+        },
       },
     };
+    return wAction;
   }
 };
