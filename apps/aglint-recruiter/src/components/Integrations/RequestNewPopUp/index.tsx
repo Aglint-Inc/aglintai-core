@@ -2,18 +2,19 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { IntegrationThanks } from '@/devlink2/IntegrationThanks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useAuthDetails();
+  const { toast } = useToast();
   const descriptionRef = useRef<HTMLInputElement>();
   const nameRef = useRef<HTMLInputElement>();
   const [showThanks, setShowThanks] = useState(false);
@@ -45,7 +46,10 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         });
       setShowThanks(true);
     } else {
-      toast.error('Please enter the name of the integration!');
+      toast({
+        variant: 'destructive',
+        title: 'Please enter the name of the integration!',
+      });
     }
   }
 

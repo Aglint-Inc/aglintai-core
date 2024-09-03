@@ -1,10 +1,14 @@
 // code has to rewritten not understandable and not maintainable
 'use client';
-import { type RecruiterType, type RecruiterUserType } from '@aglint/shared-types';
+import {
+  type RecruiterType,
+  type RecruiterUserType,
+} from '@aglint/shared-types';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
@@ -12,12 +16,12 @@ import { type ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { errorMessages } from '@/src/utils/errorMessages';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import type * as types from './types';
 import { handleEmail, handlePassword } from './utils';
 
 const SlideTwoSignUp = () => {
+  const { toast } = useToast();
   const router = useRouterPro();
 
   const [details, setDetails] = useState<types.Details>({
@@ -127,7 +131,10 @@ const SlideTwoSignUp = () => {
         if (res.status === 200) {
           router.push(ROUTES['/loading']());
         } else {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong. Please try again.',
+          });
         }
       } else {
         if (
@@ -152,7 +159,10 @@ const SlideTwoSignUp = () => {
         }
       }
     } catch (err) {
-      toast.error(err.message);
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
       router.push(ROUTES['/signup']());
     }
     setSignUpLoading(false);

@@ -40,3 +40,6 @@ yarn-error.log*
 *.pem
 
 /packages/aglint-ui/*
+apps/aglint-recruiter/. cursorrules
+
+apps/aglint-recruiter/.cursorignore

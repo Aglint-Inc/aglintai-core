@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { FeedbackCandidate } from '@/devlink3/FeedbackCandidate';
 import Seo from '@/src/components/Common/Seo';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import toast from '@/src/utils/toast';
 
 import { type API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
 import { type API_save_interview_feedback } from '../../api/save_interview_feedback/types';
@@ -81,6 +81,7 @@ const InterviewFeedbackPage = () => {
 export default InterviewFeedbackPage;
 
 const useInterviewFeedback = (interview_id: string) => {
+  const { toast } = useToast();
   const {
     data: details,
     status,
@@ -103,15 +104,27 @@ const useInterviewFeedback = (interview_id: string) => {
           return { ...prevData, candidate_feedback: feedback };
         },
       );
-      toast.success('Feedback submitted successfully');
+      toast({
+        variant: 'default',
+        title: 'Success',
+        description: 'Feedback submitted successfully',
+      });
     },
     onError() {
-      toast.error('Failed to submit feedback');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to submit feedback',
+      });
     },
   });
   const submitFeedback = (...pera: Parameters<typeof mutateAsync>) =>
     mutateAsync(...pera).catch(() => {
-      toast.error('Failed to submit feedback');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to submit feedback',
+      });
     });
   return {
     details,

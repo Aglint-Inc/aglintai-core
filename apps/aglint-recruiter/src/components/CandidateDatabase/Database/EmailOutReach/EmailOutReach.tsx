@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
 import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
 import { ConnectedMail } from '@/devlink/ConnectedMail';
@@ -17,7 +18,6 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { getTimeDifference } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
 import EmailTemplateModalComp from './EmailTemplateDialog';
 import { useOutReachCtx } from './OutReachCtx';
@@ -49,7 +49,7 @@ const EmailOutReach = ({
   } = OutreachState;
 
   const router = useRouter();
-
+  const { toast } = useToast();
   const getCandDetailshandler = async () => {
     try {
       const { data: authUrl } = await axios.get(
@@ -58,7 +58,10 @@ const EmailOutReach = ({
 
       return router.push(authUrl);
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -66,9 +69,11 @@ const EmailOutReach = ({
     try {
       if (!candEmailData) return;
       if (email && !email.toEmail && !email.subject && !email.body) {
-        toast.error(
-          'Please enter a valid email address, subject, and message body.',
-        );
+        toast({
+          variant: 'destructive',
+          title:
+            'Please enter a valid email address, subject, and message body.',
+        });
         return;
       }
       dispatch({
@@ -94,7 +99,10 @@ const EmailOutReach = ({
         createdAt: new Date().toISOString(),
       });
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       setTimeout(() => {
         dispatch({

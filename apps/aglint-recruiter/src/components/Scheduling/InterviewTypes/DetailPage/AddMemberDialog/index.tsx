@@ -1,11 +1,11 @@
 import { Dialog, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import toast from '@/src/utils/toast';
 
 import MembersAutoComplete from '../../../Common/MembersTextField';
 import { useAddMemberHandler } from '../../queries/hooks';
@@ -25,6 +25,7 @@ function AddMemberDialog({
   refetch: () => void;
 }) {
   //all active members
+  const { toast } = useToast();
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
@@ -56,7 +57,11 @@ function AddMemberDialog({
       setSelectedUsers([]);
       await refetch();
     } catch {
-      toast.error('Error adding member.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Error adding member.',
+      });
     } finally {
       // extra time for refetching
       setTimeout(() => {
@@ -83,9 +88,7 @@ function AddMemberDialog({
     >
       <DcPopup
         popupName={
-          trainingStatus === 'qualified'
-            ? 'Add Interviewers'
-            : 'Add Trainee.'
+          trainingStatus === 'qualified' ? 'Add Interviewers' : 'Add Trainee.'
         }
         onClickClosePopup={{
           onClick: () => {

@@ -1,4 +1,5 @@
 import { Avatar, Stack } from '@mui/material';
+import { Building2 } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
-import Icon from '../Common/Icons/Icon';
 
 type CompanyJobPostType = CompanyPostAPI;
 
@@ -41,7 +41,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               background: 'var(--neutral-1)',
             }}
           >
-            <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
+            <Building2 size='100%' />
           </Avatar>
         }
         textCompanyName={recruiter.name}

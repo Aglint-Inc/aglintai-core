@@ -17,6 +17,7 @@ import {
 import { useRouter } from 'next/router';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -28,7 +29,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import UITextField from '@/src/components/Common/UITextField';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { useJobs } from '@/src/context/JobsContext';

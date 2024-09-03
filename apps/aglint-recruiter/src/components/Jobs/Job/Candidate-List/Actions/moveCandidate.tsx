@@ -8,7 +8,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
-import { TaskStatesProvider } from '@/src/components/Tasks/TaskStatesContext';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -226,27 +225,27 @@ const MoveCandidateInterview = () => {
   }, buttonText);
 
   return (
-    <TaskStatesProvider>
-      <DcPopup
-        popupName={title}
-        slotBody={
-          <Stack gap={2}>
-            {capitalize(description)}
-            <CreateTask
-              applications={checklist}
-              setTask={setTask}
-              job_id={job?.id}
-              setPriority={setPriority}
-              priority={priority}
-              note={note}
-              setNote={setNote}
-            />
-          </Stack>
-        }
-        onClickClosePopup={{ onClick: () => resetActionPopup() }}
-        slotButtons={buttons}
-      />
-    </TaskStatesProvider>
+    // <TaskStatesProvider>
+    <DcPopup
+      popupName={title}
+      slotBody={
+        <Stack gap={2}>
+          {capitalize(description)}
+          <CreateTask
+            applications={checklist}
+            setTask={setTask}
+            job_id={job?.id}
+            setPriority={setPriority}
+            priority={priority}
+            note={note}
+            setNote={setNote}
+          />
+        </Stack>
+      }
+      onClickClosePopup={{ onClick: () => resetActionPopup() }}
+      slotButtons={buttons}
+    />
+    // </TaskStatesProvider>
   );
 };
 

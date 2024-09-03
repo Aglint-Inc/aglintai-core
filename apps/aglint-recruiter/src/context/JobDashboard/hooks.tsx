@@ -1,11 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
 import {
-  useAllAssessments,
-  useAllAssessmentTemplates,
-} from '@/src/queries/assessment';
-import { type Assessment } from '@/src/queries/assessment/types';
-import {
   useJobLocations,
   useJobSchedules,
   useJobSkills,
@@ -19,33 +14,19 @@ const useProviderJobDashboardActions = () => {
     jobLoad,
     job,
     total,
-    job_id,
     interviewPlans,
     status,
     manageJob,
     devlinkProps,
   } = useJob();
 
-  const assessments = useAllAssessments();
-  const templates = useAllAssessmentTemplates();
-  const assessmentData = assessments?.data
-    ? assessments.data.reduce(
-        (acc, curr) => {
-          if (curr.jobs.find(({ id }) => id === job_id))
-            acc.jobAssessments.push(curr);
-          else if (curr.duration) acc.otherAssessments.push(curr);
-          return acc;
-        },
-        {
-          jobAssessments: [] as Assessment[],
-          otherAssessments: [] as Assessment[],
-        },
-      )
-    : {
-        jobAssessments: [] as Assessment[],
-        otherAssessments: [] as Assessment[],
-      };
+  // Since we don't have access to the assessment data anymore, we'll create placeholder data
+  const assessmentData = {
+    jobAssessments: [],
+    otherAssessments: [],
+  };
 
+  // We'll need to replace these with local implementations or remove them if not needed
   const skills = useJobSkills(job);
   const locations = useJobLocations(job);
   const tenureAndExperience = useJobTenureAndExperience(job);
@@ -68,11 +49,9 @@ const useProviderJobDashboardActions = () => {
     isInterviewSessionEmpty,
     schedules,
     assessments: {
-      ...assessments,
       data: assessmentData,
     },
     tenureAndExperience,
-    templates,
     skills,
     locations,
     total,
