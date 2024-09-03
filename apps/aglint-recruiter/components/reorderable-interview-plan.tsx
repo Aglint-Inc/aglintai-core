@@ -142,6 +142,18 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         .delete()
         .eq('id', id);
 
+      const updates = steps
+        .filter((step) => step.id !== id)
+        .map((step, i) => ({ id: step.id, order: i + 1 }));
+
+      const promises = updates.map((item) =>
+        supabase
+          .from('interview_progress')
+          .update({ order: item.order })
+          .eq('id', item.id),
+      );
+      await Promise.all(promises);
+
       if (error) {
         toast.error(error.message);
       }
