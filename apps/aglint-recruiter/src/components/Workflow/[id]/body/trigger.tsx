@@ -52,8 +52,8 @@ const TriggerForm = () => {
       disabled={!manageWorkflow}
       value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
-      onChange={(e) => {
-        const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
+      onChange={(value) => {
+        const { phase, trigger } = JSON.parse(value) as typeof payload;
         handleUpdateWorkflow({
           phase,
           trigger,
@@ -76,7 +76,7 @@ const DurationForm = () => {
       disabled={!manageWorkflow}
       value={interval}
       menuOptions={DURATION_OPTIONS}
-      onChange={(e) => handleUpdateWorkflow({ interval: e.target.value })}
+      onChange={(value) => handleUpdateWorkflow({ interval: Number(value) })}
     />
   );
 };

@@ -207,24 +207,20 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
         slotTemplateButton={
           <>
             <UISelect
-              size='sm'
-              fullWidth
               menuOptions={emailTemplates.map((e) => ({
                 name: e.name,
                 value: e.id,
               }))}
               value={selectedEmailTemplate}
               defaultValue={0}
-              onChange={(e) => {
+              onChange={(value) => {
                 setIsEditorLoading(true);
-                setDefaultTemplate(
-                  emailTemplates[Number(e.target.value)].templateJson,
-                );
+                setDefaultTemplate(emailTemplates[Number(value)].templateJson);
                 setEditoJson({
-                  subject: emailTemplates[Number(e.target.value)].subject,
+                  subject: emailTemplates[Number(value)].subject,
                   templateJson: '',
                 });
-                setSelectedEmailTemp(Number(e.target.value));
+                setSelectedEmailTemp(Number(value));
                 setTimeout(() => {
                   setIsEditorLoading(false);
                 }, 500);

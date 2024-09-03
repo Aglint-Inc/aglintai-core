@@ -25,7 +25,6 @@ export async function GET(request: Request) {
         supabase,
         origin,
       });
-      console.log(url);
 
       return NextResponse.redirect(url);
     }

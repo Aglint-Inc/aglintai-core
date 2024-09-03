@@ -1,4 +1,7 @@
-import { type DatabaseEnums, type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import { get } from 'lodash';
 import React, { useState } from 'react';
 
@@ -11,7 +14,10 @@ import { useRequest } from '@/src/context/RequestContext';
 import toast from '@/src/utils/toast';
 
 import { createRequestWorkflowAction } from '../../utils';
-import { type WActionProps,TargetAPIBody } from '../WorkflowComps/TargetAPIBody';
+import {
+  type WActionProps,
+  TargetAPIBody,
+} from '../WorkflowComps/TargetAPIBody';
 import { useNewScheduleRequestPr } from '.';
 
 const WorkflowActionDialog = () => {
@@ -110,8 +116,8 @@ const WorkflowActionDialog = () => {
         <>
           <UISelect
             label='Do this'
-            onChange={(e) => {
-              handleChangeSelectedAction(e.target.value as any);
+            onChange={(value) => {
+              handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
             menuOptions={ACTION_TRIGGER_MAP[editTrigger].map((action) => ({

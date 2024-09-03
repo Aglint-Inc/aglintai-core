@@ -1,7 +1,8 @@
 import { SupabaseType } from '@aglint/shared-types';
 import { Session } from '@supabase/supabase-js';
-import ROUTES from './routing/routes';
 import axios from 'axios';
+
+import ROUTES from './routing/routes';
 
 export async function handleRedirect({
   origin,

@@ -142,9 +142,9 @@ const ActionForm = ({ action }: ActionProps) => {
       value={currentOption.target_api}
       disabled={!manageWorkflow}
       menuOptions={options}
-      onChange={(e) => {
+      onChange={(value) => {
         const { action_type, target_api, payload } = options.find(
-          ({ target_api }) => e.target.value === target_api,
+          ({ target_api }) => value === target_api,
         );
         selectAction({
           ...action,

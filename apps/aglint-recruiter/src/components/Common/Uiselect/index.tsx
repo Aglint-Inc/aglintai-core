@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { AlertCircle } from 'lucide-react';
 import React from 'react';
 
@@ -19,7 +20,7 @@ type Props = {
   menuOptions: MenuOption[];
   value: any;
   disabled?: boolean;
-  onChange: () => void;
+  onChange: (value:string) => void;
   defaultValue?: any;
   required?: boolean;
   startIcon?: React.ReactNode;
