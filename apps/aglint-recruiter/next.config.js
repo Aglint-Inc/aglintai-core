@@ -55,7 +55,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['uploads-ssl.webflow.com'],
+    domains: ['uploads-ssl.webflow.com', 'resend.com'],
     dangerouslyAllowSVG: true,
     remotePatterns: [
       {

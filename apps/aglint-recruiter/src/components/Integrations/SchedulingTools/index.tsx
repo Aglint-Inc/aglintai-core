@@ -4,13 +4,13 @@ import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
 import { ToggleButton } from '@/devlink2/ToggleButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
@@ -21,6 +21,7 @@ import { GooglLogo, updateIntegrations, ZoomLogo } from '../utils';
 
 function Scheduling({ allIntegrations }) {
   const { recruiter } = useAuthDetails();
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [hideApiKey, setHideApiKey] = useState(true);
 
@@ -73,7 +74,10 @@ function Scheduling({ allIntegrations }) {
       const account_id = accountIdRef.current.value;
 
       if (!client_id && !client_secret && !account_id) {
-        toast.warning('Provide API key.');
+        toast({
+          variant: 'destructive',
+          title: 'Provide API key.',
+        });
         return null;
       }
       updateZoomAuth({ client_id, client_secret, account_id });
@@ -84,7 +88,10 @@ function Scheduling({ allIntegrations }) {
       const account_id = accountIdRef.current.value;
 
       if (!client_id || !client_secret || !account_id) {
-        toast.warning('Provide API key.');
+        toast({
+          variant: 'destructive',
+          title: 'Provide API key.',
+        });
         return null;
       }
       updateZoomAuth({ client_id, client_secret, account_id });
@@ -209,7 +216,10 @@ function Scheduling({ allIntegrations }) {
     },
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length < 1) {
-        toast.warning('Please upload the file in .json format.');
+        toast({
+          variant: 'destructive',
+          title: 'Please upload the file in .json format.',
+        });
         return null;
       }
 

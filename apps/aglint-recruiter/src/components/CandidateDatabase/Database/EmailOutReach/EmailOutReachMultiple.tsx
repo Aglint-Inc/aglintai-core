@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
 import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
 import { ConnectedMail } from '@/devlink/ConnectedMail';
@@ -16,12 +17,12 @@ import UISelect from '@/src/components/Common/Uiselect';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getTimeDifference } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
 
 const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
   const {
     state: OutreachState,
@@ -63,11 +64,16 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
     });
 
     if (res.status === 200) {
-      toast.success(
-        'Emails are being fetched in the background. Once that process is complete, emails will be sent to the candidates.',
-      );
+      toast({
+        variant: 'default',
+        title:
+          'Emails are being fetched in the background. Once that process is complete, emails will be sent to the candidates.',
+      });
     } else {
-      toast.error('Error sending emails.');
+      toast({
+        variant: 'destructive',
+        title: 'Error sending emails.',
+      });
     }
   };
 
@@ -80,7 +86,10 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
 
       return router.push(authUrl);
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     }
   };
 

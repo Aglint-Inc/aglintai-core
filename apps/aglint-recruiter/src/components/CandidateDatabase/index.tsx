@@ -1,10 +1,14 @@
-import { type CandidateListTypeDB, type SearchHistoryType } from '@aglint/shared-types';
+import {
+  type CandidateListTypeDB,
+  type SearchHistoryType,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
@@ -26,7 +30,6 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { type CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../Common/Loader';
@@ -38,6 +41,7 @@ import EmptyState from './Search/EmptyState';
 import { getRelevantCndidates } from './utils';
 
 function CandidateSearchHistory() {
+  const { toast } = useToast();
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [history, setHistory] = useState<SearchHistoryType[]>([]);
@@ -75,7 +79,6 @@ function CandidateSearchHistory() {
       await fetchList();
       setHistory(history);
     } catch (err) {
-      // toast.error('Something went wrong. Please try again.');
       return err.message;
     } finally {
       setIsHistoryLoading(false);
@@ -97,7 +100,11 @@ function CandidateSearchHistory() {
         setIsCandidates(true);
       }
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -112,7 +119,11 @@ function CandidateSearchHistory() {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setDeleteHistoryId(-1);
       setDeleteHistory(false);
@@ -148,7 +159,11 @@ function CandidateSearchHistory() {
       );
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsQrySearching(false);
     }
@@ -165,7 +180,11 @@ function CandidateSearchHistory() {
       });
 
       if (res.data.error) {
-        toast.error(res.data.error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: res.data.error,
+        });
         return;
       }
 
@@ -183,7 +202,11 @@ function CandidateSearchHistory() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
           return;
         }
 
@@ -230,7 +253,11 @@ function CandidateSearchHistory() {
       });
 
       if (resCand.data.error) {
-        toast.error(resCand.data.error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: resCand.data.error,
+        });
         return;
       }
 
@@ -264,7 +291,11 @@ function CandidateSearchHistory() {
       router.push(`/candidates/aglintdb?id=${history.id}`);
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsQrySearching(false);
     }
@@ -293,10 +324,18 @@ function CandidateSearchHistory() {
         setText('');
         setIsInputVisible(false);
       } else {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
       }
     } else {
-      toast.error('Please enter the list name then submit');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Please enter the list name then submit',
+      });
     }
   };
 
@@ -318,7 +357,11 @@ function CandidateSearchHistory() {
       setEditListText('');
       setEditList(null);
     } else {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -329,7 +372,11 @@ function CandidateSearchHistory() {
       );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     } finally {
       setDeleteList(null);
     }
@@ -437,9 +484,12 @@ function CandidateSearchHistory() {
                                       'true',
                                     );
                                   } else {
-                                    toast.error(
-                                      'No candidates are linked to the jobs. Please add candidates.',
-                                    );
+                                    toast({
+                                      variant: 'destructive',
+                                      title: 'Error',
+                                      description:
+                                        'No candidates are linked to the jobs. Please add candidates.',
+                                    });
                                   }
                                 }
                               },

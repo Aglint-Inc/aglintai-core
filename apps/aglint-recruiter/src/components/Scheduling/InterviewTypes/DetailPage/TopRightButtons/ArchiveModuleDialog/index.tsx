@@ -1,13 +1,13 @@
 import { Dialog, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
 import { Text } from '@/devlink/Text';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { type ModuleType } from '../../../types';
@@ -19,6 +19,7 @@ function ArchiveModuleDialog({
   editModule: ModuleType;
   refetch: () => void;
 }) {
+  const { toast } = useToast();
   const isArchiveDialogOpen = useModulesStore(
     (state) => state.isArchiveDialogOpen,
   );
@@ -64,7 +65,11 @@ function ArchiveModuleDialog({
       }
       setErrors([...errors]);
     } catch (e) {
-      toast.error('Error fetching meetings.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Error fetching meetings.',
+      });
     } finally {
       setIsFetching(false);
     }
@@ -82,18 +87,27 @@ function ArchiveModuleDialog({
           .eq('id', editModule.id);
         if (!error) {
           refetch();
-          toast.success('Interview type archived successfully.');
+          toast({
+            title: 'Interview type archived successfully.',
+          });
           onClose();
         } else {
           throw new Error();
         }
       } catch {
-        toast.error('Error archiving interview type.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Error archiving interview type.',
+        });
       } finally {
         setLoading(false);
       }
     } else {
-      toast.warning('Please wait until the ongoing process is complete.');
+      toast({
+        variant: 'destructive',
+        title: 'Please wait until the ongoing process is complete.',
+      });
     }
   };
 
@@ -105,7 +119,10 @@ function ArchiveModuleDialog({
       setErrors([]);
       setIsFetching(true);
     } else {
-      toast.warning('Please wait until the ongoing process is complete.');
+      toast({
+        variant: 'destructive',
+        title: 'Please wait until the ongoing process is complete.',
+      });
     }
   }, [loading]);
 

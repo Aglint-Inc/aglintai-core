@@ -1,7 +1,7 @@
-import Icon from '@components/Common/Icons/Icon';
 import { Stack, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
+import { AlertCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
@@ -120,7 +120,7 @@ const UISelect = ({
       </Stack>
       {error && helperText && (
         <Stack direction={'row'} alignItems={'center'} justifyContent={'start'}>
-          <Icon height='12px' color='var(--error-9)' variant='AlertIcon' />
+          <AlertCircle size={12} color='var(--error-9)' />
           <UITypography type='small' color={'var(--error-11)'}>
             {error ? (helperText ? helperText : '') : ''}
           </UITypography>

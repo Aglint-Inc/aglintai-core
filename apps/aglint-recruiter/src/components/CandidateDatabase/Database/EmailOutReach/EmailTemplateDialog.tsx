@@ -2,16 +2,16 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { EmailTemplateModal } from '@/devlink/EmailTemplateModal';
 import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
-import { type TemplateType,outReachTemplates } from './seedTemplates';
+import { type TemplateType, outReachTemplates } from './seedTemplates';
 
 const EmailTemplateModalComp = ({
   selectedTemplate,
@@ -21,6 +21,7 @@ const EmailTemplateModalComp = ({
   onClose: () => void;
 }) => {
   const { recruiterUser } = useAuthDetails();
+  const { toast } = useToast();
   const [email, setEmail] = useState({ subject: '', body: null, name: '' });
   const [editorJson, setEditorJson] = useState(null);
   const [showEditName, setShowditName] = useState(false);
@@ -89,9 +90,15 @@ const EmailTemplateModalComp = ({
 
       genEmailFromTempJson(newOutReachTemp.templateJson);
       onClose();
-      toast.success('Template updated successfully.');
+      toast({
+        variant: 'default',
+        title: 'Template updated successfully.',
+      });
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsSaving(false);
     }

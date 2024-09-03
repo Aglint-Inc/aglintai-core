@@ -19,12 +19,12 @@ import {
 
 export const useCreateInterviewPlan = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useJob();
+  const { job_id, recruiter_id } = useJob();
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async ({ name, order }: { name: string; order?: number }) => {
-      await createInterviewPlan(name, id, order);
+      await createInterviewPlan(name, id, recruiter_id, order);
       await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
@@ -325,11 +325,12 @@ export const updateInterviewSession = async ({
 export const createInterviewPlan = async (
   name: string,
   job_id: string,
+  recruiter_id: string,
   order: number = 1,
 ) => {
   const { data, error } = await supabase
     .from('interview_plan')
-    .insert({ name, job_id, plan_order: order })
+    .insert({ name, job_id, plan_order: order, recruiter_id })
     .select();
   if (error) throw new Error(error.message);
   return data[0];

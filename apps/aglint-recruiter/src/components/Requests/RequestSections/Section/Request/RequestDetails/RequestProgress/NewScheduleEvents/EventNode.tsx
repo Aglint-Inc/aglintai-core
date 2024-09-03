@@ -107,28 +107,27 @@ const EventNode = ({
           slotAiText={
             <>
               {eventSubProgress.length > 0 && (
-                <Stack ml={1}>
-                  {eventProg
-                    .filter((prg) => prg.is_progress_step === true)
-                    .map((prg) => {
-                      if (
-                        progressActionMap[`${prg.event_type}_${prg.status}`]
-                      ) {
-                        let key = `${prg.event_type}_${prg.status}`;
-                        let Comp = progressActionMap[key];
-                        return <>{<Comp {...prg} />}</>;
-                      }
-                      return (
-                        <>
-                          <TextWithIcon
-                            iconName='check'
-                            textContent={prg.log}
-                            fontSize={1}
-                            color={'grey'}
-                          />
-                        </>
-                      );
-                    })}
+                <Stack ml={1} rowGap={0.8}>
+                  {eventSubProgress.map((prg) => {
+                    if (
+                      !prg.log &&
+                      progressActionMap[`${prg.event_type}_${prg.status}`]
+                    ) {
+                      let key = `${prg.event_type}_${prg.status}`;
+                      let Comp = progressActionMap[key];
+                      return <>{<Comp {...prg} />}</>;
+                    }
+                    return (
+                      <>
+                        <TextWithIcon
+                          iconName='check'
+                          textContent={prg.log}
+                          fontSize={1}
+                          color={'grey'}
+                        />
+                      </>
+                    );
+                  })}
                 </Stack>
               )}
             </>

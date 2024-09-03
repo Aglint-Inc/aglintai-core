@@ -5,7 +5,10 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { type APISendgridPayload, type EmailTemplateAPi } from '@aglint/shared-types';
+import {
+  type APISendgridPayload,
+  type EmailTemplateAPi,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
@@ -20,9 +23,8 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { filter_json_id, recruiter_user_id, task_id } =
-    req.body as InitAgentBodyParams;
-  const candLogger = getCandidateLogger(task_id, '', '', 'email_agent');
+  let { filter_json_id, recruiter_user_id } = req.body as InitAgentBodyParams;
+  const candLogger = getCandidateLogger('', '', 'email_agent');
   try {
     if (!filter_json_id || !recruiter_user_id) {
       return res.status(400).send('missing fields');
@@ -71,23 +73,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
         company_id: cand_details.company_id,
         filter_json_id: filter_json_id,
-        task_id: task_id ?? undefined,
         thread_id: thread_id,
         agent_processing: false,
         email_from_name: email_details.fromName,
         email_subject: email_details.subject,
       }),
     );
-    if (task_id) {
-      supabaseWrap(
-        await supabaseAdmin
-          .from('new_tasks')
-          .update({
-            status: 'in_progress',
-          })
-          .eq('id', task_id),
-      );
-    }
 
     await candLogger(
       `Sent interview schedule email to {candidate}`,

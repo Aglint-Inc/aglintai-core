@@ -25,7 +25,12 @@ function RequestProgress({
         <ShowCode.Else>
           <ShowCode>
             <ShowCode.When isTrue={requestDetails.type === 'schedule_request'}>
-              <NewScheduleEvents requestDetails={requestDetails} />
+              <NewScheduleEvents />
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={requestDetails.type === 'reschedule_request'}
+            >
+              <NewScheduleEvents />
             </ShowCode.When>
             <ShowCode.When
               isTrue={requestDetails.type === 'cancel_schedule_request'}

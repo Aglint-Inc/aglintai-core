@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import { useMemo } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonGhost } from '@/devlink2/ButtonGhost';
 import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -32,7 +33,6 @@ import EventNode from './EventNode';
 
 const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
-
   let lastEvent: DatabaseTable['request_progress']['event_type'];
   let { availRecivedProgEvents, isScheduled } = useMemo(() => {
     let isScheduled = false;
@@ -74,11 +74,7 @@ const CandidateAvailReceive = () => {
   return (
     <Stack rowGap={2}>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
-        <RequestProgress
-          circleIndicator={'circle'}
-          textRequestProgress={`Candidate submits Availability`}
-          slotProgress={<></>}
-        />
+        <WActionMenu />
       </ShowCode.When>
       {availRecivedProgEvents.map((eventPgs, idx) => {
         return (
@@ -92,15 +88,7 @@ const CandidateAvailReceive = () => {
       <ShowCode.When
         isTrue={lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED'}
       >
-        <RequestProgress
-          circleIndicator={'circle'}
-          textRequestProgress={`Candidate submits Availability`}
-          slotProgress={
-            <>
-              <></>
-            </>
-          }
-        />
+        <WActionMenu />
       </ShowCode.When>
     </Stack>
   );
@@ -138,8 +126,11 @@ const RequestEvents = ({
 
   let lastEvent: DatabaseTable['request_progress'];
 
-  let isManual = true;
-  if (reqTriggerActionsMap['onReceivingAvailReq']) {
+  let isManual = false;
+  if (
+    reqTriggerActionsMap['onReceivingAvailReq'] &&
+    reqTriggerActionsMap['onReceivingAvailReq'].length > 0
+  ) {
     isManual = false;
   }
   if (currProgress.length > 0) {
@@ -175,7 +166,7 @@ const RequestEvents = ({
   return (
     <>
       <RequestProgress
-        circleIndicator={'completed'}
+        circleIndicator={'success'}
         textRequestProgress={`Candidate submits Availability`}
         slotProgress={
           <>
@@ -199,17 +190,16 @@ const RequestEvents = ({
               <>
                 {reqTriggerActionsMap['onReceivingAvailReq'] &&
                   reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
-                    return apiTargetToEvents[action.target_api].map((ev) => {
-                      return (
-                        <EventNode
-                          currEventTrigger='onReceivingAvailReq'
-                          eventType={ev}
-                          reqProgresMap={reqProgresMp}
-                          key={ev}
-                          currWAction={action}
-                        />
-                      );
-                    });
+                    const eventAction = apiTargetToEvents[action.target_api];
+                    return (
+                      <EventNode
+                        currEventTrigger='onReceivingAvailReq'
+                        eventType={eventAction}
+                        reqProgresMap={reqProgresMp}
+                        key={eventAction}
+                        currWAction={action}
+                      />
+                    );
                   })}
               </>
             </ShowCode.When>
@@ -244,6 +234,69 @@ const RequestEvents = ({
                 />
               </Stack>
             </ShowCode.When>
+          </>
+        }
+      />
+    </>
+  );
+};
+
+const WActionMenu = () => {
+  const { setEditTrigger, setShowEditDialog, reqTriggerActionsMap } =
+    useNewScheduleRequestPr();
+  return (
+    <>
+      <RequestProgress
+        circleIndicator={'circle'}
+        textRequestProgress={`Candidate submits Availability`}
+        slotProgress={
+          <>
+            <Stack direction={'row'} gap={1} justifyContent={'start'}>
+              <ShowCode.When
+                isTrue={Boolean(
+                  !reqTriggerActionsMap['onReceivingAvailReq'] ||
+                    Boolean(
+                      reqTriggerActionsMap['onReceivingAvailReq'] &&
+                        reqTriggerActionsMap['onReceivingAvailReq'].length ===
+                          0,
+                    ),
+                )}
+              >
+                <ButtonGhost
+                  size={1}
+                  isLeftIcon={true}
+                  iconName={'add_circle'}
+                  textButton={'Add Ai Actions'}
+                  onClickButton={{
+                    onClick: () => {
+                      setEditTrigger('onReceivingAvailReq');
+                      setShowEditDialog(true);
+                    },
+                  }}
+                />
+              </ShowCode.When>
+              <ShowCode.When
+                isTrue={Boolean(
+                  reqTriggerActionsMap['onReceivingAvailReq'] &&
+                    reqTriggerActionsMap['onReceivingAvailReq'].length > 0,
+                )}
+              >
+                {Boolean(reqTriggerActionsMap['onReceivingAvailReq']) &&
+                  reqTriggerActionsMap['onReceivingAvailReq'].length > 0 &&
+                  reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
+                    const eventAction = apiTargetToEvents[action.target_api];
+                    return (
+                      <EventNode
+                        key={action.id}
+                        currEventTrigger='onReceivingAvailReq'
+                        eventType={eventAction}
+                        reqProgresMap={{}}
+                        currWAction={action}
+                      />
+                    );
+                  })}
+              </ShowCode.When>
+            </Stack>
           </>
         }
       />

@@ -52,7 +52,6 @@ export const candidateSelfSchedule = async ({
   });
 
   await reqProgressLogger({
-    event_type: 'SELF_SCHEDULE_LINK',
     is_progress_step: true,
     status: 'completed',
     meta: {

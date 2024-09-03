@@ -8,7 +8,7 @@ import { useRequests } from '@/src/context/RequestsContext';
 import dayjs from '@/src/utils/dayjs';
 import toast from '@/src/utils/toast';
 
-import DateRange from '../../AgentChats/AgentInputBox/CreateSchedulePopUp/SelectScheduleDate/DateRange';
+import DateRange from '../../AgentChats/AgentInputBox/CreateSchedulePopUp/SelectScheduleDate/DateRange'; // need to import from common(NTIFC)
 
 function InterviewDateList({
   selectedFilter,

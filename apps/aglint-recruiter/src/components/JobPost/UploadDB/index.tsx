@@ -5,6 +5,7 @@ import {
 } from '@aglint/shared-types';
 import { Grid, IconButton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
+import { Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,7 +19,6 @@ import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
 
 const initialError = () => {
@@ -356,7 +356,7 @@ function UploadDB({
                   setFile(null);
                 }}
               >
-                <Icon variant='TrashIcon' />
+                <Trash />
               </IconButton>
             )}
             {error.file.error && (

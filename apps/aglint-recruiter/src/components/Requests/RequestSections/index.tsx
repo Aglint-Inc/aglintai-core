@@ -37,11 +37,7 @@ function RequestSections() {
     isFetched &&
     defaults.flatMap((d) => d.requests).length === 0
   )
-    return (
-      <>
-        <GlobalEmptyState iconName='task_alt' textDesc='No results found' />
-      </>
-    );
+    return <GlobalEmptyState iconName='task_alt' textDesc='No results found' />;
 
   return (
     <>

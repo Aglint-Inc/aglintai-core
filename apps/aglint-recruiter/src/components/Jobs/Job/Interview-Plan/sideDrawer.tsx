@@ -3,6 +3,7 @@ import { Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
@@ -10,7 +11,6 @@ import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { type CompanyMember } from '@/src/queries/company-members';
-import toast from '@/src/utils/toast';
 
 import { type DrawerType } from '.';
 import BreakForms, {
@@ -125,11 +125,13 @@ type DrawerProps = {
   interview_plan_id?: string;
   id?: string;
 };
+
 const CreateSession = ({
   handleClose,
   interview_plan_id,
   order,
 }: DrawerProps) => {
+  const { toast } = useToast();
   const { handleCreateSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(getSessionFields(initialSessionFields));
   const [sessionCreation, setSessionCreation] = useState(false);
@@ -145,7 +147,11 @@ const CreateSession = ({
       }
       setSessionCreation(false);
     } else {
-      toast.warning('Interview under creation. Please wait.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Interview under creation. Please wait.',
+      });
     }
   };
 
@@ -232,6 +238,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     training,
     trainees,
   };
+  const { toast } = useToast();
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getSessionFields(initialFields));
   const handleEdit = () => {
@@ -250,7 +257,11 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Interview under updation. Please wait.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Interview under updation. Please wait.',
+      });
     }
   };
 
@@ -294,6 +305,7 @@ const CreateDebrief = ({
       members_meta: recruiter?.scheduling_settings?.debrief_defaults,
     }),
   );
+  const { toast } = useToast();
   const [debriefCreation, setDebriefCreation] = useState(false);
   const handleAdd = async () => {
     if (!debriefCreation) {
@@ -311,7 +323,11 @@ const CreateDebrief = ({
       }
       setDebriefCreation(false);
     } else {
-      toast.warning('Interview under creation. Please wait.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Interview under creation. Please wait.',
+      });
     }
   };
   return (
@@ -377,6 +393,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     members,
     members_meta,
   };
+  const { toast } = useToast();
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getDebriefFields(initialFields));
   const handleEdit = () => {
@@ -395,7 +412,11 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Interview under updation. Please wait.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Interview under updation. Please wait.',
+      });
     }
   };
 
@@ -440,6 +461,7 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     break_duration:
       break_duration === 0 ? initialBreakFields.break_duration : break_duration,
   };
+  const { toast } = useToast();
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getBreakFields(initialFields));
   const handleUpdate = async () => {
@@ -452,7 +474,11 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
         handleClose();
       }
     } else {
-      toast.warning('Interview under updation. Please wait.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Interview under updation. Please wait.',
+      });
     }
   };
   return (

@@ -2,6 +2,7 @@ import { Collapse, Drawer, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CandidateDatabaseRow } from '@/devlink/CandidateDatabaseRow';
 import { CandidateDatabaseTable } from '@/devlink/CandidateDatabaseTable';
 import { CandidateEmpty } from '@/devlink/CandidateEmpty';
@@ -9,7 +10,6 @@ import { Pagination } from '@/devlink/Pagination';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import InCompleteLottie from '../../Common/Lotties/CandidateDatabase_IncompleteLottie';
@@ -26,6 +26,7 @@ import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
 
 const CandDatabase = () => {
+  const { toast } = useToast();
   const { jobs } = useJobs();
   const { recruiter } = useAuthDetails();
   const [isLoading, setLoading] = useState(true);
@@ -75,7 +76,10 @@ const CandDatabase = () => {
             value: filteredCands,
           });
         } catch (err) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Something went wrong. Please try again.',
+          });
         } finally {
           setLoading(false);
         }

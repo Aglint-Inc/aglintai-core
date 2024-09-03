@@ -3,9 +3,9 @@ import { type schedulingSettingType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
+import { Switch } from '@/components/ui/switch';
 import { Attendee } from '@/devlink2/Attendee';
 import { DebriefDefaults as DebriefDefaultsDev } from '@/devlink3/DebriefDefaults';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 type MembersMeta = schedulingSettingType['debrief_defaults'];
@@ -37,9 +37,9 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
           key={key}
           textRole={capitalizeAll(key)}
           slotToggle={
-            <AntSwitch
+            <Switch
               checked={value}
-              onClick={() =>
+              onCheckedChange={() =>
                 setValue((prev) => ({
                   ...prev,
                   [key]: !prev[key],

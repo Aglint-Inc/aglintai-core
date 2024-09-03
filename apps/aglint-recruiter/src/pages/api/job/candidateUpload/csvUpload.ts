@@ -72,6 +72,7 @@ const handler = async (
               job_id,
               candidate_file_id,
               source: 'csv_upload',
+              recruiter_id,
             }));
           return bulkCreateApplications(supabase, safeApplications)
             .then((): CsvUploadApi['response'] => ({

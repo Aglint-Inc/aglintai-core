@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { FilterOption } from '@/devlink/FilterOption';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
@@ -13,12 +14,12 @@ import { updateMember } from '@/src/context/AuthContext/utils';
 import { type API_reset_password } from '@/src/pages/api/reset_password/type';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
 
 import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
 
 export const UserListThreeDot = ({ member }) => {
+  const { toast } = useToast();
   const [dialogReason, setDialogReason] =
     useState<Parameters<typeof DeleteMemberDialog>['0']['reason']>(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -64,16 +65,21 @@ export const UserListThreeDot = ({ member }) => {
 
   const removeMember = async () => {
     if (recruiterUser?.user_id === member.user_id) {
-      toast.error("Can't remove admin account; it's the primary one.");
+      toast({
+        variant: 'destructive',
+        title: "Can't remove admin account; it's the primary one.",
+      });
     } else {
       try {
         await axios.post('/api/supabase/deleteuser', {
           user_id: member.user_id,
         });
       } catch (error) {
-        toast.error(
-          "This member is tied to an active schedule, so removal is unavailable until it's finished.",
-        );
+        toast({
+          variant: 'destructive',
+          title:
+            "This member is tied to an active schedule, so removal is unavailable until it's finished.",
+        });
         return null;
       }
     }
@@ -140,9 +146,15 @@ export const UserListThreeDot = ({ member }) => {
                       reinviteUser(member.email, recruiterUser.user_id).then(
                         ({ error, emailSend }) => {
                           if (!error && emailSend) {
-                            return toast.success('Invite sent successfully.');
+                            return toast({
+                              variant: 'default',
+                              title: 'Invite sent successfully.',
+                            });
                           }
-                          return toast.error(error);
+                          return toast({
+                            variant: 'destructive',
+                            title: error,
+                          });
                         },
                       );
                     },
@@ -157,9 +169,10 @@ export const UserListThreeDot = ({ member }) => {
               updateMember({
                 data: { user_id: member.user_id, status: 'active' },
               }).then(() => {
-                toast.success(
-                  `${member.first_name}'s account is activated successfully.`,
-                );
+                toast({
+                  variant: 'default',
+                  title: `${member.first_name}'s account is activated successfully.`,
+                });
                 handleClose();
               });
             },
@@ -192,8 +205,18 @@ export const UserListThreeDot = ({ member }) => {
           onClickResetPassword={{
             onClick: () => {
               resetPassword(member.email)
-                .then(() => toast.success('Password reset email sent.'))
-                .catch(() => toast.error('Password reset failed.'));
+                .then(() =>
+                  toast({
+                    variant: 'default',
+                    title: 'Password reset email sent.',
+                  }),
+                )
+                .catch(() =>
+                  toast({
+                    variant: 'destructive',
+                    title: 'Password reset failed.',
+                  }),
+                );
               handleClose();
             },
           }}
@@ -228,9 +251,10 @@ export const UserListThreeDot = ({ member }) => {
                         status: 'suspended',
                       },
                     });
-                    toast.success(
-                      `${member.first_name}'s account is suspended successfully.`,
-                    );
+                    toast({
+                      variant: 'default',
+                      title: `${member.first_name}'s account is suspended successfully.`,
+                    });
                     ClosePopUp();
                   });
               }

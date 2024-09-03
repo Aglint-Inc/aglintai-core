@@ -3,10 +3,14 @@
 import { createTheme, TextField } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import * as radixColors from '@radix-ui/colors';
-
 // import { useState } from 'react';
-import CheckboxIcon from '@/src/components/Common/Icons/CheckboxIcon';
-import RadioButtonIcon from '@/src/components/Common/Icons/RadioButtonIcon';
+import {
+  Circle,
+  CircleDot,
+  Square,
+  SquareCheck,
+  SquareMinus,
+} from 'lucide-react';
 
 // import AppContext from './context';
 import { type ExtendedTypographyOptions } from './types';
@@ -480,11 +484,9 @@ function Theme({ children }) {
       MuiCheckbox: {
         defaultProps: {
           disableRipple: true,
-          icon: <CheckboxIcon variant='unchecked' size={'16px'} />,
-          indeterminateIcon: (
-            <CheckboxIcon variant='indeterminate' size={'16px'} />
-          ),
-          checkedIcon: <CheckboxIcon variant='checked' size={'16px'} />,
+          icon: <Square size={'16px'} />,
+          indeterminateIcon: <SquareMinus size={'16px'} />,
+          checkedIcon: <SquareCheck size={'16px'} />,
         },
         styleOverrides: {
           root: ({ size }) => ({
@@ -502,8 +504,8 @@ function Theme({ children }) {
       MuiRadio: {
         defaultProps: {
           disableRipple: true,
-          icon: <RadioButtonIcon variant='unchecked' />,
-          checkedIcon: <RadioButtonIcon variant='checked' />,
+          icon: <Circle />,
+          checkedIcon: <CircleDot />,
         },
         styleOverrides: {
           root: {

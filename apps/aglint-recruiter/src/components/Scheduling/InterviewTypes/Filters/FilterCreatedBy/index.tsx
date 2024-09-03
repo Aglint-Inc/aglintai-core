@@ -2,6 +2,7 @@ import { LinearProgress, Popover, Stack, Typography } from '@mui/material';
 import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
@@ -11,7 +12,6 @@ import SearchField from '@/src/components/Common/SearchField/SearchField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
@@ -27,6 +27,7 @@ type UserType = {
 };
 
 function FilterCreatedBy() {
+  const { toast } = useToast();
   const { recruiter } = useAuthDetails();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -77,7 +78,11 @@ function FilterCreatedBy() {
 
       setMembers(membersMap);
     } catch (e) {
-      toast.error(e.message);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: e.message,
+      });
     } finally {
       setLoading(false);
     }
