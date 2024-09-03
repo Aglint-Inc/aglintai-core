@@ -3,15 +3,11 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { useQuery } from '@tanstack/react-query';
 import {
-  Edit,
   FileText,
-  GripVertical,
   Phone,
-  Save,
   Trophy,
   UserCircle,
-  Users,
-  X,
+  Users
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -140,29 +136,33 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         icon: 'FileText',
         job_id: jobId,
         order: null,
-      });
+      }); 
     }
   };
 
   const renderStep = (step: Step[number], index: number) => {
-    const Icon = iconOptions[step.icon];
+    // const Icon = iconOptions[step.icon];
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
 
     return (
-      <div key={step.id} className='flex items-start space-x-4 mb-4'>
-        <div className='flex flex-col items-center cursor-move'>
-          <GripVertical className='w-6 h-6 text-gray-400' />
-        </div>
-        <div className='relative'>
-          <div
-            className={`w-6 h-6 rounded-full flex items-center justify-center cursor-pointer z-10 relative`}
-          >
-            {/* <Icon className='w-4 h-4' /> */}
-            {step.order}
+      <div
+        key={step.id}
+        className='grid gap-4'
+        style={{ gridTemplateColumns: 'max-content 1fr' }}
+      >
+        <div className='flex h-full items-stretch flex-col'>
+          <div className={``}>
+            <div className='bg-muted p-2 w-10 h-10 rounded-md'>
+              {/* <Icon className='h-5 w-5 text-primary' /> */}
+            </div>
+            {/* {step.order} */}
           </div>
-          {index < steps.length - 1 && (
-            <div className='absolute top-3 left-3 w-0.5 h-full bg-gray-300 -z-10'></div>
+          {index < steps.length  && (
+            <div
+              className='h-full mx-auto bg-gray-300'
+              style={{ width: '1px' }}
+            ></div>
           )}
         </div>
 
@@ -177,7 +177,6 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                     : handleChange(step.id, 'name', e.target.value)
                 }
                 placeholder='Stage Title'
-                className='font-semibold'
               />
               <Textarea
                 value={isNewStep ? newStep.description : step.description}
@@ -221,7 +220,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   }
                   size='sm'
                 >
-                  <Save className='w-4 h-4 mr-2' />
+                  {/* <Save className='w-4 h-4 mr-2' /> */}
                   {isNewStep ? 'Add' : 'Save'}
                 </Button>
                 <Button
@@ -240,38 +239,38 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   variant='outline'
                   size='sm'
                 >
-                  <X className='w-4 h-4 mr-2' />
+                  {/* <X className='w-4 h-4 mr-2' /> */}
                   Cancel
                 </Button>
               </div>
             </>
           ) : (
-            <>
-              <h3 className='font-semibold text-lg'>{step.name}</h3>
-              <p className='text-gray-600'>{step.description}</p>
-              <Button
-                onClick={() => handleEdit(step.id)}
-                variant='ghost'
-                size='sm'
-                className='mt-2'
-              >
-                <Edit className='w-4 h-4 mr-2' />
-                Edit
-              </Button>
-            </>
+            
+            <div className='flex flex-col mb-4 gap-2'>
+              <h3 className='font-semibold text-md'>{step.name}</h3>
+              <p className='text-sm'>{step.description}</p>
+              <div className='flex space-x-2'>
+                <Button variant='secondary' onClick={() => handleEdit(step.id)}>
+                  Edit
+                </Button>
+                <Button variant='outline' onClick={() => handleEdit(step.id)}>
+                  Delete
+                </Button>
+              </div>
+              </div>
+           
           )}
         </div>
       </div>
     );
   };
 
+  const sorted = steps.sort((a, b) => a.order - b.order);
   if (data?.length)
     return (
       <div className='max-w-2xl mx-auto p-4'>
-        <h1 className='text-2xl font-bold mb-6'>Reorderable Interview Plan</h1>
-
         <div className='relative' ref={timelineRef}>
-          {steps.map((step, index) => renderStep(step, index))}
+          {sorted.map((step, index) => renderStep(step, index))}
           {renderStep(newStep, steps.length)}
         </div>
       </div>
