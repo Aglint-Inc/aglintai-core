@@ -335,6 +335,7 @@ export const deleteFile = async (
 export const createApplication = async (
   supabase: SupabaseClient<DB>,
   job_id: string,
+  recruiter_id: string,
   candidate_id: string,
   candidate_file_id: string,
   source: DatabaseEnums['application_source'],
@@ -347,7 +348,7 @@ export const createApplication = async (
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('applications')
-    .insert({ candidate_id, job_id, candidate_file_id, source })
+    .insert({ candidate_id, job_id, candidate_file_id, source, recruiter_id })
     .select()
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -357,6 +358,7 @@ export const createApplication = async (
       return await createApplication(
         supabase,
         job_id,
+        recruiter_id,
         candidate_id,
         candidate_file_id,
         source,

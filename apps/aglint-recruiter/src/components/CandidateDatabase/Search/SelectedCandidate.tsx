@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 
 import {
@@ -27,6 +28,7 @@ const SelectedCandidate = ({
   showEmailOutReach: boolean;
 }) => {
   // const { updateState, candidateSearchState } = useCandidateSearchCtx();
+  const { recruiter_id } = useAuthDetails();
   const { jobs } = useJobs();
   const [eligibleJobs, setElegebleJobs] = useState<newCandJob[]>([]);
   const { handleAddCandidatesTojob, candidateSearchState } =
@@ -49,6 +51,7 @@ const SelectedCandidate = ({
         checkedJobIds.map((cjob) => ({
           job_id: cjob.id,
           job_title: cjob.title,
+          recruiter_id,
         })),
       );
     } catch (err) {
