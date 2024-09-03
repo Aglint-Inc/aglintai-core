@@ -12,6 +12,7 @@ export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
+
   dateRange: {
     start_date: string | null;
     end_date: string | null;

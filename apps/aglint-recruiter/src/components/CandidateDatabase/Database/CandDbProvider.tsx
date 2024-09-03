@@ -73,6 +73,7 @@ const CandDbProvider = ({ children }) => {
         job_id: string;
         candidate_file_id: string;
         source: DatabaseEnums['application_source'];
+        recruiter_id: string;
       }[] = [];
       for (const candJobApp of candsjobApps) {
         let newCandApps: typeof newJobApps = job_ids.map((j) => ({
@@ -80,6 +81,7 @@ const CandDbProvider = ({ children }) => {
           job_id: j.job_id,
           candidate_file_id: candJobApp.candidate_file_id,
           source: 'candidate_database',
+          recruiter_id: candJobApp.recruiter_id,
         }));
         newJobApps = [...newJobApps, ...newCandApps];
         updaCandState = updaCandState.map((cand) => {

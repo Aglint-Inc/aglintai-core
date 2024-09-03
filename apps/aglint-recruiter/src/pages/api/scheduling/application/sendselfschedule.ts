@@ -85,7 +85,7 @@ const sendToCandidate = async ({
   const schedule = (
     await supabaseAdmin
       .from('applications')
-      .select('id,candidates(*)')
+      .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
       .single()
       .throwOnError()

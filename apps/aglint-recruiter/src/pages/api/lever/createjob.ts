@@ -227,6 +227,7 @@ const createJobApplications = async ({
     const dbApplications: DatabaseTableInsert['applications'][] =
       refCandidates.map((ref) => {
         return {
+          recruiter_id,
           applied_at: ref.created_at,
           candidate_id: allCandidates.filter(
             (cand) => cand.email === ref.email,
