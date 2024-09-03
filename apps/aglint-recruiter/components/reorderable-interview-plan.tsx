@@ -1,7 +1,16 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { FileText, Phone, Trophy, UserCircle, Users } from 'lucide-react';
+import {
+  Edit,
+  FileText,
+  Minus,
+  Phone,
+  Plus,
+  Trophy,
+  UserCircle,
+  Users,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -16,7 +25,18 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-import { Typography } from '@mui/material';
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './ui/alert-dialog';
 
 type Step = Awaited<ReturnType<typeof fetchProgress>>;
 
@@ -166,9 +186,15 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   };
 
   const renderStep = (step: Step[number], index: number) => {
-    // const Icon = iconOptions[step.icon];
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
+    const Icon = Object.prototype.hasOwnProperty.call(iconOptions, step.icon)
+      ? iconOptions[step.icon]
+      : isNewStep
+        ? isAddOpen
+          ? Minus
+          : Plus
+        : Edit;
 
     return (
       <div
@@ -187,8 +213,8 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
             }}
           >
             <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
-              {/* <Icon className='h-5 w-5 text-primary' /> */}
-              {isNewStep ? (isAddOpen ? '-' : '+') : ''}
+              <Icon strokeWidth={1.5} className='h-5 w-5 text-primary' />
+              {/*  {isNewStep ? (isAddOpen ? '-' : '+') : ''} */}
             </div>
 
             {/* {step.order} */}
@@ -274,7 +300,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                             });
                           else setEditingId(null);
 
-                          if (isAddOpen && isNewStep) setIsAddOpen(false);
+                          setIsAddOpen((pre) => !pre);
                         }}
                         variant='outline'
                         size='sm'
@@ -296,16 +322,44 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                     >
                       Edit
                     </Button>
-                    <Button
-                      variant='outline'
-                      onClick={() => handleDeleteStep(step.id)}
-                    >
-                      Delete
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Button variant='outline'>Delete</Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure to delete this Stage ?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently delete this stage. This action
+                            cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteStep(step.id)}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               ) : (
-                <Typography p={1}>Click here to add the stage</Typography>
+                <>
+                  {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+                  <div
+                    className='font-semibold text-md cursor-pointer mt-2'
+                    onClick={() => {
+                      setIsAddOpen((pre) => !pre);
+                    }}
+                  >
+                    Add New Stage
+                  </div>
+                </>
               )}
             </div>
           </>
