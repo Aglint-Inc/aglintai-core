@@ -8,12 +8,12 @@ import React, {
   useMemo,
 } from 'react';
 
+import { Switch } from '@/components/ui/switch';
 import { Attendee } from '@/devlink2/Attendee';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
@@ -287,9 +287,9 @@ const Attendees = ({
       <Attendee
         textRole={'Previous interviewers'}
         slotToggle={
-          <AntSwitch
+          <Switch
             checked={value.previous_interviewers}
-            onClick={() =>
+            onCheckedChange={() =>
               handleChange('members_meta', {
                 ...value,
                 previous_interviewers: !value.previous_interviewers,
@@ -336,7 +336,7 @@ const Member = ({
   return (
     <Attendee
       textRole={capitalize(role)}
-      slotToggle={<AntSwitch checked={checked} onClick={onClick} />}
+      slotToggle={<Switch checked={checked} onCheckedChange={onClick} />}
       slotSelectedMemberPill={
         <SelectedMemberPill
           isCloseButton={false}

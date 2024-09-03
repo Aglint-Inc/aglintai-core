@@ -2,6 +2,7 @@ import { Dialog, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
@@ -12,7 +13,6 @@ import { WorkflowConnectedCard } from '@/devlink3/WorkflowConnectedCard';
 import { WorkflowDetail } from '@/devlink3/WorkflowDetail';
 import Loader from '@/src/components/Common/Loader';
 import Seo from '@/src/components/Common/Seo';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import {

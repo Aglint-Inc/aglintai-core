@@ -40,7 +40,7 @@ import { InterviewPlanWrap } from '@/devlink3/InterviewPlanWrap';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import OptimisticWrapper from '@/components/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';

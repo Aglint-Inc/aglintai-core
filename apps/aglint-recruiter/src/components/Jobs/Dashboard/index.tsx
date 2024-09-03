@@ -2,6 +2,7 @@ import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,7 +17,6 @@ import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesA
 import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../../Common/Loader';
-import OptimisticWrapper from '../../NewAssessment/Common/wrapper/loadingWapper';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';

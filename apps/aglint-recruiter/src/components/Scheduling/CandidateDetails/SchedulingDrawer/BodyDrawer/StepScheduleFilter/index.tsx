@@ -2,12 +2,12 @@ import { Checkbox, Stack, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
+import { Switch } from '@/components/ui/switch';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { Text } from '@/devlink/Text';
 import { SchedulerConflictCard } from '@/devlink3/SchedulerConflictCard';
 import { SchedulerFilters } from '@/devlink3/SchedulerFilters';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 
 import { useSchedulingApplicationStore } from '../../../store';
 import { setFilters, useSchedulingFlowStore } from '../../store';
@@ -199,10 +199,9 @@ function StepScheduleFilter() {
                 slotToggleWithText={
                   <ToggleWithText
                     slotToggle={
-                      <AntSwitch
-                        size='small'
+                      <Switch
                         checked={enabled}
-                        onChange={() => {
+                        onCheckedChange={() => {
                           setFilters(
                             availabilityType === 'no_conflicts'
                               ? {

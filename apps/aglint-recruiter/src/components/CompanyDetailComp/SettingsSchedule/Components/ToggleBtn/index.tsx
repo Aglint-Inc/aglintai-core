@@ -45,7 +45,7 @@ function ToggleBtn({ isChecked, handleChange }) {
     <FormControlLabel
       sx={{
         height: '20px',
-        margin: '0px'
+        margin: '0px',
       }}
       control={
         <AntSwitch

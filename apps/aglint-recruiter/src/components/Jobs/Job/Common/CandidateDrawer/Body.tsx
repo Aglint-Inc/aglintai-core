@@ -10,7 +10,7 @@ import { ButtonSolid } from '@/devlink3/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import ResumeWait from '@/public/lottie/ResumeWait';
 import Loader from '@/src/components/Common/Loader';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import OptimisticWrapper from '@/components/loadingWapper';
 import { useApplication } from '@/src/context/ApplicationContext';
 import { useApplicationStore } from '@/src/context/ApplicationContext/store';
 
