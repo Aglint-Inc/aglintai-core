@@ -13,8 +13,10 @@ import EventNode from './EventNode';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
+  isSelectScheduleFlowComplete,
 }: {
   isManualSchedule: boolean;
+  isSelectScheduleFlowComplete: boolean;
 }) => {
   const { reqTriggerActionsMap, setEditTrigger, setShowEditDialog } =
     useNewScheduleRequestPr();
@@ -88,7 +90,8 @@ const AvailabilityFlowMenus = ({
       </ShowCode.When>
       <ShowCode.When
         isTrue={
-          Boolean(!reqTriggerActionsMap['sendAvailReqReminder']) ||
+          (!isSelectScheduleFlowComplete &&
+            Boolean(!reqTriggerActionsMap['sendAvailReqReminder'])) ||
           Boolean(
             reqTriggerActionsMap['sendAvailReqReminder'] &&
               reqTriggerActionsMap['sendAvailReqReminder'].length === 0,
@@ -119,7 +122,6 @@ const AvailabilityFlowMenus = ({
           apiTargetToEvents['sendAvailReqReminder_email_applicant'].map(
             (ev) => {
               const action = reqTriggerActionsMap.sendAvailReqReminder[0];
-              //
               return (
                 <EventNode
                   key={ev}
