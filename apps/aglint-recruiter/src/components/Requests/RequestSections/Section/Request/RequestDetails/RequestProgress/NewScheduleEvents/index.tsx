@@ -10,7 +10,10 @@ import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/Settings
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 
-import { type RequestProgressMapType, type TriggerActionMapType } from '../types';
+import {
+  type RequestProgressMapType,
+  type TriggerActionMapType,
+} from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewScheduled from './InterviewScheduled';
@@ -45,12 +48,8 @@ export const useNewScheduleRequestPr = (): RequestContextType => {
   return context;
 };
 
-const NewScheduleEvents = ({
-  requestDetails,
-}: {
-  requestDetails: DatabaseTable['request'];
-}) => {
-  const { request_progress, request_workflow } = useRequest();
+const NewScheduleEvents = () => {
+  const { request_progress, request_workflow, requestDetails } = useRequest();
   const [editTrigger, setEditTrigger] =
     React.useState<DatabaseTable['workflow']['trigger']>('onRequestSchedule');
   const [showEditDialog, setShowEditDialog] = React.useState(false);
