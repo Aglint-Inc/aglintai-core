@@ -5,6 +5,7 @@ import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { AddSkillPIll } from '@/devlink/AddSkillPIll';
 import { ButtonGenerate } from '@/devlink/ButtonGenerate';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -15,7 +16,6 @@ import { useJobs } from '@/src/context/JobsContext';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import {
   type CandidateSearchState,
@@ -32,6 +32,7 @@ type FilterType = {
 } & CandidateSearchState['queryJson'];
 
 const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
+  const { toast } = useToast();
   const { jobs } = useJobs();
   const { candidateSearchState, updatenewSearchRes, updateState } =
     useCandidateSearchCtx();
@@ -81,7 +82,10 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       const resp = await similarJobs(filters.jobTitles);
       setSuggestedJobs(resp.related_jobs);
     } catch (err) {
-      //
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsjobRolesGenerating(false);
     }
@@ -135,7 +139,10 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       );
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       setIsFilterLoading(false);
       handleDialogClose();

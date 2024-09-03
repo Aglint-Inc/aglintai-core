@@ -23,7 +23,6 @@ import { PageLayout } from '@/devlink2/PageLayout';
 import EmailPreviewPopover from '@/src/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import Loader from '@/src/components/Common/Loader';
-import { SyncStatus } from '@/src/components/NewScreening/PhoneScreenTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';
 import { emailTemplateCopy } from '@/src/types/companyEmailTypes';
@@ -39,7 +38,7 @@ const templates_order: DatabaseEnums['email_slack_types'][] = [
   'applicantReject_email_applicant',
 ];
 const JobEmailTemplatesDashboard = () => {
-  const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+  const [, setSaving] = useState<'saving' | 'saved'>('saved');
   const { isFetching } = useCurrJobTemps({ setSaving });
 
   return (
@@ -50,7 +49,7 @@ const JobEmailTemplatesDashboard = () => {
         <PageLayout
           slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
           slotTopbarRight={<Settings />}
-          slotSaving={<SyncStatus status={saving} />}
+          slotSaving={<></>}
           slotBody={<JobEmailTemplates setSaving={setSaving} />}
         />
       )}

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { MyScheduleLanding } from '@/devlink/MyScheduleLanding';
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
@@ -12,7 +13,6 @@ import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllIntegrations } from '@/src/queries/intergrations';
-import toast from '@/src/utils/toast';
 
 import SearchField from '../../Common/SearchField/SearchField';
 import { ShowCode } from '../../Common/ShowCode';
@@ -25,6 +25,7 @@ import {
 import { transformDataSchedules } from '../schedules-query';
 
 function MySchedule() {
+  const { toast } = useToast();
   const { recruiterUser } = useAuthDetails();
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
@@ -54,7 +55,11 @@ function MySchedule() {
 
       return router.push(data);
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
     }
   };
 

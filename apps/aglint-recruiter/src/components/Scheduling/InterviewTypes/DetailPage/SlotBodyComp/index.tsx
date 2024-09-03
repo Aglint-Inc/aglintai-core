@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
@@ -24,7 +25,6 @@ import { useAllDepartments } from '@/src/queries/departments';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
-import toast from '@/src/utils/toast';
 
 import Instructions from '../../../ScheduleDetails/Instructions';
 import { QueryKeysInteviewModules } from '../../queries/type';
@@ -62,6 +62,7 @@ function SlotBodyComp({
   isFetching,
   refetch,
 }: SlotBodyCompProps) {
+  const { toast } = useToast();
   const router = useRouter();
   const { loading } = useSchedulingContext();
 
@@ -78,7 +79,9 @@ function SlotBodyComp({
         .eq('id', editModule?.id)
         .select();
       if (data) {
-        toast.success('Instructions updated successfully.');
+        toast({
+          title: 'Instructions updated successfully.',
+        });
         refetch();
       }
     }
@@ -325,8 +328,8 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
 
                   {currentTab === 'aglintaiinstruction' && (
                     <AiBookingInstruction
-                    textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
-                    textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
+                      textHowTo='Use these instructions to balance interview load, ensure diverse evaluations, and avoid conflicts.'
+                      textExample='Rotate interviewers to ensure diverse perspectives and assign technical interviews to senior team members.'
                       slotTextArea={
                         <UITextField
                           multiline
@@ -397,7 +400,9 @@ Balance interview load across the team, avoiding back-to-back slots when possibl
                     ...updatedEditModule,
                   },
                 );
-                toast.success('Interview type unarchived successfully.');
+                toast({
+                  title: 'Interview type unarchived successfully.',
+                });
               }
               handleClose();
             },

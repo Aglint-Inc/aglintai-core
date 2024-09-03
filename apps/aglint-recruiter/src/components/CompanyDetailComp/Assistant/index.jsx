@@ -2,16 +2,17 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
+import { useToast } from "@/components/hooks/use-toast";
 import { AssisstantSettings } from '@/devlink/AssisstantSettings';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import UITextField from '../../Common/UITextField';
 
 function Assistant({ setIsSaving }) {
+  const { toast } = useToast();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [assistant, setAssistant] = useState([]);
   const [btnhide, setbtnhide] = useState(true);
@@ -30,7 +31,10 @@ function Assistant({ setIsSaving }) {
       });
       createAssistant(data);
     }
-    toast.success('Changes saved.');
+    toast({
+      variant: 'default',
+      title: 'Changes saved.',
+    });
     setbtnhide(true);
   }
 

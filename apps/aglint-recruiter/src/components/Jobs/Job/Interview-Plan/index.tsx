@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
 import {
   Breadcrumb,
@@ -40,7 +41,6 @@ import { InterviewPlanWrap } from '@/devlink3/InterviewPlanWrap';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';

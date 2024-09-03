@@ -10,8 +10,8 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { TaskDate } from '@/devlink3/TaskDate';
-import DateRange from '@/src/components/Tasks/Components/DateRange';
 
+import DateRange from '../DateRange';
 import { ShowCode } from '../ShowCode';
 
 export type DateRangeSelectorType = {

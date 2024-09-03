@@ -31,7 +31,7 @@ const ChooseScheduleMode = () => {
         <Stack width={'100%'} direction={'row'} justifyContent={'end'} gap={2}>
           <NoWorkflow
             textDesc={
-              'There are no workflows set. please select an action to proceed manually or add action from above.'
+              'There are no workflows set. please select an action to proceed manually or add action from below.'
             }
             slotButton={
               <>

@@ -21,7 +21,6 @@ const PERMISSIONS: Permissions = {
   /** All of the permission are required to access this routes
    * permissions will reduced  using 'and'
    */
-  '/tasks': ['task_module'],
 
   //
   '/supervisor': ['authorized'],
@@ -34,14 +33,12 @@ const PERMISSIONS: Permissions = {
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[id]': ['job_module'],
   '/jobs/[id]/application/[application_id]': ['job_module'],
-  '/jobs/[id]/assessment': ['job_module'],
   '/jobs/[id]/metrics': ['job_module'],
   '/jobs/[id]/email-templates': ['job_module', 'manage_job'],
   '/jobs/[id]/hiring-team': ['job_module', 'manage_job'],
   '/jobs/[id]/interview-plan': ['job_module', 'manage_job'],
   '/jobs/[id]/job-details': ['job_module', 'manage_job'],
   '/jobs/[id]/profile-score': ['job_module', 'manage_job'],
-  '/jobs/[id]/screening': ['job_module', 'manage_job'],
   '/jobs/[id]/workflows': ['job_module'],
   '/workflows': ['workflow_module'],
   '/api/get_member': ['authorized'],
@@ -50,11 +47,9 @@ const PERMISSIONS: Permissions = {
   '/workflows/real-time-crons': ['workflow_module'],
   '/scheduling/view': ['scheduling_module'],
   '/scheduling': ['scheduling_module'],
-  '/scheduling/application': ['scheduling_actions'],
   '/scheduling/interviewer': ['manage_interviewers'],
   '/scheduling/interview-types/[type_id]': ['interview_types'],
   '/scheduling/interviewer/[member_id]': ['scheduling_module'],
-  '/scheduling/application/[application_id]': ['scheduling_module'],
   '/scheduling/dashboard': ['scheduling_settings_and_reports'],
   '/scheduling/interview-types': ['view_interview_types'],
   '/requests': ['job_module'],
@@ -96,7 +91,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get_interview_modules': ['scheduling_module'],
   '/api/scheduling/fetch_interview_module_by_id': ['scheduling_module'],
   // scheduling application apis
-  '/api/scheduling/application/sendtocandidate': ['scheduling_module'],
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
     'scheduling_module',
@@ -154,7 +148,6 @@ const PERMISSIONS: Permissions = {
   '/api/get_last_login': ['view_users'],
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
-  '/api/scheduling/application/fetchcandidatedetails': ['scheduling_module'],
   '/api/setRoleAndPermission': ['manage_roles'],
   '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],

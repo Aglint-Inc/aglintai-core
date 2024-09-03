@@ -3,10 +3,10 @@ import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tab
 import { Dialog, Radio, Stack, TextField, Typography } from '@mui/material';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { type ScheduleDetailsType } from '../hooks';
@@ -24,6 +24,7 @@ function DeclineScheduleDialog({
   schedule: ScheduleDetailsType['schedule_data'];
   refetch: () => void;
 }) {
+  const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const [reason, setReason] = useState('');
@@ -88,7 +89,11 @@ function DeclineScheduleDialog({
         refetch();
       }
     } catch {
-      toast.error('Unable to save cancel reason');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Unable to save cancel reason',
+      });
     } finally {
       setIsDeclineOpen(false);
     }

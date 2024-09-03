@@ -2,10 +2,10 @@ import { type DatabaseTable, type PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import { useToast } from '@/components/hooks/use-toast';
 import axios from '@/src/client/axios';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
-import toast from '@/src/utils/toast';
 
 import { type MemberTypeAutoComplete } from '../../Common/MembersTextField';
 import { type PauseType } from '../DetailPage/type';
@@ -112,6 +112,7 @@ export const useModuleAndUsers = () => {
 };
 
 export const usePauseHandler = () => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const resumeHandler = async ({
@@ -168,7 +169,11 @@ export const usePauseHandler = () => {
           QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
         );
         if (selectedType === 'custom' && !pause_json?.end_date) {
-          return toast.error('Please select end date.');
+          return toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Please select end date.',
+          });
         }
         const isUpdated = await updatePauseJsonByUserId({
           user_id: user_id,
@@ -198,7 +203,11 @@ export const usePauseHandler = () => {
         throw new Error();
       }
     } catch {
-      toast.error('Error pausing user.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Error pausing user.',
+      });
     }
   };
 
@@ -206,6 +215,7 @@ export const usePauseHandler = () => {
 };
 
 export const useDeleteRelationHandler = () => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const deleteRelationByUserId = async ({
@@ -242,7 +252,11 @@ export const useDeleteRelationHandler = () => {
         return true;
       }
     } catch (e) {
-      toast.error(e.message);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: e.message,
+      });
     }
   };
   return { deleteRelationByUserId };
@@ -253,6 +267,7 @@ export const useAddMemberHandler = ({
 }: {
   editModule: ModuleType;
 }) => {
+  const { toast } = useToast();
   const addMemberHandler = async ({
     selectedUsers,
     trainingStatus,
@@ -289,7 +304,11 @@ export const useAddMemberHandler = ({
         });
       }
     } catch (e) {
-      toast.error(e.message);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: e.message,
+      });
     }
   };
   return { addMemberHandler };

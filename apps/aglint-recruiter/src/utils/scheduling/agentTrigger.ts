@@ -6,7 +6,6 @@ import { type InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 export const agentTrigger = async ({
   type,
   filterJsonId,
-  task_id,
   recruiter_user_name,
   candidate_name,
   company_name,
@@ -17,7 +16,6 @@ export const agentTrigger = async ({
 }: {
   type: 'email_agent' | 'phone_agent';
   filterJsonId: string;
-  task_id: string;
   recruiter_user_name: string;
   candidate_name: string;
   company_name: string;
@@ -34,7 +32,6 @@ export const agentTrigger = async ({
     });
     const bodyParams: InitAgentBodyParams = {
       filter_json_id: filterJsonId,
-      task_id: task_id,
       recruiter_user_id,
     };
 
@@ -71,7 +68,6 @@ export const agentTrigger = async ({
         // to_phone_no: '+919482306657',
         // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
         // cand_email: sessionsWithPlan.application.candidates.email,
-        task_id: task_id,
       },
     );
 

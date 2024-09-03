@@ -1,6 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { DevlinkMainProvider } from '@context/DevlinkContext';
-import { PHProvider } from '../components/PostHog/postHog';
+import { PostHogProvider } from 'posthog-js/react';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
@@ -20,7 +20,7 @@ export const PrivateProviders = ({
 }: PropsWithChildren<{ appRouter?: boolean }>) => {
   return (
     <PublicProviders>
-      <PHProvider>
+      <PostHogProvider>
         <AuthProvider>
           <RolesAndPermissionsProvider>
             <BreadcrumProvider>
@@ -34,7 +34,7 @@ export const PrivateProviders = ({
             </BreadcrumProvider>
           </RolesAndPermissionsProvider>
         </AuthProvider>
-      </PHProvider>
+      </PostHogProvider>
     </PublicProviders>
   );
 };

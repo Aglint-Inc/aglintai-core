@@ -63,6 +63,7 @@ export type CandidateSearchCtxType = {
     job_ids: {
       job_id: string;
       job_title: string;
+      recruiter_id: string;
     }[],
   ) => Promise<void>;
 };
@@ -202,7 +203,7 @@ const CandidateSearchProvider = ({ children }) => {
 
   const handleAddCandidatesTojob = async (
     jobAppIds: string[],
-    job_ids: { job_id: string; job_title: string }[],
+    job_ids: { job_id: string; job_title: string; recruiter_id: string }[],
   ) => {
     try {
       let updaCandState = [...state.candidates];
@@ -217,6 +218,7 @@ const CandidateSearchProvider = ({ children }) => {
         candidate_id: string;
         job_id: string;
         candidate_file_id: string;
+        recruiter_id: string;
         source: DatabaseTable['applications']['source'];
       }[] = [];
       for (const candJobApp of candsjobApps) {
@@ -225,6 +227,7 @@ const CandidateSearchProvider = ({ children }) => {
           job_id: j.job_id,
           candidate_file_id: candJobApp.candidate_file_id,
           source: 'candidate_database',
+          recruiter_id: j.recruiter_id,
         }));
         newJobApps = [...newJobApps, ...newCandApps];
         updaCandState = updaCandState.map((cand) => {

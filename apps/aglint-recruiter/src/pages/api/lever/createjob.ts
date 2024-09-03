@@ -13,7 +13,7 @@ import {
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { splitFullName } from '../../loading';
+import { splitFullName } from '../../loadingX';
 import { decrypt } from '../decryptApiKey';
 
 export type ApiLeverCreateJob = {
@@ -227,6 +227,7 @@ const createJobApplications = async ({
     const dbApplications: DatabaseTableInsert['applications'][] =
       refCandidates.map((ref) => {
         return {
+          recruiter_id,
           applied_at: ref.created_at,
           candidate_id: allCandidates.filter(
             (cand) => cand.email === ref.email,

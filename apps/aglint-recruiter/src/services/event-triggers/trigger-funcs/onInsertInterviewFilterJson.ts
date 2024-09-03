@@ -29,8 +29,7 @@ const eventTrigger = async ({
     let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
-      event_run_id: null,
-      target_api: null,
+      event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
     });
     supabaseWrap(
       await supabaseAdmin
@@ -79,12 +78,10 @@ const eventTrigger = async ({
         );
         if (j_l_a.target_api === 'selfScheduleReminder_email_applicant') {
           await reqProgressLogger({
-            event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
             is_progress_step: false,
             status: 'completed',
           });
           await reqProgressLogger({
-            event_type: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
             is_progress_step: true,
             status: 'completed',
             meta: {

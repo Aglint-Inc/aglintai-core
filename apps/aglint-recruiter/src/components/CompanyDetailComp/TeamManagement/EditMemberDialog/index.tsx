@@ -1,5 +1,9 @@
-import { type employmentTypeEnum, type RecruiterUserType } from '@aglint/shared-types';
+import {
+  type employmentTypeEnum,
+  type RecruiterUserType,
+} from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack, Typography } from '@mui/material';
+import { User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -7,7 +11,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
 import { TeamInvite } from '@/devlink/TeamInvite';
 import axios from '@/src/client/axios';
-import Icon from '@/src/components/Common/Icons/Icon';
 import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadManual';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
@@ -245,7 +248,7 @@ const EditMember = ({
                   <InviteTeamCard
                     textEmail={data.email}
                     textName={data.name}
-                    slotAvatar={<Icon variant='UserSolo' />}
+                    slotAvatar={<User />}
                   />
                 </>
               );

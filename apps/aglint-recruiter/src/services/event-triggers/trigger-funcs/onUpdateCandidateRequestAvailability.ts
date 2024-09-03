@@ -134,14 +134,13 @@ const updateRequestProgress = async (
     let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
+      event_type: 'CAND_AVAIL_REC',
     });
     await reqProgressLogger({
-      event_type: 'CAND_AVAIL_REC',
       is_progress_step: false,
       status: 'completed',
     });
     await reqProgressLogger({
-      event_type: 'CAND_AVAIL_REC',
       is_progress_step: true,
       status: 'completed',
       meta: {
@@ -161,14 +160,13 @@ const reRequestingAvailability = async (
     let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
+      event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
     });
     await reqProgressLogger({
-      event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
       is_progress_step: false,
       status: 'completed',
     });
     await reqProgressLogger({
-      event_type: 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
       meta: {
         re_requested_date: {
           start_date: new_data.date_range[0],

@@ -3,25 +3,10 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type RequestResponse } from '@/src/queries/requests/types';
 import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 
-type responseCreatedCompletedType = {
-  value: {
-    data: {
-      date: string;
-      created: number;
-      completed: number;
-      on_going: number;
-    }[];
-  };
-};
-
-type SectionRequests = {
-  // eslint-disable-next-line no-unused-vars
-  [id in keyof RequestResponse | 'standard_request']: number;
-};
+import { responseCreatedCompletedType, SectionRequests } from './utils';
 
 export const useAllScheduleList = () => {
   const {

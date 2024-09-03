@@ -12,8 +12,8 @@ import {
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
+import { selfScheduleMailToCandidate } from '@/src/utils/scheduling/mailUtils';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -41,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reqProgressLogger = createRequestProgressLogger({
     supabaseAdmin,
     request_id: bodyParams.request_id,
+    event_type: 'SELF_SCHEDULE_LINK',
   });
 
   try {
@@ -51,9 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         reqProgressLogger,
       },
       reqProgressLogger,
-      {
-        event_type: 'SELF_SCHEDULE_LINK',
-      },
     );
 
     res.status(200).send(resSendToCandidate);
@@ -85,7 +83,7 @@ const sendToCandidate = async ({
   const schedule = (
     await supabaseAdmin
       .from('applications')
-      .select('id,candidates(*)')
+      .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
       .single()
       .throwOnError()
@@ -100,6 +98,8 @@ const sendToCandidate = async ({
       interview_session_id: ses.interview_session.id,
       interview_meeting_id: ses.interview_meeting.id,
       interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+      job_id: ses.interview_meeting.job_id,
+      recruiter_id: ses.interview_meeting.recruiter_id,
     })),
     supabase: supabaseAdmin,
     meeting_flow: 'self_scheduling',
@@ -133,7 +133,6 @@ const sendToCandidate = async ({
     application_id,
     supabase: supabaseAdmin,
     created_by: recruiterUser.user_id,
-    task_id: null,
   });
 
   selfScheduleMailToCandidate({
@@ -143,7 +142,6 @@ const sendToCandidate = async ({
   await reqProgressLogger({
     status: 'completed',
     is_progress_step: true,
-    event_type: 'SELF_SCHEDULE_LINK',
     meta: {
       event_run_id: null,
       filter_json_id: filterJson[0].id,

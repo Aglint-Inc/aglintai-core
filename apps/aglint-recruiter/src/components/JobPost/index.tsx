@@ -7,6 +7,7 @@ import {
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { Building2 } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookIcon,
@@ -19,6 +20,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
@@ -30,7 +32,6 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
@@ -39,6 +40,7 @@ import UploadDB from './UploadDB';
 type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
 
 const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
+  const { toast } = useToast();
   const router = useRouterPro();
   const [email, setEmail] = useState<string>();
   const [error, setError] = useState<boolean>(false);
@@ -69,13 +71,17 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               })
               .select();
             setEmail('');
-            toast.success(
-              'Thank you for subscribing! You will be notified via email.',
-            );
+            toast({
+              variant: 'default',
+              title:
+                'Thank you for subscribing! You will be notified via email.',
+            });
           } else {
-            toast.success(
-              'Thank you for subscribing! You will be notified via email.',
-            );
+            toast({
+              variant: 'default',
+              title:
+                'Thank you for subscribing! You will be notified via email.',
+            });
           }
         });
     } else {
@@ -128,11 +134,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     // background={'var(--neutral-1)'},
                   }}
                 >
-                  <Icon
-                    variant='CompanyOutlinedBig'
-                    height='100%'
-                    width='100%'
-                  />
+                  <Building2 size={48} />
                 </Avatar>
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
@@ -195,7 +197,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 width: '80px',
               }}
             >
-              <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
+              <Building2 size={48} />
             </Avatar>
           }
           onClickApplyNow={{

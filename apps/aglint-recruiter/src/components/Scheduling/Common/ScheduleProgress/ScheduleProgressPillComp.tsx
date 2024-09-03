@@ -3,11 +3,16 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Ref, forwardRef, memo } from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink/ScheduleProgressPill';
 import { StatusBadge } from '@/devlink2/StatusBadge';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
@@ -45,35 +50,40 @@ const ScheduleProgressPill = memo(
       const duration = getBreakLabel(props.session_duration);
       return (
         <Stack ref={ref}>
-          <CustomTooltip
-            title={
-              <Stack>
-                <ProgressHoverCard
-                  isScheduleDate={isScheduleDate}
-                  textScheduleDate={scheduleDate}
-                  slotInterviewTypeIcon={
-                    <SessionIcon session_type={props.session_type} />
-                  }
-                  slotMeetingTypeIcon={
-                    <IconScheduleType type={props.schedule_type} />
-                  }
-                  textMeetingType={scheduleType}
-                  textScheduleName={props.session_name}
-                  textDuration={duration}
-                  slotScheduleStatus={<ScheduleStatus status={props.status} />}
-                />
-              </Stack>
-            }
-          >
-            <Stack>
-              <ScheduleProgressPillDev
-                isEnding={isEnding}
-                isStarting={isStarting}
-                styleBgColor={{ style: { backgroundColor } }}
-                slotProgressIcon={<ProgressIcon status={props.status} />}
-              />
-            </Stack>
-          </CustomTooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Stack>
+                  <ScheduleProgressPillDev
+                    isEnding={isEnding}
+                    isStarting={isStarting}
+                    styleBgColor={{ style: { backgroundColor } }}
+                    slotProgressIcon={<ProgressIcon status={props.status} />}
+                  />
+                </Stack>
+              </TooltipTrigger>
+              <TooltipContent>
+                <Stack>
+                  <ProgressHoverCard
+                    isScheduleDate={isScheduleDate}
+                    textScheduleDate={scheduleDate}
+                    slotInterviewTypeIcon={
+                      <SessionIcon session_type={props.session_type} />
+                    }
+                    slotMeetingTypeIcon={
+                      <IconScheduleType type={props.schedule_type} />
+                    }
+                    textMeetingType={scheduleType}
+                    textScheduleName={props.session_name}
+                    textDuration={duration}
+                    slotScheduleStatus={
+                      <ScheduleStatus status={props.status} />
+                    }
+                  />
+                </Stack>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </Stack>
       );
     },

@@ -22,6 +22,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: req.body.request_id,
     supabaseAdmin: supabaseAdmin,
+    event_type: 'SEND_INTERVIEWER_ATTENDANCE_RSVP',
   });
 
   try {
@@ -31,10 +32,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         logger: reqProgressLogger,
         payload: req.body,
       },
-      reqProgressLogger,
-      {
-        event_type: 'SEND_INTERVIEWER_ATTENDANCE_RSVP',
-      }
+      reqProgressLogger
     );
     res.status(200).json({message: 'message sucessfully sended'});
   } catch (err: any) {
@@ -141,7 +139,6 @@ const notifyInts = async ({
     }
   }
   await logger({
-    event_type: 'SEND_INTERVIEWER_ATTENDANCE_RSVP',
     status: 'completed',
     meta: {
       session_id: session_id,

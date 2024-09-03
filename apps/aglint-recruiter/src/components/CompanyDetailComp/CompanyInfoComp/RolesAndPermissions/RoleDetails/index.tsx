@@ -7,13 +7,13 @@ import {
 } from '@mui/material';
 import { type MouseEvent, useEffect, useState } from 'react';
 
+import { Switch } from '@/components/ui/switch';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { Permissions } from '@/devlink/Permissions';
 import { RolesAndPermissionsDetail } from '@/devlink/RolesAndPermissionsDetail';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import {
   allPermissions,
   rolesOrder,
@@ -142,17 +142,17 @@ function RoleDetails({
                           key={permission.id}
                           textToggleLight={permission.title}
                           slotToggle={
-                            <AntSwitch
+                            <Switch
                               checked={permission.isActive}
                               disabled={editDisabled || !role.isEditable}
-                              onClick={() => {
+                              onCheckedChange={(checked) => {
                                 const data = {
                                   add: null,
                                   delete: null,
                                   role_id: role.id,
                                 };
 
-                                if (permission.isActive) {
+                                if (!checked) {
                                   data.delete = permission.relation_id;
                                 } else {
                                   data.add = permission.id;
