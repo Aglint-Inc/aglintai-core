@@ -87,13 +87,11 @@ const FilterInput = ({
           }}
           placeholder={dialogFormContent[String(path)]?.placeholder}
           type={type}
-          InputProps={{
-            onKeyDown: (e) => {
-              if (e.code === 'Enter') {
-                handleSubmit();
-                handleClosePop();
-              }
-            },
+          onKeyDown={(e) => {
+            if (e.code === 'Enter') {
+              handleSubmit();
+              handleClosePop();
+            }
           }}
         />
       </div>

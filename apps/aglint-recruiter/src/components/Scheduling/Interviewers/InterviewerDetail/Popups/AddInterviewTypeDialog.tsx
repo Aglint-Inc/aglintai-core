@@ -120,12 +120,9 @@ function AddInterviewTypeDialog() {
                 renderInput={(params) => {
                   return (
                     <UITextField
-                      rest={{ ...params }}
+                      {...params}
                       labelSize='medium'
                       placeholder='Ex. Initial Screening'
-                      InputProps={{
-                        ...params.InputProps,
-                      }}
                     />
                   );
                 }}

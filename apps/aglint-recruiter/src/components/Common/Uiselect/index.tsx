@@ -19,7 +19,8 @@ type Props = {
   menuOptions: MenuOption[];
   value: any;
   disabled?: boolean;
-  onChange: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: Props['value']) => void;
   defaultValue?: any;
   required?: boolean;
   startIcon?: React.ReactNode;
