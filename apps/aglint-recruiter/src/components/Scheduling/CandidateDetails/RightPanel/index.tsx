@@ -9,9 +9,11 @@ import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
 
-import IconApplicationLogs from '../../../Common/Icons/IconApplicationLogs';
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
-import { type useAllActivities, useGetScheduleApplication } from '../queries/hooks';
+import {
+  type useAllActivities,
+  useGetScheduleApplication,
+} from '../queries/hooks';
 import {
   setCancelSessions,
   setMultipleCancelOpen,
@@ -101,7 +103,7 @@ function RightPanel({
                     isActionVisible={false}
                     isContentVisible={Boolean(act.metadata)}
                     slotContent={<SlotContent act={act} />}
-                    slotImage={<IconApplicationLogs act={act} />}
+                    slotImage={/*<IconApplicationLogs act={act} /> */ <></>}
                   />
                 );
               })

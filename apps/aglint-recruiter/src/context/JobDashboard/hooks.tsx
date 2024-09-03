@@ -1,5 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 
+import {
+  useJobLocations,
+  useJobSchedules,
+  useJobSkills,
+  useJobTenureAndExperience,
+} from '@/src/queries/job-dashboard';
+
 import { useJob } from '../JobContext';
 
 const useProviderJobDashboardActions = () => {
@@ -7,7 +14,6 @@ const useProviderJobDashboardActions = () => {
     jobLoad,
     job,
     total,
-    job_id,
     interviewPlans,
     status,
     manageJob,
@@ -21,10 +27,10 @@ const useProviderJobDashboardActions = () => {
   };
 
   // We'll need to replace these with local implementations or remove them if not needed
-  const skills = [];
-  const locations = [];
-  const tenureAndExperience = {};
-  const schedules = [];
+  const skills = useJobSkills(job);
+  const locations = useJobLocations(job);
+  const tenureAndExperience = useJobTenureAndExperience(job);
+  const schedules = useJobSchedules(job);
 
   const isInterviewPlanDisabled =
     interviewPlans.status !== 'pending' &&

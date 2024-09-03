@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import toast from '@utils/toast';
 import { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
@@ -15,7 +16,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { toast } from '@/utils/toast';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 

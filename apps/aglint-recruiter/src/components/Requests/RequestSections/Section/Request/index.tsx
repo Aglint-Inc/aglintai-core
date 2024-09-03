@@ -23,7 +23,7 @@ import RequestDetails from './RequestDetails';
 export const Request = (
   props: PropsWithChildren<RequestType> & { index: number },
 ) => {
-  const { collapse, setCollapse, isMutating } = useRequest();
+  const { collapse, setCollapse } = useRequest();
   const { push } = useRouterPro();
 
   const [isHover, setIsHover] = useState(false);

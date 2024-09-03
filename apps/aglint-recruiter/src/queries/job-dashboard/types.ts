@@ -1,7 +1,4 @@
-import { type Assessment } from '../assessment/types';
-
 export type DashboardTypes = {
-  assessments: Assessment[];
   skills: {
     top_skills: {
       [id: string]: number;
