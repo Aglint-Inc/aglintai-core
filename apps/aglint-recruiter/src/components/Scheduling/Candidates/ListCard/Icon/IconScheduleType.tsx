@@ -1,7 +1,7 @@
 import { type DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
+import { PhoneOutgoing, Video } from 'lucide-react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function IconScheduleType({
@@ -29,10 +29,10 @@ function IconScheduleType({
           </svg>
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'phone_call'}>
-          <GlobalIcon iconName='phone_in_talk' size={size} />
+          <PhoneOutgoing />
         </ShowCode.When>
         <ShowCode.When isTrue={type == 'google_meet' || type === 'zoom'}>
-          <GlobalIcon iconName='videocam' size={size} />
+          <Video />
         </ShowCode.When>
       </ShowCode>
     </Stack>
