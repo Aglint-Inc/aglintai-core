@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import {
+  CircleCheck,
   Edit,
   FileText,
   Minus,
@@ -24,6 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import dayjs from '@/src/utils/dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -39,32 +41,76 @@ import {
   AlertDialogTrigger,
 } from './ui/alert-dialog';
 
-type Step = Awaited<ReturnType<typeof fetchProgress>>;
+type Step =
+  | Awaited<ReturnType<typeof fetchProgressByJobId>>
+  | Awaited<ReturnType<typeof fetchProgressByApplicationId>>;
 
 const iconOptions = { UserCircle, Phone, Users, FileText, Trophy };
 
-const useInterviewPlanProgress = ({ job_id }: { job_id: string }) => {
+const useInterviewPlanProgress = ({
+  job_id,
+  application_id,
+}: {
+  job_id: string;
+  application_id: string;
+}) => {
   const result = useQuery({
     queryKey: ['interview_plan_progress', job_id],
-    queryFn: () => fetchProgress({ job_id }),
+    queryFn: () => fetchProgress({ job_id, application_id }),
     retry: false,
   });
 
   return result;
 };
 
-const fetchProgress = async ({ job_id }: { job_id: string }) => {
+const fetchProgress = async ({
+  job_id,
+  application_id,
+}: {
+  job_id: string | null;
+  application_id: string | null;
+}) => {
+  let result = [];
+  if (job_id) {
+    result = await fetchProgressByJobId(job_id);
+  }
+  if (application_id) {
+    result = await fetchProgressByApplicationId(application_id);
+  }
+  return result as Step;
+};
+
+const fetchProgressByJobId = async (job_id) => {
   const { data, error } = await supabase
     .from('interview_progress')
-    .select('icon,id,job_id,name,order,icon,description')
+    .select(
+      'icon,id,job_id,application_id,name,order,icon,description,is_completed',
+    )
     .eq('job_id', job_id);
   if (error) throw new Error(error.message);
   return data;
 };
+const fetchProgressByApplicationId = async (application_id: string) => {
+  const { data, error } = await supabase
+    .from('interview_progress')
+    .select(
+      'icon,id,job_id,application_id,name,order,icon,description,is_completed',
+    )
+    .eq('application_id', application_id);
+  if (error) throw new Error(error.message);
+  return data;
+};
 
-export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
+export default function ReorderableInterviewPlan({
+  jobId,
+  applicationId,
+}: {
+  jobId: string | null;
+  applicationId: string | null;
+}) {
   const { isLoading, data, refetch } = useInterviewPlanProgress({
     job_id: jobId,
+    application_id: applicationId,
   });
 
   const [steps, setSteps] = useState<Step>([]);
@@ -74,10 +120,12 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const [newStep, setNewStep] = useState<Step[number]>({
     icon: '',
     job_id: jobId,
+    application_id: applicationId,
     name: '',
     order: null,
     id: null,
     description: '',
+    is_completed: null,
   });
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -99,23 +147,27 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   };
 
   const handleSave = async (id: number) => {
-    const updatedStep = steps.find((step) => step.id === id);
-    const { error } = await supabase
-      .from('interview_progress')
-      .update({
-        name: updatedStep.name,
-        description: updatedStep.description,
-        icon: updatedStep.icon,
-      })
-      .eq('id', id);
+    try {
+      const updatedStep = steps.find((step) => step.id === id);
+      const { error } = await supabase
+        .from('interview_progress')
+        .update({
+          name: updatedStep.name,
+          description: updatedStep.description,
+          icon: updatedStep.icon,
+        })
+        .eq('id', id);
 
-    if (error) {
-      toast.error('something went wrong');
+      if (error) {
+        toast.error(error.message);
+      }
+
+      await refetch();
+      toast.success('update successfully');
+      setEditingId(null);
+    } catch (e) {
+      toast.error(e.message);
     }
-
-    await refetch();
-    toast.success('update successfully');
-    setEditingId(null);
   };
 
   const handleChange = (
@@ -138,6 +190,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
       const { error } = await supabase.from('interview_progress').insert({
         name: newStep.name,
         job_id: jobId,
+        application_id: applicationId,
         icon: newStep.icon,
         order: order_id,
         description: newStep.description,
@@ -154,8 +207,10 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         name: '',
         description: '',
         icon: '',
+        application_id: applicationId,
         job_id: jobId,
         order: null,
+        is_completed: null,
       });
     }
   };
@@ -190,6 +245,28 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
     }
   };
 
+  const completeHandle = async (id: number, status: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('interview_progress')
+        .update({
+          is_completed: status,
+          update_at: dayjs().toISOString(),
+        })
+        .eq('id', id);
+
+      if (error) {
+        toast.error(error.message);
+      }
+
+      await refetch();
+      toast.success('update successfully');
+      setEditingId(null);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
   const renderStep = (step: Step[number], index: number) => {
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
@@ -219,8 +296,18 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
               }
             }}
           >
-            <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
-              <Icon strokeWidth={1.5} className='h-5 w-5 text-primary' />
+            <div
+              className={`${step.is_completed ? 'bg-lime-100' : 'bg-muted'} p-2 w-10 h-10 flex items-center justify-center rounded-md`}
+            >
+              {step.is_completed ? (
+                <CircleCheck
+                  strokeWidth={1.5}
+                  className='h-5 w-5 text-primary'
+                  color='green'
+                />
+              ) : (
+                <Icon strokeWidth={1.5} className='h-5 w-5 text-primary' />
+              )}
             </div>
           </div>
           {index < steps.length && !isDragging && (
@@ -286,7 +373,6 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                       }
                       size='sm'
                     >
-                      {/* <Save className='w-4 h-4 mr-2' /> */}
                       {isNewStep ? 'Add' : 'Save'}
                     </Button>
 
@@ -300,7 +386,9 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                               description: '',
                               icon: '',
                               job_id: jobId,
+                              application_id: applicationId,
                               order: null,
+                              is_completed: null,
                             });
                           else setEditingId(null);
 
@@ -309,7 +397,6 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                         variant='outline'
                         size='sm'
                       >
-                        {/* <X className='w-4 h-4 mr-2' /> */}
                         Cancel
                       </Button>
                     )}
@@ -350,6 +437,18 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
+                    {step.application_id && (
+                      <Button
+                        variant='secondary'
+                        onClick={() =>
+                          completeHandle(step.id, !step.is_completed)
+                        }
+                      >
+                        {step.is_completed
+                          ? 'Mark as Uncomplete'
+                          : 'Mark as Complete'}
+                      </Button>
+                    )}
                   </div>
                 </div>
               ) : (

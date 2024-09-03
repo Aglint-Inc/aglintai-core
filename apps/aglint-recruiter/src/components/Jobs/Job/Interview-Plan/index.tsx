@@ -161,7 +161,11 @@ const InterviewPlanPage = () => {
                 </Stack>
               </TabsContent>
               <TabsContent value='candidate'>
-                <ReorderableInterviewPlan jobId={data[0].job_id} />
+                {/* job level interview plan */}
+                <ReorderableInterviewPlan
+                  jobId={data[0].job_id}
+                  applicationId={null}
+                />
               </TabsContent>
             </Tabs>
           </Stack>
