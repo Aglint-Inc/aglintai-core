@@ -31,8 +31,6 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
-import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
@@ -47,17 +45,12 @@ import {
   setStepScheduling,
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
-import {
-  setSelectedSessionIds,
-  useSchedulingApplicationStore
-} from '../store';
+import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
 import { type ApiResponseFindAvailability } from '../types';
 import EmailPreview from './Components/EmailPriview';
 import {
-  createTask,
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
-  updateTask,
   useRequestAvailabilityContext,
 } from './RequestAvailabilityContext';
 import {
@@ -73,11 +66,8 @@ import {
 function RequestAvailability() {
   const { recruiter, recruiterUser } = useAuthDetails();
 
-  const {
-    requestSessionIds,
-    initialSessions,
-    selectedApplication,
-  } = useSchedulingApplicationStore();
+  const { requestSessionIds, initialSessions, selectedApplication } =
+    useSchedulingApplicationStore();
   const { scheduleFlow, updateRequestAvailibityId, selectedTaskId } =
     useSchedulingFlowStore();
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -182,36 +172,6 @@ function RequestAvailability() {
         });
         setRequestDetails(result);
 
-        const { data: requestData } = await axios.post(
-          `/api/scheduling/request_availability/getTaskIdDetailsByRequestId`,
-          {
-            request_id: updateRequestAvailibityId,
-          },
-        );
-        const task_id = requestData.id;
-        if (task_id) {
-          createTaskProgress({
-            data: {
-              created_by: {
-                id: recruiterUser.user_id,
-                name: getFullName(
-                  recruiterUser.first_name,
-                  recruiterUser.last_name,
-                ),
-              },
-              task_id: task_id,
-              progress_type: 'request_availability',
-            },
-            type: 're_request_availability',
-            optionData: {
-              assignerId: recruiterUser.user_id,
-              assignerName: getFullName(
-                recruiterUser.first_name,
-                recruiterUser.last_name,
-              ),
-            },
-          });
-        }
         await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
@@ -219,7 +179,7 @@ function RequestAvailability() {
           supabase: supabase,
           title: `Resend request availability to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
-          task_id: task_id,
+          task_id: null,
         });
       }
 
@@ -269,65 +229,7 @@ function RequestAvailability() {
           toast.message('Failed to send email');
         }
         // end
-        let task = null as null | DatabaseTable['new_tasks'];
-        if (markCreateTicket) {
-          if (selectedTaskId) {
-            task = await updateTask({
-              status: 'in_progress',
-              request_availability_id: result.id,
-              type: 'availability',
-            });
-          } else {
-            task = await createTask({
-              assignee: [recruiterUser.user_id],
-              created_by: recruiterUser.user_id,
-              name: `Request Availability ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.last_name)} - ${selectedApplication.public_jobs.job_title.trim()}.`,
-              agent: null,
-              application_id: selectedApplication.id,
-              due_date: selectedDate[0].toString(),
-              priority: 'medium',
-              recruiter_id: recruiter.id,
-              schedule_date_range: {
-                end_date: selectedDate[0].toString(),
-                start_date: selectedDate[1].toString(),
-              },
-              start_date: dayjs().toString(),
-              task_owner: recruiterUser.user_id,
 
-              status: 'in_progress',
-              type: 'availability',
-              request_availability_id: result.id,
-            });
-            await supabase.from('task_session_relation').insert(
-              localSessions.map((ele) => ({
-                session_id: ele.interview_session.id,
-                task_id: task.id,
-              })),
-            );
-          }
-
-          await createTaskProgress({
-            data: {
-              created_by: {
-                id: recruiterUser.user_id,
-                name: getFullName(
-                  recruiterUser.first_name,
-                  recruiterUser.last_name,
-                ),
-              },
-              task_id: task.id,
-              progress_type: 'request_availability',
-            },
-            type: 'request_availability',
-            optionData: {
-              sessions: selectedSessions as any as meetingCardType[],
-              candidateName: getFullName(
-                selectedApplication.candidates.first_name,
-                selectedApplication.candidates.last_name,
-              ),
-            },
-          });
-        }
         await addScheduleActivity({
           application_id: selectedApplication.id,
           created_by: recruiterUser.user_id,
@@ -338,7 +240,7 @@ function RequestAvailability() {
             selectedApplication.candidates.last_name,
           )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.interview_session.name).join(',')}`,
           module: 'scheduler',
-          task_id: task ? task.id : null,
+          task_id: null,
         });
       }
 

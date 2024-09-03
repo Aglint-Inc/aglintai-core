@@ -3,12 +3,9 @@ import {
   type DatabaseTableInsert,
   type SupabaseType,
 } from '@aglint/shared-types';
-import { type meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
-import { EmailAgentId, getFullName, PhoneAgentId } from '@aglint/shared-utils';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import { type SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
-import { createTaskProgress } from '@/src/components/Tasks/utils';
-import { agentsDetails } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 export const createTask = async ({
   selectedSessions,
@@ -18,6 +15,7 @@ export const createTask = async ({
   dateRange,
   filter_id,
   type,
+  // eslint-disable-next-line no-unused-vars
   recruiter_user_name,
   supabase,
   candidate_name,
@@ -78,50 +76,6 @@ export const createTask = async ({
     .from('task_session_relation')
     .insert(insertTaskSesRels)
     .throwOnError();
-
-  const { data: recUser } = await supabase
-    .from('recruiter_user')
-    .select(
-      'user_id, first_name, last_name, recruiter_relation!public_recruiter_relation_user_id_fkey(roles(name))',
-    )
-    .eq('user_id', rec_user_id)
-    .single()
-    .throwOnError();
-
-  console.log(recUser);
-
-  const assigner = agentsDetails.find((agent) => agent.user_id === assignee);
-
-  await createTaskProgress({
-    type: 'create_task',
-    data: {
-      progress_type: 'schedule',
-      created_by: { id: rec_user_id, name: recruiter_user_name },
-      task_id: task.id,
-    },
-    optionData: {
-      candidateName: candidate_name,
-      sessions: selectedSessions.map((ele) => ({
-        id: ele.interview_session.id,
-        name: ele.interview_session.name,
-      })) as meetingCardType[],
-      creatorDesignation: recUser.recruiter_relation[0].roles.name,
-      creatorName: getFullName(recUser.first_name, recUser.last_name),
-      assignerName:
-        type === 'user'
-          ? getFullName(recUser.first_name, recUser.last_name)
-          : getFullName(assigner.first_name, assigner.last_name),
-      creatorId: recUser.user_id,
-      assignerId: type === 'user' ? recUser.user_id : assigner.user_id,
-      scheduleDateRange: {
-        start_date: task.schedule_date_range.start_date,
-        end_date: task.schedule_date_range.end_date,
-      },
-    },
-    supabaseCaller: supabase,
-  });
-
-  console.log(`Created task ${task.id}`);
 
   return task;
 };

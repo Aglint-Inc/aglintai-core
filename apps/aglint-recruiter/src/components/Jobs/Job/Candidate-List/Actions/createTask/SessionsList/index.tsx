@@ -6,12 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { meetingCardType } from '@/src/components/Common/SessionCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import {
   type ApiRequestInterviewSessionTask,
   type ApiResponseInterviewSessionTask,

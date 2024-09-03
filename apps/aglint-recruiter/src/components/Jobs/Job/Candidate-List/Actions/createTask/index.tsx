@@ -5,8 +5,8 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ScheduleInterviewPop } from '@/devlink2/ScheduleInterviewPop';
 import { Skeleton } from '@/devlink2/Skeleton';
+import { meetingCardType } from '@/src/components/Common/SessionCard';
 import MemberList from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
-import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { useApplications } from '@/src/context/ApplicationsContext';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJob } from '@/src/context/JobContext';

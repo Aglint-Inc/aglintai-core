@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { DatePickerBody } from '@/devlink3/DatePickerBody';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
+import DateRange from '@/src/components/Common/DateRange';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
-import DateRange from '@/src/components/Tasks/Components/DateRange';
 
 import IconSessionType from '../../../../../Common/Icons/IconSessionType';
 import {
