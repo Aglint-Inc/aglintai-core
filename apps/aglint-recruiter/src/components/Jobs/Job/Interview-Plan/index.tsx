@@ -130,7 +130,7 @@ const InterviewPlanPage = () => {
         slotTopbarRight={<Settings />}
         slotBody={
           //cand and inter
-          <Stack>
+          <Stack className='p-4'>
             <Tabs defaultValue='candidate'>
               <TabsList>
                 <TabsTrigger defaultValue={'internal'} value='internal'>
@@ -139,7 +139,7 @@ const InterviewPlanPage = () => {
                 <TabsTrigger value='candidate'>Candidate</TabsTrigger>
               </TabsList>
               <TabsContent value='internal'>
-                <Stack gap={1} margin={2} width={'800px'}>
+                <Stack gap={1} className='max-w-2xl mt-8' >
                   {data?.length ? (
                     data.map((plan) => (
                       <InterviewPlan
