@@ -45,7 +45,6 @@ const toast = {
     createToast(message, {
       timeout: 3000,
       cancel: '✕',
-      default: '',
       type: 'dark',
     });
   },
