@@ -39,7 +39,7 @@ BEGIN
     LOOP
         -- Insert into interview_plan and get the inserted plan_id
         INSERT INTO interview_plan (name, plan_order, recruiter_id, application_id)
-        VALUES (int_plan_loop.name, int_plan_loop.plan_order, int_plan_loop.recruiter_id, NEW.id)
+        VALUES (int_plan_loop.name, int_plan_loop.plan_order, NEW.recruiter_id, NEW.id)
         RETURNING id INTO inserted_plan_id;
 
         FOR session_rec IN
@@ -60,8 +60,8 @@ BEGIN
         LOOP
             -- Insert interview meeting and session within a single SQL command using CTEs
             WITH inserted_meeting_cte AS (
-                INSERT INTO interview_meeting (status, application_id, recruiter_id)
-                VALUES ('not_scheduled', NEW.id, NEW.recruiter_id)
+                INSERT INTO interview_meeting (interview_schedule_id, status, application_id, recruiter_id, job_id)
+                VALUES (int_schedule_id, 'not_scheduled', NEW.id, NEW.recruiter_id, NEW.job_id)
                 RETURNING id
             ),
             inserted_session_cte AS (
