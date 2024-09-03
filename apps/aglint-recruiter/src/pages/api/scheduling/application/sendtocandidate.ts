@@ -10,7 +10,7 @@ import { createServerClient } from '@supabase/ssr';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
+import { selfScheduleMailToCandidate } from '@/src/utils/scheduling/mailUtils';
 import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
 import { scheduleDebrief } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';

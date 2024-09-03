@@ -1,4 +1,4 @@
-import {
+import type {
   EmailTemplateAPi,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
@@ -11,8 +11,8 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 
+import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
 
@@ -55,7 +55,6 @@ function FinalScreen() {
         setFetching(false);
       })
       .catch(() => {
-        
         // toast.error('Fail to fetch email preview');
         setFetching(false);
       });

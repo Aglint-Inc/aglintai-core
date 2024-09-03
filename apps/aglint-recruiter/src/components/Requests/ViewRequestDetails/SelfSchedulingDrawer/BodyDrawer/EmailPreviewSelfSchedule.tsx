@@ -1,4 +1,4 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
@@ -9,12 +9,12 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
 import { useMeetingList } from '../../hooks';
 import { setEmailData, useSelfSchedulingFlowStore } from '../store';
+import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 
 function EmailPreviewSelfSchedule() {
   const [fetching, setFetching] = useState(false);
@@ -84,7 +84,6 @@ function EmailPreviewSelfSchedule() {
             index={index}
             setSelectedCombIds={() => {}}
             isAutoCollapse={false}
-            isSelectedOptionsTextVisible={false}
           />
         );
       })}

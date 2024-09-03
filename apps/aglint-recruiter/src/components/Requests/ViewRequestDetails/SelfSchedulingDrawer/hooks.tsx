@@ -1,19 +1,18 @@
-import { APIFindAvailability } from '@aglint/shared-types';
+import { type APIFindAvailability } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { setNoSlotReasons } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiBodyParamsSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
-import { ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { type ApiBodyParamsSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
+import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { type ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import toast from '@/src/utils/toast';
 
 import { useMeetingList } from '../hooks';
 import { filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 import {
-  SelfSchedulingFlow,
+  type SelfSchedulingFlow,
   setAnchorEl,
   setAvailabilities,
   setCalendarDate,
@@ -26,6 +25,7 @@ import {
   setIsSelfScheduleDrawerOpen,
   setIsSendingToCandidate,
   setNoOptions,
+  setNoSlotsReasons,
   setResSendToCandidate,
   setSchedulingOptions,
   setStepScheduling,
@@ -99,7 +99,7 @@ export const useSelfSchedulingDrawer = ({
 
     // numberTotal is the total number of slots available (including conflicts)
     if (filterSlots.numberTotal < 5) {
-      setNoSlotReasons(
+      setNoSlotsReasons(
         filterSlots.combs.filter((comb) =>
           comb.plans.some((plan) => plan.no_slot_reasons.length > 0),
         ),
@@ -108,7 +108,7 @@ export const useSelfSchedulingDrawer = ({
       return;
     } else {
       setNoOptions(false);
-      setNoSlotReasons([]);
+      setNoSlotsReasons([]);
       setFilteredSchedulingOptions(filterSlots.combs);
     }
 

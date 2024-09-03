@@ -12,7 +12,7 @@ import {
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { selfScheduleMailToCandidate } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
+import { selfScheduleMailToCandidate } from '@/src/utils/scheduling/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

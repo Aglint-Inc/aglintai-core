@@ -1,21 +1,10 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import {
-  setIsScheduleNowOpen,
-  setRequestAvailibityId,
-  setScheduleFlow,
-  setStepScheduling,
-  setUpdateRequestAvailibityId,
-} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import {
-  setRequestSessionIds,
-  setSelectedSessionIds,
-} from '@/src/components/Scheduling/CandidateDetails/store';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 function RequestAvailabilityList({
@@ -58,7 +47,6 @@ function RequestAvailabilityList({
             size={1}
             onClickButton={{
               onClick: () => {
-                setRequestAvailibityId(selectedTask.request_availability_id);
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
@@ -73,18 +61,6 @@ function RequestAvailabilityList({
             size={1}
             onClickButton={{
               onClick: () => {
-                setIsScheduleNowOpen(true);
-                setStepScheduling('pick_date');
-                setScheduleFlow('update_request_availibility');
-                setSelectedSessionIds(
-                  selectedTask.session_ids.map((ele) => ele.id),
-                );
-                setRequestSessionIds(
-                  selectedTask.session_ids.map((ele) => ele.id),
-                );
-                setUpdateRequestAvailibityId(
-                  selectedTask.candidate_request_availability.id,
-                );
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );

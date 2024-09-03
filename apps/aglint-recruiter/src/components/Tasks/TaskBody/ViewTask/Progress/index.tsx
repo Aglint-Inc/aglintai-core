@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -22,11 +22,6 @@ import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import { TaskProgress } from '@/devlink3/TaskProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  setIsScheduleNowOpen,
-  setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import { setRescheduleSessionIds } from '@/src/components/Scheduling/CandidateDetails/store';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
@@ -42,7 +37,7 @@ import RequestAvailabilityList from './RequestAvailabilityList';
 import RequestAvailabilityResend from './RequestAvailabilityResend';
 import ScheduleNowCard from './ScheduleNowCard';
 import SelfScheduleResend from './SelfScheduleResend';
-import SessionCard, { meetingCardType } from './SessionCard';
+import SessionCard, { type meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
   const { tasks } = useTasksContext();
@@ -313,14 +308,6 @@ function SubTaskProgress() {
                                       textButton={'Reschedule'}
                                       onClickButton={{
                                         onClick: () => {
-                                          setRescheduleSessionIds(
-                                            sessionList.map(
-                                              (session) => session.id,
-                                            ),
-                                          );
-                                          setStepScheduling('reschedule');
-                                          // setSelectedApplicationLog(act);
-                                          setIsScheduleNowOpen(true);
                                           router.push(
                                             `/scheduling/application/${selectedTask.application_id}`,
                                           );

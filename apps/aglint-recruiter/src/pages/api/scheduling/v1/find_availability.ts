@@ -1,9 +1,16 @@
 /* eslint-disable no-console */
+import { type DateRangePlansType } from '@aglint/shared-types';
 import { schema_find_availability_payload } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+
+export type ApiResponseFindAvailability = {
+  slots: DateRangePlansType[];
+  availabilities: CandidatesSchedulingV2['calendar_events'];
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const parsedData = v.parse(schema_find_availability_payload, {
