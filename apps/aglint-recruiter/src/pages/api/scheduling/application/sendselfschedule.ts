@@ -100,6 +100,8 @@ const sendToCandidate = async ({
       interview_session_id: ses.interview_session.id,
       interview_meeting_id: ses.interview_meeting.id,
       interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+      job_id: ses.interview_meeting.job_id,
+      recruiter_id: ses.interview_meeting.recruiter_id,
     })),
     supabase: supabaseAdmin,
     meeting_flow: 'self_scheduling',
@@ -133,7 +135,6 @@ const sendToCandidate = async ({
     application_id,
     supabase: supabaseAdmin,
     created_by: recruiterUser.user_id,
-    task_id: null,
   });
 
   selfScheduleMailToCandidate({

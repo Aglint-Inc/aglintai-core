@@ -2,13 +2,9 @@
 import { type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import {
-  fetchApplicationDetails,
-  fetchSessionDetailsFromSchedule,
-} from '@/src/components/Scheduling/CandidateDetails/queries/utils';
-import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
+import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -108,26 +104,31 @@ export const scheduleWithAgent = async ({
   console.log(task_id, 'task_id');
 
   if (type) {
-    const resApplicationDetails = await fetchApplicationDetails({
-      application_id,
-      supabaseCaller: supabase,
-    });
+    const app = (
+      await supabaseAdmin
+        .from('applications')
+        .select('id,candidates(email),public_jobs(job_title)')
+        .eq('id', application_id)
+        .single()
+        .throwOnError()
+    ).data;
 
-    const sessionsWithPlan = await fetchSessionDetailsFromSchedule({
-      application_id,
-      supabaseCaller: supabase,
-    });
-
-    const selectedSessions = sessionsWithPlan.filter((ses) =>
-      session_ids.includes(ses.interview_session.id),
-    );
+    const sessions = (
+      await supabaseAdmin
+        .from('interview_session')
+        .select('*,interview_meeting(*)')
+        .in('id', session_ids)
+        .throwOnError()
+    ).data;
 
     await handleMeetingsOrganizerResetRelations({
       application_id,
-      selectedSessions: selectedSessions.map((ses) => ({
-        interview_session_id: ses.interview_session.id,
+      selectedSessions: sessions.map((ses) => ({
+        interview_session_id: ses.id,
         interview_meeting_id: ses.interview_meeting.id,
         interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        job_id: ses.interview_meeting.job_id,
+        recruiter_id: ses.interview_meeting.recruiter_id,
       })),
       supabase,
       meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',
@@ -151,14 +152,13 @@ export const scheduleWithAgent = async ({
       .throwOnError();
 
     await addScheduleActivity({
-      title: `Candidate invited for ${selectedSessions
-        .map((ses) => ses.interview_session.name)
+      title: `Candidate invited for ${sessions
+        .map((ses) => ses.name)
         .join(' , ')} via ${
         type === 'email_agent' ? 'email agent' : 'phone agent'
       }`,
       logged_by: 'user',
       application_id,
-      task_id,
       supabase,
       created_by: rec_user_id,
     });
@@ -166,12 +166,11 @@ export const scheduleWithAgent = async ({
     await agentTrigger({
       type,
       filterJsonId: filterJson.id,
-      task_id,
       recruiter_user_name,
       candidate_name,
       company_name,
-      jobRole: resApplicationDetails.public_jobs.job_title,
-      candidate_email: resApplicationDetails.candidates.email,
+      jobRole: app.public_jobs.job_title,
+      candidate_email: app.candidates.email,
       rec_user_phone,
       recruiter_user_id: rec_user_id,
     });

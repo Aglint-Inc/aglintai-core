@@ -22,7 +22,6 @@ import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
 import { TaskProgress } from '@/devlink3/TaskProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -567,3 +566,37 @@ async function getSessionsList(taskId: string) {
 
   return data.session_ids as meetingCardType[];
 }
+
+export const fetchInterviewMeetingProgresstask = async ({
+  session_ids,
+}: {
+  session_ids: string[];
+}) => {
+  try {
+    const { data: intSes, error: errSes } = await supabase
+      .from('interview_session')
+      .select('*,interview_meeting(*)')
+      .in('id', session_ids);
+
+    if (errSes) throw new Error(errSes.message);
+
+    const { data: intSesRel, error: errSesRel } = await supabase
+      .from('interview_session_relation')
+      .select('*,interview_module_relation(*,recruiter_user(*))')
+      .in('session_id', session_ids);
+
+    if (errSesRel) throw new Error(errSesRel.message);
+
+    const resMeetings = intSes.map((session) => ({
+      interview_session: session,
+      interview_meeting: session.interview_meeting,
+      interview_session_relation: intSesRel.filter(
+        (rel) => rel.session_id === session.id,
+      ),
+    }));
+
+    return resMeetings;
+  } catch (e) {
+    //
+  }
+};

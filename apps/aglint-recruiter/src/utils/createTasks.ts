@@ -74,7 +74,6 @@ export const createTasks = async (
       title: `Task assigned to ${assignerName} for scheduling ${session_ids.map((ele) => ele.name).join(',')}`,
       description: '',
       metadata: null,
-      task_id: eachTask.id,
       module: 'scheduler',
     });
   }

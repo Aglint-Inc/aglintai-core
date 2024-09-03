@@ -78,7 +78,6 @@ export const selfScheduleAgent = async ({
   } else {
     const bodyParams: InitAgentBodyParams = {
       filter_json_id: filter_json.id,
-      task_id: new_task.id,
       recruiter_user_id: agent_assigned_user_id,
     };
     await axios.post(
