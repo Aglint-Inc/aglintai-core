@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       event_run_id: req.body.event_run_id,
       event_type: eventAction,
     });
+    await reqProgressLogger.resetEventProgress();
 
     const [request_rec] = supabaseWrap(
       await supabaseAdmin
@@ -78,7 +79,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         reqProgressLogger,
       },
       reqProgressLogger,
-      {},
     );
 
     let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =

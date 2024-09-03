@@ -53,6 +53,7 @@ export const createRequestProgressLogger = ({
             ...(payload.meta ?? {}),
             event_run_id,
           },
+          log: payload.log,
           id: progress_id,
           event_type: event_type,
           status: payload.status,
@@ -88,7 +89,6 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
 ): Promise<U> {
   let progress_id = uuidv4();
   try {
-    await logger.resetEventProgress();
     await logger({
       ...(logger_args ?? {}),
       status: 'in_progress',

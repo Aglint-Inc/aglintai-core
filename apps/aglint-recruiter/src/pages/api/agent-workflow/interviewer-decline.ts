@@ -27,6 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } = req.body;
 
   try {
+    await reqProgressLogger.resetEventProgress();
+
     if (target_api === 'onRequestInterviewerDecline_agent_changeInterviewer') {
       await executeWorkflowAction(
         changeInterviewer,
