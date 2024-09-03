@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
-import Image from 'next/image';
 import React, { type FC, memo } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
