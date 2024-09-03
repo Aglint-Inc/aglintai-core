@@ -112,15 +112,6 @@ export const navList: {
     active: ['/company'],
   },
   {
-    text: 'Tasks',
-    SubComponents: null,
-    route: ROUTES['/tasks']() + '?myTasks',
-    comingSoon: false,
-    isVisible: false,
-    permission: ['task_module'],
-    active: ['/tasks'],
-  },
-  {
     text: 'Candidates',
     SubComponents: null,
     route: ROUTES['/scheduling/application'](),
