@@ -6,6 +6,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { apiTargetToEvents } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findCandSelectedSlots } from '@/src/services/api-schedulings/findCandSelectedSlots';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
@@ -25,8 +26,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     request_id,
     event_run_id,
     supabaseAdmin,
+    event_type: apiTargetToEvents[target_api],
   });
-
+  const [request_rec] = supabaseWrap(
+    await supabaseAdmin
+      .from('request')
+      .select('*,recruiter_user!request_assignee_id_fkey(*)')
+      .eq('id', request_id),
+  );
+  let request_assigner_tz =
+    request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
   const ai_response = payload.ai_response;
   const [avail_record] = supabaseWrap(
     await supabaseAdmin
@@ -61,15 +70,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_id: recruiter_id,
       start_date_str: avail_record.date_range[0],
       end_date_str: avail_record.date_range[1],
-      req_user_tz: 'Asia/Colombo',
+      req_user_tz: request_assigner_tz,
       session_ids,
       reqProgressLogger,
       ai_response,
+      request_assigner_tz,
     },
     reqProgressLogger,
-    {
-      event_type: 'FIND_SUITABLE_SLOTS',
-    },
   );
 
   if (target_api === 'onReceivingAvailReq_agent_confirmSlot') {
@@ -90,9 +97,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         reqProgressLogger,
       },
       reqProgressLogger,
-      {
-        event_type: 'SELF_SCHEDULE_LINK',
-      },
     );
   }
   return res.status(200).end();

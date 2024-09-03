@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     request_id: req.body.request_id,
     event_run_id: req.body.event_run_id,
     supabaseAdmin: supabaseAdmin,
+    event_type: 'CANCEL_INTERVIEW_MEETINGS',
   });
   try {
     const { session_ids, target_api } = v.parse(
@@ -28,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         cancelInterviews,
         { session_ids },
         reqProgressLogger,
-        { event_type: 'CANCEL_INTERVIEW_MEETINGS' },
+        {},
       );
     }
 

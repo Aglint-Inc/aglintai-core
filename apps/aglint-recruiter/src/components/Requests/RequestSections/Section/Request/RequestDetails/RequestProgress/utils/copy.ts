@@ -16,12 +16,7 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'The availability request will be cancelled.',
     error: 'There was an error cancelling the availability request.',
   },
-  FIND_CURR_AVAIL_SLOTS: {
-    past: 'Current available slots were found.',
-    present: 'Finding current available slots.',
-    future: 'Current available slots will be found.',
-    error: 'There was an error finding the current available slots.',
-  },
+
   REQ_CAND_AVAIL_EMAIL_LINK: {
     past: 'The candidate availability email link was requested.',
     present: 'Requesting candidate availability email link.',
@@ -34,12 +29,6 @@ export const workflowCopy: WorkflowCopyType = {
     present: 'Receiving candidate availability.',
     future: 'Candidate availability will be received.',
     error: 'There was an error receiving the candidate availability.',
-  },
-  FIND_SUITABLE_SLOTS: {
-    past: 'Suitable slots were found.',
-    present: 'Finding suitable slots.',
-    future: 'Suitable slots will be found.',
-    error: 'There was an error finding suitable slots.',
   },
   SELF_SCHEDULE_LINK: {
     past: 'The self-scheduling link was sent.',

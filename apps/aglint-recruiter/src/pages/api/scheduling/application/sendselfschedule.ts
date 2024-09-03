@@ -41,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reqProgressLogger = createRequestProgressLogger({
     supabaseAdmin,
     request_id: bodyParams.request_id,
+    event_type: 'SELF_SCHEDULE_LINK',
   });
 
   try {
@@ -51,9 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         reqProgressLogger,
       },
       reqProgressLogger,
-      {
-        event_type: 'SELF_SCHEDULE_LINK',
-      },
     );
 
     res.status(200).send(resSendToCandidate);
@@ -143,7 +141,6 @@ const sendToCandidate = async ({
   await reqProgressLogger({
     status: 'completed',
     is_progress_step: true,
-    event_type: 'SELF_SCHEDULE_LINK',
     meta: {
       event_run_id: null,
       filter_json_id: filterJson[0].id,
