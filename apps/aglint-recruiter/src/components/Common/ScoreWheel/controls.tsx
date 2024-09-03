@@ -1,73 +1,59 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
-import Slider from '@mui/material/Slider';
 import { capitalize } from 'lodash';
-import { type Dispatch, type SetStateAction } from 'react';
+import { RefreshCw } from 'lucide-react';
+import React from 'react';
 
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
 
-import { type ScoreWheelParams,scoreWheelDependencies } from '.';
+import { type ScoreWheelParams, scoreWheelDependencies } from '.';
 
 const ScoreWheelControls = ({
   weights,
   setWeights,
 }: {
   weights: ScoreWheelParams;
-  setWeights: Dispatch<SetStateAction<ScoreWheelParams>>;
+  setWeights: React.Dispatch<React.SetStateAction<ScoreWheelParams>>;
 }) => {
-  const limit = Object.values(weights).reduce((acc, curr) => {
-    acc -= curr;
-    return acc;
-  }, 100);
-  const sliders = scoreWheelDependencies.parameterOrder.map((key, i) => (
-    <ScoreWheelSlider
-      key={i}
-      id={i}
-      label={key}
-      weight={weights[key]}
-      limit={limit}
-      setWeights={setWeights}
-      color={
-        scoreWheelDependencies.wheelColors[
-          i % scoreWheelDependencies.wheelColors.length
-        ]
-      }
-    />
-  ));
+  const limit = Object.values(weights).reduce((acc, curr) => acc - curr, 100);
+
   const handleEqualise = () => {
     const count = Object.keys(weights).length;
-    const newWeights = Object.assign(
-      {},
-      ...Object.keys(weights).reduce(
-        (acc, curr, i) => {
-          const currentScore = Math.trunc(100 / count);
-          if (i === count - 1) {
-            return {
-              ...acc,
-              weights: [...acc.weights, { [curr]: acc.residue }],
-              residue: 0,
-            };
-          } else {
-            return {
-              ...acc,
-              weights: [...acc.weights, { [curr]: currentScore }],
-              residue: acc.residue - currentScore,
-            };
-          }
-        },
-        { weights: [], residue: 100 },
-      ).weights,
+    const newWeights = Object.fromEntries(
+      Object.keys(weights).map((key, index) => {
+        const currentScore = Math.trunc(100 / count);
+        return [
+          key,
+          index === count - 1 ? 100 - (count - 1) * currentScore : currentScore,
+        ];
+      }),
     );
-    setWeights(newWeights);
+    setWeights(newWeights as ScoreWheelParams);
   };
+
   return (
-    <Stack gap={2} display={'flex'} alignItems={'flex-start'}>
-      {sliders}
-      <ButtonPrimaryOutlinedRegular
-        buttonText={'Reset'}
-        buttonProps={{ onClick: () => handleEqualise() }}
-      />
-    </Stack>
+    <Card className='p-6 space-y-6'>
+      {scoreWheelDependencies.parameterOrder.map((key, i) => (
+        <ScoreWheelSlider
+          key={i}
+          id={i}
+          label={key}
+          weight={weights[key]}
+          limit={limit}
+          setWeights={setWeights}
+          color={
+            scoreWheelDependencies.wheelColors[
+              i % scoreWheelDependencies.wheelColors.length
+            ]
+          }
+        />
+      ))}
+      <Button variant='outline' onClick={handleEqualise} className='w-full'>
+        <RefreshCw className='w-4 h-4 mr-2' />
+        Reset
+      </Button>
+    </Card>
   );
 };
 
@@ -75,47 +61,35 @@ const ScoreWheelSlider = ({
   id,
   label,
   weight,
-  limit,
   setWeights,
   color,
 }: {
-  id;
+  id: number;
   label: string;
   weight: number;
   limit: number;
-  setWeights: Dispatch<SetStateAction<ScoreWheelParams>>;
+  setWeights: React.Dispatch<React.SetStateAction<ScoreWheelParams>>;
   color: string;
 }) => {
-  let marks = [];
-  for (let i = 0; i <= limit + weight; i++) marks.push({ value: i });
-  const handleChange = (e: any) => {
-    setWeights((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
+  const handleChange = (value: number[]) => {
+    setWeights((prev) => ({ ...prev, [label]: value[0] }));
   };
+
   return (
-    <Stack width={'550px'} flexDirection={'row'} alignItems={'center'}>
-      <Stack fontWeight={600}>{capitalize(label)}</Stack>
-      <Stack width={'300px'} ml={'auto'}>
-        <Slider
-          id={`ScoreWheelSliders${id}`}
-          name={label}
-          valueLabelDisplay='auto'
-          value={weight}
-          min={0}
-          max={100}
-          step={null}
-          marks={marks}
-          onChange={(e) => handleChange(e)}
-          sx={{ color: color }}
-        />
-      </Stack>
-      <Stack
-        fontWeight={600}
-        width={'80px'}
-        textAlign={'right'}
-      >{`${weight}%`}</Stack>
-    </Stack>
+    <div className='flex items-center space-x-4'>
+      <div className='font-semibold w-24'>{capitalize(label)}</div>
+      <Slider
+        id={`ScoreWheelSliders${id}`}
+        value={[weight]}
+        min={0}
+        max={100}
+        step={1}
+        onValueChange={handleChange}
+        className={`flex-grow ${color}`}
+      />
+      <div className='font-semibold w-16 text-right'>{`${weight}%`}</div>
+    </div>
   );
 };
+
 export default ScoreWheelControls;

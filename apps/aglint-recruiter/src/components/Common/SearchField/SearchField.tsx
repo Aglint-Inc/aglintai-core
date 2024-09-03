@@ -1,57 +1,55 @@
-//new component
-import { InputAdornment, Stack } from '@mui/material';
+import { Search, X } from 'lucide-react';
 import React from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-import UITextField from '../UITextField';
+interface SearchFieldProps {
+  value: string;
+  onChange: () => void;
+  onClear: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  placeholder?: string;
+  isFullWidth?: boolean;
+}
 
-export default function SearchField({
+const SearchField: React.FC<SearchFieldProps> = ({
   value,
   onChange,
   onClear,
   onFocus,
   onBlur,
-  placeholder,
+  placeholder = '',
   isFullWidth = false,
-}: {
-  value: string;
-  placeholder?: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onClear: any;
-  isFullWidth?: boolean;
-  onFocus?: () => void;
-  onBlur?: () => void;
-}) {
+}) => {
   return (
-    <UITextField
-      height={26}
-      width={isFullWidth ? undefined : '250px'}
-      fullWidth={isFullWidth}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      InputProps={{
-        endAdornment: value ? (
-          <Stack
+    <div className={`relative ${isFullWidth ? 'w-full' : 'w-[250px]'}`}>
+      <Input
+        type='text'
+        className='pr-10'
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+      <div className='absolute inset-y-0 right-0 flex items-center pr-3'>
+        {value ? (
+          <Button
+            variant='ghost'
+            size='icon'
             onClick={onClear}
-            sx={{
-              '&:hover': {
-                backgroundColor: 'var(--neutral-3)',
-                cursor: 'pointer',
-              },
-            }}
+            className='h-8 w-8 hover:bg-neutral-200'
           >
-            <GlobalIcon iconName='close' size={5} />
-          </Stack>
+            <X className='h-4 w-4' />
+          </Button>
         ) : (
-          <InputAdornment position='end'>
-            <GlobalIcon iconName='search' size='5' />
-          </InputAdornment>
-        ),
-      }}
-      placeholder={placeholder || ''}
-      value={value}
-      onChange={onChange}
-    />
+          <Search className='h-4 w-4 text-gray-400' />
+        )}
+      </div>
+    </div>
   );
-}
+};
+
+export default SearchField;

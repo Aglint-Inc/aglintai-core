@@ -27,6 +27,7 @@ function ImageUploadManual({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>();
+  const [isStackHovered, setIsStackHovered] = useState(false);
 
   const [initImage, setInitImage] = useState<any>(image);
 
