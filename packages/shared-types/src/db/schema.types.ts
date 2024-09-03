@@ -1453,7 +1453,6 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
-          schedule_request_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1471,7 +1470,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          schedule_request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1489,7 +1487,6 @@ export type Database = {
           meeting_json?: Json | null
           meeting_link?: string | null
           organizer_id?: string | null
-          schedule_request_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1819,6 +1816,88 @@ export type Database = {
           },
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_progress: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: number
+          is_completed: boolean | null
+          job_id: string | null
+          name: string | null
+          order: number | null
+          update_at: string | null
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: number
+          is_completed?: boolean | null
+          job_id?: string | null
+          name?: string | null
+          order?: number | null
+          update_at?: string | null
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: number
+          is_completed?: boolean | null
+          job_id?: string | null
+          name?: string | null
+          order?: number | null
+          update_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_progress_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_progress_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_progress_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_progress_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "interview_progress_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_progress_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "public_jobs"
