@@ -12,6 +12,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,6 +70,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const [steps, setSteps] = useState<Step>([]);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [newStep, setNewStep] = useState<Step[number]>({
     icon: '',
     job_id: jobId,
@@ -80,8 +82,10 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (data) {
-      setSteps(data);
+    if (data?.length > 0) {
+      const sorted = data.sort((a, b) => a.order - b.order);
+
+      setSteps(sorted);
     }
     if (data?.length === 0) setIsAddOpen(true);
   }, [data]);
@@ -128,8 +132,9 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
 
   const handleAddStep = async () => {
     if (newStep.name && newStep.description) {
-      const order_id = data?.length ? data[data?.length - 1].order + 1 : 1;
-
+      const order_id = steps?.length
+        ? steps.sort((a, b) => a.order - b.order)[steps?.length - 1].order + 1
+        : 1;
       const { error } = await supabase.from('interview_progress').insert({
         name: newStep.name,
         job_id: jobId,
@@ -214,12 +219,11 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
           >
             <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
               <Icon strokeWidth={1.5} className='h-5 w-5 text-primary' />
-              {/*  {isNewStep ? (isAddOpen ? '-' : '+') : ''} */}
             </div>
 
             {/* {step.order} */}
           </div>
-          {index < steps.length && (
+          {index < steps.length && !isDragging && (
             <div
               className='h-full mx-auto bg-gray-300'
               style={{ width: '1px' }}
@@ -368,14 +372,97 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
     );
   };
 
-  const interviewStages = steps?.length
-    ? steps.sort((a, b) => a.order - b.order)
-    : [];
+  const reorder = ({
+    list,
+    startIndex,
+    endIndex,
+  }: {
+    list: Step;
+    startIndex: number;
+    endIndex: number;
+  }) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const onDragEnd = async (result) => {
+    setIsDragging(false);
+    if (!result.destination) {
+      return;
+    }
+
+    const newItems = reorder({
+      list: steps,
+      startIndex: result.source.index,
+      endIndex: result.destination.index,
+    });
+
+    setSteps(newItems);
+
+    // update order in db
+    const updates = newItems.map((step, i) => ({ id: step.id, order: i + 1 }));
+
+    const promises = updates.map((item) =>
+      supabase
+        .from('interview_progress')
+        .update({ order: item.order })
+        .eq('id', item.id),
+    );
+    await Promise.all(promises);
+  };
+
+  const onDragStart = () => {
+    setIsDragging(true);
+  };
 
   return (
     <div className='max-w-2xl mt-8'>
       <div className='relative' ref={timelineRef}>
-        {interviewStages.map((step, index) => renderStep(step, index))}
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+          <Droppable droppableId='droppable'>
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                style={{
+                  backgroundColor: snapshot.isDraggingOver ? '#ebebeb' : '',
+                  marginBlock: snapshot.isDraggingOver ? 5 : 0,
+                }}
+                ref={provided.innerRef}
+              >
+                {steps.map((step, index) => (
+                  <Draggable
+                    key={step.id}
+                    draggableId={String(step.id)}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          backgroundColor: isDragging ? 'white' : '',
+                          paddingTop: snapshot.isDragging ? 5 : '',
+                          borderRadius: 8,
+                          boxShadow: snapshot.isDragging
+                            ? 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
+                            : '',
+                          paddingLeft: snapshot.isDragging ? 5 : '',
+                          ...provided.draggableProps.style,
+                        }}
+                      >
+                        {renderStep(step, index)}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         {renderStep(newStep, steps.length)}
       </div>
     </div>
