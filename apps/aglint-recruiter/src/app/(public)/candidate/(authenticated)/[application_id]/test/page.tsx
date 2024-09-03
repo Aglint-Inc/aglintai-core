@@ -1,7 +1,8 @@
 import React from 'react'
 
 import InterviewProgressCard from '@/src/components/CandiatePortal/components/InterviewProgressCard'
-import MessageCard from '@/src/components/CandiatePortal/components/MessageCard'
+import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
+
 
 const interviews = [
   {

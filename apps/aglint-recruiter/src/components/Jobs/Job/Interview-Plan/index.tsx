@@ -13,6 +13,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -20,7 +30,6 @@ import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
@@ -60,7 +69,6 @@ import InterviewDeletePopup, {
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
-import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
@@ -227,29 +235,27 @@ const AddStageComponent = () => {
 const BreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
+
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Interview Plan`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Interview Plan</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

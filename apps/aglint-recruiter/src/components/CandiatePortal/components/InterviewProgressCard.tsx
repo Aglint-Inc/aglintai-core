@@ -7,7 +7,6 @@ import { dayjsLocal } from '@aglint/shared-utils';
 
 interface Interview {
   name: string;
-  time: string;
   date: string;
   status:
     | 'Scheduled'
@@ -30,7 +29,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
 
   const isActive =
     status === 'Scheduled' || status === 'Completed' || status === 'Upcoming';
-  const cardClasses = `w-full mb-6 ${isActive ? '' : 'opacity-50 cursor-not-allowed'}`;
+  const cardClasses = `w-full mb-3 ${isActive ? '' : 'opacity-50 cursor-not-allowed'}`;
 
   return (
     <div className='flex flex-row gap-2'>
