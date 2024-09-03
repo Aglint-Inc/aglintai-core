@@ -33,12 +33,10 @@ export const navList: {
     active: [
       '/jobs',
       '/jobs/[id]',
-      '/jobs/[id]/assessment',
       '/jobs/[id]/email-templates',
       '/jobs/[id]/hiring-team',
       '/jobs/[id]/interview-plan',
       '/jobs/[id]/profile-score',
-      '/jobs/[id]/screening',
       '/jobs/[id]/workflows',
       '/jobs/[id]/metrics',
       '/jobs/[id]/application/[application_id]',
