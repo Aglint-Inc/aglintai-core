@@ -1,13 +1,12 @@
-import { Building2, RotateCw, Trash2, Upload, UserCircle } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { Building2, Loader2, RotateCw, Trash2, Upload, UserCircle } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { useToast } from '@/components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import ROUTES from '@/src/utils/routing/routes';
+import toast from '@/src/utils/toast';
 
 function ImageUploadManual({
   image,
@@ -21,7 +20,7 @@ function ImageUploadManual({
   setChanges?: () => void;
 }) {
   const router = useRouter();
-  const [isStackHovered, setIsStackHovered] = useState<boolean>();
+  const [isHovered, setIsHovered] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>();
 
   const [initImage, setInitImage] = useState<any>(image);
