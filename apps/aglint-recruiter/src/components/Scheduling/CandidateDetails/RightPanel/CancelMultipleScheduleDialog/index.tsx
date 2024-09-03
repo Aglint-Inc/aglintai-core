@@ -101,6 +101,8 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
         status: 'cancelled',
         interview_schedule_id: ses.interview_meeting.interview_schedule_id,
         application_id: selectedApplication.id,
+        job_id: selectedApplication.job_id,
+        recruiter_id: selectedApplication.recruiter_id,
       }));
 
     const { error: errMeet } = await supabase
@@ -149,6 +151,8 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
         status: 'cancelled',
         interview_schedule_id: ses.interview_meeting.interview_schedule_id,
         application_id: selectedApplication.id,
+        job_id: selectedApplication.job_id,
+        recruiter_id: selectedApplication.recruiter_id,
       }));
 
     const { error: errMeet } = await supabase

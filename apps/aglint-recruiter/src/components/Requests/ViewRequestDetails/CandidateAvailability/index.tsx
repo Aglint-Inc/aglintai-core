@@ -129,6 +129,8 @@ function CandidateAvailability({
     }
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
+      job_id: selectedRequest.applications.job_id,
+      recruiter_id: selectedRequest.applications.recruiter_id,
       meeting_flow: 'candidate_request',
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
