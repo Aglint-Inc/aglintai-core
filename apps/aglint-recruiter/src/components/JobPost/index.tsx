@@ -34,6 +34,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 import Footer from '../Common/Footer';
+import Icon from '../Common/Icons/Icon';
 import UploadDB from './UploadDB';
 
 type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
