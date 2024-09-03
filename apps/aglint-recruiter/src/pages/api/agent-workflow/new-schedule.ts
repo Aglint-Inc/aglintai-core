@@ -11,21 +11,14 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
+import { apiTargetToEvents } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
 import { candidateAvailRequest } from '@/src/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/src/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/src/services/api-schedulings/candidateSelfSchedule';
 import { findPlanCombs } from '@/src/services/api-schedulings/findPlanCombs';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-const TIME_ZONE = 'Asia/Colombo';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
-    request_id: req.body.request_id,
-    supabaseAdmin,
-    event_run_id: req.body.event_run_id,
-    target_api: req.body.target_api,
-  });
-
   try {
     const {
       api_options,
@@ -35,19 +28,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       request_id,
     } = v.parse(candidate_new_schedule_schema, req.body);
+    const eventAction = apiTargetToEvents[target_api];
+
+    let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: req.body.request_id,
+      supabaseAdmin,
+      event_run_id: req.body.event_run_id,
+      event_type: eventAction,
+    });
+    await reqProgressLogger.resetEventProgress();
+
     const [request_rec] = supabaseWrap(
-      await supabaseAdmin.from('request').select().eq('id', request_id),
+      await supabaseAdmin
+        .from('request')
+        .select('*,recruiter_user!request_assignee_id_fkey(*)')
+        .eq('id', request_id),
     );
+    let request_assigner_tz =
+      request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
     let date_range = {
       start_date_str: dayjsLocal().format('DD/MM/YYYY'),
       end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
     };
     if (request_rec.schedule_start_date && request_rec.schedule_end_date) {
       date_range.start_date_str = dayjsLocal(request_rec.schedule_start_date)
-        .tz(TIME_ZONE)
+        .tz(request_assigner_tz)
         .format('DD/MM/YYYY');
       date_range.end_date_str = dayjsLocal(request_rec.schedule_end_date)
-        .tz(TIME_ZONE)
+        .tz(request_assigner_tz)
         .format('DD/MM/YYYY');
     }
     const api_target = target_api as DatabaseEnums['email_slack_types'];
@@ -71,9 +79,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         reqProgressLogger,
       },
       reqProgressLogger,
-      {
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-      },
     );
 
     let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =
@@ -95,7 +100,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           application_id,
         },
         reqProgressLogger,
-        { event_type: 'SELF_SCHEDULE_LINK' }, //TODO: mention
       );
     } else if (
       api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'
@@ -112,9 +116,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           reqProgressLogger,
         },
         reqProgressLogger,
-        {
-          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-        },
       );
     } else if (
       api_target === 'onRequestReschedule_emailLink_resendAvailRequest'
@@ -130,9 +131,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           request_id: request_id,
         },
         reqProgressLogger,
-        {
-          event_type: 'RESEND_CAND_AVAIL_EMAIL_LINK',
-        },
       );
       meeting_flow = 'candidate_request';
     } else {

@@ -4600,7 +4600,7 @@ export type Database = {
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id: string | null
-          title: string | null
+          title: string
           trigger: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type: Database["public"]["Enums"]["workflow_type"]
         }
@@ -4614,7 +4614,7 @@ export type Database = {
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id?: string | null
-          title?: string | null
+          title?: string
           trigger: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type?: Database["public"]["Enums"]["workflow_type"]
         }
@@ -4628,7 +4628,7 @@ export type Database = {
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           request_id?: string | null
-          title?: string | null
+          title?: string
           trigger?: Database["public"]["Enums"]["workflow_trigger"]
           workflow_type?: Database["public"]["Enums"]["workflow_type"]
         }
@@ -7348,3 +7348,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+

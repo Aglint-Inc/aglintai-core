@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 
-export interface SelfSchedulingFlow {
+export interface CandidateAvailabilityFlow {
   candidateAvailabilityDrawerOpen: boolean;
   reRequestAvailability: boolean;
   candidateAvailabilityIdForReRequest: string;
 }
 
-const initialState: SelfSchedulingFlow = {
+const initialState: CandidateAvailabilityFlow = {
   candidateAvailabilityDrawerOpen: false,
   reRequestAvailability: false,
   candidateAvailabilityIdForReRequest: '',
 };
 
 export const useCandidateAvailabilitySchedulingFlowStore =
-  create<SelfSchedulingFlow>()(() => ({
+  create<CandidateAvailabilityFlow>()(() => ({
     ...initialState,
   }));
 

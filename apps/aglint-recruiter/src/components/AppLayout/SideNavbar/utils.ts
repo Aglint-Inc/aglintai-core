@@ -111,16 +111,4 @@ export const navList: {
     permission: ['company_settings_module'],
     active: ['/company'],
   },
-  {
-    text: 'Candidates',
-    SubComponents: null,
-    route: ROUTES['/scheduling/application'](),
-    comingSoon: false,
-    isVisible: false,
-    permission: ['scheduling_actions'],
-    active: [
-      '/scheduling/application',
-      '/scheduling/application/[application_id]',
-    ],
-  },
 ];

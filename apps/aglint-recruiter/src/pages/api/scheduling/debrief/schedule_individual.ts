@@ -9,8 +9,9 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+import { ApiResponseFindAvailability } from '../v1/find_availability';
 
 export type ApiBodyParamScheduleIndividual = {
   session_id: string;

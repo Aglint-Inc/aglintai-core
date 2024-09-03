@@ -81,7 +81,6 @@ export const candidateAvailRequest = async ({
     },
   );
   await reqProgressLogger({
-    event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
     is_progress_step: true,
     meta: {
       avail_req_id: avail_req.id,

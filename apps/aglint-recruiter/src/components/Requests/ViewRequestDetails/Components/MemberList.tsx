@@ -9,11 +9,13 @@ import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import axios from '@/src/client/axios';
-import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import {
+  type BodyParamsFetchUserDetails,
+  type CompanyMembersAPI,
+} from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
-
+type MemberType = CompanyMembersAPI[number];
 function MemberList({
   members,
   selectedMemberId,
