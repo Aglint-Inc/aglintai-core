@@ -1,4 +1,7 @@
-import { type holidayType, type schedulingSettingType } from '@aglint/shared-types';
+import {
+  type holidayType,
+  type schedulingSettingType,
+} from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
   Alert,
@@ -368,15 +371,11 @@ function InterviewerLevelSettings({
                 renderInput={(params) => {
                   return (
                     <UITextField
-                      rest={{ ...params }}
+                      {...params}
                       labelSize='medium'
                       // fullWidth
                       label=''
                       placeholder='Ex. Healthcare'
-                      InputProps={{
-                        ...params.InputProps,
-                        autoComplete: 'new-password',
-                      }}
                     />
                   );
                 }}

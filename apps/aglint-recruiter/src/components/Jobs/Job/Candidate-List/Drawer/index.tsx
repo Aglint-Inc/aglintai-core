@@ -8,12 +8,7 @@ import { getActiveSection } from '@/src/context/JobsContext/hooks';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const Drawer = () => {
-  const {
-    isAssessmentEnabled,
-    isSchedulingEnabled,
-    isScoringEnabled,
-    isScreeningEnabled,
-  } = useRolesAndPermissions();
+  const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();
 
   const {
     job,
@@ -35,10 +30,10 @@ const Drawer = () => {
 
   const tabs: Parameters<typeof Application>[0]['placeholderData']['tabs'] =
     getActiveSection({
-      isAssessmentEnabled,
+      isAssessmentEnabled: false,
       isSchedulingEnabled,
       isScoringEnabled,
-      isScreeningEnabled,
+      isScreeningEnabled: false,
       job,
     });
 

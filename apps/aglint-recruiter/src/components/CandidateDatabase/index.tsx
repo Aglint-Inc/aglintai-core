@@ -15,7 +15,6 @@ import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
 import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
 import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
 import { ClearHistory } from '@/devlink/ClearHistory';
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedList } from '@/devlink/SavedList';
@@ -418,16 +417,15 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: async (e) => {
-                                if (e.code === 'Enter') {
-                                  await getCandsFromApi();
+                            onKeyDown={(e) => {
+                              if (e.code === 'Enter') {
+                                getCandsFromApi().then(() =>
                                   localStorage.setItem(
                                     'discoverTalent',
                                     'true',
-                                  );
-                                }
-                              },
+                                  ),
+                                );
+                              }
                             }}
                           />
                         }
@@ -474,26 +472,24 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: async (e) => {
-                                if (e.code === 'Enter') {
-                                  if (isCandidates) {
-                                    await getMatchingCandsFromQry();
-                                    localStorage.setItem(
-                                      'talentRediscovery',
-                                      'true',
-                                    );
-                                  } else {
-                                    toast({
-                                      variant: 'destructive',
-                                      title: 'Error',
-                                      description:
-                                        'No candidates are linked to the jobs. Please add candidates.',
-                                    });
-                                  }
-                                }
-                              },
-                            }}
+                            // onKeyDown={(e) => {
+                            //   if (e.code === 'Enter') {
+                            //     if (isCandidates) {
+                            //       await getMatchingCandsFromQry();
+                            //       localStorage.setItem(
+                            //         'talentRediscovery',
+                            //         'true',
+                            //       );
+                            //     } else {
+                            //       toast({
+                            //         variant: 'destructive',
+                            //         title: 'Error',
+                            //         description:
+                            //           'No candidates are linked to the jobs. Please add candidates.',
+                            //       });
+                            //     }
+                            //   }
+                            // }}
                           />
                         }
                       />
@@ -545,31 +541,31 @@ function CandidateSearchHistory() {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                             }}
-                            InputProps={{
-                              onKeyDown: (e) => {
-                                if (e.code === 'Enter') {
-                                  if (currentTab === 'talent rediscovery') {
-                                    getMatchingCandsFromQry();
-                                  } else {
-                                    getCandsFromApi();
-                                  }
+                            onKeyDown={(e) => {
+                              if (e.code === 'Enter') {
+                                if (currentTab === 'talent rediscovery') {
+                                  getMatchingCandsFromQry();
+                                } else {
+                                  getCandsFromApi();
                                 }
-                              },
-                              endAdornment: searchQuery && (
-                                <Stack
-                                  onClick={() => setSearchQuery('')}
-                                  sx={{
-                                    p: '3px',
-                                    '&:hover': {
-                                      backgroundColor: 'var(--neutral-3)',
-                                      cursor: 'pointer',
-                                    },
-                                  }}
-                                >
-                                  <GlobalIcon iconName='close' size={5} />
-                                </Stack>
-                              ),
+                              }
                             }}
+                            // InputProps={{
+                            //   endAdornment: searchQuery && (
+                            //     <Stack
+                            //       onClick={() => setSearchQuery('')}
+                            //       sx={{
+                            //         p: '3px',
+                            //         '&:hover': {
+                            //           backgroundColor: 'var(--neutral-3)',
+                            //           cursor: 'pointer',
+                            //         },
+                            //       }}
+                            //     >
+                            //       <GlobalIcon iconName='close' size={5} />
+                            //     </Stack>
+                            //   ),
+                            // }}
                           />
                         }
                         isSavedListEmpty={
@@ -577,7 +573,6 @@ function CandidateSearchHistory() {
                         }
                         slotInput={
                           <UITextField
-                            rest={{ autoFocus: true }}
                             placeholder='Enter List name'
                             value={text}
                             onChange={(e) => {

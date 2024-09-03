@@ -412,15 +412,9 @@ function Availibility({
                       renderInput={(params) => {
                         return (
                           <UITextField
-                            rest={{ ...params }}
-                            labelSize='medium'
-                            // fullWidth
+                            {...params}
                             label=''
                             placeholder='Ex. Healthcare'
-                            InputProps={{
-                              ...params.InputProps,
-                              autoComplete: 'new-password',
-                            }}
                           />
                         );
                       }}

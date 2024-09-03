@@ -9,11 +9,11 @@ import { type LeverJob } from '@/src/components/Jobs/Dashboard/AddJobWithIntegra
 import {
   extractLinkedInURL,
   POSTED_BY,
+  splitFullName,
 } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/utils';
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { splitFullName } from '../../loadingX';
 import { decrypt } from '../decryptApiKey';
 
 export type ApiLeverCreateJob = {

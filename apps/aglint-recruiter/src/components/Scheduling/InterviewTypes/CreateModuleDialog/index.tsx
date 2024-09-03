@@ -15,7 +15,6 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { Checkbox } from '@/devlink/Checkbox';
 import { DcPopup } from '@/devlink/DcPopup';
 import UITextField from '@/src/components/Common/UITextField';
-import RequiredField from '@/src/components/Common/UITextField/RequiredField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/src/queries/departments';
@@ -130,7 +129,6 @@ function CreateModuleDialog() {
                   >
                     Department
                   </UITypography>
-                  <RequiredField />
                 </Stack>
                 <Autocomplete
                   id='country-select-demo'
@@ -161,7 +159,7 @@ function CreateModuleDialog() {
               </Stack>
 
               <UITextField
-              minRows={1}
+                minRows={1}
                 required
                 label='Objective'
                 multiline

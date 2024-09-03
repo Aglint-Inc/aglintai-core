@@ -27,10 +27,10 @@ import {
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
-import Loading from '@/src/pages/loadingX';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { type SchedulesSupabase } from '../../Scheduling/schedules-query';
+import Loader from '../Loader';
 import CalendarHeader from './CalendarHeader';
 import {
   type colorType,
@@ -116,7 +116,7 @@ function CalendarComp({
             display={'flex'}
             alignItems={'center'}
           >
-            <Loading />
+            <Loader />
           </Stack>
         ) : (
           <>

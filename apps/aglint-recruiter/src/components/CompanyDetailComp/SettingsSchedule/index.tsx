@@ -21,7 +21,10 @@ import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-import { type holidayType, type schedulingSettingType } from '@aglint/shared-types';
+import {
+  type holidayType,
+  type schedulingSettingType,
+} from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
@@ -1053,15 +1056,11 @@ export const TimezoneSelector = ({
         renderInput={(params) => {
           return (
             <UITextField
-              rest={{ ...params }}
+              {...params}
               labelSize='medium'
               // fullWidth
               label=''
               placeholder='Ex. America/Los_Angeles (GMT-08:00)'
-              InputProps={{
-                ...params.InputProps,
-                autoComplete: 'new-password',
-              }}
             />
           );
         }}
