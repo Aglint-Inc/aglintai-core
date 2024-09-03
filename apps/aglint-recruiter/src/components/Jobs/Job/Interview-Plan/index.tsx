@@ -139,7 +139,7 @@ const InterviewPlanPage = () => {
                 <TabsTrigger value='candidate'>Candidate</TabsTrigger>
               </TabsList>
               <TabsContent value='internal'>
-                <Stack gap={1} className='max-w-2xl mt-8' >
+                <Stack gap={1} className='max-w-2xl my-8 mb-10 ' >
                   {data?.length ? (
                     data.map((plan) => (
                       <InterviewPlan
