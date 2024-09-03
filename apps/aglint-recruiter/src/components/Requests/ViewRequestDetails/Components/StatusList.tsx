@@ -9,6 +9,8 @@ import { type Request } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import { getStatusColor } from '../utils';
+
 function StatusList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
   const { query } = useRouter();
@@ -81,17 +83,7 @@ function StatusList({ selectedFilter }: { selectedFilter: string }) {
                 <GlobalBadge
                   size={1}
                   textBadge={capitalizeFirstLetter(status)}
-                  color={
-                    status === 'to_do'
-                      ? 'purple'
-                      : status === 'in_progress'
-                        ? 'info'
-                        : status === 'blocked'
-                          ? 'error'
-                          : status === 'completed'
-                            ? 'success'
-                            : 'neutral'
-                  }
+                  color={getStatusColor({ status })}
                 />
               </Stack>
             ))}

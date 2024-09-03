@@ -31,7 +31,7 @@ const RichTextDividerLine = styled(Stack)({
   // borderRadius: 'var(--radius-2)',
   height: '24px',
   width: '1px',
-  backgroundColor:'var(--neutral-3)',
+  backgroundColor: 'var(--neutral-3)',
   margin: '2px 4px',
 });
 

@@ -1,4 +1,4 @@
-import { type DatabaseView } from '@aglint/shared-types';
+import type { DatabaseView } from '@aglint/shared-types';
 import {
   EmailAgentId,
   PhoneAgentId,
@@ -10,19 +10,6 @@ import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  setDateRange,
-  setIsScheduleNowOpen,
-  setRequestAvailibityId,
-  setScheduleFlow,
-  setSelectedTaskId,
-  setStepScheduling,
-} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/store';
-import {
-  setRequestSessionIds,
-  setRescheduleSessionIds,
-  setSelectedSessionIds,
-} from '@/src/components/Scheduling/CandidateDetails/store';
 import toast from '@/src/utils/toast';
 
 function TaskActionButtons({
@@ -61,7 +48,6 @@ function TaskActionButtons({
               size={1}
               onClickButton={{
                 onClick: () => {
-                  setRequestAvailibityId(selectedTask.request_availability_id);
                   router.push(
                     `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                   );
@@ -115,31 +101,6 @@ function TaskActionButtons({
             size={1}
             onClickButton={{
               onClick: () => {
-                setDateRange({
-                  start_date: selectedTask.schedule_date_range.start_date,
-                  end_date: selectedTask.schedule_date_range.end_date,
-                });
-                setIsScheduleNowOpen(true);
-
-                setRescheduleSessionIds(
-                  selectedTask.session_ids.map((ele) => ele.id),
-                );
-                setStepScheduling('schedule_all_options');
-                if (selectedTask.type === 'availability') {
-                  setScheduleFlow('create_request_availibility');
-                  setStepScheduling('request_availibility');
-                  setRequestSessionIds(
-                    selectedTask.session_ids.map((ele) => ele.id),
-                  );
-                }
-                if (selectedTask.type === 'self_schedule') {
-                  setScheduleFlow('self_scheduling');
-                  setStepScheduling('pick_date');
-                  setSelectedSessionIds(
-                    selectedTask.session_ids.map((ele) => ele.id),
-                  );
-                }
-                setSelectedTaskId(selectedTask.id);
                 router.push(
                   `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/application/${selectedTask.application_id}`,
                 );
@@ -203,12 +164,6 @@ function TaskActionButtons({
               textButton={'Reschedule'}
               onClickButton={{
                 onClick: () => {
-                  setRescheduleSessionIds(
-                    selectedTask.session_ids.map((session) => session.id),
-                  );
-                  setStepScheduling('reschedule');
-                  // setSelectedApplicationLog(act);
-                  setIsScheduleNowOpen(true);
                   router.push(
                     `/scheduling/application/${selectedTask.application_id}`,
                   );

@@ -1,6 +1,6 @@
-import {
-  type EmailTemplateAPi,
-  type SessionCombinationRespType,
+import type {
+  EmailTemplateAPi,
+  SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -11,8 +11,8 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 
+import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
 
@@ -55,8 +55,6 @@ function FinalScreen() {
         setFetching(false);
       })
       .catch(() => {
-        
-        // toast.error('Fail to fetch email preview');
         setFetching(false);
       });
   }
@@ -130,7 +128,6 @@ function FinalScreen() {
                   <DayCardWrapper
                     key={index}
                     selectedCombIds={[]}
-                    // selectedCombIds={selectedDateSlots.map(ele=>ele.dateSlots).flat().map(ele=>ele.plan_comb_id)}
                     item={{
                       date_range: [date],
                       plans: item.selected_dates[0].plans,

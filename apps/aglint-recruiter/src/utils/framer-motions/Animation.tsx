@@ -1,4 +1,4 @@
-import { type Variants,AnimatePresence, motion } from 'framer-motion';
+import { type Variants, AnimatePresence, motion } from 'framer-motion';
 import { type ReactElement } from 'react';
 
 const cardVariants: Variants = {

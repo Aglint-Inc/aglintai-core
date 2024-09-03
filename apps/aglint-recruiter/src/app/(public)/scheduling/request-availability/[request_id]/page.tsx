@@ -2,8 +2,8 @@
 import React from 'react';
 
 import Seo from '@/src/components/Common/Seo';
-import CandidateAvailability from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/CandidateAvailability';
-import { RequestAvailabilityProvider } from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/RequestAvailabilityContext';
+import CandidateAvailability from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/RequestAvailability/CandidateAvailability';
+import { RequestAvailabilityProvider } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/RequestAvailability/RequestAvailabilityContext';
 
 function RequestAvailability() {
   return (

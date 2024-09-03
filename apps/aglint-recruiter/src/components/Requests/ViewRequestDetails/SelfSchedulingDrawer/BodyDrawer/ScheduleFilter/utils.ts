@@ -5,7 +5,7 @@ import {
 } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
-import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
 import { type SelfSchedulingFlow } from '../../store';
@@ -53,8 +53,8 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability['slots'];
   filters: SelfSchedulingFlow['filters'];
 }) {
-  const allFilteredOptions: ApiResponseFindAvailability['slots'] = schedulingOptions.map(
-    (option) => ({
+  const allFilteredOptions: ApiResponseFindAvailability['slots'] =
+    schedulingOptions.map((option) => ({
       ...option,
       interview_rounds: option.interview_rounds.map((items) => {
         let allOptions = items;
@@ -68,8 +68,7 @@ export function filterSchedulingOptionsArray({
 
         return allOptions;
       }),
-    }),
-  );
+    }));
 
   let allCombs: MultiDayPlanType[] =
     createCombsForMultiDaySlots(allFilteredOptions);

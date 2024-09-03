@@ -1,7 +1,7 @@
-import { type APIOptions } from '@aglint/shared-types';
-import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
+import type { APIOptions } from '@aglint/shared-types';
+import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 
-import { filterSchedulingOptionsArray } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/BodyDrawer/ScheduleFilter/utils';
 
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 
