@@ -175,23 +175,3 @@ export default function LoginForm() {
     </Card>
   );
 }
-
-// function LoginFormSkeleton() {
-//   return (
-//     <Card className='w-[350px]'>
-//       <CardHeader>
-//         <Skeleton className='h-8 w-3/4 mx-auto' />
-//       </CardHeader>
-//       <CardContent className='space-y-4'>
-//         <Skeleton className='h-10 w-full' />
-//         <Skeleton className='h-10 w-full' />
-//         <Skeleton className='h-10 w-full' />
-//       </CardContent>
-//       <CardFooter className='flex flex-col space-y-4'>
-//         <Skeleton className='h-10 w-full' />
-//         <Skeleton className='h-4 w-1/2 mx-auto' />
-//         <Skeleton className='h-4 w-3/4 mx-auto' />
-//       </CardFooter>
-//     </Card>
-//   );
-// }

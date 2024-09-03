@@ -25,8 +25,10 @@ type Props = {
   name?: string;
   onSelect?: () => void;
   onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyDown?: () => void;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement> &
+    React.FocusEventHandler<HTMLInputElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement> &
+    React.KeyboardEventHandler<HTMLInputElement>;
   defaultValue?: string | number;
   height?: number;
   width?: string;
@@ -119,8 +121,8 @@ const UITextField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Props>(
           value={value}
           onChange={onChange}
           onFocus={onFocus}
-          onBlur={() => {
-            onBlur?.();
+          onBlur={(e) => {
+            onBlur?.(e);
             setContentExceeded(false);
           }}
           onKeyDown={onKeyDown}

@@ -173,7 +173,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobTitle.displayName = 'JobTitle';
 const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  // const { recruiter } = useAuthDetails();
   return (
     <div className='relative'>
       <Input
@@ -188,13 +188,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
         htmlFor={name}
         className='absolute left-3 top-1/2 -translate-y-1/2'
       >
-        <Image
-          className='rounded-sm object-contain'
-          alt='building'
-          src={recruiter?.logo ?? '/images/svg/Building.svg'}
-          width={26}
-          height={26}
-        />
+        Company
       </Label>
       {value.error.value && (
         <p className='text-sm text-destructive mt-1'>{value.error.helper}</p>

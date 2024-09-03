@@ -34,14 +34,14 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
   const [defaultTemplate, setDefaultTemplate] = useState(null);
   const [selectedEmailTemplate, setSelectedEmailTemp] = useState(0);
   const [isEditorLoading, setIsEditorLoading] = useState(false);
-  const [editorJson, setEditoJson] = useState({
+  const [editorJson, setEditorJson] = useState({
     subject: '',
     templateJson: '',
   });
 
   useEffect(() => {
     if (emailTemplates.length > 0) {
-      setEditoJson({
+      setEditorJson({
         subject: emailTemplates[0].subject,
         templateJson: '',
       });
@@ -144,7 +144,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
           <>
             <UITextField
               onChange={(e) => {
-                setEditoJson((prev) => ({ ...prev, subject: e.target.value }));
+                setEditorJson((prev) => ({ ...prev, subject: e.target.value }));
               }}
               value={editorJson.subject}
               defaultValue={editorJson.subject}
@@ -172,7 +172,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
                 <EmailTemplateEditor
                   defaultJson={defaultTemplate}
                   onChangeUpdateJson={(s) => {
-                    setEditoJson((prev) => ({ ...prev, templateJson: s }));
+                    setEditorJson((prev) => ({ ...prev, templateJson: s }));
                   }}
                 />
               )}
@@ -216,7 +216,7 @@ const EmailOutReachMultiple = ({ selCandidates, onClose }) => {
               onChange={(value) => {
                 setIsEditorLoading(true);
                 setDefaultTemplate(emailTemplates[Number(value)].templateJson);
-                setEditoJson({
+                setEditorJson({
                   subject: emailTemplates[Number(value)].subject,
                   templateJson: '',
                 });

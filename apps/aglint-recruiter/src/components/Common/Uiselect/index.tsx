@@ -20,7 +20,7 @@ type Props = {
   menuOptions: MenuOption[];
   value: any;
   disabled?: boolean;
-  onChange: (value:string) => void;
+  onChange: (value: string) => void;
   defaultValue?: any;
   required?: boolean;
   startIcon?: React.ReactNode;
