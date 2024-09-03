@@ -1,53 +1,10 @@
-// import 'vercel-toast/css';
-import { createToast } from 'vercel-toast';
+import { toast as shadcnToast } from '@/components/hooks/use-toast';
 
 const toast = {
-  error: (message) => {
-    createToast(message, {
-      timeout: 3000,
-      type: 'error',
-      cancel: '✕',
-    });
-  },
-
-  success: (message) => {
-    createToast(message, {
-      timeout: 3000,
-      type: 'success',
-      cancel: '✕',
-    });
-  },
-
-  warning: (message) => {
-    createToast(message, {
-      timeout: 3000,
-      type: 'warning',
-      cancel: '✕',
-    });
-  },
-
-  action: (message, onUndo) => {
-    createToast(message, {
-      timeout: 3000,
-      type: 'dark',
-      action: {
-        text: 'Undo',
-        callback(toast) {
-          toast.destroy();
-          onUndo && onUndo();
-        },
-      },
-      cancel: '✕',
-    });
-  },
-
-  message: (message) => {
-    createToast(message, {
-      timeout: 3000,
-      cancel: '✕',
-      type: 'dark',
-    });
-  },
+  error: (message: string) => shadcnToast({ variant: 'destructive', title: message, duration: 3000 }),
+  success: (message: string) => shadcnToast({ variant: 'default', title: message, duration: 3000 }),
+  warning: (message: string) => shadcnToast({ title: message, duration: 3000 }),
+  message: (message: string) => shadcnToast({ variant: 'default', title: message, duration: 3000 }),
 };
 
 export default toast;

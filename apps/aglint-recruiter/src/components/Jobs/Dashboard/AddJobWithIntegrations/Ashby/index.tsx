@@ -25,7 +25,6 @@ import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { useAllIntegrations } from '@/src/queries/intergrations';
-import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -267,9 +266,9 @@ export function AshbyModalComp() {
                 slotAtsCard={
                   !initialFetch ? (
                     postings.length > 0 ? (
-                      postings.map((post, ind) => {
+                      postings.map((post) => {
                         return (
-                          <ScrollList uniqueKey={ind} key={ind}>
+                          <>
                             <AtsCard
                               isChecked={
                                 selectedAshbyPostings?.filter(
@@ -311,7 +310,7 @@ export function AshbyModalComp() {
                               textStatus={'Live'}
                               textWorktypeLocation={post.location}
                             />
-                          </ScrollList>
+                          </>
                         );
                       })
                     ) : (

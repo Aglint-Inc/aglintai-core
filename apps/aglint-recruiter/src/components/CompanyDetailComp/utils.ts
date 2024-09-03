@@ -16,7 +16,7 @@ export const saveToDatabase = async (recruit: RecruiterDB, id: string) => {
     .throwOnError();
 };
 
-const debounce = toast.debouncedPromise('saveProfile');
+const debounce = toast?.debouncedPromise('saveProfile');
 export const debouncedSave = debounce(saveToDatabase, 1000, {
   onSuccess: 'Saved',
   onError: 'Failed to save',

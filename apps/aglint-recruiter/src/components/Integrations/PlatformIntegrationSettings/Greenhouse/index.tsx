@@ -38,7 +38,7 @@ function GreenhouseSettings() {
                     <div key={key} className='flex items-center space-x-2'>
                       <Checkbox
                         id={subOptions?.name}
-                        checked={data.options[key]}
+                        checked={data?.options[key]}
                         onCheckedChange={() => {
                           data.options[String(key)] =
                             !data.options?.[String(key)];

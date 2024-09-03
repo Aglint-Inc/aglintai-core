@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
-import { YTransform } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Footer from '../Common/Footer';
@@ -109,7 +108,6 @@ export default function ForgotPasswordComponent() {
         }}
       >
         {changetext == 'Send' && (
-          <YTransform uniqueKey={changetext} height={'auto'}>
             <PwResetForm
               slotButton={
                 <Stack spacing={'var(--space-2)'}>
@@ -156,12 +154,10 @@ export default function ForgotPasswordComponent() {
               contactLink={{
                 href: 'mailto:admin@aglinthq.com',
               }}
-            />
-          </YTransform>
+          />
         )}
         {changetext === 'Sent' && (
-          <YTransform uniqueKey={changetext}>
-            <PwResetConfirm
+          <PwResetConfirm
               onclickBack={{
                 onClick: () => {
                   router.push(ROUTES['/login']());
@@ -176,7 +172,6 @@ export default function ForgotPasswordComponent() {
                 },
               }}
             />
-          </YTransform>
         )}
       </Box>
       <Box

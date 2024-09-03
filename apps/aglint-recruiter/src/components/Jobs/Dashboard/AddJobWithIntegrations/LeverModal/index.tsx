@@ -24,7 +24,6 @@ import { handleGenerateJd } from '@/src/context/JobContext/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { type ApiLeverCreateJob } from '@/src/pages/api/lever/createjob';
 import { useAllIntegrations } from '@/src/queries/intergrations';
-import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
@@ -283,9 +282,9 @@ export default function LeverModalComp() {
                             return true;
                           }
                         })
-                        .map((post, ind) => {
+                        .map((post) => {
                           return (
-                            <ScrollList uniqueKey={ind} key={ind}>
+                            <>
                               <AtsCard
                                 isChecked={
                                   selectedLeverPostings?.id === post.id
@@ -304,7 +303,7 @@ export default function LeverModalComp() {
                                 textStatus={post.state}
                                 textWorktypeLocation={post.categories.location}
                               />
-                            </ScrollList>
+                            </>
                           );
                         })
                     ) : (

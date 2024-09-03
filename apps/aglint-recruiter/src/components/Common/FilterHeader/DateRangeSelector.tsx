@@ -1,9 +1,8 @@
 import { Popover, Stack } from '@mui/material';
-import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
+import { Calendar } from '@/components/ui/calendar';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -95,28 +94,30 @@ function DateRangeSelector({
                 <ShowCode.When isTrue={rangeActive}>
                   <DateRange
                     onChange={(e) => {
-                      if (e[1]) {
-                        setSelectedDate(e);
+                      if (e.to) {
+                        setSelectedDate([dayjs(e.from), dayjs(e.to)]);
                       }
                     }}
-                    value={
-                      dayjs(values[0]).toString() == 'Invalid Date'
-                        ? [dayjs(values[0]), dayjs(values[1])]
-                        : [dayjs(values[0]), dayjs(values[1])]
-                    }
+                    value={{
+                      from: dayjs(values[0]).isValid()
+                        ? dayjs(values[0]).toDate()
+                        : undefined,
+                      to: dayjs(values[1]).isValid()
+                        ? dayjs(values[1]).toDate()
+                        : undefined,
+                    }}
                   />
                 </ShowCode.When>
                 <ShowCode.Else>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                      views={['day']}
-                      disablePast={disablePast}
-                      value={dayjs(selectedDate[0])}
-                      onChange={(e) => {
-                        setSelectedDate([e]);
-                      }}
-                    />
-                  </LocalizationProvider>
+                  <Calendar
+                    mode='single'
+                    selected={selectedDate[0]?.toDate()}
+                    onSelect={(date) => setSelectedDate([dayjs(date)])}
+                    disabled={(date) =>
+                      disablePast &&
+                      date < new Date(new Date().setHours(0, 0, 0, 0))
+                    }
+                  />
                 </ShowCode.Else>
               </ShowCode>
               <Stack
