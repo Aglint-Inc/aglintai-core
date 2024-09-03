@@ -59,9 +59,19 @@ const WorkflowActionDialog = () => {
         body: emailSlackTemplate?.body || '',
         subject: emailSlackTemplate?.subject || '',
       });
+      const defaultActDetails = ACTION_TRIGGER_MAP[editTrigger].find(
+        (t) => t.value.target_api === target_api,
+      );
+      setSelectedActionsDetails({
+        id: undefined,
+        action_type: defaultActDetails.value.action_type,
+        created_at: new Date().toISOString(),
+        order: 0,
+        target_api: target_api as any,
+        workflow_id: undefined,
+      });
     }
   };
-
   const handleSaveScheduleAction = async (
     wAction: DatabaseTableInsert['workflow_action'],
   ) => {
