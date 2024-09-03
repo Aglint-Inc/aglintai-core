@@ -1,5 +1,5 @@
-import { Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import { Stack } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
