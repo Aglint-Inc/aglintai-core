@@ -2,11 +2,15 @@
 import { Collapse, Stack } from '@mui/material';
 import { type PropsWithChildren, useState } from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { GlobalBadge } from '@/devlink2/GlobalBadge';
 import { RequestCard } from '@/devlink2/RequestCard';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useRequest } from '@/src/context/RequestContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
 import type { Request as RequestType } from '@/src/queries/requests/types';
@@ -24,7 +28,7 @@ export const Request = (
 
   const [isHover, setIsHover] = useState(false);
   return (
-    <OptimisticWrapper loading={isMutating}>
+    <>
       <div
         style={{
           padding: '12px',
@@ -79,22 +83,22 @@ export const Request = (
                     </Stack>
                   </div>
                   {props?.request_note[0]?.note && (
-                    <CustomTooltip
-                      enterDelay={500}
-                      arrow
-                      placement='bottom-start'
-                      title={
-                        <Stack p={0.5}>{props?.request_note[0].note}</Stack>
-                      }
-                    >
-                      <Stack>
-                        <GlobalBadge
-                          showIcon={true}
-                          textBadge={''}
-                          iconName={'note_stack'}
-                        />
-                      </Stack>
-                    </CustomTooltip>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={500}>
+                        <TooltipTrigger asChild>
+                          <Stack>
+                            <GlobalBadge
+                              showIcon={true}
+                              textBadge={''}
+                              iconName={'note_stack'}
+                            />
+                          </Stack>
+                        </TooltipTrigger>
+                        <TooltipContent side='bottom' align='start'>
+                          <p>{props?.request_note[0].note}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   )}
                   <GlobalBadge
                     size={1}
@@ -130,6 +134,6 @@ export const Request = (
           </Stack>
         </Collapse>
       </div>
-    </OptimisticWrapper>
+    </>
   );
 };
