@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import toast from '@utils/toast';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { type Dispatch, useEffect, useState } from 'react';
@@ -21,7 +22,6 @@ import { DateIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Co
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { cancelMailHandler } from '../../CandidateDetails/mailUtils';
 import {

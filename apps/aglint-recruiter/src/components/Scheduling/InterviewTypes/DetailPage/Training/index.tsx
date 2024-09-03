@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { DcPopup } from '@/devlink/DcPopup';
@@ -21,7 +22,6 @@ import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
@@ -37,6 +37,7 @@ function ModuleSettingComp({
   editModule: ModuleType;
   refetch: () => void;
 }) {
+  const { toast } = useToast();
   const { members } = useSchedulingContext();
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
   const [errorApproval, setErrorApproval] = useState(false);
@@ -98,7 +99,11 @@ function ModuleSettingComp({
       await refetch();
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
-      toast.error('Failed to update module');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to update module',
+      });
     } finally {
       setErrorApproval(false);
       setIsSaving(false);
@@ -177,7 +182,11 @@ function ModuleSettingComp({
       await refetch();
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
-      toast.error('Failed to update module');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to update module',
+      });
     } finally {
       setBannerLoading(false);
       setOpen(false);

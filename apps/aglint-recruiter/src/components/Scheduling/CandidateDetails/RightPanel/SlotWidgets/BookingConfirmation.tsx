@@ -2,13 +2,13 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { ConfirmScheduleList } from '@/devlink3/ConfirmScheduleList';
 import { ConfirmScheduleListCard } from '@/devlink3/ConfirmScheduleListCard';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import IconSessionType from '../../../../Common/Icons/IconSessionType';
 import IconScheduleType from '../../../Candidates/ListCard/Icon/IconScheduleType';
@@ -34,6 +34,7 @@ function BookingConfirmation({
 }: {
   act: DatabaseTable['application_logs'];
 }) {
+  const { toast } = useToast();
   const { selectedApplication, initialSessions } =
     useSchedulingApplicationStore((state) => ({
       selectedApplication: state.selectedApplication,
@@ -98,7 +99,11 @@ function BookingConfirmation({
         setMultipleCancelOpen(true);
       }
     } catch (err) {
-      toast.error('Failed to cancel the schedule. Please contact support.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to cancel the schedule. Please contact support.',
+      });
     }
   };
 

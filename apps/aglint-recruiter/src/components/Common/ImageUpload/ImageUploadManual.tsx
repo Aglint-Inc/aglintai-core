@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import ROUTES from '@/src/utils/routing/routes';
-import toast from '@/src/utils/toast';
 
 function ImageUploadManual({
   image,
@@ -21,6 +21,7 @@ function ImageUploadManual({
   setChanges?: () => void;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [isStackHovered, setIsStackHovered] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>();
 
@@ -29,7 +30,10 @@ function ImageUploadManual({
   function onImageChange(file) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
-      toast.error('size is maximum');
+      toast({
+        variant: 'destructive',
+        title: 'size is maximum',
+      });
       return;
     }
     imageFile.current = file;

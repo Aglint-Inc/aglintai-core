@@ -4,13 +4,13 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 const AuthHoc = () => {
   return (
@@ -24,7 +24,7 @@ const AuthHoc = () => {
 
 const Google = () => {
   const router = useRouter();
-
+  const { toast } = useToast();
   const { recruiterUser, setRecruiterUser } = useAuthDetails();
 
   useEffect(() => {
@@ -62,7 +62,11 @@ const Google = () => {
             },
           }));
         } catch (err) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
         } finally {
           const path = localStorage.getItem('gmail-redirect-path');
           if (path) {

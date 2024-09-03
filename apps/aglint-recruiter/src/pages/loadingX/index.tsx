@@ -3,16 +3,17 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Seo from '@/src/components/Common/Seo';
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
 import { type Session } from '@/src/context/AuthContext/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 export default function Loading() {
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     getSupabaseSession();
@@ -22,7 +23,11 @@ export default function Loading() {
     const { data, error } = await supabase.auth.getSession();
 
     if (error) {
-      toast.error('Unable to login. Please try again later.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Unable to login. Please try again later.',
+      });
       handleLogout();
     }
     if (data?.session) {
@@ -30,7 +35,11 @@ export default function Loading() {
         userDetails: data?.session,
       });
     } else {
-      toast.error('Session not found');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Session not found',
+      });
       handleLogout();
     }
   }
@@ -60,19 +69,30 @@ export default function Loading() {
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails.user.id,
           });
-          toast.error(
-            'Please reach out to your admin or the Aglint support team.',
-          );
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description:
+              'Please reach out to your admin or the Aglint support team.',
+          });
           await handleLogout();
           return;
         }
       } else {
-        toast.error('Unable to login. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Unable to login. Please try again.',
+        });
         router.push(ROUTES['/login']());
         await handleLogout();
       }
     } catch (error) {
-      toast.error('Unable to login. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Unable to login. Please try again.',
+      });
       router.push(ROUTES['/login']());
       await handleLogout();
     }
@@ -102,9 +122,12 @@ export default function Loading() {
 
       if (relationData?.recruiter_user) {
         if (relationData.recruiter_user.status === 'suspended') {
-          toast.error(
-            'Your account has been suspended. Please reach out to your admin or the Aglint support team.',
-          );
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description:
+              'Your account has been suspended. Please reach out to your admin or the Aglint support team.',
+          });
           await handleLogout();
           return;
         }

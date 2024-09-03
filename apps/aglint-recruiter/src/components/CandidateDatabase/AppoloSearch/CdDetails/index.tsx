@@ -3,6 +3,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CandidateDialog } from '@/devlink/CandidateDialog';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
 import { CdExperienceCard } from '@/devlink/CdExperienceCard';
@@ -11,7 +12,6 @@ import LoaderGrey from '@/public/lottie/LoaderGrey';
 import CompanyLogo from '@/src/components/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import MuiAvatar from '../../../Common/MuiAvatar';
 import AddToListComp from '../AddToList';
@@ -25,6 +25,7 @@ import { type Candidate } from '../types';
 import { updateCredits } from '../utils';
 
 function CandidateDetail() {
+  const { toast } = useToast();
   const selectedCandidate = useCandidateStore(
     (state) => state.selectedCandidate,
   );
@@ -49,7 +50,11 @@ function CandidateDetail() {
       });
 
       if (resEmail.status !== 200) {
-        toast.error('Unable to fetch email. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Unable to fetch email. Please try again.',
+        });
         return;
       }
 
@@ -109,7 +114,11 @@ function CandidateDetail() {
           ...selCandidate,
           email_fetch_status: 'unable to fetch',
         });
-        toast.error('Unable to fetch email for this candidate.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Unable to fetch email for this candidate.',
+        });
         return false;
       }
     } else {

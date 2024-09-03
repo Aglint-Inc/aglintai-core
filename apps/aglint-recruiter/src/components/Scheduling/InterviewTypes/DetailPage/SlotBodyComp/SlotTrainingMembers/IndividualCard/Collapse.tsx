@@ -2,6 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { Collapse, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { Text } from '@/devlink/Text';
@@ -14,7 +15,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/number/numberToOrdinalText';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { type useProgressModuleUsers } from '../../../../queries/hooks';
 
@@ -44,6 +44,7 @@ function CollapseTrainingProgress({
   mutatedReverseShadowProgress: any[];
   reverseShadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
 }) {
+  const { toast } = useToast();
   const { recruiterUser } = useAuthDetails();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -57,7 +58,10 @@ function CollapseTrainingProgress({
       .eq('id', id);
 
     await refetchTrainingProgress();
-    toast.success('Approved');
+    toast({
+      title: 'Approved',
+      description: 'Approved successfully.',
+    });
   };
 
   const alterCount = async ({
@@ -71,7 +75,11 @@ function CollapseTrainingProgress({
   }) => {
     try {
       if (count === 0) {
-        toast.warning('Minimum count should be 1');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Minimum count should be 1',
+        });
         return;
       }
       setIsSaving(true);

@@ -13,6 +13,7 @@ import {
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import {
   Tooltip,
   TooltipContent,
@@ -21,7 +22,6 @@ import {
 } from '@/components/ui/tooltip';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import toast from '@/src/utils/toast';
 
 import { type LinkProps } from './type';
 import { navList } from './utils';
@@ -30,19 +30,25 @@ function SideNavbar() {
   const router = useRouterPro();
   const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
+  const { toast } = useToast();
 
   useEffect(() => {
     const tempR = navList.find((item) => {
       return pathName?.includes(item.route.split('?')[0]);
     })?.permission;
     if (tempR && !checkPermissions(tempR)) {
-      toast.error('This section of the application is not accessible to you.');
+      toast({
+        variant: 'destructive',
+        title: 'Access Denied',
+        description:
+          'This section of the application is not accessible to you.',
+      });
       router.back();
     }
-  }, [pathName]);
+  }, [pathName, checkPermissions, router, toast]);
 
   return (
-    <div className="flex flex-col items-center space-y-3 p-4 w-14">
+    <div className='flex flex-col items-center space-y-3 p-4 w-14'>
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,
@@ -77,17 +83,17 @@ const LinkIcon = ({
   const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {
-    'Requests': <LayoutList className="w-5 h-5" strokeWidth={1.5}/>,
-    'Jobs': <BriefcaseBusiness className="w-5 h-5" strokeWidth={1.5}/>,
-    'Interviews': <Calendar className="w-5 h-5" strokeWidth={1.5}/>,
-    'Interview Types': <LibraryBig className="w-5 h-5" strokeWidth={1.5}/>,
-    'Candidates': <Users className="w-5 h-5" strokeWidth={1.5}/>,
-    'Interviewers': <Users className="w-5 h-5" strokeWidth={1.5}/>,
-    'Sourcing Hub': <Search className="w-5 h-5" strokeWidth={1.5}/>,
-    'Integrations': <LayoutGrid className="w-5 h-5" strokeWidth={1.5}/>,
-    'Company Settings': <Settings className="w-5 h-5" strokeWidth={1.5}/>,
-    'Workflows': <Workflow className="w-5 h-5" strokeWidth={1.5}/>,
-    'Tasks': <ListTodo className="w-5 h-5" strokeWidth={1.5}/>,
+    Requests: <LayoutList className='w-5 h-5' strokeWidth={1.5} />,
+    Jobs: <BriefcaseBusiness className='w-5 h-5' strokeWidth={1.5} />,
+    Interviews: <Calendar className='w-5 h-5' strokeWidth={1.5} />,
+    'Interview Types': <LibraryBig className='w-5 h-5' strokeWidth={1.5} />,
+    Candidates: <Users className='w-5 h-5' strokeWidth={1.5} />,
+    Interviewers: <Users className='w-5 h-5' strokeWidth={1.5} />,
+    'Sourcing Hub': <Search className='w-5 h-5' strokeWidth={1.5} />,
+    Integrations: <LayoutGrid className='w-5 h-5' strokeWidth={1.5} />,
+    'Company Settings': <Settings className='w-5 h-5' strokeWidth={1.5} />,
+    Workflows: <Workflow className='w-5 h-5' strokeWidth={1.5} />,
+    Tasks: <ListTodo className='w-5 h-5' strokeWidth={1.5} />,
   };
 
   return (

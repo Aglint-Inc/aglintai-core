@@ -409,7 +409,14 @@ const CandidateDetailCard = ({
           {!showMore &&
             get(candidate.json_resume, 'skills', [])
               .slice(0, 10)
-              .map((s, index) => <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/> )}
+              .map((s, index) => (
+                <GlobalBadge
+                  key={index}
+                  textBadge={s}
+                  size={2}
+                  color={'neutral'}
+                />
+              ))}
           {candidate.json_resume.skills.length > 10 && (
             <ViewMoreSkills
               isViewMoreVisible={!showMore}
@@ -425,7 +432,12 @@ const CandidateDetailCard = ({
           {showMore &&
             get(candidate.json_resume, 'skills', []).map((s, index) => (
               // <CandidateSkills key={index} textSkill={s} />
-              <GlobalBadge key={index} textBadge={s} size={2} color={'neutral'}/>
+              <GlobalBadge
+                key={index}
+                textBadge={s}
+                size={2}
+                color={'neutral'}
+              />
             ))}
         </>
       }

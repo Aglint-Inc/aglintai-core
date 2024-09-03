@@ -3,12 +3,12 @@ import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
 import React, { type Dispatch, useContext, useEffect } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
-import { type TemplateType,outReachTemplates } from './seedTemplates';
+import { type TemplateType, outReachTemplates } from './seedTemplates';
 import { templateToEmailBody } from './utils';
 
 export interface OutReachCtxType {
@@ -159,6 +159,7 @@ const OutReachCtxProvider = ({
 }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const { recruiterUser, recruiter } = useAuthDetails();
+  const { toast } = useToast();
 
   useEffect(() => {
     // related to auth token
@@ -229,7 +230,10 @@ const OutReachCtxProvider = ({
           },
         });
       } catch (err) {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Something went wrong. Please try again.',
+        });
       } finally {
         //
       }
@@ -301,7 +305,10 @@ const OutReachCtxProvider = ({
 
       //
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       dispatch({
         type: 'updateState',
@@ -364,7 +371,10 @@ const OutReachCtxProvider = ({
       }
     } catch (err) {
       // console.log(err);
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     }
   };
 
@@ -405,7 +415,10 @@ const OutReachCtxProvider = ({
         },
       });
     } catch (err) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong. Please try again.',
+      });
     } finally {
       dispatch({
         type: 'updateState',

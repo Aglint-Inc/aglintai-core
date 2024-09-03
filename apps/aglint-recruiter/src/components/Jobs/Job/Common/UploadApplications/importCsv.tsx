@@ -15,7 +15,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useApplicationsStore } from '@/src/context/ApplicationsContext/store';
 import { useJob } from '@/src/context/JobContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import toast from '@/src/utils/toast';
+import { toast } from '@/utils/toast';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 

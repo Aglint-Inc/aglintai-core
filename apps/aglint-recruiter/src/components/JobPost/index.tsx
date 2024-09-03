@@ -19,6 +19,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
@@ -30,7 +31,6 @@ import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/src/pages/api/jobpost/read';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import Footer from '../Common/Footer';
 import Icon from '../Common/Icons/Icon';
@@ -39,6 +39,7 @@ import UploadDB from './UploadDB';
 type JobsListProps = Pick<PublicJobAPI, 'jobs' | 'post' | 'recruiter'>;
 
 const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
+  const { toast } = useToast();
   const router = useRouterPro();
   const [email, setEmail] = useState<string>();
   const [error, setError] = useState<boolean>(false);
@@ -69,13 +70,17 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               })
               .select();
             setEmail('');
-            toast.success(
-              'Thank you for subscribing! You will be notified via email.',
-            );
+            toast({
+              variant: 'default',
+              title:
+                'Thank you for subscribing! You will be notified via email.',
+            });
           } else {
-            toast.success(
-              'Thank you for subscribing! You will be notified via email.',
-            );
+            toast({
+              variant: 'default',
+              title:
+                'Thank you for subscribing! You will be notified via email.',
+            });
           }
         });
     } else {

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -39,7 +40,6 @@ import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleD
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 const ModuleMembers = () => {
   return (
@@ -64,6 +64,7 @@ function ModuleMembersComp() {
     isPending,
   } = useModuleAndUsers();
   const { recruiterUser } = useAuthDetails();
+  const { toast } = useToast();
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
@@ -96,9 +97,10 @@ function ModuleMembersComp() {
           return item;
         });
         setModule({ ...module, relations });
-        toast.success(
-          'Candidate qualified as interviewer for this interview type.',
-        );
+        toast({
+          variant: 'destructive',
+          title: 'Candidate qualified as interviewer for this interview type.',
+        });
       },
     );
   };
