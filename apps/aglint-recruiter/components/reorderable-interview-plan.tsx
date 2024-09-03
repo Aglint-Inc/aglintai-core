@@ -148,7 +148,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         id: null,
         name: '',
         description: '',
-        icon: 'FileText',
+        icon: '',
         job_id: jobId,
         order: null,
       });
@@ -294,7 +294,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                               id: null,
                               name: '',
                               description: '',
-                              icon: 'FileText',
+                              icon: '',
                               job_id: jobId,
                               order: null,
                             });
