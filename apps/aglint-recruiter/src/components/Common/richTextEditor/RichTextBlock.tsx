@@ -1,5 +1,4 @@
 // import { Color } from '@tiptap/extension-color';
-import Icon from '@components/Common/Icons/Icon';
 import {
   type IconButtonProps,
   IconButton,
@@ -16,6 +15,16 @@ import TextStyle, { type TextStyleOptions } from '@tiptap/extension-text-style';
 import { EditorContent, useEditor } from '@tiptap/react';
 import { type Editor } from '@tiptap/react/dist/packages/react/src/Editor';
 import StarterKit from '@tiptap/starter-kit';
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Eraser,
+  Italic,
+  Link2,
+  List,
+} from 'lucide-react';
 import React, { type ReactNode, useCallback, useEffect } from 'react';
 
 export type ToolboxPosition = 'top' | 'bottom';
@@ -110,7 +119,7 @@ const MenuBar = ({
           className={editor.isActive('bold') ? 'is-active' : ''}
           title={'Bold'}
         >
-          <Icon variant={'Bold'} width='24px' height='24px' />
+          <Bold size={24} />
         </RichTextIconButtons>
 
         <RichTextIconButtons
@@ -119,7 +128,7 @@ const MenuBar = ({
           className={editor.isActive('italic') ? 'is-active' : ''}
           title={'Italic'}
         >
-          <Icon variant={'Italic'} width='24px' height='24px' />
+          <Italic size={24} />
         </RichTextIconButtons>
 
         {/* <RichTextIconButtons
@@ -145,14 +154,14 @@ const MenuBar = ({
           className={editor.isActive('link') ? 'is-active' : ''}
           title={'Link'}
         >
-          <Icon variant='Link' width='24px' height='24px' />
+          <Link2 size={24} />
         </RichTextIconButtons>
         <RichTextIconButtons
           onClick={() => editor.chain().focus().unsetLink().run()}
           disabled={!editor.isActive('link')}
           title={'Unlink'}
         >
-          <Icon variant='Unlink' width='24px' height='24px' />
+          <Link2 size={24} />
         </RichTextIconButtons>
 
         <RichTextDividerLine />
@@ -162,7 +171,7 @@ const MenuBar = ({
           className={editor.isActive('bulletList') ? 'is-active' : ''}
           title={'List'}
         >
-          <Icon variant='BulletLint' width='24px' height='24px' />
+          <List size={24} />
         </RichTextIconButtons>
 
         <RichTextIconButtons
@@ -170,7 +179,7 @@ const MenuBar = ({
           className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
           title={'Align left'}
         >
-          <Icon variant='AlignLeft' width='24px' height='24px' />
+          <AlignLeft size={24} />
         </RichTextIconButtons>
         <RichTextIconButtons
           onClick={() => editor.chain().focus().setTextAlign('center').run()}
@@ -179,14 +188,14 @@ const MenuBar = ({
           }
           title={'Align center'}
         >
-          <Icon variant='AlignCenter' width='24px' height='24px' />
+          <AlignCenter size={24} />
         </RichTextIconButtons>
         <RichTextIconButtons
           onClick={() => editor.chain().focus().setTextAlign('right').run()}
           className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
           title={'Align right'}
         >
-          <Icon variant='AlignRight' width='24px' height='24px' />
+          <AlignRight size={24} />
         </RichTextIconButtons>
 
         <RichTextDividerLine />
@@ -197,7 +206,7 @@ const MenuBar = ({
           }
           title={'Clear style'}
         >
-          <Icon variant={'ClearText'} width='24px' height='24px' />
+          <ClearText size={24} />
         </RichTextIconButtons>
       </Stack>
 
@@ -262,26 +271,19 @@ const TipTapEditor = ({
 }: TipTapEditorType) => {
   const editor = useEditor({
     extensions: [
-      // CustomHistory,
       Link.configure({
         openOnClick: false,
-        //   target: '_blank',
         validate: (href) => /^https?:\/\//.test(href),
       }),
-
       TextAlign.configure({
-        alignments: ['left', 'right', 'center'],
-        types: ['heading', 'paragraph', 'bullet_list', 'ordered_list', 'list'],
+        alignments: ['left', 'center', 'right'],
+        types: ['heading', 'paragraph'],
       }),
-      //   Underline,
-      // Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle.configure({
         types: [ListItem.name],
       } as Partial<TextStyleOptions>),
       StarterKit.configure({
-        history: false,
-        code: false,
-        // listItem: !disableList,
+        history: true,
         bulletList: {
           keepMarks: true,
           keepAttributes: false,
@@ -295,71 +297,35 @@ const TipTapEditor = ({
         placeholder,
         emptyEditorClass: 'is-editor-empty',
       }),
-      //   Highlight.configure({ multicolor: true }),
     ],
-    ...(value ? { content: value } : {}),
-    onUpdate({ editor }) {
+    content: value,
+    onUpdate: ({ editor }) => {
       if (onChange) {
-        let value: {
-          text: string;
-          html: string;
-          wordCount: number;
-        } = {
-          text: '',
-          html: '',
-          wordCount: 0,
-        };
-        if (!editor.isEmpty) {
-          const text = editor.getText();
-          value = {
-            text,
-            html: editor.getHTML(),
-            wordCount: text.length,
-          };
-        }
+        const text = editor.getText();
+        const value = editor.isEmpty
+          ? { text: '', html: '', wordCount: 0 }
+          : {
+              text,
+              html: editor.getHTML(),
+              wordCount: text.trim().split(/\s+/).length,
+            };
         onChange(value);
       }
     },
-    // onBlur({ editor }) {
-    //   editor
-    //     .chain()
-    //     .setMeta('excludeFromUndo', true)
-    //     .setHighlight({ color: '#bf80f030' })
-    //     .run();
-    // },
-    // onFocus({ editor }) {
-    //   // editor.commands.unsetHighlight().setMeta('excludeFromUndo', true)
-    //   editor.chain().setMeta('excludeFromUndo', true).unsetHighlight().run();
-    //   // editor.chain().selectAll().unsetHighlight().setTextSelection(selectionRange?.from || 1).run()
-    // },
-    // onSelectionUpdate({ editor }) {
-    //   const { view, state } = editor;
-    //   const { from, to } = view.state.selection;
-    //   const text = state.doc.textBetween(from, to, '');
-    //   setSelectionRange({
-    //     from: from,
-    //     to: to,
-    //   });
-    //   setSelectedText(text);
-    //   if (text) setShowAiOptions(true);
-    // },
-    // onUpdate({ editor }) {
-    //   // The content has changed.
-    //   if (editor.isFocused && setUserEdited) {
-    //     setUserEdited();
-    //   }
-    //   onChange(editor.isEmpty ? '' : editor.getHTML());
-    // },
   });
+
   useEffect(() => {
-    getValue && getValue(() => editor?.getHTML() || '');
-  }, [getValue]);
+    if (getValue) {
+      getValue(() => editor?.getHTML() || '');
+    }
+  }, [getValue, editor]);
 
   useEffect(() => {
     if (value === '' && editor) {
       editor.commands.clearContent();
     }
-  }, [value]);
+  }, [value, editor]);
+
   return (
     <Stack
       border={`1px solid ${borderColor}`}
