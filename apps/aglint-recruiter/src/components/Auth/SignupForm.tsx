@@ -1,6 +1,9 @@
 'use client';
 
-import { type RecruiterType, type RecruiterUserType } from '@aglint/shared-types';
+import {
+  type RecruiterType,
+  type RecruiterUserType,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -136,7 +139,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card className='w-[400px]'>
+    <Card className='w-[400px] border-border'>
       <CardHeader>
         <h2 className='text-2xl font-bold text-center'>Sign Up</h2>
       </CardHeader>
