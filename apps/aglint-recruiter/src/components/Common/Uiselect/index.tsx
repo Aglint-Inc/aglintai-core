@@ -1,12 +1,13 @@
-import { Stack, Typography } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import { AlertCircle } from 'lucide-react';
-import React, { useState } from 'react';
+import React from 'react';
 
-import { palette } from '@/src/context/Theme/Theme';
-
-import UITypography from '../UITypography';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type MenuOption = {
   name: string;
@@ -17,19 +18,15 @@ type Props = {
   label?: string;
   menuOptions: MenuOption[];
   value: any;
-  fullWidth?: boolean;
   disabled?: boolean;
-  onChange: (
-    // eslint-disable-next-line no-unused-vars
-    event: SelectChangeEvent<any>,
-  ) => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: Props['value']) => void;
   defaultValue?: any;
   required?: boolean;
-  startIcon?: any;
-  size?: 'sm' | 'md';
+  startIcon?: React.ReactNode;
   error?: boolean;
   helperText?: string;
-  placeHolder?: string;
+  placeholder?: string;
 };
 
 const UISelect = ({
@@ -43,90 +40,49 @@ const UISelect = ({
   startIcon,
   error,
   helperText,
-  placeHolder = 'Choose from the list',
+  placeholder = 'Choose from the list',
 }: Props) => {
-  let [focus, setFocus] = useState(false);
-
-  let borderColor = `#b1cee6`;
-
   return (
-    <Stack
-      borderColor={focus && borderColor}
-      borderRadius={'7px'}
-      padding={0}
-      gap={'var(--space-1)'}
-    >
+    <div className='flex flex-col gap-1'>
       {label && (
-        <Stack direction={'row'}>
-          <UITypography type={'small'} fontBold='default'>
-            {label}
-          </UITypography>
-
-          {required && (
-            <Typography sx={{ color: 'var(--error-9)' }}>&nbsp;*</Typography>
-          )}
-        </Stack>
+        <div className='flex flex-row'>
+          <span className='text-sm font-medium'>{label}</span>
+          {required && <span className='text-red-500'>&nbsp;*</span>}
+        </div>
       )}
-      <Stack
-        style={{
-          position: 'relative',
-          height: '36px',
-        }}
+      <Select
+        disabled={disabled}
+        value={value?.toString()}
+        onValueChange={onChange}
+        defaultValue={defaultValue}
       >
-        <Stack style={{ position: 'absolute', width: '100%', height: '100%' }}>
-          <Select
-            startAdornment={startIcon}
-            disabled={disabled}
-            value={value}
-            onChange={onChange}
-            error={error}
-            onFocus={() => setFocus(true)}
-            defaultValue={defaultValue}
-          >
-            {menuOptions.length === 0 ? (
-              <Stack
-                px={1}
-                style={{
-                  fontStyle: 'italic',
-                  color: 'var(--neutral-9)',
-                  cursor: 'default',
-                }}
-              >
-                No options available
-              </Stack>
-            ) : (
-              menuOptions.map((menu, idx) => (
-                <MenuItem key={idx} value={menu?.value}>
-                  {menu?.name}
-                </MenuItem>
-              ))
-            )}
-          </Select>
-        </Stack>
-        {placeHolder && (value === null || value === undefined) && (
-          <Stack
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              padding: '8px 12px',
-              color: palette.grey[500],
-              pointerEvents: 'none',
-            }}
-          >
-            {placeHolder}
-          </Stack>
-        )}
-      </Stack>
+        <SelectTrigger
+          className={`w-full h-9 ${error ? 'border-red-500' : ''}`}
+        >
+          {startIcon && <span className='mr-2'>{startIcon}</span>}
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {menuOptions.length === 0 ? (
+            <div className='px-2 py-1 italic text-gray-500 cursor-default'>
+              No options available
+            </div>
+          ) : (
+            menuOptions.map((menu, idx) => (
+              <SelectItem key={idx} value={menu.value}>
+                {menu.name}
+              </SelectItem>
+            ))
+          )}
+        </SelectContent>
+      </Select>
       {error && helperText && (
-        <Stack direction={'row'} alignItems={'center'} justifyContent={'start'}>
-          <AlertCircle size={12} color='var(--error-9)' />
-          <UITypography type='small' color={'var(--error-11)'}>
-            {error ? (helperText ? helperText : '') : ''}
-          </UITypography>
-        </Stack>
+        <div className='flex flex-row items-center justify-start gap-1'>
+          <AlertCircle className='w-3 h-3 text-red-500' />
+          <span className='text-xs text-red-500'>{helperText}</span>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 };
 

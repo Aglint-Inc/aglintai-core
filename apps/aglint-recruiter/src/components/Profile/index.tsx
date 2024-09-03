@@ -1,10 +1,7 @@
 import { Autocomplete, Stack } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NavSublink } from '@/devlink/NavSublink';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -148,14 +145,15 @@ const ProfileForm = ({
   const { userCountry } = useAuthDetails();
   const defaultCountry =
     value.validation === 'phone' && !value.value ? userCountry : '+1';
+  // eslint-disable-next-line no-unused-vars
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  const handleClickShowPassword = () => {
-    if (value.value) setShowPassword(!showPassword);
-  };
+  // const handleMouseDownPassword = (event) => {
+  //   event.preventDefault();
+  // };
+  // const handleClickShowPassword = () => {
+  //   if (value.value) setShowPassword(!showPassword);
+  // };
 
   switch (value.validation) {
     case 'phone': {
@@ -193,28 +191,28 @@ const ProfileForm = ({
             value.helperText ?? `Please enter a valid ${capitalize(id)}`
           }
           onChange={(e) => onChange(e, id)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton
-                  aria-label='toggle password visibility'
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge='end'
-                  style={{ opacity: value.value ? 1 : 0.5 }}
-                >
-                  {showPassword ? (
-                    <GlobalIcon iconName='visibility' />
-                  ) : (
-                    <GlobalIcon iconName='visibility_off' />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-            sx: {
-              width: '360px',
-            },
-          }}
+          // InputProps={{
+          //   endAdornment: (
+          //     <InputAdornment position='end'>
+          //       <IconButton
+          //         aria-label='toggle password visibility'
+          //         onClick={handleClickShowPassword}
+          //         onMouseDown={handleMouseDownPassword}
+          //         edge='end'
+          //         style={{ opacity: value.value ? 1 : 0.5 }}
+          //       >
+          //         {showPassword ? (
+          //           <GlobalIcon iconName='visibility' />
+          //         ) : (
+          //           <GlobalIcon iconName='visibility_off' />
+          //         )}
+          //       </IconButton>
+          //     </InputAdornment>
+          //   ),
+          //   sx: {
+          //     width: '360px',
+          //   },
+          // }}
         />
       );
     }
@@ -236,11 +234,8 @@ const ProfileForm = ({
             renderInput={(params) => (
               <UITextField
                 labelBold='default'
-                rest={{ ...params }}
+                {...params}
                 fullWidth
-                InputProps={{
-                  ...params.InputProps,
-                }}
                 label={value.label}
                 labelSize='small'
               />

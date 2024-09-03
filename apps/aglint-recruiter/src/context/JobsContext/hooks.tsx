@@ -45,9 +45,7 @@ const useJobActions = () => {
   const {
     checkPermissions,
     devlinkProps: getDevlinkProps,
-    isAssessmentEnabled,
     isSchedulingEnabled,
-    isScreeningEnabled,
   } = useRolesAndPermissions();
 
   const manageJob = useMemo(
@@ -86,19 +84,13 @@ const useJobActions = () => {
         ...job,
         flags: {
           ...flags,
-          screening: !!(flags?.screening && isScreeningEnabled),
-          assessment: !!(flags?.assessment && isAssessmentEnabled),
+          screening: !!flags?.screening,
+          assessment: !!flags?.assessment,
           interview: !!(flags?.interview && isSchedulingEnabled),
         },
       })),
     }),
-    [
-      jobs,
-      jobs.status,
-      isScreeningEnabled,
-      isAssessmentEnabled,
-      isSchedulingEnabled,
-    ],
+    [jobs, jobs.status, isSchedulingEnabled],
   );
 
   const { mutateAsync: jobCreate } = useJobCreate();

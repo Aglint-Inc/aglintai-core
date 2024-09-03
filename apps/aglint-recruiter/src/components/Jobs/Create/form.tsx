@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { InputAdornment, Stack } from '@mui/material';
-import Image from 'next/image';
+import { Stack } from '@mui/material';
 import React, { type FC, memo } from 'react';
 
 import { useToast } from '@/components/hooks/use-toast';
@@ -165,7 +164,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobTitle.displayName = 'JobTitle';
 
 const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  // const { recruiter } = useAuthDetails();
   return (
     <UITextField
       label={'Company'}
@@ -176,22 +175,22 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position='start'>
-            <Image
-              style={{
-                borderRadius: 'var(--radius-2)',
-                objectFit: 'contain',
-              }}
-              alt='building'
-              src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
-              width={26}
-              height={26}
-            />
-          </InputAdornment>
-        ),
-      }}
+      // InputProps={{
+      //   startAdornment: (
+      //     <InputAdornment position='start'>
+      //       <Image
+      //         style={{
+      //           borderRadius: 'var(--radius-2)',
+      //           objectFit: 'contain',
+      //         }}
+      //         alt='building'
+      //         src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
+      //         width={26}
+      //         height={26}
+      //       />
+      //     </InputAdornment>
+      //   ),
+      // }}
     />
   );
 });

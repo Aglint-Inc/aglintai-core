@@ -564,11 +564,8 @@ const EditBasicInfoSlider = ({ editDrawer, setEditDrawer }) => {
                   renderInput={(params) => (
                     <UITextField
                       labelBold='default'
-                      rest={{ ...params }}
+                      {...params}
                       fullWidth
-                      InputProps={{
-                        ...params.InputProps,
-                      }}
                       label='Employee Size'
                       labelSize='small'
                       onChange={(event) => {

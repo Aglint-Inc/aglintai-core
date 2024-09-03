@@ -47,7 +47,6 @@ import ScoreWheel, {
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
 import { type Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
@@ -222,11 +221,7 @@ const ProfileScoreControls = () => {
                   value={weights.experience}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.experience}
-                  InputProps={{
-                    endAdornment: (
-                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
-                    ),
-                  }}
+                  // E
                 />
               }
             />
@@ -245,11 +240,11 @@ const ProfileScoreControls = () => {
                   value={weights.skills}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.skills}
-                  InputProps={{
-                    endAdornment: (
-                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
-                    ),
-                  }}
+                  // InputProps={{
+                  //   endAdornment: (
+                  //     <Stack style={{ color: palette.grey[500] }}>%</Stack>
+                  //   ),
+                  // }}
                 />
               }
             />
@@ -268,11 +263,11 @@ const ProfileScoreControls = () => {
                   value={weights.education}
                   onChange={(e) => handleChange(e)}
                   disabled={disabled.education}
-                  InputProps={{
-                    endAdornment: (
-                      <Stack style={{ color: palette.grey[500] }}>%</Stack>
-                    ),
-                  }}
+                  // InputProps={{
+                  //   endAdornment: (
+                  //     <Stack style={{ color: palette.grey[500] }}>%</Stack>
+                  //   ),
+                  // }}
                 />
               }
             />

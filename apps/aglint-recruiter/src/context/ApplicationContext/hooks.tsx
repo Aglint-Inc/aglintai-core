@@ -28,12 +28,7 @@ export const useApplicationContext = (
       defaultTab?: ApplicationStore['tab'];
     },
 ) => {
-  const {
-    isAssessmentEnabled,
-    isSchedulingEnabled,
-    isScreeningEnabled,
-    isScoringEnabled,
-  } = useRolesAndPermissions();
+  const { isSchedulingEnabled, isScoringEnabled } = useRolesAndPermissions();
   const router = useRouter();
   const queryClient = useQueryClient();
   const updateApplication = useApplications()?.handleAsyncUpdateApplication;
@@ -52,9 +47,9 @@ export const useApplicationContext = (
   const tabs = useQuery(
     applicationQuery.tabs({
       ...props,
-      isAssessmentEnabled,
+      isAssessmentEnabled: false,
       isSchedulingEnabled,
-      isScreeningEnabled,
+      isScreeningEnabled: false,
       isScoringEnabled,
       enabled: !!props?.showTabs,
     }),

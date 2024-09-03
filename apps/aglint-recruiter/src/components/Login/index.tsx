@@ -1,13 +1,11 @@
 import {
   Box,
   Container,
-  IconButton,
-  InputAdornment,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import LoaderGrey from 'aglint-recruiter/public/lottie/LoaderGrey';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { GlobalIcon } from '@/devlink/GlobalIcon';
@@ -28,6 +26,7 @@ interface LoginFormInputs {
 function Login() {
   const router = useRouterPro<{ redirect?: string }>();
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -44,16 +43,6 @@ function Login() {
     } catch (e) {
       //
     }
-  };
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
   };
 
   const form = useForm<LoginFormInputs>({
@@ -205,24 +194,6 @@ function Login() {
                   if (e.key === 'Enter') {
                     if (!isLoading) handleSubmit(onSubmit)();
                   }
-                }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge='end'
-                      >
-                        {showPassword ? (
-                          <GlobalIcon iconName='visibility' />
-                        ) : (
-                          <GlobalIcon iconName='visibility_off' />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
                 }}
               />
               {loginError && (
