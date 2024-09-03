@@ -50,7 +50,7 @@ export default function Component({ params }) {
                 />
 
                 <div className='p-8 pt-20 pb-0'>
-                  <h1 className='text-2xl font-bold'>
+                  <h1 className='text-2xl font-semibold mb-1 mt-2'>
                     {getFullName(candidate.first_name, candidate.last_name)}
                   </h1>
                   <p className='text-sm'>

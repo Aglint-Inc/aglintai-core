@@ -45,8 +45,10 @@ function ImageUploadManual({
         borderRadius: 'var(--radius-2)',
         borderColor: 'var(--neutral-6)',
       }}
+      className='mb-2'
     >
       <Stack>
+        <div className='rounded-lg overflow-hidden '>
         <Avatar
           src={initImage ? initImage : '/images/emptyProfile.jpg'}
           sx={{
@@ -57,12 +59,13 @@ function ImageUploadManual({
               objectFit: 'cover',
             },
             textTransform: 'capitalize',
-            bgcolor: 'transparent',
+            bgcolor: 'transparent'
           }}
           variant='square'
         >
-          route
+          
         </Avatar>
+        </div>
       </Stack>
       {loading && (
         <Stack
@@ -81,13 +84,16 @@ function ImageUploadManual({
           Loading
         </Stack>
       )}
-
+      <div className='flex flex-col gap-2'>
+      <div className='text-sm '>Please upload an image that is less than 5 MB in size and in either PNG or JPEG format.</div>
+      <div className='flex flex-row gap-2'>
       <FileUploader
         handleChange={onImageChange}
         name='file'
         types={['PNG', 'JPEG', 'JPG']}
       >
         <Button
+          variant='secondary'
           type='submit'
           size='sm'
           className='p-4 h-[10px] text-[12px]'
@@ -96,7 +102,9 @@ function ImageUploadManual({
           Upload Image
         </Button>
       </FileUploader>
+      
       <Button
+        variant='outline'
         type='submit'
         disabled={loading}
         size='sm'
@@ -111,6 +119,8 @@ function ImageUploadManual({
       >
         Remove
       </Button>
+      </div>
+      </div>
     </Stack>
   );
 }

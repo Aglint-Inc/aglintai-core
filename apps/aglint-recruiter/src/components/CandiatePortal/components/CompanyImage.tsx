@@ -19,7 +19,7 @@ function CompanyImage({
       }}
     >
       <div className='absolute -bottom-16 left-8'>
-        <div className='w-32 h-32 bg-white rounded-md flex items-center justify-center '>
+        <div className='w-32 h-32 bg-white rounded-md flex items-center justify-center overflow-hidden'>
           {imageSrc ? (
             // <Image
             //   src={imageSrc}
