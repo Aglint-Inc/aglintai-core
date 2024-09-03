@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useToast } from '@/components/hooks/use-toast';
@@ -16,7 +16,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
-import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 interface LoginFormInputs {
@@ -36,22 +35,36 @@ export default function LoginForm() {
   const { toast } = useToast();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    setIsLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
       });
-    } else {
-      router.push(ROUTES['/loading']());
+
+      if (error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: error.message,
+        });
+      } else {
+        const response = await fetch('/auth/redirect', {
+          method: 'GET',
+          redirect: 'follow',
+        });
+
+        if (response.redirected) {
+          await router.push(response.url);
+        } else if (!response.ok) {
+          await router.push('/login');
+        }
+      }
+    } catch (err) {
+      //
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const oauthHandler = async (provider: 'google') => {
@@ -59,7 +72,7 @@ export default function LoginForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
+          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/auth/callback`,
         },
       });
       if (error) {
@@ -77,10 +90,6 @@ export default function LoginForm() {
       });
     }
   };
-
-  if (isLoading) {
-    return <LoginFormSkeleton />;
-  }
 
   return (
     <Card className='w-[400px] border-border'>
@@ -123,6 +132,7 @@ export default function LoginForm() {
                   },
                 })}
               />
+
               <Button
                 className='absolute right-2 top-1/2 -translate-y-1/2 p-1'
                 onClick={() => setShowPassword(!showPassword)}

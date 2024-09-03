@@ -1,31 +1,79 @@
+import { Metadata } from 'next';
 import Head from 'next/head';
 
 type Props = {
-  title: string;
-  site_name?: string;
+  title?: string;
+  siteName?: string;
   description?: string;
   url?: string;
   icon?: string;
   image?: string;
-  type?: string;
+  type?:
+    | 'website'
+    | 'article'
+    | 'book'
+    | 'profile'
+    | 'music.song'
+    | 'music.album'
+    | 'music.playlist'
+    | 'music.radio_station'
+    | 'video.movie'
+    | 'video.episode'
+    | 'video.tv_show'
+    | 'video.other';
   robots?: string;
-  jsonLd?: any;
+  jsonLd?: Record<string, any>;
 };
 
-const defaultMeta = {
+const defaultMeta: Props = {
   title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
   siteName: 'Aglint AI',
   description:
     'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
   url: process.env.NEXT_PUBLIC_HOST_NAME,
-  icon: '/images/favicon.png', // Make sure the icon file is in the public folder
-  images:
+  icon: '/images/favicon.png',
+  image:
     'https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/images/aglinthq.jpg',
-
   type: 'website',
   robots: 'follow, index',
-  jsonLd: null,
 };
+
+export function generateMetadata(params: Props): Metadata {
+  const meta = { ...defaultMeta, ...params };
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: meta.url,
+      siteName: meta.siteName,
+      images: [
+        {
+          url: meta.image!,
+          width: 1200,
+          height: 630,
+          alt: 'Aglint Inc',
+        },
+      ],
+      locale: 'en_US',
+      type: meta.type,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meta.title,
+      description: meta.description,
+      images: [meta.image!],
+    },
+    robots: meta.robots,
+    icons: {
+      icon: meta.icon,
+    },
+    metadataBase: new URL(meta.url!),
+  };
+}
+
 export function SeoPro(params: Props) {
   // read route params
   const meta = {
@@ -34,7 +82,6 @@ export function SeoPro(params: Props) {
   };
   // optionally access and extend (rather than replace) parent metadata
   return (
-    // eslint-disable-next-line @next/next/no-head-element
     <Head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />
@@ -48,7 +95,7 @@ export function SeoPro(params: Props) {
       )}
       {/* Open Graph */}
       <meta property='og:type' content={meta.type} />
-      <meta property='og:site_name' content={meta.site_name} />
+      <meta property='og:site_name' content={meta.siteName} />
       <meta property='og:description' content={meta.description} />
       <meta property='og:title' content={meta.title} />
       <meta property='og:image' content={meta.image} />
