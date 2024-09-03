@@ -1,31 +1,26 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 
-export const apiTargetToEvents: Partial<
+export type ApiTargetToEvents = Partial<
   Record<
     DatabaseEnums['email_slack_types'],
-    DatabaseTable['request_progress']['event_type'][]
+    DatabaseTable['request_progress']['event_type']
   >
-> = {
-  onRequestSchedule_emailLink_getCandidateAvailability: [
+>;
+export const apiTargetToEvents: ApiTargetToEvents = {
+  onRequestSchedule_emailLink_getCandidateAvailability:
     'REQ_CAND_AVAIL_EMAIL_LINK',
-  ],
-  onReceivingAvailReq_agent_sendSelfScheduleRequest: ['SELF_SCHEDULE_LINK'],
-  onRequestInterviewerDecline_agent_changeInterviewer: [
+  onReceivingAvailReq_agent_sendSelfScheduleRequest: 'SELF_SCHEDULE_LINK',
+  onRequestInterviewerDecline_agent_changeInterviewer:
     'REPLACE_ALTERNATIVE_INTERVIEWER',
-  ],
-  candidateBook_slack_interviewerForConfirmation: [
+  candidateBook_slack_interviewerForConfirmation:
     'SEND_INTERVIEWER_ATTENDANCE_RSVP',
-  ],
-  sendAvailReqReminder_email_applicant: ['REQ_AVAIL_FIRST_FOLLOWUP'],
-  onRequestSchedule_emailLink_sendSelfSchedulingLink: ['SELF_SCHEDULE_LINK'],
-  selfScheduleReminder_email_applicant: [
-    'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
-  ],
-  onRequestCancel_agent_cancelEvents: ['CANCEL_INTERVIEW_MEETINGS'],
-  onRequestCancel_slack_interviewersOrganizer: [
+  sendAvailReqReminder_email_applicant: 'REQ_AVAIL_FIRST_FOLLOWUP',
+  onRequestSchedule_emailLink_sendSelfSchedulingLink: 'SELF_SCHEDULE_LINK',
+  selfScheduleReminder_email_applicant: 'SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE',
+  onRequestCancel_agent_cancelEvents: 'CANCEL_INTERVIEW_MEETINGS',
+  onRequestCancel_slack_interviewersOrganizer:
     'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
-  ],
-  onReceivingAvailReq_agent_confirmSlot: [],
+  onReceivingAvailReq_agent_confirmSlot: 'SCHEDULE_INTERVIEW_SLOT',
 };
 
 type GroupeTriggerEvent =

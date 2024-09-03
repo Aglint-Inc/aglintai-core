@@ -191,17 +191,16 @@ const RequestEvents = ({
               <>
                 {reqTriggerActionsMap['onReceivingAvailReq'] &&
                   reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
-                    return apiTargetToEvents[action.target_api].map((ev) => {
-                      return (
-                        <EventNode
-                          currEventTrigger='onReceivingAvailReq'
-                          eventType={ev}
-                          reqProgresMap={reqProgresMp}
-                          key={ev}
-                          currWAction={action}
-                        />
-                      );
-                    });
+                    const eventAction = apiTargetToEvents[action.target_api];
+                    return (
+                      <EventNode
+                        currEventTrigger='onReceivingAvailReq'
+                        eventType={eventAction}
+                        reqProgresMap={reqProgresMp}
+                        key={eventAction}
+                        currWAction={action}
+                      />
+                    );
                   })}
               </>
             </ShowCode.When>
@@ -294,23 +293,18 @@ const WActionMenu = () => {
               >
                 {Boolean(reqTriggerActionsMap['onReceivingAvailReq']) &&
                   reqTriggerActionsMap['onReceivingAvailReq'].length > 0 &&
-                  reqTriggerActionsMap['onReceivingAvailReq']
-                    .map((action) => {
-                      return apiTargetToEvents[action.target_api].map(
-                        (ev, idx) => {
-                          return (
-                            <EventNode
-                              key={idx}
-                              currEventTrigger='onReceivingAvailReq'
-                              eventType={ev}
-                              reqProgresMap={{}}
-                              currWAction={action}
-                            />
-                          );
-                        },
-                      );
-                    })
-                    .flat()}
+                  reqTriggerActionsMap['onReceivingAvailReq'].map((action) => {
+                    const eventAction = apiTargetToEvents[action.target_api];
+                    return (
+                      <EventNode
+                        key={action.id}
+                        currEventTrigger='onReceivingAvailReq'
+                        eventType={eventAction}
+                        reqProgresMap={{}}
+                        currWAction={action}
+                      />
+                    );
+                  })}
               </ShowCode.When>
             </Stack>
           </>
