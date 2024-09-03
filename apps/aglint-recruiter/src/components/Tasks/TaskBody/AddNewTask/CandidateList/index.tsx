@@ -12,7 +12,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { JobCandidatesType } from '../../../utils';
+import { type JobCandidatesType } from '../../../utils';
 
 function CandidateList({
   selectedCandidate,

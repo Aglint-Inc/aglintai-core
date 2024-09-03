@@ -1,4 +1,4 @@
-import { DatabaseTableUpdate, RecruiterType } from '@aglint/shared-types';
+import { type DatabaseTableUpdate, type RecruiterType } from '@aglint/shared-types';
 
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

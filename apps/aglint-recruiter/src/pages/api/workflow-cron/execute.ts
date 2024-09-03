@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { supabaseWrap } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

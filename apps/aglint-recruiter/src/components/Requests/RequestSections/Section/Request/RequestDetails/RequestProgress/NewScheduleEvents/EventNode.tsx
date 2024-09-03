@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
@@ -11,7 +11,7 @@ import { useRequest } from '@/src/context/RequestContext';
 import toast from '@/src/utils/toast';
 
 import { deleteRequestWorkflowAction } from '../../utils';
-import { ProgressTenseType, RequestProgressMapType } from '../types';
+import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';

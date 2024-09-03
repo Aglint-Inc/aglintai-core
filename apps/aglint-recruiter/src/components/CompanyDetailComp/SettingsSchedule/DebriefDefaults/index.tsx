@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { schedulingSettingType } from '@aglint/shared-types';
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { Attendee } from '@/devlink2/Attendee';
 import { DebriefDefaults as DebriefDefaultsDev } from '@/devlink3/DebriefDefaults';

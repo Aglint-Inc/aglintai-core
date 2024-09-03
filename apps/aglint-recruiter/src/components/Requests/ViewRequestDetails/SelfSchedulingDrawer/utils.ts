@@ -1,9 +1,9 @@
 import {
-  Event,
-  Resource,
+  type Event,
+  type Resource,
 } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 
 export const transformAvailability = (
   availabilities: ApiResponseFindAvailability['availabilities'],

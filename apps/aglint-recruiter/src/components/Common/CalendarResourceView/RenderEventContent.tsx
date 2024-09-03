@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material';
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
 import MuiAvatar from '../MuiAvatar';
 import { CustomTooltip } from '../Tooltip';
-import { Event } from './types';
+import { type Event } from './types';
 
 function RenderEventContent(eventInfo) {
   const { title, start, end } = eventInfo.event as {

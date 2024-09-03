@@ -3,11 +3,18 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { AllInterviewers } from '@/devlink2/AllInterviewers';
 import { AllInterviewersCard } from '@/devlink2/AllInterviewersCard';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { TextWithBg } from '@/devlink2/TextWithBg';
@@ -50,7 +57,21 @@ const InterviewTab = () => {
           />
         )
       }
-      slotTopbarLeft={<Breadcrum textName={'Interviewers'} />}
+      slotTopbarLeft={
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='#' onClick={() => router.push(ROUTES['/'])}>
+                Home
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Interviewers</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      }
       slotBody={
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>

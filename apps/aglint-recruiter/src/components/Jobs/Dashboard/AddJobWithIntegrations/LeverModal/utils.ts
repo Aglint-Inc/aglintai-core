@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LeverJob } from './types/job';
+import { type LeverJob } from './types/job';
 
 export const fetchAllJobs = async (apiKey) => {
   let allJobs = [];

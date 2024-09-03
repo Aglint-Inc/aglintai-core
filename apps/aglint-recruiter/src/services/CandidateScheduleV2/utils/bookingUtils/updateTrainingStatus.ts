@@ -1,7 +1,7 @@
-import { AssignTrainingInt } from '@aglint/shared-types';
+import { type AssignTrainingInt } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { BookedMeetingDetails } from './types';
+import { type BookedMeetingDetails } from './types';
 
 export const updateTrainingStatus = async (
   booked_meeting_details: BookedMeetingDetails,

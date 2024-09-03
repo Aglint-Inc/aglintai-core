@@ -1,5 +1,5 @@
 import { schema_verify_interviewer_selected_slots } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';

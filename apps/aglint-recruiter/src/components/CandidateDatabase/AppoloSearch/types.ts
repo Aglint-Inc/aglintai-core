@@ -1,5 +1,5 @@
-import { DB } from '@aglint/shared-types';
-import { Json } from '@trigger.dev/sdk';
+import { type DB } from '@aglint/shared-types';
+import { type Json } from '@trigger.dev/sdk';
 
 export type Candidate = Omit<
   DB['public']['Tables']['aglint_candidates']['Row'],

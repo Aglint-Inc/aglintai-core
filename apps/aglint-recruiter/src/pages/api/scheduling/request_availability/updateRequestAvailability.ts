@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/queries/utils';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
+
+import { fetchAllActivities } from '../fetch_activities';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

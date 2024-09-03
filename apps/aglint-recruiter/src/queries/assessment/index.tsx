@@ -8,11 +8,11 @@ import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
 import {
-  Assessment,
-  AssessmentCreate,
-  AssessmentRowInsert,
-  AssessmentTemplate,
-  AssessmentUpdate,
+  type Assessment,
+  type AssessmentCreate,
+  type AssessmentRowInsert,
+  type AssessmentTemplate,
+  type AssessmentUpdate,
 } from './types';
 
 export const useAllAssessments = () => {

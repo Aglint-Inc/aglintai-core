@@ -12,7 +12,7 @@ import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { useTrainingProgress, useTrainingProgressType } from '../Hook';
+import { type useTrainingProgressType,useTrainingProgress } from '../Hook';
 
 const LIMIT = 4;
 

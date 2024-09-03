@@ -1,13 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DatabaseTable } from '@aglint/shared-types';
-import { CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
+import { type DatabaseTable } from '@aglint/shared-types';
+import { type CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { ApiBodyParamTaskCreate } from '../debrief/task_create';
+import { type ApiBodyParamTaskCreate } from '../debrief/task_create';
 
 export type ApiDebriefAddUsers = {
   filter_id: string;

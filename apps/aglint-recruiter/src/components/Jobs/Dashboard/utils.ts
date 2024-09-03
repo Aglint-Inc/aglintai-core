@@ -1,9 +1,9 @@
-import { DatabaseTable, JobApplcationDB } from '@aglint/shared-types';
+import { type DatabaseTable, type JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { JobType, Status } from './types';
+import { type JobType, type Status } from './types';
 
 export const fetchJobs = (recruiter_id) => {
   return supabase

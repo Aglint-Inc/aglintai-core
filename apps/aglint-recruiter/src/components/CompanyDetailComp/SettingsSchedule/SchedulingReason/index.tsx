@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
+import { type DatabaseTable, type DatabaseTableUpdate } from '@aglint/shared-types';
 import {
   Box,
   capitalize,

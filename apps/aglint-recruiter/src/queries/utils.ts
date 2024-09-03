@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
 export type SupabaseQuery<T extends keyof DB['public']['Tables']> =
   readonly (keyof DB['public']['Tables'][T]['Row'])[];

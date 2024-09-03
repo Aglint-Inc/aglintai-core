@@ -1,4 +1,4 @@
-import { RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
@@ -6,7 +6,7 @@ import React from 'react';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { UserWithRole } from '@/devlink/UserWithRole';
-import { GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
+import { type GetRoleAndPermissionsAPI } from '@/src/pages/api/getRoleAndPermissions/type';
 
 export const RoleUserWidget = ({
   role,

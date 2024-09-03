@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Popover, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import {
-  ChangeEventHandler,
-  FC,
+  type ChangeEventHandler,
+  type FC,
   useCallback,
   useEffect,
   useMemo,
@@ -13,6 +13,14 @@ import {
   useState,
 } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -25,7 +33,6 @@ import { ScorePillNice } from '@/devlink/ScorePillNice';
 import { ScoreSetting } from '@/devlink/ScoreSetting';
 import { ScoreWeightage } from '@/devlink/ScoreWeightage';
 import { Text } from '@/devlink/Text';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { GlobalInfo } from '@/devlink2/GlobalInfo';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -35,14 +42,14 @@ import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
 import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import Loader from '@/src/components/Common/Loader';
 import ScoreWheel, {
-  ScoreWheelParams,
+  type ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useJob } from '@/src/context/JobContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useTour } from '@/src/context/TourContext';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalize, capitalizeSentence } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
@@ -743,28 +750,28 @@ const BreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Profile Score`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href='#'
+            onClick={() => push(ROUTES['/jobs/[id]']({ id: job?.id }))}
+          >
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Profile Score</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 

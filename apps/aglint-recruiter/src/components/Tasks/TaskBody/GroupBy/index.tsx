@@ -8,8 +8,8 @@ import { FilterList } from '@/devlink2/FilterList';
 import { FilterPill } from '@/devlink2/FilterPill';
 
 import {
+  type groupByTextType,
   groupByText,
-  groupByTextType,
   useTaskStatesContext,
 } from '../../TaskStatesContext';
 

@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTableUpdate, DB } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTableUpdate, type DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
@@ -14,7 +14,7 @@ import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import TaskOwners from '@/src/components/Jobs/Job/Candidate-List/Actions/createTask/TaskOwners';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
-  TasksAgentContextType,
+  type TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { useAllMembers } from '@/src/queries/members';
@@ -26,14 +26,14 @@ import {
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import SelectStatus from '../../../Components/SelectStatus';
-import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType, createTaskProgress } from '../../../utils';
+import { type AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
+import { type assigneeType, createTaskProgress } from '../../../utils';
 import PriorityList from '../../AddNewTask/PriorityList';
 import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
 import SessionList from '../../AddNewTask/SessionList';
 import TriggerTime from '../../AddNewTask/TriggerTime';
-import { meetingCardType } from '../Progress/SessionCard';
+import { type meetingCardType } from '../Progress/SessionCard';
 
 function TaskCard({
   task,

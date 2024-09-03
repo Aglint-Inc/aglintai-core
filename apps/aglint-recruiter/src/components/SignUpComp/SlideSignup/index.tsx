@@ -1,6 +1,6 @@
 // code has to rewritten not understandable and not maintainable
 'use client';
-import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
+import { type RecruiterType, type RecruiterUserType } from '@aglint/shared-types';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';
@@ -8,13 +8,13 @@ import { useState } from 'react';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
+import { type ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { errorMessages } from '@/src/utils/errorMessages';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import * as types from './types';
+import type * as types from './types';
 import { handleEmail, handlePassword } from './utils';
 
 const SlideTwoSignUp = () => {

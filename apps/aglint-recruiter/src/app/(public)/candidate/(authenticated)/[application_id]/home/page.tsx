@@ -3,10 +3,13 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
+// import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
-import MessageCard from '@/src/components/CandiatePortal/components/MassageCard';
+import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
+// import InterviewProgressCard from '@/src/components/CandiatePortal/components/InterviewProgressCard';
+// import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
 import RequestedAvailability from '@/src/components/CandiatePortal/components/RequestedAvailability';
 import SelfScheduling from '@/src/components/CandiatePortal/components/SelfScheduling';
 import UpcomingInterview from '@/src/components/CandiatePortal/components/UpcomingInterview';
@@ -20,13 +23,15 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <MessageCard />;
+  // if (!data) return <ReorderableInterviewPlan />;
+
+  if (!data) return <>No data</>;
 
   const {
     availability,
     candidate,
     company,
-    // interviewPlan,
+    interviewPlan,
     job,
     schedule,
     upcoming,
@@ -34,11 +39,11 @@ export default function Component({ params }) {
 
   if (data)
     return (
-      <div className='flex flex-col min-h-screen bg-gray-100'>
-        <main className='flex-1 container mx-auto px-4 py-8'>
+      <div className='flex flex-col min-h-screen'>
+        <main className='flex-1 mx-auto px-4 py-8'>
           <div className='grid grid-cols-3 gap-8'>
             <div className='col-span-2'>
-              <div className='bg-white rounded-lg overflow-hidden shadow'>
+              <div className=' rounded-lg overflow-hidden shadow'>
                 <CompanyImage
                   imageSrc={candidate.avatar}
                   coverSrc={job.banner}
@@ -48,7 +53,7 @@ export default function Component({ params }) {
                   <h1 className='text-2xl font-bold'>
                     {getFullName(candidate.first_name, candidate.last_name)}
                   </h1>
-                  <p className='text-gray-600'>
+                  <p className='text-sm'>
                     for {job.name} at {company.name}
                   </p>
                   <GreetingCandidate sentence={job.greetings} />
@@ -61,6 +66,9 @@ export default function Component({ params }) {
               </div>
             </div>
             <div className='space-y-8'>
+              {interviewPlan.length > 0 && (
+                <InterviewProgress interviews={interviewPlan} />
+              )}
               {upcoming.length > 0 && (
                 <UpcomingInterview upcomingData={upcoming} />
               )}
@@ -73,6 +81,16 @@ export default function Component({ params }) {
               {schedule.length > 0 && (
                 <SelfScheduling scheduleData={schedule} />
               )}
+              {/* <div className='flex flex-col space-y-2'>
+                <h4 className='text-md font-semibold'>Interview Progress</h4>
+                {interviews && interviews.map((interview, index) => (
+                  <InterviewProgressCard
+                    key={index}
+                    interview={interview}
+                    isLast={index === interviews.length - 1}
+                  />
+                ))}
+              </div> */}
             </div>
           </div>
         </main>

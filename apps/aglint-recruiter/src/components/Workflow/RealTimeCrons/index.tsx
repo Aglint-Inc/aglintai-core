@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types/src/db/schema.types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
+import { type Database } from '@aglint/shared-types/src/db/schema.types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import {
+  type SelectChangeEvent,
   Box,
   Button,
   Chip,
@@ -11,10 +12,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { type GridColDef,DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 

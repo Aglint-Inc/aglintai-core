@@ -8,7 +8,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { InterviewerWorkload } from '@/devlink3/InterviewerWorkload';
 import { InterviewWorkloadList } from '@/devlink3/InterviewWorkloadList';
 import { useJobs } from '@/src/context/JobsContext';
-import { allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
+import { type allInterviewerType } from '@/src/pages/api/interviewers/getAllInterviewers';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import dayjs from '@/src/utils/dayjs';

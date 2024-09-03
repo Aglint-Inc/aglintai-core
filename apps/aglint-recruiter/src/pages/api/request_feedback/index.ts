@@ -1,8 +1,8 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { API_request_feedback } from './type';
+import { type API_request_feedback } from './type';
 
 export default async function handler(
   req: NextApiRequest,

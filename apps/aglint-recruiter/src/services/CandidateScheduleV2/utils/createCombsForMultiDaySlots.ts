@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  DateRangePlansType,
-  MultiDayPlanType,
-  PlanCombinationRespType,
+  type DateRangePlansType,
+  type MultiDayPlanType,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';

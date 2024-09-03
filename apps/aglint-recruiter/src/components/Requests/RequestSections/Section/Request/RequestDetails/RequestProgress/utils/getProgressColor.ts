@@ -1,6 +1,6 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { ProgressTenseType } from '../types';
+import { type ProgressTenseType } from '../types';
 export const progressStatusToTense = (
   status: DatabaseTable['request_progress']['status'],
 ): ProgressTenseType => {

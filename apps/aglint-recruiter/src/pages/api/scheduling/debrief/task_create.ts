@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTableInsert, SupabaseType } from '@aglint/shared-types';
 import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -324,4 +323,41 @@ const createTask = async ({
   console.log(`Created task ${task.id}`);
 
   return { task, session };
+};
+
+export const createFilterJson = async ({
+  sessions_ids,
+  application_id,
+  organizer_name,
+  dateRange,
+  supabase,
+  rec_user_id,
+}: {
+  sessions_ids: string[];
+  application_id: string;
+  organizer_name: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  supabase: SupabaseType;
+  rec_user_id: string;
+}) => {
+  const { data: filterJson, error: errorFilterJson } = await supabase
+    .from('interview_filter_json')
+    .insert({
+      filter_json: {
+        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        organizer_name: organizer_name,
+      },
+      session_ids: sessions_ids,
+      created_by: rec_user_id,
+      application_id,
+    })
+    .select();
+
+  if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+  return filterJson[0];
 };

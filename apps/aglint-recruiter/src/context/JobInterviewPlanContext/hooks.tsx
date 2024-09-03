@@ -3,8 +3,8 @@ import { useMutationState } from '@tanstack/react-query';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
-  CreateDebriefSession,
-  CreateInterviewSession,
+  type CreateDebriefSession,
+  type CreateInterviewSession,
   useAddDebriefSession,
   useAddInterviewSession,
   useCreateInterviewPlan,

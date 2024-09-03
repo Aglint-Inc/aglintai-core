@@ -32,9 +32,9 @@ import {
   useCandidateStore,
 } from './store';
 import {
-  Candidate,
-  CandidateSearchHistoryType,
-  FetchCandidatesParams,
+  type Candidate,
+  type CandidateSearchHistoryType,
+  type FetchCandidatesParams,
 } from './types';
 import { processCandidatesInBatches } from './utils';
 import ViewSavedList from './ViewSavedList';

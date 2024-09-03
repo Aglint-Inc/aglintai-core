@@ -3,7 +3,7 @@ import { capitalize } from 'lodash';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { IntegrationCard } from '@/devlink2/IntegrationCard';
 
-import { MessagingToolsType } from '../types';
+import { type MessagingToolsType } from '../types';
 import { SlackLogo } from '../utils';
 
 function MessagingTools() {

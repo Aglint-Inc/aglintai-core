@@ -4,7 +4,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { assessmentQueryKeys } from './keys';
-import { Assessment, RecommendationQuestion } from './types';
+import { type Assessment, type RecommendationQuestion } from './types';
 
 const TABLE = 'question_bank' as const;
 

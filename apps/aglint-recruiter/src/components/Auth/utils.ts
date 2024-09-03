@@ -1,6 +1,6 @@
 import { errorMessages } from '@/src/utils/errorMessages';
 
-import { FieldError } from './types';
+import { type FieldError } from './types';
 
 export const handlePassword = (value): FieldError => {
   if (value.length < 8) {

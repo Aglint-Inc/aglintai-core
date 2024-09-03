@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { ResumePreviewer } from '@/src/components/Jobs/Job/Candidate-List/Common/ResumePreviewer';
 import { upsertRequestNotes } from '@/src/components/Requests/ViewRequestDetails/RequestNotes/utils';
-import { APICreateScheduleRequest } from '@/src/pages/api/request/schedule-request';
+import { type APICreateScheduleRequest } from '@/src/pages/api/request/schedule-request';
 import {
   applicationQuery,
   useUpdateApplication,
@@ -18,7 +18,7 @@ import toast from '@/src/utils/toast';
 
 import { useApplications } from '../ApplicationsContext';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
-import { ApplicationStore, useApplicationStore } from './store';
+import { type ApplicationStore, useApplicationStore } from './store';
 
 export const useApplicationContext = (
   props: Parameters<(typeof applicationQuery)['application']>[0] &

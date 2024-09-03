@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, {
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
+  type ChangeEventHandler,
+  type Dispatch,
+  type SetStateAction,
   useCallback,
   useMemo,
 } from 'react';
@@ -23,13 +23,13 @@ import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor'
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CreateInterviewSession } from '@/src/queries/interview-plans';
-import { InterviewSessionType } from '@/src/queries/interview-plans/types';
+import { type CreateInterviewSession } from '@/src/queries/interview-plans';
+import { type InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { sessionDurations } from '@/src/utils/scheduling/const';
 
-import { CompanyMember, PausedBadge, RoleIcon } from '.';
+import { type CompanyMember, PausedBadge, RoleIcon } from '.';
 import { getBreakLabelV2 } from './utils';
 
 export type SessionUser = CompanyMember & {

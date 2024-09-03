@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ApplicantDetailStage } from '@/devlink2/ApplicantDetailStage';
 import { useApplication } from '@/src/context/ApplicationContext';
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 
 import {
   setIsScheduleOpen,

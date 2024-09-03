@@ -6,7 +6,7 @@ import { MemberListCard } from '@/devlink2/MemberListCard';
 import dayjs from '@/src/utils/dayjs';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { useModuleRelations } from '../hooks';
+import { type useModuleRelations } from '../hooks';
 import ThreeDot from './ThreeDot';
 
 function QualifiedInterviewTypeCard({

@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 
 import MuiAvatar from '../MuiAvatar';
 import { CustomTooltip } from '../Tooltip';
-import { Resource } from './types';
+import { type Resource } from './types';
 
 function RenderResourceContent(resourceInfo) {
   const { data } = resourceInfo.resource

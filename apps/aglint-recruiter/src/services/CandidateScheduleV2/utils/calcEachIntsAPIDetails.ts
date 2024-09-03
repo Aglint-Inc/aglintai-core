@@ -1,17 +1,17 @@
 import {
-  APIOptions,
-  holidayType,
-  InterDayFreeTime,
-  InterDayHolidayOff,
-  InterDayWorkHr,
-  InterDetailsType,
-  TimeDurationDayjsType,
-  TimeDurationType,
+  type APIOptions,
+  type holidayType,
+  type InterDayFreeTime,
+  type InterDayHolidayOff,
+  type InterDayWorkHr,
+  type InterDetailsType,
+  type TimeDurationDayjsType,
+  type TimeDurationType,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
-import { ScheduleApiDetails } from '../types';
+import { type ScheduleApiDetails } from '../types';
 import { getInterviewerBlockedTimes } from './getInterviewerBlockedTimes';
 import {
   convertTimeDurStrToDayjsChunk,

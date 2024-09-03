@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
@@ -10,9 +10,9 @@ import {
   useJobsSync,
   useJobUpdate,
 } from '@/src/queries/jobs';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 
-import { ApplicationStore } from '../ApplicationContext/store';
+import { type ApplicationStore } from '../ApplicationContext/store';
 import { handleGenerateJd } from '../JobContext/hooks';
 import { useRolesAndPermissions } from '../RolesAndPermissions/RolesAndPermissionsContext';
 

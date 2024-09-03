@@ -1,18 +1,18 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
+import { type getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { getNthDateFromToday, groupDateBy } from '../utils';
 import { schedulingDashboardQueryKeys } from './keys';
 import {
-  Functions,
-  SchedulingDashboardArgs,
-  SchedulingDashboardTypes,
+  type Functions,
+  type SchedulingDashboardArgs,
+  type SchedulingDashboardTypes,
 } from './types';
 
 type Args<T extends keyof SchedulingDashboardArgs> = SchedulingDashboardArgs[T];

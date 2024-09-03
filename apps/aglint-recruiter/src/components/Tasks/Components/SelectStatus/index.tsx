@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Popover, selectClasses, Stack, Typography } from '@mui/material';
 import React from 'react';
 

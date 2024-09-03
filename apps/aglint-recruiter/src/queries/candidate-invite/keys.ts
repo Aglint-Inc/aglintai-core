@@ -1,7 +1,7 @@
-import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
+import { type useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 
 import { appKey } from '..';
-import { InviteSlotsParams } from '.';
+import { type InviteSlotsParams } from '.';
 
 export const candidateInviteKeys = {
   all: { queryKey: [appKey, 'candidate-invite'] as string[] },

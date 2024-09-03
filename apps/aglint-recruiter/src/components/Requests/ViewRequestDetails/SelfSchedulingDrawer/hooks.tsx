@@ -4,8 +4,10 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { type ApiBodyParamsSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
-import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import {
+  type ApiBodyParamsSelfSchedule,
+  ApiResponseSelfSchedule,
+} from '@/src/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import toast from '@/src/utils/toast';
 
@@ -209,7 +211,7 @@ export const useSelfSchedulingDrawer = ({
       );
 
       if (res.status === 200) {
-        const resObj = res?.data?.data as ApiResponseSendToCandidate['data'];
+        const resObj = res?.data?.data as ApiResponseSelfSchedule['data'];
         setResSendToCandidate(resObj);
         setStepScheduling('success_screen');
         refetch();

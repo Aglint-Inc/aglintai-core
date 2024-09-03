@@ -19,7 +19,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { useModuleAndUsers } from '../../../queries/hooks';
 import { setIsSettingsDialogOpen, useModulesStore } from '../../../store';
-import { ModuleType } from '../../../types';
+import { type ModuleType } from '../../../types';
 
 function SettingsDialog({ editModule }: { editModule: ModuleType }) {
   const { members } = useSchedulingContext();

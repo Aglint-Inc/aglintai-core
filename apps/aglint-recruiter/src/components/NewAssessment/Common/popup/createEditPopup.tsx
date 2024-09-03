@@ -6,7 +6,7 @@ import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { AssessmentPopup as AssessmentPopupDev } from '@/devlink2/AssessmentPopup';
 import { SelectionPill } from '@/devlink2/SelectionPill';
 import UITextField from '@/src/components/Common/UITextField';
-import { useCreateAssessment } from '@/src/queries/assessment';
+import { type useCreateAssessment } from '@/src/queries/assessment';
 
 import useAssessmentStore from '../../Stores';
 import SelectionComp from '../components/selection';

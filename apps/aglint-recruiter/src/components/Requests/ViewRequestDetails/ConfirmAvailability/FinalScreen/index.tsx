@@ -112,7 +112,7 @@ function FinalScreen() {
               </ShowCode.When>
               <ShowCode.Else>
                 <iframe
-                  width={'600px'}
+                  width={'470px'}
                   height={'620px'}
                   color='white'
                   srcDoc={emailData?.html}

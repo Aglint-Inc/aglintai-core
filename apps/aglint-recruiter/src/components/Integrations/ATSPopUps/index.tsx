@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Dialog, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -13,7 +13,7 @@ import { LearnHowLever } from '@/devlink3/LearnHowLever';
 
 import Loader from '../../Common/Lotties/Integration_Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import { PopUpReasonTypes } from '../types';
+import { type PopUpReasonTypes } from '../types';
 
 function ATSPopUps({
   isOpen,

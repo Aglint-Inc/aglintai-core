@@ -12,7 +12,7 @@ import toast from '@/src/utils/toast';
 import UITypography from '../Common/UITypography';
 import CompanyLogo from './CompanyLogo';
 import {
-  PhoneScreeningResponseType,
+  type PhoneScreeningResponseType,
   useScreeningCtx,
 } from './ScreeningCtxProvider';
 import { phoneScreenEmail } from './utils';

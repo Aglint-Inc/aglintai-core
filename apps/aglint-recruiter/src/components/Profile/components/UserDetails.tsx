@@ -16,9 +16,9 @@ import toast from '@/src/utils/toast';
 import ImageUploadManual from '../../Common/ImageUpload/ImageUploadManual';
 import { ProfileForms } from '..';
 import {
-  FormFields,
-  FormValues,
-  PreferenceFormFields,
+  type FormFields,
+  type FormValues,
+  type PreferenceFormFields,
   validateLinkedIn,
   validateMail,
   validatePhone,

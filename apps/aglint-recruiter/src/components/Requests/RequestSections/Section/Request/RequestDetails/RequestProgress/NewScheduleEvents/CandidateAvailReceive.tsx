@@ -70,6 +70,7 @@ const CandidateAvailReceive = () => {
     lastEvent =
       request_progress.data[request_progress.data.length - 1].event_type;
   }
+
   return (
     <Stack rowGap={2}>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>

@@ -10,11 +10,11 @@ import toast from '@/src/utils/toast';
 
 import { assessmentQueryKeys, generateUUID, useAssessmentId } from './keys';
 import {
-  Assessment,
-  AssessmentQuestion,
-  AssessmentQuestionInsert,
-  AssessmentQuestionUpdate,
-  RecommendationQuestion,
+  type Assessment,
+  type AssessmentQuestion,
+  type AssessmentQuestionInsert,
+  type AssessmentQuestionUpdate,
+  type RecommendationQuestion,
 } from './types';
 
 const TABLE = 'assessment_question' as const;

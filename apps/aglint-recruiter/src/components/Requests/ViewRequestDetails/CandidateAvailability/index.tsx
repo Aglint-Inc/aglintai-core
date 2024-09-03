@@ -22,7 +22,7 @@ import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import {
   requestDaysListOptions,
   slotsListOptions,
-} from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';

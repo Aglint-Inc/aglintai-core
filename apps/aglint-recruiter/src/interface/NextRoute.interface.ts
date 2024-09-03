@@ -1,4 +1,4 @@
-import { NextRequest as nextApiRequest } from 'next/server';
+import { type NextRequest as nextApiRequest } from 'next/server';
 
 export interface NextApiRequest extends nextApiRequest {
   headers: {

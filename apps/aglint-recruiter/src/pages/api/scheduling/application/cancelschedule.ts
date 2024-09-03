@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { DB } from '@aglint/shared-types';
-import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
+import { type DB } from '@aglint/shared-types';
+import { type CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { cancelMailHandler } from '@/src/utils/scheduling/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
 } from '@/src/components/Scheduling/ScheduleDetails/utils';
+import { cancelMailHandler } from '@/src/utils/scheduling/mailUtils';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;

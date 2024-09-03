@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ import { useAllInterviewModules } from '../../Scheduling/InterviewTypes/queries/
 import { Filter } from '../components/Filter';
 import { Interviewers } from '../components/Interviewers';
 import { useLeaderBoard } from '../Hook';
-import { LeaderAnalyticsFilterType } from '../types';
+import { type LeaderAnalyticsFilterType } from '../types';
 
 function Metrics() {
   const [leaderboardType, setLeaderboardType] =

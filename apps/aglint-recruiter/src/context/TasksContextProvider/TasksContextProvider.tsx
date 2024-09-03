@@ -1,26 +1,26 @@
 'use client';
 import {
-  DatabaseEnums,
-  DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
-  DatabaseView,
+  type DatabaseEnums,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type DatabaseTableUpdate,
+  type DatabaseView,
 } from '@aglint/shared-types';
-import { meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
+import { type meetingCardType } from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import {
   EmailAgentId,
   PhoneAgentId,
   SystemAgentId,
 } from '@aglint/shared-utils';
-import { RealtimeChannel } from '@supabase/supabase-js';
+import { type RealtimeChannel } from '@supabase/supabase-js';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import {
+  type ReactNode,
   createContext,
-  ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -28,15 +28,15 @@ import {
   useState,
 } from 'react';
 
-import { sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
+import { type sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import {
+  type indicatorType,
   getIndicator,
-  indicatorType,
 } from '@/src/components/Tasks/Components/TaskStatusTag/utils';
 import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { useAllMembers } from '@/src/queries/members';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';

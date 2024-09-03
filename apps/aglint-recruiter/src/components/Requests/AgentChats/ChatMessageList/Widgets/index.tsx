@@ -1,5 +1,5 @@
 
-import { ChatType } from '../hooks/fetch';
+import { type ChatType } from '../hooks/fetch';
 import FetchDeclinedInterviews from './FetchDeclinedInterviews';
 import FetchScheduledInterviews from './FetchScheduledInterviews';
 import UserRequests from './UserRequests';

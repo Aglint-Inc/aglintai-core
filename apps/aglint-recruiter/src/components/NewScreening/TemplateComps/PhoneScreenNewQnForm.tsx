@@ -11,7 +11,7 @@ import { ToggleButton } from '@/devlink2/ToggleButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
-import { PhoneScreenQuestion } from '../types';
+import { type PhoneScreenQuestion } from '../types';
 import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
 

@@ -1,4 +1,4 @@
-import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
+import { type employmentTypeEnum, type RecruiterUserType } from '@aglint/shared-types';
 import { Autocomplete, Drawer, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 
@@ -12,8 +12,8 @@ import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadMa
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiResponseGetMember } from '@/src/pages/api/get_member';
-import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { type ApiResponseGetMember } from '@/src/pages/api/get_member';
+import { type API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/src/queries/departments';
 import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import { supabase } from '@/src/utils/supabase/client';

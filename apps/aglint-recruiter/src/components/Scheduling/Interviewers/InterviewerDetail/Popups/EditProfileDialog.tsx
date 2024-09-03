@@ -9,9 +9,9 @@ import ImageUploadManual from '@/src/components/Common/ImageUpload/ImageUploadMa
 import UITextField from '@/src/components/Common/UITextField';
 import { ProfileForms } from '@/src/components/Profile';
 import {
-  FormFields,
-  FormValues,
-  PreferenceFormFields,
+  type FormFields,
+  type FormValues,
+  type PreferenceFormFields,
   validateLinkedIn,
   validateMail,
   validatePhone,

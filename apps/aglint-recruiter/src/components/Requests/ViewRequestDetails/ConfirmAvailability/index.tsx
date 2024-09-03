@@ -1,7 +1,7 @@
 import {
-  APIConfirmRecruiterSelectedOption,
-  CandReqSlotsType,
-  SessionCombinationRespType,
+  type APIConfirmRecruiterSelectedOption,
+  type CandReqSlotsType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,8 +15,8 @@ import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 
@@ -145,12 +145,6 @@ function ConfirmAvailability() {
           onClickCancel={{
             onClick: closeDrawer,
           }}
-          isDisabled={
-            !selectedDateSlots.find(
-              (ele) => ele.current_round === selectedIndex + 1,
-            ) && selectedIndex !== availableSlots?.slots.length
-          }
-          isLoading={loading}
           textPrimaryButton={
             selectedIndex !== availableSlots?.slots.length
               ? 'Continue'
@@ -159,10 +153,21 @@ function ConfirmAvailability() {
           slotButtons={
             <>
               <ButtonSoft
-                onClickButton={{ onClick: closeDrawer }}
-                textButton={selectedIndex === 0 ? 'close' : 'back'}
+                onClickButton={{
+                  onClick: () => {
+                    if (selectedIndex !== 0) setSelectedIndex((pre) => pre - 1);
+                    else closeDrawer();
+                  },
+                }}
+                textButton={selectedIndex === 0 ? 'Close' : 'Back'}
               />
               <ButtonSolid
+                isDisabled={
+                  !selectedDateSlots.find(
+                    (ele) => ele.current_round === selectedIndex + 1,
+                  ) && selectedIndex !== availableSlots?.slots.length
+                }
+                isLoading={loading}
                 onClickButton={{ onClick: handleContinue }}
                 textButton={
                   selectedIndex !== availableSlots?.slots.length

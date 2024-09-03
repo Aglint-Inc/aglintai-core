@@ -1,4 +1,4 @@
-import { Select, SelectChangeEvent, Stack } from '@mui/material';
+import { type SelectChangeEvent, Select, Stack } from '@mui/material';
 import { type FC, type ReactNode } from 'react';
 
 const SelectionComp: FC<{

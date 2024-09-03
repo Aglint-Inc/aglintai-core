@@ -19,7 +19,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { CandidateSearchRes } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
+import { type CandidateSearchRes } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

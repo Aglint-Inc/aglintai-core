@@ -2,16 +2,16 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, Popover, Stack, TextField } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { type Dispatch, useEffect, useState } from 'react';
 
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssignedNameCard } from '@/devlink2/AssignedNameCard';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import axios from '@/src/client/axios';
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 function MemberList({

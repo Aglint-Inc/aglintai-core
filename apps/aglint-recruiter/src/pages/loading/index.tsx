@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Seo from '@/src/components/Common/Seo';
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
-import { Session } from '@/src/context/AuthContext/types';
+import { type Session } from '@/src/context/AuthContext/types';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

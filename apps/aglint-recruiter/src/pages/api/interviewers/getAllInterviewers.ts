@@ -1,5 +1,5 @@
-import { CalendarEvent } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type CalendarEvent } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

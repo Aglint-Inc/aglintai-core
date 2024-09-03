@@ -1,11 +1,14 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
-import { type ApiResponseSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
+import { ApiResponseSelfSchedule } from '@/src/pages/api/scheduling/application/sendselfschedule';
 import { ApiResponseFindAvailability } from '@/src/pages/api/scheduling/v1/find_availability';
 import dayjs from '@/src/utils/dayjs';
 
-import { type Event, type Resource } from '../../../Common/CalendarResourceView/types';
+import {
+  type Event,
+  type Resource,
+} from '../../../Common/CalendarResourceView/types';
 import { type filterSchedulingOptionsArray } from './BodyDrawer/ScheduleFilter/utils';
 
 type PrefferedInterviewer = {
@@ -45,7 +48,7 @@ export interface SelfSchedulingFlow {
   };
   selectedCombIds: string[];
   emailData: { html: string; subject: string } | null;
-  resSendToCandidate: ApiResponseSendToCandidate['data'];
+  resSendToCandidate: ApiResponseSelfSchedule['data'];
   noSlotReasons: ReturnType<typeof filterSchedulingOptionsArray>['combs'];
   errorNoSlotFilter: boolean;
   availabilities: {
@@ -191,7 +194,7 @@ export const setErrorNoSlotFilter = (errorNoSlotFilter: boolean) =>
   useSelfSchedulingFlowStore.setState({ errorNoSlotFilter });
 
 export const setResSendToCandidate = (
-  resSendToCandidate: ApiResponseSendToCandidate['data'],
+  resSendToCandidate: ApiResponseSelfSchedule['data'],
 ) => useSelfSchedulingFlowStore.setState({ resSendToCandidate });
 
 export const resetSchedulingFlowStore = () =>

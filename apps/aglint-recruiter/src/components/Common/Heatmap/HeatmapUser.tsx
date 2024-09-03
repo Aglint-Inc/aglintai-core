@@ -6,7 +6,7 @@ import { HeatMapGrid } from 'react-grid-heatmap';
 
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 
-import { Meeting } from './type';
+import { type Meeting } from './type';
 import {
   filling2dArray,
   getDatesArray,

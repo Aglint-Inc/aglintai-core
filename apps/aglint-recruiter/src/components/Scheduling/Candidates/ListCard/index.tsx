@@ -10,7 +10,7 @@ import { ScheduleWithAgent } from '@/devlink2/ScheduleWithAgent';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
-import { ApplicationList } from '../queries/hooks';
+import { type ApplicationList } from '../queries/hooks';
 
 function ListCardInterviewSchedule({
   app,

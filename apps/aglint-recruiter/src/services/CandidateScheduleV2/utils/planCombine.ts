@@ -1,9 +1,9 @@
 import {
-  DateRangePlansType,
-  PlanCombinationRespType,
-  SessionCombinationRespType,
-  SessionsCombType,
-  SessionSlotType,
+  type DateRangePlansType,
+  type PlanCombinationRespType,
+  type SessionCombinationRespType,
+  type SessionsCombType,
+  type SessionSlotType,
 } from '@aglint/shared-types';
 import { nanoid } from 'nanoid';
 

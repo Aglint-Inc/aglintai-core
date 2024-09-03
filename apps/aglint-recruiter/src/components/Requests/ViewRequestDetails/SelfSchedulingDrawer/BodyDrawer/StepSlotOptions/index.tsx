@@ -1,4 +1,4 @@
-import { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -16,7 +16,7 @@ import {
 } from '../../store';
 import DayCardWrapper from './DayCardWrapper';
 import FilterButton from './FilterButton';
-import { groupByDateRange } from './utils';
+import { type groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 

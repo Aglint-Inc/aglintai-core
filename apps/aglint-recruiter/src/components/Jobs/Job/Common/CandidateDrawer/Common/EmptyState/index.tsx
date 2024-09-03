@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { memo } from 'react';
 
 import NoApplicants from '@/public/lottie/NoApplicants';
-import { ApplicationStore } from '@/src/context/ApplicationContext/store';
+import { type ApplicationStore } from '@/src/context/ApplicationContext/store';
 
 export const EmptyState = memo(({ tab }: { tab: ApplicationStore['tab'] }) => {
   return (

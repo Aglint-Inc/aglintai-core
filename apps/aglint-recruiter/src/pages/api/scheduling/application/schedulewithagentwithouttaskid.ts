@@ -1,15 +1,9 @@
 /* eslint-disable no-console */
-import { SupabaseType } from '@aglint/shared-types';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type SupabaseType } from '@aglint/shared-types';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import {
-  fetchApplicationDetails,
-  fetchSessionDetailsFromSchedule,
-} from '@/src/components/Scheduling/CandidateDetails/queries/utils';
-import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { agentTrigger } from '@/src/utils/scheduling/agentTrigger';
-import { createTask } from '@/src/utils/scheduling/createTask';
 import { handleMeetingsOrganizerResetRelations } from '@/src/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -128,19 +122,6 @@ const scheduleWithAgentWithoutTaskId = async ({
       supabase,
       rec_user_id,
       application_id,
-    });
-
-    const task = await createTask({
-      application_id,
-      dateRange,
-      filter_id: filterJson.id,
-      rec_user_id,
-      recruiter_id,
-      selectedSessions,
-      type,
-      recruiter_user_name,
-      supabase,
-      candidate_name,
     });
 
     await agentTrigger({
