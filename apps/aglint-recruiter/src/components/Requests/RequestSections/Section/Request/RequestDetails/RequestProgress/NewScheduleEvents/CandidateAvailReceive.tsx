@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonGhost } from '@/devlink2/ButtonGhost';
-import { NoWorkflow } from '@/devlink2/NoWorkflow';
 import { RequestProgress } from '@/devlink2/RequestProgress';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -211,38 +210,29 @@ const RequestEvents = ({
                 lastEvent.event_type === 'CAND_AVAIL_REC'
               }
             >
-              <NoWorkflow
-                textDesc={
-                  'There are no workflows set. please select an action to proceed manually or add action from below.'
-                }
-                slotButton={
-                  <>
-                    <Stack direction={'row'} gap={1}>
-                      <ButtonSoft
-                        size={1}
-                        color={'accent'}
-                        textButton='Schedule Interview'
-                        onClickButton={{
-                          onClick: () => {
-                            handleConfirmSlot(lastEvent.request_id);
-                          },
-                        }}
-                        isLoading={!isFetched}
-                      />
-                      <ButtonSoft
-                        size={1}
-                        color='accent'
-                        onClickButton={{
-                          onClick: () => {
-                            handleReReq(lastEvent.request_id);
-                          },
-                        }}
-                        textButton='Re Request Availability'
-                      />
-                    </Stack>
-                  </>
-                }
-              />
+              <Stack direction={'row'} gap={1}>
+                <ButtonSoft
+                  size={1}
+                  color={'accent'}
+                  textButton='Schedule Interview'
+                  onClickButton={{
+                    onClick: () => {
+                      handleConfirmSlot(lastEvent.request_id);
+                    },
+                  }}
+                  isLoading={!isFetched}
+                />
+                <ButtonSoft
+                  size={1}
+                  color='accent'
+                  onClickButton={{
+                    onClick: () => {
+                      handleReReq(lastEvent.request_id);
+                    },
+                  }}
+                  textButton='Re Request Availability'
+                />
+              </Stack>
             </ShowCode.When>
           </>
         }
