@@ -23,9 +23,11 @@ export type apiHomepageResponse = {
     images: string | string[];
   };
   interviewPlan: {
-    stage: number;
+    name: string;
+    description: string;
+    order: number;
+    update_at: string;
     is_completed: boolean;
-    stage_name: string;
   }[];
   availability: availability;
   schedule: schedule;
@@ -151,9 +153,11 @@ export async function POST(req) {
 
     // interview plan -----------------------------------------------------------------
     const { data: interviewPlan } = await supabaseAdmin
-      .from('candidate_portal_plan')
-      .select('stage,is_completed,stage_name')
-      .eq('application_id', application_id);
+      .from('interview_progress')
+      .select('name,description,order,update_at,is_completed')
+      .eq('application_id', application_id)
+      .order('order', { ascending: true });
+
     // .throwOnError();
 
     //final -----------------------------------------------------------------------------
@@ -214,7 +218,7 @@ const getAvailabilitySessionDetails = async (availability_id: string) => {
   }));
 };
 
-//  ----------------- meeting
+//  ---------------------------------- meeting
 
 const getMeetings = async (application_id) => {
   const interviews = await getInterviews(application_id);

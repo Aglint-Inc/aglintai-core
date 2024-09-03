@@ -42,13 +42,14 @@
     // "react-compiler/react-compiler": "warn",
     "@aglint/linter/enforce-devlink-rules": "error",
     "security/detect-object-injection": "off",
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        "prefer": "type-imports",
-        "fixStyle": "inline-type-imports"
-      }
-    ]
+    "@typescript-eslint/consistent-type-imports": "off"
+    // "@typescript-eslint/consistent-type-imports": [
+    //   "warn",
+    //   {
+    //     "prefer": "type-imports",
+    //     "fixStyle": "inline-type-imports"
+    //   }
+    // ]
   },
   "overrides": [
     {

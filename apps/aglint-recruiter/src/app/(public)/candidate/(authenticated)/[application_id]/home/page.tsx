@@ -3,10 +3,11 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
-import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+// import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
+import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
 // import InterviewProgressCard from '@/src/components/CandiatePortal/components/InterviewProgressCard';
 // import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
 import RequestedAvailability from '@/src/components/CandiatePortal/components/RequestedAvailability';
@@ -22,13 +23,15 @@ export default function Component({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return <ReorderableInterviewPlan />;
+  // if (!data) return <ReorderableInterviewPlan />;
+
+  if (!data) return <>No data</>;
 
   const {
     availability,
     candidate,
     company,
-    // interviewPlan,
+    interviewPlan,
     job,
     schedule,
     upcoming,
@@ -63,6 +66,9 @@ export default function Component({ params }) {
               </div>
             </div>
             <div className='space-y-8'>
+              {interviewPlan.length > 0 && (
+                <InterviewProgress interviews={interviewPlan} />
+              )}
               {upcoming.length > 0 && (
                 <UpcomingInterview upcomingData={upcoming} />
               )}
