@@ -16,6 +16,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+import { Typography } from '@mui/material';
 
 type Step = Awaited<ReturnType<typeof fetchProgress>>;
 
@@ -167,14 +168,14 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
           <div
             className={``}
             onClick={() => {
-              if (isNewStep && steps.length > 0) {
-                setIsAddOpen(false);
+              if (isNewStep) {
+                setIsAddOpen((pre) => !pre);
               }
             }}
           >
             <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
               {/* <Icon className='h-5 w-5 text-primary' /> */}
-              {isNewStep && (steps.length > 0 ? '-' : '')}
+              {isNewStep ? (isAddOpen ? '-' : '+') : ''}
             </div>
 
             {/* {step.order} */}
@@ -185,120 +186,117 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
               style={{ width: '1px' }}
             ></div>
           )}
-
-          {index === steps.length - 1 && !isAddOpen && (
-            <>
-              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
-              <div className={``} onClick={() => setIsAddOpen((pre) => !pre)}>
-                <div className='p-2 w-10 h-10 border border-gray-300 flex items-center justify-center rounded-md text-xl'>
-                  +
-                </div>
-              </div>
-            </>
-          )}
         </div>
-
-        <div className='flex-grow space-y-2 pb-4'>
-          {isEditing || isNewStep ? (
-            <>
-              <Input
-                value={isNewStep ? newStep.name : step.name}
-                onChange={(e) =>
-                  isNewStep
-                    ? setNewStep({ ...newStep, name: e.target.value })
-                    : handleChange(step.id, 'name', e.target.value)
-                }
-                placeholder='Stage Title'
-              />
-              <Textarea
-                value={isNewStep ? newStep.description : step.description}
-                onChange={(e) =>
-                  isNewStep
-                    ? setNewStep({
-                        ...newStep,
-                        description: e.target.value,
-                      })
-                    : handleChange(step.id, 'description', e.target.value)
-                }
-                placeholder='Stage Description'
-                className='text-gray-600'
-              />
-              <Select
-                value={isNewStep ? newStep.icon : step.icon}
-                onValueChange={(value) =>
-                  isNewStep
-                    ? setNewStep({
-                        ...newStep,
-                        icon: value as keyof typeof iconOptions,
-                      })
-                    : handleChange(step.id, 'icon', value)
-                }
-              >
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select an icon' />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(iconOptions).map((iconName) => (
-                    <SelectItem key={iconName} value={iconName}>
-                      {iconName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className='flex space-x-2'>
-                <Button
-                  onClick={() =>
-                    isNewStep ? handleAddStep() : handleSave(step.id)
-                  }
-                  size='sm'
-                >
-                  {/* <Save className='w-4 h-4 mr-2' /> */}
-                  {isNewStep ? 'Add' : 'Save'}
-                </Button>
-
-                {steps.length > 0 && (
-                  <Button
-                    onClick={() => {
-                      if (isNewStep)
-                        setNewStep({
-                          id: null,
-                          name: '',
-                          description: '',
-                          icon: 'FileText',
-                          job_id: jobId,
-                          order: null,
-                        });
-                      else setEditingId(null);
-
-                      if (isAddOpen && isNewStep) setIsAddOpen(false);
-                    }}
-                    variant='outline'
-                    size='sm'
+        {
+          <>
+            <div className='flex-grow space-y-2 pb-4'>
+              {(isEditing && !isNewStep) || (isAddOpen && isNewStep) ? (
+                <>
+                  <Input
+                    value={isNewStep ? newStep.name : step.name}
+                    onChange={(e) =>
+                      isNewStep
+                        ? setNewStep({ ...newStep, name: e.target.value })
+                        : handleChange(step.id, 'name', e.target.value)
+                    }
+                    placeholder='Stage Title'
+                  />
+                  <Textarea
+                    value={isNewStep ? newStep.description : step.description}
+                    onChange={(e) =>
+                      isNewStep
+                        ? setNewStep({
+                            ...newStep,
+                            description: e.target.value,
+                          })
+                        : handleChange(step.id, 'description', e.target.value)
+                    }
+                    placeholder='Stage Description'
+                    className='text-gray-600'
+                  />
+                  <Select
+                    value={isNewStep ? newStep.icon : step.icon}
+                    onValueChange={(value) =>
+                      isNewStep
+                        ? setNewStep({
+                            ...newStep,
+                            icon: value as keyof typeof iconOptions,
+                          })
+                        : handleChange(step.id, 'icon', value)
+                    }
                   >
-                    {/* <X className='w-4 h-4 mr-2' /> */}
-                    Cancel
-                  </Button>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className='flex flex-col mb-4 gap-2'>
-              <h3 className='font-semibold text-md'>{step.name}</h3>
-              <p className='text-sm'>{step.description}</p>
-              <div className='flex space-x-2'>
-                <Button variant='secondary' onClick={() => handleEdit(step.id)}>
-                  Edit
-                </Button>
-                <Button
-                  variant='outline'
-                  onClick={() => handleDeleteStep(step.id)}
-                >
-                  Delete
-                </Button> 
-              </div>
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Select an icon' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(iconOptions).map((iconName) => (
+                        <SelectItem key={iconName} value={iconName}>
+                          {iconName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className='flex space-x-2'>
+                    <Button
+                      onClick={() =>
+                        isNewStep ? handleAddStep() : handleSave(step.id)
+                      }
+                      size='sm'
+                    >
+                      {/* <Save className='w-4 h-4 mr-2' /> */}
+                      {isNewStep ? 'Add' : 'Save'}
+                    </Button>
+
+                    {steps.length > 0 && (
+                      <Button
+                        onClick={() => {
+                          if (isNewStep)
+                            setNewStep({
+                              id: null,
+                              name: '',
+                              description: '',
+                              icon: 'FileText',
+                              job_id: jobId,
+                              order: null,
+                            });
+                          else setEditingId(null);
+
+                          if (isAddOpen && isNewStep) setIsAddOpen(false);
+                        }}
+                        variant='outline'
+                        size='sm'
+                      >
+                        {/* <X className='w-4 h-4 mr-2' /> */}
+                        Cancel
+                      </Button>
+                    )}
+                  </div>
+                </>
+              ) : !isNewStep ? (
+                <div className='flex flex-col mb-4 gap-2'>
+                  <h3 className='font-semibold text-md'>{step.name}</h3>
+                  <p className='text-sm'>{step.description}</p>
+                  <div className='flex space-x-2'>
+                    <Button
+                      variant='secondary'
+                      onClick={() => handleEdit(step.id)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant='outline'
+                      onClick={() => handleDeleteStep(step.id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Typography p={1}>Click here to add the stage</Typography>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        }
       </div>
     );
   };
@@ -311,7 +309,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
     <div className='max-w-2xl mt-8'>
       <div className='relative' ref={timelineRef}>
         {interviewStages.map((step, index) => renderStep(step, index))}
-        {isAddOpen && renderStep(newStep, steps.length)}
+        {renderStep(newStep, steps.length)}
       </div>
     </div>
   );
