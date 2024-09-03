@@ -5,12 +5,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { useState } from 'react';
 
 import { Text } from '@/devlink/Text';
+import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestSetting } from '@/devlink2/RequestSetting';
 import MuiPopup from '@/src/components/Common/MuiPopup';
+import SelectionComp from '@/src/components/Common/SelectionComp';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import ToggleBtn from '@/src/components/Common/UIToggle';
-import { ClockIcon } from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
-import SelectionComp from '@/src/components/NewAssessment/Common/components/selection';
+function ClockIcon() {
+  return <GlobalIcon iconName='schedule' />;
+}
 
 function SettingsPopup({
   open,
