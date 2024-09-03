@@ -170,6 +170,7 @@ function CandidateAvailability({
       let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
         request_id: selectedRequest.id,
         supabaseAdmin: supabase,
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
       });
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
@@ -181,12 +182,10 @@ function CandidateAvailability({
         ...payload,
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: false,
         status: 'completed',
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: true,
         status: 'completed',
         meta: {
