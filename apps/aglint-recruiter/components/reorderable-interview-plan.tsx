@@ -1,14 +1,7 @@
 'use client';
 
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useQuery } from '@tanstack/react-query';
-import {
-  FileText,
-  Phone,
-  Trophy,
-  UserCircle,
-  Users
-} from 'lucide-react';
+import { FileText, Phone, Trophy, UserCircle, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -32,18 +25,18 @@ const useInterviewPlanProgress = ({ job_id }: { job_id: string }) => {
   const result = useQuery({
     queryKey: ['interview_plan_progress', job_id],
     queryFn: () => fetchProgress({ job_id }),
+    retry: false,
   });
 
   return result;
 };
 
 const fetchProgress = async ({ job_id }: { job_id: string }) => {
-  const data = supabaseWrap(
-    await supabase
-      .from('interview_progress')
-      .select('icon,id,job_id,name,order,icon,description')
-      .eq('job_id', job_id),
-  );
+  const { data, error } = await supabase
+    .from('interview_progress')
+    .select('icon,id,job_id,name,order,icon,description')
+    .eq('job_id', job_id);
+  if (error) throw new Error(error.message);
   return data;
 };
 
@@ -53,6 +46,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   });
 
   const [steps, setSteps] = useState<Step>([]);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [newStep, setNewStep] = useState<Step[number]>({
     icon: '',
@@ -65,15 +59,14 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (data) setSteps(data);
+    if (data) {
+      setSteps(data);
+    }
+    if (data?.length === 0) setIsAddOpen(true);
   }, [data]);
 
   if (isLoading) {
     return <p>Loading...</p>;
-  }
-
-  if (!data) {
-    return <p>No data</p>;
   }
 
   const handleEdit = (id: number) => {
@@ -128,7 +121,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
       }
 
       await refetch();
-      toast.error('Added successfully');
+      toast.success('Added successfully');
       setNewStep({
         id: null,
         name: '',
@@ -136,7 +129,25 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         icon: 'FileText',
         job_id: jobId,
         order: null,
-      }); 
+      });
+    }
+  };
+
+  const handleDeleteStep = async (id: number) => {
+    try {
+      const { error } = await supabase
+        .from('interview_progress')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        toast.error(error.message);
+      }
+
+      await refetch();
+      toast.success('Deleted successfully');
+    } catch (e) {
+      toast.error(e.message);
     }
   };
 
@@ -152,17 +163,34 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
         style={{ gridTemplateColumns: 'max-content 1fr' }}
       >
         <div className='flex h-full items-stretch flex-col'>
-          <div className={``}>
+          {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+          <div
+            className={``}
+            onClick={() => {
+              if (isNewStep && steps.length > 0) {
+                setIsAddOpen(false);
+              }
+            }}
+          >
             <div className='bg-muted p-2 w-10 h-10 rounded-md'>
               {/* <Icon className='h-5 w-5 text-primary' /> */}
+              {isNewStep && (steps.length > 0 ? '-' : '')}
             </div>
             {/* {step.order} */}
           </div>
-          {index < steps.length  && (
+          {index < steps.length && (
             <div
               className='h-full mx-auto bg-gray-300'
               style={{ width: '1px' }}
             ></div>
+          )}
+          {index === steps.length - 1 && !isAddOpen && (
+            <>
+              {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
+              <div className={``} onClick={() => setIsAddOpen((pre) => !pre)}>
+                <div className='bg-muted p-2 w-10 h-10 rounded-md'>+</div>
+              </div>
+            </>
           )}
         </div>
 
@@ -223,29 +251,33 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                   {/* <Save className='w-4 h-4 mr-2' /> */}
                   {isNewStep ? 'Add' : 'Save'}
                 </Button>
-                <Button
-                  onClick={() =>
-                    isNewStep
-                      ? setNewStep({
+
+                {steps.length > 0 && (
+                  <Button
+                    onClick={() => {
+                      if (isNewStep)
+                        setNewStep({
                           id: null,
                           name: '',
                           description: '',
                           icon: 'FileText',
                           job_id: jobId,
                           order: null,
-                        })
-                      : setEditingId(null)
-                  }
-                  variant='outline'
-                  size='sm'
-                >
-                  {/* <X className='w-4 h-4 mr-2' /> */}
-                  Cancel
-                </Button>
+                        });
+                      else setEditingId(null);
+
+                      if (isAddOpen && isNewStep) setIsAddOpen(false);
+                    }}
+                    variant='outline'
+                    size='sm'
+                  >
+                    {/* <X className='w-4 h-4 mr-2' /> */}
+                    Cancel
+                  </Button>
+                )}
               </div>
             </>
           ) : (
-            
             <div className='flex flex-col mb-4 gap-2'>
               <h3 className='font-semibold text-md'>{step.name}</h3>
               <p className='text-sm'>{step.description}</p>
@@ -253,26 +285,30 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
                 <Button variant='secondary' onClick={() => handleEdit(step.id)}>
                   Edit
                 </Button>
-                <Button variant='outline' onClick={() => handleEdit(step.id)}>
+                <Button
+                  variant='outline'
+                  onClick={() => handleDeleteStep(step.id)}
+                >
                   Delete
                 </Button>
               </div>
-              </div>
-           
+            </div>
           )}
         </div>
       </div>
     );
   };
 
-  const sorted = steps.sort((a, b) => a.order - b.order);
-  if (data?.length)
-    return (
-      <div className='max-w-2xl mx-auto p-4'>
-        <div className='relative' ref={timelineRef}>
-          {sorted.map((step, index) => renderStep(step, index))}
-          {renderStep(newStep, steps.length)}
-        </div>
+  const interviewStages = steps?.length
+    ? steps.sort((a, b) => a.order - b.order)
+    : [];
+
+  return (
+    <div className='max-w-2xl mx-auto p-4'>
+      <div className='relative' ref={timelineRef}>
+        {interviewStages.map((step, index) => renderStep(step, index))}
+        {isAddOpen && renderStep(newStep, steps.length)}
       </div>
-    );
+    </div>
+  );
 }

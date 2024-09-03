@@ -131,7 +131,7 @@ const InterviewPlanPage = () => {
         slotBody={
           //cand and inter
           <Stack>
-            <Tabs>
+            <Tabs defaultValue='candidate'>
               <TabsList>
                 <TabsTrigger defaultValue={'internal'} value='internal'>
                   Internal
@@ -164,7 +164,6 @@ const InterviewPlanPage = () => {
               </TabsContent>
               <TabsContent value='candidate'>
                 <ReorderableInterviewPlan jobId={data[0].job_id} />
-            
               </TabsContent>
             </Tabs>
           </Stack>
