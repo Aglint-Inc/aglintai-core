@@ -197,7 +197,9 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
       ? iconOptions[step.icon]
       : isNewStep
         ? isAddOpen
-          ? Minus
+          ? steps.length > 0
+            ? Minus
+            : Plus
           : Plus
         : Edit;
 
@@ -212,7 +214,7 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
           <div
             className={``}
             onClick={() => {
-              if (isNewStep) {
+              if (isNewStep && steps.length > 0) {
                 setIsAddOpen((pre) => !pre);
               }
             }}
@@ -220,8 +222,6 @@ export default function ReorderableInterviewPlan({ jobId }: { jobId: string }) {
             <div className='bg-muted p-2 w-10 h-10 flex items-center justify-center rounded-md'>
               <Icon strokeWidth={1.5} className='h-5 w-5 text-primary' />
             </div>
-
-            {/* {step.order} */}
           </div>
           {index < steps.length && !isDragging && (
             <div
