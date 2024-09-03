@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
-
 import {
   interviewCancelReasons,
   userDetails,
-} from '../CandidateDetails/queries/utils';
+} from '@/src/utils/scheduling/const';
+import { supabase } from '@/src/utils/supabase/client';
+
 import { type MemberType } from '../InterviewTypes/types';
 
 export const useScheduleDetails = () => {

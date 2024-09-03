@@ -15,17 +15,17 @@ export const createRequestProgressLogger = ({
   event_run_id,
   request_id,
   supabaseAdmin,
-  target_api,
+  event_type,
 }: {
   supabaseAdmin: SupabaseType;
+  event_type: DatabaseTable['request_progress']['event_type'];
   request_id: string;
   event_run_id?: number;
-  target_api?: DatabaseEnums['email_slack_types'];
 }) => {
   const logger = async (
-    payload: Pick<
+    payload?: Pick<
       DatabaseTableInsert['request_progress'],
-      'log' | 'event_type' | 'status' | 'id' | 'is_progress_step' | 'meta'
+      'log' | 'status' | 'id' | 'is_progress_step' | 'meta'
     >
   ) => {
     let progress_id = uuidv4();
@@ -34,7 +34,7 @@ export const createRequestProgressLogger = ({
         await supabaseAdmin
           .from('request_progress')
           .select()
-          .eq('event_type', payload.event_type)
+          .eq('event_type', event_type)
           .eq('is_progress_step', false)
           .eq('request_id', request_id),
         false
@@ -50,12 +50,12 @@ export const createRequestProgressLogger = ({
           request_id: request_id,
           created_at: dayjsLocal().toISOString(),
           meta: {
-            ...payload.meta,
+            ...(payload.meta ?? {}),
             event_run_id,
           },
-          target_api,
+          log: payload.log,
           id: progress_id,
-          event_type: payload.event_type,
+          event_type: event_type,
           status: payload.status,
           is_progress_step: payload.is_progress_step,
         })
@@ -63,14 +63,12 @@ export const createRequestProgressLogger = ({
     );
     return rec;
   };
-  logger.resetEventProgress = async (
-    type: DatabaseTable['request_progress']['event_type']
-  ) => {
+  logger.resetEventProgress = async () => {
     supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
         .delete()
-        .eq('event_type', type)
+        .eq('event_type', event_type)
         .eq('request_id', request_id)
     );
   };
@@ -87,23 +85,19 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   callback1: AsyncCallbackFunction<T1, U>,
   args: T1,
   logger: ProgressLoggerType,
-  logger_args: Pick<
-    DatabaseTableInsert['request_progress'],
-    'log' | 'event_type' | 'status' | 'meta'
-  >
+  logger_args?: Pick<DatabaseTableInsert['request_progress'], 'meta'>
 ): Promise<U> {
   let progress_id = uuidv4();
   try {
-    await logger.resetEventProgress(logger_args.event_type);
     await logger({
-      ...logger_args,
+      ...(logger_args ?? {}),
       status: 'in_progress',
       is_progress_step: false,
       id: progress_id,
     });
     const res = await callback1(args);
     await logger({
-      ...logger_args,
+      ...(logger_args ?? {}),
       status: 'completed',
       id: progress_id,
       is_progress_step: false,
@@ -115,7 +109,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       err_log = err.message;
     }
     await logger({
-      ...logger_args,
+      ...(logger_args ?? {}),
       status: 'failed',
       id: progress_id,
       log: err_log,

@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 
+import { Switch } from '@/components/ui/switch';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { InterviewMode } from '@/devlink2/InterviewMode';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { DropDown } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
@@ -144,10 +144,10 @@ function InterviewModeComp() {
       isTraining={true}
       textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
       slotToggle={
-        <AntSwitch
+        <Switch
           checked={trainingToggle}
-          onClick={() => {
-            setTrainingToggle(!trainingToggle);
+          onCheckedChange={(checked) => {
+            setTrainingToggle(checked);
             setTrainingInterviewers([]);
           }}
         />

@@ -7,6 +7,7 @@ import {
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { Building2 } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookIcon,
@@ -133,11 +134,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     // background={'var(--neutral-1)'},
                   }}
                 >
-                  <Icon
-                    variant='CompanyOutlinedBig'
-                    height='100%'
-                    width='100%'
-                  />
+                  <Building2 size={48} />
                 </Avatar>
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
@@ -200,7 +197,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 width: '80px',
               }}
             >
-              <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
+              <Building2 size={48} />
             </Avatar>
           }
           onClickApplyNow={{

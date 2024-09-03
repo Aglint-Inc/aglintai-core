@@ -57,13 +57,11 @@ export const changeInterviewer = async (payload: FuncParams) => {
     api_payload2,
   );
   await payload.reqProgressLogger({
-    event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
     is_progress_step: true,
     status: 'completed',
     log: `Replaced ${getFullName(alternate_slots[0].replacement_int.first_name, alternate_slots[0].replacement_int.last_name)} for the interview`,
   });
   await payload.reqProgressLogger({
-    event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
     is_progress_step: false,
     status: 'completed',
   });

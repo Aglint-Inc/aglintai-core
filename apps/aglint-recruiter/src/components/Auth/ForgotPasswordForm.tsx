@@ -60,7 +60,7 @@ export default function ForgotPasswordForm() {
   }
 
   return (
-    <Card className='w-[400px]'>
+    <Card className='w-[400px] border-border'>
       <CardHeader>
         <h2 className='text-2xl font-bold text-center'>Forgot Password</h2>
       </CardHeader>

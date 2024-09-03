@@ -6,6 +6,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { apiTargetToEvents } from '@/src/components/Requests/RequestSections/Section/Request/RequestDetails/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/src/services/api-schedulings/interviewer-decline/change-interviewer';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -15,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     request_id: req.body.request_id,
     supabaseAdmin: supabaseAdmin,
     event_run_id: req.body.event_run_id,
-    target_api,
+    event_type: apiTargetToEvents[target_api],
   });
   const {
     request_id,
@@ -26,6 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } = req.body;
 
   try {
+    await reqProgressLogger.resetEventProgress();
+
     if (target_api === 'onRequestInterviewerDecline_agent_changeInterviewer') {
       await executeWorkflowAction(
         changeInterviewer,
@@ -35,9 +38,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           reqProgressLogger,
         },
         reqProgressLogger,
-        {
-          event_type: 'REPLACE_ALTERNATIVE_INTERVIEWER',
-        },
       );
     }
     return res.status(200).send('ok');

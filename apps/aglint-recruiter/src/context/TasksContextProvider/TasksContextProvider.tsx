@@ -28,14 +28,22 @@ import {
   useState,
 } from 'react';
 
+export type indicatorType =
+  | 'READY_TO_SCHEDULE'
+  | 'AWAITING_RESPONSE'
+  | 'NO_RESPONSE'
+  | 'MAIL_SENT'
+  | 'BOOKED'
+  | 'SCHEDULED'
+  | 'RESCHEDULE'
+  | 'ACTION_NEEDED'
+  | 'UNKNOWN_STATUS'
+  | 'ASSIGNED_TO_AGENT'
+  | 'COMPLETED'
+  | 'CLOSED';
 import { type sortComponentType } from '@/src/components/Common/FilterHeader/SortComponent';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
-import {
-  type indicatorType,
-  getIndicator,
-} from '@/src/components/Tasks/Components/TaskStatusTag/utils';
-import { typeArray } from '@/src/components/Tasks/TaskBody/AddNewTask/TypeList';
 import { type BodyParamsFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { useAllMembers } from '@/src/queries/members';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -139,7 +147,7 @@ const reducerInitialState: TasksReducerType = {
     assignee: { options: [], values: [] },
     jobTitle: { options: [], values: [] },
     priority: { options: ['high', 'low', 'medium'], values: [] },
-    type: { options: typeArray, values: [] },
+    type: { options: [], values: [] },
     date: { values: [] },
     candidate: { options: [], values: [] },
   },
@@ -488,7 +496,6 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   const filterTask: TasksAgentContextType['tasks'] = useMemo(() => {
-    const status = tasksReducer.filter.status;
     const assignee = tasksReducer.filter.assignee;
     const jobTitle = tasksReducer.filter.jobTitle;
     const priority = tasksReducer.filter.priority;
@@ -496,25 +503,6 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     const candidate = tasksReducer.filter.candidate;
     const type = tasksReducer.filter.type;
     let temp = [...sortedTask];
-
-    if (status.values.length) {
-      temp = temp.filter((sub) => {
-        const progress_type = sub?.latest_progress?.progress_type;
-        const created_at = sub?.latest_progress?.created_at;
-
-        if (
-          status.values.includes(
-            getIndicator({
-              task: sub,
-              progress_type: progress_type,
-              created_at: created_at,
-            }),
-          )
-        ) {
-          return sub;
-        }
-      });
-    }
 
     if (assignee.values.length) {
       temp = temp.filter((sub) => {

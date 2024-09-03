@@ -2,11 +2,11 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { memo } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { GlobalBadge } from '@/devlink3/GlobalBadge';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflows } from '@/src/context/Workflows';
 import { type Workflow } from '@/src/types/workflow.types';
 import ROUTES from '@/src/utils/routing/routes';

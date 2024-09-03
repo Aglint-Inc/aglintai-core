@@ -17,17 +17,15 @@ export const handleMeetingsOrganizerResetRelations = async ({
   supabase,
   selectedSessions,
   meeting_flow,
-  recruiter_id,
-  job_id,
 }: {
   application_id: string;
-  recruiter_id: string;
-  job_id: string;
   supabase: SupabaseType;
   selectedSessions: {
     interview_session_id: string;
     interview_meeting_id: string;
     interview_schedule_id: string;
+    job_id: string;
+    recruiter_id: string;
   }[];
   meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
@@ -45,8 +43,8 @@ export const handleMeetingsOrganizerResetRelations = async ({
       organizer_id,
       meeting_flow,
       application_id,
-      recruiter_id,
-      job_id,
+      job_id: ses.job_id,
+      recruiter_id: ses.recruiter_id,
     }));
 
   // Upsert meetings

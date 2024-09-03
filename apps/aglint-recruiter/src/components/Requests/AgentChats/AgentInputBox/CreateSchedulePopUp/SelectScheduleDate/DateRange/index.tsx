@@ -30,25 +30,6 @@ function DateRange({
         '.MuiDayCalendar-slideTransition': {
           minHeight: 220,
         },
-        // '& .MuiDayCalendar-weekContainer': {
-        //   margin: '0px',
-        // },
-        // '& .MuiDayCalendar-weekContainer div div': {
-        //   p: '0.5px 1.7px',
-        //   height: '38px',
-        // },
-        // '&>div': {
-        //   height: 334,
-        //   width: '100%',
-        // },
-        // '& .MuiDateRangeCalendar-monthContainer': {
-        //   width: '100%',
-        // },
-        // '& .MuiDayCalendar-weekContainer .MuiButtonBase-root': {
-        // },
-        // '& .MuiPickersSlideTransition-root': {
-        //   minHeight: 235,
-        // },
       }}
       direction={'column'}
       justifyContent={'center'}

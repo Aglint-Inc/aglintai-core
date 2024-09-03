@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import 'react-phone-input-2/lib/style.css';
 
-import Icon from '@components/Common/Icons/Icon';
 import { Stack, Typography } from '@mui/material';
+import { AlertCircle } from 'lucide-react';
 import React from 'react';
 import PhoneInput, { type CountryData } from 'react-phone-input-2';
 
@@ -122,7 +122,7 @@ const UIPhoneInput = ({
           spacing={'2px'}
         >
           <Stack className='placeholder-icon'>
-            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
+            <AlertCircle size={12} color={'var(--error-9)'} />
           </Stack>
           <Stack className='placeholder'>
             <UITypography type='small' color={'var(--error-11)'}>

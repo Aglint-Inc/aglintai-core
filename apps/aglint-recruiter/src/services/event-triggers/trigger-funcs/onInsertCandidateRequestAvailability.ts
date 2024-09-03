@@ -29,6 +29,7 @@ export const trigger = async ({
     let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
       supabaseAdmin,
+      event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
     });
     supabaseWrap(
       await supabaseAdmin
@@ -75,12 +76,10 @@ export const trigger = async ({
         );
         if (j_l_a.target_api === 'sendAvailReqReminder_email_applicant') {
           await reqProgressLogger({
-            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
             is_progress_step: false,
             status: 'completed',
           });
           await reqProgressLogger({
-            event_type: 'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK',
             is_progress_step: true,
             status: 'completed',
             meta: {

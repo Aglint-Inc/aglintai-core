@@ -5,10 +5,9 @@ import { SystemAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { createFilterJson } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
-import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
+import { createFilterJson } from '@/src/utils/scheduling/createFilterJson';
 import { getOrganizerId } from '@/src/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -101,7 +100,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       title: `Auto scheduling ${selectedDebrief.interview_session.name}`,
       logged_by: 'user',
       application_id,
-      task_id: task.task.id,
       supabase: supabaseAdmin,
       created_by: recruiter_user.user_id,
     });
@@ -299,29 +297,7 @@ const createTask = async ({
 
   if (errorTaskSesRel) throw new Error(errorTaskSesRel.message);
 
-  await createTaskProgress({
-    type: 'create_debrief_task',
-    data: {
-      progress_type: 'standard',
-      created_by: { id: rec_user_id, name: recruiter_user_name },
-      task_id: task.id,
-    },
-    optionData: {
-      sessions: [
-        {
-          name: session.name,
-          id: session.id,
-          interview_meeting: session.interview_meeting,
-          session_order: session.session_order,
-          users: [],
-        },
-      ],
-      debriefDateRange: dateRange,
-    },
-    supabaseCaller: supabaseAdmin,
-  });
-
-  console.log(`Created task ${task.id}`);
+  console.log(`Created task ${task.id}`, recruiter_user_name);
 
   return { task, session };
 };

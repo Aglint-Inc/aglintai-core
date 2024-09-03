@@ -2,10 +2,15 @@ import { type ConflictReason as ConflictReasonType } from '@aglint/shared-types'
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ConflictPopover } from '@/devlink3/ConflictPopover';
 import { ConflictReason } from '@/devlink3/ConflictReason';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
 
 function ConflictWithHover({
   isNoConflict,
@@ -69,9 +74,14 @@ function ConflictWithHover({
   return (
     <>
       {!isNoConflict && isToolTipVisible ? (
-        <CustomTooltip
-          title={
-            <React.Fragment>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Stack>
+                <BadgeContent />
+              </Stack>
+            </TooltipTrigger>
+            <TooltipContent>
               <ConflictPopover
                 isHardConflict={isHardConflict}
                 isOutsideWorkHours={isOutsideWorkHours}
@@ -89,13 +99,9 @@ function ConflictWithHover({
                   );
                 })}
               />
-            </React.Fragment>
-          }
-        >
-          <Stack>
-            <BadgeContent />
-          </Stack>
-        </CustomTooltip>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       ) : (
         <Stack>
           <BadgeContent />

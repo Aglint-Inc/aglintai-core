@@ -83,7 +83,7 @@ export default function LoginForm() {
   }
 
   return (
-    <Card className='w-[400px]'>
+    <Card className='w-[400px] border-border'>
       <CardHeader>
         <h2 className='text-2xl font-bold text-center'>Login</h2>
       </CardHeader>
