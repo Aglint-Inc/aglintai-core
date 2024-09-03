@@ -55,8 +55,6 @@ function FinalScreen() {
         setFetching(false);
       })
       .catch(() => {
-        
-        // toast.error('Fail to fetch email preview');
         setFetching(false);
       });
   }
@@ -130,7 +128,6 @@ function FinalScreen() {
                   <DayCardWrapper
                     key={index}
                     selectedCombIds={[]}
-                    // selectedCombIds={selectedDateSlots.map(ele=>ele.dateSlots).flat().map(ele=>ele.plan_comb_id)}
                     item={{
                       date_range: [date],
                       plans: item.selected_dates[0].plans,

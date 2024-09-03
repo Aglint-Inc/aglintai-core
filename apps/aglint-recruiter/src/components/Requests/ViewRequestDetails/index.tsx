@@ -5,14 +5,6 @@ import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
 import { Page404 } from '@/devlink/Page404';
 import { UserInfoTeam } from '@/devlink/UserInfoTeam';
 import { AiTaskBanner } from '@/devlink2/AiTaskBanner';
@@ -36,11 +28,11 @@ import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import Loader from '../../Common/Loader';
 import SideDrawerEdit from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/EditDrawer';
 import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/InterviewTabContent/StageSessions/StageIndividual/ScheduleIndividual';
-import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
 import CandidateAvailability from './CandidateAvailability';
+import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
 import MemberList, { useMemberList } from './Components/MemberList';
 import PriorityList from './Components/PriorityList';
@@ -50,6 +42,7 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
+import { getStatusColor } from './utils';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();
@@ -109,15 +102,6 @@ function ViewRequestDetails() {
     );
   }
 
-  async function handleProceed(id) {
-    await handleAsyncUpdateRequest({
-      payload: {
-        requestId: id,
-        requestPayload: { status: 'in_progress' },
-      },
-    });
-  }
-
   return (
     <>
       <AvailabilityProvider>
@@ -127,328 +111,265 @@ function ViewRequestDetails() {
       <SideDrawerEdit refetch={refetch} />
       <PageLayout
         slotTopbarLeft={
-          <>
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink
-                    href='#'
-                    onClick={() => {
-                      replace('/requests?tab=requests');
-                    }}
-                  >
-                    Requests
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>
-                    <div className='flex flex-row justify-center items-center space-x-2'>
-                      <span className='text-sm'>
-                        {`Schedule ${formatSessions(selectedRequest.request_relation.map(({ interview_session }) => interview_session.name))} interview with `}
-                      </span>
-                      <span
-                        className='text-sm text-accent-900 cursor-pointer'
-                        onClick={() => {
-                          window.open(
-                            ROUTES['/jobs/[id]/application/[application_id]']({
-                              id: jobDetails.id,
-                              application_id: selectedRequest.application_id,
-                            }) + '?tab=interview',
-                            '_blank',
-                          );
-                        }}
-                      >
-                        {getFullName(
-                          candidateDetails.first_name,
-                          candidateDetails.last_name,
-                        )}
-                      </span>
-                    </div>
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </>
+          <RequestDetailsBreadcrumb
+            selectedRequest={selectedRequest}
+            jobDetails={jobDetails}
+            candidateDetails={candidateDetails}
+          />
         }
         slotBody={
-          <>
-            <RequestDetail
-              slotInterview={
-                <>
-                  {status === 'pending' ? (
-                    <Stack position={'relative'}>
-                      <SkeletonScheduleCard />
-                    </Stack>
-                  ) : (
-                    <>
-                      {selectedRequest.status === 'to_do' && (
-                        <SelfSchedulingDrawer refetch={refetch} />
-                      )}
-                      {sessionsCards.map((session) => {
-                        return (
-                          <>
-                            <ScheduleIndividualCard
-                              hideDateAndTime={
-                                session.interview_meeting?.status ===
-                                'completed'
-                              }
-                              session={session}
-                              key={session.interview_session.id}
-                              selectedSessionIds={[]}
-                              onClickCheckBox={() => {}}
-                              isCheckboxVisible={false}
-                              candidate={null}
-                              isEditIconVisible={
-                                selectedRequest.status === 'to_do'
-                              }
-                              isViewDetailVisible={true}
-                              isStatusVisible={
-                                session.interview_meeting?.status ===
-                                'not_scheduled'
-                              }
-                            />
-                          </>
-                        );
-                      })}
-                    </>
-                  )}
-                </>
-              }
-              slotNotes={<RequestNotes />}
-              slotNewTask={
-                <>
-                  {Boolean(selectedRequest?.status === 'to_do') &&
-                    selectedRequest?.type === 'schedule_request' && (
-                      <Stack width={'60%'}>
-                        <AiTaskBanner
-                          slotButton={
-                            <ButtonSolid
-                              onClickButton={{
-                                onClick: () => {
-                                  handleProceed(selectedRequest.id);
-                                },
-                              }}
-                              size={1}
-                              textButton='Proceed'
-                            />
+          <RequestDetail
+            slotInterview={
+              <>
+                {status === 'pending' ? (
+                  <Stack position={'relative'}>
+                    <SkeletonScheduleCard />
+                  </Stack>
+                ) : (
+                  <>
+                    {selectedRequest.status === 'to_do' && (
+                      <SelfSchedulingDrawer refetch={refetch} />
+                    )}
+                    {sessionsCards.map((session) => {
+                      return (
+                        <ScheduleIndividualCard
+                          hideDateAndTime={
+                            session.interview_meeting?.status === 'completed'
+                          }
+                          session={session}
+                          key={session.interview_session.id}
+                          selectedSessionIds={[]}
+                          onClickCheckBox={() => {}}
+                          isCheckboxVisible={false}
+                          candidate={null}
+                          isEditIconVisible={selectedRequest.status === 'to_do'}
+                          isViewDetailVisible={true}
+                          isStatusVisible={
+                            session.interview_meeting?.status ===
+                            'not_scheduled'
                           }
                         />
-                      </Stack>
-                    )}
-                  {selectedRequest?.type ? (
-                    <RequestProgress requestDetails={selectedRequest} />
-                  ) : (
-                    <RequestProgressSkeleton />
-                  )}
-                </>
-              }
-              slotRequestDetailRight={
-                <RequestDetailRight
-                  slotStatus={
-                    <GlobalBadge
-                      size={1}
-                      textBadge={capitalizeFirstLetter(selectedRequest?.status)}
-                      color={
-                        selectedRequest?.status === 'to_do'
-                          ? 'purple'
-                          : selectedRequest?.status === 'in_progress'
-                            ? 'info'
-                            : selectedRequest?.status === 'blocked'
-                              ? 'error'
-                              : selectedRequest?.status === 'completed'
-                                ? 'success'
-                                : 'neutral'
-                      }
-                    />
-                  }
-                  slotStatusEdit={
-                    <StatusList selectedFilter={selectedRequest?.status} />
-                  }
-                  slotPriority={
-                    <GlobalBadge
-                      showIcon={true}
-                      iconSize={4}
-                      iconName={
-                        selectedRequest?.priority === 'urgent' ? 'flag_2' : ''
-                      }
-                      color={
-                        selectedRequest?.priority === 'urgent'
-                          ? 'warning'
-                          : 'neutral'
-                      }
-                      textBadge={capitalizeFirstLetter(
-                        selectedRequest?.priority,
-                      )}
-                    />
-                  }
-                  slotPriorityEdit={
-                    <PriorityList selectedFilter={selectedRequest?.priority} />
-                  }
-                  slotRequestType={
-                    <GlobalBadge
-                      showIcon={true}
-                      iconSize={4}
-                      iconName={'calendar_add_on'}
-                      color={'neutral'}
-                      textBadge={capitalizeFirstLetter(selectedRequest?.type)}
-                    />
-                  }
-                  slotRequestTypeEdit={<></>}
-                  textDueDate={
-                    <Text
-                      content={
-                        dayjsLocal(selectedRequest?.schedule_start_date).format(
-                          'DD MMM, YYYY',
-                        ) +
-                        ' - ' +
-                        dayjsLocal(selectedRequest?.schedule_end_date).format(
-                          'DD MMM, YYYY',
-                        )
-                      }
-                    />
-                  }
-                  slotInterviewDate={
-                    selectedRequest?.status === 'to_do' &&
-                    selectedRequest?.assigner_id === recruiterUser?.user_id && (
-                      <InterviewDateList
-                        selectedFilter={{
-                          startDate: selectedRequest?.schedule_start_date,
-                          endDate: selectedRequest?.schedule_end_date,
-                        }}
-                      />
-                    )
-                  }
-                  slotAssignedTo={
-                    <MemberList
-                      selectedMemberId={selectedRequest?.assignee.user_id}
-                      members={members}
-                      onChange={async (id) => {
-                        await handleAsyncUpdateRequest({
-                          payload: {
-                            requestId: String(query?.id),
-                            requestPayload: {
-                              assignee_id: id,
-                            },
-                          },
-                          loading: false,
-                          toast: false,
-                        });
-                      }}
-                      width={'375px'}
-                    />
-                  }
-                  slotCandidate={
-                    <UserInfoTeam
-                      isLinkedInVisible={!!candidateDetails?.linkedin}
-                      onClickLinkedIn={() => {
-                        window.open(candidateDetails?.linkedin, '_blank');
-                      }}
-                      slotImage={
-                        <Avatar
-                          variant='rounded'
-                          src={candidateDetails?.avatar}
-                        />
-                      }
-                      textName={getFullName(
-                        candidateDetails?.first_name,
-                        candidateDetails?.last_name,
-                      )}
-                      textDesgination={capitalizeFirstLetter(
-                        candidateDetails?.current_job_title,
-                      )}
-                      slotDetails={
-                        <>
-                          <TextWithIcon
-                            textContent={
-                              !candidateDetails?.city &&
-                              !candidateDetails?.state &&
-                              !candidateDetails?.country
-                                ? '--'
-                                : `${candidateDetails?.city} ${candidateDetails?.state}, ${candidateDetails?.country}`
-                            }
-                            iconName='location_on'
-                            iconSize={4}
-                            iconWeight={'medium'}
-                          />
-
-                          <TextWithIcon
-                            textContent={candidateDetails?.email || '--'}
-                            iconName='mail'
-                            iconSize={4}
-                            iconWeight={'medium'}
-                          />
-                          <TextWithIcon
-                            textContent={candidateDetails?.phone || '--'}
-                            iconName='smartphone'
-                            iconSize={4}
-                            iconWeight={'medium'}
-                          />
-                          <Stack width={'110px'}></Stack>
-                        </>
-                      }
-                      isButtonVisible={true}
-                      slotButton={
-                        <>
-                          <ButtonSoft
+                      );
+                    })}
+                  </>
+                )}
+              </>
+            }
+            slotNotes={<RequestNotes />}
+            slotNewTask={
+              <>
+                {Boolean(selectedRequest?.status === 'to_do') &&
+                  selectedRequest?.type === 'schedule_request' && (
+                    <Stack width={'60%'}>
+                      <AiTaskBanner
+                        slotButton={
+                          <ButtonSolid
                             onClickButton={{
-                              onClick: () => {
-                                window.open(
-                                  ROUTES[
-                                    '/jobs/[id]/application/[application_id]'
-                                  ]({
-                                    id: jobDetails.id,
-                                    application_id:
-                                      selectedRequest.application_id,
-                                  }) + '?tab=interview',
-                                  '_blank',
-                                );
+                              onClick: async () => {
+                                await handleAsyncUpdateRequest({
+                                  payload: {
+                                    requestId: selectedRequest.id,
+                                    requestPayload: { status: 'in_progress' },
+                                  },
+                                });
                               },
                             }}
                             size={1}
-                            color={'neutral'}
-                            textButton={'View Profile'}
-                            isRightIcon={true}
-                            iconName='call_made'
+                            textButton='Proceed'
                           />
-                        </>
-                      }
-                    />
-                  }
-                  slotRelatedJob={
-                    <Stack bgcolor={'white'}>
-                      <WorkflowConnectedCard
-                        isLinkOffVisible={false}
-                        textRoleCategory={
-                          capitalizeFirstLetter(jobDetails.departments?.name) ||
-                          '--'
                         }
-                        role={jobDetails.job_title || '--'}
-                        textLocation={
-                          !jobDetails.office_locations?.city ||
-                          !jobDetails.office_locations?.country
-                            ? '--'
-                            : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
-                        }
-                        jobLink={{
-                          href: `/jobs/${jobDetails.id}?section=interview`,
-                          target: '_blank',
-                        }}
-                        // onClickJob={{
-                        //   onClick: () => {
-                        //     window.open(
-                        //       `/jobs/${jobDetails.id}?section=interview`,
-                        //       '_blank',
-                        //     );
-                        //   },
-                        // }}
                       />
                     </Stack>
-                  }
-                />
-              }
-            />
-          </>
+                  )}
+                {selectedRequest?.type ? (
+                  <RequestProgress requestDetails={selectedRequest} />
+                ) : (
+                  <RequestProgressSkeleton />
+                )}
+              </>
+            }
+            slotRequestDetailRight={
+              <RequestDetailRight
+                slotStatus={
+                  <GlobalBadge
+                    size={1}
+                    textBadge={capitalizeFirstLetter(selectedRequest?.status)}
+                    color={getStatusColor({ status: selectedRequest?.status })}
+                  />
+                }
+                slotStatusEdit={
+                  <StatusList selectedFilter={selectedRequest?.status} />
+                }
+                slotPriority={
+                  <GlobalBadge
+                    showIcon={true}
+                    iconSize={4}
+                    iconName={
+                      selectedRequest?.priority === 'urgent' ? 'flag_2' : ''
+                    }
+                    color={
+                      selectedRequest?.priority === 'urgent'
+                        ? 'warning'
+                        : 'neutral'
+                    }
+                    textBadge={capitalizeFirstLetter(selectedRequest?.priority)}
+                  />
+                }
+                slotPriorityEdit={
+                  <PriorityList selectedFilter={selectedRequest?.priority} />
+                }
+                slotRequestType={
+                  <GlobalBadge
+                    showIcon={true}
+                    iconSize={4}
+                    iconName={'calendar_add_on'}
+                    color={'neutral'}
+                    textBadge={capitalizeFirstLetter(selectedRequest?.type)}
+                  />
+                }
+                slotRequestTypeEdit={<></>}
+                textDueDate={
+                  <Text
+                    content={
+                      dayjsLocal(selectedRequest?.schedule_start_date).format(
+                        'DD MMM, YYYY',
+                      ) +
+                      ' - ' +
+                      dayjsLocal(selectedRequest?.schedule_end_date).format(
+                        'DD MMM, YYYY',
+                      )
+                    }
+                  />
+                }
+                slotInterviewDate={
+                  selectedRequest?.status === 'to_do' &&
+                  selectedRequest?.assigner_id === recruiterUser?.user_id && (
+                    <InterviewDateList
+                      selectedFilter={{
+                        startDate: selectedRequest?.schedule_start_date,
+                        endDate: selectedRequest?.schedule_end_date,
+                      }}
+                    />
+                  )
+                }
+                slotAssignedTo={
+                  <MemberList
+                    selectedMemberId={selectedRequest?.assignee.user_id}
+                    members={members}
+                    onChange={async (id) => {
+                      await handleAsyncUpdateRequest({
+                        payload: {
+                          requestId: String(query?.id),
+                          requestPayload: {
+                            assignee_id: id,
+                          },
+                        },
+                        loading: false,
+                        toast: false,
+                      });
+                    }}
+                    width={'375px'}
+                  />
+                }
+                slotCandidate={
+                  <UserInfoTeam
+                    isLinkedInVisible={!!candidateDetails?.linkedin}
+                    onClickLinkedIn={() => {
+                      window.open(candidateDetails?.linkedin, '_blank');
+                    }}
+                    slotImage={
+                      <Avatar
+                        variant='rounded'
+                        src={candidateDetails?.avatar}
+                      />
+                    }
+                    textName={getFullName(
+                      candidateDetails?.first_name,
+                      candidateDetails?.last_name,
+                    )}
+                    textDesgination={capitalizeFirstLetter(
+                      candidateDetails?.current_job_title,
+                    )}
+                    slotDetails={
+                      <>
+                        <TextWithIcon
+                          textContent={
+                            !candidateDetails?.city &&
+                            !candidateDetails?.state &&
+                            !candidateDetails?.country
+                              ? '--'
+                              : `${candidateDetails?.city} ${candidateDetails?.state}, ${candidateDetails?.country}`
+                          }
+                          iconName='location_on'
+                          iconSize={4}
+                          iconWeight={'medium'}
+                        />
+
+                        <TextWithIcon
+                          textContent={candidateDetails?.email || '--'}
+                          iconName='mail'
+                          iconSize={4}
+                          iconWeight={'medium'}
+                        />
+                        <TextWithIcon
+                          textContent={candidateDetails?.phone || '--'}
+                          iconName='smartphone'
+                          iconSize={4}
+                          iconWeight={'medium'}
+                        />
+                      </>
+                    }
+                    isButtonVisible={true}
+                    slotButton={
+                      <ButtonSoft
+                        onClickButton={{
+                          onClick: () => {
+                            window.open(
+                              ROUTES['/jobs/[id]/application/[application_id]'](
+                                {
+                                  id: jobDetails.id,
+                                  application_id:
+                                    selectedRequest.application_id,
+                                },
+                              ) + '?tab=interview',
+                              '_blank',
+                            );
+                          },
+                        }}
+                        size={1}
+                        color={'neutral'}
+                        textButton={'View Profile'}
+                        isRightIcon={true}
+                        iconName='call_made'
+                      />
+                    }
+                  />
+                }
+                slotRelatedJob={
+                  <Stack bgcolor={'white'}>
+                    <WorkflowConnectedCard
+                      isLinkOffVisible={false}
+                      textRoleCategory={
+                        capitalizeFirstLetter(jobDetails.departments?.name) ||
+                        '--'
+                      }
+                      role={jobDetails.job_title || '--'}
+                      textLocation={
+                        !jobDetails.office_locations?.city ||
+                        !jobDetails.office_locations?.country
+                          ? '--'
+                          : `${jobDetails.office_locations?.city}, ${jobDetails.office_locations?.country}`
+                      }
+                      jobLink={{
+                        href: `/jobs/${jobDetails.id}?section=interview`,
+                        target: '_blank',
+                      }}
+                    />
+                  </Stack>
+                }
+              />
+            }
+          />
         }
       />
     </>
