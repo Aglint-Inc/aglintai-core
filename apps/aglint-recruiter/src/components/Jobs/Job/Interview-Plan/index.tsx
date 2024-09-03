@@ -131,11 +131,9 @@ const InterviewPlanPage = () => {
         slotBody={
           //cand and inter
           <Stack>
-            <Tabs>
+            <Tabs defaultValue='internal'>
               <TabsList>
-                <TabsTrigger defaultValue={'internal'} value='internal'>
-                  Internal
-                </TabsTrigger>
+                <TabsTrigger value='internal'>Internal</TabsTrigger>
                 <TabsTrigger value='candidate'>Candidate</TabsTrigger>
               </TabsList>
               <TabsContent value='internal'>

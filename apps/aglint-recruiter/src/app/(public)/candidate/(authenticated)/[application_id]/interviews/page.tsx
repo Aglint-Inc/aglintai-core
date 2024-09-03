@@ -19,47 +19,43 @@ export default function InterviewsPage({ params }) {
   if (isLoading) {
     return <Loader />;
   }
-  if (!data) return 'No data';
 
-  const upcomingInterviews = data.filter(
-    (interview) => interview.status === 'confirmed',
-  );
-  const pastInterviews = data.filter(
-    (interview) => interview.status === 'completed',
-  );
+  const upcoming =
+    data?.filter((interview) => interview.status === 'confirmed') || [];
+  const past =
+    data?.filter((interview) => interview.status === 'completed') || [];
 
-  if (data)
-    return (
-      <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
-        <main className='lg:w-[70%] space-y-6'>
-          <div>
-            <h2 className='text-lg font-semibold mb-4'>Upcoming interviews</h2>
-            {upcomingInterviews.length > 0 ? (
-              upcomingInterviews.map((interview, index) => (
-                <InterviewCard key={index} interview={interview} />
-              ))
-            ) : (
-              <div>
-                <EmptyState icon={Calendar} text='No upcoming interviews' />
-              </div>
-            )}
-          </div>
-          <div>
-            <h2 className='text-lg font-semibold mb-4'>Past interviews</h2>
-            {pastInterviews.length > 0 ? (
-              pastInterviews.map((interview, index) => (
-                <InterviewCard key={index} interview={interview} />
-              ))
-            ) : (
-              <EmptyState icon={Calendar} text='No Past interviews' />
-            )}
-          </div>
-        </main>
-        <aside className='lg:w-[30%] space-y-6'>
-          {/* You can add additional content or widgets here */}
-        </aside>
-      </div>
-    );
+  return (
+    <div className='container mx-auto max-w-screen-xl flex flex-col lg:flex-row gap-8 p-6'>
+      <main className='lg:w-[70%] space-y-6'>
+        <div>
+          <h2 className='text-lg font-semibold mb-4'>Upcoming interviews</h2>
+          {upcoming?.length > 0 ? (
+            upcoming.map((interview, index) => (
+              <InterviewCard key={index} interview={interview} />
+            ))
+          ) : (
+            <div>
+              <EmptyState icon={Calendar} text='No upcoming interviews' />
+            </div>
+          )}
+        </div>
+        <div>
+          <h2 className='text-lg font-semibold mb-4'>Past interviews</h2>
+          {past?.length > 0 ? (
+            past.map((interview, index) => (
+              <InterviewCard key={index} interview={interview} />
+            ))
+          ) : (
+            <EmptyState icon={Calendar} text='No Past interviews' />
+          )}
+        </div>
+      </main>
+      <aside className='lg:w-[30%] space-y-6'>
+        {/* You can add additional content or widgets here */}
+      </aside>
+    </div>
+  );
 }
 
 function InterviewCard({
