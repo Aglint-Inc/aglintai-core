@@ -1,6 +1,6 @@
 import { type RecruiterDB } from '@aglint/shared-types';
 
-import toast from '@/components/ui/toastPro';
+import toast from '@/src/utils/ToastPro';
 // import debounce from 'lodash/debounce';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
 import { type MessageType } from '@/src/utils/prompts/types';
