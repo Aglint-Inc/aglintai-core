@@ -7,6 +7,7 @@ import { RequestProgress } from '@/devlink2/RequestProgress';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchEmailTemplates } from '@/src/components/CompanyDetailComp/SettingsSchedule/SchedulingEmailTemplates/utils';
+import { ACTION_TRIGGER_MAP } from '@/src/components/Workflow/constants';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequest } from '@/src/context/RequestContext';
 
@@ -16,6 +17,7 @@ import {
 } from '../types';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
+import { SelectedActionsDetailsProvider } from './dialogCtx';
 import InterviewScheduled from './InterviewScheduled';
 import SelectScheduleFlow from './SelectScheduleFlow';
 import WorkflowActionDialog from './WorkflowActionDialog';
@@ -143,7 +145,16 @@ const NewScheduleEvents = () => {
               },
             }}
           >
-            <WorkflowActionDialog />
+            <SelectedActionsDetailsProvider
+              defaultSelectedActionsDetails={getInitialActionDetails({
+                companyEmailTemplatesMp,
+                editTrigger,
+                reqTriggerActionsMap,
+              })}
+              companyTemplatesMp={companyEmailTemplatesMp}
+            >
+              <WorkflowActionDialog />
+            </SelectedActionsDetailsProvider>
           </MuiPopup>
         </>
       </RequestContext.Provider>
@@ -152,3 +163,56 @@ const NewScheduleEvents = () => {
 };
 
 export default NewScheduleEvents;
+
+const getInitialActionDetails = ({
+  companyEmailTemplatesMp,
+  editTrigger,
+  reqTriggerActionsMap,
+}: {
+  reqTriggerActionsMap: TriggerActionMapType;
+  companyEmailTemplatesMp: Partial<
+    Record<
+      DatabaseEnums['email_slack_types'],
+      DatabaseTable['company_email_template']
+    >
+  >;
+  editTrigger: DatabaseTable['workflow']['trigger'];
+}) => {
+  if (
+    reqTriggerActionsMap[editTrigger] &&
+    reqTriggerActionsMap[editTrigger].length > 0
+  ) {
+    return reqTriggerActionsMap[editTrigger][0];
+  } else {
+    let template: DatabaseTable['company_email_template'];
+    if (
+      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
+      'onRequestSchedule_emailAgent_getCandidateAvailability'
+    ) {
+      template =
+        companyEmailTemplatesMp['sendAvailabilityRequest_email_applicant'];
+    } else if (
+      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
+      ('onRequestSchedule_emailAgent_selfScheduleInterview' as any)
+    ) {
+      template =
+        companyEmailTemplatesMp['selfScheduleInterview_email_applicant'];
+    }
+
+    let wAction: DatabaseTable['workflow_action'] = {
+      action_type: ACTION_TRIGGER_MAP[editTrigger][0].value.action_type as any,
+      created_at: '',
+      id: '',
+      order: 0,
+      target_api: ACTION_TRIGGER_MAP[editTrigger][0].value.target_api as any,
+      workflow_id: '',
+      payload: {
+        email: {
+          body: template?.body ?? '',
+          subject: template?.subject ?? '',
+        },
+      },
+    };
+    return wAction;
+  }
+};
