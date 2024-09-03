@@ -6,7 +6,7 @@ import { type Event } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
 
 import { transformAvailability } from '../SelfSchedulingDrawer/utils';
-import { useRequestAvailabilityDetails } from '.';
+import { useRequestAvailabilityDetails } from './hooks';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import {
   setCalendarDate,
