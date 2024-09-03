@@ -1,8 +1,15 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { WorkflowJobs } from '@/devlink/WorkflowJobs';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { PageLayout } from '@/devlink2/PageLayout';
 import Loader from '@/src/components/Common/Loader';
@@ -42,28 +49,28 @@ const BreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(ROUTES['/jobs/[id]']({ id: job?.id }));
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Workflows`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href='#'
+            onClick={() => push(ROUTES['/jobs/[id]']({ id: job?.id }))}
+          >
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Workflows</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
