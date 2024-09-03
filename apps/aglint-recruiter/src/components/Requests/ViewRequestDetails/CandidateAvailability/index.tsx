@@ -10,6 +10,7 @@ import {
 import { Autocomplete, Drawer, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
@@ -18,7 +19,6 @@ import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { RequestCandidate } from '@/devlink2/RequestCandidate';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import axios from '@/src/client/axios';
-import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import {
   requestDaysListOptions,
   slotsListOptions,
@@ -298,7 +298,7 @@ function CandidateAvailability({
                   onChange={(_, value) => {
                     setSelectedDays(value);
                   }}
-                  popupIcon={<PopUpArrowIcon />}
+                  popupIcon={<ArrowUpRight />}
                 />
               }
               slotMinNumberSlot={
@@ -317,7 +317,7 @@ function CandidateAvailability({
                   onChange={(_, value) => {
                     setSelectedSlots(value);
                   }}
-                  popupIcon={<PopUpArrowIcon />}
+                  popupIcon={<ArrowUpRight />}
                 />
               }
               slotEmailTemplateHolder={

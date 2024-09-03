@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
+import { FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { Skeleton } from '@/devlink2/Skeleton';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
-import IconApplicationLogs from '@/src/components/Common/Icons/IconApplicationLogs';
 import SlotContent from '@/src/components/Scheduling/CandidateDetails/RightPanel/SlotWidgets';
 import { useApplication } from '@/src/context/ApplicationContext';
 
@@ -42,7 +42,7 @@ export const Activity = () => {
           isActionVisible={false}
           isContentVisible={!!activity.metadata}
           slotContent={<SlotContent act={activity} />}
-          slotImage={<IconApplicationLogs act={activity} />}
+          slotImage={<FileText />}
         />
       ))}
     </>

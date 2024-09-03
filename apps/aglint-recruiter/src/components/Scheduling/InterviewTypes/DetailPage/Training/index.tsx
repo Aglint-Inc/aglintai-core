@@ -1,6 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Checkbox, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import _ from 'lodash';
+import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -16,7 +17,6 @@ import { ModuleSetting } from '@/devlink2/ModuleSetting';
 import { TrainingSetting } from '@/devlink2/TrainingSetting';
 import { TrainingSettingItem } from '@/devlink2/TrainingSettingItem';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
-import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiNumberfield from '@/src/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -397,11 +397,7 @@ function ModuleSettingComp({
                           mb={'var(--space-2)'}
                           pt={'2px'}
                         >
-                          <Icon
-                            height='12px'
-                            color={'var(--error-9)'}
-                            variant='AlertIcon'
-                          />
+                          <AlertCircle className='h-3 w-3 text-[var(--error-9)]' />
                           Please select users to approve or uncheck require
                           approval
                         </Typography>
@@ -564,11 +560,7 @@ function ModuleSettingComp({
 
                   {isDisableError && (
                     <Typography mt={1} color={'error'}>
-                      <Icon
-                        height='12px'
-                        color={'var(--error-9)'}
-                        variant='AlertIcon'
-                      />
+                      <AlertCircle size={12} color='var(--error-9)' />
                       Cannot disable training while members are still in
                       training.
                     </Typography>
