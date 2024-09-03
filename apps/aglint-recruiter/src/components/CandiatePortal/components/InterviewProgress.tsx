@@ -1,6 +1,8 @@
 import React from 'react';
-import InterviewProgressCard from './InterviewProgressCard';
+
 import { apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
+
+import InterviewProgressCard from './InterviewProgressCard';
 
 function InterviewProgress({
   interviews,

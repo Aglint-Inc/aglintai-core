@@ -1,20 +1,9 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import React from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { apiHomepageResponse } from '@/src/app/api/candidate_portal/home_page/route';
-import { dayjsLocal } from '@aglint/shared-utils';
-
-interface Interview {
-  name: string;
-  date: string;
-  status:
-    | 'Scheduled'
-    | 'Completed'
-    | 'Not Scheduled'
-    | 'Upcoming'
-    | 'Cancelled';
-}
 
 interface InterviewProgressCardProps {
   interview: apiHomepageResponse['interviewPlan'][number];

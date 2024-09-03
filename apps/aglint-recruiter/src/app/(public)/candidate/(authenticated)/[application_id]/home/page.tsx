@@ -3,10 +3,11 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
-import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
+// import { ReorderableInterviewPlan } from '@/components/reorderable-interview-plan';
 import CompanyImage from '@/src/components/CandiatePortal/components/CompanyImage';
 import CompanyTabs from '@/src/components/CandiatePortal/components/CompanyTabs';
 import GreetingCandidate from '@/src/components/CandiatePortal/components/GreetingCandidate';
+import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
 // import InterviewProgressCard from '@/src/components/CandiatePortal/components/InterviewProgressCard';
 // import MessageCard from '@/src/components/CandiatePortal/components/MessageCard';
 import RequestedAvailability from '@/src/components/CandiatePortal/components/RequestedAvailability';
@@ -14,8 +15,6 @@ import SelfScheduling from '@/src/components/CandiatePortal/components/SelfSched
 import UpcomingInterview from '@/src/components/CandiatePortal/components/UpcomingInterview';
 import { usePortalHomePage } from '@/src/components/CandiatePortal/hook';
 import Loader from '@/src/components/Common/Loader';
-
-import InterviewProgress from '@/src/components/CandiatePortal/components/InterviewProgress';
 
 export default function Component({ params }) {
   const application_id = params.application_id;
