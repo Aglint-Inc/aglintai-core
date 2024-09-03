@@ -31,6 +31,7 @@ import ScheduleIndividualCard from '../../Jobs/Job/ApplicationDetail/SlotBody/In
 import RequestProgress, {
   RequestProgressSkeleton,
 } from '../RequestSections/Section/Request/RequestDetails/RequestProgress';
+import { getStatusColor } from '../utils';
 import CandidateAvailability from './CandidateAvailability';
 import RequestDetailsBreadcrumb from './Components/Breadcrumb';
 import InterviewDateList from './Components/InterviewDateList';
@@ -42,7 +43,6 @@ import { AvailabilityProvider } from './ConfirmAvailability/RequestAvailabilityC
 import { useMeetingList } from './hooks';
 import RequestNotes from './RequestNotes';
 import SelfSchedulingDrawer from './SelfSchedulingDrawer';
-import { getStatusColor } from './utils';
 
 function ViewRequestDetails() {
   const { replace } = useRouterPro();

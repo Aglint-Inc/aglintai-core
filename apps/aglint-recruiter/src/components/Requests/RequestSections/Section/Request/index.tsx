@@ -13,6 +13,7 @@ import type { Request as RequestType } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { getRequestTitle } from '../../../AgentChats/AgentInputBox';
+import { getStatusColor } from '../../../utils';
 import MoreOptions from './MoreOptions';
 import RequestDetails from './RequestDetails';
 
@@ -99,17 +100,7 @@ export const Request = (
                   <GlobalBadge
                     size={1}
                     textBadge={capitalizeFirstLetter(props.status)}
-                    color={
-                      props.status === 'to_do'
-                        ? 'purple'
-                        : props.status === 'in_progress'
-                          ? 'info'
-                          : props.status === 'blocked'
-                            ? 'error'
-                            : props.status === 'completed'
-                              ? 'success'
-                              : 'neutral'
-                    }
+                    color={getStatusColor({ status: props.status })}
                   />
                   <MoreOptions request_id={props.id} />
                 </>

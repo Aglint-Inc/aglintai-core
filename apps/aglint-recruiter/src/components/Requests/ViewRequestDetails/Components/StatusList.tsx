@@ -9,7 +9,7 @@ import { type Request } from '@/src/queries/requests/types';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import { getStatusColor } from '../utils';
+import { getStatusColor } from '../../utils';
 
 function StatusList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
