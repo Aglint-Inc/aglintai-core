@@ -4,11 +4,11 @@ import { cloneDeep, set } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CdEditQuerry } from '@/devlink/CdEditQuerry';
 import { JobPills } from '@/devlink/JobPills';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import FilterInput from '../../Search/FilterInput';
 import {
@@ -25,6 +25,7 @@ import { type Candidate, type CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
 
 function EditFilter() {
+  const { toast } = useToast();
   const router = useRouter();
   const isfilterOpen = useCandidateStore((state) => state.isfilterOpen);
   const filters = useCandidateStore((state) => state.filters);
@@ -69,7 +70,11 @@ function EditFilter() {
         filters.person_titles.length === 0 &&
         filters.companies.length === 0
       ) {
-        toast.warning('Please add at least one filter');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Please add at least one filter',
+        });
         return;
       }
 
@@ -89,7 +94,11 @@ function EditFilter() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
           setIsFilterLoading(false);
           return;
         }
@@ -149,7 +158,11 @@ function EditFilter() {
       );
 
       if (!resCand.data.people) {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
         setIsFilterLoading(false);
       }
 
@@ -184,7 +197,11 @@ function EditFilter() {
       setIsFilterLoading(false);
       setIsFilterOpen(false);
     } catch (e) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
       setIsFilterLoading(false);
     }
   };

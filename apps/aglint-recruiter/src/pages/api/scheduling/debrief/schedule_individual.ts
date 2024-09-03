@@ -9,7 +9,6 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { ApiResponseFindAvailability } from '../v1/find_availability';
@@ -189,20 +188,5 @@ const updateFailedTask = async ({
     .eq('id', task_id);
 
   if (errorTasks) throw new Error(errorTasks.message);
-
-  await createTaskProgress({
-    type: 'slots_failed',
-    data: {
-      progress_type: 'standard',
-      created_by: { id: rec_user_id, name: recruiter_user_name },
-      task_id: task_id,
-    },
-    optionData: {
-      prevScheduleDateRange: {
-        start_date: dateRange.start_date,
-        end_date: dateRange.end_date,
-      },
-    },
-    supabaseCaller: supabaseAdmin,
-  });
+  else return { rec_user_id, recruiter_user_name, dateRange };
 };

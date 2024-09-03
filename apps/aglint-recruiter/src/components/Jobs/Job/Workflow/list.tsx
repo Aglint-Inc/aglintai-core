@@ -4,6 +4,7 @@ import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { useRouter } from 'next/router';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
+import OptimisticWrapper from '@/components/loadingWapper';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { RcCheckbox } from '@/devlink2/RcCheckbox';
@@ -11,7 +12,6 @@ import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
-import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { getTriggerOption } from '@/src/components/Workflow/constants';
 import { WorkflowTags } from '@/src/components/Workflow/index/body/content';
 import {
@@ -117,14 +117,13 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-  <Stack bgcolor={'white'} padding={'12px'}>
+      <Stack bgcolor={'white'} padding={'12px'}>
         <GlobalEmptyState
-        iconName={'lan'}
-        styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
-        textDesc={'No workflows connected'}
-      />
-
-  </Stack>
+          iconName={'lan'}
+          styleEmpty={{ style: { backgroundColor: 'var(--neutral-3)' } }}
+          textDesc={'No workflows connected'}
+        />
+      </Stack>
     );
   const cards = workflows
     .toSorted((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
@@ -213,8 +212,8 @@ const WorkflowBrowser = () => {
       const jobCount = (jobs ?? []).length;
       return (
         <WorkflowCard
-        widthText={'small'}
-        border={'visible'}
+          widthText={'small'}
+          border={'visible'}
           key={id}
           isCheckboxVisible={true}
           // isChecked={checked}

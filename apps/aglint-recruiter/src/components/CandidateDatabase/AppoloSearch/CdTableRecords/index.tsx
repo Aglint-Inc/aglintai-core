@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { CdAglintEmptyTable } from '@/devlink/CdAglintEmptyTable';
 import { CdExperienceCard } from '@/devlink/CdExperienceCard';
 import { CdLoadMore } from '@/devlink/CdLoadMore';
@@ -15,7 +16,6 @@ import CompanyLogo from '@/src/components/Common/CompanyLogo';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import {
   setCandidateHistory,
@@ -28,6 +28,7 @@ import { type Candidate, type CandidateSearchHistoryType } from '../types';
 import { calculateTotalExperience } from '../utils';
 
 function CdTableRecords({ loading }) {
+  const { toast } = useToast();
   const router = useRouter();
   const filters = useCandidateStore((state) => state.filters);
   const selectedCandidate = useCandidateStore(
@@ -59,7 +60,11 @@ function CdTableRecords({ loading }) {
         person_seniorities: filters.person_seniorities,
       });
       if (!resCand.data.people) {
-        toast.error('Something went wrong. Please try again.');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Something went wrong. Please try again.',
+        });
       }
       let fetchedCandidates: Candidate[] = resCand.data.people;
       const fetchedIds = fetchedCandidates.map((c) => c.id);
@@ -85,7 +90,11 @@ function CdTableRecords({ loading }) {
       }
       setFetchingNextPage(false);
     } catch (e) {
-      toast.error('Something went wrong. Please try again.');
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+      });
       setFetchingNextPage(false);
     }
   };
@@ -142,18 +151,20 @@ function CdTableRecords({ loading }) {
                         isLogoVisible={
                           candidate?.organization?.id === exp?.organization_id
                         }
-                        bgColorProps={{
-                          // style: {
-                          //   backgroundColor:
-                          //     selectedCandidate?.id === candidate.id
-                          //       ? ind === 0
-                          //         ? 'rgba(206, 226, 242, 0.50)'
-                          //         : 'rgba(206, 226, 242, 0.30)'
-                          //       : ind === 0
-                          //         ? 'rgba(233, 235, 237, 0.50)'
-                          //         : '#F7F9FB',
-                          // },
-                        }}
+                        bgColorProps={
+                          {
+                            // style: {
+                            //   backgroundColor:
+                            //     selectedCandidate?.id === candidate.id
+                            //       ? ind === 0
+                            //         ? 'rgba(206, 226, 242, 0.50)'
+                            //         : 'rgba(206, 226, 242, 0.30)'
+                            //       : ind === 0
+                            //         ? 'rgba(233, 235, 237, 0.50)'
+                            //         : '#F7F9FB',
+                            // },
+                          }
+                        }
                         isActive={
                           ind === 0 &&
                           candidate?.organization?.id === exp?.organization_id

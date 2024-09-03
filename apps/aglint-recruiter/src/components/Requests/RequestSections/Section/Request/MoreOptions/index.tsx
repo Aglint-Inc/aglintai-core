@@ -10,6 +10,12 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { AssignedToList } from '@/devlink2/AssignedToList';
 import { GlobalIcon } from '@/devlink2/GlobalIcon';
@@ -17,7 +23,6 @@ import { RequestCardSkeleton } from '@/devlink2/RequestCardSkeleton';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import MuiPopup from '@/src/components/Common/MuiPopup';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useMemberList } from '@/src/components/Requests/ViewRequestDetails/Components/MemberList';
 import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useRequests } from '@/src/context/RequestsContext';
@@ -83,56 +88,45 @@ function MoreOptions({ request_id }: { request_id: string }) {
         e.stopPropagation();
       }}
     >
-      <CustomTooltip
-        slotProps={{
-          popper: {
-            sx: {
-              '& .MuiTooltip-tooltip': {
-                margin: '0px !important',
-                marginTop: '10px !important',
-              },
-            },
-          },
-        }}
-        onMouseEnter={() => setTooltipOpen(true)}
-        placement={'bottom-start'}
-        open={tooltipOpen}
-        onClose={() => setTooltipOpen(false)}
-        title={
-          <Stack style={{ cursor: 'pointer' }} px={1}>
-            <List>
-              {items.map(
-                ({ iconName, iconSize, textContent, color, action }, i) => {
-                  return (
-                    <ListItem key={i} disablePadding>
-                      <ListItemButton
-                        onClick={() => {
-                          handleClick(action);
-                        }}
-                      >
-                        <TextWithIcon
-                          iconName={iconName}
-                          iconSize={iconSize}
-                          textContent={textContent}
-                          color={color}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                },
-              )}
-            </List>
-          </Stack>
-        }
-      >
-        <Stack
-          onClick={() => {
-            setTooltipOpen(!tooltipOpen);
-          }}
-        >
-          <GlobalIcon iconName={'more_vert'} size={4} />
-        </Stack>
-      </CustomTooltip>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Stack
+              onClick={() => {
+                setTooltipOpen(!tooltipOpen);
+              }}
+            >
+              <GlobalIcon iconName={'more_vert'} size={4} />
+            </Stack>
+          </TooltipTrigger>
+          <TooltipContent side='bottom' align='start'>
+            <Stack style={{ cursor: 'pointer' }} px={1}>
+              <List>
+                {items.map(
+                  ({ iconName, iconSize, textContent, color, action }, i) => {
+                    return (
+                      <ListItem key={i} disablePadding>
+                        <ListItemButton
+                          onClick={() => {
+                            handleClick(action);
+                          }}
+                        >
+                          <TextWithIcon
+                            iconName={iconName}
+                            iconSize={iconSize}
+                            textContent={textContent}
+                            color={color}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  },
+                )}
+              </List>
+            </Stack>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <MembersPopUps
         openAssigneePopup={openAssigneePopup}
         setOpenAssigneePopup={setOpenAssigneePopup}

@@ -111,13 +111,4 @@ export const navList: {
     permission: ['company_settings_module'],
     active: ['/company'],
   },
-  {
-    text: 'Tasks',
-    SubComponents: null,
-    route: ROUTES['/tasks']() + '?myTasks',
-    comingSoon: false,
-    isVisible: false,
-    permission: ['task_module'],
-    active: ['/tasks'],
-  },
 ];

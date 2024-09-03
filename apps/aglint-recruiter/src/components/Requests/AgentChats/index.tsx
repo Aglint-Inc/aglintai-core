@@ -10,7 +10,6 @@ import {
   setViewList,
   useAgentChatStore,
 } from './ChatMessageList/store';
-import SettingsPopup from './SettingsPopup';
 
 function AgentChats() {
   const [openSetting, setOpenSettings] = useState(false);
@@ -24,7 +23,6 @@ function AgentChats() {
 
   return (
     <>
-      <SettingsPopup open={openSetting} setOpen={setOpenSettings} />
       <AglintAiChat
         onClickMemory={{
           onClick: () => {

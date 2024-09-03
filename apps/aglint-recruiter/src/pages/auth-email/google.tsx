@@ -4,13 +4,13 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 const AuthHoc = () => {
   return (
@@ -24,7 +24,7 @@ const AuthHoc = () => {
 
 const Google = () => {
   const router = useRouter();
-
+  const { toast } = useToast();
   const { recruiterUser, setRecruiterUser } = useAuthDetails();
   useEffect(() => {
     if (router.isReady && recruiterUser) {
@@ -69,7 +69,11 @@ const Google = () => {
             return router.replace('/jobs');
           }
         } catch (err) {
-          toast.error('Something went wrong. Please try again.');
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
         }
       })();
     }

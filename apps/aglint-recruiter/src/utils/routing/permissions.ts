@@ -21,7 +21,6 @@ const PERMISSIONS: Permissions = {
   /** All of the permission are required to access this routes
    * permissions will reduced  using 'and'
    */
-  '/tasks': ['task_module'],
 
   //
   '/supervisor': ['authorized'],

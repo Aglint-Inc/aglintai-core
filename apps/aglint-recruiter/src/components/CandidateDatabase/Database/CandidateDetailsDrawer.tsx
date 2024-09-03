@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { AddedJobList } from '@/devlink/AddedJobList';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -21,7 +22,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type CandidateSearchRes } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
-import toast from '@/src/utils/toast';
 
 import AddToJobOptions from './CandAddToJobMenu';
 
@@ -51,6 +51,7 @@ const CandidateDrawer = ({
   onClickEmailOutreach?: () => void;
   isEmailOutreachVisible?: boolean;
 }) => {
+  const { toast } = useToast();
   const [resume, setResume] = useState(false);
   const [isEducationShow, setIseducationShow] = useState(false);
   const [isExperienceShow, setIsExperienceShow] = useState(false);
@@ -86,7 +87,10 @@ const CandidateDrawer = ({
         questions: parametersInput,
       },
     );
-    toast.success('Call initiated successfully.');
+    toast({
+      variant: 'default',
+      title: 'Call initiated successfully.',
+    });
   };
   const resumeNullCheck = (resume: any) => {
     const array = [];
@@ -234,7 +238,10 @@ const CandidateDrawer = ({
         onClickPhone={{
           onClick: () => {
             navigator.clipboard.writeText(candidate.json_resume.basics.phone);
-            toast.success('Phone number copied.');
+            toast({
+              variant: 'default',
+              title: 'Phone number copied.',
+            });
           },
         }}
         slotAddJob={

@@ -10,6 +10,7 @@ import React, {
   useMemo,
 } from 'react';
 
+import { Switch } from '@/components/ui/switch';
 import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { InterviewMode } from '@/devlink2/InterviewMode';
@@ -19,7 +20,6 @@ import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { validateString } from '@/src/context/JobContext/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
@@ -487,9 +487,9 @@ const Interview = ({
 
   const trainingSwitch = useMemo(
     () => (
-      <AntSwitch
+      <Switch
         checked={training.value}
-        onClick={() => handleTrainingChange(!training.value)}
+        onCheckedChange={() => handleTrainingChange(!training.value)}
       />
     ),
     [training],

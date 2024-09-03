@@ -1,4 +1,3 @@
-import Icon from '@components/Common/Icons/Icon';
 import {
   type FilledInputProps,
   type InputProps,
@@ -8,6 +7,7 @@ import {
 } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
+import { AlertCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 import UITypography from '../UITypography';
@@ -180,7 +180,7 @@ const UITextField = React.forwardRef(
             alignItems={'center'}
             justifyContent={'start'}
           >
-            <Icon height='12px' color={'var(--error-9)'} variant='AlertIcon' />
+            <AlertCircle size={12} color={'var(--error-9)'} />
             <UITypography type='small' color={'var(--error-11)'}>
               {error
                 ? helperText

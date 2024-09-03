@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Box, Container, Stack } from '@mui/material';
 import { createClient } from '@supabase/supabase-js';
-import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
 import { PwResetConfirm } from '@/devlink2/PwResetConfirm';
@@ -81,8 +80,6 @@ export default function ForgotPasswordComponent() {
         setLoading(false);
         tempEmail = email.current?.value;
         setchangetext('Sent');
-        posthog.identify(tempEmail, { Email: tempEmail });
-        posthog.capture('Send reset linked Clicked');
       } else {
         setLoading(false);
       }

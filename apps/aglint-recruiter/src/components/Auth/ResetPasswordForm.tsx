@@ -82,7 +82,7 @@ export default function ResetPasswordComponent() {
   }, [router]);
 
   return (
-    <Card className='w-[400px]'>
+    <Card className='w-[400px] border-border'>
       <CardHeader>
         <h2 className='text-2xl font-bold text-center'>Reset Password</h2>
       </CardHeader>

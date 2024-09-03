@@ -2,8 +2,8 @@
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
 import { memo, useMemo } from 'react';
 
+import { GlobalIcon } from '@/devlink2/GlobalIcon';
 import { GlobalBadge } from '@/devlink3/GlobalBadge';
-import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useWorkflows } from '@/src/context/Workflows';
 import { type Workflow } from '@/src/types/workflow.types';
 import { SafeObject } from '@/src/utils/safeObject';
@@ -67,7 +67,7 @@ type FilterIconProps = {
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <JobIcon />;
+      return <GlobalIcon iconName='business_center' />;
     case 'tags':
       return <></>;
   }

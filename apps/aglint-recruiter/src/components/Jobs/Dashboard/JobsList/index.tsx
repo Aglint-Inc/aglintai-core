@@ -1,6 +1,5 @@
 import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
@@ -142,7 +141,6 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 onClickCard={{
                   onClick: () => {
                     router.push(ROUTES['/jobs/[id]']({ id: job.id }));
-                    posthog.capture('Job Card Clicked');
                   },
                 }}
               />

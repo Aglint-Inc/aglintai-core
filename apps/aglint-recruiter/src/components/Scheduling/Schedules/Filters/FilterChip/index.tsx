@@ -6,8 +6,8 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import DateRange from '@/src/components/Common/DateRange';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { type FilterOptionsType } from '../../types';

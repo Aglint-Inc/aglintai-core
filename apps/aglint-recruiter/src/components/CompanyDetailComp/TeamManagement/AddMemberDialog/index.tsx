@@ -7,6 +7,7 @@ import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
+import { useToast } from '@/components/hooks/use-toast';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { InviteTeamCard } from '@/devlink/InviteTeamCard';
@@ -23,7 +24,6 @@ import { useAllOfficeLocations } from '@/src/queries/officeLocations';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import timeZone from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
 
 import { useRolesOptions } from '../hooks';
 import { inviteUserApi, reinviteUser } from '../utils';
@@ -104,7 +104,7 @@ const AddMember = ({
   const [isResendDisable, setResendDisable] = useState<string>(null);
   const [isInviteCardVisible, setInviteCardVisible] = useState(false);
   const { data: roleOptions } = useRolesOptions();
-
+  const { toast } = useToast();
   const checkValidation = () => {
     let flag = false;
     let temp = { ...formError };
@@ -121,9 +121,11 @@ const AddMember = ({
         recruiterUser.primary
       )
     ) {
-      toast.error(
-        'The user you are trying to invite is outside of the organization. Please contact your Primary Admin for assistance',
-      );
+      toast({
+        variant: 'destructive',
+        title:
+          'The user you are trying to invite is outside of the organization. Please contact your Primary Admin for assistance',
+      });
       temp = { ...temp, email: true };
       flag = true;
     }
@@ -203,7 +205,10 @@ const AddMember = ({
           },
         ]);
         setInviteCardVisible(true);
-        toast.success('Invite sent successfully.');
+        toast({
+          variant: 'default',
+          title: 'Invite sent successfully.',
+        });
         setIsDisable(false);
         setForm({
           first_name: null,
@@ -220,7 +225,11 @@ const AddMember = ({
         });
       }
     } catch (error) {
-      toast.error(String(error));
+      toast({
+        variant: 'destructive',
+        title: 'Failed to invite user',
+        description: String(error),
+      });
     } finally {
       setIsDisable(false);
     }
@@ -665,9 +674,16 @@ const AddMember = ({
                           ({ error, emailSend }) => {
                             setResendDisable(null);
                             if (!error && emailSend) {
-                              return toast.success('Invite sent successfully.');
+                              return toast({
+                                variant: 'default',
+                                title: 'Invite sent successfully.',
+                              });
                             }
-                            return toast.error(error);
+                            return toast({
+                              variant: 'destructive',
+                              title: 'Failed to resend invite',
+                              description: error,
+                            });
                           },
                         );
                       },

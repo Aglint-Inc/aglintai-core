@@ -3,6 +3,12 @@ import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import Link from 'next/link';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { Text } from '@/devlink/Text';
 import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
@@ -10,7 +16,6 @@ import { GlobalUserDetail } from '@/devlink3/GlobalUserDetail';
 import InterviewerAcceptDeclineIcon from '../../Common/Icons/InterviewerAcceptDeclineIcon';
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
-import { CustomTooltip } from '../../Common/Tooltip';
 import { getPauseMemberText } from '../InterviewTypes/DetailPage/SlotBodyComp/utils';
 import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
 
@@ -65,36 +70,39 @@ function InterviewerUserDetail({
           )}
           {interview_meeting?.status === 'confirmed' && (
             <>
-              <CustomTooltip
-                disableHoverListener={!cancelReason?.reason}
-                // hidden={!cancelReason?.reason}
-                title={
-                  <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
-                    <Text
-                      size={1}
-                      content={`Reason : ${cancelReason?.reason}`}
-                      color={'warning'}
-                      weight={'regular'}
-                    />
-                    {cancelReason?.other_details?.note && (
-                      <Text
-                        size={1}
-                        content={`Notes : ${cancelReason?.other_details?.note}`}
-                        weight={'regular'}
-                        color={'neutral'}
-                      />
-                    )}
-                  </Stack>
-                }
-              >
-                <Stack
-                  sx={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  <InterviewerAcceptDeclineIcon type={accepted_status} />
-                </Stack>
-              </CustomTooltip>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Stack
+                      sx={{
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <InterviewerAcceptDeclineIcon type={accepted_status} />
+                    </Stack>
+                  </TooltipTrigger>
+                  {cancelReason?.reason && (
+                    <TooltipContent>
+                      <Stack p={'var(--space-2)'} spacing={'var(--space-1)'}>
+                        <Text
+                          size={1}
+                          content={`Reason : ${cancelReason?.reason}`}
+                          color={'warning'}
+                          weight={'regular'}
+                        />
+                        {cancelReason?.other_details?.note && (
+                          <Text
+                            size={1}
+                            content={`Notes : ${cancelReason?.other_details?.note}`}
+                            weight={'regular'}
+                            color={'neutral'}
+                          />
+                        )}
+                      </Stack>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
             </>
           )}
 

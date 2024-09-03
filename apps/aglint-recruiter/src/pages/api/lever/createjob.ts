@@ -13,7 +13,7 @@ import {
 import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { splitFullName } from '../../loading';
+import { splitFullName } from '../../loadingX';
 import { decrypt } from '../decryptApiKey';
 
 export type ApiLeverCreateJob = {
