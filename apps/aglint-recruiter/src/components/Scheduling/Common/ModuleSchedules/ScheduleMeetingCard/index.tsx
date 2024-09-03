@@ -1,5 +1,6 @@
 import { Collapse, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { User } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -7,7 +8,6 @@ import { StatusBadge } from '@/devlink2/StatusBadge';
 import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { MembersList } from '@/devlink3/MembersList';
 import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
-import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -56,7 +56,7 @@ function ScheduleMeetingCard({
               <Collapse in={collapseOpen}>
                 <Stack direction={'column'} spacing={'var(--space-2)'}>
                   <MembersList
-                    slotImage={<CandidateDefaultIcon size={40} />}
+                    slotImage={<User size={40} />}
                     textName={getFullName(
                       meetingDetails.applications.candidates.first_name,
                       meetingDetails.applications.candidates.last_name,

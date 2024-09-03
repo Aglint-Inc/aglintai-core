@@ -1,5 +1,6 @@
+import { User } from 'lucide-react';
+
 import { ApplicantInfoBox } from '@/devlink2/ApplicantInfoBox';
-import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { useApplication } from '@/src/context/ApplicationContext';
 
 function CandidateInfo() {
@@ -19,7 +20,7 @@ function CandidateInfo() {
           textEmail={applicationDetail.email}
           isRoleVisible={Boolean(applicationDetail.current_job_title)}
           textRole={applicationDetail.current_job_title || '--'}
-          slotImage={<CandidateDefaultIcon />}
+          slotImage={<User />}
           isLinkedInVisible={!!resume.resume_json?.basics.linkedIn}
           onClickLinkedIn={{
             onClick: () => {

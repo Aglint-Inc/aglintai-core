@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -24,7 +25,6 @@ import { GlobalCta } from '@/devlink3/GlobalCta';
 import { ReqAvailability } from '@/devlink3/ReqAvailability';
 import { ScheduleSelectPill } from '@/devlink3/ScheduleSelectPill';
 import { ToggleWithText } from '@/devlink3/ToggleWithText';
-import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import ToggleBtn from '@/src/components/Common/UIToggle';
 import {
@@ -478,7 +478,7 @@ function RequestAvailability() {
                     onChange={(_, value) => {
                       setSelectedDays(value);
                     }}
-                    popupIcon={<PopUpArrowIcon />}
+                    popupIcon={<ArrowUpRight />}
                   />
                 </Stack>
 
@@ -511,7 +511,7 @@ function RequestAvailability() {
                     onChange={(_, value) => {
                       setSelectedSlots(value);
                     }}
-                    popupIcon={<PopUpArrowIcon />}
+                    popupIcon={<ArrowUpRight />}
                   />
                 </Stack>
               </>

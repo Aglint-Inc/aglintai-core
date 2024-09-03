@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { ActivityIcon, FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2/EmptyState';
@@ -7,7 +8,6 @@ import { Skeleton } from '@/devlink2/Skeleton';
 import { Activities } from '@/devlink3/Activities';
 import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import { SkeletonActivitiesCard } from '@/devlink3/SkeletonActivitiesCard';
-import Icon from '@/src/components/Common/Icons/Icon';
 
 import CancelScheduleDialog from '../../ScheduleDetails/CancelScheduleDialog';
 import {
@@ -60,9 +60,7 @@ function RightPanel({
           <>
             {isFetched && !isLoading && activities.length === 0 && (
               <EmptyState
-                slotIcons={
-                  <Icon variant='ActivityTimeline' width='50px' height='50px' />
-                }
+                slotIcons={<ActivityIcon size={50} />}
                 textDescription={'No activities found.'}
               />
             )}
@@ -103,7 +101,7 @@ function RightPanel({
                     isActionVisible={false}
                     isContentVisible={Boolean(act.metadata)}
                     slotContent={<SlotContent act={act} />}
-                    slotImage={/*<IconApplicationLogs act={act} /> */ <></>}
+                    slotImage={<FileText size={24} />}
                   />
                 );
               })

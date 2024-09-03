@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { FileText } from 'lucide-react';
 import { useRouter } from 'next/router';
 
 import { Skeleton } from '@/devlink2/Skeleton';
@@ -41,7 +42,7 @@ export const Activity = () => {
           isActionVisible={false}
           isContentVisible={!!activity.metadata}
           slotContent={<SlotContent act={activity} />}
-          slotImage={/*<IconApplicationLogs act={activity} />*/ <></>}
+          slotImage={<FileText />}
         />
       ))}
     </>
