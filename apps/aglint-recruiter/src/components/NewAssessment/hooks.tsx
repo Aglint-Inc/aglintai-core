@@ -1,7 +1,7 @@
 import { useDrop } from 'react-dnd';
 
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
-import { RecommendationQuestion } from '@/src/queries/assessment/types';
+import { type RecommendationQuestion } from '@/src/queries/assessment/types';
 
 
 export const useRecommendationCardDrop = () => {

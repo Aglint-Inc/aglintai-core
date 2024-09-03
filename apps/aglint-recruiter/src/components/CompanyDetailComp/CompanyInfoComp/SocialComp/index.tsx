@@ -1,16 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  type TooltipProps,
   Box,
   Dialog,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
@@ -19,7 +19,7 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import {
-  ContextValue,
+  type ContextValue,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
 

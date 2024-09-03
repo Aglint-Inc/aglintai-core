@@ -1,4 +1,4 @@
-import { DatabaseEnums } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import { useState } from 'react';

@@ -7,7 +7,7 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { JobRequisite } from '../job';
+import { type JobRequisite } from '../job';
 import { workflowQueryKeys } from '../workflow/keys';
 import { jobWorkflowMutationKeys } from './keys';
 

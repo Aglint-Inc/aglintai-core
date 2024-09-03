@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { AvailableTimeRange } from '@/devlink/AvailableTimeRange';
 import { CandidateCalender } from '@/devlink/CandidateCalender';
 import { DayColumn } from '@/devlink/DayColumn';
-import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
-import { useInviteSlots } from '@/src/queries/candidate-invite';
+import { type useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { type useInviteSlots } from '@/src/queries/candidate-invite';
 
 import { dayJS } from './utils';
 

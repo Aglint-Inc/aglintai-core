@@ -1,10 +1,10 @@
 import {
-  APIFindAltenativeTimeSlot,
-  APIRespFindReplaceMentInts,
-  APIUpdateMeetingInterviewers,
+  type APIFindAltenativeTimeSlot,
+  type APIRespFindReplaceMentInts,
+  type APIUpdateMeetingInterviewers,
 } from '@aglint/shared-types';
 import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
+import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import axios from 'axios';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

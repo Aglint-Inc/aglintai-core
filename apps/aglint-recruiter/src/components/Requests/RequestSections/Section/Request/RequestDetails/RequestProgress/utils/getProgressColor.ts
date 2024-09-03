@@ -1,13 +1,27 @@
-import { ProgressTenseType } from '../types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-export function getProgressColor(tense: ProgressTenseType) {
-  if (tense === 'error') {
+import { type ProgressTenseType } from '../types';
+export const progressStatusToTense = (
+  status: DatabaseTable['request_progress']['status'],
+): ProgressTenseType => {
+  if (status === 'completed') {
+    return 'past';
+  } else if (status === 'failed') {
     return 'error';
-  } else if (tense === 'future') {
-    return 'neutral';
-  } else if (tense === 'past') {
-    return 'success';
   } else {
-    return 'info';
+    return 'present';
   }
+};
+
+export function getProgressCompStatus(
+  status: DatabaseTable['request_progress']['status'],
+) {
+  if (status === 'completed') {
+    return 'completed';
+  } else if (status === 'failed') {
+    return 'error';
+  } else if (status === 'in_progress') {
+    return 'in_progress';
+  }
+  return '';
 }

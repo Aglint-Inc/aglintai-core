@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 const rediret_uri = `${process.env.NEXT_PUBLIC_HOST_NAME}/auth/microsoft`;
 const scopes = `Calendars.ReadWrite offline_access User.Read`;

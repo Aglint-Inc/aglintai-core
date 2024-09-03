@@ -9,7 +9,7 @@ import { NavSublink } from '@/devlink/NavSublink';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { PermissionEnums } from '@/src/utils/routing/permissions';
+import { type PermissionEnums } from '@/src/utils/routing/permissions';
 import { capitalize } from '@/src/utils/text/textUtils';
 
 import UIPhoneInput from '../Common/UIPhoneInput';
@@ -17,11 +17,11 @@ import UITextField from '../Common/UITextField';
 import { PasswordUpdate } from './components/PasswordUpdate';
 import { UserDetail } from './components/UserDetails';
 import {
-  EmailFormFields,
-  FormFields,
-  FormValues,
-  PasswordFormFields,
-  PreferenceFormFields,
+  type EmailFormFields,
+  type FormFields,
+  type FormValues,
+  type PasswordFormFields,
+  type PreferenceFormFields,
 } from './util';
 
 const navTabs: {

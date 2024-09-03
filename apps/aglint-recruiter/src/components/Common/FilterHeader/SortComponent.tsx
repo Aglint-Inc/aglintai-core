@@ -1,5 +1,5 @@
 import { MenuItem, Popover, Select, Stack } from '@mui/material';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';

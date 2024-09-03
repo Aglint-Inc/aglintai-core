@@ -1,11 +1,11 @@
 import {
-  DatabaseTable,
-  DatabaseTableInsert,
-  DatabaseTableUpdate,
-  SessionCombinationRespType,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type DatabaseTableUpdate,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

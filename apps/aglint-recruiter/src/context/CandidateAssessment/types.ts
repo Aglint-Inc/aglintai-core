@@ -1,4 +1,4 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
 export type ApplicationType = DB['public']['Tables']['applications']['Row'];
 export type PublicJobsType = DB['public']['Tables']['public_jobs']['Row'];

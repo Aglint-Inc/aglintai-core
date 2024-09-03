@@ -1,8 +1,8 @@
 import Icon from '@components/Common/Icons/Icon';
 import {
-  FilledInputProps,
-  InputProps,
-  OutlinedInputProps,
+  type FilledInputProps,
+  type InputProps,
+  type OutlinedInputProps,
   Stack,
   Typography,
 } from '@mui/material';

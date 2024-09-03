@@ -1,7 +1,7 @@
 import {
-  APIConfirmRecruiterSelectedOption,
-  CandReqSlotsType,
-  SessionCombinationRespType,
+  type APIConfirmRecruiterSelectedOption,
+  type CandReqSlotsType,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Drawer, Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -11,14 +11,17 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink2/ButtonSolid';
 import { GlobalCta } from '@/devlink3/GlobalCta';
 import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/src/utils/toast';
 
+import DayCardWrapper from '../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import Calendar from './Calendar';
 import { useAvailabilityContext } from './RequestAvailabilityContext';
 import SelectAvailableOption from './SelectAvailableOption';
 import {
@@ -36,6 +39,7 @@ function ConfirmAvailability() {
     selectedDateSlots,
     selectedIndex,
     setSelectedIndex,
+    selectedDayAvailableBlocks,
   } = useAvailabilityContext();
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
@@ -58,17 +62,17 @@ function ConfirmAvailability() {
   }
 
   useEffect(() => {
-    if (availableSlots && selectedIndex !== availableSlots.length) {
-      handleClick(availableSlots[Number(selectedIndex)]?.selected_dates);
+    if (availableSlots && selectedIndex !== availableSlots.slots.length) {
+      handleClick(availableSlots.slots[Number(selectedIndex)]?.selected_dates);
     }
   }, [availableSlots, selectedIndex]);
 
   async function handleContinue() {
-    if (selectedIndex !== availableSlots.length) {
+    if (selectedIndex !== availableSlots.slots.length) {
       setSelectedIndex((pre) => pre + 1);
       return null;
     }
-    if (selectedIndex === availableSlots.length) {
+    if (selectedIndex === availableSlots.slots.length) {
       setLoading(true);
 
       const task_id = null;
@@ -122,102 +126,134 @@ function ConfirmAvailability() {
     <Drawer
       onClose={closeDrawer}
       anchor={'right'}
-      open={openAvailabilityDrawer}
+      open={openAvailabilityDrawer && isFetched}
     >
-      <SideDrawerLarge
-        onClickBack={{
-          onClick: handleBack,
-        }}
-        textDrawertitle={'Schedule Now'}
-        onClickPrimary={{
-          onClick: () => {
-            handleContinue();
-          },
-        }}
-        onClickCancel={{
-          onClick: closeDrawer,
-        }}
-        isDisabled={
-          !selectedDateSlots.find(
-            (ele) => ele.current_round === selectedIndex + 1,
-          ) && selectedIndex !== availableSlots?.length
-        }
-        isLoading={loading}
-        textPrimaryButton={
-          selectedIndex !== availableSlots?.length ? 'Continue' : 'Schedule Now'
-        }
-        slotSideDrawerbody={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={selectedIndex === availableSlots?.length + 1}
-            >
-              <Stack p={2} height={'calc(100vh - 96px)'}>
-                <GlobalCta
-                  iconName={'event_upcoming'}
-                  color={'info'}
-                  textTitle={'Interview Confirmed'}
-                  textDescription={
-                    'The candidate and the interviewers received an email containing a link to join to the interview on the specified date and time'
-                  }
-                  slotButton={
-                    <Stack direction={'column'} spacing={2}>
-                      {selectedDateSlots &&
-                        selectedDateSlots?.map((item, index) => {
-                          return (
-                            <DayCardWrapper
-                              key={index}
-                              selectedCombIds={[]}
-                              item={{
-                                date_range: [item.selected_dates[0].curr_date],
-                                plans: item.selected_dates[0].plans,
-                              }}
-                              onClickSelect={() => {}}
-                              isDayCollapseNeeded={false}
-                              isSlotCollapseNeeded={false}
-                              isDayCheckboxNeeded={false}
-                              isRadioNeeded={false}
-                              isSlotCheckboxNeeded={false}
-                              index={index}
-                              setSelectedCombIds={() => {}}
-                            />
-                          );
-                        })}
-                      <Stack
-                        direction={'row'}
-                        justifyItems={'center'}
-                        justifyContent={'center'}
-                      >
-                        <ButtonSoft
-                          size={2}
-                          color={'accent'}
-                          onClickButton={{
-                            onClick: () => {
-                              router.replace(
-                                `/scheduling/view?meeting_id=${selectedDateSlots[0].selected_dates[0].plans[0].sessions[0].meeting_id}`,
-                              );
-                            },
-                          }}
-                          textButton={'View in schedules'}
-                        />
-                      </Stack>
-                    </Stack>
-                  }
-                />
-              </Stack>
-            </ShowCode.When>
-            <ShowCode.When isTrue={isLoading && !isFetched}>
-              <Stack height={'calc(100vh - 96px)'}>
-                <DynamicLoader />
-              </Stack>
-            </ShowCode.When>
+      <Stack direction={'row'}>
+        {!isLoading && selectedDayAvailableBlocks && <Calendar />}
 
-            <ShowCode.Else>
-              <SelectAvailableOption availableSlots={availableSlots} />
-            </ShowCode.Else>
-          </ShowCode>
-        }
-        isBottomBar={selectedIndex !== availableSlots?.length + 1}
-      />
+        <SideDrawerLarge
+          onClickBack={{
+            onClick: handleBack,
+          }}
+          textDrawertitle={'Schedule Now'}
+          onClickPrimary={{
+            onClick: () => {
+              handleContinue();
+            },
+          }}
+          drawerSize={'medium'}
+          onClickCancel={{
+            onClick: closeDrawer,
+          }}
+          textPrimaryButton={
+            selectedIndex !== availableSlots?.slots.length
+              ? 'Continue'
+              : 'Schedule Now'
+          }
+          slotButtons={
+            <>
+              <ButtonSoft
+                onClickButton={{
+                  onClick: () => {
+                    if (selectedIndex !== 0) setSelectedIndex((pre) => pre - 1);
+                    else closeDrawer();
+                  },
+                }}
+                textButton={selectedIndex === 0 ? 'Close' : 'Back'}
+              />
+              <ButtonSolid
+                isDisabled={
+                  !selectedDateSlots.find(
+                    (ele) => ele.current_round === selectedIndex + 1,
+                  ) && selectedIndex !== availableSlots?.slots.length
+                }
+                isLoading={loading}
+                onClickButton={{ onClick: handleContinue }}
+                textButton={
+                  selectedIndex !== availableSlots?.slots.length
+                    ? 'Continue'
+                    : 'Schedule Now'
+                }
+              />
+            </>
+          }
+          slotSideDrawerbody={
+            <ShowCode>
+              <ShowCode.When
+                isTrue={selectedIndex === availableSlots?.slots.length + 1}
+              >
+                <Stack p={2} height={'calc(100vh - 96px)'}>
+                  <GlobalCta
+                    iconName={'event_upcoming'}
+                    color={'info'}
+                    textTitle={'Interview Confirmed'}
+                    textDescription={
+                      'The candidate and the interviewers received an email containing a link to join to the interview on the specified date and time'
+                    }
+                    slotButton={
+                      <Stack direction={'column'} spacing={2}>
+                        {selectedDateSlots &&
+                          selectedDateSlots?.map((item, index) => {
+                            return (
+                              <DayCardWrapper
+                                key={index}
+                                selectedCombIds={[]}
+                                item={{
+                                  date_range: [
+                                    item.selected_dates[0].curr_date,
+                                  ],
+                                  plans: item.selected_dates[0].plans,
+                                }}
+                                onClickSelect={() => {}}
+                                isDayCollapseNeeded={false}
+                                isSlotCollapseNeeded={false}
+                                isDayCheckboxNeeded={false}
+                                isRadioNeeded={false}
+                                isSlotCheckboxNeeded={false}
+                                index={index}
+                                setSelectedCombIds={() => {}}
+                              />
+                            );
+                          })}
+                        <Stack
+                          direction={'row'}
+                          justifyItems={'center'}
+                          justifyContent={'center'}
+                        >
+                          <ButtonSoft
+                            size={2}
+                            color={'accent'}
+                            onClickButton={{
+                              onClick: () => {
+                                router.replace(
+                                  `/scheduling/view?meeting_id=${selectedDateSlots[0].selected_dates[0].plans[0].sessions[0].meeting_id}`,
+                                );
+                              },
+                            }}
+                            textButton={'View in schedules'}
+                          />
+                        </Stack>
+                      </Stack>
+                    }
+                  />
+                </Stack>
+              </ShowCode.When>
+              <ShowCode.When isTrue={isLoading && !isFetched}>
+                <Stack height={'calc(100vh - 96px)'}>
+                  <DynamicLoader />
+                </Stack>
+              </ShowCode.When>
+
+              <ShowCode.Else>
+                <SelectAvailableOption
+                  availableSlots={availableSlots?.slots || []}
+                />
+              </ShowCode.Else>
+            </ShowCode>
+          }
+          isBottomBar={selectedIndex !== availableSlots?.slots.length + 1}
+        />
+      </Stack>
     </Drawer>
   );
 }
@@ -254,7 +290,10 @@ async function getRequestAvailabilityDetails(request_id: string) {
           user_tz: userTzDayjs.tz.guess(),
         },
       );
-      return data as CandReqSlotsType[];
+      return data as {
+        slots: CandReqSlotsType[];
+        availabilities: ApiResponseFindAvailability['availabilities'];
+      };
     } catch (error) {
       throw error;
     }

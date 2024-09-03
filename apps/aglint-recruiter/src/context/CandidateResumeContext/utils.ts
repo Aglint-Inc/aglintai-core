@@ -1,15 +1,15 @@
-import { PostgrestError } from '@supabase/supabase-js';
+import { type PostgrestError } from '@supabase/supabase-js';
 
 import { supabase } from '@/src/utils/supabase/client';
 
 import {
-  CandidateFilesBulkCreateAction,
-  CandidateFilesBulkUpdateAction,
-  CandidateFilesContext,
-  CandidateFilesCreateAction,
-  CandidateFilesDeleteAction,
-  CandidateFilesReadAction,
-  CandidateFilesUpdateAction,
+  type CandidateFilesBulkCreateAction,
+  type CandidateFilesBulkUpdateAction,
+  type CandidateFilesContext,
+  type CandidateFilesCreateAction,
+  type CandidateFilesDeleteAction,
+  type CandidateFilesReadAction,
+  type CandidateFilesUpdateAction,
 } from './types';
 
 export const initialCandidatesContext: CandidateFilesContext = {

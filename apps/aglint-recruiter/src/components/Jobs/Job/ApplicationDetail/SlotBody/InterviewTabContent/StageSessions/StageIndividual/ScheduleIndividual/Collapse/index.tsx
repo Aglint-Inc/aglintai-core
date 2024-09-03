@@ -6,7 +6,7 @@ import { Text } from '@/devlink3/Text';
 import { TextWithIcon } from '@/devlink3/TextWithIcon';
 import InterviewerUserDetail from '@/src/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 import { useAllIntegrations } from '@/src/queries/intergrations';
 import { numberToText } from '@/src/utils/number/numberToText';
 

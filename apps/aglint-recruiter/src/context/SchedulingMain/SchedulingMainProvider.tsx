@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
+import { type MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 // import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
-  ApiFetchUserDetails,
-  BodyParamsFetchUserDetails,
+  type ApiFetchUserDetails,
+  type BodyParamsFetchUserDetails,
 } from '@/src/pages/api/scheduling/fetchUserDetails';
 import { supabase } from '@/src/utils/supabase/client';
 

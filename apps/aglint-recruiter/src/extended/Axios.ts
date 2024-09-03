@@ -1,12 +1,12 @@
 import axios, {
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type AxiosStatic,
   AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosStatic,
 } from 'axios';
 
-import { API_PATHS } from '../constant/apiPaths';
-import { ApiInterface } from '../interface/NextApiRequest.interface';
+import { type API_PATHS } from '../constant/apiPaths';
+import { type ApiInterface } from '../interface/NextApiRequest.interface';
 
 export default class CustomAxios {
   private _axios: AxiosStatic;

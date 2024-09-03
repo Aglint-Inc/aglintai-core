@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import {
-  CandPhoneScreeningState,
-  PhoneScreeningResponseType,
+  type CandPhoneScreeningState,
+  type PhoneScreeningResponseType,
 } from './ScreeningCtxProvider';
 
 export const phoneScreenEmail = async ({

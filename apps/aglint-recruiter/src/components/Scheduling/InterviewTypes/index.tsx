@@ -2,9 +2,16 @@ import { AvatarGroup, Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { ButtonGhost } from '@/devlink/ButtonGhost';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
 import { EmptyState } from '@/devlink2/EmptyState';
 import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
@@ -82,7 +89,19 @@ export function InterviewTypes() {
             </Stack>
           )
         }
-        slotTopbarLeft={<Breadcrum textName={'Interview Types'} />}
+        slotTopbarLeft={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Interview Types</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
         slotBody={
           isLoading || isFetching ? (
             <Stack sx={{ height: '100%' }}>

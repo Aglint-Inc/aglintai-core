@@ -1,4 +1,4 @@
-import { Assessment } from '../assessment/types';
+import { type Assessment } from '../assessment/types';
 
 export type DashboardTypes = {
   assessments: Assessment[];

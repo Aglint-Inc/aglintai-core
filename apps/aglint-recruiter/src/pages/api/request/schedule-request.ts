@@ -1,6 +1,6 @@
-import { DatabaseFunctions } from '@aglint/shared-types';
+import { type DatabaseFunctions } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { resetSessionRelations } from '@/src/utils/scheduling/resetSessionRelations';

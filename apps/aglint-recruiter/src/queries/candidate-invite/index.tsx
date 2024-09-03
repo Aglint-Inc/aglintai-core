@@ -1,7 +1,7 @@
 import {
-  APICandidateConfirmSlotNoConflict,
-  APIVerifyRecruiterSelectedSlots,
-  CandidateDirectBookingType,
+  type APICandidateConfirmSlotNoConflict,
+  type APIVerifyRecruiterSelectedSlots,
+  type CandidateDirectBookingType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,8 +9,8 @@ import axios from 'axios';
 
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 import {
-  ApiResponseAllSlots,
-  ApiResponseCandidateInvite,
+  type ApiResponseAllSlots,
+  type ApiResponseCandidateInvite,
 } from '@/src/pages/api/scheduling/invite';
 
 import { candidateInviteKeys } from './keys';

@@ -1,5 +1,5 @@
 import { CApiError } from '@aglint/shared-utils/src/customApiError/customApiError';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 export const addErrorHandlerWrap = (call_back) => {
   const handlerWrap = async (req: NextApiRequest, res: NextApiResponse) => {

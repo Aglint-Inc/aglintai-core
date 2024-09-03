@@ -12,11 +12,11 @@ import React, {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
+import { type FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PhoneScreenQuestion } from '../NewScreening/types';
+import { type PhoneScreenQuestion } from '../NewScreening/types';
 import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;

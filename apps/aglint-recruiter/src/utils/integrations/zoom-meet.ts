@@ -5,10 +5,10 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
 import { decrypt_string } from './crypt-funcs';
 import {
-  TokenType,
-  ZoomCreateMeetingParams,
-  ZoomMeetCred,
-  ZoomMeetingResp,
+  type TokenType,
+  type ZoomCreateMeetingParams,
+  type ZoomMeetCred,
+  type ZoomMeetingResp,
 } from './types';
 
 export class ZoomMeet {

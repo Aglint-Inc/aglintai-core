@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 
-import { Interviewer } from './types';
+import { type Interviewer } from './types';
 
 export interface EditSessionDrawer {
   selectedInterviewers: Interviewer[];

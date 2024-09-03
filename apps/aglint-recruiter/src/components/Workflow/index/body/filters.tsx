@@ -5,12 +5,12 @@ import { memo, useMemo } from 'react';
 import { GlobalBadge } from '@/devlink3/GlobalBadge';
 import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useWorkflows } from '@/src/context/Workflows';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 import { SafeObject } from '@/src/utils/safeObject';
 
 import {
+  type WorkflowStore,
   useWorkflowStore,
-  WorkflowStore,
 } from '../../../../context/Workflows/store';
 import { TAG_OPTIONS } from '../../constants';
 

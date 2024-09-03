@@ -1,5 +1,5 @@
 import { geolocation } from '@vercel/edge';
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const headers = {
   'Access-Control-Allow-Origin': '*', // Allow requests from any origin

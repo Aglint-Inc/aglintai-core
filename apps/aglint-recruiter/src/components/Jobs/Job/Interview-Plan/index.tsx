@@ -13,13 +13,22 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import ReorderableInterviewPlan from '@/components/reorderable-interview-plan';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
@@ -35,11 +44,11 @@ import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loa
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { useJob } from '@/src/context/JobContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
-import { DeleteInterviewSession } from '@/src/queries/interview-plans';
+import { type CompanyMember as CompanyMemberGlobal } from '@/src/queries/company-members';
+import { type DeleteInterviewSession } from '@/src/queries/interview-plans';
 import {
-  InterviewPlansType,
-  InterviewSessionType,
+  type InterviewPlansType,
+  type InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
 import { jobQueries } from '@/src/queries/job';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -54,7 +63,9 @@ import toast from '@/src/utils/toast';
 
 import JobNotFound from '../Common/JobNotFound';
 import { Settings } from '../Common/SharedTopNav/actions';
-import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
+import InterviewDeletePopup, {
+  type InterviewDeletePopupType,
+} from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
 
@@ -118,27 +129,44 @@ const InterviewPlanPage = () => {
         slotTopbarLeft={<BreadCrumbs />}
         slotTopbarRight={<Settings />}
         slotBody={
-          <Stack gap={1} margin={2} width={'800px'}>
-            {data?.length ? (
-              data.map((plan) => (
-                <InterviewPlan
-                  key={plan.id}
-                  plan_id={plan.id}
-                  handleCreate={handleCreate}
-                  handleEdit={handleEdit}
-                />
-              ))
-            ) : (
-              <Typography>
-                {`Create your interview stages for the job to ensure a structured
+          //cand and inter
+          <Stack>
+            <Tabs>
+              <TabsList>
+                <TabsTrigger defaultValue={'internal'} value='internal'>
+                  Internal
+                </TabsTrigger>
+                <TabsTrigger value='candidate'>Candidate</TabsTrigger>
+              </TabsList>
+              <TabsContent value='internal'>
+                <Stack gap={1} margin={2} width={'800px'}>
+                  {data?.length ? (
+                    data.map((plan) => (
+                      <InterviewPlan
+                        key={plan.id}
+                        plan_id={plan.id}
+                        handleCreate={handleCreate}
+                        handleEdit={handleEdit}
+                      />
+                    ))
+                  ) : (
+                    <Typography>
+                      {`Create your interview stages for the job to ensure a structured
                 evaluation process. Add different interview types such as
                 "Initial Screening" or "Technical Interview." Use this template
                 each time you schedule interviews for candidates to maintain
                 consistency and efficiency.`}
-              </Typography>
-            )}
+                    </Typography>
+                  )}
 
-            <AddStageComponent />
+                  <AddStageComponent />
+                </Stack>
+              </TabsContent>
+              <TabsContent value='candidate'>
+                <ReorderableInterviewPlan jobId={data[0].job_id} />
+                candidate
+              </TabsContent>
+            </Tabs>
           </Stack>
         }
       />
@@ -206,29 +234,27 @@ const AddStageComponent = () => {
 const BreadCrumbs = () => {
   const { push } = useRouter();
   const { job } = useJob();
+
   return (
-    <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalizeSentence(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Interview Plan`} showArrow />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+            Jobs
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+            {capitalizeSentence(job?.job_title ?? 'Job')}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Interview Plan</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
@@ -406,59 +432,6 @@ const InterviewPlan = ({
                 {sessionsCount ? (
                   <>
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                    {/* <Stack direction={'row'} gap={1}>
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Session'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          handleCreate(
-                            'session',
-                            plan_id,
-                            data.interview_session.length,
-                          );
-                        },
-                      }}
-                    />
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Debrief'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          handleCreate(
-                            'debrief',
-                            plan_id,
-                            data.interview_session.length,
-                          );
-                        },
-                      }}
-                    />
-                    <ButtonSoft
-                      size={1}
-                      iconName='add'
-                      isLeftIcon
-                      textButton={'Add Break'}
-                      color={'neutral'}
-                      onClickButton={{
-                        onClick: () => {
-                          data.interview_session.length > 1 &&
-                            handleUpdateSession({
-                              session: { break_duration: 30 },
-                              session_id:
-                                data.interview_session[
-                                  data.interview_session.length - 2
-                                ]?.id,
-                            });
-                        },
-                      }}
-                    />
-                  </Stack> */}
                   </>
                 ) : (
                   <GlobalEmptyState
@@ -483,6 +456,7 @@ const InterviewPlan = ({
           }
         />
       </OptimisticWrapper>
+
       <InterviewDeletePopup
         open={popupModal}
         popup={popup}

@@ -16,10 +16,10 @@ import { useAllActivities, useGetScheduleApplication } from './queries/hooks';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
 import {
+  type TabSchedulingType,
   resetSchedulingApplicationState,
   setFetchingSchedule,
   setSelectedSessionIds,
-  TabSchedulingType,
   useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';

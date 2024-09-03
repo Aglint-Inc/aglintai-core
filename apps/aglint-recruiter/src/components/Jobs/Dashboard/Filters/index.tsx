@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import { useAllMembers } from '@/src/queries/members';
 
 import FilterHeader from '../../../Common/FilterHeader';

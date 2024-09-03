@@ -1,17 +1,17 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type PostgrestError } from '@supabase/supabase-js';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  ResumeUploadApi,
-  Supabase,
+  type ResumeUploadApi,
+  type Supabase,
 } from '@/src/apiUtils/job/candidateUpload/types';
 import {
   createAndUploadCandidate,

@@ -1,73 +1,79 @@
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  type DatabaseEnums,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/src/utils/supabase/client';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export const createRequestWorkflow = async ({
-  old_workflow_id,
-  workflow,
-  actions,
-}: {
-  old_workflow_id: string;
-  workflow: DatabaseTableInsert['workflow'];
-  actions: DatabaseTableInsert['workflow_action'];
-}) => {
-  if (old_workflow_id) {
-    const { data: workflowData } = await supabase
-      .from('workflow')
-      .upsert({
-        ...workflow,
-        id: old_workflow_id,
-      })
-      .select()
-      .single()
-      .throwOnError();
-    const { ...resetActions } = actions;
-    const { data: action } = await supabase.from('workflow_action').insert({
-      ...resetActions,
-      workflow_id: workflowData.id,
-    });
-
-    return {
-      workflow,
-      action,
-    };
-  } else {
-    const { data: workflowData } = await supabase
-      .from('workflow')
-      .insert({
-        ...workflow,
-      })
-      .select()
-      .single()
-      .throwOnError();
-    const { ...resetActions } = actions;
-    const { data: action } = await supabase.from('workflow_action').insert({
-      ...resetActions,
-      workflow_id: workflowData.id,
-    });
-
-    return {
-      workflow,
-      action,
-    };
-  }
+const triggerinterval: Partial<
+  Record<DatabaseEnums['workflow_trigger'], number>
+> = {
+  sendAvailReqReminder: 24 * 60,
+  selfScheduleReminder: 24 * 60,
 };
 
-export const deleteRequestWorkFlow = async ({
+export const createRequestWorkflowAction = async ({
+  wAction,
   request_id,
-  trigger,
+  recruiter_id,
 }: {
+  wAction: DatabaseTableInsert['workflow_action'];
   request_id: string;
-  workflow_id: string;
-  trigger: DatabaseTable['workflow']['trigger'];
+  recruiter_id: string;
 }) => {
-  const { data, error } = await supabase
-    .from('workflow')
-    .delete()
-    .eq('request_id', request_id)
-    .eq('trigger', trigger)
-    .select()
-    .single();
-  if (error) throw new Error(error.message);
-  return data;
+  const trigger = wAction.target_api.split('_')[0] as any;
+  let interval = 0;
+  if (triggerinterval[trigger]) {
+    interval = triggerinterval[trigger];
+  }
+  let wTrigger: DatabaseTable['workflow'];
+  [wTrigger] = supabaseWrap(
+    await supabase
+      .from('workflow')
+      .select()
+      .eq('request_id', request_id)
+      .eq('trigger', trigger),
+    false,
+  );
+  if (!wTrigger) {
+    [wTrigger] = supabaseWrap(
+      await supabase
+        .from('workflow')
+        .insert({
+          request_id: request_id,
+          trigger: trigger,
+          phase: 'after',
+          recruiter_id: recruiter_id,
+          interval: interval,
+          workflow_type: 'job',
+        })
+        .select(),
+    );
+  }
+  supabaseWrap(
+    await supabaseAdmin
+      .from('workflow_action')
+      .delete()
+      .eq('workflow_id', wTrigger.id),
+  );
+  supabaseWrap(
+    await supabase
+      .from('workflow_action')
+      .insert([
+        {
+          ...wAction,
+          workflow_id: wTrigger.id,
+        },
+      ])
+      .select(),
+  );
+};
+
+export const deleteRequestWorkflowAction = async (workflowActionId: string) => {
+  supabaseWrap(
+    await supabase.from('workflow_action').delete().eq('id', workflowActionId),
+  );
 };

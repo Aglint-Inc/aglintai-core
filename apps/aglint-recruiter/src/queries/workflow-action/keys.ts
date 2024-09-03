@@ -1,5 +1,5 @@
 import { appKey, argsToKeys } from '..';
-import { WorkflowActionKeys } from '.';
+import { type WorkflowActionKeys } from '.';
 
 export const workflowActionQueryKeys = {
   all: { queryKey: [appKey, 'workflowAction'] as string[] },

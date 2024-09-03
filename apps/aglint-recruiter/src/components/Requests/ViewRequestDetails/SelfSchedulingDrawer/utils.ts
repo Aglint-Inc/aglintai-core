@@ -1,16 +1,18 @@
 import {
-  Event,
-  Resource,
+  type Event,
+  type Resource,
 } from '@/src/components/Common/CalendarResourceView/types';
 import { getStringColor } from '@/src/components/Common/MuiAvatar';
-import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { type ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
 
 export const transformAvailability = (
   availabilities: ApiResponseFindAvailability['availabilities'],
 ) => {
-  const intArray = Object.entries(availabilities).map(([, value]) => ({
-    ...value,
-  }));
+  const intArray = availabilities
+    ? Object?.entries(availabilities)?.map(([, value]) => ({
+        ...value,
+      }))
+    : [];
 
   const events: Event[] = intArray.flatMap((cal) =>
     cal.all_events.flatMap((event) => {

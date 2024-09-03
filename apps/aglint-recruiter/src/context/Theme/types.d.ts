@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { TypographyOptions } from '@mui/material/styles/createTypography';
-import React from 'react';
+import { type TypographyOptions } from '@mui/material/styles/createTypography';
+import type React from 'react';
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {

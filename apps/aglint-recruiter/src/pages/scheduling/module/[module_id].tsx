@@ -1,10 +1,17 @@
-import { DatabaseTableUpdate } from '@aglint/shared-types';
+import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { MemberListCard } from '@/devlink2/MemberListCard';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -19,14 +26,14 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
 import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
-import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
+import { type ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
   useProgressModuleUsers,
 } from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
 import {
-  MemberType,
-  ModuleType,
+  type MemberType,
+  type ModuleType,
 } from '@/src/components/Scheduling/InterviewTypes/types';
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -108,7 +115,17 @@ function ModuleMembersComp() {
         isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={module?.name} />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{module?.name}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </>
         }
         slotBody={

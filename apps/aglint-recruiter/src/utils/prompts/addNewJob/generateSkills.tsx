@@ -1,4 +1,4 @@
-import { MessageType } from '../types';
+import { type MessageType } from '../types';
 import { requestJson } from '../utils';
 import { getAIResponse } from '.';
 

@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import React from 'react';
 
-import { ModuleType } from '../../types';
+import { type ModuleType } from '../../types';
 import ArchiveModuleDialog from './ArchiveModuleDialog';
 import DeleteModuleDialog from './DeleteModuleDialog';
 

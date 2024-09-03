@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useRequests } from '@/src/context/RequestsContext';
-import { GetRequestParams } from '@/src/queries/requests';
+import { type GetRequestParams } from '@/src/queries/requests';
 import { supabase } from '@/src/utils/supabase/client';
 
 import FilterHeader from '../../Common/FilterHeader';

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { CandidateAssesmentCard } from '@/devlink2/CandidateAssesmentCard';
 import { CandidateLanding } from '@/devlink2/CandidateLanding';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
-import { AssessmentDetailsType } from '@/src/context/CandidateAssessment/types';
+import { type AssessmentDetailsType } from '@/src/context/CandidateAssessment/types';
 
 import Loader from '../Common/Loader';
 import TypeIcon from '../NewAssessment/Common/icons/types';

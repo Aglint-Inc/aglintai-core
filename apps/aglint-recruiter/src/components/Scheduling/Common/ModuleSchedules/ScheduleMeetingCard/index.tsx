@@ -17,7 +17,7 @@ import {
   getScheduleTextcolor,
   getScheduleType,
 } from '../../../Candidates/utils';
-import { getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
+import { type getAllScheduleList } from '../../../Schedules/ScheduleStatesContext';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
 

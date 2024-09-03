@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type PostgrestError } from '@supabase/supabase-js';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { AssessmentResult } from '@/src/queries/assessment/types';
+import { type AssessmentResult } from '@/src/queries/assessment/types';
 
 // export const config = {
 //   runtime: 'edge',

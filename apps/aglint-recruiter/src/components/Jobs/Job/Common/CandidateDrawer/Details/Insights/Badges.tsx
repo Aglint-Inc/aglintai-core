@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import Image from 'next/image';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { Badge as BadgeDev } from '@/devlink/Badge';
 import { Skeleton } from '@/devlink2/Skeleton';

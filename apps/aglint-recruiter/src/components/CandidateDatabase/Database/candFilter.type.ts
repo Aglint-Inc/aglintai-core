@@ -1,6 +1,6 @@
-import { JsonResume } from '@aglint/shared-types';
+import { type JsonResume } from '@aglint/shared-types';
 
-import { CandJobPost } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { type CandJobPost } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 export interface Candidate {
   candidate_id: string;

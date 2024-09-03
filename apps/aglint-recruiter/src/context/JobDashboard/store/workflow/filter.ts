@@ -1,6 +1,6 @@
-import { WorkflowStore } from '@/src/context/Workflows/store';
+import { type WorkflowStore } from '@/src/context/Workflows/store';
 
-import { CreateSlice } from '.';
+import { type CreateSlice } from '.';
 
 type Filters = WorkflowStore['filters'];
 

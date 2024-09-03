@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
@@ -39,16 +39,9 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
         .eq('id', new_data.interview_schedule_id),
     );
 
-    const [req_reln] = supabaseWrap(
-      await supabaseAdmin
-        .from('request_relation')
-        .select('*,interview_session(*), request(*)')
-        .eq('interview_session.meeting_id', new_data.id),
-      false,
-    );
     const { request_workflows, company_actions } = await getWActions({
       company_id: schedule_application.applications.public_jobs.recruiter_id,
-      request_id: req_reln?.request?.id,
+      request_id: new_data.schedule_request_id,
     });
     const [meeting_details] = supabaseWrap(
       await supabaseAdmin
@@ -80,6 +73,7 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
               organizer_id: new_data.organizer_id,
               session_id: meeting_details.session_id,
               payload: act.payload,
+              request_id: new_data.schedule_request_id,
             },
           }),
         );

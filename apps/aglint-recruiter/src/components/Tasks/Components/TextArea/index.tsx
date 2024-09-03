@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import Mention from '@tiptap/extension-mention';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import {
-  Editor,
+  type Editor,
   EditorContent,
   mergeAttributes,
   useEditor,
@@ -11,7 +11,7 @@ import {
 import StarterKit from '@tiptap/starter-kit';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { assigneeType } from '../../utils';
+import { type assigneeType } from '../../utils';
 // import { useTaskStatesContext } from '../../../TaskStatesContext';
 // import { assigneeType } from '../../UpdateSubTask';
 import suggetion from './utils/suggetions';

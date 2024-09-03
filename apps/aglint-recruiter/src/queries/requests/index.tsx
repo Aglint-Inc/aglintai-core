@@ -5,11 +5,11 @@ import type {
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
+import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import {
   type MutationFilters,
+  type QueryClient,
   type QueryFilters,
-  QueryClient,
   queryOptions,
   useMutation,
   useMutationState,
@@ -21,7 +21,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import aglintToast from '@/src/utils/toast';
 
 import { appKey, GC_TIME } from '..';
-import { Request, RequestProgress, RequestResponse } from './types';
+import { type Request, type RequestProgress, type RequestResponse } from './types';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -130,7 +130,7 @@ export const requestQueries = {
     enabled?: boolean;
   }) =>
     queryOptions({
-      initialData: [],
+      placeholderData: [],
       enabled: !!request_id && enabled,
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
@@ -142,7 +142,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .throwOnError()
         ).data;
-        return d;
+        return d ?? [];
       },
     }),
 } as const;

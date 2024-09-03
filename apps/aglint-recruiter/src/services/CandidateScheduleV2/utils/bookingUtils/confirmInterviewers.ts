@@ -1,9 +1,9 @@
-import { SessionInterviewerType } from '@aglint/shared-types';
+import { type SessionInterviewerType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { BookedMeetingDetails } from './types';
+import { type BookedMeetingDetails } from './types';
 
 type ConfirmInt = Pick<
   SessionInterviewerType,

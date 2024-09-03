@@ -1,81 +1,140 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
-import { EventNodeType } from '@aglint/shared-types/src/workflow';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React from 'react';
 
+import { IconButtonSoft } from '@/devlink/IconButtonSoft';
+import { ScheduleProgress } from '@/devlink2/ScheduleProgress';
 import { TextWithIcon } from '@/devlink2/TextWithIcon';
 import LottieAnimations from '@/src/components/Common/Lotties/LottieIcons';
+import { useRequest } from '@/src/context/RequestContext';
+import toast from '@/src/utils/toast';
 
-import CheckCircleFilled from '../CheckCircleFilled';
-import { ProgressTenseType, RequestProgressMapType } from '../types';
+import { deleteRequestWorkflowAction } from '../../utils';
+import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
-import { getProgressColor } from '../utils/getProgressColor';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
+import { useNewScheduleRequestPr } from '.';
 
 const EventNode = ({
-  eventNode,
-  reqProgressMap,
+  eventType,
+  reqProgresMap,
+  currEventTrigger,
+  currWAction,
 }: {
-  eventNode: EventNodeType;
-  reqProgressMap: RequestProgressMapType;
+  eventType: DatabaseTable['request_progress']['event_type'];
+  reqProgresMap: RequestProgressMapType;
+  currEventTrigger: DatabaseTable['workflow']['trigger'];
+  currWAction?: DatabaseTable['workflow_action'];
 }) => {
-  const eventProg = reqProgressMap[eventNode];
+  const { request_workflow } = useRequest();
+  const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
+  const [onHover, setOnHover] = React.useState(false);
+  const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
-  let CustomComp;
-  let headingEvent: DatabaseTable['request_progress'];
   if (eventProg) {
-    headingEvent = eventProg.find((prg) => prg.is_progress_step === false);
+    let headingEvent: DatabaseTable['request_progress'] = eventProg.find(
+      (prg) => prg.is_progress_step === false,
+    );
     tense = progressStatusToTense(headingEvent.status);
-    CustomComp =
-      progressActionMap[`${headingEvent.event_type}_${headingEvent.status}`];
   }
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
-
+  const handleDeleteScheduleAction = async () => {
+    try {
+      await deleteRequestWorkflowAction(currWAction.id);
+      await request_workflow.refetch();
+    } catch (err) {
+      toast.error('Failed to remove action');
+    }
+  };
   return (
     <>
-      <TextWithIcon
-        textContent={workflowCopy[eventNode][tense]}
-        iconSize={3}
-        fontSize={1}
-        color={getProgressColor(tense)}
-        iconName={
-          tense === 'past' ? (
-            <CheckCircleFilled />
-          ) : tense === 'future' ? (
-            'circle'
-          ) : (
-            <LottieAnimations animation='loading_spinner' size={1.2} />
-          )
-        }
-      />
-      {(eventSubProgress.length > 0 || CustomComp) && (
-        <Stack ml={1}>
-          {/* {CustomComp && <CustomComp {...(headingEvent ?? {})} />} */}
-          {eventProg
-            .filter((prg) => prg.is_progress_step === true)
-            .map((prg) => {
-              if (progressActionMap[`${prg.event_type}_${prg.status}`]) {
-                let key = `${prg.event_type}_${prg.status}`;
-                let Comp = progressActionMap[key];
-                return <>{<Comp {...prg} />}</>;
-              }
-              return (
-                <>
-                  <TextWithIcon
-                    iconName='check'
-                    textContent={prg.log}
-                    fontSize={1}
-                    color={'grey'}
-                  />
-                </>
-              );
-            })}
-        </Stack>
-      )}
+      <Stack
+        onMouseEnter={() => {
+          if (tense === 'future') {
+            setOnHover(true);
+          }
+        }}
+        onMouseLeave={() => {
+          setOnHover(false);
+        }}
+      >
+        <ScheduleProgress
+          status={
+            tense === 'past' ? 'completed' : tense === 'future' ? 'circle' : ''
+          }
+          textProgress={workflowCopy[eventType][tense]}
+          slotRightIcon={
+            <Stack
+              direction={'row'}
+              columnGap={1}
+              sx={{
+                opacity: onHover ? 1 : 0,
+                cursor: onHover ? 'pointer' : 'none',
+              }}
+            >
+              <IconButtonSoft
+                iconName={'sync'}
+                size={1}
+                color={'neutral'}
+                onClickButton={{
+                  onClick: () => {
+                    setEditTrigger(currEventTrigger);
+                    setShowEditDialog(true);
+                  },
+                }}
+              />
+              <IconButtonSoft
+                iconName={'delete'}
+                size={1}
+                color={'error'}
+                onClickButton={{
+                  onClick: () => {
+                    handleDeleteScheduleAction();
+                  },
+                }}
+              />
+            </Stack>
+          }
+          slotLoader={
+            tense === 'present' ? (
+              <LottieAnimations animation='loading_spinner' size={1.5} />
+            ) : undefined
+          }
+          slotAiText={
+            <>
+              {eventSubProgress.length > 0 && (
+                <Stack ml={1}>
+                  {eventProg
+                    .filter((prg) => prg.is_progress_step === true)
+                    .map((prg) => {
+                      if (
+                        progressActionMap[`${prg.event_type}_${prg.status}`]
+                      ) {
+                        let key = `${prg.event_type}_${prg.status}`;
+                        let Comp = progressActionMap[key];
+                        return <>{<Comp {...prg} />}</>;
+                      }
+                      return (
+                        <>
+                          <TextWithIcon
+                            iconName='check'
+                            textContent={prg.log}
+                            fontSize={1}
+                            color={'grey'}
+                          />
+                        </>
+                      );
+                    })}
+                </Stack>
+              )}
+            </>
+          }
+        />
+      </Stack>
     </>
   );
 };

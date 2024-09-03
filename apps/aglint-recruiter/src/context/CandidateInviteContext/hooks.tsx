@@ -1,18 +1,18 @@
 /* eslint-disable security/detect-object-injection */
-import { CandidateDirectBookingType } from '@aglint/shared-types';
+import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from '@utils/dayjs';
 import axios from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
+import { type TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
-import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
+import { type ApiBodyOpenSelfScheduling } from '@/src/pages/api/scheduling/application/openselfscheduling';
+import { type BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
+  type useInviteSlots,
   useConfirmSlots,
   useInviteMeta,
-  useInviteSlots,
 } from '@/src/queries/candidate-invite';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';

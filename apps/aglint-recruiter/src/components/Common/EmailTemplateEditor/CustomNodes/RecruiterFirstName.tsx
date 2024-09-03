@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { mergeAttributes, Node } from '@tiptap/core';
-import { DOMOutputSpec, Node as ProseMirrorNode } from '@tiptap/pm/model';
+import { type DOMOutputSpec, type Node as ProseMirrorNode } from '@tiptap/pm/model';
 import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
-import { SuggestionOptions } from '@tiptap/suggestion';
+import { type SuggestionOptions } from '@tiptap/suggestion';
 import Image from 'next/image';
 
 export type MentionOptions = {

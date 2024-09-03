@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { MessageType } from '../types';
+import { type MessageType } from '../types';
 
 export const resolveAiCmd = async (
   candidateOverview,

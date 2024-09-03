@@ -1,7 +1,7 @@
 import {
-  DatabaseTable,
-  DatabaseTableInsert,
-  SupabaseType,
+  type DatabaseTable,
+  type DatabaseTableInsert,
+  type SupabaseType,
 } from '@aglint/shared-types';
 
 import {

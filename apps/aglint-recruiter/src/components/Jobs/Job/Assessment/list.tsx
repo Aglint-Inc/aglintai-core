@@ -20,7 +20,7 @@ import { AssessmentDetails } from '@/src/components/NewAssessment/AssessmentDash
 import TypeIcon from '@/src/components/NewAssessment/Common/icons/types';
 import { useJob } from '@/src/context/JobContext';
 import { useJobDashboard } from '@/src/context/JobDashboard';
-import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
+import { type Assessment, type AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
   useJobAssessmentsBulkConnect,
   useJobAssessmentsDisconnect,

@@ -1,8 +1,8 @@
-import { DatabaseTable, DB } from '@aglint/shared-types';
+import { type DatabaseTable, type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { jwtVerify } from 'jose';
 
-import { EventSessionType } from './type';
+import { type EventSessionType } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

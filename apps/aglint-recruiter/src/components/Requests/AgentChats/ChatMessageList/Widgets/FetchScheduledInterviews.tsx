@@ -6,8 +6,8 @@ import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { formatTimeWithTimeZone } from '@/src/components/Scheduling/utils';
 import ROUTES from '@/src/utils/routing/routes';
 
-import ScheduleList, { ScheduleListProps } from '../../Components/SheduleList';
-import { ChatType } from '../hooks/fetch';
+import ScheduleList, { type ScheduleListProps } from '../../Components/SheduleList';
+import { type ChatType } from '../hooks/fetch';
 
 function FetchScheduledInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;

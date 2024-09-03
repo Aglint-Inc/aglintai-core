@@ -1,10 +1,10 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 import {
-  JobDetailsForm,
-  JobHiringTeamForm,
+  type JobDetailsForm,
+  type JobHiringTeamForm,
 } from '@/src/components/Jobs/Create/form';
-import { Job } from '@/src/queries/jobs/types';
+import { type Job } from '@/src/queries/jobs/types';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 type DetailsValidity = {

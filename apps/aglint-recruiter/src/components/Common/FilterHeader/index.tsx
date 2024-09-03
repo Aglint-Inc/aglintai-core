@@ -7,8 +7,8 @@ import { Text } from '@/devlink/Text';
 import SearchField from '../SearchField/SearchField';
 import { ShowCode } from '../ShowCode';
 import DateRangeSelector from './DateRangeSelector';
-import { FiltersComponent, FilterTypes } from './FilterComponents';
-import SortComponent, { sortComponentType } from './SortComponent';
+import { type FilterTypes,FiltersComponent } from './FilterComponents';
+import SortComponent, { type sortComponentType } from './SortComponent';
 
 export default function FilterHeader({
   search,

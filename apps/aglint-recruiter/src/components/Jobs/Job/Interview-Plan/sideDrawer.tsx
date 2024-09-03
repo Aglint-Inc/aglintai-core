@@ -9,10 +9,10 @@ import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CompanyMember } from '@/src/queries/company-members';
+import { type CompanyMember } from '@/src/queries/company-members';
 import toast from '@/src/utils/toast';
 
-import { DrawerType } from '.';
+import { type DrawerType } from '.';
 import BreakForms, {
   getBreakFields,
   getBreakSessionPayload,
@@ -26,10 +26,10 @@ import DebriefForms, {
   validateDebriefSessionFields,
 } from './debriefForms';
 import SessionForms, {
+  type SessionUser,
   getSessionFields,
   getSessionPayload,
   initialSessionFields,
-  SessionUser,
   validateSessionFields,
 } from './sessionForms';
 

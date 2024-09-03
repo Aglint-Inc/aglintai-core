@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Breadcrum } from '@/devlink2/Breadcrum';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb';
 import { PageLayout } from '@/devlink2/PageLayout';
 
 import { WithPermission } from '../../withPermission';
@@ -10,7 +15,7 @@ type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
   return (
     <PageLayout
-    isHeaderDividerVisible={false}
+      isHeaderDividerVisible={false}
       slotTopbarLeft={<BreadCrumbs />}
       slotTopbarRight={<Actions />}
       slotBody={props.children}
@@ -21,7 +26,15 @@ const Layout = (props: LayoutProps) => {
 export default Layout;
 
 const BreadCrumbs = () => {
-  return <Breadcrum textName={'Workflows'} />;
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbPage>Workflows</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
 };
 
 const Actions = () => {

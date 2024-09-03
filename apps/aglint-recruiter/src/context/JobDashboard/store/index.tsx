@@ -1,7 +1,7 @@
-import { create, StateCreator } from 'zustand';
+import { type StateCreator,create } from 'zustand';
 
-import { DashboardSlices, DashboardSlicesType } from './[id]';
-import { WorkflowSlices, WorkflowSlicesType } from './workflow';
+import { type DashboardSlicesType,DashboardSlices } from './[id]';
+import { type WorkflowSlicesType,WorkflowSlices } from './workflow';
 
 type SlicesType = DashboardSlicesType & WorkflowSlicesType;
 const Slices = { ...DashboardSlices, ...WorkflowSlices };

@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { DatabaseTableUpdate } from '@aglint/shared-types';
+import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Stack } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { Text } from '@/devlink/Text';
 import { ButtonSoft } from '@/devlink2/ButtonSoft';
@@ -115,8 +115,7 @@ function RequestDetails({
       )}
       slotBody={
         <>
-          <RequestProgress request_type={request.type} />
-
+          <RequestProgress requestDetails={request} />
           {Boolean(
             request.status === 'to_do' &&
               request.type === 'schedule_request' &&

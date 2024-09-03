@@ -1,7 +1,7 @@
 import {
-  DatabaseTable,
-  EmailTemplateAPi,
-  InterviewSessionTypeDB,
+  type DatabaseTable,
+  type EmailTemplateAPi,
+  type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -31,7 +31,7 @@ import {
   IndividualIcon,
   PanelIcon,
 } from '@/src/components/Jobs/Job/Interview-Plan/sessionForms';
-import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { type meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
@@ -48,7 +48,7 @@ import {
   useSchedulingFlowStore,
 } from '../SchedulingDrawer/store';
 import { setSelectedSessionIds, useSchedulingApplicationStore } from '../store';
-import { ApiResponseFindAvailability } from '../types';
+import { type ApiResponseFindAvailability } from '../types';
 import EmailPreview from './Components/EmailPriview';
 import {
   createTask,

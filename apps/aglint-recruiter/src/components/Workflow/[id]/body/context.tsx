@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { useQuery } from '@tanstack/react-query';
-import type React from 'react';
+import React from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

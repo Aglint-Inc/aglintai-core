@@ -1,4 +1,4 @@
-import { DateInfoType } from '@aglint/shared-types';
+import { type DateInfoType } from '@aglint/shared-types';
 
 import { capitalizeAll } from './text/textUtils';
 

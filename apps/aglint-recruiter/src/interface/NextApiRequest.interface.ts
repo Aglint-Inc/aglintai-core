@@ -1,6 +1,6 @@
 import {
-  NextApiRequest as nextApiRequest,
-  NextApiResponse as nextApiResponse,
+  type NextApiRequest as nextApiRequest,
+  type NextApiResponse as nextApiResponse,
 } from 'next';
 
 export interface NextApiRequest extends nextApiRequest {

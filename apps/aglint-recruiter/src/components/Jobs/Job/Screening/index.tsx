@@ -3,13 +3,20 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { AssessmentSide } from '@/devlink/AssessmentSide';
 import { ButtonOutlined } from '@/devlink/ButtonOutlined';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { CreateNewJob } from '@/devlink/CreateNewJob';
 import { EnableAssessment } from '@/devlink/EnableAssessment';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { BrowseScreeningPop } from '@/devlink2/BrowseScreeningPop';
 import { ChooseScreeningCard } from '@/devlink2/ChooseScreeningCard';
 import { PageLayout } from '@/devlink2/PageLayout';
@@ -327,26 +334,25 @@ const JobScreeningDashboardBreadCrumbs = () => {
   const { job } = useJob();
   return (
     <>
-      <Breadcrum
-        isLink
-        textName={`Jobs`}
-        onClickLink={{
-          onClick: () => push(ROUTES['/jobs']()),
-          style: { cursor: 'pointer' },
-        }}
-      />
-      <Breadcrum
-        isLink
-        textName={capitalize(job?.job_title ?? 'Job')}
-        onClickLink={{
-          onClick: () => {
-            push(`/jobs/${job?.id}`);
-          },
-          style: { cursor: 'pointer' },
-        }}
-        showArrow
-      />
-      <Breadcrum textName={`Screening`} showArrow />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+              Jobs
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
+              {capitalize(job?.job_title ?? 'Job')}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Screening</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
     </>
   );
 };

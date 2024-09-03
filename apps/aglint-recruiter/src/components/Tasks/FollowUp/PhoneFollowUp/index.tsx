@@ -17,7 +17,7 @@ import { PopupAgentFollowup } from '@/devlink3/PopupAgentFollowup';
 import { RadioWithText } from '@/devlink3/RadioWithText';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import { type ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';

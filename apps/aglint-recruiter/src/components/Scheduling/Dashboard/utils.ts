@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
 import {
-  useInterviewConversion,
-  useInterviewMeetingStatus,
+  type useInterviewConversion,
+  type useInterviewMeetingStatus,
 } from '@/src/queries/scheduling-dashboard';
 
 export const interviewConversionTimeFormat = (

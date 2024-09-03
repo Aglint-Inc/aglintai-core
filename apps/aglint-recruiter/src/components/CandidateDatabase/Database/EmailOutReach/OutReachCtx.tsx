@@ -1,14 +1,14 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { cloneDeep, set } from 'lodash';
-import React, { Dispatch, useContext, useEffect } from 'react';
+import React, { type Dispatch, useContext, useEffect } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { outReachTemplates, TemplateType } from './seedTemplates';
+import { type TemplateType,outReachTemplates } from './seedTemplates';
 import { templateToEmailBody } from './utils';
 
 export interface OutReachCtxType {

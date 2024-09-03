@@ -8,7 +8,7 @@ import { GlobalEmptyState } from '@/devlink/GlobalEmptyState';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import { useRouterPro } from '@/src/hooks/useRouterPro';
-import { CompanyPostAPI } from '@/src/pages/api/jobpost/company';
+import { type CompanyPostAPI } from '@/src/pages/api/jobpost/company';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 

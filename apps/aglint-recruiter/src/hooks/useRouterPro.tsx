@@ -5,6 +5,8 @@ import {
   useSearchParams,
 } from 'next/navigation';
 
+import type ROUTES from '../utils/routing/routes';
+
 export function useRouterPro<T extends Record<string, string | number>>() {
   const router = useRouter();
   const params = useParams<Record<string, string>>() || {};
@@ -30,7 +32,7 @@ export function useRouterPro<T extends Record<string, string | number>>() {
   };
   const pathName = Object.entries(params).reduce((acc, [key, val]) => {
     return acc.replace(val, `[${key}]`);
-  }, url);
+  }, url) as keyof typeof ROUTES;
   const asPath =
     pathName +
     '?' +

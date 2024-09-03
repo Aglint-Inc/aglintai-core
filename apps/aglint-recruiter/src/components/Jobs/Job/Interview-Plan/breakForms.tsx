@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import React, { type Dispatch, type SetStateAction, useCallback, useMemo } from 'react';
 
 import { SidedrawerBodyBreak } from '@/devlink2/SidedrawerBodyBreak';
-import { UpdateInterviewSession } from '@/src/queries/interview-plans';
-import { InterviewSessionType } from '@/src/queries/interview-plans/types';
+import { type UpdateInterviewSession } from '@/src/queries/interview-plans';
+import { type InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { breakDurations } from '@/src/utils/scheduling/const';
 
 import { DropDown } from './sessionForms';

@@ -10,7 +10,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType } from '../../../utils';
+import { type assigneeType } from '../../../utils';
 
 // import {assigneeType} from '../../../UpdateSubTask'
 

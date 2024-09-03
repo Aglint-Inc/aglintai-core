@@ -1,21 +1,22 @@
 // import { Color } from '@tiptap/extension-color';
 import Icon from '@components/Common/Icons/Icon';
 import {
+  type IconButtonProps,
   IconButton,
-  IconButtonProps,
   Stack,
   styled,
   Tooltip,
 } from '@mui/material';
-import { Content } from '@tiptap/core/dist/packages/core/src/types';
+import { type Content } from '@tiptap/core/dist/packages/core/src/types';
 import Link from '@tiptap/extension-link';
 import ListItem from '@tiptap/extension-list-item';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
-import TextStyle, { TextStyleOptions } from '@tiptap/extension-text-style';
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import TextStyle, { type TextStyleOptions } from '@tiptap/extension-text-style';
+import { EditorContent, useEditor } from '@tiptap/react';
+import { type Editor } from '@tiptap/react/dist/packages/react/src/Editor';
 import StarterKit from '@tiptap/starter-kit';
-import React, { ReactNode, useCallback, useEffect } from 'react';
+import React, { type ReactNode, useCallback, useEffect } from 'react';
 
 export type ToolboxPosition = 'top' | 'bottom';
 

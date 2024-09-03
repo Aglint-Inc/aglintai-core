@@ -1,4 +1,4 @@
-import { DatabaseView } from '@aglint/shared-types';
+import { type DatabaseView } from '@aglint/shared-types';
 import { Stack, Tooltip } from '@mui/material';
 import axios from 'axios';
 import { useState } from 'react';

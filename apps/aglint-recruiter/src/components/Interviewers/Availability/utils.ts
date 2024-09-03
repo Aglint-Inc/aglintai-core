@@ -1,9 +1,9 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { keyframes } from '@emotion/react';
 
-import { initUser } from '@/src/pages/api/interviewers';
+import { type initUser } from '@/src/pages/api/interviewers';
 
-import { CalendarEventWithType, EventType } from '../types';
+import { type CalendarEventWithType, type EventType } from '../types';
 import { color, oneDayPx } from './constant';
 
 export const timeToPx = (hours, minutes) => {

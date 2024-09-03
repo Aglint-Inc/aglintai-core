@@ -1,14 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  MultiDayPlanType,
-  PlanCombinationRespType,
+  type MultiDayPlanType,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
 import { createCombsForMultiDaySlots } from '@/src/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 
-import { ApiResponseFindAvailability } from '../../../types';
-import { SchedulingFlow } from '../../store';
+import { type ApiResponseFindAvailability } from '../../../types';
+import { type SchedulingFlow } from '../../store';
 
 export const filterByDateRanges = ({
   schedulingOptions,
@@ -53,8 +53,8 @@ export function filterSchedulingOptionsArray({
   schedulingOptions: ApiResponseFindAvailability['slots'];
   filters: SchedulingFlow['filters'];
 }) {
-  const allFilteredOptions: ApiResponseFindAvailability['slots'] = schedulingOptions.map(
-    (option) => ({
+  const allFilteredOptions: ApiResponseFindAvailability['slots'] =
+    schedulingOptions.map((option) => ({
       ...option,
       interview_rounds: option.interview_rounds.map((items) => {
         let allOptions = items;
@@ -68,24 +68,10 @@ export function filterSchedulingOptionsArray({
 
         return allOptions;
       }),
-    }),
-  );
+    }));
 
   let allCombs: MultiDayPlanType[] =
     createCombsForMultiDaySlots(allFilteredOptions);
-
-  // allCombs = allCombs
-  //   .map(
-  //     (comb) =>
-  //       ({
-  //         ...comb,
-  //         plans: comb.plans.filter(
-  //           (option) =>
-  //             option.no_slot_reasons.length === 0 && option.sessions.length > 0,
-  //         ),
-  //       }) as MultiDayPlanType,
-  //   )
-  //   .filter((comb) => comb.plans.length > 0);
 
   let noConflictsCnt = 0;
   let softConflictsCnt = 0;

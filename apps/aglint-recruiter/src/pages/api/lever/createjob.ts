@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { type DatabaseTable, type DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { processEmailsInBatches } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/GreenhouseModal/utils';
-import { LeverApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/applications';
-import { LeverJob } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/job';
+import { type LeverApplication } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/applications';
+import { type LeverJob } from '@/src/components/Jobs/Dashboard/AddJobWithIntegrations/LeverModal/types/job';
 import {
   extractLinkedInURL,
   POSTED_BY,

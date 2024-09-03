@@ -4,11 +4,11 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 
 import {
-  CandidateSearchRes,
+  type CandidateSearchRes,
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import CandidateDrawer from '../Database/CandidateDetailsDrawer';
-import { newCandJob } from './Search';
+import { type newCandJob } from './Search';
 
 const SelectedCandidate = ({
   candidate,

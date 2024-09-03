@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo, useState } from 'react';
 
+import { useRouterPro } from '@/src/hooks/useRouterPro';
 import { requestQueries } from '@/src/queries/requests';
 
 import { useRequests } from '../RequestsContext';
@@ -8,6 +9,11 @@ import { useRequests } from '../RequestsContext';
 type RequestParams = Parameters<(typeof requestQueries)['request_progress']>[0];
 
 export const useRequestActions = ({ request_id }: RequestParams) => {
+  const { pathName } = useRouterPro();
+  const isRequestPage = useMemo(() => {
+    return !!request_id && pathName === '/requests/[id]';
+  }, [pathName, request_id]);
+
   const [collapse, setCollapse] = useState(false);
 
   const {
@@ -19,12 +25,17 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     requests: { data: requests },
   } = useRequests();
 
+  const enabled = isRequestPage || collapse;
+
   const request_progress = useQuery(
-    requestQueries.request_progress({ request_id, enabled: collapse }),
+    requestQueries.request_progress({
+      request_id,
+      enabled,
+    }),
   );
 
   const request_workflow = useQuery(
-    requestQueries.request_workflow({ request_id, enabled: collapse }),
+    requestQueries.request_workflow({ request_id, enabled }),
   );
 
   const requestDetails = useMemo(() => {
@@ -44,7 +55,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
       }),
     [request_id, updateRequest],
   );
-  
+
   const handleAsyncUpdateRequest = useCallback(
     async (
       requestPayload: Parameters<

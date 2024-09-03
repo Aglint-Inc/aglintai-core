@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 
 import ScheduleIndividualCard from '../../FullSchedule/ScheduleIndividual';
-import { SchedulingApplication, useSchedulingApplicationStore } from '../../store';
+import { type SchedulingApplication, useSchedulingApplicationStore } from '../../store';
 
 function RescheduleSlot() {
   const { initialSessions, selectedApplication, rescheduleSessionIds } =

@@ -1,12 +1,12 @@
 import {
+  type ProgressLoggerType,
   candidate_new_schedule_schema,
   CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
-  ProgressLoggerType,
 } from '@aglint/shared-utils';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

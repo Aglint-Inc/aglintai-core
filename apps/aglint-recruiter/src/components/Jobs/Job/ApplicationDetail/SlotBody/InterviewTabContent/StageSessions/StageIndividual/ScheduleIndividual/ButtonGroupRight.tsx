@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
-import { StageWithSessions } from '@/src/queries/application';
+import { type StageWithSessions } from '@/src/queries/application';
 
 import {
   setDebriefMembers,

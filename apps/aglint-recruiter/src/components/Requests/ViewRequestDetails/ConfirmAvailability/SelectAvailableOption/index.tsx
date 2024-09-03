@@ -1,15 +1,16 @@
 import {
-  CandReqSlotsType,
-  PlanCombinationRespType,
+  type CandReqSlotsType,
+  type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { Divider, Stack } from '@mui/material';
 
 import { Stepper } from '@/devlink2/Stepper';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 
+import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import FinalScreen from '../FinalScreen';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
+import { setCalendarDate } from '../store';
 
 function RequestAvailabilityBody({
   availableSlots,
@@ -148,6 +149,7 @@ function RequestAvailabilityBody({
                   setSelectedCombIds={() => {}}
                   isDayCheckboxNeeded={false}
                   isSlotCheckboxNeeded={false}
+                  setCalendarDate={setCalendarDate}
                 />
               );
             })}

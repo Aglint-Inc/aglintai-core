@@ -1,5 +1,5 @@
-import { PlanCombinationRespType } from '@aglint/shared-types';
-import dayjs, { Dayjs } from 'dayjs';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
+import dayjs, { type Dayjs } from 'dayjs';
 
 export const assignCandidateSlot = (
   curr_day_slots: PlanCombinationRespType[],

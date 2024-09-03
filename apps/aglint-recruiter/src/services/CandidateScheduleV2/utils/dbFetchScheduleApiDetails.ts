@@ -1,19 +1,19 @@
 import {
-  AllSessionIntDetails,
-  InterviewerMeetingScheduled,
-  InterviewModuleType,
-  InterviewSession,
-  InterviewSessionApiRespType,
-  InterviewSessionApiType,
-  schedulingSettingType,
-  SessionInterviewerApiRespType,
-  SessionInterviewerType,
+  type AllSessionIntDetails,
+  type InterviewerMeetingScheduled,
+  type InterviewModuleType,
+  type InterviewSession,
+  type InterviewSessionApiRespType,
+  type InterviewSessionApiType,
+  type schedulingSettingType,
+  type SessionInterviewerApiRespType,
+  type SessionInterviewerType,
 } from '@aglint/shared-types';
 import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { ScheduleApiDetails, ScheduleDBDetailsParams } from '../types';
+import { type ScheduleApiDetails, type ScheduleDBDetailsParams } from '../types';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 // eslint-disable-next-line no-unused-vars
 declare function IconReLoad(props: {

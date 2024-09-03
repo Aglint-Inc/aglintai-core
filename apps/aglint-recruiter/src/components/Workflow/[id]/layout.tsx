@@ -1,14 +1,21 @@
 import { Dialog, Popover, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import type React from 'react';
+import React from 'react';
 import { useState } from 'react';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { ConnectedJobsList } from '@/devlink/ConnectedJobsList';
 import { DcPopup } from '@/devlink/DcPopup';
 import { IconButtonGhost } from '@/devlink/IconButtonGhost';
-import { Breadcrum } from '@/devlink2/Breadcrum';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { MoreMenu } from '@/devlink3/MoreMenu';
@@ -42,17 +49,21 @@ const BreadCrumbs = () => {
   const { push } = useRouter();
   const { workflow } = useWorkflow();
   return (
-    <>
-      <Breadcrum
-        isLink
-        onClickLink={{ onClick: () => push(ROUTES['/workflows']()) }}
-        textName={'Workflows'}
-      />
-      <Breadcrum
-        showArrow
-        textName={workflow ? `${capitalizeSentence(workflow.title)}` : '---'}
-      />
-    </>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/workflows']())}>
+            Workflows
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>
+            {workflow ? capitalizeSentence(workflow.title) : '---'}
+          </BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
@@ -77,24 +88,24 @@ const Edit = () => {
     <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
-        <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
-          <ButtonSoft
-            size={'1'}
-            iconName={'bolt'}
-            isLeftIcon={true}
-            textButton={'Edit Workflow'}
-            onClickButton={{ onClick: () => setPopup({ open: true }) }}
-          />
-          <IconButtonGhost
-            color={'neutral'}
-            iconSize={6}
-            iconName='more_vert'
-            onClickButton={{
-              onClick: (event) => {
-                setAnchorEl(event.currentTarget);
-              },
-            }}
-          />
+          <Stack flexDirection={'row'} alignItems={'center'} gap={'8px'}>
+            <ButtonSoft
+              size={'1'}
+              iconName={'bolt'}
+              isLeftIcon={true}
+              textButton={'Edit Workflow'}
+              onClickButton={{ onClick: () => setPopup({ open: true }) }}
+            />
+            <IconButtonGhost
+              color={'neutral'}
+              iconSize={6}
+              iconName='more_vert'
+              onClickButton={{
+                onClick: (event) => {
+                  setAnchorEl(event.currentTarget);
+                },
+              }}
+            />
           </Stack>
 
           <Popover

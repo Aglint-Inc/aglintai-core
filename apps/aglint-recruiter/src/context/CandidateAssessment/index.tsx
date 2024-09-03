@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import {
-  AssessmentDetailsType,
-  AssessmentQuestionType,
-  AssessmentType,
-  responseType,
+  type AssessmentDetailsType,
+  type AssessmentQuestionType,
+  type AssessmentType,
+  type responseType,
 } from './types';
 
 interface ContextValue {

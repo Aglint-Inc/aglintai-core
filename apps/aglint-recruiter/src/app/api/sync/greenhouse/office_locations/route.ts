@@ -1,12 +1,12 @@
 // import axios from 'axios';
-import { NextRequest } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 import { routeHandlerFactory } from '@/src/utils/apiUtils/responseFactoryPro';
 import { getSupabaseServer } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getDecryptKey } from '../util';
 import { syncOfficeLocations } from './process';
-import { GreenHouseFullSyncAPI } from './type';
+import { type GreenHouseFullSyncAPI } from './type';
 
 export function POST(request: NextRequest) {
   const method = routeHandlerFactory<GreenHouseFullSyncAPI>('POST', request);

@@ -1,4 +1,4 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import {
   useMutation,
   useMutationState,
@@ -12,9 +12,9 @@ import toast from '@/src/utils/toast';
 import { jobQueries } from '../job';
 import { interviewSessionMutationKeys } from './keys';
 import {
-  InterviewPlansType,
-  InterviewSessionRelationType,
-  InterviewSessionUpdate,
+  type InterviewPlansType,
+  type InterviewSessionRelationType,
+  type InterviewSessionUpdate,
 } from './types';
 
 export const useCreateInterviewPlan = () => {

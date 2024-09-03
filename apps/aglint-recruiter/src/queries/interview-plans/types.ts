@@ -1,6 +1,6 @@
-import { DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
-import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { type GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 
 export type InterviewPlansType = GetInterviewPlansType['respone'];
 

@@ -3,7 +3,7 @@ import { isEqual } from 'lodash';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { UserType } from './Filters/FilterCordinator';
+import { type UserType } from './Filters/FilterCordinator';
 
 export interface FilterCandidateState {
   filter: {

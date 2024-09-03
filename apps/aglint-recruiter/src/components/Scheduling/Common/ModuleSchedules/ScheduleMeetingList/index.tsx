@@ -5,7 +5,7 @@ import { GlobalIcon } from '@/devlink/GlobalIcon';
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import {
-  SchedulesSupabase,
+  type SchedulesSupabase,
   transformDataSchedules,
 } from '../../../schedules-query';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';

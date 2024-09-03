@@ -1,10 +1,10 @@
 import {
+  type TooltipProps,
   Checkbox,
   Stack,
   styled,
   Tooltip,
   tooltipClasses,
-  TooltipProps,
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -14,7 +14,7 @@ import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskTableJobSubCard } from '@/devlink3/TaskTableJobSubCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';

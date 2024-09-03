@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { db_event_triggers } from '@/src/services/event-triggers/eventTriggers';
 
@@ -30,3 +30,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 export default handler;
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};

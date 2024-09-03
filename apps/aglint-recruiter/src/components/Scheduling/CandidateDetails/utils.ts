@@ -2,16 +2,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import {
-  APIScheduleDebreif,
-  DB,
-  EmailTemplateAPi,
-  InterviewSessionTypeDB,
-  JobApplcationDB,
-  PlanCombinationRespType,
-  SupabaseType,
+  type APIScheduleDebreif,
+  type DB,
+  type EmailTemplateAPi,
+  type InterviewSessionTypeDB,
+  type JobApplcationDB,
+  type PlanCombinationRespType,
+  type SupabaseType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { createServerClient } from '@supabase/ssr';
+import { type createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -20,7 +20,7 @@ import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../Candidates/queries/utils';
 import { selfScheduleReminderMailToCandidate } from './mailUtils';
-import { SchedulingApplication } from './store';
+import { type SchedulingApplication } from './store';
 
 export const fetchInterviewMeetingProgresstask = async ({
   session_ids,

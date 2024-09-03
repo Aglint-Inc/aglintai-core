@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { AnalysisProcedures } from './types';
+import { type AnalysisProcedures } from './types';
 
 const completed_interviews_type = z.object({
   type: z.enum(['month', 'quarter', 'year']).optional(),

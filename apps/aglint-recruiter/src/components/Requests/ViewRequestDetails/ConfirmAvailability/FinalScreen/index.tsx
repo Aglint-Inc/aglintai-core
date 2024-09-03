@@ -1,6 +1,6 @@
 import {
-  EmailTemplateAPi,
-  SessionCombinationRespType,
+  type EmailTemplateAPi,
+  type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -12,7 +12,6 @@ import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
-import toast from '@/src/utils/toast';
 
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
@@ -56,7 +55,8 @@ function FinalScreen() {
         setFetching(false);
       })
       .catch(() => {
-        toast.error('Fail to fetch email preview');
+        
+        // toast.error('Fail to fetch email preview');
         setFetching(false);
       });
   }
@@ -113,7 +113,7 @@ function FinalScreen() {
               </ShowCode.When>
               <ShowCode.Else>
                 <iframe
-                  width={'600px'}
+                  width={'470px'}
                   height={'620px'}
                   color='white'
                   srcDoc={emailData?.html}

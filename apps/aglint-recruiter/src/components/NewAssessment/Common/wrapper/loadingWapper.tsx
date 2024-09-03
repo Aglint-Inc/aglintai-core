@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import type React from 'react';
+import React from 'react';
 
 const OptimisticWrapper: React.FC<{
   children: React.ReactNode;

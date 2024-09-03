@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import {
-  DatabaseTable,
-  RecruiterUserType,
-  SocialsType,
+  type DatabaseTable,
+  type RecruiterUserType,
+  type SocialsType,
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import {
+  type Dispatch,
+  type SetStateAction,
   createContext,
-  Dispatch,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -22,7 +22,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { Session } from './types';
+import { type Session } from './types';
 import {
   fetchUserLocation,
   getUserDetails,

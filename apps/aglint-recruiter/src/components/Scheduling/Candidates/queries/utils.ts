@@ -1,5 +1,5 @@
-import { DatabaseEnums, DatabaseTable, DB } from '@aglint/shared-types';
-import { createServerClient } from '@supabase/ssr';
+import { type DatabaseEnums, type DatabaseTable, type DB } from '@aglint/shared-types';
+import { type createServerClient } from '@supabase/ssr';
 
 export const addScheduleActivity = async ({
   title,

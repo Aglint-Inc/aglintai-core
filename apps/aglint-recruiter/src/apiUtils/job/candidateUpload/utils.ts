@@ -1,23 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { Applications, DatabaseEnums, DB } from '@aglint/shared-types';
-import { CandidateFiles } from '@aglint/shared-types';
-import { Candidate } from '@aglint/shared-types';
-import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
+import { type Applications, type DatabaseEnums, type DB } from '@aglint/shared-types';
+import { type CandidateFiles } from '@aglint/shared-types';
+import { type Candidate } from '@aglint/shared-types';
+import { type PostgrestError, type SupabaseClient } from '@supabase/supabase-js';
 import formidable from 'formidable';
 import * as fs from 'fs';
-import { NextApiRequest } from 'next';
+import { type NextApiRequest } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-  ApplicationsBulkCreateAction,
-  CandidateBulkCreateAction,
-  CandidateCreateAction,
-  CandidateDeleteAction,
-  CandidateDuplicationCheckAction,
-  CandidateFilesBulkCreateAction,
+  type ApplicationsBulkCreateAction,
+  type CandidateBulkCreateAction,
+  type CandidateCreateAction,
+  type CandidateDeleteAction,
+  type CandidateDuplicationCheckAction,
+  type CandidateFilesBulkCreateAction,
 } from '@/src/context/CandidatesContext/types';
 
-import { Supabase, UploadApiFormData } from './types';
+import { type Supabase, UploadApiFormData } from './types';
 
 const MAX_TRIES = 1;
 

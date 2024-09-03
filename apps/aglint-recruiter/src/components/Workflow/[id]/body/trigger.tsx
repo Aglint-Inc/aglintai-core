@@ -4,7 +4,7 @@ import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { Workflow } from '@/src/types/workflow.types';
+import { type Workflow } from '@/src/types/workflow.types';
 
 import {
   DURATION_OPTIONS,

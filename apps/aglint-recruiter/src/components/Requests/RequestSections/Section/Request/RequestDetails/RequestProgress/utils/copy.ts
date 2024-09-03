@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 
 type WorkflowCopyType = {
   // eslint-disable-next-line no-unused-vars
@@ -140,5 +140,11 @@ export const workflowCopy: WorkflowCopyType = {
     future: "The candidate's availability will be re-requested.",
     error:
       "An error occurred while re-requesting the candidate's availability.",
+  },
+  SCHEDULE_INTERVIEW_SLOT: {
+    past: 'The interview slot has been scheduled.',
+    present: 'Scheduling the interview slot.',
+    future: 'The interview slot will be scheduled.',
+    error: 'An error occurred while scheduling the interview slot.',
   },
 };

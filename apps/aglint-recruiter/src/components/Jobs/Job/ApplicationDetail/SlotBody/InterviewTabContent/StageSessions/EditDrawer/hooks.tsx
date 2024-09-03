@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 import {
-  EditInterviewSession,
+  type EditInterviewSession,
+  type UpdateDebriefSession,
   editInterviewSession,
-  UpdateDebriefSession,
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
 import toast from '@/src/utils/toast';

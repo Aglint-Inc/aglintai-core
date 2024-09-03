@@ -1,4 +1,4 @@
-import { ApiInterface } from '@/src/interface/NextApiRequest.interface';
+import { type ApiInterface } from '@/src/interface/NextApiRequest.interface';
 
 import type { getMembers } from '.';
 
