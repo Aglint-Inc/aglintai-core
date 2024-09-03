@@ -1,9 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId, supabaseWrap } from '@aglint/shared-utils';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 /* eslint-disable no-unused-vars */
 type TitleAttrType = {
@@ -22,7 +20,6 @@ export type LoggerType = (
 ) => Promise<void>;
 
 export const getCandidateLogger = (
-  task_id: string,
   candidate_name: string,
   candidate_id: string,
   default_created: 'candidate' | 'phone_agent' | 'email_agent',
@@ -75,29 +72,6 @@ export const getCandidateLogger = (
     //     );
     //   }
     // }
-
-    try {
-      if (!task_id) return;
-      supabaseWrap(
-        await supabaseAdmin
-          .from('new_tasks_progress')
-          .insert({
-            created_by: {
-              id: created_by.id,
-              name: created_by.name,
-            },
-            title: log_msg,
-            jsonb_data: transcript ?? null,
-            task_id: task_id,
-            progress_type: progress_type,
-            created_at: userTzDayjs().toISOString(),
-            title_meta: title_attr,
-          })
-          .select(),
-      );
-    } catch (error) {
-      // console.log(error);
-    }
   };
   return logger;
 };

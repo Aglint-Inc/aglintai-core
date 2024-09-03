@@ -22,7 +22,7 @@ import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import {
   requestDaysListOptions,
   slotsListOptions,
-} from '@/src/components/Scheduling/CandidateDetails/RequestAvailability/utils';
+} from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/RequestAvailability/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/src/queries/requests/types';
 import { getCompanyDaysCnt } from '@/src/services/CandidateScheduleV2/utils/companyWorkingDays';
@@ -129,13 +129,13 @@ function CandidateAvailability({
     }
     await handleMeetingsOrganizerResetRelations({
       application_id: selectedRequest.application_id,
-      job_id: selectedRequest.applications.job_id,
-      recruiter_id: selectedRequest.applications.recruiter_id,
       meeting_flow: 'candidate_request',
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.interview_session.id,
         interview_meeting_id: ses.interview_meeting.id,
         interview_schedule_id: ses.interview_meeting.interview_schedule_id,
+        job_id: ses.interview_meeting.job_id,
+        recruiter_id: ses.interview_meeting.recruiter_id,
       })),
       supabase,
     });
@@ -170,6 +170,7 @@ function CandidateAvailability({
       let reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
         request_id: selectedRequest.id,
         supabaseAdmin: supabase,
+        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
       });
       const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
         {
@@ -181,12 +182,10 @@ function CandidateAvailability({
         ...payload,
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: false,
         status: 'completed',
       });
       await reqProgressLogger({
-        event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
         is_progress_step: true,
         status: 'completed',
         meta: {

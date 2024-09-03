@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
-import { onClickResendInvite } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
 import {
@@ -32,18 +31,6 @@ function AgentFollowUpCard({
     const assignee = assignerList.find(
       (ele) => ele.user_id === recruiterUser.user_id,
     );
-    onClickResendInvite({
-      application_id: selectedTask.application_id,
-      candidate_name: getFullName(
-        selectedTask.applications.candidates.first_name,
-        selectedTask.applications.candidates.first_name,
-      ),
-      rec_user_id: recruiterUser.user_id,
-      filter_id: selectedTask.filter_id,
-      session_name: `${selectedTask.session_ids.map((ses) => ses.name).join(' , ')}`,
-      request_id: null,
-      task_id: selectedTask.id,
-    });
 
     createTaskProgress({
       type: 'email_followUp_reminder',

@@ -1,7 +1,7 @@
-import { type APIOptions } from '@aglint/shared-types';
-import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
+import type { APIOptions } from '@aglint/shared-types';
+import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 
-import { filterSchedulingOptionsArray } from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/BodyDrawer/StepScheduleFilter/utils';
+import { filterSchedulingOptionsArray } from '@/src/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/BodyDrawer/ScheduleFilter/utils';
 
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 
@@ -46,7 +46,6 @@ export const findPlanCombs = async ({
   const plans = filtered_slot_info.combs.flatMap((c) => c.plans);
   let schedule_dates = cand_schedule.db_details.schedule_dates;
   await reqProgressLogger({
-    event_type: 'FIND_CURR_AVAIL_SLOTS',
     log: `Found ${plans.length} slots within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')}`,
     status: 'completed',
     is_progress_step: true,

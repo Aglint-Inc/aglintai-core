@@ -2,11 +2,11 @@
 import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
 import {
   interviewCancelReasons,
   userDetails,
-} from '@/src/components/Scheduling/CandidateDetails/queries/utils';
-import { apiRequestHandlerFactory } from '@/src/utils/apiUtils/responseFactory';
+} from '@/src/utils/scheduling/const';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export type ApiInterviewStages = {
