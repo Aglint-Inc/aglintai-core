@@ -4,9 +4,9 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
 import { SystemIcon } from '@/src/components/Tasks/Components/SystemIcon';
+import { useAllActivities } from '@/src/queries/activities';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { type useAllActivities } from '../../Scheduling/CandidateDetails/queries/hooks';
 import IconCandidate from './IconCandidate';
 
 type Activities = ReturnType<typeof useAllActivities>['data'][0];

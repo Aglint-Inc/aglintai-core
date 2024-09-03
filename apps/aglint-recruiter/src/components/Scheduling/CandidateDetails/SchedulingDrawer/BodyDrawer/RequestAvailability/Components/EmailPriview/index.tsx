@@ -1,9 +1,10 @@
-import type { EmailTemplateAPi } from '@aglint/shared-types';
+import { type EmailTemplateAPi } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { ButtonSoft } from '@/devlink/ButtonSoft';
+import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { GlobalBannerInline } from '@/devlink2/GlobalBannerInline';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
@@ -12,46 +13,37 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
-import { useMeetingList } from '../../hooks';
-import { setEmailData, useSelfSchedulingFlowStore } from '../store';
-import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
-
-function EmailPreviewSelfSchedule() {
-  const [fetching, setFetching] = useState(false);
-  const { data } = useMeetingList();
-  const allSessions = data;
-  const application_id = allSessions[0]?.interview_meeting.application_id;
-
+function EmailPreview({
+  setRequestSteps,
+  onSubmit,
+  loading,
+  application_id,
+}: {
+  requestAvailabilityId: string;
+  setRequestSteps: Dispatch<
+    SetStateAction<'finding_slots' | 'preview' | 'success'>
+  >;
+  onSubmit: () => void;
+  loading: boolean;
+  application_id: string;
+}) {
   const { recruiterUser } = useAuthDetails();
-
-  const payload: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['api_payload'] =
+  const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
+    null,
+  );
+  const [fetching, setFetching] = useState(false);
+  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
     {
-      application_id,
-      organizer_id: recruiterUser.user_id,
+      preview_details: {
+        application_id,
+      },
+      organizer_user_id: recruiterUser.user_id,
     };
 
-  const { emailData, filteredSchedulingOptions, selectedCombIds } =
-    useSelfSchedulingFlowStore((state) => ({
-      emailData: state.emailData,
-      filteredSchedulingOptions: state.filteredSchedulingOptions,
-      selectedCombIds: state.selectedCombIds,
-    }));
-
-  const selectedSlots = filteredSchedulingOptions
-    .map((option) => ({
-      ...option,
-      plans: option.plans.filter((plan) =>
-        selectedCombIds.includes(plan.plan_comb_id),
-      ),
-    }))
-    .filter((option) => option.plans.length > 1);
-
-  const numberOfDays = selectedSlots.length;
-
-  const getEmail = () => {
+  function getEmail() {
     setFetching(true);
     axios
-      .post('/api/emails/sendSelfScheduleRequest_email_applicant', {
+      .post('/api/emails/sendAvailabilityRequest_email_applicant', {
         ...payload,
       })
       .then(({ data }) => {
@@ -62,31 +54,15 @@ function EmailPreviewSelfSchedule() {
         toast.error('Fail to fetch email preview');
         setFetching(false);
       });
-  };
+  }
+  useEffect(() => {
+    if (!emailData) {
+      getEmail();
+    }
+  }, []);
 
   return (
     <EmailPreviewOnScheduling
-      showSelectedSchedules={true}
-      textSlotCount={`You have selected ${selectedCombIds.length} slots across ${numberOfDays} days.`}
-      slotSelectedScheduleOptions={selectedSlots.map((item, index) => {
-        return (
-          <DayCardWrapper
-            key={item.date_range.join(', ')}
-            isRadioNeeded={false}
-            item={item}
-            onClickSelect={() => {}}
-            selectedCombIds={selectedCombIds}
-            isDisabled={false}
-            isDayCheckboxNeeded={false}
-            isSlotCheckboxNeeded={false}
-            isDayCollapseNeeded={true}
-            isSlotCollapseNeeded={true}
-            index={index}
-            setSelectedCombIds={() => {}}
-            isAutoCollapse={false}
-          />
-        );
-      })}
       textEmailPreview={
         <Stack spacing={1} direction={'column'}>
           <Typography>
@@ -96,6 +72,28 @@ function EmailPreviewSelfSchedule() {
             {`Click "Request Availability" to send.`}
           </Typography>
         </Stack>
+      }
+      slotButton={
+        <>
+          <ButtonSoft
+            color={'neutral'}
+            size={2}
+            onClickButton={{
+              onClick: () => {
+                setRequestSteps('finding_slots');
+              },
+            }}
+            textButton={'Back'}
+          />
+          <ButtonSolid
+            size={2}
+            isLoading={loading}
+            textButton={'Request Availability'}
+            onClickButton={{
+              onClick: onSubmit,
+            }}
+          />
+        </>
       }
       slotEmailPreview={
         <ShowCode>
@@ -135,7 +133,7 @@ function EmailPreviewSelfSchedule() {
                   onClickButton={{
                     onClick: () => {
                       window.open(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendAvailabilityRequest_email_applicant&template_tab=email`,
                       );
                     },
                   }}
@@ -150,15 +148,13 @@ function EmailPreviewSelfSchedule() {
                 />
               </Stack>
             </Stack>
-            <Stack sx={{ py: 'var(--space-4)' }}>
-              <iframe
-                width={'510px'}
-                height={'750px'}
-                color='white'
-                srcDoc={emailData?.html}
-                title='Previw Email'
-              />
-            </Stack>
+            <iframe
+              width={'600px'}
+              height={'720px'}
+              color='white'
+              srcDoc={emailData?.html}
+              title='Previw Email'
+            />
           </ShowCode.Else>
         </ShowCode>
       }
@@ -166,4 +162,4 @@ function EmailPreviewSelfSchedule() {
   );
 }
 
-export default EmailPreviewSelfSchedule;
+export default EmailPreview;

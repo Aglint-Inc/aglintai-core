@@ -1,6 +1,6 @@
-import {
-  type EmailTemplateAPi,
-  type SessionCombinationRespType,
+import type {
+  EmailTemplateAPi,
+  SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -11,8 +11,8 @@ import { IconButtonSoft } from '@/devlink/IconButtonSoft';
 import { EmailPreviewOnScheduling } from '@/devlink3/EmailPreviewOnScheduling';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DayCardWrapper from '@/src/components/Scheduling/CandidateDetails/SchedulingDrawer/StepSlotOptions/DayCardWrapper';
 
+import DayCardWrapper from '../../SelfSchedulingDrawer/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { useAvailabilityContext } from '../RequestAvailabilityContext';
 import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
 

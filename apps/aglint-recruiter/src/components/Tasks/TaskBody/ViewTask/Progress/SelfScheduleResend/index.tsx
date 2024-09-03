@@ -1,4 +1,3 @@
-import { getFullName } from '@aglint/shared-utils';
 import { Stack, Tooltip } from '@mui/material';
 import { useState } from 'react';
 
@@ -6,9 +5,7 @@ import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
 import { GlobalBannerShort } from '@/devlink2/GlobalBannerShort';
 import UITypography from '@/src/components/Common/UITypography';
-import { onClickResendInvite } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { onClickCopyLink } from '@/src/components/Scheduling/ScheduleDetails/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { type TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import toast from '@/src/utils/toast';
 
@@ -17,7 +14,6 @@ function SelfScheduleResend({
 }: {
   selectedTask: TasksAgentContextType['tasks'][0];
 }) {
-  const { recruiterUser } = useAuthDetails();
   //tooltip for copy link
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -63,21 +59,6 @@ function SelfScheduleResend({
             size={1}
             onClickButton={{
               onClick: () => {
-                onClickResendInvite({
-                  application_id: selectedTask.application_id,
-                  candidate_name: getFullName(
-                    selectedTask.applications.candidates.first_name,
-                    selectedTask.applications.candidates.last_name,
-                  ),
-                  filter_id: selectedTask.filter_id,
-                  rec_user_id: recruiterUser.user_id,
-                  request_id: null,
-                  session_name: selectedTask.session_ids
-                    .map((ele) => ele.name)
-                    .join(', '),
-                  task_id: selectedTask.id,
-                });
-
                 toast.message('Resend invited link sent successfully!');
               },
             }}

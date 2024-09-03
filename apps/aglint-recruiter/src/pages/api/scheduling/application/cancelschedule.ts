@@ -5,12 +5,12 @@ import { type CookieOptions, createServerClient, serialize } from '@supabase/ssr
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { cancelMailHandler } from '@/src/components/Scheduling/CandidateDetails/mailUtils';
 import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import {
   removeSessionsFromFilterJson,
   removeSessionsFromRequestAvailability,
 } from '@/src/components/Scheduling/ScheduleDetails/utils';
+import { cancelMailHandler } from '@/src/utils/scheduling/mailUtils';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
