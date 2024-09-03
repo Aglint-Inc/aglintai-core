@@ -18,7 +18,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import timeZone from '@/src/utils/timeZone';
 
 import ImageUploadManual from './ImageUpload';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function CandidateForm({
   formData,

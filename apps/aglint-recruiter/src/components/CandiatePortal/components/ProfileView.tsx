@@ -1,11 +1,11 @@
-import { Globe,Linkedin, Mail, Phone } from "lucide-react"
-
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ProfileEdit } from "./ProfileEdit"
-import { candidatePortalProfileType } from "@/src/app/api/candidate_portal/get_profile/route";
 import { getFullName } from "@aglint/shared-utils";
+import { Globe,Linkedin, Mail, Phone } from "lucide-react"
+import Image from "next/image"
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { candidatePortalProfileType } from "@/src/app/api/candidate_portal/get_profile/route";
+
+import { ProfileEdit } from "./ProfileEdit"
 
 export default function ProfileView({application_id,formData}:{application_id:string,formData:candidatePortalProfileType}) {
   return (
