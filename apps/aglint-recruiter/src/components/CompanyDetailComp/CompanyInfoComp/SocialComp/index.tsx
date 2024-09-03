@@ -1,17 +1,14 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  type TooltipProps,
-  Box,
-  Dialog,
-  Stack,
-  styled,
-  Tooltip,
-  tooltipClasses,
-  Typography,
-} from '@mui/material';
+import { Box, Dialog, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { AddSocialLink } from '@/devlink/AddSocialLink';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { ButtonSolid } from '@/devlink/ButtonSolid';
@@ -332,95 +329,96 @@ const SocialComp = ({
         })}
         {customSocials?.map((socialName) => {
           return (
-            <CustomTooltip
-              placement='right'
-              title={
-                <Stack
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    const newCustomSocials = recruiter.socials.custom;
-                    delete newCustomSocials[socialName];
-                    handleChange({
-                      ...recruiterLocal,
-                      socials: {
-                        ...recruiterLocal.socials,
-                        custom: newCustomSocials,
-                      },
-                    });
-                  }}
-                >
-                  <IconButtonSoft
-                    iconName='delete'
-                    color={'error'}
-                    iconColor={'error'}
-                  />
-                </Stack>
-              }
-              key={socialName}
-            >
-              <Stack
-                position={'relative'}
-                direction={'row'}
-                alignItems={'center'}
-                gap={1}
-              >
-                <Box
-                  style={{
-                    border: `1px solid var(--neutral-6)`,
-                    borderRadius: 'var(--radius-2)',
-                    display: 'flex',
-                    height: '36px',
-                    width: '36px',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Image
-                    src={`https://logo.clearbit.com/${socialName
-                      .toLowerCase()
-                      .replaceAll(' ', '')}.com `}
-                    height={16}
-                    width={16}
-                    alt=''
-                    style={{ filter: 'grayscale(100%)' }}
-                  />
-                </Box>
+            <TooltipProvider key={socialName}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Stack
+                    position={'relative'}
+                    direction={'row'}
+                    alignItems={'center'}
+                    gap={1}
+                  >
+                    <Box
+                      style={{
+                        border: `1px solid var(--neutral-6)`,
+                        borderRadius: 'var(--radius-2)',
+                        display: 'flex',
+                        height: '36px',
+                        width: '36px',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Image
+                        src={`https://logo.clearbit.com/${socialName
+                          .toLowerCase()
+                          .replaceAll(' ', '')}.com `}
+                        height={16}
+                        width={16}
+                        alt=''
+                        style={{ filter: 'grayscale(100%)' }}
+                      />
+                    </Box>
 
-                <UITextField
-                  labelSize='medium'
-                  fullWidth
-                  value={recruiter?.socials.custom[socialName]}
-                  placeholder={`https://www.${socialName}.com/company-id`}
-                  onBlur={() => {
-                    handleChange(
-                      {
-                        ...recruiterLocal,
-                      },
-                      socialName,
-                      true,
-                    );
-                  }}
-                  onChange={(e) => {
-                    handleChange(
-                      {
+                    <UITextField
+                      labelSize='medium'
+                      fullWidth
+                      value={recruiter?.socials.custom[socialName]}
+                      placeholder={`https://www.${socialName}.com/company-id`}
+                      onBlur={() => {
+                        handleChange(
+                          {
+                            ...recruiterLocal,
+                          },
+                          socialName,
+                          true,
+                        );
+                      }}
+                      onChange={(e) => {
+                        handleChange(
+                          {
+                            ...recruiterLocal,
+                            socials: {
+                              ...recruiterLocal.socials,
+                              custom: {
+                                ...(recruiterLocal.socials.custom as any),
+                                [socialName]: e.target.value,
+                              } as any,
+                            },
+                          },
+                          socialName,
+                          true,
+                        );
+                      }}
+                      error={error.custom[socialName].error}
+                      helperText={error.custom[socialName].msg}
+                    />
+                  </Stack>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <Stack
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      const newCustomSocials = recruiter.socials.custom;
+                      delete newCustomSocials[socialName];
+                      handleChange({
                         ...recruiterLocal,
                         socials: {
                           ...recruiterLocal.socials,
-                          custom: {
-                            ...(recruiterLocal.socials.custom as any),
-                            [socialName]: e.target.value,
-                          } as any,
+                          custom: newCustomSocials,
                         },
-                      },
-                      socialName,
-                      true,
-                    );
-                  }}
-                  error={error.custom[socialName].error}
-                  helperText={error.custom[socialName].msg}
-                />
-              </Stack>
-            </CustomTooltip>
+                      });
+                    }}
+                  >
+                    <IconButtonSoft
+                      iconName='delete'
+                      color={'error'}
+                      iconColor={'error'}
+                    />
+                  </Stack>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           );
         })}
         {!disabled && <AddSocialLinkButton setError={setError} />}
@@ -632,26 +630,3 @@ const validateUrl = (url: string) => {
 const validateString = (str: string) => {
   return str !== null && str.trim().length !== 0;
 };
-
-export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    maxWidth: 'none',
-    background: 'var(--white)',
-    padding: '0px',
-    boxShadow: 'none',
-    // border: '1px solid var(--neutral-6)',
-    borderRadius: 'none',
-    color: 'var(--neutral-12)',
-    fontSize: 'var(--font-size-1)',
-    fontWeight: 400,
-  },
-  [theme.breakpoints.up('sm')]: {
-    '& .MuiTooltip-tooltip': {
-      fontSize: 'inherit',
-      fontWeight: 'inherit',
-      color: 'inherit',
-    },
-  },
-}));

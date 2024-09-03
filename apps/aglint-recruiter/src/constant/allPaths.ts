@@ -259,7 +259,6 @@ export const PATHS = [
 '/loading',
 '/loadingX',
 '/login',
-'/mui-styleguide',
 '/portal',
 '/profile',
 '/profile-pro',

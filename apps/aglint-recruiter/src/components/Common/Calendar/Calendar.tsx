@@ -18,10 +18,15 @@ import {
   useState,
 } from 'react';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { ButtonSoft } from '@/devlink/ButtonSoft';
 import { GlobalBadge } from '@/devlink/GlobalBadge';
 import { ProgressHoverCard } from '@/devlink/ProgressHoverCard';
-import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import Loading from '@/src/pages/loadingX';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -165,23 +170,30 @@ export default CalendarComp;
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
-    <CustomTooltip title={<TooltipComp data={data} />}>
-      <Stack
-        bgcolor={color?.bg}
-        borderRadius={'4px'}
-        sx={{
-          padding: '5px 10px',
-          borderLeft: `3px solid ${color.pri}`,
-          width: '100%',
-        }}
-      >
-        <Typography fontWeight={500}>{eventInfo.event.title}</Typography>
-        <Typography fontSize={'10px'}>
-          {dayjsLocal(data.start_time).format('hh:mm A -')}
-          {dayjsLocal(data.end_time).format('hh:mm A')}
-        </Typography>
-      </Stack>
-    </CustomTooltip>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            style={{
+              backgroundColor: color?.bg,
+              borderRadius: '4px',
+              padding: '5px 10px',
+              borderLeft: `3px solid ${color.pri}`,
+              width: '100%',
+            }}
+          >
+            <p style={{ fontWeight: 500 }}>{eventInfo.event.title}</p>
+            <p style={{ fontSize: '10px' }}>
+              {dayjsLocal(data.start_time).format('hh:mm A -')}
+              {dayjsLocal(data.end_time).format('hh:mm A')}
+            </p>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <TooltipComp data={data} />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
