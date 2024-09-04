@@ -6,9 +6,9 @@ import React, { type Dispatch, useEffect, useState } from 'react';
 import { useToast } from '@/components/hooks/use-toast';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { addScheduleActivity } from '@/src/utils/scheduling/utils';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { type ScheduleDetailsType } from '../hooks';
 
 function DeclineScheduleDialog({
@@ -79,7 +79,7 @@ function DeclineScheduleDialog({
 
         addScheduleActivity({
           title: `Declined ${schedule.interview_session.name}. Reason: ${reason} `,
-          application_id: schedule.schedule.application_id,
+          application_id: schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
           created_by: recruiterUser.user_id,

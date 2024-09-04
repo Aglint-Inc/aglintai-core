@@ -13,7 +13,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { FilterType } from '../../../Candidates/filter-store';
 import { setCreatedBy, useFilterModuleStore } from '../../filter-store';
 
 type UserType = {
@@ -102,7 +101,7 @@ function FilterCreatedBy() {
         isActive={createdBy.length > 0}
         isDotVisible={createdBy.length > 0}
         onClickStatus={{
-          id: FilterType.coordinator + 'click',
+          id: 'cordinator' + 'click',
           onClick: handleClick,
         }}
         textLabel={'Created by'}

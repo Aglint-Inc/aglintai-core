@@ -12,15 +12,15 @@ import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
 import axios from '@/src/client/axios';
 import CompanyLogo from '@/src/components/Common/CompanyLogo';
 import Footer from '@/src/components/Common/Footer';
+import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
 import { type TimezoneObj } from '@/src/components/CompanyDetailComp/SettingsSchedule';
 import { getBreakLabel } from '@/src/components/Jobs/Job/Interview-Plan/utils';
 import { type useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason';
+import { addScheduleActivity } from '@/src/utils/scheduling/utils';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import IconScheduleType from '../../Candidates/ListCard/Icon/IconScheduleType';
-import { addScheduleActivity } from '../../Candidates/queries/utils';
 import CancelRescheduleDialog from '../CancelScheduleDialog';
 import { type ScheduleCardProps, type ScheduleCardsProps } from '../types';
 import { createRequest, dayJS, getCalenderEventUrl } from '../utils';

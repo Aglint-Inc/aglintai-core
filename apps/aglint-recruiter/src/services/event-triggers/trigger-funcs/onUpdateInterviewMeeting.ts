@@ -34,13 +34,13 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
     await stopJobPreviouslyQueuedJobs(new_data);
     const [schedule_application] = supabaseWrap(
       await supabaseAdmin
-        .from('interview_schedule')
-        .select('*,applications(*,public_jobs(*))')
-        .eq('id', new_data.interview_schedule_id),
+        .from('applications')
+        .select('*,public_jobs(*)')
+        .eq('id', new_data.application_id),
     );
 
     const { request_workflows, company_actions } = await getWActions({
-      company_id: schedule_application.applications.public_jobs.recruiter_id,
+      company_id: schedule_application.public_jobs.recruiter_id,
       request_id: new_data.schedule_request_id,
     });
     const [meeting_details] = supabaseWrap(
@@ -66,9 +66,8 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
             interval_minutes: act.workflow.interval,
             phase: act.workflow.phase,
             meta: {
-              schedule_id: new_data.interview_schedule_id,
               meeting_id: new_data.id,
-              application_id: schedule_application.application_id,
+              application_id: schedule_application.id,
               target_api: act.target_api,
               organizer_id: new_data.organizer_id,
               session_id: meeting_details.session_id,

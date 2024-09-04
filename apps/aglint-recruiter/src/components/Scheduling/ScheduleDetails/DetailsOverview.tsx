@@ -132,7 +132,7 @@ function DetailsOverview({
             >
               {schedule && (
                 <CandidateInfo
-                  application_id={schedule.schedule.application_id}
+                  application_id={schedule.application_id}
                   job_id={schedule.job.id}
                 />
               )}
@@ -143,8 +143,7 @@ function DetailsOverview({
                 setTextValue={setTextValue}
                 showEditButton={
                   recruiterUser.role === 'admin' ||
-                  recruiterUser.role === 'recruiter' ||
-                  schedule?.schedule.coordinator_id === recruiterUser.user_id
+                  recruiterUser.role === 'recruiter'
                 }
                 updateInstruction={updateInstruction}
                 isBorder={false}
@@ -178,7 +177,7 @@ function DetailsOverview({
                       email: schedule?.candidates.email,
                       name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
                       job_id: schedule?.job?.id,
-                      application_id: schedule?.schedule.application_id,
+                      application_id: schedule?.application_id,
                     }}
                   />
                 ) : (
@@ -217,7 +216,7 @@ function DetailsOverview({
           refetch={refetch}
           metaDetails={[
             {
-              application_id: schedule.schedule.application_id,
+              application_id: schedule.application_id,
               meeting_id: schedule.interview_meeting.id,
               session_name: schedule.interview_session.name,
               session_id: schedule.interview_session.id,

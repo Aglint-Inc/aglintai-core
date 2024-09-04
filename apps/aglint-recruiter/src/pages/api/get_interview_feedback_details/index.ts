@@ -50,7 +50,7 @@ const getInterviewDetails = async (interview_id: string) => {
   return supabase
     .from('interview_meeting')
     .select(
-      'candidate_feedback, interview_schedule( applications( public_jobs(id, job_title,recruiter!public_jobs_recruiter_id_fkey(logo,name))))',
+      'candidate_feedback,  applications( public_jobs(id, job_title,recruiter!public_jobs_recruiter_id_fkey(logo,name)))',
     )
     .eq('id', interview_id)
     .single()
@@ -59,10 +59,10 @@ const getInterviewDetails = async (interview_id: string) => {
       return {
         candidate_feedback: data.candidate_feedback,
         company_logo:
-          data.interview_schedule.applications.public_jobs.recruiter.logo,
+          data.applications.public_jobs.recruiter.logo,
         company_name:
-          data.interview_schedule.applications.public_jobs.recruiter.name,
-        job_title: data.interview_schedule.applications.public_jobs.job_title,
+          data.applications.public_jobs.recruiter.name,
+        job_title: data.applications.public_jobs.job_title,
       };
     });
 };

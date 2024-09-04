@@ -22,11 +22,10 @@ import { DarkPill } from '@/devlink3/DarkPill';
 import { HistoryPill } from '@/devlink3/HistoryPill';
 import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { InterviewerPage } from '@/devlink3/InterviewerPage';
+import IconScheduleType from '@/src/components/Common/Icons/IconScheduleType';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
-import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
 import { type ProgressUser } from '@/src/components/Scheduling/InterviewTypes/DetailPage/SlotBodyComp/SlotTrainingMembers';
 import {
   useModuleAndUsers,
@@ -39,6 +38,7 @@ import {
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import { getScheduleType } from '@/src/utils/scheduling/colors_and_enums';
 import { supabase } from '@/src/utils/supabase/client';
 
 const ModuleMembers = () => {

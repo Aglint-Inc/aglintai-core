@@ -16,13 +16,13 @@ import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
 import toast from '@/src/utils/toast';
 
+import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
 import CompanyLogo from '../../Common/CompanyLogo';
 import Footer from '../../Common/Footer';
+import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import Loader from '../../Common/Loader';
 import { TimezoneSelector } from '../../CompanyDetailComp/SettingsSchedule';
 import { getBreakLabel } from '../../Jobs/Job/Interview-Plan/utils';
-import IconScheduleType from '../Candidates/ListCard/Icon/IconScheduleType';
-import { getScheduleType } from '../Candidates/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/ScheduleProgressPillComp';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
