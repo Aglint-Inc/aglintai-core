@@ -61,19 +61,11 @@ const AvailabilityCard = ({
         <h2 className='font-semibold'>Availability Requested for {job.name}</h2>
         <p className='text-sm text-gray-600'>
           Requested on{' '}
-          {dayjs(latestavailability.created_at).format('mmm DD, hh:mm A')}
+          {dayjs(latestavailability.created_at).format('MMM DD YYYY, hh:mm A')}
         </p>
         {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
       </CardHeader>
       <CardContent>
-        <div className='bg-gray-100 p-4 rounded-lg mb-4'>
-          <h4 className='font-medium mb-2'>A note from your recruiter</h4>
-          <p className='text-sm text-gray-600'>
-            Make sure to study &quot;Coding Essentials&quot; content shared with
-            you in email!, also please submit your availability before Aug 30,
-            05:00 PM.
-          </p>
-        </div>
         <Button
           className='w-full'
           variant='outline'

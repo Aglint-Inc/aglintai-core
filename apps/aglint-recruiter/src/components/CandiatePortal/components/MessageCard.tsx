@@ -1,8 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import Image from 'next/image';
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { apiResponsePortalMessage } from '@/src/app/api/candidate_portal/get_message/route';
+import { apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
 
 const MessageCard = ({
   message,

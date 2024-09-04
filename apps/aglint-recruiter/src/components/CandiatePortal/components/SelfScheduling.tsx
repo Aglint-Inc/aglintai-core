@@ -1,10 +1,9 @@
+import { dayjsLocal } from '@aglint/shared-utils';
+import { Button } from '@components/ui/button';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import React from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { type schedule } from '@/src/app/api/candidate_portal/home_page/route';
-import dayjs from '@/src/utils/dayjs';
-import { dayjsLocal } from '@aglint/shared-utils';
+import { schedule } from '@/app/api/candidate_portal/home_page/route';
 
 import { formatSessions } from '../../Jobs/Job/Candidate-List/utils';
 
@@ -48,7 +47,8 @@ const SelfSchedulingComp = ({ schedule }) => {
           {formatSessions(schedule.sessions.map(({ name }) => name))}
         </h2>
         <p className='text-sm text-gray-600 mb-4'>
-          Requested on ${dayjs(schedule.created_at).format('mmm DD, hh:mm A')}
+          Requested on $
+          {dayjsLocal(schedule.created_at).format('mmm DD, hh:mm A')}
         </p>
       </CardHeader>
       <CardContent>

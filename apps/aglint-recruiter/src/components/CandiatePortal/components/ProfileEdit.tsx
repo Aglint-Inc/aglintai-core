@@ -1,10 +1,9 @@
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { candidatePortalProfileType } from '@/src/app/api/candidate_portal/get_profile/route';
+import { candidatePortalProfileType } from '@/app/api/candidate_portal/get_profile/route';
 
-import CandidateForm from '../Profile/CandidateForm';
 import CandidateForm from '../Profile/CandidateForm';
 
 export function ProfileEdit({
@@ -38,6 +37,5 @@ export function ProfileEdit({
         />
       </DialogContent>
     </Dialog>
-  );
   );
 }

@@ -10,8 +10,8 @@ import {
 } from '@components/ui/dropdown-menu';
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
-} from '@/components/ui/dropdown-menu';
-import { apiResponsePortalNavBar } from '@/src/app/api/candidate_portal/get_navbar/route';
+
+import { apiResponsePortalNavBar } from '@/app/api/candidate_portal/get_navbar/route';
 
 export default function NavProfile({
   application_id,

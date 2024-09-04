@@ -1,10 +1,9 @@
 'use client';
 
-import ProfileView from '@/src/components/CandiatePortal/components/ProfileView';
-import { ThemeSelector } from '@/src/components/CandiatePortal/components/ThemeSelector';
-import { usePortalProfile } from '@/src/components/CandiatePortal/hook';
-// import { ThemeSelector } from '@/src/components/CandiatePortal/Profile/ThemeSelector';
-import Loader from '@/src/components/Common/Loader';
+import ProfileView from '@/components/CandiatePortal/components/ProfileView';
+import { ThemeSelector } from '@/components/CandiatePortal/components/ThemeSelector';
+import { usePortalProfile } from '@/components/CandiatePortal/hook';
+import Loader from '@/components/Common/Loader';
 
 export default function ProfilePage({ params }) {
   const application_id = params.application_id;

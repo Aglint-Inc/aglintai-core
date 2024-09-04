@@ -3,6 +3,8 @@ import { Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { type apiResponsePortalMessage } from '@/app/api/candidate_portal/get_message/route';
+import EmptyState from '@/components/CandiatePortal/components/EmptyState';
+import MessageCard from '@/components/CandiatePortal/components/MessageCard';
 import { usePortalMessage } from '@/components/CandiatePortal/hook';
 import Loader from '@/components/Common/Loader';
 

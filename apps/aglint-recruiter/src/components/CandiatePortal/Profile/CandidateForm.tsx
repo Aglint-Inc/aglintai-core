@@ -16,7 +16,9 @@ import { useRef, useState } from 'react';
 import { type candidatePortalProfileType } from '@/app/api/candidate_portal/get_profile/route';
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
+import toast from '@/utils/toast';
 
+import { useNavbar } from '../hook';
 import ImageUploadManual from './ImageUpload';
 
 export default function CandidateForm({
