@@ -18,6 +18,7 @@ import {
 import dayjs from '@/src/utils/dayjs';
 
 import { type TimezoneObj, TimezoneSelector } from '.';
+import TimezonePicker from '@/src/components/Common/TimezonePicker';
 
 let schedulingSettingObj = {};
 
@@ -123,7 +124,7 @@ export default function WorkingHour({ updateSettings, initialData }) {
             <div className='flex flex-col space-y-4'>
               <div className='flex flex-col space-y-2'>
                 <label className='text-sm font-medium'>Time Zone</label>
-                <TimezoneSelector
+                <TimezonePicker
                   disabled={isTimeZone}
                   value={selectedTimeZone}
                   setValue={setSelectedTimeZone}
