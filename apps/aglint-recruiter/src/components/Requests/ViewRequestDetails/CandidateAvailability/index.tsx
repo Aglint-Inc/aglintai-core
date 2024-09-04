@@ -44,6 +44,7 @@ import {
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
 } from './utils';
+
 function CandidateAvailability({
   selectedRequest,
 }: {

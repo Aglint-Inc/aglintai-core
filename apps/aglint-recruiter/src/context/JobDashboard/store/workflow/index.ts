@@ -1,8 +1,8 @@
 import { type StateCreator } from 'zustand';
 
-import { type FiltersSlice,createFiltersSlice } from './filter';
-import { type PopupSlice,createPopupSlice } from './popup';
-import { type SelectionsSlice,createSelectionsSlice } from './selections';
+import { type FiltersSlice, createFiltersSlice } from './filter';
+import { type PopupSlice, createPopupSlice } from './popup';
+import { type SelectionsSlice, createSelectionsSlice } from './selections';
 
 type Slices = FiltersSlice & PopupSlice & SelectionsSlice;
 

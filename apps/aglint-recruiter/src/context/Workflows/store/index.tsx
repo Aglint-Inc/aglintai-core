@@ -1,4 +1,4 @@
-import { type StateCreator,create } from 'zustand';
+import { type StateCreator, create } from 'zustand';
 
 import { type ActionsLoadSlice, createActionsLoadSlice } from './actionLoader';
 import { type DeletionSlice, createDeletionSlice } from './delete';

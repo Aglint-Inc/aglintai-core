@@ -8,4 +8,3 @@ function SubNavBar() {
 }
 
 export default SubNavBar;
-

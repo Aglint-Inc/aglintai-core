@@ -15,7 +15,7 @@ export const useRequestAvailabilityDetails = ({
     queryKey: ['get_request_availability_details', { request_id }],
     queryFn: () => getRequestAvailabilityDetails(request_id),
     // refetchInterval: 2000,
-    enabled: !request_id,
+    enabled: !!request_id,
   });
   const refetch = () =>
     queryClient.invalidateQueries({

@@ -13,6 +13,7 @@ import { type PropsWithChildren, Suspense } from 'react';
 import WorkflowsProvider from './Workflows';
 import { ThemeProvider } from '@components/theme-provider';
 import { TRPCReactProvider } from '../trpc/client';
+import { TooltipProvider } from '@components/ui/tooltip';
 
 export const PrivateProviders = ({
   children,
@@ -27,7 +28,9 @@ export const PrivateProviders = ({
               <TourProvider>
                 <JobsProvider>
                   <WorkflowsProvider>
-                    <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                    <TooltipProvider>
+                      <AppLayout appRouter={appRouter}>{children}</AppLayout>
+                    </TooltipProvider>
                   </WorkflowsProvider>
                 </JobsProvider>
               </TourProvider>

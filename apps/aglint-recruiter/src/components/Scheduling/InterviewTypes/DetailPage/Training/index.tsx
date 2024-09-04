@@ -17,7 +17,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import MuiAvatar from '@/components/Common/MuiAvatar';
-import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useToast } from '@/components/hooks/use-toast';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';

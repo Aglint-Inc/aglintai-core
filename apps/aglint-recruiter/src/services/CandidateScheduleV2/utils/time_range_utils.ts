@@ -1,4 +1,7 @@
-import { type TimeDurationDayjsType, type TimeDurationType } from '@aglint/shared-types';
+import {
+  type TimeDurationDayjsType,
+  type TimeDurationType,
+} from '@aglint/shared-types';
 import { type Dayjs } from 'dayjs';
 
 import { userTzDayjs } from './userTzDayjs';

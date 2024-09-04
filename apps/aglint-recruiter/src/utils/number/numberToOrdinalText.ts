@@ -20,7 +20,7 @@ export function numberToOrdinalText(number) {
     'sixteenth',
     'seventeenth',
     'eighteenth',
-    'nineteenth'
+    'nineteenth',
   ];
   const tens = [
     '',
@@ -32,7 +32,7 @@ export function numberToOrdinalText(number) {
     'sixty',
     'seventy',
     'eighty',
-    'ninety'
+    'ninety',
   ];
 
   if (number < 20) {

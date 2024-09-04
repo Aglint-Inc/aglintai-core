@@ -7,7 +7,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import {
@@ -121,156 +120,138 @@ const TipTapMenus = ({
         </Popover>
       )}
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              disabled={!editor.can().chain().focus().toggleBold().run()}
-              className={`p-2 ${editor.isActive('bold') ? 'bg-neutral-100' : ''}`}
-            >
-              <Bold className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Bold</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editor.can().chain().focus().toggleBold().run()}
+            className={`p-2 ${editor.isActive('bold') ? 'bg-neutral-100' : ''}`}
+          >
+            <Bold className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Bold</p>
+        </TooltipContent>
+      </Tooltip>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              disabled={!editor.can().chain().focus().toggleItalic().run()}
-              className={`p-2 ${editor.isActive('italic') ? 'bg-neutral-100' : ''}`}
-            >
-              <Italic className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Italic</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            disabled={!editor.can().chain().focus().toggleItalic().run()}
+            className={`p-2 ${editor.isActive('italic') ? 'bg-neutral-100' : ''}`}
+          >
+            <Italic className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Italic</p>
+        </TooltipContent>
+      </Tooltip>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => editor.chain().focus().toggleUnderline().run()}
-              disabled={!editor.can().chain().focus().toggleUnderline().run()}
-              className={`p-2 ${editor.isActive('underline') ? 'bg-neutral-100' : ''}`}
-            >
-              <Underline className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Underline</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            disabled={!editor.can().chain().focus().toggleUnderline().run()}
+            className={`p-2 ${editor.isActive('underline') ? 'bg-neutral-100' : ''}`}
+          >
+            <Underline className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Underline</p>
+        </TooltipContent>
+      </Tooltip>
 
       {isAlign && (
         <>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='ghost'
-                  size='sm'
-                  onClick={() =>
-                    editor.chain().focus().toggleBulletList().run()
-                  }
-                  disabled={
-                    !editor.can().chain().focus().toggleBulletList().run()
-                  }
-                  className={`p-2 ${editor.isActive('bulletList') ? 'bg-neutral-100' : ''}`}
-                >
-                  <List className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Bullet List</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                disabled={
+                  !editor.can().chain().focus().toggleBulletList().run()
+                }
+                className={`p-2 ${editor.isActive('bulletList') ? 'bg-neutral-100' : ''}`}
+              >
+                <List className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Bullet List</p>
+            </TooltipContent>
+          </Tooltip>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='ghost'
-                  size='sm'
-                  onClick={() =>
-                    editor.chain().focus().toggleOrderedList().run()
-                  }
-                  disabled={
-                    !editor.can().chain().focus().toggleOrderedList().run()
-                  }
-                  className={`p-2 ${editor.isActive('orderedList') ? 'bg-neutral-100' : ''}`}
-                >
-                  <ListOrdered className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Ordered List</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                disabled={
+                  !editor.can().chain().focus().toggleOrderedList().run()
+                }
+                className={`p-2 ${editor.isActive('orderedList') ? 'bg-neutral-100' : ''}`}
+              >
+                <ListOrdered className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Ordered List</p>
+            </TooltipContent>
+          </Tooltip>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='ghost'
-                  size='sm'
-                  onClick={() =>
-                    editor.chain().focus().setTextAlign('left').run()
-                  }
-                  disabled={
-                    !editor.can().chain().focus().setTextAlign('left').run()
-                  }
-                  className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'bg-neutral-100' : ''}`}
-                >
-                  <AlignLeft className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Align Left</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('left').run()
+                }
+                disabled={
+                  !editor.can().chain().focus().setTextAlign('left').run()
+                }
+                className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'bg-neutral-100' : ''}`}
+              >
+                <AlignLeft className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Align Left</p>
+            </TooltipContent>
+          </Tooltip>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='ghost'
-                  size='sm'
-                  onClick={() =>
-                    editor.chain().focus().setTextAlign('right').run()
-                  }
-                  disabled={
-                    !editor.can().chain().focus().setTextAlign('right').run()
-                  }
-                  className={`p-2 ${editor.isActive({ textAlign: 'right' }) ? 'bg-neutral-100' : ''}`}
-                >
-                  <AlignRight className='h-4 w-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Align Right</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() =>
+                  editor.chain().focus().setTextAlign('right').run()
+                }
+                disabled={
+                  !editor.can().chain().focus().setTextAlign('right').run()
+                }
+                className={`p-2 ${editor.isActive({ textAlign: 'right' }) ? 'bg-neutral-100' : ''}`}
+              >
+                <AlignRight className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Align Right</p>
+            </TooltipContent>
+          </Tooltip>
         </>
       )}
     </div>
@@ -281,43 +262,39 @@ const TipTapUndoRedo = () => {
   const { editor } = useTipTap();
   return (
     <div className='flex items-center gap-1'>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => editor?.chain().focus().undo().run()}
-              disabled={!editor?.can().undo()}
-              className={`h-6 w-6 p-1 ${editor?.can().undo() ? 'bg-neutral-100' : ''}`}
-            >
-              <Undo className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Undo</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => editor?.chain().focus().undo().run()}
+            disabled={!editor?.can().undo()}
+            className={`h-6 w-6 p-1 ${editor?.can().undo() ? 'bg-neutral-100' : ''}`}
+          >
+            <Undo className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Undo</p>
+        </TooltipContent>
+      </Tooltip>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => editor?.chain().focus().redo().run()}
-              disabled={!editor?.can().redo()}
-              className={`h-6 w-6 p-1 ${editor?.can().redo() ? 'bg-neutral-100' : ''}`}
-            >
-              <Redo className='h-4 w-4' />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Redo</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => editor?.chain().focus().redo().run()}
+            disabled={!editor?.can().redo()}
+            className={`h-6 w-6 p-1 ${editor?.can().redo() ? 'bg-neutral-100' : ''}`}
+          >
+            <Redo className='h-4 w-4' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Redo</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 };

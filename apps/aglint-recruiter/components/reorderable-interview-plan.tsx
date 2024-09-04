@@ -132,9 +132,8 @@ export default function ReorderableInterviewPlan({
   useEffect(() => {
     if (data?.length > 0) {
       const sorted = data.sort((a, b) => a.order - b.order);
-
       setSteps(sorted);
-    }
+    } else setSteps([]);
     if (data?.length === 0) setIsAddOpen(true);
   }, [data]);
 
@@ -270,15 +269,20 @@ export default function ReorderableInterviewPlan({
   const renderStep = (step: Step[number], index: number) => {
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
-    const Icon = Object.prototype.hasOwnProperty.call(iconOptions, step.icon)
-      ? iconOptions[step.icon]
-      : isNewStep
-        ? isAddOpen
-          ? steps.length > 0
-            ? Minus
-            : Plus
-          : Plus
-        : Edit;
+
+    let Icon;
+
+    if (Object.prototype.hasOwnProperty.call(iconOptions, step.icon)) {
+      Icon = iconOptions[step.icon];
+    } else if (isNewStep) {
+      if (isAddOpen) {
+        Icon = steps.length > 0 ? Minus : Plus;
+      } else {
+        Icon = Plus;
+      }
+    } else {
+      Icon = Edit;
+    }
 
     return (
       <div

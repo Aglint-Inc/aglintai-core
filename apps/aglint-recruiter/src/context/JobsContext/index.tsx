@@ -5,12 +5,12 @@ import { type JobContext } from './types';
 
 const JobsContext = createContext(undefined);
 
-const JobsProvider = ({ children }: { children: ReactNode }) => {
+const HomeProvider = ({ children }: { children: ReactNode }) => {
   const value = useJobActions();
   return <JobsContext.Provider value={value}>{children}</JobsContext.Provider>;
 };
 
-export default JobsProvider;
+export default HomeProvider;
 
 export const useJobs = (): JobContext => {
   const value = useContext(JobsContext);

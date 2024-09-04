@@ -28,9 +28,15 @@ export const AgentIEditorProvider = ({ children }) => {
   const inputRef = useRef(null);
   return (
     <AgentEditorContext.Provider
-     
-      value={{ text, setText, inputRef, isResponding, setIsResponding, planText, setPlanText }}
-    
+      value={{
+        text,
+        setText,
+        inputRef,
+        isResponding,
+        setIsResponding,
+        planText,
+        setPlanText,
+      }}
     >
       {children}
     </AgentEditorContext.Provider>

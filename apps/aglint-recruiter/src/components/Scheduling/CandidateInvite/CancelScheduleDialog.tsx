@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 
 const CancelRescheduleDialog = ({
   title,

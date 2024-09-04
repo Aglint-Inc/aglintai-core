@@ -25,12 +25,12 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 
 import UITextField from '@/components/Common/UITextField';
-import { LoadMax } from '@/components/CompanyDetailComp/SettingsSchedule';
-import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
-import SelectTime from '@/components/CompanyDetailComp/SettingsSchedule/Components/SelectTime';
+import { LoadMax } from '@/components/CompanyDetailComp/Holidays';
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
+import SelectTime from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/SelectTime';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { updateMember } from '@/context/AuthContext/utils';
-import timeZones from '@/utils/timeZone';
+import timeZone from '@/utils/timeZone';
 
 import { getShortTimeZone } from '../../../utils';
 import InterviewerLevelSettings from '../InterviewerLevelSettings';
@@ -388,7 +388,7 @@ function Availibility({
                     <Autocomplete
                       disabled={isTimeZone}
                       disableClearable
-                      options={timeZones}
+                      options={timeZone}
                       value={selectedTimeZone}
                       onChange={(event, value) => {
                         if (value) {

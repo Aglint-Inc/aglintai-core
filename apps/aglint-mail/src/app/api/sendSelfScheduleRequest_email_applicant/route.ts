@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       api_target: 'sendSelfScheduleRequest_email_applicant',
       comp_email_placeholder,
       company_id,
+      application_id: req_body.application_id,
       react_email_placeholders,
       recipient_email,
       payload: req_body.payload,

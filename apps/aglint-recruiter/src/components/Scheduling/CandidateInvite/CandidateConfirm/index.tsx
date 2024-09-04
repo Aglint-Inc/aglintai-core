@@ -13,7 +13,7 @@ import axios from '@/client/axios';
 import CompanyLogo from '@/components/Common/CompanyLogo';
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { type TimezoneObj } from '@/components/CompanyDetailComp/SettingsSchedule';
+import { TimezoneObj } from '@/components/CompanyDetailComp/Scheduling';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';

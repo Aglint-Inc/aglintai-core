@@ -3,9 +3,9 @@ import {
   type DatabaseTable,
   type DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { ButtonSoft } from '@devlink/ButtonSoft';
 import { ButtonSolid } from '@devlink/ButtonSolid';
 import { GlobalIcon } from '@devlink/GlobalIcon';
-import { ButtonSoft } from '@devlink2/ButtonSoft';
 import { NewTabPill } from '@devlink3/NewTabPill';
 import { ReasonList } from '@devlink3/ReasonList';
 import { ScheduleReason } from '@devlink3/ScheduleReason';
@@ -37,7 +37,7 @@ const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   },
 };
 
-const SchedulingRegions = () => {
+const SchedulingReasons = () => {
   const { recruiter, setRecruiter: updateRecruiter } = useAuthDetails();
   const [tab, setTab] =
     useState<keyof DatabaseTable['recruiter']['scheduling_reason']>(
@@ -127,7 +127,7 @@ const SchedulingRegions = () => {
     </>
   );
 };
-export default SchedulingRegions;
+export default SchedulingReasons;
 
 const ScheduleReasonSectionCard = <
   T extends keyof DatabaseTable['recruiter']['scheduling_reason'],

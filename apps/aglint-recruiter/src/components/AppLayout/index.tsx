@@ -4,7 +4,6 @@ import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { ResponsiveBanner } from '@devlink2/ResponsiveBanner';
@@ -62,38 +61,36 @@ export default function AppLayout({ children, appRouter = false }) {
           <SideNavbar />
         </div>
         <div className='flex flex-col items-center pb-3 space-y-3'>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  variant='ghost'
-                  size='icon'
-                  className='rounded-full'
-                  asChild
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant='ghost'
+                size='icon'
+                className='rounded-full'
+                asChild
+              >
+                <Link
+                  href={
+                    ROUTES['/user/profile/[user_id]']({
+                      user_id: recruiterUser?.user_id,
+                    }) + '?profile=true'
+                  }
                 >
-                  <Link
-                    href={
-                      ROUTES['/user/profile/[user_id]']({
-                        user_id: recruiterUser?.user_id,
-                      }) + '?profile=true'
-                    }
-                  >
-                    {/*eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={userDetails?.profile_image}
-                      alt='User Profile'
-                      className='rounded-full w-8 h-8'
-                      style={{ objectFit: 'cover' }}
-                    />
-                    <span className='sr-only'>User profile</span>
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent align='center' side='right'>
-                <p>Your profile</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                  {/*eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={userDetails?.profile_image}
+                    alt='User Profile'
+                    className='rounded-full w-8 h-8'
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <span className='sr-only'>User profile</span>
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent align='center' side='right'>
+              <p>Your profile</p>
+            </TooltipContent>
+          </Tooltip>
           {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -104,18 +101,16 @@ export default function AppLayout({ children, appRouter = false }) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider> */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button variant='outline' size='icon' onClick={handleSignOut}>
-                  <LogOut className='w-5 h-5' strokeWidth={1.5} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent align='center' side='right'>
-                <p>Logout</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button variant='outline' size='icon' onClick={handleSignOut}>
+                <LogOut className='w-5 h-5' strokeWidth={1.5} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent align='center' side='right'>
+              <p>Logout</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </nav>
 

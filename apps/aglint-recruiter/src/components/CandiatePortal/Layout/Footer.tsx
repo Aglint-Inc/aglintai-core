@@ -11,7 +11,7 @@ const footerLinks = [
 export function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className='bg-secondary py-6 mt-auto'>
+    <footer className='py-6 mt-12'>
       <div className='container mx-auto px-4'>
         <div className='flex flex-wrap justify-center mb-4'>
           {footerLinks.map((link, index) => (
@@ -23,7 +23,9 @@ export function Footer() {
                 {link.label}
               </Link>
               {index < footerLinks.length - 1 && (
-                <span className='mx-2 text-gray-700 dark:text-gray-300 text-xs'>|</span>
+                <span className='mx-2 text-gray-700 dark:text-gray-300 text-xs'>
+                  |
+                </span>
               )}
             </React.Fragment>
           ))}

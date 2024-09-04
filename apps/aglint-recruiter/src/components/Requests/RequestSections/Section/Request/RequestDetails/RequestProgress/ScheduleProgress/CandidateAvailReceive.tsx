@@ -105,7 +105,7 @@ const RequestEvents = ({
 }) => {
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetched } = useRequestAvailabilityDetails({
+  const { isFetching } = useRequestAvailabilityDetails({
     request_id: candidateAvailabilityId,
   });
 
@@ -220,7 +220,7 @@ const RequestEvents = ({
                       handleConfirmSlot(lastEvent.request_id);
                     },
                   }}
-                  isLoading={!isFetched}
+                  isLoading={isFetching}
                 />
                 <ButtonSoft
                   size={1}

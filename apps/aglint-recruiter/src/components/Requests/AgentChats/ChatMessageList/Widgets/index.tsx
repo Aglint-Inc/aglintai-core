@@ -1,14 +1,9 @@
-
 import { type ChatType } from '../hooks/fetch';
 import FetchDeclinedInterviews from './FetchDeclinedInterviews';
 import FetchScheduledInterviews from './FetchScheduledInterviews';
 import UserRequests from './UserRequests';
 
-function Widgets({
-  chat,
-}: {
-  chat: ChatType;
-}) {
+function Widgets({ chat }: { chat: ChatType }) {
   return (
     <>
       {chat?.function === 'fetch_scheduled_interviews' ? (

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import SearchField from '@/components/Common/SearchField/SearchField';
-import { DateIcon } from '@/components/CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 
 import ScheduleMeetingCard from '../../Common/ModuleSchedules/ScheduleMeetingCard';
 import {

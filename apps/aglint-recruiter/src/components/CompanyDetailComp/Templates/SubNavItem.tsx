@@ -13,8 +13,8 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { emailTemplateQueries } from '@/queries/email-templates';
 import ROUTES from '@/utils/routing/routes';
 
-import { emailTempKeys } from './SchedulingEmailTemplates/utils';
-import { settingsItems, settingSubNavItem } from './utils';
+import { settingsItems, settingSubNavItem } from '../SideNav/utils';
+import { emailTempKeys } from './utils';
 
 const SettingsSubNavItem: React.FC = () => {
   const router = useRouter();

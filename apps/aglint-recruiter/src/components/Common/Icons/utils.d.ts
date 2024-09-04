@@ -22,12 +22,12 @@ export declare const removeUnescaped: (value: string) => string;
  */
 export declare const replaceSelector: (
   selector: string,
-  styles: CSSModules
+  styles: CSSModules,
 ) => string;
 export declare function debounce<T extends (...args: any[]) => void>(
   this: void,
   func: T,
-  timeout?: number
+  timeout?: number,
 ): (...args: Parameters<T>) => void;
 /**
  * cubic bezier functions have been extracted from this repository:
@@ -68,7 +68,7 @@ export declare const isServer: boolean;
 export declare const useLayoutEffect: typeof React.useLayoutEffect;
 export declare function useResizeObserver(
   ref: React.RefObject<HTMLElement>,
-  fn: (entry: ResizeObserverEntry) => void
+  fn: (entry: ResizeObserverEntry) => void,
 ): void;
 export declare function isUrl(str: string): boolean;
 export declare function loadScript(
@@ -78,7 +78,7 @@ export declare function loadScript(
     type?: string;
     defer?: boolean;
     cacheRegex?: RegExp;
-  }
+  },
 ): Promise<unknown>;
 export declare const KEY_CODES: {
   ARROW_LEFT: string;
@@ -92,17 +92,17 @@ export declare const KEY_CODES: {
 };
 export declare function dispatchCustomEvent(
   element: Document | Element,
-  eventName: string
+  eventName: string,
 ): void;
 export declare function useClickOut(
   ref: React.RefObject<HTMLElement>,
-  action: () => void
+  action: () => void,
 ): void;
 export declare function extractElement<
-  T extends React.JSXElementConstructor<any>
+  T extends React.JSXElementConstructor<any>,
 >(
   elements: React.ReactNode[],
-  type: T
+  type: T,
 ): {
   extracted: React.ReactNode;
   tree: React.ReactNode[];

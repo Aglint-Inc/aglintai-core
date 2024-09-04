@@ -2,7 +2,7 @@ import React from 'react';
 
 function PauseIcon({
   size = 20,
-  color = '#F79A3E'
+  color = '#F79A3E',
 }: {
   size?: number;
   color?: string;

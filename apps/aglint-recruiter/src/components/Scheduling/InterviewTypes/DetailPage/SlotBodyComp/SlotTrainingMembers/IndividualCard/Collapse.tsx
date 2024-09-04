@@ -8,7 +8,7 @@ import { TrainingStatus } from '@devlink2/TrainingStatus';
 import { Collapse, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
-import MuiNumberfield from '@/components/CompanyDetailComp/SettingsSchedule/Components/MuiNumberfield';
+import MuiNumberfield from '@/components/CompanyDetailComp/OldSettingsSchedule/Components/MuiNumberfield';
 import { useToast } from '@/components/hooks/use-toast';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

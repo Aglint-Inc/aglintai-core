@@ -40,7 +40,7 @@ export const useJobId = () => {
   const router = useRouter();
   const job_id = (
     (router?.pathname ?? null).startsWith('/jobs/[id]')
-      ? router?.query?.id ?? null
+      ? (router?.query?.id ?? null)
       : null
   ) as string;
   return { job_id };

@@ -4,7 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { type Dayjs } from 'dayjs';
 import React from 'react';
 
-import { DateIcon } from '../../CompanyDetailComp/SettingsSchedule/Components/DateSelector';
+import { DateIcon } from '../../CompanyDetailComp/OldSettingsSchedule/Components/DateSelector';
 import UITextField from '../UITextField';
 
 export default function SpecializedDatePicker({

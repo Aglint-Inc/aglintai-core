@@ -70,6 +70,7 @@ export async function dbUtil(
     };
   return {
     company_id: recruiter_id,
+    application_id: avail_req_data.application_id,
     comp_email_placeholder,
     react_email_placeholders,
     recipient_email: cand_email,
