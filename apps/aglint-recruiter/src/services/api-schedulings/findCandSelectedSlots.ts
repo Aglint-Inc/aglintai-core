@@ -34,6 +34,22 @@ export const findCandSelectedSlots = async ({
   ai_response: CustomAgentInstructionPayload['agent']['ai_response'];
   request_assigner_tz: string;
 }) => {
+  //TODO: from db
+  ai_response = {
+    preferredInterviewer: [],
+    excludeInterviewTimes: [],
+    scheduleWithinNumDays: 3,
+    maxOptionsToCandidates: 10,
+    schedulewithMaxNumDays: 5,
+    prefferredInterviewTimes: [
+      {
+        endTime: '18:00',
+        startTime: '10:00',
+      },
+    ],
+    balanceWorkloadAmongInterviewers: true,
+    scheduleOutsideOfficeHoursForTimezoneDifferences: true,
+  };
   const cand_schedule = new CandidatesSchedulingV2(api_options);
 
   await cand_schedule.fetchDetails({
@@ -58,19 +74,9 @@ export const findCandSelectedSlots = async ({
     );
   }
 
-  let max_specified_day = dayjsLocal()
-    .tz(request_assigner_tz)
-    .startOf('day')
-    .add(ai_response.schedulewithMaxNumDays, 'day');
-  let filtered_plans: PlanCombinationRespType[] = flatted_plans;
-
-  flatted_plans.filter((plan) => {
-    if (plan.sessions.length === 0) return false;
-    let plan_date = dayjsLocal(plan.sessions[0].start_time).tz(
-      request_assigner_tz,
-    );
-    return plan_date.isSameOrBefore(max_specified_day, 'date');
-  });
+  let filtered_plans: PlanCombinationRespType[] = flatted_plans.filter(
+    (plan) => plan.no_slot_reasons.length === 0,
+  );
   if (filtered_plans.length === 0) {
     throw new CApiError(
       'CLIENT',
