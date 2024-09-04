@@ -178,9 +178,6 @@ const getInitialActionDetails = ({
   >;
   editTrigger: DatabaseTable['workflow']['trigger'];
 }) => {
-  console.log(
-    companyEmailTemplatesMp['sendSelfScheduleRequest_email_applicant'],
-  );
   if (
     reqTriggerActionsMap[editTrigger] &&
     reqTriggerActionsMap[editTrigger].length > 0
@@ -188,18 +185,15 @@ const getInitialActionDetails = ({
     return reqTriggerActionsMap[editTrigger][0];
   } else {
     let template: DatabaseTable['company_email_template'];
-    if (
-      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
-      'onRequestSchedule_emailAgent_getCandidateAvailability'
-    ) {
-      template =
-        companyEmailTemplatesMp['sendAvailabilityRequest_email_applicant'];
-    } else if (
-      ACTION_TRIGGER_MAP[editTrigger][0].value.target_api ===
-      ('onRequestSchedule_emailLink_sendSelfSchedulingLink' as any)
-    ) {
+    if (editTrigger === 'onRequestSchedule') {
       template =
         companyEmailTemplatesMp['sendSelfScheduleRequest_email_applicant'];
+    } else if (editTrigger === 'sendAvailReqReminder') {
+      template =
+        companyEmailTemplatesMp['sendAvailReqReminder_email_applicant'];
+    } else if (editTrigger === 'selfScheduleReminder') {
+      template =
+        companyEmailTemplatesMp['selfScheduleReminder_email_applicant'];
     }
 
     let wAction: DatabaseTable['workflow_action'] = {
@@ -216,7 +210,6 @@ const getInitialActionDetails = ({
         },
       },
     };
-    console.log(wAction);
     return wAction;
   }
 };

@@ -24,7 +24,6 @@ export const createRequestWorkflowAction = async ({
   request_id: string;
   recruiter_id: string;
 }) => {
-  console.log(wAction);
   const trigger = wAction.target_api.split('_')[0] as any;
   let interval = 0;
   if (triggerinterval[trigger]) {

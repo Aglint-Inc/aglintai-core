@@ -50,7 +50,6 @@ const WorkflowActionDialog = () => {
       reqTriggerActionsMap[editTrigger][0].target_api === target_api
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
-      console.log(existing_workflow_action);
       setEmailTemplate({
         body: existing_workflow_action.payload?.email?.body || '',
         subject: existing_workflow_action.payload?.email?.subject || '',

@@ -3,7 +3,6 @@ import React, {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -51,7 +50,7 @@ interface SelectedActionsDetailsProviderProps {
 
 export const SelectedActionsDetailsProvider: React.FC<
   SelectedActionsDetailsProviderProps
-> = ({ children, defaultSelectedActionsDetails, companyTemplatesMp }) => {
+> = ({ children, defaultSelectedActionsDetails }) => {
   const [selectedActionsDetails, setSelectedActionsDetails] = useState<
     Omit<DatabaseTable['workflow_action'], 'payload'>
   >(defaultSelectedActionsDetails);

@@ -46,7 +46,6 @@ const EmailSubject = () => {
     emailTemplate,
     tiptapLoadStatus,
   } = useSelectedActionsDetails();
-  console.log(emailTemplate);
   return (
     <Stack>
       <UITypography type='small'>Email Subject</UITypography>
