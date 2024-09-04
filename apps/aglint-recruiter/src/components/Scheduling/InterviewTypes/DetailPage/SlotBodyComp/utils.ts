@@ -28,7 +28,6 @@ export const tabsModuleMembers: TabsModuleMembers[] = [
     name: 'Aglint AI Instruction',
     queryParams: 'aglintaiinstruction',
   },
- 
 ];
 
 export const getPauseMemberText = (

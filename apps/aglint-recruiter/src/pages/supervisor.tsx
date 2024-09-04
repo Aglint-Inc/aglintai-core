@@ -1,4 +1,7 @@
-import { type ApiBodyAgentSupervisor, type Message } from '@aglint/shared-types';
+import {
+  type ApiBodyAgentSupervisor,
+  type Message,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import { useState } from 'react';
 

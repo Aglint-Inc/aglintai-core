@@ -1,9 +1,9 @@
 import {
+  type ProgressLoggerType,
   candidate_new_schedule_schema,
   CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
-  type ProgressLoggerType,
 } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('OK');
   } catch (err) {
+    console.error(err);
     if (err instanceof CApiError) {
       return res.status(500).json({
         type: err.type,

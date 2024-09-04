@@ -74,7 +74,13 @@ export type FormValues = {
   type: 'text' | 'password';
   placeholder: string;
   error: boolean;
-  validation: 'string' | 'phone' | 'mail' | 'password' | 'linkedIn' | 'timeZone';
+  validation:
+    | 'string'
+    | 'phone'
+    | 'mail'
+    | 'password'
+    | 'linkedIn'
+    | 'timeZone';
   helperText: string;
   blocked: boolean;
   required: boolean;

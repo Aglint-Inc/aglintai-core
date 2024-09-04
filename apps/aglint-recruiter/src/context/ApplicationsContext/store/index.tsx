@@ -1,9 +1,9 @@
-import { create, type StateCreator } from 'zustand';
+import { type StateCreator, create } from 'zustand';
 
 import { type ActionPopupSlice, createActionPopupSlice } from './actionPopup';
 import { type ChecklistSlice, createChecklistSlice } from './checklist';
-import { createImportPopupSlice, type ImportPopupSlice } from './importPopup';
-import { createLocationsSlice, type LocationsSlice } from './locations';
+import { type ImportPopupSlice, createImportPopupSlice } from './importPopup';
+import { type LocationsSlice, createLocationsSlice } from './locations';
 type SlicesType = ImportPopupSlice &
   ChecklistSlice &
   LocationsSlice &

@@ -11,11 +11,11 @@ import { useRequest } from '@/context/RequestContext';
 import toast from '@/utils/toast';
 
 import { deleteRequestWorkflowAction } from '../../utils';
+import { useRequestProgressProvider } from '../progressCtx';
 import { type ProgressTenseType, type RequestProgressMapType } from '../types';
 import { workflowCopy } from '../utils/copy';
 import { progressActionMap } from '../utils/ProgressActionMap';
 import { progressStatusToTense } from '../utils/progressStatusToTense';
-import { useNewScheduleRequestPr } from '.';
 
 const EventNode = ({
   eventType,
@@ -29,7 +29,7 @@ const EventNode = ({
   currWAction?: DatabaseTable['workflow_action'];
 }) => {
   const { request_workflow } = useRequest();
-  const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
+  const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
   const [onHover, setOnHover] = React.useState(false);
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';

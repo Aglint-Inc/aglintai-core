@@ -11,7 +11,7 @@ import { ScheduleProgressPill as ScheduleProgressPillDev } from '@devlink/Schedu
 import { StatusBadge } from '@devlink2/StatusBadge';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { forwardRef, memo, type Ref } from 'react';
+import { type Ref, forwardRef, memo } from 'react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getBreakLabel } from '@/components/Jobs/Job/Interview-Plan/utils';

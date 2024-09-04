@@ -30,7 +30,7 @@ export const Drag = ({ id, index, ...props }) => {
                   position: 'absolute',
                   left: '-4px',
                   zIndex: 2,
-                  display: onHovered || snapshot.isDragging ? 'block' : 'none'
+                  display: onHovered || snapshot.isDragging ? 'block' : 'none',
                 }}
               >
                 <Image

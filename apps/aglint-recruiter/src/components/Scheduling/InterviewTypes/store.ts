@@ -2,7 +2,11 @@ import { type PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { type MemberTypeAutoComplete } from '../Common/MembersTextField';
-import { type ModuleType, type SchedulingSlice, type StatusTraining } from './types';
+import {
+  type ModuleType,
+  type SchedulingSlice,
+  type StatusTraining,
+} from './types';
 
 export const initialEditModule: ModuleType = {
   id: '',

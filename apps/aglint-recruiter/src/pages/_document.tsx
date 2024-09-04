@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang='en'>
       <Head>
-      <style>{`
+        <style>{`
             *[icon-color],
             *[icon-size],
             *[icon-weight] {
@@ -27,8 +27,8 @@ export default function Document() {
         <link rel='icon' href='/favicon.ico' />
         <meta name='description' content='AI for People Products' />
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-          rel="stylesheet"
+          href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap'
+          rel='stylesheet'
         />
         <meta
           name='keywords'

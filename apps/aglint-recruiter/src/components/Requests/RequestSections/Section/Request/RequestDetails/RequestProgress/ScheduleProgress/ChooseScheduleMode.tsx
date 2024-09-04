@@ -14,10 +14,10 @@ import {
   useSelfSchedulingFlowStore,
 } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/store';
 
-import { useNewScheduleRequestPr } from '.';
+import { useRequestProgressProvider } from '../progressCtx';
 
 const ChooseScheduleMode = () => {
-  const { setEditTrigger, setShowEditDialog } = useNewScheduleRequestPr();
+  const { setEditTrigger, setShowEditDialog } = useRequestProgressProvider();
   const { fetchingPlan } = useSelfSchedulingFlowStore((state) => ({
     fetchingPlan: state.fetchingPlan,
   }));

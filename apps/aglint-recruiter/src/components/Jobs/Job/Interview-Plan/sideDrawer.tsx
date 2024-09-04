@@ -26,10 +26,10 @@ import DebriefForms, {
   validateDebriefSessionFields,
 } from './debriefForms';
 import SessionForms, {
+  type SessionUser,
   getSessionFields,
   getSessionPayload,
   initialSessionFields,
-  type SessionUser,
   validateSessionFields,
 } from './sessionForms';
 

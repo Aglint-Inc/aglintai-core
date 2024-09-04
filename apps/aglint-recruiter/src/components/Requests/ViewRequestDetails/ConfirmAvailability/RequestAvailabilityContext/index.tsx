@@ -4,9 +4,9 @@ import {
   type DatabaseTable,
 } from '@aglint/shared-types';
 import {
-  createContext,
   type Dispatch,
   type SetStateAction,
+  createContext,
   useContext,
   useState,
 } from 'react';

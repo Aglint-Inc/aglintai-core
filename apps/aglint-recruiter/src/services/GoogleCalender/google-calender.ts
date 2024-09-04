@@ -1,4 +1,7 @@
-import { type CalendarEvent, type NewCalenderEvent } from '@aglint/shared-types';
+import {
+  type CalendarEvent,
+  type NewCalenderEvent,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { google } from 'googleapis';
 

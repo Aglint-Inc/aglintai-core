@@ -12,7 +12,7 @@ import { memo, useMemo } from 'react';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { useTrainingProgress, type useTrainingProgressType } from '../Hook';
+import { type useTrainingProgressType, useTrainingProgress } from '../Hook';
 
 const LIMIT = 4;
 

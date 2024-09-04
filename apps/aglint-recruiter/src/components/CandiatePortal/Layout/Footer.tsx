@@ -23,7 +23,9 @@ export function Footer() {
                 {link.label}
               </Link>
               {index < footerLinks.length - 1 && (
-                <span className='mx-2 text-gray-700 dark:text-gray-300 text-xs'>|</span>
+                <span className='mx-2 text-gray-700 dark:text-gray-300 text-xs'>
+                  |
+                </span>
               )}
             </React.Fragment>
           ))}

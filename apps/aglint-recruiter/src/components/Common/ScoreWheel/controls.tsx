@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 import { RefreshCw } from 'lucide-react';
 import React from 'react';
 
-import { scoreWheelDependencies, type ScoreWheelParams } from '.';
+import { type ScoreWheelParams, scoreWheelDependencies } from '.';
 
 const ScoreWheelControls = ({
   weights,

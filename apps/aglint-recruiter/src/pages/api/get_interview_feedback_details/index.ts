@@ -58,10 +58,8 @@ const getInterviewDetails = async (interview_id: string) => {
       if (error) throw error;
       return {
         candidate_feedback: data.candidate_feedback,
-        company_logo:
-          data.applications.public_jobs.recruiter.logo,
-        company_name:
-          data.applications.public_jobs.recruiter.name,
+        company_logo: data.applications.public_jobs.recruiter.logo,
+        company_name: data.applications.public_jobs.recruiter.name,
         job_title: data.applications.public_jobs.job_title,
       };
     });
