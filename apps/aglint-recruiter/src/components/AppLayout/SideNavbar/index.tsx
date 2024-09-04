@@ -1,7 +1,6 @@
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import {
@@ -97,18 +96,16 @@ const LinkIcon = ({
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <div className={`${baseClasses} ${activeClasses} ${hoverClasses}`}>
-            {iconMap[module]}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent align='center' side='right'>
-          <p>{module}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger>
+        <div className={`${baseClasses} ${activeClasses} ${hoverClasses}`}>
+          {iconMap[module]}
+        </div>
+      </TooltipTrigger>
+      <TooltipContent align='center' side='right'>
+        <p>{module}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
